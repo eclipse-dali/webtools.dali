@@ -211,11 +211,11 @@ public abstract class XmlOverride extends XmlEObject implements IOverride
 		result.append(')');
 		return result.toString();
 	}
-	
+
 	public boolean isVirtual() {
 		return getOwner().isVirtual(this);
 	}
-	
+
 	@Override
 	public ITextRange getTextRange() {
 		if (node == null) {
@@ -229,4 +229,4 @@ public abstract class XmlOverride extends XmlEObject implements IOverride
 	public Owner getOwner() {
 		return this.owner;
 	}
-} 
+}

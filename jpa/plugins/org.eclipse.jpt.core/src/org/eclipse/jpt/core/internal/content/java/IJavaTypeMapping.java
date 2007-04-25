@@ -36,5 +36,4 @@ public interface IJavaTypeMapping extends ITypeMapping
 	void updateFromJava(CompilationUnit astRoot);
 
 	List<String> candidateValuesFor(int pos, CompilationUnit astRoot);
-
 }

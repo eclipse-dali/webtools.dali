@@ -532,7 +532,7 @@ public interface IEntity extends ITypeMapping
 	boolean containsSpecifiedPrimaryKeyJoinColumns();
 
 	IPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(int index);
-	
+
 	INamedQuery createNamedQuery(int index);
 
 	INamedNativeQuery createNamedNativeQuery(int index);
@@ -545,11 +545,11 @@ public interface IEntity extends ITypeMapping
 		public OverrideOwner(IEntity entity) {
 			this.entity = entity;
 		}
-		
+
 		public ITypeMapping getTypeMapping() {
 			return this.entity;
 		}
-		
+
 		public ITextRange getTextRange() {
 			return entity.getTextRange();
 		}
@@ -577,7 +577,7 @@ public interface IEntity extends ITypeMapping
 			}
 			return null;
 		}
-		
+
 		public boolean isVirtual(IOverride override) {
 			return entity.getDefaultAttributeOverrides().contains(override);
 		}
@@ -601,7 +601,7 @@ public interface IEntity extends ITypeMapping
 			}
 			return null;
 		}
-		
+
 		public boolean isVirtual(IOverride override) {
 			return entity.getDefaultAssociationOverrides().contains(override);
 		}

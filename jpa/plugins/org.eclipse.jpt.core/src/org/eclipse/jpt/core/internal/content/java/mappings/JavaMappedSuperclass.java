@@ -121,5 +121,4 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 	public List<String> candidateValuesFor(int pos, CompilationUnit astRoot) {
 		return Collections.emptyList();
 	}
-
 }

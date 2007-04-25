@@ -95,5 +95,4 @@ public class JavaEmbeddable extends JavaTypeMapping implements IEmbeddable
 	public List<String> candidateValuesFor(int pos, CompilationUnit astRoot) {
 		return Collections.emptyList();
 	}
-
 }

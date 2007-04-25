@@ -131,7 +131,7 @@ public abstract class JavaOverride extends JavaEObject implements IOverride
 
 	public void setName(String newName) {
 		setNameGen(newName);
-		if (! this.isVirtual()) {
+		if (!this.isVirtual()) {
 			setNameInJava(newName);
 		}
 	}
@@ -249,7 +249,7 @@ public abstract class JavaOverride extends JavaEObject implements IOverride
 		result.append(')');
 		return result.toString();
 	}
-	
+
 	public boolean isVirtual() {
 		return getOwner().isVirtual(this);
 	}

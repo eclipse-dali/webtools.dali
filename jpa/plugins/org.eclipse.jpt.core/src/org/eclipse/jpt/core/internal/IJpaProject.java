@@ -93,7 +93,7 @@ public interface IJpaProject extends IJpaEObject
 	 * Returns a (non-modifiable) Iterator on all the IJpaFiles in the project.
 	 */
 	Iterator<IJpaFile> jpaFiles();
-	
+
 	/**
 	 * Return a JavaPersistentType for the IType, if it exists, null otherwise.
 	 */

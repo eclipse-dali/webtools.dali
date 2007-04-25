@@ -214,7 +214,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	 */
 	protected void addAttributeMappingAnnotationAdaptersTo(Collection<DeclarationAnnotationAdapter> adapters) {
 		adapters.add(JavaAssociationOverride.SINGLE_DECLARATION_ANNOTATION_ADAPTER);
-		adapters.add(JavaAssociationOverride.MULTIPLE_DECLARATION_ANNOTATION_ADAPTER);  // AssociationOverrides
+		adapters.add(JavaAssociationOverride.MULTIPLE_DECLARATION_ANNOTATION_ADAPTER); // AssociationOverrides
 		adapters.add(JavaAttributeOverride.SINGLE_DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaAttributeOverride.MULTIPLE_DECLARATION_ANNOTATION_ADAPTER); // AttributeOverrides
 		adapters.add(JavaBasic.DECLARATION_ANNOTATION_ADAPTER);
@@ -235,7 +235,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		adapters.add(JavaOneToOne.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaOrderBy.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaPrimaryKeyJoinColumn.MULTIPLE_DECLARATION_ANNOTATION_ADAPTER);
-		adapters.add(JavaPrimaryKeyJoinColumn.SINGLE_DECLARATION_ANNOTATION_ADAPTER);  // PrimaryKeyJoinColumns
+		adapters.add(JavaPrimaryKeyJoinColumn.SINGLE_DECLARATION_ANNOTATION_ADAPTER); // PrimaryKeyJoinColumns
 		adapters.add(JavaSequenceGenerator.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaTableGenerator.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaBasic.TEMPORAL_ADAPTER);
@@ -778,7 +778,8 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		IJavaElement javaElement = null;
 		try {
 			javaElement = unit.getElementAt(offset);
-		} catch (JavaModelException ex) {
+		}
+		catch (JavaModelException ex) {
 			// fall through
 		}
 		if (javaElement == null) {

@@ -417,7 +417,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		}
 		return jpaFiles;
 	}
-	
+
 	public JavaPersistentType findJavaPersistentType(IType type) {
 		if (type == null) {
 			return null;

@@ -57,14 +57,13 @@ public interface IOverride extends IJpaSourceObject
 	 * @generated
 	 */
 	void setName(String value);
-	
+
 	/**
 	 * Return true if override exists as specified on the owning object, or false
 	 * if the override is "gotten for free" as a result of defaults calculation
 	 */
 	boolean isVirtual();
 
-	
 	Owner getOwner();
 	
 	
@@ -73,9 +72,9 @@ public interface IOverride extends IJpaSourceObject
 		ITypeMapping getTypeMapping();
 
 		IAttributeMapping attributeMapping(String attributeName);
-		
+
 		boolean isVirtual(IOverride override);
-		
+
 		ITextRange getTextRange();
 	}
 }

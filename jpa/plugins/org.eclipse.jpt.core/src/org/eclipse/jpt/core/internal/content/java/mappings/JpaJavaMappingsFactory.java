@@ -335,7 +335,7 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 		JavaAssociationOverride javaAssociationOverride = new JavaAssociationOverride(owner, member, idaa);
 		return javaAssociationOverride;
 	}
-	
+
 	public JavaAssociationOverride createJavaAssociationOverride(IOverride.Owner owner, Member member) {
 		return this.createJavaAssociationOverride(owner, member, NullDeclarationAnnotationAdapter.instance());
 	}

@@ -132,11 +132,11 @@ public interface IEmbedded extends IAttributeMapping
 			}
 			return null;
 		}
-		
+
 		public boolean isVirtual(IOverride override) {
 			return embedded.getDefaultAttributeOverrides().contains(override);
 		}
-		
+
 		public ITextRange getTextRange() {
 			return embedded.getTextRange();
 		}

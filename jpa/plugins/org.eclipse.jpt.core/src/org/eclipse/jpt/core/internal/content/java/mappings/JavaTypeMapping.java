@@ -258,5 +258,4 @@ public abstract class JavaTypeMapping extends JavaEObject
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
 		return true;
 	}
-
 }

@@ -1054,7 +1054,7 @@ public class EntityMappingsInternal extends XmlEObject
 		}
 		return persistentTypes;
 	}
-	
+
 	public boolean containsPersistentType(IType type) {
 		if (type == null) {
 			return false;
@@ -1561,7 +1561,7 @@ public class EntityMappingsInternal extends XmlEObject
 		result.append(')');
 		return result.toString();
 	}
-	
+
 	public void addMapping(String className, String mappingKey) {
 		XmlPersistentType persistentType = OrmFactory.eINSTANCE.createXmlPersistentType();
 		XmlTypeMapping typeMapping = buildXmlTypeMapping(persistentType.typeMappingProviders(), mappingKey);
