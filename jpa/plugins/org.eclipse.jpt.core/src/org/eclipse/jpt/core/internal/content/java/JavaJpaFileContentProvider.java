@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.content.java;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 
 public class JavaJpaFileContentProvider implements IJpaFileContentProvider
 {
@@ -32,6 +32,6 @@ public class JavaJpaFileContentProvider implements IJpaFileContentProvider
 	}
 	
 	public String contentType() {
-		return JpaCorePlugin.JAVA_CONTENT_TYPE;
+		return JptCorePlugin.JAVA_CONTENT_TYPE;
 	}
 }

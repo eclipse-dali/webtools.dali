@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.tests.internal.jdtutility;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-public class JpaCoreJdtUtilityTests {
+public class JptCoreJdtUtilityTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JpaCoreJdtUtilityTests.class.getName());
+		TestSuite suite = new TestSuite(JptCoreJdtUtilityTests.class.getName());
 		suite.addTestSuite(MemberAnnotationElementAdapterTests.class);
 		suite.addTestSuite(CombinationIndexedDeclarationAnnotationAdapterTests.class);
 		suite.addTestSuite(JDTToolsTests.class);
@@ -26,7 +26,7 @@ public class JpaCoreJdtUtilityTests {
 		return suite;
 	}
 
-	private JpaCoreJdtUtilityTests() {
+	private JptCoreJdtUtilityTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}

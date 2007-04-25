@@ -12,13 +12,13 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
 
 public class XmlStructureProvider implements IJpaStructureProvider {
 
 	public String fileContentType() {
-		return JpaCorePlugin.ORM_XML_CONTENT_TYPE;
+		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
 	}
 	
 	public ITreeContentProvider buildContentProvider() {

@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.internal.facet;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jpt.core.internal.JpaCoreMessages;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.platform.generic.GenericPlatform;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
 import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvider;
@@ -40,7 +40,7 @@ public class JpaFacetDataModelProvider
 	@Override
 	public Object getDefaultProperty(String propertyName) {
 		if (FACET_ID.equals(propertyName)) {
-			return JpaCorePlugin.FACET_ID;
+			return JptCorePlugin.FACET_ID;
 		}
 		else if (PLATFORM_ID.equals(propertyName)) {
 			return GenericPlatform.ID;
@@ -77,7 +77,7 @@ public class JpaFacetDataModelProvider
 	
 	private IStatus validatePlatform(String platformId) {
 		if (platformId == null || platformId.equals("")) {
-			return new Status(IStatus.ERROR, JpaCorePlugin.PLUGIN_ID, JpaCoreMessages.VALIDATE_PLATFORM_NOT_SPECIFIED);
+			return new Status(IStatus.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.VALIDATE_PLATFORM_NOT_SPECIFIED);
 		}
 		else {
 			return OK_STATUS;
@@ -86,7 +86,7 @@ public class JpaFacetDataModelProvider
 	
 	private IStatus validateConnection(String connectionName) {
 		if (connectionName == null || connectionName.equals("") || ! ConnectionProfileRepository.instance().getConnectionWithProfileNamed(connectionName).isConnected()) {
-			return new Status(IStatus.INFO, JpaCorePlugin.PLUGIN_ID, JpaCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED);
+			return new Status(IStatus.INFO, JptCorePlugin.PLUGIN_ID, JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED);
 		}
 		else {
 			return OK_STATUS;

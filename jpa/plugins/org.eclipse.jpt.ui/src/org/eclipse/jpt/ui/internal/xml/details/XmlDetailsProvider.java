@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.content.orm.IXmlContentNodes;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
@@ -23,7 +23,7 @@ public class XmlDetailsProvider
 	}
 	
 	public String fileContentType() {
-		return JpaCorePlugin.ORM_XML_CONTENT_TYPE;
+		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
 	}
 	
 	public IJpaDetailsPage buildDetailsPage(

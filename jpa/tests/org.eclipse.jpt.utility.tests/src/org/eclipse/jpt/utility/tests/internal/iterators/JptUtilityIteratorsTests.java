@@ -15,10 +15,10 @@ import junit.framework.TestSuite;
 /**
  * decentralize test creation code
  */
-public class JpaUtilityIteratorsTests {
+public class JptUtilityIteratorsTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JpaUtilityIteratorsTests.class.getPackage().getName());
+		TestSuite suite = new TestSuite(JptUtilityIteratorsTests.class.getPackage().getName());
 
 		suite.addTestSuite(ArrayIteratorTests.class);
 		suite.addTestSuite(ArrayListIteratorTests.class);
@@ -46,7 +46,7 @@ public class JpaUtilityIteratorsTests {
 		return suite;
 	}
 
-	private JpaUtilityIteratorsTests() {
+	private JptUtilityIteratorsTests() {
 		super();
 	}
 

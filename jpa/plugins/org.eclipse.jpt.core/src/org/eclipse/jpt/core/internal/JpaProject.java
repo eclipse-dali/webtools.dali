@@ -45,7 +45,7 @@ import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.internal.facet.JpaFacetUtils;
 import org.eclipse.jpt.core.internal.platform.IContext;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
-import org.eclipse.jpt.db.internal.PersistenceDbPlugin;
+import org.eclipse.jpt.db.internal.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -422,7 +422,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		if (type == null) {
 			return null;
 		}
-		Collection<IJpaFile> persistenceFiles = jpaFiles(JpaCorePlugin.JAVA_CONTENT_TYPE);
+		Collection<IJpaFile> persistenceFiles = jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE);
 		for (IJpaFile jpaFile : persistenceFiles) {
 			JpaCompilationUnit compilationUnit = (JpaCompilationUnit) jpaFile.getContent();
 			for (JavaPersistentType persistentType : compilationUnit.getTypes()) {
@@ -640,6 +640,6 @@ public class JpaProject extends JpaEObject implements IJpaProject
 
 	public ConnectionProfile connectionProfile() {
 		String profileName = getDataSource().getConnectionProfileName();
-		return PersistenceDbPlugin.getDefault().getConnectionProfileRepository().profileNamed(profileName);
+		return JptDbPlugin.getDefault().getConnectionProfileRepository().profileNamed(profileName);
 	}
 }

@@ -11,24 +11,24 @@ package org.eclipse.jpt.core.tests.internal;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.core.tests.internal.content.java.mappings.JpaCoreContentJavaMappingsTests;
-import org.eclipse.jpt.core.tests.internal.jdtutility.JpaCoreJdtUtilityTests;
-import org.eclipse.jpt.core.tests.internal.model.JpaCoreModelTests;
+import org.eclipse.jpt.core.tests.internal.content.java.mappings.JptCoreContentJavaMappingsTests;
+import org.eclipse.jpt.core.tests.internal.jdtutility.JptCoreJdtUtilityTests;
+import org.eclipse.jpt.core.tests.internal.model.JptCoreModelTests;
 
 /**
  * Runs all JPA Core Tests
  */
-public class JpaCoreTests {
+public class JptCoreTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JpaCoreTests.class.getName());
-		suite.addTest(JpaCoreContentJavaMappingsTests.suite());
-		suite.addTest(JpaCoreModelTests.suite());
-		suite.addTest(JpaCoreJdtUtilityTests.suite());
+		TestSuite suite = new TestSuite(JptCoreTests.class.getName());
+		suite.addTest(JptCoreContentJavaMappingsTests.suite());
+		suite.addTest(JptCoreModelTests.suite());
+		suite.addTest(JptCoreJdtUtilityTests.suite());
 		return suite;
 	}
 	
-	private JpaCoreTests() {
+	private JptCoreTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}

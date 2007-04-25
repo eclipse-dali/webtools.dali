@@ -20,7 +20,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
 import org.eclipse.jpt.core.internal.content.orm.OrmFactory;
@@ -92,7 +92,7 @@ public class JpaFacetPostInstallDelegate
 			resource.save(null);
 		}
 		catch (IOException e) {
-			JpaCorePlugin.log(e);
+			JptCorePlugin.log(e);
 		}
 	}
 	
@@ -109,7 +109,7 @@ public class JpaFacetPostInstallDelegate
 			resource.save(null);
 		}
 		catch (IOException e) {
-			JpaCorePlugin.log(e);
+			JptCorePlugin.log(e);
 		}
 	}
 	

@@ -11,15 +11,15 @@ package org.eclipse.jpt.core.tests.internal.model;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-public class JpaCoreModelTests {
+public class JptCoreModelTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JpaCoreModelTests.class.getPackage().getName());
+		TestSuite suite = new TestSuite(JptCoreModelTests.class.getPackage().getName());
 		suite.addTestSuite(ModelInitializationTests.class);
 		return suite;
 	}
 
-	private JpaCoreModelTests() {
+	private JptCoreModelTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}

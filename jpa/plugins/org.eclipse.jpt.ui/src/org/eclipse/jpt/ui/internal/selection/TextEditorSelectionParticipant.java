@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -104,7 +104,7 @@ public class TextEditorSelectionParticipant
 		if (file == null) {
 			return null;
 		}
-		return JpaCorePlugin.getJpaFile(file);
+		return JptCorePlugin.getJpaFile(file);
 	}
 	
 	//TODO this is working only if the project is an ejb project.

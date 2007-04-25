@@ -16,23 +16,23 @@ import org.eclipse.jpt.db.tests.internal.platforms.AllPlatformTests;
 import org.eclipse.jpt.utility.internal.ClassTools;
 
 /**
- *  JpaDbTests
+ *  JptDbTests
  */
-public class JpaDbTests {
+public class JptDbTests {
 
     public static void main( String[] args) {
-        TestRunner.main( new String[] { "-c", JpaDbTests.class.getName()});
+        TestRunner.main( new String[] { "-c", JptDbTests.class.getName()});
     }
     
     public static Test suite() {
-        TestSuite suite = new TestSuite( ClassTools.packageNameFor( JpaDbTests.class));
+        TestSuite suite = new TestSuite( ClassTools.packageNameFor( JptDbTests.class));
     
         suite.addTest( AllPlatformTests.suite());
     
         return suite;
     }
     
-    private JpaDbTests() {
+    private JptDbTests() {
         super();
         throw new UnsupportedOperationException();
     }

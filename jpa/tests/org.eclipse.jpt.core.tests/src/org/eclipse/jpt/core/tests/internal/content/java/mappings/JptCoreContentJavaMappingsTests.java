@@ -12,15 +12,15 @@ package org.eclipse.jpt.core.tests.internal.content.java.mappings;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-public class JpaCoreContentJavaMappingsTests {
+public class JptCoreContentJavaMappingsTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JpaCoreContentJavaMappingsTests.class.getName());
+		TestSuite suite = new TestSuite(JptCoreContentJavaMappingsTests.class.getName());
 //		suite.addTestSuite(JavaEntityTests.class);
 		return suite;
 	}
 
-	private JpaCoreContentJavaMappingsTests() {
+	private JptCoreContentJavaMappingsTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}

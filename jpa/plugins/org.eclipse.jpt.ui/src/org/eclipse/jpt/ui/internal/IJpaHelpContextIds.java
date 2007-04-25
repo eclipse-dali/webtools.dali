@@ -22,7 +22,7 @@ public interface IJpaHelpContextIds {
 
 
 	//ContextID prefix
-	public static final String PREFIX = JpaUiPlugin.PLUGIN_ID + ".";  //$NON-NLS-1$
+	public static final String PREFIX = JptUiPlugin.PLUGIN_ID + ".";  //$NON-NLS-1$
 	
 	//Persistent Type composites
 	public static final String ENTITY_ACCESS_TYPE = PREFIX + "entity_accessType"; //$NON-NLS-1$

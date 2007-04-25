@@ -136,7 +136,7 @@ public class JpaPlatformRegistry
 	private Iterator<IConfigurationElement> allConfigElements() {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = 
-			registry.getExtensionPoint(JpaCorePlugin.PLUGIN_ID, EXTENSION_ID);
+			registry.getExtensionPoint(JptCorePlugin.PLUGIN_ID, EXTENSION_ID);
 		IExtension[] extensions = extensionPoint.getExtensions();
 		
 		return new CompositeIterator<IConfigurationElement>(
@@ -159,7 +159,7 @@ public class JpaPlatformRegistry
 			+ "\" is missing a required attribute \""
 			+ attributeName
 			+ "\".";
-		JpaCorePlugin.log(message);
+		JptCorePlugin.log(message);
 	}
 	
 	// TODO externalize strings
@@ -172,7 +172,7 @@ public class JpaPlatformRegistry
 			+ otherConfigElement.getContributor().getName()
 			+ "\" have registered a duplicate attribute \"id\" "
 			+ "for the extension element \"jpaPlatform\".";
-		JpaCorePlugin.log(message);
+		JptCorePlugin.log(message);
 	}
 		
 	// TODO externalize strings
@@ -185,6 +185,6 @@ public class JpaPlatformRegistry
 			+ "\" in the plugin \""
 			+ configElement.getContributor().getName()
 			+ "\".";
-		JpaCorePlugin.log(message);
+		JptCorePlugin.log(message);
 	}
 }

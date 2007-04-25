@@ -20,8 +20,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
-import org.eclipse.jpt.ui.internal.JpaUiMessages;
-import org.eclipse.jpt.ui.internal.JpaUiPlugin;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddableUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.EntityUiProvider;
@@ -63,7 +63,7 @@ public class AddPersistentClassDialog extends StatusDialog
 	public AddPersistentClassDialog(Shell parentShell, EntityMappingsInternal entityMappings) {
 		super(parentShell);
 		this.entityMappings = entityMappings;
-		setTitle(JpaUiMessages.AddPersistentClassDialog_title);
+		setTitle(JptUiMessages.AddPersistentClassDialog_title);
 	}
 	
 	protected Control createDialogArea(Composite parent) {
@@ -73,7 +73,7 @@ public class AddPersistentClassDialog extends StatusDialog
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		composite.setLayout(new GridLayout(2, false));
 		
-		classLabel = createLabel(composite, 2, JpaUiMessages.AddPersistentClassDialog_classLabel);
+		classLabel = createLabel(composite, 2, JptUiMessages.AddPersistentClassDialog_classLabel);
 			
 		classText = createText(composite, 1);
 		classText.addModifyListener(
@@ -84,7 +84,7 @@ public class AddPersistentClassDialog extends StatusDialog
 				}
 			);
 		
-		classBrowseButton = createButton(composite, 1, JpaUiMessages.General_browse);
+		classBrowseButton = createButton(composite, 1, JptUiMessages.General_browse);
 		classBrowseButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				IType type = chooseType();
@@ -97,7 +97,7 @@ public class AddPersistentClassDialog extends StatusDialog
 			}
 		});
 		
-		mappingLabel = createLabel(composite, 2, JpaUiMessages.AddPersistentClassDialog_mappingLabel);
+		mappingLabel = createLabel(composite, 2, JptUiMessages.AddPersistentClassDialog_mappingLabel);
 		
 		mappingCombo = new ComboViewer(createCombo(composite, 2));
 		mappingCombo.setContentProvider(
@@ -202,11 +202,11 @@ public class AddPersistentClassDialog extends StatusDialog
 						false, getClassName());
 		}
 		catch (JavaModelException e) {
-			JpaUiPlugin.log(e);
+			JptUiPlugin.log(e);
 			throw new RuntimeException(e);
 		}
-		typeSelectionDialog.setTitle(JpaUiMessages.AddPersistentClassDialog_classDialog_title); 
-		typeSelectionDialog.setMessage(JpaUiMessages.AddPersistentClassDialog_classDialog_message); 
+		typeSelectionDialog.setTitle(JptUiMessages.AddPersistentClassDialog_classDialog_title); 
+		typeSelectionDialog.setMessage(JptUiMessages.AddPersistentClassDialog_classDialog_message); 
 
 		if (typeSelectionDialog.open() == Window.OK) {
 			return (IType) typeSelectionDialog.getResult()[0];
@@ -220,8 +220,8 @@ public class AddPersistentClassDialog extends StatusDialog
 		if (StringTools.stringIsEmpty(className)) {
 			updateStatus(
 				new Status(
-					IStatus.ERROR, JpaUiPlugin.PLUGIN_ID, 
-					JpaUiMessages.AddPersistentClassDialog_noClassError));
+					IStatus.ERROR, JptUiPlugin.PLUGIN_ID, 
+					JptUiMessages.AddPersistentClassDialog_noClassError));
 			return;
 		}
 		
@@ -236,16 +236,16 @@ public class AddPersistentClassDialog extends StatusDialog
 		if (type == null) {
 			updateStatus(
 				new Status(
-					IStatus.WARNING, JpaUiPlugin.PLUGIN_ID,
-					JpaUiMessages.AddPersistentClassDialog_classNotFoundWarning));
+					IStatus.WARNING, JptUiPlugin.PLUGIN_ID,
+					JptUiMessages.AddPersistentClassDialog_classNotFoundWarning));
 			return;
 		}
 		
 		if (entityMappings.containsPersistentType(type)) {
 			updateStatus(
 				new Status(
-					IStatus.WARNING, JpaUiPlugin.PLUGIN_ID, 
-					JpaUiMessages.AddPersistentClassDialog_duplicateClassWarning));
+					IStatus.WARNING, JptUiPlugin.PLUGIN_ID, 
+					JptUiMessages.AddPersistentClassDialog_duplicateClassWarning));
 			return;
 		}
 		
@@ -253,8 +253,8 @@ public class AddPersistentClassDialog extends StatusDialog
 		if (mappingKey == null) {
 			updateStatus(
 				new Status(
-					IStatus.ERROR, JpaUiPlugin.PLUGIN_ID,
-					JpaUiMessages.AddPersistentClassDialog_noMappingKeyError));
+					IStatus.ERROR, JptUiPlugin.PLUGIN_ID,
+					JptUiMessages.AddPersistentClassDialog_noMappingKeyError));
 			return;
 		}
 		

@@ -36,7 +36,7 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.gen.internal.EntityGenerator;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.JpaUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -74,8 +74,8 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 
 	GenerateEntitiesWizardPage() {
 		super(true, "Generate Entities"); //$NON-NLS-1$
-		setTitle(JpaUiMessages.GenerateEntitiesWizardPage_generateEntities);
-		setMessage(JpaUiMessages.GenerateEntitiesWizardPage_chooseEntityTable);
+		setTitle(JptUiMessages.GenerateEntitiesWizardPage_generateEntities);
+		setMessage(JptUiMessages.GenerateEntitiesWizardPage_chooseEntityTable);
 	}
 	
 	// -------- Initialization ---------
@@ -106,7 +106,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		
 		Group tablesGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		tablesGroup.setLayout(new GridLayout());
-		tablesGroup.setText(JpaUiMessages.GenerateEntitiesWizardPage_tables);
+		tablesGroup.setText(JptUiMessages.GenerateEntitiesWizardPage_tables);
 		GridData data = new GridData();
 		data.horizontalSpan = 4;
 		data.verticalAlignment = SWT.FILL;

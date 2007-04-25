@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceResource;
 import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceXmlResourceFactory;
 
@@ -56,7 +56,7 @@ public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProv
 	}
 
 	public String contentType() {
-		return JpaCorePlugin.PERSISTENCE_XML_CONTENT_TYPE;
+		return JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE;
 	}
 	
 	
@@ -87,7 +87,7 @@ public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProv
 					}
 					catch (IOException ioe) {
 						// hmmm, log for now
-						JpaCorePlugin.log(ioe);
+						JptCorePlugin.log(ioe);
 					}
 				}
 			}

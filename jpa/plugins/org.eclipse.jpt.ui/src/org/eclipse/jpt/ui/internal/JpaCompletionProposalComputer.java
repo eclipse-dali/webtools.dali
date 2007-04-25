@@ -21,7 +21,7 @@ import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
 
@@ -59,7 +59,7 @@ public class JpaCompletionProposalComputer implements IJavaCompletionProposalCom
 		System.out.println("CU resource: " + resource);
 		IFile file = (IFile) resource;
 
-		IJpaFile jpaFile = JpaCorePlugin.getJpaFile(file);
+		IJpaFile jpaFile = JptCorePlugin.getJpaFile(file);
 		System.out.println("JPA file: " + jpaFile);
 		
 		JpaCompilationUnit jpaCU = (JpaCompilationUnit) jpaFile.getContent();

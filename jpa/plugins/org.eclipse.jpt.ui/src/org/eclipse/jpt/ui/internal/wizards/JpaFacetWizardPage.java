@@ -14,16 +14,16 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.facet.IJpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.JpaUiIcons;
-import org.eclipse.jpt.ui.internal.JpaUiMessages;
-import org.eclipse.jpt.ui.internal.JpaUiPlugin;
+import org.eclipse.jpt.ui.internal.JptUiIcons;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.prefs.JpaPreferencePage;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
@@ -57,9 +57,9 @@ public class JpaFacetWizardPage
 	
 	public JpaFacetWizardPage() {
 		super("jpt.jpa.facet.install.page"); //$NON-NLS-1$
-		setTitle(JpaUiMessages.JpaFacetWizardPage_title);
-		setDescription(JpaUiMessages.JpaFacetWizardPage_description);
-		setImageDescriptor(JpaUiPlugin.getPlugin().getImageDescriptor(JpaUiIcons.JPA_WIZ_BANNER));
+		setTitle(JptUiMessages.JpaFacetWizardPage_title);
+		setDescription(JptUiMessages.JpaFacetWizardPage_description);
+		setImageDescriptor(JptUiPlugin.getPlugin().getImageDescriptor(JptUiIcons.JPA_WIZ_BANNER));
 	}
 	
 	
@@ -143,7 +143,7 @@ public class JpaFacetWizardPage
 			// TODO - F1 Help
 			// PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IDaliHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
 			
-			platformLabel = createLabel(group, 1, JpaUiMessages.JpaFacetWizardPage_platformLabel);
+			platformLabel = createLabel(group, 1, JptUiMessages.JpaFacetWizardPage_platformLabel);
 			
 			platformCombo = new ComboViewer(createCombo(group, true));
 			platformCombo.setContentProvider(
@@ -209,7 +209,7 @@ public class JpaFacetWizardPage
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
 			
-			connectionLabel = createLabel(group, 1, JpaUiMessages.JpaFacetWizardPage_connectionLabel);
+			connectionLabel = createLabel(group, 1, JptUiMessages.JpaFacetWizardPage_connectionLabel);
 			
 			connectionCombo = createCombo(group, true);
 			connectionCombo.addSelectionListener(
@@ -237,7 +237,7 @@ public class JpaFacetWizardPage
 			GridData data = new GridData(GridData.END, GridData.CENTER, false, false);
 			data.horizontalSpan = 2;
 			connectionLink.setLayoutData(data);
-			connectionLink.setText(JpaUiMessages.JpaFacetWizardPage_connectionLink);
+			connectionLink.setText(JptUiMessages.JpaFacetWizardPage_connectionLink);
 			connectionLink.addSelectionListener(
 				new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent e) {
@@ -289,7 +289,7 @@ public class JpaFacetWizardPage
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
 			
-			jpaLibLabel = createLabel(group, 1, JpaUiMessages.JpaFacetWizardPage_jpaLibLabel);
+			jpaLibLabel = createLabel(group, 1, JptUiMessages.JpaFacetWizardPage_jpaLibLabel);
 			
 			jpaLibCombo = createCombo(group, true);
 			jpaLibCombo.addSelectionListener(
@@ -309,7 +309,7 @@ public class JpaFacetWizardPage
 			GridData data = new GridData(GridData.END, GridData.CENTER, false, false);
 			data.horizontalSpan = 2;
 			jpaPrefsLink.setLayoutData(data);
-			jpaPrefsLink.setText(JpaUiMessages.JpaFacetWizardPage_jpaPrefsLink);
+			jpaPrefsLink.setText(JptUiMessages.JpaFacetWizardPage_jpaPrefsLink);
 			jpaPrefsLink.addSelectionListener(
 				new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent e) {
@@ -322,7 +322,7 @@ public class JpaFacetWizardPage
 			data = new GridData(GridData.END, GridData.CENTER, false, false);
 			data.horizontalSpan = 2;
 			userLibsLink.setLayoutData(data);
-			userLibsLink.setText(JpaUiMessages.JpaFacetWizardPage_userLibsLink);
+			userLibsLink.setText(JptUiMessages.JpaFacetWizardPage_userLibsLink);
 			userLibsLink.addSelectionListener(
 				new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent e) {
@@ -340,7 +340,7 @@ public class JpaFacetWizardPage
 			}
 			else {
 				selectedJpaLib = 
-					JpaCorePlugin.getPlugin().getPluginPreferences()
+					JptCorePlugin.getPlugin().getPluginPreferences()
 						.getString(JpaPreferenceConstants.PREF_DEFAULT_JPA_LIB);
 			}
 			
@@ -393,7 +393,7 @@ public class JpaFacetWizardPage
 			// PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IDaliHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
 			
 			createOrmXmlButton = new Button(group, SWT.CHECK);
-			createOrmXmlButton.setText(JpaUiMessages.JpaFacetWizardPage_createOrmXmlButton);
+			createOrmXmlButton.setText(JptUiMessages.JpaFacetWizardPage_createOrmXmlButton);
 			createOrmXmlButton.setSelection(model.getBooleanProperty(CREATE_ORM_XML));
 			createOrmXmlButton.addSelectionListener(
 					new SelectionListener() {

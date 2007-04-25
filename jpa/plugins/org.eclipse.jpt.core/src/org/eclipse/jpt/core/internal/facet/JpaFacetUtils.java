@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jpt.core.internal.IJpaCoreConstants;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JpaProject;
 import org.eclipse.jpt.core.internal.platform.generic.GenericPlatform;
@@ -26,7 +26,7 @@ import org.osgi.service.prefs.BackingStoreException;
 public class JpaFacetUtils
 {
 	private static QualifiedName CONNECTION_KEY = 
-			new QualifiedName(JpaCorePlugin.PLUGIN_ID, IJpaCoreConstants.DATA_SOURCE_CONNECTION_NAME);
+			new QualifiedName(JptCorePlugin.PLUGIN_ID, IJpaCoreConstants.DATA_SOURCE_CONNECTION_NAME);
 	
 	
 	/**
@@ -37,7 +37,7 @@ public class JpaFacetUtils
 	
 	public static String getPlatform(final IProject project) {
 		final IScopeContext context = new ProjectScope(project);
-		final IEclipsePreferences prefs = context.getNode(JpaCorePlugin.PLUGIN_ID);
+		final IEclipsePreferences prefs = context.getNode(JptCorePlugin.PLUGIN_ID);
 		
 		String platformId = prefs.get(IJpaCoreConstants.JPA_PLATFORM, null);
 		
@@ -58,9 +58,9 @@ public class JpaFacetUtils
 		throws CoreException
 	{
 		final IScopeContext context = new ProjectScope(project);
-		final IEclipsePreferences prefs = context.getNode(JpaCorePlugin.PLUGIN_ID);
+		final IEclipsePreferences prefs = context.getNode(JptCorePlugin.PLUGIN_ID);
 		
-		JpaProject jpaProject = (JpaProject) JpaCorePlugin.getJpaProject(project);
+		JpaProject jpaProject = (JpaProject) JptCorePlugin.getJpaProject(project);
 		
 		if (jpaProject == null) {
 			throw new IllegalArgumentException(project.getName());
@@ -93,7 +93,7 @@ public class JpaFacetUtils
 	public static void setConnectionName(final IProject project, String connectionName)
 		throws CoreException
 	{
-		JpaProject jpaProject = (JpaProject) JpaCorePlugin.getJpaProject(project);
+		JpaProject jpaProject = (JpaProject) JptCorePlugin.getJpaProject(project);
 		
 		if (jpaProject == null) {
 			throw new IllegalArgumentException(project.getName());

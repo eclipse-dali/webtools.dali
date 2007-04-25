@@ -37,7 +37,7 @@ import org.eclipse.jpt.db.internal.DTPConnectionProfileWrapper;
 import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.db.tests.internal.DbTestPlugin;
+import org.eclipse.jpt.db.tests.internal.JptDbTestsPlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 
@@ -295,7 +295,7 @@ public abstract class DTPPlatformTests extends TestCase {
     }
    
     private String getTestPluginBundleId() {
-		return DbTestPlugin.BUNDLE_ID;
+		return JptDbTestsPlugin.BUNDLE_ID;
 	}
 
 	private IPath getDriverDefinitionLocation() {

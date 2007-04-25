@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.IPreferenceConstants;
-import org.eclipse.jpt.ui.internal.JpaUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.jface.NullLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.NullTreeContentProvider;
@@ -49,7 +49,7 @@ public class JpaStructureView extends AbstractJpaView
 	
 	
 	public JpaStructureView() {
-		super(JpaUiMessages.JpaStructureView_viewNotAvailable);
+		super(JptUiMessages.JpaStructureView_viewNotAvailable);
 	}
 	
 	
@@ -268,9 +268,9 @@ public class JpaStructureView extends AbstractJpaView
 	private class ToggleLinkingAction extends Action 
 	{
 		public ToggleLinkingAction() {
-			super(JpaUiMessages.JpaStructureView_linkWithEditorText);
-			setDescription(JpaUiMessages.JpaStructureView_linkWithEditorDesc);
-			setToolTipText(JpaUiMessages.JpaStructureView_linkWithEditorTooltip);
+			super(JptUiMessages.JpaStructureView_linkWithEditorText);
+			setDescription(JptUiMessages.JpaStructureView_linkWithEditorDesc);
+			setToolTipText(JptUiMessages.JpaStructureView_linkWithEditorTooltip);
 			//TODO shouldn't be accessing this
 			JavaPluginImages.setLocalImageDescriptors(this, "synced.gif"); //$NON-NLS-1$		
 			// PlatformUI.getWorkbench().getHelpSystem().setHelp(this,

@@ -24,8 +24,8 @@ import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentType;
-import org.eclipse.jpt.core.internal.JpaCoreMessages;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
 import org.eclipse.jpt.core.internal.content.orm.XmlRootContentNode;
@@ -51,26 +51,26 @@ public class SynchronizeClassesJob extends Job
 	
 	
 	public SynchronizeClassesJob(IFile file) {
-		super(JpaCoreMessages.SYNCHRONIZE_CLASSES_JOB);
+		super(JptCoreMessages.SYNCHRONIZE_CLASSES_JOB);
 		persistenceXmlFile = file;
 	}
 	
 	protected IStatus run(IProgressMonitor monitor) {
 		IProject project = persistenceXmlFile.getProject();
 		
-		monitor.beginTask(JpaCoreMessages.SYNCHRONIZING_CLASSES_TASK, 150);
+		monitor.beginTask(JptCoreMessages.SYNCHRONIZING_CLASSES_TASK, 150);
 		
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
 		}
 		
-		IJpaFile jpaFile = JpaCorePlugin.getJpaFile(persistenceXmlFile);
+		IJpaFile jpaFile = JptCorePlugin.getJpaFile(persistenceXmlFile);
 		PersistenceXmlRootContentNode root;
 		try {
 			root = (PersistenceXmlRootContentNode) jpaFile.getContent();
 		}
 		catch (ClassCastException cce) {
-			return new Status(Status.ERROR, JpaCorePlugin.PLUGIN_ID, JpaCoreMessages.INVALID_PERSISTENCE_XML_CONTENT);
+			return new Status(Status.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.INVALID_PERSISTENCE_XML_CONTENT);
 		}
 		
 		Persistence persistence = root.getPersistence();
@@ -108,7 +108,7 @@ public class SynchronizeClassesJob extends Job
 			resource.save(null);
 		}
 		catch (IOException ioe) {
-			return new Status(Status.ERROR, JpaCorePlugin.PLUGIN_ID, JpaCoreMessages.ERROR_WRITING_FILE, ioe);
+			return new Status(Status.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.ERROR_WRITING_FILE, ioe);
 		}
 		
 		return Status.OK_STATUS;
@@ -130,7 +130,7 @@ public class SynchronizeClassesJob extends Job
 	}
 	
 	private Iterator<IPersistentType> allJavaTypes(IJpaProject jpaProject) {
-		return new TransformationIterator<IJpaFile, IPersistentType>(jpaProject.jpaFiles(JpaCorePlugin.JAVA_CONTENT_TYPE).iterator()) {
+		return new TransformationIterator<IJpaFile, IPersistentType>(jpaProject.jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE).iterator()) {
 			@Override
 			protected IPersistentType transform(IJpaFile next) {
 				JpaCompilationUnit jcu = (JpaCompilationUnit) next.getContent();

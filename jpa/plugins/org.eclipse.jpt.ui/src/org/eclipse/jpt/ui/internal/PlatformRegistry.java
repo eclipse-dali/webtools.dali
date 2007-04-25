@@ -102,7 +102,7 @@ public class PlatformRegistry
 	private Iterator allConfigElements() {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = 
-			registry.getExtensionPoint(JpaUiPlugin.PLUGIN_ID, EXTENSION_ID);
+			registry.getExtensionPoint(JptUiPlugin.PLUGIN_ID, EXTENSION_ID);
 		IExtension[] extensions = extensionPoint.getExtensions();
 		
 		return new CompositeIterator(
@@ -125,7 +125,7 @@ public class PlatformRegistry
 			+ "\" is missing a required attribute \""
 			+ attributeName
 			+ "\".";
-		JpaUiPlugin.log(message);
+		JptUiPlugin.log(message);
 	}
 	
 	// TODO externalize strings
@@ -138,7 +138,7 @@ public class PlatformRegistry
 			+ otherConfigElement.getContributor().getName()
 			+ "\" have registered a duplicate attribute \"id\" "
 			+ "for the extension element \"jpaVendor\".";
-		JpaUiPlugin.log(message);
+		JptUiPlugin.log(message);
 	}
 		
 	// TODO externalize strings
@@ -151,6 +151,6 @@ public class PlatformRegistry
 			+ "\" in the plugin \""
 			+ configElement.getContributor().getName()
 			+ "\".";
-		JpaUiPlugin.log(message);
+		JptUiPlugin.log(message);
 	}
 }

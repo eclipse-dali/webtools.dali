@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
-import org.eclipse.jpt.ui.internal.JpaUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
@@ -36,7 +36,7 @@ public class JpaDetailsView extends AbstractJpaView
 	private Map<Object, IJpaDetailsPage> detailsPages;
 	
 	public JpaDetailsView() {
-		super(JpaUiMessages.JpaDetailsView_viewNotAvailable);
+		super(JptUiMessages.JpaDetailsView_viewNotAvailable);
 		this.currentSelection = Selection.NULL_SELECTION;
 		this.detailsProviders = new HashMap<String, IJpaDetailsProvider>();
 		this.detailsPages = new HashMap<Object, IJpaDetailsPage>();

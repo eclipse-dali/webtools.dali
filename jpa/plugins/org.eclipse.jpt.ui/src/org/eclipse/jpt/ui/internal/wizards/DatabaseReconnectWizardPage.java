@@ -21,12 +21,12 @@ import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
 import org.eclipse.jpt.db.internal.Database;
-import org.eclipse.jpt.db.internal.PersistenceDbPlugin;
+import org.eclipse.jpt.db.internal.JptDbPlugin;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.JpaUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
@@ -51,8 +51,8 @@ class DatabaseReconnectWizardPage extends WizardPage {
 	DatabaseReconnectWizardPage( IJpaProject jpaProject) {
 		super( "Database Settings"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
-		setTitle( JpaUiMessages.DatabaseReconnectWizardPage_databaseConnection);
-		setMessage( JpaUiMessages.DatabaseReconnectWizardPage_reconnectToDatabase);
+		setTitle( JptUiMessages.DatabaseReconnectWizardPage_databaseConnection);
+		setMessage( JptUiMessages.DatabaseReconnectWizardPage_reconnectToDatabase);
 	}
 
 	public void createControl( Composite parent) {
@@ -140,7 +140,7 @@ class DatabaseReconnectWizardPage extends WizardPage {
 
 	ConnectionProfile getProjectConnectionProfile() {
 		String profileName = this.jpaProject.getDataSource().getConnectionProfileName();
-		return PersistenceDbPlugin.getDefault().getConnectionProfileRepository().profileNamed( profileName);
+		return JptDbPlugin.getDefault().getConnectionProfileRepository().profileNamed( profileName);
 	}
 	
 	Schema getProjectUserSchema() {
@@ -167,10 +167,10 @@ class DatabaseReconnectWizardPage extends WizardPage {
 			layout.numColumns = 2;
 			this.group.setLayout( layout);
 			this.group.setLayoutData( new GridData( GridData.FILL_HORIZONTAL));
-			this.group.setText( JpaUiMessages.DatabaseReconnectWizardPage_database);
+			this.group.setText( JptUiMessages.DatabaseReconnectWizardPage_database);
 			//TODO Add Help
 //			PlatformUI.getWorkbench().getHelpSystem().setHelp( this.group, IDaliHelpContextIds.XXX);
-			this.connectionLabel = createLabel( this.group, 1, JpaUiMessages.DatabaseReconnectWizardPage_connection);
+			this.connectionLabel = createLabel( this.group, 1, JptUiMessages.DatabaseReconnectWizardPage_connection);
 			this.connectionCombo = createCombo( this.group, true);
 			this.connectionCombo.addSelectionListener( new SelectionAdapter() {
 				public void widgetDefaultSelected( SelectionEvent e) {
@@ -181,7 +181,7 @@ class DatabaseReconnectWizardPage extends WizardPage {
 					handleConnectionChange();
 				}
 			});
-			this.schemaLabel = createLabel( this.group, 1, JpaUiMessages.DatabaseReconnectWizardPage_schema);
+			this.schemaLabel = createLabel( this.group, 1, JptUiMessages.DatabaseReconnectWizardPage_schema);
 			this.schemaCombo = createCombo( this.group, true);
 			this.schemaCombo.addSelectionListener( new SelectionAdapter() {
 				public void widgetDefaultSelected( SelectionEvent e) {
@@ -192,12 +192,12 @@ class DatabaseReconnectWizardPage extends WizardPage {
 					handleSchemaChange();
 				}
 			});
-			schemaInfoLabel = createLabel( this.group, 2, JpaUiMessages.DatabaseReconnectWizardPage_schemaInfo);
+			schemaInfoLabel = createLabel( this.group, 2, JptUiMessages.DatabaseReconnectWizardPage_schemaInfo);
 			this.addConnectionLink = new Link( this.group, SWT.NONE);
 			GridData data = new GridData( GridData.END, GridData.CENTER, false, false);
 			data.horizontalSpan = 2;
 			this.addConnectionLink.setLayoutData( data);
-			this.addConnectionLink.setText( JpaUiMessages.DatabaseReconnectWizardPage_addConnectionLink);
+			this.addConnectionLink.setText( JptUiMessages.DatabaseReconnectWizardPage_addConnectionLink);
 			this.addConnectionLink.addSelectionListener( new SelectionAdapter() {
 				public void widgetSelected( SelectionEvent e) {
 					openNewConnectionWizard();
@@ -207,7 +207,7 @@ class DatabaseReconnectWizardPage extends WizardPage {
 			data = new GridData( GridData.END, GridData.CENTER, false, false);
 			data.horizontalSpan = 2;
 			this.reconnectLink.setLayoutData( data);
-			this.reconnectLink.setText( JpaUiMessages.DatabaseReconnectWizardPage_reconnectLink);
+			this.reconnectLink.setText( JptUiMessages.DatabaseReconnectWizardPage_reconnectLink);
 			this.reconnectLink.setEnabled( false);
 			this.reconnectLink.addSelectionListener( new SelectionAdapter() {
 				public void widgetSelected( SelectionEvent e) {
@@ -219,11 +219,11 @@ class DatabaseReconnectWizardPage extends WizardPage {
 		}
 
 		private ConnectionProfile getConnectionProfileNamed( String profileName) {
-			return PersistenceDbPlugin.getDefault().getConnectionProfileRepository().profileNamed( profileName);
+			return JptDbPlugin.getDefault().getConnectionProfileRepository().profileNamed( profileName);
 		}
 		
 		private Iterator dtpConnectionProfileNames() {
-			return PersistenceDbPlugin.getDefault().getConnectionProfileRepository().profileNames();
+			return JptDbPlugin.getDefault().getConnectionProfileRepository().profileNames();
 		}
 
 		private String getProjectConnectionProfileName() {
@@ -239,7 +239,7 @@ class DatabaseReconnectWizardPage extends WizardPage {
 			if( DatabaseReconnectWizardPage.this.connection != null) {
 				DatabaseReconnectWizardPage.this.removeConnectionListener();
 			}
-			ConnectionProfile profile = PersistenceDbPlugin.getDefault().getConnectionProfileRepository().profileNamed( connectionProfileName);
+			ConnectionProfile profile = JptDbPlugin.getDefault().getConnectionProfileRepository().profileNamed( connectionProfileName);
 			profile.connect();
 			DatabaseReconnectWizardPage.this.connection = profile.getConnection();
 			if( DatabaseReconnectWizardPage.this.connection != null) {

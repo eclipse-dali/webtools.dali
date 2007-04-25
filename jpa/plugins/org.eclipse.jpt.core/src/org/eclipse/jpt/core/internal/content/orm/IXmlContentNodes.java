@@ -8,19 +8,19 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 
 public interface IXmlContentNodes 
 {
 	public static final String XML_ROOT_ID =
-		JpaCorePlugin.PLUGIN_ID + ".xml.Root";
+		JptCorePlugin.PLUGIN_ID + ".xml.Root";
 	
 	public static final String ENTITY_MAPPINGS_ID = 
-		JpaCorePlugin.PLUGIN_ID + ".xml.entityMappings";
+		JptCorePlugin.PLUGIN_ID + ".xml.entityMappings";
 	
 	public static final String PERSISTENT_TYPE_ID = 
-		JpaCorePlugin.PLUGIN_ID + ".xml.persistentType";
+		JptCorePlugin.PLUGIN_ID + ".xml.persistentType";
 	
 	public static final String PERSISTENT_ATTRIBUTE_ID =
-		JpaCorePlugin.PLUGIN_ID + ".xml.persistentAttribute";
+		JptCorePlugin.PLUGIN_ID + ".xml.persistentAttribute";
 }

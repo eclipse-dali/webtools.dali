@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings;
 
-import org.eclipse.jpt.ui.internal.JpaUiPlugin;
+import org.eclipse.jpt.ui.internal.JptUiPlugin;
 
 public class JpaUiMappingsImages 
 {
@@ -48,7 +48,7 @@ public class JpaUiMappingsImages
 	
 	
 	public static Object getImage(String imageLocator) {
-		return JpaUiPlugin.getPlugin().getImageDescriptor(imageLocator).createImage();
+		return JptUiPlugin.getPlugin().getImageDescriptor(imageLocator).createImage();
 	}
 	
 	

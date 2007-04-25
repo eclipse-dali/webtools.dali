@@ -12,17 +12,17 @@ package org.eclipse.jpt.utility.tests.internal;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.utility.internal.ClassTools;
-import org.eclipse.jpt.utility.tests.internal.iterators.JpaUtilityIteratorsTests;
+import org.eclipse.jpt.utility.tests.internal.iterators.JptUtilityIteratorsTests;
 
 /**
  * decentralize test creation code
  */
-public class JpaUtilityTests {
+public class JptUtilityTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(ClassTools.packageNameFor(JpaUtilityTests.class));
+		TestSuite suite = new TestSuite(ClassTools.packageNameFor(JptUtilityTests.class));
 
-		suite.addTest(JpaUtilityIteratorsTests.suite());
+		suite.addTest(JptUtilityIteratorsTests.suite());
 
 		suite.addTestSuite(BitToolsTests.class);
 		suite.addTestSuite(ClasspathTests.class);
@@ -41,7 +41,7 @@ public class JpaUtilityTests {
 		return suite;
 	}
 
-	private JpaUtilityTests() {
+	private JptUtilityTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}

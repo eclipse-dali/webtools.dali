@@ -15,23 +15,23 @@ import org.osgi.framework.BundleContext;
 /**
  * The main plugin class to be used in the desktop.
  */
-public class PersistenceDbPlugin extends Plugin {
+public class JptDbPlugin extends Plugin {
 	private ConnectionProfileRepository connectionProfileRepository;
 
 	// The shared instance
-	private static PersistenceDbPlugin plugin;
+	private static JptDbPlugin plugin;
 
 	/**
 	 * Returns the shared instance
 	 */
-	public static PersistenceDbPlugin getDefault() {
+	public static JptDbPlugin getDefault() {
 		return plugin;
 	}
 	
 	/**
 	 * The constructor
 	 */
-	public PersistenceDbPlugin() {
+	public JptDbPlugin() {
 		super();
 		plugin = this;
 	}

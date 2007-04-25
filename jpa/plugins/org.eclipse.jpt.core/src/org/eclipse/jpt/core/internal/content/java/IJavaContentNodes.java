@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java;
 
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 
 public interface IJavaContentNodes 
 {
 	public static final String COMPILATION_UNIT_ID = 
-		JpaCorePlugin.PLUGIN_ID + ".java.compilationUnit";
+		JptCorePlugin.PLUGIN_ID + ".java.compilationUnit";
 	
 	public static final String PERSISTENT_TYPE_ID = 
-		JpaCorePlugin.PLUGIN_ID + ".java.persistentType";
+		JptCorePlugin.PLUGIN_ID + ".java.persistentType";
 	
 	public static final String PERSISTENT_ATTRIBUTE_ID = 
-		JpaCorePlugin.PLUGIN_ID + ".java.persistentAttribute";
+		JptCorePlugin.PLUGIN_ID + ".java.persistentAttribute";
 }

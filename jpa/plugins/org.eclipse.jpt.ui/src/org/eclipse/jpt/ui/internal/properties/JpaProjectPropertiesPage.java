@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.internal.facet.JpaFacetUtils;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.JpaUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -134,7 +134,7 @@ public class JpaProjectPropertiesPage
 			// TODO
 			// PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IDaliHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
 			
-			platformLabel = createLabel(group, 1, JpaUiMessages.JpaFacetWizardPage_platformLabel);
+			platformLabel = createLabel(group, 1, JptUiMessages.JpaFacetWizardPage_platformLabel);
 			
 			platformCombo = new ComboViewer(createCombo(group, true));
 			platformCombo.setContentProvider(
@@ -204,7 +204,7 @@ public class JpaProjectPropertiesPage
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			
 			
-			connectionLabel = createLabel(group, 1, JpaUiMessages.JpaFacetWizardPage_connectionLabel);
+			connectionLabel = createLabel(group, 1, JptUiMessages.JpaFacetWizardPage_connectionLabel);
 			
 			connectionCombo = createCombo(group, true);
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
@@ -225,7 +225,7 @@ public class JpaProjectPropertiesPage
 			GridData data = new GridData(GridData.END, GridData.CENTER, false, false);
 			data.horizontalSpan = 2;
 			connectionLink.setLayoutData(data);
-			connectionLink.setText(JpaUiMessages.JpaFacetWizardPage_connectionLink);
+			connectionLink.setText(JptUiMessages.JpaFacetWizardPage_connectionLink);
 			connectionLink.addSelectionListener(
 				new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent e) {

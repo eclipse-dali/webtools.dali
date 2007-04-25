@@ -11,13 +11,13 @@ package org.eclipse.jpt.ui.internal;
 
 import org.eclipse.osgi.util.NLS;
 
-public class JpaUiMessages extends NLS 
+public class JptUiMessages extends NLS 
 {	
 	private static final String BUNDLE_NAME = "jpa_ui"; //$NON-NLS-1$
 	
 	static {
 		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, JpaUiMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, JptUiMessages.class);
 	}
 	
 	public static String AddPersistentClassDialog_title;
@@ -113,7 +113,7 @@ public class JpaUiMessages extends NLS
 	public static String OverwriteConfirmerDialog_text;
 
 	
-	private JpaUiMessages() {
+	private JptUiMessages() {
 		throw new UnsupportedOperationException();
 	}
 }

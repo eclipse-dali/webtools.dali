@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.tests.internal.projects;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 
 public class TestJpaProject extends TestJavaProject {
 	private IJpaProject jpaProject;
@@ -33,7 +33,7 @@ public class TestJpaProject extends TestJavaProject {
 		this.installFacet("jst.utility", "1.0");
 		this.installFacet("jpt.jpa", "1.0");
 		this.addJar(this.jarName());
-		this.jpaProject = JpaCorePlugin.getJpaProject(this.getProject());
+		this.jpaProject = JptCorePlugin.getJpaProject(this.getProject());
 	}
 
 	protected String jarName() {

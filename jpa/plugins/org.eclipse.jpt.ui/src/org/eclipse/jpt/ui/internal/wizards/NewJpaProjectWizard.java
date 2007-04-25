@@ -10,9 +10,9 @@ package org.eclipse.jpt.ui.internal.wizards;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jpt.ui.internal.JpaUiIcons;
-import org.eclipse.jpt.ui.internal.JpaUiMessages;
-import org.eclipse.jpt.ui.internal.JpaUiPlugin;
+import org.eclipse.jpt.ui.internal.JptUiIcons;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jst.j2ee.ui.project.facet.UtilityProjectWizard;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
@@ -22,12 +22,12 @@ public class NewJpaProjectWizard extends UtilityProjectWizard {
 
 	public NewJpaProjectWizard() {
 		super();
-		setWindowTitle(JpaUiMessages.NewJpaProjectWizard_title);
+		setWindowTitle(JptUiMessages.NewJpaProjectWizard_title);
 	}
 
 	public NewJpaProjectWizard(IDataModel model) {
 		super(model);
-		setWindowTitle(JpaUiMessages.NewJpaProjectWizard_title);
+		setWindowTitle(JptUiMessages.NewJpaProjectWizard_title);
 	}
 	
 	// TODO - when we have a data model to add
@@ -36,7 +36,7 @@ public class NewJpaProjectWizard extends UtilityProjectWizard {
 //	}
 	
 	protected ImageDescriptor getDefaultPageImageDescriptor() {
-		return JpaUiPlugin.getPlugin().getImageDescriptor(JpaUiIcons.JPA_WIZ_BANNER);
+		return JptUiPlugin.getPlugin().getImageDescriptor(JptUiIcons.JPA_WIZ_BANNER);
 	}
 	
 	protected IFacetedProjectTemplate getTemplate() {

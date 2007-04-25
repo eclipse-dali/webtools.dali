@@ -19,9 +19,9 @@ import org.eclipse.jpt.core.internal.content.orm.OrmInit;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceInit;
 import org.osgi.framework.BundleContext;
 
-public class JpaCorePlugin extends Plugin 
+public class JptCorePlugin extends Plugin 
 {
-	private static JpaCorePlugin INSTANCE;
+	private static JptCorePlugin INSTANCE;
 	
 	/**
 	 * The plug-in identifier of the persistence support
@@ -88,7 +88,7 @@ public class JpaCorePlugin extends Plugin
 	/**
 	 * Returns the singleton DaliPlugin
 	 */
-	public static JpaCorePlugin getPlugin() {
+	public static JptCorePlugin getPlugin() {
 		return INSTANCE;
 	}
 	
@@ -105,7 +105,7 @@ public class JpaCorePlugin extends Plugin
 	}
 	
 	
-	public JpaCorePlugin() {
+	public JptCorePlugin() {
 		super();
 		INSTANCE = this;
 	}

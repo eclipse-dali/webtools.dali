@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.core;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.eclipse.jpt.core.internal.JpaCorePlugin
+Bundle-Activator: org.eclipse.jpt.core.internal.JptCorePlugin
 Bundle-ClassPath: .
 Bundle-Localization: plugin
 Eclipse-LazyStart: true

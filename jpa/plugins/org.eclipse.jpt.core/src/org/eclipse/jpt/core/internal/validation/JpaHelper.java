@@ -12,13 +12,13 @@ package org.eclipse.jpt.core.internal.validation;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.internal.IJpaEObject;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.wst.validation.internal.operations.WorkbenchContext;
 
 public class JpaHelper extends WorkbenchContext
 {
 	IJpaProject getJpaProject() {
-		return JpaCorePlugin.getJpaProject(getProject());
+		return JptCorePlugin.getJpaProject(getProject());
 	}
 	
 	@Override

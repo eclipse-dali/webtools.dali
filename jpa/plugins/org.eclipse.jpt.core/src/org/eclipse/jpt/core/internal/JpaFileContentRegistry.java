@@ -32,10 +32,10 @@ public class JpaFileContentRegistry
 				Platform.getContentTypeManager().findContentTypeFor(file.getContents(), file.getName());
 		}
 		catch (IOException e) {
-			JpaCorePlugin.log(e);
+			JptCorePlugin.log(e);
 		}
 		catch (CoreException e) {
-			JpaCorePlugin.log(e);
+			JptCorePlugin.log(e);
 		}
 		if (contentType == null) {
 			return null;

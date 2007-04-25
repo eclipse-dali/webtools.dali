@@ -15,9 +15,9 @@ import org.eclipse.jdt.internal.ui.preferences.UserLibraryPreferencePage;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
-import org.eclipse.jpt.ui.internal.JpaUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
@@ -57,7 +57,7 @@ public class JpaPreferencePage extends PreferencePage
 		preferences = 
 			new ScopedPreferenceStore(
 				new InstanceScope(),
-				JpaCorePlugin.getPlugin().getBundle().getSymbolicName());
+				JptCorePlugin.getPlugin().getBundle().getSymbolicName());
 		userLibPreferences =
 			new ScopedPreferenceStore(
 				new InstanceScope(),
@@ -71,7 +71,7 @@ public class JpaPreferencePage extends PreferencePage
 		GridLayout layout = new GridLayout();
 		container.setLayout(layout);
 		
-		jpaLibLabel = createLabel(container, 1, JpaUiMessages.JpaPreferencePage_defaultJpaLib);
+		jpaLibLabel = createLabel(container, 1, JptUiMessages.JpaPreferencePage_defaultJpaLib);
 			
 		jpaLibCombo = createCombo(container, true);
 		
@@ -79,7 +79,7 @@ public class JpaPreferencePage extends PreferencePage
 		GridData data = new GridData(GridData.END, GridData.CENTER, false, false);
 		data.horizontalSpan = 2;
 		userLibsLink.setLayoutData(data);
-		userLibsLink.setText(JpaUiMessages.JpaPreferencePage_userLibsLink);
+		userLibsLink.setText(JptUiMessages.JpaPreferencePage_userLibsLink);
 		userLibsLink.addSelectionListener(
 			new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
@@ -163,7 +163,7 @@ public class JpaPreferencePage extends PreferencePage
 			preferences.save();
 		}
 		catch (IOException ioe) {
-			JpaCorePlugin.log(ioe);
+			JptCorePlugin.log(ioe);
 		}
 		return true;
 	}
@@ -180,7 +180,7 @@ public class JpaPreferencePage extends PreferencePage
 //		private boolean libContainsJpaClasses() {
 //			return true;
 //			String jarLocation = getStringValue();
-//			String errorMessage = JpaUiMessages.JpaPreferencePage_invalidJpaLib;
+//			String errorMessage = JptUiMessages.JpaPreferencePage_invalidJpaLib;
 //			boolean hasError = false;
 //			
 //			try {

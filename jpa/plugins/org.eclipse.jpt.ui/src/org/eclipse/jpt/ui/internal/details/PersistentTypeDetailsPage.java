@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
-import org.eclipse.jpt.ui.internal.JpaUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddableUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.EntityUiProvider;
@@ -102,7 +102,7 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 	}
 
 	protected Label buildTypeMappingLabel(Composite parent) {
-		return getWidgetFactory().createLabel(parent, JpaUiMessages.PersistentTypePage_mapAs);
+		return getWidgetFactory().createLabel(parent, JptUiMessages.PersistentTypePage_mapAs);
 	}
 	
 	protected CComboViewer buildTypeMappingCombo(Composite parent) {

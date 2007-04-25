@@ -21,7 +21,7 @@ import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.gen.internal.EntityGenerator;
 import org.eclipse.jpt.gen.internal.PackageGenerator;
-import org.eclipse.jpt.ui.internal.JpaUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class GenerateEntitiesWizard extends Wizard {	
@@ -47,7 +47,7 @@ public class GenerateEntitiesWizard extends Wizard {
 		this.selection = selection;
 		this.packageGeneratorConfig = new PackageGenerator.Config();
 		this.entityGeneratorConfig = new EntityGenerator.Config();
-		this.setWindowTitle( JpaUiMessages.GenerateEntitiesWizard_generateEntities);
+		this.setWindowTitle( JptUiMessages.GenerateEntitiesWizard_generateEntities);
 	}
 	
 	public void addPages() {

@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IPersistentType;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.content.persistence.Persistence;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceXmlRootContentNode;
@@ -80,7 +80,7 @@ public class BaseJpaProjectContext extends BaseContext
 	}
 	
 	private Collection<IJpaFile> persistenceXmlFiles() {
-		return this.project.jpaFiles(JpaCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);
+		return this.project.jpaFiles(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);
 	}
 	
 	private boolean isValidPersistenceXmlLocation(IJpaFile jpaFile) {

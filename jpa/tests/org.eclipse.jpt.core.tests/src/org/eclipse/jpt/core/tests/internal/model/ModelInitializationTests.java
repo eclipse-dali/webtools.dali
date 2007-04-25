@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.internal.IJpaModel;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestFacetedProject;
 import org.eclipse.jpt.utility.internal.ClassTools;
@@ -32,7 +32,7 @@ public class ModelInitializationTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		ProjectUtility.deleteAllProjects();
-		this.jpaModel = JpaCorePlugin.getJpaModel();
+		this.jpaModel = JptCorePlugin.getJpaModel();
 	}
 	
 	@Override

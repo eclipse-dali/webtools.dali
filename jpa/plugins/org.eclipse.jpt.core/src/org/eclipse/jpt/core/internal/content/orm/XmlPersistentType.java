@@ -32,7 +32,7 @@ import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.XmlEObject;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
@@ -748,7 +748,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 		if (this.javaPersistentType == null) {
 			IType iType = findJdtType();
 			if (iType != null) {
-				for (IJpaFile jpaFile : getJpaProject().jpaFiles(JpaCorePlugin.JAVA_CONTENT_TYPE)) {
+				for (IJpaFile jpaFile : getJpaProject().jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE)) {
 					for (Iterator i = ((JpaCompilationUnit) jpaFile.getContent()).getTypes().iterator(); i.hasNext();) {
 						JavaPersistentType javaPersistentType = (JavaPersistentType) i.next();
 						if (javaPersistentType.jdtType().equals(iType)) {

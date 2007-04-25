@@ -30,7 +30,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.content.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
-import org.eclipse.jpt.ui.internal.JpaUiPlugin;
+import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.xml.JpaUiXmlMessages;
 import org.eclipse.swt.SWT;
@@ -150,7 +150,7 @@ public class XmlJavaClassChooser extends BaseJpaController
 			typeSelectionDialog = JavaUI.createTypeDialog(this.text.getShell(), service, scope, IJavaElementSearchConstants.CONSIDER_CLASSES, false, getType());
 		}
 		catch (JavaModelException e) {
-			JpaUiPlugin.log(e);
+			JptUiPlugin.log(e);
 			throw new RuntimeException(e);
 		}
 		typeSelectionDialog.setTitle(JpaUiXmlMessages.XmlJavaClassChooser_XmlJavaClassDialog_title); 
@@ -173,7 +173,7 @@ public class XmlJavaClassChooser extends BaseJpaController
 			return root.getAllPackageFragmentRoots()[0];
 		}
 		catch (JavaModelException e) {
-			JpaUiPlugin.log(e);
+			JptUiPlugin.log(e);
 		}
 		return null;
 	}

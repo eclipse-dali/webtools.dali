@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.internal.XmlEObject;
 import org.eclipse.jpt.core.internal.content.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
-import org.eclipse.jpt.ui.internal.JpaUiPlugin;
+import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.xml.JpaUiXmlMessages;
 import org.eclipse.swt.SWT;
@@ -192,7 +192,7 @@ public class XmlPackageChooser extends BaseJpaController
 			return root.getAllPackageFragmentRoots()[0];
 		}
 		catch (JavaModelException e) {
-			JpaUiPlugin.log(e);
+			JptUiPlugin.log(e);
 		}
 		return null;
 	}
@@ -225,7 +225,7 @@ public class XmlPackageChooser extends BaseJpaController
 			selectionDialog = JavaUI.createPackageDialog(text.getShell(), getPackageFragmentRoot());
 		}
 		catch (JavaModelException e) {
-			JpaUiPlugin.log(e);
+			JptUiPlugin.log(e);
 			throw new RuntimeException(e);
 		}
 		selectionDialog.setTitle(JpaUiXmlMessages.XmlPackageChooser_PackageDialog_title); 

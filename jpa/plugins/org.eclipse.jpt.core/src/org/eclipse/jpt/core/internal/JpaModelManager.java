@@ -84,16 +84,16 @@ public class JpaModelManager
 			buildWorkspace();
 			ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
 			JavaCore.addElementChangedListener(elementChangeListener);
-			JpaCorePlugin.getPlugin().getPluginPreferences().addPropertyChangeListener(preferencesListener);
+			JptCorePlugin.getPlugin().getPluginPreferences().addPropertyChangeListener(preferencesListener);
 		}
 		catch (RuntimeException re) {
-			JpaCorePlugin.log(re);
+			JptCorePlugin.log(re);
 			shutdown();
 		}
 	}
 	
 	public void shutdown() {
-		JpaCorePlugin.getPlugin().getPluginPreferences().removePropertyChangeListener(preferencesListener);
+		JptCorePlugin.getPlugin().getPluginPreferences().removePropertyChangeListener(preferencesListener);
 		JavaCore.removeElementChangedListener(elementChangeListener);
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
 		model.dispose();
@@ -187,7 +187,7 @@ public class JpaModelManager
 	 */
 	public synchronized IJpaProject createJpaProject(IProject project) 
 			throws CoreException {
-		if (FacetedProjectFramework.hasProjectFacet(project, JpaCorePlugin.FACET_ID)) {
+		if (FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID)) {
 			JpaProject jpaProject = JpaCoreFactory.eINSTANCE.createJpaProject();
 			jpaProject.setProject(project);
 			model.getProjects().add(jpaProject);
@@ -313,7 +313,7 @@ public class JpaModelManager
 						try {
 							if ((resource.getType() == IResource.PROJECT)
 									&& (FacetedProjectFramework.hasProjectFacet(
-											(IProject) resource, JpaCorePlugin.FACET_ID))) {
+											(IProject) resource, JptCorePlugin.FACET_ID))) {
 								projectBeingDeleted((IProject) resource);
 							}
 						} 
@@ -351,7 +351,7 @@ public class JpaModelManager
 					IProject project = (IProject) resource;
 					
 					try {
-						if (FacetedProjectFramework.hasProjectFacet(project, JpaCorePlugin.FACET_ID)) {
+						if (FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID)) {
 							JpaProject jpaProject = (JpaProject) model.getJpaProject(project);
 							if (jpaProject != null) {
 								// sometimes we receive events before the project
@@ -411,7 +411,7 @@ public class JpaModelManager
 										JpaModelManager.instance().createFilledJpaProject(project);
 									}
 									catch (CoreException ce) {
-										JpaCorePlugin.log(ce);
+										JptCorePlugin.log(ce);
 									}
 								} 
 								else {
@@ -535,7 +535,7 @@ public class JpaModelManager
 					JavaCore.setClasspathVariable("DEFAULT_JPA_LIB", new Path((String) event.getNewValue()), null);
 				}
 				catch (JavaModelException jme) {
-					JpaCorePlugin.log(jme);
+					JptCorePlugin.log(jme);
 				}
 			}
 		}

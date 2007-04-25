@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.wizards;
 
-import org.eclipse.jpt.ui.internal.JpaUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jst.j2ee.ui.project.facet.UtilityProjectFirstPage;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
@@ -16,8 +16,8 @@ public class NewJpaProjectFirstPage extends UtilityProjectFirstPage
 {
 	public NewJpaProjectFirstPage(IDataModel dataModel, String pageName) {
 		super(dataModel, pageName);
-		setTitle(JpaUiMessages.NewJpaProjectWizard_firstPage_title);
-		setDescription(JpaUiMessages.NewJpaProjectWizard_firstPage_description);
+		setTitle(JptUiMessages.NewJpaProjectWizard_firstPage_title);
+		setDescription(JptUiMessages.NewJpaProjectWizard_firstPage_description);
 		// TODO
 		// setInfopopID(IJ2EEUIContextIds.NEW_UTILITY_WIZARD_P1);
 	}

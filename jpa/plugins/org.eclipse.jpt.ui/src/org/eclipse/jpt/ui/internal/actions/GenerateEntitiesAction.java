@@ -24,7 +24,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.gen.internal.EntityGenerator;
 import org.eclipse.jpt.gen.internal.PackageGenerator;
-import org.eclipse.jpt.ui.internal.JpaUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.wizards.GenerateEntitiesWizard;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -170,7 +170,7 @@ public class GenerateEntitiesAction extends ProjectAction {
 
 		protected void configureShell(Shell shell) {
 			super.configureShell(shell);
-			shell.setText(JpaUiMessages.OverwriteConfirmerDialog_title);
+			shell.setText(JptUiMessages.OverwriteConfirmerDialog_title);
 		}
 
 		protected Control createDialogArea(Composite parent) {
@@ -179,7 +179,7 @@ public class GenerateEntitiesAction extends ProjectAction {
 			gridLayout.numColumns = 2;
 
 			Label text = new Label(composite, SWT.LEFT);
-			text.setText(NLS.bind(JpaUiMessages.OverwriteConfirmerDialog_text, this.className));
+			text.setText(NLS.bind(JptUiMessages.OverwriteConfirmerDialog_text, this.className));
 			text.setLayoutData(new GridData());
 			
 			return composite;

@@ -114,7 +114,7 @@ public class JpaModel extends JpaEObject implements IJpaModel
 				return JpaModelManager.instance().createJpaProject(project);
 			}
 			catch (CoreException ce) {
-				JpaCorePlugin.log(ce.getStatus());
+				JptCorePlugin.log(ce.getStatus());
 				return null;
 			}
 		}

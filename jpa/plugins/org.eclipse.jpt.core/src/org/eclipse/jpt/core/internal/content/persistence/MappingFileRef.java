@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.XmlEObject;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -201,7 +201,7 @@ public class MappingFileRef extends XmlEObject
 		for (Iterator stream = javaSourceFolders(); stream.hasNext();) {
 			IFolder sourceFolder = (IFolder) ((IPackageFragmentRoot) stream.next()).getResource();
 			IFile file = sourceFolder.getFile(fileName);
-			IJpaFile jpaFile = JpaCorePlugin.getJpaFile(file);
+			IJpaFile jpaFile = JptCorePlugin.getJpaFile(file);
 			if (mappingFile != null && jpaFile != null) {
 				return null; // multiple possibilities == not resolved
 			}

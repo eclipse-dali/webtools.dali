@@ -8,10 +8,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.content.persistence.resource;
 
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 
 public interface IPersistenceXmlContentNodes 
 {
-	String PERSISTENCEXML_ROOT_ID = JpaCorePlugin.PLUGIN_ID + ".persistencexml.Root";
+	String PERSISTENCEXML_ROOT_ID = JptCorePlugin.PLUGIN_ID + ".persistencexml.Root";
 	
 }

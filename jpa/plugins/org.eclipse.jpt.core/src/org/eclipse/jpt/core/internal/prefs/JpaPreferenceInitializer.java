@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.prefs;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 
 /**
  * Class used to initialize default preference values.
@@ -24,7 +24,7 @@ public class JpaPreferenceInitializer extends AbstractPreferenceInitializer
 	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
 	 */
 	public void initializeDefaultPreferences() {
-		IEclipsePreferences node = new DefaultScope().getNode(JpaCorePlugin.getPlugin().getBundle().getSymbolicName());
+		IEclipsePreferences node = new DefaultScope().getNode(JptCorePlugin.getPlugin().getBundle().getSymbolicName());
 		
 		// default JPA library
 		node.put(JpaPreferenceConstants.PREF_DEFAULT_JPA_LIB, "");

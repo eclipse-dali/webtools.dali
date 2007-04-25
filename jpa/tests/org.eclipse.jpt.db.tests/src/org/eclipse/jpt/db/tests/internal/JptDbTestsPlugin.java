@@ -13,26 +13,26 @@ import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
 /**
- *  DbTestPlugin
+ *  JptDbTestsPlugin
  */
-public class DbTestPlugin extends Plugin {
+public class JptDbTestsPlugin extends Plugin {
 
 	// The shared instance
-	private static DbTestPlugin plugin;
+	private static JptDbTestsPlugin plugin;
 
 	public static final String BUNDLE_ID = "org.eclipse.jpt.db.tests"; //$NON-NLS-1$
 
 	/**
 	 * Returns the shared instance
 	 */
-	public static DbTestPlugin getDefault() {
+	public static JptDbTestsPlugin getDefault() {
 		return plugin;
 	}
 	
 	/**
 	 * The constructor
 	 */
-	public DbTestPlugin() {
+	public JptDbTestsPlugin() {
 		super();
 		plugin = this;
 	}

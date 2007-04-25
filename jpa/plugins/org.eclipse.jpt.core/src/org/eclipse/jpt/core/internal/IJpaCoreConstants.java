@@ -14,12 +14,12 @@ public interface IJpaCoreConstants
 	/**
 	 * Possible configuration option
 	 */
-	public static final String JPA_PLATFORM = JpaCorePlugin.PLUGIN_ID + ".platform";  //$NON-NLS-1$
+	public static final String JPA_PLATFORM = JptCorePlugin.PLUGIN_ID + ".platform";  //$NON-NLS-1$
 	
 	/**
 	 * Possible configuration option
 	 */
-	public static final String DATA_SOURCE_CONNECTION_NAME = JpaCorePlugin.PLUGIN_ID + ".dataSource.connectionName";  //$NON-NLS-1$
+	public static final String DATA_SOURCE_CONNECTION_NAME = JptCorePlugin.PLUGIN_ID + ".dataSource.connectionName";  //$NON-NLS-1$
 	
 	/**
 	 * Name of META-INF directory

@@ -11,13 +11,13 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.osgi.util.NLS;
 
-public class JpaCoreMessages extends NLS
+public class JptCoreMessages extends NLS
 {
 	private static final String BUNDLE_NAME = "jpa_core"; //$NON-NLS-1$
 	
 	static {
 		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, JpaCoreMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, JptCoreMessages.class);
 	}
 	
 	public static String VALIDATE_PLATFORM_NOT_SPECIFIED;
@@ -35,7 +35,7 @@ public class JpaCoreMessages extends NLS
 	public static String ERROR_WRITING_FILE;
 	
 	
-	private JpaCoreMessages() {
+	private JptCoreMessages() {
 		throw new UnsupportedOperationException();
 	}
 }

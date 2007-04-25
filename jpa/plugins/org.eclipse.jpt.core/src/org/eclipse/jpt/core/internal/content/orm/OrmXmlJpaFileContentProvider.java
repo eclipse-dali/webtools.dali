@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
-import org.eclipse.jpt.core.internal.JpaCorePlugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.content.orm.resource.OrmXmlResourceFactory;
 
 public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
@@ -56,7 +56,7 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 	}
 
 	public String contentType() {
-		return JpaCorePlugin.ORM_XML_CONTENT_TYPE;
+		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
 	}
 	
 	
@@ -86,7 +86,7 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 					}
 					catch (IOException ioe) {
 						// hmmm, log for now
-						JpaCorePlugin.log(ioe);
+						JptCorePlugin.log(ioe);
 					}
 				}
 			}

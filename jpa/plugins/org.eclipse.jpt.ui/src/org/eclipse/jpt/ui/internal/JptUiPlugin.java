@@ -17,9 +17,9 @@ import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
 import org.eclipse.ui.IActionFilter;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-public class JpaUiPlugin extends AbstractUIPlugin
+public class JptUiPlugin extends AbstractUIPlugin
 {
-	private static JpaUiPlugin INSTANCE;
+	private static JptUiPlugin INSTANCE;
 	
 	/**
 	 * The plug-in identifier of JPA UI support
@@ -30,7 +30,7 @@ public class JpaUiPlugin extends AbstractUIPlugin
 	/**
 	 * Returns the singleton Plugin
 	 */
-	public static JpaUiPlugin getPlugin() {
+	public static JptUiPlugin getPlugin() {
 		return INSTANCE;
 	}
 	
@@ -47,7 +47,7 @@ public class JpaUiPlugin extends AbstractUIPlugin
 	}
 	
 	
-	public JpaUiPlugin() {
+	public JptUiPlugin() {
 		super();
 		INSTANCE = this;
 
