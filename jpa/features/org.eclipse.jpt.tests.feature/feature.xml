@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.jpt.tests.feature"
+      label="Dali Java Persistence API Tools (JPA) JUnit Tests"
+      version="1.0.0.qualifier"
+      provider-name="Eclipse.org">
+
+   <description>
+      %description
+   </description>
+
+   <license url="license.html">
+      %license
+   </license>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <plugin
+         id="org.eclipse.jpt.utility.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0" />
+
+   <plugin
+         id="org.eclipse.jpt.core.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0" />
+
+</feature>
