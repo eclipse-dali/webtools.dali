@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="persistence"
+    nsURI="persistence.xmi" nsPrefix="org.eclipse.jpt.core.content.persistence">
+  <eClassifiers xsi:type="ecore:EClass" name="PersistenceXmlRootContentNode" eSuperTypes="core.ecore#//XmlEObject core.ecore#//IJpaRootContentNode">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="persistence" eType="#//Persistence"
+        eOpposite="#//Persistence/root"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Persistence" eSuperTypes="core.ecore#//XmlEObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceUnits" upperBound="-1"
+        eType="#//PersistenceUnit" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" unique="false"
+        lowerBound="1" eType="#//Version"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="root" ordered="false" unique="false"
+        lowerBound="1" eType="#//PersistenceXmlRootContentNode" resolveProxies="false"
+        eOpposite="#//PersistenceXmlRootContentNode/persistence"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnit" eSuperTypes="core.ecore#//XmlEObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="provider" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jtaDataSource" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nonJtaDataSource" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingFiles" unique="false"
+        upperBound="-1" eType="#//MappingFileRef" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jarFiles" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classes" unique="false"
+        upperBound="-1" eType="#//JavaClassRef" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeUnlistedClasses"
+        unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
+        defaultValueLiteral="false" unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" eType="#//Properties"
+        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" unique="false" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="transactionType" unique="false"
+        eType="#//PersistenceUnitTransactionType" defaultValueLiteral="JTA" unsettable="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MappingFileRef" eSuperTypes="core.ecore#//XmlEObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" ordered="false"
+        unique="false" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JavaClassRef" eSuperTypes="core.ecore#//XmlEObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="javaClass" ordered="false"
+        unique="false" lowerBound="1" eType="ecore:EClass javaModel.ecore#//JavaClass"
+        resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Properties" eSuperTypes="core.ecore#//XmlEObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
+        eType="#//Property" containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Property" eSuperTypes="core.ecore#//XmlEObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" unique="false" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" unique="false" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="PersistenceUnitTransactionType">
+    <eLiterals name="JTA"/>
+    <eLiterals name="RESOURCE_LOCAL" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="PersistenceUnitTransactionTypeObject"
+      instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Version" instanceClassName="java.lang.String"/>
+</ecore:EPackage>
