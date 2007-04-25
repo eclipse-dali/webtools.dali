@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-Vendor: %providerName
+Bundle-SymbolicName: org.eclipse.jpt.db
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.jpt.db.internal.PersistenceDbPlugin
+Bundle-ClassPath: .
+Bundle-Localization: plugin
+Eclipse-AutoStart: true
+Export-Package: org.eclipse.jpt.db.internal
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.datatools.sqltools.editor.core,
+ org.eclipse.jpt.utility
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
