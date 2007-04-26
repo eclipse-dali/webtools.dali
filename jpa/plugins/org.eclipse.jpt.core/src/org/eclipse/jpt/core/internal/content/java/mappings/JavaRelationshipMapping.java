@@ -472,9 +472,6 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 		if (Signature.getArrayCount(signature) > 0) {
 			return null; // arrays cannot be entities
 		}
-		if (JavaBasic.signatureIsBasic(signature, jdtType)) {
-			return null;
-		}
 		return JDTTools.resolve(Signature.toString(signature), jdtType);
 	}
 
