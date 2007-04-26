@@ -151,11 +151,13 @@ public abstract class ConnectionProfile extends DTPWrapper {
 			return;
 		}
 		if( this.database.supportsCatalogs()) {
-			Catalog catalog = this.database.catalogNamed( catalogName);
+			String name = ( catalogName != null) ? catalogName : this.database.getDefaultCatalogName();
+			
+			Catalog catalog = this.database.catalogNamed( name);
 			if( catalog == null) {
 				throw new NoSuchElementException();
 			}
-			this.catalogName = catalogName;
+			this.catalogName = name;
 			this.database.refresh();
 			this.catalogChanged( catalog, this.database, ICatalogObjectListener.EventTypeEnumeration.ELEMENT_REFRESH);
 		}
