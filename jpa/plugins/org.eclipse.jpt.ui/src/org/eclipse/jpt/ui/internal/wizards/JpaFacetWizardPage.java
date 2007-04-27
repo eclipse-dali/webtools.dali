@@ -86,7 +86,7 @@ public class JpaFacetWizardPage
 		
 		Dialog.applyDialogFont(parent);
 		// TODO
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IJpaHelpContextIds.NEW_JPA_PROJECT);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IJpaHelpContextIds.DIALOG_JPA_FACET);
 		
 		return composite;
 	}
