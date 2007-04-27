@@ -12,7 +12,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.jpt.core.internal.content.persistence.Persistence;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
-import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
 
 public class PersistenceResource extends TranslatorResourceImpl

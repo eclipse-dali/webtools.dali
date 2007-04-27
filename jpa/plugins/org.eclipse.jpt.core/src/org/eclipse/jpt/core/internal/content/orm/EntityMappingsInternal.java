@@ -504,7 +504,7 @@ public class EntityMappingsInternal extends XmlEObject
 		String oldValue = getPackageForXml();
 		setPackageInternal(newPackageForXml);
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS_INTERNAL__PACKAGE_FOR_XML, null, newPackageForXml));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS_INTERNAL__PACKAGE_FOR_XML, oldValue, newPackageForXml));
 	}
 
 	public void makePersistenceUnitMetadataForXmlNull() {
