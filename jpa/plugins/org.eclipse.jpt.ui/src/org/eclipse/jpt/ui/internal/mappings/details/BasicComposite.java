@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.internal.mappings.EnumType;
 import org.eclipse.jpt.core.internal.mappings.IBasic;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.mappings.TemporalType;
+import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
 import org.eclipse.swt.SWT;
@@ -25,6 +26,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class BasicComposite extends BaseJpaComposite 
@@ -59,7 +62,7 @@ public class BasicComposite extends BaseJpaComposite
 	}
 	
 	private Control buildGeneralComposite(Composite composite) {
-//		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 		
 		Composite generalComposite = getWidgetFactory().createComposite(composite);
 		GridLayout layout = new GridLayout(2, false);
@@ -80,8 +83,8 @@ public class BasicComposite extends BaseJpaComposite
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.fetchTypeComboViewer.getControl().setLayoutData(gridData);
+		helpSystem.setHelp(fetchTypeComboViewer.getControl(), IJpaHelpContextIds.MAPPING_FETCH_TYPE);
 
-		
 		CommonWidgets.buildOptionalLabel(generalComposite, getWidgetFactory());
 		this.optionalComboViewer = CommonWidgets.buildEnumComboViewer(generalComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
@@ -89,7 +92,8 @@ public class BasicComposite extends BaseJpaComposite
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.optionalComboViewer.getControl().setLayoutData(gridData);
-
+		helpSystem.setHelp(optionalComboViewer.getControl(), IJpaHelpContextIds.MAPPING_OPTIONAL);
+		
 	    this.lobCheckBox = buildLobCheckBox(generalComposite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
@@ -97,6 +101,7 @@ public class BasicComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalSpan = 2;
 		this.lobCheckBox.getControl().setLayoutData(gridData);
+		helpSystem.setHelp(lobCheckBox.getControl(), IJpaHelpContextIds.MAPPING_LOB);
 
 		
 		CommonWidgets.buildTemporalLabel(generalComposite, getWidgetFactory());
@@ -106,6 +111,7 @@ public class BasicComposite extends BaseJpaComposite
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.temporalTypeViewer.getControl().setLayoutData(gridData);
+		helpSystem.setHelp(temporalTypeViewer.getControl(), IJpaHelpContextIds.MAPPING_TEMPORAL);
 
 		CommonWidgets.buildEnumeratedLabel(generalComposite, getWidgetFactory());
 		this.enumeratedTypeViewer = CommonWidgets.buildEnumComboViewer(generalComposite, this.commandStack, getWidgetFactory());
@@ -114,6 +120,7 @@ public class BasicComposite extends BaseJpaComposite
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.enumeratedTypeViewer.getControl().setLayoutData(gridData);
+		helpSystem.setHelp(enumeratedTypeViewer.getControl(), IJpaHelpContextIds.MAPPING_ENUMERATED);
 
 		return generalComposite;
 	}

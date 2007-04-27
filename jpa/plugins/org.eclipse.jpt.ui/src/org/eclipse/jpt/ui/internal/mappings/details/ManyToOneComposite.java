@@ -12,12 +12,15 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.mappings.IManyToOne;
+import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class ManyToOneComposite extends BaseJpaComposite 
@@ -50,7 +53,7 @@ public class ManyToOneComposite extends BaseJpaComposite
 	}
 	
 	private Control buildGeneralComposite(Composite composite) {
-//		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 		
 		Composite generalComposite = getWidgetFactory().createComposite(composite);
 		GridLayout layout = new GridLayout(2, false);
@@ -64,8 +67,8 @@ public class ManyToOneComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalSpan = 2;
 		this.targetEntityChooser.getControl().setLayoutData(gridData);
+		helpSystem.setHelp(targetEntityChooser.getControl(), IJpaHelpContextIds.MAPPING_TARGET_ENTITY);
 		
-
 		CommonWidgets.buildFetchLabel(generalComposite, getWidgetFactory());
 		this.fetchTypeComboViewer = CommonWidgets.buildFetchTypeComboViewer(generalComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
@@ -73,7 +76,8 @@ public class ManyToOneComposite extends BaseJpaComposite
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.fetchTypeComboViewer.getControl().setLayoutData(gridData);
-
+		helpSystem.setHelp(fetchTypeComboViewer.getControl(), IJpaHelpContextIds.MAPPING_FETCH_TYPE);
+		
 		this.joinColumnComposite = new JoinColumnComposite(generalComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;

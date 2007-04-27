@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
@@ -67,6 +68,8 @@ public class OrderByComposite extends BaseJpaComposite  {
 
 	@Override
 	protected void initializeLayout(Composite composite) {
+		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+		
 		GridLayout layout = new GridLayout();
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
@@ -78,13 +81,15 @@ public class OrderByComposite extends BaseJpaComposite  {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		orderByGroup.setLayoutData(gridData);
+		helpSystem.setHelp(orderByGroup, IJpaHelpContextIds.MAPPING_ORDER_BY);
+		
 
 		this.noOrderingRadioButton = buildNoOrderingRadioButton(orderByGroup);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.noOrderingRadioButton.setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.noOrderingRadioButton, IJpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING);
+//		helpSystem().setHelp(this.noOrderingRadioButton, IJpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING);
 
 
 		this.primaryKeyOrderingRadioButton = buildPrimaryKeyOrderingRadioButton(orderByGroup);
@@ -92,14 +97,14 @@ public class OrderByComposite extends BaseJpaComposite  {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.primaryKeyOrderingRadioButton.setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.primaryKeyOrderingRadioButton, IJpaHelpContextIds.MAPPING_ORDER_BY_PRIMARY_KEY_ORDERING);
+//		helpSystem().setHelp(this.primaryKeyOrderingRadioButton, IJpaHelpContextIds.MAPPING_ORDER_BY_PRIMARY_KEY_ORDERING);
 
 		this.customOrderingRadioButton = buildCustomOrderingRadioButton(orderByGroup);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.customOrderingRadioButton.setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.customOrderingRadioButton, IJpaHelpContextIds.MAPPING_ORDER_BY_CUSTOM_ORDERING);
+//		helpSystem().setHelp(this.customOrderingRadioButton, IJpaHelpContextIds.MAPPING_ORDER_BY_CUSTOM_ORDERING);
 
 		
 		this.orderingTextViewer = buildOrderByTestViewer(orderByGroup);
@@ -108,7 +113,7 @@ public class OrderByComposite extends BaseJpaComposite  {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalIndent = 15;
 		this.orderingTextViewer.getTextWidget().setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.orderingTextViewer.getTextWidget(), IJpaHelpContextIds.MAPPING_ORDER_BY);
+		helpSystem.setHelp(this.orderingTextViewer.getTextWidget(), IJpaHelpContextIds.MAPPING_ORDER_BY);
 	}
 	
 	private Button buildNoOrderingRadioButton(Composite parent) {

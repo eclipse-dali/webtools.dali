@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.mappings.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.mappings.TemporalType;
+import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
@@ -33,8 +34,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class IdComposite extends BaseJpaComposite 
@@ -126,8 +129,6 @@ public class IdComposite extends BaseJpaComposite
 	}
 	
 	private Control buildGeneralComposite(Composite composite) {
-//		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
-		
 		Composite generalComposite = getWidgetFactory().createComposite(composite);
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginWidth = 0;
@@ -138,7 +139,7 @@ public class IdComposite extends BaseJpaComposite
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalSpan = 2;
-		this.columnComposite.getControl().setLayoutData(gridData);		
+		this.columnComposite.getControl().setLayoutData(gridData);	
 
 		CommonWidgets.buildTemporalLabel(generalComposite, getWidgetFactory());
 		this.temporalTypeViewer = CommonWidgets.buildEnumComboViewer(generalComposite, this.commandStack, getWidgetFactory());
@@ -147,12 +148,15 @@ public class IdComposite extends BaseJpaComposite
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.temporalTypeViewer.getControl().setLayoutData(gridData);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(temporalTypeViewer.getControl(), IJpaHelpContextIds.MAPPING_TEMPORAL);
 
 		return generalComposite;
 	}
 
 	private Control buildGenerationComposite(Composite composite) {
-	    this.pkGenerationSection = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
+		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+		
+		this.pkGenerationSection = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
 	    this.pkGenerationSection.setText(JpaUiMappingsMessages.IdMappingComposite_primaryKeyGeneration);
 
 		Composite generationClient = getWidgetFactory().createComposite(this.pkGenerationSection);
@@ -165,6 +169,7 @@ public class IdComposite extends BaseJpaComposite
 		this.primaryKeyGenerationCheckBox = buildPrimaryKeyGenerationCheckBox(generationClient);
 		GridData gridData = new GridData();
 		this.primaryKeyGenerationCheckBox.setLayoutData(gridData);
+		helpSystem.setHelp(primaryKeyGenerationCheckBox, IJpaHelpContextIds.MAPPING_PRIMARY_KEY_GENERATION);
 		
 		this.generatedValueComposite = new GeneratedValueComposite(generationClient, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
@@ -191,6 +196,7 @@ public class IdComposite extends BaseJpaComposite
 		this.tableGeneratorCheckBox = buildTableGeneratorCheckBox(tableGenClient);
 		gridData = new GridData();
 		this.tableGeneratorCheckBox.setLayoutData(gridData);
+		helpSystem.setHelp(tableGeneratorCheckBox, IJpaHelpContextIds.MAPPING_TABLE_GENERATOR);
 		
 		this.tableGeneratorComposite = new TableGeneratorComposite(tableGenClient, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
@@ -218,6 +224,7 @@ public class IdComposite extends BaseJpaComposite
 		this.sequenceGeneratorCheckBox = buildSequenceGeneratorCheckBox(sequenceGenClient);
 		gridData = new GridData();
 		this.sequenceGeneratorCheckBox.setLayoutData(gridData);
+		helpSystem.setHelp(sequenceGeneratorCheckBox, IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR);
 
 		this.sequenceGeneratorComposite = new SequenceGeneratorComposite(sequenceGenClient, this.commandStack, getWidgetFactory());
 		gridData = new GridData();

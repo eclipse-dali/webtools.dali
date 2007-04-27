@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
@@ -23,8 +24,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class EntityComposite extends BaseJpaComposite
@@ -61,7 +64,7 @@ public class EntityComposite extends BaseJpaComposite
 	}
 	
 	private Control buildGeneralComposite(Composite composite) {
-//		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 		
 		Composite generalComposite = getWidgetFactory().createComposite(composite);
 		GridLayout layout = new GridLayout(2, false);
@@ -76,6 +79,7 @@ public class EntityComposite extends BaseJpaComposite
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.entityNameCombo.getCombo().setLayoutData(gridData);
+		helpSystem.setHelp(entityNameCombo.getCombo(), IJpaHelpContextIds.ENTITY_NAME);
 		
 		
 		this.tableComposite = new TableComposite(generalComposite, this.commandStack, getWidgetFactory());

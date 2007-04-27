@@ -18,6 +18,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 //TODO repopulate this panel based on the Entity table changing
@@ -36,6 +37,7 @@ public class TableComposite extends BaseJpaComposite
 
 	@Override
 	protected void initializeLayout(Composite composite) {
+		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginWidth = 0;
 		composite.setLayout(layout);	
@@ -48,7 +50,7 @@ public class TableComposite extends BaseJpaComposite
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.tableCombo.getCombo().setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(tableCombo.getCombo(), IJpaHelpContextIds.ENTITY_TABLE);
+		helpSystem.setHelp(tableCombo.getCombo(), IJpaHelpContextIds.ENTITY_TABLE);
 
 		CommonWidgets.buildCatalogLabel(composite, getWidgetFactory());
 		this.catalogCombo = new CatalogCombo(composite, this.commandStack, getWidgetFactory());
@@ -57,6 +59,7 @@ public class TableComposite extends BaseJpaComposite
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.catalogCombo.getCombo().setLayoutData(gridData);
+		helpSystem.setHelp(catalogCombo.getCombo(), IJpaHelpContextIds.ENTITY_CATALOG);
 	
 		CommonWidgets.buildSchemaLabel(composite, getWidgetFactory());
 		this.schemaCombo = new SchemaCombo(composite, this.commandStack, getWidgetFactory());
@@ -65,6 +68,7 @@ public class TableComposite extends BaseJpaComposite
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.schemaCombo.getCombo().setLayoutData(gridData);
+		helpSystem.setHelp(schemaCombo.getCombo(), IJpaHelpContextIds.ENTITY_SCHEMA);
 	}
 	
 	@Override

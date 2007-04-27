@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.mappings.IOneToMany;
+import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
 import org.eclipse.swt.SWT;
@@ -19,8 +20,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class OneToManyComposite extends BaseJpaComposite 
@@ -62,6 +65,8 @@ public class OneToManyComposite extends BaseJpaComposite
 	}
 	
 	private Control buildGeneralControl(Composite composite) {
+		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+		
 		Composite generalComposite = getWidgetFactory().createComposite(composite);
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginWidth = 0;
@@ -84,6 +89,7 @@ public class OneToManyComposite extends BaseJpaComposite
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.fetchTypeComboViewer.getControl().setLayoutData(gridData);
+		helpSystem.setHelp(fetchTypeComboViewer.getControl(), IJpaHelpContextIds.MAPPING_FETCH_TYPE);
 
 		CommonWidgets.buildMappedByLabel(generalComposite, getWidgetFactory());
 		this.mappedByCombo = new MappedByCombo(generalComposite, this.commandStack, getWidgetFactory());
@@ -92,6 +98,7 @@ public class OneToManyComposite extends BaseJpaComposite
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.mappedByCombo.getControl().setLayoutData(gridData);
+		helpSystem.setHelp(mappedByCombo.getControl(), IJpaHelpContextIds.MAPPING_MAPPED_BY);
 		
 
 		this.orderByComposite = new OrderByComposite(composite, this.commandStack, getWidgetFactory());

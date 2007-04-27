@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.mappings.IId;
 import org.eclipse.jpt.core.internal.mappings.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -26,6 +27,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
@@ -55,6 +58,8 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 
 	@Override
 	protected void initializeLayout(Composite composite) {
+		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+		
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
 		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.SequenceGeneratorComposite_name);
@@ -64,6 +69,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.nameViewer.getTextWidget().setLayoutData(gridData);
+		helpSystem.setHelp(nameViewer.getTextWidget(), IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME);
 		
 		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.SequenceGeneratorComposite_sequence);
 		
@@ -72,6 +78,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.sequenceNameCombo.setLayoutData(gridData);
+		helpSystem.setHelp(sequenceNameCombo, IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE);
 	}
 
 	private Combo buildSequenceNameCombo(Composite parent) {
