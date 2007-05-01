@@ -20,7 +20,7 @@ public class NewJpaProjectFirstPage extends UtilityProjectFirstPage
 		super(dataModel, pageName);
 		setTitle(JptUiMessages.NewJpaProjectWizard_firstPage_title);
 		setDescription(JptUiMessages.NewJpaProjectWizard_firstPage_description);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.getControl(), IJpaHelpContextIds.NEW_JPA_PROJECT);
+//		This causes an NPE - PlatformUI.getWorkbench().getHelpSystem().setHelp(this.getControl(), IJpaHelpContextIds.NEW_JPA_PROJECT);
 		// TODO
 		// setInfopopID(IJ2EEUIContextIds.NEW_UTILITY_WIZARD_P1);
 	}
