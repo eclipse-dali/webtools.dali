@@ -56,6 +56,10 @@ public class JptUiMessages extends NLS
 
 	public static String General_browse;
 	
+	public static String General_deselectAll;
+	
+	public static String General_selectAll;
+	
 	public static String GenerateEntitiesWizard_generateEntities;
 
 	public static String GenerateEntitiesWizardPage_chooseEntityTable;

@@ -207,7 +207,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		buttonComposite.setLayoutData(data);
 		
 		Button selectAllButton = new Button(buttonComposite, SWT.PUSH);
-		selectAllButton.setText("Select All");
+		selectAllButton.setText(JptUiMessages.General_selectAll);
 		GridData gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		selectAllButton.setLayoutData(gridData);
@@ -223,7 +223,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		});
 		
 		Button deselectAllButton = new Button(buttonComposite, SWT.PUSH);
-		deselectAllButton.setText("Deselect All");
+		deselectAllButton.setText(JptUiMessages.General_deselectAll);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		deselectAllButton.setLayoutData(gridData);
