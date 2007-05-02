@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.internal.ui.util.SWTUtil;
@@ -41,9 +42,12 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.TableColumn;
@@ -105,7 +109,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		createPackageControls(composite, nColumns);	
 		
 		Group tablesGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		tablesGroup.setLayout(new GridLayout());
+		tablesGroup.setLayout(new GridLayout(2, false));
 		tablesGroup.setText(JptUiMessages.GenerateEntitiesWizardPage_tables);
 		GridData data = new GridData();
 		data.horizontalSpan = 4;
@@ -116,6 +120,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		tablesGroup.setLayoutData(data);
 		
 		createTablesSelectionControl(tablesGroup);
+		createButtonComposite(tablesGroup);
 		
 		GenerateEntitiesWizard generateEntitiesWizard = ((GenerateEntitiesWizard)this.getWizard());
 		Collection possibleTables = generateEntitiesWizard.getPossibleTables();
@@ -127,6 +132,16 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		this.setPageComplete( false);
 	}
 
+	private void selectAllTables(){
+		this.tableTable.setAllChecked(true);
+		doStatusUpdate();
+	}
+	
+	private void deselectAllTables(){
+		this.tableTable.setAllChecked(false);
+		doStatusUpdate();
+	}
+	
 	private void initTablesSelectionControl(Collection possibleTables) {
 		this.overrideEntityNames = new HashMap(possibleTables.size());
 		this.tableTable.setInput(possibleTables);
@@ -180,6 +195,49 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		
 		this.addCellEditors();
 	}
+	
+	private void createButtonComposite(Group tablesGroup){
+		
+		Composite buttonComposite = new Composite(tablesGroup, SWT.NULL);
+		GridLayout buttonLayout = new GridLayout(1, false);
+		buttonComposite.setLayout(buttonLayout);
+		GridData data =  new GridData();
+		data.horizontalAlignment = GridData.FILL;
+		data.verticalAlignment = GridData.BEGINNING;
+		buttonComposite.setLayoutData(data);
+		
+		Button selectAllButton = new Button(buttonComposite, SWT.PUSH);
+		selectAllButton.setText("Select All");
+		GridData gridData =  new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		selectAllButton.setLayoutData(gridData);
+		selectAllButton.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// do nothing
+			}
+		
+			public void widgetSelected(SelectionEvent e) {
+				selectAllTables();
+				
+			}
+		});
+		
+		Button deselectAllButton = new Button(buttonComposite, SWT.PUSH);
+		deselectAllButton.setText("Deselect All");
+		gridData =  new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		deselectAllButton.setLayoutData(gridData);
+		deselectAllButton.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// do nothing
+			}
+		
+			public void widgetSelected(SelectionEvent e) {
+				deselectAllTables();
+			}
+		});
+	}
+	
 	
 	private void addColumnLayoutData(TableLayoutComposite layout) {
 		layout.addColumnData(new ColumnWeightData(50, true));
