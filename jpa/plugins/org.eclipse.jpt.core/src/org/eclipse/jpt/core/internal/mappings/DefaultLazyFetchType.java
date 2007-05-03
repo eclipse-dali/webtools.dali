@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
-import static org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType.DEFAULT_VALUE;
-import static org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType.EAGER_VALUE;
-import static org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType.LAZY_VALUE;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

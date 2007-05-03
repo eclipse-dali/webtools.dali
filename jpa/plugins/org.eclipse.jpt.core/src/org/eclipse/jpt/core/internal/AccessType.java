@@ -2,13 +2,10 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AccessType.java,v 1.1 2007/04/25 20:09:35 pfullbright Exp $
+ * $Id: AccessType.java,v 1.2 2007/05/03 05:26:53 bvosburgh Exp $
  */
 package org.eclipse.jpt.core.internal;
 
-import static org.eclipse.jpt.core.internal.AccessType.DEFAULT_VALUE;
-import static org.eclipse.jpt.core.internal.AccessType.FIELD_VALUE;
-import static org.eclipse.jpt.core.internal.AccessType.PROPERTY_VALUE;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

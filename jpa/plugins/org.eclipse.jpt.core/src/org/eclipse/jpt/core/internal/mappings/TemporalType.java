@@ -9,10 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
-import static org.eclipse.jpt.core.internal.mappings.TemporalType.DATE_VALUE;
-import static org.eclipse.jpt.core.internal.mappings.TemporalType.NULL_VALUE;
-import static org.eclipse.jpt.core.internal.mappings.TemporalType.TIMESTAMP_VALUE;
-import static org.eclipse.jpt.core.internal.mappings.TemporalType.TIME_VALUE;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

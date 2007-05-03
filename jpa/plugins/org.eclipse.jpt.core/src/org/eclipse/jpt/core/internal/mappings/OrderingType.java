@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
-import static org.eclipse.jpt.core.internal.mappings.OrderingType.CUSTOM_VALUE;
-import static org.eclipse.jpt.core.internal.mappings.OrderingType.NONE_VALUE;
-import static org.eclipse.jpt.core.internal.mappings.OrderingType.PRIMARY_KEY_VALUE;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

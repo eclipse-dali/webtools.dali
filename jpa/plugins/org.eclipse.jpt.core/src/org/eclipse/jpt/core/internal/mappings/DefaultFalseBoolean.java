@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
-import static org.eclipse.jpt.core.internal.mappings.DefaultFalseBoolean.DEFAULT_VALUE;
-import static org.eclipse.jpt.core.internal.mappings.DefaultFalseBoolean.FALSE_VALUE;
-import static org.eclipse.jpt.core.internal.mappings.DefaultFalseBoolean.TRUE_VALUE;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
