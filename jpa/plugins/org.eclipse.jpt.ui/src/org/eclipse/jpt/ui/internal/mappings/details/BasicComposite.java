@@ -94,17 +94,7 @@ public class BasicComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		this.optionalComboViewer.getControl().setLayoutData(gridData);
 		helpSystem.setHelp(optionalComboViewer.getControl(), IJpaHelpContextIds.MAPPING_OPTIONAL);
-		
-	    this.lobCheckBox = buildLobCheckBox(generalComposite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalSpan = 2;
-		this.lobCheckBox.getControl().setLayoutData(gridData);
-		helpSystem.setHelp(lobCheckBox.getControl(), IJpaHelpContextIds.MAPPING_LOB);
-
-		
+			
 		CommonWidgets.buildTemporalLabel(generalComposite, getWidgetFactory());
 		this.temporalTypeViewer = CommonWidgets.buildEnumComboViewer(generalComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
@@ -122,6 +112,15 @@ public class BasicComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		this.enumeratedTypeViewer.getControl().setLayoutData(gridData);
 		helpSystem.setHelp(enumeratedTypeViewer.getControl(), IJpaHelpContextIds.MAPPING_ENUMERATED);
+
+	    this.lobCheckBox = buildLobCheckBox(generalComposite);
+		gridData = new GridData();
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.verticalAlignment = SWT.BEGINNING;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalSpan = 2;
+		this.lobCheckBox.getControl().setLayoutData(gridData);
+		helpSystem.setHelp(lobCheckBox.getControl(), IJpaHelpContextIds.MAPPING_LOB);
 
 		return generalComposite;
 	}
