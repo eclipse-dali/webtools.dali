@@ -13,10 +13,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -38,22 +40,46 @@ public class TableComposite extends BaseJpaComposite
 	@Override
 	protected void initializeLayout(Composite composite) {
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
-		GridLayout layout = new GridLayout(2, false);
-		layout.marginWidth = 0;
+		GridLayout layout = new GridLayout();
+		layout.marginWidth = 0;		
 		composite.setLayout(layout);	
 		
-		CommonWidgets.buildTableLabel(composite, getWidgetFactory());
-		
-		this.tableCombo = new TableCombo(composite, this.commandStack, getWidgetFactory());
+		Group columnGroup = getWidgetFactory().createGroup(composite, JpaUiMappingsMessages.TableComposite_tableSection);
+		layout = new GridLayout();
+		layout.marginHeight = 0;				
+		columnGroup.setLayout(layout);
 		GridData gridData = new GridData();
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.verticalAlignment = SWT.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace= true;
+		columnGroup.setLayoutData(gridData);
+
+		//created this composite because combos as direct children of a Group do not have a border, no clue why
+		Composite intermediaryComposite = getWidgetFactory().createComposite(columnGroup);
+		layout = new GridLayout(2, false);
+		layout.marginWidth = 0;		
+		intermediaryComposite.setLayout(layout);
+		
+		gridData = new GridData();
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.verticalAlignment = SWT.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace= true;
+		intermediaryComposite.setLayoutData(gridData);
+		
+		CommonWidgets.buildTableLabel(intermediaryComposite, getWidgetFactory());
+		
+		this.tableCombo = new TableCombo(intermediaryComposite, this.commandStack, getWidgetFactory());
+		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.tableCombo.getCombo().setLayoutData(gridData);
 		helpSystem.setHelp(tableCombo.getCombo(), IJpaHelpContextIds.ENTITY_TABLE);
 
-		CommonWidgets.buildCatalogLabel(composite, getWidgetFactory());
-		this.catalogCombo = new CatalogCombo(composite, this.commandStack, getWidgetFactory());
+		CommonWidgets.buildCatalogLabel(intermediaryComposite, getWidgetFactory());
+		this.catalogCombo = new CatalogCombo(intermediaryComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -61,8 +87,8 @@ public class TableComposite extends BaseJpaComposite
 		this.catalogCombo.getCombo().setLayoutData(gridData);
 		helpSystem.setHelp(catalogCombo.getCombo(), IJpaHelpContextIds.ENTITY_CATALOG);
 	
-		CommonWidgets.buildSchemaLabel(composite, getWidgetFactory());
-		this.schemaCombo = new SchemaCombo(composite, this.commandStack, getWidgetFactory());
+		CommonWidgets.buildSchemaLabel(intermediaryComposite, getWidgetFactory());
+		this.schemaCombo = new SchemaCombo(intermediaryComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;

@@ -56,6 +56,13 @@ public class EntityComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		generalControl.setLayoutData(gridData);
 
+		Control attributeOverridesControl = buildAttributeOverridesComposite(composite);
+	    gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		attributeOverridesControl.setLayoutData(gridData);
+
+		
 		Control inheritanceControl = buildInheritanceComposite(composite);
 	    gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -89,15 +96,6 @@ public class EntityComposite extends BaseJpaComposite
 		gridData.horizontalSpan = 2;
 		this.tableComposite.getControl().setLayoutData(gridData);
 		
-		this.attributeOverridesComposite = new OverridesComposite(generalComposite, this.commandStack, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalSpan = 2;
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		this.attributeOverridesComposite.getControl().setLayoutData(gridData);
-
 		return generalComposite;
 	}
 	
@@ -122,7 +120,29 @@ public class EntityComposite extends BaseJpaComposite
 		
 		return section;
 	}
-	
+
+	private Control buildAttributeOverridesComposite(Composite composite) {
+	    Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
+	    section.setText(JpaUiMappingsMessages.AttributeOverridesComposite_attributeOverrides);
+	    section.setExpanded(true);
+		Composite client = getWidgetFactory().createComposite(section);
+		section.setClient(client);
+		
+		GridLayout layout = new GridLayout();
+		layout.marginWidth = 0;
+		client.setLayout(layout);
+
+		this.attributeOverridesComposite = new OverridesComposite(client, this.commandStack, getWidgetFactory());
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		this.attributeOverridesComposite.getControl().setLayoutData(gridData);
+		
+		return section;
+	}
+
 	//TODO talk to JavaEditor people about what we can do to hook in TabbedProperties for the JavaEditor
 	
 	public void doPopulate(EObject obj) {

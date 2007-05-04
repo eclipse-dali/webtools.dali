@@ -46,6 +46,7 @@ public class JpaUiMappingsMessages extends NLS
 	public static String EntityComposite_tableDefault;
 	public static String EntityComposite_tableNoDefaultSpecified;
 	public static String EntityComposite_inheritance;
+	public static String TableComposite_tableSection;
 	public static String TableComposite_defaultEmpty;
 	public static String TableComposite_defaultWithOneParam;
 	
