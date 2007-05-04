@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -22,13 +23,13 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 /**
  *  Wrap a DTP Schema
  */
-public final class Schema extends DTPWrapper {
-	private final Database database;
-	private final org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema;
+public final class Schema extends DTPWrapper implements Comparable<Schema> {
+	final Database database;
+	final org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema;
 	private ICatalogObjectListener schemaListener;
 	
-	private Set tables;  // lazy-initialized
-	private Set sequences;  // lazy-initialized
+	private Set<Table> tables;  // lazy-initialized
+	private Set<Sequence> sequences;  // lazy-initialized
 	
 
 	// ********** constructors **********
@@ -49,6 +50,7 @@ public final class Schema extends DTPWrapper {
 		}
 	}
 	
+	@Override
 	protected boolean connectionIsOnline() {
 		return this.database.connectionIsOnline();
 	}
@@ -64,7 +66,7 @@ public final class Schema extends DTPWrapper {
         };
     }
 
-	private void refresh() {
+	void refresh() {
 		this.disposeTables();
 		this.disposeSequences();
 		
@@ -84,6 +86,7 @@ public final class Schema extends DTPWrapper {
 		return new Sequence( this, sequence);
 	}
 
+	@Override
 	protected void dispose() {
 		this.removeCatalogObjectListener(( ICatalogObject) this.dtpSchema, this.schemaListener);
 
@@ -93,22 +96,23 @@ public final class Schema extends DTPWrapper {
 
 	private void disposeTables() {
 		if( this.tables != null) {
-			for( Iterator i = this.tables(); i.hasNext(); ) {
-				(( Table)i.next()).dispose();
+			for( Iterator<Table> stream = this.tables(); stream.hasNext(); ) {
+				stream.next().dispose();
 			}
 		}
 	}
 
 	private void disposeSequences() {
 		if( this.sequences != null) {
-			for( Iterator i = this.sequences(); i.hasNext(); ) {
-				(( Sequence)i.next()).dispose();
+			for( Iterator<Sequence> stream = this.sequences(); stream.hasNext(); ) {
+				stream.next().dispose();
 			}
 		}
 	}
 	
 	// ********** queries **********
 
+	@Override
 	public String getName() {
 		return this.dtpSchema.getName();
 	}
@@ -124,23 +128,24 @@ public final class Schema extends DTPWrapper {
 
 	// ********** tables **********
 
-	private synchronized Collection getTables() {
+	private synchronized Collection<Table> getTables() {
 		if( this.tables == null) {
 			this.tables = this.buildTables();
 		}
 		return this.tables;
 	}
 
-	private Set buildTables() {
-		Collection dtpTables = this.dtpSchema.getTables();
-		Set result = new HashSet( dtpTables.size());
-		for( Iterator i = dtpTables.iterator(); i.hasNext(); ) {
-			result.add( this.wrap(( org.eclipse.datatools.modelbase.sql.tables.Table) i.next()));
+	@SuppressWarnings("unchecked")
+	private Set<Table> buildTables() {
+		Collection<org.eclipse.datatools.modelbase.sql.tables.Table> dtpTables = this.dtpSchema.getTables();
+		Set<Table> result = new HashSet<Table>( dtpTables.size());
+		for (org.eclipse.datatools.modelbase.sql.tables.Table dtpTable : dtpTables) {
+			result.add( this.wrap(dtpTable));
 		}
 		return result;
 	}
 	
-	public Iterator tables() {
+	public Iterator<Table> tables() {
 		return this.getTables().iterator();
 	}
 
@@ -153,9 +158,10 @@ public final class Schema extends DTPWrapper {
 	}
 
 	public Iterator<String> tableNames() {
-		return new TransformationIterator( this.tables()) {
-			protected Object transform( Object next) {
-				 return (( Table) next).getName();
+		return new TransformationIterator<Table, String>( this.tables()) {
+			@Override
+			protected String transform( Table table) {
+				 return table.getName();
 			}
 		};
 	}
@@ -169,8 +175,8 @@ public final class Schema extends DTPWrapper {
 	}
 	
 	private Table tableNamedInternal( String name) {
-		for( Iterator i = this.tables(); i.hasNext(); ) {
-			Table table = ( Table) i.next();
+		for( Iterator<Table> stream = this.tables(); stream.hasNext(); ) {
+			Table table = stream.next();
 			if( table.getName().equals( name)) {
 				return table;
 			}
@@ -179,8 +185,8 @@ public final class Schema extends DTPWrapper {
 	}
 	
 	private Table tableNamedIgnoreCase( String name) {
-		for( Iterator i = this.tables(); i.hasNext(); ) {
-			Table table = ( Table) i.next();
+		for( Iterator<Table> stream = this.tables(); stream.hasNext(); ) {
+			Table table = stream.next();
 			if( StringTools.stringsAreEqualIgnoreCase( table.getName(), name)) {
 				return table;
 			}
@@ -195,8 +201,8 @@ public final class Schema extends DTPWrapper {
 		if( dtpTable.getSchema() != this.dtpSchema) {
 			return this.database.table( dtpTable);
 		}
-		for( Iterator i = this.tables(); i.hasNext(); ) {
-			Table table = ( Table) i.next();
+		for( Iterator<Table> stream = this.tables(); stream.hasNext(); ) {
+			Table table = stream.next();
 			if( table.wraps( dtpTable)) {
 				return table;
 			}
@@ -206,23 +212,24 @@ public final class Schema extends DTPWrapper {
 
 	// ***** sequences
 
-	private synchronized Collection getSequences() {
+	private synchronized Collection<Sequence> getSequences() {
 		if( this.sequences == null) {
 			this.sequences = this.buildSequences();
 		}
 		return this.sequences;
 	}
 
-	private Set buildSequences() {
-		Collection dtpSequences = this.dtpSchema.getSequences();
-		Set result = new HashSet( dtpSequences.size());
-		for( Iterator i = dtpSequences.iterator(); i.hasNext(); ) {
-			result.add( this.wrap(( org.eclipse.datatools.modelbase.sql.schema.Sequence) i.next()));
+	@SuppressWarnings("unchecked")
+	private Set<Sequence> buildSequences() {
+		Collection<org.eclipse.datatools.modelbase.sql.schema.Sequence> dtpSequences = this.dtpSchema.getSequences();
+		Set<Sequence> result = new HashSet<Sequence>( dtpSequences.size());
+		for (org.eclipse.datatools.modelbase.sql.schema.Sequence dtpSequence : dtpSequences) {
+			result.add( this.wrap(dtpSequence));
 		}
 		return result;
 	}
 
-	public Iterator sequences() {
+	public Iterator<Sequence> sequences() {
 		return this.getSequences().iterator();
 	}
 
@@ -234,10 +241,11 @@ public final class Schema extends DTPWrapper {
 		return this.getSequences().contains( column);
 	}
 
-	public Iterator sequenceNames() {
-		return new TransformationIterator(this.sequences()) {
-			protected Object transform( Object next) {
-				 return (( Sequence)next).getName();
+	public Iterator<String> sequenceNames() {
+		return new TransformationIterator<Sequence, String>(this.sequences()) {
+			@Override
+			protected String transform( Sequence sequence) {
+				 return sequence.getName();
 			}
 		};
 	}
@@ -251,8 +259,8 @@ public final class Schema extends DTPWrapper {
 	}
 	
 	private Sequence sequenceNamedInternal( String name) {
-		for( Iterator i = this.sequences(); i.hasNext(); ) {
-			Sequence sequence = ( Sequence) i.next();
+		for( Iterator<Sequence> stream = this.sequences(); stream.hasNext(); ) {
+			Sequence sequence = stream.next();
 			if( sequence.getName().equals( name)) {
 				return sequence;
 			}
@@ -261,8 +269,8 @@ public final class Schema extends DTPWrapper {
 	}
 
 	private Sequence sequenceNamedIgnoreCase( String name) {
-		for( Iterator i = this.sequences(); i.hasNext(); ) {
-			Sequence sequence = ( Sequence) i.next();
+		for( Iterator<Sequence> stream = this.sequences(); stream.hasNext(); ) {
+			Sequence sequence = stream.next();
 			if( sequence.getName().equalsIgnoreCase( name)) {
 				return sequence;
 			}
@@ -270,14 +278,14 @@ public final class Schema extends DTPWrapper {
 		return null;
 	}
 	
-	boolean wraps( org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
-		return this.dtpSchema == dtpSchema;
+	boolean wraps( org.eclipse.datatools.modelbase.sql.schema.Schema schema) {
+		return this.dtpSchema == schema;
 	}
 
 	// ********** Comparable implementation **********
 
-	public int compareTo( Object o) {
-		return Collator.getInstance().compare( this.getName(), (( Schema)o).getName());
+	public int compareTo( Schema schema) {
+		return Collator.getInstance().compare( this.getName(), schema.getName());
 	}
 
 }

@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,12 +11,13 @@ package org.eclipse.jpt.db.internal;
 
 import java.text.Collator;
 import java.util.NoSuchElementException;
+
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 
 /**
  *  ConnectionProfile wrapper base class.
  */
-public abstract class ConnectionProfile extends DTPWrapper {
+public abstract class ConnectionProfile extends DTPWrapper implements Comparable<ConnectionProfile> {
 	
 	private Connection connection; // Lazy initialized
 	private Database database; // Lazy initialized
@@ -49,19 +50,20 @@ public abstract class ConnectionProfile extends DTPWrapper {
 	
 	protected abstract Database buildDatabase();
 	
-	abstract void databaseChanged( Database database, int eventType);
+	abstract void databaseChanged( Database db, int eventType);
 	
-	abstract void catalogChanged( Catalog catalog, Database database, int eventType);
+	abstract void catalogChanged( Catalog catalog, Database db, int eventType);
 	
-	abstract void schemaChanged( Schema schema, Database database, int eventType);
+	abstract void schemaChanged( Schema schema, Database db, int eventType);
 	
-	abstract void tableChanged( Table table, Schema schema, Database database, int eventType);
+	abstract void tableChanged( Table table, Schema schema, Database db, int eventType);
 
 	protected void refreshDatabase() {
 		this.disposeDatabase();
 		this.database = null;
     }
     
+	@Override
 	protected void dispose() {
 		this.disengageConnectionListener();
 		
@@ -118,6 +120,7 @@ public abstract class ConnectionProfile extends DTPWrapper {
 	
 	public abstract boolean isConnected();
 
+	@Override
 	protected boolean connectionIsOnline() {
 		return this.isConnected();
 	}
@@ -180,39 +183,39 @@ public abstract class ConnectionProfile extends DTPWrapper {
     private ConnectionListener buildConnectionListener() {
 		return new ConnectionListener() {
 
-			public void aboutToClose(Connection connection) {
+			public void aboutToClose(Connection c) {
 				// not interested to this event.
 			}
 
-			public void closed(Connection connection) {
+			public void closed(Connection c) {
 				ConnectionProfile.this.refreshDatabase();
-				}
+			}
 
-			public void modified(Connection connection) {
+			public void modified(Connection c) {
 				// not interested to this event.
 				return;
-				}
+			}
 
-			public boolean okToClose(Connection connection) {
+			public boolean okToClose(Connection c) {
 				// not interested to this event.
 				return true;
 			}
 
-			public void opened(Connection connection) {
+			public void opened(Connection c) {
 				ConnectionProfile.this.refreshDatabase();
 			}
 
-			public void databaseChanged(Connection connection, final Database database) {
+			public void databaseChanged(Connection c, final Database db) {
 				// not interested to this event.
 				return;
-				}
+			}
 			
-			public void schemaChanged(Connection connection, final Schema schema) {
+			public void schemaChanged(Connection c, final Schema schema) {
 				// not interested to this event.
 				return;
-				}
+			}
 
-			public void tableChanged(Connection connection, final Table table) {
+			public void tableChanged(Connection c, final Table table) {
 				// not interested to this event.
 				return;
 			}
@@ -237,8 +240,8 @@ public abstract class ConnectionProfile extends DTPWrapper {
 	
 	// ********** Comparable implementation **********
 
-	public int compareTo( Object o) {
-		return Collator.getInstance().compare( this.getName(), (( ConnectionProfile)o).getName());
+	public int compareTo( ConnectionProfile connectionProfile) {
+		return Collator.getInstance().compare( this.getName(), connectionProfile.getName());
 	}
 
 }

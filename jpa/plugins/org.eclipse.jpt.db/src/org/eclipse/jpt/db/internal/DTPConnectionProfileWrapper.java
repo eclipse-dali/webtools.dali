@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -52,21 +52,25 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 	
 	// ********** listeners **********
 
+	@Override
 	public void addProfileListener( ProfileListener listener) {
 		
 		this.getProfileRepository().addProfileListener( listener);
 	}
 
+	@Override
 	public void removeProfileListener( ProfileListener listener) {
 		
 		this.getProfileRepository().removeProfileListener( listener);
 	}
 	
+	@Override
 	public void addConnectionListener( ConnectionListener listener) {
 		
 		this.getConnection().addConnectionListener( listener);
 	}
 
+	@Override
 	public void removeConnectionListener( ConnectionListener listener) {
 
 		this.getConnection().removeConnectionListener( listener);
@@ -80,6 +84,7 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 	/**
 	 * Connect using this profile.
 	 */
+	@Override
 	public void connect() {
 		if( !this.dtpConnectionProfile.isConnected()) {
 			
@@ -89,13 +94,12 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 					IStatus[] statusChildren = status.getChildren();
 					throw new RuntimeException( statusChildren[ 0].getMessage(), statusChildren[ 0].getException());
 				}
-				else {
-					throw new RuntimeException( status.getMessage(), status.getException());
-				}
+				throw new RuntimeException( status.getMessage(), status.getException());
 			}
 		}
 	}
 	
+	@Override
 	public void disconnect() {
 		
 		IStatus status = this.dtpConnectionProfile.disconnect();
@@ -104,71 +108,83 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 				IStatus[] statusChildren = status.getChildren();
 				throw new RuntimeException( statusChildren[ 0].getMessage(), statusChildren[ 0].getException());
 			}
-			else {
-				throw new RuntimeException( status.getMessage(), status.getException());
-			}
+			throw new RuntimeException( status.getMessage(), status.getException());
 		}
 	}
 	
+	@Override
 	void databaseChanged( Database database, int eventType) {
 		this.getConnection().databaseChanged( database, eventType);
 		return;
 	}
 	
+	@Override
 	 void catalogChanged( Catalog catalog, Database database, int eventType) {
 		 //TODO
 //		this.getConnection().catalogChanged( catalog, eventType);
 		 return;
 	}
 	
+	@Override
 	void schemaChanged( Schema schema, Database database, int eventType) {
 		this.getConnection().schemaChanged( schema, database, eventType);
 	}
 		
+	@Override
 	void tableChanged( Table table, Schema schema, Database database, int eventType) {
 		this.getConnection().tableChanged( table, schema, database, eventType);
 	}
 		
 	// ********** queries **********
 
+	@Override
 	public boolean isConnected() {
 
 		return this.getConnection().isConnected();
 	}
 	
+	@Override
 	public boolean isNull() {
 		return false;
 	}
 	
+	@Override
 	public String getName() {
 
 		return this.dtpConnectionProfile.getName();
 	}
 	
+	@Override
 	public String getDatabaseName() {
 		return this.getProperties().getProperty( IDBDriverDefinitionConstants.DATABASE_NAME_PROP_ID);
 	}
 	
+	@Override
 	public String getDatabaseProduct() {
 		return this.getProperties().getProperty( DATABASE_PRODUCT_PROPERTY);
 	}
 	
+	@Override
 	public String getDatabaseVendor() {
 		return this.getProperties().getProperty( IDBDriverDefinitionConstants.DATABASE_VENDOR_PROP_ID);
 	}
 	
+	@Override
 	public String getDatabaseVersion() {
 		return this.getProperties().getProperty( IDBDriverDefinitionConstants.DATABASE_VERSION_PROP_ID);
 	}
 
+	@Override
 	public String getUserName() {
 		return this.getProperties().getProperty( IDBDriverDefinitionConstants.USERNAME_PROP_ID);
 	}
 	
+	@Override
 	public String getInstanceId() {
 		return this.dtpConnectionProfile.getInstanceID();
 	}
 
+	@Override
 	public String getProviderId() {
 		return this.dtpConnectionProfile.getProviderId();
 	}
@@ -177,12 +193,14 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 		return this.dtpConnectionProfile.getBaseProperties();
 	}
 	
+	@Override
 	protected Connection buildConnection() {
 
 		Connection connection = Connection.createConnection( this.buildDtpManagedConnection( this.dtpConnectionProfile));  //$NON-NLS-1$
 		return connection;
 	}
 
+	@Override
 	protected Database buildDatabase() {
 		
 		org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase;
@@ -190,11 +208,10 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 			dtpDatabase = ProfileUtil.getDatabase( new DatabaseIdentifier( this.getName(), this.getDatabaseName()), false);
 			return Database.createDatabase( this, dtpDatabase);
 		}
-		else {
-			return NullDatabase.instance();
-		}
+		return NullDatabase.instance();
 	}
 	
+	@Override
 	boolean wraps( org.eclipse.datatools.connectivity.IConnectionProfile dtpProfile) {
 		return this.dtpConnectionProfile == dtpProfile;
 	}

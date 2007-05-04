@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 import org.eclipse.datatools.modelbase.sql.constraints.PrimaryKey;
@@ -27,9 +28,9 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 /**
  *  Wrap a DTP Table
  */
-public final class Table extends DTPWrapper {
-	private final Schema schema;
-	private final org.eclipse.datatools.modelbase.sql.tables.Table dtpTable;
+public final class Table extends DTPWrapper implements Comparable<Table> {
+	final Schema schema;
+	final org.eclipse.datatools.modelbase.sql.tables.Table dtpTable;
 	private ICatalogObjectListener tableListener;
 	
 	private Set<Column> columns;  // lazy-initialized
@@ -56,6 +57,7 @@ public final class Table extends DTPWrapper {
 		}
 	}
 	
+	@Override
 	protected boolean connectionIsOnline() {
 		return this.schema.connectionIsOnline();
 	}
@@ -71,7 +73,7 @@ public final class Table extends DTPWrapper {
         };
     }
 
-    private void refresh() {
+    void refresh() {
 		this.disposeColumns();
 		
     	this.columns = null;
@@ -90,16 +92,16 @@ public final class Table extends DTPWrapper {
 
 	private void disposeColumns() {
 		if( this.columns != null) {
-			for( Iterator i = this.columns(); i.hasNext(); ) {
-				(( Column)i.next()).dispose();
+			for( Iterator<Column> stream = this.columns(); stream.hasNext(); ) {
+				stream.next().dispose();
 			}
 		}
 	}
 
 	private void disposeForeignKey() {
 		if( this.foreignKeys != null) {
-			for( Iterator i = this.foreignKeys(); i.hasNext(); ) {
-				(( ForeignKey)i.next()).dispose();
+			for( Iterator<ForeignKey> stream = this.foreignKeys(); stream.hasNext(); ) {
+				stream.next().dispose();
 			}
 		}
 	}
@@ -339,7 +341,7 @@ public final class Table extends DTPWrapper {
 
 	// ********** Comparable implementation **********
 
-	public int compareTo( Object o) {
-		return Collator.getInstance().compare( this.getName(), (( Table)o).getName());
+	public int compareTo( Table table) {
+		return Collator.getInstance().compare( this.getName(), table.getName());
 	}
 }

@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -36,40 +36,49 @@ public final class NullDatabase extends Database {
 
 	// ********** behavior **********
 	
+	@Override
 	void catalogChanged( Catalog catalog, int eventType) {
 		// do nothing
 	}
 
+	@Override
 	void schemaChanged( Schema schema, int eventType) {
 		// do nothing
 	}
 
+	@Override
 	void tableChanged( Table table,  Schema schema,int eventType) {
 		// do nothing
 	}
 	
+	@Override
 	void refresh() {
 		// do nothing
 	}
 	
+	@Override
 	protected void dispose() {
 		// do nothing
 	}
 	
+	@Override
 	protected boolean connectionIsOnline() {
 		return false;
 	}
 
 	// ********** queries **********
 
+	@Override
 	public String getName() {
 		return ClassTools.shortClassNameForObject( this);
 	}
 
+	@Override
 	public String getVendor() {
 		return this.getName();
 	}
 	
+	@Override
 	public String getVersion() {
 		return "";
 	}
@@ -87,14 +96,14 @@ public final class NullDatabase extends Database {
 	}
 
 	@Override
-	Set getCatalogs() {
+	Set<Catalog> getCatalogs() {
 		return Collections.emptySet();
 	}
 
 	// ***** schemata
 	
 	@Override
-	Set getSchemata() {
+	Set<Schema> getSchemata() {
 		return Collections.emptySet();
 	}
 }

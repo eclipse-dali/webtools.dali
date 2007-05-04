@@ -1,22 +1,23 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
 import java.text.Collator;
+
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 
 /**
  *  Wrap a DTP Sequence
  */
-public final class Sequence extends DTPWrapper {
+public final class Sequence extends DTPWrapper implements Comparable<Sequence> {
 	private final Schema schema;
 	private final org.eclipse.datatools.modelbase.sql.schema.Sequence dtpSequence;
 	private ICatalogObjectListener sequenceListener;
@@ -37,6 +38,7 @@ public final class Sequence extends DTPWrapper {
 		}
 	}
 	
+	@Override
 	protected boolean connectionIsOnline() {
 		return this.schema.connectionIsOnline();
 	}
@@ -55,16 +57,18 @@ public final class Sequence extends DTPWrapper {
 
 	// ********** queries **********
 
+	@Override
 	protected void dispose() {
 		
 		this.removeCatalogObjectListener(( ICatalogObject) this.dtpSequence, this.sequenceListener);
 	}
 
+	@Override
 	public String getName() {
 		return this.dtpSequence.getName();
 	}
 
-	public int compareTo( Object o) {
-		return Collator.getInstance().compare( this.getName(), (( Sequence)o).getName());
+	public int compareTo( Sequence sequence) {
+		return Collator.getInstance().compare( this.getName(), sequence.getName());
 	}
 }

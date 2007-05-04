@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -73,23 +73,23 @@ public final class DTPTools {
 	/**
 	 * Primitive => JDBC type mappings, keyed by Primitive type name (e.g. "CHARACTER_VARYING")
 	 */
-	private static HashMap PRIMITIVE_TO_JDBC_TYPE_MAPPINGS;  // pseudo 'final' - lazy-initialized
+	private static HashMap<String, PrimitiveToJDBCTypeMapping> PRIMITIVE_TO_JDBC_TYPE_MAPPINGS;  // pseudo 'final' - lazy-initialized
 	private static final JDBCType DEFAULT_JDBC_TYPE = JDBCType.type(Types.VARCHAR);  // TODO VARCHAR is the default?
 
 
 	private static PrimitiveToJDBCTypeMapping primitiveToJDBCTypeMapping(String primitiveTypeName) {
-		return (PrimitiveToJDBCTypeMapping) primitiveToJDBCTypeMappings().get(primitiveTypeName);
+		return primitiveToJDBCTypeMappings().get(primitiveTypeName);
 	}
 
-	private static synchronized HashMap primitiveToJDBCTypeMappings() {
+	private static synchronized HashMap<String, PrimitiveToJDBCTypeMapping> primitiveToJDBCTypeMappings() {
 		if (PRIMITIVE_TO_JDBC_TYPE_MAPPINGS == null) {
 			PRIMITIVE_TO_JDBC_TYPE_MAPPINGS = buildPrimitiveToJDBCTypeMappings();
 		}
 		return PRIMITIVE_TO_JDBC_TYPE_MAPPINGS;
 	}
 
-	private static HashMap buildPrimitiveToJDBCTypeMappings() {
-		HashMap mappings = new HashMap();
+	private static HashMap<String, PrimitiveToJDBCTypeMapping> buildPrimitiveToJDBCTypeMappings() {
+		HashMap<String, PrimitiveToJDBCTypeMapping> mappings = new HashMap<String, PrimitiveToJDBCTypeMapping>();
 		addPrimitiveToJDBCTypeMappingsTo(mappings);
 		return mappings;
 	}
@@ -100,7 +100,7 @@ public final class DTPTools {
 	 * pretty much a straight one-to-one mapping based on similar names;
 	 * TODO some JDBC types are missing: INTERVAL, XML_TYPE
 	 */
-	private static void addPrimitiveToJDBCTypeMappingsTo(HashMap mappings) {
+	private static void addPrimitiveToJDBCTypeMappingsTo(HashMap<String, PrimitiveToJDBCTypeMapping> mappings) {
 		addPrimitiveToJDBCTypeMappingTo(PrimitiveType.BIGINT_LITERAL, Types.BIGINT, mappings);
 		addPrimitiveToJDBCTypeMappingTo(PrimitiveType.BINARY_LARGE_OBJECT_LITERAL, Types.BLOB, mappings);
 		addPrimitiveToJDBCTypeMappingTo(PrimitiveType.BINARY_LITERAL, Types.BINARY, mappings);
@@ -127,7 +127,7 @@ public final class DTPTools {
 		addPrimitiveToJDBCTypeMappingTo(PrimitiveType.XML_TYPE_LITERAL, Types.OTHER, mappings);  // ???
 	}
 
-	private static void addPrimitiveToJDBCTypeMappingTo(PrimitiveType primitiveType, int jdbcTypeCode, HashMap mappings) {
+	private static void addPrimitiveToJDBCTypeMappingTo(PrimitiveType primitiveType, int jdbcTypeCode, HashMap<String, PrimitiveToJDBCTypeMapping> mappings) {
 		// check for duplicates
 		Object prev = mappings.put(primitiveType.getName(), buildPrimitiveToJDBCTypeMapping(primitiveType, jdbcTypeCode));
 		if (prev != null) {
@@ -186,6 +186,7 @@ public final class DTPTools {
 			return this.primitiveType.getValue() == primitiveTypeCode;
 		}
 
+		@Override
 		public String toString() {
 			StringBuffer sb = new StringBuffer();
 			this.appendTo(sb);

@@ -1,15 +1,16 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
 import java.text.Collator;
+
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 import org.eclipse.datatools.modelbase.sql.datatypes.DataType;
@@ -20,7 +21,7 @@ import org.eclipse.jpt.utility.internal.NameTools;
 /**
  *  Wrap a DTP Column
  */
-public final class Column extends DTPWrapper {
+public final class Column extends DTPWrapper implements Comparable<Column> {
 	private final Table table;
 	private final org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn;
 	private ICatalogObjectListener columnListener;
@@ -46,6 +47,7 @@ public final class Column extends DTPWrapper {
 		}
 	}
 	
+	@Override
 	protected boolean connectionIsOnline() {
 		return this.table.connectionIsOnline();
 	}
@@ -61,6 +63,7 @@ public final class Column extends DTPWrapper {
         };
     }
 	
+	@Override
 	protected void dispose() {
 		
 		this.removeCatalogObjectListener(( ICatalogObject) this.dtpColumn, this.columnListener);
@@ -68,6 +71,7 @@ public final class Column extends DTPWrapper {
 	
 	// ********** queries **********
 
+	@Override
 	public String getName() {
 		return this.dtpColumn.getName();
 	}
@@ -122,8 +126,8 @@ public final class Column extends DTPWrapper {
 
 	// ********** Comparable implementation **********
 	
-	public int compareTo( Object o) {
-		return Collator.getInstance().compare( this.getName(), (( Column)o).getName());
+	public int compareTo( Column column) {
+		return Collator.getInstance().compare( this.getName(), column.getName());
 	}
 }
 

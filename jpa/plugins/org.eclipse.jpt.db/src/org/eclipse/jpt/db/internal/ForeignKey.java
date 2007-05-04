@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -23,7 +24,7 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 /**
  *  Wrap a DTP ForeignKey
  */
-public final class ForeignKey extends DTPWrapper {
+public final class ForeignKey extends DTPWrapper implements Comparable<ForeignKey> {
 	private final Table baseTable;
 	private final org.eclipse.datatools.modelbase.sql.constraints.ForeignKey dtpForeignKey;
 	private ICatalogObjectListener foreignKeyListener;
@@ -52,6 +53,7 @@ public final class ForeignKey extends DTPWrapper {
 		}
 	}
 	
+	@Override
 	protected boolean connectionIsOnline() {
 		return this.baseTable.connectionIsOnline();
 	}
@@ -67,6 +69,7 @@ public final class ForeignKey extends DTPWrapper {
         };
     }
 
+	@Override
 	protected void dispose() {
 		
 		this.removeCatalogObjectListener(( ICatalogObject) this.dtpForeignKey, this.foreignKeyListener);
@@ -120,7 +123,7 @@ public final class ForeignKey extends DTPWrapper {
 	 * the base table's primary key
 	 */
 	public Iterator<Column> nonPrimaryKeyBaseColumns() {
-		return new FilteringIterator(this.baseColumns()) {
+		return new FilteringIterator<Column>(this.baseColumns()) {
 			@Override
 			protected boolean accept(Object o) {
 				return ! ForeignKey.this.getBaseTable().primaryKeyColumnsContains((Column) o);
@@ -132,10 +135,10 @@ public final class ForeignKey extends DTPWrapper {
 	 * return the foreign key's "referenced" columns
 	 */
 	public Iterator<Column> referencedColumns() {
-		return new TransformationIterator(this.columnPairs()) {
+		return new TransformationIterator<ColumnPair, Column>(this.columnPairs()) {
 			@Override
-			protected Object transform(Object next) {
-				return ((ColumnPair) next).getReferencedColumn();
+			protected Column transform(ColumnPair columnPair) {
+				return columnPair.getReferencedColumn();
 			}
 		};
 	}
@@ -165,7 +168,7 @@ public final class ForeignKey extends DTPWrapper {
 		}
 
 		ColumnPair columnPair = this.columnPairs().next();
-		Column pkColumn = (Column) this.getReferencedTable().primaryKeyColumns().next();
+		Column pkColumn = this.getReferencedTable().primaryKeyColumns().next();
 		if (columnPair.getReferencedColumn() != pkColumn) {
 			return false;
 		}
@@ -183,6 +186,7 @@ public final class ForeignKey extends DTPWrapper {
 		return this.columnPairs;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Set<ColumnPair> buildColumnPairs() {
 		List<org.eclipse.datatools.modelbase.sql.tables.Column> baseColumns = this.dtpForeignKey.getMembers();
 		int size = baseColumns.size();
@@ -285,8 +289,8 @@ public final class ForeignKey extends DTPWrapper {
 
 	// ********** Comparable implementation **********
 
-	public int compareTo(Object o) {
-		return Collator.getInstance().compare(this.getName(), ((ForeignKey) o).getName());
+	public int compareTo(ForeignKey foreignKey) {
+		return Collator.getInstance().compare(this.getName(), foreignKey.getName());
 	}
 
 

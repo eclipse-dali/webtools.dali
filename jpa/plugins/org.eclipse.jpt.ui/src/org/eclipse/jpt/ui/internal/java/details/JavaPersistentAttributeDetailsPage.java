@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -40,13 +40,13 @@ public class JavaPersistentAttributeDetailsPage
 		gridData.grabExcessHorizontalSpace = true;
 		mappingCombo.getCombo().setLayoutData(gridData);
 		
-		PageBook mappingPageBook = buildMappingPageBook(composite);
+		PageBook book = buildMappingPageBook(composite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalSpan = 2;
-		mappingPageBook.setLayoutData(gridData);
+		book.setLayoutData(gridData);
 	}
 }

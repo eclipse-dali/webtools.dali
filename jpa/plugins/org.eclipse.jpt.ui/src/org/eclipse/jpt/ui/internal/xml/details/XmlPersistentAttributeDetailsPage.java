@@ -47,13 +47,14 @@ public class XmlPersistentAttributeDetailsPage
 	
 	private void buildPersistentTypeListener() {
 		this.persistentTypeListener = new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				persistentTypeChanged(notification);
 			}
 		};
 	}
 	
-	private void persistentTypeChanged(Notification notification) {
+	void persistentTypeChanged(Notification notification) {
 		if (notification.getFeatureID(XmlPersistentType.class) == 
 			OrmPackage.XML_PERSISTENT_TYPE__SPECIFIED_ATTRIBUTE_MAPPINGS) {
 			Display.getDefault().asyncExec(
@@ -90,14 +91,14 @@ public class XmlPersistentAttributeDetailsPage
 		gridData.grabExcessHorizontalSpace = true;
 		mappingCombo.getCombo().setLayoutData(gridData);
 		
-		PageBook mappingPageBook = buildMappingPageBook(composite);
+		PageBook book = buildMappingPageBook(composite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalSpan = 2;
-		mappingPageBook.setLayoutData(gridData);
+		book.setLayoutData(gridData);
 	}
 	
 	@Override

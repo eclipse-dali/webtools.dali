@@ -39,6 +39,7 @@ public class JptDbPlugin extends Plugin {
 	/**
 	 * This method is called upon plug-in activation
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		this.connectionProfileRepository = ConnectionProfileRepository.instance();
@@ -48,6 +49,7 @@ public class JptDbPlugin extends Plugin {
 	/**
 	 * This method is called when the plug-in is stopped
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		this.connectionProfileRepository.disposeListeners();
 		this.connectionProfileRepository = null;

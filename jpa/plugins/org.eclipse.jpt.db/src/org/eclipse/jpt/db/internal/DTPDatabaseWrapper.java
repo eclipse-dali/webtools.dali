@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,9 +12,9 @@ package org.eclipse.jpt.db.internal;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 import org.eclipse.emf.common.util.EList;
@@ -24,12 +24,12 @@ import org.eclipse.emf.common.util.EList;
  */
 public final class DTPDatabaseWrapper extends Database {
 	
-	final private ConnectionProfile profile;
-	final private org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase;
+	final ConnectionProfile profile;
+	final org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase;
 	private ICatalogObjectListener databaseListener;
 	
-	private Set catalogs;  // lazy-initialized
-	private Set schemata;  // lazy-initialized
+	private Set<Catalog> catalogs;  // lazy-initialized
+	private Set<Schema> schemata;  // lazy-initialized
 
 	DTPDatabaseWrapper( ConnectionProfile profile, org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase) {
 		super();
@@ -48,6 +48,7 @@ public final class DTPDatabaseWrapper extends Database {
 		}
 	}
 	
+	@Override
 	protected boolean connectionIsOnline() {
 		return this.profile.isConnected();
 	}
@@ -63,6 +64,7 @@ public final class DTPDatabaseWrapper extends Database {
 	    };
 	}
 
+	@Override
 	void refresh() {
 		this.disposeSchemata();
 		this.disposeCatalogs();
@@ -71,21 +73,25 @@ public final class DTPDatabaseWrapper extends Database {
 		this.catalogs = null;
 	}
 	
+	@Override
 	void catalogChanged( Catalog catalog, int eventType) {
 		this.profile.catalogChanged( catalog, this, eventType);
 		return;
 	}	
 		
+	@Override
 	void schemaChanged( Schema schema, int eventType) {
 		this.profile.schemaChanged( schema, this, eventType);
 		return;
 	}
 
+	@Override
 	void tableChanged( Table table,  Schema schema, int eventType) {
 		this.profile.tableChanged( table, schema, this, eventType);
 		return;
 	}
 	
+	@Override
 	protected void dispose() {
 		this.removeCatalogObjectListener(( ICatalogObject) this.dtpDatabase, this.databaseListener);
 
@@ -95,32 +101,35 @@ public final class DTPDatabaseWrapper extends Database {
 
 	private void disposeSchemata() {
 		if( this.schemata != null) {
-			for( Iterator i = this.schemata(); i.hasNext(); ) {
-				(( Schema)i.next()).dispose();
+			for( Iterator<Schema> stream = this.schemata(); stream.hasNext(); ) {
+				stream.next().dispose();
 			}
 		}
 	}
 	
 	private void disposeCatalogs() {
 		if( this.catalogs != null) {
-			for( Iterator i = this.catalogs(); i.hasNext(); ) {
-				(( Catalog)i.next()).dispose();
+			for( Iterator<Catalog> stream = this.catalogs(); stream.hasNext(); ) {
+				stream.next().dispose();
 			}
 		}
 	}
 	
 	// ********** queries **********
 
+	@Override
 	public String getName() {
 
 		return this.dtpDatabase.getName();
 	}
 
+	@Override
 	public String getVendor() {
 		
 		return this.dtpDatabase.getVendor();
 	}
 	
+	@Override
 	public String getVersion() {
 		
 		return this.dtpDatabase.getVersion();
@@ -129,23 +138,25 @@ public final class DTPDatabaseWrapper extends Database {
 	
 	// ***** schemata
 
-	synchronized Set getSchemata() {
+	@Override
+	synchronized Set<Schema> getSchemata() {
 		if( this.schemata == null) {
 			this.schemata = this.buildSchemata();
 		}
 		return this.schemata;
 	}
 
-	private Set buildSchemata() {
-		Set result;
+	@SuppressWarnings("unchecked")
+	private Set<Schema> buildSchemata() {
+		Set<Schema> result;
 		if( this.supportsCatalogs()) {
 			result = this.getSchemataForCatalogNamed( this.profile.getCatalogName());
 		}
 		else {
-			EList dtpSchemata = this.dtpDatabase.getSchemas();
-			result = new HashSet( dtpSchemata.size());
-			for( Iterator i = dtpSchemata.iterator(); i.hasNext(); ) {
-				result.add( this.wrap(( org.eclipse.datatools.modelbase.sql.schema.Schema)i.next()));
+			EList<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.dtpDatabase.getSchemas();
+			result = new HashSet<Schema>( dtpSchemata.size());
+			for (org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema : dtpSchemata) {
+				result.add( this.wrap(dtpSchema));
 			}
 		}
 		return result;
@@ -153,58 +164,57 @@ public final class DTPDatabaseWrapper extends Database {
 	
 	// ***** catalogs
 
+	@SuppressWarnings("unchecked")
+	@Override
 	public boolean supportsCatalogs() {
-		EList schemata = this.dtpDatabase.getSchemas();
-		return ( schemata == null || schemata.size() == 0);
+		EList<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.dtpDatabase.getSchemas();
+		return ( dtpSchemata == null || dtpSchemata.size() == 0);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public String getDefaultCatalogName() {
 		
 		if( !this.supportsCatalogs()) {	// this database doesn't support catalogs
 			return "";
 		}
-		else {
-			String userName = this.profile.getUserName();
-			List dtpCatalogs = this.dtpDatabase.getCatalogs();
-			for( Iterator i = dtpCatalogs.iterator(); i.hasNext(); ) {
-				org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog = ( org.eclipse.datatools.modelbase.sql.schema.Catalog)i.next();
-				if( dtpCatalog.getName().length() == 0) {	// special catalog that contains all schemata
-					return "";
-				}
-				else if( dtpCatalog.getName().equals( userName)) {
-					return userName;		// returns user name as default catalog
-				}
+		String userName = this.profile.getUserName();
+		for (org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog : (EList<org.eclipse.datatools.modelbase.sql.schema.Catalog>) this.dtpDatabase.getCatalogs()) {
+			if( dtpCatalog.getName().length() == 0) {	// special catalog that contains all schemata
+				return "";
 			}
-			throw new NoSuchElementException();
+			else if( dtpCatalog.getName().equals( userName)) {
+				return userName;		// returns user name as default catalog
+			}
 		}
+		throw new NoSuchElementException();
 	}
 	
-	synchronized Set getCatalogs() {
+	@Override
+	synchronized Set<Catalog> getCatalogs() {
 		if( this.catalogs == null) {
 			this.catalogs = this.buildCatalogs();
 		}
 		return this.catalogs;
 	}
 
-	private Set buildCatalogs() {
+	@SuppressWarnings("unchecked")
+	private Set<Catalog> buildCatalogs() {
 		
-		EList dtpCatalogs = this.dtpDatabase.getCatalogs();
+		EList<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs = this.dtpDatabase.getCatalogs();
 		if( dtpCatalogs == null) {
 			return Collections.emptySet();
 		}
-		Set result = new HashSet( dtpCatalogs.size());
-		for( Iterator i = dtpCatalogs.iterator(); i.hasNext(); ) {
-			result.add( this.wrap(( org.eclipse.datatools.modelbase.sql.schema.Catalog)i.next()));
+		Set<Catalog> result = new HashSet<Catalog>( dtpCatalogs.size());
+		for (org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog : dtpCatalogs) {
+			result.add( this.wrap(dtpCatalog));
 		}
 		return result;
 	}
 	
-	//TODO case insensitive search
-	//
-	private Set getSchemataForCatalogNamed( String catalogName) {
+	private Set<Schema> getSchemataForCatalogNamed( String catalogName) {
 
 		Catalog catalog = this.catalogNamed( catalogName);
-		return ( catalog != null) ? catalog.buildSchemata() : Collections.emptySet();
+		return ( catalog != null) ? catalog.buildSchemata() : Collections.<Schema>emptySet();
 	}
 }

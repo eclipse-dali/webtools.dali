@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -27,7 +27,7 @@ public class ConnectionProfileRepository {
 	
 	private LocalRepositoryListener repositoryListener;
 	private LocalProfileListener profileListener;
-	private Set profiles;
+	private Set<ConnectionProfile> profiles;
 
 	private static ConnectionProfileRepository INSTANCE;
 
@@ -65,8 +65,8 @@ public class ConnectionProfileRepository {
 	}
 
 	public void disposeListeners() {
-		for( Iterator i = profiles(); i.hasNext(); ) {
-			(( ConnectionProfile) i.next()).dispose();
+		for( Iterator<ConnectionProfile> stream = this.profiles(); stream.hasNext(); ) {
+			stream.next().dispose();
 		}
 		if( this.repositoryListener != null) {
 			this.dtpProfileManager.removeProfileListener( this.repositoryListener);
@@ -83,27 +83,29 @@ public class ConnectionProfileRepository {
 	}
 	
 	
+	@Override
 	public String toString() {
 		return this.profiles.toString();
 	}
 	
 	// ********** profiles
 
-	public Iterator profiles() {
+	public Iterator<ConnectionProfile> profiles() {
 		return this.getProfiles().iterator();
 	}
 
-	public Iterator profileNames() {
-		return new TransformationIterator( this.profiles()) {
-			protected Object transform( Object next) {
-				 return (( ConnectionProfile)next).getName();
+	public Iterator<String> profileNames() {
+		return new TransformationIterator<ConnectionProfile, String>( this.profiles()) {
+			@Override
+			protected String transform( ConnectionProfile profile) {
+				 return profile.getName();
 			}
 		};
 	}
 
 	public ConnectionProfile profileNamed( String name) {
-		for( Iterator stream = this.profiles(); stream.hasNext(); ) {
-			ConnectionProfile profile = ( ConnectionProfile) stream.next();
+		for( Iterator<ConnectionProfile> stream = this.profiles(); stream.hasNext(); ) {
+			ConnectionProfile profile = stream.next();
 			if( profile.getName().equals( name)) {
 				return profile;
 			}
@@ -111,7 +113,7 @@ public class ConnectionProfileRepository {
 		return NullConnectionProfile.instance();
 	}
 	
-	private Set getProfiles() {
+	private Set<ConnectionProfile> getProfiles() {
 
 		if( this.profiles == null) {
 			this.profiles = this.buildProfiles();
@@ -119,16 +121,16 @@ public class ConnectionProfileRepository {
 		return this.profiles;
 	}
 
-	private Set buildProfiles() {
-		IConnectionProfile[] profiles = this.dtpProfileManager.getProfiles();
-		Set result = new HashSet( profiles.length);
-		for( int i = profiles.length; i-- > 0; ) {
-			result.add( ConnectionProfile.createProfile( this, profiles[i]));
+	private Set<ConnectionProfile> buildProfiles() {
+		IConnectionProfile[] dtpProfiles = this.dtpProfileManager.getProfiles();
+		Set<ConnectionProfile> result = new HashSet<ConnectionProfile>( dtpProfiles.length);
+		for (IConnectionProfile dtpProfile : dtpProfiles) {
+			result.add( ConnectionProfile.createProfile( this, dtpProfile));
 		}
 		return result;
 	}
 
-	private void addProfile( IConnectionProfile dtpProfile) {
+	void addProfile( IConnectionProfile dtpProfile) {
 		
 		if( !this.profileExists( dtpProfile)) {
 			ConnectionProfile newProfile = ConnectionProfile.createProfile( ConnectionProfileRepository.this, dtpProfile);
@@ -136,7 +138,7 @@ public class ConnectionProfileRepository {
 		}
 	}
 	
-	private void removeProfile( IConnectionProfile dtpProfile) {
+	void removeProfile( IConnectionProfile dtpProfile) {
 		
 		this.profiles.remove( this.getProfile( dtpProfile));
 	}
@@ -146,10 +148,10 @@ public class ConnectionProfileRepository {
 		return ( this.getProfile( dtpProfile) == null) ? false : true;
 	}
 
-	private ConnectionProfile getProfile( IConnectionProfile dtpProfile) {
+	ConnectionProfile getProfile( IConnectionProfile dtpProfile) {
 		
-		for( Iterator i = this.profiles(); i.hasNext(); ) {
-			ConnectionProfile profile = ( ConnectionProfile)i.next();
+		for( Iterator<ConnectionProfile> stream = this.profiles(); stream.hasNext(); ) {
+			ConnectionProfile profile = stream.next();
 			if( profile.wraps( dtpProfile)) {
 				return profile;
 			}
@@ -169,11 +171,13 @@ public class ConnectionProfileRepository {
 		this.profileListener.removeProfileListener( listener);
 	}
 
+	@SuppressWarnings("unused")
 	private void addInternalProfileListener( IProfileListener listener) {
 
 		this.dtpProfileManager.addProfileListener( listener);
 	}
 
+	@SuppressWarnings("unused")
 	private void removeInternalProfileListener( IProfileListener listener) {
 		
 		this.dtpProfileManager.removeProfileListener( listener);
@@ -184,6 +188,10 @@ public class ConnectionProfileRepository {
 	 * Listens to ProfileManager events and updates the repository.
 	 */
 	private class LocalRepositoryListener implements IProfileListener {
+
+		LocalRepositoryListener() {
+			super();
+		}
 
 		public void profileAdded( IConnectionProfile connectionProfile) {
 			ConnectionProfileRepository.this.addProfile( connectionProfile);
@@ -203,7 +211,11 @@ public class ConnectionProfileRepository {
 	 * This listener translates and forwards IProfileListener events to ProfileListener.
 	 */
 	private class LocalProfileListener implements IProfileListener {
-		private Collection listeners = new ArrayList();
+		private Collection<ProfileListener> listeners = new ArrayList<ProfileListener>();
+
+		LocalProfileListener() {
+			super();
+		}
 
 		void addProfileListener( ProfileListener listener) {
 			this.listeners.add( listener);
@@ -217,22 +229,22 @@ public class ConnectionProfileRepository {
 		
 		public void profileAdded( IConnectionProfile dtpProfile) {
 			ConnectionProfile profile = getProfile( dtpProfile);
-			for( Iterator j = listeners.iterator(); j.hasNext(); ) {
-				(( ProfileListener)j.next()).profileAdded( profile);
+			for (ProfileListener listener : this.listeners) {
+				listener.profileAdded( profile);
 			}
 		}
 
 		public void profileChanged( IConnectionProfile dtpProfile) {
 			ConnectionProfile profile = getProfile( dtpProfile);
-			for( Iterator j = listeners.iterator(); j.hasNext(); ) {
-				(( ProfileListener)j.next()).profileChanged( profile);
+			for (ProfileListener listener : this.listeners) {
+				listener.profileChanged( profile);
 			}
 		}
 
 		public void profileDeleted( IConnectionProfile dtpProfile) {
 			String profileName = dtpProfile.getName();
-			for( Iterator j = listeners.iterator(); j.hasNext(); ) {
-				(( ProfileListener)j.next()).profileDeleted( profileName);
+			for (ProfileListener listener : this.listeners) {
+				listener.profileDeleted( profileName);
 			}
 		}
 	}

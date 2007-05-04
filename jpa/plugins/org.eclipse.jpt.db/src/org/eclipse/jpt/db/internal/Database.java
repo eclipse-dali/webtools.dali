@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,13 +12,14 @@ package org.eclipse.jpt.db.internal;
 import java.text.Collator;
 import java.util.Iterator;
 import java.util.Set;
+
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
  *  Database wrapper base class.
  */
-public abstract class Database extends DTPWrapper {
+public abstract class Database extends DTPWrapper implements Comparable<Database> {
 	
 	private boolean caseSensitive = false;  // TODO allow user to configure
 
@@ -72,8 +73,8 @@ public abstract class Database extends DTPWrapper {
 
 	// ********** Comparable implementation **********
 
-	public int compareTo( Object o) {
-		return Collator.getInstance().compare( this.getName(), (( Database)o).getName());
+	public int compareTo( Database database) {
+		return Collator.getInstance().compare( this.getName(), database.getName());
 	}
 
 	// ***** caseSensitive
@@ -88,7 +89,7 @@ public abstract class Database extends DTPWrapper {
 
 	// ***** catalogs
 
-	abstract Set getCatalogs();
+	abstract Set<Catalog> getCatalogs();
 
 	/**
 	 * Returns true if this database accepts catalogs.
@@ -100,7 +101,7 @@ public abstract class Database extends DTPWrapper {
 	 */
 	public abstract String getDefaultCatalogName();
 	
-	public Iterator catalogs() {
+	public Iterator<Catalog> catalogs() {
 		return this.getCatalogs().iterator();
 	}
 
@@ -108,10 +109,11 @@ public abstract class Database extends DTPWrapper {
 		return this.getCatalogs().size();
 	}
 
-	public Iterator catalogNames() {
-		return new TransformationIterator( this.catalogs()) {
-			protected Object transform( Object next) {
-				 return (( Catalog) next).getName();
+	public Iterator<String> catalogNames() {
+		return new TransformationIterator<Catalog, String>( this.catalogs()) {
+			@Override
+			protected String transform( Catalog catalog) {
+				 return catalog.getName();
 			}
 		};
 	}
@@ -125,8 +127,8 @@ public abstract class Database extends DTPWrapper {
 	}
 	
 	private Catalog catalogNamedInternal( String name) {
-		for ( Iterator stream = this.catalogs(); stream.hasNext(); ) {
-			Catalog catalog = ( Catalog) stream.next();
+		for ( Iterator<Catalog> stream = this.catalogs(); stream.hasNext(); ) {
+			Catalog catalog = stream.next();
 			if ( catalog.getName().equals( name)) {
 				return catalog;
 			}
@@ -135,8 +137,8 @@ public abstract class Database extends DTPWrapper {
 	}
 	
 	private Catalog catalogNamedIgnoreCase( String name) {
-		for ( Iterator stream = this.catalogs(); stream.hasNext(); ) {
-			Catalog catalog = ( Catalog) stream.next();
+		for ( Iterator<Catalog> stream = this.catalogs(); stream.hasNext(); ) {
+			Catalog catalog = stream.next();
 			if ( StringTools.stringsAreEqualIgnoreCase( catalog.getName(), name)) {
 				return catalog;
 			}
@@ -148,8 +150,8 @@ public abstract class Database extends DTPWrapper {
 	 * return the catalog for the specified dtp catalog
 	 */
 	Catalog catalog( org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog) {
-		for ( Iterator stream = this.catalogs(); stream.hasNext(); ) {
-			Catalog catalog = ( Catalog) stream.next();
+		for ( Iterator<Catalog> stream = this.catalogs(); stream.hasNext(); ) {
+			Catalog catalog = stream.next();
 			if (catalog.wraps( dtpCatalog)) {
 				return catalog;
 			}
@@ -160,9 +162,9 @@ public abstract class Database extends DTPWrapper {
 
 	// ***** schemata
 
-	abstract Set getSchemata();
+	abstract Set<Schema> getSchemata();
 
-	public Iterator schemata() {
+	public Iterator<Schema> schemata() {
 		return this.getSchemata().iterator();
 	}
 
@@ -174,10 +176,11 @@ public abstract class Database extends DTPWrapper {
 		return this.getSchemata().contains( column);
 	}
 
-	public Iterator schemaNames() {
-		return new TransformationIterator( this.schemata()) {
-			protected Object transform( Object next) {
-				 return (( Schema) next).getName();
+	public Iterator<String> schemaNames() {
+		return new TransformationIterator<Schema, String>( this.schemata()) {
+			@Override
+			protected String transform( Schema schema) {
+				 return schema.getName();
 			}
 		};
 	}
@@ -191,8 +194,8 @@ public abstract class Database extends DTPWrapper {
 	}
 	
 	private Schema schemaNamedInternal( String name) {
-		for ( Iterator stream = this.schemata(); stream.hasNext(); ) {
-			Schema schema = ( Schema) stream.next();
+		for ( Iterator<Schema> stream = this.schemata(); stream.hasNext(); ) {
+			Schema schema = stream.next();
 			if ( schema.getName().equals( name)) {
 				return schema;
 			}
@@ -201,8 +204,8 @@ public abstract class Database extends DTPWrapper {
 	}
 	
 	private Schema schemaNamedIgnoreCase( String name) {
-		for ( Iterator stream = this.schemata(); stream.hasNext(); ) {
-			Schema schema = ( Schema) stream.next();
+		for ( Iterator<Schema> stream = this.schemata(); stream.hasNext(); ) {
+			Schema schema = stream.next();
 			if ( StringTools.stringsAreEqualIgnoreCase( schema.getName(), name)) {
 				return schema;
 			}
@@ -214,8 +217,8 @@ public abstract class Database extends DTPWrapper {
 	 * return the schema for the specified dtp schema
 	 */
 	Schema schema( org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
-		for ( Iterator stream = this.schemata(); stream.hasNext(); ) {
-			Schema schema = ( Schema) stream.next();
+		for ( Iterator<Schema> stream = this.schemata(); stream.hasNext(); ) {
+			Schema schema = stream.next();
 			if ( schema.wraps( dtpSchema)) {
 				return schema;
 			}
