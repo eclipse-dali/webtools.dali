@@ -97,8 +97,11 @@ public class JpaUiMappingsMessages extends NLS
 	public static String MultiRelationshipMappingComposite_mappedBy;
 	public static String MultiRelationshipMappingComposite_targetEntity;
 
+	public static String ColumnComposite_columnSection;
 	public static String ColumnComposite_defaultWithOneParam;
 	public static String ColumnComposite_defaultEmpty;
+	public static String ColumnComposite_insertable;	
+	public static String ColumnComposite_updatable;
 
 	public static String JoinColumnComposite_defaultEmpty;
 	public static String JoinColumnComposite_defaultWithOneParam;

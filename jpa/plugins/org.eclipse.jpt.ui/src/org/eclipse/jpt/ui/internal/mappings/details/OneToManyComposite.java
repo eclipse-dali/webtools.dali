@@ -49,6 +49,7 @@ public class OneToManyComposite extends BaseJpaComposite
 	protected void initializeLayout(Composite composite) {
 		GridLayout layout = new GridLayout();
 		layout.marginWidth = 0;
+		layout.marginHeight = 0;
 		composite.setLayout(layout);
 		
 		Control generalControl = buildGeneralControl(composite);

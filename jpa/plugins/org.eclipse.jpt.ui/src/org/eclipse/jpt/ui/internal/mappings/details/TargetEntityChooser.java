@@ -27,6 +27,7 @@ import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -34,7 +35,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -47,7 +47,7 @@ public class TargetEntityChooser extends BaseJpaController
 	private IRelationshipMapping relationshipMapping;
 	private Adapter relationshipMappingListener;
 	
-	protected Combo targetEntityCombo;
+	protected CCombo targetEntityCombo;
 
 	
 	private Composite composite;
@@ -87,8 +87,8 @@ public class TargetEntityChooser extends BaseJpaController
 
 	}
 	
-	protected Combo buildTargetEntityCombo(Composite parent) {
-		final Combo combo = new Combo(parent, SWT.SINGLE | SWT.BORDER);
+	protected CCombo buildTargetEntityCombo(Composite parent) {
+		final CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
 		combo.add(JpaUiMappingsMessages.TargetEntityChooser_defaultEmpty);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(combo, IJpaHelpContextIds.MAPPING_TARGET_ENTITY);
 		combo.addModifyListener(new ModifyListener() {
@@ -96,7 +96,7 @@ public class TargetEntityChooser extends BaseJpaController
 				if (isPopulating()) {
 					return;
 				}
-				String targetEntityName = ((Combo) e.getSource()).getText();
+				String targetEntityName = ((CCombo) e.getSource()).getText();
 				if (targetEntityName.equals(combo.getItem(0)) || targetEntityName.equals("")) { //$NON-NLS-1$
 					targetEntityName = null;
 				}

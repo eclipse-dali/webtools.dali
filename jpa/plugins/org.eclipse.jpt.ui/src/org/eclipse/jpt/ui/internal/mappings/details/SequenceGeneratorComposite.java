@@ -20,11 +20,11 @@ import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
@@ -36,7 +36,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  */
 public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGenerator>
 {
-	private Combo sequenceNameCombo;
+	private CCombo sequenceNameCombo;
 
 	private ModifyListener sequenceNameComboListener;
 
@@ -81,8 +81,8 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		helpSystem.setHelp(sequenceNameCombo, IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE);
 	}
 
-	private Combo buildSequenceNameCombo(Composite parent) {
-		Combo combo = new Combo(parent, SWT.DROP_DOWN);
+	private CCombo buildSequenceNameCombo(Composite parent) {
+		CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
 		combo.add(""); //$NON-NLS-1$
 		combo.select(0);
 		combo.addModifyListener(getSequenceNameListener());
@@ -96,7 +96,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 					if (isPopulating()) {
 						return;
 					}
-					String text = ((Combo) e.getSource()).getText();
+					String text = ((CCombo) e.getSource()).getText();
 					if (text != null && sequenceNameCombo.getItemCount() > 0 && text.equals(sequenceNameCombo.getItem(0))) {
 						text = null;
 					}
