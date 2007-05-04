@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 sp2 U (http://www.altova.com) by FREDERICK (RICK) SAPIR (ORACLE BELMONT) -->
+<cheatsheet title="Map a Java Persistent Entity">
+	<intro href="/org.eclipse.platform.doc.user/reference/ref-cheatsheets.htm">
+		<description>
+This cheat sheet will automatically launch wizards, perform actions, and guide you through the steps to map the fields of Java persistent entity to your database.. 
+To learn more about using cheat sheets or to see a list of available cheat sheets, click Help (?). 
+To start work working on this cheat sheet, click the "Click to Begin" button below. 
+Let's get started!
+  </description>
+	</intro>
+	<item href="/org.eclipse.dali.doc.user/ref_persistence_perspective.htm" title="Open the Persistence Perspective" skip="true">
+		<action pluginId="org.eclipse.ui.cheatsheets" class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective" param1="org.eclipse.dali.ui.PersistencePerspective"/>
+		<description>
+First, you need to use the Persistence Perspective. If you are already viewing the Persistence Perspective, you may skip this step by clicking the "Click to Skip" button. If not, select Window->Open Perspective->Other in the menubar at the top of the workbench
+In the Select Perspectives dialog, select Persistence and click OK.
+This step changes the perspective to set up the Eclipse workbench for Java persistence development.
+You can click the "Click to Perform" button to have the "Persistence" perspective opened automatically.
+  </description>
+	</item>
+	<item href="/org.eclipse.dali.doc.user/create_new_entity.htm" title="Create a Persistent Entity" skip="true">
+		<action pluginId="org.eclipse.ui.cheatsheets" class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective" param1="org.eclipse.dali.ui.PersistencePerspective"/>
+		<description>
+To create a new Java persistent entity, use the Create Java Persistent Entity wizard. 
+If you already have a Java persistent entity that you would like to use, you may skip this step by clicking the "Click to Skip" button. If not, select File->New->Other in the menubar at the top of the workbench. 
+In the Select a Wizard dialog, select Java Persistence->Entity and click Next.
+The "Java Persistent Entity" wizard is automatically displayed when you click the "Click to Perform" button.
+  </description>
+	</item>
+	<item href="org.eclipse.wst.datatools.connection.ui.doc.user/topics/ruidbconn_connpage.html" title="Add Database Connection" skip="true">
+		<action pluginId="org.eclipse.ui.cheatsheets" class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective" param1="org.eclipse.dali.ui.PersistencePerspective"/>
+		<description>
+If you already have a database connection in your workspace that you would like to use, you may skip this step by clicking the "Click to Skip" button. If not,  create a new database connection.
+  </description>
+	</item>
+	<item href="/org.eclipse.dali.doc.user/ref_persistence_prop_view.htm" title="Specifying Persistence Properties" skip="true">
+		<action pluginId="org.eclipse.ui.cheatsheets" class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective" param1="org.eclipse.dali.ui.PersistencePerspective"/>
+		<description>
+Now you will associate the entity with a database table. If you already have associated the entity with a database table, you may skip this step by clicking the "Click to Skip" button.
+If not, in the Persistence Properties view of the selected entity, use the "Table Name" field to select the database table to which the entity maps.
+The "Persistence Properties" view of the wizard is automatically displayed when you click the "Click to Perform" button.
+  </description>
+	</item>
+	<item href="" title="Add Fields to the Class" skip="true">
+		<action pluginId="org.eclipse.ui.cheatsheets" class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective" param1="org.eclipse.dali.ui.PersistencePerspective"/>
+		<description>
+Now you will add some fields to the entity to map to rows in the database table.   
+If your persistent entity already has fields to map, you may skip this step by clicking the "Click to Skip" button. If not, use the Java editor to add fields to the entity.
+  </description>
+	</item>
+	<item href="/org.eclipse.dali.doc.user/ref_entity_page.htm" title="Create the Mapping">
+		<action pluginId="org.eclipse.ui.cheatsheets" class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective" param1="org.eclipse.dali.ui.PersistencePerspective"/>
+		<description>
+Now you are ready to map the entity fields to columns in the database table. In the Package Explorer, select the Java class. In the Persistence Outline view, expand the persistent entity to display the fields. Select a field. The Persistence Properties view displays the information for the field. Use the Map As field to select the Basic mapping. Use the Column field to select a column from the database table.
+  </description>
+	</item>
+	<item title="Finish">
+		<description>
+Congratulations! You have successfully mapped the fields from a Java persistent entity to a column in a database table.
+  </description>
+	</item>
+</cheatsheet>

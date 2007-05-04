@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<!-- Run date = May 3, 2007 9:19:08 -->
+<meta name="OAC_IGNORE_SKIP_NAV" content="true" />
+<title>Create version mappings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="generator" content="Oracle DARB XHTML Converter - Version 4.5.3 Build 02" />
+<meta name="date" content="2005-07-10T12:57:20+08:00" />
+<meta name="robots" content="all" scheme="http://www.robotstxt.org/" />
+<meta name="doctitle" content="Create version mappings" />
+<meta name="relnum" content="Release 1.0.0" />
+<meta name="partnum" content="" />
+<link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
+<link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
+<link rel="start" href="../../index.htm" title="Home" type="text/html" />
+<link rel="contents" href="toc.htm" title="Contents" type="text/html" />
+</head>
+<body>
+<p><a id="BABIDFFG" name="BABIDFFG"></a></p>
+<div class="sect3"><!-- infolevel="all" infotype="General" -->
+<table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<tr valign="bottom">
+<td align="left" width="86%">
+<h1>Create version mappings</h1>
+</td>
+</tr>
+</table>
+<p>Use a <span class="bold">Version Mapping</span> to specify the database field used by a persistent entity for optimistic locking.</p>
+<ol type="1" start="1">
+<li>
+<p>Select the <span class="bold">Employee</span> entity in the Package Explorer view.</p>
+</li>
+<li>
+<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the <span class="bold">version</span> field of the <span class="bold">Employee</span> entity. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the field.</p>
+</li>
+<li>
+<p>In the <span class="gui-object-title">Map As</span> field, select <span class="gui-object-action">Version</span>.</p>
+<div class="figure"><a id="sthref39" name="sthref39"></a>
+<p class="titleinfigure">Version Mapping for version</p>
+<img src="img/persistence_view_version.png" alt="This figure shows the Persistence Properties page for the version field." title="This figure shows the Persistence Properties page for the version field." /><br /></div>
+<!-- class="figure" --></li>
+</ol>
+<p>Dali automatically selects the Version column in the EMPLOYEE database table. In the JPA Structure, the <span class="bold">Version</span> field is identified as a version mapping, as shown in the following figure:</p>
+<div class="figure"><a id="sthref40" name="sthref40"></a>
+<p class="titleinfigure">JPA Structure for Employee Entity</p>
+<img src="img/persistence_outline_version.png" alt="This figure shows the version attribute of the Employee entity in the Persistence Outline view." title="This figure shows the version attribute of the Employee entity in the Persistence Outline view." /><br /></div>
+<!-- class="figure" -->
+<p>Congratulations! All of the entities have been successfully mapped.</p>
+</div>
+<!-- class="sect3" -->
+<!-- class="sect2" -->
+<!-- class="sect1" -->
+<!-- Start Footer -->
+<div class="footer">
+<table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2007,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+</tr>
+</table>
+</div>
+<!-- class="footer" -->
+</body>
+</html>

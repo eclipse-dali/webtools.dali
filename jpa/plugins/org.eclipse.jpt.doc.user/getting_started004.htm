@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<!-- Run date = May 3, 2007 9:19:07 -->
+<meta name="OAC_IGNORE_SKIP_NAV" content="true" />
+<title>Creating a Java persistent entity</title>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="generator" content="Oracle DARB XHTML Converter - Version 4.5.3 Build 02" />
+<meta name="date" content="2005-07-10T12:57:20+08:00" />
+<meta name="robots" content="all" scheme="http://www.robotstxt.org/" />
+<meta name="doctitle" content="Creating a Java persistent entity" />
+<meta name="relnum" content="Release 1.0.0" />
+<meta name="partnum" content="" />
+<link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
+<link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
+<link rel="start" href="../../index.htm" title="Home" type="text/html" />
+<link rel="contents" href="toc.htm" title="Contents" type="text/html" />
+</head>
+<body>
+<p><a id="BABFGDDG" name="BABFGDDG"></a></p>
+<div class="sect2"><!-- infolevel="all" infotype="General" -->
+<table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<tr valign="bottom">
+<td align="left" width="86%">
+<h1>Creating a Java persistent entity</h1>
+</td>
+</tr>
+</table>
+<p><a id="sthref10" name="sthref10"></a>This quick start shows how to create a new persistent Java entity. We will create an entity to associate with a database table. You will also need to add the ADDRESS table to your database.</p>
+<ol type="1" start="1">
+<li>
+<p>Right-click the project in the Package Explorer and select <span class="bold">New &gt; Class</span>. The New Java Class page appears.</p>
+</li>
+<li>
+<p>On the Java Class page, enter a package name (such as <code>quickstart.demo.model</code>), class name (such as <code>Address</code>), and click <span class="bold">Finish</span>.</p>
+</li>
+<li>
+<p>synchronize <code>persistence.xml</code></p>
+<p><span class="italic">informationPending...</span></p>
+</li>
+<li>
+<p>Right-click the <code>Address.java</code> file in the Package Explorer and select <span class="bold">Open</span>.</p>
+<div class="figure"><a id="sthref11" name="sthref11"></a>
+<p class="titleinfigure">Open Address.java</p>
+<img src="img/address_java_open.png" alt="" title="" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Select the <code>Address</code> entity in the JPA Structure view.</p>
+<div class="figure"><a id="sthref12" name="sthref12"></a>
+<p class="titleinfigure">Address Class in JPA Structure View</p>
+<img src="img/address_jpa_structure.png" alt="" title="" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>In the JPA Details view, in the Map As field, select <span class="bold">Entity</span>. In the Table field, select the <span class="bold">ADDRESS</span> database table.</p>
+<div class="figure"><a id="sthref13" name="sthref13"></a>
+<p class="titleinfigure">Address Entity in JPA Details View</p>
+<img src="img/address_jpa_details.png" alt="" title="" /><br /></div>
+<!-- class="figure" --></li>
+</ol>
+<p>Eclipse creates the persistent entity and adds the <code>@Entity</code> annotation to the class.</p>
+<div class="figure"><a id="sthref14" name="sthref14"></a>
+<p class="titleinfigure">Address Entity</p>
+<img src="img/java_editor_address.png" alt="This figure shows the Java editor with the Address entity." title="This figure shows the Java editor with the Address entity." /><br /></div>
+<!-- class="figure" -->
+<p>Eclipse also displays the <span class="bold">Address</span> entity in the JPA Structure view:</p>
+<div class="figure"><a id="sthref15" name="sthref15"></a>
+<p class="titleinfigure">Address Entity</p>
+<img src="img/persistence_outline_entity.png" alt="This figure shows the Address entity in the Persistence Outline view." title="This figure shows the Address entity in the Persistence Outline view." /><br /></div>
+<!-- class="figure" -->
+<p>After creating the entity, you must associate it with a database table.</p>
+<ol type="1" start="1">
+<li>
+<p>Select the <span class="gui-object-action">Address</span> class in the Explorer view.</p>
+</li>
+<li>
+<p>In the <span class="gui-object-title">Persistence Properties</span> view, notice that Dali has automatically associated the ADDRESS database table with the entity because they are named identically.</p>
+<div align="center">
+<div class="inftblnote"><br />
+<table class="Note oac_no_warn" summary="This is a layout table to format a note" title="This is a layout table to format a note" dir="ltr" border="1" width="80%" frame="hsides" rules="groups" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Note:</p>
+Depending on your database connection type, you may need to specify the <span class="bold">Schema</span>.</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnote" --></div>
+<div class="figure"><a id="sthref16" name="sthref16"></a>
+<p class="titleinfigure">Persistence Properties View for Address Entity</p>
+<img src="img/persistence_view_address.png" alt="This figure shows the Table selection for the Address entity in the Persistence Properties view." title="This figure shows the Table selection for the Address entity in the Persistence Properties view." /><br /></div>
+<!-- class="figure" --></li>
+</ol>
+<p>Now that you have created a persistent entity, you can continue with <a href="getting_started005.htm#BABHACAF">Mapping an entity</a> to map the entity's fields to columns on the database table.</p>
+</div>
+<!-- class="sect2" -->
+<!-- Start Footer -->
+<div class="footer">
+<table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2007,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+</tr>
+</table>
+</div>
+<!-- class="footer" -->
+</body>
+</html>

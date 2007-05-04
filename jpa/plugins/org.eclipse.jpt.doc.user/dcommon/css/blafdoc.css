@@ -1,0 +1,21 @@
+@import "../../../PRODUCT_PLUGIN/book.css";
+
+span.control, span.gui-object-action, p.subhead2, span.bold, p.notep1 {
+  font-weight: bold;
+}
+
+span.name, p.titleinfigure, span.italic {
+  font-style: italic;
+}
+
+p.titleinfigure, p.subhead2 {
+  padding-top: 10px;
+}
+
+span.code {
+  font-family: monospace;
+}
+
+span.copyrightlogo {font-size: 75%}
+
+.footer {padding-top: 2em;}
