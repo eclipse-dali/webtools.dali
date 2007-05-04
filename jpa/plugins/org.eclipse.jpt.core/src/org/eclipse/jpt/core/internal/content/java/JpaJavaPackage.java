@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -70,26 +70,6 @@ public class JpaJavaPackage extends EPackageImpl
 	 * @generated
 	 */
 	public static final JpaJavaPackage eINSTANCE = org.eclipse.jpt.core.internal.content.java.JpaJavaPackage.init();
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping <em>IJava Attribute Mapping</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping
-	 * @see org.eclipse.jpt.core.internal.content.java.JpaJavaPackage#getIJavaAttributeMapping()
-	 * @generated
-	 */
-	public static final int IJAVA_ATTRIBUTE_MAPPING = 5;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping <em>IJava Type Mapping</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping
-	 * @see org.eclipse.jpt.core.internal.content.java.JpaJavaPackage#getIJavaTypeMapping()
-	 * @generated
-	 */
-	public static final int IJAVA_TYPE_MAPPING = 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.JavaEObject <em>Java EObject</em>}' class.
@@ -213,13 +193,13 @@ public class JpaJavaPackage extends EPackageImpl
 	public static final int JAVA_PERSISTENT_ATTRIBUTE = 3;
 
 	/**
-	 * The feature id for the '<em><b>Mapping Key</b></em>' attribute.
+	 * The feature id for the '<em><b>Mapping</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_PERSISTENT_ATTRIBUTE__MAPPING_KEY = JAVA_EOBJECT_FEATURE_COUNT + 0;
+	public static final int JAVA_PERSISTENT_ATTRIBUTE__MAPPING = JAVA_EOBJECT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Default Mapping</b></em>' containment reference.
@@ -249,6 +229,16 @@ public class JpaJavaPackage extends EPackageImpl
 	public static final int JAVA_PERSISTENT_ATTRIBUTE_FEATURE_COUNT = JAVA_EOBJECT_FEATURE_COUNT + 3;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping <em>IJava Type Mapping</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping
+	 * @see org.eclipse.jpt.core.internal.content.java.JpaJavaPackage#getIJavaTypeMapping()
+	 * @generated
+	 */
+	public static final int IJAVA_TYPE_MAPPING = 4;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -276,6 +266,16 @@ public class JpaJavaPackage extends EPackageImpl
 	public static final int IJAVA_TYPE_MAPPING_FEATURE_COUNT = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping <em>IJava Attribute Mapping</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping
+	 * @see org.eclipse.jpt.core.internal.content.java.JpaJavaPackage#getIJavaAttributeMapping()
+	 * @generated
+	 */
+	public static final int IJAVA_ATTRIBUTE_MAPPING = 5;
+
+	/**
 	 * The number of structural features of the '<em>IJava Attribute Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -283,20 +283,6 @@ public class JpaJavaPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT = JpaCorePackage.IATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass iJavaAttributeMappingEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass iJavaTypeMappingEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -325,6 +311,20 @@ public class JpaJavaPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass javaPersistentAttributeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaTypeMappingEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaAttributeMappingEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -406,30 +406,6 @@ public class JpaJavaPackage extends EPackageImpl
 		// Mark meta-data to indicate it can't be changed
 		theJpaJavaPackage.freeze();
 		return theJpaJavaPackage;
-	}
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping <em>IJava Attribute Mapping</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>IJava Attribute Mapping</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping
-	 * @generated
-	 */
-	public EClass getIJavaAttributeMapping() {
-		return iJavaAttributeMappingEClass;
-	}
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping <em>IJava Type Mapping</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>IJava Type Mapping</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping
-	 * @generated
-	 */
-	public EClass getIJavaTypeMapping() {
-		return iJavaTypeMappingEClass;
 	}
 
 	/**
@@ -559,6 +535,30 @@ public class JpaJavaPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping <em>IJava Type Mapping</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava Type Mapping</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping
+	 * @generated
+	 */
+	public EClass getIJavaTypeMapping() {
+		return iJavaTypeMappingEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping <em>IJava Attribute Mapping</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava Attribute Mapping</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping
+	 * @generated
+	 */
+	public EClass getIJavaAttributeMapping() {
+		return iJavaAttributeMappingEClass;
+	}
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -677,26 +677,6 @@ public class JpaJavaPackage extends EPackageImpl
 	public interface Literals
 	{
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping <em>IJava Attribute Mapping</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping
-		 * @see org.eclipse.jpt.core.internal.content.java.JpaJavaPackage#getIJavaAttributeMapping()
-		 * @generated
-		 */
-		public static final EClass IJAVA_ATTRIBUTE_MAPPING = eINSTANCE.getIJavaAttributeMapping();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping <em>IJava Type Mapping</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping
-		 * @see org.eclipse.jpt.core.internal.content.java.JpaJavaPackage#getIJavaTypeMapping()
-		 * @generated
-		 */
-		public static final EClass IJAVA_TYPE_MAPPING = eINSTANCE.getIJavaTypeMapping();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.JavaEObject <em>Java EObject</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -783,5 +763,25 @@ public class JpaJavaPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference JAVA_PERSISTENT_ATTRIBUTE__SPECIFIED_MAPPING = eINSTANCE.getJavaPersistentAttribute_SpecifiedMapping();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping <em>IJava Type Mapping</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping
+		 * @see org.eclipse.jpt.core.internal.content.java.JpaJavaPackage#getIJavaTypeMapping()
+		 * @generated
+		 */
+		public static final EClass IJAVA_TYPE_MAPPING = eINSTANCE.getIJavaTypeMapping();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping <em>IJava Attribute Mapping</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping
+		 * @see org.eclipse.jpt.core.internal.content.java.JpaJavaPackage#getIJavaAttributeMapping()
+		 * @generated
+		 */
+		public static final EClass IJAVA_ATTRIBUTE_MAPPING = eINSTANCE.getIJavaAttributeMapping();
 	}
-} //JpaCoreJavaPackage
+} //JpaJavaPackage

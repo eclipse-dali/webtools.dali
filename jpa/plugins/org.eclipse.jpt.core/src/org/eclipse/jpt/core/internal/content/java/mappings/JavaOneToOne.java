@@ -286,4 +286,9 @@ public class JavaOneToOne extends JavaSingleRelationshipMapping
 		super.updateFromJava(astRoot);
 		setMappedBy((String) this.mappedByAdapter.getValue(astRoot));
 	}
+
+	@Override
+	public boolean isOverridableAssociationMapping() {
+		return true;
+	}
 }

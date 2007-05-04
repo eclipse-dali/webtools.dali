@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -24,7 +24,14 @@ import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model <b>Package</b>.
+ * The <b>Package</b> for the model.
+ * It contains accessors for the meta objects to represent
+ * <ul>
+ *   <li>each class,</li>
+ *   <li>each feature of each class,</li>
+ *   <li>each enum,</li>
+ *   <li>and each data type</li>
+ * </ul>
  * <!-- end-user-doc -->
  * @see org.eclipse.jpt.core.internal.content.orm.OrmFactory
  * @model kind="package"
@@ -347,196 +354,6 @@ public class OrmPackage extends EPackageImpl
 	public static final int ENTITY_MAPPINGS = 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.EntityMappingsForXml <em>Entity Mappings For Xml</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.EntityMappingsForXml
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getEntityMappingsForXml()
-	 * @generated
-	 */
-	public static final int ENTITY_MAPPINGS_FOR_XML = 3;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping <em>Xml Type Mapping</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlTypeMapping()
-	 * @generated
-	 */
-	public static final int XML_TYPE_MAPPING = 4;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlPersistentType <em>Xml Persistent Type</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlPersistentType
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlPersistentType()
-	 * @generated
-	 */
-	public static final int XML_PERSISTENT_TYPE = 5;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntity <em>Xml Entity</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntity
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntity()
-	 * @generated
-	 */
-	public static final int XML_ENTITY = 9;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEmbeddable
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEmbeddable()
-	 * @generated
-	 */
-	public static final int XML_EMBEDDABLE = 10;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlMappedSuperclass()
-	 * @generated
-	 */
-	public static final int XML_MAPPED_SUPERCLASS = 6;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlAttributeMapping <em>Xml Attribute Mapping</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlAttributeMapping
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlAttributeMapping()
-	 * @generated
-	 */
-	public static final int XML_ATTRIBUTE_MAPPING = 11;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute <em>Xml Persistent Attribute</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlPersistentAttribute()
-	 * @generated
-	 */
-	public static final int XML_PERSISTENT_ATTRIBUTE = 24;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlBasic <em>Xml Basic</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlBasic
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlBasic()
-	 * @generated
-	 */
-	public static final int XML_BASIC = 13;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlId <em>Xml Id</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlId
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlId()
-	 * @generated
-	 */
-	public static final int XML_ID = 14;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadataInternal <em>Persistence Unit Metadata Internal</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadataInternal
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitMetadataInternal()
-	 * @generated
-	 */
-	public static final int PERSISTENCE_UNIT_METADATA_INTERNAL = 25;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadata
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitMetadata()
-	 * @generated
-	 */
-	public static final int PERSISTENCE_UNIT_METADATA = 26;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadataForXml <em>Persistence Unit Metadata For Xml</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadataForXml
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitMetadataForXml()
-	 * @generated
-	 */
-	public static final int PERSISTENCE_UNIT_METADATA_FOR_XML = 27;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaultsInternal <em>Persistence Unit Defaults Internal</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaultsInternal
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitDefaultsInternal()
-	 * @generated
-	 */
-	public static final int PERSISTENCE_UNIT_DEFAULTS_INTERNAL = 28;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaults
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitDefaults()
-	 * @generated
-	 */
-	public static final int PERSISTENCE_UNIT_DEFAULTS = 29;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaultsForXml <em>Persistence Unit Defaults For Xml</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaultsForXml
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitDefaultsForXml()
-	 * @generated
-	 */
-	public static final int PERSISTENCE_UNIT_DEFAULTS_FOR_XML = 30;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMapping <em>Xml Multi Relationship Mapping</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMapping
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlMultiRelationshipMapping()
-	 * @generated
-	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING = 21;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlOneToMany <em>Xml One To Many</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlOneToMany
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlOneToMany()
-	 * @generated
-	 */
-	public static final int XML_ONE_TO_MANY = 22;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlManyToMany <em>Xml Many To Many</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlManyToMany
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlManyToMany()
-	 * @generated
-	 */
-	public static final int XML_MANY_TO_MANY = 23;
-
-	/**
 	 * The feature id for the '<em><b>Persistence Unit Metadata</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -564,6 +381,16 @@ public class OrmPackage extends EPackageImpl
 	public static final int ENTITY_MAPPINGS_FEATURE_COUNT = 2;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.EntityMappingsForXml <em>Entity Mappings For Xml</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.EntityMappingsForXml
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getEntityMappingsForXml()
+	 * @generated
+	 */
+	public static final int ENTITY_MAPPINGS_FOR_XML = 3;
+
+	/**
 	 * The feature id for the '<em><b>Persistence Unit Metadata For Xml</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -589,6 +416,16 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int ENTITY_MAPPINGS_FOR_XML_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping <em>Xml Type Mapping</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlTypeMapping()
+	 * @generated
+	 */
+	public static final int XML_TYPE_MAPPING = 4;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -661,6 +498,16 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_TYPE_MAPPING_FEATURE_COUNT = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 7;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlPersistentType <em>Xml Persistent Type</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlPersistentType
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlPersistentType()
+	 * @generated
+	 */
+	public static final int XML_PERSISTENT_TYPE = 5;
 
 	/**
 	 * The feature id for the '<em><b>Mapping Key</b></em>' attribute.
@@ -742,6 +589,16 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_PERSISTENT_TYPE_FEATURE_COUNT = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 8;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlMappedSuperclass()
+	 * @generated
+	 */
+	public static final int XML_MAPPED_SUPERCLASS = 6;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1169,6 +1026,16 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ENTITY_FOR_XML_FEATURE_COUNT = 2;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntity <em>Xml Entity</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntity
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntity()
+	 * @generated
+	 */
+	public static final int XML_ENTITY = 9;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1412,6 +1279,16 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ENTITY_FEATURE_COUNT = JpaCoreMappingsPackage.IENTITY_FEATURE_COUNT + 3;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEmbeddable
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEmbeddable()
+	 * @generated
+	 */
+	public static final int XML_EMBEDDABLE = 10;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1484,6 +1361,16 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_EMBEDDABLE_FEATURE_COUNT = XML_TYPE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlAttributeMapping <em>Xml Attribute Mapping</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlAttributeMapping
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlAttributeMapping()
+	 * @generated
+	 */
+	public static final int XML_ATTRIBUTE_MAPPING = 11;
+
+	/**
 	 * The feature id for the '<em><b>Persistent Attribute</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1528,6 +1415,16 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_NULL_ATTRIBUTE_MAPPING_FEATURE_COUNT = XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlBasic <em>Xml Basic</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlBasic
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlBasic()
+	 * @generated
+	 */
+	public static final int XML_BASIC = 13;
 
 	/**
 	 * The feature id for the '<em><b>Persistent Attribute</b></em>' containment reference.
@@ -1609,6 +1506,16 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_BASIC_FEATURE_COUNT = XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlId <em>Xml Id</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlId
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlId()
+	 * @generated
+	 */
+	public static final int XML_ID = 14;
 
 	/**
 	 * The feature id for the '<em><b>Persistent Attribute</b></em>' containment reference.
@@ -2068,6 +1975,16 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML_FEATURE_COUNT = 2;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMapping <em>Xml Multi Relationship Mapping</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMapping
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlMultiRelationshipMapping()
+	 * @generated
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING = 21;
+
+	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2147,6 +2064,16 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT = JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlOneToMany <em>Xml One To Many</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlOneToMany
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlOneToMany()
+	 * @generated
+	 */
+	public static final int XML_ONE_TO_MANY = 22;
 
 	/**
 	 * The feature id for the '<em><b>Persistent Attribute</b></em>' containment reference.
@@ -2257,6 +2184,16 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_MANY_FEATURE_COUNT = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlManyToMany <em>Xml Many To Many</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlManyToMany
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlManyToMany()
+	 * @generated
+	 */
+	public static final int XML_MANY_TO_MANY = 23;
+
+	/**
 	 * The feature id for the '<em><b>Persistent Attribute</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2365,13 +2302,23 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY_FEATURE_COUNT = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Mapping Key</b></em>' attribute.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute <em>Xml Persistent Attribute</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlPersistentAttribute()
+	 * @generated
+	 */
+	public static final int XML_PERSISTENT_ATTRIBUTE = 24;
+
+	/**
+	 * The feature id for the '<em><b>Mapping</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PERSISTENT_ATTRIBUTE__MAPPING_KEY = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 0;
+	public static final int XML_PERSISTENT_ATTRIBUTE__MAPPING = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2390,6 +2337,16 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_PERSISTENT_ATTRIBUTE_FEATURE_COUNT = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadataInternal <em>Persistence Unit Metadata Internal</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadataInternal
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitMetadataInternal()
+	 * @generated
+	 */
+	public static final int PERSISTENCE_UNIT_METADATA_INTERNAL = 25;
 
 	/**
 	 * The feature id for the '<em><b>Xml Mapping Metadata Complete For Xml</b></em>' attribute.
@@ -2455,6 +2412,16 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_METADATA_INTERNAL_FEATURE_COUNT = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 6;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadata
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitMetadata()
+	 * @generated
+	 */
+	public static final int PERSISTENCE_UNIT_METADATA = 26;
+
+	/**
 	 * The feature id for the '<em><b>Xml Mapping Metadata Complete</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2482,6 +2449,16 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_METADATA_FEATURE_COUNT = JpaCorePackage.IXML_EOBJECT_FEATURE_COUNT + 2;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadataForXml <em>Persistence Unit Metadata For Xml</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadataForXml
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitMetadataForXml()
+	 * @generated
+	 */
+	public static final int PERSISTENCE_UNIT_METADATA_FOR_XML = 27;
+
+	/**
 	 * The feature id for the '<em><b>Xml Mapping Metadata Complete For Xml</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2507,6 +2484,16 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int PERSISTENCE_UNIT_METADATA_FOR_XML_FEATURE_COUNT = JpaCorePackage.IXML_EOBJECT_FEATURE_COUNT + 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaultsInternal <em>Persistence Unit Defaults Internal</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaultsInternal
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitDefaultsInternal()
+	 * @generated
+	 */
+	public static final int PERSISTENCE_UNIT_DEFAULTS_INTERNAL = 28;
 
 	/**
 	 * The feature id for the '<em><b>Schema</b></em>' attribute.
@@ -2626,6 +2613,16 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_DEFAULTS_INTERNAL_FEATURE_COUNT = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 12;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaults
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitDefaults()
+	 * @generated
+	 */
+	public static final int PERSISTENCE_UNIT_DEFAULTS = 29;
+
+	/**
 	 * The feature id for the '<em><b>Schema</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2669,6 +2666,16 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int PERSISTENCE_UNIT_DEFAULTS_FEATURE_COUNT = JpaCorePackage.IXML_EOBJECT_FEATURE_COUNT + 4;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaultsForXml <em>Persistence Unit Defaults For Xml</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaultsForXml
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitDefaultsForXml()
+	 * @generated
+	 */
+	public static final int PERSISTENCE_UNIT_DEFAULTS_FOR_XML = 30;
 
 	/**
 	 * The feature id for the '<em><b>Schema For Xml</b></em>' attribute.
@@ -5434,6 +5441,27 @@ public class OrmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass xmlMappedSuperclassEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlEntityInternalEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlEntityForXmlEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass xmlEntityEClass = null;
 
 	/**
@@ -5456,13 +5484,6 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlNullAttributeMappingEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass xmlPersistentAttributeEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -5540,6 +5561,13 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlManyToManyEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlPersistentAttributeEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -5771,27 +5799,6 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlQueryHintEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass xmlMappedSuperclassEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass xmlEntityInternalEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass xmlEntityForXmlEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -6121,6 +6128,19 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal#getSequenceGenerators <em>Sequence Generators</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Sequence Generators</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal#getSequenceGenerators()
+	 * @see #getEntityMappingsInternal()
+	 * @generated
+	 */
+	public EReference getEntityMappingsInternal_SequenceGenerators() {
+		return (EReference) entityMappingsInternalEClass.getEStructuralFeatures().get(16);
+	}
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal#getTableGenerators <em>Table Generators</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6157,19 +6177,6 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getEntityMappingsInternal_NamedNativeQueries() {
 		return (EReference) entityMappingsInternalEClass.getEStructuralFeatures().get(19);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal#getSequenceGenerators <em>Sequence Generators</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Sequence Generators</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal#getSequenceGenerators()
-	 * @see #getEntityMappingsInternal()
-	 * @generated
-	 */
-	public EReference getEntityMappingsInternal_SequenceGenerators() {
-		return (EReference) entityMappingsInternalEClass.getEStructuralFeatures().get(16);
 	}
 
 	/**
@@ -6429,6 +6436,68 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Mapped Superclass</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass
+	 * @generated
+	 */
+	public EClass getXmlMappedSuperclass() {
+		return xmlMappedSuperclassEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal <em>Xml Entity Internal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Entity Internal</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal
+	 * @generated
+	 */
+	public EClass getXmlEntityInternal() {
+		return xmlEntityInternalEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml <em>Xml Entity For Xml</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Entity For Xml</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml
+	 * @generated
+	 */
+	public EClass getXmlEntityForXml() {
+		return xmlEntityForXmlEClass;
+	}
+
+	/**
+	 * Returns the meta object for the reference '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getTableForXml <em>Table For Xml</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Table For Xml</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getTableForXml()
+	 * @see #getXmlEntityForXml()
+	 * @generated
+	 */
+	public EReference getXmlEntityForXml_TableForXml() {
+		return (EReference) xmlEntityForXmlEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * Returns the meta object for the reference '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getDiscriminatorColumnForXml <em>Discriminator Column For Xml</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Discriminator Column For Xml</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getDiscriminatorColumnForXml()
+	 * @see #getXmlEntityForXml()
+	 * @generated
+	 */
+	public EReference getXmlEntityForXml_DiscriminatorColumnForXml() {
+		return (EReference) xmlEntityForXmlEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntity <em>Xml Entity</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6526,31 +6595,6 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EClass getXmlNullAttributeMapping() {
 		return xmlNullAttributeMappingEClass;
-	}
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute <em>Xml Persistent Attribute</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Persistent Attribute</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute
-	 * @generated
-	 */
-	public EClass getXmlPersistentAttribute() {
-		return xmlPersistentAttributeEClass;
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute#getName()
-	 * @see #getXmlPersistentAttribute()
-	 * @generated
-	 */
-	public EAttribute getXmlPersistentAttribute_Name() {
-		return (EAttribute) xmlPersistentAttributeEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -6709,6 +6753,31 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EClass getXmlManyToMany() {
 		return xmlManyToManyEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute <em>Xml Persistent Attribute</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Persistent Attribute</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute
+	 * @generated
+	 */
+	public EClass getXmlPersistentAttribute() {
+		return xmlPersistentAttributeEClass;
+	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute#getName()
+	 * @see #getXmlPersistentAttribute()
+	 * @generated
+	 */
+	public EAttribute getXmlPersistentAttribute_Name() {
+		return (EAttribute) xmlPersistentAttributeEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -7613,68 +7682,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Mapped Superclass</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass
-	 * @generated
-	 */
-	public EClass getXmlMappedSuperclass() {
-		return xmlMappedSuperclassEClass;
-	}
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal <em>Xml Entity Internal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Entity Internal</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal
-	 * @generated
-	 */
-	public EClass getXmlEntityInternal() {
-		return xmlEntityInternalEClass;
-	}
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml <em>Xml Entity For Xml</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Entity For Xml</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml
-	 * @generated
-	 */
-	public EClass getXmlEntityForXml() {
-		return xmlEntityForXmlEClass;
-	}
-
-	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getTableForXml <em>Table For Xml</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Table For Xml</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getTableForXml()
-	 * @see #getXmlEntityForXml()
-	 * @generated
-	 */
-	public EReference getXmlEntityForXml_TableForXml() {
-		return (EReference) xmlEntityForXmlEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getDiscriminatorColumnForXml <em>Discriminator Column For Xml</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Discriminator Column For Xml</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getDiscriminatorColumnForXml()
-	 * @see #getXmlEntityForXml()
-	 * @generated
-	 */
-	public EReference getXmlEntityForXml_DiscriminatorColumnForXml() {
-		return (EReference) xmlEntityForXmlEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -8296,6 +8303,14 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference ENTITY_MAPPINGS_INTERNAL__PERSISTENT_TYPES = eINSTANCE.getEntityMappingsInternal_PersistentTypes();
 
 		/**
+		 * The meta object literal for the '<em><b>Sequence Generators</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference ENTITY_MAPPINGS_INTERNAL__SEQUENCE_GENERATORS = eINSTANCE.getEntityMappingsInternal_SequenceGenerators();
+
+		/**
 		 * The meta object literal for the '<em><b>Table Generators</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -8318,14 +8333,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference ENTITY_MAPPINGS_INTERNAL__NAMED_NATIVE_QUERIES = eINSTANCE.getEntityMappingsInternal_NamedNativeQueries();
-
-		/**
-		 * The meta object literal for the '<em><b>Sequence Generators</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference ENTITY_MAPPINGS_INTERNAL__SEQUENCE_GENERATORS = eINSTANCE.getEntityMappingsInternal_SequenceGenerators();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.EntityMappings <em>Entity Mappings</em>}' class.
@@ -8496,6 +8503,52 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference XML_PERSISTENT_TYPE__VIRTUAL_PERSISTENT_ATTRIBUTES = eINSTANCE.getXmlPersistentType_VirtualPersistentAttributes();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass
+		 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlMappedSuperclass()
+		 * @generated
+		 */
+		public static final EClass XML_MAPPED_SUPERCLASS = eINSTANCE.getXmlMappedSuperclass();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal <em>Xml Entity Internal</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal
+		 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntityInternal()
+		 * @generated
+		 */
+		public static final EClass XML_ENTITY_INTERNAL = eINSTANCE.getXmlEntityInternal();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml <em>Xml Entity For Xml</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml
+		 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntityForXml()
+		 * @generated
+		 */
+		public static final EClass XML_ENTITY_FOR_XML = eINSTANCE.getXmlEntityForXml();
+
+		/**
+		 * The meta object literal for the '<em><b>Table For Xml</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ENTITY_FOR_XML__TABLE_FOR_XML = eINSTANCE.getXmlEntityForXml_TableForXml();
+
+		/**
+		 * The meta object literal for the '<em><b>Discriminator Column For Xml</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ENTITY_FOR_XML__DISCRIMINATOR_COLUMN_FOR_XML = eINSTANCE.getXmlEntityForXml_DiscriminatorColumnForXml();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntity <em>Xml Entity</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -8566,24 +8619,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_NULL_ATTRIBUTE_MAPPING = eINSTANCE.getXmlNullAttributeMapping();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute <em>Xml Persistent Attribute</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute
-		 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlPersistentAttribute()
-		 * @generated
-		 */
-		public static final EClass XML_PERSISTENT_ATTRIBUTE = eINSTANCE.getXmlPersistentAttribute();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_PERSISTENT_ATTRIBUTE__NAME = eINSTANCE.getXmlPersistentAttribute_Name();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlBasic <em>Xml Basic</em>}' class.
@@ -8710,6 +8745,24 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MANY_TO_MANY = eINSTANCE.getXmlManyToMany();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute <em>Xml Persistent Attribute</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute
+		 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlPersistentAttribute()
+		 * @generated
+		 */
+		public static final EClass XML_PERSISTENT_ATTRIBUTE = eINSTANCE.getXmlPersistentAttribute();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_PERSISTENT_ATTRIBUTE__NAME = eINSTANCE.getXmlPersistentAttribute_Name();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadataInternal <em>Persistence Unit Metadata Internal</em>}' class.
@@ -9344,51 +9397,5 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_QUERY_HINT = eINSTANCE.getXmlQueryHint();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass
-		 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlMappedSuperclass()
-		 * @generated
-		 */
-		public static final EClass XML_MAPPED_SUPERCLASS = eINSTANCE.getXmlMappedSuperclass();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal <em>Xml Entity Internal</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal
-		 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntityInternal()
-		 * @generated
-		 */
-		public static final EClass XML_ENTITY_INTERNAL = eINSTANCE.getXmlEntityInternal();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml <em>Xml Entity For Xml</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml
-		 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntityForXml()
-		 * @generated
-		 */
-		public static final EClass XML_ENTITY_FOR_XML = eINSTANCE.getXmlEntityForXml();
-
-		/**
-		 * The meta object literal for the '<em><b>Table For Xml</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ENTITY_FOR_XML__TABLE_FOR_XML = eINSTANCE.getXmlEntityForXml_TableForXml();
-
-		/**
-		 * The meta object literal for the '<em><b>Discriminator Column For Xml</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ENTITY_FOR_XML__DISCRIMINATOR_COLUMN_FOR_XML = eINSTANCE.getXmlEntityForXml_DiscriminatorColumnForXml();
 	}
-} //JpaCoreXmlPackage
+} //OrmPackage

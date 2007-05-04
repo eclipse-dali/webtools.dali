@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -157,16 +157,6 @@ public class JpaCorePackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int JPA_MODEL_FEATURE_COUNT = JPA_EOBJECT_FEATURE_COUNT + 1;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.XmlEObject <em>Xml EObject</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.XmlEObject
-	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getXmlEObject()
-	 * @generated
-	 */
-	public static final int XML_EOBJECT = 13;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.IJpaProject <em>IJpa Project</em>}' class.
@@ -394,6 +384,16 @@ public class JpaCorePackage extends EPackageImpl
 	public static final int IXML_EOBJECT_FEATURE_COUNT = IJPA_EOBJECT_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.XmlEObject <em>Xml EObject</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.XmlEObject
+	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getXmlEObject()
+	 * @generated
+	 */
+	public static final int XML_EOBJECT = 13;
+
+	/**
 	 * The number of structural features of the '<em>Xml EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -562,13 +562,13 @@ public class JpaCorePackage extends EPackageImpl
 	public static final int IPERSISTENT_ATTRIBUTE = 19;
 
 	/**
-	 * The feature id for the '<em><b>Mapping Key</b></em>' attribute.
+	 * The feature id for the '<em><b>Mapping</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IPERSISTENT_ATTRIBUTE__MAPPING_KEY = IJPA_CONTENT_NODE_FEATURE_COUNT + 0;
+	public static final int IPERSISTENT_ATTRIBUTE__MAPPING = IJPA_CONTENT_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>IPersistent Attribute</em>' class.
@@ -641,13 +641,6 @@ public class JpaCorePackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass xmlEObjectEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass iJpaProjectEClass = null;
 
 	/**
@@ -705,6 +698,13 @@ public class JpaCorePackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass iXmlEObjectEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlEObjectEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -906,18 +906,6 @@ public class JpaCorePackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.XmlEObject <em>Xml EObject</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml EObject</em>'.
-	 * @see org.eclipse.jpt.core.internal.XmlEObject
-	 * @generated
-	 */
-	public EClass getXmlEObject() {
-		return xmlEObjectEClass;
-	}
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.IJpaProject <em>IJpa Project</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1104,6 +1092,18 @@ public class JpaCorePackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.XmlEObject <em>Xml EObject</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml EObject</em>'.
+	 * @see org.eclipse.jpt.core.internal.XmlEObject
+	 * @generated
+	 */
+	public EClass getXmlEObject() {
+		return xmlEObjectEClass;
+	}
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.IJpaContentNode <em>IJpa Content Node</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1228,16 +1228,16 @@ public class JpaCorePackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.IPersistentAttribute#getMappingKey <em>Mapping Key</em>}'.
+	 * Returns the meta object for the reference '{@link org.eclipse.jpt.core.internal.IPersistentAttribute#getMapping <em>Mapping</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Mapping Key</em>'.
-	 * @see org.eclipse.jpt.core.internal.IPersistentAttribute#getMappingKey()
+	 * @return the meta object for the reference '<em>Mapping</em>'.
+	 * @see org.eclipse.jpt.core.internal.IPersistentAttribute#getMapping()
 	 * @see #getIPersistentAttribute()
 	 * @generated
 	 */
-	public EAttribute getIPersistentAttribute_MappingKey() {
-		return (EAttribute) iPersistentAttributeEClass.getEStructuralFeatures().get(0);
+	public EReference getIPersistentAttribute_Mapping() {
+		return (EReference) iPersistentAttributeEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1325,7 +1325,7 @@ public class JpaCorePackage extends EPackageImpl
 		createEAttribute(iTypeMappingEClass, ITYPE_MAPPING__TABLE_NAME);
 		nullTypeMappingEClass = createEClass(NULL_TYPE_MAPPING);
 		iPersistentAttributeEClass = createEClass(IPERSISTENT_ATTRIBUTE);
-		createEAttribute(iPersistentAttributeEClass, IPERSISTENT_ATTRIBUTE__MAPPING_KEY);
+		createEReference(iPersistentAttributeEClass, IPERSISTENT_ATTRIBUTE__MAPPING);
 		iAttributeMappingEClass = createEClass(IATTRIBUTE_MAPPING);
 		// Create enums
 		accessTypeEEnum = createEEnum(ACCESS_TYPE);
@@ -1435,10 +1435,11 @@ public class JpaCorePackage extends EPackageImpl
 		addEOperation(iTypeMappingEClass, this.getIPersistentType(), "getPersistentType", 1, 1);
 		initEClass(nullTypeMappingEClass, NullTypeMapping.class, "NullTypeMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iPersistentAttributeEClass, IPersistentAttribute.class, "IPersistentAttribute", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getIPersistentAttribute_MappingKey(), ecorePackage.getEString(), "mappingKey", null, 1, 1, IPersistentAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		addEOperation(iPersistentAttributeEClass, this.getIAttributeMapping(), "getMapping", 1, 1);
+		initEReference(getIPersistentAttribute_Mapping(), this.getIAttributeMapping(), null, "mapping", null, 1, 1, IPersistentAttribute.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		addEOperation(iPersistentAttributeEClass, this.getITypeMapping(), "typeMapping", 1, 1);
-		addEOperation(iPersistentAttributeEClass, theEcorePackage.getEString(), "getName", 0, 1);
+		addEOperation(iPersistentAttributeEClass, theEcorePackage.getEString(), "getName", 1, 1);
+		addEOperation(iPersistentAttributeEClass, ecorePackage.getEString(), "mappingKey", 1, 1);
+		addEOperation(iPersistentAttributeEClass, ecorePackage.getEString(), "defaultMappingKey", 1, 1);
 		initEClass(iAttributeMappingEClass, IAttributeMapping.class, "IAttributeMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		addEOperation(iAttributeMappingEClass, this.getIPersistentAttribute(), "getPersistentAttribute", 1, 1);
 		addEOperation(iAttributeMappingEClass, theEcorePackage.getEBoolean(), "isDefault", 0, 1);
@@ -1511,16 +1512,6 @@ public class JpaCorePackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass JPA_EOBJECT = eINSTANCE.getJpaEObject();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.XmlEObject <em>Xml EObject</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.XmlEObject
-		 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getXmlEObject()
-		 * @generated
-		 */
-		public static final EClass XML_EOBJECT = eINSTANCE.getXmlEObject();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.IJpaProject <em>IJpa Project</em>}' class.
@@ -1661,6 +1652,16 @@ public class JpaCorePackage extends EPackageImpl
 		public static final EClass IXML_EOBJECT = eINSTANCE.getIXmlEObject();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.XmlEObject <em>Xml EObject</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.XmlEObject
+		 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getXmlEObject()
+		 * @generated
+		 */
+		public static final EClass XML_EOBJECT = eINSTANCE.getXmlEObject();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.IJpaContentNode <em>IJpa Content Node</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1753,12 +1754,12 @@ public class JpaCorePackage extends EPackageImpl
 		public static final EClass IPERSISTENT_ATTRIBUTE = eINSTANCE.getIPersistentAttribute();
 
 		/**
-		 * The meta object literal for the '<em><b>Mapping Key</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Mapping</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute IPERSISTENT_ATTRIBUTE__MAPPING_KEY = eINSTANCE.getIPersistentAttribute_MappingKey();
+		public static final EReference IPERSISTENT_ATTRIBUTE__MAPPING = eINSTANCE.getIPersistentAttribute_Mapping();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.IAttributeMapping <em>IAttribute Mapping</em>}' class.
@@ -1780,4 +1781,4 @@ public class JpaCorePackage extends EPackageImpl
 		 */
 		public static final EEnum ACCESS_TYPE = eINSTANCE.getAccessType();
 	}
-}
+} //JpaCorePackage

@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.XmlEObject;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -43,26 +44,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 public class XmlPersistentAttribute extends XmlEObject
 	implements IPersistentAttribute
 {
-	/**
-	 * The default value of the '{@link #getMappingKey() <em>Mapping Key</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMappingKey()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String MAPPING_KEY_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getMappingKey() <em>Mapping Key</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMappingKey()
-	 * @generated
-	 * @ordered
-	 */
-	protected String mappingKey = MAPPING_KEY_EDEFAULT;
-
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -85,11 +66,6 @@ public class XmlPersistentAttribute extends XmlEObject
 
 	private Collection<IXmlAttributeMappingProvider> attributeMappingProviders;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
 	protected XmlPersistentAttribute() {
 		super();
 		this.attributeMappingProviders = buildAttributeMappingProviders();
@@ -110,11 +86,6 @@ public class XmlPersistentAttribute extends XmlEObject
 		return collection;
 	}
 
-	protected XmlPersistentAttribute(String theMappingKey) {
-		this();
-		mappingKey = theMappingKey;
-	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -123,45 +94,6 @@ public class XmlPersistentAttribute extends XmlEObject
 	@Override
 	protected EClass eStaticClass() {
 		return OrmPackage.Literals.XML_PERSISTENT_ATTRIBUTE;
-	}
-
-	/* @see IJpaContentNode#getId() */
-	public Object getId() {
-		return IXmlContentNodes.PERSISTENT_ATTRIBUTE_ID;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Mapping Key</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Mapping Key</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Mapping Key</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIPersistentAttribute_MappingKey()
-	 * @model required="true" changeable="false"
-	 * @generated
-	 */
-	public String getMappingKey() {
-		return mappingKey;
-	}
-
-	public void setMappingKey(String newMappingKey, boolean default_) {
-		if (mappingKey == newMappingKey) {
-			return;
-		}
-		XmlAttributeMapping oldMapping = getMapping();
-		XmlPersistentType persistentType = oldMapping.getPersistentType();
-		persistentType.changeMapping(oldMapping, newMappingKey);
-		setMappingKeyInternal(newMappingKey);
-	}
-
-	protected void setMappingKeyInternal(String newMappingKey) {
-		String oldMappingKey = mappingKey;
-		mappingKey = newMappingKey;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENT_ATTRIBUTE__MAPPING_KEY, oldMappingKey, mappingKey));
 	}
 
 	/**
@@ -197,40 +129,6 @@ public class XmlPersistentAttribute extends XmlEObject
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENT_ATTRIBUTE__NAME, oldName, name));
 	}
 
-	public Iterator candidateMappingKeys() {
-		Collection mappingKeys = new ArrayList();
-		for (IXmlAttributeMappingProvider provider : attributeMappingProviders()) {
-			mappingKeys.add(provider.key());
-		}
-		return mappingKeys.iterator();
-	}
-
-	public Collection<IXmlAttributeMappingProvider> attributeMappingProviders() {
-		return this.attributeMappingProviders;
-	}
-
-	public XmlAttributeMapping getMapping() {
-		return (XmlAttributeMapping) eContainer();
-	}
-
-	public XmlPersistentType persistentType() {
-		return getMapping().getPersistentType();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation" required="true"
-	 * @generated NOT
-	 */
-	public ITypeMapping typeMapping() {
-		return persistentType().getMapping();
-	}
-
-	public boolean isVirtual() {
-		return persistentType().getVirtualPersistentAttributes().contains(this);
-	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -239,8 +137,6 @@ public class XmlPersistentAttribute extends XmlEObject
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case OrmPackage.XML_PERSISTENT_ATTRIBUTE__MAPPING_KEY :
-				return getMappingKey();
 			case OrmPackage.XML_PERSISTENT_ATTRIBUTE__NAME :
 				return getName();
 		}
@@ -285,8 +181,6 @@ public class XmlPersistentAttribute extends XmlEObject
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case OrmPackage.XML_PERSISTENT_ATTRIBUTE__MAPPING_KEY :
-				return MAPPING_KEY_EDEFAULT == null ? mappingKey != null : !MAPPING_KEY_EDEFAULT.equals(mappingKey);
 			case OrmPackage.XML_PERSISTENT_ATTRIBUTE__NAME :
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
@@ -308,8 +202,8 @@ public class XmlPersistentAttribute extends XmlEObject
 		}
 		if (baseClass == IPersistentAttribute.class) {
 			switch (derivedFeatureID) {
-				case OrmPackage.XML_PERSISTENT_ATTRIBUTE__MAPPING_KEY :
-					return JpaCorePackage.IPERSISTENT_ATTRIBUTE__MAPPING_KEY;
+				case OrmPackage.XML_PERSISTENT_ATTRIBUTE__MAPPING :
+					return JpaCorePackage.IPERSISTENT_ATTRIBUTE__MAPPING;
 				default :
 					return -1;
 			}
@@ -332,8 +226,8 @@ public class XmlPersistentAttribute extends XmlEObject
 		}
 		if (baseClass == IPersistentAttribute.class) {
 			switch (baseFeatureID) {
-				case JpaCorePackage.IPERSISTENT_ATTRIBUTE__MAPPING_KEY :
-					return OrmPackage.XML_PERSISTENT_ATTRIBUTE__MAPPING_KEY;
+				case JpaCorePackage.IPERSISTENT_ATTRIBUTE__MAPPING :
+					return OrmPackage.XML_PERSISTENT_ATTRIBUTE__MAPPING;
 				default :
 					return -1;
 			}
@@ -351,12 +245,59 @@ public class XmlPersistentAttribute extends XmlEObject
 		if (eIsProxy())
 			return super.toString();
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (mappingKey: ");
-		result.append(mappingKey);
-		result.append(", name: ");
+		result.append(" (name: ");
 		result.append(name);
 		result.append(')');
 		return result.toString();
+	}
+
+	public XmlAttributeMapping getMapping() {
+		return (XmlAttributeMapping) eContainer();
+	}
+
+	public String mappingKey() {
+		return this.getMapping().getKey();
+	}
+
+	public String defaultMappingKey() {
+		return null;
+	}
+
+	public void setSpecifiedMappingKey(String newKey) {
+		String oldKey = this.mappingKey();
+		if (newKey == oldKey) {
+			return;
+		}
+		this.persistentType().changeMapping(this.getMapping(), newKey);
+	}
+
+	public Object getId() {
+		return IXmlContentNodes.PERSISTENT_ATTRIBUTE_ID;
+	}
+
+	public Iterator<String> candidateMappingKeys() {
+		return new TransformationIterator<IXmlAttributeMappingProvider, String>(this.attributeMappingProviders.iterator()) {
+			@Override
+			protected String transform(IXmlAttributeMappingProvider provider) {
+				return provider.key();
+			}
+		};
+	}
+
+	public Collection<IXmlAttributeMappingProvider> attributeMappingProviders() {
+		return this.attributeMappingProviders;
+	}
+
+	public XmlPersistentType persistentType() {
+		return getMapping().getPersistentType();
+	}
+
+	public ITypeMapping typeMapping() {
+		return persistentType().getMapping();
+	}
+
+	public boolean isVirtual() {
+		return persistentType().getVirtualPersistentAttributes().contains(this);
 	}
 
 	public Attribute getAttribute() {
@@ -373,26 +314,28 @@ public class XmlPersistentAttribute extends XmlEObject
 		return null;
 	}
 
-	public String defaultKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public String primaryKeyColumnName() {
 		return getMapping().primaryKeyColumnName();
 	}
 
 	@Override
 	public ITextRange getTextRange() {
-		if (isVirtual()) {
-			return persistentType().getAttributesTextRange();
-		}
-		else {
-			return getMapping().getTextRange();
-		}
+		return (this.isVirtual()) ? this.persistentType().getAttributesTextRange() : this.getMapping().getTextRange();
 	}
 
 	public ITextRange getNameTextRange() {
 		return getMapping().getNameTextRange();
+	}
+
+	public boolean isOverridableAttribute() {
+		return this.getMapping().isOverridableAttributeMapping();
+	}
+
+	public boolean isOverridableAssociation() {
+		return this.getMapping().isOverridableAssociationMapping();
+	}
+
+	public boolean isIdAttribute() {
+		return this.getMapping().isIdMapping();
 	}
 }

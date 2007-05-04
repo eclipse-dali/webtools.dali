@@ -729,6 +729,16 @@ public class JavaId extends JavaAttributeMapping implements IId
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaTableGenerator(getAttribute());
 	}
 
+	@Override
+	public boolean isOverridableAttributeMapping() {
+		return true;
+	}
+
+	@Override
+	public boolean isIdMapping() {
+		return true;
+	}
+
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter buildTemporalValueAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(TEMPORAL_ADAPTER, JPA.TEMPORAL__VALUE, false);

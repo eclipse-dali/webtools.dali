@@ -503,19 +503,24 @@ public class JavaEmbedded extends JavaAttributeMapping implements IEmbedded
 	}
 
 	public Iterator<String> allOverridableAttributeNames() {
-		if (embeddable() != null) {
-			return new TransformationIterator(new FilteringIterator(embeddable().getPersistentType().attributes()) {
-				protected boolean accept(Object o) {
-					String key = ((IPersistentAttribute) o).getMappingKey();
-					return key == IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY || key == IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
-				}
-			}) {
-				protected Object transform(Object next) {
-					return ((IPersistentAttribute) next).getName();
-				}
-			};
+		return new TransformationIterator<IPersistentAttribute, String>(this.allOverridableAttributes()) {
+			@Override
+			protected String transform(IPersistentAttribute attribute) {
+				return attribute.getName();
+			}
+		};
+	}
+
+	public Iterator<IPersistentAttribute> allOverridableAttributes() {
+		if (this.embeddable() == null) {
+			return EmptyIterator.instance();
 		}
-		return EmptyIterator.instance();
+		return new FilteringIterator<IPersistentAttribute>(this.embeddable().getPersistentType().attributes()) {
+			@Override
+			protected boolean accept(Object o) {
+				return ((IPersistentAttribute) o).isOverridableAttribute();
+			}
+		};
 	}
 
 	public IAttributeOverride createAttributeOverride(int index) {

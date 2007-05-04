@@ -902,6 +902,11 @@ public class JavaBasic extends JavaAttributeMapping implements IBasic
 		}
 	}
 
+	@Override
+	public boolean isOverridableAttributeMapping() {
+		return true;
+	}
+
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter buildTemporalValueAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(TEMPORAL_ADAPTER, JPA.TEMPORAL__VALUE, false);

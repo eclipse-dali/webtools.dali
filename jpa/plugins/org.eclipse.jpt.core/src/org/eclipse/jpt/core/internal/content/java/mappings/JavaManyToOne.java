@@ -82,4 +82,9 @@ public class JavaManyToOne extends JavaSingleRelationshipMapping
 	public String getKey() {
 		return IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
+
+	@Override
+	public boolean isOverridableAssociationMapping() {
+		return true;
+	}
 }

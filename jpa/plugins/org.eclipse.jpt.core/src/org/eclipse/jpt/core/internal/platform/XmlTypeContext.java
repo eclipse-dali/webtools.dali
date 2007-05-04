@@ -265,7 +265,7 @@ public abstract class XmlTypeContext extends BaseContext
 		XmlAttributeMapping xmlAttributeMapping = null;
 		String mappingKey;
 		if (persistentType.getMapping().isXmlMetadataComplete()) {
-			mappingKey = javaAttribute.defaultKey();
+			mappingKey = javaAttribute.defaultMappingKey();
 		}
 		else {
 			mappingKey = javaAttribute.getMapping().getKey();

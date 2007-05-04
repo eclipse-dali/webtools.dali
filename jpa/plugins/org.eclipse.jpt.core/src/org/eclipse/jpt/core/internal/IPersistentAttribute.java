@@ -17,12 +17,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
  * A representation of the model object '<em><b>IPersistent Attribute</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.IPersistentAttribute#getMappingKey <em>Mapping Key</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIPersistentAttribute()
  * @model kind="class" interface="true" abstract="true"
@@ -30,28 +24,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
  */
 public interface IPersistentAttribute extends IJpaContentNode
 {
-	/**
-	 * Returns the value of the '<em><b>Mapping Key</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Mapping Key</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Mapping Key</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIPersistentAttribute_MappingKey()
-	 * @model required="true" changeable="false"
-	 * @generated
-	 */
-	String getMappingKey();
-
-	void setMappingKey(String value, boolean default_);
-
-	/**
-	 * Returns an iterator on all mapping keys that are available for this attribute.
-	 */
-	Iterator candidateMappingKeys();
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -71,22 +43,66 @@ public interface IPersistentAttribute extends IJpaContentNode
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model kind="operation"
+	 * @model kind="operation" required="true"
 	 * @generated
 	 */
 	String getName();
 
 	/**
-	 * Return the java Attribute that this IPersistentAttribute is associated with
-	 * @return
+	 * <!-- begin-user-doc -->
+	 * Return the key for the attribute's mapping.
+	 * The key may be for either the "specified" mapping or, if the "specified"
+	 * mapping is missing, the "default" mapping.
+	 * <!-- end-user-doc -->
+	 * @model required="true"
+	 * @generated
+	 */
+	String mappingKey();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Return the key for the attribute's "default" mapping.
+	 * <!-- end-user-doc -->
+	 * @model required="true"
+	 * @generated
+	 */
+	String defaultMappingKey();
+
+	/**
+	 * Clients should call this method to set the attribute's mapping.
+	 * Passing in a null key will cause the "specified" mapping to be
+	 * cleared and the attribute's mapping to be its "default" mapping.
+	 */
+	void setSpecifiedMappingKey(String key);
+
+	/**
+	 * Return all the attribute's mapping keys.
+	 */
+	Iterator<String> candidateMappingKeys();
+
+	/**
+	 * Return the attribute's Java attribute.
 	 */
 	Attribute getAttribute();
-
-	String defaultKey();
 
 	/**
 	 * If the attribute is mapped to a primary key column, return the
 	 * column's name, otherwise return null.
 	 */
 	String primaryKeyColumnName();
+
+	/**
+	 * Return whether the attribute's "attribute" mapping can be overridden.
+	 */
+	boolean isOverridableAttribute();
+
+	/**
+	 * Return whether the attribute's "association" mapping can be overridden.
+	 */
+	boolean isOverridableAssociation();
+
+	/**
+	 * Return whether the attribute's "attribute" mapping is for an ID.
+	 */
+	boolean isIdAttribute();
 }

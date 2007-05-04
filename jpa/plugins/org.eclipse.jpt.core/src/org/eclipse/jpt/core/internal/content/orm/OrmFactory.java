@@ -252,7 +252,7 @@ public class OrmFactory extends EFactoryImpl
 
 	public XmlNullAttributeMapping createXmlNullAttributeMapping() {
 		XmlNullAttributeMapping xmlNullAttributeMapping = createXmlNullAttributeMappingGen();
-		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute(null);
+		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute();
 		xmlNullAttributeMapping.setPersistentAttribute(persistentAttribute);
 		return xmlNullAttributeMapping;
 	}
@@ -264,11 +264,6 @@ public class OrmFactory extends EFactoryImpl
 	 */
 	public XmlPersistentAttribute createXmlPersistentAttribute() {
 		XmlPersistentAttribute xmlPersistentAttribute = new XmlPersistentAttribute();
-		return xmlPersistentAttribute;
-	}
-
-	public XmlPersistentAttribute createXmlPersistentAttribute(String mappingKey) {
-		XmlPersistentAttribute xmlPersistentAttribute = new XmlPersistentAttribute(mappingKey);
 		return xmlPersistentAttribute;
 	}
 
@@ -284,7 +279,7 @@ public class OrmFactory extends EFactoryImpl
 
 	public XmlBasic createXmlBasic() {
 		XmlBasic basic = createXmlBasicGen();
-		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute();
 		basic.setPersistentAttribute(persistentAttribute);
 		return basic;
 	}
@@ -301,7 +296,7 @@ public class OrmFactory extends EFactoryImpl
 
 	public XmlId createXmlId() {
 		XmlId id = createXmlIdGen();
-		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute();
 		id.setPersistentAttribute(persistentAttribute);
 		return id;
 	}
@@ -318,7 +313,7 @@ public class OrmFactory extends EFactoryImpl
 
 	public XmlTransient createXmlTransient() {
 		XmlTransient xmlTransient = createXmlTransientGen();
-		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute();
 		xmlTransient.setPersistentAttribute(persistentAttribute);
 		return xmlTransient;
 	}
@@ -335,7 +330,7 @@ public class OrmFactory extends EFactoryImpl
 
 	public XmlEmbedded createXmlEmbedded() {
 		XmlEmbedded xmlEmbedded = createXmlEmbeddedGen();
-		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute();
 		xmlEmbedded.setPersistentAttribute(persistentAttribute);
 		return xmlEmbedded;
 	}
@@ -352,7 +347,7 @@ public class OrmFactory extends EFactoryImpl
 
 	public XmlEmbeddedId createXmlEmbeddedId() {
 		XmlEmbeddedId xmlEmbeddedId = createXmlEmbeddedIdGen();
-		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute();
 		xmlEmbeddedId.setPersistentAttribute(persistentAttribute);
 		return xmlEmbeddedId;
 	}
@@ -369,7 +364,7 @@ public class OrmFactory extends EFactoryImpl
 
 	public XmlVersion createXmlVersion() {
 		XmlVersion xmlVersion = createXmlVersionGen();
-		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute();
 		xmlVersion.setPersistentAttribute(persistentAttribute);
 		return xmlVersion;
 	}
@@ -386,7 +381,7 @@ public class OrmFactory extends EFactoryImpl
 
 	public XmlOneToMany createXmlOneToMany() {
 		XmlOneToMany oneToMany = createXmlOneToManyGen();
-		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute();
 		oneToMany.setPersistentAttribute(persistentAttribute);
 		return oneToMany;
 	}
@@ -403,7 +398,7 @@ public class OrmFactory extends EFactoryImpl
 
 	public XmlManyToMany createXmlManyToMany() {
 		XmlManyToMany manyToMany = createXmlManyToManyGen();
-		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute();
 		manyToMany.setPersistentAttribute(persistentAttribute);
 		return manyToMany;
 	}
@@ -481,7 +476,7 @@ public class OrmFactory extends EFactoryImpl
 
 	public XmlManyToOne createXmlManyToOne() {
 		XmlManyToOne xmlManyToOne = createXmlManyToOneGen();
-		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute();
 		xmlManyToOne.setPersistentAttribute(persistentAttribute);
 		return xmlManyToOne;
 	}
@@ -498,7 +493,7 @@ public class OrmFactory extends EFactoryImpl
 
 	public XmlOneToOne createXmlOneToOne() {
 		XmlOneToOne xmlOneToOne = createXmlOneToOneGen();
-		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		XmlPersistentAttribute persistentAttribute = createXmlPersistentAttribute();
 		xmlOneToOne.setPersistentAttribute(persistentAttribute);
 		return xmlOneToOne;
 	}

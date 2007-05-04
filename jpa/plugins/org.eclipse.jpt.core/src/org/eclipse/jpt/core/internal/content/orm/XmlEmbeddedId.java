@@ -57,4 +57,9 @@ public class XmlEmbeddedId extends XmlAttributeMapping implements IEmbeddedId
 	public String getKey() {
 		return IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;
 	}
-} // XmlEmbeddedId
+
+	@Override
+	public boolean isIdMapping() {
+		return true;
+	}
+}

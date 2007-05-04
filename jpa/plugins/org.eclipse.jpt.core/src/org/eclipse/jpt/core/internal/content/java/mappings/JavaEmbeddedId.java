@@ -56,4 +56,9 @@ public class JavaEmbeddedId extends JavaAttributeMapping implements IEmbeddedId
 	public String getKey() {
 		return IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;
 	}
+
+	@Override
+	public boolean isIdMapping() {
+		return true;
+	}
 }

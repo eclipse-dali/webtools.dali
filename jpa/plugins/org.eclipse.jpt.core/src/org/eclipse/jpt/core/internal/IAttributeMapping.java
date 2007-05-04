@@ -53,4 +53,19 @@ public interface IAttributeMapping extends IJpaSourceObject
 	 * Return the mapping for the attribute mapping's attribute's type.
 	 */
 	ITypeMapping typeMapping();
+
+	/**
+	 * Return whether the "attribute" mapping can be overridden.
+	 */
+	boolean isOverridableAttributeMapping();
+
+	/**
+	 * Return whether the "association" mapping can be overridden.
+	 */
+	boolean isOverridableAssociationMapping();
+
+	/**
+	 * Return whether the "attribute" mapping is for an ID.
+	 */
+	boolean isIdMapping();
 }

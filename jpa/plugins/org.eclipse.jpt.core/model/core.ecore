@@ -89,11 +89,13 @@
   <eClassifiers xsi:type="ecore:EClass" name="NullTypeMapping" eSuperTypes="#//JpaEObject #//ITypeMapping #//IJpaSourceObject"/>
   <eClassifiers xsi:type="ecore:EClass" name="IPersistentAttribute" abstract="true"
       interface="true" eSuperTypes="#//IJpaContentNode">
-    <eOperations name="getMapping" lowerBound="1" eType="#//IAttributeMapping"/>
     <eOperations name="typeMapping" lowerBound="1" eType="#//ITypeMapping"/>
-    <eOperations name="getName" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mappingKey" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" changeable="false"/>
+    <eOperations name="getName" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eOperations name="mappingKey" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eOperations name="defaultMappingKey" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" lowerBound="1"
+        eType="#//IAttributeMapping" changeable="false" volatile="true" transient="true"
+        derived="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IAttributeMapping" abstract="true" interface="true"
       eSuperTypes="#//IJpaSourceObject">

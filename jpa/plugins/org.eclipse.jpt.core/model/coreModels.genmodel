@@ -79,10 +79,11 @@
     </genClasses>
     <genClasses ecoreClass="core.ecore#//NullTypeMapping"/>
     <genClasses ecoreClass="core.ecore#//IPersistentAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//IPersistentAttribute/mappingKey"/>
-      <genOperations ecoreOperation="core.ecore#//IPersistentAttribute/getMapping"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference core.ecore#//IPersistentAttribute/mapping"/>
       <genOperations ecoreOperation="core.ecore#//IPersistentAttribute/typeMapping"/>
       <genOperations ecoreOperation="core.ecore#//IPersistentAttribute/getName"/>
+      <genOperations ecoreOperation="core.ecore#//IPersistentAttribute/mappingKey"/>
+      <genOperations ecoreOperation="core.ecore#//IPersistentAttribute/defaultMappingKey"/>
     </genClasses>
     <genClasses ecoreClass="core.ecore#//IAttributeMapping">
       <genOperations ecoreOperation="core.ecore#//IAttributeMapping/getPersistentAttribute"/>

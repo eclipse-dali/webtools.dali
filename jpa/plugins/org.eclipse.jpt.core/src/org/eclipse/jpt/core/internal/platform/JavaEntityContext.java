@@ -1,18 +1,18 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
- * Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAssociationOverride;
@@ -275,14 +275,16 @@ public class JavaEntityContext extends JavaTypeContext
 	}
 	
 	private boolean entityHasNoId() {
-		for (Iterator<IPersistentAttribute> stream = getEntity().getPersistentType().allAttributes(); stream.hasNext(); ) {
-			IPersistentAttribute persistentAttribute = stream.next();
-			String mappingKey = persistentAttribute.getMappingKey();
-			if (mappingKey == IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY
-					|| mappingKey == IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
-				return false;
+		return ! this.entityHasId();
+	}
+
+	private boolean entityHasId() {
+		for (Iterator<IPersistentAttribute> stream = this.getEntity().getPersistentType().allAttributes(); stream.hasNext(); ) {
+			if (stream.next().isIdAttribute()) {
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
+
 }
