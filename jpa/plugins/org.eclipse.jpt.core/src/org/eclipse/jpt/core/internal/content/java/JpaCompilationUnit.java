@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.content.java;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -37,6 +37,8 @@ import org.eclipse.jpt.core.internal.JpaFile;
 import org.eclipse.jpt.core.internal.jdtutility.ASTNodeTextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AttributeAnnotationTools;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
+import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -288,7 +290,7 @@ public class JpaCompilationUnit extends JavaEObject
 	}
 
 	public ITextRange getTextRange() {
-		return new ASTNodeTextRange(JDTTools.createASTRoot(compilationUnit));
+		return new ASTNodeTextRange(this.astRoot());
 	}
 
 	public Object getId() {
@@ -301,27 +303,27 @@ public class JpaCompilationUnit extends JavaEObject
 	}
 
 	public void setFile(IFile file) {
-		compilationUnit = JavaCore.createCompilationUnitFrom(file);
+		this.compilationUnit = JavaCore.createCompilationUnitFrom(file);
 		try {
-			compilationUnit.open(null);
+			this.compilationUnit.open(null);
 		}
 		catch (JavaModelException jme) {
 			// do nothing - we just won't have a primary type in this case
 		}
-		updatePersistentTypes();
+		this.synchronizePersistentTypes();
 	}
 
-	public JavaPersistentType addJavaPersistentType(IType primaryType) {
-		return addJavaPersistentType(createJavaPersistentType(), primaryType);
+	public JavaPersistentType addJavaPersistentType(IType primaryType, CompilationUnit astRoot) {
+		return this.addJavaPersistentType(this.createJavaPersistentType(), primaryType, astRoot);
 	}
 
 	public JavaPersistentType createJavaPersistentType() {
 		return JpaJavaFactory.eINSTANCE.createJavaPersistentType();
 	}
 
-	private JavaPersistentType addJavaPersistentType(JavaPersistentType javaPersistentType, IType primaryType) {
-		getTypes().add(javaPersistentType);
-		javaPersistentType.setJdtType(primaryType);
+	private JavaPersistentType addJavaPersistentType(JavaPersistentType javaPersistentType, IType primaryType, CompilationUnit astRoot) {
+		this.getTypes().add(javaPersistentType);
+		javaPersistentType.setJdtType(primaryType, astRoot);
 		return javaPersistentType;
 	}
 
@@ -365,30 +367,31 @@ public class JpaCompilationUnit extends JavaEObject
 		if (!delta.getElement().equals(this.compilationUnit)) {
 			return;
 		}
-		updatePersistentTypes();
+		this.synchronizePersistentTypes();
 	}
 
-	private void updatePersistentTypes() {
-		List<JavaPersistentType> persistentTypesToRemove = new ArrayList<JavaPersistentType>(getTypes());
-		IType[] iTypes = compilationUnitTypes();
+	private void synchronizePersistentTypes() {
+		CompilationUnit astRoot = this.astRoot();
+		List<JavaPersistentType> persistentTypesToRemove = new ArrayList<JavaPersistentType>(this.getTypes());
+		IType[] iTypes = this.compilationUnitTypes();
 		for (IType iType : iTypes) {
-			JavaPersistentType persistentType = persistentTypeFor(iType);
+			JavaPersistentType persistentType = this.persistentTypeFor(iType);
 			if (persistentType == null) {
 				if (AttributeAnnotationTools.typeIsPersistable(iType)) {
-					persistentType = addJavaPersistentType(iType);
+					persistentType = this.addJavaPersistentType(iType, astRoot);
 				}
 			}
 			if (persistentType != null) {
 				persistentTypesToRemove.remove(persistentType);
 				if (AttributeAnnotationTools.typeIsPersistable(iType)) {
-					persistentType.updateFromJava();
+					persistentType.updateFromJava(astRoot);
 				}
 				else {
-					getTypes().remove(persistentType);
+					this.getTypes().remove(persistentType);
 				}
 			}
 		}
-		getTypes().removeAll(persistentTypesToRemove);
+		this.getTypes().removeAll(persistentTypesToRemove);
 	}
 
 	private JavaPersistentType persistentTypeFor(IType iType) {
@@ -411,15 +414,15 @@ public class JpaCompilationUnit extends JavaEObject
 		}
 	}
 
-	public List<String> candidateValuesFor(int pos) {
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter) {
 		CompilationUnit astRoot = this.astRoot();
 		for (JavaPersistentType persistentType : this.getTypes()) {
-			List<String> list = persistentType.candidateValuesFor(pos, astRoot);
-			if (list != null) {
-				return list;
+			Iterator<String> values = persistentType.candidateValuesFor(pos, filter, astRoot);
+			if (values != null) {
+				return values;
 			}
 		}
-		return Collections.emptyList();
+		return EmptyIterator.instance();
 	}
 
 	public CompilationUnit astRoot() {

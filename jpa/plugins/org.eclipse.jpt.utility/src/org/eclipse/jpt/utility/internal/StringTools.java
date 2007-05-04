@@ -12,6 +12,9 @@ package org.eclipse.jpt.utility.internal;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.Iterator;
+
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
  * Convenience methods related to the java.lang.String class.
@@ -20,6 +23,10 @@ public final class StringTools {
 
 	/** carriage return */
 	public static final String CR = System.getProperty("line.separator");
+
+	/** double quote */
+	public static final char QUOTE = '"';
+
 
 
 	// ********** padding/truncating **********
@@ -766,6 +773,242 @@ public final class StringTools {
 	}
 
 
+	// ********** wrapping/quoting **********
+
+	/**
+	 * Wrap the specified string with double quotes.
+	 */
+	public static String quote(String string) {
+		return wrap(string, QUOTE);
+	}
+
+	/**
+	 * Wrap the specified string with double quotes.
+	 */
+	public static void quoteOn(String string, Writer writer) {
+		wrapOn(string, QUOTE, writer);
+	}
+
+	/**
+	 * Wrap the specified string with double quotes.
+	 */
+	public static void quoteOn(String string, StringBuffer sb) {
+		wrapOn(string, QUOTE, sb);
+	}
+
+	/**
+	 * Wrap each of the specified strings with double quotes.
+	 */
+	public static Iterator<String> quote(Iterator<String> strings) {
+		return new TransformationIterator<String, String>(strings) {
+			@Override
+			protected String transform(String string) {
+				return StringTools.quote(string);
+			}
+		};
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static String wrap(String string, char wrap) {
+		return new String(wrap(string.toCharArray(), wrap));
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static void wrapOn(String string, char wrap, Writer writer) {
+		wrapOn(string.toCharArray(), wrap, writer);
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static void wrapOn(String string, char wrap, StringBuffer sb) {
+		wrapOn(string.toCharArray(), wrap, sb);
+	}
+
+	/**
+	 * Wrap each of the specified strings with the specified wrap; i.e. put a
+	 * copy of the wrap at the front and back of the resulting string.
+	 */
+	public static Iterator<String> wrap(Iterator<String> strings, final char wrap) {
+		return new TransformationIterator<String, String>(strings) {
+			@Override
+			protected String transform(String string) {
+				return StringTools.wrap(string, wrap);
+			}
+		};
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static String wrap(String string, String wrap) {
+		return new String(wrap(string.toCharArray(), wrap.toCharArray()));
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static void wrapOn(String string, String wrap, Writer writer) {
+		wrapOn(string.toCharArray(), wrap.toCharArray(), writer);
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static void wrapOn(String string, String wrap, StringBuffer sb) {
+		wrapOn(string.toCharArray(), wrap.toCharArray(), sb);
+	}
+
+	/**
+	 * Wrap each of the specified strings with the specified wrap; i.e. put a
+	 * copy of the wrap at the front and back of the resulting string.
+	 */
+	public static Iterator<String> wrap(Iterator<String> strings, final String wrap) {
+		return new TransformationIterator<String, String>(strings) {
+			@Override
+			protected String transform(String string) {
+				return StringTools.wrap(string, wrap);
+			}
+		};
+	}
+
+	/**
+	 * Wrap the specified string with double quotes.
+	 */
+	public static char[] quote(char[] string) {
+		return wrap(string, QUOTE);
+	}
+
+	/**
+	 * Wrap the specified string with double quotes.
+	 */
+	public static void quoteOn(char[] string, Writer writer) {
+		wrapOn(string, QUOTE, writer);
+	}
+
+	/**
+	 * Wrap the specified string with double quotes.
+	 */
+	public static void quoteOn(char[] string, StringBuffer sb) {
+		wrapOn(string, QUOTE, sb);
+	}
+
+	/**
+	 * Wrap each of the specified strings with double quotes.
+	 */
+	public static Iterator<char[]> quoteCharArrays(Iterator<char[]> strings) {
+		return new TransformationIterator<char[], char[]>(strings) {
+			@Override
+			protected char[] transform(char[] string) {
+				return StringTools.quote(string);
+			}
+		};
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static char[] wrap(char[] string, char wrap) {
+		int len = string.length;
+		char[] result = new char[len+2];
+		result[0] = wrap;
+		System.arraycopy(string, 0, result, 1, len);
+		result[len+1] = wrap;
+		return result;
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static void wrapOn(char[] string, char wrap, Writer writer) {
+		writeCharOn(wrap, writer);
+		writeStringOn(string, writer);
+		writeCharOn(wrap, writer);
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static void wrapOn(char[] string, char wrap, StringBuffer sb) {
+		sb.append(wrap);
+		sb.append(string);
+		sb.append(wrap);
+	}
+
+	/**
+	 * Wrap each of the specified strings with the specified wrap; i.e. put a
+	 * copy of the wrap at the front and back of the resulting string.
+	 */
+	public static Iterator<char[]> wrapCharArrays(Iterator<char[]> strings, final char wrap) {
+		return new TransformationIterator<char[], char[]>(strings) {
+			@Override
+			protected char[] transform(char[] string) {
+				return StringTools.wrap(string, wrap);
+			}
+		};
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static char[] wrap(char[] string, char[] wrap) {
+		int stringLength = string.length;
+		int wrapLength = wrap.length;
+		char[] result = new char[stringLength+(2*wrapLength)];
+		System.arraycopy(wrap, 0, result, 0, wrapLength);
+		System.arraycopy(string, 0, result, wrapLength, stringLength);
+		System.arraycopy(wrap, 0, result, stringLength+wrapLength, wrapLength);
+		return result;
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static void wrapOn(char[] string, char[] wrap, Writer writer) {
+		writeStringOn(wrap, writer);
+		writeStringOn(string, writer);
+		writeStringOn(wrap, writer);
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static void wrapOn(char[] string, char[] wrap, StringBuffer sb) {
+		sb.append(wrap);
+		sb.append(string);
+		sb.append(wrap);
+	}
+
+	/**
+	 * Wrap each of the specified strings with the specified wrap; i.e. put a
+	 * copy of the wrap at the front and back of the resulting string.
+	 */
+	public static Iterator<char[]> wrapCharArrays(Iterator<char[]> strings, final char[] wrap) {
+		return new TransformationIterator<char[], char[]>(strings) {
+			@Override
+			protected char[] transform(char[] string) {
+				return StringTools.wrap(string, wrap);
+			}
+		};
+	}
+
+
 	// ********** removing characters **********
 
 	/**
@@ -997,7 +1240,7 @@ public final class StringTools {
 	 * String#commonPrefixLength(String, int)
 	 */
 	public static int commonPrefixLength(String s1, String s2, int max) {
-		return commonPrefixLength(s1.toCharArray(), s2.toCharArray());
+		return commonPrefixLength(s1.toCharArray(), s2.toCharArray(), max);
 	}
 
 	/**
@@ -1374,9 +1617,51 @@ public final class StringTools {
 		if ((s1 == null) || (s2 == null)) {
 			return false;  // one is null but the other is not
 		}
-		return new String(s1).equalsIgnoreCase(new String(s2));
+		if (s1.length != s2.length) {
+			return false;
+		}
+		for (int i = s1.length; i-- > 0; ) {
+			if ( ! charactersAreEqualIgnoreCase(s1[i], s2[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Return whether the specified string starts with the specified prefix,
+	 * ignoring case.
+	 */
+	public static boolean stringStartsWithIgnoreCase(char[] string, char[] prefix) {
+		if (string.length < prefix.length) {
+			return false;
+		}
+		for (int i = prefix.length; i-- > 0; ) {
+			if ( ! charactersAreEqualIgnoreCase(string[i], prefix[i])) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
+	/**
+	 * Return whether the specified string starts with the specified prefix,
+	 * ignoring case.
+	 */
+	public static boolean stringStartsWithIgnoreCase(String string, String prefix) {
+		return string.regionMatches(true, 0, prefix, 0, prefix.length());
+	}
+
+	/**
+	 * Return whether the specified characters are are equal, ignoring case.
+	 * @see java.lang.String#regionMatches(boolean, int, String, int, int)
+	 */
+	public static boolean charactersAreEqualIgnoreCase(char c1, char c2) {
+		//  something about the Georgian alphabet requires us to check lower case also
+		return (c1 == c2)
+				|| (Character.toUpperCase(c1) == Character.toUpperCase(c2))
+				|| (Character.toLowerCase(c1) == Character.toLowerCase(c2));
+	}
 
 	// ********** conversions **********
 

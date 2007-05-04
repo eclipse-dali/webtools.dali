@@ -1,11 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
- * Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
 import java.util.Collection;
@@ -14,12 +15,14 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.internal.emf.resource.EMF2DOMAdapter;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
@@ -76,7 +79,7 @@ public abstract class XmlEObject extends JpaEObject implements IXmlEObject
 	}
 
 	@Override
-	public EList eAdapters() {
+	public EList<Adapter> eAdapters() {
 		if (this.eAdapters == null) {
 			this.eAdapters = new XmlEAdapterList(this);
 		}
@@ -148,26 +151,11 @@ public abstract class XmlEObject extends JpaEObject implements IXmlEObject
 	}
 
 	public ITextRange getTextRange() {
-		return getTextRange(node);
+		return buildTextRange(node);
 	}
 
-	protected ITextRange getTextRange(final IDOMNode aNode) {
-		return new ITextRange() {
-			public int getLength() {
-				if (aNode.getNodeType() == Node.ELEMENT_NODE) {
-					return ((IDOMElement) aNode).getStartEndOffset() - aNode.getStartOffset();
-				}
-				return aNode.getLength();
-			}
-
-			public int getLineNumber() {
-				return aNode.getStructuredDocument().getLineOfOffset(getOffset()) + 1;
-			}
-
-			public int getOffset() {
-				return aNode.getStartOffset();
-			}
-		};
+	protected ITextRange buildTextRange(IDOMNode domNode) {
+		return new DOMNodeTextRange(domNode);
 	}
 
 	protected boolean xmlFeatureIsSignificant(int featureId) {
@@ -213,5 +201,47 @@ public abstract class XmlEObject extends JpaEObject implements IXmlEObject
 	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
 	// when you override this method, don't forget to include:
 	//	super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
+	}
+	/**
+	 * Implementation of ITextRange that adapts a IDOMNode.
+	 */
+	private static class DOMNodeTextRange implements ITextRange
+	{
+		private final IDOMNode node;
+
+		DOMNodeTextRange(IDOMNode node) {
+			super();
+			this.node = node;
+		}
+
+		public int getOffset() {
+			return this.node.getStartOffset();
+		}
+
+		public int getLength() {
+			if (this.node.getNodeType() == Node.ELEMENT_NODE) {
+				return ((IDOMElement) this.node).getStartEndOffset() - this.node.getStartOffset();
+			}
+			return this.node.getLength();
+		}
+
+		public int getLineNumber() {
+			return this.node.getStructuredDocument().getLineOfOffset(getOffset()) + 1;
+		}
+
+		public boolean includes(int index) {
+			return (this.getOffset() <= index) && (index <= this.end());
+		}
+
+		private int end() {
+			return this.getOffset() + this.getLength() - 1;
+		}
+
+		@Override
+		public String toString() {
+			String start = String.valueOf(this.getOffset());
+			String end = String.valueOf(this.getOffset() + this.getLength() - 1);
+			return StringTools.buildToStringFor(this, start + ", " + end);
+		}
 	}
 }

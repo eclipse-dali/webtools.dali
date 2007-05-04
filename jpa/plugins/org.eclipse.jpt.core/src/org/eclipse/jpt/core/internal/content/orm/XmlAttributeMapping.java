@@ -352,10 +352,22 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	public ITextRange getNameTextRange() {
 		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.NAME);
 		if (nameNode != null) {
-			return getTextRange(nameNode);
+			return buildTextRange(nameNode);
 		}
 		else {
 			return getTextRange();
 		}
+	}
+
+	public boolean isOverridableAttributeMapping() {
+		return false;
+	}
+
+	public boolean isOverridableAssociationMapping() {
+		return false;
+	}
+
+	public boolean isIdMapping() {
+		return false;
 	}
 }

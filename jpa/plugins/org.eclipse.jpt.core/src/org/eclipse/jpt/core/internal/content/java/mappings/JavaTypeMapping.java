@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IPersistentType;
@@ -19,7 +20,10 @@ import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaEObject;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -89,38 +93,12 @@ public abstract class JavaTypeMapping extends JavaEObject
 		return JpaJavaMappingsPackage.Literals.JAVA_TYPE_MAPPING;
 	}
 
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getITypeMapping_Name()
-	 * @model changeable="false" volatile="true" derived="true"
-	 * @generated NOT
-	 */
 	public String getName() {
-		return getType().getName();
+		return this.getType().getName();
 	}
 
-	/**
-	 * Returns the value of the '<em><b>Table Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Table Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Table Name</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getITypeMapping_TableName()
-	 * @model changeable="false" volatile="true" derived="true"
-	 * @generated NOT
-	 */
 	public String getTableName() {
-		return getType().getName();
+		return this.getType().getName();
 	}
 
 	/**
@@ -135,14 +113,8 @@ public abstract class JavaTypeMapping extends JavaEObject
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation" required="true"
-	 * @generated NOT
-	 */
 	public IPersistentType getPersistentType() {
-		return (IPersistentType) eContainer();
+		return (IPersistentType) this.eContainer();
 	}
 
 	/**
@@ -230,7 +202,7 @@ public abstract class JavaTypeMapping extends JavaEObject
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-		// do nothing
+	// do nothing
 	}
 
 	public Type getType() {
@@ -238,8 +210,8 @@ public abstract class JavaTypeMapping extends JavaEObject
 	}
 
 	public ITextRange getTextRange() {
-		ITextRange textRange = type.annotationTextRange(declarationAnnotationAdapter());
-		return (textRange == null) ? getPersistentType().getTextRange() : textRange;
+		ITextRange textRange = this.type.annotationTextRange(this.declarationAnnotationAdapter());
+		return (textRange != null) ? textRange : this.getPersistentType().getTextRange();
 	}
 
 	public Table primaryDbTable() {
@@ -250,12 +222,35 @@ public abstract class JavaTypeMapping extends JavaEObject
 		return null;
 	}
 
-	/**
-	 * @see ITypeMapping#attributeMappingKeyAllowed(String)
-	 * 
-	 * Default implementation:  override where needed
-	 */
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
 		return true;
+	}
+
+	public Iterator<ITable> associatedTables() {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<String> associatedTableNamesIncludingInherited() {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<ITable> associatedTablesIncludingInherited() {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<String> overridableAssociationNames() {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<String> overridableAttributeNames() {
+		return EmptyIterator.instance();
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		return false;
 	}
 }

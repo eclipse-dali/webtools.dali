@@ -1,11 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. All rights reserved. This
- *  program and the accompanying materials are made available under the terms of
- *  the Eclipse Public License v1.0 which accompanies this distribution, and is
- *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
 import java.util.Set;
@@ -869,7 +870,7 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 			return owner.getTextRange();
 		}
 		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.NAME);
-		return (nameNode == null) ? getTextRange() : getTextRange(nameNode);
+		return (nameNode == null) ? getTextRange() : buildTextRange(nameNode);
 	}
 
 	public ITextRange getSchemaTextRange() {
@@ -877,7 +878,7 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 			return owner.getTextRange();
 		}
 		IDOMNode schemaNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.SCHEMA);
-		return (schemaNode == null) ? getTextRange() : getTextRange(schemaNode);
+		return (schemaNode == null) ? getTextRange() : buildTextRange(schemaNode);
 	}
 
 	@Override

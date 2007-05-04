@@ -1,15 +1,16 @@
 /*******************************************************************************
- *  Copyright (c) 2005, 2007 Oracle. All rights reserved.  This program and 
- *  the accompanying materials are made available under the terms of the 
- *  Eclipse Public License v1.0 which accompanies this distribution, and is 
- *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.validation;
 
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.SimpleTextRange;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -18,20 +19,7 @@ public class JpaValidationMessages
 {	
 	private static String[] DEFAULT_PARAMS = new String[0];
 	
-	private static ITextRange DEFAULT_TEXT_RANGE = 
-			new ITextRange() {
-				public int getLength() {
-					return 0;
-				}
-				
-				public int getLineNumber() {
-					return 0;
-				}
-				
-				public int getOffset() {
-					return 0;
-				}
-		};
+	private static ITextRange DEFAULT_TEXT_RANGE = new SimpleTextRange(0, 0, 0);
 	
 	public static IMessage buildMessage(
 			int severity, String messageId, Object targetObject) {

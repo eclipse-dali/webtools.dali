@@ -48,7 +48,7 @@ public class JavaEmbeddableProvider
 	}
 
 	public DeclarationAnnotationAdapter declarationAnnotationAdapter() {
-		return JavaEmbeddable.ANNOTATION_ADAPTER;
+		return JavaEmbeddable.DECLARATION_ANNOTATION_ADAPTER;
 	}
 
 }

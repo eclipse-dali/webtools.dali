@@ -406,6 +406,6 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 			return owner.getTextRange();
 		}
 		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
-		return (referencedColumnNameNode == null) ? getTextRange() : getTextRange(referencedColumnNameNode);
+		return (referencedColumnNameNode == null) ? getTextRange() : buildTextRange(referencedColumnNameNode);
 	}
 }

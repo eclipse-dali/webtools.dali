@@ -68,6 +68,7 @@ import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
+import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -602,10 +603,10 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		return result.toString();
 	}
 
-	public void setJdtType(IType iType) {
+	public void setJdtType(IType iType, CompilationUnit astRoot) {
 		this.type = new Type(iType);
-		this.setAccess(this.javaAccessType(this.getType().astRoot()));
-		this.createAndSetPersistentTypeMappingFromJava(this.javaTypeMappingKey());
+		this.setAccess(this.javaAccessType(astRoot));
+		this.createAndSetPersistentTypeMappingFromJava(this.javaTypeMappingKey(astRoot));
 	}
 
 	public JavaPersistentAttribute addJavaPersistentAttribute(IMember jdtMember) {
@@ -661,11 +662,10 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		return this.type.wraps(member);
 	}
 
-	protected void updateFromJava() {
-		CompilationUnit astRoot = this.getType().astRoot();
+	protected void updateFromJava(CompilationUnit astRoot) {
 		this.setAccess(this.javaAccessType(astRoot));
 		String jpaKey = this.getMapping().getKey();
-		String javaKey = this.javaTypeMappingKey();
+		String javaKey = this.javaTypeMappingKey(astRoot);
 		if (jpaKey != javaKey) {
 			this.createAndSetPersistentTypeMappingFromJava(javaKey);
 		}
@@ -718,8 +718,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		return AttributeAnnotationTools.persistablePropertyGetters(jdtType());
 	}
 
-	private String javaTypeMappingKey() {
-		CompilationUnit astRoot = this.type.astRoot();
+	private String javaTypeMappingKey(CompilationUnit astRoot) {
 		for (IJavaTypeMappingProvider provider : this.typeMappingProviders) {
 			if (this.type.containsAnnotation(provider.declarationAnnotationAdapter(), astRoot)) {
 				return provider.key();
@@ -756,13 +755,13 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		}
 	}
 
-	public List<String> candidateValuesFor(int pos, CompilationUnit astRoot) {
-		List<String> values = this.mapping.candidateValuesFor(pos, astRoot);
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> values = this.mapping.candidateValuesFor(pos, filter, astRoot);
 		if (values != null) {
 			return values;
 		}
 		for (JavaPersistentAttribute attribute : this.getAttributes()) {
-			values = attribute.candidateValuesFor(pos, astRoot);
+			values = attribute.candidateValuesFor(pos, filter, astRoot);
 			if (values != null) {
 				return values;
 			}

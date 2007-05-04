@@ -222,16 +222,27 @@
 		
 	</extension>
 	
+<!-- =================================================================================== -->
+<!-- Extension: Java Completion Proposal Computer                                        -->
+<!-- =================================================================================== -->
+	
 	<extension
 		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
-		id="Foo"
-		name="JPA Proposals">
+		id="JpaCompletionProposalComputer">
 		<javaCompletionProposalComputer 
 			class="org.eclipse.jpt.ui.internal.JpaCompletionProposalComputer"
-			categoryId="org.eclipse.jdt.ui.javaTypeProposalCategory">
+			categoryId="org.eclipse.jpt.ui.jpaProposalCategory">
 			<partition type="__dftl_partition_content_type"/>
 			<partition type="__java_string"/>
 		</javaCompletionProposalComputer>
+	</extension>
+
+	<extension
+		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
+		id="jpaProposalCategory"
+		name="%JpaProposalCategory">
+		<proposalCategory
+			icon="$nl$/icons/full/eview16/jpa_perspective.gif"/>
 	</extension>
 
 </plugin>

@@ -11,9 +11,7 @@ package org.eclipse.jpt.core.internal.content.java;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -41,6 +39,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaVersionProvider;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
+import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -65,26 +64,6 @@ public class JavaPersistentAttribute extends JavaEObject
 	implements IPersistentAttribute
 {
 	/**
-	 * The default value of the '{@link #getMappingKey() <em>Mapping Key</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMappingKey()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String MAPPING_KEY_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getMappingKey() <em>Mapping Key</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMappingKey()
-	 * @generated
-	 * @ordered
-	 */
-	protected String mappingKey = MAPPING_KEY_EDEFAULT;
-
-	/**
 	 * The cached value of the '{@link #getDefaultMapping() <em>Default Mapping</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -106,14 +85,14 @@ public class JavaPersistentAttribute extends JavaEObject
 
 	private Attribute attribute;
 
-	// TODO move these to a singleton?
+	// TODO move these to the platform
 	private IJavaAttributeMappingProvider[] attributeMappingProviders;
 
 	/**
 	 * the "null" attribute mapping is used when the attribute is neither
 	 * modified with a mapping annotation nor mapped by a "default" mapping
 	 */
-	// TODO move this to a singleton?
+	// TODO move this to the platform
 	private IJavaAttributeMappingProvider nullAttributeMappingProvider;
 
 	/**
@@ -130,6 +109,7 @@ public class JavaPersistentAttribute extends JavaEObject
 		this.attribute = attribute;
 		this.attributeMappingProviders = this.buildAttributeMappingProviders();
 		this.nullAttributeMappingProvider = this.buildNullAttributeMappingProvider();
+		this.setDefaultMapping(this.nullAttributeMappingProvider.buildMapping(this.attribute));
 	}
 
 	private IJavaAttributeMappingProvider[] buildAttributeMappingProviders() {
@@ -168,23 +148,6 @@ public class JavaPersistentAttribute extends JavaEObject
 	@Override
 	protected EClass eStaticClass() {
 		return JpaJavaPackage.Literals.JAVA_PERSISTENT_ATTRIBUTE;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Mapping Key</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Mapping Key</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Mapping Key</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.content.java.JpaJavaPackage#getIPersistentAttribute_MappingKey()
-	 * @model required="true" changeable="false"
-	 * @generated
-	 */
-	public String getMappingKey() {
-		return mappingKey;
 	}
 
 	/**
@@ -231,7 +194,7 @@ public class JavaPersistentAttribute extends JavaEObject
 	 * @see #getDefaultMapping()
 	 * @generated
 	 */
-	public void setDefaultMapping(IJavaAttributeMapping newDefaultMapping) {
+	public void setDefaultMappingGen(IJavaAttributeMapping newDefaultMapping) {
 		if (newDefaultMapping != defaultMapping) {
 			NotificationChain msgs = null;
 			if (defaultMapping != null)
@@ -244,6 +207,13 @@ public class JavaPersistentAttribute extends JavaEObject
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__DEFAULT_MAPPING, newDefaultMapping, newDefaultMapping));
+	}
+
+	/**
+	 * clients do not set the "default" mapping
+	 */
+	private void setDefaultMapping(IJavaAttributeMapping defaultMapping) {
+		this.setDefaultMappingGen(defaultMapping);
 	}
 
 	/**
@@ -285,6 +255,8 @@ public class JavaPersistentAttribute extends JavaEObject
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute#getSpecifiedMapping <em>Specified Mapping</em>}' containment reference.
 	 * <!-- begin-user-doc -->
+	 * clients do not set the "specified" mapping directly;
+	 * call #setMappingKey(String, boolean) instead
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Specified Mapping</em>' containment reference.
 	 * @see #getSpecifiedMapping()
@@ -306,56 +278,11 @@ public class JavaPersistentAttribute extends JavaEObject
 	}
 
 	/**
-	 * This should not be called when updating the persistence model
-	 * from the java model, it should only be called when going in the 
-	 * other direction.  This will update the java code appropriately
-	 * to the change in mapping in the persistence model.
+	 * clients do not set the "specified" mapping;
+	 * use #setMappingKey(String)
 	 */
-	public void setSpecifiedMapping(IJavaAttributeMapping newMapping) {
-		if (this.specifiedMapping != null) {
-			this.attribute.removeAnnotation(this.annotationAdapterForAttributeMappingKey(this.specifiedMapping.getKey()));
-		}
-		if (newMapping != null) {
-			this.attribute.newMarkerAnnotation(this.annotationAdapterForAttributeMappingKey(newMapping.getKey()));
-		}
-		this.setSpecifiedMappingGen(newMapping);
-	}
-
-	protected void setMappingKeyInternal(String newMappingKey) {
-		String oldMappingKey = mappingKey;
-		mappingKey = newMappingKey;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING_KEY, oldMappingKey, mappingKey));
-	}
-
-	/**
-	 * This should not be called when updating the persistence model
-	 * from the java model, it should only be called when going in the 
-	 * other direction.  This will update the java code appropriately
-	 * to the change in mapping in the persistence model.
-	 */
-	public void setMappingKey(String newMappingKey, boolean default_) {
-		if (default_) {
-			setSpecifiedMapping(null);
-			setMappingKeyInternal(newMappingKey);
-			return;
-		}
-		this.setSpecifiedMapping(this.buildMapping(newMappingKey));
-		if (this.specifiedMapping != null) {
-			this.specifiedMapping.initialize();
-		}
-		this.setMappingKeyInternal(newMappingKey);
-		//TODO need to support mapping morphing, copying common settings over
-		//to the new mapping.  This can't be done in the same was as XmlAttributeMapping
-		//since we don't know all the possible mapping types
-	}
-
-	public IJavaAttributeMapping getMapping() {
-		return getSpecifiedMapping() != null ? getSpecifiedMapping() : getDefaultMapping();
-	}
-
-	public String getName() {
-		return getAttribute().attributeName();
+	private void setSpecifiedMapping(IJavaAttributeMapping specifiedMapping) {
+		this.setSpecifiedMappingGen(specifiedMapping);
 	}
 
 	/**
@@ -382,8 +309,6 @@ public class JavaPersistentAttribute extends JavaEObject
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING_KEY :
-				return getMappingKey();
 			case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__DEFAULT_MAPPING :
 				return getDefaultMapping();
 			case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__SPECIFIED_MAPPING :
@@ -436,8 +361,6 @@ public class JavaPersistentAttribute extends JavaEObject
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING_KEY :
-				return MAPPING_KEY_EDEFAULT == null ? mappingKey != null : !MAPPING_KEY_EDEFAULT.equals(mappingKey);
 			case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__DEFAULT_MAPPING :
 				return defaultMapping != null;
 			case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__SPECIFIED_MAPPING :
@@ -461,8 +384,8 @@ public class JavaPersistentAttribute extends JavaEObject
 		}
 		if (baseClass == IPersistentAttribute.class) {
 			switch (derivedFeatureID) {
-				case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING_KEY :
-					return JpaCorePackage.IPERSISTENT_ATTRIBUTE__MAPPING_KEY;
+				case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING :
+					return JpaCorePackage.IPERSISTENT_ATTRIBUTE__MAPPING;
 				default :
 					return -1;
 			}
@@ -485,8 +408,8 @@ public class JavaPersistentAttribute extends JavaEObject
 		}
 		if (baseClass == IPersistentAttribute.class) {
 			switch (baseFeatureID) {
-				case JpaCorePackage.IPERSISTENT_ATTRIBUTE__MAPPING_KEY :
-					return JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING_KEY;
+				case JpaCorePackage.IPERSISTENT_ATTRIBUTE__MAPPING :
+					return JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING;
 				default :
 					return -1;
 			}
@@ -494,30 +417,74 @@ public class JavaPersistentAttribute extends JavaEObject
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy())
-			return super.toString();
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (mappingKey: ");
-		result.append(mappingKey);
-		result.append(')');
-		return result.toString();
-	}
-
 	public IPersistentType getPersistentType() {
 		return (IPersistentType) this.eContainer();
+	}
+
+	public IJavaAttributeMapping getMapping() {
+		return (this.specifiedMapping != null) ? this.specifiedMapping : this.defaultMapping;
+	}
+
+	public String getName() {
+		return this.attribute.attributeName();
 	}
 
 	public ITypeMapping typeMapping() {
 		return this.getPersistentType().getMapping();
 	}
 
+	public String mappingKey() {
+		return this.getMapping().getKey();
+	}
+
+	/**
+	 * return null if there is no "default" mapping for the attribute
+	 */
+	public String defaultMappingKey() {
+		return this.defaultMapping.getKey();
+	}
+
+	/**
+	 * return null if there is no "specified" mapping for the attribute
+	 */
+	public String specifiedMappingKey() {
+		return (this.specifiedMapping == null) ? null : this.specifiedMapping.getKey();
+	}
+
+	// TODO support morphing mappings, i.e. copying common settings over
+	// to the new mapping; this can't be done in the same was as XmlAttributeMapping
+	// since we don't know all the possible mapping types
+	public void setSpecifiedMappingKey(String newKey) {
+		String oldKey = this.specifiedMappingKey();
+		if (newKey == oldKey) {
+			return;
+		}
+		IJavaAttributeMapping old = this.getMapping();
+		if (newKey == null) {
+			// remove mapping annotation
+			this.setSpecifiedMapping(null);
+			this.attribute.removeAnnotation(this.declarationAnnotationAdapterForAttributeMappingKey(oldKey));
+		} else {
+			// add or replace mapping annotation
+			this.setSpecifiedMapping(this.attributeMappingProviderFor(newKey).buildMapping(this.attribute));
+			if (oldKey != null) {
+				this.attribute.removeAnnotation(this.declarationAnnotationAdapterForAttributeMappingKey(oldKey));
+			}
+			this.attribute.newMarkerAnnotation(this.declarationAnnotationAdapterForAttributeMappingKey(newKey));
+			this.specifiedMapping.initialize();
+		}
+		if (this.eNotificationRequired()) {
+			this.eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING, old, this.getMapping()));
+		}
+	}
+
+	private DeclarationAnnotationAdapter declarationAnnotationAdapterForAttributeMappingKey(String attributeMappingKey) {
+		return this.attributeMappingProviderFor(attributeMappingKey).declarationAnnotationAdapter();
+	}
+
+	/**
+	 * throw an exception if the provider is not found
+	 */
 	private IJavaAttributeMappingProvider attributeMappingProviderFor(String attributeMappingKey) {
 		for (IJavaAttributeMappingProvider provider : this.attributeMappingProviders) {
 			if (provider.key() == attributeMappingKey) {
@@ -527,14 +494,11 @@ public class JavaPersistentAttribute extends JavaEObject
 		throw new IllegalArgumentException("Unsupported attribute mapping key: " + attributeMappingKey);
 	}
 
-	private DeclarationAnnotationAdapter annotationAdapterForAttributeMappingKey(String attributeMappingKey) {
-		return this.attributeMappingProviderFor(attributeMappingKey).declarationAnnotationAdapter();
-	}
-
 	public Iterator<String> candidateMappingKeys() {
 		return new TransformationIterator<IJavaAttributeMappingProvider, String>(new ArrayIterator<IJavaAttributeMappingProvider>(this.attributeMappingProviders)) {
-			protected String transform(IJavaAttributeMappingProvider next) {
-				return next.key();
+			@Override
+			protected String transform(IJavaAttributeMappingProvider provider) {
+				return provider.key();
 			}
 		};
 	}
@@ -556,97 +520,96 @@ public class JavaPersistentAttribute extends JavaEObject
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-		String jpaKey = null;
-		if (this.specifiedMapping != null) {
-			jpaKey = this.specifiedMapping.getKey();
-		}
-		String javaKey = this.javaAttributeMappingKey(astRoot);
-		if (javaKey == null) { // no annotation
-			if (this.specifiedMapping != null) {
-				setSpecifiedMapping(null);
+		// synchronize the "specified" mapping with the Java source
+		String jpaKey = this.specifiedMappingKey();
+		IJavaAttributeMappingProvider javaProvider = this.javaAttributeMappingProvider(astRoot);
+		String javaKey = ((javaProvider == null) ? null : javaProvider.key());
+		if (javaKey != jpaKey) {
+			IJavaAttributeMapping old = this.getMapping();
+			if (javaKey == null) {
+				// no mapping annotation found in Java source
+				this.setSpecifiedMapping(null);
+			} else {
+				// the mapping has changed
+				this.setSpecifiedMapping(javaProvider.buildMapping(this.attribute));
+				this.specifiedMapping.initialize();
+			}
+			if (this.eNotificationRequired()) {
+				this.eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING, old, this.getMapping()));
 			}
 		}
-		else if (jpaKey != javaKey) {
-			this.createAndSetMappingFromJava(javaKey);
-		}
-		if (getMapping() != null) {
-			getMapping().updateFromJava(astRoot);
-		}
+		// once the "specified" mapping is in place, update it from Java;
+		// unless it is null, in which case we update the "default" mapping from Java
+		this.getMapping().updateFromJava(astRoot);
 	}
 
-	private void createAndSetMappingFromJava(String key) {
-		this.setSpecifiedMappingGen(this.buildMapping(key));
-		this.specifiedMapping.initialize();
-		this.setMappingKeyInternal(this.specifiedMapping.getKey());
-	}
-
-	//A null key means there is no "mapping" annotation on the attribute.
-	//In this case check the attributeMappingProviders for one that the defaultApplies
-	//and create the mapping.  If the key is not null then create the mapping
-	//based on the appropriate provider, otherwise return the a nullAttributeMapping
-	private IJavaAttributeMapping buildMapping(String key) {
-		if (key == null) {
-			return null;
-		}
-		for (IJavaAttributeMappingProvider provider : this.attributeMappingProviders) {
-			if (provider.key() == key) {
-				return provider.buildMapping(this.attribute);
-			}
-		}
-		return this.nullAttributeMappingProvider.buildMapping(this.attribute);
-	}
-
-	private String javaAttributeMappingKey(CompilationUnit astRoot) {
+	/**
+	 * return null if we can't find a mapping annotation on the attribute
+	 */
+	private IJavaAttributeMappingProvider javaAttributeMappingProvider(CompilationUnit astRoot) {
 		for (IJavaAttributeMappingProvider provider : this.attributeMappingProviders) {
 			if (this.attribute.containsAnnotation(provider.declarationAnnotationAdapter(), astRoot)) {
-				return provider.key();
+				return provider;
 			}
-		}
-		return null;
-	}
-
-	public String defaultKey() {
-		if (this.defaultMapping != null) {
-			return this.defaultMapping.getKey();
 		}
 		return null;
 	}
 
 	public String primaryKeyColumnName() {
-		if (getMapping() != null) {
-			return getMapping().primaryKeyColumnName();
-		}
-		return null;
+		IJavaAttributeMapping mapping = this.getMapping();
+		return (mapping == null) ? null : mapping.primaryKeyColumnName();
 	}
 
-	public boolean isAttributeMappingDefault() {
+	/**
+	 * the mapping might be "default", but it still might be a "null" mapping...
+	 */
+	public boolean mappingIsDefault() {
 		return this.specifiedMapping == null;
 	}
 
-	public List<String> candidateValuesFor(int pos, CompilationUnit astRoot) {
-		return Collections.emptyList();
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		return this.getMapping().candidateValuesFor(pos, filter, astRoot);
 	}
 
+	/**
+	 * check to see whether the "default" mapping has changed
+	 */
 	public void refreshDefaults(DefaultsContext defaultsContext) {
-		for (IJavaAttributeMappingProvider provider : this.attributeMappingProviders) {
-			if (provider.defaultApplies(this.attribute, defaultsContext)) {
-				if (getDefaultMapping() != null) {
-					if (getDefaultMapping().getKey() == provider.key()) {
-						return;
-					}
-				}
-				setDefaultMapping(provider.buildMapping(this.attribute));
-				getDefaultMapping().updateFromJava(getAttribute().astRoot());
-				if (getSpecifiedMapping() == null) {
-					setMappingKeyInternal(getDefaultMapping().getKey());
-				}
-				return;
-			}
+		IJavaAttributeMappingProvider defaultProvider = this.defaultAttributeMappingProvider(defaultsContext);
+		if (defaultProvider.key() == this.defaultMapping.getKey()) {
+			return;
 		}
-		setDefaultMapping(this.nullAttributeMappingProvider.buildMapping(this.attribute));
-		getDefaultMapping().updateFromJava(getAttribute().astRoot());
-		if (getSpecifiedMapping() == null) {
-			setMappingKeyInternal(getDefaultMapping().getKey());
+		// the "default" mapping has changed
+		IJavaAttributeMapping old = this.getMapping();
+		this.setDefaultMapping(defaultProvider.buildMapping(this.attribute));
+		this.defaultMapping.updateFromJava(this.attribute.astRoot());
+		if (this.eNotificationRequired()) {
+			this.eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING, old, this.getMapping()));
 		}
 	}
-} // JavaPersistentAttribute
+
+	/**
+	 * return the first(?) provider that can supply a "default" mapping for the attribute;
+	 * return the null provider if we can't find a provider
+	 */
+	private IJavaAttributeMappingProvider defaultAttributeMappingProvider(DefaultsContext defaultsContext) {
+		for (IJavaAttributeMappingProvider provider : this.attributeMappingProviders) {
+			if (provider.defaultApplies(this.attribute, defaultsContext)) {
+				return provider;
+			}
+		}
+		return this.nullAttributeMappingProvider;
+	}
+
+	public boolean isOverridableAttribute() {
+		return this.getMapping().isOverridableAttributeMapping();
+	}
+
+	public boolean isOverridableAssociation() {
+		return this.getMapping().isOverridableAssociationMapping();
+	}
+
+	public boolean isIdAttribute() {
+		return this.getMapping().isIdMapping();
+	}
+}

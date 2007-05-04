@@ -1,11 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
- * Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -445,7 +446,7 @@ public class XmlJoinColumn extends AbstractXmlColumn implements IJoinColumn
 			return owner.getTextRange();
 		}
 		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
-		return (referencedColumnNameNode == null) ? getTextRange() : getTextRange(referencedColumnNameNode);
+		return (referencedColumnNameNode == null) ? getTextRange() : buildTextRange(referencedColumnNameNode);
 	}
 
 	public void refreshDefaults(DefaultsContext defaultsContext) {

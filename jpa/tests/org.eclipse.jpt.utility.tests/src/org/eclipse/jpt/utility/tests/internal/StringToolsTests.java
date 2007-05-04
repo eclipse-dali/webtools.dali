@@ -226,6 +226,76 @@ public class StringToolsTests extends TestCase {
 		assertEquals(expected, sb.toString());
 	}
 
+	// ********** wrapping **********
+
+	public void testWrap() {
+		this.verifyWrap("Employee", "123", "123Employee123");
+		this.verifyWrap("123", "123", "123123123");
+		this.verifyWrap("", "123", "123123");
+	}
+
+	private void verifyWrap(String string, String wrap, String expectedString) {
+		assertEquals(expectedString, StringTools.wrap(string, wrap));
+	}
+
+	public void testWrapOnWriter() {
+		this.verifyWrapOnWriter("Employee", "123", "123Employee123");
+		this.verifyWrapOnWriter("123", "123", "123123123");
+		this.verifyWrapOnWriter("", "123", "123123");
+	}
+
+	private void verifyWrapOnWriter(String string, String wrap, String expectedString) {
+		Writer writer = new StringWriter();
+		StringTools.wrapOn(string, wrap, writer);
+		assertEquals(expectedString, writer.toString());
+	}
+
+	public void testWrapOnStringBuffer() {
+		this.verifyWrapOnStringBuffer("Employee", "123", "123Employee123");
+		this.verifyWrapOnStringBuffer("123", "123", "123123123");
+		this.verifyWrapOnStringBuffer("", "123", "123123");
+	}
+
+	private void verifyWrapOnStringBuffer(String string, String wrap, String expectedString) {
+		StringBuffer sb = new StringBuffer();
+		StringTools.wrapOn(string, wrap, sb);
+		assertEquals(expectedString, sb.toString());
+	}
+
+	public void testQuote() {
+		this.verifyQuote("Employee", "\"Employee\"");
+		this.verifyQuote("123", "\"123\"");
+		this.verifyQuote("", "\"\"");
+	}
+
+	private void verifyQuote(String string, String expectedString) {
+		assertEquals(expectedString, StringTools.quote(string));
+	}
+
+	public void testQuoteOnWriter() {
+		this.verifyQuoteOnWriter("Employee", "\"Employee\"");
+		this.verifyQuoteOnWriter("123", "\"123\"");
+		this.verifyQuoteOnWriter("", "\"\"");
+	}
+
+	private void verifyQuoteOnWriter(String string, String expectedString) {
+		Writer writer = new StringWriter();
+		StringTools.quoteOn(string, writer);
+		assertEquals(expectedString, writer.toString());
+	}
+
+	public void testQuoteOnStringBuffer() {
+		this.verifyQuoteOnStringBuffer("Employee", "\"Employee\"");
+		this.verifyQuoteOnStringBuffer("123", "\"123\"");
+		this.verifyQuoteOnStringBuffer("", "\"\"");
+	}
+
+	private void verifyQuoteOnStringBuffer(String string, String expectedString) {
+		StringBuffer sb = new StringBuffer();
+		StringTools.quoteOn(string, sb);
+		assertEquals(expectedString, sb.toString());
+	}
+
 	// ********** removing characters **********
 
 	public void testRemoveFirstOccurrence() {
@@ -335,6 +405,13 @@ public class StringToolsTests extends TestCase {
 		assertEquals(3, StringTools.commonPrefixLength("foo", "fooBBB"));
 		assertEquals(3, StringTools.commonPrefixLength("fooZZZ", "foo"));
 		assertEquals(3, StringTools.commonPrefixLength("foo", "foo"));
+	}
+
+	public void testCommonPrefixLengthMax() {
+		assertEquals(2, StringTools.commonPrefixLength("fooZZZ", "fooBBB", 2));
+		assertEquals(2, StringTools.commonPrefixLength("foo", "fooBBB", 2));
+		assertEquals(2, StringTools.commonPrefixLength("fooZZZ", "foo", 2));
+		assertEquals(2, StringTools.commonPrefixLength("foo", "foo", 2));
 	}
 
 	// ********** capitalization **********
@@ -525,7 +602,7 @@ public class StringToolsTests extends TestCase {
 
 	// ********** queries **********
 
-	public void testStringIsEmpty() {
+	public void testStringIsEmptyString() {
 		assertTrue(StringTools.stringIsEmpty((String) null));
 		assertTrue(StringTools.stringIsEmpty(""));
 		assertTrue(StringTools.stringIsEmpty("      "));
@@ -533,12 +610,70 @@ public class StringToolsTests extends TestCase {
 		assertTrue(StringTools.stringIsEmpty("      \t\t   " + StringTools.CR));
 	}
 
-	public void testStringsAreEqualIgnoreCase() {
+	public void testStringIsEmptyCharArray() {
+		assertTrue(StringTools.stringIsEmpty((char[]) null));
+		this.verifyStringIsEmptyCharArray("");
+		this.verifyStringIsEmptyCharArray("      \t\t   ");
+		this.verifyStringIsEmptyCharArray("      ");
+		this.verifyStringIsEmptyCharArray("      \t\t   " + StringTools.CR);
+	}
+
+	private void verifyStringIsEmptyCharArray(String string) {
+		assertTrue(StringTools.stringIsEmpty(string.toCharArray()));
+	}
+
+	public void testStringsAreEqualIgnoreCaseStringString() {
 		assertTrue(StringTools.stringsAreEqualIgnoreCase((String) null, (String) null));
 		assertFalse(StringTools.stringsAreEqualIgnoreCase(null, "asdf"));
 		assertFalse(StringTools.stringsAreEqualIgnoreCase("asdf", null));
 		assertTrue(StringTools.stringsAreEqualIgnoreCase("asdf", "asdf"));
 		assertTrue(StringTools.stringsAreEqualIgnoreCase("asdf", "ASDF"));
+	}
+
+	public void testStringsAreEqualIgnoreCaseCharArrayCharArray() {
+		assertTrue(StringTools.stringsAreEqualIgnoreCase((char[]) null, (char[]) null));
+		assertFalse(StringTools.stringsAreEqualIgnoreCase((char[]) null, "asdf".toCharArray()));
+		assertFalse(StringTools.stringsAreEqualIgnoreCase("asdf".toCharArray(), (char[]) null));
+		assertTrue(StringTools.stringsAreEqualIgnoreCase("asdf".toCharArray(), "asdf".toCharArray()));
+		assertTrue(StringTools.stringsAreEqualIgnoreCase("asdf".toCharArray(), "ASDF".toCharArray()));
+	}
+
+	public void testStringStartsWithIgnoreCaseStringString() {
+		assertTrue(StringTools.stringStartsWithIgnoreCase("asdf", "as"));
+		assertTrue(StringTools.stringStartsWithIgnoreCase("asdf", "aS"));
+		assertTrue(StringTools.stringStartsWithIgnoreCase("asdf", ""));
+		assertTrue(StringTools.stringStartsWithIgnoreCase("asdf", "A"));
+
+		assertFalse(StringTools.stringStartsWithIgnoreCase("asdf", "bsdf"));
+		assertFalse(StringTools.stringStartsWithIgnoreCase("asdf", "g"));
+		assertFalse(StringTools.stringStartsWithIgnoreCase("asdf", "asdg"));
+		assertFalse(StringTools.stringStartsWithIgnoreCase("asdf", "asdfg"));
+		assertFalse(StringTools.stringStartsWithIgnoreCase("asdf", "asdfgggggg"));
+	}
+
+	public void testStringStartsWithIgnoreCaseCharArrayCharArray() {
+		assertTrue(StringTools.stringStartsWithIgnoreCase("asdf".toCharArray(), "as".toCharArray()));
+		assertTrue(StringTools.stringStartsWithIgnoreCase("asdf".toCharArray(), "aS".toCharArray()));
+		assertTrue(StringTools.stringStartsWithIgnoreCase("asdf".toCharArray(), "".toCharArray()));
+		assertTrue(StringTools.stringStartsWithIgnoreCase("asdf".toCharArray(), "A".toCharArray()));
+		assertTrue(StringTools.stringStartsWithIgnoreCase("asdf".toCharArray(), "ASDF".toCharArray()));
+		assertTrue(StringTools.stringStartsWithIgnoreCase("asdf".toCharArray(), "asdf".toCharArray()));
+
+		assertFalse(StringTools.stringStartsWithIgnoreCase("asdf".toCharArray(), "bsdf".toCharArray()));
+		assertFalse(StringTools.stringStartsWithIgnoreCase("asdf".toCharArray(), "g".toCharArray()));
+		assertFalse(StringTools.stringStartsWithIgnoreCase("asdf".toCharArray(), "asdg".toCharArray()));
+		assertFalse(StringTools.stringStartsWithIgnoreCase("asdf".toCharArray(), "asdfg".toCharArray()));
+		assertFalse(StringTools.stringStartsWithIgnoreCase("asdf".toCharArray(), "asdfgggggg".toCharArray()));
+	}
+
+	public void testCharactersAreEqualIgnoreCase() {
+		assertTrue(StringTools.charactersAreEqualIgnoreCase('a', 'a'));
+		assertTrue(StringTools.charactersAreEqualIgnoreCase('a', 'A'));
+		assertTrue(StringTools.charactersAreEqualIgnoreCase('A', 'a'));
+		assertTrue(StringTools.charactersAreEqualIgnoreCase('A', 'A'));
+		
+		assertFalse(StringTools.charactersAreEqualIgnoreCase('a', 'b'));
+		assertFalse(StringTools.charactersAreEqualIgnoreCase('A', 'b'));
 	}
 
 	// ********** conversions **********

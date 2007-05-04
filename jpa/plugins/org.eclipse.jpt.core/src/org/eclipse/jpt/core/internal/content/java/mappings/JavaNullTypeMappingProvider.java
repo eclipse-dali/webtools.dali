@@ -49,7 +49,7 @@ public class JavaNullTypeMappingProvider
 	}
 
 	public DeclarationAnnotationAdapter declarationAnnotationAdapter() {
-		return JavaNullTypeMapping.ANNOTATION_ADAPTER;
+		return JavaNullTypeMapping.DECLARATION_ANNOTATION_ADAPTER;
 	}
 
 }

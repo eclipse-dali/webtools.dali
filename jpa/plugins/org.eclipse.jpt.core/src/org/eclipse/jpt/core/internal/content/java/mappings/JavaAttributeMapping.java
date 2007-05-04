@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.utility.internal.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -89,7 +91,7 @@ public abstract class JavaAttributeMapping extends JavaEObject
 	}
 
 	public boolean isDefault() {
-		return getPersistentAttribute().isAttributeMappingDefault();
+		return getPersistentAttribute().mappingIsDefault();
 	}
 
 	public ITypeMapping typeMapping() {
@@ -109,7 +111,9 @@ public abstract class JavaAttributeMapping extends JavaEObject
 		return this.typeMapping().getPersistentType().findJdtType();
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {}
+	public void updateFromJava(CompilationUnit astRoot) {
+	// do nothing - override as appropriate
+	}
 
 	// TODO figure out how to use [stupid] EMF to implement the Column.Owner interface directly
 	protected INamedColumn.Owner buildColumnOwner() {
@@ -129,10 +133,26 @@ public abstract class JavaAttributeMapping extends JavaEObject
 	}
 
 	public void refreshDefaults(DefaultsContext defaultsContext) {
-	//do nothing, override if necessary
+	// do nothing - override as appropriate
 	}
 
 	public String primaryKeyColumnName() {
 		return null;
 	}
-} // JavaAttributeMapping
+
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		return null;
+	}
+
+	public boolean isOverridableAttributeMapping() {
+		return false;
+	}
+
+	public boolean isOverridableAssociationMapping() {
+		return false;
+	}
+
+	public boolean isIdMapping() {
+		return false;
+	}
+}

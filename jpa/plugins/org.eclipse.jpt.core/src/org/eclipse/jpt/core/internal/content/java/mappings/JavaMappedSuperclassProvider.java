@@ -48,7 +48,7 @@ public class JavaMappedSuperclassProvider
 	}
 
 	public DeclarationAnnotationAdapter declarationAnnotationAdapter() {
-		return JavaMappedSuperclass.ANNOTATION_ADAPTER;
+		return JavaMappedSuperclass.DECLARATION_ANNOTATION_ADAPTER;
 	}
 
 }

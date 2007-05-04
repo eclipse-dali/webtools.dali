@@ -48,7 +48,7 @@ public class JavaEntityProvider
 	}
 
 	public DeclarationAnnotationAdapter declarationAnnotationAdapter() {
-		return JavaEntity.ANNOTATION_ADAPTER;
+		return JavaEntity.DECLARATION_ANNOTATION_ADAPTER;
 	}
 
 }

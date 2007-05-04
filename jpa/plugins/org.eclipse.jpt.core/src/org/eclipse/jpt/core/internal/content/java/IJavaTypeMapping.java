@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java;
 
-import java.util.List;
+import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITypeMapping;
+import org.eclipse.jpt.utility.internal.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -35,5 +36,9 @@ public interface IJavaTypeMapping extends ITypeMapping
 
 	void updateFromJava(CompilationUnit astRoot);
 
-	List<String> candidateValuesFor(int pos, CompilationUnit astRoot);
+	/**
+	 * Return the candidate code-completion values for the specified position
+	 * in the source code.
+	 */
+	Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot);
 }

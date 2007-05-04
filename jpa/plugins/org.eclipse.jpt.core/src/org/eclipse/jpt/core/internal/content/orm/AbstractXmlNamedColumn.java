@@ -442,7 +442,7 @@ public abstract class AbstractXmlNamedColumn extends XmlEObject
 			return owner.getTextRange();
 		}
 		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.NAME);
-		return (nameNode == null) ? getTextRange() : getTextRange(nameNode);
+		return (nameNode == null) ? getTextRange() : buildTextRange(nameNode);
 	}
 
 	public void refreshDefaults(DefaultsContext defaultsContext) {

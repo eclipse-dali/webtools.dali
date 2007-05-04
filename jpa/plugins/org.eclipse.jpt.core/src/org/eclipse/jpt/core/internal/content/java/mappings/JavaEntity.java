@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
@@ -56,8 +55,8 @@ import org.eclipse.jpt.core.internal.mappings.InheritanceType;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -329,7 +328,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 
 	private AnnotationAdapter sequenceGeneratorAnnotationAdapter;
 
-	public static final DeclarationAnnotationAdapter ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ENTITY);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ENTITY);
 
 	private static final DeclarationAnnotationElementAdapter NAME_ADAPTER = buildNameAdapter();
 
@@ -339,7 +338,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 
 	private static final DeclarationAnnotationAdapter DISCRIMINATOR_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.DISCRIMINATOR_VALUE);
 
-	private static final DeclarationAnnotationElementAdapter DISCRIMINATOR_VALUE_ADAPTER = buildValueAdapter();
+	private static final DeclarationAnnotationElementAdapter DISCRIMINATOR_VALUE_ADAPTER = buildDiscriminatorValueAdapter();
 
 	protected JavaEntity() {
 		this(null);
@@ -375,11 +374,11 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 
 	@Override
 	public DeclarationAnnotationAdapter declarationAnnotationAdapter() {
-		return ANNOTATION_ADAPTER;
+		return DECLARATION_ANNOTATION_ADAPTER;
 	}
 
 	private static DeclarationAnnotationElementAdapter buildNameAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter(ANNOTATION_ADAPTER, JPA.ENTITY__NAME, false); // false = do not remove annotation when empty
+		return new ConversionDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ENTITY__NAME, false); // false = do not remove annotation when empty
 	}
 
 	/**
@@ -1169,14 +1168,6 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	 */
 	public String getSpecifiedName() {
 		return specifiedName;
-	}
-
-	private String specifiedNameFromJava() {
-		return (String) this.getType().annotationElementValue(NAME_ADAPTER);
-	}
-
-	private String defaultNameFromJava() {
-		return super.getName();
 	}
 
 	/**
@@ -2256,22 +2247,27 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
-		//TODO creating a new AST for each of these, maybe we should reduce this
-		//and have the javaChanged(ElementChangedEvent) pass the AST.
-		//same problem in the xml world, the defaults are taken from java
-		this.setSpecifiedName(specifiedNameFromJava());
-		this.setDefaultName(defaultNameFromJava());
-		((JavaTable) this.getTable()).updateFromJava(astRoot);
+		this.setSpecifiedName((String) this.getType().annotationElementValue(NAME_ADAPTER, astRoot));
+		this.setDefaultName(this.getType().getName());
+		this.getJavaTable().updateFromJava(astRoot);
 		this.updateSecondaryTablesFromJava(astRoot);
 		this.updateNamedQueriesFromJava(astRoot);
 		this.updateNamedNativeQueriesFromJava(astRoot);
 		this.updateAttributeOverridesFromJava(astRoot);
 		this.setInheritanceStrategy(InheritanceType.fromJavaAnnotationValue(this.inheritanceStrategyAdapter.getValue(astRoot)));
-		((JavaDiscriminatorColumn) this.getDiscriminatorColumn()).updateFromJava(astRoot);
+		this.getJavaDiscriminatorColumn().updateFromJava(astRoot);
 		this.setSpecifiedDiscriminatorValue((String) this.discriminatorValueAdapter.getValue(astRoot));
 		this.setDefaultDiscriminatorValue(this.javaDefaultDiscriminatorValue());
 		this.updateTableGeneratorFromJava(astRoot);
 		this.updateSequenceGeneratorFromJava(astRoot);
+	}
+
+	private JavaTable getJavaTable() {
+		return (JavaTable) this.table;
+	}
+
+	private JavaDiscriminatorColumn getJavaDiscriminatorColumn() {
+		return (JavaDiscriminatorColumn) this.discriminatorColumn;
 	}
 
 	private void updateTableGeneratorFromJava(CompilationUnit astRoot) {
@@ -2313,7 +2309,13 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	 * TODO extension point for provider-specific function?
 	 */
 	private String javaDefaultDiscriminatorValue() {
-		return ((!getType().isAbstract()) && this.discriminatorType().isString()) ? getName() : null;
+		if (this.getType().isAbstract()) {
+			return null;
+		}
+		if (!this.discriminatorType().isString()) {
+			return null;
+		}
+		return this.getName();
 	}
 
 	private DiscriminatorType discriminatorType() {
@@ -2567,14 +2569,17 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		return pkAttributeName;
 	}
 
+	@Override
 	public boolean tableNameIsInvalid(String tableName) {
 		return !CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
 	}
 
+	@Override
 	public Iterator<ITable> associatedTables() {
 		return new CompositeIterator<ITable>(this.getTable(), this.getSecondaryTables().iterator());
 	}
 
+	@Override
 	public Iterator<ITable> associatedTablesIncludingInherited() {
 		return new CompositeIterator<ITable>(new TransformationIterator<ITypeMapping, Iterator<ITable>>(this.inheritanceHierarchy()) {
 			@Override
@@ -2592,6 +2597,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		});
 	}
 
+	@Override
 	public Iterator<String> associatedTableNamesIncludingInherited() {
 		return this.nonNullTableNames(this.associatedTablesIncludingInherited());
 	}
@@ -2645,14 +2651,6 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				return mapping.overridableAssociationNames();
 			}
 		});
-	}
-
-	public Iterator<String> overridableAttributeNames() {
-		return EmptyIterator.instance();
-	}
-
-	public Iterator<String> overridableAssociationNames() {
-		return EmptyIterator.instance();
 	}
 
 	public IAttributeOverride createAttributeOverride(int index) {
@@ -2746,8 +2744,49 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		}
 	}
 
-	public List<String> candidateValuesFor(int pos, CompilationUnit astRoot) {
-		return Collections.emptyList();
+	@Override
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result;
+		result = this.getJavaTable().candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		//		result = this.secondaryTablesCandidateValuesFor(pos, astRoot);
+		//		if (result != null) {
+		//			return result;
+		//		}
+		//
+		//		result = this.specifiedPrimaryKeyJoinColumnsCandidateValuesFor(pos, astRoot);
+		//		if (result != null) {
+		//			return result;
+		//		}
+		//
+		//		result = this.attributeOverridesCandidateValuesFor(pos, astRoot);
+		//		if (result != null) {
+		//			return result;
+		//		}
+		//
+		//		result = this.associationOverridesCandidateValuesFor(pos, astRoot);
+		//		if (result != null) {
+		//			return result;
+		//		}
+		//
+		//		result = this.getJavaDiscriminatorColumn().candidateValuesFor(pos, astRoot);
+		//		if (result != null) {
+		//			return result;
+		//		}
+		//
+		//		result = this.tableGeneratorCandidateValuesFor(pos, astRoot);
+		//		if (result != null) {
+		//			return result;
+		//		}
+		//
+		//		result = this.sequenceGeneratorCandidateValuesFor(pos, astRoot);
+		//		if (result != null) {
+		//			return result;
+		//		}
+		//
+		return null;
 	}
 
 	// ********** static methods **********
@@ -2755,7 +2794,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		return new EnumDeclarationAnnotationElementAdapter(INHERITANCE_ANNOTATION_ADAPTER, JPA.INHERITANCE__STRATEGY);
 	}
 
-	private static DeclarationAnnotationElementAdapter buildValueAdapter() {
+	private static DeclarationAnnotationElementAdapter buildDiscriminatorValueAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter(DISCRIMINATOR_ANNOTATION_ADAPTER, JPA.DISCRIMINATOR_VALUE__VALUE);
 	}
 }

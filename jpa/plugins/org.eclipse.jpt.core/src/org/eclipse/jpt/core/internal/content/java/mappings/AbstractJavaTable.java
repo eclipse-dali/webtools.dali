@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -26,8 +27,12 @@ import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -676,12 +681,24 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		return this.elementTextRange(this.nameDeclarationAdapter);
 	}
 
+	public ITextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
+	}
+
 	public ITextRange getSchemaTextRange() {
 		return this.elementTextRange(this.schemaDeclarationAdapter);
 	}
 
+	public ITextRange getSchemaTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.schemaDeclarationAdapter, astRoot);
+	}
+
 	public ITextRange getCatalogTextRange() {
 		return this.elementTextRange(this.catalogDeclarationAdapter);
+	}
+
+	public ITextRange getCatalogTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.catalogDeclarationAdapter, astRoot);
 	}
 
 	//TODO should we allow setting through the ecore, that would make this method
@@ -739,12 +756,12 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	}
 
 	public Schema dbSchema() {
-		return this.getJpaProject().connectionProfile().getDatabase().schemaNamed(this.getSchema());
+		return this.database().schemaNamed(this.getSchema());
 	}
 
 	public boolean isConnected() {
-		ConnectionProfile connectionProfile = this.getJpaProject().connectionProfile();
-		return connectionProfile != null && connectionProfile.isConnected();
+		ConnectionProfile cp = this.connectionProfile();
+		return (cp != null) && cp.isConnected();
 	}
 
 	public boolean hasResolvedSchema() {
@@ -757,5 +774,71 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 
 	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter elementAdapter) {
 		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter));
+	}
+
+	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter elementAdapter, CompilationUnit astRoot) {
+		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter, astRoot));
+	}
+
+	/**
+	 * name, schema, catalog
+	 */
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		if (this.isConnected()) {
+			if (this.getNameTextRange(astRoot).includes(pos)) {
+				return this.quotedCandidateNames(filter);
+			}
+			if (this.getSchemaTextRange(astRoot).includes(pos)) {
+				return this.quotedCandidateSchemas(filter);
+			}
+			if (this.getCatalogTextRange(astRoot).includes(pos)) {
+				return this.quotedCandidateCatalogs(filter);
+			}
+		}
+		return null;
+	}
+
+	private ConnectionProfile connectionProfile() {
+		return this.getJpaProject().connectionProfile();
+	}
+
+	private Database database() {
+		return this.connectionProfile().getDatabase();
+	}
+
+	private Iterator<String> candidateNames() {
+		return this.dbSchema().tableNames();
+	}
+
+	private Iterator<String> candidateNames(Filter<String> filter) {
+		return new FilteringIterator<String>(this.candidateNames(), filter);
+	}
+
+	private Iterator<String> quotedCandidateNames(Filter<String> filter) {
+		return StringTools.quote(this.candidateNames(filter));
+	}
+
+	private Iterator<String> candidateSchemas() {
+		return this.database().schemaNames();
+	}
+
+	private Iterator<String> candidateSchemas(Filter<String> filter) {
+		return new FilteringIterator<String>(this.candidateSchemas(), filter);
+	}
+
+	private Iterator<String> quotedCandidateSchemas(Filter<String> filter) {
+		return StringTools.quote(this.candidateSchemas(filter));
+	}
+
+	private Iterator<String> candidateCatalogs() {
+		return this.database().catalogNames();
+	}
+
+	private Iterator<String> candidateCatalogs(Filter<String> filter) {
+		return new FilteringIterator<String>(this.candidateCatalogs(), filter);
+	}
+
+	private Iterator<String> quotedCandidateCatalogs(Filter<String> filter) {
+		return StringTools.quote(this.candidateCatalogs(filter));
 	}
 }
