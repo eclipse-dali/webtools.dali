@@ -233,6 +233,8 @@ public interface ITable extends IJpaSourceObject
 	ITextRange getSchemaTextRange();
 
 	Owner getOwner();
+
+
 	/**
 	 * interface allowing tables to be owned by various objects
 	 */

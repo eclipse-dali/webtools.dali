@@ -88,6 +88,8 @@ public interface IAssociationOverride extends IOverride
 	boolean containsSpecifiedJoinColumns();
 
 	ITypeMapping typeMapping();
+
+
 	public class JoinColumnOwner implements IJoinColumn.Owner
 	{
 		private IAssociationOverride associationOverride;

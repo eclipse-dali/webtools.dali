@@ -6596,6 +6596,8 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		addEEnumLiteral(orderingTypeEEnum, OrderingType.PRIMARY_KEY);
 		addEEnumLiteral(orderingTypeEEnum, OrderingType.CUSTOM);
 	}
+
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * Defines literals for the meta objects that represent

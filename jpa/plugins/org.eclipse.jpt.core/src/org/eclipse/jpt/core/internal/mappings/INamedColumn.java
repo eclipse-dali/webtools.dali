@@ -118,6 +118,8 @@ public interface INamedColumn extends IJpaSourceObject
 	void setColumnDefinition(String value);
 
 	Owner getOwner();
+
+
 	/**
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)

@@ -536,8 +536,8 @@ public interface IEntity extends ITypeMapping
 	INamedQuery createNamedQuery(int index);
 
 	INamedNativeQuery createNamedNativeQuery(int index);
-	
-	
+
+
 	abstract class OverrideOwner implements IOverride.Owner
 	{
 		protected IEntity entity;
@@ -554,8 +554,8 @@ public interface IEntity extends ITypeMapping
 			return entity.getTextRange();
 		}
 	}
-	
-	
+
+
 	class AttributeOverrideOwner extends OverrideOwner
 	{
 		public AttributeOverrideOwner(IEntity entity) {
@@ -582,8 +582,8 @@ public interface IEntity extends ITypeMapping
 			return entity.getDefaultAttributeOverrides().contains(override);
 		}
 	}
-	
-	
+
+
 	class AssociationOverrideOwner extends OverrideOwner
 	{
 		public AssociationOverrideOwner(IEntity entity) {
@@ -606,8 +606,8 @@ public interface IEntity extends ITypeMapping
 			return entity.getDefaultAssociationOverrides().contains(override);
 		}
 	}
-	
-	
+
+
 	class PrimaryKeyJoinColumnOwner implements IAbstractJoinColumn.Owner
 	{
 		private IEntity entity;

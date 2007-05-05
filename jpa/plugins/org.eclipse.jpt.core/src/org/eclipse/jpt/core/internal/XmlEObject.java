@@ -89,6 +89,8 @@ public abstract class XmlEObject extends JpaEObject implements IXmlEObject
 	public IDOMNode getNode() {
 		return this.node;
 	}
+
+
 	protected class XmlEAdapterList extends EAdapterList
 	{
 		public XmlEAdapterList(Notifier notifier) {
@@ -202,6 +204,8 @@ public abstract class XmlEObject extends JpaEObject implements IXmlEObject
 	// when you override this method, don't forget to include:
 	//	super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
 	}
+
+
 	/**
 	 * Implementation of ITextRange that adapts a IDOMNode.
 	 */
