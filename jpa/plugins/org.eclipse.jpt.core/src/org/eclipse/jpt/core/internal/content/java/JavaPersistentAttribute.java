@@ -309,6 +309,8 @@ public class JavaPersistentAttribute extends JavaEObject
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING :
+				return getMapping();
 			case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__DEFAULT_MAPPING :
 				return getDefaultMapping();
 			case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__SPECIFIED_MAPPING :
@@ -361,6 +363,8 @@ public class JavaPersistentAttribute extends JavaEObject
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING :
+				return getMapping() != null;
 			case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__DEFAULT_MAPPING :
 				return defaultMapping != null;
 			case JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__SPECIFIED_MAPPING :
@@ -464,7 +468,8 @@ public class JavaPersistentAttribute extends JavaEObject
 			// remove mapping annotation
 			this.setSpecifiedMapping(null);
 			this.attribute.removeAnnotation(this.declarationAnnotationAdapterForAttributeMappingKey(oldKey));
-		} else {
+		}
+		else {
 			// add or replace mapping annotation
 			this.setSpecifiedMapping(this.attributeMappingProviderFor(newKey).buildMapping(this.attribute));
 			if (oldKey != null) {
@@ -529,7 +534,8 @@ public class JavaPersistentAttribute extends JavaEObject
 			if (javaKey == null) {
 				// no mapping annotation found in Java source
 				this.setSpecifiedMapping(null);
-			} else {
+			}
+			else {
 				// the mapping has changed
 				this.setSpecifiedMapping(javaProvider.buildMapping(this.attribute));
 				this.specifiedMapping.initialize();
