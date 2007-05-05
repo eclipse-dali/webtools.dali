@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.wizards;
 
 import java.util.Iterator;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.preferences.UserLibraryPreferencePage;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.PreferenceDialog;
@@ -24,10 +23,9 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.facet.IJpaFacetDataModelProperties;
-import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
@@ -46,10 +44,17 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelEvent;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelListener;
+import org.eclipse.wst.common.project.facet.ui.internal.AbstractDataModel;
+import org.eclipse.wst.common.project.facet.ui.internal.ChangeTargetedRuntimesDataModel;
+import org.eclipse.wst.common.project.facet.ui.internal.FacetsSelectionPage;
 import org.eclipse.wst.web.ui.internal.wizards.DataModelFacetInstallPage;
 
 public class JpaFacetWizardPage 
@@ -61,6 +66,8 @@ public class JpaFacetWizardPage
 	private ConnectionGroup connectionGroup;
 	
 	private ClasspathConfigGroup classpathConfigGroup;
+	
+	private PersistentClassManagementGroup persistentClassManagementGroup;
 	
 	private OrmXmlGroup ormXmlGroup;
 	
@@ -82,14 +89,47 @@ public class JpaFacetWizardPage
 		platformGroup = new PlatformGroup(composite);
 		connectionGroup = new ConnectionGroup(composite);
 		classpathConfigGroup = new ClasspathConfigGroup(composite);
+		persistentClassManagementGroup = new PersistentClassManagementGroup(composite);
 		ormXmlGroup = new OrmXmlGroup(composite);
 		
+		setUpRuntimeListener();
+		
 		Dialog.applyDialogFont(parent);
-		// TODO
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IJpaHelpContextIds.DIALOG_JPA_FACET);
 		
 		return composite;
 	}
+	
+	private void setUpRuntimeListener() {
+		final ChangeTargetedRuntimesDataModel runtimeDataModel = getRuntimeDataModel();
+		// must do it manually the first time
+		model.setProperty(RUNTIME, runtimeDataModel.getPrimaryRuntime());
+		runtimeDataModel.addListener(
+			ChangeTargetedRuntimesDataModel.EVENT_PRIMARY_RUNTIME_CHANGED,
+			new AbstractDataModel.IDataModelListener() {
+				public void handleEvent() {
+					model.setProperty(RUNTIME, runtimeDataModel.getPrimaryRuntime());
+				}
+			}
+		);
+	}
+	
+	private ChangeTargetedRuntimesDataModel getRuntimeDataModel() {
+		// This is hacky, but unfortunately the only current way to do this
+		// see bug 138074
+		FacetsSelectionPage facetPage = null;
+		for (IWizardPage page : getWizard().getPages()) {
+			if (page instanceof FacetsSelectionPage) {
+				facetPage = (FacetsSelectionPage) page;
+				break;
+			}
+		}
+		return (facetPage == null) ?
+			null :
+			facetPage.panel.getDataModel().getTargetedRuntimesDataModel();
+	}
+	
+	
 	
 	private Label createLabel(Composite container, int span, String text) {
 		Label label = new Label(container, SWT.NONE);
@@ -100,14 +140,26 @@ public class JpaFacetWizardPage
 		return label;
 	}
 	
-	private Combo createCombo(Composite container, boolean fillHorizontal) {
+	private Button createButton(Composite container, int span, String text, int style) {
+		Button button = new Button(container, SWT.NONE | style);
+		button.setText(text);
+		GridData gd = new GridData();
+		gd.horizontalSpan = span;
+		button.setLayoutData(gd);
+		return button;
+	}
+	
+	private Combo createCombo(Composite container, int span, boolean fillHorizontal) {
 		Combo combo = new Combo(container, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
+		GridData gd;
 		if (fillHorizontal) {
-			combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			gd = new GridData(GridData.FILL_HORIZONTAL);
 		}
 		else {
-			combo.setLayoutData(new GridData());
+			gd = new GridData();
 		}
+		gd.horizontalSpan = span;
+		combo.setLayoutData(gd);
 		return combo;
 	}
 	
@@ -116,7 +168,9 @@ public class JpaFacetWizardPage
 		return new String[] {
 			PLATFORM_ID,
 			CONNECTION,
-			JPA_LIBRARY
+			USE_SERVER_JPA_IMPLEMENTATION,
+			JPA_LIBRARY,
+			DISCOVER_ANNOTATED_CLASSES
 		};
 	}
 	
@@ -141,21 +195,18 @@ public class JpaFacetWizardPage
 	
 	private final class PlatformGroup
 	{
-		private final Label platformLabel;
-		
 		private final ComboViewer platformCombo;
 		
 		
 		public PlatformGroup(Composite composite) {
-			Composite group = new Composite(composite, SWT.NONE);
+			Group group = new Group(composite, SWT.NONE);
+			group.setText(JptUiMessages.JpaFacetWizardPage_platformLabel);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			// TODO - F1 Help
 			// PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IDaliHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
 			
-			platformLabel = createLabel(group, 1, JptUiMessages.JpaFacetWizardPage_platformLabel);
-			
-			platformCombo = new ComboViewer(createCombo(group, true));
+			platformCombo = new ComboViewer(createCombo(group, 1, true));
 			platformCombo.setContentProvider(
 					new IStructuredContentProvider() {
 						public Object[] getElements(Object inputElement) {
@@ -206,22 +257,19 @@ public class JpaFacetWizardPage
 	
 	private final class ConnectionGroup
 	{
-		private final Label connectionLabel;
-		
 		private final Combo connectionCombo;
 		
 		private Link connectionLink;
 		
 		
 		public ConnectionGroup(Composite composite) {
-			Composite group = new Composite(composite, SWT.NONE);
+			Group group = new Group(composite, SWT.NONE);
+			group.setText(JptUiMessages.JpaFacetWizardPage_connectionLabel);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
 			
-			connectionLabel = createLabel(group, 1, JptUiMessages.JpaFacetWizardPage_connectionLabel);
-			
-			connectionCombo = createCombo(group, true);
+			connectionCombo = createCombo(group, 1, true);
 			connectionCombo.addSelectionListener(
 					new SelectionListener() {
 						public void widgetSelected(SelectionEvent e) {
@@ -283,7 +331,9 @@ public class JpaFacetWizardPage
 	
 	private final class ClasspathConfigGroup
 	{
-		private final Label jpaLibLabel;
+		private final Button useServerLibButton;
+		
+		private final Button specifyLibButton;
 		
 		private final Combo jpaLibCombo;
 		
@@ -294,26 +344,53 @@ public class JpaFacetWizardPage
 		
 		
 		public ClasspathConfigGroup(Composite composite) {
-			Composite group = new Composite(composite, SWT.NONE);
-			group.setLayout(new GridLayout());
+			Group group = new Group(composite, SWT.NONE);
+			group.setText(JptUiMessages.JpaFacetWizardPage_jpaImplementationLabel);
+			group.setLayout(new GridLayout(2, false));
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
 			
-			jpaLibLabel = createLabel(group, 1, JptUiMessages.JpaFacetWizardPage_jpaLibLabel);
-			
-			jpaLibCombo = createCombo(group, true);
-			jpaLibCombo.addSelectionListener(
+			useServerLibButton = createButton(group, 2, JptUiMessages.JpaFacetWizardPage_userServerLibLabel, SWT.RADIO);
+			useServerLibButton.addSelectionListener(
 					new SelectionListener() {
 						public void widgetDefaultSelected(SelectionEvent e) {
 							widgetSelected(e);
 						}
 						
 						public void widgetSelected(SelectionEvent e) {
-							model.setProperty(JPA_LIBRARY, jpaLibCombo.getItem(jpaLibCombo.getSelectionIndex()));
-						};
+							model.setBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION, true);
+						}
 					}
 				);
-			fillJpaLibs();
+			
+			specifyLibButton = createButton(group, 1, JptUiMessages.JpaFacetWizardPage_specifyLibLabel, SWT.RADIO);
+			specifyLibButton.addSelectionListener(
+					new SelectionListener() {
+						public void widgetDefaultSelected(SelectionEvent e) {
+							widgetSelected(e);
+						}
+						
+						public void widgetSelected(SelectionEvent e) {
+							model.setBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION, false);
+						}
+					}
+				);
+			
+			jpaLibCombo = createCombo(group, 1, true);
+			synchHelper.synchCombo(jpaLibCombo, JPA_LIBRARY, null);
+			
+			model.addListener(
+					new IDataModelListener() {
+						public void propertyChanged(DataModelEvent event) {
+							if (USE_SERVER_JPA_IMPLEMENTATION.equals(event.getPropertyName())) {
+								boolean useServerLib = (Boolean) event.getProperty();
+								useServerLibButton.setSelection(useServerLib);
+								specifyLibButton.setSelection(! useServerLib);
+								jpaLibCombo.setEnabled(! useServerLib);
+							}
+						}
+					}
+				);
 			
 			jpaPrefsLink = new Link(group, SWT.NONE);
 			GridData data = new GridData(GridData.END, GridData.CENTER, false, false);
@@ -342,30 +419,6 @@ public class JpaFacetWizardPage
 			);
 		}
 		
-		private void fillJpaLibs() {
-			int index = jpaLibCombo.getSelectionIndex();
-			String selectedJpaLib = null;
-			if (index >= 0) {
-				selectedJpaLib = jpaLibCombo.getItem(jpaLibCombo.getSelectionIndex());
-			}
-			else {
-				selectedJpaLib = 
-					JptCorePlugin.getPlugin().getPluginPreferences()
-						.getString(JpaPreferenceConstants.PREF_DEFAULT_JPA_LIB);
-			}
-			
-			jpaLibCombo.clearSelection();
-			jpaLibCombo.setItems(JavaCore.getUserLibraryNames());
-			
-			if (selectedJpaLib != null) {
-				int newIndex = CollectionTools.indexOf(jpaLibCombo.getItems(), selectedJpaLib);
-				if (newIndex >= 0) {
-					jpaLibCombo.select(newIndex);
-					model.setProperty(JPA_LIBRARY, selectedJpaLib);	
-				}
-			}
-		}
-		
 		private void promptToConfigJpaPrefs() {
 			PreferenceDialog dlg = 
 				PreferencesUtil.createPreferenceDialogOn(
@@ -374,7 +427,8 @@ public class JpaFacetWizardPage
 					new String[] {JpaPreferencePage.ID},
 					null);
 			dlg.open();
-			fillJpaLibs();
+			model.notifyPropertyChange(JPA_LIBRARY, IDataModel.VALID_VALUES_CHG);
+			model.notifyPropertyChange(JPA_LIBRARY, IDataModel.DEFAULT_CHG);
 		}
 		
 		private void promptToConfigUserLibraries() {
@@ -385,7 +439,62 @@ public class JpaFacetWizardPage
 					new String[] {UserLibraryPreferencePage.ID},
 					null);
 			dlg.open();
-			fillJpaLibs();
+			model.notifyPropertyChange(JPA_LIBRARY, IDataModel.VALID_VALUES_CHG);
+		}
+	}
+	
+	
+	private final class PersistentClassManagementGroup
+	{
+		private final Button discoverClassesButton;
+		
+		private final Button listClassesButton;
+		
+		
+		public PersistentClassManagementGroup(Composite composite) {
+			Group group = new Group(composite, SWT.NONE);
+			group.setText(JptUiMessages.JpaFacetWizardPage_persistentClassManagementLabel);
+			group.setLayout(new GridLayout());
+			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
+			
+			discoverClassesButton = createButton(group, 1, JptUiMessages.JpaFacetWizardPage_discoverClassesButton, SWT.RADIO);
+			discoverClassesButton.addSelectionListener(
+				new SelectionListener() {
+						public void widgetDefaultSelected(SelectionEvent e) {
+							widgetSelected(e);
+						}
+						
+						public void widgetSelected(SelectionEvent e) {
+							model.setBooleanProperty(DISCOVER_ANNOTATED_CLASSES, true);
+						}
+					}
+				);
+			
+			listClassesButton = createButton(group, 1, JptUiMessages.JpaFacetWizardPage_listClassesButton, SWT.RADIO);
+			listClassesButton.addSelectionListener(
+				new SelectionListener() {
+						public void widgetDefaultSelected(SelectionEvent e) {
+							widgetSelected(e);
+						}
+						
+						public void widgetSelected(SelectionEvent e) {
+							model.setBooleanProperty(DISCOVER_ANNOTATED_CLASSES, false);
+						}
+					}
+				);
+			
+			model.addListener(
+					new IDataModelListener() {
+						public void propertyChanged(DataModelEvent event) {
+							if (DISCOVER_ANNOTATED_CLASSES.equals(event.getPropertyName())) {
+								boolean discoverClasses = (Boolean) event.getProperty();
+								discoverClassesButton.setSelection(discoverClasses);
+								listClassesButton.setSelection(! discoverClasses);
+							}
+						}
+					}
+				);
 		}
 	}
 	

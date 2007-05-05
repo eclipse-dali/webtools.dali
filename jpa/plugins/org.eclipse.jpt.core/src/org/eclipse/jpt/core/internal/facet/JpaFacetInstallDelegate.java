@@ -13,10 +13,16 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jst.j2ee.classpathdep.ClasspathDependencyUtil;
+import org.eclipse.jst.j2ee.classpathdep.IClasspathDependencyConstants;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
@@ -36,13 +42,21 @@ public class JpaFacetInstallDelegate
 		
 		IJavaProject javaProject = JavaCore.create(project);
 		
+		boolean usesServerLibrary = ((IDataModel) config).getBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION);
 		String jpaLibrary = ((IDataModel) config).getStringProperty(JPA_LIBRARY);
-		if (jpaLibrary != null && ! jpaLibrary.equals("")) {
+		if (! usesServerLibrary && ! StringTools.stringIsEmpty(jpaLibrary)) {
 			IClasspathEntry[] classpath = javaProject.getRawClasspath();
 			int newLength = classpath.length + 1;
+			boolean isWebApp = FacetedProjectFramework.hasProjectFacet(project, IModuleConstants.JST_WEB_MODULE);
+			IClasspathAttribute depAttrib = 
+				JavaCore.newClasspathAttribute(
+					IClasspathDependencyConstants.CLASSPATH_COMPONENT_DEPENDENCY,
+					ClasspathDependencyUtil.getDefaultRuntimePath(isWebApp).toString()
+				);
 			IClasspathEntry jpaLibraryEntry = 
 				JavaCore.newContainerEntry(
-					new Path(JavaCore.USER_LIBRARY_CONTAINER_ID + "/" + jpaLibrary));
+					new Path(JavaCore.USER_LIBRARY_CONTAINER_ID + "/" + jpaLibrary),
+					null, new IClasspathAttribute[] {depAttrib}, true);
 			IClasspathEntry[] newClasspath = new IClasspathEntry[newLength];
 			System.arraycopy(classpath, 0, newClasspath, 0, newLength - 1);
 			newClasspath[newLength - 1] = jpaLibraryEntry;

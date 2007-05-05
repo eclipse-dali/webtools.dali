@@ -22,8 +22,11 @@ import org.eclipse.jpt.core.internal.IJpaCoreConstants;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
+import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.internal.content.persistence.Persistence;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceXmlRootContentNode;
@@ -182,6 +185,15 @@ public class BaseJpaProjectContext extends BaseContext
 		ConnectionProfile profile = this.getProjectConnectionProfile();
 		return profile.getCatalogName();
 	}
+	
+	public boolean contains(IPersistentType persistentType) {
+		for (PersistenceUnitContext context : this.persistenceUnitContexts) {
+			if (context.contains(persistentType)) {
+				return true;
+			}
+		}
+		return false;
+	}
 		
 //	public IGeneratorRepository generatorRepository(IPersistentType persistentType) {
 //		for (PersistenceUnitContext context : this.persistenceUnitContexts) {
@@ -207,6 +219,7 @@ public class BaseJpaProjectContext extends BaseContext
 				context.addToMessages(messages);
 			}
 		}
+		addOrphanedJavaClassMessages(messages);
 	}
 	
 	protected void addProjectLevelMessages(List<IMessage> messages) {
@@ -318,6 +331,21 @@ public class BaseJpaProjectContext extends BaseContext
 						persistence, persistence.getTextRange())
 				);
 			okToContinueValidation = false;
+		}
+	}
+	
+	protected void addOrphanedJavaClassMessages(List<IMessage> messages) {
+		for (IJpaFile jpaFile : project.jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE)) {
+			for (JavaPersistentType jpType : ((JpaCompilationUnit) jpaFile.getContent()).getTypes()) {
+				if (jpType.getMappingKey() != IMappingKeys.NULL_TYPE_MAPPING_KEY && ! contains(jpType)) {
+					messages.add(
+							JpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								IJpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
+								jpType.getMapping(), jpType.getMapping().getTextRange())
+						);
+				}
+			}
 		}
 	}
 }

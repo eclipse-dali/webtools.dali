@@ -31,5 +31,7 @@ public interface IJpaDataSource extends IJpaEObject
 	 */
 	String getConnectionProfileName();
 
+	void setConnectionProfileName(String newConnectionProfileName);
+
 	Connection getConnection();
 }

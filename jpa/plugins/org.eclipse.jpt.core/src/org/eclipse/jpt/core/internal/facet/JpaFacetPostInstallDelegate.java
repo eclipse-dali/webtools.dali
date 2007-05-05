@@ -51,6 +51,7 @@ public class JpaFacetPostInstallDelegate
 		IDataModel dataModel = (IDataModel) config;
 		JpaFacetUtils.setPlatform(project, dataModel.getStringProperty(PLATFORM_ID));
 		JpaFacetUtils.setConnectionName(project, dataModel.getStringProperty(CONNECTION));
+		JpaFacetUtils.setDiscoverAnnotatedClasses(project, dataModel.getBooleanProperty(DISCOVER_ANNOTATED_CLASSES));
 		
 		createPersistenceXml(project, dataModel);
 		

@@ -13,7 +13,13 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.db.internal.Connection;
+import org.eclipse.jpt.db.internal.ConnectionListener;
+import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
+import org.eclipse.jpt.db.internal.Database;
+import org.eclipse.jpt.db.internal.ProfileListener;
+import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.internal.Table;
 
 /**
  * <!-- begin-user-doc -->
@@ -53,13 +59,70 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 	 */
 	protected String connectionProfileName = CONNECTION_PROFILE_NAME_EDEFAULT;
 
+	private transient ConnectionProfile connectionProfile;
+
+	private ProfileListener profileListener;
+
+	private ConnectionListener connectionListener;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	protected JpaDataSource() {
 		super();
+		profileListener = buildProfileListener();
+		ConnectionProfileRepository.instance().addProfileListener(profileListener);
+		connectionListener = buildConnectionListener();
+	}
+
+	private ProfileListener buildProfileListener() {
+		return new ProfileListener() {
+			public void profileAdded(ConnectionProfile profile) {
+				if (profile.getName().equals(connectionProfileName)) {
+					setConnectionProfile(profile);
+				}
+			}
+
+			public void profileChanged(ConnectionProfile profile) {
+				if (profile == connectionProfile && !profile.getName().equals(connectionProfileName)) {
+					setConnectionProfileName(profile.getName());
+				}
+			}
+
+			public void profileDeleted(String profileName) {
+				if (profileName.equals(connectionProfileName)) {
+					setConnectionProfile(null);
+				}
+			}
+		};
+	}
+
+	private ConnectionListener buildConnectionListener() {
+		return new ConnectionListener() {
+			public void opened(Connection connection) {
+				getProject().resynch();
+			}
+
+			public void aboutToClose(Connection connection) {}
+
+			public boolean okToClose(Connection connection) {
+				return true;
+			}
+
+			public void closed(Connection connection) {
+				getProject().resynch();
+			}
+
+			public void modified(Connection connection) {}
+
+			public void databaseChanged(Connection connection, Database database) {}
+
+			public void schemaChanged(Connection connection, Schema schema) {}
+
+			public void tableChanged(Connection connection, Table table) {}
+		};
 	}
 
 	/**
@@ -70,6 +133,10 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 	@Override
 	protected EClass eStaticClass() {
 		return JpaCorePackage.Literals.JPA_DATA_SOURCE;
+	}
+
+	public IJpaProject getProject() {
+		return (IJpaProject) eContainer();
 	}
 
 	/**
@@ -98,11 +165,35 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 	 * @see #getConnectionProfileName()
 	 * @generated
 	 */
-	public void setConnectionProfileName(String newConnectionProfileName) {
+	public void setConnectionProfileNameGen(String newConnectionProfileName) {
 		String oldConnectionProfileName = connectionProfileName;
 		connectionProfileName = newConnectionProfileName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaCorePackage.JPA_DATA_SOURCE__CONNECTION_PROFILE_NAME, oldConnectionProfileName, connectionProfileName));
+	}
+
+	public void setConnectionProfileName(String newConnectionProfileName) {
+		ConnectionProfile oldConnectionProfile = connectionProfile;
+		setConnectionProfileNameGen(newConnectionProfileName);
+		ConnectionProfile newConnectionProfile = ConnectionProfileRepository.instance().profileNamed(newConnectionProfileName);
+		if (oldConnectionProfile != newConnectionProfile) {
+			setConnectionProfile(newConnectionProfile);
+		}
+	}
+
+	public ConnectionProfile getConnectionProfile() {
+		return connectionProfile;
+	}
+
+	private void setConnectionProfile(ConnectionProfile profile) {
+		if (connectionProfile != null) {
+			connectionProfile.removeConnectionListener(connectionListener);
+		}
+		connectionProfile = profile;
+		if (connectionProfile != null) {
+			connectionProfile.addConnectionListener(connectionListener);
+		}
+		getProject().resynch();
 	}
 
 	public Connection getConnection() {
@@ -182,4 +273,4 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 		result.append(')');
 		return result.toString();
 	}
-} // JpaDataSource
+}

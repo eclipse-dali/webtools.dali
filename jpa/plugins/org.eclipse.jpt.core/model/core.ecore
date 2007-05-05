@@ -25,12 +25,21 @@
       <eParameters name="connectionProfileName" ordered="false" unique="false" lowerBound="1"
           eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eOperations>
+    <eOperations name="isDiscoverAnnotatedClasses" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    <eOperations name="setDiscoverAnnotatedClasses" ordered="false" unique="false"
+        lowerBound="1">
+      <eParameters name="discoverAnnotatedClasses" ordered="false" unique="false"
+          lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JpaProject" eSuperTypes="#//JpaEObject #//IJpaProject">
     <eStructuralFeatures xsi:type="ecore:EReference" name="platform" ordered="false"
         unique="false" lowerBound="1" eType="#//IJpaPlatform" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dataSource" ordered="false"
         unique="false" eType="#//IJpaDataSource" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="discoverAnnotatedClasses"
+        ordered="false" unique="false" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
+        defaultValueLiteral="false" unsettable="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="files" upperBound="-1"
         eType="#//IJpaFile" containment="true"/>
   </eClassifiers>

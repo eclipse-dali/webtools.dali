@@ -17,6 +17,12 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
  * A representation of the model object '<em><b>IPersistent Attribute</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link org.eclipse.jpt.core.internal.IPersistentAttribute#getMapping <em>Mapping</em>}</li>
+ * </ul>
+ * </p>
  *
  * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIPersistentAttribute()
  * @model kind="class" interface="true" abstract="true"
@@ -25,9 +31,12 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 public interface IPersistentAttribute extends IJpaContentNode
 {
 	/**
+	 * Returns the value of the '<em><b>Mapping</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" required="true"
+	 * @return the value of the '<em>Mapping</em>' reference.
+	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIPersistentAttribute_Mapping()
+	 * @model resolveProxies="false" required="true" transient="true" changeable="false" volatile="true" derived="true"
 	 * @generated
 	 */
 	IAttributeMapping getMapping();

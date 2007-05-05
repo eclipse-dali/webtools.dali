@@ -8,10 +8,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.wizards;
 
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jst.j2ee.ui.project.facet.UtilityProjectFirstPage;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class NewJpaProjectFirstPage extends UtilityProjectFirstPage 

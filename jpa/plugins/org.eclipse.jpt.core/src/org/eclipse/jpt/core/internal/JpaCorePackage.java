@@ -206,13 +206,22 @@ public class JpaCorePackage extends EPackageImpl
 	public static final int JPA_PROJECT__DATA_SOURCE = JPA_EOBJECT_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Discover Annotated Classes</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES = JPA_EOBJECT_FEATURE_COUNT + 2;
+
+	/**
 	 * The feature id for the '<em><b>Files</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JPA_PROJECT__FILES = JPA_EOBJECT_FEATURE_COUNT + 2;
+	public static final int JPA_PROJECT__FILES = JPA_EOBJECT_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Jpa Project</em>' class.
@@ -221,7 +230,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JPA_PROJECT_FEATURE_COUNT = JPA_EOBJECT_FEATURE_COUNT + 3;
+	public static final int JPA_PROJECT_FEATURE_COUNT = JPA_EOBJECT_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.IJpaPlatform <em>IJpa Platform</em>}' class.
@@ -956,6 +965,19 @@ public class JpaCorePackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.JpaProject#isDiscoverAnnotatedClasses <em>Discover Annotated Classes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Discover Annotated Classes</em>'.
+	 * @see org.eclipse.jpt.core.internal.JpaProject#isDiscoverAnnotatedClasses()
+	 * @see #getJpaProject()
+	 * @generated
+	 */
+	public EAttribute getJpaProject_DiscoverAnnotatedClasses() {
+		return (EAttribute) jpaProjectEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.JpaProject#getFiles <em>Files</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -965,7 +987,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getJpaProject_Files() {
-		return (EReference) jpaProjectEClass.getEStructuralFeatures().get(2);
+		return (EReference) jpaProjectEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -1303,6 +1325,7 @@ public class JpaCorePackage extends EPackageImpl
 		jpaProjectEClass = createEClass(JPA_PROJECT);
 		createEReference(jpaProjectEClass, JPA_PROJECT__PLATFORM);
 		createEReference(jpaProjectEClass, JPA_PROJECT__DATA_SOURCE);
+		createEAttribute(jpaProjectEClass, JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES);
 		createEReference(jpaProjectEClass, JPA_PROJECT__FILES);
 		iJpaPlatformEClass = createEClass(IJPA_PLATFORM);
 		iJpaDataSourceEClass = createEClass(IJPA_DATA_SOURCE);
@@ -1402,9 +1425,13 @@ public class JpaCorePackage extends EPackageImpl
 		addEOperation(iJpaProjectEClass, this.getIJpaDataSource(), "getDataSource", 1, 1);
 		op = addEOperation(iJpaProjectEClass, null, "setDataSource");
 		addEParameter(op, theEcorePackage.getEString(), "connectionProfileName", 1, 1);
+		addEOperation(iJpaProjectEClass, theEcorePackage.getEBoolean(), "isDiscoverAnnotatedClasses", 1, 1);
+		op = addEOperation(iJpaProjectEClass, null, "setDiscoverAnnotatedClasses");
+		addEParameter(op, theEcorePackage.getEBoolean(), "discoverAnnotatedClasses", 1, 1);
 		initEClass(jpaProjectEClass, JpaProject.class, "JpaProject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getJpaProject_Platform(), this.getIJpaPlatform(), null, "platform", null, 1, 1, JpaProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getJpaProject_DataSource(), this.getIJpaDataSource(), null, "dataSource", null, 0, 1, JpaProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getJpaProject_DiscoverAnnotatedClasses(), theEcorePackage.getEBoolean(), "discoverAnnotatedClasses", "false", 1, 1, JpaProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getJpaProject_Files(), this.getIJpaFile(), null, "files", null, 0, -1, JpaProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iJpaPlatformEClass, IJpaPlatform.class, "IJpaPlatform", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iJpaDataSourceEClass, IJpaDataSource.class, "IJpaDataSource", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1451,6 +1478,8 @@ public class JpaCorePackage extends EPackageImpl
 		// Create resource
 		createResource(eNS_URI);
 	}
+
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * Defines literals for the meta objects that represent
@@ -1548,6 +1577,14 @@ public class JpaCorePackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference JPA_PROJECT__DATA_SOURCE = eINSTANCE.getJpaProject_DataSource();
+
+		/**
+		 * The meta object literal for the '<em><b>Discover Annotated Classes</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES = eINSTANCE.getJpaProject_DiscoverAnnotatedClasses();
 
 		/**
 		 * The meta object literal for the '<em><b>Files</b></em>' containment reference list feature.

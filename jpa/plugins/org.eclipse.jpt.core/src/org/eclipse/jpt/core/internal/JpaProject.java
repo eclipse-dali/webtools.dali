@@ -60,6 +60,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.JpaProject#getPlatform <em>Platform</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.JpaProject#getDataSource <em>Data Source</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.JpaProject#isDiscoverAnnotatedClasses <em>Discover Annotated Classes</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.JpaProject#getFiles <em>Files</em>}</li>
  * </ul>
  * </p>
@@ -89,6 +90,35 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * @ordered
 	 */
 	protected IJpaDataSource dataSource;
+
+	/**
+	 * The default value of the '{@link #isDiscoverAnnotatedClasses() <em>Discover Annotated Classes</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDiscoverAnnotatedClasses()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean DISCOVER_ANNOTATED_CLASSES_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isDiscoverAnnotatedClasses() <em>Discover Annotated Classes</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDiscoverAnnotatedClasses()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean discoverAnnotatedClasses = DISCOVER_ANNOTATED_CLASSES_EDEFAULT;
+
+	/**
+	 * This is true if the Discover Annotated Classes attribute has been set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean discoverAnnotatedClassesESet;
 
 	/**
 	 * The cached value of the '{@link #getFiles() <em>Files</em>}' containment reference list.
@@ -266,7 +296,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		return dataSource;
 	}
 
-	public IJpaDataSource getDataSource() {
+	public synchronized IJpaDataSource getDataSource() {
 		if (dataSource == null) {
 			setDataSource(JpaFacetUtils.getConnectionName(project));
 		}
@@ -318,9 +348,90 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * @see IJpaProject#setDataSource(String)
 	 */
 	public void setDataSource(String connectionProfileName) {
-		JpaDataSource ds = JpaCoreFactory.eINSTANCE.createJpaDataSource();
-		ds.setConnectionProfileName(connectionProfileName);
-		setDataSource(ds);
+		if (dataSource == null) {
+			JpaDataSource ds = JpaCoreFactory.eINSTANCE.createJpaDataSource();
+			setDataSource(ds);
+		}
+		dataSource.setConnectionProfileName(connectionProfileName);
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Discover Annotated Classes</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Discover Annotated Classes</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Discover Annotated Classes</em>' attribute.
+	 * @see #isSetDiscoverAnnotatedClasses()
+	 * @see #unsetDiscoverAnnotatedClasses()
+	 * @see #setDiscoverAnnotatedClasses(boolean)
+	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaProject_DiscoverAnnotatedClasses()
+	 * @model default="false" unique="false" unsettable="true" required="true" ordered="false"
+	 * @generated
+	 */
+	public boolean isDiscoverAnnotatedClassesGen() {
+		return discoverAnnotatedClasses;
+	}
+
+	public boolean isDiscoverAnnotatedClasses() {
+		if (! isSetDiscoverAnnotatedClasses()) {
+			setDiscoverAnnotatedClasses(JpaFacetUtils.getDiscoverAnnotatedClasses(project));
+		}
+		return isDiscoverAnnotatedClassesGen();
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.JpaProject#isDiscoverAnnotatedClasses <em>Discover Annotated Classes</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Discover Annotated Classes</em>' attribute.
+	 * @see #isSetDiscoverAnnotatedClasses()
+	 * @see #unsetDiscoverAnnotatedClasses()
+	 * @see #isDiscoverAnnotatedClasses()
+	 * @generated
+	 */
+	public void setDiscoverAnnotatedClasses(boolean newDiscoverAnnotatedClasses) {
+		boolean oldDiscoverAnnotatedClasses = discoverAnnotatedClasses;
+		discoverAnnotatedClasses = newDiscoverAnnotatedClasses;
+		boolean oldDiscoverAnnotatedClassesESet = discoverAnnotatedClassesESet;
+		discoverAnnotatedClassesESet = true;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JpaCorePackage.JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES, oldDiscoverAnnotatedClasses, discoverAnnotatedClasses, !oldDiscoverAnnotatedClassesESet));
+	}
+
+	/**
+	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.JpaProject#isDiscoverAnnotatedClasses <em>Discover Annotated Classes</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isSetDiscoverAnnotatedClasses()
+	 * @see #isDiscoverAnnotatedClasses()
+	 * @see #setDiscoverAnnotatedClasses(boolean)
+	 * @generated
+	 */
+	public void unsetDiscoverAnnotatedClasses() {
+		boolean oldDiscoverAnnotatedClasses = discoverAnnotatedClasses;
+		boolean oldDiscoverAnnotatedClassesESet = discoverAnnotatedClassesESet;
+		discoverAnnotatedClasses = DISCOVER_ANNOTATED_CLASSES_EDEFAULT;
+		discoverAnnotatedClassesESet = false;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.UNSET, JpaCorePackage.JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES, oldDiscoverAnnotatedClasses, DISCOVER_ANNOTATED_CLASSES_EDEFAULT, oldDiscoverAnnotatedClassesESet));
+	}
+
+	/**
+	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.JpaProject#isDiscoverAnnotatedClasses <em>Discover Annotated Classes</em>}' attribute is set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return whether the value of the '<em>Discover Annotated Classes</em>' attribute is set.
+	 * @see #unsetDiscoverAnnotatedClasses()
+	 * @see #isDiscoverAnnotatedClasses()
+	 * @see #setDiscoverAnnotatedClasses(boolean)
+	 * @generated
+	 */
+	public boolean isSetDiscoverAnnotatedClasses() {
+		return discoverAnnotatedClassesESet;
 	}
 
 	@Override
@@ -570,6 +681,8 @@ public class JpaProject extends JpaEObject implements IJpaProject
 				return getPlatform();
 			case JpaCorePackage.JPA_PROJECT__DATA_SOURCE :
 				return getDataSource();
+			case JpaCorePackage.JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES :
+				return isDiscoverAnnotatedClasses() ? Boolean.TRUE : Boolean.FALSE;
 			case JpaCorePackage.JPA_PROJECT__FILES :
 				return getFiles();
 		}
@@ -590,6 +703,9 @@ public class JpaProject extends JpaEObject implements IJpaProject
 				return;
 			case JpaCorePackage.JPA_PROJECT__DATA_SOURCE :
 				setDataSource((IJpaDataSource) newValue);
+				return;
+			case JpaCorePackage.JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES :
+				setDiscoverAnnotatedClasses(((Boolean) newValue).booleanValue());
 				return;
 			case JpaCorePackage.JPA_PROJECT__FILES :
 				getFiles().clear();
@@ -613,6 +729,9 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			case JpaCorePackage.JPA_PROJECT__DATA_SOURCE :
 				setDataSource((IJpaDataSource) null);
 				return;
+			case JpaCorePackage.JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES :
+				unsetDiscoverAnnotatedClasses();
+				return;
 			case JpaCorePackage.JPA_PROJECT__FILES :
 				getFiles().clear();
 				return;
@@ -632,10 +751,31 @@ public class JpaProject extends JpaEObject implements IJpaProject
 				return platform != null;
 			case JpaCorePackage.JPA_PROJECT__DATA_SOURCE :
 				return dataSource != null;
+			case JpaCorePackage.JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES :
+				return isSetDiscoverAnnotatedClasses();
 			case JpaCorePackage.JPA_PROJECT__FILES :
 				return files != null && !files.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (discoverAnnotatedClasses: ");
+		if (discoverAnnotatedClassesESet)
+			result.append(discoverAnnotatedClasses);
+		else
+			result.append("<unset>");
+		result.append(')');
+		return result.toString();
 	}
 
 	public ConnectionProfile connectionProfile() {

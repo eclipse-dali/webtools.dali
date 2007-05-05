@@ -77,7 +77,7 @@ public class JpaFacetUtils
 			prefs.flush();
 		}
 		catch( BackingStoreException e ) {
-			// TODO: Handle this.
+			JptCorePlugin.log(e);
 		}
 	}
 	
@@ -107,5 +107,33 @@ public class JpaFacetUtils
 		project.setPersistentProperty(CONNECTION_KEY, connectionName);
 	}
 	
-//	public static boolean getUsesContainerImplementation
+	public static boolean getDiscoverAnnotatedClasses(final IProject project) {
+		final IScopeContext context = new ProjectScope(project);
+		final IEclipsePreferences prefs = context.getNode(JptCorePlugin.PLUGIN_ID);
+		
+		return prefs.getBoolean(IJpaCoreConstants.DISCOVER_ANNOTATED_CLASSES, false);
+	}
+	
+	public static void setDiscoverAnnotatedClasses(final IProject project, boolean discoverAnnotatedClasses) 
+		throws CoreException
+	{
+		final IScopeContext context = new ProjectScope(project);
+		final IEclipsePreferences prefs = context.getNode(JptCorePlugin.PLUGIN_ID);
+		
+		JpaProject jpaProject = (JpaProject) JptCorePlugin.getJpaProject(project);
+		
+		if (jpaProject == null) {
+			throw new IllegalArgumentException(project.getName());
+		}
+		
+		jpaProject.setDiscoverAnnotatedClasses(discoverAnnotatedClasses);
+		prefs.putBoolean(IJpaCoreConstants.DISCOVER_ANNOTATED_CLASSES, discoverAnnotatedClasses);
+		
+		try {
+			prefs.flush();
+		}
+		catch(BackingStoreException e) {
+			JptCorePlugin.log(e);
+		}
+	}
 }

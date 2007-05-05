@@ -77,6 +77,22 @@ public interface IJpaProject extends IJpaEObject
 	void setDataSource(String connectionProfileName);
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" required="true"
+	 * @generated
+	 */
+	boolean isDiscoverAnnotatedClasses();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model discoverAnnotatedClassesUnique="false" discoverAnnotatedClassesRequired="true" discoverAnnotatedClassesOrdered="false"
+	 * @generated
+	 */
+	void setDiscoverAnnotatedClasses(boolean discoverAnnotatedClasses);
+
+	/**
 	 * Returns the IJpaFile corresponding to the given IFile.
 	 * Returns <code>null</code> if unable to associate the given IFile
 	 * with an IJpaFile.

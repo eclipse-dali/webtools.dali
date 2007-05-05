@@ -19,8 +19,10 @@ import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentType;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
+import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.content.orm.XmlRootContentNode;
@@ -32,6 +34,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -46,6 +49,7 @@ public class PersistenceUnitContext extends BaseContext
 	//private Collection<JarFileContext> jarFilesContexts;
 	
 	private IGeneratorRepository generatorRepository;
+	
 	/**
 	 * Stores the JavaPersistentTypeContext for JavaPersistentTypes that are referenced
 	 * by more than one orm.xml file.  An error will be given to the user for this condition
@@ -104,20 +108,58 @@ public class PersistenceUnitContext extends BaseContext
 	
 	protected List<JavaTypeContext> buildJavaClassesContexts() {
 		List<JavaTypeContext> javaPersistentTypeContexts = new ArrayList<JavaTypeContext>();
-		for (JavaClassRef javaClassRef : persistenceUnit.getClasses()) {
-			JavaPersistentType javaPersistentType = javaPersistentTypeFor(javaClassRef);
-			if (javaPersistentType != null) {
-				//if it's already specified in an orm.xml file then that is its context, 
-				//no need to add a javaTypeMappingContext
-				if (xmlTypeMappingContextFor(javaPersistentType.getMapping())== null) {
-					JavaTypeContext javaTypeContext = 
-						(JavaTypeContext) getPlatform().buildJavaTypeContext(this, javaPersistentType.getMapping());
-					javaPersistentTypeContexts.add(javaTypeContext);
-				}
+		for (JavaPersistentType jpType : allIncludedJavaPersistentTypes()) {
+			//if it's already specified in an orm.xml file then that is its context, 
+			//no need to add a javaTypeMappingContext
+			if (xmlTypeMappingContextFor(jpType.getMapping()) == null) {
+				JavaTypeContext javaTypeContext = 
+					(JavaTypeContext) getPlatform().buildJavaTypeContext(this, jpType.getMapping());
+				javaPersistentTypeContexts.add(javaTypeContext);
 			}
 		}
-		
 		return javaPersistentTypeContexts;
+	}
+	
+	protected List<JavaPersistentType> allIncludedJavaPersistentTypes() {
+		List<JavaPersistentType> jpTypes = new ArrayList<JavaPersistentType>();
+		for (Iterator<JavaPersistentType> stream = listedJavaPersistentTypes(); stream.hasNext(); ) {
+			JavaPersistentType listedJpType = stream.next();
+			if (listedJpType != null && ! jpTypes.contains(listedJpType)) {
+				jpTypes.add(listedJpType);
+			}
+		}
+		for (Iterator<JavaPersistentType> stream = discoveredJavaPersistentTypes(); stream.hasNext(); ) {
+			JavaPersistentType discoveredJpType = stream.next();
+			if (discoveredJpType != null && discoveredJpType.getMappingKey() != IMappingKeys.NULL_TYPE_MAPPING_KEY && ! jpTypes.contains(discoveredJpType)) {
+				jpTypes.add(discoveredJpType);
+			}
+		}
+		return jpTypes;
+	}
+	
+	protected Iterator<JavaPersistentType> listedJavaPersistentTypes() {
+		return new TransformationIterator<JavaClassRef, JavaPersistentType>(persistenceUnit.getClasses().iterator()) {
+			@Override
+			protected JavaPersistentType transform(JavaClassRef next) {
+				return javaPersistentTypeFor(next);
+			}
+		};
+	}
+	
+	protected Iterator<JavaPersistentType> discoveredJavaPersistentTypes() {
+		if (! persistenceUnit.getJpaProject().isDiscoverAnnotatedClasses()) {
+			return EmptyIterator.instance();
+		}
+		Collection<IJpaFile> javaJpaFiles = persistenceUnit.getJpaProject().jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE);
+		return new CompositeIterator<JavaPersistentType>(
+				new TransformationIterator<IJpaFile, Iterator<JavaPersistentType>>(javaJpaFiles.iterator()) {
+					@Override
+					protected Iterator<JavaPersistentType> transform(IJpaFile next) {
+						JpaCompilationUnit jcu = (JpaCompilationUnit) next.getContent();
+						return jcu.getTypes().iterator();
+					}
+				}
+			);
 	}
 	
 	/**

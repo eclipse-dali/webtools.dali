@@ -35,10 +35,15 @@
       <genOperations ecoreOperation="core.ecore#//IJpaProject/setDataSource">
         <genParameters ecoreParameter="core.ecore#//IJpaProject/setDataSource/connectionProfileName"/>
       </genOperations>
+      <genOperations ecoreOperation="core.ecore#//IJpaProject/isDiscoverAnnotatedClasses"/>
+      <genOperations ecoreOperation="core.ecore#//IJpaProject/setDiscoverAnnotatedClasses">
+        <genParameters ecoreParameter="core.ecore#//IJpaProject/setDiscoverAnnotatedClasses/discoverAnnotatedClasses"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="core.ecore#//JpaProject">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference core.ecore#//JpaProject/platform"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//JpaProject/dataSource"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//JpaProject/discoverAnnotatedClasses"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//JpaProject/files"/>
     </genClasses>
     <genClasses ecoreClass="core.ecore#//IJpaPlatform"/>

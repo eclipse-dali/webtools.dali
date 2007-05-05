@@ -24,9 +24,30 @@ public interface IJpaFacetDataModelProperties extends IDataModelProperties
 	public static final String CONNECTION = "IJpaFacetDataModelProperties.CONNECTION";
 	
 	/**
-	 * Not required, type String, identifies JPA implementation library
+	 * Internal, type IRuntime, identifies runtime associated with project
+	 * Used only in conjunction with validation of other properties, because this information
+	 * is otherwise inaccessible to this data model
+	 */
+	public static final String RUNTIME = "IJpaFacetDataModelProperties.RUNTIME";
+	
+	/**
+	 * Required, type boolean, identifies whether server runtime provides 
+	 * JPA implementation
+	 * If this is true, then the property JPA_LIBRARY is not used
+	 */
+	public static final String USE_SERVER_JPA_IMPLEMENTATION = "IJpaFacetDataModelProperties.USE_SERVER_JPA_IMPLEMENTATION";
+	
+	/**
+	 * Not required, type String, identifies JPA implementation library.
+	 * Only used if the property USE_SERVER_JPA_IMPLEMENTATION is false.
 	 */
 	public static final String JPA_LIBRARY = "IJpaFacetDataModelProperties.JPA_LIBRARY";
+	
+	/**
+	 * Required, type boolean, identifies whether all annotated classes are to be automatically
+	 * included as part of all persistence units
+	 */
+	public static final String DISCOVER_ANNOTATED_CLASSES = "IJpaFacetDataModelProperties.DISCOVER_ANNOTATED_CLASSES";
 	
 	/**
 	 * Required, type boolean, details whether orm.xml should be created

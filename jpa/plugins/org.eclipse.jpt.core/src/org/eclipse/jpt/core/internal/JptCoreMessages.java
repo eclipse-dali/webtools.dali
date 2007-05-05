@@ -26,6 +26,12 @@ public class JptCoreMessages extends NLS
 	
 	public static String VALIDATE_CONNECTION_NOT_CONNECTED;
 	
+	public static String VALIDATE_RUNTIME_NOT_SPECIFIED;
+	
+	public static String VALIDATE_RUNTIME_DOES_NOT_SUPPORT_EJB_30;
+	
+	public static String VALIDATE_LIBRARY_NOT_SPECIFIED;
+	
 	public static String SYNCHRONIZE_CLASSES_JOB;
 	
 	public static String SYNCHRONIZING_CLASSES_TASK;
