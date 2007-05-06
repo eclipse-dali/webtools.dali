@@ -791,13 +791,22 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ENTITY_INTERNAL__TABLE = XML_TYPE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Specified Secondary Tables</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES = XML_TYPE_MAPPING_FEATURE_COUNT + 5;
+
+	/**
 	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__PRIMARY_KEY_JOIN_COLUMNS = XML_TYPE_MAPPING_FEATURE_COUNT + 5;
+	public static final int XML_ENTITY_INTERNAL__PRIMARY_KEY_JOIN_COLUMNS = XML_TYPE_MAPPING_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Specified Primary Key Join Columns</b></em>' containment reference list.
@@ -806,7 +815,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS = XML_TYPE_MAPPING_FEATURE_COUNT + 6;
+	public static final int XML_ENTITY_INTERNAL__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS = XML_TYPE_MAPPING_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Default Primary Key Join Columns</b></em>' containment reference list.
@@ -815,7 +824,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS = XML_TYPE_MAPPING_FEATURE_COUNT + 7;
+	public static final int XML_ENTITY_INTERNAL__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS = XML_TYPE_MAPPING_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Inheritance Strategy</b></em>' attribute.
@@ -824,7 +833,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__INHERITANCE_STRATEGY = XML_TYPE_MAPPING_FEATURE_COUNT + 8;
+	public static final int XML_ENTITY_INTERNAL__INHERITANCE_STRATEGY = XML_TYPE_MAPPING_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Default Discriminator Value</b></em>' attribute.
@@ -833,7 +842,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__DEFAULT_DISCRIMINATOR_VALUE = XML_TYPE_MAPPING_FEATURE_COUNT + 9;
+	public static final int XML_ENTITY_INTERNAL__DEFAULT_DISCRIMINATOR_VALUE = XML_TYPE_MAPPING_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Specified Discriminator Value</b></em>' attribute.
@@ -842,7 +851,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__SPECIFIED_DISCRIMINATOR_VALUE = XML_TYPE_MAPPING_FEATURE_COUNT + 10;
+	public static final int XML_ENTITY_INTERNAL__SPECIFIED_DISCRIMINATOR_VALUE = XML_TYPE_MAPPING_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Discriminator Value</b></em>' attribute.
@@ -851,7 +860,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__DISCRIMINATOR_VALUE = XML_TYPE_MAPPING_FEATURE_COUNT + 11;
+	public static final int XML_ENTITY_INTERNAL__DISCRIMINATOR_VALUE = XML_TYPE_MAPPING_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Discriminator Column</b></em>' containment reference.
@@ -860,7 +869,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__DISCRIMINATOR_COLUMN = XML_TYPE_MAPPING_FEATURE_COUNT + 12;
+	public static final int XML_ENTITY_INTERNAL__DISCRIMINATOR_COLUMN = XML_TYPE_MAPPING_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
@@ -869,7 +878,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__SEQUENCE_GENERATOR = XML_TYPE_MAPPING_FEATURE_COUNT + 13;
+	public static final int XML_ENTITY_INTERNAL__SEQUENCE_GENERATOR = XML_TYPE_MAPPING_FEATURE_COUNT + 14;
 
 	/**
 	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
@@ -878,7 +887,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__TABLE_GENERATOR = XML_TYPE_MAPPING_FEATURE_COUNT + 14;
+	public static final int XML_ENTITY_INTERNAL__TABLE_GENERATOR = XML_TYPE_MAPPING_FEATURE_COUNT + 15;
 
 	/**
 	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
@@ -887,7 +896,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__ATTRIBUTE_OVERRIDES = XML_TYPE_MAPPING_FEATURE_COUNT + 15;
+	public static final int XML_ENTITY_INTERNAL__ATTRIBUTE_OVERRIDES = XML_TYPE_MAPPING_FEATURE_COUNT + 16;
 
 	/**
 	 * The feature id for the '<em><b>Specified Attribute Overrides</b></em>' containment reference list.
@@ -896,7 +905,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__SPECIFIED_ATTRIBUTE_OVERRIDES = XML_TYPE_MAPPING_FEATURE_COUNT + 16;
+	public static final int XML_ENTITY_INTERNAL__SPECIFIED_ATTRIBUTE_OVERRIDES = XML_TYPE_MAPPING_FEATURE_COUNT + 17;
 
 	/**
 	 * The feature id for the '<em><b>Default Attribute Overrides</b></em>' containment reference list.
@@ -905,7 +914,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__DEFAULT_ATTRIBUTE_OVERRIDES = XML_TYPE_MAPPING_FEATURE_COUNT + 17;
+	public static final int XML_ENTITY_INTERNAL__DEFAULT_ATTRIBUTE_OVERRIDES = XML_TYPE_MAPPING_FEATURE_COUNT + 18;
 
 	/**
 	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
@@ -914,7 +923,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__ASSOCIATION_OVERRIDES = XML_TYPE_MAPPING_FEATURE_COUNT + 18;
+	public static final int XML_ENTITY_INTERNAL__ASSOCIATION_OVERRIDES = XML_TYPE_MAPPING_FEATURE_COUNT + 19;
 
 	/**
 	 * The feature id for the '<em><b>Specified Association Overrides</b></em>' containment reference list.
@@ -923,7 +932,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__SPECIFIED_ASSOCIATION_OVERRIDES = XML_TYPE_MAPPING_FEATURE_COUNT + 19;
+	public static final int XML_ENTITY_INTERNAL__SPECIFIED_ASSOCIATION_OVERRIDES = XML_TYPE_MAPPING_FEATURE_COUNT + 20;
 
 	/**
 	 * The feature id for the '<em><b>Default Association Overrides</b></em>' containment reference list.
@@ -932,7 +941,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__DEFAULT_ASSOCIATION_OVERRIDES = XML_TYPE_MAPPING_FEATURE_COUNT + 20;
+	public static final int XML_ENTITY_INTERNAL__DEFAULT_ASSOCIATION_OVERRIDES = XML_TYPE_MAPPING_FEATURE_COUNT + 21;
 
 	/**
 	 * The feature id for the '<em><b>Named Queries</b></em>' containment reference list.
@@ -941,7 +950,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__NAMED_QUERIES = XML_TYPE_MAPPING_FEATURE_COUNT + 21;
+	public static final int XML_ENTITY_INTERNAL__NAMED_QUERIES = XML_TYPE_MAPPING_FEATURE_COUNT + 22;
 
 	/**
 	 * The feature id for the '<em><b>Named Native Queries</b></em>' containment reference list.
@@ -950,7 +959,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__NAMED_NATIVE_QUERIES = XML_TYPE_MAPPING_FEATURE_COUNT + 22;
+	public static final int XML_ENTITY_INTERNAL__NAMED_NATIVE_QUERIES = XML_TYPE_MAPPING_FEATURE_COUNT + 23;
 
 	/**
 	 * The feature id for the '<em><b>Secondary Tables</b></em>' containment reference list.
@@ -959,25 +968,16 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__SECONDARY_TABLES = XML_TYPE_MAPPING_FEATURE_COUNT + 23;
+	public static final int XML_ENTITY_INTERNAL__SECONDARY_TABLES = XML_TYPE_MAPPING_FEATURE_COUNT + 24;
 
 	/**
-	 * The feature id for the '<em><b>Specified Secondary Tables</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Virtual Secondary Tables</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES = XML_TYPE_MAPPING_FEATURE_COUNT + 24;
-
-	/**
-	 * The feature id for the '<em><b>Default Secondary Tables</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY_INTERNAL__DEFAULT_SECONDARY_TABLES = XML_TYPE_MAPPING_FEATURE_COUNT + 25;
+	public static final int XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES = XML_TYPE_MAPPING_FEATURE_COUNT + 25;
 
 	/**
 	 * The number of structural features of the '<em>Xml Entity Internal</em>' class.
@@ -1079,6 +1079,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ENTITY__TABLE = JpaCoreMappingsPackage.IENTITY__TABLE;
+
+	/**
+	 * The feature id for the '<em><b>Specified Secondary Tables</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__SPECIFIED_SECONDARY_TABLES = JpaCoreMappingsPackage.IENTITY__SPECIFIED_SECONDARY_TABLES;
 
 	/**
 	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
@@ -1252,22 +1261,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ENTITY__SECONDARY_TABLES = JpaCoreMappingsPackage.IENTITY_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Specified Secondary Tables</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Virtual Secondary Tables</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__SPECIFIED_SECONDARY_TABLES = JpaCoreMappingsPackage.IENTITY_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Default Secondary Tables</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__DEFAULT_SECONDARY_TABLES = JpaCoreMappingsPackage.IENTITY_FEATURE_COUNT + 2;
+	public static final int XML_ENTITY__VIRTUAL_SECONDARY_TABLES = JpaCoreMappingsPackage.IENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml Entity</em>' class.
@@ -1276,7 +1276,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_FEATURE_COUNT = JpaCoreMappingsPackage.IENTITY_FEATURE_COUNT + 3;
+	public static final int XML_ENTITY_FEATURE_COUNT = JpaCoreMappingsPackage.IENTITY_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.
@@ -6523,29 +6523,16 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntity#getSpecifiedSecondaryTables <em>Specified Secondary Tables</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntity#getVirtualSecondaryTables <em>Virtual Secondary Tables</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Specified Secondary Tables</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntity#getSpecifiedSecondaryTables()
+	 * @return the meta object for the containment reference list '<em>Virtual Secondary Tables</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntity#getVirtualSecondaryTables()
 	 * @see #getXmlEntity()
 	 * @generated
 	 */
-	public EReference getXmlEntity_SpecifiedSecondaryTables() {
+	public EReference getXmlEntity_VirtualSecondaryTables() {
 		return (EReference) xmlEntityEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntity#getDefaultSecondaryTables <em>Default Secondary Tables</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Default Secondary Tables</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlEntity#getDefaultSecondaryTables()
-	 * @see #getXmlEntity()
-	 * @generated
-	 */
-	public EReference getXmlEntity_DefaultSecondaryTables() {
-		return (EReference) xmlEntityEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -7750,8 +7737,7 @@ public class OrmPackage extends EPackageImpl
 		createEReference(xmlEntityForXmlEClass, XML_ENTITY_FOR_XML__DISCRIMINATOR_COLUMN_FOR_XML);
 		xmlEntityEClass = createEClass(XML_ENTITY);
 		createEReference(xmlEntityEClass, XML_ENTITY__SECONDARY_TABLES);
-		createEReference(xmlEntityEClass, XML_ENTITY__SPECIFIED_SECONDARY_TABLES);
-		createEReference(xmlEntityEClass, XML_ENTITY__DEFAULT_SECONDARY_TABLES);
+		createEReference(xmlEntityEClass, XML_ENTITY__VIRTUAL_SECONDARY_TABLES);
 		xmlEmbeddableEClass = createEClass(XML_EMBEDDABLE);
 		xmlAttributeMappingEClass = createEClass(XML_ATTRIBUTE_MAPPING);
 		createEReference(xmlAttributeMappingEClass, XML_ATTRIBUTE_MAPPING__PERSISTENT_ATTRIBUTE);
@@ -8035,8 +8021,7 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getXmlEntityForXml_DiscriminatorColumnForXml(), this.getXmlDiscriminatorColumn(), null, "discriminatorColumnForXml", null, 0, 1, XmlEntityForXml.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(xmlEntityEClass, XmlEntity.class, "XmlEntity", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlEntity_SecondaryTables(), theJpaCoreMappingsPackage.getISecondaryTable(), null, "secondaryTables", null, 0, -1, XmlEntity.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_SpecifiedSecondaryTables(), theJpaCoreMappingsPackage.getISecondaryTable(), null, "specifiedSecondaryTables", null, 0, -1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_DefaultSecondaryTables(), theJpaCoreMappingsPackage.getISecondaryTable(), null, "defaultSecondaryTables", null, 0, -1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_VirtualSecondaryTables(), theJpaCoreMappingsPackage.getISecondaryTable(), null, "virtualSecondaryTables", null, 0, -1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(xmlEmbeddableEClass, XmlEmbeddable.class, "XmlEmbeddable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlAttributeMappingEClass, XmlAttributeMapping.class, "XmlAttributeMapping", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlAttributeMapping_PersistentAttribute(), this.getXmlPersistentAttribute(), null, "persistentAttribute", null, 1, 1, XmlAttributeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8567,20 +8552,12 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference XML_ENTITY__SECONDARY_TABLES = eINSTANCE.getXmlEntity_SecondaryTables();
 
 		/**
-		 * The meta object literal for the '<em><b>Specified Secondary Tables</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Virtual Secondary Tables</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference XML_ENTITY__SPECIFIED_SECONDARY_TABLES = eINSTANCE.getXmlEntity_SpecifiedSecondaryTables();
-
-		/**
-		 * The meta object literal for the '<em><b>Default Secondary Tables</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ENTITY__DEFAULT_SECONDARY_TABLES = eINSTANCE.getXmlEntity_DefaultSecondaryTables();
+		public static final EReference XML_ENTITY__VIRTUAL_SECONDARY_TABLES = eINSTANCE.getXmlEntity_VirtualSecondaryTables();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEmbeddable <em>Xml Embeddable</em>}' class.

@@ -170,6 +170,18 @@ public class JpaUiMappingsMessages extends NLS
 	public static String OrderByComposite_customOrdering;
 	public static String OrderByComposite_orderByLabel;
 
+	public static String SecondaryTablesComposite_secondaryTables;
+	public static String SecondaryTablesComposite_add;
+	public static String SecondaryTablesComposite_edit;
+	public static String SecondaryTablesComposite_remove;
+
+	public static String SecondaryTableDialog_editSecondaryTable;
+	public static String SecondaryTableDialog_name;
+	public static String SecondaryTableDialog_catalog;
+	public static String SecondaryTableDialog_schema;
+	public static String SecondaryTableDialog_defaultSchema;
+	public static String SecondaryTableDialog_defaultCatalog;	
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JpaUiMappingsMessages.class);

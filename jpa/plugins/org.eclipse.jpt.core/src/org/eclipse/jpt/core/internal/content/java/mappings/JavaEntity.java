@@ -65,12 +65,6 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
  * A representation of the model object '<em><b>Java Entity</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaEntity#getSecondaryTables <em>Secondary Tables</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaEntity()
  * @model kind="class"
@@ -127,6 +121,16 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	 * @ordered
 	 */
 	protected ITable table;
+
+	/**
+	 * The cached value of the '{@link #getSpecifiedSecondaryTables() <em>Specified Secondary Tables</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSpecifiedSecondaryTables()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ISecondaryTable> specifiedSecondaryTables;
 
 	/**
 	 * The cached value of the '{@link #getSpecifiedPrimaryKeyJoinColumns() <em>Specified Primary Key Join Columns</em>}' containment reference list.
@@ -308,16 +312,6 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	 */
 	protected EList<INamedNativeQuery> namedNativeQueries;
 
-	/**
-	 * The cached value of the '{@link #getSecondaryTables() <em>Secondary Tables</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getSecondaryTables()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<ISecondaryTable> secondaryTables;
-
 	private AnnotationElementAdapter nameAdapter;
 
 	private AnnotationElementAdapter inheritanceStrategyAdapter;
@@ -407,7 +401,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 			case JpaCoreMappingsPackage.IENTITY__SPECIFIED_ASSOCIATION_OVERRIDES :
 				this.associationOverridesChanged(notification);
 				break;
-			case JpaJavaMappingsPackage.JAVA_ENTITY__SECONDARY_TABLES :
+			case JpaCoreMappingsPackage.IENTITY__SPECIFIED_SECONDARY_TABLES :
 				this.secondaryTablesChanged(notification);
 				break;
 			case JpaCoreMappingsPackage.IENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
@@ -1238,24 +1232,28 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Secondary Tables</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Specified Secondary Tables</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.core.internal.mappings.ISecondaryTable}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Secondary Tables</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>Specified Secondary Tables</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Secondary Tables</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaEntity_SecondaryTables()
+	 * @return the value of the '<em>Specified Secondary Tables</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIEntity_SpecifiedSecondaryTables()
 	 * @model type="org.eclipse.jpt.core.internal.mappings.ISecondaryTable" containment="true"
 	 * @generated
 	 */
-	public EList<ISecondaryTable> getSecondaryTables() {
-		if (secondaryTables == null) {
-			secondaryTables = new EObjectContainmentEList<ISecondaryTable>(ISecondaryTable.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__SECONDARY_TABLES);
+	public EList<ISecondaryTable> getSpecifiedSecondaryTables() {
+		if (specifiedSecondaryTables == null) {
+			specifiedSecondaryTables = new EObjectContainmentEList<ISecondaryTable>(ISecondaryTable.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_SECONDARY_TABLES);
 		}
-		return secondaryTables;
+		return specifiedSecondaryTables;
+	}
+
+	public EList<ISecondaryTable> getSecondaryTables() {
+		return getSpecifiedSecondaryTables();
 	}
 
 	public boolean containsSecondaryTable(String name) {
@@ -1803,6 +1801,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		switch (featureID) {
 			case JpaJavaMappingsPackage.JAVA_ENTITY__TABLE :
 				return basicSetTable(null, msgs);
+			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_SECONDARY_TABLES :
+				return ((InternalEList<?>) getSpecifiedSecondaryTables()).basicRemove(otherEnd, msgs);
 			case JpaJavaMappingsPackage.JAVA_ENTITY__PRIMARY_KEY_JOIN_COLUMNS :
 				return ((InternalEList<?>) getPrimaryKeyJoinColumns()).basicRemove(otherEnd, msgs);
 			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
@@ -1831,8 +1831,6 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				return ((InternalEList<?>) getNamedQueries()).basicRemove(otherEnd, msgs);
 			case JpaJavaMappingsPackage.JAVA_ENTITY__NAMED_NATIVE_QUERIES :
 				return ((InternalEList<?>) getNamedNativeQueries()).basicRemove(otherEnd, msgs);
-			case JpaJavaMappingsPackage.JAVA_ENTITY__SECONDARY_TABLES :
-				return ((InternalEList<?>) getSecondaryTables()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1858,6 +1856,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				return getDefaultName();
 			case JpaJavaMappingsPackage.JAVA_ENTITY__TABLE :
 				return getTable();
+			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_SECONDARY_TABLES :
+				return getSpecifiedSecondaryTables();
 			case JpaJavaMappingsPackage.JAVA_ENTITY__PRIMARY_KEY_JOIN_COLUMNS :
 				return getPrimaryKeyJoinColumns();
 			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
@@ -1894,8 +1894,6 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				return getNamedQueries();
 			case JpaJavaMappingsPackage.JAVA_ENTITY__NAMED_NATIVE_QUERIES :
 				return getNamedNativeQueries();
-			case JpaJavaMappingsPackage.JAVA_ENTITY__SECONDARY_TABLES :
-				return getSecondaryTables();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1911,6 +1909,10 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		switch (featureID) {
 			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_NAME :
 				setSpecifiedName((String) newValue);
+				return;
+			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_SECONDARY_TABLES :
+				getSpecifiedSecondaryTables().clear();
+				getSpecifiedSecondaryTables().addAll((Collection<? extends ISecondaryTable>) newValue);
 				return;
 			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
 				getSpecifiedPrimaryKeyJoinColumns().clear();
@@ -1959,10 +1961,6 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				getNamedNativeQueries().clear();
 				getNamedNativeQueries().addAll((Collection<? extends INamedNativeQuery>) newValue);
 				return;
-			case JpaJavaMappingsPackage.JAVA_ENTITY__SECONDARY_TABLES :
-				getSecondaryTables().clear();
-				getSecondaryTables().addAll((Collection<? extends ISecondaryTable>) newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1977,6 +1975,9 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		switch (featureID) {
 			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_NAME :
 				setSpecifiedName(SPECIFIED_NAME_EDEFAULT);
+				return;
+			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_SECONDARY_TABLES :
+				getSpecifiedSecondaryTables().clear();
 				return;
 			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
 				getSpecifiedPrimaryKeyJoinColumns().clear();
@@ -2017,9 +2018,6 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 			case JpaJavaMappingsPackage.JAVA_ENTITY__NAMED_NATIVE_QUERIES :
 				getNamedNativeQueries().clear();
 				return;
-			case JpaJavaMappingsPackage.JAVA_ENTITY__SECONDARY_TABLES :
-				getSecondaryTables().clear();
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -2038,6 +2036,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				return DEFAULT_NAME_EDEFAULT == null ? defaultName != null : !DEFAULT_NAME_EDEFAULT.equals(defaultName);
 			case JpaJavaMappingsPackage.JAVA_ENTITY__TABLE :
 				return table != null;
+			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_SECONDARY_TABLES :
+				return specifiedSecondaryTables != null && !specifiedSecondaryTables.isEmpty();
 			case JpaJavaMappingsPackage.JAVA_ENTITY__PRIMARY_KEY_JOIN_COLUMNS :
 				return !getPrimaryKeyJoinColumns().isEmpty();
 			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
@@ -2074,8 +2074,6 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				return namedQueries != null && !namedQueries.isEmpty();
 			case JpaJavaMappingsPackage.JAVA_ENTITY__NAMED_NATIVE_QUERIES :
 				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
-			case JpaJavaMappingsPackage.JAVA_ENTITY__SECONDARY_TABLES :
-				return secondaryTables != null && !secondaryTables.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -2095,6 +2093,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 					return JpaCoreMappingsPackage.IENTITY__DEFAULT_NAME;
 				case JpaJavaMappingsPackage.JAVA_ENTITY__TABLE :
 					return JpaCoreMappingsPackage.IENTITY__TABLE;
+				case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_SECONDARY_TABLES :
+					return JpaCoreMappingsPackage.IENTITY__SPECIFIED_SECONDARY_TABLES;
 				case JpaJavaMappingsPackage.JAVA_ENTITY__PRIMARY_KEY_JOIN_COLUMNS :
 					return JpaCoreMappingsPackage.IENTITY__PRIMARY_KEY_JOIN_COLUMNS;
 				case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
@@ -2153,6 +2153,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 					return JpaJavaMappingsPackage.JAVA_ENTITY__DEFAULT_NAME;
 				case JpaCoreMappingsPackage.IENTITY__TABLE :
 					return JpaJavaMappingsPackage.JAVA_ENTITY__TABLE;
+				case JpaCoreMappingsPackage.IENTITY__SPECIFIED_SECONDARY_TABLES :
+					return JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_SECONDARY_TABLES;
 				case JpaCoreMappingsPackage.IENTITY__PRIMARY_KEY_JOIN_COLUMNS :
 					return JpaJavaMappingsPackage.JAVA_ENTITY__PRIMARY_KEY_JOIN_COLUMNS;
 				case JpaCoreMappingsPackage.IENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :

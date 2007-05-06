@@ -377,7 +377,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	}
 
 	public boolean isDiscoverAnnotatedClasses() {
-		if (! isSetDiscoverAnnotatedClasses()) {
+		if (!isSetDiscoverAnnotatedClasses()) {
 			setDiscoverAnnotatedClasses(JpaFacetUtils.getDiscoverAnnotatedClasses(project));
 		}
 		return isDiscoverAnnotatedClassesGen();

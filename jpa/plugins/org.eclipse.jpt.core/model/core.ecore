@@ -130,6 +130,8 @@
           changeable="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="table" lowerBound="1"
           eType="#//mappings/ITable" changeable="false" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="specifiedSecondaryTables"
+          upperBound="-1" eType="#//mappings/ISecondaryTable" containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="primaryKeyJoinColumns"
           upperBound="-1" eType="#//mappings/IPrimaryKeyJoinColumn" changeable="false"
           volatile="true" transient="true" containment="true" resolveProxies="false"/>

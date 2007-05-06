@@ -20,7 +20,7 @@ public class SecondaryTableTranslator extends AbstractTableTranslator
 	private IEntity entity;
 
 	public SecondaryTableTranslator() {
-		super(SECONDARY_TABLE, JPA_CORE_XML_PKG.getXmlEntity_SpecifiedSecondaryTables());
+		super(SECONDARY_TABLE, MAPPINGS_PKG.getIEntity_SpecifiedSecondaryTables());
 	}
 	
 	

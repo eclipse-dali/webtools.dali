@@ -28,6 +28,7 @@ import org.eclipse.jpt.db.internal.Table;
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IEntity#getSpecifiedName <em>Specified Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IEntity#getDefaultName <em>Default Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IEntity#getTable <em>Table</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.mappings.IEntity#getSpecifiedSecondaryTables <em>Specified Secondary Tables</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IEntity#getPrimaryKeyJoinColumns <em>Primary Key Join Columns</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IEntity#getSpecifiedPrimaryKeyJoinColumns <em>Specified Primary Key Join Columns</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IEntity#getDefaultPrimaryKeyJoinColumns <em>Default Primary Key Join Columns</em>}</li>
@@ -110,6 +111,22 @@ public interface IEntity extends ITypeMapping
 	 * @generated
 	 */
 	ITable getTable();
+
+	/**
+	 * Returns the value of the '<em><b>Specified Secondary Tables</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.internal.mappings.ISecondaryTable}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Specified Secondary Tables</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Specified Secondary Tables</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_SpecifiedSecondaryTables()
+	 * @model type="org.eclipse.jpt.core.internal.mappings.ISecondaryTable" containment="true"
+	 * @generated
+	 */
+	EList<ISecondaryTable> getSpecifiedSecondaryTables();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -536,8 +553,6 @@ public interface IEntity extends ITypeMapping
 	INamedQuery createNamedQuery(int index);
 
 	INamedNativeQuery createNamedNativeQuery(int index);
-
-
 	abstract class OverrideOwner implements IOverride.Owner
 	{
 		protected IEntity entity;
@@ -554,8 +569,6 @@ public interface IEntity extends ITypeMapping
 			return entity.getTextRange();
 		}
 	}
-
-
 	class AttributeOverrideOwner extends OverrideOwner
 	{
 		public AttributeOverrideOwner(IEntity entity) {
@@ -582,8 +595,6 @@ public interface IEntity extends ITypeMapping
 			return entity.getDefaultAttributeOverrides().contains(override);
 		}
 	}
-
-
 	class AssociationOverrideOwner extends OverrideOwner
 	{
 		public AssociationOverrideOwner(IEntity entity) {
@@ -606,8 +617,6 @@ public interface IEntity extends ITypeMapping
 			return entity.getDefaultAssociationOverrides().contains(override);
 		}
 	}
-
-
 	class PrimaryKeyJoinColumnOwner implements IAbstractJoinColumn.Owner
 	{
 		private IEntity entity;

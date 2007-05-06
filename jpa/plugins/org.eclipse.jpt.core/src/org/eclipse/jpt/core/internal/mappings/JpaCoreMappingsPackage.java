@@ -165,13 +165,22 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IENTITY__TABLE = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Specified Secondary Tables</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IENTITY__SPECIFIED_SECONDARY_TABLES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__PRIMARY_KEY_JOIN_COLUMNS = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 3;
+	public static final int IENTITY__PRIMARY_KEY_JOIN_COLUMNS = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Specified Primary Key Join Columns</b></em>' containment reference list.
@@ -180,7 +189,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 4;
+	public static final int IENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Default Primary Key Join Columns</b></em>' containment reference list.
@@ -189,7 +198,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 5;
+	public static final int IENTITY__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Inheritance Strategy</b></em>' attribute.
@@ -198,7 +207,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__INHERITANCE_STRATEGY = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 6;
+	public static final int IENTITY__INHERITANCE_STRATEGY = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Default Discriminator Value</b></em>' attribute.
@@ -207,7 +216,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__DEFAULT_DISCRIMINATOR_VALUE = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 7;
+	public static final int IENTITY__DEFAULT_DISCRIMINATOR_VALUE = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Specified Discriminator Value</b></em>' attribute.
@@ -216,7 +225,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__SPECIFIED_DISCRIMINATOR_VALUE = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 8;
+	public static final int IENTITY__SPECIFIED_DISCRIMINATOR_VALUE = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Discriminator Value</b></em>' attribute.
@@ -225,7 +234,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__DISCRIMINATOR_VALUE = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 9;
+	public static final int IENTITY__DISCRIMINATOR_VALUE = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Discriminator Column</b></em>' containment reference.
@@ -234,7 +243,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__DISCRIMINATOR_COLUMN = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 10;
+	public static final int IENTITY__DISCRIMINATOR_COLUMN = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
@@ -243,7 +252,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__SEQUENCE_GENERATOR = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 11;
+	public static final int IENTITY__SEQUENCE_GENERATOR = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
@@ -252,7 +261,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__TABLE_GENERATOR = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 12;
+	public static final int IENTITY__TABLE_GENERATOR = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
@@ -261,7 +270,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__ATTRIBUTE_OVERRIDES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 13;
+	public static final int IENTITY__ATTRIBUTE_OVERRIDES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 14;
 
 	/**
 	 * The feature id for the '<em><b>Specified Attribute Overrides</b></em>' containment reference list.
@@ -270,7 +279,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__SPECIFIED_ATTRIBUTE_OVERRIDES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 14;
+	public static final int IENTITY__SPECIFIED_ATTRIBUTE_OVERRIDES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 15;
 
 	/**
 	 * The feature id for the '<em><b>Default Attribute Overrides</b></em>' containment reference list.
@@ -279,7 +288,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__DEFAULT_ATTRIBUTE_OVERRIDES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 15;
+	public static final int IENTITY__DEFAULT_ATTRIBUTE_OVERRIDES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 16;
 
 	/**
 	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
@@ -288,7 +297,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__ASSOCIATION_OVERRIDES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 16;
+	public static final int IENTITY__ASSOCIATION_OVERRIDES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 17;
 
 	/**
 	 * The feature id for the '<em><b>Specified Association Overrides</b></em>' containment reference list.
@@ -297,7 +306,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__SPECIFIED_ASSOCIATION_OVERRIDES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 17;
+	public static final int IENTITY__SPECIFIED_ASSOCIATION_OVERRIDES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 18;
 
 	/**
 	 * The feature id for the '<em><b>Default Association Overrides</b></em>' containment reference list.
@@ -306,7 +315,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__DEFAULT_ASSOCIATION_OVERRIDES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 18;
+	public static final int IENTITY__DEFAULT_ASSOCIATION_OVERRIDES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 19;
 
 	/**
 	 * The feature id for the '<em><b>Named Queries</b></em>' containment reference list.
@@ -315,7 +324,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__NAMED_QUERIES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 19;
+	public static final int IENTITY__NAMED_QUERIES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 20;
 
 	/**
 	 * The feature id for the '<em><b>Named Native Queries</b></em>' containment reference list.
@@ -324,7 +333,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY__NAMED_NATIVE_QUERIES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 20;
+	public static final int IENTITY__NAMED_NATIVE_QUERIES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 21;
 
 	/**
 	 * The number of structural features of the '<em>IEntity</em>' class.
@@ -333,7 +342,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY_FEATURE_COUNT = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 21;
+	public static final int IENTITY_FEATURE_COUNT = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 22;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.IEmbeddable <em>IEmbeddable</em>}' class.
@@ -3813,6 +3822,19 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.mappings.IEntity#getSpecifiedSecondaryTables <em>Specified Secondary Tables</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Specified Secondary Tables</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.IEntity#getSpecifiedSecondaryTables()
+	 * @see #getIEntity()
+	 * @generated
+	 */
+	public EReference getIEntity_SpecifiedSecondaryTables() {
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IEntity#getInheritanceStrategy <em>Inheritance Strategy</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3822,7 +3844,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getIEntity_InheritanceStrategy() {
-		return (EAttribute) iEntityEClass.getEStructuralFeatures().get(6);
+		return (EAttribute) iEntityEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -3835,7 +3857,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_DiscriminatorColumn() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(10);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
@@ -3848,7 +3870,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_SequenceGenerator() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(11);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(12);
 	}
 
 	/**
@@ -3861,7 +3883,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_TableGenerator() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(12);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(13);
 	}
 
 	/**
@@ -3874,7 +3896,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getIEntity_DefaultDiscriminatorValue() {
-		return (EAttribute) iEntityEClass.getEStructuralFeatures().get(7);
+		return (EAttribute) iEntityEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -3887,7 +3909,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getIEntity_SpecifiedDiscriminatorValue() {
-		return (EAttribute) iEntityEClass.getEStructuralFeatures().get(8);
+		return (EAttribute) iEntityEClass.getEStructuralFeatures().get(9);
 	}
 
 	/**
@@ -3900,7 +3922,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getIEntity_DiscriminatorValue() {
-		return (EAttribute) iEntityEClass.getEStructuralFeatures().get(9);
+		return (EAttribute) iEntityEClass.getEStructuralFeatures().get(10);
 	}
 
 	/**
@@ -3913,7 +3935,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_PrimaryKeyJoinColumns() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(3);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -3926,7 +3948,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_SpecifiedPrimaryKeyJoinColumns() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(4);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -3939,7 +3961,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_DefaultPrimaryKeyJoinColumns() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(5);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -3952,7 +3974,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_AttributeOverrides() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(13);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(14);
 	}
 
 	/**
@@ -3965,7 +3987,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_SpecifiedAttributeOverrides() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(14);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(15);
 	}
 
 	/**
@@ -3978,7 +4000,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_DefaultAttributeOverrides() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(15);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(16);
 	}
 
 	/**
@@ -3991,7 +4013,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_AssociationOverrides() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(16);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(17);
 	}
 
 	/**
@@ -4004,7 +4026,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_SpecifiedAssociationOverrides() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(17);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(18);
 	}
 
 	/**
@@ -4017,7 +4039,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_DefaultAssociationOverrides() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(18);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(19);
 	}
 
 	/**
@@ -4030,7 +4052,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_NamedQueries() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(19);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(20);
 	}
 
 	/**
@@ -4043,7 +4065,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIEntity_NamedNativeQueries() {
-		return (EReference) iEntityEClass.getEStructuralFeatures().get(20);
+		return (EReference) iEntityEClass.getEStructuralFeatures().get(21);
 	}
 
 	/**
@@ -6113,6 +6135,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		createEAttribute(iEntityEClass, IENTITY__SPECIFIED_NAME);
 		createEAttribute(iEntityEClass, IENTITY__DEFAULT_NAME);
 		createEReference(iEntityEClass, IENTITY__TABLE);
+		createEReference(iEntityEClass, IENTITY__SPECIFIED_SECONDARY_TABLES);
 		createEReference(iEntityEClass, IENTITY__PRIMARY_KEY_JOIN_COLUMNS);
 		createEReference(iEntityEClass, IENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS);
 		createEReference(iEntityEClass, IENTITY__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS);
@@ -6375,6 +6398,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEAttribute(getIEntity_SpecifiedName(), ecorePackage.getEString(), "specifiedName", null, 0, 1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIEntity_DefaultName(), ecorePackage.getEString(), "defaultName", null, 0, 1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIEntity_Table(), this.getITable(), null, "table", null, 1, 1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getIEntity_SpecifiedSecondaryTables(), this.getISecondaryTable(), null, "specifiedSecondaryTables", null, 0, -1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIEntity_PrimaryKeyJoinColumns(), this.getIPrimaryKeyJoinColumn(), null, "primaryKeyJoinColumns", null, 0, -1, IEntity.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIEntity_SpecifiedPrimaryKeyJoinColumns(), this.getIPrimaryKeyJoinColumn(), null, "specifiedPrimaryKeyJoinColumns", null, 0, -1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIEntity_DefaultPrimaryKeyJoinColumns(), this.getIPrimaryKeyJoinColumn(), null, "defaultPrimaryKeyJoinColumns", null, 0, -1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -6596,8 +6620,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		addEEnumLiteral(orderingTypeEEnum, OrderingType.PRIMARY_KEY);
 		addEEnumLiteral(orderingTypeEEnum, OrderingType.CUSTOM);
 	}
-
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * Defines literals for the meta objects that represent
@@ -6655,6 +6677,14 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference IENTITY__TABLE = eINSTANCE.getIEntity_Table();
+
+		/**
+		 * The meta object literal for the '<em><b>Specified Secondary Tables</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference IENTITY__SPECIFIED_SECONDARY_TABLES = eINSTANCE.getIEntity_SpecifiedSecondaryTables();
 
 		/**
 		 * The meta object literal for the '<em><b>Inheritance Strategy</b></em>' attribute feature.

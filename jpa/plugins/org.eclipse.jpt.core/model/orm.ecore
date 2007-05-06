@@ -96,10 +96,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="secondaryTables" upperBound="-1"
         eType="ecore:EClass core.ecore#//mappings/ISecondaryTable" changeable="false"
         volatile="true" transient="true" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="specifiedSecondaryTables"
-        upperBound="-1" eType="ecore:EClass core.ecore#//mappings/ISecondaryTable"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="defaultSecondaryTables"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="virtualSecondaryTables"
         upperBound="-1" eType="ecore:EClass core.ecore#//mappings/ISecondaryTable"
         containment="true" resolveProxies="false"/>
   </eClassifiers>

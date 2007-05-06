@@ -8,6 +8,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.content.persistence;
 
+import static org.eclipse.jpt.core.internal.content.persistence.PersistenceUnitTransactionType.JTA_VALUE;
+import static org.eclipse.jpt.core.internal.content.persistence.PersistenceUnitTransactionType.RESOURCE_LOCAL_VALUE;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

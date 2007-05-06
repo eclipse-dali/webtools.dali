@@ -21,8 +21,7 @@ import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlEntity#getSecondaryTables <em>Secondary Tables</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlEntity#getSpecifiedSecondaryTables <em>Specified Secondary Tables</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlEntity#getDefaultSecondaryTables <em>Default Secondary Tables</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlEntity#getVirtualSecondaryTables <em>Virtual Secondary Tables</em>}</li>
  * </ul>
  * </p>
  *
@@ -49,34 +48,18 @@ public interface XmlEntity extends IEntity
 	EList<ISecondaryTable> getSecondaryTables();
 
 	/**
-	 * Returns the value of the '<em><b>Specified Secondary Tables</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Virtual Secondary Tables</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.core.internal.mappings.ISecondaryTable}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Specified Secondary Tables</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>Virtual Secondary Tables</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Specified Secondary Tables</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntity_SpecifiedSecondaryTables()
+	 * @return the value of the '<em>Virtual Secondary Tables</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntity_VirtualSecondaryTables()
 	 * @model type="org.eclipse.jpt.core.internal.mappings.ISecondaryTable" containment="true"
 	 * @generated
 	 */
-	EList<ISecondaryTable> getSpecifiedSecondaryTables();
-
-	/**
-	 * Returns the value of the '<em><b>Default Secondary Tables</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.internal.mappings.ISecondaryTable}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Default Secondary Tables</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Default Secondary Tables</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntity_DefaultSecondaryTables()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.ISecondaryTable" containment="true"
-	 * @generated
-	 */
-	EList<ISecondaryTable> getDefaultSecondaryTables();
+	EList<ISecondaryTable> getVirtualSecondaryTables();
 } // XmlEntity

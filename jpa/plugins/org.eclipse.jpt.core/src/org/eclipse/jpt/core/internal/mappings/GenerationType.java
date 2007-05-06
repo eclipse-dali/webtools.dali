@@ -9,6 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
+import static org.eclipse.jpt.core.internal.mappings.GenerationType.AUTO_VALUE;
+import static org.eclipse.jpt.core.internal.mappings.GenerationType.DEFAULT_VALUE;
+import static org.eclipse.jpt.core.internal.mappings.GenerationType.IDENTITY_VALUE;
+import static org.eclipse.jpt.core.internal.mappings.GenerationType.SEQUENCE_VALUE;
+import static org.eclipse.jpt.core.internal.mappings.GenerationType.TABLE_VALUE;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

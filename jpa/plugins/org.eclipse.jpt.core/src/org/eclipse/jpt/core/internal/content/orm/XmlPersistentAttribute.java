@@ -137,6 +137,8 @@ public class XmlPersistentAttribute extends XmlEObject
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case OrmPackage.XML_PERSISTENT_ATTRIBUTE__MAPPING :
+				return getMapping();
 			case OrmPackage.XML_PERSISTENT_ATTRIBUTE__NAME :
 				return getName();
 		}
@@ -181,6 +183,8 @@ public class XmlPersistentAttribute extends XmlEObject
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case OrmPackage.XML_PERSISTENT_ATTRIBUTE__MAPPING :
+				return getMapping() != null;
 			case OrmPackage.XML_PERSISTENT_ATTRIBUTE__NAME :
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}

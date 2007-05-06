@@ -38,6 +38,7 @@ public class EntityComposite extends BaseJpaComposite
 	
 	private TableComposite tableComposite;
 	private InheritanceComposite inheritanceComposite;
+	private SecondaryTablesComposite secondaryTablesComposite;
 	private OverridesComposite attributeOverridesComposite;
 	
 	public EntityComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -62,6 +63,11 @@ public class EntityComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		attributeOverridesControl.setLayoutData(gridData);
 
+		Control secondaryTablesControl = buildSecondaryTablesComposite(composite);
+	    gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		secondaryTablesControl.setLayoutData(gridData);
 		
 		Control inheritanceControl = buildInheritanceComposite(composite);
 	    gridData = new GridData();
@@ -99,6 +105,28 @@ public class EntityComposite extends BaseJpaComposite
 		return generalComposite;
 	}
 	
+	private Control buildSecondaryTablesComposite(Composite composite) {
+	    Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
+	    section.setText(JpaUiMappingsMessages.SecondaryTablesComposite_secondaryTables);
+
+		Composite client = getWidgetFactory().createComposite(section);
+		section.setClient(client);
+		
+		GridLayout layout = new GridLayout();
+		layout.marginWidth = 0;
+		client.setLayout(layout);
+
+		this.secondaryTablesComposite = new SecondaryTablesComposite(client, this.commandStack, getWidgetFactory());
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		this.secondaryTablesComposite.getControl().setLayoutData(gridData);
+		
+		return section;
+	}
+
 	private Control buildInheritanceComposite(Composite composite) {
 	    Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
 	    section.setText(JpaUiMappingsMessages.EntityComposite_inheritance);
@@ -149,6 +177,7 @@ public class EntityComposite extends BaseJpaComposite
 		this.entity = (IEntity) obj;
 		this.entityNameCombo.populate(obj);
 		this.attributeOverridesComposite.populate(obj);
+		this.secondaryTablesComposite.populate(obj);
 		this.inheritanceComposite.populate(obj);
 		if (this.entity != null) {
 			this.tableComposite.populate(this.entity.getTable());
@@ -162,6 +191,7 @@ public class EntityComposite extends BaseJpaComposite
 		this.entityNameCombo.populate();
 		this.tableComposite.populate();
 		this.attributeOverridesComposite.populate();
+		this.secondaryTablesComposite.populate();
 		this.inheritanceComposite.populate();
 	}
 	
@@ -176,6 +206,7 @@ public class EntityComposite extends BaseJpaComposite
 		this.entityNameCombo.dispose();
 		this.tableComposite.dispose();
 		this.attributeOverridesComposite.dispose();
+		this.secondaryTablesComposite.dispose();
 		this.inheritanceComposite.dispose();
 		super.dispose();
 	}

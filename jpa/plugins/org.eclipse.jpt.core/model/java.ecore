@@ -35,10 +35,7 @@
   </eClassifiers>
   <eSubpackages name="mappings" nsURI="jpt.core.java.mappings.xmi" nsPrefix="jpt.core.java.mappings">
     <eClassifiers xsi:type="ecore:EClass" name="JavaTypeMapping" abstract="true" eSuperTypes="#//JavaEObject #//IJavaTypeMapping"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaEntity" eSuperTypes="#//mappings/JavaTypeMapping core.ecore#//mappings/IEntity">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="secondaryTables" upperBound="-1"
-          eType="ecore:EClass core.ecore#//mappings/ISecondaryTable" containment="true"/>
-    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaEntity" eSuperTypes="#//mappings/JavaTypeMapping core.ecore#//mappings/IEntity"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaMappedSuperclass" eSuperTypes="#//mappings/JavaTypeMapping core.ecore#//mappings/IMappedSuperclass"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaEmbeddable" eSuperTypes="#//mappings/JavaTypeMapping core.ecore#//mappings/IEmbeddable"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaNullTypeMapping" eSuperTypes="#//mappings/JavaTypeMapping"/>

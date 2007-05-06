@@ -100,8 +100,6 @@ public interface IEmbedded extends IAttributeMapping
 	boolean containsAttributeOverride(String name);
 
 	boolean containsSpecifiedAttributeOverride(String name);
-
-
 	class AttributeOverrideOwner implements Owner
 	{
 		private IEmbedded embedded;

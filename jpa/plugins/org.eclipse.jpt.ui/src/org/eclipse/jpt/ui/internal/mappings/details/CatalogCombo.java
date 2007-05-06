@@ -220,9 +220,9 @@ public class CatalogCombo extends BaseJpaController
 			Database database = this.getDatabase();
 			
 			if ( database != null) {
-				Iterator catalogs = database.catalogNames();
-				for ( Iterator stream = CollectionTools.sort( catalogs); stream.hasNext(); ) {
-					this.combo.add(( String) stream.next());
+				Iterator<String> catalogs = database.catalogNames();
+				for ( Iterator<String> stream = CollectionTools.sort(catalogs); stream.hasNext(); ) {
+					this.combo.add(stream.next());
 				}
 			}
 		}

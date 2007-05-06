@@ -113,6 +113,16 @@ public class XmlEntityInternal extends XmlTypeMapping
 	protected ITable table;
 
 	/**
+	 * The cached value of the '{@link #getSpecifiedSecondaryTables() <em>Specified Secondary Tables</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSpecifiedSecondaryTables()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ISecondaryTable> specifiedSecondaryTables;
+
+	/**
 	 * The cached value of the '{@link #getSpecifiedPrimaryKeyJoinColumns() <em>Specified Primary Key Join Columns</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -293,24 +303,14 @@ public class XmlEntityInternal extends XmlTypeMapping
 	protected EList<INamedNativeQuery> namedNativeQueries;
 
 	/**
-	 * The cached value of the '{@link #getSpecifiedSecondaryTables() <em>Specified Secondary Tables</em>}' containment reference list.
+	 * The cached value of the '{@link #getVirtualSecondaryTables() <em>Virtual Secondary Tables</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getSpecifiedSecondaryTables()
+	 * @see #getVirtualSecondaryTables()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ISecondaryTable> specifiedSecondaryTables;
-
-	/**
-	 * The cached value of the '{@link #getDefaultSecondaryTables() <em>Default Secondary Tables</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDefaultSecondaryTables()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<ISecondaryTable> defaultSecondaryTables;
+	protected EList<ISecondaryTable> virtualSecondaryTables;
 
 	protected XmlEntityInternal() {
 		super();
@@ -450,8 +450,29 @@ public class XmlEntityInternal extends XmlTypeMapping
 	public EList<ISecondaryTable> getSecondaryTables() {
 		EList<ISecondaryTable> list = new BasicEList<ISecondaryTable>();
 		list.addAll(getSpecifiedSecondaryTables());
-		list.addAll(getDefaultSecondaryTables());
+		list.addAll(getVirtualSecondaryTables());
 		return list;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Virtual Secondary Tables</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.internal.mappings.ISecondaryTable}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Virtual Secondary Tables</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Virtual Secondary Tables</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntity_VirtualSecondaryTables()
+	 * @model type="org.eclipse.jpt.core.internal.mappings.ISecondaryTable" containment="true"
+	 * @generated
+	 */
+	public EList<ISecondaryTable> getVirtualSecondaryTables() {
+		if (virtualSecondaryTables == null) {
+			virtualSecondaryTables = new EObjectContainmentEList<ISecondaryTable>(ISecondaryTable.class, this, OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES);
+		}
+		return virtualSecondaryTables;
 	}
 
 	public boolean containsSecondaryTable(String name) {
@@ -474,7 +495,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Secondary Tables</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntity_SpecifiedSecondaryTables()
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIEntity_SpecifiedSecondaryTables()
 	 * @model type="org.eclipse.jpt.core.internal.mappings.ISecondaryTable" containment="true"
 	 * @generated
 	 */
@@ -483,27 +504,6 @@ public class XmlEntityInternal extends XmlTypeMapping
 			specifiedSecondaryTables = new EObjectContainmentEList<ISecondaryTable>(ISecondaryTable.class, this, OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES);
 		}
 		return specifiedSecondaryTables;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Default Secondary Tables</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.internal.mappings.ISecondaryTable}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Default Secondary Tables</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Default Secondary Tables</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntity_DefaultSecondaryTables()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.ISecondaryTable" containment="true"
-	 * @generated
-	 */
-	public EList<ISecondaryTable> getDefaultSecondaryTables() {
-		if (defaultSecondaryTables == null) {
-			defaultSecondaryTables = new EObjectContainmentEList<ISecondaryTable>(ISecondaryTable.class, this, OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_SECONDARY_TABLES);
-		}
-		return defaultSecondaryTables;
 	}
 
 	/**
@@ -1104,6 +1104,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 		switch (featureID) {
 			case OrmPackage.XML_ENTITY_INTERNAL__TABLE :
 				return basicSetTable(null, msgs);
+			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES :
+				return ((InternalEList<?>) getSpecifiedSecondaryTables()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY_INTERNAL__PRIMARY_KEY_JOIN_COLUMNS :
 				return ((InternalEList<?>) getPrimaryKeyJoinColumns()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
@@ -1134,10 +1136,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 				return ((InternalEList<?>) getNamedNativeQueries()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY_INTERNAL__SECONDARY_TABLES :
 				return ((InternalEList<?>) getSecondaryTables()).basicRemove(otherEnd, msgs);
-			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES :
-				return ((InternalEList<?>) getSpecifiedSecondaryTables()).basicRemove(otherEnd, msgs);
-			case OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_SECONDARY_TABLES :
-				return ((InternalEList<?>) getDefaultSecondaryTables()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES :
+				return ((InternalEList<?>) getVirtualSecondaryTables()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1177,6 +1177,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 				return getDefaultName();
 			case OrmPackage.XML_ENTITY_INTERNAL__TABLE :
 				return getTable();
+			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES :
+				return getSpecifiedSecondaryTables();
 			case OrmPackage.XML_ENTITY_INTERNAL__PRIMARY_KEY_JOIN_COLUMNS :
 				return getPrimaryKeyJoinColumns();
 			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
@@ -1215,10 +1217,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 				return getNamedNativeQueries();
 			case OrmPackage.XML_ENTITY_INTERNAL__SECONDARY_TABLES :
 				return getSecondaryTables();
-			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES :
-				return getSpecifiedSecondaryTables();
-			case OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_SECONDARY_TABLES :
-				return getDefaultSecondaryTables();
+			case OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES :
+				return getVirtualSecondaryTables();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1240,6 +1240,10 @@ public class XmlEntityInternal extends XmlTypeMapping
 				return;
 			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_NAME :
 				setSpecifiedName((String) newValue);
+				return;
+			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES :
+				getSpecifiedSecondaryTables().clear();
+				getSpecifiedSecondaryTables().addAll((Collection<? extends ISecondaryTable>) newValue);
 				return;
 			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
 				getSpecifiedPrimaryKeyJoinColumns().clear();
@@ -1288,13 +1292,9 @@ public class XmlEntityInternal extends XmlTypeMapping
 				getNamedNativeQueries().clear();
 				getNamedNativeQueries().addAll((Collection<? extends INamedNativeQuery>) newValue);
 				return;
-			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES :
-				getSpecifiedSecondaryTables().clear();
-				getSpecifiedSecondaryTables().addAll((Collection<? extends ISecondaryTable>) newValue);
-				return;
-			case OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_SECONDARY_TABLES :
-				getDefaultSecondaryTables().clear();
-				getDefaultSecondaryTables().addAll((Collection<? extends ISecondaryTable>) newValue);
+			case OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES :
+				getVirtualSecondaryTables().clear();
+				getVirtualSecondaryTables().addAll((Collection<? extends ISecondaryTable>) newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -1316,6 +1316,9 @@ public class XmlEntityInternal extends XmlTypeMapping
 				return;
 			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_NAME :
 				setSpecifiedName(SPECIFIED_NAME_EDEFAULT);
+				return;
+			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES :
+				getSpecifiedSecondaryTables().clear();
 				return;
 			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
 				getSpecifiedPrimaryKeyJoinColumns().clear();
@@ -1356,11 +1359,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 			case OrmPackage.XML_ENTITY_INTERNAL__NAMED_NATIVE_QUERIES :
 				getNamedNativeQueries().clear();
 				return;
-			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES :
-				getSpecifiedSecondaryTables().clear();
-				return;
-			case OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_SECONDARY_TABLES :
-				getDefaultSecondaryTables().clear();
+			case OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES :
+				getVirtualSecondaryTables().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -1384,6 +1384,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 				return DEFAULT_NAME_EDEFAULT == null ? defaultName != null : !DEFAULT_NAME_EDEFAULT.equals(defaultName);
 			case OrmPackage.XML_ENTITY_INTERNAL__TABLE :
 				return table != null;
+			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES :
+				return specifiedSecondaryTables != null && !specifiedSecondaryTables.isEmpty();
 			case OrmPackage.XML_ENTITY_INTERNAL__PRIMARY_KEY_JOIN_COLUMNS :
 				return !getPrimaryKeyJoinColumns().isEmpty();
 			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
@@ -1422,10 +1424,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
 			case OrmPackage.XML_ENTITY_INTERNAL__SECONDARY_TABLES :
 				return !getSecondaryTables().isEmpty();
-			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES :
-				return specifiedSecondaryTables != null && !specifiedSecondaryTables.isEmpty();
-			case OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_SECONDARY_TABLES :
-				return defaultSecondaryTables != null && !defaultSecondaryTables.isEmpty();
+			case OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES :
+				return virtualSecondaryTables != null && !virtualSecondaryTables.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1455,6 +1455,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 					return JpaCoreMappingsPackage.IENTITY__DEFAULT_NAME;
 				case OrmPackage.XML_ENTITY_INTERNAL__TABLE :
 					return JpaCoreMappingsPackage.IENTITY__TABLE;
+				case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES :
+					return JpaCoreMappingsPackage.IENTITY__SPECIFIED_SECONDARY_TABLES;
 				case OrmPackage.XML_ENTITY_INTERNAL__PRIMARY_KEY_JOIN_COLUMNS :
 					return JpaCoreMappingsPackage.IENTITY__PRIMARY_KEY_JOIN_COLUMNS;
 				case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
@@ -1499,10 +1501,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 			switch (derivedFeatureID) {
 				case OrmPackage.XML_ENTITY_INTERNAL__SECONDARY_TABLES :
 					return OrmPackage.XML_ENTITY__SECONDARY_TABLES;
-				case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES :
-					return OrmPackage.XML_ENTITY__SPECIFIED_SECONDARY_TABLES;
-				case OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_SECONDARY_TABLES :
-					return OrmPackage.XML_ENTITY__DEFAULT_SECONDARY_TABLES;
+				case OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES :
+					return OrmPackage.XML_ENTITY__VIRTUAL_SECONDARY_TABLES;
 				default :
 					return -1;
 			}
@@ -1535,6 +1535,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 					return OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_NAME;
 				case JpaCoreMappingsPackage.IENTITY__TABLE :
 					return OrmPackage.XML_ENTITY_INTERNAL__TABLE;
+				case JpaCoreMappingsPackage.IENTITY__SPECIFIED_SECONDARY_TABLES :
+					return OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES;
 				case JpaCoreMappingsPackage.IENTITY__PRIMARY_KEY_JOIN_COLUMNS :
 					return OrmPackage.XML_ENTITY_INTERNAL__PRIMARY_KEY_JOIN_COLUMNS;
 				case JpaCoreMappingsPackage.IENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS :
@@ -1579,10 +1581,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 			switch (baseFeatureID) {
 				case OrmPackage.XML_ENTITY__SECONDARY_TABLES :
 					return OrmPackage.XML_ENTITY_INTERNAL__SECONDARY_TABLES;
-				case OrmPackage.XML_ENTITY__SPECIFIED_SECONDARY_TABLES :
-					return OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES;
-				case OrmPackage.XML_ENTITY__DEFAULT_SECONDARY_TABLES :
-					return OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_SECONDARY_TABLES;
+				case OrmPackage.XML_ENTITY__VIRTUAL_SECONDARY_TABLES :
+					return OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES;
 				default :
 					return -1;
 			}

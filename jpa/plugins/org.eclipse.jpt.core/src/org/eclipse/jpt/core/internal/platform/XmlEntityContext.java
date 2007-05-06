@@ -239,13 +239,13 @@ public class XmlEntityContext extends XmlTypeContext
 				if (!getEntity().containsSecondaryTable(secondaryTable.getName())) {
 					ISecondaryTable defaultSecondaryTable = getEntity().createSecondaryTable(0);
 					defaultSecondaryTable.setSpecifiedName(secondaryTable.getName());
-					getEntity().getDefaultSecondaryTables().add(defaultSecondaryTable);
+					getEntity().getVirtualSecondaryTables().add(defaultSecondaryTable);
 				}
 			}
 		}
 		Collection<ISecondaryTable> secondaryTablesToRemove = new ArrayList<ISecondaryTable>();
 		
-		for (Iterator<ISecondaryTable> i = getEntity().getDefaultSecondaryTables().iterator(); i.hasNext(); ) {
+		for (Iterator<ISecondaryTable> i = getEntity().getVirtualSecondaryTables().iterator(); i.hasNext(); ) {
 			ISecondaryTable secondaryTable = i.next();
 			if (getXmlTypeMapping().isXmlMetadataComplete()) {
 				secondaryTablesToRemove.add(secondaryTable);
@@ -258,7 +258,7 @@ public class XmlEntityContext extends XmlTypeContext
 				secondaryTablesToRemove.add(secondaryTable);			
 			}
 		}
-		getEntity().getDefaultSecondaryTables().removeAll(secondaryTablesToRemove);
+		getEntity().getVirtualSecondaryTables().removeAll(secondaryTablesToRemove);
 		
 	}
 	

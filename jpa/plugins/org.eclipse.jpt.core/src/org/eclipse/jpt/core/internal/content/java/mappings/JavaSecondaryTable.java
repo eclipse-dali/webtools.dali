@@ -64,6 +64,11 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		return this.annotationAdapter.getAnnotation(astRoot);
 	}
 
+	@Override
+	protected void setDefaultName(String newDefaultName) {
+		throw new UnsupportedOperationException("No default name for a secondary table");
+	}
+
 	// ********** AbstractJavaTable implementation **********
 	@Override
 	protected DeclarationAnnotationElementAdapter nameAdapter(DeclarationAnnotationAdapter daa) {

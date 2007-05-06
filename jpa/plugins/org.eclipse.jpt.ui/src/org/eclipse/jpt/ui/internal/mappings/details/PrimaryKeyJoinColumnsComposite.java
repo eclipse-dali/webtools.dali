@@ -370,6 +370,9 @@ public class PrimaryKeyJoinColumnsComposite extends BaseJpaComposite
 			}
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
+					if (getControl().isDisposed()) {
+						return;
+					}
 					pkJoinColumnsListViewer.refresh();
 					overrideDefaultJoinColumnsCheckBox.setSelection(entity.containsSpecifiedPrimaryKeyJoinColumns());
 					updatePrimaryKeyJoinColumnsEnablement();
@@ -392,11 +395,5 @@ public class PrimaryKeyJoinColumnsComposite extends BaseJpaComposite
 				}
 			});
 		}
-	}
-
-	
-	public void dispose() {
-		disengageListeners();
-		super.dispose();
 	}
 }

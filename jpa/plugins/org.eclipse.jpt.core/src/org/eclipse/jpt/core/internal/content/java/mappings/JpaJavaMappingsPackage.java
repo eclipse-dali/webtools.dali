@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.jem.java.JavaRefPackage;
@@ -163,13 +162,22 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_ENTITY__TABLE = JAVA_TYPE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Specified Secondary Tables</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_ENTITY__SPECIFIED_SECONDARY_TABLES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__PRIMARY_KEY_JOIN_COLUMNS = JAVA_TYPE_MAPPING_FEATURE_COUNT + 3;
+	public static final int JAVA_ENTITY__PRIMARY_KEY_JOIN_COLUMNS = JAVA_TYPE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Specified Primary Key Join Columns</b></em>' containment reference list.
@@ -178,7 +186,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS = JAVA_TYPE_MAPPING_FEATURE_COUNT + 4;
+	public static final int JAVA_ENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS = JAVA_TYPE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Default Primary Key Join Columns</b></em>' containment reference list.
@@ -187,7 +195,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS = JAVA_TYPE_MAPPING_FEATURE_COUNT + 5;
+	public static final int JAVA_ENTITY__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS = JAVA_TYPE_MAPPING_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Inheritance Strategy</b></em>' attribute.
@@ -196,7 +204,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__INHERITANCE_STRATEGY = JAVA_TYPE_MAPPING_FEATURE_COUNT + 6;
+	public static final int JAVA_ENTITY__INHERITANCE_STRATEGY = JAVA_TYPE_MAPPING_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Default Discriminator Value</b></em>' attribute.
@@ -205,7 +213,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__DEFAULT_DISCRIMINATOR_VALUE = JAVA_TYPE_MAPPING_FEATURE_COUNT + 7;
+	public static final int JAVA_ENTITY__DEFAULT_DISCRIMINATOR_VALUE = JAVA_TYPE_MAPPING_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Specified Discriminator Value</b></em>' attribute.
@@ -214,7 +222,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__SPECIFIED_DISCRIMINATOR_VALUE = JAVA_TYPE_MAPPING_FEATURE_COUNT + 8;
+	public static final int JAVA_ENTITY__SPECIFIED_DISCRIMINATOR_VALUE = JAVA_TYPE_MAPPING_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Discriminator Value</b></em>' attribute.
@@ -223,7 +231,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__DISCRIMINATOR_VALUE = JAVA_TYPE_MAPPING_FEATURE_COUNT + 9;
+	public static final int JAVA_ENTITY__DISCRIMINATOR_VALUE = JAVA_TYPE_MAPPING_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Discriminator Column</b></em>' containment reference.
@@ -232,7 +240,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__DISCRIMINATOR_COLUMN = JAVA_TYPE_MAPPING_FEATURE_COUNT + 10;
+	public static final int JAVA_ENTITY__DISCRIMINATOR_COLUMN = JAVA_TYPE_MAPPING_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
@@ -241,7 +249,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__SEQUENCE_GENERATOR = JAVA_TYPE_MAPPING_FEATURE_COUNT + 11;
+	public static final int JAVA_ENTITY__SEQUENCE_GENERATOR = JAVA_TYPE_MAPPING_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
@@ -250,7 +258,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__TABLE_GENERATOR = JAVA_TYPE_MAPPING_FEATURE_COUNT + 12;
+	public static final int JAVA_ENTITY__TABLE_GENERATOR = JAVA_TYPE_MAPPING_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
@@ -259,7 +267,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__ATTRIBUTE_OVERRIDES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 13;
+	public static final int JAVA_ENTITY__ATTRIBUTE_OVERRIDES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 14;
 
 	/**
 	 * The feature id for the '<em><b>Specified Attribute Overrides</b></em>' containment reference list.
@@ -268,7 +276,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__SPECIFIED_ATTRIBUTE_OVERRIDES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 14;
+	public static final int JAVA_ENTITY__SPECIFIED_ATTRIBUTE_OVERRIDES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 15;
 
 	/**
 	 * The feature id for the '<em><b>Default Attribute Overrides</b></em>' containment reference list.
@@ -277,7 +285,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__DEFAULT_ATTRIBUTE_OVERRIDES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 15;
+	public static final int JAVA_ENTITY__DEFAULT_ATTRIBUTE_OVERRIDES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 16;
 
 	/**
 	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
@@ -286,7 +294,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__ASSOCIATION_OVERRIDES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 16;
+	public static final int JAVA_ENTITY__ASSOCIATION_OVERRIDES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 17;
 
 	/**
 	 * The feature id for the '<em><b>Specified Association Overrides</b></em>' containment reference list.
@@ -295,7 +303,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__SPECIFIED_ASSOCIATION_OVERRIDES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 17;
+	public static final int JAVA_ENTITY__SPECIFIED_ASSOCIATION_OVERRIDES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 18;
 
 	/**
 	 * The feature id for the '<em><b>Default Association Overrides</b></em>' containment reference list.
@@ -304,7 +312,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__DEFAULT_ASSOCIATION_OVERRIDES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 18;
+	public static final int JAVA_ENTITY__DEFAULT_ASSOCIATION_OVERRIDES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 19;
 
 	/**
 	 * The feature id for the '<em><b>Named Queries</b></em>' containment reference list.
@@ -313,7 +321,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__NAMED_QUERIES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 19;
+	public static final int JAVA_ENTITY__NAMED_QUERIES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 20;
 
 	/**
 	 * The feature id for the '<em><b>Named Native Queries</b></em>' containment reference list.
@@ -322,16 +330,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY__NAMED_NATIVE_QUERIES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 20;
-
-	/**
-	 * The feature id for the '<em><b>Secondary Tables</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JAVA_ENTITY__SECONDARY_TABLES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 21;
+	public static final int JAVA_ENTITY__NAMED_NATIVE_QUERIES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 21;
 
 	/**
 	 * The number of structural features of the '<em>Java Entity</em>' class.
@@ -3660,19 +3659,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaEntity#getSecondaryTables <em>Secondary Tables</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Secondary Tables</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JavaEntity#getSecondaryTables()
-	 * @see #getJavaEntity()
-	 * @generated
-	 */
-	public EReference getJavaEntity_SecondaryTables() {
-		return (EReference) javaEntityEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaMappedSuperclass <em>Java Mapped Superclass</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4196,7 +4182,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		// Create classes and their features
 		javaTypeMappingEClass = createEClass(JAVA_TYPE_MAPPING);
 		javaEntityEClass = createEClass(JAVA_ENTITY);
-		createEReference(javaEntityEClass, JAVA_ENTITY__SECONDARY_TABLES);
 		javaMappedSuperclassEClass = createEClass(JAVA_MAPPED_SUPERCLASS);
 		javaEmbeddableEClass = createEClass(JAVA_EMBEDDABLE);
 		javaNullTypeMappingEClass = createEClass(JAVA_NULL_TYPE_MAPPING);
@@ -4351,7 +4336,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		// Initialize classes and features; add operations and parameters
 		initEClass(javaTypeMappingEClass, JavaTypeMapping.class, "JavaTypeMapping", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaEntityEClass, JavaEntity.class, "JavaEntity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getJavaEntity_SecondaryTables(), theJpaCoreMappingsPackage.getISecondaryTable(), null, "secondaryTables", null, 0, -1, JavaEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(javaMappedSuperclassEClass, JavaMappedSuperclass.class, "JavaMappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaEmbeddableEClass, JavaEmbeddable.class, "JavaEmbeddable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaNullTypeMappingEClass, JavaNullTypeMapping.class, "JavaNullTypeMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -4393,8 +4377,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		initEClass(javaNamedNativeQueryEClass, JavaNamedNativeQuery.class, "JavaNamedNativeQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaQueryHintEClass, JavaQueryHint.class, "JavaQueryHint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 	}
-
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * Defines literals for the meta objects that represent
@@ -4418,14 +4400,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass JAVA_ENTITY = eINSTANCE.getJavaEntity();
-
-		/**
-		 * The meta object literal for the '<em><b>Secondary Tables</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference JAVA_ENTITY__SECONDARY_TABLES = eINSTANCE.getJavaEntity_SecondaryTables();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaMappedSuperclass <em>Java Mapped Superclass</em>}' class.
