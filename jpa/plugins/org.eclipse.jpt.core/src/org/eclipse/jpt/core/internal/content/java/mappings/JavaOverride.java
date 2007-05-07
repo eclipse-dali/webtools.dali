@@ -290,4 +290,8 @@ public abstract class JavaOverride extends JavaEObject implements IOverride
 		ITextRange textRange = this.member.annotationTextRange(this.daa);
 		return (textRange == null) ? getOwner().getTextRange() : textRange;
 	}
+	
+	protected IndexedDeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
+		return this.daa;
+	}
 }

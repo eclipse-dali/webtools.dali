@@ -366,19 +366,19 @@ public class JavaQueryHint extends JavaEObject implements IQueryHint
 	}
 
 	// ********** static methods **********
-	static JavaQueryHint createNamedQueryQueryHint(Member member, int index) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaQueryHint(member, buildNamedQueryQueryHintAnnotationAdapter(index));
+	static JavaQueryHint createNamedQueryQueryHint(JavaNamedQuery namedQuery,Member member, int index) {
+		return JpaJavaMappingsFactory.eINSTANCE.createJavaQueryHint(member, buildNamedQueryQueryHintAnnotationAdapter(namedQuery, index));
 	}
 
-	private static IndexedDeclarationAnnotationAdapter buildNamedQueryQueryHintAnnotationAdapter(int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(JavaNamedQuery.SINGLE_DECLARATION_ANNOTATION_ADAPTER, JPA.NAMED_QUERY__HINTS, index, JPA.QUERY_HINT);
+	private static IndexedDeclarationAnnotationAdapter buildNamedQueryQueryHintAnnotationAdapter(JavaNamedQuery namedQuery, int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(namedQuery.getDeclarationAnnotationAdapter(), JPA.NAMED_QUERY__HINTS, index, JPA.QUERY_HINT);
 	}
 
-	static JavaQueryHint createNamedNativeQueryQueryHint(Member member, int index) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaQueryHint(member, buildNamedNativeQueryQueryHintAnnotationAdapter(index));
+	static JavaQueryHint createNamedNativeQueryQueryHint(JavaNamedNativeQuery namedNativeQuery, Member member, int index) {
+		return JpaJavaMappingsFactory.eINSTANCE.createJavaQueryHint(member, buildNamedNativeQueryQueryHintAnnotationAdapter(namedNativeQuery, index));
 	}
 
-	private static IndexedDeclarationAnnotationAdapter buildNamedNativeQueryQueryHintAnnotationAdapter(int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(JavaNamedNativeQuery.SINGLE_DECLARATION_ANNOTATION_ADAPTER, JPA.NAMED_NATIVE_QUERY__HINTS, index, JPA.QUERY_HINT);
+	private static IndexedDeclarationAnnotationAdapter buildNamedNativeQueryQueryHintAnnotationAdapter(JavaNamedNativeQuery namedNativeQuery, int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(namedNativeQuery.getDeclarationAnnotationAdapter(), JPA.NAMED_NATIVE_QUERY__HINTS, index, JPA.QUERY_HINT);
 	}
 } // JavaQueryHint

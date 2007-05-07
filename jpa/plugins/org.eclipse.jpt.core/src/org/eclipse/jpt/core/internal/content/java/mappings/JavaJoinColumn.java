@@ -451,12 +451,12 @@ public class JavaJoinColumn extends AbstractJavaColumn implements IJoinColumn
 		return new CombinationIndexedDeclarationAnnotationAdapter(SINGLE_DECLARATION_ANNOTATION_ADAPTER, MULTIPLE_DECLARATION_ANNOTATION_ADAPTER, index, JPA.JOIN_COLUMN);
 	}
 
-	static JavaJoinColumn createAssociationOverrideJoinColumn(IJoinColumn.Owner owner, Member member, int index) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaJoinColumn(owner, member, buildAssociationOverrideAnnotationAdapter(index));
+	static JavaJoinColumn createAssociationOverrideJoinColumn(JavaAssociationOverride associationOverride, IJoinColumn.Owner owner, Member member, int index) {
+		return JpaJavaMappingsFactory.eINSTANCE.createJavaJoinColumn(owner, member, buildAssociationOverrideAnnotationAdapter(associationOverride, index));
 	}
 
-	private static IndexedDeclarationAnnotationAdapter buildAssociationOverrideAnnotationAdapter(int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(JavaAssociationOverride.SINGLE_DECLARATION_ANNOTATION_ADAPTER, JPA.ASSOCIATION_OVERRIDE__JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
+	private static IndexedDeclarationAnnotationAdapter buildAssociationOverrideAnnotationAdapter(JavaAssociationOverride associationOverride, int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(associationOverride.getDeclarationAnnotationAdapter(), JPA.ASSOCIATION_OVERRIDE__JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
 	}
 
 	static JavaJoinColumn createJoinTableJoinColumn(IJoinColumn.Owner owner, Member member, int index) {

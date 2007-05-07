@@ -339,7 +339,7 @@ public class JavaAssociationOverride extends JavaOverride
 	}
 
 	private JavaJoinColumn createJavaJoinColumn(int index) {
-		return JavaJoinColumn.createAssociationOverrideJoinColumn(new JoinColumnOwner(this), this.getMember(), index);
+		return JavaJoinColumn.createAssociationOverrideJoinColumn(this, new JoinColumnOwner(this), this.getMember(), index);
 	}
 
 	// ********** jpa model -> java annotations **********
