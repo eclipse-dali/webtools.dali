@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.internal.XmlEObject;
 import org.eclipse.jpt.core.internal.content.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
+import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
@@ -26,6 +27,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage
@@ -48,6 +51,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage
 
 	@Override
 	protected void initializeLayout(Composite composite) {
+		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 		GridLayout layout = new GridLayout(2, false);
 		layout.horizontalSpacing = 6;
 		composite.setLayout(layout);
@@ -62,6 +66,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.xmlPackageChooser.getControl().setLayoutData(gridData);
+		helpSystem.setHelp(xmlPackageChooser.getControl(), IJpaHelpContextIds.ENTITY_ORM_PACKAGE);
 
 		
 		CommonWidgets.buildSchemaLabel(composite, getWidgetFactory());
@@ -72,6 +77,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.xmlSchemaChooser.getCombo().setLayoutData(gridData);
+		helpSystem.setHelp(xmlSchemaChooser.getControl(), IJpaHelpContextIds.ENTITY_ORM_SCHEMA);
 
 		
 		CommonWidgets.buildCatalogLabel(composite, getWidgetFactory());
@@ -82,6 +88,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.xmlCatalogChooser.getCombo().setLayoutData(gridData);
+		helpSystem.setHelp(xmlCatalogChooser.getControl(), IJpaHelpContextIds.ENTITY_ORM_CATALOG);
 		
 		
 		CommonWidgets.buildAccessLabel(composite, getWidgetFactory());
@@ -92,6 +99,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.accessComboViewer.getControl().setLayoutData(gridData);
+		helpSystem.setHelp(accessComboViewer.getControl(), IJpaHelpContextIds.ENTITY_ORM_ACCESS);
 		
 		this.persistenceUnitMetadataSection = new PersistenceUnitMetadataSection(composite, this.commandStack, getWidgetFactory());
 		

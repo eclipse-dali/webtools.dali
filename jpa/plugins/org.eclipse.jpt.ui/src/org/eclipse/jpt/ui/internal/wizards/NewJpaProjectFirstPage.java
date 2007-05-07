@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.wizards;
 
+import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jst.j2ee.ui.project.facet.UtilityProjectFirstPage;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -18,8 +19,6 @@ public class NewJpaProjectFirstPage extends UtilityProjectFirstPage
 		super(dataModel, pageName);
 		setTitle(JptUiMessages.NewJpaProjectWizard_firstPage_title);
 		setDescription(JptUiMessages.NewJpaProjectWizard_firstPage_description);
-//		This causes an NPE - PlatformUI.getWorkbench().getHelpSystem().setHelp(this.getControl(), IJpaHelpContextIds.NEW_JPA_PROJECT);
-		// TODO
-		// setInfopopID(IJ2EEUIContextIds.NEW_UTILITY_WIZARD_P1);
+		setInfopopID(IJpaHelpContextIds.NEW_JPA_PROJECT);
 	}
 }

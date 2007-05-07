@@ -34,8 +34,15 @@ public interface IJpaHelpContextIds {
 	public static final String ENTITY_INHERITANCE_DISCRIMINATOR_COLUMN = PREFIX + "entity_inheritanceDiscriminatorColumn"; //$NON-NLS-1$
 	public static final String ENTITY_INHERITANCE_DISCRIMINATOR_VALUE = PREFIX + "entity_inheritanceDiscriminatorValue"; //$NON-NLS-1$
 	public static final String ENTITY_NAME = PREFIX + "entity_name"; //$NON-NLS-1$
+	public static final String ENTITY_ORM_PACKAGE = PREFIX + "orm_package"; //$NON-NLS-1$
+	public static final String ENTITY_ORM_SCHEMA = PREFIX + "orm_schema"; //$NON-NLS-1$
+	public static final String ENTITY_ORM_CATALOG = PREFIX + "orm_catalog"; //$NON-NLS-1$
+	public static final String ENTITY_ORM_ACCESS = PREFIX + "orm_access"; //$NON-NLS-1$
+	public static final String ENTITY_ORM_CASCADE = PREFIX + "orm_cascade"; //$NON-NLS-1$
+	public static final String ENTITY_ORM_XML = PREFIX + "orm_xml"; //$NON-NLS-1$
 	public static final String ENTITY_SCHEMA = PREFIX + "entity_schema"; //$NON-NLS-1$
 	public static final String ENTITY_TABLE = PREFIX + "entity_table"; //$NON-NLS-1$
+
 	
 	//Persistent Attribute composites
 	public static final String MAPPING_CASCADE_TYPE = PREFIX + "mapping_cascadeType"; //$NON-NLS-1$
@@ -81,18 +88,20 @@ public interface IJpaHelpContextIds {
 	public static final String PROPERTIES_JAVA_PERSISTENCE_SCHEMA = PREFIX + "properties_javaPersistenceSchema"; //$NON-NLS-1$
 	
 	//Dialogs, Wizards
+	public static final String DIALOG_CREATE_ORM = PREFIX + "dialog_createORM"; //$NON-NLS-1$
 	public static final String DIALOG_EDIT_INVERSE_JOIN_COLUNN = PREFIX + "dialog_editInverseJoinColumn"; //$NON-NLS-1$
 	public static final String DIALOG_GENERATE_ENTITIES = PREFIX + "dialog_generateEntities"; //$NON-NLS-1$
 	public static final String DIALOG_GENERATE_ENTITIES_SOURCE = PREFIX + "dialog_generateEntities_source"; //$NON-NLS-1$
 	public static final String DIALOG_GENERATE_ENTITIES_PACKAGE = PREFIX + "dialog_generateEntities_package"; //$NON-NLS-1$
 	public static final String DIALOG_GENERATE_ENTITIES_TABLES = PREFIX + "dialog_generateEntities_tables"; //$NON-NLS-1$
 	public static final String DIALOG_JPA_FACET = PREFIX + "dialog_JPAFacet"; //$NON-NLS-1$
- 	public static final String NEW_JPA_PROJECT = PREFIX + "dialog_newJPAProject"; //$NON-NLS-1$
+	public static final String DIALOG_JPA_PLATFORM = PREFIX + "dialog_JPAPlatform"; //$NON-NLS-1$
+	public static final String NEW_JPA_PROJECT = PREFIX + "dialog_newJPAProject"; //$NON-NLS-1$
  	public static final String NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH = PREFIX + "dialog_addJavaPersistence_classpath"; //$NON-NLS-1$
  	public static final String NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE = PREFIX + "dialog_addJavaPersistence_database"; //$NON-NLS-1$
  	public static final String NEW_JPA_PROJECT_CONTENT_PAGE_PACKAGING = PREFIX + "dialog_addJavaPersistence_packaging"; //$NON-NLS-1$
  	public static final String NEW_JPA_PROJECT_CREATION_PAGE = PREFIX + "dialog_addJavaPersistence"; //$NON-NLS-1$
- 	
+	
 	//Other
 	public static final String PERSISTENCE_OUTLINE = PREFIX + "persistenceOutline"; //$NON-NLS-1$
 

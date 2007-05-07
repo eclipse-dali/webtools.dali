@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaultsInternal;
 import org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
@@ -26,8 +27,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class PersistenceUnitMetadataSection extends BaseJpaController
@@ -46,6 +49,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 	
 	@Override
 	protected void buildWidget(Composite parent) {
+		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 	    this.section = getWidgetFactory().createSection(parent, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
 	    this.section.setText(JpaUiXmlMessages.XMLEntityMappingsPage_PersistenceUnitSection);
 
@@ -64,7 +68,8 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalSpan = 2;
 		this.xmlMappingMetadataCompleteCheckBox.getControl().setLayoutData(gridData);
-
+		helpSystem.setHelp(xmlMappingMetadataCompleteCheckBox.getControl(), IJpaHelpContextIds.ENTITY_ORM_XML);
+		
 		CommonWidgets.buildSchemaLabel(persistenceUnitComposite, getWidgetFactory());
 		
 		this.xmlSchemaChooser = CommonWidgets.buildSchemaChooser(persistenceUnitComposite, this.commandStack, getWidgetFactory());
@@ -73,6 +78,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.xmlSchemaChooser.getCombo().setLayoutData(gridData);
+		helpSystem.setHelp(xmlSchemaChooser.getControl(), IJpaHelpContextIds.ENTITY_ORM_SCHEMA);
 
 		CommonWidgets.buildCatalogLabel(persistenceUnitComposite, getWidgetFactory());
 		
@@ -82,6 +88,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.xmlCatalogChooser.getCombo().setLayoutData(gridData);
+		helpSystem.setHelp(xmlCatalogChooser.getControl(), IJpaHelpContextIds.ENTITY_ORM_CATALOG);
 		
 		CommonWidgets.buildAccessLabel(persistenceUnitComposite, getWidgetFactory());
 		
@@ -91,6 +98,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.accessComboViewer.getControl().setLayoutData(gridData);
+		helpSystem.setHelp(accessComboViewer.getControl(), IJpaHelpContextIds.ENTITY_ORM_ACCESS);
 
 	
 	    this.cascadePersistCheckBox = buildCascadePersistCheckBox(persistenceUnitComposite);
@@ -100,6 +108,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalSpan = 2;
 		this.cascadePersistCheckBox.getControl().setLayoutData(gridData);
+		helpSystem.setHelp(cascadePersistCheckBox.getControl(), IJpaHelpContextIds.ENTITY_ORM_CASCADE);
 
 	}
 	

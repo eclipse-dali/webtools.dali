@@ -203,8 +203,7 @@ public class JpaFacetWizardPage
 			group.setText(JptUiMessages.JpaFacetWizardPage_platformLabel);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			// TODO - F1 Help
-			// PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IDaliHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.DIALOG_JPA_PLATFORM);
 			
 			platformCombo = new ComboViewer(createCombo(group, 1, true));
 			platformCombo.setContentProvider(
@@ -508,8 +507,7 @@ public class JpaFacetWizardPage
 			Composite group = new Composite(composite, SWT.NONE);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			// TODO - F1 Help
-			// PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IDaliHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.DIALOG_CREATE_ORM);
 			
 			createOrmXmlButton = new Button(group, SWT.CHECK);
 			createOrmXmlButton.setText(JptUiMessages.JpaFacetWizardPage_createOrmXmlButton);
