@@ -2483,13 +2483,13 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_ASSOCIATION_OVERRIDE_FEATURE_COUNT = JAVA_OVERRIDE_FEATURE_COUNT + 3;
 
 	/**
-	 * The feature id for the '<em><b>Default Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_DISCRIMINATOR_COLUMN__DEFAULT_NAME = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 0;
+	public static final int JAVA_DISCRIMINATOR_COLUMN__NAME = JAVA_NAMED_COLUMN__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Specified Name</b></em>' attribute.
@@ -2498,25 +2498,16 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_DISCRIMINATOR_COLUMN__SPECIFIED_NAME = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 1;
+	public static final int JAVA_DISCRIMINATOR_COLUMN__SPECIFIED_NAME = JAVA_NAMED_COLUMN__SPECIFIED_NAME;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Default Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_DISCRIMINATOR_COLUMN__NAME = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Discriminator Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JAVA_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 3;
+	public static final int JAVA_DISCRIMINATOR_COLUMN__DEFAULT_NAME = JAVA_NAMED_COLUMN__DEFAULT_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -2525,7 +2516,16 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 4;
+	public static final int JAVA_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION = JAVA_NAMED_COLUMN__COLUMN_DEFINITION;
+
+	/**
+	 * The feature id for the '<em><b>Discriminator Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE = JAVA_NAMED_COLUMN_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Default Length</b></em>' attribute.
@@ -2534,7 +2534,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_DISCRIMINATOR_COLUMN__DEFAULT_LENGTH = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 5;
+	public static final int JAVA_DISCRIMINATOR_COLUMN__DEFAULT_LENGTH = JAVA_NAMED_COLUMN_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Specified Length</b></em>' attribute.
@@ -2543,7 +2543,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_DISCRIMINATOR_COLUMN__SPECIFIED_LENGTH = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 6;
+	public static final int JAVA_DISCRIMINATOR_COLUMN__SPECIFIED_LENGTH = JAVA_NAMED_COLUMN_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Length</b></em>' attribute.
@@ -2552,7 +2552,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_DISCRIMINATOR_COLUMN__LENGTH = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 7;
+	public static final int JAVA_DISCRIMINATOR_COLUMN__LENGTH = JAVA_NAMED_COLUMN_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Java Discriminator Column</em>' class.
@@ -2561,7 +2561,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_DISCRIMINATOR_COLUMN_FEATURE_COUNT = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 8;
+	public static final int JAVA_DISCRIMINATOR_COLUMN_FEATURE_COUNT = JAVA_NAMED_COLUMN_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4338,7 +4338,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		javaAttributeOverrideEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIAttributeOverride());
 		javaAssociationOverrideEClass.getESuperTypes().add(this.getJavaOverride());
 		javaAssociationOverrideEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIAssociationOverride());
-		javaDiscriminatorColumnEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
+		javaDiscriminatorColumnEClass.getESuperTypes().add(this.getJavaNamedColumn());
 		javaDiscriminatorColumnEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIDiscriminatorColumn());
 		javaPrimaryKeyJoinColumnEClass.getESuperTypes().add(this.getJavaNamedColumn());
 		javaPrimaryKeyJoinColumnEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIPrimaryKeyJoinColumn());

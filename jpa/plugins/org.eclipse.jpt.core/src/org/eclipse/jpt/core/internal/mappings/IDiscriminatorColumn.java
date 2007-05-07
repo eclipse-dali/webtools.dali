@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
-import org.eclipse.jpt.core.internal.IJpaSourceObject;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
@@ -20,11 +19,7 @@ import org.eclipse.jpt.db.internal.Table;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getDefaultName <em>Default Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getSpecifiedName <em>Specified Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getDiscriminatorType <em>Discriminator Type</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getColumnDefinition <em>Column Definition</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getDefaultLength <em>Default Length</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getSpecifiedLength <em>Specified Length</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getLength <em>Length</em>}</li>
@@ -35,75 +30,8 @@ import org.eclipse.jpt.db.internal.Table;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface IDiscriminatorColumn extends IJpaSourceObject
+public interface IDiscriminatorColumn extends INamedColumn
 {
-	/**
-	 * Returns the value of the '<em><b>Default Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Default Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Default Name</em>' attribute.
-	 * @see #setDefaultName(String)
-	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIDiscriminatorColumn_DefaultName()
-	 * @model
-	 * @generated
-	 */
-	String getDefaultName();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getDefaultName <em>Default Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Default Name</em>' attribute.
-	 * @see #getDefaultName()
-	 * @generated
-	 */
-	void setDefaultName(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Specified Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Specified Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Specified Name</em>' attribute.
-	 * @see #setSpecifiedName(String)
-	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIDiscriminatorColumn_SpecifiedName()
-	 * @model
-	 * @generated
-	 */
-	String getSpecifiedName();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getSpecifiedName <em>Specified Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Specified Name</em>' attribute.
-	 * @see #getSpecifiedName()
-	 * @generated
-	 */
-	void setSpecifiedName(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIDiscriminatorColumn_Name()
-	 * @model transient="true" changeable="false" volatile="true" derived="true"
-	 * @generated
-	 */
-	String getName();
-
 	/**
 	 * Returns the value of the '<em><b>Discriminator Type</b></em>' attribute.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.mappings.DiscriminatorType}.
@@ -132,32 +60,6 @@ public interface IDiscriminatorColumn extends IJpaSourceObject
 	 * @generated
 	 */
 	void setDiscriminatorType(DiscriminatorType value);
-
-	/**
-	 * Returns the value of the '<em><b>Column Definition</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Column Definition</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Column Definition</em>' attribute.
-	 * @see #setColumnDefinition(String)
-	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIDiscriminatorColumn_ColumnDefinition()
-	 * @model
-	 * @generated
-	 */
-	String getColumnDefinition();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getColumnDefinition <em>Column Definition</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Column Definition</em>' attribute.
-	 * @see #getColumnDefinition()
-	 * @generated
-	 */
-	void setColumnDefinition(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Default Length</b></em>' attribute.

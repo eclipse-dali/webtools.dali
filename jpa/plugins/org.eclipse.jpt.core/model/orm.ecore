@@ -239,13 +239,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlOverride" abstract="true" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IOverride"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeOverride" eSuperTypes="#//XmlOverride core.ecore#//mappings/IAttributeOverride #//IXmlColumnMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverride" eSuperTypes="#//XmlOverride core.ecore#//mappings/IAssociationOverride"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlDiscriminatorColumn" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IDiscriminatorColumn">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedNameForXml" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        volatile="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlDiscriminatorColumn" eSuperTypes="#//AbstractXmlNamedColumn core.ecore#//mappings/IDiscriminatorColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="discriminatorTypeForXml"
         eType="ecore:EEnum core.ecore#//mappings/DiscriminatorType" volatile="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnDefinitionForXml"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" volatile="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedLengthForXml"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
         volatile="true"/>

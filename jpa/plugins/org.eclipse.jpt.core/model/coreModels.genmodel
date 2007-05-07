@@ -304,11 +304,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/IAssociationOverride/defaultJoinColumns"/>
       </genClasses>
       <genClasses ecoreClass="core.ecore#//mappings/IDiscriminatorColumn">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IDiscriminatorColumn/defaultName"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IDiscriminatorColumn/specifiedName"/>
-        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IDiscriminatorColumn/name"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IDiscriminatorColumn/discriminatorType"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IDiscriminatorColumn/columnDefinition"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IDiscriminatorColumn/defaultLength"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IDiscriminatorColumn/specifiedLength"/>
         <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IDiscriminatorColumn/length"/>
@@ -600,9 +596,7 @@
     <genClasses ecoreClass="orm.ecore#//XmlAttributeOverride"/>
     <genClasses ecoreClass="orm.ecore#//XmlAssociationOverride"/>
     <genClasses ecoreClass="orm.ecore#//XmlDiscriminatorColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlDiscriminatorColumn/specifiedNameForXml"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlDiscriminatorColumn/discriminatorTypeForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlDiscriminatorColumn/columnDefinitionForXml"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlDiscriminatorColumn/specifiedLengthForXml"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlSecondaryTable"/>

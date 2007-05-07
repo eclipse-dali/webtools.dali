@@ -4340,13 +4340,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_DISCRIMINATOR_COLUMN = 46;
 
 	/**
-	 * The feature id for the '<em><b>Default Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_DISCRIMINATOR_COLUMN__DEFAULT_NAME = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 0;
+	public static final int XML_DISCRIMINATOR_COLUMN__NAME = ABSTRACT_XML_NAMED_COLUMN__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Specified Name</b></em>' attribute.
@@ -4355,25 +4355,16 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_DISCRIMINATOR_COLUMN__SPECIFIED_NAME = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 1;
+	public static final int XML_DISCRIMINATOR_COLUMN__SPECIFIED_NAME = ABSTRACT_XML_NAMED_COLUMN__SPECIFIED_NAME;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Default Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_DISCRIMINATOR_COLUMN__NAME = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Discriminator Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 3;
+	public static final int XML_DISCRIMINATOR_COLUMN__DEFAULT_NAME = ABSTRACT_XML_NAMED_COLUMN__DEFAULT_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -4382,34 +4373,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 4;
-
-	/**
-	 * The feature id for the '<em><b>Default Length</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_DISCRIMINATOR_COLUMN__DEFAULT_LENGTH = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 5;
-
-	/**
-	 * The feature id for the '<em><b>Specified Length</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_DISCRIMINATOR_COLUMN__SPECIFIED_LENGTH = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 6;
-
-	/**
-	 * The feature id for the '<em><b>Length</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_DISCRIMINATOR_COLUMN__LENGTH = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 7;
+	public static final int XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION = ABSTRACT_XML_NAMED_COLUMN__COLUMN_DEFINITION;
 
 	/**
 	 * The feature id for the '<em><b>Specified Name For Xml</b></em>' attribute.
@@ -4418,16 +4382,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_DISCRIMINATOR_COLUMN__SPECIFIED_NAME_FOR_XML = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 8;
-
-	/**
-	 * The feature id for the '<em><b>Discriminator Type For Xml</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE_FOR_XML = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 9;
+	public static final int XML_DISCRIMINATOR_COLUMN__SPECIFIED_NAME_FOR_XML = ABSTRACT_XML_NAMED_COLUMN__SPECIFIED_NAME_FOR_XML;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition For Xml</b></em>' attribute.
@@ -4436,7 +4391,52 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION_FOR_XML = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 10;
+	public static final int XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION_FOR_XML = ABSTRACT_XML_NAMED_COLUMN__COLUMN_DEFINITION_FOR_XML;
+
+	/**
+	 * The feature id for the '<em><b>Discriminator Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE = ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Default Length</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_DISCRIMINATOR_COLUMN__DEFAULT_LENGTH = ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Specified Length</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_DISCRIMINATOR_COLUMN__SPECIFIED_LENGTH = ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Length</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_DISCRIMINATOR_COLUMN__LENGTH = ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Discriminator Type For Xml</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE_FOR_XML = ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Specified Length For Xml</b></em>' attribute.
@@ -4445,7 +4445,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_DISCRIMINATOR_COLUMN__SPECIFIED_LENGTH_FOR_XML = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 11;
+	public static final int XML_DISCRIMINATOR_COLUMN__SPECIFIED_LENGTH_FOR_XML = ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Xml Discriminator Column</em>' class.
@@ -4454,7 +4454,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_DISCRIMINATOR_COLUMN_FEATURE_COUNT = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 12;
+	public static final int XML_DISCRIMINATOR_COLUMN_FEATURE_COUNT = ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlSecondaryTable <em>Xml Secondary Table</em>}' class.
@@ -7488,19 +7488,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.content.orm.XmlDiscriminatorColumn#getSpecifiedNameForXml <em>Specified Name For Xml</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Specified Name For Xml</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlDiscriminatorColumn#getSpecifiedNameForXml()
-	 * @see #getXmlDiscriminatorColumn()
-	 * @generated
-	 */
-	public EAttribute getXmlDiscriminatorColumn_SpecifiedNameForXml() {
-		return (EAttribute) xmlDiscriminatorColumnEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.content.orm.XmlDiscriminatorColumn#getDiscriminatorTypeForXml <em>Discriminator Type For Xml</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7510,20 +7497,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getXmlDiscriminatorColumn_DiscriminatorTypeForXml() {
-		return (EAttribute) xmlDiscriminatorColumnEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.content.orm.XmlDiscriminatorColumn#getColumnDefinitionForXml <em>Column Definition For Xml</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Column Definition For Xml</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlDiscriminatorColumn#getColumnDefinitionForXml()
-	 * @see #getXmlDiscriminatorColumn()
-	 * @generated
-	 */
-	public EAttribute getXmlDiscriminatorColumn_ColumnDefinitionForXml() {
-		return (EAttribute) xmlDiscriminatorColumnEClass.getEStructuralFeatures().get(2);
+		return (EAttribute) xmlDiscriminatorColumnEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -7536,7 +7510,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getXmlDiscriminatorColumn_SpecifiedLengthForXml() {
-		return (EAttribute) xmlDiscriminatorColumnEClass.getEStructuralFeatures().get(3);
+		return (EAttribute) xmlDiscriminatorColumnEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -7839,9 +7813,7 @@ public class OrmPackage extends EPackageImpl
 		xmlAttributeOverrideEClass = createEClass(XML_ATTRIBUTE_OVERRIDE);
 		xmlAssociationOverrideEClass = createEClass(XML_ASSOCIATION_OVERRIDE);
 		xmlDiscriminatorColumnEClass = createEClass(XML_DISCRIMINATOR_COLUMN);
-		createEAttribute(xmlDiscriminatorColumnEClass, XML_DISCRIMINATOR_COLUMN__SPECIFIED_NAME_FOR_XML);
 		createEAttribute(xmlDiscriminatorColumnEClass, XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE_FOR_XML);
-		createEAttribute(xmlDiscriminatorColumnEClass, XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION_FOR_XML);
 		createEAttribute(xmlDiscriminatorColumnEClass, XML_DISCRIMINATOR_COLUMN__SPECIFIED_LENGTH_FOR_XML);
 		xmlSecondaryTableEClass = createEClass(XML_SECONDARY_TABLE);
 		xmlPrimaryKeyJoinColumnEClass = createEClass(XML_PRIMARY_KEY_JOIN_COLUMN);
@@ -7973,7 +7945,7 @@ public class OrmPackage extends EPackageImpl
 		xmlAttributeOverrideEClass.getESuperTypes().add(this.getIXmlColumnMapping());
 		xmlAssociationOverrideEClass.getESuperTypes().add(this.getXmlOverride());
 		xmlAssociationOverrideEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIAssociationOverride());
-		xmlDiscriminatorColumnEClass.getESuperTypes().add(theJpaCorePackage.getXmlEObject());
+		xmlDiscriminatorColumnEClass.getESuperTypes().add(this.getAbstractXmlNamedColumn());
 		xmlDiscriminatorColumnEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIDiscriminatorColumn());
 		xmlSecondaryTableEClass.getESuperTypes().add(this.getAbstractXmlTable());
 		xmlSecondaryTableEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getISecondaryTable());
@@ -8125,9 +8097,7 @@ public class OrmPackage extends EPackageImpl
 		initEClass(xmlAttributeOverrideEClass, XmlAttributeOverride.class, "XmlAttributeOverride", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlAssociationOverrideEClass, XmlAssociationOverride.class, "XmlAssociationOverride", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlDiscriminatorColumnEClass, XmlDiscriminatorColumn.class, "XmlDiscriminatorColumn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlDiscriminatorColumn_SpecifiedNameForXml(), ecorePackage.getEString(), "specifiedNameForXml", null, 0, 1, XmlDiscriminatorColumn.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlDiscriminatorColumn_DiscriminatorTypeForXml(), theJpaCoreMappingsPackage.getDiscriminatorType(), "discriminatorTypeForXml", null, 0, 1, XmlDiscriminatorColumn.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlDiscriminatorColumn_ColumnDefinitionForXml(), ecorePackage.getEString(), "columnDefinitionForXml", null, 0, 1, XmlDiscriminatorColumn.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlDiscriminatorColumn_SpecifiedLengthForXml(), theEcorePackage.getEInt(), "specifiedLengthForXml", null, 0, 1, XmlDiscriminatorColumn.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(xmlSecondaryTableEClass, XmlSecondaryTable.class, "XmlSecondaryTable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlPrimaryKeyJoinColumnEClass, XmlPrimaryKeyJoinColumn.class, "XmlPrimaryKeyJoinColumn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -9253,28 +9223,12 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass XML_DISCRIMINATOR_COLUMN = eINSTANCE.getXmlDiscriminatorColumn();
 
 		/**
-		 * The meta object literal for the '<em><b>Specified Name For Xml</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_DISCRIMINATOR_COLUMN__SPECIFIED_NAME_FOR_XML = eINSTANCE.getXmlDiscriminatorColumn_SpecifiedNameForXml();
-
-		/**
 		 * The meta object literal for the '<em><b>Discriminator Type For Xml</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		public static final EAttribute XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE_FOR_XML = eINSTANCE.getXmlDiscriminatorColumn_DiscriminatorTypeForXml();
-
-		/**
-		 * The meta object literal for the '<em><b>Column Definition For Xml</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION_FOR_XML = eINSTANCE.getXmlDiscriminatorColumn_ColumnDefinitionForXml();
 
 		/**
 		 * The meta object literal for the '<em><b>Specified Length For Xml</b></em>' attribute feature.

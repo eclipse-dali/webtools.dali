@@ -393,13 +393,8 @@
           eType="#//mappings/IJoinColumn" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="IDiscriminatorColumn" abstract="true"
-        interface="true" eSuperTypes="#//IJpaSourceObject">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultName" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedName" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
-          changeable="false" volatile="true" transient="true" derived="true"/>
+        interface="true" eSuperTypes="#//mappings/INamedColumn">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="discriminatorType" eType="#//mappings/DiscriminatorType"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnDefinition" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultLength" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
           defaultValueLiteral="31"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedLength" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"

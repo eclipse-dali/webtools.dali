@@ -523,6 +523,9 @@ public class InheritanceComposite extends BaseJpaComposite {
 			final String columnName = (String) notification.getNewValue();
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
+					if (getControl().isDisposed()) {
+						return;
+					}
 					if (discriminatorValueCombo.getText() == null || !discriminatorValueCombo.getText().equals(columnName)) {
 						if (columnName == null) {
 							discriminatorValueCombo.select(0);
@@ -537,6 +540,9 @@ public class InheritanceComposite extends BaseJpaComposite {
 		else if (notification.getFeatureID(IEntity.class) == JpaCoreMappingsPackage.IENTITY__DEFAULT_DISCRIMINATOR_VALUE) {
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
+					if (getControl().isDisposed()) {
+						return;
+					}
 					populateDiscriminatorValueCombo();
 				}
 			});

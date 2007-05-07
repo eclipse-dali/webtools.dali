@@ -911,9 +911,13 @@ public class JpaJavaMappingsSwitch<T>
 				JavaDiscriminatorColumn javaDiscriminatorColumn = (JavaDiscriminatorColumn) theEObject;
 				T result = caseJavaDiscriminatorColumn(javaDiscriminatorColumn);
 				if (result == null)
-					result = caseJavaEObject(javaDiscriminatorColumn);
+					result = caseJavaNamedColumn(javaDiscriminatorColumn);
 				if (result == null)
 					result = caseIDiscriminatorColumn(javaDiscriminatorColumn);
+				if (result == null)
+					result = caseJavaEObject(javaDiscriminatorColumn);
+				if (result == null)
+					result = caseINamedColumn(javaDiscriminatorColumn);
 				if (result == null)
 					result = caseJpaEObject(javaDiscriminatorColumn);
 				if (result == null)

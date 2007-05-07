@@ -1183,9 +1183,13 @@ public class OrmSwitch<T>
 				XmlDiscriminatorColumn xmlDiscriminatorColumn = (XmlDiscriminatorColumn) theEObject;
 				T result = caseXmlDiscriminatorColumn(xmlDiscriminatorColumn);
 				if (result == null)
-					result = caseXmlEObject(xmlDiscriminatorColumn);
+					result = caseAbstractXmlNamedColumn(xmlDiscriminatorColumn);
 				if (result == null)
 					result = caseIDiscriminatorColumn(xmlDiscriminatorColumn);
+				if (result == null)
+					result = caseXmlEObject(xmlDiscriminatorColumn);
+				if (result == null)
+					result = caseINamedColumn(xmlDiscriminatorColumn);
 				if (result == null)
 					result = caseJpaEObject(xmlDiscriminatorColumn);
 				if (result == null)

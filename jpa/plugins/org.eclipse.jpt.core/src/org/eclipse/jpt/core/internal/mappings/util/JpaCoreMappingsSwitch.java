@@ -530,6 +530,8 @@ public class JpaCoreMappingsSwitch<T>
 				IDiscriminatorColumn iDiscriminatorColumn = (IDiscriminatorColumn) theEObject;
 				T result = caseIDiscriminatorColumn(iDiscriminatorColumn);
 				if (result == null)
+					result = caseINamedColumn(iDiscriminatorColumn);
+				if (result == null)
 					result = caseIJpaSourceObject(iDiscriminatorColumn);
 				if (result == null)
 					result = caseIJpaEObject(iDiscriminatorColumn);

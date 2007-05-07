@@ -16,30 +16,15 @@ import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
-public class DiscriminatorColumnTranslator extends Translator
+public class DiscriminatorColumnTranslator extends AbstractColumnTranslator
 	implements OrmXmlMapper
 {	
-	private Translator[] children;
-	
-	protected static final OrmPackage JPA_CORE_XML_PKG = 
-		OrmPackage.eINSTANCE;
-	protected static final OrmFactory JPA_CORE_XML_FACTORY =
-		OrmFactory.eINSTANCE;
-	protected static final JpaCoreMappingsPackage MAPPINGS_PKG = 
-		JpaCoreMappingsPackage.eINSTANCE;
 	
 	private IEntity entity;
 
 	public DiscriminatorColumnTranslator() {
-		super(ENTITY__DISCRIMINATOR_COLUMN, JPA_CORE_XML_PKG.getXmlEntityForXml_DiscriminatorColumnForXml(), END_TAG_NO_INDENT);
-	}
-	public Translator[] getChildren(Object target, int versionID) {
-		if (children == null) {
-			children = createChildren();
-		}
-		return children;
-	}
-		
+		super(ENTITY__DISCRIMINATOR_COLUMN, JPA_CORE_XML_PKG.getXmlEntityForXml_DiscriminatorColumnForXml());
+	}		
 	
 	protected IEntity getEntity() {
 		return this.entity;
@@ -59,21 +44,13 @@ public class DiscriminatorColumnTranslator extends Translator
 			IDTranslator.INSTANCE,
 			createNameTranslator(),
 			createDiscrminiatorTypeTranslator(),
-			createColumnDefinitationTranslator(),
+			createColumnDefinitionTranslator(),
 			createLengthTranslator(),
 		};
-	}
-
-	protected Translator createNameTranslator() {
-		return new Translator(DISCRIMINATOR_COLUMN__NAME, JPA_CORE_XML_PKG.getXmlDiscriminatorColumn_SpecifiedNameForXml(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createDiscrminiatorTypeTranslator() {
 		return new EnumeratorTranslator(DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE, JPA_CORE_XML_PKG.getXmlDiscriminatorColumn_DiscriminatorTypeForXml(), DOM_ATTRIBUTE);
-	}
-	
-	protected Translator createColumnDefinitationTranslator() {
-		return new Translator(DISCRIMINATOR_COLUMN__COLUMN_DEFINITION, JPA_CORE_XML_PKG.getXmlDiscriminatorColumn_ColumnDefinitionForXml(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createLengthTranslator() {

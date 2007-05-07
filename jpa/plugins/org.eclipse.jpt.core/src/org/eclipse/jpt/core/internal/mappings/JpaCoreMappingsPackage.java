@@ -2262,13 +2262,13 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IDISCRIMINATOR_COLUMN = 28;
 
 	/**
-	 * The feature id for the '<em><b>Default Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IDISCRIMINATOR_COLUMN__DEFAULT_NAME = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 0;
+	public static final int IDISCRIMINATOR_COLUMN__NAME = INAMED_COLUMN__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Specified Name</b></em>' attribute.
@@ -2277,25 +2277,16 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IDISCRIMINATOR_COLUMN__SPECIFIED_NAME = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 1;
+	public static final int IDISCRIMINATOR_COLUMN__SPECIFIED_NAME = INAMED_COLUMN__SPECIFIED_NAME;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Default Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IDISCRIMINATOR_COLUMN__NAME = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Discriminator Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int IDISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 3;
+	public static final int IDISCRIMINATOR_COLUMN__DEFAULT_NAME = INAMED_COLUMN__DEFAULT_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -2304,7 +2295,16 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IDISCRIMINATOR_COLUMN__COLUMN_DEFINITION = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 4;
+	public static final int IDISCRIMINATOR_COLUMN__COLUMN_DEFINITION = INAMED_COLUMN__COLUMN_DEFINITION;
+
+	/**
+	 * The feature id for the '<em><b>Discriminator Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IDISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE = INAMED_COLUMN_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Default Length</b></em>' attribute.
@@ -2313,7 +2313,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IDISCRIMINATOR_COLUMN__DEFAULT_LENGTH = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 5;
+	public static final int IDISCRIMINATOR_COLUMN__DEFAULT_LENGTH = INAMED_COLUMN_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Specified Length</b></em>' attribute.
@@ -2322,7 +2322,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IDISCRIMINATOR_COLUMN__SPECIFIED_LENGTH = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 6;
+	public static final int IDISCRIMINATOR_COLUMN__SPECIFIED_LENGTH = INAMED_COLUMN_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Length</b></em>' attribute.
@@ -2331,7 +2331,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IDISCRIMINATOR_COLUMN__LENGTH = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 7;
+	public static final int IDISCRIMINATOR_COLUMN__LENGTH = INAMED_COLUMN_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>IDiscriminator Column</em>' class.
@@ -2340,7 +2340,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IDISCRIMINATOR_COLUMN_FEATURE_COUNT = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 8;
+	public static final int IDISCRIMINATOR_COLUMN_FEATURE_COUNT = INAMED_COLUMN_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.ISecondaryTable <em>ISecondary Table</em>}' class.
@@ -5265,45 +5265,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getDefaultName <em>Default Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Default Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getDefaultName()
-	 * @see #getIDiscriminatorColumn()
-	 * @generated
-	 */
-	public EAttribute getIDiscriminatorColumn_DefaultName() {
-		return (EAttribute) iDiscriminatorColumnEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getSpecifiedName <em>Specified Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Specified Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getSpecifiedName()
-	 * @see #getIDiscriminatorColumn()
-	 * @generated
-	 */
-	public EAttribute getIDiscriminatorColumn_SpecifiedName() {
-		return (EAttribute) iDiscriminatorColumnEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getName()
-	 * @see #getIDiscriminatorColumn()
-	 * @generated
-	 */
-	public EAttribute getIDiscriminatorColumn_Name() {
-		return (EAttribute) iDiscriminatorColumnEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getDiscriminatorType <em>Discriminator Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5313,20 +5274,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getIDiscriminatorColumn_DiscriminatorType() {
-		return (EAttribute) iDiscriminatorColumnEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getColumnDefinition <em>Column Definition</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Column Definition</em>'.
-	 * @see org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn#getColumnDefinition()
-	 * @see #getIDiscriminatorColumn()
-	 * @generated
-	 */
-	public EAttribute getIDiscriminatorColumn_ColumnDefinition() {
-		return (EAttribute) iDiscriminatorColumnEClass.getEStructuralFeatures().get(4);
+		return (EAttribute) iDiscriminatorColumnEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -5339,7 +5287,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getIDiscriminatorColumn_DefaultLength() {
-		return (EAttribute) iDiscriminatorColumnEClass.getEStructuralFeatures().get(5);
+		return (EAttribute) iDiscriminatorColumnEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -5352,7 +5300,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getIDiscriminatorColumn_SpecifiedLength() {
-		return (EAttribute) iDiscriminatorColumnEClass.getEStructuralFeatures().get(6);
+		return (EAttribute) iDiscriminatorColumnEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -5365,7 +5313,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getIDiscriminatorColumn_Length() {
-		return (EAttribute) iDiscriminatorColumnEClass.getEStructuralFeatures().get(7);
+		return (EAttribute) iDiscriminatorColumnEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -6312,11 +6260,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		createEReference(iAssociationOverrideEClass, IASSOCIATION_OVERRIDE__SPECIFIED_JOIN_COLUMNS);
 		createEReference(iAssociationOverrideEClass, IASSOCIATION_OVERRIDE__DEFAULT_JOIN_COLUMNS);
 		iDiscriminatorColumnEClass = createEClass(IDISCRIMINATOR_COLUMN);
-		createEAttribute(iDiscriminatorColumnEClass, IDISCRIMINATOR_COLUMN__DEFAULT_NAME);
-		createEAttribute(iDiscriminatorColumnEClass, IDISCRIMINATOR_COLUMN__SPECIFIED_NAME);
-		createEAttribute(iDiscriminatorColumnEClass, IDISCRIMINATOR_COLUMN__NAME);
 		createEAttribute(iDiscriminatorColumnEClass, IDISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE);
-		createEAttribute(iDiscriminatorColumnEClass, IDISCRIMINATOR_COLUMN__COLUMN_DEFINITION);
 		createEAttribute(iDiscriminatorColumnEClass, IDISCRIMINATOR_COLUMN__DEFAULT_LENGTH);
 		createEAttribute(iDiscriminatorColumnEClass, IDISCRIMINATOR_COLUMN__SPECIFIED_LENGTH);
 		createEAttribute(iDiscriminatorColumnEClass, IDISCRIMINATOR_COLUMN__LENGTH);
@@ -6447,7 +6391,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		iAttributeOverrideEClass.getESuperTypes().add(this.getIOverride());
 		iAttributeOverrideEClass.getESuperTypes().add(this.getIColumnMapping());
 		iAssociationOverrideEClass.getESuperTypes().add(this.getIOverride());
-		iDiscriminatorColumnEClass.getESuperTypes().add(theJpaCorePackage.getIJpaSourceObject());
+		iDiscriminatorColumnEClass.getESuperTypes().add(this.getINamedColumn());
 		iSecondaryTableEClass.getESuperTypes().add(this.getITable());
 		iPrimaryKeyJoinColumnEClass.getESuperTypes().add(this.getIAbstractJoinColumn());
 		iGeneratorEClass.getESuperTypes().add(theJpaCorePackage.getIJpaSourceObject());
@@ -6584,11 +6528,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEReference(getIAssociationOverride_SpecifiedJoinColumns(), this.getIJoinColumn(), null, "specifiedJoinColumns", null, 0, -1, IAssociationOverride.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIAssociationOverride_DefaultJoinColumns(), this.getIJoinColumn(), null, "defaultJoinColumns", null, 0, -1, IAssociationOverride.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iDiscriminatorColumnEClass, IDiscriminatorColumn.class, "IDiscriminatorColumn", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getIDiscriminatorColumn_DefaultName(), theEcorePackage.getEString(), "defaultName", null, 0, 1, IDiscriminatorColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getIDiscriminatorColumn_SpecifiedName(), theEcorePackage.getEString(), "specifiedName", null, 0, 1, IDiscriminatorColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getIDiscriminatorColumn_Name(), theEcorePackage.getEString(), "name", null, 0, 1, IDiscriminatorColumn.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIDiscriminatorColumn_DiscriminatorType(), this.getDiscriminatorType(), "discriminatorType", null, 0, 1, IDiscriminatorColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getIDiscriminatorColumn_ColumnDefinition(), ecorePackage.getEString(), "columnDefinition", null, 0, 1, IDiscriminatorColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIDiscriminatorColumn_DefaultLength(), theEcorePackage.getEInt(), "defaultLength", "31", 0, 1, IDiscriminatorColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIDiscriminatorColumn_SpecifiedLength(), theEcorePackage.getEInt(), "specifiedLength", "-1", 0, 1, IDiscriminatorColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIDiscriminatorColumn_Length(), theEcorePackage.getEInt(), "length", null, 0, 1, IDiscriminatorColumn.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -7694,44 +7634,12 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		public static final EClass IDISCRIMINATOR_COLUMN = eINSTANCE.getIDiscriminatorColumn();
 
 		/**
-		 * The meta object literal for the '<em><b>Default Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute IDISCRIMINATOR_COLUMN__DEFAULT_NAME = eINSTANCE.getIDiscriminatorColumn_DefaultName();
-
-		/**
-		 * The meta object literal for the '<em><b>Specified Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute IDISCRIMINATOR_COLUMN__SPECIFIED_NAME = eINSTANCE.getIDiscriminatorColumn_SpecifiedName();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute IDISCRIMINATOR_COLUMN__NAME = eINSTANCE.getIDiscriminatorColumn_Name();
-
-		/**
 		 * The meta object literal for the '<em><b>Discriminator Type</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		public static final EAttribute IDISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE = eINSTANCE.getIDiscriminatorColumn_DiscriminatorType();
-
-		/**
-		 * The meta object literal for the '<em><b>Column Definition</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute IDISCRIMINATOR_COLUMN__COLUMN_DEFINITION = eINSTANCE.getIDiscriminatorColumn_ColumnDefinition();
 
 		/**
 		 * The meta object literal for the '<em><b>Default Length</b></em>' attribute feature.
