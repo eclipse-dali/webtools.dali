@@ -30,7 +30,6 @@ import org.eclipse.jpt.core.internal.jdtutility.IndexedDeclarationAnnotationAdap
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
@@ -365,7 +364,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	}
 
 	private JavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(int index) {
-		return JavaPrimaryKeyJoinColumn.createJavaPrimaryKeyJoinColumn(buildPkJoinColumnOwner(), ((JavaTypeMapping) typeMapping()).getType(), index);
+		return JavaPrimaryKeyJoinColumn.createSecondaryTableJoinColumn(this, buildPkJoinColumnOwner(), ((JavaTypeMapping) typeMapping()).getType(), index);
 	}
 
 	protected IAbstractJoinColumn.Owner buildPkJoinColumnOwner() {

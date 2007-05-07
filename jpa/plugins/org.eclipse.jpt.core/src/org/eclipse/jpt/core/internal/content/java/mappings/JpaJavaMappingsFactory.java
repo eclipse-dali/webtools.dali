@@ -247,11 +247,6 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 		return javaId;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
 	public JavaTable createJavaTable() {
 		throw new UnsupportedOperationException("Use createJavaTable(ITable.Owner, Member) instead");
 	}
@@ -261,11 +256,6 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 		return javaTable;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
 	public JavaColumn createJavaColumn() {
 		throw new UnsupportedOperationException("Use createJavaColumn(Member ) instead");
 	}
@@ -340,11 +330,6 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 		return this.createJavaAssociationOverride(owner, member, NullDeclarationAnnotationAdapter.instance());
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
 	public JavaDiscriminatorColumn createJavaDiscriminatorColumn() {
 		throw new UnsupportedOperationException();
 	}
@@ -422,16 +407,11 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 		return javaSequenceGenerator;
 	}
 
-	public JavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(IAbstractJoinColumn.Owner owner, Member member, int index) {
-		JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn = new JavaPrimaryKeyJoinColumn(owner, member, index);
+	public JavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(IAbstractJoinColumn.Owner owner, Member member, IndexedDeclarationAnnotationAdapter idaa) {
+		JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn = new JavaPrimaryKeyJoinColumn(owner, member, idaa);
 		return javaPrimaryKeyJoinColumn;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
 	public JavaSecondaryTable createJavaSecondaryTable() {
 		throw new UnsupportedOperationException();
 	}

@@ -2570,7 +2570,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__NAME = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 0;
+	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__NAME = JAVA_NAMED_COLUMN__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Specified Name</b></em>' attribute.
@@ -2579,7 +2579,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_NAME = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 1;
+	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_NAME = JAVA_NAMED_COLUMN__SPECIFIED_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Default Name</b></em>' attribute.
@@ -2588,7 +2588,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__DEFAULT_NAME = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 2;
+	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__DEFAULT_NAME = JAVA_NAMED_COLUMN__DEFAULT_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -2597,7 +2597,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 3;
+	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION = JAVA_NAMED_COLUMN__COLUMN_DEFINITION;
 
 	/**
 	 * The feature id for the '<em><b>Referenced Column Name</b></em>' attribute.
@@ -2606,7 +2606,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 4;
+	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME = JAVA_NAMED_COLUMN_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Specified Referenced Column Name</b></em>' attribute.
@@ -2615,7 +2615,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_REFERENCED_COLUMN_NAME = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 5;
+	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_REFERENCED_COLUMN_NAME = JAVA_NAMED_COLUMN_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Default Referenced Column Name</b></em>' attribute.
@@ -2624,7 +2624,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__DEFAULT_REFERENCED_COLUMN_NAME = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 6;
+	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN__DEFAULT_REFERENCED_COLUMN_NAME = JAVA_NAMED_COLUMN_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Java Primary Key Join Column</em>' class.
@@ -2633,7 +2633,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN_FEATURE_COUNT = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 7;
+	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN_FEATURE_COUNT = JAVA_NAMED_COLUMN_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Strategy</b></em>' attribute.
@@ -4340,7 +4340,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		javaAssociationOverrideEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIAssociationOverride());
 		javaDiscriminatorColumnEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
 		javaDiscriminatorColumnEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIDiscriminatorColumn());
-		javaPrimaryKeyJoinColumnEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
+		javaPrimaryKeyJoinColumnEClass.getESuperTypes().add(this.getJavaNamedColumn());
 		javaPrimaryKeyJoinColumnEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIPrimaryKeyJoinColumn());
 		javaGeneratedValueEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
 		javaGeneratedValueEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIGeneratedValue());

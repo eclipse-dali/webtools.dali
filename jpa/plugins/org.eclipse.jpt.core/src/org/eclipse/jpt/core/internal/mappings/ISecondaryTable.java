@@ -89,12 +89,11 @@ public interface ISecondaryTable extends ITable
 	 * @generated
 	 */
 	ITypeMapping typeMapping();
-	
+
 	/**
 	 * Create a primary key join column with the given index
 	 */
 	IPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(int index);
-	
 	class PrimaryKeyJoinColumnOwner implements IAbstractJoinColumn.Owner
 	{
 		private ISecondaryTable secondaryTable;

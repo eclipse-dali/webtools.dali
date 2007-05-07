@@ -928,19 +928,21 @@ public class JpaJavaMappingsSwitch<T>
 				JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn = (JavaPrimaryKeyJoinColumn) theEObject;
 				T result = caseJavaPrimaryKeyJoinColumn(javaPrimaryKeyJoinColumn);
 				if (result == null)
-					result = caseJavaEObject(javaPrimaryKeyJoinColumn);
+					result = caseJavaNamedColumn(javaPrimaryKeyJoinColumn);
 				if (result == null)
 					result = caseIPrimaryKeyJoinColumn(javaPrimaryKeyJoinColumn);
+				if (result == null)
+					result = caseJavaEObject(javaPrimaryKeyJoinColumn);
+				if (result == null)
+					result = caseINamedColumn(javaPrimaryKeyJoinColumn);
+				if (result == null)
+					result = caseIAbstractJoinColumn(javaPrimaryKeyJoinColumn);
 				if (result == null)
 					result = caseJpaEObject(javaPrimaryKeyJoinColumn);
 				if (result == null)
 					result = caseIJpaSourceObject(javaPrimaryKeyJoinColumn);
 				if (result == null)
-					result = caseIAbstractJoinColumn(javaPrimaryKeyJoinColumn);
-				if (result == null)
 					result = caseIJpaEObject(javaPrimaryKeyJoinColumn);
-				if (result == null)
-					result = caseINamedColumn(javaPrimaryKeyJoinColumn);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;

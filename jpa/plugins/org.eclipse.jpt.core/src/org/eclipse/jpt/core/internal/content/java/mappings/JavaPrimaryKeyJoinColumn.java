@@ -15,19 +15,16 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.content.java.JavaEObject;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.CombinationIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
@@ -45,99 +42,19 @@ import org.eclipse.jpt.db.internal.Table;
  * @model kind="class"
  * @generated
  */
-public class JavaPrimaryKeyJoinColumn extends JavaEObject
+public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn
 	implements IPrimaryKeyJoinColumn
 {
-	private final IAbstractJoinColumn.Owner owner;
-
-	private final Member member;
-
-	private final IndexedDeclarationAnnotationAdapter daa;
-
 	private final IndexedAnnotationAdapter annotationAdapter;
-
-	private final AnnotationElementAdapter nameAdapter;
 
 	// hold this so we can get the 'referenced column name' text range
 	private final DeclarationAnnotationElementAdapter referencedColumnNameDeclarationAdapter;
 
 	private final AnnotationElementAdapter referencedColumnNameAdapter;
 
-	private final AnnotationElementAdapter columnDefinitionAdapter;
-
 	public static final SimpleDeclarationAnnotationAdapter SINGLE_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.PRIMARY_KEY_JOIN_COLUMN);
 
 	public static final SimpleDeclarationAnnotationAdapter MULTIPLE_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.PRIMARY_KEY_JOIN_COLUMNS);
-
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getSpecifiedName() <em>Specified Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getSpecifiedName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String SPECIFIED_NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getSpecifiedName() <em>Specified Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getSpecifiedName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String specifiedName = SPECIFIED_NAME_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getDefaultName() <em>Default Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDefaultName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String DEFAULT_NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getDefaultName() <em>Default Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDefaultName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String defaultName = DEFAULT_NAME_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getColumnDefinition() <em>Column Definition</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getColumnDefinition()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String COLUMN_DEFINITION_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getColumnDefinition() <em>Column Definition</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getColumnDefinition()
-	 * @generated
-	 * @ordered
-	 */
-	protected String columnDefinition = COLUMN_DEFINITION_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.
@@ -193,28 +110,33 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 		throw new UnsupportedOperationException();
 	}
 
-	protected JavaPrimaryKeyJoinColumn(IAbstractJoinColumn.Owner owner, Member member, int index) {
-		super();
-		this.owner = owner;
-		this.member = member;
-		this.daa = new CombinationIndexedDeclarationAnnotationAdapter(SINGLE_DECLARATION_ANNOTATION_ADAPTER, MULTIPLE_DECLARATION_ANNOTATION_ADAPTER, index, JPA.PRIMARY_KEY_JOIN_COLUMN);
-		this.annotationAdapter = new MemberIndexedAnnotationAdapter(member, this.daa);
-		this.nameAdapter = this.buildAdapter(JPA.PRIMARY_KEY_JOIN_COLUMN__NAME);
+	protected JavaPrimaryKeyJoinColumn(IAbstractJoinColumn.Owner owner, Member member, IndexedDeclarationAnnotationAdapter daa) {
+		super(owner, member, daa);
+		this.annotationAdapter = new MemberIndexedAnnotationAdapter(member, daa);
 		this.referencedColumnNameDeclarationAdapter = this.buildStringElementAdapter(JPA.PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME);
 		this.referencedColumnNameAdapter = this.buildShortCircuitElementAdapter(this.referencedColumnNameDeclarationAdapter);
-		this.columnDefinitionAdapter = this.buildAdapter(JPA.PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION);
 	}
 
-	private AnnotationElementAdapter buildAdapter(String elementName) {
-		return new ShortCircuitAnnotationElementAdapter(this.member, new ConversionDeclarationAnnotationElementAdapter(this.daa, elementName));
+	@Override
+	protected String nameElementName() {
+		return JPA.PRIMARY_KEY_JOIN_COLUMN__NAME;
 	}
 
-	protected DeclarationAnnotationElementAdapter buildStringElementAdapter(String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter(this.daa, elementName);
+	@Override
+	protected String columnDefinitionElementName() {
+		return JPA.PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION;
 	}
 
-	protected AnnotationElementAdapter buildShortCircuitElementAdapter(DeclarationAnnotationElementAdapter daea) {
-		return new ShortCircuitAnnotationElementAdapter(this.member, daea);
+	@Override
+	protected void notifyChanged(Notification notification) {
+		super.notifyChanged(notification);
+		switch (notification.getFeatureID(IAbstractJoinColumn.class)) {
+			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_REFERENCED_COLUMN_NAME :
+				this.referencedColumnNameAdapter.setValue(notification.getNewValue());
+				break;
+			default :
+				break;
+		}
 	}
 
 	/**
@@ -225,88 +147,6 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 	@Override
 	protected EClass eStaticClass() {
 		return JpaJavaMappingsPackage.Literals.JAVA_PRIMARY_KEY_JOIN_COLUMN;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIPrimaryKeyJoinColumn_Name()
-	 * @model changeable="false" volatile="true" derived="true"
-	 * @generated NOT
-	 */
-	public String getName() {
-		return (this.specifiedName == null) ? this.defaultName : this.specifiedName;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Specified Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Specified Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Specified Name</em>' attribute.
-	 * @see #setSpecifiedName(String)
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getINamedColumn_SpecifiedName()
-	 * @model
-	 * @generated
-	 */
-	public String getSpecifiedName() {
-		return specifiedName;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaPrimaryKeyJoinColumn#getSpecifiedName <em>Specified Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Specified Name</em>' attribute.
-	 * @see #getSpecifiedName()
-	 * @generated
-	 */
-	public void setSpecifiedNameGen(String newSpecifiedName) {
-		String oldSpecifiedName = specifiedName;
-		specifiedName = newSpecifiedName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_NAME, oldSpecifiedName, specifiedName));
-	}
-
-	public void setSpecifiedName(String newSpecifiedName) {
-		this.nameAdapter.setValue(newSpecifiedName);
-		setSpecifiedNameGen(newSpecifiedName);
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Default Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Default Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Default Name</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getINamedColumn_DefaultName()
-	 * @model changeable="false"
-	 * @generated
-	 */
-	public String getDefaultName() {
-		return defaultName;
-	}
-
-	//TODO should we allow setting through the ecore, that would make this method
-	//public and part of the ITable api.  only the model needs to be setting the default,
-	//but the ui needs to be listening for changes to the default.
-	protected void setDefaultName(String newDefaultName) {
-		String oldDefaultName = this.defaultName;
-		this.defaultName = newDefaultName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__DEFAULT_NAME, oldDefaultName, this.defaultName));
 	}
 
 	/**
@@ -352,16 +192,11 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 	 * @see #getSpecifiedReferencedColumnName()
 	 * @generated
 	 */
-	public void setSpecifiedReferencedColumnNameGen(String newSpecifiedReferencedColumnName) {
+	public void setSpecifiedReferencedColumnName(String newSpecifiedReferencedColumnName) {
 		String oldSpecifiedReferencedColumnName = specifiedReferencedColumnName;
 		specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_REFERENCED_COLUMN_NAME, oldSpecifiedReferencedColumnName, specifiedReferencedColumnName));
-	}
-
-	public void setSpecifiedReferencedColumnName(String newSpecifiedReferencedColumnName) {
-		this.referencedColumnNameAdapter.setValue(newSpecifiedReferencedColumnName);
-		setSpecifiedReferencedColumnNameGen(newSpecifiedReferencedColumnName);
 	}
 
 	/**
@@ -389,44 +224,6 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Column Definition</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Column Definition</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Column Definition</em>' attribute.
-	 * @see #setColumnDefinition(String)
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getINamedColumn_ColumnDefinition()
-	 * @model
-	 * @generated
-	 */
-	public String getColumnDefinition() {
-		return columnDefinition;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaPrimaryKeyJoinColumn#getColumnDefinition <em>Column Definition</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Column Definition</em>' attribute.
-	 * @see #getColumnDefinition()
-	 * @generated
-	 */
-	public void setColumnDefinitionGen(String newColumnDefinition) {
-		String oldColumnDefinition = columnDefinition;
-		columnDefinition = newColumnDefinition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION, oldColumnDefinition, columnDefinition));
-	}
-
-	public void setColumnDefinition(String newColumnDefinition) {
-		this.columnDefinitionAdapter.setValue(newColumnDefinition);
-		setColumnDefinitionGen(newColumnDefinition);
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -434,14 +231,6 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__NAME :
-				return getName();
-			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_NAME :
-				return getSpecifiedName();
-			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__DEFAULT_NAME :
-				return getDefaultName();
-			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION :
-				return getColumnDefinition();
 			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME :
 				return getReferencedColumnName();
 			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_REFERENCED_COLUMN_NAME :
@@ -460,12 +249,6 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_NAME :
-				setSpecifiedName((String) newValue);
-				return;
-			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION :
-				setColumnDefinition((String) newValue);
-				return;
 			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_REFERENCED_COLUMN_NAME :
 				setSpecifiedReferencedColumnName((String) newValue);
 				return;
@@ -481,12 +264,6 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_NAME :
-				setSpecifiedName(SPECIFIED_NAME_EDEFAULT);
-				return;
-			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION :
-				setColumnDefinition(COLUMN_DEFINITION_EDEFAULT);
-				return;
 			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_REFERENCED_COLUMN_NAME :
 				setSpecifiedReferencedColumnName(SPECIFIED_REFERENCED_COLUMN_NAME_EDEFAULT);
 				return;
@@ -502,14 +279,6 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__NAME :
-				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
-			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_NAME :
-				return SPECIFIED_NAME_EDEFAULT == null ? specifiedName != null : !SPECIFIED_NAME_EDEFAULT.equals(specifiedName);
-			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__DEFAULT_NAME :
-				return DEFAULT_NAME_EDEFAULT == null ? defaultName != null : !DEFAULT_NAME_EDEFAULT.equals(defaultName);
-			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION :
-				return COLUMN_DEFINITION_EDEFAULT == null ? columnDefinition != null : !COLUMN_DEFINITION_EDEFAULT.equals(columnDefinition);
 			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME :
 				return REFERENCED_COLUMN_NAME_EDEFAULT == null ? getReferencedColumnName() != null : !REFERENCED_COLUMN_NAME_EDEFAULT.equals(getReferencedColumnName());
 			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_REFERENCED_COLUMN_NAME :
@@ -527,20 +296,6 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == INamedColumn.class) {
-			switch (derivedFeatureID) {
-				case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__NAME :
-					return JpaCoreMappingsPackage.INAMED_COLUMN__NAME;
-				case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_NAME :
-					return JpaCoreMappingsPackage.INAMED_COLUMN__SPECIFIED_NAME;
-				case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__DEFAULT_NAME :
-					return JpaCoreMappingsPackage.INAMED_COLUMN__DEFAULT_NAME;
-				case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION :
-					return JpaCoreMappingsPackage.INAMED_COLUMN__COLUMN_DEFINITION;
-				default :
-					return -1;
-			}
-		}
 		if (baseClass == IAbstractJoinColumn.class) {
 			switch (derivedFeatureID) {
 				case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME :
@@ -569,20 +324,6 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == INamedColumn.class) {
-			switch (baseFeatureID) {
-				case JpaCoreMappingsPackage.INAMED_COLUMN__NAME :
-					return JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__NAME;
-				case JpaCoreMappingsPackage.INAMED_COLUMN__SPECIFIED_NAME :
-					return JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_NAME;
-				case JpaCoreMappingsPackage.INAMED_COLUMN__DEFAULT_NAME :
-					return JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__DEFAULT_NAME;
-				case JpaCoreMappingsPackage.INAMED_COLUMN__COLUMN_DEFINITION :
-					return JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION;
-				default :
-					return -1;
-			}
-		}
 		if (baseClass == IAbstractJoinColumn.class) {
 			switch (baseFeatureID) {
 				case JpaCoreMappingsPackage.IABSTRACT_JOIN_COLUMN__REFERENCED_COLUMN_NAME :
@@ -614,18 +355,17 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 		if (eIsProxy())
 			return super.toString();
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (specifiedName: ");
-		result.append(specifiedName);
-		result.append(", defaultName: ");
-		result.append(defaultName);
-		result.append(", columnDefinition: ");
-		result.append(columnDefinition);
-		result.append(", specifiedReferencedColumnName: ");
+		result.append(" (specifiedReferencedColumnName: ");
 		result.append(specifiedReferencedColumnName);
 		result.append(", defaultReferencedColumnName: ");
 		result.append(defaultReferencedColumnName);
 		result.append(')');
 		return result.toString();
+	}
+
+	@Override
+	public IAbstractJoinColumn.Owner getOwner() {
+		return (IAbstractJoinColumn.Owner) super.getOwner();
 	}
 
 	public Column dbReferencedColumn() {
@@ -645,18 +385,6 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 		return elementTextRange(this.referencedColumnNameDeclarationAdapter);
 	}
 
-	public ITextRange getTextRange() {
-		return this.member.annotationTextRange(this.daa);
-	}
-
-	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter elementAdapter) {
-		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter));
-	}
-
-	public IAbstractJoinColumn.Owner getOwner() {
-		return this.owner;
-	}
-
 	public void refreshDefaults(DefaultsContext defaultsContext) {
 		setDefaultReferencedColumnName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_REFERENCED_COLUMN_NAME_KEY));
 		setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_NAME_KEY));
@@ -670,10 +398,10 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 	}
 
 	// ********** persistence model -> java annotations **********
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
-		setSpecifiedName((String) this.nameAdapter.getValue(astRoot));
+		super.updateFromJava(astRoot);
 		setSpecifiedReferencedColumnName((String) this.referencedColumnNameAdapter.getValue(astRoot));
-		setColumnDefinition((String) this.columnDefinitionAdapter.getValue(astRoot));
 	}
 
 	void moveAnnotation(int newIndex) {
@@ -689,7 +417,19 @@ public class JavaPrimaryKeyJoinColumn extends JavaEObject
 	}
 
 	// ********** static methods **********
-	static JavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(Owner owner, Member member, int index) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaPrimaryKeyJoinColumn(owner, member, index);
+	static JavaPrimaryKeyJoinColumn createSecondaryTableJoinColumn(JavaSecondaryTable secondaryTable, IAbstractJoinColumn.Owner owner, Member member, int index) {
+		return JpaJavaMappingsFactory.eINSTANCE.createJavaPrimaryKeyJoinColumn(owner, member, buildSecondaryTableAnnotationAdapter(secondaryTable, index));
+	}
+
+	private static IndexedDeclarationAnnotationAdapter buildSecondaryTableAnnotationAdapter(JavaSecondaryTable secondaryTable, int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(secondaryTable.getDeclarationAnnotationAdapter(), JPA.SECONDARY_TABLE__PK_JOIN_COLUMNS, index, JPA.PRIMARY_KEY_JOIN_COLUMN);
+	}
+
+	static JavaPrimaryKeyJoinColumn createEntityPrimaryKeyJoinColumn(IAbstractJoinColumn.Owner owner, Member member, int index) {
+		return JpaJavaMappingsFactory.eINSTANCE.createJavaPrimaryKeyJoinColumn(owner, member, buildEntityPrimaryKeyJoinColumnAnnotationAdapter(index));
+	}
+
+	private static IndexedDeclarationAnnotationAdapter buildEntityPrimaryKeyJoinColumnAnnotationAdapter(int index) {
+		return new CombinationIndexedDeclarationAnnotationAdapter(SINGLE_DECLARATION_ANNOTATION_ADAPTER, MULTIPLE_DECLARATION_ANNOTATION_ADAPTER, index, JPA.PRIMARY_KEY_JOIN_COLUMN);
 	}
 }

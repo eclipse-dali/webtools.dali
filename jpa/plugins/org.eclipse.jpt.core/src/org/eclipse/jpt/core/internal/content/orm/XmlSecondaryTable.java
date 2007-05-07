@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.ITypeMapping;
-import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
@@ -275,9 +274,8 @@ public class XmlSecondaryTable extends AbstractXmlTable
 	//secondaryTables are part of a collection, the secondary-table element will be removed/added
 	//when the XmlSecondaryTable is removed/added to the XmlEntity collection
 	}
-	
+
 	public IPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(int index) {
 		return OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn(new ISecondaryTable.PrimaryKeyJoinColumnOwner(this));
 	}
-
 } // XmlSecondaryTable

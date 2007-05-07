@@ -733,6 +733,10 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		return this.member;
 	}
 
+	protected DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
+		return this.daa;
+	}
+
 	//set these defaults here or call setDefaultCatalog from JavaTableContext instead
 	public void refreshDefaults(DefaultsContext defaultsContext) {
 		this.setDefaultCatalog((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TABLE_CATALOG_KEY));

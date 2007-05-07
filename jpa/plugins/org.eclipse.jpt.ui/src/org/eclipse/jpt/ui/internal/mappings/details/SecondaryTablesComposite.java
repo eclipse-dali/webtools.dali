@@ -194,11 +194,6 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 			secondaryTable.setSpecifiedName(name);
 			secondaryTable.setSpecifiedCatalog(catalog);
 			secondaryTable.setSpecifiedSchema(schema);
-			
-			IPrimaryKeyJoinColumn joinColumn = secondaryTable.createPrimaryKeyJoinColumn(0);
-			secondaryTable.getSpecifiedPrimaryKeyJoinColumns().add(joinColumn);
-			joinColumn.setSpecifiedName("foo");
-			joinColumn.setSpecifiedReferencedColumnName("bar");
 		}
 	}
 	

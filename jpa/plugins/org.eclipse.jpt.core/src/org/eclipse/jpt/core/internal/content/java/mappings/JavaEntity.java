@@ -2700,7 +2700,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	}
 
 	private JavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(int index) {
-		return JavaPrimaryKeyJoinColumn.createJavaPrimaryKeyJoinColumn(buildPkJoinColumnOwner(), this.getType(), index);
+		return JavaPrimaryKeyJoinColumn.createEntityPrimaryKeyJoinColumn(buildPkJoinColumnOwner(), this.getType(), index);
 	}
 
 	protected IAbstractJoinColumn.Owner buildPkJoinColumnOwner() {
