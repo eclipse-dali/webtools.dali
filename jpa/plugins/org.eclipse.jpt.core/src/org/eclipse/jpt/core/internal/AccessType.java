@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
+import static org.eclipse.jpt.core.internal.AccessType.DEFAULT_VALUE;
+import static org.eclipse.jpt.core.internal.AccessType.FIELD_VALUE;
+import static org.eclipse.jpt.core.internal.AccessType.PROPERTY_VALUE;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

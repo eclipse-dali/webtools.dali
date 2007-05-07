@@ -156,6 +156,7 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IEntity/specifiedName"/>
         <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IEntity/defaultName"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/IEntity/table"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/IEntity/specifiedSecondaryTables"/>
         <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference core.ecore#//mappings/IEntity/primaryKeyJoinColumns"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/IEntity/specifiedPrimaryKeyJoinColumns"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/IEntity/defaultPrimaryKeyJoinColumns"/>
@@ -312,7 +313,12 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IDiscriminatorColumn/specifiedLength"/>
         <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IDiscriminatorColumn/length"/>
       </genClasses>
-      <genClasses ecoreClass="core.ecore#//mappings/ISecondaryTable"/>
+      <genClasses ecoreClass="core.ecore#//mappings/ISecondaryTable">
+        <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference core.ecore#//mappings/ISecondaryTable/primaryKeyJoinColumns"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/ISecondaryTable/specifiedPrimaryKeyJoinColumns"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/ISecondaryTable/defaultPrimaryKeyJoinColumns"/>
+        <genOperations ecoreOperation="core.ecore#//mappings/ISecondaryTable/typeMapping"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="core.ecore#//mappings/IPrimaryKeyJoinColumn"/>
       <genClasses image="false" ecoreClass="core.ecore#//mappings/IGenerator">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IGenerator/name"/>
@@ -399,9 +405,7 @@
     <nestedGenPackages prefix="JpaJavaMappings" basePackage="org.eclipse.jpt.core.internal.content.java"
         disposableProviderFactory="true" ecorePackage="java.ecore#//mappings">
       <genClasses image="false" ecoreClass="java.ecore#//mappings/JavaTypeMapping"/>
-      <genClasses ecoreClass="java.ecore#//mappings/JavaEntity">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//mappings/JavaEntity/secondaryTables"/>
-      </genClasses>
+      <genClasses ecoreClass="java.ecore#//mappings/JavaEntity"/>
       <genClasses ecoreClass="java.ecore#//mappings/JavaMappedSuperclass"/>
       <genClasses ecoreClass="java.ecore#//mappings/JavaEmbeddable"/>
       <genClasses ecoreClass="java.ecore#//mappings/JavaNullTypeMapping"/>
@@ -503,8 +507,7 @@
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlEntity">
       <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/secondaryTables"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/specifiedSecondaryTables"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/defaultSecondaryTables"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/virtualSecondaryTables"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlEmbeddable"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlAttributeMapping">

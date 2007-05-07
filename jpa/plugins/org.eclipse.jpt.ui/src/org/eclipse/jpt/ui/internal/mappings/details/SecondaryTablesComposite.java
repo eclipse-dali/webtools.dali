@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
+import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
@@ -193,6 +194,11 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 			secondaryTable.setSpecifiedName(name);
 			secondaryTable.setSpecifiedCatalog(catalog);
 			secondaryTable.setSpecifiedSchema(schema);
+			
+			IPrimaryKeyJoinColumn joinColumn = secondaryTable.createPrimaryKeyJoinColumn(0);
+			secondaryTable.getSpecifiedPrimaryKeyJoinColumns().add(joinColumn);
+			joinColumn.setSpecifiedName("foo");
+			joinColumn.setSpecifiedReferencedColumnName("bar");
 		}
 	}
 	

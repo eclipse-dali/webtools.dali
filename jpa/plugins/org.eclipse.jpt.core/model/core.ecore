@@ -420,7 +420,18 @@
       <eLiterals name="INTEGER" value="3" literal="Integer"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ISecondaryTable" abstract="true" interface="true"
-        eSuperTypes="#//mappings/ITable"/>
+        eSuperTypes="#//mappings/ITable">
+      <eOperations name="typeMapping" eType="#//ITypeMapping"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="primaryKeyJoinColumns"
+          upperBound="-1" eType="#//mappings/IPrimaryKeyJoinColumn" changeable="false"
+          volatile="true" transient="true" containment="true" resolveProxies="false"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="specifiedPrimaryKeyJoinColumns"
+          upperBound="-1" eType="#//mappings/IPrimaryKeyJoinColumn" containment="true"
+          resolveProxies="false"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultPrimaryKeyJoinColumns"
+          upperBound="-1" eType="#//mappings/IPrimaryKeyJoinColumn" containment="true"
+          resolveProxies="false"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="IPrimaryKeyJoinColumn" abstract="true"
         interface="true" eSuperTypes="#//mappings/IAbstractJoinColumn"/>
     <eClassifiers xsi:type="ecore:EClass" name="IGenerator" abstract="true" interface="true"

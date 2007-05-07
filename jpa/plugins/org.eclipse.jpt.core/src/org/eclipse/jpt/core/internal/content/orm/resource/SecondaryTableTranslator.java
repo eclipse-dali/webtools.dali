@@ -9,8 +9,12 @@
 package org.eclipse.jpt.core.internal.content.orm.resource;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.jpt.core.internal.content.orm.OrmFactory;
+import org.eclipse.jpt.core.internal.content.orm.resource.PrimaryKeyJoinColumnTranslator.PrimaryKeyJoinColumnBuilder;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
+import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
+import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -19,6 +23,8 @@ public class SecondaryTableTranslator extends AbstractTableTranslator
 
 	private IEntity entity;
 
+	private ISecondaryTable secondaryTable;
+	
 	public SecondaryTableTranslator() {
 		super(SECONDARY_TABLE, MAPPINGS_PKG.getIEntity_SpecifiedSecondaryTables());
 	}
@@ -34,7 +40,8 @@ public class SecondaryTableTranslator extends AbstractTableTranslator
 
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return getEntity().createSecondaryTable(0);
+		this.secondaryTable = getEntity().createSecondaryTable(0);
+		return this.secondaryTable;
 	}
 	
 	
@@ -44,14 +51,24 @@ public class SecondaryTableTranslator extends AbstractTableTranslator
 			createNameTranslator(),
 			createCatalogTranslator(),
 			createSchemaTranslator(),
-			createPrimaryKeyJoinColumnTranslator(),
+			createPrimaryKeyJoinColumnsTranslator(),
 			createUniqueConstraintTranslator(),
 		};
 	}
 	
-	//placeholder until we support primaryKeyJoinColumns
-	protected Translator createPrimaryKeyJoinColumnTranslator() {
-		return new Translator(SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMN, (EStructuralFeature) null);
+	protected Translator createPrimaryKeyJoinColumnsTranslator() {
+		return new PrimaryKeyJoinColumnTranslator(
+			SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMN,  
+				JpaCoreMappingsPackage.eINSTANCE.getISecondaryTable_SpecifiedPrimaryKeyJoinColumns(),
+				buildPrimaryKeyJoinColumnsBuilder());
+	}
+	
+	private PrimaryKeyJoinColumnBuilder buildPrimaryKeyJoinColumnsBuilder() {
+		return new PrimaryKeyJoinColumnBuilder() {
+			public IPrimaryKeyJoinColumn createPrimaryKeyJoinColumn() {
+				return OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn(new ISecondaryTable.PrimaryKeyJoinColumnOwner(secondaryTable));
+			}
+		};
 	}
 
 }

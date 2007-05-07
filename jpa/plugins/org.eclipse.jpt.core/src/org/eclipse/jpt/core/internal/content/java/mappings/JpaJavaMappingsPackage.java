@@ -1760,13 +1760,40 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_SECONDARY_TABLE__DEFAULT_SCHEMA = ABSTRACT_JAVA_TABLE__DEFAULT_SCHEMA;
 
 	/**
+	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS = ABSTRACT_JAVA_TABLE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Specified Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_SECONDARY_TABLE__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS = ABSTRACT_JAVA_TABLE_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Default Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_SECONDARY_TABLE__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS = ABSTRACT_JAVA_TABLE_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Java Secondary Table</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_SECONDARY_TABLE_FEATURE_COUNT = ABSTRACT_JAVA_TABLE_FEATURE_COUNT + 0;
+	public static final int JAVA_SECONDARY_TABLE_FEATURE_COUNT = ABSTRACT_JAVA_TABLE_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.

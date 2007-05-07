@@ -4575,13 +4575,40 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_SECONDARY_TABLE__SPECIFIED_SCHEMA_FOR_XML = ABSTRACT_XML_TABLE__SPECIFIED_SCHEMA_FOR_XML;
 
 	/**
+	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS = ABSTRACT_XML_TABLE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Specified Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SECONDARY_TABLE__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS = ABSTRACT_XML_TABLE_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Default Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SECONDARY_TABLE__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS = ABSTRACT_XML_TABLE_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Xml Secondary Table</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SECONDARY_TABLE_FEATURE_COUNT = ABSTRACT_XML_TABLE_FEATURE_COUNT + 0;
+	public static final int XML_SECONDARY_TABLE_FEATURE_COUNT = ABSTRACT_XML_TABLE_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlPrimaryKeyJoinColumn <em>Xml Primary Key Join Column</em>}' class.

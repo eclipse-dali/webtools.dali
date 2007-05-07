@@ -2434,13 +2434,40 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int ISECONDARY_TABLE__DEFAULT_SCHEMA = ITABLE__DEFAULT_SCHEMA;
 
 	/**
+	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ISECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS = ITABLE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Specified Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ISECONDARY_TABLE__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS = ITABLE_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Default Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ISECONDARY_TABLE__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS = ITABLE_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>ISecondary Table</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ISECONDARY_TABLE_FEATURE_COUNT = ITABLE_FEATURE_COUNT + 0;
+	public static final int ISECONDARY_TABLE_FEATURE_COUNT = ITABLE_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn <em>IPrimary Key Join Column</em>}' class.
@@ -5354,6 +5381,45 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.mappings.ISecondaryTable#getPrimaryKeyJoinColumns <em>Primary Key Join Columns</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Primary Key Join Columns</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.ISecondaryTable#getPrimaryKeyJoinColumns()
+	 * @see #getISecondaryTable()
+	 * @generated
+	 */
+	public EReference getISecondaryTable_PrimaryKeyJoinColumns() {
+		return (EReference) iSecondaryTableEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.mappings.ISecondaryTable#getSpecifiedPrimaryKeyJoinColumns <em>Specified Primary Key Join Columns</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Specified Primary Key Join Columns</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.ISecondaryTable#getSpecifiedPrimaryKeyJoinColumns()
+	 * @see #getISecondaryTable()
+	 * @generated
+	 */
+	public EReference getISecondaryTable_SpecifiedPrimaryKeyJoinColumns() {
+		return (EReference) iSecondaryTableEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.mappings.ISecondaryTable#getDefaultPrimaryKeyJoinColumns <em>Default Primary Key Join Columns</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Default Primary Key Join Columns</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.ISecondaryTable#getDefaultPrimaryKeyJoinColumns()
+	 * @see #getISecondaryTable()
+	 * @generated
+	 */
+	public EReference getISecondaryTable_DefaultPrimaryKeyJoinColumns() {
+		return (EReference) iSecondaryTableEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn <em>IPrimary Key Join Column</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6255,6 +6321,9 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		createEAttribute(iDiscriminatorColumnEClass, IDISCRIMINATOR_COLUMN__SPECIFIED_LENGTH);
 		createEAttribute(iDiscriminatorColumnEClass, IDISCRIMINATOR_COLUMN__LENGTH);
 		iSecondaryTableEClass = createEClass(ISECONDARY_TABLE);
+		createEReference(iSecondaryTableEClass, ISECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS);
+		createEReference(iSecondaryTableEClass, ISECONDARY_TABLE__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS);
+		createEReference(iSecondaryTableEClass, ISECONDARY_TABLE__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS);
 		iPrimaryKeyJoinColumnEClass = createEClass(IPRIMARY_KEY_JOIN_COLUMN);
 		iGeneratorEClass = createEClass(IGENERATOR);
 		createEAttribute(iGeneratorEClass, IGENERATOR__NAME);
@@ -6524,6 +6593,10 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEAttribute(getIDiscriminatorColumn_SpecifiedLength(), theEcorePackage.getEInt(), "specifiedLength", "-1", 0, 1, IDiscriminatorColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIDiscriminatorColumn_Length(), theEcorePackage.getEInt(), "length", null, 0, 1, IDiscriminatorColumn.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEClass(iSecondaryTableEClass, ISecondaryTable.class, "ISecondaryTable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getISecondaryTable_PrimaryKeyJoinColumns(), this.getIPrimaryKeyJoinColumn(), null, "primaryKeyJoinColumns", null, 0, -1, ISecondaryTable.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getISecondaryTable_SpecifiedPrimaryKeyJoinColumns(), this.getIPrimaryKeyJoinColumn(), null, "specifiedPrimaryKeyJoinColumns", null, 0, -1, ISecondaryTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getISecondaryTable_DefaultPrimaryKeyJoinColumns(), this.getIPrimaryKeyJoinColumn(), null, "defaultPrimaryKeyJoinColumns", null, 0, -1, ISecondaryTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		addEOperation(iSecondaryTableEClass, theJpaCorePackage.getITypeMapping(), "typeMapping", 0, 1);
 		initEClass(iPrimaryKeyJoinColumnEClass, IPrimaryKeyJoinColumn.class, "IPrimaryKeyJoinColumn", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iGeneratorEClass, IGenerator.class, "IGenerator", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIGenerator_Name(), ecorePackage.getEString(), "name", null, 0, 1, IGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -7693,6 +7766,30 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass ISECONDARY_TABLE = eINSTANCE.getISecondaryTable();
+
+		/**
+		 * The meta object literal for the '<em><b>Primary Key Join Columns</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference ISECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS = eINSTANCE.getISecondaryTable_PrimaryKeyJoinColumns();
+
+		/**
+		 * The meta object literal for the '<em><b>Specified Primary Key Join Columns</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference ISECONDARY_TABLE__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS = eINSTANCE.getISecondaryTable_SpecifiedPrimaryKeyJoinColumns();
+
+		/**
+		 * The meta object literal for the '<em><b>Default Primary Key Join Columns</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference ISECONDARY_TABLE__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS = eINSTANCE.getISecondaryTable_DefaultPrimaryKeyJoinColumns();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn <em>IPrimary Key Join Column</em>}' class.
