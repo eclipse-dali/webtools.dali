@@ -244,9 +244,9 @@ public class TableCombo extends BaseJpaController
 			this.combo.remove(1, this.combo.getItemCount()-1);
 			Schema schema = this.getTableSchema();
 			if (schema != null) {
-				Iterator tables = schema.tableNames();
-				for (Iterator stream = CollectionTools.sort( tables); stream.hasNext(); ) {
-					this.combo.add((String) stream.next());
+				Iterator<String> tables = schema.tableNames();
+				for (Iterator<String> stream = CollectionTools.sort( tables); stream.hasNext(); ) {
+					this.combo.add(stream.next());
 				}
 			}
 		}

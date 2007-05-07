@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.osgi.util.NLS;
@@ -118,14 +119,26 @@ public class SecondaryTableDialog extends Dialog {
 		return project.connectionProfile();
 	}
 	
+	protected Schema getTableSchema() {
+		Database database = this.getDatabase();
+		if (database != null) {
+			if (this.secondaryTable != null) {
+				return database.schemaNamed(this.secondaryTable.getSchema());
+			}
+			return database.schemaNamed(this.entity.getTable().getSchema());
+		}
+		return null;
+	}
+	
 	protected void populateNameCombo() {
-		//TODO populate with the tables from the secondaryTable's schema
-//		Table table = getNameTable();
-//		if (table != null) {
-//			for (Iterator i = table.columnNames(); i.hasNext(); ) {
-//				this.nameCombo.add((String) i.next());
-//			}
-//		}
+		Schema schema = this.getTableSchema();
+		if (schema != null) {
+			Iterator<String> tables = schema.tableNames();
+			for (Iterator<String> stream = CollectionTools.sort( tables); stream.hasNext(); ) {
+				this.nameCombo.add(stream.next());
+			}
+		}
+
 		if (getSecondaryTable() != null) {
 			if (getSecondaryTable().getSpecifiedName() != null) {
 				this.nameCombo.setText(getSecondaryTable().getSpecifiedName());
