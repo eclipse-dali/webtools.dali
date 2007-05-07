@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IOverride;
 import org.eclipse.jpt.core.internal.mappings.ITable;
+import org.eclipse.jpt.core.internal.mappings.INamedColumn.Owner;
 
 /**
  * <!-- begin-user-doc -->
@@ -421,8 +422,8 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 		return javaSecondaryTable;
 	}
 
-	public JavaDiscriminatorColumn createJavaDiscriminatorColumn(Type type) {
-		JavaDiscriminatorColumn javaDiscriminatorColumn = new JavaDiscriminatorColumn(type);
+	public JavaDiscriminatorColumn createJavaDiscriminatorColumn(Owner owner, Type type, DeclarationAnnotationAdapter daa) {
+		JavaDiscriminatorColumn javaDiscriminatorColumn = new JavaDiscriminatorColumn(owner, type, daa);
 		return javaDiscriminatorColumn;
 	}
 

@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.mappings.DiscriminatorType;
 import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn;
+import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.db.internal.Table;
 
@@ -127,15 +128,14 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 	 */
 	protected static final int SPECIFIED_LENGTH_FOR_XML_EDEFAULT = 0;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	protected XmlDiscriminatorColumn() {
-		super();
+		throw new UnsupportedOperationException();
 	}
-
+	
+	protected XmlDiscriminatorColumn(INamedColumn.Owner owner) {
+		super(owner);
+	}
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -631,10 +631,6 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 		result.append(specifiedLength);
 		result.append(')');
 		return result.toString();
-	}
-
-	public Table dbTable() {
-		return entity().primaryDbTable();
 	}
 
 	private XmlEntityInternal entity() {

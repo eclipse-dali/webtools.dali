@@ -48,7 +48,7 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 
 	private IntAnnotationElementAdapter lengthAdapter;
 
-	private static final DeclarationAnnotationAdapter ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.DISCRIMINATOR_COLUMN);
+	public static final DeclarationAnnotationAdapter ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.DISCRIMINATOR_COLUMN);
 
 	private static final DeclarationAnnotationElementAdapter DISCRIMINATOR_TYPE_ADAPTER = buildDiscriminatorTypeAdapter();
 
@@ -134,8 +134,8 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 		throw new UnsupportedOperationException();
 	}
 
-	protected JavaDiscriminatorColumn(Type type) {
-		super(null, type, ANNOTATION_ADAPTER);
+	protected JavaDiscriminatorColumn(Owner owner, Type type, DeclarationAnnotationAdapter daa) {
+		super(owner, type, daa);
 		this.type = type;
 		this.discriminatorTypeAdapter = new ShortCircuitAnnotationElementAdapter(this.type, DISCRIMINATOR_TYPE_ADAPTER);
 		this.lengthAdapter = new IntAnnotationElementAdapter(new ShortCircuitAnnotationElementAdapter(this.type, LENGTH_ADAPTER));
@@ -449,14 +449,6 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 
 	public ITextRange getTextRange() {
 		return this.type.textRange();
-	}
-
-	public Table dbTable() {
-		return entity().primaryDbTable();
-	}
-
-	private IEntity entity() {
-		return (IEntity) eContainer();
 	}
 
 	// ********** java annotations -> persistence model **********

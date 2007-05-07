@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
+import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 
 /**
@@ -530,13 +531,12 @@ public class OrmFactory extends EFactoryImpl
 		return xmlAssociationOverride;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public XmlDiscriminatorColumn createXmlDiscriminatorColumn() {
-		XmlDiscriminatorColumn xmlDiscriminatorColumn = new XmlDiscriminatorColumn();
+		throw new UnsupportedOperationException("Use createXmlDiscriminatorColumn(INamedColumn.Owner) instead");
+	}
+	
+	public XmlDiscriminatorColumn createXmlDiscriminatorColumn(INamedColumn.Owner owner) {
+		XmlDiscriminatorColumn xmlDiscriminatorColumn = new XmlDiscriminatorColumn(owner);
 		return xmlDiscriminatorColumn;
 	}
 

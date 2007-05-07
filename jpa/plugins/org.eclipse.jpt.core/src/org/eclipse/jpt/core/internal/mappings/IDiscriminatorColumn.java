@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
+import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
@@ -129,9 +131,26 @@ public interface IDiscriminatorColumn extends INamedColumn
 	 * @generated
 	 */
 	int getLength();
-
-	/**
-	 * return the resolved db table for the discriminatorColumn
-	 */
-	Table dbTable();
+	
+	class DiscriminatorColumnOwner implements INamedColumn.Owner {
+		
+		private IEntity entity;
+		
+		public DiscriminatorColumnOwner(IEntity entity) {
+			super();
+			this.entity = entity;
+		}
+		
+		public Table dbTable(String tableName) {
+			return this.entity.dbTable(tableName);
+		}
+		
+		public ITextRange getTextRange() {
+			return this.entity.getDiscriminatorColumn().getTextRange();
+		}
+		
+		public ITypeMapping getTypeMapping() {
+			return this.entity;
+		}
+	}
 } // IDiscriminatorColumn

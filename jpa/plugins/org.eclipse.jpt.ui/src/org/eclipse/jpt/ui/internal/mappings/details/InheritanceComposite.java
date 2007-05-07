@@ -376,7 +376,7 @@ public class InheritanceComposite extends BaseJpaComposite {
 	}
 
 	private Table getDbTable() {
-		return this.discriminatorColumn.dbTable();
+		return this.entity.primaryDbTable();
 	}
 	
 	private void populateColumnCombo() {
