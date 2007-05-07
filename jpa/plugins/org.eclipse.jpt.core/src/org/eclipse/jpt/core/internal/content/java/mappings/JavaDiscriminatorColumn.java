@@ -42,8 +42,6 @@ import org.eclipse.jpt.db.internal.Table;
 public class JavaDiscriminatorColumn extends JavaNamedColumn
 	implements IDiscriminatorColumn
 {
-	private Type type;
-
 	private AnnotationElementAdapter discriminatorTypeAdapter;
 
 	private IntAnnotationElementAdapter lengthAdapter;
@@ -51,8 +49,6 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 	public static final DeclarationAnnotationAdapter ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.DISCRIMINATOR_COLUMN);
 
 	private static final DeclarationAnnotationElementAdapter DISCRIMINATOR_TYPE_ADAPTER = buildDiscriminatorTypeAdapter();
-
-	private static final DeclarationAnnotationElementAdapter LENGTH_ADAPTER = buildAnnotationElementAdapter(JPA.DISCRIMINATOR_COLUMN__LENGTH);
 
 
 	/**
@@ -125,20 +121,14 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 	 */
 	protected static final int LENGTH_EDEFAULT = 0;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
 	protected JavaDiscriminatorColumn() {
 		throw new UnsupportedOperationException();
 	}
 
 	protected JavaDiscriminatorColumn(Owner owner, Type type, DeclarationAnnotationAdapter daa) {
 		super(owner, type, daa);
-		this.type = type;
-		this.discriminatorTypeAdapter = new ShortCircuitAnnotationElementAdapter(this.type, DISCRIMINATOR_TYPE_ADAPTER);
-		this.lengthAdapter = new IntAnnotationElementAdapter(new ShortCircuitAnnotationElementAdapter(this.type, LENGTH_ADAPTER));
+		this.discriminatorTypeAdapter = buildShortCircuitElementAdapter(DISCRIMINATOR_TYPE_ADAPTER);
+		this.lengthAdapter =  this.buildShortCircuitIntElementAdapter(JPA.DISCRIMINATOR_COLUMN__LENGTH);
 	}
 
 	@Override
@@ -447,10 +437,6 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 		return result.toString();
 	}
 
-	public ITextRange getTextRange() {
-		return this.type.textRange();
-	}
-
 	// ********** java annotations -> persistence model **********
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
@@ -461,9 +447,5 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter buildDiscriminatorTypeAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(ANNOTATION_ADAPTER, JPA.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE);
-	}
-
-	private static DeclarationAnnotationElementAdapter buildAnnotationElementAdapter(String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter(ANNOTATION_ADAPTER, elementName);
 	}
 } // JavaDiscriminatorColumn
