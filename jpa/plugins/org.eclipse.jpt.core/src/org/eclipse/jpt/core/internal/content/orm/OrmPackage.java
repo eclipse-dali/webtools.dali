@@ -2814,13 +2814,22 @@ public class OrmPackage extends EPackageImpl
 	public static final int ABSTRACT_XML_TABLE__DEFAULT_SCHEMA = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 8;
 
 	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_TABLE__UNIQUE_CONSTRAINTS = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 9;
+
+	/**
 	 * The feature id for the '<em><b>Specified Name For Xml</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_TABLE__SPECIFIED_NAME_FOR_XML = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 9;
+	public static final int ABSTRACT_XML_TABLE__SPECIFIED_NAME_FOR_XML = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Specified Catalog For Xml</b></em>' attribute.
@@ -2829,7 +2838,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_TABLE__SPECIFIED_CATALOG_FOR_XML = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 10;
+	public static final int ABSTRACT_XML_TABLE__SPECIFIED_CATALOG_FOR_XML = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Specified Schema For Xml</b></em>' attribute.
@@ -2838,7 +2847,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_TABLE__SPECIFIED_SCHEMA_FOR_XML = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 11;
+	public static final int ABSTRACT_XML_TABLE__SPECIFIED_SCHEMA_FOR_XML = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 12;
 
 	/**
 	 * The number of structural features of the '<em>Abstract Xml Table</em>' class.
@@ -2847,7 +2856,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_TABLE_FEATURE_COUNT = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 12;
+	public static final int ABSTRACT_XML_TABLE_FEATURE_COUNT = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 13;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlTable <em>Xml Table</em>}' class.
@@ -2939,6 +2948,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_TABLE__DEFAULT_SCHEMA = ABSTRACT_XML_TABLE__DEFAULT_SCHEMA;
+
+	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TABLE__UNIQUE_CONSTRAINTS = ABSTRACT_XML_TABLE__UNIQUE_CONSTRAINTS;
 
 	/**
 	 * The feature id for the '<em><b>Specified Name For Xml</b></em>' attribute.
@@ -4111,6 +4129,15 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_JOIN_TABLE__DEFAULT_SCHEMA = ABSTRACT_XML_TABLE__DEFAULT_SCHEMA;
 
 	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_JOIN_TABLE__UNIQUE_CONSTRAINTS = ABSTRACT_XML_TABLE__UNIQUE_CONSTRAINTS;
+
+	/**
 	 * The feature id for the '<em><b>Specified Name For Xml</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4546,6 +4573,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_SECONDARY_TABLE__DEFAULT_SCHEMA = ABSTRACT_XML_TABLE__DEFAULT_SCHEMA;
+
+	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SECONDARY_TABLE__UNIQUE_CONSTRAINTS = ABSTRACT_XML_TABLE__UNIQUE_CONSTRAINTS;
 
 	/**
 	 * The feature id for the '<em><b>Specified Name For Xml</b></em>' attribute.
@@ -5183,13 +5219,22 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_TABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE = XML_GENERATOR_FEATURE_COUNT + 17;
 
 	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TABLE_GENERATOR__UNIQUE_CONSTRAINTS = XML_GENERATOR_FEATURE_COUNT + 18;
+
+	/**
 	 * The number of structural features of the '<em>Xml Table Generator</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TABLE_GENERATOR_FEATURE_COUNT = XML_GENERATOR_FEATURE_COUNT + 18;
+	public static final int XML_TABLE_GENERATOR_FEATURE_COUNT = XML_GENERATOR_FEATURE_COUNT + 19;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlOrderBy <em>Xml Order By</em>}' class.
@@ -5420,6 +5465,34 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_QUERY_HINT_FEATURE_COUNT = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlUniqueConstraint <em>Xml Unique Constraint</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlUniqueConstraint
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlUniqueConstraint()
+	 * @generated
+	 */
+	public static final int XML_UNIQUE_CONSTRAINT = 58;
+
+	/**
+	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_UNIQUE_CONSTRAINT__COLUMN_NAMES = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Unique Constraint</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_UNIQUE_CONSTRAINT_FEATURE_COUNT = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 1;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -5826,6 +5899,13 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlQueryHintEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlUniqueConstraintEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -7659,6 +7739,18 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.orm.XmlUniqueConstraint <em>Xml Unique Constraint</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Unique Constraint</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlUniqueConstraint
+	 * @generated
+	 */
+	public EClass getXmlUniqueConstraint() {
+		return xmlUniqueConstraintEClass;
+	}
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7827,6 +7919,7 @@ public class OrmPackage extends EPackageImpl
 		xmlNamedQueryEClass = createEClass(XML_NAMED_QUERY);
 		xmlNamedNativeQueryEClass = createEClass(XML_NAMED_NATIVE_QUERY);
 		xmlQueryHintEClass = createEClass(XML_QUERY_HINT);
+		xmlUniqueConstraintEClass = createEClass(XML_UNIQUE_CONSTRAINT);
 	}
 
 	/**
@@ -7969,6 +8062,8 @@ public class OrmPackage extends EPackageImpl
 		xmlNamedNativeQueryEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getINamedNativeQuery());
 		xmlQueryHintEClass.getESuperTypes().add(theJpaCorePackage.getXmlEObject());
 		xmlQueryHintEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIQueryHint());
+		xmlUniqueConstraintEClass.getESuperTypes().add(theJpaCorePackage.getXmlEObject());
+		xmlUniqueConstraintEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIUniqueConstraint());
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlRootContentNodeEClass, XmlRootContentNode.class, "XmlRootContentNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlRootContentNode_EntityMappings(), this.getEntityMappingsInternal(), this.getEntityMappingsInternal_Root(), "entityMappings", null, 1, 1, XmlRootContentNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
@@ -8111,6 +8206,7 @@ public class OrmPackage extends EPackageImpl
 		initEClass(xmlNamedQueryEClass, XmlNamedQuery.class, "XmlNamedQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlNamedNativeQueryEClass, XmlNamedNativeQuery.class, "XmlNamedNativeQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlQueryHintEClass, XmlQueryHint.class, "XmlQueryHint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(xmlUniqueConstraintEClass, XmlUniqueConstraint.class, "XmlUniqueConstraint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		// Create resource
 		createResource(eNS_URI);
 	}
@@ -9355,5 +9451,15 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_QUERY_HINT = eINSTANCE.getXmlQueryHint();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlUniqueConstraint <em>Xml Unique Constraint</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.orm.XmlUniqueConstraint
+		 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlUniqueConstraint()
+		 * @generated
+		 */
+		public static final EClass XML_UNIQUE_CONSTRAINT = eINSTANCE.getXmlUniqueConstraint();
 	}
 } //OrmPackage

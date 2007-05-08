@@ -198,6 +198,10 @@
         <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/ITable/schema"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/ITable/specifiedSchema"/>
         <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/ITable/defaultSchema"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/ITable/uniqueConstraints"/>
+      </genClasses>
+      <genClasses ecoreClass="core.ecore#//mappings/IUniqueConstraint">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IUniqueConstraint/columnNames"/>
       </genClasses>
       <genClasses image="false" ecoreClass="core.ecore#//mappings/INamedColumn">
         <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/INamedColumn/name"/>
@@ -344,6 +348,7 @@
         <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/ITableGenerator/pkColumnValue"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/ITableGenerator/specifiedPkColumnValue"/>
         <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/ITableGenerator/defaultPkColumnValue"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/ITableGenerator/uniqueConstraints"/>
       </genClasses>
       <genClasses image="false" ecoreClass="core.ecore#//mappings/ISequenceGenerator">
         <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/ISequenceGenerator/sequenceName"/>
@@ -442,6 +447,7 @@
       <genClasses ecoreClass="java.ecore#//mappings/JavaNamedQuery"/>
       <genClasses ecoreClass="java.ecore#//mappings/JavaNamedNativeQuery"/>
       <genClasses ecoreClass="java.ecore#//mappings/JavaQueryHint"/>
+      <genClasses ecoreClass="java.ecore#//mappings/JavaUniqueConstraint"/>
     </nestedGenPackages>
   </genPackages>
   <genPackages prefix="Orm" basePackage="org.eclipse.jpt.core.internal.content" disposableProviderFactory="true"
@@ -612,6 +618,7 @@
     <genClasses ecoreClass="orm.ecore#//XmlNamedQuery"/>
     <genClasses ecoreClass="orm.ecore#//XmlNamedNativeQuery"/>
     <genClasses ecoreClass="orm.ecore#//XmlQueryHint"/>
+    <genClasses ecoreClass="orm.ecore#//XmlUniqueConstraint"/>
   </genPackages>
   <genPackages prefix="Persistence" basePackage="org.eclipse.jpt.core.internal.content"
       disposableProviderFactory="true" ecorePackage="persistence.ecore#/">

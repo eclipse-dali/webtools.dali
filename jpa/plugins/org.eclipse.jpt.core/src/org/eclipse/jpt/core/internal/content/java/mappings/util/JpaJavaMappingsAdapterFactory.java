@@ -62,6 +62,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaTable;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaTableGenerator;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaTransient;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaTypeMapping;
+import org.eclipse.jpt.core.internal.content.java.mappings.JavaUniqueConstraint;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaVersion;
 import org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage;
 import org.eclipse.jpt.core.internal.mappings.IAbstractColumn;
@@ -103,6 +104,7 @@ import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
 import org.eclipse.jpt.core.internal.mappings.ITransient;
+import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.IVersion;
 
 /**
@@ -372,6 +374,11 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 		}
 
 		@Override
+		public Adapter caseJavaUniqueConstraint(JavaUniqueConstraint object) {
+			return createJavaUniqueConstraintAdapter();
+		}
+
+		@Override
 		public Adapter caseIJpaEObject(IJpaEObject object) {
 			return createIJpaEObjectAdapter();
 		}
@@ -609,6 +616,11 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 		@Override
 		public Adapter caseIQueryHint(IQueryHint object) {
 			return createIQueryHintAdapter();
+		}
+
+		@Override
+		public Adapter caseIUniqueConstraint(IUniqueConstraint object) {
+			return createIUniqueConstraintAdapter();
 		}
 
 		@Override
@@ -1159,6 +1171,20 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createJavaQueryHintAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaUniqueConstraint <em>Java Unique Constraint</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JavaUniqueConstraint
+	 * @generated
+	 */
+	public Adapter createJavaUniqueConstraintAdapter() {
 		return null;
 	}
 
@@ -1817,6 +1843,20 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createIQueryHintAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.mappings.IUniqueConstraint <em>IUnique Constraint</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.mappings.IUniqueConstraint
+	 * @generated
+	 */
+	public Adapter createIUniqueConstraintAdapter() {
 		return null;
 	}
 

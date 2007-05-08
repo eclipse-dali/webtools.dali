@@ -144,6 +144,8 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 				return createJavaNamedNativeQuery();
 			case JpaJavaMappingsPackage.JAVA_QUERY_HINT :
 				return createJavaQueryHint();
+			case JpaJavaMappingsPackage.JAVA_UNIQUE_CONSTRAINT :
+				return createJavaUniqueConstraint();
 			default :
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -391,6 +393,15 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 
 	public JavaQueryHint createJavaQueryHint() {
 		throw new UnsupportedOperationException("Use createJavaQueryHint(Member, IndexedDeclarationAnnotationAdapter) instead");
+	}
+
+	public JavaUniqueConstraint createJavaUniqueConstraint() {
+		throw new UnsupportedOperationException("Use createJavaUniqueConstraint(Member, IndexedDeclarationAnnotationAdapter) instead");
+	}
+	
+	public JavaUniqueConstraint createJavaUniqueConstraint(Member member, IndexedDeclarationAnnotationAdapter idaa) {
+		JavaUniqueConstraint javaUniqueConstraint = new JavaUniqueConstraint(member, idaa);
+		return javaUniqueConstraint;
 	}
 
 	public JavaQueryHint createJavaQueryHint(Member member, IndexedDeclarationAnnotationAdapter idaa) {

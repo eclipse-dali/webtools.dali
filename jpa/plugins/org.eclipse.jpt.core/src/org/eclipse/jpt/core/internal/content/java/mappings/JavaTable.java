@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.internal.platform.DefaultsContext;
  */
 public class JavaTable extends AbstractJavaTable
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.TABLE);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.TABLE);
 
 	private static final DeclarationAnnotationElementAdapter NAME_ADAPTER = new ConversionDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__NAME);
 
@@ -79,5 +79,10 @@ public class JavaTable extends AbstractJavaTable
 	public void refreshDefaults(DefaultsContext defaultsContext) {
 		super.refreshDefaults(defaultsContext);
 		this.setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TABLE_NAME_KEY));
+	}
+	
+	@Override
+	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
+		return JavaUniqueConstraint.createTableUniqueConstraint(getMember(), index);
 	}
 }

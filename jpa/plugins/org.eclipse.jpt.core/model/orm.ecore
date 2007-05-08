@@ -260,4 +260,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedQuery" eSuperTypes="#//AbstractXmlQuery core.ecore#//mappings/INamedQuery"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedNativeQuery" eSuperTypes="#//AbstractXmlQuery core.ecore#//mappings/INamedNativeQuery"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlQueryHint" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IQueryHint"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlUniqueConstraint" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IUniqueConstraint"/>
 </ecore:EPackage>

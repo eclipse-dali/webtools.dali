@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.internal.IJpaSourceObject;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.ITypeMapping;
@@ -32,6 +33,7 @@ import org.eclipse.jpt.db.internal.Table;
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.ITable#getSchema <em>Schema</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.ITable#getSpecifiedSchema <em>Specified Schema</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.ITable#getDefaultSchema <em>Default Schema</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.mappings.ITable#getUniqueConstraints <em>Unique Constraints</em>}</li>
  * </ul>
  * </p>
  *
@@ -184,6 +186,22 @@ public interface ITable extends IJpaSourceObject
 	String getDefaultSchema();
 
 	/**
+	 * Returns the value of the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.internal.mappings.IUniqueConstraint}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Unique Constraints</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Unique Constraints</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getITable_UniqueConstraints()
+	 * @model type="org.eclipse.jpt.core.internal.mappings.IUniqueConstraint" containment="true"
+	 * @generated
+	 */
+	EList<IUniqueConstraint> getUniqueConstraints();
+
+	/**
 	 * Returns the value of the '<em><b>Specified Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -233,6 +251,9 @@ public interface ITable extends IJpaSourceObject
 	ITextRange getSchemaTextRange();
 
 	Owner getOwner();
+	
+	IUniqueConstraint createUniqueConstraint(int index);
+	
 	/**
 	 * interface allowing tables to be owned by various objects
 	 */

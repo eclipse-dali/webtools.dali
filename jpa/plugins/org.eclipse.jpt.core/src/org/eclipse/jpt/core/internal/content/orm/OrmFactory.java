@@ -150,6 +150,8 @@ public class OrmFactory extends EFactoryImpl
 				return createXmlNamedNativeQuery();
 			case OrmPackage.XML_QUERY_HINT :
 				return createXmlQueryHint();
+			case OrmPackage.XML_UNIQUE_CONSTRAINT :
+				return createXmlUniqueConstraint();
 			default :
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -534,7 +536,7 @@ public class OrmFactory extends EFactoryImpl
 	public XmlDiscriminatorColumn createXmlDiscriminatorColumn() {
 		throw new UnsupportedOperationException("Use createXmlDiscriminatorColumn(INamedColumn.Owner) instead");
 	}
-	
+
 	public XmlDiscriminatorColumn createXmlDiscriminatorColumn(INamedColumn.Owner owner) {
 		XmlDiscriminatorColumn xmlDiscriminatorColumn = new XmlDiscriminatorColumn(owner);
 		return xmlDiscriminatorColumn;
@@ -616,6 +618,16 @@ public class OrmFactory extends EFactoryImpl
 	public XmlQueryHint createXmlQueryHint() {
 		XmlQueryHint xmlQueryHint = new XmlQueryHint();
 		return xmlQueryHint;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlUniqueConstraint createXmlUniqueConstraint() {
+		XmlUniqueConstraint xmlUniqueConstraint = new XmlUniqueConstraint();
+		return xmlUniqueConstraint;
 	}
 
 	public XmlPrimaryKeyJoinColumn createXmlPrimaryKeyJoinColumn(IAbstractJoinColumn.Owner owner) {

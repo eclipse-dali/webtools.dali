@@ -197,6 +197,13 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedSchema" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultSchema" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
           changeable="false"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueConstraints" upperBound="-1"
+          eType="#//mappings/IUniqueConstraint" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="IUniqueConstraint" abstract="true"
+        interface="true" eSuperTypes="#//IJpaSourceObject">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnNames" upperBound="-1"
+          eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="INamedColumn" abstract="true" interface="true"
         eSuperTypes="#//IJpaSourceObject">
@@ -487,6 +494,8 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultPkColumnValue"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
           changeable="false"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueConstraints" upperBound="-1"
+          eType="#//mappings/IUniqueConstraint" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ISequenceGenerator" abstract="true"
         interface="true" eSuperTypes="#//mappings/IGenerator">

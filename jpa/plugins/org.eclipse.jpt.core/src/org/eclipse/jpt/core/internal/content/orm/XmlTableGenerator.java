@@ -9,10 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
+import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
@@ -328,6 +335,16 @@ public class XmlTableGenerator extends XmlGenerator implements ITableGenerator
 	 * @ordered
 	 */
 	protected String defaultPkColumnValue = DEFAULT_PK_COLUMN_VALUE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getUniqueConstraints() <em>Unique Constraints</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUniqueConstraints()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<IUniqueConstraint> uniqueConstraints;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -680,6 +697,41 @@ public class XmlTableGenerator extends XmlGenerator implements ITableGenerator
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.internal.mappings.IUniqueConstraint}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Unique Constraints</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Unique Constraints</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getITableGenerator_UniqueConstraints()
+	 * @model type="org.eclipse.jpt.core.internal.mappings.IUniqueConstraint" containment="true"
+	 * @generated
+	 */
+	public EList<IUniqueConstraint> getUniqueConstraints() {
+		if (uniqueConstraints == null) {
+			uniqueConstraints = new EObjectContainmentEList<IUniqueConstraint>(IUniqueConstraint.class, this, OrmPackage.XML_TABLE_GENERATOR__UNIQUE_CONSTRAINTS);
+		}
+		return uniqueConstraints;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case OrmPackage.XML_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+				return ((InternalEList<?>) getUniqueConstraints()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -723,6 +775,8 @@ public class XmlTableGenerator extends XmlGenerator implements ITableGenerator
 				return getSpecifiedPkColumnValue();
 			case OrmPackage.XML_TABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE :
 				return getDefaultPkColumnValue();
+			case OrmPackage.XML_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+				return getUniqueConstraints();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -732,6 +786,7 @@ public class XmlTableGenerator extends XmlGenerator implements ITableGenerator
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -752,6 +807,10 @@ public class XmlTableGenerator extends XmlGenerator implements ITableGenerator
 				return;
 			case OrmPackage.XML_TABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE :
 				setSpecifiedPkColumnValue((String) newValue);
+				return;
+			case OrmPackage.XML_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+				getUniqueConstraints().clear();
+				getUniqueConstraints().addAll((Collection<? extends IUniqueConstraint>) newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -782,6 +841,9 @@ public class XmlTableGenerator extends XmlGenerator implements ITableGenerator
 				return;
 			case OrmPackage.XML_TABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE :
 				setSpecifiedPkColumnValue(SPECIFIED_PK_COLUMN_VALUE_EDEFAULT);
+				return;
+			case OrmPackage.XML_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+				getUniqueConstraints().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -831,6 +893,8 @@ public class XmlTableGenerator extends XmlGenerator implements ITableGenerator
 				return SPECIFIED_PK_COLUMN_VALUE_EDEFAULT == null ? specifiedPkColumnValue != null : !SPECIFIED_PK_COLUMN_VALUE_EDEFAULT.equals(specifiedPkColumnValue);
 			case OrmPackage.XML_TABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE :
 				return DEFAULT_PK_COLUMN_VALUE_EDEFAULT == null ? defaultPkColumnValue != null : !DEFAULT_PK_COLUMN_VALUE_EDEFAULT.equals(defaultPkColumnValue);
+			case OrmPackage.XML_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+				return uniqueConstraints != null && !uniqueConstraints.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -880,6 +944,8 @@ public class XmlTableGenerator extends XmlGenerator implements ITableGenerator
 					return JpaCoreMappingsPackage.ITABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE;
 				case OrmPackage.XML_TABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE :
 					return JpaCoreMappingsPackage.ITABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE;
+				case OrmPackage.XML_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+					return JpaCoreMappingsPackage.ITABLE_GENERATOR__UNIQUE_CONSTRAINTS;
 				default :
 					return -1;
 			}
@@ -932,6 +998,8 @@ public class XmlTableGenerator extends XmlGenerator implements ITableGenerator
 					return OrmPackage.XML_TABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE;
 				case JpaCoreMappingsPackage.ITABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE :
 					return OrmPackage.XML_TABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE;
+				case JpaCoreMappingsPackage.ITABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+					return OrmPackage.XML_TABLE_GENERATOR__UNIQUE_CONSTRAINTS;
 				default :
 					return -1;
 			}

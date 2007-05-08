@@ -163,6 +163,7 @@ public interface OrmXmlMapper
 	String TEMPORAL = "temporal";  //$NON-NLS-1$
 	String TRANSIENT = "transient";  //$NON-NLS-1$
 	String UNIQUE_CONSTRAINT = "unique-constraint";  //$NON-NLS-1$
+	String UNIQUE_CONSTRAINT__COLUMN_NAME = "column-name";  //$NON-NLS-1$
 	String VERSION = "version";  //$NON-NLS-1$
 	String XML_MAPPING_METADATA_COMPLETE = "xml-mapping-metadata-complete";  //$NON-NLS-1$
 }

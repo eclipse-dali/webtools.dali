@@ -1450,13 +1450,22 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int ABSTRACT_JAVA_TABLE__DEFAULT_SCHEMA = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 8;
 
 	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 9;
+
+	/**
 	 * The number of structural features of the '<em>Abstract Java Table</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_JAVA_TABLE_FEATURE_COUNT = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 9;
+	public static final int ABSTRACT_JAVA_TABLE_FEATURE_COUNT = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 10;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaTable <em>Java Table</em>}' class.
@@ -1548,6 +1557,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int JAVA_TABLE__DEFAULT_SCHEMA = ABSTRACT_JAVA_TABLE__DEFAULT_SCHEMA;
+
+	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_TABLE__UNIQUE_CONSTRAINTS = ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS;
 
 	/**
 	 * The number of structural features of the '<em>Java Table</em>' class.
@@ -1760,6 +1778,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_SECONDARY_TABLE__DEFAULT_SCHEMA = ABSTRACT_JAVA_TABLE__DEFAULT_SCHEMA;
 
 	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_SECONDARY_TABLE__UNIQUE_CONSTRAINTS = ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS;
+
+	/**
 	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1875,6 +1902,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int JAVA_JOIN_TABLE__DEFAULT_SCHEMA = ABSTRACT_JAVA_TABLE__DEFAULT_SCHEMA;
+
+	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_JOIN_TABLE__UNIQUE_CONSTRAINTS = ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -2960,13 +2996,22 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_TABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE = JAVA_GENERATOR_FEATURE_COUNT + 17;
 
 	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_TABLE_GENERATOR__UNIQUE_CONSTRAINTS = JAVA_GENERATOR_FEATURE_COUNT + 18;
+
+	/**
 	 * The number of structural features of the '<em>Java Table Generator</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_TABLE_GENERATOR_FEATURE_COUNT = JAVA_GENERATOR_FEATURE_COUNT + 18;
+	public static final int JAVA_TABLE_GENERATOR_FEATURE_COUNT = JAVA_GENERATOR_FEATURE_COUNT + 19;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3298,6 +3343,34 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_QUERY_HINT_FEATURE_COUNT = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 2;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaUniqueConstraint <em>Java Unique Constraint</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JavaUniqueConstraint
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaUniqueConstraint()
+	 * @generated
+	 */
+	public static final int JAVA_UNIQUE_CONSTRAINT = 42;
+
+	/**
+	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_UNIQUE_CONSTRAINT__COLUMN_NAMES = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Java Unique Constraint</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_UNIQUE_CONSTRAINT_FEATURE_COUNT = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 1;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3583,6 +3656,13 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass javaQueryHintEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass javaUniqueConstraintEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -4166,6 +4246,18 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaUniqueConstraint <em>Java Unique Constraint</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Java Unique Constraint</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JavaUniqueConstraint
+	 * @generated
+	 */
+	public EClass getJavaUniqueConstraint() {
+		return javaUniqueConstraintEClass;
+	}
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaSecondaryTable <em>Java Secondary Table</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4249,6 +4341,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		javaNamedQueryEClass = createEClass(JAVA_NAMED_QUERY);
 		javaNamedNativeQueryEClass = createEClass(JAVA_NAMED_NATIVE_QUERY);
 		javaQueryHintEClass = createEClass(JAVA_QUERY_HINT);
+		javaUniqueConstraintEClass = createEClass(JAVA_UNIQUE_CONSTRAINT);
 	}
 
 	/**
@@ -4360,6 +4453,8 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		javaNamedNativeQueryEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getINamedNativeQuery());
 		javaQueryHintEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
 		javaQueryHintEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIQueryHint());
+		javaUniqueConstraintEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
+		javaUniqueConstraintEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIUniqueConstraint());
 		// Initialize classes and features; add operations and parameters
 		initEClass(javaTypeMappingEClass, JavaTypeMapping.class, "JavaTypeMapping", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaEntityEClass, JavaEntity.class, "JavaEntity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -4403,6 +4498,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		initEClass(javaNamedQueryEClass, JavaNamedQuery.class, "JavaNamedQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaNamedNativeQueryEClass, JavaNamedNativeQuery.class, "JavaNamedNativeQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaQueryHintEClass, JavaQueryHint.class, "JavaQueryHint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(javaUniqueConstraintEClass, JavaUniqueConstraint.class, "JavaUniqueConstraint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 	}
 	/**
 	 * <!-- begin-user-doc -->
@@ -4827,6 +4923,16 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass JAVA_QUERY_HINT = eINSTANCE.getJavaQueryHint();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaUniqueConstraint <em>Java Unique Constraint</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JavaUniqueConstraint
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaUniqueConstraint()
+		 * @generated
+		 */
+		public static final EClass JAVA_UNIQUE_CONSTRAINT = eINSTANCE.getJavaUniqueConstraint();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaSecondaryTable <em>Java Secondary Table</em>}' class.

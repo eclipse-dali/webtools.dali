@@ -52,8 +52,8 @@ public abstract class AbstractTableTranslator extends Translator
 		return new Translator(SCHEMA, JPA_CORE_XML_PKG.getAbstractXmlTable_SpecifiedSchemaForXml(), DOM_ATTRIBUTE);
 	}
 	
-	//placeholder until we support unique-constraint
 	protected Translator createUniqueConstraintTranslator() {
 		return new Translator(UNIQUE_CONSTRAINT, (EStructuralFeature) null);
+		//TODO return new UniqueConstraintTranslator(UNIQUE_CONSTRAINT, MAPPINGS_PKG.getITable_UniqueConstraints());
 	}
 }

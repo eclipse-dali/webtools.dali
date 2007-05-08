@@ -82,6 +82,7 @@ import org.eclipse.jpt.core.internal.content.orm.XmlTable;
 import org.eclipse.jpt.core.internal.content.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.internal.content.orm.XmlTransient;
 import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
+import org.eclipse.jpt.core.internal.content.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.internal.content.orm.XmlVersion;
 import org.eclipse.jpt.core.internal.mappings.IAbstractColumn;
 import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
@@ -122,6 +123,7 @@ import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
 import org.eclipse.jpt.core.internal.mappings.ITransient;
+import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.IVersion;
 
 /**
@@ -471,6 +473,11 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 		}
 
 		@Override
+		public Adapter caseXmlUniqueConstraint(XmlUniqueConstraint object) {
+			return createXmlUniqueConstraintAdapter();
+		}
+
+		@Override
 		public Adapter caseIJpaEObject(IJpaEObject object) {
 			return createIJpaEObjectAdapter();
 		}
@@ -723,6 +730,11 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 		@Override
 		public Adapter caseIQueryHint(IQueryHint object) {
 			return createIQueryHintAdapter();
+		}
+
+		@Override
+		public Adapter caseIUniqueConstraint(IUniqueConstraint object) {
+			return createIUniqueConstraintAdapter();
 		}
 
 		@Override
@@ -1529,6 +1541,20 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.orm.XmlUniqueConstraint <em>Xml Unique Constraint</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlUniqueConstraint
+	 * @generated
+	 */
+	public Adapter createXmlUniqueConstraintAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.IJpaEObject <em>IJpa EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -2043,6 +2069,20 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createIQueryHintAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.mappings.IUniqueConstraint <em>IUnique Constraint</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.mappings.IUniqueConstraint
+	 * @generated
+	 */
+	public Adapter createIUniqueConstraintAdapter() {
 		return null;
 	}
 

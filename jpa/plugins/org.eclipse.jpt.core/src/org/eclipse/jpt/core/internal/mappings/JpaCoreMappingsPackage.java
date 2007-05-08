@@ -473,13 +473,50 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int ITABLE__DEFAULT_SCHEMA = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 8;
 
 	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ITABLE__UNIQUE_CONSTRAINTS = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 9;
+
+	/**
 	 * The number of structural features of the '<em>ITable</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ITABLE_FEATURE_COUNT = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 9;
+	public static final int ITABLE_FEATURE_COUNT = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 10;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.IUniqueConstraint <em>IUnique Constraint</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.mappings.IUniqueConstraint
+	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIUniqueConstraint()
+	 * @generated
+	 */
+	public static final int IUNIQUE_CONSTRAINT = 4;
+
+	/**
+	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IUNIQUE_CONSTRAINT__COLUMN_NAMES = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>IUnique Constraint</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IUNIQUE_CONSTRAINT_FEATURE_COUNT = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.INamedColumn <em>INamed Column</em>}' class.
@@ -489,7 +526,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getINamedColumn()
 	 * @generated
 	 */
-	public static final int INAMED_COLUMN = 4;
+	public static final int INAMED_COLUMN = 5;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -544,7 +581,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIAbstractColumn()
 	 * @generated
 	 */
-	public static final int IABSTRACT_COLUMN = 5;
+	public static final int IABSTRACT_COLUMN = 6;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -662,7 +699,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIColumn()
 	 * @generated
 	 */
-	public static final int ICOLUMN = 6;
+	public static final int ICOLUMN = 7;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -807,7 +844,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIColumnMapping()
 	 * @generated
 	 */
-	public static final int ICOLUMN_MAPPING = 7;
+	public static final int ICOLUMN_MAPPING = 8;
 
 	/**
 	 * The number of structural features of the '<em>IColumn Mapping</em>' class.
@@ -826,7 +863,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIBasic()
 	 * @generated
 	 */
-	public static final int IBASIC = 8;
+	public static final int IBASIC = 9;
 
 	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
@@ -899,7 +936,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIId()
 	 * @generated
 	 */
-	public static final int IID = 9;
+	public static final int IID = 10;
 
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
@@ -963,7 +1000,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getITransient()
 	 * @generated
 	 */
-	public static final int ITRANSIENT = 10;
+	public static final int ITRANSIENT = 11;
 
 	/**
 	 * The number of structural features of the '<em>ITransient</em>' class.
@@ -982,7 +1019,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIVersion()
 	 * @generated
 	 */
-	public static final int IVERSION = 11;
+	public static final int IVERSION = 12;
 
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
@@ -1019,7 +1056,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEmbeddedId()
 	 * @generated
 	 */
-	public static final int IEMBEDDED_ID = 12;
+	public static final int IEMBEDDED_ID = 13;
 
 	/**
 	 * The number of structural features of the '<em>IEmbedded Id</em>' class.
@@ -1038,7 +1075,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEmbedded()
 	 * @generated
 	 */
-	public static final int IEMBEDDED = 13;
+	public static final int IEMBEDDED = 14;
 
 	/**
 	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
@@ -1084,7 +1121,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIRelationshipMapping()
 	 * @generated
 	 */
-	public static final int IRELATIONSHIP_MAPPING = 14;
+	public static final int IRELATIONSHIP_MAPPING = 15;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1139,7 +1176,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getINonOwningMapping()
 	 * @generated
 	 */
-	public static final int INON_OWNING_MAPPING = 15;
+	public static final int INON_OWNING_MAPPING = 16;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1203,7 +1240,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIMultiRelationshipMapping()
 	 * @generated
 	 */
-	public static final int IMULTI_RELATIONSHIP_MAPPING = 16;
+	public static final int IMULTI_RELATIONSHIP_MAPPING = 17;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1294,7 +1331,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIOneToMany()
 	 * @generated
 	 */
-	public static final int IONE_TO_MANY = 17;
+	public static final int IONE_TO_MANY = 18;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1385,7 +1422,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIManyToMany()
 	 * @generated
 	 */
-	public static final int IMANY_TO_MANY = 18;
+	public static final int IMANY_TO_MANY = 19;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1476,7 +1513,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getISingleRelationshipMapping()
 	 * @generated
 	 */
-	public static final int ISINGLE_RELATIONSHIP_MAPPING = 19;
+	public static final int ISINGLE_RELATIONSHIP_MAPPING = 20;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1567,7 +1604,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIManyToOne()
 	 * @generated
 	 */
-	public static final int IMANY_TO_ONE = 20;
+	public static final int IMANY_TO_ONE = 21;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1658,7 +1695,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIOneToOne()
 	 * @generated
 	 */
-	public static final int IONE_TO_ONE = 21;
+	public static final int IONE_TO_ONE = 22;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1758,7 +1795,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIJoinTable()
 	 * @generated
 	 */
-	public static final int IJOIN_TABLE = 22;
+	public static final int IJOIN_TABLE = 23;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1842,6 +1879,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IJOIN_TABLE__DEFAULT_SCHEMA = ITABLE__DEFAULT_SCHEMA;
 
 	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJOIN_TABLE__UNIQUE_CONSTRAINTS = ITABLE__UNIQUE_CONSTRAINTS;
+
+	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1912,7 +1958,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIAbstractJoinColumn()
 	 * @generated
 	 */
-	public static final int IABSTRACT_JOIN_COLUMN = 23;
+	public static final int IABSTRACT_JOIN_COLUMN = 24;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1994,7 +2040,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIJoinColumn()
 	 * @generated
 	 */
-	public static final int IJOIN_COLUMN = 24;
+	public static final int IJOIN_COLUMN = 25;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2139,7 +2185,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIOverride()
 	 * @generated
 	 */
-	public static final int IOVERRIDE = 25;
+	public static final int IOVERRIDE = 26;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2167,7 +2213,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIAttributeOverride()
 	 * @generated
 	 */
-	public static final int IATTRIBUTE_OVERRIDE = 26;
+	public static final int IATTRIBUTE_OVERRIDE = 27;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2204,7 +2250,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIAssociationOverride()
 	 * @generated
 	 */
-	public static final int IASSOCIATION_OVERRIDE = 27;
+	public static final int IASSOCIATION_OVERRIDE = 28;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2259,7 +2305,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIDiscriminatorColumn()
 	 * @generated
 	 */
-	public static final int IDISCRIMINATOR_COLUMN = 28;
+	public static final int IDISCRIMINATOR_COLUMN = 29;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2350,7 +2396,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getISecondaryTable()
 	 * @generated
 	 */
-	public static final int ISECONDARY_TABLE = 29;
+	public static final int ISECONDARY_TABLE = 30;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2434,6 +2480,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int ISECONDARY_TABLE__DEFAULT_SCHEMA = ITABLE__DEFAULT_SCHEMA;
 
 	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ISECONDARY_TABLE__UNIQUE_CONSTRAINTS = ITABLE__UNIQUE_CONSTRAINTS;
+
+	/**
 	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2477,7 +2532,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIPrimaryKeyJoinColumn()
 	 * @generated
 	 */
-	public static final int IPRIMARY_KEY_JOIN_COLUMN = 30;
+	public static final int IPRIMARY_KEY_JOIN_COLUMN = 31;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2559,7 +2614,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIGenerator()
 	 * @generated
 	 */
-	public static final int IGENERATOR = 31;
+	public static final int IGENERATOR = 32;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2641,7 +2696,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getITableGenerator()
 	 * @generated
 	 */
-	public static final int ITABLE_GENERATOR = 32;
+	public static final int ITABLE_GENERATOR = 33;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2869,13 +2924,22 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int ITABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE = IGENERATOR_FEATURE_COUNT + 17;
 
 	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ITABLE_GENERATOR__UNIQUE_CONSTRAINTS = IGENERATOR_FEATURE_COUNT + 18;
+
+	/**
 	 * The number of structural features of the '<em>ITable Generator</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ITABLE_GENERATOR_FEATURE_COUNT = IGENERATOR_FEATURE_COUNT + 18;
+	public static final int ITABLE_GENERATOR_FEATURE_COUNT = IGENERATOR_FEATURE_COUNT + 19;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.ISequenceGenerator <em>ISequence Generator</em>}' class.
@@ -2885,7 +2949,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getISequenceGenerator()
 	 * @generated
 	 */
-	public static final int ISEQUENCE_GENERATOR = 33;
+	public static final int ISEQUENCE_GENERATOR = 34;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2994,7 +3058,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIGeneratedValue()
 	 * @generated
 	 */
-	public static final int IGENERATED_VALUE = 34;
+	public static final int IGENERATED_VALUE = 35;
 
 	/**
 	 * The feature id for the '<em><b>Strategy</b></em>' attribute.
@@ -3031,7 +3095,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIOrderBy()
 	 * @generated
 	 */
-	public static final int IORDER_BY = 35;
+	public static final int IORDER_BY = 36;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -3068,7 +3132,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIQuery()
 	 * @generated
 	 */
-	public static final int IQUERY = 36;
+	public static final int IQUERY = 37;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3114,7 +3178,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getINamedQuery()
 	 * @generated
 	 */
-	public static final int INAMED_QUERY = 37;
+	public static final int INAMED_QUERY = 38;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3160,7 +3224,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getINamedNativeQuery()
 	 * @generated
 	 */
-	public static final int INAMED_NATIVE_QUERY = 38;
+	public static final int INAMED_NATIVE_QUERY = 39;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3224,7 +3288,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIQueryHint()
 	 * @generated
 	 */
-	public static final int IQUERY_HINT = 39;
+	public static final int IQUERY_HINT = 40;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3261,7 +3325,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDefaultEagerFetchType()
 	 * @generated
 	 */
-	public static final int DEFAULT_EAGER_FETCH_TYPE = 40;
+	public static final int DEFAULT_EAGER_FETCH_TYPE = 41;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType <em>Default Lazy Fetch Type</em>}' enum.
@@ -3271,7 +3335,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDefaultLazyFetchType()
 	 * @generated
 	 */
-	public static final int DEFAULT_LAZY_FETCH_TYPE = 41;
+	public static final int DEFAULT_LAZY_FETCH_TYPE = 42;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.DefaultFalseBoolean <em>Default False Boolean</em>}' enum.
@@ -3281,7 +3345,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDefaultFalseBoolean()
 	 * @generated
 	 */
-	public static final int DEFAULT_FALSE_BOOLEAN = 42;
+	public static final int DEFAULT_FALSE_BOOLEAN = 43;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean <em>Default True Boolean</em>}' enum.
@@ -3291,7 +3355,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDefaultTrueBoolean()
 	 * @generated
 	 */
-	public static final int DEFAULT_TRUE_BOOLEAN = 43;
+	public static final int DEFAULT_TRUE_BOOLEAN = 44;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.TemporalType <em>Temporal Type</em>}' enum.
@@ -3301,7 +3365,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 44;
+	public static final int TEMPORAL_TYPE = 45;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -3311,7 +3375,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 45;
+	public static final int INHERITANCE_TYPE = 46;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.DiscriminatorType <em>Discriminator Type</em>}' enum.
@@ -3321,7 +3385,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 46;
+	public static final int DISCRIMINATOR_TYPE = 47;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.GenerationType <em>Generation Type</em>}' enum.
@@ -3331,7 +3395,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 47;
+	public static final int GENERATION_TYPE = 48;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.EnumType <em>Enum Type</em>}' enum.
@@ -3341,7 +3405,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 48;
+	public static final int ENUM_TYPE = 49;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.OrderingType <em>Ordering Type</em>}' enum.
@@ -3351,7 +3415,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getOrderingType()
 	 * @generated
 	 */
-	public static final int ORDERING_TYPE = 49;
+	public static final int ORDERING_TYPE = 50;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -3380,6 +3444,13 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass iTableEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iUniqueConstraintEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -4234,6 +4305,44 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 */
 	public EAttribute getITable_DefaultSchema() {
 		return (EAttribute) iTableEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.mappings.ITable#getUniqueConstraints <em>Unique Constraints</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Unique Constraints</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.ITable#getUniqueConstraints()
+	 * @see #getITable()
+	 * @generated
+	 */
+	public EReference getITable_UniqueConstraints() {
+		return (EReference) iTableEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.mappings.IUniqueConstraint <em>IUnique Constraint</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IUnique Constraint</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.IUniqueConstraint
+	 * @generated
+	 */
+	public EClass getIUniqueConstraint() {
+		return iUniqueConstraintEClass;
+	}
+
+	/**
+	 * Returns the meta object for the attribute list '{@link org.eclipse.jpt.core.internal.mappings.IUniqueConstraint#getColumnNames <em>Column Names</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Column Names</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.IUniqueConstraint#getColumnNames()
+	 * @see #getIUniqueConstraint()
+	 * @generated
+	 */
+	public EAttribute getIUniqueConstraint_ColumnNames() {
+		return (EAttribute) iUniqueConstraintEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -5729,6 +5838,19 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.mappings.ITableGenerator#getUniqueConstraints <em>Unique Constraints</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Unique Constraints</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.ITableGenerator#getUniqueConstraints()
+	 * @see #getITableGenerator()
+	 * @generated
+	 */
+	public EReference getITableGenerator_UniqueConstraints() {
+		return (EReference) iTableGeneratorEClass.getEStructuralFeatures().get(18);
+	}
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.mappings.ISequenceGenerator <em>ISequence Generator</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6179,6 +6301,9 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		createEAttribute(iTableEClass, ITABLE__SCHEMA);
 		createEAttribute(iTableEClass, ITABLE__SPECIFIED_SCHEMA);
 		createEAttribute(iTableEClass, ITABLE__DEFAULT_SCHEMA);
+		createEReference(iTableEClass, ITABLE__UNIQUE_CONSTRAINTS);
+		iUniqueConstraintEClass = createEClass(IUNIQUE_CONSTRAINT);
+		createEAttribute(iUniqueConstraintEClass, IUNIQUE_CONSTRAINT__COLUMN_NAMES);
 		iNamedColumnEClass = createEClass(INAMED_COLUMN);
 		createEAttribute(iNamedColumnEClass, INAMED_COLUMN__NAME);
 		createEAttribute(iNamedColumnEClass, INAMED_COLUMN__SPECIFIED_NAME);
@@ -6296,6 +6421,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		createEAttribute(iTableGeneratorEClass, ITABLE_GENERATOR__PK_COLUMN_VALUE);
 		createEAttribute(iTableGeneratorEClass, ITABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE);
 		createEAttribute(iTableGeneratorEClass, ITABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE);
+		createEReference(iTableGeneratorEClass, ITABLE_GENERATOR__UNIQUE_CONSTRAINTS);
 		iSequenceGeneratorEClass = createEClass(ISEQUENCE_GENERATOR);
 		createEAttribute(iSequenceGeneratorEClass, ISEQUENCE_GENERATOR__SEQUENCE_NAME);
 		createEAttribute(iSequenceGeneratorEClass, ISEQUENCE_GENERATOR__SPECIFIED_SEQUENCE_NAME);
@@ -6362,6 +6488,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		iEntityEClass.getESuperTypes().add(theJpaCorePackage.getITypeMapping());
 		iEmbeddableEClass.getESuperTypes().add(theJpaCorePackage.getITypeMapping());
 		iTableEClass.getESuperTypes().add(theJpaCorePackage.getIJpaSourceObject());
+		iUniqueConstraintEClass.getESuperTypes().add(theJpaCorePackage.getIJpaSourceObject());
 		iNamedColumnEClass.getESuperTypes().add(theJpaCorePackage.getIJpaSourceObject());
 		iAbstractColumnEClass.getESuperTypes().add(this.getINamedColumn());
 		iColumnEClass.getESuperTypes().add(this.getIAbstractColumn());
@@ -6445,6 +6572,9 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEAttribute(getITable_Schema(), ecorePackage.getEString(), "schema", null, 0, 1, ITable.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getITable_SpecifiedSchema(), ecorePackage.getEString(), "specifiedSchema", null, 0, 1, ITable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getITable_DefaultSchema(), ecorePackage.getEString(), "defaultSchema", null, 0, 1, ITable.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getITable_UniqueConstraints(), this.getIUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, ITable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(iUniqueConstraintEClass, IUniqueConstraint.class, "IUniqueConstraint", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getIUniqueConstraint_ColumnNames(), theEcorePackage.getEString(), "columnNames", null, 0, -1, IUniqueConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iNamedColumnEClass, INamedColumn.class, "INamedColumn", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getINamedColumn_Name(), ecorePackage.getEString(), "name", null, 0, 1, INamedColumn.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getINamedColumn_SpecifiedName(), ecorePackage.getEString(), "specifiedName", null, 0, 1, INamedColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -6565,6 +6695,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEAttribute(getITableGenerator_PkColumnValue(), ecorePackage.getEString(), "pkColumnValue", null, 0, 1, ITableGenerator.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getITableGenerator_SpecifiedPkColumnValue(), ecorePackage.getEString(), "specifiedPkColumnValue", null, 0, 1, ITableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getITableGenerator_DefaultPkColumnValue(), ecorePackage.getEString(), "defaultPkColumnValue", null, 0, 1, ITableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getITableGenerator_UniqueConstraints(), this.getIUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, ITableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iSequenceGeneratorEClass, ISequenceGenerator.class, "ISequenceGenerator", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getISequenceGenerator_SequenceName(), ecorePackage.getEString(), "sequenceName", null, 0, 1, ISequenceGenerator.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getISequenceGenerator_SpecifiedSequenceName(), ecorePackage.getEString(), "specifiedSequenceName", null, 0, 1, ISequenceGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -6934,6 +7065,32 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute ITABLE__DEFAULT_SCHEMA = eINSTANCE.getITable_DefaultSchema();
+
+		/**
+		 * The meta object literal for the '<em><b>Unique Constraints</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference ITABLE__UNIQUE_CONSTRAINTS = eINSTANCE.getITable_UniqueConstraints();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.IUniqueConstraint <em>IUnique Constraint</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.mappings.IUniqueConstraint
+		 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIUniqueConstraint()
+		 * @generated
+		 */
+		public static final EClass IUNIQUE_CONSTRAINT = eINSTANCE.getIUniqueConstraint();
+
+		/**
+		 * The meta object literal for the '<em><b>Column Names</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute IUNIQUE_CONSTRAINT__COLUMN_NAMES = eINSTANCE.getIUniqueConstraint_ColumnNames();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.INamedColumn <em>INamed Column</em>}' class.
@@ -7928,6 +8085,14 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute ITABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE = eINSTANCE.getITableGenerator_DefaultPkColumnValue();
+
+		/**
+		 * The meta object literal for the '<em><b>Unique Constraints</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference ITABLE_GENERATOR__UNIQUE_CONSTRAINTS = eINSTANCE.getITableGenerator_UniqueConstraints();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.ISequenceGenerator <em>ISequence Generator</em>}' class.

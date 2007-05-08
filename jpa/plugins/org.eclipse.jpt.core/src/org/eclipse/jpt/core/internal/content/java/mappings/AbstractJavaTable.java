@@ -9,10 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.content.java.JavaEObject;
@@ -21,8 +28,8 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.mappings.ITable;
+import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
@@ -196,6 +203,16 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	 */
 	protected String defaultSchema = DEFAULT_SCHEMA_EDEFAULT;
 
+	/**
+	 * The cached value of the '{@link #getUniqueConstraints() <em>Unique Constraints</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUniqueConstraints()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<IUniqueConstraint> uniqueConstraints;
+
 	private final Owner owner;
 
 	private final Member member;
@@ -254,7 +271,7 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	@Override
 	protected void notifyChanged(Notification notification) {
 		super.notifyChanged(notification);
-		switch (notification.getFeatureID(INamedColumn.class)) {
+		switch (notification.getFeatureID(ITable.class)) {
 			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__SPECIFIED_NAME :
 				this.nameAdapter.setValue(notification.getNewValue());
 				break;
@@ -263,6 +280,45 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 				break;
 			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__SPECIFIED_CATALOG :
 				this.catalogAdapter.setValue(notification.getNewValue());
+				break;
+			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS :
+				uniqueConstraintsChanged(notification);
+				break;
+			default :
+				break;
+		}
+	}
+
+	void uniqueConstraintsChanged(Notification notification) {
+		switch (notification.getEventType()) {
+			case Notification.ADD :
+				uniqueConstraintAdded(notification.getPosition(), (IUniqueConstraint) notification.getNewValue());
+				break;
+			case Notification.ADD_MANY :
+				uniqueConstraintsAdded(notification.getPosition(), (List<IUniqueConstraint>) notification.getNewValue());
+				break;
+			case Notification.REMOVE :
+				uniqueConstraintRemoved(notification.getPosition(), (IUniqueConstraint) notification.getOldValue());
+				break;
+			case Notification.REMOVE_MANY :
+				if (notification.getPosition() == Notification.NO_INDEX) {
+					uniqueConstraintsCleared((List<IUniqueConstraint>) notification.getOldValue());
+				}
+				else {
+					// Notification.getNewValue() returns an array of the positions of objects that were removed
+					uniqueConstraintsRemoved((int[]) notification.getNewValue(), (List<IUniqueConstraint>) notification.getOldValue());
+				}
+				break;
+			case Notification.SET :
+				if (!notification.isTouch()) {
+					uniqueConstraintSet(notification.getPosition(), (IUniqueConstraint) notification.getOldValue(), (IUniqueConstraint) notification.getNewValue());
+				}
+				break;
+			case Notification.MOVE :
+				// Notification.getOldValue() returns the source index
+				// Notification.getPositon() returns the target index
+				// Notification.getNewValue() returns the moved object
+				uniqueConstraintMoved(notification.getOldIntValue(), notification.getPosition(), (IUniqueConstraint) notification.getNewValue());
 				break;
 			default :
 				break;
@@ -481,6 +537,41 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.internal.mappings.IUniqueConstraint}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Unique Constraints</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Unique Constraints</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getITable_UniqueConstraints()
+	 * @model type="org.eclipse.jpt.core.internal.mappings.IUniqueConstraint" containment="true"
+	 * @generated
+	 */
+	public EList<IUniqueConstraint> getUniqueConstraints() {
+		if (uniqueConstraints == null) {
+			uniqueConstraints = new EObjectContainmentEList<IUniqueConstraint>(IUniqueConstraint.class, this, JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS);
+		}
+		return uniqueConstraints;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS :
+				return ((InternalEList<?>) getUniqueConstraints()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -506,6 +597,8 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 				return getSpecifiedSchema();
 			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__DEFAULT_SCHEMA :
 				return getDefaultSchema();
+			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS :
+				return getUniqueConstraints();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -515,6 +608,7 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -526,6 +620,10 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 				return;
 			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__SPECIFIED_SCHEMA :
 				setSpecifiedSchema((String) newValue);
+				return;
+			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS :
+				getUniqueConstraints().clear();
+				getUniqueConstraints().addAll((Collection<? extends IUniqueConstraint>) newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -547,6 +645,9 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 				return;
 			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__SPECIFIED_SCHEMA :
 				setSpecifiedSchema(SPECIFIED_SCHEMA_EDEFAULT);
+				return;
+			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS :
+				getUniqueConstraints().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -578,6 +679,8 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 				return SPECIFIED_SCHEMA_EDEFAULT == null ? specifiedSchema != null : !SPECIFIED_SCHEMA_EDEFAULT.equals(specifiedSchema);
 			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__DEFAULT_SCHEMA :
 				return DEFAULT_SCHEMA_EDEFAULT == null ? defaultSchema != null : !DEFAULT_SCHEMA_EDEFAULT.equals(defaultSchema);
+			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS :
+				return uniqueConstraints != null && !uniqueConstraints.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -609,6 +712,8 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 					return JpaCoreMappingsPackage.ITABLE__SPECIFIED_SCHEMA;
 				case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__DEFAULT_SCHEMA :
 					return JpaCoreMappingsPackage.ITABLE__DEFAULT_SCHEMA;
+				case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS :
+					return JpaCoreMappingsPackage.ITABLE__UNIQUE_CONSTRAINTS;
 				default :
 					return -1;
 			}
@@ -643,6 +748,8 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 					return JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__SPECIFIED_SCHEMA;
 				case JpaCoreMappingsPackage.ITABLE__DEFAULT_SCHEMA :
 					return JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__DEFAULT_SCHEMA;
+				case JpaCoreMappingsPackage.ITABLE__UNIQUE_CONSTRAINTS :
+					return JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS;
 				default :
 					return -1;
 			}
@@ -737,6 +844,13 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		return this.daa;
 	}
 
+	public IUniqueConstraint createUniqueConstraint(int index) {
+		return createJavaUniqueConstraint(index);
+	}
+	
+	protected abstract JavaUniqueConstraint createJavaUniqueConstraint(int index);
+
+	
 	//set these defaults here or call setDefaultCatalog from JavaTableContext instead
 	public void refreshDefaults(DefaultsContext defaultsContext) {
 		this.setDefaultCatalog((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TABLE_CATALOG_KEY));
@@ -845,4 +959,88 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	private Iterator<String> quotedCandidateCatalogs(Filter<String> filter) {
 		return StringTools.quote(this.candidateCatalogs(filter));
 	}
+	
+	// ********** jpa model -> java annotations **********
+	////////////////////////////////////////////////////////
+	/**
+	 * slide over all the annotations that follow the new join column
+	 */
+	public void uniqueConstraintAdded(int index, IUniqueConstraint uniqueConstraint) {
+		// JoinColumn was added to jpa model when updating from java, do not need
+		// to edit the java in this case. TODO is there a better way to handle this??
+		if (((JavaUniqueConstraint) uniqueConstraint).annotation(getMember().astRoot()) == null) {
+			this.synchUniqueConstraintAnnotationsAfterAdd(index + 1);
+			((JavaUniqueConstraint) uniqueConstraint).newAnnotation();
+		}
+	}
+
+	// bjv look at this
+	public void uniqueConstraintsAdded(int index, List<IUniqueConstraint> uniqueConstraints) {
+		// JoinColumn was added to jpa model when updating from java, do not need
+		// to edit the java in this case. TODO is there a better way to handle this??
+		if (!uniqueConstraints.isEmpty() && ((JavaUniqueConstraint) uniqueConstraints.get(0)).annotation(getMember().astRoot()) == null) {
+			this.synchUniqueConstraintAnnotationsAfterAdd(index + uniqueConstraints.size());
+			for (IUniqueConstraint uniqueConstraint : uniqueConstraints) {
+				((JavaUniqueConstraint) uniqueConstraint).newAnnotation();
+			}
+		}
+	}
+
+	public void uniqueConstraintRemoved(int index, IUniqueConstraint uniqueConstraint) {
+		((JavaUniqueConstraint) uniqueConstraint).removeAnnotation();
+		this.synchUniqueConstraintAnnotationsAfterRemove(index);
+	}
+
+	public void uniqueConstraintsRemoved(int[] indexes, List<IUniqueConstraint> uniqueConstraints) {
+		for (IUniqueConstraint uniqueConstraint : uniqueConstraints) {
+			((JavaUniqueConstraint) uniqueConstraint).removeAnnotation();
+		}
+		this.synchUniqueConstraintAnnotationsAfterRemove(indexes[0]);
+	}
+
+	public void uniqueConstraintsCleared(List<IUniqueConstraint> uniqueConstraints) {
+		for (IUniqueConstraint uniqueConstraint : uniqueConstraints) {
+			((JavaUniqueConstraint) uniqueConstraint).removeAnnotation();
+		}
+	}
+
+	public void uniqueConstraintSet(int index, IUniqueConstraint oldUniqueConstraint, IUniqueConstraint newUniqueConstraint) {
+		((JavaUniqueConstraint) newUniqueConstraint).newAnnotation();
+	}
+
+	public void uniqueConstraintMoved(int sourceIndex, int targetIndex, IUniqueConstraint uniqueConstraint) {
+		List<IUniqueConstraint> uniqueConstraints = this.getUniqueConstraints();
+		int begin = Math.min(sourceIndex, targetIndex);
+		int end = Math.max(sourceIndex, targetIndex);
+		for (int i = begin; i-- > end;) {
+			this.synch(uniqueConstraints.get(i), i);
+		}
+	}
+
+	/**
+	 * synchronize the annotations with the model join columns,
+	 * starting at the end of the list to prevent overlap
+	 */
+	private void synchUniqueConstraintAnnotationsAfterAdd(int index) {
+		List<IUniqueConstraint> uniqueConstraints = this.getUniqueConstraints();
+		for (int i = uniqueConstraints.size(); i-- > index;) {
+			this.synch(uniqueConstraints.get(i), i);
+		}
+	}
+
+	/**
+	 * synchronize the annotations with the model join columns,
+	 * starting at the specified index to prevent overlap
+	 */
+	private void synchUniqueConstraintAnnotationsAfterRemove(int index) {
+		List<IUniqueConstraint> joinColumns = this.getUniqueConstraints();
+		for (int i = index; i < joinColumns.size(); i++) {
+			this.synch(joinColumns.get(i), i);
+		}
+	}
+	
+	private void synch(IUniqueConstraint uniqueConstraint, int index) {
+		((JavaUniqueConstraint) uniqueConstraint).moveAnnotation(index);
+	}
+
 }

@@ -61,6 +61,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaTable;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaTableGenerator;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaTransient;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaTypeMapping;
+import org.eclipse.jpt.core.internal.content.java.mappings.JavaUniqueConstraint;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaVersion;
 import org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage;
 import org.eclipse.jpt.core.internal.mappings.IAbstractColumn;
@@ -102,6 +103,7 @@ import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
 import org.eclipse.jpt.core.internal.mappings.ITransient;
+import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.IVersion;
 
 /**
@@ -1120,6 +1122,23 @@ public class JpaJavaMappingsSwitch<T>
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case JpaJavaMappingsPackage.JAVA_UNIQUE_CONSTRAINT : {
+				JavaUniqueConstraint javaUniqueConstraint = (JavaUniqueConstraint) theEObject;
+				T result = caseJavaUniqueConstraint(javaUniqueConstraint);
+				if (result == null)
+					result = caseJavaEObject(javaUniqueConstraint);
+				if (result == null)
+					result = caseIUniqueConstraint(javaUniqueConstraint);
+				if (result == null)
+					result = caseJpaEObject(javaUniqueConstraint);
+				if (result == null)
+					result = caseIJpaSourceObject(javaUniqueConstraint);
+				if (result == null)
+					result = caseIJpaEObject(javaUniqueConstraint);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			default :
 				return defaultCase(theEObject);
 		}
@@ -1692,6 +1711,21 @@ public class JpaJavaMappingsSwitch<T>
 	 * @generated
 	 */
 	public T caseJavaQueryHint(JavaQueryHint object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpretting the object as an instance of '<em>Java Unique Constraint</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpretting the object as an instance of '<em>Java Unique Constraint</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseJavaUniqueConstraint(JavaUniqueConstraint object) {
 		return null;
 	}
 
@@ -2397,6 +2431,21 @@ public class JpaJavaMappingsSwitch<T>
 	 * @generated
 	 */
 	public T caseIQueryHint(IQueryHint object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpretting the object as an instance of '<em>IUnique Constraint</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpretting the object as an instance of '<em>IUnique Constraint</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIUniqueConstraint(IUniqueConstraint object) {
 		return null;
 	}
 

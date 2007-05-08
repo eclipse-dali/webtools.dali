@@ -55,6 +55,7 @@ import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
 import org.eclipse.jpt.core.internal.mappings.ITransient;
+import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.IVersion;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 
@@ -176,6 +177,17 @@ public class JpaCoreMappingsSwitch<T>
 					result = caseIJpaSourceObject(iTable);
 				if (result == null)
 					result = caseIJpaEObject(iTable);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case JpaCoreMappingsPackage.IUNIQUE_CONSTRAINT : {
+				IUniqueConstraint iUniqueConstraint = (IUniqueConstraint) theEObject;
+				T result = caseIUniqueConstraint(iUniqueConstraint);
+				if (result == null)
+					result = caseIJpaSourceObject(iUniqueConstraint);
+				if (result == null)
+					result = caseIJpaEObject(iUniqueConstraint);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -721,6 +733,21 @@ public class JpaCoreMappingsSwitch<T>
 	 * @generated
 	 */
 	public T caseITable(ITable object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpretting the object as an instance of '<em>IUnique Constraint</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpretting the object as an instance of '<em>IUnique Constraint</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIUniqueConstraint(IUniqueConstraint object) {
 		return null;
 	}
 

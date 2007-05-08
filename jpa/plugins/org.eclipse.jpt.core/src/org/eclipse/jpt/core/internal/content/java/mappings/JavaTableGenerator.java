@@ -9,9 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -19,6 +25,7 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdap
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
+import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
@@ -367,6 +374,16 @@ public class JavaTableGenerator extends JavaGenerator
 	 * @ordered
 	 */
 	protected String defaultPkColumnValue = DEFAULT_PK_COLUMN_VALUE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getUniqueConstraints() <em>Unique Constraints</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUniqueConstraints()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<IUniqueConstraint> uniqueConstraints;
 
 	protected JavaTableGenerator() {
 		throw new UnsupportedOperationException("Use JavaTableGenerator(Member) instead");
@@ -795,6 +812,41 @@ public class JavaTableGenerator extends JavaGenerator
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.internal.mappings.IUniqueConstraint}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Unique Constraints</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Unique Constraints</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getITableGenerator_UniqueConstraints()
+	 * @model type="org.eclipse.jpt.core.internal.mappings.IUniqueConstraint" containment="true"
+	 * @generated
+	 */
+	public EList<IUniqueConstraint> getUniqueConstraints() {
+		if (uniqueConstraints == null) {
+			uniqueConstraints = new EObjectContainmentEList<IUniqueConstraint>(IUniqueConstraint.class, this, JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__UNIQUE_CONSTRAINTS);
+		}
+		return uniqueConstraints;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+				return ((InternalEList<?>) getUniqueConstraints()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -838,6 +890,8 @@ public class JavaTableGenerator extends JavaGenerator
 				return getSpecifiedPkColumnValue();
 			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE :
 				return getDefaultPkColumnValue();
+			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+				return getUniqueConstraints();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -847,6 +901,7 @@ public class JavaTableGenerator extends JavaGenerator
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -867,6 +922,10 @@ public class JavaTableGenerator extends JavaGenerator
 				return;
 			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE :
 				setSpecifiedPkColumnValue((String) newValue);
+				return;
+			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+				getUniqueConstraints().clear();
+				getUniqueConstraints().addAll((Collection<? extends IUniqueConstraint>) newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -897,6 +956,9 @@ public class JavaTableGenerator extends JavaGenerator
 				return;
 			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE :
 				setSpecifiedPkColumnValue(SPECIFIED_PK_COLUMN_VALUE_EDEFAULT);
+				return;
+			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+				getUniqueConstraints().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -946,6 +1008,8 @@ public class JavaTableGenerator extends JavaGenerator
 				return SPECIFIED_PK_COLUMN_VALUE_EDEFAULT == null ? specifiedPkColumnValue != null : !SPECIFIED_PK_COLUMN_VALUE_EDEFAULT.equals(specifiedPkColumnValue);
 			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE :
 				return DEFAULT_PK_COLUMN_VALUE_EDEFAULT == null ? defaultPkColumnValue != null : !DEFAULT_PK_COLUMN_VALUE_EDEFAULT.equals(defaultPkColumnValue);
+			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+				return uniqueConstraints != null && !uniqueConstraints.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -995,6 +1059,8 @@ public class JavaTableGenerator extends JavaGenerator
 					return JpaCoreMappingsPackage.ITABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE;
 				case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE :
 					return JpaCoreMappingsPackage.ITABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE;
+				case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+					return JpaCoreMappingsPackage.ITABLE_GENERATOR__UNIQUE_CONSTRAINTS;
 				default :
 					return -1;
 			}
@@ -1047,6 +1113,8 @@ public class JavaTableGenerator extends JavaGenerator
 					return JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE;
 				case JpaCoreMappingsPackage.ITABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE :
 					return JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__DEFAULT_PK_COLUMN_VALUE;
+				case JpaCoreMappingsPackage.ITABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+					return JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__UNIQUE_CONSTRAINTS;
 				default :
 					return -1;
 			}

@@ -130,11 +130,11 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 	protected XmlDiscriminatorColumn() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	protected XmlDiscriminatorColumn(INamedColumn.Owner owner) {
 		super(owner);
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

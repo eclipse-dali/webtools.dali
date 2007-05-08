@@ -56,6 +56,7 @@ import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
 import org.eclipse.jpt.core.internal.mappings.ITransient;
+import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.IVersion;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 
@@ -133,6 +134,11 @@ public class JpaCoreMappingsAdapterFactory extends AdapterFactoryImpl
 		@Override
 		public Adapter caseITable(ITable object) {
 			return createITableAdapter();
+		}
+
+		@Override
+		public Adapter caseIUniqueConstraint(IUniqueConstraint object) {
+			return createIUniqueConstraintAdapter();
 		}
 
 		@Override
@@ -393,6 +399,20 @@ public class JpaCoreMappingsAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createITableAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.mappings.IUniqueConstraint <em>IUnique Constraint</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.mappings.IUniqueConstraint
+	 * @generated
+	 */
+	public Adapter createIUniqueConstraintAdapter() {
 		return null;
 	}
 

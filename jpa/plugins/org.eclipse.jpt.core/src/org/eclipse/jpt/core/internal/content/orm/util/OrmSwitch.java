@@ -81,6 +81,7 @@ import org.eclipse.jpt.core.internal.content.orm.XmlTable;
 import org.eclipse.jpt.core.internal.content.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.internal.content.orm.XmlTransient;
 import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
+import org.eclipse.jpt.core.internal.content.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.internal.content.orm.XmlVersion;
 import org.eclipse.jpt.core.internal.mappings.IAbstractColumn;
 import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
@@ -121,6 +122,7 @@ import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
 import org.eclipse.jpt.core.internal.mappings.ITransient;
+import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.IVersion;
 
 /**
@@ -1437,6 +1439,25 @@ public class OrmSwitch<T>
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.XML_UNIQUE_CONSTRAINT : {
+				XmlUniqueConstraint xmlUniqueConstraint = (XmlUniqueConstraint) theEObject;
+				T result = caseXmlUniqueConstraint(xmlUniqueConstraint);
+				if (result == null)
+					result = caseXmlEObject(xmlUniqueConstraint);
+				if (result == null)
+					result = caseIUniqueConstraint(xmlUniqueConstraint);
+				if (result == null)
+					result = caseJpaEObject(xmlUniqueConstraint);
+				if (result == null)
+					result = caseIXmlEObject(xmlUniqueConstraint);
+				if (result == null)
+					result = caseIJpaSourceObject(xmlUniqueConstraint);
+				if (result == null)
+					result = caseIJpaEObject(xmlUniqueConstraint);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			default :
 				return defaultCase(theEObject);
 		}
@@ -2268,6 +2289,21 @@ public class OrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpretting the object as an instance of '<em>Xml Unique Constraint</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpretting the object as an instance of '<em>Xml Unique Constraint</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlUniqueConstraint(XmlUniqueConstraint object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpretting the object as an instance of '<em>IJpa EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -2834,6 +2870,21 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseIQueryHint(IQueryHint object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpretting the object as an instance of '<em>IUnique Constraint</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpretting the object as an instance of '<em>IUnique Constraint</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIUniqueConstraint(IUniqueConstraint object) {
 		return null;
 	}
 

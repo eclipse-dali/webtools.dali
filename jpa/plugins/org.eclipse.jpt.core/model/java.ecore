@@ -83,5 +83,6 @@
     <eClassifiers xsi:type="ecore:EClass" name="JavaNamedQuery" eSuperTypes="#//mappings/JavaAbstractQuery core.ecore#//mappings/INamedQuery"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaNamedNativeQuery" eSuperTypes="#//mappings/JavaAbstractQuery core.ecore#//mappings/INamedNativeQuery"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaQueryHint" eSuperTypes="#//JavaEObject core.ecore#//mappings/IQueryHint"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaUniqueConstraint" eSuperTypes="#//JavaEObject core.ecore#//mappings/IUniqueConstraint"/>
   </eSubpackages>
 </ecore:EPackage>

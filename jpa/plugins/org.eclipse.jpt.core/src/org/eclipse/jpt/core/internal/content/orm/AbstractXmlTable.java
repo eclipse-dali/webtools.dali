@@ -9,15 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
+import java.util.Collection;
 import java.util.Set;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.XmlEObject;
 import org.eclipse.jpt.core.internal.content.orm.resource.OrmXmlMapper;
 import org.eclipse.jpt.core.internal.emfutility.DOMUtilities;
 import org.eclipse.jpt.core.internal.mappings.ITable;
+import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
@@ -197,6 +204,16 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 	 * @ordered
 	 */
 	protected String defaultSchema = DEFAULT_SCHEMA_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getUniqueConstraints() <em>Unique Constraints</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUniqueConstraints()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<IUniqueConstraint> uniqueConstraints;
 
 	/**
 	 * The default value of the '{@link #getSpecifiedNameForXml() <em>Specified Name For Xml</em>}' attribute.
@@ -502,6 +519,27 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.internal.mappings.IUniqueConstraint}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Unique Constraints</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Unique Constraints</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getITable_UniqueConstraints()
+	 * @model type="org.eclipse.jpt.core.internal.mappings.IUniqueConstraint" containment="true"
+	 * @generated
+	 */
+	public EList<IUniqueConstraint> getUniqueConstraints() {
+		if (uniqueConstraints == null) {
+			uniqueConstraints = new EObjectContainmentEList<IUniqueConstraint>(IUniqueConstraint.class, this, OrmPackage.ABSTRACT_XML_TABLE__UNIQUE_CONSTRAINTS);
+		}
+		return uniqueConstraints;
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Specified Name For Xml</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -600,6 +638,20 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_TABLE__SPECIFIED_SCHEMA_FOR_XML, newSpecifiedSchemaForXml + " ", newSpecifiedSchemaForXml));
 	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case OrmPackage.ABSTRACT_XML_TABLE__UNIQUE_CONSTRAINTS :
+				return ((InternalEList<?>) getUniqueConstraints()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
 	//TODO should we allow setting through the ecore, that would make this method
 	//public and part of the ITable api.  only the model needs to be setting the default,
 	//but the ui needs to be listening for changes to the default.
@@ -650,6 +702,8 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 				return getSpecifiedSchema();
 			case OrmPackage.ABSTRACT_XML_TABLE__DEFAULT_SCHEMA :
 				return getDefaultSchema();
+			case OrmPackage.ABSTRACT_XML_TABLE__UNIQUE_CONSTRAINTS :
+				return getUniqueConstraints();
 			case OrmPackage.ABSTRACT_XML_TABLE__SPECIFIED_NAME_FOR_XML :
 				return getSpecifiedNameForXml();
 			case OrmPackage.ABSTRACT_XML_TABLE__SPECIFIED_CATALOG_FOR_XML :
@@ -665,6 +719,7 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -676,6 +731,10 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 				return;
 			case OrmPackage.ABSTRACT_XML_TABLE__SPECIFIED_SCHEMA :
 				setSpecifiedSchema((String) newValue);
+				return;
+			case OrmPackage.ABSTRACT_XML_TABLE__UNIQUE_CONSTRAINTS :
+				getUniqueConstraints().clear();
+				getUniqueConstraints().addAll((Collection<? extends IUniqueConstraint>) newValue);
 				return;
 			case OrmPackage.ABSTRACT_XML_TABLE__SPECIFIED_NAME_FOR_XML :
 				setSpecifiedNameForXml((String) newValue);
@@ -706,6 +765,9 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 				return;
 			case OrmPackage.ABSTRACT_XML_TABLE__SPECIFIED_SCHEMA :
 				setSpecifiedSchema(SPECIFIED_SCHEMA_EDEFAULT);
+				return;
+			case OrmPackage.ABSTRACT_XML_TABLE__UNIQUE_CONSTRAINTS :
+				getUniqueConstraints().clear();
 				return;
 			case OrmPackage.ABSTRACT_XML_TABLE__SPECIFIED_NAME_FOR_XML :
 				setSpecifiedNameForXml(SPECIFIED_NAME_FOR_XML_EDEFAULT);
@@ -746,6 +808,8 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 				return SPECIFIED_SCHEMA_EDEFAULT == null ? specifiedSchema != null : !SPECIFIED_SCHEMA_EDEFAULT.equals(specifiedSchema);
 			case OrmPackage.ABSTRACT_XML_TABLE__DEFAULT_SCHEMA :
 				return DEFAULT_SCHEMA_EDEFAULT == null ? defaultSchema != null : !DEFAULT_SCHEMA_EDEFAULT.equals(defaultSchema);
+			case OrmPackage.ABSTRACT_XML_TABLE__UNIQUE_CONSTRAINTS :
+				return uniqueConstraints != null && !uniqueConstraints.isEmpty();
 			case OrmPackage.ABSTRACT_XML_TABLE__SPECIFIED_NAME_FOR_XML :
 				return SPECIFIED_NAME_FOR_XML_EDEFAULT == null ? getSpecifiedNameForXml() != null : !SPECIFIED_NAME_FOR_XML_EDEFAULT.equals(getSpecifiedNameForXml());
 			case OrmPackage.ABSTRACT_XML_TABLE__SPECIFIED_CATALOG_FOR_XML :
@@ -783,6 +847,8 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 					return JpaCoreMappingsPackage.ITABLE__SPECIFIED_SCHEMA;
 				case OrmPackage.ABSTRACT_XML_TABLE__DEFAULT_SCHEMA :
 					return JpaCoreMappingsPackage.ITABLE__DEFAULT_SCHEMA;
+				case OrmPackage.ABSTRACT_XML_TABLE__UNIQUE_CONSTRAINTS :
+					return JpaCoreMappingsPackage.ITABLE__UNIQUE_CONSTRAINTS;
 				default :
 					return -1;
 			}
@@ -817,6 +883,8 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 					return OrmPackage.ABSTRACT_XML_TABLE__SPECIFIED_SCHEMA;
 				case JpaCoreMappingsPackage.ITABLE__DEFAULT_SCHEMA :
 					return OrmPackage.ABSTRACT_XML_TABLE__DEFAULT_SCHEMA;
+				case JpaCoreMappingsPackage.ITABLE__UNIQUE_CONSTRAINTS :
+					return OrmPackage.ABSTRACT_XML_TABLE__UNIQUE_CONSTRAINTS;
 				default :
 					return -1;
 			}
@@ -910,5 +978,13 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 
 	public boolean isResolved() {
 		return dbTable() != null;
+	}
+	
+	public IUniqueConstraint createUniqueConstraint(int index) {
+		return createXmlJavaUniqueConstraint(index);
+	}
+	
+	protected XmlUniqueConstraint createXmlJavaUniqueConstraint(int index) {
+		return OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 	}
 }
