@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
@@ -39,6 +38,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOne;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaTransient;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaVersion;
 import org.eclipse.jpt.core.internal.content.orm.OrmXmlJpaFileContentProvider;
+import org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceXmlJpaFileContentProvider;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -88,6 +88,26 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	public void setProject(IJpaProject jpaProject) {
 		this.project = jpaProject;
 	}
+
+	// ********** Persistence Unit **********
+
+	public boolean containsPersistenceUnitNamed(String name) {
+		return ((BaseJpaProjectContext)this.context).containsPersistenceUnitNamed(name);
+	}
+	
+	public PersistenceUnit persistenceUnitNamed(String name) {
+		return ((BaseJpaProjectContext)this.context).persistenceUnitNamed(name);
+	}
+	
+	public Iterator<PersistenceUnit> persistenceUnits() {
+		return ((BaseJpaProjectContext)this.context).persistenceUnits();
+	}
+	
+	public int persistenceUnitSize() {
+		return ((BaseJpaProjectContext)this.context).persistenceUnitContextsSize();
+	}
+
+	// **********
 	
 	public Collection<IJpaFileContentProvider> jpaFileContentProviders() {
 		if (this.contentProviders == null) {

@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
+import org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.IContext;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -55,6 +56,17 @@ public interface IJpaPlatform
 	 */
 	void setProject(IJpaProject jpaProject);
 
+	// ********** Persistence Unit **********
+
+	boolean containsPersistenceUnitNamed(String name);
+	
+	PersistenceUnit persistenceUnitNamed(String name);
+	
+	Iterator<PersistenceUnit> persistenceUnits();
+	
+	int persistenceUnitSize();
+
+	// **********
 	/**
 	 * Get the valid persistence XML files from the project
 	 */

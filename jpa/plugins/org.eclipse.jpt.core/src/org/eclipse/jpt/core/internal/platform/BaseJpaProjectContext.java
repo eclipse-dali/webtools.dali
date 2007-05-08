@@ -34,6 +34,8 @@ import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.db.internal.Connection;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -198,6 +200,36 @@ public class BaseJpaProjectContext extends BaseContext
 		}
 		return false;
 	}
+
+	private Iterator<PersistenceUnitContext> persistenceUnitContexts() {
+		return this.persistenceUnitContexts.iterator();
+	}
+
+	int persistenceUnitContextsSize() {
+		return this.persistenceUnitContexts.size();
+	}
+
+	Iterator<PersistenceUnit> persistenceUnits() {
+		return new TransformationIterator<PersistenceUnitContext, PersistenceUnit>(this.persistenceUnitContexts()) {
+			@Override
+			protected PersistenceUnit transform(PersistenceUnitContext next) {
+				 return next.persistenceUnit();
+			}
+		};
+	}
+
+	public boolean containsPersistenceUnitNamed(String name) {
+		return this.persistenceUnitNamed(name) != null;
+	}
+
+	PersistenceUnit persistenceUnitNamed(String name) {
+		for (PersistenceUnitContext context : this.persistenceUnitContexts) {
+			if( context.persistenceUnit().getName().equals(name)) {
+				return context.persistenceUnit();
+			}
+		}
+		return null;
+	}
 		
 //	public IGeneratorRepository generatorRepository(IPersistentType persistentType) {
 //		for (PersistenceUnitContext context : this.persistenceUnitContexts) {
@@ -352,4 +384,8 @@ public class BaseJpaProjectContext extends BaseContext
 			}
 		}
 	}
+	
+	public String toString() {
+		return StringTools.buildToStringFor( this, this.project.getJavaProject().getProject().getName());
+	}	
 }

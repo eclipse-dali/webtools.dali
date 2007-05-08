@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jpt.core.internal.AccessType;
@@ -33,6 +34,7 @@ import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -207,6 +209,10 @@ public class PersistenceUnitContext extends BaseContext
 	
 	protected IJpaProject jpaProject() {
 		return this.persistenceUnit.getJpaProject();
+	}
+	
+	PersistenceUnit persistenceUnit() {
+		return this.persistenceUnit;
 	}
 	
 	public void refreshDefaults(DefaultsContext parentDefaults) {
@@ -523,4 +529,8 @@ public class PersistenceUnitContext extends BaseContext
 			}
 		}
 	}
+	
+	public String toString() {
+		return StringTools.buildToStringFor( this, this.persistenceUnit.getName());
+	}	
 }
