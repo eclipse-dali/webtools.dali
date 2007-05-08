@@ -32,6 +32,7 @@ public class OneToOneTranslator extends SingleRelationshipTranslator
 			createNameTranslator(),
 			createTargetEntityTranslator(),
 			createFetchTypeTranslator(),
+			createMappedByTranslator(),
 			createPlaceHolderTranslator(ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS),
 			createJoinColumnsTranslator(),
 			createPlaceHolderTranslator(ONE_TO_ONE__JOIN_TABLE),

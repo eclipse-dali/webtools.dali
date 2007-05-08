@@ -43,7 +43,5 @@ public class ManyToManyTranslator extends MultiRelationshipTranslator
 			createCascadeTranslator()
 		};
 	}
-	protected Translator createMappedByTranslator() {
-		return new Translator(MAPPED_BY, JpaCoreMappingsPackage.eINSTANCE.getINonOwningMapping_MappedBy(), DOM_ATTRIBUTE);
-	}
+
 }

@@ -27,5 +27,8 @@ public abstract class RelationshipTranslator extends AttributeMappingTranslator
 	protected Translator createCascadeTranslator() {
 		return new Translator(CASCADE , (EStructuralFeature) null);
 	}
-
+	
+	protected Translator createMappedByTranslator() {
+		return new Translator(MAPPED_BY, JpaCoreMappingsPackage.eINSTANCE.getINonOwningMapping_MappedBy(), DOM_ATTRIBUTE);
+	}
 }
