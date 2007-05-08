@@ -11,21 +11,22 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.PrimitiveType;
 import org.eclipse.jdt.core.dom.TypeLiteral;
 
 /**
- * Convert an expression to/from a string representation of a primitive type
+ * Convert a type literal to/from a string representation of a primitive type
  * (e.g. "int").
  */
-public final class PrimitiveTypeStringExpressionConverter extends AbstractExpressionConverter {
-	private static ExpressionConverter INSTANCE;
+public final class PrimitiveTypeStringExpressionConverter
+	extends AbstractExpressionConverter<TypeLiteral, String>
+{
+	private static ExpressionConverter<TypeLiteral, String> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter instance() {
+	public static ExpressionConverter<TypeLiteral, String> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new PrimitiveTypeStringExpressionConverter();
 		}
@@ -33,24 +34,24 @@ public final class PrimitiveTypeStringExpressionConverter extends AbstractExpres
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private PrimitiveTypeStringExpressionConverter() {
 		super();
 	}
 
 	@Override
-	protected Expression convert_(Object o, AST ast) {
-		org.eclipse.jdt.core.dom.Type type = ast.newPrimitiveType(PrimitiveType.toCode((String) o));
+	protected TypeLiteral convert_(String string, AST ast) {
+		org.eclipse.jdt.core.dom.Type type = ast.newPrimitiveType(PrimitiveType.toCode(string));
 		TypeLiteral typeLiteral = ast.newTypeLiteral();
 		typeLiteral.setType(type);
 		return typeLiteral;
 	}
 
 	@Override
-	protected Object convert_(Expression expression) {
-		if (expression.getNodeType() == ASTNode.TYPE_LITERAL) {
-			org.eclipse.jdt.core.dom.Type type = ((TypeLiteral) expression).getType();
+	protected String convert_(TypeLiteral typeLiteral) {
+		if (typeLiteral.getNodeType() == ASTNode.TYPE_LITERAL) {
+			org.eclipse.jdt.core.dom.Type type = typeLiteral.getType();
 			if (type.getNodeType() == ASTNode.PRIMITIVE_TYPE) {
 				return ((PrimitiveType) type).getPrimitiveTypeCode().toString();
 			}

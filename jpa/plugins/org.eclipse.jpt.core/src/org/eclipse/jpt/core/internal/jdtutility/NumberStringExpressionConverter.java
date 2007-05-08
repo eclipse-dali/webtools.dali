@@ -11,20 +11,21 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.NumberLiteral;
 
 /**
- * Convert an expression to/from a string representation of a number
+ * Convert a number literal to/from a string representation of a number
  * (e.g. "48").
  */
-public final class NumberStringExpressionConverter extends AbstractExpressionConverter {
-	private static ExpressionConverter INSTANCE;
+public final class NumberStringExpressionConverter
+	extends AbstractExpressionConverter<NumberLiteral, String>
+{
+	private static ExpressionConverter<NumberLiteral, String> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter instance() {
+	public static ExpressionConverter<NumberLiteral, String> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new NumberStringExpressionConverter();
 		}
@@ -32,21 +33,21 @@ public final class NumberStringExpressionConverter extends AbstractExpressionCon
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private NumberStringExpressionConverter() {
 		super();
 	}
 	
 	@Override
-	protected Expression convert_(Object o, AST ast) {
-		return ast.newNumberLiteral((String) o);
+	protected NumberLiteral convert_(String string, AST ast) {
+		return ast.newNumberLiteral(string);
 	}
 
 	@Override
-	protected Object convert_(Expression expression) {
-		return (expression.getNodeType() == ASTNode.NUMBER_LITERAL) ?
-			((NumberLiteral) expression).getToken()
+	protected String convert_(NumberLiteral numberLiteral) {
+		return (numberLiteral.getNodeType() == ASTNode.NUMBER_LITERAL) ?
+			numberLiteral.getToken()
 		:
 			null;
 	}

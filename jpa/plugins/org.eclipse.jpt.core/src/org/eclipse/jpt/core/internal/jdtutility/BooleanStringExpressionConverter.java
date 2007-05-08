@@ -12,19 +12,20 @@ package org.eclipse.jpt.core.internal.jdtutility;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.BooleanLiteral;
-import org.eclipse.jdt.core.dom.Expression;
 
 /**
- * Convert an expression to/from a string representation of a boolean
+ * Convert a boolean literal to/from a string representation of a boolean
  * (e.g. "true").
  */
-public final class BooleanStringExpressionConverter extends AbstractExpressionConverter {
-	private static ExpressionConverter INSTANCE;
+public final class BooleanStringExpressionConverter
+	extends AbstractExpressionConverter<BooleanLiteral, String>
+{
+	private static ExpressionConverter<BooleanLiteral, String> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter instance() {
+	public static ExpressionConverter<BooleanLiteral, String> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new BooleanStringExpressionConverter();
 		}
@@ -32,21 +33,21 @@ public final class BooleanStringExpressionConverter extends AbstractExpressionCo
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private BooleanStringExpressionConverter() {
 		super();
 	}
 
 	@Override
-	protected Expression convert_(Object o, AST ast) {
-		return ast.newBooleanLiteral(Boolean.valueOf((String) o).booleanValue());
+	protected BooleanLiteral convert_(String string, AST ast) {
+		return ast.newBooleanLiteral(Boolean.valueOf(string).booleanValue());
 	}
 
 	@Override
-	protected Object convert_(Expression expression) {
-		return (expression.getNodeType() == ASTNode.BOOLEAN_LITERAL) ?
-			Boolean.toString(((BooleanLiteral) expression).booleanValue())
+	protected String convert_(BooleanLiteral booleanLiteral) {
+		return (booleanLiteral.getNodeType() == ASTNode.BOOLEAN_LITERAL) ?
+			Boolean.toString(booleanLiteral.booleanValue())
 		:
 			null;
 	}

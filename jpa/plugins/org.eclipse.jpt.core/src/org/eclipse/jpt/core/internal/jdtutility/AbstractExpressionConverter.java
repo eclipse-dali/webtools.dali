@@ -15,24 +15,28 @@ import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Gather together just the tiniest bit of common behavior.
+ * T1 is the expression type, while T2 is the type of object the expression
+ * is convert to/from.
  */
-public abstract class AbstractExpressionConverter implements ExpressionConverter {
+public abstract class AbstractExpressionConverter<T1 extends Expression, T2>
+	implements ExpressionConverter<T1, T2>
+{
 
 	protected AbstractExpressionConverter() {
 		super();
 	}
 
-	public Expression convert(Object o, AST ast) {
-		return (o == null) ? null : this.convert_(o, ast);
+	public T1 convert(T2 object, AST ast) {
+		return (object == null) ? null : this.convert_(object, ast);
 	}
 
 	/**
 	 * The specified object is not null.
-	 * @see #convert(Object, AST)
+	 * @see #convert(T, AST)
 	 */
-	protected abstract Expression convert_(Object o, AST ast);
+	protected abstract T1 convert_(T2 object, AST ast);
 
-	public Object convert(Expression expression) {
+	public T2 convert(T1 expression) {
 		return (expression == null) ? null : this.convert_(expression);
 	}
 
@@ -40,7 +44,7 @@ public abstract class AbstractExpressionConverter implements ExpressionConverter
 	 * The specified expression is not null.
 	 * @see #convert(Expression)
 	 */
-	protected abstract Object convert_(Expression expression);
+	protected abstract T2 convert_(T1 expression);
 
 	@Override
 	public String toString() {

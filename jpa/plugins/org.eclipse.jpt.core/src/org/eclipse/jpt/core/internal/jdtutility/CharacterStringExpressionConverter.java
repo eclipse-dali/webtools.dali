@@ -12,19 +12,20 @@ package org.eclipse.jpt.core.internal.jdtutility;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CharacterLiteral;
-import org.eclipse.jdt.core.dom.Expression;
 
 /**
- * Convert an expression to/from a string representation of a character
+ * Convert a character literal to/from a string representation of a character
  * (e.g. "A").
  */
-public final class CharacterStringExpressionConverter extends AbstractExpressionConverter {
-	private static ExpressionConverter INSTANCE;
+public final class CharacterStringExpressionConverter
+	extends AbstractExpressionConverter<CharacterLiteral, String>
+{
+	private static ExpressionConverter<CharacterLiteral, String> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter instance() {
+	public static ExpressionConverter<CharacterLiteral, String> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new CharacterStringExpressionConverter();
 		}
@@ -32,23 +33,23 @@ public final class CharacterStringExpressionConverter extends AbstractExpression
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private CharacterStringExpressionConverter() {
 		super();
 	}
 	
 	@Override
-	protected Expression convert_(Object o, AST ast) {
+	protected CharacterLiteral convert_(String string, AST ast) {
 		CharacterLiteral characterLiteral = ast.newCharacterLiteral();
-		characterLiteral.setCharValue(((String) o).charAt(0));
+		characterLiteral.setCharValue(string.charAt(0));
 		return characterLiteral;
 	}
 
 	@Override
-	protected Object convert_(Expression expression) {
-		return (expression.getNodeType() == ASTNode.CHARACTER_LITERAL) ?
-			Character.toString(((CharacterLiteral) expression).charValue())
+	protected String convert_(CharacterLiteral characterLiteral) {
+		return (characterLiteral.getNodeType() == ASTNode.CHARACTER_LITERAL) ?
+			Character.toString(characterLiteral.charValue())
 		:
 			null;
 	}

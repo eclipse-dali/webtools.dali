@@ -11,22 +11,23 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.TypeLiteral;
 
 /**
- * Convert an expression to/from a string representation of a simple type
+ * Convert a type literal to/from a string representation of a simple type
  * (e.g. "java.lang.Object").
  */
-public final class SimpleTypeStringExpressionConverter extends AbstractExpressionConverter {
-	private static ExpressionConverter INSTANCE;
+public final class SimpleTypeStringExpressionConverter
+	extends AbstractExpressionConverter<TypeLiteral, String>
+{
+	private static ExpressionConverter<TypeLiteral, String> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter instance() {
+	public static ExpressionConverter<TypeLiteral, String> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new SimpleTypeStringExpressionConverter();
 		}
@@ -34,15 +35,15 @@ public final class SimpleTypeStringExpressionConverter extends AbstractExpressio
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private SimpleTypeStringExpressionConverter() {
 		super();
 	}
 
 	@Override
-	protected Expression convert_(Object o, AST ast) {
-		Name name = ast.newName((String) o);
+	protected TypeLiteral convert_(String string, AST ast) {
+		Name name = ast.newName(string);
 		org.eclipse.jdt.core.dom.Type type = ast.newSimpleType(name);
 		TypeLiteral typeLiteral = ast.newTypeLiteral();
 		typeLiteral.setType(type);
@@ -50,9 +51,9 @@ public final class SimpleTypeStringExpressionConverter extends AbstractExpressio
 	}
 
 	@Override
-	protected Object convert_(Expression expression) {
-		if (expression.getNodeType() == ASTNode.TYPE_LITERAL) {
-			org.eclipse.jdt.core.dom.Type type = ((TypeLiteral) expression).getType();
+	protected String convert_(TypeLiteral typeLiteral) {
+		if (typeLiteral.getNodeType() == ASTNode.TYPE_LITERAL) {
+			org.eclipse.jdt.core.dom.Type type = typeLiteral.getType();
 			if (type.getNodeType() == ASTNode.SIMPLE_TYPE) {
 				return ((SimpleType) type).getName().getFullyQualifiedName();
 			}

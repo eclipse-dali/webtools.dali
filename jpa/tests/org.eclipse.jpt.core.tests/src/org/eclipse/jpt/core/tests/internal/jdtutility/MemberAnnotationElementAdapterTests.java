@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.jdtutility;
 
+import java.util.Arrays;
+import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.ASTNodeTextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -25,6 +27,8 @@ import org.eclipse.jpt.core.internal.jdtutility.NumberStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.PrimitiveTypeStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.core.internal.jdtutility.StringArrayExpressionConverter;
+import org.eclipse.jpt.core.internal.jdtutility.StringExpressionConverter;
 
 public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 
@@ -536,6 +540,36 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		AnnotationElementAdapter aea = new MemberAnnotationElementAdapter(this.idField(), daea);
 		aea.setValue("enums.TestEnum.XXX");
 		this.assertSourceContains("import static enums.TestEnum.XXX;");
+		this.assertSourceContains(annotation);
+	}
+
+	public void testGetValueStringArray() throws Exception {
+		this.createAnnotationAndMembers("Foo", "String[] bar();");
+		this.createTestType("@annot.Foo(bar={\"string0\", \"string1\"})");
+		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
+		DeclarationAnnotationElementAdapter daea = new ConversionDeclarationAnnotationElementAdapter(daa, "bar", new StringArrayExpressionConverter<StringLiteral>(StringExpressionConverter.instance()));
+		AnnotationElementAdapter aea = new MemberAnnotationElementAdapter(this.idField(), daea);
+		assertTrue(Arrays.equals(new String[] {"string0", "string1"}, (String[]) aea.getValue()));
+	}
+
+	public void testGetValueNullStringArray() throws Exception {
+		this.createAnnotationAndMembers("Foo", "String[] bar();");
+		this.createTestType("@annot.Foo()");
+		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
+		DeclarationAnnotationElementAdapter daea = new ConversionDeclarationAnnotationElementAdapter(daa, "bar", new StringArrayExpressionConverter<StringLiteral>(StringExpressionConverter.instance()));
+		AnnotationElementAdapter aea = new MemberAnnotationElementAdapter(this.idField(), daea);
+		assertNull(aea.getValue());
+	}
+
+	public void testSetValueStringArray() throws Exception {
+		this.createAnnotationAndMembers("Foo", "String[] bar();");
+		String annotation = "@Foo(bar={\"string0\",\"string1\"})";
+		this.createTestType();
+		this.assertSourceDoesNotContain(annotation);
+		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
+		DeclarationAnnotationElementAdapter daea = new ConversionDeclarationAnnotationElementAdapter(daa, "bar", new StringArrayExpressionConverter<StringLiteral>(StringExpressionConverter.instance()));
+		AnnotationElementAdapter aea = new MemberAnnotationElementAdapter(this.idField(), daea);
+		aea.setValue(new String[] {"string0", "string1"});
 		this.assertSourceContains(annotation);
 	}
 
