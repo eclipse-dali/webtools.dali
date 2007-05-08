@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.internal.mappings.IEmbedded;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -86,7 +86,7 @@ public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite
 		composite.setLayout(layout);
 		
 		Group attributeOverridesGroup = getWidgetFactory().createGroup(
-			composite, JpaUiMappingsMessages.AttributeOverridesComposite_attributeOverrides);
+			composite, JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides);
 		attributeOverridesGroup.setLayout(new GridLayout(2, true));
 		GridData gridData =  new GridData();
 		gridData.horizontalAlignment = SWT.FILL;

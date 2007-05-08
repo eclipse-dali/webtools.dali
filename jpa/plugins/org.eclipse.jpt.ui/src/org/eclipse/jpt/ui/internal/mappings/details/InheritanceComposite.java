@@ -34,7 +34,7 @@ import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.osgi.util.NLS;
@@ -166,7 +166,7 @@ public class InheritanceComposite extends BaseJpaComposite {
 
 		GridData gridData;
 
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.InheritanceComposite_strategy);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.InheritanceComposite_strategy);
 
 		this.strategyViewer = buildStrategyCombo(composite);
 		gridData = new GridData();
@@ -175,7 +175,7 @@ public class InheritanceComposite extends BaseJpaComposite {
 		this.strategyViewer.getCombo().setLayoutData(gridData);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.strategyViewer.getCombo(), IJpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY);
 
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.DiscriminatorColumnComposite_column);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.DiscriminatorColumnComposite_column);
 
 		this.columnCombo = buildColumnCombo(composite);
 		gridData.horizontalAlignment = GridData.FILL;
@@ -183,7 +183,7 @@ public class InheritanceComposite extends BaseJpaComposite {
 		this.columnCombo.setLayoutData(gridData);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.columnCombo, IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_COLUMN);
 		
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.DiscriminatorColumnComposite_discriminatorType);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.DiscriminatorColumnComposite_discriminatorType);
 
 		this.discriminatorTypeViewer = buildDiscriminatorTypeCombo(composite);
 		gridData = new GridData();
@@ -193,7 +193,7 @@ public class InheritanceComposite extends BaseJpaComposite {
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.discriminatorTypeViewer.getCombo(), IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_TYPE);
 	
 		
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.InheritanceComposite_discriminatorValue);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.InheritanceComposite_discriminatorValue);
 
 		this.discriminatorValueCombo = buildDiscriminatorValueCombo(composite);
 		gridData = new GridData();
@@ -237,7 +237,7 @@ public class InheritanceComposite extends BaseJpaComposite {
 	
 	private CCombo buildColumnCombo(Composite parent) {
 		final CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-  		combo.add(JpaUiMappingsMessages.ColumnComposite_defaultEmpty);
+  		combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				if (isPopulating()) {
@@ -402,7 +402,7 @@ public class InheritanceComposite extends BaseJpaComposite {
 	protected void populateDefaultColumnName() {
 		String defaultTableName = discriminatorColumn.getDefaultName();
 		int selectionIndex = columnCombo.getSelectionIndex();
-		columnCombo.setItem(0, NLS.bind(JpaUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName));
+		columnCombo.setItem(0, NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName));
 		if (selectionIndex == 0) {
 			//combo text does not update when switching between 2 mappings of the same type
 			//that both have a default column name.  clear the selection and then set it again
@@ -420,7 +420,7 @@ public class InheritanceComposite extends BaseJpaComposite {
 			}
 		}
 		else {
-			if (!this.columnCombo.getText().equals(NLS.bind(JpaUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultName))) {
+			if (!this.columnCombo.getText().equals(NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultName))) {
 				this.columnCombo.select(0);
 			}
 		}
@@ -479,13 +479,13 @@ public class InheritanceComposite extends BaseJpaComposite {
 		if (this.entity.discriminatorValueIsAllowed()) {
 			this.discriminatorValueCombo.setEnabled(true);
 			if (this.discriminatorValueCombo.getItemCount() == 0) {
-				this.discriminatorValueCombo.add(JpaUiMappingsMessages.DiscriminatorColumnComposite_defaultEmpty);
+				this.discriminatorValueCombo.add(JptUiMappingsMessages.DiscriminatorColumnComposite_defaultEmpty);
 			}
 			if (defaultValue != null) {
-				this.discriminatorValueCombo.setItem(0, NLS.bind(JpaUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultValue));
+				this.discriminatorValueCombo.setItem(0, NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultValue));
 			}
 			else {
-				this.discriminatorValueCombo.setItem(0, JpaUiMappingsMessages.DiscriminatorColumnComposite_defaultEmpty);
+				this.discriminatorValueCombo.setItem(0, JptUiMappingsMessages.DiscriminatorColumnComposite_defaultEmpty);
 			}
 		}
 		else {

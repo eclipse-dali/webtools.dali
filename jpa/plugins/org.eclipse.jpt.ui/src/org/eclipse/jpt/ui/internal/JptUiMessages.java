@@ -13,7 +13,7 @@ import org.eclipse.osgi.util.NLS;
 
 public class JptUiMessages extends NLS 
 {	
-	private static final String BUNDLE_NAME = "jpa_ui"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "jpt_ui"; //$NON-NLS-1$
 	
 	static {
 		// initialize resource bundle

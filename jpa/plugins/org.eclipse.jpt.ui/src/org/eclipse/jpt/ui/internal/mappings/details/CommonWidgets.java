@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
 import org.eclipse.osgi.util.NLS;
@@ -31,7 +31,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public class CommonWidgets 
 {
 	public static Label buildEntityNameLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiMappingsMessages.EntityGeneralSection_name);
+		return widgetFactory.createLabel(parent, JptUiMappingsMessages.EntityGeneralSection_name);
 	}
 
 	public static EntityNameCombo buildEntityNameCombo(
@@ -40,15 +40,15 @@ public class CommonWidgets
 	}
 	
 	public static Label buildTableLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiMappingsMessages.TableChooser_label);
+		return widgetFactory.createLabel(parent, JptUiMappingsMessages.TableChooser_label);
 	}
 	
 	public static Label buildCatalogLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiMappingsMessages.CatalogChooser_label);
+		return widgetFactory.createLabel(parent, JptUiMappingsMessages.CatalogChooser_label);
 	}
 	
 	public static Label buildSchemaLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiMappingsMessages.SchemaChooser_label);
+		return widgetFactory.createLabel(parent, JptUiMappingsMessages.SchemaChooser_label);
 	}
 	
 	public static StringWithDefaultChooser buildStringWithDefaultChooser(
@@ -58,27 +58,27 @@ public class CommonWidgets
 
 
 	public static Label buildFetchLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiMappingsMessages.BasicGeneralSection_fetchLabel);
+		return widgetFactory.createLabel(parent, JptUiMappingsMessages.BasicGeneralSection_fetchLabel);
 	}
 	
 	public static Label buildTargetEntityLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiMappingsMessages.TargetEntityChooser_label);
+		return widgetFactory.createLabel(parent, JptUiMappingsMessages.TargetEntityChooser_label);
 	}
 	
 	public static Label buildOptionalLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiMappingsMessages.BasicGeneralSection_optionalLabel);
+		return widgetFactory.createLabel(parent, JptUiMappingsMessages.BasicGeneralSection_optionalLabel);
 	}
 	
 	public static Label buildTemporalLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiMappingsMessages.BasicGeneralSection_temporalLabel);
+		return widgetFactory.createLabel(parent, JptUiMappingsMessages.BasicGeneralSection_temporalLabel);
 	}
 	
 	public static Label buildEnumeratedLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiMappingsMessages.BasicGeneralSection_enumeratedLabel);
+		return widgetFactory.createLabel(parent, JptUiMappingsMessages.BasicGeneralSection_enumeratedLabel);
 	}
 	
 	public static Label buildMappedByLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiMappingsMessages.NonOwningMapping_mappedByLabel);
+		return widgetFactory.createLabel(parent, JptUiMappingsMessages.NonOwningMapping_mappedByLabel);
 	}
 	
 	public static EnumComboViewer buildFetchTypeComboViewer(
@@ -100,11 +100,11 @@ public class CommonWidgets
 	}
 		
 	public static Label buildColumnLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiMappingsMessages.ColumnChooser_label);
+		return widgetFactory.createLabel(parent, JptUiMappingsMessages.ColumnChooser_label);
 	}
 	
 	public static Label buildColumnTableLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiMappingsMessages.ColumnTableChooser_label);
+		return widgetFactory.createLabel(parent, JptUiMappingsMessages.ColumnTableChooser_label);
 	}
 	
 	public static ColumnTableHolder buildColumnTableHolder(IColumn column) {
@@ -225,9 +225,9 @@ public class CommonWidgets
 		public String defaultItem() {
 			String defaultName = getColumn().getDefaultTable();
 			if (defaultName != null) {
-				return NLS.bind(JpaUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultName);
+				return NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultName);
 			}
-			return JpaUiMappingsMessages.ColumnComposite_defaultEmpty;
+			return JptUiMappingsMessages.ColumnComposite_defaultEmpty;
 		}
 		
 		public String getString() {

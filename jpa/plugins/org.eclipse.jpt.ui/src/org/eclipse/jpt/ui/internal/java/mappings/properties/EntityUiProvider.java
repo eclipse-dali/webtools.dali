@@ -13,7 +13,7 @@ import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.EntityComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -25,7 +25,7 @@ public class EntityUiProvider implements ITypeMappingUiProvider
 	}
 	
 	public String label() {
-		return JpaUiMappingsMessages.PersistentTypePage_EntityLabel;
+		return JptUiMappingsMessages.PersistentTypePage_EntityLabel;
 	}
 	
 	public IJpaComposite buildPersistentTypeMappingComposite(

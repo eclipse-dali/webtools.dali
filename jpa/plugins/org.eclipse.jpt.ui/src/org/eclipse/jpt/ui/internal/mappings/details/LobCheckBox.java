@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.mappings.IBasic;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -51,7 +51,7 @@ public class LobCheckBox extends BaseJpaController
 	protected void buildWidget(Composite parent) {
 		this.button = getWidgetFactory().createButton(
 						parent, 
-						JpaUiMappingsMessages.BasicGeneralSection_lobLabel,
+						JptUiMappingsMessages.BasicGeneralSection_lobLabel,
 						SWT.CHECK);
 		
 		this.button.addSelectionListener(new SelectionListener() {

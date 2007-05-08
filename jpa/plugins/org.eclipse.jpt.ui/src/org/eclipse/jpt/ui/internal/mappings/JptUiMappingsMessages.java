@@ -11,9 +11,9 @@ package org.eclipse.jpt.ui.internal.mappings;
 
 import org.eclipse.osgi.util.NLS;
 
-public class JpaUiMappingsMessages extends NLS 
+public class JptUiMappingsMessages extends NLS 
 {
-	private static final String BUNDLE_NAME = "jpa_ui_mappings"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "jpt_ui_mappings"; //$NON-NLS-1$
 	
 	public static String PersistentTypePage_EntityLabel;
 	public static String PersistentTypePage_EmbeddableLabel;
@@ -184,10 +184,10 @@ public class JpaUiMappingsMessages extends NLS
 	
 	static {
 		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, JpaUiMappingsMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, JptUiMappingsMessages.class);
 	}
 
-	private JpaUiMappingsMessages() {
+	private JptUiMappingsMessages() {
 		throw new UnsupportedOperationException();
 	}
 

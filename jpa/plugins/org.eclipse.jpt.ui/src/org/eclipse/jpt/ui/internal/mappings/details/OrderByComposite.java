@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.mappings.OrderingType;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -75,7 +75,7 @@ public class OrderByComposite extends BaseJpaComposite  {
 		layout.marginWidth = 0;
 		composite.setLayout(layout);
 		
-		Group orderByGroup = getWidgetFactory().createGroup(composite, JpaUiMappingsMessages.OrderByComposite_orderByGroup);
+		Group orderByGroup = getWidgetFactory().createGroup(composite, JptUiMappingsMessages.OrderByComposite_orderByGroup);
 		orderByGroup.setLayout(new GridLayout(1, false));
 		GridData gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -119,7 +119,7 @@ public class OrderByComposite extends BaseJpaComposite  {
 	private Button buildNoOrderingRadioButton(Composite parent) {
 		Button button = getWidgetFactory().createButton(
 			parent, 
-			JpaUiMappingsMessages.OrderByComposite_noOrdering, 
+			JptUiMappingsMessages.OrderByComposite_noOrdering, 
 			SWT.RADIO);
 		button.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -148,7 +148,7 @@ public class OrderByComposite extends BaseJpaComposite  {
 	private Button buildPrimaryKeyOrderingRadioButton(Composite parent) {
 		Button button = getWidgetFactory().createButton(
 			parent, 
-			JpaUiMappingsMessages.OrderByComposite_primaryKeyOrdering, 
+			JptUiMappingsMessages.OrderByComposite_primaryKeyOrdering, 
 			SWT.RADIO);
 		button.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -175,7 +175,7 @@ public class OrderByComposite extends BaseJpaComposite  {
 	private Button buildCustomOrderingRadioButton(Composite parent) {
 		Button button = getWidgetFactory().createButton(
 			parent, 
-			JpaUiMappingsMessages.OrderByComposite_customOrdering, 
+			JptUiMappingsMessages.OrderByComposite_customOrdering, 
 			SWT.RADIO);
 		button.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {

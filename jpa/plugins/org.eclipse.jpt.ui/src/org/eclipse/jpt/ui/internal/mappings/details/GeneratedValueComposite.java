@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.internal.platform.IGeneratorRepository;
 import org.eclipse.jpt.core.internal.platform.NullGeneratorRepository;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -72,7 +72,7 @@ public class GeneratedValueComposite extends BaseJpaComposite
 		
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 		
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.GeneratedValueComposite_strategy);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.GeneratedValueComposite_strategy);
 		
 		this.strategyComboViewer = buildStrategyComboViewer(composite);
 		GridData gridData = new GridData();
@@ -81,7 +81,7 @@ public class GeneratedValueComposite extends BaseJpaComposite
 		this.strategyComboViewer.getCombo().setLayoutData(gridData);
 		helpSystem.setHelp(this.strategyComboViewer.getCombo(), IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY);
 		
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.GeneratedValueComposite_generatorName);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.GeneratedValueComposite_generatorName);
 		
 		this.generatorNameCombo = buildGeneratorNameCombo(composite);
 		gridData = new GridData();
@@ -121,7 +121,7 @@ public class GeneratedValueComposite extends BaseJpaComposite
 
 	protected CCombo buildGeneratorNameCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-		combo.add(JpaUiMappingsMessages.TableComposite_defaultEmpty);
+		combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				if (isPopulating()) {

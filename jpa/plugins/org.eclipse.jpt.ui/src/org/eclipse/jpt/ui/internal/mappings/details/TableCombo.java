@@ -24,7 +24,7 @@ import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -136,7 +136,7 @@ public class TableCombo extends BaseJpaController
 	@Override
 	protected void buildWidget(Composite parent) {
 		this.combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-		this.combo.add(JpaUiMappingsMessages.TableComposite_defaultEmpty);
+		this.combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		this.combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				if (isPopulating()) {
@@ -263,7 +263,7 @@ public class TableCombo extends BaseJpaController
 		}
 		String defaultTableName = table.getDefaultName();
 		int selectionIndex = combo.getSelectionIndex();
-		combo.setItem(0, NLS.bind(JpaUiMappingsMessages.TableComposite_defaultWithOneParam, defaultTableName));
+		combo.setItem(0, NLS.bind(JptUiMappingsMessages.TableComposite_defaultWithOneParam, defaultTableName));
 		if (selectionIndex == 0) {
 			//combo text does not update when switching between 2 mappings of the same type
 			//that both have a default column name.  clear the selection and then set it again
@@ -284,7 +284,7 @@ public class TableCombo extends BaseJpaController
 			}
 		}
 		else {
-			if (!this.combo.getText().equals(NLS.bind(JpaUiMappingsMessages.TableComposite_defaultWithOneParam, defaultTableName))) {
+			if (!this.combo.getText().equals(NLS.bind(JptUiMappingsMessages.TableComposite_defaultWithOneParam, defaultTableName))) {
 				this.combo.select(0);
 			}
 		}

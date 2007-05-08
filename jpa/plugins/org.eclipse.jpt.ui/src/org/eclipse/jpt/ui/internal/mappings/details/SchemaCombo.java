@@ -25,7 +25,7 @@ import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.osgi.util.NLS;
@@ -138,7 +138,7 @@ public class SchemaCombo extends BaseJpaController
 	@Override
 	protected void buildWidget( Composite parent) {
 		this.combo = getWidgetFactory().createCCombo( parent, SWT.FLAT);
-		this.combo.add( JpaUiMappingsMessages.TableComposite_defaultEmpty);
+		this.combo.add( JptUiMappingsMessages.TableComposite_defaultEmpty);
 		
 		this.combo.addModifyListener( new ModifyListener() {
 			
@@ -258,7 +258,7 @@ public class SchemaCombo extends BaseJpaController
 	protected void populateDefaultSchemaName() {
 		String defaultSchemaName = this.table.getDefaultSchema();
 		int selectionIndex = combo.getSelectionIndex();
-		combo.setItem( 0, NLS.bind( JpaUiMappingsMessages.TableComposite_defaultWithOneParam, defaultSchemaName));
+		combo.setItem( 0, NLS.bind( JptUiMappingsMessages.TableComposite_defaultWithOneParam, defaultSchemaName));
 		if( selectionIndex == 0) {
 			combo.clearSelection();
 			combo.select( 0);
@@ -277,7 +277,7 @@ public class SchemaCombo extends BaseJpaController
 			}
 		}
 		else {
-			if ( ! this.combo.getText().equals( NLS.bind( JpaUiMappingsMessages.TableComposite_defaultWithOneParam, defaultSchemaName))) {
+			if ( ! this.combo.getText().equals( NLS.bind( JptUiMappingsMessages.TableComposite_defaultWithOneParam, defaultSchemaName))) {
 				this.combo.select( 0);
 			}
 		}

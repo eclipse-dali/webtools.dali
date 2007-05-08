@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
 import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 
@@ -30,7 +30,7 @@ public class InverseJoinColumnDialog extends JoinColumnInJoinTableDialog {
 	}
 	
 	protected String getTitle() {
-		return JpaUiMappingsMessages.InverseJoinColumnDialog_editInverseJoinColumn;
+		return JptUiMappingsMessages.InverseJoinColumnDialog_editInverseJoinColumn;
 	}
 	
 	protected void populateNameCombo() {
@@ -38,7 +38,7 @@ public class InverseJoinColumnDialog extends JoinColumnInJoinTableDialog {
 			return;
 		}
 		if (getJoinColumn() != null) {
-			getNameCombo().add(NLS.bind(JpaUiMappingsMessages.InverseJoinColumnDialog_defaultWithOneParam, getJoinColumn().getDefaultName()));
+			getNameCombo().add(NLS.bind(JptUiMappingsMessages.InverseJoinColumnDialog_defaultWithOneParam, getJoinColumn().getDefaultName()));
 		}
 		Table joinDBTable = getJoinTable().dbTable();
 		if (joinDBTable != null) {
@@ -59,7 +59,7 @@ public class InverseJoinColumnDialog extends JoinColumnInJoinTableDialog {
 			return;
 		}
 		if (getJoinColumn() != null) {
-			getReferencedColumnNameCombo().add(NLS.bind(JpaUiMappingsMessages.InverseJoinColumnDialog_defaultWithOneParam, getJoinColumn().getDefaultReferencedColumnName()));
+			getReferencedColumnNameCombo().add(NLS.bind(JptUiMappingsMessages.InverseJoinColumnDialog_defaultWithOneParam, getJoinColumn().getDefaultReferencedColumnName()));
 		}
 		IMultiRelationshipMapping multiRelationshipMapping = (IMultiRelationshipMapping) getJoinTable().eContainer();
 		IEntity targetEntity = multiRelationshipMapping.getResolvedTargetEntity();

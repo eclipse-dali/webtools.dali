@@ -33,7 +33,7 @@ import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -94,7 +94,7 @@ public class JoinColumnsComposite extends BaseJpaComposite
 		this.joinColumnsGroup = 
 			getWidgetFactory().createGroup(
 				composite, 
-				JpaUiMappingsMessages.JoinTableComposite_joinColumn);
+				JptUiMappingsMessages.JoinTableComposite_joinColumn);
 		this.joinColumnsGroup.setLayout(new GridLayout(2, false));
 		GridData gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -116,7 +116,7 @@ public class JoinColumnsComposite extends BaseJpaComposite
 		this.joinColumnsListViewer.getList().setLayoutData(gridData);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.joinColumnsListViewer.getList(), IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS);
 		
-		this.joinColumnsAddButton = getWidgetFactory().createButton(this.joinColumnsGroup, JpaUiMappingsMessages.JoinTableComposite_add, SWT.NONE);
+		this.joinColumnsAddButton = getWidgetFactory().createButton(this.joinColumnsGroup, JptUiMappingsMessages.JoinTableComposite_add, SWT.NONE);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.joinColumnsAddButton.setLayoutData(gridData);
@@ -129,7 +129,7 @@ public class JoinColumnsComposite extends BaseJpaComposite
 			}
 		});
 		
-		this.joinColumnsEditButton = getWidgetFactory().createButton(this.joinColumnsGroup, JpaUiMappingsMessages.JoinTableComposite_edit, SWT.NONE);
+		this.joinColumnsEditButton = getWidgetFactory().createButton(this.joinColumnsGroup, JptUiMappingsMessages.JoinTableComposite_edit, SWT.NONE);
 		this.joinColumnsEditButton.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
@@ -142,7 +142,7 @@ public class JoinColumnsComposite extends BaseJpaComposite
 		gridData.horizontalAlignment = GridData.FILL;
 		this.joinColumnsEditButton.setLayoutData(gridData);
 
-		this.joinColumnsRemoveButton = getWidgetFactory().createButton(this.joinColumnsGroup, JpaUiMappingsMessages.JoinTableComposite_remove, SWT.NONE);
+		this.joinColumnsRemoveButton = getWidgetFactory().createButton(this.joinColumnsGroup, JptUiMappingsMessages.JoinTableComposite_remove, SWT.NONE);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.BEGINNING;
@@ -191,21 +191,21 @@ public class JoinColumnsComposite extends BaseJpaComposite
 	}
 	
 	private String buildDefaultJoinColumnLabel(IJoinColumn joinColumn) {
-		return NLS.bind(JpaUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());				
+		return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());				
 	}
 	
 	private String buildJoinColumnLabel(IJoinColumn joinColumn) {
 		if (joinColumn.getSpecifiedName() == null) {
 			if (joinColumn.getSpecifiedReferencedColumnName() == null) {
-				return NLS.bind(JpaUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsBothDefault, joinColumn.getName(),joinColumn.getReferencedColumnName());				
+				return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsBothDefault, joinColumn.getName(),joinColumn.getReferencedColumnName());				
 			}
-			return NLS.bind(JpaUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsFirstDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());
+			return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsFirstDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());
 		}
 		else if (joinColumn.getSpecifiedReferencedColumnName() == null) {
-			return NLS.bind(JpaUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsSecDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());				
+			return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsSecDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());				
 		}
 		else {
-			return NLS.bind(JpaUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParams, joinColumn.getName(), joinColumn.getReferencedColumnName());					
+			return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParams, joinColumn.getName(), joinColumn.getReferencedColumnName());					
 		}
 	}
 

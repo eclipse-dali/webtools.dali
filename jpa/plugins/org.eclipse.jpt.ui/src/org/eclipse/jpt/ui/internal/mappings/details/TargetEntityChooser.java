@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
@@ -89,7 +89,7 @@ public class TargetEntityChooser extends BaseJpaController
 	
 	protected CCombo buildTargetEntityCombo(Composite parent) {
 		final CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-		combo.add(JpaUiMappingsMessages.TargetEntityChooser_defaultEmpty);
+		combo.add(JptUiMappingsMessages.TargetEntityChooser_defaultEmpty);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(combo, IJpaHelpContextIds.MAPPING_TARGET_ENTITY);
 		combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -162,7 +162,7 @@ public class TargetEntityChooser extends BaseJpaController
 			return;
 		}
 		String targetEntity = this.relationshipMapping.getSpecifiedTargetEntity();
-		this.targetEntityCombo.setItem(0, NLS.bind(JpaUiMappingsMessages.TargetEntityChooser_defaultWithOneParam, this.relationshipMapping.getDefaultTargetEntity()));
+		this.targetEntityCombo.setItem(0, NLS.bind(JptUiMappingsMessages.TargetEntityChooser_defaultWithOneParam, this.relationshipMapping.getDefaultTargetEntity()));
 		if (targetEntity != null) {
 			if (!this.targetEntityCombo.getText().equals(targetEntity)) {
 				this.targetEntityCombo.setText(targetEntity);
@@ -184,7 +184,7 @@ public class TargetEntityChooser extends BaseJpaController
 	//for example of the hyperlink opening a resource
 	protected Button buildTargetEntitySelectionButton(Composite parent) {
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText(JpaUiMappingsMessages.TargetEntityChooser_browse);
+		button.setText(JptUiMappingsMessages.TargetEntityChooser_browse);
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				browse();

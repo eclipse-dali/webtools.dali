@@ -29,7 +29,7 @@ import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.Owner;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -162,7 +162,7 @@ public class JoinTableComposite extends BaseJpaComposite
 		layout.marginWidth = 0;
 		composite.setLayout(layout);
 		
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.JoinTableComposite_name);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.JoinTableComposite_name);
 		
 		this.tableCombo = new TableCombo(composite, this.commandStack, getWidgetFactory());
 		GridData gridData = new GridData();
@@ -175,7 +175,7 @@ public class JoinTableComposite extends BaseJpaComposite
 		this.overrideDefaultJoinColumnsCheckBox = 
 			getWidgetFactory().createButton(
 				composite, 
-				JpaUiMappingsMessages.JoinTableComposite_overrideDefaultJoinColumns, 
+				JptUiMappingsMessages.JoinTableComposite_overrideDefaultJoinColumns, 
 				SWT.CHECK);
 		this.overrideDefaultJoinColumnsCheckBox.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -206,7 +206,7 @@ public class JoinTableComposite extends BaseJpaComposite
 		gridData.horizontalSpan = 2;
 		this.joinColumnsComposite.getControl().setLayoutData(gridData);
 		
-		this.overrideDefaultInverseJoinColumnsCheckBox = getWidgetFactory().createButton(composite, JpaUiMappingsMessages.JoinTableComposite_overrideDefaultInverseJoinColumns, SWT.CHECK);
+		this.overrideDefaultInverseJoinColumnsCheckBox = getWidgetFactory().createButton(composite, JptUiMappingsMessages.JoinTableComposite_overrideDefaultInverseJoinColumns, SWT.CHECK);
 		this.overrideDefaultInverseJoinColumnsCheckBox.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// do nothing
@@ -237,21 +237,21 @@ public class JoinTableComposite extends BaseJpaComposite
 	}
 	
 	private String buildDefaultJoinColumnLabel(IJoinColumn joinColumn) {
-		return NLS.bind(JpaUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());				
+		return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());				
 	}
 	
 	private String buildJoinColumnLabel(IJoinColumn joinColumn) {
 		if (joinColumn.getSpecifiedName() == null) {
 			if (joinColumn.getSpecifiedReferencedColumnName() == null) {
-				return NLS.bind(JpaUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsBothDefault, joinColumn.getName(),joinColumn.getReferencedColumnName());				
+				return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsBothDefault, joinColumn.getName(),joinColumn.getReferencedColumnName());				
 			}
-			return NLS.bind(JpaUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsFirstDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());
+			return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsFirstDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());
 		}
 		else if (joinColumn.getSpecifiedReferencedColumnName() == null) {
-			return NLS.bind(JpaUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsSecDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());				
+			return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsSecDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());				
 		}
 		else {
-			return NLS.bind(JpaUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParams, joinColumn.getName(), joinColumn.getReferencedColumnName());					
+			return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParams, joinColumn.getName(), joinColumn.getReferencedColumnName());					
 		}
 	}
 

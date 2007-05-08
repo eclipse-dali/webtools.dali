@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
-import org.eclipse.jpt.ui.internal.xml.JpaUiXmlMessages;
+import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -51,7 +51,7 @@ public class CascadePersistCheckBox extends BaseJpaController
 	protected void buildWidget(Composite parent) {
 		this.button = getWidgetFactory().createButton(
 						parent, 
-						JpaUiXmlMessages.XMLEntityMappingsPage_CascadePersistCheckBox,
+						JptUiXmlMessages.XMLEntityMappingsPage_CascadePersistCheckBox,
 						SWT.CHECK);
 		
 		this.button.addSelectionListener(new SelectionListener() {

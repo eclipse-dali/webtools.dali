@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.mappings.TemporalType;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -158,7 +158,7 @@ public class IdComposite extends BaseJpaComposite
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 		
 		this.pkGenerationSection = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-	    this.pkGenerationSection.setText(JpaUiMappingsMessages.IdMappingComposite_primaryKeyGeneration);
+	    this.pkGenerationSection.setText(JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration);
 
 		Composite generationClient = getWidgetFactory().createComposite(this.pkGenerationSection);
 		this.pkGenerationSection.setClient(generationClient);
@@ -185,7 +185,7 @@ public class IdComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		this.tableGenSection.setLayoutData(gridData);
 		
-	    this.tableGenSection.setText(JpaUiMappingsMessages.IdMappingComposite_tableGenerator);
+	    this.tableGenSection.setText(JptUiMappingsMessages.IdMappingComposite_tableGenerator);
 
 		Composite tableGenClient = getWidgetFactory().createComposite(this.tableGenSection);
 		this.tableGenSection.setClient(tableGenClient);
@@ -209,7 +209,7 @@ public class IdComposite extends BaseJpaComposite
 
 		
 	    this.sequenceGenSection = getWidgetFactory().createSection(generationClient, SWT.FLAT | ExpandableComposite.TWISTIE);
-	    this.sequenceGenSection.setText(JpaUiMappingsMessages.IdMappingComposite_sequenceGenerator);
+	    this.sequenceGenSection.setText(JptUiMappingsMessages.IdMappingComposite_sequenceGenerator);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -238,7 +238,7 @@ public class IdComposite extends BaseJpaComposite
 	}
 	
 	private Button buildPrimaryKeyGenerationCheckBox(Composite parent) {
-		Button button = getWidgetFactory().createButton(parent,JpaUiMappingsMessages.IdMappingComposite_primaryKeyGeneration, SWT.CHECK);
+		Button button = getWidgetFactory().createButton(parent,JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration, SWT.CHECK);
 		button.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
 			// ignore
@@ -265,7 +265,7 @@ public class IdComposite extends BaseJpaComposite
 	}
 
 	private Button buildTableGeneratorCheckBox(Composite parent) {
-		Button button = getWidgetFactory().createButton(parent,JpaUiMappingsMessages.IdMappingComposite_tableGenerator, SWT.CHECK);
+		Button button = getWidgetFactory().createButton(parent,JptUiMappingsMessages.IdMappingComposite_tableGenerator, SWT.CHECK);
 		button.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
 			// ignore
@@ -298,7 +298,7 @@ public class IdComposite extends BaseJpaComposite
 	}
 
 	private Button buildSequenceGeneratorCheckBox(Composite parent) {
-		Button button = getWidgetFactory().createButton(parent,JpaUiMappingsMessages.IdMappingComposite_sequenceGenerator, SWT.CHECK);
+		Button button = getWidgetFactory().createButton(parent,JptUiMappingsMessages.IdMappingComposite_sequenceGenerator, SWT.CHECK);
 		button.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
 			// ignore

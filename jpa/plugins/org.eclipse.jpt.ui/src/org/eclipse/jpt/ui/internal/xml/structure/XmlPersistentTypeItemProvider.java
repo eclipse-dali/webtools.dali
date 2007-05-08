@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.internal.content.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.mappings.IEmbeddable;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IMappedSuperclass;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsImages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsImages;
 
 public class XmlPersistentTypeItemProvider extends ItemProviderAdapter
 	implements IEditingDomainItemProvider, 
@@ -53,13 +53,13 @@ public class XmlPersistentTypeItemProvider extends ItemProviderAdapter
 		ITypeMapping mapping = ((IPersistentType) object).getMapping();
 		
 		if (mapping instanceof IEntity) {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.ENTITY);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.ENTITY);
 		}
 		else if (mapping instanceof IEmbeddable) {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.EMBEDDABLE);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.EMBEDDABLE);
 		}
 		else if (mapping instanceof IMappedSuperclass) {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.MAPPED_SUPERCLASS);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.MAPPED_SUPERCLASS);
 		}
 		else {
 			return null;

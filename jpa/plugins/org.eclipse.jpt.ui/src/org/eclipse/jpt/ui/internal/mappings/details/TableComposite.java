@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -44,7 +44,7 @@ public class TableComposite extends BaseJpaComposite
 		layout.marginWidth = 0;		
 		composite.setLayout(layout);	
 		
-		Group columnGroup = getWidgetFactory().createGroup(composite, JpaUiMappingsMessages.TableComposite_tableSection);
+		Group columnGroup = getWidgetFactory().createGroup(composite, JptUiMappingsMessages.TableComposite_tableSection);
 		layout = new GridLayout();
 		layout.marginHeight = 0;				
 		columnGroup.setLayout(layout);

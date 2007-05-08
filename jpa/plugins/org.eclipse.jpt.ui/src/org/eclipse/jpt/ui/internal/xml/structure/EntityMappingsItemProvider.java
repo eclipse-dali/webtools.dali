@@ -19,7 +19,7 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsImages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsImages;
 
 public class EntityMappingsItemProvider extends ItemProviderAdapter
 	implements IEditingDomainItemProvider, 
@@ -47,7 +47,7 @@ public class EntityMappingsItemProvider extends ItemProviderAdapter
 	
 	@Override
 	public Object getImage(Object object) {
-		return JpaUiMappingsImages.getImage(JpaUiMappingsImages.ENTITY_MAPPINGS);
+		return JptUiMappingsImages.getImage(JptUiMappingsImages.ENTITY_MAPPINGS);
 	}
 	
 	@Override

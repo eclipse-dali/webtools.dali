@@ -13,7 +13,7 @@ import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.mappings.IManyToMany;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -108,7 +108,7 @@ public class ManyToManyComposite extends BaseJpaComposite
 	
 	private Control buildJoinTableControl(Composite composite) {
 	    Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-	    section.setText(JpaUiMappingsMessages.MultiRelationshipMappingComposite_joinTable);
+	    section.setText(JptUiMappingsMessages.MultiRelationshipMappingComposite_joinTable);
 
 		Composite joinTableClient = getWidgetFactory().createComposite(section);
 		section.setClient(joinTableClient);

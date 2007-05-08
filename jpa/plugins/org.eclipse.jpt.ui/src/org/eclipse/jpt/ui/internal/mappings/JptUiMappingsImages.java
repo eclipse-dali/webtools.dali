@@ -10,7 +10,7 @@ package org.eclipse.jpt.ui.internal.mappings;
 
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
 
-public class JpaUiMappingsImages 
+public class JptUiMappingsImages 
 {
 	public final static String BASIC = "full/obj16/basic";
 	
@@ -52,7 +52,7 @@ public class JpaUiMappingsImages
 	}
 	
 	
-	private JpaUiMappingsImages() {
+	private JptUiMappingsImages() {
 		throw new UnsupportedOperationException();
 	}
 }

@@ -24,7 +24,7 @@ import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -71,7 +71,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 		
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.TableGeneratorComposite_name);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.TableGeneratorComposite_name);
 		
 		this.nameViewer = buildNameViewer(composite);
 		GridData gridData = new GridData();
@@ -80,7 +80,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		this.nameViewer.getTextWidget().setLayoutData(gridData);
 		helpSystem.setHelp(this.nameViewer.getTextWidget(), IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME);
 		
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.TableGeneratorComposite_table);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.TableGeneratorComposite_table);
 		
 		this.tableNameCombo = buildTableNameCombo(composite);
 		gridData = new GridData();
@@ -89,7 +89,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		this.tableNameCombo.setLayoutData(gridData);
 		helpSystem.setHelp(this.tableNameCombo, IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE);
 		
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.TableGeneratorComposite_pkColumn);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.TableGeneratorComposite_pkColumn);
 		
 		this.pkColumnNameCombo = buildPkColumnNameCombo(composite);
 		gridData = new GridData();
@@ -98,7 +98,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		this.pkColumnNameCombo.setLayoutData(gridData);
 		helpSystem.setHelp(this.pkColumnNameCombo, IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN);
 		
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.TableGeneratorComposite_valueColumn);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.TableGeneratorComposite_valueColumn);
 		
 		this.valueColumnNameCombo = buildValueColumnNameCombo(composite);
 		gridData = new GridData();
@@ -107,7 +107,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		this.valueColumnNameCombo.setLayoutData(gridData);
 		helpSystem.setHelp(this.valueColumnNameCombo, IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN);
 		
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.TableGeneratorComposite_pkColumnValue);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.TableGeneratorComposite_pkColumnValue);
 		
 		this.pkColumnValueCombo = buildPkColumnValueCombo(composite);
 		gridData = new GridData();
@@ -119,7 +119,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 	private CCombo buildTableNameCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-		combo.add(JpaUiMappingsMessages.TableGeneratorComposite_default);
+		combo.add(JptUiMappingsMessages.TableGeneratorComposite_default);
 		combo.select(0);
 		combo.addModifyListener(buildTableNameListener());
 		return combo;
@@ -127,7 +127,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 	private CCombo buildPkColumnNameCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-		combo.add(JpaUiMappingsMessages.TableGeneratorComposite_default);
+		combo.add(JptUiMappingsMessages.TableGeneratorComposite_default);
 		combo.select(0);
 		combo.addModifyListener(buildPkColumnNameListener());
 		return combo;
@@ -135,7 +135,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 	private CCombo buildValueColumnNameCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-		combo.add(JpaUiMappingsMessages.TableGeneratorComposite_default);
+		combo.add(JptUiMappingsMessages.TableGeneratorComposite_default);
 		combo.select(0);
 		combo.addModifyListener(buildValueColumnNameListener());
 		return combo;
@@ -143,7 +143,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 	private CCombo buildPkColumnValueCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-		combo.add(JpaUiMappingsMessages.TableGeneratorComposite_default);
+		combo.add(JptUiMappingsMessages.TableGeneratorComposite_default);
 		combo.select(0);
 		combo.addModifyListener(buildPkColumnValueListener());
 		return combo;
@@ -386,7 +386,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		this.pkColumnNameCombo.remove(1, this.pkColumnNameCombo.getItemCount() - 1);
 		
 		if (this.getConnectionProfile().isConnected()) {
-			if (!this.tableNameCombo.getText().equals(JpaUiMappingsMessages.TableGeneratorComposite_default)) { // hmm,
+			if (!this.tableNameCombo.getText().equals(JptUiMappingsMessages.TableGeneratorComposite_default)) { // hmm,
 				// if
 				// they
 				// actually
@@ -427,7 +427,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		}
 		if (this.getConnectionProfile().isConnected()) {
 			this.valueColumnNameCombo.remove(1, this.valueColumnNameCombo.getItemCount() - 1);
-			if (!this.tableNameCombo.getText().equals(JpaUiMappingsMessages.TableGeneratorComposite_default)) { // hmm,
+			if (!this.tableNameCombo.getText().equals(JptUiMappingsMessages.TableGeneratorComposite_default)) { // hmm,
 				// if
 				// they
 				// actually

@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -109,7 +109,7 @@ public class EntityComposite extends BaseJpaComposite
 	
 	private Control buildSecondaryTablesComposite(Composite composite) {
 	    Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-	    section.setText(JpaUiMappingsMessages.SecondaryTablesComposite_secondaryTables);
+	    section.setText(JptUiMappingsMessages.SecondaryTablesComposite_secondaryTables);
 
 		Composite client = getWidgetFactory().createComposite(section);
 		section.setClient(client);
@@ -131,7 +131,7 @@ public class EntityComposite extends BaseJpaComposite
 
 	private Control buildInheritanceComposite(Composite composite) {
 	    Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-	    section.setText(JpaUiMappingsMessages.EntityComposite_inheritance);
+	    section.setText(JptUiMappingsMessages.EntityComposite_inheritance);
 
 		Composite inheritanceClient = getWidgetFactory().createComposite(section);
 		section.setClient(inheritanceClient);
@@ -153,7 +153,7 @@ public class EntityComposite extends BaseJpaComposite
 
 	private Control buildAttributeOverridesComposite(Composite composite) {
 	    Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-	    section.setText(JpaUiMappingsMessages.AttributeOverridesComposite_attributeOverrides);
+	    section.setText(JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides);
 	    section.setExpanded(true);
 		Composite client = getWidgetFactory().createComposite(section);
 		section.setClient(client);
@@ -260,9 +260,9 @@ public class EntityComposite extends BaseJpaComposite
 		public String defaultItem() {
 			String defaultName = getTable().getDefaultName();
 			if (defaultName != null) {
-				return NLS.bind(JpaUiMappingsMessages.EntityComposite_tableDefault, defaultName);
+				return NLS.bind(JptUiMappingsMessages.EntityComposite_tableDefault, defaultName);
 			}
-			return JpaUiMappingsMessages.EntityComposite_tableNoDefaultSpecified;
+			return JptUiMappingsMessages.EntityComposite_tableNoDefaultSpecified;
 		}
 		
 		public String getString() {
@@ -291,9 +291,9 @@ public class EntityComposite extends BaseJpaComposite
 		public String defaultItem() {
 			String defaultCatalog = getTable().getDefaultCatalog();
 			if (defaultCatalog != null) {
-				return NLS.bind(JpaUiMappingsMessages.EntityComposite_tableDefault, defaultCatalog);
+				return NLS.bind(JptUiMappingsMessages.EntityComposite_tableDefault, defaultCatalog);
 			}
-			return JpaUiMappingsMessages.EntityComposite_tableNoDefaultSpecified;
+			return JptUiMappingsMessages.EntityComposite_tableNoDefaultSpecified;
 		}
 		
 		public String getString() {
@@ -322,9 +322,9 @@ public class EntityComposite extends BaseJpaComposite
 		public String defaultItem() {
 			String defaultSchema = getTable().getDefaultSchema();
 			if (defaultSchema != null) {
-				return NLS.bind(JpaUiMappingsMessages.EntityComposite_tableDefault, defaultSchema);
+				return NLS.bind(JptUiMappingsMessages.EntityComposite_tableDefault, defaultSchema);
 			}
-			return JpaUiMappingsMessages.EntityComposite_tableNoDefaultSpecified;
+			return JptUiMappingsMessages.EntityComposite_tableNoDefaultSpecified;
 		}
 		
 		public String getString() {

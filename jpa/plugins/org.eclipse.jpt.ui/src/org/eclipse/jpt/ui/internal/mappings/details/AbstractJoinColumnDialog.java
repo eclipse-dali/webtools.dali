@@ -14,7 +14,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -58,7 +58,7 @@ public abstract class AbstractJoinColumnDialog<E extends IAbstractJoinColumn> ex
 	}
 	
 	protected String getTitle() {
-		return JpaUiMappingsMessages.JoinColumnDialog_editJoinColumn;
+		return JptUiMappingsMessages.JoinColumnDialog_editJoinColumn;
 	}
 	
 	protected Control createDialogArea(Composite parent) {
@@ -67,7 +67,7 @@ public abstract class AbstractJoinColumnDialog<E extends IAbstractJoinColumn> ex
 		gridLayout.numColumns = 2;
 		
 		Label nameLabel = new Label(composite, SWT.LEFT);
-		nameLabel.setText(JpaUiMappingsMessages.JoinColumnDialog_name);
+		nameLabel.setText(JptUiMappingsMessages.JoinColumnDialog_name);
 		GridData gridData = new GridData();
 		nameLabel.setLayoutData(gridData);
 		
@@ -80,7 +80,7 @@ public abstract class AbstractJoinColumnDialog<E extends IAbstractJoinColumn> ex
 		populateNameCombo();
 	
 		Label referencedColumnNameLabel = new Label(composite, SWT.LEFT);
-		referencedColumnNameLabel.setText(JpaUiMappingsMessages.JoinColumnDialog_referencedColumnName);
+		referencedColumnNameLabel.setText(JptUiMappingsMessages.JoinColumnDialog_referencedColumnName);
 		gridData = new GridData();
 		referencedColumnNameLabel.setLayoutData(gridData);
 
@@ -97,7 +97,7 @@ public abstract class AbstractJoinColumnDialog<E extends IAbstractJoinColumn> ex
 	
 	protected void populateNameCombo() {
 		if (getJoinColumn() != null) {
-			this.nameCombo.add(NLS.bind(JpaUiMappingsMessages.JoinColumnDialog_defaultWithOneParam, getJoinColumn().getDefaultName()));
+			this.nameCombo.add(NLS.bind(JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam, getJoinColumn().getDefaultName()));
 		}
 		Table table = getNameTable();
 		if (table != null) {
@@ -129,7 +129,7 @@ public abstract class AbstractJoinColumnDialog<E extends IAbstractJoinColumn> ex
 
 	protected void populateReferencedNameCombo() {
 		if (getJoinColumn() != null) {
-			this.referencedColumnNameCombo.add(NLS.bind(JpaUiMappingsMessages.JoinColumnDialog_defaultWithOneParam, getJoinColumn().getDefaultReferencedColumnName()));
+			this.referencedColumnNameCombo.add(NLS.bind(JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam, getJoinColumn().getDefaultReferencedColumnName()));
 		}
 		Table referencedNameTable = getReferencedNameTable();
 		if (referencedNameTable != null) {

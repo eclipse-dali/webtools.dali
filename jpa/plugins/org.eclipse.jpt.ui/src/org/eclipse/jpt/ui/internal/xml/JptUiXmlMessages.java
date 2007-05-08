@@ -10,9 +10,9 @@ package org.eclipse.jpt.ui.internal.xml;
 
 import org.eclipse.osgi.util.NLS;
 
-public class JpaUiXmlMessages 
+public class JptUiXmlMessages 
 {
-	private static final String BUNDLE_NAME = "jpa_ui_xml"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "jpt_ui_xml"; //$NON-NLS-1$
 	
 	public static String PersistentTypePage_javaClassLabel;
 	public static String PersistentTypePage_MetadataCompleteLabel;
@@ -42,10 +42,10 @@ public class JpaUiXmlMessages
 	
 	static {
 		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, JpaUiXmlMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, JptUiXmlMessages.class);
 	}
 	
-	private JpaUiXmlMessages() {
+	private JptUiXmlMessages() {
 		throw new UnsupportedOperationException();
 	}
 }

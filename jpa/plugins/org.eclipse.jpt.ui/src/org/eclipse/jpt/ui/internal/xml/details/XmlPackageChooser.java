@@ -31,7 +31,7 @@ import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
-import org.eclipse.jpt.ui.internal.xml.JpaUiXmlMessages;
+import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -228,8 +228,8 @@ public class XmlPackageChooser extends BaseJpaController
 			JptUiPlugin.log(e);
 			throw new RuntimeException(e);
 		}
-		selectionDialog.setTitle(JpaUiXmlMessages.XmlPackageChooser_PackageDialog_title); 
-		selectionDialog.setMessage(JpaUiXmlMessages.XmlPackageChooser_PackageDialog_message); 
+		selectionDialog.setTitle(JptUiXmlMessages.XmlPackageChooser_PackageDialog_title); 
+		selectionDialog.setMessage(JptUiXmlMessages.XmlPackageChooser_PackageDialog_message); 
 		selectionDialog.setHelpAvailable(false);
 		IPackageFragment pack= getPackageFragment();
 		if (pack != null) {

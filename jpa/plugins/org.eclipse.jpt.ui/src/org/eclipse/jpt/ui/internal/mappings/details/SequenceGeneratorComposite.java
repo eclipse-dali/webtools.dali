@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.internal.mappings.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
@@ -62,7 +62,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.SequenceGeneratorComposite_name);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.SequenceGeneratorComposite_name);
 		
 		this.nameViewer = buildNameViewer(composite);
 		GridData gridData = new GridData();
@@ -71,7 +71,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		this.nameViewer.getTextWidget().setLayoutData(gridData);
 		helpSystem.setHelp(nameViewer.getTextWidget(), IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME);
 		
-		getWidgetFactory().createLabel(composite, JpaUiMappingsMessages.SequenceGeneratorComposite_sequence);
+		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.SequenceGeneratorComposite_sequence);
 		
 		this.sequenceNameCombo = buildSequenceNameCombo(composite);
 		gridData = new GridData();
@@ -157,7 +157,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		if (this.getGenerator() == null) {
 			return;
 		}
-		this.sequenceNameCombo.setItem(0, JpaUiMappingsMessages.SequenceGeneratorComposite_default);
+		this.sequenceNameCombo.setItem(0, JptUiMappingsMessages.SequenceGeneratorComposite_default);
 		if (this.getConnectionProfile().isConnected()) {
 //			this.sequenceNameCombo.remove(1, this.sequenceNameCombo.getItemCount() - 1);
 //			Schema schema = getConnectionProfile().getDatabase().schemaNamed(getGenerator().getJpaProject().getSchemaName());

@@ -32,7 +32,7 @@ import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -100,7 +100,7 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this.secondaryTablesListViewer.getList(), IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS);
 		
 		this.addButton = new Button(composite, SWT.NONE);
-		this.addButton.setText(JpaUiMappingsMessages.SecondaryTablesComposite_add);
+		this.addButton.setText(JptUiMappingsMessages.SecondaryTablesComposite_add);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.addButton.setLayoutData(gridData);
@@ -115,7 +115,7 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 		});
 		
 		this.editButton = new Button(composite, SWT.NONE);
-		this.editButton.setText(JpaUiMappingsMessages.SecondaryTablesComposite_edit);
+		this.editButton.setText(JptUiMappingsMessages.SecondaryTablesComposite_edit);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.editButton.setLayoutData(gridData);
@@ -130,7 +130,7 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 		});
 
 		this.removeButton = new Button(composite, SWT.NONE);
-		this.removeButton.setText(JpaUiMappingsMessages.SecondaryTablesComposite_remove);
+		this.removeButton.setText(JptUiMappingsMessages.SecondaryTablesComposite_remove);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.BEGINNING;

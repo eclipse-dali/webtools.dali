@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -63,7 +63,7 @@ public class SecondaryTableDialog extends Dialog {
 	}
 	
 	protected String getTitle() {
-		return JpaUiMappingsMessages.SecondaryTableDialog_editSecondaryTable;
+		return JptUiMappingsMessages.SecondaryTableDialog_editSecondaryTable;
 	}
 	
 	protected Control createDialogArea(Composite parent) {
@@ -72,7 +72,7 @@ public class SecondaryTableDialog extends Dialog {
 		gridLayout.numColumns = 2;
 		
 		Label nameLabel = new Label(composite, SWT.LEFT);
-		nameLabel.setText(JpaUiMappingsMessages.SecondaryTableDialog_name);
+		nameLabel.setText(JptUiMappingsMessages.SecondaryTableDialog_name);
 		GridData gridData = new GridData();
 		nameLabel.setLayoutData(gridData);
 		
@@ -84,7 +84,7 @@ public class SecondaryTableDialog extends Dialog {
 		populateNameCombo();
 	
 		Label catalogLabel = new Label(composite, SWT.LEFT);
-		catalogLabel.setText(JpaUiMappingsMessages.SecondaryTableDialog_catalog);
+		catalogLabel.setText(JptUiMappingsMessages.SecondaryTableDialog_catalog);
 		gridData = new GridData();
 		catalogLabel.setLayoutData(gridData);
 		
@@ -96,7 +96,7 @@ public class SecondaryTableDialog extends Dialog {
 		populateCatalogCombo();
 
 		Label schemaLabel = new Label(composite, SWT.LEFT);
-		schemaLabel.setText(JpaUiMappingsMessages.SecondaryTableDialog_schema);
+		schemaLabel.setText(JptUiMappingsMessages.SecondaryTableDialog_schema);
 		gridData = new GridData();
 		schemaLabel.setLayoutData(gridData);
 		
@@ -148,7 +148,7 @@ public class SecondaryTableDialog extends Dialog {
 
 	protected void populateSchemaCombo() {
 		if (getSecondaryTable() != null) {
-			this.schemaCombo.add(NLS.bind(JpaUiMappingsMessages.SecondaryTableDialog_defaultSchema, getSecondaryTable().getDefaultSchema()));
+			this.schemaCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultSchema, getSecondaryTable().getDefaultSchema()));
 		}
 		
 		Database database = this.getDatabase();
@@ -172,7 +172,7 @@ public class SecondaryTableDialog extends Dialog {
 	
 	protected void populateCatalogCombo() {
 		if (getSecondaryTable() != null) {
-			this.catalogCombo.add(NLS.bind(JpaUiMappingsMessages.SecondaryTableDialog_defaultCatalog, getSecondaryTable().getDefaultCatalog()));
+			this.catalogCombo.add(NLS.bind(JptUiMappingsMessages.SecondaryTableDialog_defaultCatalog, getSecondaryTable().getDefaultCatalog()));
 		}
 		Database database = this.getDatabase();
 		

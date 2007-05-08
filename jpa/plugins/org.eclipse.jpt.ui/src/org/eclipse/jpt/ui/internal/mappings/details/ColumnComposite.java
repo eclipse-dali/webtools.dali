@@ -29,7 +29,7 @@ import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.osgi.util.NLS;
@@ -150,7 +150,7 @@ public class ColumnComposite extends BaseJpaComposite
 		layout.marginWidth = 0;		
 		composite.setLayout(layout);	
 		
-		Group columnGroup = getWidgetFactory().createGroup(composite, JpaUiMappingsMessages.ColumnComposite_columnSection);
+		Group columnGroup = getWidgetFactory().createGroup(composite, JptUiMappingsMessages.ColumnComposite_columnSection);
 		layout = new GridLayout();
 		layout.marginHeight = 0;				
 		columnGroup.setLayout(layout);
@@ -196,13 +196,13 @@ public class ColumnComposite extends BaseJpaComposite
 		this.tableCombo.setLayoutData(gridData);
 		helpSystem.setHelp(tableCombo, IJpaHelpContextIds.MAPPING_COLUMN_TABLE);
 
-		getWidgetFactory().createLabel(intermediaryComposite, JpaUiMappingsMessages.ColumnComposite_insertable);
+		getWidgetFactory().createLabel(intermediaryComposite, JptUiMappingsMessages.ColumnComposite_insertable);
 
 		this.insertableComboViewer = new EnumComboViewer(intermediaryComposite, this.commandStack, getWidgetFactory());
 		this.insertableComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
 		helpSystem.setHelp(this.insertableComboViewer.getControl(), IJpaHelpContextIds.MAPPING_COLUMN_INSERTABLE);
 
-		getWidgetFactory().createLabel(intermediaryComposite, JpaUiMappingsMessages.ColumnComposite_updatable);
+		getWidgetFactory().createLabel(intermediaryComposite, JptUiMappingsMessages.ColumnComposite_updatable);
 
 		this.updatableComboViewer = new EnumComboViewer(intermediaryComposite, this.commandStack, getWidgetFactory());
 		this.updatableComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
@@ -212,7 +212,7 @@ public class ColumnComposite extends BaseJpaComposite
 	
 	private CCombo buildColumnCombo(Composite parent) {
 		final CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-  		combo.add(JpaUiMappingsMessages.ColumnComposite_defaultEmpty);
+  		combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				if (isPopulating()) {
@@ -243,7 +243,7 @@ public class ColumnComposite extends BaseJpaComposite
 	
 	private CCombo buildTableCombo(Composite parent) {
 		final CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-  		combo.add(JpaUiMappingsMessages.ColumnComposite_defaultEmpty);
+  		combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				if (isPopulating()) {
@@ -377,7 +377,7 @@ public class ColumnComposite extends BaseJpaComposite
 	protected void populateDefaultColumnName() {
 		String defaultTableName = column.getDefaultName();
 		int selectionIndex = columnCombo.getSelectionIndex();
-		columnCombo.setItem(0, NLS.bind(JpaUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName));
+		columnCombo.setItem(0, NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName));
 		if (selectionIndex == 0) {
 			//combo text does not update when switching between 2 mappings of the same type
 			//that both have a default column name.  clear the selection and then set it again
@@ -395,7 +395,7 @@ public class ColumnComposite extends BaseJpaComposite
 		}
 		else {
 			String defaultColumnName = this.column.getDefaultName();
-			if (!this.columnCombo.getText().equals(NLS.bind(JpaUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultColumnName))) {
+			if (!this.columnCombo.getText().equals(NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultColumnName))) {
 				this.columnCombo.select(0);
 			}
 		}
@@ -418,7 +418,7 @@ public class ColumnComposite extends BaseJpaComposite
 	protected void populateDefaultColumnTable() {
 		String defaultTableName = column.getDefaultTable();
 		int selectionIndex = tableCombo.getSelectionIndex();
-		tableCombo.setItem(0, NLS.bind(JpaUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName));
+		tableCombo.setItem(0, NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName));
 		if (selectionIndex == 0) {
 			//combo text does not update when switching between 2 mappings of the same type
 			//that both have a default column name.  clear the selection and then set it again
@@ -436,7 +436,7 @@ public class ColumnComposite extends BaseJpaComposite
 			}
 		}
 		else {
-			if (!this.tableCombo.getText().equals(NLS.bind(JpaUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName))) {
+			if (!this.tableCombo.getText().equals(NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName))) {
 				this.tableCombo.select(0);
 			}
 		}

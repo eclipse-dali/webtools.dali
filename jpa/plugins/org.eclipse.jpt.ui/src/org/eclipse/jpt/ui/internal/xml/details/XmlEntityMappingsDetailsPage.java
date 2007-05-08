@@ -20,7 +20,7 @@ import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
-import org.eclipse.jpt.ui.internal.xml.JpaUiXmlMessages;
+import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComboViewer.AccessHolder;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -210,9 +210,9 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage
 		public String defaultItem() {
 			String defaultSchema = this.entityMappings.getDefaultSchema();
 			if (defaultSchema != null) {
-				return NLS.bind(JpaUiXmlMessages.XMLEntityMappingsPage_SchemaDefault, defaultSchema);
+				return NLS.bind(JptUiXmlMessages.XMLEntityMappingsPage_SchemaDefault, defaultSchema);
 			}
-			return JpaUiXmlMessages.XMLEntityMappingsPage_SchemaNoDefaultSpecified;
+			return JptUiXmlMessages.XMLEntityMappingsPage_SchemaNoDefaultSpecified;
 		}
 		
 		public String getString() {
@@ -254,9 +254,9 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage
 		public String defaultItem() {
 			String defaultCatalog = this.entityMappings.getDefaultCatalog();
 			if (defaultCatalog != null) {
-				return NLS.bind(JpaUiXmlMessages.XMLEntityMappingsPage_CatalogDefault, defaultCatalog);
+				return NLS.bind(JptUiXmlMessages.XMLEntityMappingsPage_CatalogDefault, defaultCatalog);
 			}
-			return JpaUiXmlMessages.XMLEntityMappingsPage_CatalogNoDefaultSpecified;
+			return JptUiXmlMessages.XMLEntityMappingsPage_CatalogNoDefaultSpecified;
 		}
 		
 		public String getString() {

@@ -10,7 +10,7 @@ package org.eclipse.jpt.ui.internal.xml.details;
 
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser;
-import org.eclipse.jpt.ui.internal.xml.JpaUiXmlMessages;
+import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -18,7 +18,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public class CommonWidgets 
 {
 	public static Label buildJavaClassLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		Label label = widgetFactory.createLabel(parent, JpaUiXmlMessages.PersistentTypePage_javaClassLabel);
+		Label label = widgetFactory.createLabel(parent, JptUiXmlMessages.PersistentTypePage_javaClassLabel);
 		return label;
 	}
 	
@@ -28,7 +28,7 @@ public class CommonWidgets
 	}
 	
 	public static Label buildJavaAttributeNameLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		Label label = widgetFactory.createLabel(parent, JpaUiXmlMessages.PersistentAttributePage_javaAttributeLabel);
+		Label label = widgetFactory.createLabel(parent, JptUiXmlMessages.PersistentAttributePage_javaAttributeLabel);
 		return label;
 	}
 	
@@ -39,7 +39,7 @@ public class CommonWidgets
 	
 	
 	public static Label buildAccessLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiXmlMessages.PersistentTypePage_AccessLabel);
+		return widgetFactory.createLabel(parent, JptUiXmlMessages.PersistentTypePage_AccessLabel);
 	}
 	
 	public static AccessTypeComboViewer buildAccessTypeComboViewer(
@@ -49,7 +49,7 @@ public class CommonWidgets
 
 	
 	public static Label buildCatalogLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiXmlMessages.XmlCatalogChooser_CatalogChooser);
+		return widgetFactory.createLabel(parent, JptUiXmlMessages.XmlCatalogChooser_CatalogChooser);
 	}
 	
 	public static StringWithDefaultChooser buildCatalogChooser(
@@ -59,7 +59,7 @@ public class CommonWidgets
 
 	
 	public static Label buildSchemaLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return widgetFactory.createLabel(parent, JpaUiXmlMessages.XmlSchemaChooser_SchemaChooser);
+		return widgetFactory.createLabel(parent, JptUiXmlMessages.XmlSchemaChooser_SchemaChooser);
 	}
 	
 	public static StringWithDefaultChooser buildSchemaChooser(

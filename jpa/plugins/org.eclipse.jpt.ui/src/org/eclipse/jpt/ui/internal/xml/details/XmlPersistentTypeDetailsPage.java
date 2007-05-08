@@ -23,7 +23,7 @@ import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddableUiProvider
 import org.eclipse.jpt.ui.internal.java.mappings.properties.EntityUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.MappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
-import org.eclipse.jpt.ui.internal.xml.JpaUiXmlMessages;
+import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComboViewer.AccessHolder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -104,7 +104,7 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage
 	}
 		
 	private Label buildMetadataCompleteLabel(Composite parent ) {
-		return getWidgetFactory().createLabel(parent, JpaUiXmlMessages.PersistentTypePage_MetadataCompleteLabel);
+		return getWidgetFactory().createLabel(parent, JptUiXmlMessages.PersistentTypePage_MetadataCompleteLabel);
 	}
 	
 	@Override

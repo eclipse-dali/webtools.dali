@@ -20,7 +20,7 @@ import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
-import org.eclipse.jpt.ui.internal.xml.JpaUiXmlMessages;
+import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComboViewer.AccessHolder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -51,7 +51,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 	protected void buildWidget(Composite parent) {
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 	    this.section = getWidgetFactory().createSection(parent, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-	    this.section.setText(JpaUiXmlMessages.XMLEntityMappingsPage_PersistenceUnitSection);
+	    this.section.setText(JptUiXmlMessages.XMLEntityMappingsPage_PersistenceUnitSection);
 
 		Composite persistenceUnitComposite = getWidgetFactory().createComposite(this.section);
 		this.section.setClient(persistenceUnitComposite);
@@ -197,7 +197,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		}
 		
 		public String defaultItem() {
-			return JpaUiXmlMessages.PersistenceUnitMetadataSection_SchemaDefault;
+			return JptUiXmlMessages.PersistenceUnitMetadataSection_SchemaDefault;
 		}
 		
 		public String getString() {
@@ -237,7 +237,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		}
 		
 		public String defaultItem() {
-			return JpaUiXmlMessages.PersistenceUnitMetadataSection_CatalogDefault;
+			return JptUiXmlMessages.PersistenceUnitMetadataSection_CatalogDefault;
 		}
 		
 		public String getString() {

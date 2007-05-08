@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.internal.mappings.IOneToMany;
 import org.eclipse.jpt.core.internal.mappings.IOneToOne;
 import org.eclipse.jpt.core.internal.mappings.ITransient;
 import org.eclipse.jpt.core.internal.mappings.IVersion;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsImages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsImages;
 
 public class JavaPersistentAttributeItemProvider extends ItemProviderAdapter
 	implements IEditingDomainItemProvider, 
@@ -47,37 +47,37 @@ public class JavaPersistentAttributeItemProvider extends ItemProviderAdapter
 		IAttributeMapping mapping = ((IPersistentAttribute) object).getMapping();
 		
 		if (mapping instanceof IBasic) {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.BASIC);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.BASIC);
 		}
 		else if (mapping instanceof IId) {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.ID);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.ID);
 		}
 		else if (mapping instanceof IVersion) {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.VERSION);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.VERSION);
 		}
 		else if (mapping instanceof IEmbedded) {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.EMBEDDED);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.EMBEDDED);
 		}
 		else if (mapping instanceof IEmbeddedId) {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.EMBEDDED_ID);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.EMBEDDED_ID);
 		}
 		else if (mapping instanceof IOneToOne) {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.ONE_TO_ONE);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.ONE_TO_ONE);
 		}
 		else if (mapping instanceof IOneToMany) {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.ONE_TO_MANY);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.ONE_TO_MANY);
 		}
 		else if (mapping instanceof IManyToOne) {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.MANY_TO_ONE);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.MANY_TO_ONE);
 		}
 		else if (mapping instanceof IManyToMany) {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.MANY_TO_MANY);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.MANY_TO_MANY);
 		}
 		else if (mapping instanceof ITransient) {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.TRANSIENT);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.TRANSIENT);
 		}
 		else {
-			return JpaUiMappingsImages.getImage(JpaUiMappingsImages.NULL_ATTRIBUTE_MAPPING);
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.NULL_ATTRIBUTE_MAPPING);
 		}
 	}
 	

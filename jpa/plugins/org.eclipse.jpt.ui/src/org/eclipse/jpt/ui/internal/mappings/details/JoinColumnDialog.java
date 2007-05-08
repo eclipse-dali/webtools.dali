@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -53,7 +53,7 @@ public class JoinColumnDialog extends AbstractJoinColumnDialog<IJoinColumn> {
 		Composite composite = (Composite) super.createDialogArea(parent);
 		
 		Label insertableLabel = new Label(composite, SWT.LEFT);
-		insertableLabel.setText(JpaUiMappingsMessages.JoinColumnDialog_insertable);
+		insertableLabel.setText(JptUiMappingsMessages.JoinColumnDialog_insertable);
 		insertableLabel.setLayoutData(new GridData());
 		
 		this.insertableComboViewer = this.buildInsertableComboViewer(composite);
@@ -61,7 +61,7 @@ public class JoinColumnDialog extends AbstractJoinColumnDialog<IJoinColumn> {
 		helpSystem.setHelp(this.insertableComboViewer.getCombo(), IJpaHelpContextIds.MAPPING_COLUMN_INSERTABLE);
 	
 		Label updatableLabel = new Label(composite, SWT.LEFT);
-		updatableLabel.setText(JpaUiMappingsMessages.JoinColumnDialog_updatable);
+		updatableLabel.setText(JptUiMappingsMessages.JoinColumnDialog_updatable);
 		updatableLabel.setLayoutData(new GridData());
 		
 		this.updatableComboViewer = this.buildUpdatableComboViewer(composite);

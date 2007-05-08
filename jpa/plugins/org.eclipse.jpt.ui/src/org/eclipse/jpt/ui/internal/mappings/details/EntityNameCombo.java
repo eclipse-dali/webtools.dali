@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
-import org.eclipse.jpt.ui.internal.mappings.JpaUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -133,7 +133,7 @@ public class EntityNameCombo extends BaseJpaController
 			return;
 		}
 		
-		String defaultItem = NLS.bind(JpaUiMappingsMessages.EntityGeneralSection_nameDefaultWithOneParam, entity.getDefaultName());
+		String defaultItem = NLS.bind(JptUiMappingsMessages.EntityGeneralSection_nameDefaultWithOneParam, entity.getDefaultName());
 		String specifiedName = entity.getSpecifiedName();
 		
 		if (specifiedName == null) {
