@@ -1588,13 +1588,22 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int ISINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS = IRELATIONSHIP_MAPPING_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ISINGLE_RELATIONSHIP_MAPPING__OPTIONAL = IRELATIONSHIP_MAPPING_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>ISingle Relationship Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ISINGLE_RELATIONSHIP_MAPPING_FEATURE_COUNT = IRELATIONSHIP_MAPPING_FEATURE_COUNT + 4;
+	public static final int ISINGLE_RELATIONSHIP_MAPPING_FEATURE_COUNT = IRELATIONSHIP_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.IManyToOne <em>IMany To One</em>}' class.
@@ -1677,6 +1686,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int IMANY_TO_ONE__DEFAULT_JOIN_COLUMNS = ISINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS;
+
+	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IMANY_TO_ONE__OPTIONAL = ISINGLE_RELATIONSHIP_MAPPING__OPTIONAL;
 
 	/**
 	 * The number of structural features of the '<em>IMany To One</em>' class.
@@ -1768,6 +1786,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int IONE_TO_ONE__DEFAULT_JOIN_COLUMNS = ISINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS;
+
+	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IONE_TO_ONE__OPTIONAL = ISINGLE_RELATIONSHIP_MAPPING__OPTIONAL;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
@@ -5084,6 +5111,19 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping#getOptional <em>Optional</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Optional</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping#getOptional()
+	 * @see #getISingleRelationshipMapping()
+	 * @generated
+	 */
+	public EAttribute getISingleRelationshipMapping_Optional() {
+		return (EAttribute) iSingleRelationshipMappingEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.mappings.IManyToOne <em>IMany To One</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6362,6 +6402,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		createEReference(iSingleRelationshipMappingEClass, ISINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS);
 		createEReference(iSingleRelationshipMappingEClass, ISINGLE_RELATIONSHIP_MAPPING__SPECIFIED_JOIN_COLUMNS);
 		createEReference(iSingleRelationshipMappingEClass, ISINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS);
+		createEAttribute(iSingleRelationshipMappingEClass, ISINGLE_RELATIONSHIP_MAPPING__OPTIONAL);
 		iManyToOneEClass = createEClass(IMANY_TO_ONE);
 		iOneToOneEClass = createEClass(IONE_TO_ONE);
 		iJoinTableEClass = createEClass(IJOIN_TABLE);
@@ -6635,6 +6676,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEReference(getISingleRelationshipMapping_JoinColumns(), this.getIJoinColumn(), null, "joinColumns", null, 0, -1, ISingleRelationshipMapping.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getISingleRelationshipMapping_SpecifiedJoinColumns(), this.getIJoinColumn(), null, "specifiedJoinColumns", null, 0, -1, ISingleRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getISingleRelationshipMapping_DefaultJoinColumns(), this.getIJoinColumn(), null, "defaultJoinColumns", null, 0, -1, ISingleRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getISingleRelationshipMapping_Optional(), this.getDefaultTrueBoolean(), "optional", null, 0, 1, ISingleRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iManyToOneEClass, IManyToOne.class, "IManyToOne", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iOneToOneEClass, IOneToOne.class, "IOneToOne", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iJoinTableEClass, IJoinTable.class, "IJoinTable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -7587,6 +7629,14 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference ISINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS = eINSTANCE.getISingleRelationshipMapping_DefaultJoinColumns();
+
+		/**
+		 * The meta object literal for the '<em><b>Optional</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute ISINGLE_RELATIONSHIP_MAPPING__OPTIONAL = eINSTANCE.getISingleRelationshipMapping_Optional();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.IManyToOne <em>IMany To One</em>}' class.

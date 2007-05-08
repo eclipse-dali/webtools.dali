@@ -111,7 +111,7 @@ public abstract class JavaAttributeMapping extends JavaEObject
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-		// do nothing - override as appropriate
+	// do nothing - override as appropriate
 	}
 
 	protected INamedColumn.Owner buildColumnOwner() {
@@ -119,7 +119,7 @@ public abstract class JavaAttributeMapping extends JavaEObject
 	}
 
 	public void refreshDefaults(DefaultsContext defaultsContext) {
-		// do nothing - override as appropriate
+	// do nothing - override as appropriate
 	}
 
 	public String primaryKeyColumnName() {
@@ -141,12 +141,11 @@ public abstract class JavaAttributeMapping extends JavaEObject
 	public boolean isIdMapping() {
 		return false;
 	}
-
-
 	/**
 	 * mapping implementation of column owner
 	 */
-	protected class ColumnOwner implements INamedColumn.Owner {
+	protected class ColumnOwner implements INamedColumn.Owner
+	{
 		public ITypeMapping getTypeMapping() {
 			return JavaAttributeMapping.this.typeMapping();
 		}
@@ -159,5 +158,4 @@ public abstract class JavaAttributeMapping extends JavaEObject
 			return this.getTypeMapping().dbTable(tableName);
 		}
 	}
-
 }

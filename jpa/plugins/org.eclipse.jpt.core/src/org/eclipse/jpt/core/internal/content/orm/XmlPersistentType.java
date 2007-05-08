@@ -430,22 +430,21 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	protected void changeMapping(XmlAttributeMapping oldMapping, String newMappingKey) {
 		boolean virtual = oldMapping.isVirtual();
 		XmlAttributeMapping newAttributeMapping = buildAttributeMapping(oldMapping.getPersistentAttribute().attributeMappingProviders(), newMappingKey);
-		
 		if (virtual) {
 			getVirtualAttributeMappings().remove(oldMapping);
-		} else {
+		}
+		else {
 			getSpecifiedAttributeMappings().remove(oldMapping);
 		}
-		
 		oldMapping.initializeOn(newAttributeMapping);
-		
 		if (virtual) {
 			insertAttributeMapping(newAttributeMapping, getVirtualAttributeMappings());
-		} else {
+		}
+		else {
 			insertAttributeMapping(newAttributeMapping, getSpecifiedAttributeMappings());
 		}
 	}
-	
+
 	private XmlAttributeMapping buildAttributeMapping(Collection<IXmlAttributeMappingProvider> providers, String key) {
 		for (IXmlAttributeMappingProvider provider : providers) {
 			if (provider.key().equals(key)) {
@@ -459,14 +458,12 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	public Collection<IXmlTypeMappingProvider> typeMappingProviders() {
 		return this.typeMappingProviders;
 	}
-	
+
 	protected void setMappingVirtual(XmlAttributeMapping attributeMapping, boolean virtual) {
 		boolean oldVirtual = attributeMapping.isVirtual();
-		
 		if (oldVirtual == virtual) {
 			return;
 		}
-		
 		if (virtual) {
 			getSpecifiedAttributeMappings().remove(attributeMapping);
 			insertAttributeMapping(attributeMapping, getVirtualAttributeMappings());

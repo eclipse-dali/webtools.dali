@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.mappings.DefaultEagerFetchType;
+import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
@@ -88,6 +89,26 @@ public abstract class JavaSingleRelationshipMapping
 	 */
 	protected EList<IJoinColumn> defaultJoinColumns;
 
+	/**
+	 * The default value of the '{@link #getOptional() <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOptional()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final DefaultTrueBoolean OPTIONAL_EDEFAULT = DefaultTrueBoolean.DEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getOptional() <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOptional()
+	 * @generated
+	 * @ordered
+	 */
+	protected DefaultTrueBoolean optional = OPTIONAL_EDEFAULT;
+
 	protected JavaSingleRelationshipMapping() {
 		throw new UnsupportedOperationException("Use JavaSingleRelationshipMapping(Attribute) instead");
 	}
@@ -113,8 +134,14 @@ public abstract class JavaSingleRelationshipMapping
 	protected void notifyChanged(Notification notification) {
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(ISingleRelationshipMapping.class)) {
+			case JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__OPTIONAL :
+				this.optionalAdapter.setValue(((DefaultTrueBoolean) notification.getNewValue()).convertToJavaAnnotationValue());
+				break;
 			case JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__SPECIFIED_JOIN_COLUMNS :
 				specifiedJoinColumnsChanged(notification);
+				break;
+			case JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__FETCH :
+				this.getFetchAdapter().setValue(((DefaultEagerFetchType) notification.getNewValue()).convertToJavaAnnotationValue());	
 				break;
 			default :
 				break;
@@ -285,16 +312,11 @@ public abstract class JavaSingleRelationshipMapping
 	 * @see #getFetch()
 	 * @generated
 	 */
-	public void setFetchGen(DefaultEagerFetchType newFetch) {
+	public void setFetch(DefaultEagerFetchType newFetch) {
 		DefaultEagerFetchType oldFetch = fetch;
 		fetch = newFetch == null ? FETCH_EDEFAULT : newFetch;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__FETCH, oldFetch, fetch));
-	}
-
-	public void setFetch(DefaultEagerFetchType newFetch) {
-		this.getFetchAdapter().setValue(newFetch.convertToJavaAnnotationValue());
-		setFetchGen(newFetch);
 	}
 
 	/**
@@ -358,6 +380,42 @@ public abstract class JavaSingleRelationshipMapping
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Optional</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Optional</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Optional</em>' attribute.
+	 * @see org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean
+	 * @see #setOptional(DefaultTrueBoolean)
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getISingleRelationshipMapping_Optional()
+	 * @model
+	 * @generated
+	 */
+	public DefaultTrueBoolean getOptional() {
+		return optional;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaSingleRelationshipMapping#getOptional <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Optional</em>' attribute.
+	 * @see org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean
+	 * @see #getOptional()
+	 * @generated
+	 */
+	public void setOptional(DefaultTrueBoolean newOptional) {
+		DefaultTrueBoolean oldOptional = optional;
+		optional = newOptional == null ? OPTIONAL_EDEFAULT : newOptional;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL, oldOptional, optional));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -391,6 +449,8 @@ public abstract class JavaSingleRelationshipMapping
 				return getSpecifiedJoinColumns();
 			case JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS :
 				return getDefaultJoinColumns();
+			case JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL :
+				return getOptional();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -415,6 +475,9 @@ public abstract class JavaSingleRelationshipMapping
 				getDefaultJoinColumns().clear();
 				getDefaultJoinColumns().addAll((Collection<? extends IJoinColumn>) newValue);
 				return;
+			case JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL :
+				setOptional((DefaultTrueBoolean) newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -436,6 +499,9 @@ public abstract class JavaSingleRelationshipMapping
 			case JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS :
 				getDefaultJoinColumns().clear();
 				return;
+			case JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL :
+				setOptional(OPTIONAL_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -456,6 +522,8 @@ public abstract class JavaSingleRelationshipMapping
 				return specifiedJoinColumns != null && !specifiedJoinColumns.isEmpty();
 			case JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS :
 				return defaultJoinColumns != null && !defaultJoinColumns.isEmpty();
+			case JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL :
+				return optional != OPTIONAL_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -477,6 +545,8 @@ public abstract class JavaSingleRelationshipMapping
 					return JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__SPECIFIED_JOIN_COLUMNS;
 				case JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS :
 					return JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS;
+				case JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL :
+					return JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__OPTIONAL;
 				default :
 					return -1;
 			}
@@ -501,6 +571,8 @@ public abstract class JavaSingleRelationshipMapping
 					return JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__SPECIFIED_JOIN_COLUMNS;
 				case JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS :
 					return JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS;
+				case JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__OPTIONAL :
+					return JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL;
 				default :
 					return -1;
 			}
@@ -520,6 +592,8 @@ public abstract class JavaSingleRelationshipMapping
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (fetch: ");
 		result.append(fetch);
+		result.append(", optional: ");
+		result.append(optional);
 		result.append(')');
 		return result.toString();
 	}
@@ -529,7 +603,7 @@ public abstract class JavaSingleRelationshipMapping
 		super.updateFromJava(astRoot);
 		this.updateFetchFromJava(astRoot);
 		this.updateSpecifiedJoinColumnsFromJava(astRoot);
-		//setOptional(DefaultTrueBoolean.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot)));
+		this.setOptional(DefaultTrueBoolean.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot)));
 	}
 
 	/**
@@ -575,7 +649,7 @@ public abstract class JavaSingleRelationshipMapping
 	}
 
 	protected void updateFetchFromJava(CompilationUnit astRoot) {
-		setFetchGen(DefaultEagerFetchType.fromJavaAnnotationValue(this.getFetchAdapter().getValue(astRoot)));
+		setFetch(DefaultEagerFetchType.fromJavaAnnotationValue(this.getFetchAdapter().getValue(astRoot)));
 	}
 
 	/**

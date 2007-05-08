@@ -180,7 +180,7 @@ public abstract class JavaGenerator extends JavaEObject implements IGenerator
 	protected Member getMember() {
 		return this.member;
 	}
-	
+
 	@Override
 	protected void notifyChanged(Notification notification) {
 		super.notifyChanged(notification);
@@ -198,7 +198,7 @@ public abstract class JavaGenerator extends JavaEObject implements IGenerator
 				break;
 		}
 	}
-	
+
 	// ********** initialization **********
 	protected AnnotationElementAdapter buildAdapter(DeclarationAnnotationElementAdapter daea) {
 		return new ShortCircuitAnnotationElementAdapter(this.member, daea);

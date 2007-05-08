@@ -11,8 +11,14 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
+import org.eclipse.jpt.core.internal.mappings.IBasic;
 import org.eclipse.jpt.core.internal.mappings.IOneToOne;
+import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -29,6 +35,8 @@ public class OneToOneComposite extends BaseJpaComposite
 	private EnumComboViewer fetchTypeComboViewer;
 	
 	private MappedByCombo mappedByCombo;
+
+	private EnumComboViewer optionalComboViewer;
 
 	private JoinColumnComposite joinColumnComposite;
 		
@@ -88,6 +96,13 @@ public class OneToOneComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		this.mappedByCombo.getControl().setLayoutData(gridData);
 		
+		CommonWidgets.buildOptionalLabel(generalComposite, getWidgetFactory());
+		this.optionalComboViewer = CommonWidgets.buildEnumComboViewer(generalComposite, this.commandStack, getWidgetFactory());
+		gridData = new GridData();
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.verticalAlignment = SWT.BEGINNING;
+		gridData.grabExcessHorizontalSpace = true;
+		this.optionalComboViewer.getControl().setLayoutData(gridData);
 
 		this.joinColumnComposite = new JoinColumnComposite(generalComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
@@ -106,6 +121,7 @@ public class OneToOneComposite extends BaseJpaComposite
 		this.targetEntityChooser.populate(this.oneToOne);
 		this.fetchTypeComboViewer.populate(CommonWidgets.buildSingleRelationshipMappingFetchEnumHolder(this.oneToOne));
 		this.mappedByCombo.populate(this.oneToOne);
+		this.optionalComboViewer.populate(new OptionalHolder(this.oneToOne));
 		this.joinColumnComposite.populate(this.oneToOne);
 	}
 	
@@ -113,6 +129,7 @@ public class OneToOneComposite extends BaseJpaComposite
 		this.targetEntityChooser.populate();
 		this.fetchTypeComboViewer.populate();
 		this.mappedByCombo.populate();
+		this.optionalComboViewer.populate();
 		this.joinColumnComposite.populate();
 	}
 	
@@ -127,8 +144,43 @@ public class OneToOneComposite extends BaseJpaComposite
 		this.targetEntityChooser.dispose();
 		this.fetchTypeComboViewer.dispose();
 		this.mappedByCombo.dispose();
+		this.optionalComboViewer.dispose();
 		this.joinColumnComposite.dispose();
 		super.dispose();
+	}
+
+	private class OptionalHolder extends EObjectImpl implements EnumHolder {
+		
+		private IOneToOne oneToOne;
+		
+		OptionalHolder(IOneToOne oneToOne) {
+			super();
+			this.oneToOne = oneToOne;
+		}
+		
+		public Object get() {
+			return this.oneToOne.getOptional();
+		}
+		
+		public void set(Object enumSetting) {
+			this.oneToOne.setOptional((DefaultTrueBoolean) enumSetting);
+		}
+		
+		public Class featureClass() {
+			return IOneToOne.class;
+		}
+		
+		public int featureId() {
+			return JpaCoreMappingsPackage.IONE_TO_ONE__OPTIONAL;
+		}
+		
+		public EObject wrappedObject() {
+			return this.oneToOne;
+		}
+		
+		public Object[] enumValues() {
+			return DefaultTrueBoolean.VALUES.toArray();
+		}
 	}
 
 }

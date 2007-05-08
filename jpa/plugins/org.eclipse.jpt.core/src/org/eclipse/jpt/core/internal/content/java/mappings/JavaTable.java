@@ -80,7 +80,7 @@ public class JavaTable extends AbstractJavaTable
 		super.refreshDefaults(defaultsContext);
 		this.setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TABLE_NAME_KEY));
 	}
-	
+
 	@Override
 	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
 		return JavaUniqueConstraint.createTableUniqueConstraint(getMember(), index);

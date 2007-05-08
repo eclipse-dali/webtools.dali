@@ -398,7 +398,7 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 	public JavaUniqueConstraint createJavaUniqueConstraint() {
 		throw new UnsupportedOperationException("Use createJavaUniqueConstraint(Member, IndexedDeclarationAnnotationAdapter) instead");
 	}
-	
+
 	public JavaUniqueConstraint createJavaUniqueConstraint(Member member, IndexedDeclarationAnnotationAdapter idaa) {
 		JavaUniqueConstraint javaUniqueConstraint = new JavaUniqueConstraint(member, idaa);
 		return javaUniqueConstraint;

@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: IAbstractJoinColumn.java,v 1.4 2007/05/08 14:07:47 bvosburgh Exp $
+ * $Id: IAbstractJoinColumn.java,v 1.5 2007/05/08 17:21:41 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.mappings;
 
@@ -108,13 +108,11 @@ public interface IAbstractJoinColumn extends INamedColumn
 	 * Re-declared to return INamedColumn.Owner.
 	 */
 	Owner getOwner();
-
-
-	interface Owner extends INamedColumn.Owner {
+	interface Owner extends INamedColumn.Owner
+	{
 		/**
 		 * Return the wrapper for the datasource table for the referenced column
 		 */
 		Table dbReferencedColumnTable();
 	}
-
 }

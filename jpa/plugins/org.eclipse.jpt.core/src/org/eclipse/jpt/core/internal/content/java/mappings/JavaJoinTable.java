@@ -785,7 +785,7 @@ public class JavaJoinTable extends AbstractJavaTable implements IJoinTable
 	public boolean containsSpecifiedInverseJoinColumns() {
 		return !this.getSpecifiedInverseJoinColumns().isEmpty();
 	}
-	
+
 	@Override
 	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
 		return JavaUniqueConstraint.createJoinTableUniqueConstraint(getMember(), index);

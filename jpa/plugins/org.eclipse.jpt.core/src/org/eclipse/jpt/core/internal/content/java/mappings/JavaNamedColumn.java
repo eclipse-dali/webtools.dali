@@ -519,5 +519,4 @@ public abstract class JavaNamedColumn extends JavaEObject
 	private Iterator<String> quotedCandidateNames(Filter<String> filter) {
 		return StringTools.quote(this.candidateNames(filter));
 	}
-
 }

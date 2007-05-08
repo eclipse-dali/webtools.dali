@@ -51,7 +51,7 @@ public class JavaUniqueConstraint extends JavaEObject
 	private final Member member;
 
 	private final IndexedDeclarationAnnotationAdapter idaa;
-	
+
 	private final IndexedAnnotationAdapter annotationAdapter;
 
 	protected JavaUniqueConstraint() {
@@ -212,7 +212,7 @@ public class JavaUniqueConstraint extends JavaEObject
 	public ITextRange getTextRange() {
 		return this.member.annotationTextRange(this.idaa);
 	}
-	
+
 	/**
 	 * allow owners to verify the annotation
 	 */
@@ -241,7 +241,7 @@ public class JavaUniqueConstraint extends JavaEObject
 	private static IndexedDeclarationAnnotationAdapter buildSecondaryTableUniqueConstraintAnnotationAdapter(JavaSecondaryTable secondaryTable, int index) {
 		return new NestedIndexedDeclarationAnnotationAdapter(secondaryTable.getDeclarationAnnotationAdapter(), JPA.SECONDARY_TABLE__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
 	}
-	
+
 	static JavaUniqueConstraint createJoinTableUniqueConstraint(Member member, int index) {
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaUniqueConstraint(member, buildJoinTableUniqueConstraintAnnotationAdapter(index));
 	}
@@ -249,7 +249,7 @@ public class JavaUniqueConstraint extends JavaEObject
 	private static IndexedDeclarationAnnotationAdapter buildJoinTableUniqueConstraintAnnotationAdapter(int index) {
 		return new NestedIndexedDeclarationAnnotationAdapter(JavaJoinTable.DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
 	}
-	
+
 	static JavaUniqueConstraint createTableUniqueConstraint(Member member, int index) {
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaUniqueConstraint(member, buildTableUniqueConstraintAnnotationAdapter(index));
 	}

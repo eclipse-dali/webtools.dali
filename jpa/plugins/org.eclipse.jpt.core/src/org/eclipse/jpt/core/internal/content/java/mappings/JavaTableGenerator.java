@@ -429,7 +429,7 @@ public class JavaTableGenerator extends JavaGenerator
 				break;
 		}
 	}
-	
+
 	void uniqueConstraintsChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
@@ -637,7 +637,6 @@ public class JavaTableGenerator extends JavaGenerator
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_SCHEMA, oldSpecifiedSchema, specifiedSchema));
 	}
-
 
 	/**
 	 * Returns the value of the '<em><b>Default Schema</b></em>' attribute.
@@ -1268,12 +1267,11 @@ public class JavaTableGenerator extends JavaGenerator
 			this.synch(joinColumns.get(i), i);
 		}
 	}
-	
+
 	private void synch(IUniqueConstraint uniqueConstraint, int index) {
 		((JavaUniqueConstraint) uniqueConstraint).moveAnnotation(index);
 	}
 
-	
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter buildAdapter(String elementName) {
 		return buildAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);

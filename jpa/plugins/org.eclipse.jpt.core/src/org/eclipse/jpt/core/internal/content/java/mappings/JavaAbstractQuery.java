@@ -604,7 +604,7 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 	protected IndexedDeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
 		return this.idaa;
 	}
-	
+
 	// ********** persistence model -> java annotations **********
 	void moveAnnotation(int newIndex) {
 		this.annotationAdapter.moveAnnotation(newIndex);

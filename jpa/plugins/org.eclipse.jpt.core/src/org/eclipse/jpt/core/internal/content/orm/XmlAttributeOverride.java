@@ -308,8 +308,8 @@ public class XmlAttributeOverride extends XmlOverride
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
-
-	public class ColumnOwner implements INamedColumn.Owner {
+	public class ColumnOwner implements INamedColumn.Owner
+	{
 		public ITextRange getTextRange() {
 			return XmlAttributeOverride.this.getTextRange();
 		}
@@ -322,5 +322,4 @@ public class XmlAttributeOverride extends XmlOverride
 			return this.getTypeMapping().dbTable(column.getTable());
 		}
 	}
-
 }

@@ -319,6 +319,7 @@
           upperBound="-1" eType="#//mappings/IJoinColumn" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="defaultJoinColumns" upperBound="-1"
           eType="#//mappings/IJoinColumn" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="#//mappings/DefaultTrueBoolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="IManyToOne" abstract="true" interface="true"
         eSuperTypes="#//mappings/ISingleRelationshipMapping"/>

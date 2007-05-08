@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.mappings.DefaultEagerFetchType;
+import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
@@ -76,6 +77,26 @@ public abstract class XmlSingleRelationshipMapping
 	 * @ordered
 	 */
 	protected EList<IJoinColumn> defaultJoinColumns;
+
+	/**
+	 * The default value of the '{@link #getOptional() <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOptional()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final DefaultTrueBoolean OPTIONAL_EDEFAULT = DefaultTrueBoolean.DEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getOptional() <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOptional()
+	 * @generated
+	 * @ordered
+	 */
+	protected DefaultTrueBoolean optional = OPTIONAL_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -228,6 +249,42 @@ public abstract class XmlSingleRelationshipMapping
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Optional</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Optional</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Optional</em>' attribute.
+	 * @see org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean
+	 * @see #setOptional(DefaultTrueBoolean)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getISingleRelationshipMapping_Optional()
+	 * @model
+	 * @generated
+	 */
+	public DefaultTrueBoolean getOptional() {
+		return optional;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlSingleRelationshipMapping#getOptional <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Optional</em>' attribute.
+	 * @see org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean
+	 * @see #getOptional()
+	 * @generated
+	 */
+	public void setOptional(DefaultTrueBoolean newOptional) {
+		DefaultTrueBoolean oldOptional = optional;
+		optional = newOptional == null ? OPTIONAL_EDEFAULT : newOptional;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL, oldOptional, optional));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -261,6 +318,8 @@ public abstract class XmlSingleRelationshipMapping
 				return getSpecifiedJoinColumns();
 			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS :
 				return getDefaultJoinColumns();
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL :
+				return getOptional();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -285,6 +344,9 @@ public abstract class XmlSingleRelationshipMapping
 				getDefaultJoinColumns().clear();
 				getDefaultJoinColumns().addAll((Collection<? extends IJoinColumn>) newValue);
 				return;
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL :
+				setOptional((DefaultTrueBoolean) newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -306,6 +368,9 @@ public abstract class XmlSingleRelationshipMapping
 			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS :
 				getDefaultJoinColumns().clear();
 				return;
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL :
+				setOptional(OPTIONAL_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -326,6 +391,8 @@ public abstract class XmlSingleRelationshipMapping
 				return specifiedJoinColumns != null && !specifiedJoinColumns.isEmpty();
 			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS :
 				return defaultJoinColumns != null && !defaultJoinColumns.isEmpty();
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL :
+				return optional != OPTIONAL_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -347,6 +414,8 @@ public abstract class XmlSingleRelationshipMapping
 					return JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__SPECIFIED_JOIN_COLUMNS;
 				case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS :
 					return JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS;
+				case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL :
+					return JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__OPTIONAL;
 				default :
 					return -1;
 			}
@@ -371,6 +440,8 @@ public abstract class XmlSingleRelationshipMapping
 					return OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__SPECIFIED_JOIN_COLUMNS;
 				case JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS :
 					return OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS;
+				case JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__OPTIONAL :
+					return OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL;
 				default :
 					return -1;
 			}
@@ -390,6 +461,8 @@ public abstract class XmlSingleRelationshipMapping
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (fetch: ");
 		result.append(fetch);
+		result.append(", optional: ");
+		result.append(optional);
 		result.append(')');
 		return result.toString();
 	}

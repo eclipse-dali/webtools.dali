@@ -279,6 +279,7 @@
         <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference core.ecore#//mappings/ISingleRelationshipMapping/joinColumns"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/ISingleRelationshipMapping/specifiedJoinColumns"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/ISingleRelationshipMapping/defaultJoinColumns"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/ISingleRelationshipMapping/optional"/>
       </genClasses>
       <genClasses ecoreClass="core.ecore#//mappings/IManyToOne"/>
       <genClasses image="false" ecoreClass="core.ecore#//mappings/IOneToOne"/>

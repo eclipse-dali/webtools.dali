@@ -30,6 +30,7 @@ public class ManyToOneTranslator extends SingleRelationshipTranslator
 			createNameTranslator(),
 			createTargetEntityTranslator(),
 			createFetchTypeTranslator(),
+			createOptionalTranslator(),
 			createJoinColumnsTranslator(),
 			createCascadeTranslator()
 		};

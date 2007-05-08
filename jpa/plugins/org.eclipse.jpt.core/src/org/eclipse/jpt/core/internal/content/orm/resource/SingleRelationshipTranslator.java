@@ -36,6 +36,10 @@ public abstract class SingleRelationshipTranslator extends RelationshipTranslato
 		return new EnumeratorTranslator(FETCH, JpaCoreMappingsPackage.eINSTANCE.getISingleRelationshipMapping_Fetch(), DOM_ATTRIBUTE);
 	}
 	
+	protected Translator createOptionalTranslator() {
+		return new BooleanEnumeratorTranslator(OPTIONAL, JpaCoreMappingsPackage.eINSTANCE.getISingleRelationshipMapping_Optional(), DOM_ATTRIBUTE);
+	}
+
 	protected Translator createJoinColumnsTranslator() {
 		return new JoinColumnTranslator(
 				JOIN_COLUMN,  

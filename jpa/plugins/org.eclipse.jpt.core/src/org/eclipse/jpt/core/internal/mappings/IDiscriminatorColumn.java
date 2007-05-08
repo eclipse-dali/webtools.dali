@@ -131,24 +131,23 @@ public interface IDiscriminatorColumn extends INamedColumn
 	 * @generated
 	 */
 	int getLength();
-	
-	class Owner implements INamedColumn.Owner {
-		
+	class Owner implements INamedColumn.Owner
+	{
 		private IEntity entity;
-		
+
 		public Owner(IEntity entity) {
 			super();
 			this.entity = entity;
 		}
-		
+
 		public Table dbTable(String tableName) {
 			return this.entity.dbTable(tableName);
 		}
-		
+
 		public ITextRange getTextRange() {
 			return this.entity.getDiscriminatorColumn().getTextRange();
 		}
-		
+
 		public ITypeMapping getTypeMapping() {
 			return this.entity;
 		}

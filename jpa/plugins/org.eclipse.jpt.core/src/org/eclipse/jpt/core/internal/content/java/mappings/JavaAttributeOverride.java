@@ -224,9 +224,9 @@ public class JavaAttributeOverride extends JavaOverride
 	private static IndexedDeclarationAnnotationAdapter buildAnnotationAdapter(int index) {
 		return new CombinationIndexedDeclarationAnnotationAdapter(SINGLE_DECLARATION_ANNOTATION_ADAPTER, MULTIPLE_DECLARATION_ANNOTATION_ADAPTER, index, JPA.ATTRIBUTE_OVERRIDE);
 	}
-
 	// ********** member class **********
-	public class ColumnOwner implements INamedColumn.Owner {
+	public class ColumnOwner implements INamedColumn.Owner
+	{
 		public ITypeMapping getTypeMapping() {
 			return JavaAttributeOverride.this.getOwner().getTypeMapping();
 		}
@@ -239,5 +239,4 @@ public class JavaAttributeOverride extends JavaOverride
 			return this.getTypeMapping().dbTable(tableName);
 		}
 	}
-
 }

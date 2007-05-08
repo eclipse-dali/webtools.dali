@@ -32,7 +32,6 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
-import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 
 /**
@@ -371,12 +370,12 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	protected IAbstractJoinColumn.Owner buildPkJoinColumnOwner() {
 		return new ISecondaryTable.PrimaryKeyJoinColumnOwner(this);
 	}
-	
+
 	@Override
 	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
 		return JavaUniqueConstraint.createSecondaryTableUniqueConstraint(this, getMember(), index);
 	}
-	
+
 	// ********** persistence model -> java annotations **********
 	void moveAnnotation(int newIndex) {
 		this.annotationAdapter.moveAnnotation(newIndex);

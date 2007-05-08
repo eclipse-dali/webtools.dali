@@ -314,7 +314,7 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	}
 
 	public void refreshDefaults(DefaultsContext defaultsContext) {
-		// do nothing
+	// do nothing
 	}
 
 	public String primaryKeyColumnName() {
@@ -328,25 +328,19 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	public boolean isVirtual() {
 		return getPersistentType().getVirtualAttributeMappings().contains(this);
 	}
-	
+
 	public void setVirtual(boolean virtual) {
 		getPersistentType().setMappingVirtual(this, virtual);
 	}
 
 	@Override
 	public ITextRange getTextRange() {
-		return (this.isVirtual()) ?
-			this.getPersistentType().getAttributesTextRange()
-		:
-			super.getTextRange();
+		return (this.isVirtual()) ? this.getPersistentType().getAttributesTextRange() : super.getTextRange();
 	}
 
 	public ITextRange getNameTextRange() {
 		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.NAME);
-		return (nameNode != null) ?
-			this.buildTextRange(nameNode)
-		:
-			this.getTextRange();
+		return (nameNode != null) ? this.buildTextRange(nameNode) : this.getTextRange();
 	}
 
 	public boolean isOverridableAttributeMapping() {
@@ -360,8 +354,8 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	public boolean isIdMapping() {
 		return false;
 	}
-
-	public class ColumnOwner implements INamedColumn.Owner {
+	public class ColumnOwner implements INamedColumn.Owner
+	{
 		public ITextRange getTextRange() {
 			return XmlAttributeMapping.this.getTextRange();
 		}
@@ -374,5 +368,4 @@ public abstract class XmlAttributeMapping extends XmlEObject
 			return this.getTypeMapping().dbTable(tableName);
 		}
 	}
-
 }

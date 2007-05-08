@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: IAbstractColumn.java,v 1.2 2007/05/08 14:07:47 bvosburgh Exp $
+ * $Id: IAbstractColumn.java,v 1.3 2007/05/08 17:21:41 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.mappings;
 
@@ -208,5 +208,4 @@ public interface IAbstractColumn extends INamedColumn
 	 * Return the (best guess) text location of the column's table.
 	 */
 	ITextRange getTableTextRange();
-
 }

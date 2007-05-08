@@ -847,10 +847,9 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	public IUniqueConstraint createUniqueConstraint(int index) {
 		return createJavaUniqueConstraint(index);
 	}
-	
+
 	protected abstract JavaUniqueConstraint createJavaUniqueConstraint(int index);
 
-	
 	//set these defaults here or call setDefaultCatalog from JavaTableContext instead
 	public void refreshDefaults(DefaultsContext defaultsContext) {
 		this.setDefaultCatalog((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TABLE_CATALOG_KEY));
@@ -959,7 +958,7 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	private Iterator<String> quotedCandidateCatalogs(Filter<String> filter) {
 		return StringTools.quote(this.candidateCatalogs(filter));
 	}
-	
+
 	// ********** jpa model -> java annotations **********
 	////////////////////////////////////////////////////////
 	/**
@@ -1038,9 +1037,8 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 			this.synch(joinColumns.get(i), i);
 		}
 	}
-	
+
 	private void synch(IUniqueConstraint uniqueConstraint, int index) {
 		((JavaUniqueConstraint) uniqueConstraint).moveAnnotation(index);
 	}
-
 }

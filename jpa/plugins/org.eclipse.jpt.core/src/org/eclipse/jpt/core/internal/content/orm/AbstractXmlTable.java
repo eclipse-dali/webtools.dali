@@ -979,11 +979,11 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 	public boolean isResolved() {
 		return dbTable() != null;
 	}
-	
+
 	public IUniqueConstraint createUniqueConstraint(int index) {
 		return createXmlJavaUniqueConstraint(index);
 	}
-	
+
 	protected XmlUniqueConstraint createXmlJavaUniqueConstraint(int index) {
 		return OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 	}

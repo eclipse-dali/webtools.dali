@@ -45,7 +45,6 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 
 	private static final DeclarationAnnotationElementAdapter DISCRIMINATOR_TYPE_ADAPTER = buildDiscriminatorTypeAdapter();
 
-
 	/**
 	 * The default value of the '{@link #getDiscriminatorType() <em>Discriminator Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -123,19 +122,19 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 	protected JavaDiscriminatorColumn(INamedColumn.Owner owner, Type type, DeclarationAnnotationAdapter daa) {
 		super(owner, type, daa);
 		this.discriminatorTypeAdapter = this.buildShortCircuitElementAdapter(DISCRIMINATOR_TYPE_ADAPTER);
-		this.lengthAdapter =  this.buildShortCircuitIntElementAdapter(JPA.DISCRIMINATOR_COLUMN__LENGTH);
+		this.lengthAdapter = this.buildShortCircuitIntElementAdapter(JPA.DISCRIMINATOR_COLUMN__LENGTH);
 	}
 
 	@Override
 	protected String nameElementName() {
 		return JPA.DISCRIMINATOR_COLUMN__NAME;
 	}
-	
+
 	@Override
 	protected String columnDefinitionElementName() {
 		return JPA.DISCRIMINATOR_COLUMN__COLUMN_DEFINITION;
 	}
-	
+
 	@Override
 	protected void notifyChanged(Notification notification) {
 		super.notifyChanged(notification);

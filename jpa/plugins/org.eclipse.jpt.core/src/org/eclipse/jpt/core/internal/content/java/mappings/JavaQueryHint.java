@@ -366,7 +366,7 @@ public class JavaQueryHint extends JavaEObject implements IQueryHint
 	}
 
 	// ********** static methods **********
-	static JavaQueryHint createNamedQueryQueryHint(JavaNamedQuery namedQuery,Member member, int index) {
+	static JavaQueryHint createNamedQueryQueryHint(JavaNamedQuery namedQuery, Member member, int index) {
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaQueryHint(member, buildNamedQueryQueryHintAnnotationAdapter(namedQuery, index));
 	}
 

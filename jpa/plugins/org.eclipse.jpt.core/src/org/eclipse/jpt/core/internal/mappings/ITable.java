@@ -251,9 +251,8 @@ public interface ITable extends IJpaSourceObject
 	ITextRange getSchemaTextRange();
 
 	Owner getOwner();
-	
+
 	IUniqueConstraint createUniqueConstraint(int index);
-	
 	/**
 	 * interface allowing tables to be owned by various objects
 	 */

@@ -877,13 +877,22 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_SINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>Java Single Relationship Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_SINGLE_RELATIONSHIP_MAPPING_FEATURE_COUNT = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 4;
+	public static final int JAVA_SINGLE_RELATIONSHIP_MAPPING_FEATURE_COUNT = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToOne <em>Java Many To One</em>}' class.
@@ -966,6 +975,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int JAVA_MANY_TO_ONE__DEFAULT_JOIN_COLUMNS = JAVA_SINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS;
+
+	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_MANY_TO_ONE__OPTIONAL = JAVA_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL;
 
 	/**
 	 * The number of structural features of the '<em>Java Many To One</em>' class.
@@ -1057,6 +1075,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int JAVA_ONE_TO_ONE__DEFAULT_JOIN_COLUMNS = JAVA_SINGLE_RELATIONSHIP_MAPPING__DEFAULT_JOIN_COLUMNS;
+
+	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_ONE_TO_ONE__OPTIONAL = JAVA_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.

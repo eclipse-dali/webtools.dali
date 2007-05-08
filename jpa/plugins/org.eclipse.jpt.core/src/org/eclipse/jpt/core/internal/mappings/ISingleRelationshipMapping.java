@@ -27,6 +27,7 @@ import org.eclipse.jpt.db.internal.Table;
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping#getJoinColumns <em>Join Columns</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping#getSpecifiedJoinColumns <em>Specified Join Columns</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping#getDefaultJoinColumns <em>Default Join Columns</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping#getOptional <em>Optional</em>}</li>
  * </ul>
  * </p>
  *
@@ -112,6 +113,35 @@ public interface ISingleRelationshipMapping extends IRelationshipMapping
 	 * @generated
 	 */
 	EList<IJoinColumn> getDefaultJoinColumns();
+
+	/**
+	 * Returns the value of the '<em><b>Optional</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Optional</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Optional</em>' attribute.
+	 * @see org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean
+	 * @see #setOptional(DefaultTrueBoolean)
+	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getISingleRelationshipMapping_Optional()
+	 * @model
+	 * @generated
+	 */
+	DefaultTrueBoolean getOptional();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping#getOptional <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Optional</em>' attribute.
+	 * @see org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean
+	 * @see #getOptional()
+	 * @generated
+	 */
+	void setOptional(DefaultTrueBoolean value);
 
 	boolean containsSpecifiedJoinColumns();
 
