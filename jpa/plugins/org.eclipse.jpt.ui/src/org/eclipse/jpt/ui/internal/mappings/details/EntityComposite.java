@@ -183,34 +183,6 @@ public class EntityComposite extends BaseJpaComposite
 		this.inheritanceComposite.populate(obj);
 		if (this.entity != null) {
 			this.tableComposite.populate(this.entity.getTable());
-			INamedQuery namedQuery = this.entity.createNamedQuery(0);
-			this.entity.getNamedQueries().add(namedQuery);
-			namedQuery.setName("foo");
-			namedQuery.setQuery("select foo from Bar");
-			IQueryHint hint = namedQuery.createQueryHint(0);
-			namedQuery.getHints().add(hint);
-			hint.setName("myHint");
-			hint.setValue("myValue");
-			
-			IQueryHint hint2 = namedQuery.createQueryHint(1);
-			namedQuery.getHints().add(hint2);
-			hint2.setName("myHint2");
-			hint2.setValue("myValue2");
-
-		
-			INamedQuery namedQuery2 = this.entity.createNamedQuery(1);
-			this.entity.getNamedQueries().add(namedQuery2);
-			namedQuery2.setName("foo2");
-			namedQuery2.setQuery("select foo from Bar2");
-			IQueryHint hint3 = namedQuery2.createQueryHint(0);
-			namedQuery2.getHints().add(hint3);
-			hint3.setName("myHint");
-			hint3.setValue("myValue");
-			
-			IQueryHint hint4 = namedQuery2.createQueryHint(1);
-			namedQuery2.getHints().add(hint4);
-			hint4.setName("myHint2");
-			hint4.setValue("myValue2");
 		}
 		else {
 			this.tableComposite.populate(null);					
