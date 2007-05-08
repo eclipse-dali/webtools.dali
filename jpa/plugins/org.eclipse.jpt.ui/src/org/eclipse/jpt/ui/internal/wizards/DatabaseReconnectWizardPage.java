@@ -41,14 +41,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
 
-class DatabaseReconnectWizardPage extends WizardPage {
+public class DatabaseReconnectWizardPage extends WizardPage {
 	private IJpaProject jpaProject;
 
 	private Connection connection;
 	private ConnectionListener connectionListener;
 	private DatabaseGroup databaseGroup;
 
-	DatabaseReconnectWizardPage( IJpaProject jpaProject) {
+	public DatabaseReconnectWizardPage( IJpaProject jpaProject) {
 		super( "Database Settings"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
 		setTitle( JptUiMessages.DatabaseReconnectWizardPage_databaseConnection);
@@ -110,7 +110,7 @@ class DatabaseReconnectWizardPage extends WizardPage {
 		return layout;
 	}
 
-	Collection getTables() {
+	public Collection getTables() {
 		Schema schema = this.getProjectUserSchema();
 		if ( schema != null && schema.getName() != null) {
 			return CollectionTools.collection( schema.tables());
