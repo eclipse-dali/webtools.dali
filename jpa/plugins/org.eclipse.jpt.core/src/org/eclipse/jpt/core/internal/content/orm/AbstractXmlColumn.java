@@ -20,9 +20,6 @@ import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
 import org.eclipse.jpt.core.internal.mappings.IAbstractColumn;
 import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.jpt.db.internal.Column;
-import org.eclipse.jpt.db.internal.ConnectionProfile;
-import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
@@ -901,22 +898,9 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 		return result.toString();
 	}
 
-	public Table dbTable() {
-		return getOwner().dbTable(getTable());
-	}
-
-	public Column dbColumn() {
-		Table table = this.dbTable();
-		return (table == null) ? null : table.columnNamed(getName());
-	}
-
-	public boolean isConnected() {
-		ConnectionProfile connectionProfile = getJpaProject().connectionProfile();
-		return connectionProfile != null && connectionProfile.isConnected();
-	}
-
-	public boolean isResolved() {
-		return dbColumn() != null;
+	@Override
+	protected String tableName() {
+		return this.getTable();
 	}
 
 	public ITextRange getTableTextRange() {

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.mappings;
 import org.eclipse.jpt.core.internal.IJpaSourceObject;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.ITypeMapping;
+import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
@@ -117,15 +118,53 @@ public interface INamedColumn extends IJpaSourceObject
 	 */
 	void setColumnDefinition(String value);
 
+	/**
+	 * Return the wrapper for the datasource column
+	 */
+	Column dbColumn();
+
+	/**
+	 * Return the wrapper for the datasource table
+	 */
+	Table dbTable();
+
+	/**
+	 * Return whether the column is found on the datasource.
+	 */
+	boolean isResolved();
+
+	/**
+	 * Return the (best guess) text location of the column's name.
+	 */
+	ITextRange getNameTextRange();
+
+	/**
+	 * Return whether the column's datasource is connected
+	 */
+	boolean isConnected();
+
+	/**
+	 * Return the column's "owner" - the object that contains the column
+	 * and provides its context.
+	 */
 	Owner getOwner();
+
+
 	/**
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
-	interface Owner
-	{
+	interface Owner {
+
+		/**
+		 * Return the type mapping that contains the column.
+		 */
 		ITypeMapping getTypeMapping();
 
+		/**
+		 * Return the column owner's text range. This can be returned by the
+		 * column when its annotation is not present.
+		 */
 		ITextRange getTextRange();
 
 		/**

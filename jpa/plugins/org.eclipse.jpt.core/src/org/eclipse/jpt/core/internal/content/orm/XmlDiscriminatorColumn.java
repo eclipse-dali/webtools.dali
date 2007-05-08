@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.internal.mappings.DiscriminatorType;
 import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.jpt.db.internal.Table;
 
 /**
  * <!-- begin-user-doc -->
@@ -158,23 +157,6 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIDiscriminatorColumn_Name()
-	 * @model transient="true" changeable="false" volatile="true" derived="true"
-	 * @generated NOT
-	 */
-	public String getName() {
-		return (this.getSpecifiedName() == null) ? getDefaultName() : this.getSpecifiedName();
-	}
-
-	/**
 	 * Returns the value of the '<em><b>Discriminator Type</b></em>' attribute.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.mappings.DiscriminatorType}.
 	 * <!-- begin-user-doc -->
@@ -311,85 +293,14 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 		}
 	}
 
-	/**
-	 * Returns the value of the '<em><b>Length</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Length</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Length</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIDiscriminatorColumn_Length()
-	 * @model transient="true" changeable="false" volatile="true" derived="true"
-	 * @generated NOT
-	 */
 	public int getLength() {
-		return (this.getSpecifiedLength() == -1) ? this.getDefaultLength() : this.getSpecifiedLength();
+		return (this.specifiedLength != -1) ? this.specifiedLength : this.defaultLength;
 	}
 
-	/**
-	 * Returns the value of the '<em><b>Specified Name For Xml</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Specified Name For Xml</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Specified Name For Xml</em>' attribute.
-	 * @see #setSpecifiedNameForXml(String)
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlDiscriminatorColumn_SpecifiedNameForXml()
-	 * @model volatile="true"
-	 * @generated NOT
-	 */
-	public String getSpecifiedNameForXml() {
-		return getSpecifiedName();
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlDiscriminatorColumn#getSpecifiedNameForXml <em>Specified Name For Xml</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Specified Name For Xml</em>' attribute.
-	 * @see #getSpecifiedNameForXml()
-	 * @generated NOT
-	 */
-	public void setSpecifiedNameForXml(String newSpecifiedNameForXml) {
-		setSpecifiedNameGen(newSpecifiedNameForXml);
-		if (eNotificationRequired())
-			//pass in oldValue of null because we don't store the value from the xml, see super.eNotify()
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_DISCRIMINATOR_COLUMN__SPECIFIED_NAME_FOR_XML, newSpecifiedNameForXml + " ", newSpecifiedNameForXml));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Discriminator Type For Xml</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.mappings.DiscriminatorType}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Discriminator Type For Xml</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Discriminator Type For Xml</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.mappings.DiscriminatorType
-	 * @see #setDiscriminatorTypeForXml(DiscriminatorType)
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlDiscriminatorColumn_DiscriminatorTypeForXml()
-	 * @model volatile="true"
-	 * @generated NOT
-	 */
 	public DiscriminatorType getDiscriminatorTypeForXml() {
 		return getDiscriminatorType();
 	}
 
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlDiscriminatorColumn#getDiscriminatorTypeForXml <em>Discriminator Type For Xml</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Discriminator Type For Xml</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.mappings.DiscriminatorType
-	 * @see #getDiscriminatorTypeForXml()
-	 * @generated NOT
-	 */
 	public void setDiscriminatorTypeForXml(DiscriminatorType newDiscriminatorTypeForXml) {
 		setDiscriminatorTypeGen(newDiscriminatorTypeForXml);
 		if (eNotificationRequired())
@@ -397,65 +308,10 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE_FOR_XML, null, newDiscriminatorTypeForXml));
 	}
 
-	/**
-	 * Returns the value of the '<em><b>Column Definition For Xml</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Column Definition For Xml</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Column Definition For Xml</em>' attribute.
-	 * @see #setColumnDefinitionForXml(String)
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlDiscriminatorColumn_ColumnDefinitionForXml()
-	 * @model volatile="true"
-	 * @generated NOT
-	 */
-	public String getColumnDefinitionForXml() {
-		return getColumnDefinition();
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlDiscriminatorColumn#getColumnDefinitionForXml <em>Column Definition For Xml</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Column Definition For Xml</em>' attribute.
-	 * @see #getColumnDefinitionForXml()
-	 * @generated NOT
-	 */
-	public void setColumnDefinitionForXml(String newColumnDefinitionForXml) {
-		setColumnDefinitionGen(newColumnDefinitionForXml);
-		if (eNotificationRequired())
-			//pass in oldValue of null because we don't store the value from the xml, see super.eNotify()
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION_FOR_XML, newColumnDefinitionForXml + " ", newColumnDefinitionForXml));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Specified Length For Xml</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Specified Length For Xml</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Specified Length For Xml</em>' attribute.
-	 * @see #setSpecifiedLengthForXml(int)
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlDiscriminatorColumn_SpecifiedLengthForXml()
-	 * @model volatile="true"
-	 * @generated NOT
-	 */
 	public int getSpecifiedLengthForXml() {
 		return getSpecifiedLength();
 	}
 
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlDiscriminatorColumn#getSpecifiedLengthForXml <em>Specified Length For Xml</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Specified Length For Xml</em>' attribute.
-	 * @see #getSpecifiedLengthForXml()
-	 * @generated NOT
-	 */
 	public void setSpecifiedLengthForXml(int newSpecifiedLengthForXml) {
 		setSpecifiedLengthGen(newSpecifiedLengthForXml);
 		if (eNotificationRequired())
@@ -637,6 +493,11 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 		return (XmlEntityInternal) eContainer();
 	}
 
+	@Override
+	protected String tableName() {
+		return this.getOwner().getTypeMapping().getTableName();
+	}
+
 	/**
 	 * Call this when the table tag is removed from the xml,
 	 * need to make sure all the model attributes are set to the default
@@ -647,4 +508,4 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 		eUnset(OrmPackage.XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION);
 		eUnset(OrmPackage.XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE);
 	}
-} // XmlDiscriminatorColumn
+}

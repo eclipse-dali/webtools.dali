@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.core.internal.mappings.IColumnMapping;
 import org.eclipse.jpt.core.internal.mappings.IVersion;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.mappings.TemporalType;
+import org.eclipse.jpt.utility.internal.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -346,7 +348,7 @@ public class JavaVersion extends JavaAttributeMapping implements IVersion
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		this.updateTemporalFromJava(astRoot);
-		((JavaColumn) this.column).updateFromJava(astRoot);
+		this.getJavaColumn().updateFromJava(astRoot);
 	}
 
 	/*
@@ -370,8 +372,25 @@ public class JavaVersion extends JavaAttributeMapping implements IVersion
 		}
 	}
 
+	private JavaColumn getJavaColumn() {
+		return (JavaColumn) this.column;
+	}
+
+	@Override
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		result = this.getJavaColumn().candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
+
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter buildTemporalValueAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(TEMPORAL_ADAPTER, JPA.TEMPORAL__VALUE, false);
 	}
-} // JavaVersion
+}

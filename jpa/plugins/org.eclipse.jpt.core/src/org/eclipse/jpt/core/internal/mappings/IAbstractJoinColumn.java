@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: IAbstractJoinColumn.java,v 1.3 2007/05/06 23:05:38 kmoore Exp $
+ * $Id: IAbstractJoinColumn.java,v 1.4 2007/05/08 14:07:47 bvosburgh Exp $
  */
 package org.eclipse.jpt.core.internal.mappings;
 
@@ -87,15 +87,6 @@ public interface IAbstractJoinColumn extends INamedColumn
 	 */
 	String getDefaultReferencedColumnName();
 
-	public Owner getOwner();
-	public interface Owner extends INamedColumn.Owner
-	{
-		/**
-		 * Return the wrapper for the datasource table for the referenced column
-		 */
-		Table dbReferencedColumnTable();
-	}
-
 	void refreshDefaults(DefaultsContext defaultsContext);
 
 	/**
@@ -109,7 +100,21 @@ public interface IAbstractJoinColumn extends INamedColumn
 	boolean isReferencedColumnResolved();
 
 	/**
-	 * Return (best) text location of the referenced column name
+	 * Return the (best guess) text location of the referenced column name
 	 */
 	ITextRange getReferencedColumnNameTextRange();
+
+	/**
+	 * Re-declared to return INamedColumn.Owner.
+	 */
+	Owner getOwner();
+
+
+	interface Owner extends INamedColumn.Owner {
+		/**
+		 * Return the wrapper for the datasource table for the referenced column
+		 */
+		Table dbReferencedColumnTable();
+	}
+
 }

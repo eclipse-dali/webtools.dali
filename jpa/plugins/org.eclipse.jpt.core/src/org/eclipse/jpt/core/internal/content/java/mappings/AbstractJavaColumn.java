@@ -22,9 +22,6 @@ import org.eclipse.jpt.core.internal.mappings.DefaultFalseBoolean;
 import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
 import org.eclipse.jpt.core.internal.mappings.IAbstractColumn;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.jpt.db.internal.Column;
-import org.eclipse.jpt.db.internal.ConnectionProfile;
-import org.eclipse.jpt.db.internal.Table;
 
 /**
  * <!-- begin-user-doc -->
@@ -638,6 +635,11 @@ public abstract class AbstractJavaColumn extends JavaNamedColumn
 		return result.toString();
 	}
 
+	@Override
+	protected String tableName() {
+		return this.getTable();
+	}
+
 	public ITextRange getTableTextRange() {
 		return this.elementTextRange(this.tableDeclarationAdapter);
 	}
@@ -650,23 +652,5 @@ public abstract class AbstractJavaColumn extends JavaNamedColumn
 		this.setNullable(DefaultTrueBoolean.fromJavaAnnotationValue(this.nullableAdapter.getValue(astRoot)));
 		this.setInsertable(DefaultTrueBoolean.fromJavaAnnotationValue(this.insertableAdapter.getValue(astRoot)));
 		this.setUpdatable(DefaultTrueBoolean.fromJavaAnnotationValue(this.updatableAdapter.getValue(astRoot)));
-	}
-
-	public Column dbColumn() {
-		Table table = this.dbTable();
-		return (table == null) ? null : table.columnNamed(this.getName());
-	}
-
-	public Table dbTable() {
-		return this.getOwner().dbTable(getTable());
-	}
-
-	public boolean isConnected() {
-		ConnectionProfile connectionProfile = this.getJpaProject().connectionProfile();
-		return connectionProfile != null && connectionProfile.isConnected();
-	}
-
-	public boolean isResolved() {
-		return this.dbColumn() != null;
 	}
 }

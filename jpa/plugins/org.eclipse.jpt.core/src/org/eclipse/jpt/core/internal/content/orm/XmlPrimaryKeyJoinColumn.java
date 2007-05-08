@@ -397,6 +397,11 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 		return getOwner().dbReferencedColumnTable();
 	}
 
+	@Override
+	protected String tableName() {
+		return this.getOwner().getTypeMapping().getTableName();
+	}
+
 	public boolean isReferencedColumnResolved() {
 		return dbReferencedColumn() != null;
 	}

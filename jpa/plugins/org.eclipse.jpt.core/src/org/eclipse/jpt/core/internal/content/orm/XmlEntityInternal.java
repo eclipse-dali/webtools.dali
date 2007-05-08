@@ -30,7 +30,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn;
-import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn.DiscriminatorColumnOwner;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.INamedNativeQuery;
 import org.eclipse.jpt.core.internal.mappings.INamedQuery;
@@ -317,7 +316,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 		super();
 		this.table = OrmFactory.eINSTANCE.createXmlTable(buildTableOwner());
 		((InternalEObject) this.table).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__TABLE, null, null);
-		this.discriminatorColumn = OrmFactory.eINSTANCE.createXmlDiscriminatorColumn(new DiscriminatorColumnOwner(this));
+		this.discriminatorColumn = OrmFactory.eINSTANCE.createXmlDiscriminatorColumn(new IDiscriminatorColumn.Owner(this));
 		((InternalEObject) this.discriminatorColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__DISCRIMINATOR_COLUMN, null, null);
 		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
 	}

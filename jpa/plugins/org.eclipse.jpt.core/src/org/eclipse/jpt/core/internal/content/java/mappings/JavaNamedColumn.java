@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -25,6 +26,12 @@ import org.eclipse.jpt.core.internal.jdtutility.NumberStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.db.internal.Column;
+import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -442,20 +449,75 @@ public abstract class JavaNamedColumn extends JavaEObject
 
 	public ITextRange getTextRange() {
 		ITextRange textRange = this.member.annotationTextRange(this.daa);
-		return (textRange != null) ? textRange : this.getOwner().getTextRange();
+		return (textRange != null) ? textRange : this.owner.getTextRange();
 	}
 
 	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter elementAdapter) {
 		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter));
 	}
 
+	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter elementAdapter, CompilationUnit astRoot) {
+		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter, astRoot));
+	}
+
 	public ITextRange getNameTextRange() {
-		ITextRange textRange = this.elementTextRange(this.nameDeclarationAdapter);
-		return (textRange == null) ? getTextRange() : textRange;
+		return this.elementTextRange(this.nameDeclarationAdapter);
+	}
+
+	public ITextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
 		this.setSpecifiedName((String) this.nameAdapter.getValue(astRoot));
 		this.setColumnDefinition((String) this.columnDefinitionAdapter.getValue(astRoot));
 	}
+
+	public boolean isConnected() {
+		ConnectionProfile cp = this.getJpaProject().connectionProfile();
+		return cp != null && cp.isConnected();
+	}
+
+	public Column dbColumn() {
+		Table table = this.dbTable();
+		return (table == null) ? null : table.columnNamed(this.getName());
+	}
+
+	public Table dbTable() {
+		return this.owner.dbTable(this.tableName());
+	}
+
+	/**
+	 * Return the name of the column's table.
+	 */
+	protected abstract String tableName();
+
+	public boolean isResolved() {
+		return this.dbColumn() != null;
+	}
+
+	/**
+	 * name
+	 */
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		if (this.isConnected()) {
+			if (this.getNameTextRange(astRoot).includes(pos)) {
+				return this.quotedCandidateNames(filter);
+			}
+		}
+		return null;
+	}
+
+	private Iterator<String> candidateNames() {
+		return this.dbTable().columnNames();
+	}
+
+	private Iterator<String> candidateNames(Filter<String> filter) {
+		return new FilteringIterator<String>(this.candidateNames(), filter);
+	}
+
+	private Iterator<String> quotedCandidateNames(Filter<String> filter) {
+		return StringTools.quote(this.candidateNames(filter));
+	}
+
 }

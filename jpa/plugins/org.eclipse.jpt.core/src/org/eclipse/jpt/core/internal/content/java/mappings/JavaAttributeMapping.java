@@ -42,6 +42,7 @@ public abstract class JavaAttributeMapping extends JavaEObject
 {
 	private final Attribute attribute;
 
+	// TODO remove?
 	private final AnnotationAdapter annotationAdapter;
 
 	protected JavaAttributeMapping() {
@@ -76,22 +77,20 @@ public abstract class JavaAttributeMapping extends JavaEObject
 		return JpaJavaMappingsPackage.Literals.JAVA_ATTRIBUTE_MAPPING;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated NOT
-	 */
 	public void initialize() {
-		updateFromJava(getAttribute().astRoot());
+		this.updateFromJava(this.attribute.astRoot());
 	}
 
 	public JavaPersistentAttribute getPersistentAttribute() {
-		return (JavaPersistentAttribute) eContainer();
+		return (JavaPersistentAttribute) this.eContainer();
 	}
 
+	/**
+	 * the persistent attribute can tell whether there is a "specified" mapping
+	 * or a "default" one
+	 */
 	public boolean isDefault() {
-		return getPersistentAttribute().mappingIsDefault();
+		return this.getPersistentAttribute().mappingIsDefault();
 	}
 
 	public ITypeMapping typeMapping() {
@@ -103,8 +102,8 @@ public abstract class JavaAttributeMapping extends JavaEObject
 	}
 
 	public ITextRange getTextRange() {
-		ITextRange textRange = attribute.annotationTextRange(declarationAnnotationAdapter());
-		return (textRange == null) ? getPersistentAttribute().getTextRange() : textRange;
+		ITextRange textRange = attribute.annotationTextRange(this.declarationAnnotationAdapter());
+		return (textRange == null) ? this.getPersistentAttribute().getTextRange() : textRange;
 	}
 
 	protected IType jdtType() {
@@ -112,28 +111,15 @@ public abstract class JavaAttributeMapping extends JavaEObject
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-	// do nothing - override as appropriate
+		// do nothing - override as appropriate
 	}
 
-	// TODO figure out how to use [stupid] EMF to implement the Column.Owner interface directly
 	protected INamedColumn.Owner buildColumnOwner() {
-		return new INamedColumn.Owner() {
-			public ITypeMapping getTypeMapping() {
-				return JavaAttributeMapping.this.typeMapping();
-			}
-
-			public ITextRange getTextRange() {
-				return JavaAttributeMapping.this.getTextRange();
-			}
-
-			public Table dbTable(String tableName) {
-				return getTypeMapping().dbTable(tableName);
-			}
-		};
+		return new ColumnOwner();
 	}
 
 	public void refreshDefaults(DefaultsContext defaultsContext) {
-	// do nothing - override as appropriate
+		// do nothing - override as appropriate
 	}
 
 	public String primaryKeyColumnName() {
@@ -155,4 +141,23 @@ public abstract class JavaAttributeMapping extends JavaEObject
 	public boolean isIdMapping() {
 		return false;
 	}
+
+
+	/**
+	 * mapping implementation of column owner
+	 */
+	protected class ColumnOwner implements INamedColumn.Owner {
+		public ITypeMapping getTypeMapping() {
+			return JavaAttributeMapping.this.typeMapping();
+		}
+
+		public ITextRange getTextRange() {
+			return JavaAttributeMapping.this.getTextRange();
+		}
+
+		public Table dbTable(String tableName) {
+			return this.getTypeMapping().dbTable(tableName);
+		}
+	}
+
 }

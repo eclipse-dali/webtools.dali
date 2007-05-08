@@ -43,7 +43,6 @@ import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn;
-import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn.DiscriminatorColumnOwner;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.INamedNativeQuery;
 import org.eclipse.jpt.core.internal.mappings.INamedQuery;
@@ -343,7 +342,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		super(type);
 		this.table = JpaJavaMappingsFactory.eINSTANCE.createJavaTable(buildTableOwner(), getType());
 		((InternalEObject) this.table).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_ENTITY__TABLE, null, null);
-		this.discriminatorColumn = JpaJavaMappingsFactory.eINSTANCE.createJavaDiscriminatorColumn(new DiscriminatorColumnOwner(this), type, JavaDiscriminatorColumn.ANNOTATION_ADAPTER);
+		this.discriminatorColumn = JpaJavaMappingsFactory.eINSTANCE.createJavaDiscriminatorColumn(new IDiscriminatorColumn.Owner(this), type, JavaDiscriminatorColumn.DECLARATION_ANNOTATION_ADAPTER);
 		((InternalEObject) this.discriminatorColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_ENTITY__DISCRIMINATOR_COLUMN, null, null);
 		//		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(IPrimaryKeyJoinColumnModelAdapter.DEFAULT));
 		//		this.eAdapters().add(this.buildListener());

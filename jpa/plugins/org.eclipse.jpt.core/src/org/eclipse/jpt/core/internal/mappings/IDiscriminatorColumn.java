@@ -132,11 +132,11 @@ public interface IDiscriminatorColumn extends INamedColumn
 	 */
 	int getLength();
 	
-	class DiscriminatorColumnOwner implements INamedColumn.Owner {
+	class Owner implements INamedColumn.Owner {
 		
 		private IEntity entity;
 		
-		public DiscriminatorColumnOwner(IEntity entity) {
+		public Owner(IEntity entity) {
 			super();
 			this.entity = entity;
 		}
@@ -153,4 +153,4 @@ public interface IDiscriminatorColumn extends INamedColumn
 			return this.entity;
 		}
 	}
-} // IDiscriminatorColumn
+}

@@ -58,19 +58,7 @@ public class XmlAttributeOverride extends XmlOverride
 	}
 
 	protected INamedColumn.Owner buildColumnOwner() {
-		return new INamedColumn.Owner() {
-			public ITextRange getTextRange() {
-				return XmlAttributeOverride.this.getTextRange();
-			}
-
-			public ITypeMapping getTypeMapping() {
-				return XmlAttributeOverride.this.getOwner().getTypeMapping();
-			}
-
-			public Table dbTable(String tablename) {
-				return getTypeMapping().dbTable(column.getTable());
-			}
-		};
+		return new ColumnOwner();
 	}
 
 	/**
@@ -320,4 +308,19 @@ public class XmlAttributeOverride extends XmlOverride
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
+
+	public class ColumnOwner implements INamedColumn.Owner {
+		public ITextRange getTextRange() {
+			return XmlAttributeOverride.this.getTextRange();
+		}
+
+		public ITypeMapping getTypeMapping() {
+			return XmlAttributeOverride.this.getOwner().getTypeMapping();
+		}
+
+		public Table dbTable(String tablename) {
+			return this.getTypeMapping().dbTable(column.getTable());
+		}
+	}
+
 }

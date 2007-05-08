@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -45,6 +46,7 @@ import org.eclipse.jpt.core.internal.mappings.IColumnMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.mappings.TemporalType;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -695,10 +697,14 @@ public class JavaBasic extends JavaAttributeMapping implements IBasic
 		super.updateFromJava(astRoot);
 		this.setOptional(DefaultTrueBoolean.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot)));
 		this.setFetch(DefaultEagerFetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot)));
-		((JavaColumn) this.column).updateFromJava(astRoot);
+		this.getJavaColumn().updateFromJava(astRoot);
 		this.setLob(this.lobAdapter.getValue(astRoot));
 		this.updateTemporalFromJava(astRoot);
 		this.updateEnumeratedFromJava(astRoot);
+	}
+
+	private JavaColumn getJavaColumn() {
+		return (JavaColumn) this.column;
 	}
 
 	/*
@@ -905,6 +911,19 @@ public class JavaBasic extends JavaAttributeMapping implements IBasic
 	@Override
 	public boolean isOverridableAttributeMapping() {
 		return true;
+	}
+
+	@Override
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		result = this.getJavaColumn().candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		return null;
 	}
 
 	// ********** static methods **********

@@ -78,19 +78,7 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	}
 
 	protected INamedColumn.Owner buildOwner() {
-		return new INamedColumn.Owner() {
-			public ITextRange getTextRange() {
-				return XmlAttributeMapping.this.getTextRange();
-			}
-
-			public ITypeMapping getTypeMapping() {
-				return XmlAttributeMapping.this.typeMapping();
-			}
-
-			public Table dbTable(String tableName) {
-				return getTypeMapping().dbTable(tableName);
-			}
-		};
+		return new ColumnOwner();
 	}
 
 	/**
@@ -325,7 +313,9 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	//do nothing as this will be handle by the Xml Translators
 	}
 
-	public void refreshDefaults(DefaultsContext defaultsContext) {}
+	public void refreshDefaults(DefaultsContext defaultsContext) {
+		// do nothing
+	}
 
 	public String primaryKeyColumnName() {
 		return null;
@@ -345,22 +335,18 @@ public abstract class XmlAttributeMapping extends XmlEObject
 
 	@Override
 	public ITextRange getTextRange() {
-		if (isVirtual()) {
-			return getPersistentType().getAttributesTextRange();
-		}
-		else {
-			return super.getTextRange();
-		}
+		return (this.isVirtual()) ?
+			this.getPersistentType().getAttributesTextRange()
+		:
+			super.getTextRange();
 	}
 
 	public ITextRange getNameTextRange() {
 		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.NAME);
-		if (nameNode != null) {
-			return buildTextRange(nameNode);
-		}
-		else {
-			return getTextRange();
-		}
+		return (nameNode != null) ?
+			this.buildTextRange(nameNode)
+		:
+			this.getTextRange();
 	}
 
 	public boolean isOverridableAttributeMapping() {
@@ -374,4 +360,19 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	public boolean isIdMapping() {
 		return false;
 	}
+
+	public class ColumnOwner implements INamedColumn.Owner {
+		public ITextRange getTextRange() {
+			return XmlAttributeMapping.this.getTextRange();
+		}
+
+		public ITypeMapping getTypeMapping() {
+			return XmlAttributeMapping.this.typeMapping();
+		}
+
+		public Table dbTable(String tableName) {
+			return this.getTypeMapping().dbTable(tableName);
+		}
+	}
+
 }

@@ -20,6 +20,9 @@ import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
+import org.eclipse.jpt.db.internal.Column;
+import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
@@ -154,7 +157,7 @@ public abstract class AbstractXmlNamedColumn extends XmlEObject
 	}
 
 	public String getName() {
-		return (this.getSpecifiedName() == null) ? getDefaultName() : this.getSpecifiedName();
+		return (this.specifiedName != null) ? this.specifiedName : this.defaultName;
 	}
 
 	/**
@@ -435,6 +438,26 @@ public abstract class AbstractXmlNamedColumn extends XmlEObject
 
 	public INamedColumn.Owner getOwner() {
 		return owner;
+	}
+
+	public boolean isConnected() {
+		ConnectionProfile cp = this.getJpaProject().connectionProfile();
+		return cp != null && cp.isConnected();
+	}
+
+	public Column dbColumn() {
+		Table table = this.dbTable();
+		return (table == null) ? null : table.columnNamed(getName());
+	}
+
+	public Table dbTable() {
+		return getOwner().dbTable(this.tableName());
+	}
+
+	protected abstract String tableName();
+
+	public boolean isResolved() {
+		return dbColumn() != null;
 	}
 
 	public ITextRange getNameTextRange() {

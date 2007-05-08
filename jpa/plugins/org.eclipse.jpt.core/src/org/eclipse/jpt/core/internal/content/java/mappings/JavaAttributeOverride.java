@@ -72,19 +72,7 @@ public class JavaAttributeOverride extends JavaOverride
 
 	// TODO figure out how to use [stupid] EMF to implement the Column.Owner interface directly
 	protected INamedColumn.Owner buildColumnOwner() {
-		return new INamedColumn.Owner() {
-			public ITypeMapping getTypeMapping() {
-				return JavaAttributeOverride.this.getOwner().getTypeMapping();
-			}
-
-			public ITextRange getTextRange() {
-				return JavaAttributeOverride.this.getTextRange();
-			}
-
-			public Table dbTable(String tableName) {
-				return getTypeMapping().dbTable(tableName);
-			}
-		};
+		return new ColumnOwner();
 	}
 
 	/**
@@ -222,6 +210,7 @@ public class JavaAttributeOverride extends JavaOverride
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		((JavaColumn) getColumn()).updateFromJava(astRoot);
@@ -235,4 +224,20 @@ public class JavaAttributeOverride extends JavaOverride
 	private static IndexedDeclarationAnnotationAdapter buildAnnotationAdapter(int index) {
 		return new CombinationIndexedDeclarationAnnotationAdapter(SINGLE_DECLARATION_ANNOTATION_ADAPTER, MULTIPLE_DECLARATION_ANNOTATION_ADAPTER, index, JPA.ATTRIBUTE_OVERRIDE);
 	}
-} // JavaAttributeOverride
+
+	// ********** member class **********
+	public class ColumnOwner implements INamedColumn.Owner {
+		public ITypeMapping getTypeMapping() {
+			return JavaAttributeOverride.this.getOwner().getTypeMapping();
+		}
+
+		public ITextRange getTextRange() {
+			return JavaAttributeOverride.this.getTextRange();
+		}
+
+		public Table dbTable(String tableName) {
+			return this.getTypeMapping().dbTable(tableName);
+		}
+	}
+
+}

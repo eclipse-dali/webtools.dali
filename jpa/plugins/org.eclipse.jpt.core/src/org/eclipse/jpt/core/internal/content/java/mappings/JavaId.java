@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -34,6 +35,7 @@ import org.eclipse.jpt.core.internal.mappings.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.mappings.TemporalType;
+import org.eclipse.jpt.utility.internal.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -138,6 +140,7 @@ public class JavaId extends JavaAttributeMapping implements IId
 		this.sequenceGeneratorAnnotationAdapter = this.buildAnnotationAdapter(JavaSequenceGenerator.DECLARATION_ANNOTATION_ADAPTER);
 	}
 
+	@Override
 	protected DeclarationAnnotationAdapter declarationAnnotationAdapter() {
 		return DECLARATION_ANNOTATION_ADAPTER;
 	}
@@ -644,7 +647,7 @@ public class JavaId extends JavaAttributeMapping implements IId
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		this.updateTemporalFromJava(astRoot);
-		((JavaColumn) this.column).updateFromJava(astRoot);
+		this.getJavaColumn().updateFromJava(astRoot);
 		this.updateGeneratedValueFromJava(astRoot);
 		this.updateTableGeneratorFromJava(astRoot);
 		this.updateSequenceGeneratorFromJava(astRoot);
@@ -713,6 +716,24 @@ public class JavaId extends JavaAttributeMapping implements IId
 		}
 	}
 
+	private JavaColumn getJavaColumn() {
+		return (JavaColumn) this.column;
+	}
+
+	@Override
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		result = this.getJavaColumn().candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
+
+	@Override
 	public String primaryKeyColumnName() {
 		return this.getColumn().getName();
 	}

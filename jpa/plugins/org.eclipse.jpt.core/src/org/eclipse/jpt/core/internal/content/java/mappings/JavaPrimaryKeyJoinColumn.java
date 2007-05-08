@@ -368,6 +368,11 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn
 		return (IAbstractJoinColumn.Owner) super.getOwner();
 	}
 
+	@Override
+	protected String tableName() {
+		return this.getOwner().getTypeMapping().getTableName();
+	}
+
 	public Column dbReferencedColumn() {
 		Table table = this.dbReferencedColumnTable();
 		return (table == null) ? null : table.columnNamed(this.getReferencedColumnName());
@@ -397,7 +402,6 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn
 		return this.annotationAdapter.getAnnotation(astRoot);
 	}
 
-	// ********** persistence model -> java annotations **********
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);

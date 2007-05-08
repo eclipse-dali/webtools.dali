@@ -2,13 +2,11 @@
  * <copyright>
  * </copyright>
  *
- * $Id: IAbstractColumn.java,v 1.1 2007/04/25 20:09:33 pfullbright Exp $
+ * $Id: IAbstractColumn.java,v 1.2 2007/05/08 14:07:47 bvosburgh Exp $
  */
 package org.eclipse.jpt.core.internal.mappings;
 
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.db.internal.Column;
-import org.eclipse.jpt.db.internal.Table;
 
 /**
  * <!-- begin-user-doc -->
@@ -207,32 +205,8 @@ public interface IAbstractColumn extends INamedColumn
 	String getDefaultTable();
 
 	/**
-	 * Return the wrapper for the datasource column
-	 */
-	Column dbColumn();
-
-	/**
-	 * Return the wrapper for the datasource table
-	 */
-	Table dbTable();
-
-	/**
-	 * Return whether the datasource is connected
-	 */
-	boolean isConnected();
-
-	/**
-	 * Return whether the column is found on the datasource
-	 */
-	boolean isResolved();
-
-	/**
-	 * Return (best) text location of this column's name
-	 */
-	ITextRange getNameTextRange();
-
-	/**
-	 * Return (best) text location of this column's table
+	 * Return the (best guess) text location of the column's table.
 	 */
 	ITextRange getTableTextRange();
+
 }
