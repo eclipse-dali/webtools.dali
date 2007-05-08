@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.structure;
 
+import org.eclipse.draw2d.ImageUtilities;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
@@ -31,6 +32,9 @@ import org.eclipse.jpt.core.internal.mappings.IOneToOne;
 import org.eclipse.jpt.core.internal.mappings.ITransient;
 import org.eclipse.jpt.core.internal.mappings.IVersion;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsImages;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 
 public class XmlPersistentAttributeItemProvider extends ItemProviderAdapter
 	implements IEditingDomainItemProvider, 
@@ -46,40 +50,49 @@ public class XmlPersistentAttributeItemProvider extends ItemProviderAdapter
 	public Object getImage(Object object) {
 		XmlAttributeMapping mapping = ((XmlPersistentAttribute) object).getMapping();
 		
+		Image image;
 		if (mapping instanceof IBasic) {
-			return JptUiMappingsImages.getImage(JptUiMappingsImages.BASIC);
+			image = JptUiMappingsImages.getImage(JptUiMappingsImages.BASIC);
 		}
 		else if (mapping instanceof IId) {
-			return JptUiMappingsImages.getImage(JptUiMappingsImages.ID);
+			image = JptUiMappingsImages.getImage(JptUiMappingsImages.ID);
 		}
 		else if (mapping instanceof IVersion) {
-			return JptUiMappingsImages.getImage(JptUiMappingsImages.VERSION);
+			image = JptUiMappingsImages.getImage(JptUiMappingsImages.VERSION);
 		}
 		else if (mapping instanceof IEmbedded) {
-			return JptUiMappingsImages.getImage(JptUiMappingsImages.EMBEDDED);
+			image = JptUiMappingsImages.getImage(JptUiMappingsImages.EMBEDDED);
 		}
 		else if (mapping instanceof IEmbeddedId) {
-			return JptUiMappingsImages.getImage(JptUiMappingsImages.EMBEDDED_ID);
+			image = JptUiMappingsImages.getImage(JptUiMappingsImages.EMBEDDED_ID);
 		}
 		else if (mapping instanceof IOneToOne) {
-			return JptUiMappingsImages.getImage(JptUiMappingsImages.ONE_TO_ONE);
+			image = JptUiMappingsImages.getImage(JptUiMappingsImages.ONE_TO_ONE);
 		}
 		else if (mapping instanceof IOneToMany) {
-			return JptUiMappingsImages.getImage(JptUiMappingsImages.ONE_TO_MANY);
+			image = JptUiMappingsImages.getImage(JptUiMappingsImages.ONE_TO_MANY);
 		}
 		else if (mapping instanceof IManyToOne) {
-			return JptUiMappingsImages.getImage(JptUiMappingsImages.MANY_TO_ONE);
+			image = JptUiMappingsImages.getImage(JptUiMappingsImages.MANY_TO_ONE);
 		}
 		else if (mapping instanceof IManyToMany) {
-			return JptUiMappingsImages.getImage(JptUiMappingsImages.MANY_TO_MANY);
+			image = JptUiMappingsImages.getImage(JptUiMappingsImages.MANY_TO_MANY);
 		}
 		else if (mapping instanceof ITransient) {
-			return JptUiMappingsImages.getImage(JptUiMappingsImages.TRANSIENT);
+			image = JptUiMappingsImages.getImage(JptUiMappingsImages.TRANSIENT);
 		}
 		else {
-			return JptUiMappingsImages.getImage(JptUiMappingsImages.NULL_ATTRIBUTE_MAPPING);
+			image = JptUiMappingsImages.getImage(JptUiMappingsImages.NULL_ATTRIBUTE_MAPPING);
 		}
-	
+		
+		// apply "ghosting"
+		if (mapping.isVirtual()) {
+			Color offwhite = new Color(image.getDevice(), 250, 250, 250);
+			ImageData imageData = ImageUtilities.createShadedImage(image, offwhite);
+			image = new Image(image.getDevice(), imageData);
+		}
+		
+		return image;
 	}
 	
 	@Override

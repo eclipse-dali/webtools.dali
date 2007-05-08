@@ -9,6 +9,7 @@
 package org.eclipse.jpt.ui.internal.mappings;
 
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
+import org.eclipse.swt.graphics.Image;
 
 public class JptUiMappingsImages 
 {
@@ -47,7 +48,7 @@ public class JptUiMappingsImages
 	public final static String VERSION = "full/obj16/version";
 	
 	
-	public static Object getImage(String imageLocator) {
+	public static Image getImage(String imageLocator) {
 		return JptUiPlugin.getPlugin().getImageDescriptor(imageLocator).createImage();
 	}
 	
