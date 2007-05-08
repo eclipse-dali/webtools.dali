@@ -73,7 +73,7 @@ public class JpaCompletionProposalComputer implements IJavaCompletionProposalCom
 		// the context's "token" is really a sort of "prefix" - it does NOT
 		// correspond to the "start" and "end" we get below... 
 		char[] prefix = cc.getToken();
-		Filter<String> filter = new IgnoreCasePrefixFilter(prefix);
+		Filter<String> filter = ((prefix == null) ? Filter.Null.<String>instance() : new IgnoreCasePrefixFilter(prefix));
 		// the token "start" is the offset of the token's first character
 		int tokenStart = cc.getTokenStart();
 		// the token "end" is the offset of the token's last character (yuk)
@@ -109,7 +109,7 @@ public class JpaCompletionProposalComputer implements IJavaCompletionProposalCom
 		// do nothing
 	}
 
-	private class IgnoreCasePrefixFilter implements Filter<String> {
+	private static class IgnoreCasePrefixFilter implements Filter<String> {
 		private final char[] prefix;
 		IgnoreCasePrefixFilter(char[] prefix) {
 			super();
