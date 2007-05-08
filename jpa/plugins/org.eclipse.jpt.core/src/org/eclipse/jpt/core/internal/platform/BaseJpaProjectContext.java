@@ -141,6 +141,10 @@ public class BaseJpaProjectContext extends BaseContext
 		return this.project.getPlatform();
 	}
 	
+	protected Iterator<IJpaFile> validPersistenceXmlFiles(){
+		return validPersistenceXmlFiles.iterator();
+	}
+	
 	public void refreshDefaults() {
 		refreshDefaults(null);
 	}

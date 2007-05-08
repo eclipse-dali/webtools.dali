@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.actions;
 
 import java.util.Collection;
+
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -21,7 +22,9 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.synch.SynchronizeClassesJob;
 import org.eclipse.jpt.gen.internal.EntityGenerator;
 import org.eclipse.jpt.gen.internal.PackageGenerator;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -63,6 +66,7 @@ public class GenerateEntitiesAction extends ProjectAction {
 					wizard.getPackageGeneratorConfig(),
 					wizard.getEntityGeneratorConfig(),
 					wizard.getSelectedTables(),
+					project,
 					new OverwriteConfirmer(this.targetPart.getSite().getShell())
 			);
 			try {
@@ -85,11 +89,13 @@ public class GenerateEntitiesAction extends ProjectAction {
 		private final EntityGenerator.Config entityConfig;
 		private final Collection selectedTables;
 		private final EntityGenerator.OverwriteConfirmer overwriteConfirmer;
-
+		private final IJpaProject project;
+		
 		GenerateEntitiesRunnable(
 				PackageGenerator.Config packageConfig,
 				EntityGenerator.Config entityConfig,
 				Collection selectedTables,
+				IJpaProject project,
 				EntityGenerator.OverwriteConfirmer overwriteConfirmer
 		) {
 			super();
@@ -97,12 +103,19 @@ public class GenerateEntitiesAction extends ProjectAction {
 			this.entityConfig = entityConfig;
 			this.selectedTables = selectedTables;
 			this.overwriteConfirmer = overwriteConfirmer;
+			this.project = project;
 		}
 
 		public void run(IProgressMonitor monitor) throws CoreException {
 			monitor.beginTask("", 1000);
 			try {
 				PackageGenerator.generateEntities(this.packageConfig, this.entityConfig, this.selectedTables, this.overwriteConfirmer, monitor);
+				// we currently only support *one* persistence.xml file per project
+				IJpaFile resource = project.getPlatform().validPersistenceXmlFiles().next();
+				if(resource != null){
+					SynchronizeClassesJob job = new SynchronizeClassesJob(resource.getFile());
+					job.schedule();
+				}
 			} catch (OperationCanceledException ex) {
 				// fall through and tell monitor we are done
 			}

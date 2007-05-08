@@ -11,7 +11,11 @@ package org.eclipse.jpt.core.internal.platform;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
@@ -98,6 +102,10 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	public IContext buildProjectContext() {
 		this.context = new BaseJpaProjectContext(getProject());
 		return this.context;
+	}
+	
+	public Iterator<IJpaFile> validPersistenceXmlFiles(){
+		return ((BaseJpaProjectContext)this.context).validPersistenceXmlFiles();
 	}
 	
 	public IContext buildJavaTypeContext(IContext parentContext, IJavaTypeMapping typeMapping) {

@@ -10,7 +10,9 @@
 package org.eclipse.jpt.core.internal;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.platform.IContext;
@@ -53,6 +55,11 @@ public interface IJpaPlatform
 	 */
 	void setProject(IJpaProject jpaProject);
 
+	/**
+	 * Get the valid persistence XML files from the project
+	 */
+	Iterator<IJpaFile> validPersistenceXmlFiles();
+	
 	/**
 	 * Return a collection of IJpaFileContentProviders.  These will be used to 
 	 * determine which files will be read from an IProject based on contentType.
