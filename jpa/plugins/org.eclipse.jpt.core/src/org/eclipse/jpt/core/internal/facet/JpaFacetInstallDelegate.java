@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.classpathdep.ClasspathDependencyUtil;
 import org.eclipse.jst.j2ee.classpathdep.IClasspathDependencyConstants;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
@@ -48,15 +49,22 @@ public class JpaFacetInstallDelegate
 			IClasspathEntry[] classpath = javaProject.getRawClasspath();
 			int newLength = classpath.length + 1;
 			boolean isWebApp = FacetedProjectFramework.hasProjectFacet(project, IModuleConstants.JST_WEB_MODULE);
-			IClasspathAttribute depAttrib = 
-				JavaCore.newClasspathAttribute(
-					IClasspathDependencyConstants.CLASSPATH_COMPONENT_DEPENDENCY,
-					ClasspathDependencyUtil.getDefaultRuntimePath(isWebApp).toString()
-				);
+			IClasspathAttribute[] attributes;
+			if (! isWebApp && J2EEProjectUtilities.isStandaloneProject(project)) {
+				attributes = new IClasspathAttribute[0];
+			}
+			else {
+				attributes = new IClasspathAttribute[] {
+					JavaCore.newClasspathAttribute(
+						IClasspathDependencyConstants.CLASSPATH_COMPONENT_DEPENDENCY,
+						ClasspathDependencyUtil.getDefaultRuntimePath(isWebApp).toString()
+					)
+				};
+			}
 			IClasspathEntry jpaLibraryEntry = 
 				JavaCore.newContainerEntry(
 					new Path(JavaCore.USER_LIBRARY_CONTAINER_ID + "/" + jpaLibrary),
-					null, new IClasspathAttribute[] {depAttrib}, true);
+					null, attributes, true);
 			IClasspathEntry[] newClasspath = new IClasspathEntry[newLength];
 			System.arraycopy(classpath, 0, newClasspath, 0, newLength - 1);
 			newClasspath[newLength - 1] = jpaLibraryEntry;
