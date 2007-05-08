@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Collection;
+import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -399,6 +400,72 @@ public class JavaTableGenerator extends JavaGenerator
 		this.pkColumnValueAdapter = this.buildAdapter(PK_COLUMN_VALUE_ADAPTER);
 	}
 
+	@Override
+	protected void notifyChanged(Notification notification) {
+		super.notifyChanged(notification);
+		switch (notification.getFeatureID(ITableGenerator.class)) {
+			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_TABLE :
+				this.tableAdapter.setValue(notification.getNewValue());
+				break;
+			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_CATALOG :
+				this.catalogAdapter.setValue(notification.getNewValue());
+				break;
+			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_SCHEMA :
+				this.schemaAdapter.setValue(notification.getNewValue());
+				break;
+			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_VALUE_COLUMN_NAME :
+				this.valueColumnNameAdapter.setValue(notification.getNewValue());
+				break;
+			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_PK_COLUMN_NAME :
+				this.pkColumnNameAdapter.setValue(notification.getNewValue());
+				break;
+			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE :
+				this.pkColumnValueAdapter.setValue(notification.getNewValue());
+				break;
+			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
+				uniqueConstraintsChanged(notification);
+				break;
+			default :
+				break;
+		}
+	}
+	
+	void uniqueConstraintsChanged(Notification notification) {
+		switch (notification.getEventType()) {
+			case Notification.ADD :
+				uniqueConstraintAdded(notification.getPosition(), (IUniqueConstraint) notification.getNewValue());
+				break;
+			case Notification.ADD_MANY :
+				uniqueConstraintsAdded(notification.getPosition(), (List<IUniqueConstraint>) notification.getNewValue());
+				break;
+			case Notification.REMOVE :
+				uniqueConstraintRemoved(notification.getPosition(), (IUniqueConstraint) notification.getOldValue());
+				break;
+			case Notification.REMOVE_MANY :
+				if (notification.getPosition() == Notification.NO_INDEX) {
+					uniqueConstraintsCleared((List<IUniqueConstraint>) notification.getOldValue());
+				}
+				else {
+					// Notification.getNewValue() returns an array of the positions of objects that were removed
+					uniqueConstraintsRemoved((int[]) notification.getNewValue(), (List<IUniqueConstraint>) notification.getOldValue());
+				}
+				break;
+			case Notification.SET :
+				if (!notification.isTouch()) {
+					uniqueConstraintSet(notification.getPosition(), (IUniqueConstraint) notification.getOldValue(), (IUniqueConstraint) notification.getNewValue());
+				}
+				break;
+			case Notification.MOVE :
+				// Notification.getOldValue() returns the source index
+				// Notification.getPositon() returns the target index
+				// Notification.getNewValue() returns the moved object
+				uniqueConstraintMoved(notification.getOldIntValue(), notification.getPosition(), (IUniqueConstraint) notification.getNewValue());
+				break;
+			default :
+				break;
+		}
+	}
+
 	// ********** initialization **********
 	protected DeclarationAnnotationAdapter annotationAdapter() {
 		return DECLARATION_ANNOTATION_ADAPTER;
@@ -456,20 +523,11 @@ public class JavaTableGenerator extends JavaGenerator
 	 * @see #getSpecifiedTable()
 	 * @generated
 	 */
-	public void setSpecifiedTableGen(String newSpecifiedTable) {
+	public void setSpecifiedTable(String newSpecifiedTable) {
 		String oldSpecifiedTable = specifiedTable;
 		specifiedTable = newSpecifiedTable;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_TABLE, oldSpecifiedTable, specifiedTable));
-	}
-
-	public void setSpecifiedTable(String newSpecifiedTable) {
-		setSpecifiedTableGen(newSpecifiedTable);
-		setSpecifiedTableInJava(newSpecifiedTable);
-	}
-
-	public void setSpecifiedTableInJava(String newSpecifiedTable) {
-		this.tableAdapter.setValue(newSpecifiedTable);
 	}
 
 	/**
@@ -519,20 +577,11 @@ public class JavaTableGenerator extends JavaGenerator
 	 * @see #getSpecifiedCatalog()
 	 * @generated
 	 */
-	public void setSpecifiedCatalogGen(String newSpecifiedCatalog) {
+	public void setSpecifiedCatalog(String newSpecifiedCatalog) {
 		String oldSpecifiedCatalog = specifiedCatalog;
 		specifiedCatalog = newSpecifiedCatalog;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_CATALOG, oldSpecifiedCatalog, specifiedCatalog));
-	}
-
-	public void setSpecifiedCatalog(String newSpecifiedCatalog) {
-		setSpecifiedCatalogGen(newSpecifiedCatalog);
-		setSpecifiedCatalogInJava(newSpecifiedCatalog);
-	}
-
-	private void setSpecifiedCatalogInJava(String newSpecifiedCatalog) {
-		this.catalogAdapter.setValue(newSpecifiedCatalog);
 	}
 
 	/**
@@ -582,21 +631,13 @@ public class JavaTableGenerator extends JavaGenerator
 	 * @see #getSpecifiedSchema()
 	 * @generated
 	 */
-	public void setSpecifiedSchemaGen(String newSpecifiedSchema) {
+	public void setSpecifiedSchema(String newSpecifiedSchema) {
 		String oldSpecifiedSchema = specifiedSchema;
 		specifiedSchema = newSpecifiedSchema;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_SCHEMA, oldSpecifiedSchema, specifiedSchema));
 	}
 
-	public void setSpecifiedSchema(String newSpecifiedSchema) {
-		setSpecifiedSchemaGen(newSpecifiedSchema);
-		setSpecifiedSchemaInJava(newSpecifiedSchema);
-	}
-
-	private void setSpecifiedSchemaInJava(String newSpecifiedSchema) {
-		this.schemaAdapter.setValue(newSpecifiedSchema);
-	}
 
 	/**
 	 * Returns the value of the '<em><b>Default Schema</b></em>' attribute.
@@ -652,20 +693,11 @@ public class JavaTableGenerator extends JavaGenerator
 	 * @see #getSpecifiedPkColumnName()
 	 * @generated
 	 */
-	public void setSpecifiedPkColumnNameGen(String newSpecifiedPkColumnName) {
+	public void setSpecifiedPkColumnName(String newSpecifiedPkColumnName) {
 		String oldSpecifiedPkColumnName = specifiedPkColumnName;
 		specifiedPkColumnName = newSpecifiedPkColumnName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_PK_COLUMN_NAME, oldSpecifiedPkColumnName, specifiedPkColumnName));
-	}
-
-	public void setSpecifiedPkColumnName(String newSpecifiedPkColumnName) {
-		setSpecifiedPkColumnNameGen(newSpecifiedPkColumnName);
-		setSpecifiedPkColumnNameInJava(newSpecifiedPkColumnName);
-	}
-
-	private void setSpecifiedPkColumnNameInJava(String newSpecifiedPkColumnName) {
-		this.pkColumnNameAdapter.setValue(newSpecifiedPkColumnName);
 	}
 
 	/**
@@ -715,20 +747,11 @@ public class JavaTableGenerator extends JavaGenerator
 	 * @see #getSpecifiedValueColumnName()
 	 * @generated
 	 */
-	public void setSpecifiedValueColumnNameGen(String newSpecifiedValueColumnName) {
+	public void setSpecifiedValueColumnName(String newSpecifiedValueColumnName) {
 		String oldSpecifiedValueColumnName = specifiedValueColumnName;
 		specifiedValueColumnName = newSpecifiedValueColumnName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_VALUE_COLUMN_NAME, oldSpecifiedValueColumnName, specifiedValueColumnName));
-	}
-
-	public void setSpecifiedValueColumnName(String newSpecifiedValueColumnName) {
-		setSpecifiedValueColumnNameGen(newSpecifiedValueColumnName);
-		setSpecifiedValueColumnNameInJava(newSpecifiedValueColumnName);
-	}
-
-	public void setSpecifiedValueColumnNameInJava(String newSpecifiedValueColumnName) {
-		this.valueColumnNameAdapter.setValue(newSpecifiedValueColumnName);
 	}
 
 	/**
@@ -778,20 +801,11 @@ public class JavaTableGenerator extends JavaGenerator
 	 * @see #getSpecifiedPkColumnValue()
 	 * @generated
 	 */
-	public void setSpecifiedPkColumnValueGen(String newSpecifiedPkColumnValue) {
+	public void setSpecifiedPkColumnValue(String newSpecifiedPkColumnValue) {
 		String oldSpecifiedPkColumnValue = specifiedPkColumnValue;
 		specifiedPkColumnValue = newSpecifiedPkColumnValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE, oldSpecifiedPkColumnValue, specifiedPkColumnValue));
-	}
-
-	public void setSpecifiedPkColumnValue(String newSpecifiedPkColumnValue) {
-		setSpecifiedPkColumnValueGen(newSpecifiedPkColumnValue);
-		setSpecifiedPkColumnValueInJava(newSpecifiedPkColumnValue);
-	}
-
-	public void setSpecifiedPkColumnValueInJava(String newSpecifiedPkColumnValue) {
-		this.pkColumnValueAdapter.setValue(newSpecifiedPkColumnValue);
 	}
 
 	/**
@@ -1161,6 +1175,7 @@ public class JavaTableGenerator extends JavaGenerator
 	}
 
 	// ********** java annotations -> persistence model **********
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		setSpecifiedTable((String) this.tableAdapter.getValue(astRoot));
@@ -1175,6 +1190,90 @@ public class JavaTableGenerator extends JavaGenerator
 		setDefaultSchema((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TABLE_GENERATOR_SCHEMA_KEY));
 	}
 
+	// ********** jpa model -> java annotations **********
+	////////////////////////////////////////////////////////
+	/**
+	 * slide over all the annotations that follow the new join column
+	 */
+	public void uniqueConstraintAdded(int index, IUniqueConstraint uniqueConstraint) {
+		// JoinColumn was added to jpa model when updating from java, do not need
+		// to edit the java in this case. TODO is there a better way to handle this??
+		if (((JavaUniqueConstraint) uniqueConstraint).annotation(getMember().astRoot()) == null) {
+			this.synchUniqueConstraintAnnotationsAfterAdd(index + 1);
+			((JavaUniqueConstraint) uniqueConstraint).newAnnotation();
+		}
+	}
+
+	// bjv look at this
+	public void uniqueConstraintsAdded(int index, List<IUniqueConstraint> uniqueConstraints) {
+		// JoinColumn was added to jpa model when updating from java, do not need
+		// to edit the java in this case. TODO is there a better way to handle this??
+		if (!uniqueConstraints.isEmpty() && ((JavaUniqueConstraint) uniqueConstraints.get(0)).annotation(getMember().astRoot()) == null) {
+			this.synchUniqueConstraintAnnotationsAfterAdd(index + uniqueConstraints.size());
+			for (IUniqueConstraint uniqueConstraint : uniqueConstraints) {
+				((JavaUniqueConstraint) uniqueConstraint).newAnnotation();
+			}
+		}
+	}
+
+	public void uniqueConstraintRemoved(int index, IUniqueConstraint uniqueConstraint) {
+		((JavaUniqueConstraint) uniqueConstraint).removeAnnotation();
+		this.synchUniqueConstraintAnnotationsAfterRemove(index);
+	}
+
+	public void uniqueConstraintsRemoved(int[] indexes, List<IUniqueConstraint> uniqueConstraints) {
+		for (IUniqueConstraint uniqueConstraint : uniqueConstraints) {
+			((JavaUniqueConstraint) uniqueConstraint).removeAnnotation();
+		}
+		this.synchUniqueConstraintAnnotationsAfterRemove(indexes[0]);
+	}
+
+	public void uniqueConstraintsCleared(List<IUniqueConstraint> uniqueConstraints) {
+		for (IUniqueConstraint uniqueConstraint : uniqueConstraints) {
+			((JavaUniqueConstraint) uniqueConstraint).removeAnnotation();
+		}
+	}
+
+	public void uniqueConstraintSet(int index, IUniqueConstraint oldUniqueConstraint, IUniqueConstraint newUniqueConstraint) {
+		((JavaUniqueConstraint) newUniqueConstraint).newAnnotation();
+	}
+
+	public void uniqueConstraintMoved(int sourceIndex, int targetIndex, IUniqueConstraint uniqueConstraint) {
+		List<IUniqueConstraint> uniqueConstraints = this.getUniqueConstraints();
+		int begin = Math.min(sourceIndex, targetIndex);
+		int end = Math.max(sourceIndex, targetIndex);
+		for (int i = begin; i-- > end;) {
+			this.synch(uniqueConstraints.get(i), i);
+		}
+	}
+
+	/**
+	 * synchronize the annotations with the model join columns,
+	 * starting at the end of the list to prevent overlap
+	 */
+	private void synchUniqueConstraintAnnotationsAfterAdd(int index) {
+		List<IUniqueConstraint> uniqueConstraints = this.getUniqueConstraints();
+		for (int i = uniqueConstraints.size(); i-- > index;) {
+			this.synch(uniqueConstraints.get(i), i);
+		}
+	}
+
+	/**
+	 * synchronize the annotations with the model join columns,
+	 * starting at the specified index to prevent overlap
+	 */
+	private void synchUniqueConstraintAnnotationsAfterRemove(int index) {
+		List<IUniqueConstraint> joinColumns = this.getUniqueConstraints();
+		for (int i = index; i < joinColumns.size(); i++) {
+			this.synch(joinColumns.get(i), i);
+		}
+	}
+	
+	private void synch(IUniqueConstraint uniqueConstraint, int index) {
+		((JavaUniqueConstraint) uniqueConstraint).moveAnnotation(index);
+	}
+
+	
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter buildAdapter(String elementName) {
 		return buildAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);

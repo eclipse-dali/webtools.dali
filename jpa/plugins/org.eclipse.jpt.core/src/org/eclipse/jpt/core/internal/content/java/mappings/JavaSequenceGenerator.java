@@ -105,6 +105,18 @@ public class JavaSequenceGenerator extends JavaGenerator
 		this.sequenceNameAdapter = this.buildAdapter(SEQUENCE_NAME_ADAPTER);
 	}
 
+	@Override
+	protected void notifyChanged(Notification notification) {
+		super.notifyChanged(notification);
+		switch (notification.getFeatureID(ISequenceGenerator.class)) {
+			case JpaJavaMappingsPackage.JAVA_SEQUENCE_GENERATOR__SPECIFIED_SEQUENCE_NAME :
+				this.sequenceNameAdapter.setValue(notification.getNewIntValue());
+				break;
+			default :
+				break;
+		}
+	}
+
 	// ********** initialization **********
 	protected DeclarationAnnotationAdapter annotationAdapter() {
 		return DECLARATION_ANNOTATION_ADAPTER;
@@ -162,20 +174,11 @@ public class JavaSequenceGenerator extends JavaGenerator
 	 * @see #getSpecifiedSequenceName()
 	 * @generated
 	 */
-	public void setSpecifiedSequenceNameGen(String newSpecifiedSequenceName) {
+	public void setSpecifiedSequenceName(String newSpecifiedSequenceName) {
 		String oldSpecifiedSequenceName = specifiedSequenceName;
 		specifiedSequenceName = newSpecifiedSequenceName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_SEQUENCE_GENERATOR__SPECIFIED_SEQUENCE_NAME, oldSpecifiedSequenceName, specifiedSequenceName));
-	}
-
-	public void setSpecifiedSequenceName(String newSpecifiedSequenceName) {
-		setSpecifiedSequenceNameGen(newSpecifiedSequenceName);
-		setSpecifiedSequenceNameInJava(newSpecifiedSequenceName);
-	}
-
-	private void setSpecifiedSequenceNameInJava(String newSpecifiedSequenceName) {
-		this.sequenceNameAdapter.setValue(newSpecifiedSequenceName);
 	}
 
 	/**
@@ -324,6 +327,7 @@ public class JavaSequenceGenerator extends JavaGenerator
 	}
 
 	// ********** java annotations -> persistence model **********
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		setSpecifiedSequenceName((String) this.sequenceNameAdapter.getValue(astRoot));

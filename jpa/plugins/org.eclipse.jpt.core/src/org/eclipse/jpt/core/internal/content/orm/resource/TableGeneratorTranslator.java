@@ -33,6 +33,7 @@ public class TableGeneratorTranslator extends GeneratorTranslator
 			createPkColumnValueTranslator(),
 			createInitialValueTranslator(),
 			createAllocationSizeTranslator(),
+			createUniqueConstraintTranslator(),
 		};
 	}
 
@@ -60,6 +61,10 @@ public class TableGeneratorTranslator extends GeneratorTranslator
 		return new Translator(TABLE_GENERATOR__PK_COLUMN_VALUE, MAPPINGS_PKG.getITableGenerator_SpecifiedPkColumnValue(), DOM_ATTRIBUTE);
 	}
 	
+	protected Translator createUniqueConstraintTranslator() {
+		return new Translator(UNIQUE_CONSTRAINT, (EStructuralFeature) null);
+		//return new UniqueConstraintTranslator(UNIQUE_CONSTRAINT, MAPPINGS_PKG.getITableGenerator_UniqueConstraints());
+	}
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
 		return OrmFactory.eINSTANCE.createXmlTableGenerator();

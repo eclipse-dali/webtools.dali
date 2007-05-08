@@ -177,6 +177,28 @@ public abstract class JavaGenerator extends JavaEObject implements IGenerator
 		this.allocationSizeAdapter = this.buildIntAdapter(this.allocationSizeAdapter());
 	}
 
+	protected Member getMember() {
+		return this.member;
+	}
+	
+	@Override
+	protected void notifyChanged(Notification notification) {
+		super.notifyChanged(notification);
+		switch (notification.getFeatureID(IGenerator.class)) {
+			case JpaJavaMappingsPackage.JAVA_GENERATOR__SPECIFIED_ALLOCATION_SIZE :
+				this.allocationSizeAdapter.setValue(notification.getNewIntValue());
+				break;
+			case JpaJavaMappingsPackage.JAVA_GENERATOR__SPECIFIED_INITIAL_VALUE :
+				this.initialValueAdapter.setValue(notification.getNewIntValue());
+				break;
+			case JpaJavaMappingsPackage.JAVA_GENERATOR__NAME :
+				this.nameAdapter.setValue(notification.getNewValue());
+				break;
+			default :
+				break;
+		}
+	}
+	
 	// ********** initialization **********
 	protected AnnotationElementAdapter buildAdapter(DeclarationAnnotationElementAdapter daea) {
 		return new ShortCircuitAnnotationElementAdapter(this.member, daea);
@@ -230,20 +252,11 @@ public abstract class JavaGenerator extends JavaEObject implements IGenerator
 	 * @see #getName()
 	 * @generated
 	 */
-	public void setNameGen(String newName) {
+	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_GENERATOR__NAME, oldName, name));
-	}
-
-	public void setName(String newName) {
-		setNameGen(newName);
-		setNameInJava(newName);
-	}
-
-	private void setNameInJava(String newName) {
-		this.nameAdapter.setValue(newName);
 	}
 
 	public int getInitialValue() {
@@ -277,20 +290,11 @@ public abstract class JavaGenerator extends JavaEObject implements IGenerator
 	 * @see #getSpecifiedInitialValue()
 	 * @generated
 	 */
-	public void setSpecifiedInitialValueGen(int newSpecifiedInitialValue) {
+	public void setSpecifiedInitialValue(int newSpecifiedInitialValue) {
 		int oldSpecifiedInitialValue = specifiedInitialValue;
 		specifiedInitialValue = newSpecifiedInitialValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_GENERATOR__SPECIFIED_INITIAL_VALUE, oldSpecifiedInitialValue, specifiedInitialValue));
-	}
-
-	public void setSpecifiedInitialValue(int newSpecifiedInitialValue) {
-		setSpecifiedInitialValueGen(newSpecifiedInitialValue);
-		setSpecifiedInitialValueInJava(newSpecifiedInitialValue);
-	}
-
-	private void setSpecifiedInitialValueInJava(int newSpecifiedInitialValue) {
-		this.initialValueAdapter.setValue(newSpecifiedInitialValue);
 	}
 
 	/**
@@ -341,20 +345,11 @@ public abstract class JavaGenerator extends JavaEObject implements IGenerator
 	 * @see #getSpecifiedAllocationSize()
 	 * @generated
 	 */
-	public void setSpecifiedAllocationSizeGen(int newSpecifiedAllocationSize) {
+	public void setSpecifiedAllocationSize(int newSpecifiedAllocationSize) {
 		int oldSpecifiedAllocationSize = specifiedAllocationSize;
 		specifiedAllocationSize = newSpecifiedAllocationSize;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_GENERATOR__SPECIFIED_ALLOCATION_SIZE, oldSpecifiedAllocationSize, specifiedAllocationSize));
-	}
-
-	public void setSpecifiedAllocationSize(int newSpecifiedAllocationSize) {
-		setSpecifiedAllocationSizeGen(newSpecifiedAllocationSize);
-		setSpecifiedAllocationSizeInJava(newSpecifiedAllocationSize);
-	}
-
-	private void setSpecifiedAllocationSizeInJava(int newSpecifiedAllocationSize) {
-		this.allocationSizeAdapter.setValue(newSpecifiedAllocationSize);
 	}
 
 	/**
