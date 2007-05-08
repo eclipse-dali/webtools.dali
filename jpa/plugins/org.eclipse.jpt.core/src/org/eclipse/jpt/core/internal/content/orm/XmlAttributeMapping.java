@@ -338,6 +338,10 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	public boolean isVirtual() {
 		return getPersistentType().getVirtualAttributeMappings().contains(this);
 	}
+	
+	public void setVirtual(boolean virtual) {
+		getPersistentType().setMappingVirtual(this, virtual);
+	}
 
 	@Override
 	public ITextRange getTextRange() {

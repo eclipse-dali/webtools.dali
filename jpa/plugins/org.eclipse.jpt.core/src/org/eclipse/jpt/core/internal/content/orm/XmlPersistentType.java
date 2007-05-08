@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -427,12 +428,24 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	}
 
 	protected void changeMapping(XmlAttributeMapping oldMapping, String newMappingKey) {
+		boolean virtual = oldMapping.isVirtual();
 		XmlAttributeMapping newAttributeMapping = buildAttributeMapping(oldMapping.getPersistentAttribute().attributeMappingProviders(), newMappingKey);
-		getSpecifiedAttributeMappings().remove(oldMapping);
+		
+		if (virtual) {
+			getVirtualAttributeMappings().remove(oldMapping);
+		} else {
+			getSpecifiedAttributeMappings().remove(oldMapping);
+		}
+		
 		oldMapping.initializeOn(newAttributeMapping);
-		insertAttributeMapping(newAttributeMapping);
+		
+		if (virtual) {
+			insertAttributeMapping(newAttributeMapping, getVirtualAttributeMappings());
+		} else {
+			insertAttributeMapping(newAttributeMapping, getSpecifiedAttributeMappings());
+		}
 	}
-
+	
 	private XmlAttributeMapping buildAttributeMapping(Collection<IXmlAttributeMappingProvider> providers, String key) {
 		for (IXmlAttributeMappingProvider provider : providers) {
 			if (provider.key().equals(key)) {
@@ -446,10 +459,27 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	public Collection<IXmlTypeMappingProvider> typeMappingProviders() {
 		return this.typeMappingProviders;
 	}
+	
+	protected void setMappingVirtual(XmlAttributeMapping attributeMapping, boolean virtual) {
+		boolean oldVirtual = attributeMapping.isVirtual();
+		
+		if (oldVirtual == virtual) {
+			return;
+		}
+		
+		if (virtual) {
+			getSpecifiedAttributeMappings().remove(attributeMapping);
+			insertAttributeMapping(attributeMapping, getVirtualAttributeMappings());
+		}
+		else {
+			getVirtualAttributeMappings().remove(attributeMapping);
+			insertAttributeMapping(attributeMapping, getSpecifiedAttributeMappings());
+		}
+	}
 
-	private void insertAttributeMapping(XmlAttributeMapping newMapping) {
-		int newIndex = CollectionTools.insertionIndexOf(getSpecifiedAttributeMappings(), newMapping, buildMappingComparator());
-		getSpecifiedAttributeMappings().add(newIndex, newMapping);
+	private void insertAttributeMapping(XmlAttributeMapping newMapping, List<XmlAttributeMapping> attributeMappings) {
+		int newIndex = CollectionTools.insertionIndexOf(attributeMappings, newMapping, buildMappingComparator());
+		attributeMappings.add(newIndex, newMapping);
 	}
 
 	private Comparator<XmlAttributeMapping> buildMappingComparator() {

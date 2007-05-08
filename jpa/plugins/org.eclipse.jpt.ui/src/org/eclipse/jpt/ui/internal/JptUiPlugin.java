@@ -8,13 +8,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal;
 
-import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
-import org.eclipse.ui.IActionFilter;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class JptUiPlugin extends AbstractUIPlugin
@@ -50,30 +46,6 @@ public class JptUiPlugin extends AbstractUIPlugin
 	public JptUiPlugin() {
 		super();
 		INSTANCE = this;
-
-		Platform.getAdapterManager().registerAdapters(buildPersistentAttributeAdapterFactory(), XmlPersistentAttribute.class);
-	}
-	
-	private IAdapterFactory buildPersistentAttributeAdapterFactory() {
-		return new IAdapterFactory() {
-			public Class[] getAdapterList() {
-				return new Class[] {IActionFilter.class};
-			}
-		
-			public Object getAdapter(Object adaptableObject, Class adapterType) {
-				return new IActionFilter() {
-					public boolean testAttribute(Object target, String name, String value) {
-						if (name.equals("specifiedInXml")) {
-							return !((XmlPersistentAttribute) target).isVirtual();
-						}
-						if (name.equals("defaultedFromJava")) {
-							return ((XmlPersistentAttribute) target).isVirtual();
-						}
-						throw new IllegalArgumentException();
-					}
-				};
-			}
-		};
 	}
 	
 	/**

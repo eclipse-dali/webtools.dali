@@ -5,7 +5,6 @@
 	<extension-point 
 		id="jpaPlatform" name="%JPA_PLATFORM" schema="schema/jpaPlatform.exsd"/>
 	
-	
 	<extension
 		point="org.eclipse.core.resources.markers"
 		id="jpaProblemMarker"

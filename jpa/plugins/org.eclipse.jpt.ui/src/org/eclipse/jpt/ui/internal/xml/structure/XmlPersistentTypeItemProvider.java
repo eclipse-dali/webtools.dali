@@ -42,7 +42,8 @@ public class XmlPersistentTypeItemProvider extends ItemProviderAdapter
 	protected Collection getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(OrmPackage.Literals.XML_PERSISTENT_TYPE__PERSISTENT_ATTRIBUTES);
+			childrenFeatures.add(OrmPackage.Literals.XML_PERSISTENT_TYPE__SPECIFIED_PERSISTENT_ATTRIBUTES);
+			childrenFeatures.add(OrmPackage.Literals.XML_PERSISTENT_TYPE__VIRTUAL_PERSISTENT_ATTRIBUTES);
 		}
 		return childrenFeatures;
 	}
@@ -87,7 +88,7 @@ public class XmlPersistentTypeItemProvider extends ItemProviderAdapter
 				fireNotifyChanged(
 					new ViewerNotification(
 						notification, notification.getNotifier(), true, false));
-			return;
+				return;
 		}
 		
 		super.notifyChanged(notification);

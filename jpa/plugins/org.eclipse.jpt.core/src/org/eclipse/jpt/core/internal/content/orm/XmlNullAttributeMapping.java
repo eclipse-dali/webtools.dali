@@ -48,7 +48,9 @@ public class XmlNullAttributeMapping extends XmlAttributeMapping
 	}
 
 	@Override
-	protected void initializeOn(XmlAttributeMapping newMapping) {}
+	protected void initializeOn(XmlAttributeMapping newMapping) {
+		newMapping.initializeFromXmlAttributeMapping(this);
+	}
 
 	public String getKey() {
 		return null;

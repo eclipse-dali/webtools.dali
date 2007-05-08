@@ -20,6 +20,14 @@ public class JptUiMessages extends NLS
 		NLS.initializeMessages(BUNDLE_NAME, JptUiMessages.class);
 	}
 	
+	public static String AddPersistentAttributeDialog_title;
+	
+	public static String AddPersistentAttributeDialog_attributeLabel;
+	
+	public static String AddPersistentAttributeDialog_mappingLabel;
+	
+	public static String AddPersistentAttributeDialog_noMappingKeyError;
+	
 	public static String AddPersistentClassDialog_title;
 	
 	public static String AddPersistentClassDialog_classLabel;

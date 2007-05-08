@@ -301,7 +301,11 @@ public class XmlPersistentAttribute extends XmlEObject
 	}
 
 	public boolean isVirtual() {
-		return persistentType().getVirtualPersistentAttributes().contains(this);
+		return getMapping().isVirtual();
+	}
+	
+	public void setVirtual(boolean virtual) {
+		getMapping().setVirtual(virtual);
 	}
 
 	public Attribute getAttribute() {

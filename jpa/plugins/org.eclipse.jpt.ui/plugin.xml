@@ -17,6 +17,20 @@
 			<adapter type="org.eclipse.jpt.ui.internal.selection.ISelectionParticipant"/>
 		</factory>
 		
+		<factory
+			adaptableType="org.eclipse.jpt.core.internal.IPersistentAttribute"
+			class="org.eclipse.jpt.ui.internal.actions.PersistentAttributeActionFilter$Factory">
+			<adapter
+				type="org.eclipse.ui.IActionFilter"/>
+		</factory>
+		
+		<factory
+			adaptableType="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute"
+			class="org.eclipse.jpt.ui.internal.actions.XmlPersistentAttributeActionFilter$Factory">
+			<adapter
+				type="org.eclipse.ui.IActionFilter"/>
+		</factory>
+		
 	</extension>
 	
 	
@@ -66,11 +80,11 @@
 			</enablement>
 
 			<action
-         class="org.eclipse.jpt.ui.internal.actions.GenerateEntitiesAction"
-         id="org.eclipse.jpt.ui.generateEntities"
-         label="%generateEntities"
-         menubarPath="org.eclipse.jpt.ui.project.JPATools/content">
-			</action>
+				class="org.eclipse.jpt.ui.internal.actions.GenerateEntitiesAction"
+				id="org.eclipse.jpt.ui.generateEntities"
+				label="%generateEntities"
+				menubarPath="org.eclipse.jpt.ui.project.JPATools/content"/>
+				
 		</objectContribution>
 		
 		<objectContribution
@@ -108,36 +122,68 @@
 				menubarPath="additions"/>
 		</objectContribution>
 				<objectContribution
-			id="org.eclipse.jpt.ui.xmlStructure"
- 			adaptable="false"
+			id="org.eclipse.jpt.ui.xmlPersistentAttributeActions1"
 			objectClass="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute">
+			
 			<action
-				id="org.eclipse.jpt.ui.addToXml"
-				class="org.eclipse.jpt.ui.internal.actions.AddPersistentAttributeToXml"
-				label="Add to XML"
+				id="org.eclipse.jpt.ui.addPersistentAttributeToXml"
+				class="org.eclipse.jpt.ui.internal.actions.AddPersistentAttributeToXmlAction"
+				label="%addPersistentAttributeToXml"
 				menubarPath="additions"/>
 			<visibility>
-				<objectState
-					name="defaultedFromJava"
-					value="true"/>
+				<and>
+					<objectState
+						name="isVirtual"
+						value="true"/>
+					<objectState
+						name="isMapped"
+						value="true"/>
+				</and>
 			</visibility>
+			
 		</objectContribution>
-  		
+		
 		<objectContribution
-			id="org.eclipse.jpt.ui.xmlStructure"
-			adaptable="false"
+			id="org.eclipse.jpt.ui.xmlPersistentAttributeActions2"
 			objectClass="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute">
+			
 			<action
-				id="org.eclipse.jpt.ui.removeFromXml"
-				class="org.eclipse.jpt.ui.internal.actions.RemovePersistentAttributeFromXml"
-				label="Remove from XML"
+				id="org.eclipse.jpt.ui.addPersistentAttributeToXmlAndMap"
+				class="org.eclipse.jpt.ui.internal.actions.AddPersistentAttributeToXmlAndMapAction"
+				label="%addPersistentAttributeToXmlAndMap"
+				enablesFor="1"
+				menubarPath="additions"/>
+			<visibility>
+				<and>
+					<objectState
+						name="isVirtual"
+						value="true"/>
+					<objectState
+						name="isMapped"
+						value="false"/>
+				</and>
+			</visibility>
+			
+		</objectContribution>
+		
+		<objectContribution
+			id="org.eclipse.jpt.ui.xmlPersistentAttributeActions3"
+			objectClass="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute">
+			
+			<action
+				id="org.eclipse.jpt.ui.removePersistentAttributeFromXml"
+				class="org.eclipse.jpt.ui.internal.actions.RemovePersistentAttributeFromXmlAction"
+				label="%removePersistentAttributeFromXml"
 				menubarPath="additions"/>
 			<visibility>
 				<objectState
-					name="specifiedInXml"
-					value="true"/>
+					name="isVirtual"
+					value="false"/>
 			</visibility>
+			
 		</objectContribution>
+		
+		
 	
 	</extension>
 	

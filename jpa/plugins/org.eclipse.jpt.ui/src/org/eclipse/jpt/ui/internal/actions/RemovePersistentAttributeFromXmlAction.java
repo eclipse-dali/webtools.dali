@@ -18,9 +18,8 @@ import org.eclipse.jpt.core.internal.content.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
 import org.eclipse.ui.actions.ActionDelegate;
 
-public class RemovePersistentAttributeFromXml extends ActionDelegate
+public class RemovePersistentAttributeFromXmlAction extends ActionDelegate
 {	
-	
 	private ISelection selection;
 	
 	@Override
