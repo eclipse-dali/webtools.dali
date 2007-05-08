@@ -77,6 +77,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	public JavaSecondaryTable(Owner owner, Member member, IndexedDeclarationAnnotationAdapter idaa) {
 		super(owner, member, idaa);
 		this.annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
+		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
 	}
 
 	/**
@@ -331,6 +332,55 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
+	
+	@Override
+	protected void updateFromJava(CompilationUnit astRoot) {
+		super.updateFromJava(astRoot);
+		this.updateSpecifiedPrimaryKeyJoinColumnsFromJava(astRoot);
+	}
+	/**
+	 * here we just worry about getting the join column lists the same size;
+	 * then we delegate to the join columns to synch themselves up
+	 */
+	private void updateSpecifiedPrimaryKeyJoinColumnsFromJava(CompilationUnit astRoot) {
+		// synchronize the model join columns with the Java source
+		List<IPrimaryKeyJoinColumn> joinColumns = getSpecifiedPrimaryKeyJoinColumns();
+		int persSize = joinColumns.size();
+		int javaSize = 0;
+		boolean allJavaAnnotationsFound = false;
+		for (int i = 0; i < persSize; i++) {
+			JavaPrimaryKeyJoinColumn joinColumn = (JavaPrimaryKeyJoinColumn) joinColumns.get(i);
+			if (joinColumn.annotation(astRoot) == null) {
+				allJavaAnnotationsFound = true;
+				break; // no need to go any further
+			}
+			joinColumn.updateFromJava(astRoot);
+			javaSize++;
+		}
+		if (allJavaAnnotationsFound) {
+			// remove any model join columns beyond those that correspond to the Java annotations
+			while (persSize > javaSize) {
+				persSize--;
+				joinColumns.remove(persSize);
+			}
+		}
+		else {
+			// add new model join columns until they match the Java annotations
+			while (!allJavaAnnotationsFound) {
+				JavaPrimaryKeyJoinColumn joinColumn = this.createJavaPrimaryKeyJoinColumn(javaSize);
+				if (joinColumn.annotation(astRoot) == null) {
+					allJavaAnnotationsFound = true;
+				}
+				else {
+					getSpecifiedPrimaryKeyJoinColumns().add(joinColumn);
+					joinColumn.updateFromJava(astRoot);
+					javaSize++;
+				}
+			}
+		}
+	}
+
+	
 	/**
 	 * allow owners to verify the annotation
 	 */
@@ -364,7 +414,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	}
 
 	private JavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(int index) {
-		return JavaPrimaryKeyJoinColumn.createSecondaryTableJoinColumn(this, buildPkJoinColumnOwner(), ((JavaTypeMapping) typeMapping()).getType(), index);
+		return JavaPrimaryKeyJoinColumn.createSecondaryTableJoinColumn(this, buildPkJoinColumnOwner(),  this.getMember(), index);
 	}
 
 	protected IAbstractJoinColumn.Owner buildPkJoinColumnOwner() {

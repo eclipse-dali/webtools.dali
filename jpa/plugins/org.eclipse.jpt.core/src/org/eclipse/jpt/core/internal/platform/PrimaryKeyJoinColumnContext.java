@@ -8,8 +8,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import java.util.List;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class PrimaryKeyJoinColumnContext extends AbstractJoinColumnContext<IPrimaryKeyJoinColumn>
 {
@@ -18,7 +22,7 @@ public class PrimaryKeyJoinColumnContext extends AbstractJoinColumnContext<IPrim
 		super(parentContext, column);
 	}
 
-
+	//TODO This default is different for oneToOne mappings, we don't yet support pkJoinColumns there
 	protected String buildDefaultReferencedColumnName() {
 		return this.buildDefaultName();
 	}
@@ -33,5 +37,29 @@ public class PrimaryKeyJoinColumnContext extends AbstractJoinColumnContext<IPrim
 		return pkColumnName;
 	}
 
-
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+	
+		boolean doContinue = column.isConnected();
+		if (doContinue && ! column.isResolved()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,
+						new String[] {column.getName()}, 
+						column, column.getNameTextRange())
+			);
+		}
+		
+		if (doContinue && ! column.isReferencedColumnResolved()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
+						new String[] {column.getReferencedColumnName(), column.getName()}, 
+						column, column.getReferencedColumnNameTextRange())
+			);
+		}
+	}
 }
