@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.internal.IJpaSourceObject;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
@@ -230,6 +231,8 @@ public interface ITable extends IJpaSourceObject
 	void refreshDefaults(DefaultsContext defaultsContext);
 
 	Table dbTable();
+
+	Schema dbSchema();
 
 	/**
 	 * Return true if this table is connected to a datasource

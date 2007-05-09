@@ -53,6 +53,7 @@ import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
 import org.eclipse.jpt.core.internal.mappings.InheritanceType;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
@@ -2254,7 +2255,12 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		}
 		return null;
 	}
-
+	
+	@Override
+	public Schema dbSchema() {
+		return getTable().dbSchema();
+	}
+	
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		this.setSpecifiedName((String) this.getType().annotationElementValue(NAME_ADAPTER, astRoot));

@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
@@ -229,6 +230,10 @@ public class NullTypeMapping extends JpaEObject
 	}
 
 	public Table dbTable(String tableName) {
+		return null;
+	}
+
+	public Schema dbSchema() {
 		return null;
 	}
 

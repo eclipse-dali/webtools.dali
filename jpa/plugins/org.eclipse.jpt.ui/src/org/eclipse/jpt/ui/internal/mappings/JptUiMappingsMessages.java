@@ -86,6 +86,7 @@ public class JptUiMappingsMessages extends NLS
 	public static String JoinColumnDialog_updatable;
 	public static String JoinColumnDialog_defaultWithOneParam;
 	public static String JoinColumnDialog_referencedColumnName;
+	public static String JoinColumnDialog_table;
 	
 	public static String InverseJoinColumnDialog_defaultWithOneParam;
 	public static String InverseJoinColumnDialog_editInverseJoinColumn;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.IAttributeMapping;
-import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
@@ -18,45 +16,41 @@ import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.swt.widgets.Shell;
 
-public class JoinColumnInAssociationOverrideDialog extends JoinColumnDialog {
+public class JoinColumnInRelationshipMappingDialog extends JoinColumnDialog {
 
-	private IAssociationOverride associationOverride;
+	private ISingleRelationshipMapping singleRelationshipMapping;
 	
-	JoinColumnInAssociationOverrideDialog(Shell parent, IAssociationOverride associationOverride) {
+	JoinColumnInRelationshipMappingDialog(Shell parent, ISingleRelationshipMapping singleRelationshipMapping) {
 		super(parent);
-		this.associationOverride = associationOverride;
+		this.singleRelationshipMapping = singleRelationshipMapping;
 	}
 
-	JoinColumnInAssociationOverrideDialog(Shell parent, IJoinColumn joinColumn) {
+	JoinColumnInRelationshipMappingDialog(Shell parent, IJoinColumn joinColumn) {
 		super(parent, joinColumn);
-		this.associationOverride = (IAssociationOverride) joinColumn.eContainer();
-	}
-	
-	protected Schema getSchema() {
-		return this.associationOverride.typeMapping().dbSchema();
+		this.singleRelationshipMapping = (ISingleRelationshipMapping) joinColumn.eContainer();
 	}
 	
 	protected String defaultTableName() {
 		if (getJoinColumn() != null) {
 			return getJoinColumn().getDefaultTable();
 		}
-		return this.associationOverride.typeMapping().getTableName();
+		return this.singleRelationshipMapping.typeMapping().getTableName();
 	}
-
+	
+	protected Schema getSchema() {
+		return this.singleRelationshipMapping.getEntity().getTable().dbSchema();
+	}
+	
 	protected Table getNameTable() {
-		return this.associationOverride.typeMapping().primaryDbTable();
+		Schema schema = this.getSchema();
+		return (schema == null) ? null : schema.tableNamed(tableName());
 	}
 	
 	protected Table getReferencedNameTable() {
-		IAttributeMapping attributeMapping = this.associationOverride.getOwner().attributeMapping(this.associationOverride.getName());
-		if (attributeMapping == null) {
-			return null;
-		}
-		IEntity targetEntity = ((ISingleRelationshipMapping) attributeMapping).getResolvedTargetEntity();
+		IEntity targetEntity = this.singleRelationshipMapping.getResolvedTargetEntity();
 		if (targetEntity != null) {
 			return targetEntity.primaryDbTable();
 		}
 		return null;
 	}
-
 }

@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.content.java.JavaEObject;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.mappings.ITable;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -219,6 +220,10 @@ public abstract class JavaTypeMapping extends JavaEObject
 	}
 
 	public Table dbTable(String tableName) {
+		return null;
+	}
+	
+	public Schema dbSchema() {
 		return null;
 	}
 

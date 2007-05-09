@@ -36,7 +36,6 @@ public abstract class AbstractJoinColumnDialog<E extends IAbstractJoinColumn> ex
 	
 	private Combo nameCombo;
 	private Combo referencedColumnNameCombo;
-
 	
 	private boolean defaultNameSelected;
 	private String selectedName;
@@ -96,6 +95,7 @@ public abstract class AbstractJoinColumnDialog<E extends IAbstractJoinColumn> ex
 	}
 	
 	protected void populateNameCombo() {
+		this.nameCombo.removeAll();
 		if (getJoinColumn() != null) {
 			this.nameCombo.add(NLS.bind(JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam, getJoinColumn().getDefaultName()));
 		}

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.mappings.ITable;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
@@ -95,6 +96,8 @@ public interface ITypeMapping extends IJpaSourceObject
 	 * return the resolved primary db table
 	 */
 	Table primaryDbTable();
+
+	Schema dbSchema();
 
 	/**
 	 * return the resolved associated db table with the passed in name

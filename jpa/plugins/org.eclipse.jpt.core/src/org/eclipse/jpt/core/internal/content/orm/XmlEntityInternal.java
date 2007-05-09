@@ -42,6 +42,7 @@ import org.eclipse.jpt.core.internal.mappings.InheritanceType;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -1741,6 +1742,11 @@ public class XmlEntityInternal extends XmlTypeMapping
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Schema dbSchema() {
+		return getTable().dbSchema();
 	}
 
 	@Override

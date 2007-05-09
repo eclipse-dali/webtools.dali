@@ -257,7 +257,7 @@ public class JoinColumnComposite
 	}
 
 	void addJoinColumn() {
-		JoinColumnDialog dialog = new JoinColumnDialog(this.getControl().getShell(), this.singleRelationshipMapping);
+		JoinColumnDialog dialog = new JoinColumnInRelationshipMappingDialog(this.getControl().getShell(), this.singleRelationshipMapping);
 		this.addJoinColumnFromDialog(dialog);
 	}
 	
@@ -270,11 +270,12 @@ public class JoinColumnComposite
 		this.singleRelationshipMapping.getSpecifiedJoinColumns().add(joinColumn);
 		joinColumn.setSpecifiedName(dialog.getSelectedName());
 		joinColumn.setSpecifiedReferencedColumnName(dialog.getReferencedColumnName());
+		joinColumn.setSpecifiedTable(dialog.getSelectedTable());
 	}
 	
 	void editJoinColumn() {
 		IJoinColumn joinColumn = getSelectedJoinColumn();
-		JoinColumnDialog dialog = new JoinColumnDialog(this.getControl().getShell(), joinColumn);
+		JoinColumnDialog dialog = new JoinColumnInRelationshipMappingDialog(this.getControl().getShell(), joinColumn);
 		editJoinColumnFromDialog(dialog, joinColumn);
 	}
 	
@@ -291,6 +292,7 @@ public class JoinColumnComposite
 	private void editJoinColumnDialogOkd(JoinColumnDialog dialog, IJoinColumn joinColumn) {
 		String name = dialog.getSelectedName();
 		String referencedColumnName = dialog.getReferencedColumnName();
+		String table = dialog.getSelectedTable();
 
 		if (dialog.isDefaultNameSelected()) {
 			if (joinColumn.getSpecifiedName() != null) {
@@ -307,6 +309,15 @@ public class JoinColumnComposite
 		}
 		else if (joinColumn.getSpecifiedReferencedColumnName() == null || !joinColumn.getSpecifiedReferencedColumnName().equals(referencedColumnName)){
 			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+		}
+		
+		if (dialog.isDefaultTableSelected()) {
+			if (joinColumn.getSpecifiedTable() != null) {
+				joinColumn.setSpecifiedTable(null);
+			}
+		}
+		else if (joinColumn.getSpecifiedTable() == null || !joinColumn.getSpecifiedTable().equals(table)){
+			joinColumn.setSpecifiedTable(table);
 		}
 
 		DefaultTrueBoolean insertable = dialog.getInsertable();

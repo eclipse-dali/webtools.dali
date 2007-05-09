@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.internal.emfutility.DOMUtilities;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.mappings.DefaultFalseBoolean;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
@@ -606,6 +607,10 @@ public abstract class XmlTypeMapping extends XmlEObject implements ITypeMapping
 	}
 
 	public Table dbTable(String tableName) {
+		return null;
+	}
+	
+	public Schema dbSchema() {
 		return null;
 	}
 
