@@ -19,7 +19,7 @@ public class JptUiMappingsImages
 	
 	public final static String EMBEDDED = "full/obj16/embedded";
 	
-	public final static String EMBEDDED_ID = "full/obj16/embedded-id";
+	public final static String EMBEDDED_ID = "full/obj16/embeddedId";
 	
 	public final static String ENTITY = "full/obj16/entity";
 	
