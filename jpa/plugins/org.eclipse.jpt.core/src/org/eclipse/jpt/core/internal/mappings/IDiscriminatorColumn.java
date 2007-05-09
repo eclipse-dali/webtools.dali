@@ -131,6 +131,8 @@ public interface IDiscriminatorColumn extends INamedColumn
 	 * @generated
 	 */
 	int getLength();
+
+
 	class Owner implements INamedColumn.Owner
 	{
 		private IEntity entity;

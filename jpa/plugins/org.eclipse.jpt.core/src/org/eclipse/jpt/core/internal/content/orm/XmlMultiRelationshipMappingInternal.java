@@ -97,6 +97,26 @@ public abstract class XmlMultiRelationshipMappingInternal
 	 */
 	protected IOrderBy orderBy;
 
+	/**
+	 * The default value of the '{@link #getMapKey() <em>Map Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String MAP_KEY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getMapKey() <em>Map Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected String mapKey = MAP_KEY_EDEFAULT;
+
 	protected XmlMultiRelationshipMappingInternal() {
 		super();
 		this.joinTable = OrmFactory.eINSTANCE.createXmlJoinTable(buildJoinTableOwner());
@@ -266,6 +286,39 @@ public abstract class XmlMultiRelationshipMappingInternal
 		return msgs;
 	}
 
+	/**
+	 * Returns the value of the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Map Key</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Map Key</em>' attribute.
+	 * @see #setMapKey(String)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIMultiRelationshipMapping_MapKey()
+	 * @model
+	 * @generated
+	 */
+	public String getMapKey() {
+		return mapKey;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingInternal#getMapKey <em>Map Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Map Key</em>' attribute.
+	 * @see #getMapKey()
+	 * @generated
+	 */
+	public void setMapKey(String newMapKey) {
+		String oldMapKey = mapKey;
+		mapKey = newMapKey;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY, oldMapKey, mapKey));
+	}
+
 	private XmlJoinTable getJoinTableInternal() {
 		return (XmlJoinTable) getJoinTable();
 	}
@@ -339,6 +392,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 				return getJoinTable();
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY :
 				return getOrderBy();
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY :
+				return getMapKey();
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML :
 				return getJoinTableForXml();
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML :
@@ -360,6 +415,9 @@ public abstract class XmlMultiRelationshipMappingInternal
 				return;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__FETCH :
 				setFetch((DefaultLazyFetchType) newValue);
+				return;
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY :
+				setMapKey((String) newValue);
 				return;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML :
 				setJoinTableForXml((XmlJoinTable) newValue);
@@ -384,6 +442,9 @@ public abstract class XmlMultiRelationshipMappingInternal
 				return;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__FETCH :
 				setFetch(FETCH_EDEFAULT);
+				return;
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY :
+				setMapKey(MAP_KEY_EDEFAULT);
 				return;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML :
 				setJoinTableForXml((XmlJoinTable) null);
@@ -411,6 +472,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 				return joinTable != null;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY :
 				return orderBy != null;
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY :
+				return MAP_KEY_EDEFAULT == null ? mapKey != null : !MAP_KEY_EDEFAULT.equals(mapKey);
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML :
 				return getJoinTableForXml() != null;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML :
@@ -442,6 +505,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
 				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY :
 					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY :
+					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 				default :
 					return -1;
 			}
@@ -488,6 +553,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE;
 				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY :
 					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY;
+				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY :
+					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY;
 				default :
 					return -1;
 			}
@@ -525,6 +592,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 		result.append(mappedBy);
 		result.append(", fetch: ");
 		result.append(fetch);
+		result.append(", mapKey: ");
+		result.append(mapKey);
 		result.append(')');
 		return result.toString();
 	}

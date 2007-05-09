@@ -146,6 +146,8 @@ public interface IJoinTable extends ITable
 	boolean containsSpecifiedInverseJoinColumns();
 
 	IRelationshipMapping relationshipMapping();
+
+
 	/**
 	 * just a little common behavior
 	 */
@@ -193,6 +195,8 @@ public interface IJoinTable extends ITable
 			return (joinTable.getName().equals(tableName)) ? joinTable.dbTable() : null;
 		}
 	}
+
+
 	/**
 	 * owner for "forward-pointer" JoinColumns;
 	 * these point at the target/inverse entity
@@ -229,6 +233,8 @@ public interface IJoinTable extends ITable
 			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
 	}
+
+
 	/**
 	 * owner for "back-pointer" JoinColumns;
 	 * these point at the source/owning entity

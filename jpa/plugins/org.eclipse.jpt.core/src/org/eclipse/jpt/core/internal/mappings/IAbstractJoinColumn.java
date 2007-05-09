@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: IAbstractJoinColumn.java,v 1.5 2007/05/08 17:21:41 kmoore Exp $
+ * $Id: IAbstractJoinColumn.java,v 1.6 2007/05/09 22:43:58 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.mappings;
 
@@ -108,6 +108,8 @@ public interface IAbstractJoinColumn extends INamedColumn
 	 * Re-declared to return INamedColumn.Owner.
 	 */
 	Owner getOwner();
+
+
 	interface Owner extends INamedColumn.Owner
 	{
 		/**

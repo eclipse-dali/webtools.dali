@@ -1649,6 +1649,8 @@ public class EntityMappingsInternal extends XmlEObject
 		setDefaultSchema((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TABLE_SCHEMA_KEY));
 		setDefaultAccess((AccessType) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_ACCESS_KEY));
 	}
+
+
 	private class TypeMappingsList<E>
 		extends EObjectContainmentEList<XmlTypeMapping>
 	{

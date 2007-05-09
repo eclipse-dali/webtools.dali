@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.content.java.JavaEObject;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -29,12 +28,9 @@ import org.eclipse.jpt.core.internal.jdtutility.IndexedDeclarationAnnotationAdap
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitArrayAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.StringArrayExpressionConverter;
-import org.eclipse.jpt.core.internal.jdtutility.StringExpressionConverter;
-import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -71,9 +67,8 @@ public class JavaUniqueConstraint extends JavaEObject
 	private final IndexedAnnotationAdapter annotationAdapter;
 
 	private final DeclarationAnnotationElementAdapter columnNamesDeclarationAdapter;
-	
+
 	private final AnnotationElementAdapter columnNamesAdapter;
-	
 
 	protected JavaUniqueConstraint() {
 		super();
@@ -88,7 +83,7 @@ public class JavaUniqueConstraint extends JavaEObject
 		this.columnNamesDeclarationAdapter = buildArrayAnnotationElementAdapter(idaa, JPA.UNIQUE_CONSTRAINT__COLUMN_NAMES);
 		this.columnNamesAdapter = this.buildAnnotationElementAdapter(this.columnNamesDeclarationAdapter);
 	}
-	
+
 	protected AnnotationElementAdapter buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter daea) {
 		return new ShortCircuitArrayAnnotationElementAdapter(this.member, daea);
 	}
@@ -101,7 +96,6 @@ public class JavaUniqueConstraint extends JavaEObject
 		return new ConversionDeclarationAnnotationElementAdapter(annotationAdapter, elementName, false, converter);
 	}
 
-	
 	@Override
 	protected void notifyChanged(Notification notification) {
 		super.notifyChanged(notification);
@@ -271,10 +265,9 @@ public class JavaUniqueConstraint extends JavaEObject
 	public void updateFromJava(CompilationUnit astRoot) {
 		updateColumnNamesFromJava(astRoot);
 	}
-	
+
 	private void updateColumnNamesFromJava(CompilationUnit astRoot) {
 		String[] javaColumnNames = (String[]) this.columnNamesAdapter.getValue(astRoot);
-		
 		CollectionTools.retainAll(getColumnNames(), javaColumnNames);
 		for (int i = 0; i < javaColumnNames.length; i++) {
 			String columnName = javaColumnNames[i];
@@ -283,7 +276,7 @@ public class JavaUniqueConstraint extends JavaEObject
 			}
 		}
 	}
-	
+
 	// ********** persistence model -> java annotations **********
 	void moveAnnotation(int newIndex) {
 		this.annotationAdapter.moveAnnotation(newIndex);
@@ -321,7 +314,7 @@ public class JavaUniqueConstraint extends JavaEObject
 	private static IndexedDeclarationAnnotationAdapter buildTableUniqueConstraintAnnotationAdapter(int index) {
 		return new NestedIndexedDeclarationAnnotationAdapter(JavaTable.DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
 	}
-	
+
 	static JavaUniqueConstraint createTableGeneratorUniqueConstraint(Member member, int index) {
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaUniqueConstraint(member, buildTableGeneratorUniqueConstraintAnnotationAdapter(index));
 	}

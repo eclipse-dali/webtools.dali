@@ -19,9 +19,15 @@ import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.ITypeMapping;
+import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
 import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;
@@ -106,6 +112,34 @@ public abstract class JavaMultiRelationshipMapping
 	 */
 	protected IOrderBy orderBy;
 
+	/**
+	 * The default value of the '{@link #getMapKey() <em>Map Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String MAP_KEY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getMapKey() <em>Map Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected String mapKey = MAP_KEY_EDEFAULT;
+
+	private final AnnotationAdapter mapKeyAnnotationAdapter;
+
+	private final AnnotationElementAdapter mapKeyNameAdapter;
+
+	public static final DeclarationAnnotationAdapter MAP_KEY_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.MAP_KEY);
+
+	private static final DeclarationAnnotationElementAdapter MAP_KEY_NAME_ADAPTER = buildMapKeyNameAdapter();
+
 	protected JavaMultiRelationshipMapping() {
 		throw new UnsupportedOperationException("Use JavaMultiRelationshipMapping(Attribute) instead");
 	}
@@ -113,6 +147,8 @@ public abstract class JavaMultiRelationshipMapping
 	protected JavaMultiRelationshipMapping(Attribute attribute) {
 		super(attribute);
 		this.mappedByAdapter = this.buildAnnotationElementAdapter(this.mappedByAdapter());
+		this.mapKeyAnnotationAdapter = new MemberAnnotationAdapter(this.getAttribute(), MAP_KEY_ADAPTER);
+		this.mapKeyNameAdapter = new ShortCircuitAnnotationElementAdapter(attribute, MAP_KEY_NAME_ADAPTER);
 		this.joinTable = JpaJavaMappingsFactory.eINSTANCE.createJavaJoinTable(buildOwner(), attribute);
 		((InternalEObject) this.joinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE, null, null);
 		this.orderBy = JpaJavaMappingsFactory.eINSTANCE.createJavaOrderBy(attribute);
@@ -123,6 +159,15 @@ public abstract class JavaMultiRelationshipMapping
 	protected void notifyChanged(Notification notification) {
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(IMultiRelationshipMapping.class)) {
+			case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY :
+				String mapKey = (String) notification.getNewValue();
+				if (mapKey == null) {
+					this.mapKeyAnnotationAdapter.removeAnnotation();
+				}
+				else {
+					this.mapKeyNameAdapter.setValue(mapKey);
+				}
+				break;
 			case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__FETCH :
 				this.getFetchAdapter().setValue(((DefaultLazyFetchType) notification.getNewValue()).convertToJavaAnnotationValue());
 				break;
@@ -305,6 +350,39 @@ public abstract class JavaMultiRelationshipMapping
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Map Key</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Map Key</em>' attribute.
+	 * @see #setMapKey(String)
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIMultiRelationshipMapping_MapKey()
+	 * @model
+	 * @generated
+	 */
+	public String getMapKey() {
+		return mapKey;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaMultiRelationshipMapping#getMapKey <em>Map Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Map Key</em>' attribute.
+	 * @see #getMapKey()
+	 * @generated
+	 */
+	public void setMapKey(String newMapKey) {
+		String oldMapKey = mapKey;
+		mapKey = newMapKey;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY, oldMapKey, mapKey));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -336,6 +414,8 @@ public abstract class JavaMultiRelationshipMapping
 				return getJoinTable();
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY :
 				return getOrderBy();
+			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY :
+				return getMapKey();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -354,6 +434,9 @@ public abstract class JavaMultiRelationshipMapping
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__FETCH :
 				setFetch((DefaultLazyFetchType) newValue);
 				return;
+			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY :
+				setMapKey((String) newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -371,6 +454,9 @@ public abstract class JavaMultiRelationshipMapping
 				return;
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__FETCH :
 				setFetch(FETCH_EDEFAULT);
+				return;
+			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY :
+				setMapKey(MAP_KEY_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -392,6 +478,8 @@ public abstract class JavaMultiRelationshipMapping
 				return joinTable != null;
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY :
 				return orderBy != null;
+			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY :
+				return MAP_KEY_EDEFAULT == null ? mapKey != null : !MAP_KEY_EDEFAULT.equals(mapKey);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -419,6 +507,8 @@ public abstract class JavaMultiRelationshipMapping
 					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
 				case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY :
 					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+				case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY :
+					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 				default :
 					return -1;
 			}
@@ -449,6 +539,8 @@ public abstract class JavaMultiRelationshipMapping
 					return JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
 				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY :
 					return JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY :
+					return JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 				default :
 					return -1;
 			}
@@ -470,6 +562,8 @@ public abstract class JavaMultiRelationshipMapping
 		result.append(mappedBy);
 		result.append(", fetch: ");
 		result.append(fetch);
+		result.append(", mapKey: ");
+		result.append(mapKey);
 		result.append(')');
 		return result.toString();
 	}
@@ -480,6 +574,16 @@ public abstract class JavaMultiRelationshipMapping
 		setMappedBy((String) this.mappedByAdapter.getValue(astRoot));
 		this.getJavaOrderBy().updateFromJava(astRoot);
 		this.getJavaJoinTable().updateFromJava(astRoot);
+		updateMapKeyFromJava(astRoot);
+	}
+
+	private void updateMapKeyFromJava(CompilationUnit astRoot) {
+		if (this.mapKeyAnnotationAdapter.getAnnotation(astRoot) == null) {
+			this.setMapKey(null);
+		}
+		else {
+			this.setMapKey((String) this.mapKeyNameAdapter.getValue(astRoot));
+		}
 	}
 
 	private JavaJoinTable getJavaJoinTable() {
@@ -528,5 +632,10 @@ public abstract class JavaMultiRelationshipMapping
 		String elementSignature = parmSignatures[0];
 		String elementTypeName = buildReferenceEntityTypeName(elementSignature, jdtType());
 		return typeNamedIsContainer(elementTypeName) ? null : elementTypeName;
+	}
+
+	// ********** static methods **********
+	private static DeclarationAnnotationElementAdapter buildMapKeyNameAdapter() {
+		return new EnumDeclarationAnnotationElementAdapter(MAP_KEY_ADAPTER, JPA.MAP_KEY__NAME, false);
 	}
 }

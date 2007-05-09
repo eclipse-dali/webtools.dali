@@ -20,6 +20,7 @@ package org.eclipse.jpt.core.internal.mappings;
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getFetch <em>Fetch</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getJoinTable <em>Join Table</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getOrderBy <em>Order By</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getMapKey <em>Map Key</em>}</li>
  * </ul>
  * </p>
  *
@@ -87,4 +88,30 @@ public interface IMultiRelationshipMapping extends INonOwningMapping
 	 * @generated
 	 */
 	IOrderBy getOrderBy();
+
+	/**
+	 * Returns the value of the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Map Key</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Map Key</em>' attribute.
+	 * @see #setMapKey(String)
+	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIMultiRelationshipMapping_MapKey()
+	 * @model
+	 * @generated
+	 */
+	String getMapKey();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getMapKey <em>Map Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Map Key</em>' attribute.
+	 * @see #getMapKey()
+	 * @generated
+	 */
+	void setMapKey(String value);
 } // IMultiRelationshipMapping

@@ -1911,13 +1911,22 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Join Table For Xml</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 4;
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Order By For Xml</b></em>' reference.
@@ -1926,7 +1935,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 5;
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Xml Multi Relationship Mapping Internal</em>' class.
@@ -1935,7 +1944,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL_FEATURE_COUNT = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 6;
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL_FEATURE_COUNT = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 7;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml <em>Xml Multi Relationship Mapping For Xml</em>}' class.
@@ -2057,6 +2066,15 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY = JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 
 	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY = JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY;
+
+	/**
 	 * The number of structural features of the '<em>Xml Multi Relationship Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2155,6 +2173,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ONE_TO_MANY__ORDER_BY = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY;
+
+	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__MAP_KEY = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY;
 
 	/**
 	 * The feature id for the '<em><b>Join Table For Xml</b></em>' reference.
@@ -2273,6 +2300,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MANY_TO_MANY__ORDER_BY = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY;
+
+	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__MAP_KEY = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY;
 
 	/**
 	 * The feature id for the '<em><b>Join Table For Xml</b></em>' reference.
@@ -8237,6 +8273,8 @@ public class OrmPackage extends EPackageImpl
 		// Create resource
 		createResource(eNS_URI);
 	}
+
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * Defines literals for the meta objects that represent

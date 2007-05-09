@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jpt.core.internal.AccessType;

@@ -271,6 +271,7 @@
         <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference core.ecore#//mappings/IMultiRelationshipMapping/joinTable"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference core.ecore#//mappings/IMultiRelationshipMapping/orderBy"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IMultiRelationshipMapping/mapKey"/>
       </genClasses>
       <genClasses ecoreClass="core.ecore#//mappings/IOneToMany"/>
       <genClasses ecoreClass="core.ecore#//mappings/IManyToMany"/>

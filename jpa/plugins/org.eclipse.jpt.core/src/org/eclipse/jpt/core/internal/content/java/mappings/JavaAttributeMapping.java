@@ -141,6 +141,8 @@ public abstract class JavaAttributeMapping extends JavaEObject
 	public boolean isIdMapping() {
 		return false;
 	}
+
+
 	/**
 	 * mapping implementation of column owner
 	 */

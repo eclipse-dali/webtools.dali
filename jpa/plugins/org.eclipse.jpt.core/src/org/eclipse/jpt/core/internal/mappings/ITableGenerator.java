@@ -401,6 +401,6 @@ public interface ITableGenerator extends IGenerator
 	EList<IUniqueConstraint> getUniqueConstraints();
 
 	void refreshDefaults(DefaultsContext defaultsContext);
-	
+
 	IUniqueConstraint createUniqueConstraint(int index);
 } // ITableGenerator

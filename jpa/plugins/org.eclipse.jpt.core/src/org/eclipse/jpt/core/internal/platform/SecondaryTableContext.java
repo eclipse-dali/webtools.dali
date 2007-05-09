@@ -14,7 +14,6 @@ import java.util.List;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
-import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;

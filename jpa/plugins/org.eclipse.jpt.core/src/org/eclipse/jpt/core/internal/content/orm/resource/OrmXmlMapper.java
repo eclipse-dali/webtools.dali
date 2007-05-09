@@ -113,6 +113,8 @@ public interface OrmXmlMapper
 	String MANY_TO_MANY = "many-to-many";  //$NON-NLS-1$
 	String MANY_TO_ONE = "many-to-one";  //$NON-NLS-1$
 	String MAP_KEY = "map-key";  //$NON-NLS-1$
+	String MAP_KEY__NAME = "name";  //$NON-NLS-1$
+	
 	String MAPPED_BY = "mapped-by";  //$NON-NLS-1$
 	String MAPPED_SUPERCLASS = "mapped-superclass";  //$NON-NLS-1$
 	String METADATA_COMPLETE = "metadata-complete";  //$NON-NLS-1$

@@ -256,6 +256,8 @@ public interface ITable extends IJpaSourceObject
 	Owner getOwner();
 
 	IUniqueConstraint createUniqueConstraint(int index);
+
+
 	/**
 	 * interface allowing tables to be owned by various objects
 	 */

@@ -1186,13 +1186,22 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>Java Multi Relationship Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 4;
+	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToMany <em>Java One To Many</em>}' class.
@@ -1275,6 +1284,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int JAVA_ONE_TO_MANY__ORDER_BY = JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+
+	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_ONE_TO_MANY__MAP_KEY = JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 
 	/**
 	 * The number of structural features of the '<em>Java One To Many</em>' class.
@@ -1366,6 +1384,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int JAVA_MANY_TO_MANY__ORDER_BY = JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+
+	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_MANY_TO_MANY__MAP_KEY = JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 
 	/**
 	 * The number of structural features of the '<em>Java Many To Many</em>' class.
@@ -4527,6 +4554,8 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		initEClass(javaQueryHintEClass, JavaQueryHint.class, "JavaQueryHint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaUniqueConstraintEClass, JavaUniqueConstraint.class, "JavaUniqueConstraint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 	}
+
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * Defines literals for the meta objects that represent

@@ -94,8 +94,10 @@ public interface ISecondaryTable extends ITable
 	 * Create a primary key join column with the given index
 	 */
 	IPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(int index);
-	
+
 	boolean containsSpecifiedPrimaryKeyJoinColumns();
+
+
 	class PrimaryKeyJoinColumnOwner implements IAbstractJoinColumn.Owner
 	{
 		private ISecondaryTable secondaryTable;

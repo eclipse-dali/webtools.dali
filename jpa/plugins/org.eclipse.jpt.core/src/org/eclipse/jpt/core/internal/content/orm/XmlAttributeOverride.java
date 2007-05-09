@@ -308,6 +308,8 @@ public class XmlAttributeOverride extends XmlOverride
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
+
+
 	public class ColumnOwner implements INamedColumn.Owner
 	{
 		public ITextRange getTextRange() {

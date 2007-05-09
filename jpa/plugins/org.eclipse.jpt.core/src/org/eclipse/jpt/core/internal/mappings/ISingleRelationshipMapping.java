@@ -146,6 +146,8 @@ public interface ISingleRelationshipMapping extends IRelationshipMapping
 	boolean containsSpecifiedJoinColumns();
 
 	IJoinColumn createJoinColumn(int index);
+
+
 	public class JoinColumnOwner implements IJoinColumn.Owner
 	{
 		private ISingleRelationshipMapping singleRelationshipMapping;

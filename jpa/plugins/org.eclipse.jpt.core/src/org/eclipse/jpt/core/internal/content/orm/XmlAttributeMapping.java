@@ -354,6 +354,8 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	public boolean isIdMapping() {
 		return false;
 	}
+
+
 	public class ColumnOwner implements INamedColumn.Owner
 	{
 		public ITextRange getTextRange() {

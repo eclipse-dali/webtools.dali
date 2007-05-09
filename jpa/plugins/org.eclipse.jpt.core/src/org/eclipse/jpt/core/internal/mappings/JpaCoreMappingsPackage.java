@@ -1315,13 +1315,22 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IMULTI_RELATIONSHIP_MAPPING__ORDER_BY = INON_OWNING_MAPPING_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IMULTI_RELATIONSHIP_MAPPING__MAP_KEY = INON_OWNING_MAPPING_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>IMulti Relationship Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IMULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT = INON_OWNING_MAPPING_FEATURE_COUNT + 3;
+	public static final int IMULTI_RELATIONSHIP_MAPPING_FEATURE_COUNT = INON_OWNING_MAPPING_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.IOneToMany <em>IOne To Many</em>}' class.
@@ -1404,6 +1413,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int IONE_TO_MANY__ORDER_BY = IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+
+	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IONE_TO_MANY__MAP_KEY = IMULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 
 	/**
 	 * The number of structural features of the '<em>IOne To Many</em>' class.
@@ -1495,6 +1513,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int IMANY_TO_MANY__ORDER_BY = IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+
+	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IMANY_TO_MANY__MAP_KEY = IMULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 
 	/**
 	 * The number of structural features of the '<em>IMany To Many</em>' class.
@@ -5023,6 +5050,19 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getMapKey <em>Map Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Map Key</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getMapKey()
+	 * @see #getIMultiRelationshipMapping()
+	 * @generated
+	 */
+	public EAttribute getIMultiRelationshipMapping_MapKey() {
+		return (EAttribute) iMultiRelationshipMappingEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.mappings.IOneToMany <em>IOne To Many</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6395,6 +6435,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		createEAttribute(iMultiRelationshipMappingEClass, IMULTI_RELATIONSHIP_MAPPING__FETCH);
 		createEReference(iMultiRelationshipMappingEClass, IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE);
 		createEReference(iMultiRelationshipMappingEClass, IMULTI_RELATIONSHIP_MAPPING__ORDER_BY);
+		createEAttribute(iMultiRelationshipMappingEClass, IMULTI_RELATIONSHIP_MAPPING__MAP_KEY);
 		iOneToManyEClass = createEClass(IONE_TO_MANY);
 		iManyToManyEClass = createEClass(IMANY_TO_MANY);
 		iSingleRelationshipMappingEClass = createEClass(ISINGLE_RELATIONSHIP_MAPPING);
@@ -6669,6 +6710,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEAttribute(getIMultiRelationshipMapping_Fetch(), this.getDefaultLazyFetchType(), "fetch", null, 0, 1, IMultiRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIMultiRelationshipMapping_JoinTable(), this.getIJoinTable(), null, "joinTable", null, 1, 1, IMultiRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIMultiRelationshipMapping_OrderBy(), this.getIOrderBy(), null, "orderBy", null, 1, 1, IMultiRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getIMultiRelationshipMapping_MapKey(), theEcorePackage.getEString(), "mapKey", null, 0, 1, IMultiRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iOneToManyEClass, IOneToMany.class, "IOneToMany", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iManyToManyEClass, IManyToMany.class, "IManyToMany", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iSingleRelationshipMappingEClass, ISingleRelationshipMapping.class, "ISingleRelationshipMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -6806,6 +6848,8 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		addEEnumLiteral(orderingTypeEEnum, OrderingType.PRIMARY_KEY);
 		addEEnumLiteral(orderingTypeEEnum, OrderingType.CUSTOM);
 	}
+
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * Defines literals for the meta objects that represent
@@ -7567,6 +7611,14 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference IMULTI_RELATIONSHIP_MAPPING__ORDER_BY = eINSTANCE.getIMultiRelationshipMapping_OrderBy();
+
+		/**
+		 * The meta object literal for the '<em><b>Map Key</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute IMULTI_RELATIONSHIP_MAPPING__MAP_KEY = eINSTANCE.getIMultiRelationshipMapping_MapKey();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.IOneToMany <em>IOne To Many</em>}' class.

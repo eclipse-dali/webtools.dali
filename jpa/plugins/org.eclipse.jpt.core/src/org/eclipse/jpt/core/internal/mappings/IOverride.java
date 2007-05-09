@@ -65,6 +65,8 @@ public interface IOverride extends IJpaSourceObject
 	boolean isVirtual();
 
 	Owner getOwner();
+
+
 	interface Owner
 	{
 		ITypeMapping getTypeMapping();

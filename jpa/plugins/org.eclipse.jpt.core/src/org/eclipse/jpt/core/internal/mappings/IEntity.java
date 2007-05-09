@@ -543,7 +543,7 @@ public interface IEntity extends ITypeMapping
 	boolean containsSpecifiedAssociationOverride(String name);
 
 	boolean containsSecondaryTable(String name);
-	
+
 	boolean containsSpecifiedSecondaryTable(String name);
 
 	ISecondaryTable createSecondaryTable(int index);
@@ -555,6 +555,8 @@ public interface IEntity extends ITypeMapping
 	INamedQuery createNamedQuery(int index);
 
 	INamedNativeQuery createNamedNativeQuery(int index);
+
+
 	abstract class OverrideOwner implements IOverride.Owner
 	{
 		protected IEntity entity;
@@ -571,6 +573,8 @@ public interface IEntity extends ITypeMapping
 			return entity.getTextRange();
 		}
 	}
+
+
 	class AttributeOverrideOwner extends OverrideOwner
 	{
 		public AttributeOverrideOwner(IEntity entity) {
@@ -597,6 +601,8 @@ public interface IEntity extends ITypeMapping
 			return entity.getDefaultAttributeOverrides().contains(override);
 		}
 	}
+
+
 	class AssociationOverrideOwner extends OverrideOwner
 	{
 		public AssociationOverrideOwner(IEntity entity) {
@@ -619,6 +625,8 @@ public interface IEntity extends ITypeMapping
 			return entity.getDefaultAssociationOverrides().contains(override);
 		}
 	}
+
+
 	class PrimaryKeyJoinColumnOwner implements IAbstractJoinColumn.Owner
 	{
 		private IEntity entity;

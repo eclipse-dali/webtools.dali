@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaPlatform;

@@ -53,7 +53,7 @@ public abstract class MultiRelationshipTranslator extends RelationshipTranslator
 	//placeholder until we support in our model, this allow us
 	//to keep the elements in the proper order
 	protected Translator createMapKeyTranslator() {
-		return new Translator(MAP_KEY , (EStructuralFeature) null);
+		return new Translator(MAP_KEY + "/" + MAP_KEY__NAME, JpaCoreMappingsPackage.eINSTANCE.getIMultiRelationshipMapping_MapKey(), DOM_ATTRIBUTE);
 	}
 
 }

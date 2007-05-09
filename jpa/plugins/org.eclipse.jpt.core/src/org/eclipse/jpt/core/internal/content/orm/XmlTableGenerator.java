@@ -1048,7 +1048,7 @@ public class XmlTableGenerator extends XmlGenerator implements ITableGenerator
 	public void refreshDefaults(DefaultsContext defaultsContext) {
 		setDefaultSchema((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TABLE_GENERATOR_SCHEMA_KEY));
 	}
-	
+
 	public IUniqueConstraint createUniqueConstraint(int index) {
 		return createXmlJavaUniqueConstraint(index);
 	}

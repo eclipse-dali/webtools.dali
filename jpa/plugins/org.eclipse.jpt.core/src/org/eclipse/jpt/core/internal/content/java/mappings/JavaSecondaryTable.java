@@ -332,12 +332,12 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
-	
 	@Override
 	protected void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		this.updateSpecifiedPrimaryKeyJoinColumnsFromJava(astRoot);
 	}
+
 	/**
 	 * here we just worry about getting the join column lists the same size;
 	 * then we delegate to the join columns to synch themselves up
@@ -380,7 +380,6 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		}
 	}
 
-	
 	/**
 	 * allow owners to verify the annotation
 	 */
@@ -414,7 +413,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	}
 
 	private JavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(int index) {
-		return JavaPrimaryKeyJoinColumn.createSecondaryTableJoinColumn(this, buildPkJoinColumnOwner(),  this.getMember(), index);
+		return JavaPrimaryKeyJoinColumn.createSecondaryTableJoinColumn(this, buildPkJoinColumnOwner(), this.getMember(), index);
 	}
 
 	protected IAbstractJoinColumn.Owner buildPkJoinColumnOwner() {

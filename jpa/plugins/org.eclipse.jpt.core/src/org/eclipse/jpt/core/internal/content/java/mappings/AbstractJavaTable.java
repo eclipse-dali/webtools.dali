@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.content.java.JavaEObject;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -875,7 +874,7 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		this.setSpecifiedCatalog((String) this.catalogAdapter.getValue(astRoot));
 		this.updateUniqueConstraintsFromJava(astRoot);
 	}
-	
+
 	/**
 	 * here we just worry about getting the unique constraints lists the same size;
 	 * then we delegate to the unique constraints to synch themselves up
@@ -917,7 +916,6 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 			}
 		}
 	}
-
 
 	public ITextRange getTextRange() {
 		ITextRange textRange = this.member.annotationTextRange(this.daa);

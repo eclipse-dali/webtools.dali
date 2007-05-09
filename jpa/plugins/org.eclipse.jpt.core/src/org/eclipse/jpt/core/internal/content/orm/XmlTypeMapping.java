@@ -609,7 +609,7 @@ public abstract class XmlTypeMapping extends XmlEObject implements ITypeMapping
 	public Table dbTable(String tableName) {
 		return null;
 	}
-	
+
 	public Schema dbSchema() {
 		return null;
 	}

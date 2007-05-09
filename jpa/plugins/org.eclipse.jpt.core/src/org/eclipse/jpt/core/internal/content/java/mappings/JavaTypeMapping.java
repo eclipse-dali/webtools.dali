@@ -222,7 +222,7 @@ public abstract class JavaTypeMapping extends JavaEObject
 	public Table dbTable(String tableName) {
 		return null;
 	}
-	
+
 	public Schema dbSchema() {
 		return null;
 	}

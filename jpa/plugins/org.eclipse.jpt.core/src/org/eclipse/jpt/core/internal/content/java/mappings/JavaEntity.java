@@ -1260,11 +1260,11 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	public boolean containsSecondaryTable(String name) {
 		return containsSecondaryTable(name, getSecondaryTables());
 	}
-	
+
 	public boolean containsSpecifiedSecondaryTable(String name) {
 		return containsSecondaryTable(name, getSpecifiedSecondaryTables());
 	}
-	
+
 	private boolean containsSecondaryTable(String name, List<ISecondaryTable> secondaryTables) {
 		for (ISecondaryTable secondaryTable : secondaryTables) {
 			String secondaryTableName = secondaryTable.getName();
@@ -2255,12 +2255,12 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		}
 		return null;
 	}
-	
+
 	@Override
 	public Schema dbSchema() {
 		return getTable().dbSchema();
 	}
-	
+
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		this.setSpecifiedName((String) this.getType().annotationElementValue(NAME_ADAPTER, astRoot));

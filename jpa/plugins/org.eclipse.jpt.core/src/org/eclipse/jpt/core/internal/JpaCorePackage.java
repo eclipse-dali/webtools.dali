@@ -1478,6 +1478,8 @@ public class JpaCorePackage extends EPackageImpl
 		// Create resource
 		createResource(eNS_URI);
 	}
+
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * Defines literals for the meta objects that represent

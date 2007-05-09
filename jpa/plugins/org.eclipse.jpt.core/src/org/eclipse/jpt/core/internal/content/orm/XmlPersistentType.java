@@ -897,6 +897,8 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	public ITextRange getAttributesTextRange() {
 		return getMapping().getAttributesTextRange();
 	}
+
+
 	private abstract class AttributeMappingsList<E>
 		extends EObjectContainmentEList<XmlAttributeMapping>
 	{
@@ -940,6 +942,8 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 			persistentAttributes().set(index, newObject.getPersistentAttribute());
 		}
 	}
+
+
 	private class SpecifiedAttributeMappingsList<E>
 		extends AttributeMappingsList<XmlAttributeMapping>
 	{
@@ -952,6 +956,8 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 			return getSpecifiedPersistentAttributes();
 		}
 	}
+
+
 	private class VirtualAttributeMappingsList<E>
 		extends AttributeMappingsList<XmlAttributeMapping>
 	{

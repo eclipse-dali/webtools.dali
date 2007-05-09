@@ -142,7 +142,7 @@ public abstract class JavaSingleRelationshipMapping
 				specifiedJoinColumnsChanged(notification);
 				break;
 			case JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__FETCH :
-				this.getFetchAdapter().setValue(((DefaultEagerFetchType) notification.getNewValue()).convertToJavaAnnotationValue());	
+				this.getFetchAdapter().setValue(((DefaultEagerFetchType) notification.getNewValue()).convertToJavaAnnotationValue());
 				break;
 			default :
 				break;

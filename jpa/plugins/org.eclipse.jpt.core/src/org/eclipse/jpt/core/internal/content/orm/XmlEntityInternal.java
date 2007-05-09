@@ -479,11 +479,11 @@ public class XmlEntityInternal extends XmlTypeMapping
 	public boolean containsSecondaryTable(String name) {
 		return containsSecondaryTable(name, getSecondaryTables());
 	}
-	
+
 	public boolean containsSpecifiedSecondaryTable(String name) {
 		return containsSecondaryTable(name, getSpecifiedSecondaryTables());
 	}
-	
+
 	private boolean containsSecondaryTable(String name, List<ISecondaryTable> secondaryTables) {
 		for (ISecondaryTable secondaryTable : secondaryTables) {
 			String secondaryTableName = secondaryTable.getName();
