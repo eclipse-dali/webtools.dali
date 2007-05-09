@@ -88,6 +88,26 @@
 		</objectContribution>
 		
 		<objectContribution
+			id="org.eclipse.jpt.ui.project.JPATools"
+			objectClass="org.eclipse.core.resources.IProject"
+			adaptable="true">
+			<menu
+				id="org.eclipse.jpt.ui.project.JPATools"
+				label="%jpaMenuName"/>
+
+			<enablement>
+					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa"/>
+			</enablement>
+
+			<action
+				class="org.eclipse.jpt.ui.internal.actions.GenerateDLLAction"
+				id="org.eclipse.jpt.ui.generateDLL"
+				label="%generateDLL"
+				menubarPath="org.eclipse.jpt.ui.project.JPATools/content"/>
+				
+		</objectContribution>
+		
+		<objectContribution
 			id="org.eclipse.jpt.ui.persistenceXmlActions"
 			objectClass="org.eclipse.core.resources.IFile"
 			nameFilter="persistence.xml">
