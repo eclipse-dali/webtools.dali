@@ -90,13 +90,20 @@ public class ShortCircuitAnnotationElementAdapter
 			if (newValue == null) {  // object => null
 				this.adapter.setValue(newValue);
 			} else {  // object => object
-				if (newValue.equals(oldValue)) {
+				if (this.valuesAreEqual(oldValue, newValue)) {
 					// do nothing
 				} else {
 					this.adapter.setValue(newValue);
 				}
 			}
 		}
+	}
+
+	/**
+	 * both values are non-null when this method is called
+	 */
+	protected boolean valuesAreEqual(Object oldValue, Object newValue) {
+		return newValue.equals(oldValue);
 	}
 
 }
