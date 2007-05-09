@@ -38,11 +38,37 @@ public class ASTNodeTextRange implements ITextRange {
 	}
 
 	public boolean includes(int index) {
-		return (this.getOffset() <= index) && (index <= this.end());
+		return (this.getOffset() <= index) && (index < this.end());
 	}
 
+	public boolean touches(int index) {
+		return this.includes(index) || (index == this.end());
+	}
+
+	/**
+	 * The end offset is "exclusive", i.e. the element at the end offset
+	 * is not included in the range.
+	 */
 	private int end() {
-		return this.getOffset() + this.getLength() - 1;
+		return this.getOffset() + this.getLength();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		if ( ! (o instanceof ITextRange)) {
+			return false;
+		}
+		ITextRange r = (ITextRange) o;
+		return (r.getOffset() == this.getOffset())
+				&& (r.getLength() == this.getLength());
+	}
+
+	@Override
+	public int hashCode() {
+		return this.getOffset() ^ this.getLength();
 	}
 
 	@Override

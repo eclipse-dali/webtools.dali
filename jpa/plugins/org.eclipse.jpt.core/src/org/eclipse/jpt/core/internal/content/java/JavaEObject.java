@@ -92,4 +92,12 @@ public abstract class JavaEObject extends JpaEObject
 	protected ITextRange elementTextRange(ITextRange elementTextRange) {
 		return (elementTextRange != null) ? elementTextRange : this.getTextRange();
 	}
+
+	/**
+	 * Convenience method. Return whether element's text range is not
+	 * null (meaning the element exists) and the specified position touches it.
+	 */
+	protected boolean elementTouches(ITextRange elementTextRange, int pos) {
+		return (elementTextRange != null) && elementTextRange.touches(pos);
+	}
 }

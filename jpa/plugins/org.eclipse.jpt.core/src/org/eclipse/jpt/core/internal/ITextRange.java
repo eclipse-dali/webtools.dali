@@ -26,22 +26,84 @@ public interface ITextRange {
 	int getOffset();
 	
 	/**
-	 * Returns the length of the text.
-	 *
-	 * @return the length of the text
+	 * Return the length of the text.
 	 */
 	int getLength();
 
 	/**
-	 * Return whether the range includes the specified index.
+	 * Return whether the range includes the character at the specified index.
 	 */
 	boolean includes(int index);
 
 	/**
-	 * Returns the line number of the text.
-	 * 
-	 * @return line number
+	 * Return whether the range touches an insertion cursor at the
+	 * specified index.
+	 */
+	boolean touches(int index);
+
+	/**
+	 * Return the line number of the text.
 	 */
 	int getLineNumber();
+
+	/**
+	 * Return true if the offsets and lengths are the same.
+	 */
+	boolean equals(Object obj);
+
+	/**
+	 * Return a hash code that corresponds to the #equals() contract.
+	 */
+	int hashCode();
+
+
+	/**
+	 * Empty implementation of text range.
+	 */
+	final class Empty implements ITextRange {
+		public static final ITextRange INSTANCE = new Empty();
+		public static ITextRange instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private Empty() {
+			super();
+		}
+		public int getOffset() {
+			return 0;
+		}
+		public int getLength() {
+			return 0;
+		}
+		public boolean includes(int index) {
+			return false;
+		}
+		public boolean touches(int index) {
+			return index == 0;  // ???
+		}
+		public int getLineNumber() {
+			return 0;
+		}
+		@Override
+		public boolean equals(Object o) {
+			if (o == this) {
+				return true;
+			}
+			if ( ! (o instanceof ITextRange)) {
+				return false;
+			}
+			ITextRange r = (ITextRange) o;
+			return (r.getOffset() == 0)
+					&& (r.getLength() == 0);
+		}
+		@Override
+		public int hashCode() {
+			return 0;
+		}
+		@Override
+		public String toString() {
+			return "ITextRange.Empty";
+		}
+	}
 
 }

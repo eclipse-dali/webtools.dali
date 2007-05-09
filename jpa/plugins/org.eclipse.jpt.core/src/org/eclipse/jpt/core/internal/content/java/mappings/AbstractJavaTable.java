@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.content.java.JavaEObject;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -792,6 +793,10 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
+	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
+	}
+
 	public ITextRange getSchemaTextRange() {
 		return this.elementTextRange(this.schemaDeclarationAdapter);
 	}
@@ -800,12 +805,20 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		return this.elementTextRange(this.schemaDeclarationAdapter, astRoot);
 	}
 
+	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.schemaDeclarationAdapter, pos, astRoot);
+	}
+
 	public ITextRange getCatalogTextRange() {
 		return this.elementTextRange(this.catalogDeclarationAdapter);
 	}
 
 	public ITextRange getCatalogTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.catalogDeclarationAdapter, astRoot);
+	}
+
+	public boolean catalogTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.catalogDeclarationAdapter, pos, astRoot);
 	}
 
 	//TODO should we allow setting through the ecore, that would make this method
@@ -941,20 +954,37 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter, astRoot));
 	}
 
-	/**
-	 * name, schema, catalog
-	 */
+	protected boolean elementTouches(DeclarationAnnotationElementAdapter elementAdapter, int pos) {
+		return this.elementTouches(this.member.annotationElementTextRange(elementAdapter), pos);
+	}
+
+	protected boolean elementTouches(DeclarationAnnotationElementAdapter elementAdapter, int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.member.annotationElementTextRange(elementAdapter, astRoot), pos);
+	}
+
 	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		if (this.isConnected()) {
-			if (this.getNameTextRange(astRoot).includes(pos)) {
-				return this.quotedCandidateNames(filter);
+			Iterator<String> result = this.connectedCandidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
 			}
-			if (this.getSchemaTextRange(astRoot).includes(pos)) {
-				return this.quotedCandidateSchemas(filter);
-			}
-			if (this.getCatalogTextRange(astRoot).includes(pos)) {
-				return this.quotedCandidateCatalogs(filter);
-			}
+		}
+		return null;
+	}
+
+	/**
+	 * called if the database is connected
+	 * name, schema, catalog
+	 */
+	protected Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		if (this.nameTouches(pos, astRoot)) {
+			return this.quotedCandidateNames(filter);
+		}
+		if (this.schemaTouches(pos, astRoot)) {
+			return this.quotedCandidateSchemas(filter);
+		}
+		if (this.catalogTouches(pos, astRoot)) {
+			return this.quotedCandidateCatalogs(filter);
 		}
 		return null;
 	}

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
+import org.eclipse.jpt.utility.internal.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -761,6 +763,32 @@ public class JavaJoinTable extends AbstractJavaTable implements IJoinTable
 		((JavaJoinColumn) joinColumn).moveAnnotation(index);
 	}
 
+	@Override
+	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		for (IJoinColumn column : this.getJoinColumns()) {
+			result = ((JavaJoinColumn) column).candidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		for (IJoinColumn column : this.getInverseJoinColumns()) {
+			result = ((JavaJoinColumn) column).candidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
+		return JavaUniqueConstraint.createJoinTableUniqueConstraint(getMember(), index);
+	}
+
 	// ********** IJoinTable implementation **********
 	public IJoinColumn createJoinColumn(int index) {
 		return this.createJavaJoinColumn(index);
@@ -784,10 +812,5 @@ public class JavaJoinTable extends AbstractJavaTable implements IJoinTable
 
 	public boolean containsSpecifiedInverseJoinColumns() {
 		return !this.getSpecifiedInverseJoinColumns().isEmpty();
-	}
-
-	@Override
-	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
-		return JavaUniqueConstraint.createJoinTableUniqueConstraint(getMember(), index);
 	}
 }

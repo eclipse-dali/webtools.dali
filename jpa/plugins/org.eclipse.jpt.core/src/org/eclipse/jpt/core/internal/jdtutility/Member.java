@@ -109,8 +109,8 @@ public abstract class Member {
 		return this.textRange(this.bodyDeclaration(astRoot));
 	}
 
-	ITextRange textRange(BodyDeclaration bodyDeclaration) {
-		return new ASTNodeTextRange(bodyDeclaration);
+	ITextRange textRange(ASTNode astNode) {
+		return (astNode == null) ? null : new ASTNodeTextRange(astNode);
 	}
 
 	/**
@@ -176,8 +176,7 @@ public abstract class Member {
 	 * If the annotation is missing, return null.
 	 */
 	public ITextRange annotationTextRange(DeclarationAnnotationAdapter adapter, CompilationUnit astRoot) {
-		Annotation annotation = this.annotation(adapter, astRoot);
-		return (annotation == null) ? null : new ASTNodeTextRange(annotation);
+		return this.textRange(this.annotation(adapter, astRoot));
 	}
 
 	/**
@@ -280,8 +279,7 @@ public abstract class Member {
 	 * If the element is missing, return null.
 	 */
 	public ITextRange annotationElementTextRange(DeclarationAnnotationElementAdapter adapter, CompilationUnit astRoot) {
-		Expression expression = this.annotationElementExpression(adapter, astRoot);
-		return (expression == null) ? null : new ASTNodeTextRange(expression);
+		return this.textRange(this.annotationElementExpression(adapter, astRoot));
 	}
 
 	/**
@@ -349,7 +347,7 @@ public abstract class Member {
 	private void edit_(Editor editor) throws JavaModelException, BadLocationException {
 		ICompilationUnit compilationUnit = this.compilationUnit();
 		if ( ! compilationUnit.isWorkingCopy()) {
-			compilationUnit.becomeWorkingCopy(null, null);
+			compilationUnit.becomeWorkingCopy(null);
 		}
 
 		ITextFileBuffer buffer = FileBuffers.getTextFileBufferManager().getTextFileBuffer(compilationUnit.getResource().getFullPath());

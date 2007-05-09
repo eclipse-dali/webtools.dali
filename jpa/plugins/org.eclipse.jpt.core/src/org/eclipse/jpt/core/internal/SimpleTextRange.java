@@ -39,11 +39,37 @@ public class SimpleTextRange implements ITextRange {
 	}
 
 	public boolean includes(int index) {
-		return (this.offset <= index) && (index <= this.end());
+		return (this.offset <= index) && (index < this.end());
 	}
 
+	public boolean touches(int index) {
+		return this.includes(index) || (index == this.end());
+	}
+
+	/**
+	 * The end offset is "exclusive", i.e. the element at the end offset
+	 * is not included in the range.
+	 */
 	private int end() {
-		return this.offset + this.length - 1;
+		return this.offset + this.length;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		if ( ! (o instanceof ITextRange)) {
+			return false;
+		}
+		ITextRange r = (ITextRange) o;
+		return (r.getOffset() == this.offset)
+				&& (r.getLength() == this.length);
+	}
+
+	@Override
+	public int hashCode() {
+		return this.offset ^ this.length;
 	}
 
 	@Override

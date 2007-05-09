@@ -33,6 +33,7 @@ import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.utility.internal.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -319,21 +320,7 @@ public abstract class JavaSingleRelationshipMapping
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_SINGLE_RELATIONSHIP_MAPPING__FETCH, oldFetch, fetch));
 	}
 
-	/**
-	 * Returns the value of the '<em><b>Join Columns</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.internal.mappings.IJoinColumn}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Join Columns</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getISingleRelationshipMapping_JoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IJoinColumn" containment="true" transient="true" changeable="false" volatile="true"
-	 * @generated NOT
-	 */
-	public EList getJoinColumns() {
+	public EList<IJoinColumn> getJoinColumns() {
 		return this.getSpecifiedJoinColumns().isEmpty() ? this.getDefaultJoinColumns() : this.getSpecifiedJoinColumns();
 	}
 
@@ -663,6 +650,21 @@ public abstract class JavaSingleRelationshipMapping
 
 	public boolean containsSpecifiedJoinColumns() {
 		return !this.getSpecifiedJoinColumns().isEmpty();
+	}
+
+	@Override
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		for (IJoinColumn column : this.getJoinColumns()) {
+			result = ((JavaJoinColumn) column).candidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
 	}
 
 	public IJoinColumn createJoinColumn(int index) {

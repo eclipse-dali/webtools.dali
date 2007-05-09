@@ -468,6 +468,14 @@ public abstract class JavaNamedColumn extends JavaEObject
 		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
+	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
+	}
+
+	protected boolean elementTouches(DeclarationAnnotationElementAdapter elementAdapter, int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.member.annotationElementTextRange(elementAdapter, astRoot), pos);
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		this.setSpecifiedName((String) this.nameAdapter.getValue(astRoot));
 		this.setColumnDefinition((String) this.columnDefinitionAdapter.getValue(astRoot));
@@ -501,9 +509,20 @@ public abstract class JavaNamedColumn extends JavaEObject
 	 */
 	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		if (this.isConnected()) {
-			if (this.getNameTextRange(astRoot).includes(pos)) {
-				return this.quotedCandidateNames(filter);
+			Iterator<String> result = this.connectedCandidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
 			}
+		}
+		return null;
+	}
+
+	/**
+	 * called if the database is connected
+	 */
+	protected Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		if (this.nameTouches(pos, astRoot)) {
+			return this.quotedCandidateNames(filter);
 		}
 		return null;
 	}
