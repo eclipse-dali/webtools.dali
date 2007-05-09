@@ -275,6 +275,10 @@ public class XmlSecondaryTable extends AbstractXmlTable
 	//when the XmlSecondaryTable is removed/added to the XmlEntity collection
 	}
 
+	public boolean containsSpecifiedPrimaryKeyJoinColumns() {
+		return !this.getSpecifiedPrimaryKeyJoinColumns().isEmpty();
+	}
+
 	public IPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(int index) {
 		return OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn(new ISecondaryTable.PrimaryKeyJoinColumnOwner(this));
 	}

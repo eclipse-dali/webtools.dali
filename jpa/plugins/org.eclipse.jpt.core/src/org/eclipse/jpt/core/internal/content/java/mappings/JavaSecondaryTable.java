@@ -421,6 +421,10 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		return new ISecondaryTable.PrimaryKeyJoinColumnOwner(this);
 	}
 
+	public boolean containsSpecifiedPrimaryKeyJoinColumns() {
+		return !this.getSpecifiedPrimaryKeyJoinColumns().isEmpty();
+	}
+
 	@Override
 	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
 		return JavaUniqueConstraint.createSecondaryTableUniqueConstraint(this, getMember(), index);

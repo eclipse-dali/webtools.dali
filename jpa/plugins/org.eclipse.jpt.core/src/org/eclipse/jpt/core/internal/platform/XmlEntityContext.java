@@ -247,7 +247,8 @@ public class XmlEntityContext extends XmlTypeContext
 		
 		for (Iterator<ISecondaryTable> i = getEntity().getVirtualSecondaryTables().iterator(); i.hasNext(); ) {
 			ISecondaryTable secondaryTable = i.next();
-			if (getXmlTypeMapping().isXmlMetadataComplete()) {
+			
+			if (getXmlTypeMapping().isXmlMetadataComplete() || getEntity().containsSpecifiedSecondaryTable(secondaryTable.getName())) {
 				secondaryTablesToRemove.add(secondaryTable);
 				continue;
 			}

@@ -154,7 +154,7 @@ public class EntityComposite extends BaseJpaComposite
 	private Control buildAttributeOverridesComposite(Composite composite) {
 	    Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
 	    section.setText(JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides);
-	    section.setExpanded(true);
+	    //section.setExpanded(true); //not going to expand this for now, it causes the scroll bar not to appear
 		Composite client = getWidgetFactory().createComposite(section);
 		section.setClient(client);
 		

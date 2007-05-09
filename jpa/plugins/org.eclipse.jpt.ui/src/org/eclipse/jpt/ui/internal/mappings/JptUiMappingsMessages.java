@@ -129,10 +129,11 @@ public class JptUiMappingsMessages extends NLS
 	public static String PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsDefault;
 	public static String PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsBothDefault;
 	public static String PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsFirstDefault;
-
 	public static String PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsSecDefault;
+	
 	public static String AttributeOverridesComposite_attributeOverrides;
 	public static String AttributeOverridesComposite_overridDefault;
+	public static String OverridesComposite_joinColumn;
 
 	public static String InheritanceComposite_strategy;	
 	public static String InheritanceComposite_discriminatorValue;	

@@ -543,6 +543,8 @@ public interface IEntity extends ITypeMapping
 	boolean containsSpecifiedAssociationOverride(String name);
 
 	boolean containsSecondaryTable(String name);
+	
+	boolean containsSpecifiedSecondaryTable(String name);
 
 	ISecondaryTable createSecondaryTable(int index);
 
