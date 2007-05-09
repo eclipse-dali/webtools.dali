@@ -197,7 +197,7 @@ public class JoinTableComposite extends BaseJpaComposite
 			}
 		});
 
-		this.joinColumnsComposite = new JoinColumnsComposite(composite, this.commandStack, getWidgetFactory());
+		this.joinColumnsComposite = new JoinColumnsComposite(composite, this.commandStack, getWidgetFactory(), JptUiMappingsMessages.JoinTableComposite_joinColumn);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -226,7 +226,7 @@ public class JoinTableComposite extends BaseJpaComposite
 				}
 			}
 		});
-		this.inverseJoinColumnsComposite = new JoinColumnsComposite(composite, this.commandStack, getWidgetFactory());
+		this.inverseJoinColumnsComposite = new JoinColumnsComposite(composite, this.commandStack, getWidgetFactory(), JptUiMappingsMessages.JoinTableComposite_inverseJoinColumn);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -236,25 +236,6 @@ public class JoinTableComposite extends BaseJpaComposite
 		this.inverseJoinColumnsComposite.getControl().setLayoutData(gridData);
 	}
 	
-	private String buildDefaultJoinColumnLabel(IJoinColumn joinColumn) {
-		return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());				
-	}
-	
-	private String buildJoinColumnLabel(IJoinColumn joinColumn) {
-		if (joinColumn.getSpecifiedName() == null) {
-			if (joinColumn.getSpecifiedReferencedColumnName() == null) {
-				return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsBothDefault, joinColumn.getName(),joinColumn.getReferencedColumnName());				
-			}
-			return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsFirstDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());
-		}
-		else if (joinColumn.getSpecifiedReferencedColumnName() == null) {
-			return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsSecDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());				
-		}
-		else {
-			return NLS.bind(JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParams, joinColumn.getName(), joinColumn.getReferencedColumnName());					
-		}
-	}
-
 	void addJoinColumn() {
 		JoinColumnInJoinTableDialog dialog = new JoinColumnInJoinTableDialog(this.getControl().getShell(), this.joinTable);
 		this.addJoinColumnFromDialog(dialog);

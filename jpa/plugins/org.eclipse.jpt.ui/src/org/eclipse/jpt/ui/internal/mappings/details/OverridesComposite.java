@@ -131,7 +131,7 @@ public class OverridesComposite extends BaseJpaComposite
 		gridData.horizontalAlignment = SWT.FILL;
 		this.overridePageBook.setLayoutData(gridData);
 
-		this.joinColumnsComposite = new JoinColumnsComposite(this.overridePageBook, this.commandStack, getWidgetFactory());
+		this.joinColumnsComposite = new JoinColumnsComposite(this.overridePageBook, this.commandStack, getWidgetFactory(), JptUiMappingsMessages.OverridesComposite_joinColumn);
 		this.columnComposite = new ColumnComposite(this.overridePageBook, this.commandStack, getWidgetFactory());
 		this.overridePageBook.showPage(this.joinColumnsComposite.getControl());
 	}

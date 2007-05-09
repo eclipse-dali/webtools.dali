@@ -63,10 +63,11 @@ public class JoinColumnsComposite extends BaseJpaComposite
 	private Button joinColumnsEditButton;
 	
 
-	public JoinColumnsComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
+	public JoinColumnsComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory, String groupTitle) {
 		super(parent, SWT.NULL, commandStack, widgetFactory);
 		this.joinColumnsOwnerListener = buildJoinColumnsOwnerListener();
 		this.joinColumnListener = buildJoinColumnListener();
+		this.joinColumnsGroup.setText(groupTitle);
 	}
 	
 	private Adapter buildJoinColumnsOwnerListener() {
@@ -94,7 +95,7 @@ public class JoinColumnsComposite extends BaseJpaComposite
 		this.joinColumnsGroup = 
 			getWidgetFactory().createGroup(
 				composite, 
-				JptUiMappingsMessages.JoinTableComposite_joinColumn);
+				"");
 		this.joinColumnsGroup.setLayout(new GridLayout(2, false));
 		GridData gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
