@@ -860,7 +860,51 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		this.setSpecifiedName((String) this.nameAdapter.getValue(astRoot));
 		this.setSpecifiedSchema((String) this.schemaAdapter.getValue(astRoot));
 		this.setSpecifiedCatalog((String) this.catalogAdapter.getValue(astRoot));
+		this.updateUniqueConstraintsFromJava(astRoot);
 	}
+	
+	/**
+	 * here we just worry about getting the unique constraints lists the same size;
+	 * then we delegate to the unique constraints to synch themselves up
+	 */
+	private void updateUniqueConstraintsFromJava(CompilationUnit astRoot) {
+		// synchronize the model join columns with the Java source
+		List<IUniqueConstraint> uniqueConstraints = this.getUniqueConstraints();
+		int persSize = uniqueConstraints.size();
+		int javaSize = 0;
+		boolean allJavaAnnotationsFound = false;
+		for (int i = 0; i < persSize; i++) {
+			JavaUniqueConstraint uniqueConstraint = (JavaUniqueConstraint) uniqueConstraints.get(i);
+			if (uniqueConstraint.annotation(astRoot) == null) {
+				allJavaAnnotationsFound = true;
+				break; // no need to go any further
+			}
+			uniqueConstraint.updateFromJava(astRoot);
+			javaSize++;
+		}
+		if (allJavaAnnotationsFound) {
+			// remove any model join columns beyond those that correspond to the Java annotations
+			while (persSize > javaSize) {
+				persSize--;
+				uniqueConstraints.remove(persSize);
+			}
+		}
+		else {
+			// add new model join columns until they match the Java annotations
+			while (!allJavaAnnotationsFound) {
+				JavaUniqueConstraint uniqueConstraint = this.createJavaUniqueConstraint(javaSize);
+				if (uniqueConstraint.annotation(astRoot) == null) {
+					allJavaAnnotationsFound = true;
+				}
+				else {
+					this.getUniqueConstraints().add(uniqueConstraint);
+					uniqueConstraint.updateFromJava(astRoot);
+					javaSize++;
+				}
+			}
+		}
+	}
+
 
 	public ITextRange getTextRange() {
 		ITextRange textRange = this.member.annotationTextRange(this.daa);
