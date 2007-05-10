@@ -66,6 +66,7 @@ public class GenerateEntitiesAction extends ProjectAction {
 					wizard.getPackageGeneratorConfig(),
 					wizard.getEntityGeneratorConfig(),
 					wizard.getSelectedTables(),
+					wizard.synchronizePersistenceXml(),
 					project,
 					new OverwriteConfirmer(this.targetPart.getSite().getShell())
 			);
@@ -88,6 +89,7 @@ public class GenerateEntitiesAction extends ProjectAction {
 		private final PackageGenerator.Config packageConfig;
 		private final EntityGenerator.Config entityConfig;
 		private final Collection selectedTables;
+		private final boolean synchronizePersistenceXml;
 		private final EntityGenerator.OverwriteConfirmer overwriteConfirmer;
 		private final IJpaProject project;
 		
@@ -95,6 +97,7 @@ public class GenerateEntitiesAction extends ProjectAction {
 				PackageGenerator.Config packageConfig,
 				EntityGenerator.Config entityConfig,
 				Collection selectedTables,
+				boolean synchronizePersistenceXml,
 				IJpaProject project,
 				EntityGenerator.OverwriteConfirmer overwriteConfirmer
 		) {
@@ -102,6 +105,7 @@ public class GenerateEntitiesAction extends ProjectAction {
 			this.packageConfig = packageConfig;
 			this.entityConfig = entityConfig;
 			this.selectedTables = selectedTables;
+			this.synchronizePersistenceXml = synchronizePersistenceXml;
 			this.overwriteConfirmer = overwriteConfirmer;
 			this.project = project;
 		}
@@ -110,11 +114,13 @@ public class GenerateEntitiesAction extends ProjectAction {
 			monitor.beginTask("", 1000);
 			try {
 				PackageGenerator.generateEntities(this.packageConfig, this.entityConfig, this.selectedTables, this.overwriteConfirmer, monitor);
-				// we currently only support *one* persistence.xml file per project
-				IJpaFile resource = project.getPlatform().validPersistenceXmlFiles().next();
-				if(resource != null){
-					SynchronizeClassesJob job = new SynchronizeClassesJob(resource.getFile());
-					job.schedule();
+				if (synchronizePersistenceXml) {
+					// we currently only support *one* persistence.xml file per project
+					IJpaFile resource = project.getPlatform().validPersistenceXmlFiles().next();
+					if (resource != null) {
+						SynchronizeClassesJob job = new SynchronizeClassesJob(resource.getFile());
+						job.schedule();
+					}
 				}
 			} catch (OperationCanceledException ex) {
 				// fall through and tell monitor we are done

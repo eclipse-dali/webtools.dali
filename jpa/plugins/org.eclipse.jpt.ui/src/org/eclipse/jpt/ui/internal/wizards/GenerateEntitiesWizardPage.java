@@ -69,6 +69,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 	private boolean serializable = true;
 	private boolean generateSerialVersionUID = true;
 	private boolean generateEmbeddedIdForCompoundPK = true;
+	private boolean synchronizePersistenceXml = false;
 	private Map overrideEntityNames;
 	
 	static final String[] TABLE_TABLE_COLUMN_PROPERTIES = { "table", "entityName" };
@@ -108,6 +109,18 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		createContainerControls(composite, nColumns);	
 		createPackageControls(composite, nColumns);	
 		
+		final Button synchronizeClassesCheckBox = new Button(composite, SWT.CHECK);
+		synchronizeClassesCheckBox.setText(JptUiMessages.GenerateEntitiesWizardPage_synchronizeClasses);
+		synchronizeClassesCheckBox.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// do nothing
+			}
+		
+			public void widgetSelected(SelectionEvent e) {
+				setSynchronizePersistenceXml(synchronizeClassesCheckBox.getSelection());
+			}
+		});
+		
 		Group tablesGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		tablesGroup.setLayout(new GridLayout(2, false));
 		tablesGroup.setText(JptUiMessages.GenerateEntitiesWizardPage_tables);
@@ -125,6 +138,10 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		GenerateEntitiesWizard generateEntitiesWizard = ((GenerateEntitiesWizard)this.getWizard());
 		Collection possibleTables = generateEntitiesWizard.getPossibleTables();
 		initTablesSelectionControl(possibleTables);
+		
+		//set initial selection state of the synchronize classes checkbox
+		synchronizeClassesCheckBox.setSelection(!generateEntitiesWizard.getJpaProject().isDiscoverAnnotatedClasses());
+		setSynchronizePersistenceXml(synchronizeClassesCheckBox.getSelection());
 		
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.tableTable.getControl(), IJpaHelpContextIds.DIALOG_GENERATE_ENTITIES_TABLES);
 		
@@ -407,6 +424,14 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		this.generateEmbeddedIdForCompoundPK = generateEmbeddedIdForCompoundPK;
 	}
 
+	boolean synchronizePersistenceXml() {
+		return this.synchronizePersistenceXml;
+	}
+	
+	private void setSynchronizePersistenceXml(boolean synchronizePersistenceXml){
+		this.synchronizePersistenceXml = synchronizePersistenceXml;
+	}
+	
 	/**
 	 * key = table
 	 * value = override entity name

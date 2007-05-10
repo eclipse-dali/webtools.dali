@@ -73,6 +73,8 @@ public class JptUiMessages extends NLS
 	public static String GenerateEntitiesWizardPage_chooseEntityTable;
 
 	public static String GenerateEntitiesWizardPage_generateEntities;
+	
+	public static String GenerateEntitiesWizardPage_synchronizeClasses;
 
 	public static String GenerateEntitiesWizardPage_tables;
 

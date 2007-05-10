@@ -39,6 +39,8 @@ public class GenerateEntitiesWizard extends Wizard {
 
 	private EntityGenerator.Config entityGeneratorConfig;
 
+	private boolean synchronizePersistenceXml;
+	
 	private Collection selectedTables;
 
 	public GenerateEntitiesWizard( IJpaProject jpaProject, IStructuredSelection selection) {
@@ -76,6 +78,8 @@ public class GenerateEntitiesWizard extends Wizard {
 		this.entityGeneratorConfig.setGenerateEmbeddedIdForCompoundPK( this.generateEntitiesPage.generateEmbeddedIdForCompoundPK());
 		this.entityGeneratorConfig.setOverrideEntityNames( this.generateEntitiesPage.getOverrideEntityNames());
 
+		this.synchronizePersistenceXml = this.generateEntitiesPage.synchronizePersistenceXml();
+		
 		this.selectedTables = this.generateEntitiesPage.getSelectedTables();
 		return true;
 	}
@@ -111,6 +115,10 @@ public class GenerateEntitiesWizard extends Wizard {
 		return this.jpaProject.connectionProfile();
 	}
 	
+	IJpaProject getJpaProject(){
+		return this.jpaProject;
+	}
+	
 	Schema getProjectUserSchema() {
 		ConnectionProfile profile = this.getProjectConnectionProfile();
 		return profile.getDatabase().schemaNamed( profile.getUserName());
@@ -126,6 +134,10 @@ public class GenerateEntitiesWizard extends Wizard {
 
 	public Collection getSelectedTables() {
 		return this.selectedTables;
+	}
+	
+	public boolean synchronizePersistenceXml(){
+		return this.synchronizePersistenceXml;
 	}
 	
     public boolean canFinish() {
