@@ -15,6 +15,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.ui.internal.BaseJpaPlatformUi;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 public class GenericPlatformUi extends BaseJpaPlatformUi
 {
@@ -23,12 +26,13 @@ public class GenericPlatformUi extends BaseJpaPlatformUi
 	}
 	
 	public void generateDLL(IJpaProject project, IStructuredSelection selection) {
-		this.displayWarning("Warning", "DLL Generation not supported");
+		this.displayWarning(JptUiMessages.GenericPlatformUiDialog_warningTitle, JptUiMessages.GenericPlatformUiDialog_warningText);
 	}
 
 	protected void displayWarning(String title, String message) {
 	    String formattedMessage = MessageFormat.format( message, (Object [])(new String [] { message}));
-	    MessageDialog.openWarning(this.getCurrentShell(), title, formattedMessage);	  
+	    Shell currentShell = Display.getCurrent().getActiveShell();
+	    MessageDialog.openWarning(currentShell, title, formattedMessage);	  
 	}
 	
 }

@@ -9,25 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.actions;
 
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.PlatformRegistry;
-import org.eclipse.ui.IWorkbenchPart;
 
 /**
  *  GenerateDLLAction
  */
 public class GenerateDLLAction extends ProjectAction {
-	private IWorkbenchPart targetPart;
-
+	
 	public GenerateDLLAction() {
 		super();
-	}
-
-	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-		super.setActivePart(action, targetPart);
-		this.targetPart = targetPart;
 	}
 
 	protected void execute(IJpaProject project) {
