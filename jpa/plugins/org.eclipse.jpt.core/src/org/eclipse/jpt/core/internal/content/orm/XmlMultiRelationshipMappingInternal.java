@@ -15,12 +15,15 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.ITypeMapping;
+import org.eclipse.jpt.core.internal.content.orm.resource.OrmXmlMapper;
+import org.eclipse.jpt.core.internal.emfutility.DOMUtilities;
 import org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
 import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.mappings.IOrderBy;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -178,6 +181,14 @@ public abstract class XmlMultiRelationshipMappingInternal
 		mappedBy = newMappedBy;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAPPED_BY, oldMappedBy, mappedBy));
+	}
+	
+	public ITextRange getMappedByTextRange() {
+		if (node == null) {
+			return typeMapping().getTextRange();
+		}
+		IDOMNode mappedByNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.MAPPED_BY);
+		return (mappedByNode == null) ? getTextRange() : buildTextRange(mappedByNode);
 	}
 
 	/**

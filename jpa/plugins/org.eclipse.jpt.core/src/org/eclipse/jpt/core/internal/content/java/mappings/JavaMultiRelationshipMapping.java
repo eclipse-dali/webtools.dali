@@ -243,6 +243,10 @@ public abstract class JavaMultiRelationshipMapping
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY, oldMappedBy, mappedBy));
 	}
+	
+	public ITextRange getMappedByTextRange() {
+		return this.elementTextRange(this.mappedByAdapter());
+	}
 
 	/**
 	 * Returns the value of the '<em><b>Fetch</b></em>' attribute.

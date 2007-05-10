@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.internal.mappings;
 
 import java.util.Iterator;
+import org.eclipse.jpt.core.internal.IAttributeMapping;
+import org.eclipse.jpt.core.internal.ITextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -56,4 +58,8 @@ public interface INonOwningMapping extends IRelationshipMapping
 	void setMappedBy(String value);
 
 	Iterator<String> possibleMappedByAttributeNames();
-} // INonOwningMapping
+	
+	boolean mappedByIsValid(IAttributeMapping mappedByMapping);
+	
+	ITextRange getMappedByTextRange();
+}

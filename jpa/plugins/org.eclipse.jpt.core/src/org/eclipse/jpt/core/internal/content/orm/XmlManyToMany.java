@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.content.orm;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.mappings.IManyToMany;
 
@@ -57,5 +58,13 @@ public class XmlManyToMany extends XmlMultiRelationshipMappingInternal
 	@Override
 	public int xmlSequence() {
 		return 6;
+	}
+	
+	
+	// ********** INonOwningMapping implementation **********
+	
+	public boolean mappedByIsValid(IAttributeMapping mappedByMapping) {
+		String mappedByKey = mappedByMapping.getKey();
+		return (mappedByKey == IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 	}
 }

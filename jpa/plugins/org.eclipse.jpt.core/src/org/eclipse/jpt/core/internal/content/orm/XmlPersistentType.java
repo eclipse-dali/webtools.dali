@@ -44,6 +44,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -876,13 +877,41 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 		}
 	}
 
+	protected Iterator<XmlPersistentAttribute> attributesNamed(final String attributeName) {
+		return new FilteringIterator<XmlPersistentAttribute>(getPersistentAttributes().iterator()) {
+			@Override
+			protected boolean accept(Object o) {
+				return attributeName.equals(((XmlPersistentAttribute) o).getName());
+			}
+		};
+	}
+	
 	public XmlPersistentAttribute attributeNamed(String attributeName) {
-		for (XmlPersistentAttribute attribute : getPersistentAttributes()) {
-			if (attributeName.equals(attribute.getName())) {
+		Iterator<XmlPersistentAttribute> attributes = attributesNamed(attributeName);
+		if (attributes.hasNext()) {
+			return attributes.next();
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public IPersistentAttribute resolveAttribute(String attributeName) {
+		Iterator<XmlPersistentAttribute> attributes = attributesNamed(attributeName);
+		if (attributes.hasNext()) {
+			XmlPersistentAttribute attribute = attributes.next();
+			
+			if (attributes.hasNext()) {
+				// more than one
+				return null;
+			} else {
 				return attribute;
 			}
+		} else if (parentPersistentType() != null) {
+			return parentPersistentType().resolveAttribute(attributeName);
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
@@ -104,6 +105,10 @@ public abstract class JavaAttributeMapping extends JavaEObject
 	public ITextRange getTextRange() {
 		ITextRange textRange = attribute.annotationTextRange(this.declarationAnnotationAdapter());
 		return (textRange == null) ? this.getPersistentAttribute().getTextRange() : textRange;
+	}
+	
+	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter elementAdapter) {
+		return this.elementTextRange(this.attribute.annotationElementTextRange(elementAdapter));
 	}
 
 	protected IType jdtType() {

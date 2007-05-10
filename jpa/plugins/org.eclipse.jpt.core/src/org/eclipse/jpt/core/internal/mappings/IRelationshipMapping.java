@@ -131,4 +131,4 @@ public interface IRelationshipMapping extends IAttributeMapping
 	 * @return
 	 */
 	IEntity getEntity();
-} // IRelationshipMapping
+}

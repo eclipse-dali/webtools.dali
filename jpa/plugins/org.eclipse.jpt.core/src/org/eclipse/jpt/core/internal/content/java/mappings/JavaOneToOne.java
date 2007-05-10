@@ -13,7 +13,9 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -153,6 +155,15 @@ public class JavaOneToOne extends JavaSingleRelationshipMapping
 		mappedBy = newMappedBy;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ONE_TO_ONE__MAPPED_BY, oldMappedBy, mappedBy));
+	}
+	
+	public boolean mappedByIsValid(IAttributeMapping mappedByMapping) {
+		String mappedByKey = mappedByMapping.getKey();
+		return (mappedByKey == IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+	}
+	
+	public ITextRange getMappedByTextRange() {
+		return this.elementTextRange(MAPPED_BY_ADAPTER);
 	}
 
 	/**

@@ -72,6 +72,7 @@ import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -735,14 +736,42 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 			}
 		};
 	}
-
+	
+	protected Iterator<JavaPersistentAttribute> attributesNamed(final String attributeName) {
+		return new FilteringIterator<JavaPersistentAttribute>(getAttributes().iterator()) {
+			@Override
+			protected boolean accept(Object o) {
+				return attributeName.equals(((JavaPersistentAttribute) o).getName());
+			}
+		};
+	}
+	
 	public JavaPersistentAttribute attributeNamed(String attributeName) {
-		for (JavaPersistentAttribute attribute : this.getAttributes()) {
-			if (attributeName.equals(attribute.getName())) {
+		Iterator<JavaPersistentAttribute> attributes = attributesNamed(attributeName);
+		if (attributes.hasNext()) {
+			return attributes.next();
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public IPersistentAttribute resolveAttribute(String attributeName) {
+		Iterator<JavaPersistentAttribute> attributes = attributesNamed(attributeName);
+		if (attributes.hasNext()) {
+			JavaPersistentAttribute attribute = attributes.next();
+			
+			if (attributes.hasNext()) {
+				// more than one
+				return null;
+			} else {
 				return attribute;
 			}
+		} else if (parentPersistentType() != null) {
+			return parentPersistentType().resolveAttribute(attributeName);
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 	public boolean containsOffset(int offset) {

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -82,5 +83,13 @@ public class JavaOneToMany extends JavaMultiRelationshipMapping
 	// ********** JavaMultiRelationshipMappingModelAdapter implementation **********
 	protected DeclarationAnnotationElementAdapter mappedByAdapter() {
 		return MAPPED_BY_ADAPTER;
+	}
+	
+	
+	// ********** INonOwningMapping implementation **********
+	
+	public boolean mappedByIsValid(IAttributeMapping mappedByMapping) {
+		String mappedByKey = mappedByMapping.getKey();
+		return (mappedByKey == IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 	}
 }

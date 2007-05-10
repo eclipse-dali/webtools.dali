@@ -12,10 +12,15 @@ package org.eclipse.jpt.core.internal.content.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.content.orm.resource.OrmXmlMapper;
+import org.eclipse.jpt.core.internal.emfutility.DOMUtilities;
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.mappings.IOneToOne;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -105,6 +110,19 @@ public class XmlOneToOne extends XmlSingleRelationshipMapping
 		mappedBy = newMappedBy;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_ONE__MAPPED_BY, oldMappedBy, mappedBy));
+	}
+	
+	public boolean mappedByIsValid(IAttributeMapping mappedByMapping) {
+		String mappedByKey = mappedByMapping.getKey();
+		return (mappedByKey == IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+	}
+	
+	public ITextRange getMappedByTextRange() {
+		if (node == null) {
+			return typeMapping().getTextRange();
+		}
+		IDOMNode mappedByNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.MAPPED_BY);
+		return (mappedByNode == null) ? getTextRange() : buildTextRange(mappedByNode);
 	}
 
 	/**

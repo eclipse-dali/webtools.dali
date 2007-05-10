@@ -60,6 +60,10 @@ public interface IJpaValidationMessages
 	
 	public static final String PERSISTENT_ATTRIBUTE_INVALID_MAPPING = "PERSISTENT_ATTRIBUTE_INVALID_MAPPING";
 	
+	public static final String MAPPING_UNRESOLVED_MAPPED_BY = "MAPPING_UNRESOLVED_MAPPED_BY";
+	
+	public static final String MAPPING_INVALID_MAPPED_BY = "MAPPING_INVALID_MAPPED_BY";
+	
 	public static final String TABLE_UNRESOLVED_SCHEMA = "TABLE_UNRESOLVED_SCHEMA";
 	
 	public static final String TABLE_UNRESOLVED_NAME = "TABLE_UNRESOLVED_NAME";
