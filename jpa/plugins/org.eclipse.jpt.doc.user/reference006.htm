@@ -2,16 +2,16 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 3, 2007 9:19:12 -->
+<!-- Run date = May 9, 2007 10:03:45 -->
 <meta name="OAC_IGNORE_SKIP_NAV" content="true" />
-<title>Join Columns Information</title>
+<title>Join Table Information</title>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="generator" content="Oracle DARB XHTML Converter - Version 4.5.3 Build 02" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
 <meta name="robots" content="all" scheme="http://www.robotstxt.org/" />
-<meta name="doctitle" content="Join Columns Information" />
+<meta name="doctitle" content="Join Table Information" />
 <meta name="relnum" content="Release 1.0.0" />
 <meta name="partnum" content="" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
@@ -20,32 +20,43 @@
 <link rel="contents" href="toc.htm" title="Contents" type="text/html" />
 </head>
 <body>
-<p><a id="CACFCEJC" name="CACFCEJC"></a></p>
+<p><a id="CACBAEBC" name="CACBAEBC"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
 <tr valign="bottom">
 <td align="left" width="86%">
-<h1>Join Columns Information</h1>
+<h1>Join Table Information</h1>
 </td>
 </tr>
 </table>
-<p>This table lists the fields available in the <span class="gui-object-title">Join Table</span> area in <span class="gui-object-title">JPA Details</span> view for <a href="tasks012.htm#BABHFAFJ">Many-to-one mapping</a> and <a href="tasks014.htm#BABFHBCJ">One-to-one mapping</a> mapping types.</p>
+<p>Use area to specify a mapped column for joining an entity association. By default, the mapping is assumed to have a single join.</p>
+<p>This table lists the fields available on the <span class="gui-object-title">Join Table</span> area in <span class="gui-object-title">the JPA Details</span> view for <a href="tasks013.htm#BABHGEBD">One-to-many mapping</a> and <a href="tasks011.htm#BABEIEGD">Many-to-many mapping</a> mapping types.</p>
 <div class="inftblruleinformal">
-<table class="RuleInformal" title="This table describes the options on the Join Columns tab." summary="This table describes the options on the Join Columns tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<table class="RuleInformal" title="This table describes the options on the Join Table tab." summary="This table describes the options on the Join Table tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t8">Property</th>
-<th align="left" valign="bottom" id="r1c2-t8">Description</th>
-<th align="left" valign="bottom" id="r1c3-t8">Default</th>
+<th align="left" valign="bottom" id="r1c1-t7">Property</th>
+<th align="left" valign="bottom" id="r1c2-t7">Description</th>
+<th align="left" valign="bottom" id="r1c3-t7">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t8" headers="r1c1-t8">Join Column</td>
-<td align="left" headers="r2c1-t8 r1c2-t8"><a id="sthref221" name="sthref221"></a><a id="sthref222" name="sthref222"></a>Specify a mapped column for joining an entity association. This field corresponds to the <code>@JoinColum</code> attribute.
+<td align="left" id="r2c1-t7" headers="r1c1-t7">Name</td>
+<td align="left" headers="r2c1-t7 r1c2-t7">Name of the join table that contains the foreign key column.</td>
+<td align="left" headers="r2c1-t7 r1c3-t7">By default, the name is assumed to be the primary tables associated with the entities concatenated with an underscore.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t7" headers="r1c1-t7"><a id="CACBBDFG" name="CACBBDFG"></a>Join Columns</td>
+<td align="left" headers="r3c1-t7 r1c2-t7"><a id="sthref217" name="sthref217"></a><a id="sthref218" name="sthref218"></a>Specify a mapped column for joining an entity association. This field corresponds to the <code>@JoinColum</code> attribute.
 <p>Select <span class="bold">Override Default</span>, then Add, Edit, or Remove the join columns.</p>
 </td>
-<td align="left" headers="r2c1-t8 r1c3-t8">By default, the mapping is assumed to have a single join.</td>
+<td align="left" headers="r3c1-t7 r1c3-t7">By default, the mapping is assumed to have a single join.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t7" headers="r1c1-t7">Inverse Join Columns</td>
+<td align="left" headers="r4c1-t7 r1c2-t7">Select <span class="bold">Override Default</span>, then Add, Edit, or Remove the join columns.</td>
+<td align="left" headers="r4c1-t7 r1c3-t7"><br /></td>
 </tr>
 </tbody>
 </table>

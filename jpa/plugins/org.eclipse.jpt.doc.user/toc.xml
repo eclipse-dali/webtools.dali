@@ -41,7 +41,7 @@
         <topic href="tasks001.htm#CIHEJAIE" label="Working with persistence.xml file" />
         <topic href="tasks002.htm#CIHFEBAI" label="Synchronizing classes" />
       </topic>
-      <topic href="task_manage_persistence001.htm#CIHDGDCD" label="Managing the orm.xml file">
+      <topic href="task_manage_orm.htm#CIHDGDCD" label="Managing the orm.xml file">
         <topic href="tasks003.htm#CIHBCDCE" label="Working with orm.xml file" />
       </topic>
       <topic href="task_add_persistence.htm#BABHICAI" label="Adding persistence to a class">
@@ -49,7 +49,8 @@
         <topic href="tasks005.htm#BABFEICE" label="Embeddable" />
         <topic href="tasks006.htm#BABDAGCI" label="Mapped superclass" />
       </topic>
-      <topic href="task_inheritance.htm#CIHCCCJD" label="Specifying entity inheritance" />
+      <topic href="task_inheritance.htm#CIHGBIEI" label="Specifying additional tables" />
+      <topic href="task_inheritance001.htm#CIHCCCJD" label="Specifying entity inheritance" />
       <topic href="task_mapping.htm#BABDGBIJ" label="Mapping an entity">
         <topic href="tasks007.htm#BABBABCE" label="Basic mapping" />
         <topic href="tasks008.htm#BABCBHDF" label="Embedded mapping" />
@@ -63,7 +64,6 @@
         <topic href="tasks016.htm#BABHIBII" label="Version mapping" />
       </topic>
       <topic href="tasks017.htm#BABBAGFI" label="Generating entities from tables" />
-      <topic href="task_generate_ddl.htm#BABJJIAA" label="Generating tables (DDL scripts) from entities" />
       <topic href="tasks018.htm#BABFAIBA" label="Validating mappings and reporting problems">
         <topic href="tasks019.htm#CIHFEDEI" label="Error messages" />
         <topic href="tasks020.htm#CIHGEAIJ" label="Warning messages" />
@@ -80,15 +80,16 @@
       <topic label="Property pages">
         <topic href="ref_persistence_prop_view.htm#BABFAEBB" label="JPA Details view (for entities)">
           <topic href="reference003.htm#CACCAGGC" label="General information" />
-          <topic href="reference004.htm#CACFHGHE" label="Inheritance information" />
+          <topic href="reference004.htm#CACBHIDA" label="Secondary table information" />
+          <topic href="reference005.htm#CACFHGHE" label="Inheritance information" />
         </topic>
         <topic href="ref_persistence_map_view.htm#BABIFBAF" label="JPA Details view (for attributes)">
           <topic href="ref_mapping_general.htm#CACBHFIJ" label="General information" />
-          <topic href="reference005.htm#CACBAEBC" label="Join Table Information" />
-          <topic href="reference006.htm#CACFCEJC" label="Join Columns Information" />
+          <topic href="reference006.htm#CACBAEBC" label="Join Table Information" />
+          <topic href="reference007.htm#CACFCEJC" label="Join Columns Information" />
           <topic href="ref_primary_key.htm#CACFCCAB" label="Primary Key Generation information" />
         </topic>
-        <topic href="reference007.htm#CACGDGHC" label="JPA Details view (for orm.xml)">
+        <topic href="ref_details_orm.htm#CACGDGHC" label="JPA Details view (for orm.xml)">
           <topic href="reference008.htm#CACCACGH" label="General information" />
           <topic href="reference009.htm#CACEAGBG" label="Persistence Unit information" />
         </topic>
@@ -102,12 +103,12 @@
         <topic href="reference012.htm#CACCGEHC" label="Edit Join Columns Dialog" />
         <topic href="reference013.htm#CACHJAGB" label="Database Connection Dialog" />
       </topic>
-      <topic href="ref_persistence_perspective.htm#BABIFBDB" label="JPA perspective" />
+      <topic href="ref_persistence_perspective.htm#BABIFBDB" label="JPA Development perspective" />
       <topic label="Icons and buttons">
         <topic href="reference015.htm#CACGEACG" label="Icons" />
         <topic href="reference016.htm#CACDJCEI" label="Buttons" />
       </topic>
-      <topic href="reference017.htm#sthref247" label="Javadoc" />
+      <topic href="reference017.htm#sthref245" label="Javadoc" />
       <topic href="reference018.htm#CACBBDIB" label="Dali Developer Documentation" />
     </topic>
     <topic href="tips_and_tricks.htm" label="Tips and tricks" />

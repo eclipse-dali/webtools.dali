@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 3, 2007 9:19:11 -->
+<!-- Run date = May 9, 2007 10:03:44 -->
 <meta name="OAC_IGNORE_SKIP_NAV" content="true" />
 <title>One-to-one mapping</title>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
@@ -29,7 +29,7 @@
 </td>
 </tr>
 </table>
-<p><a id="sthref140" name="sthref140"></a><a id="sthref141" name="sthref141"></a><a id="sthref142" name="sthref142"></a><a id="sthref143" name="sthref143"></a>Use a <span class="bold">One-to-One Mapping</span> to define a relationship with one-to-many multiplicity.</p>
+<p><a id="sthref143" name="sthref143"></a><a id="sthref144" name="sthref144"></a><a id="sthref145" name="sthref145"></a><a id="sthref146" name="sthref146"></a>Use a <span class="bold">One-to-One Mapping</span> to define a relationship with one-to-many multiplicity.</p>
 <ol type="1" start="1">
 <li>
 <p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
@@ -43,45 +43,22 @@
 <table class="RuleInformal" title="This table lists the fields in the Persistence Properties view for this mapping." summary="This table lists the fields in the Persistence Properties view for this mapping." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t14">Property</th>
-<th align="left" valign="bottom" id="r1c2-t14">Description</th>
-<th align="left" valign="bottom" id="r1c3-t14">Default</th>
+<th align="left" valign="bottom" id="r1c1-t15">Property</th>
+<th align="left" valign="bottom" id="r1c2-t15">Description</th>
+<th align="left" valign="bottom" id="r1c3-t15">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t14" headers="r1c1-t14">Target Entity</td>
-<td align="left" headers="r2c1-t14 r1c2-t14">The entity to which this attribute is mapped.</td>
-<td align="left" headers="r2c1-t14 r1c3-t14">null
+<td align="left" id="r2c1-t15" headers="r1c1-t15">Target Entity</td>
+<td align="left" headers="r2c1-t15 r1c2-t15">The entity to which this attribute is mapped.</td>
+<td align="left" headers="r2c1-t15 r1c3-t15">null
 <p>You do not need to explicitly specify the target entity, since it can be inferred from the type of object being referenced.</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t14" headers="r1c1-t14">Cascade Type</td>
-<td align="left" headers="r3c1-t14 r1c2-t14">See <a href="ref_mapping_general.htm#CACJAIHB">"Cascade Type"</a> for details.
-<ul>
-<li type="disc">
-<p>Default</p>
-</li>
-<li type="disc">
-<p>All</p>
-</li>
-<li type="disc">
-<p>Persist</p>
-</li>
-<li type="disc">
-<p>Merge</p>
-</li>
-<li type="disc">
-<p>Remove</p>
-</li>
-</ul>
-</td>
-<td align="left" headers="r3c1-t14 r1c3-t14">Default</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r4c1-t14" headers="r1c1-t14">Fetch Type</td>
-<td align="left" headers="r4c1-t14 r1c2-t14">Defines how data is loaded from the database. See <a href="ref_mapping_general.htm#CACGGGHB">"Fetch Type"</a> for details.
+<td align="left" id="r3c1-t15" headers="r1c1-t15">Fetch Type</td>
+<td align="left" headers="r3c1-t15 r1c2-t15">Defines how data is loaded from the database. See <a href="ref_mapping_general.htm#CACGGGHB">"Fetch Type"</a> for details.
 <ul>
 <li type="disc">
 <p>Eager</p>
@@ -91,40 +68,35 @@
 </li>
 </ul>
 </td>
-<td align="left" headers="r4c1-t14 r1c3-t14">Eager</td>
+<td align="left" headers="r3c1-t15 r1c3-t15">Eager</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t14" headers="r1c1-t14">Optional</td>
-<td align="left" headers="r5c1-t14 r1c2-t14">Specifies if this field is can be null.</td>
-<td align="left" headers="r5c1-t14 r1c3-t14">Yes</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r6c1-t14" headers="r1c1-t14">Mapped By</td>
-<td align="left" headers="r6c1-t14 r1c2-t14">The database field that owns the relationship.</td>
-<td align="left" headers="r6c1-t14 r1c3-t14"><br /></td>
+<td align="left" id="r4c1-t15" headers="r1c1-t15">Mapped By</td>
+<td align="left" headers="r4c1-t15 r1c2-t15">The database field that owns the relationship.</td>
+<td align="left" headers="r4c1-t15 r1c3-t15"><br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
 <!-- class="inftblruleinformal" --></li>
 <li>
-<p>Use this table to complete the <a href="reference006.htm#CACFCEJC">Join Columns Information</a> fields in the <span class="gui-object-title">JPA Details</span> view.</p>
+<p>Use this table to complete the <a href="reference007.htm#CACFCEJC">Join Columns Information</a> fields in the <span class="gui-object-title">JPA Details</span> view.</p>
 <div class="inftblruleinformal">
 <table class="RuleInformal" title="This table lists the fields in the Persistence Properties view for this mapping." summary="This table lists the fields in the Persistence Properties view for this mapping." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t15">Property</th>
-<th align="left" valign="bottom" id="r1c2-t15">Description</th>
-<th align="left" valign="bottom" id="r1c3-t15">Default</th>
+<th align="left" valign="bottom" id="r1c1-t16">Property</th>
+<th align="left" valign="bottom" id="r1c2-t16">Description</th>
+<th align="left" valign="bottom" id="r1c3-t16">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t15" headers="r1c1-t15">Join Column</td>
-<td align="left" headers="r2c1-t15 r1c2-t15"><a id="sthref144" name="sthref144"></a><a id="sthref145" name="sthref145"></a>Specify a mapped column for joining an entity association. This field corresponds to the <code>@JoinColum</code> attribute.
+<td align="left" id="r2c1-t16" headers="r1c1-t16">Join Column</td>
+<td align="left" headers="r2c1-t16 r1c2-t16"><a id="sthref147" name="sthref147"></a><a id="sthref148" name="sthref148"></a>Specify a mapped column for joining an entity association. This field corresponds to the <code>@JoinColum</code> attribute.
 <p>Select <span class="bold">Override Default</span>, then Add, Edit, or Remove the join columns.</p>
 </td>
-<td align="left" headers="r2c1-t15 r1c3-t15">By default, the mapping is assumed to have a single join.</td>
+<td align="left" headers="r2c1-t16 r1c3-t16">By default, the mapping is assumed to have a single join.</td>
 </tr>
 </tbody>
 </table>

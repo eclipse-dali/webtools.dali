@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 3, 2007 9:19:07 -->
+<!-- Run date = May 9, 2007 10:03:39 -->
 <meta name="OAC_IGNORE_SKIP_NAV" content="true" />
 <title>Creating a Java persistent entity</title>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
@@ -38,37 +38,33 @@
 <p>On the Java Class page, enter a package name (such as <code>quickstart.demo.model</code>), class name (such as <code>Address</code>), and click <span class="bold">Finish</span>.</p>
 </li>
 <li>
-<p>synchronize <code>persistence.xml</code></p>
-<p><span class="italic">informationPending...</span></p>
-</li>
-<li>
 <p>Right-click the <code>Address.java</code> file in the Package Explorer and select <span class="bold">Open</span>.</p>
 <div class="figure"><a id="sthref11" name="sthref11"></a>
 <p class="titleinfigure">Open Address.java</p>
-<img src="img/address_java_open.png" alt="" title="" /><br /></div>
+<img src="img/address_java_open.png" alt="Opening a Java class." title="Opening a Java class." /><br /></div>
 <!-- class="figure" --></li>
 <li>
 <p>Select the <code>Address</code> entity in the JPA Structure view.</p>
 <div class="figure"><a id="sthref12" name="sthref12"></a>
 <p class="titleinfigure">Address Class in JPA Structure View</p>
-<img src="img/address_jpa_structure.png" alt="" title="" /><br /></div>
+<img src="img/address_jpa_structure.png" alt="Address class in JPA Structure view." title="Address class in JPA Structure view." /><br /></div>
 <!-- class="figure" --></li>
 <li>
 <p>In the JPA Details view, in the Map As field, select <span class="bold">Entity</span>. In the Table field, select the <span class="bold">ADDRESS</span> database table.</p>
 <div class="figure"><a id="sthref13" name="sthref13"></a>
 <p class="titleinfigure">Address Entity in JPA Details View</p>
-<img src="img/address_jpa_details.png" alt="" title="" /><br /></div>
+<img src="img/address_jpa_details.png" alt="JPA Details view." title="JPA Details view." /><br /></div>
 <!-- class="figure" --></li>
 </ol>
 <p>Eclipse creates the persistent entity and adds the <code>@Entity</code> annotation to the class.</p>
 <div class="figure"><a id="sthref14" name="sthref14"></a>
 <p class="titleinfigure">Address Entity</p>
-<img src="img/java_editor_address.png" alt="This figure shows the Java editor with the Address entity." title="This figure shows the Java editor with the Address entity." /><br /></div>
+<img src="img/java_editor_address.png" alt="Java editor with the Address entity." title="Java editor with the Address entity." /><br /></div>
 <!-- class="figure" -->
 <p>Eclipse also displays the <span class="bold">Address</span> entity in the JPA Structure view:</p>
 <div class="figure"><a id="sthref15" name="sthref15"></a>
 <p class="titleinfigure">Address Entity</p>
-<img src="img/persistence_outline_entity.png" alt="This figure shows the Address entity in the Persistence Outline view." title="This figure shows the Address entity in the Persistence Outline view." /><br /></div>
+<img src="img/persistence_outline_entity.png" alt="Address entity in the JPA Structure view." title="Address entity in the JPA Structure view." /><br /></div>
 <!-- class="figure" -->
 <p>After creating the entity, you must associate it with a database table.</p>
 <ol type="1" start="1">
@@ -91,10 +87,14 @@ Depending on your database connection type, you may need to specify the <span cl
 <br /></div>
 <!-- class="inftblnote" --></div>
 <div class="figure"><a id="sthref16" name="sthref16"></a>
-<p class="titleinfigure">Persistence Properties View for Address Entity</p>
-<img src="img/persistence_view_address.png" alt="This figure shows the Table selection for the Address entity in the Persistence Properties view." title="This figure shows the Table selection for the Address entity in the Persistence Properties view." /><br /></div>
+<p class="titleinfigure">JPA Details View for Address Entity</p>
+<img src="img/persistence_view_address.png" alt="Table selection for the Address entity in the JPA Details view." title="Table selection for the Address entity in the JPA Details view." /><br /></div>
 <!-- class="figure" --></li>
 </ol>
+<p>After associating the entity with the database table, you must update the <code>persistence.xml</code> file to include this JPA entity.</p>
+<p>Right-click the <code>persistence.xml</code> file in the Package Explorer and select <span class="bold">JPA Tools &gt; Synchronize Classes</span>. Dali adds the following to the <code>persistence.xml</code> file:</p>
+<p><code>&lt;class&gt;quickstart.demo.model.Address&lt;/class&gt;</code></p>
+<p>&nbsp;</p>
 <p>Now that you have created a persistent entity, you can continue with <a href="getting_started005.htm#BABHACAF">Mapping an entity</a> to map the entity's fields to columns on the database table.</p>
 </div>
 <!-- class="sect2" -->

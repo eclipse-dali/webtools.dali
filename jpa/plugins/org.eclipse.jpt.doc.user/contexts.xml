@@ -377,32 +377,43 @@
 		<topic label="Understanding persistence" href="concept_persistence.htm"/>
 	</context>
 	<context id="orm_package">
-		<description>.</description>
-		<topic label="JPA Details" href="ref_persistence_prop_view.htm"/>
-	</context>
-	<context id="orm_package">
-		<description>.</description>
-		<topic label="JPA Details" href="ref_persistence_prop_view.htm"/>
+		<description>The Java package that contains the persitent entities to which the orm.xml file applies.</description>
+		<topic label="Managing the orm.xml file" href="task_manage_orm.htm"/>
+		<topic label="JPA Details" href="ref_details_orm.htm"/>
 	</context>
 	<context id="orm_schema">
-		<description>.</description>
-		<topic label="JPA Details" href="ref_persistence_prop_view.htm"/>
+		<description>The database schema to use as the default for all entities managed by this persistence unit.</description>
+		<topic label="Managing the orm.xml file" href="task_manage_orm.htm"/>
+		<topic label="JPA Details" href="ref_details_orm.htm"/>
 	</context>
 	<context id="orm_catalog">
-		<description>.</description>
-		<topic label="JPA Details" href="ref_persistence_prop_view.htm"/>
+		<description>The database catalog to use as the default for all entities managed by this persistence unit.</description>
+		<topic label="Managing the orm.xml file" href="task_manage_orm.htm"/>
+		<topic label="JPA Details" href="ref_details_orm.htm"/>
 	</context>
 	<context id="orm_access">
-		<description>.</description>
-		<topic label="JPA Details" href="ref_persistence_prop_view.htm"/>
+		<description>The default access method for variables in this project: Property or Field.</description>
+		<topic label="Managing the orm.xml file" href="task_manage_orm.htm"/>
+		<topic label="JPA Details" href="ref_details_orm.htm"/>
 	</context>
 	<context id="orm_cascade">
-		<description>.</description>
-		<topic label="JPA Details" href="ref_persistence_prop_view.htm"/>
+		<description>Adds cascade-persist to the set of cascade options in entity relationships of the persistence unit.</description>
+		<topic label="Managing the orm.xml file" href="task_manage_orm.htm"/>
+		<topic label="JPA Details" href="ref_details_orm.htm"/>
 	</context>
 	<context id="orm_xml">
-		<description>.</description>
-		<topic label="JPA Details" href="ref_persistence_prop_view.htm"/>
+		<description>Specifies that the Java classes in this persistence unit are fully specified by their metadata. Any annotations will be ignored.</description>
+		<topic label="Managing the orm.xml file" href="task_manage_orm.htm"/>
+		<topic label="JPA Details" href="ref_details_orm.htm"/>
+	</context>
+	<context id="dialog_JPAPlatform">
+		<description>Specify the vendor-specific JPA implementation.Default is Generic..</description>
+		<topic label="JPA Facet page" href="ref_jpa_facet.htm"/>
+	</context>
+	<context id="dialog_createORM">
+		<description>Create an initial orm.xml file. Use this file to specify project and persistence unit defaults.</description>
+		<topic label="Managing the orm.xml file" href="task_manage_orm.htm"/>
+		<topic label="JPA Facet page" href="ref_jpa_facet.htm"/>
 	</context>
 
 

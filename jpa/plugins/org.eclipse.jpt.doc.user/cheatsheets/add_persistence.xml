@@ -1,53 +1,63 @@
-<?xml version="1.0" encoding="UTF-8" ?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <cheatsheet title="Create a JPA Project">
- <intro href="/org.eclipse.platform.doc.user/reference/ref-cheatsheets.htm">
-  <description>
-This cheat sheet will automatically launch wizards, perform actions, and guide you through the steps to create a JPA project. 
+   <intro href="/org.eclipse.platform.doc.user/reference/ref-cheatsheets.htm">
+      <description>
+         This cheat sheet will automatically launch wizards, perform actions, and guide you through the steps to create a JPA project. 
+
 To learn more about using cheat sheets, or to see a list of available cheat sheets, click Help (?). 
-To start work working on this cheat sheet click the "Click to Begin" button below. 
-Let's get started!
-  </description>
- </intro>
- <item title="Setup the enviroment" skip="true">
-  <description>Your environment must be set up before you can perform the steps in this cheat sheet.
-  Create a database connection.
-  informationPending
-  </description>
- </item>
- <item href="/org.eclipse.jdt.doc.user/tasks/tasks-12.htm" title="Create a JPA Project" skip="true">
-  <action pluginId="org.eclipse.jdt.ui" class="org.eclipse.jdt.internal.ui.wizards.OpenProjectWizardAction" />
-  <description>
-First, you will need to create a JPA project.
-If you already have a JPA project in your workspace that you would like to use, you may skip this step by clicking the "Click to Skip" button. If not, select File->New->Project... and choose JPA->JPA Project in the list. 
-Complete the subsequent pages as required. 
-The "New JPA Project" wizard is automatically displayed when you click the "Click to Perform" button.
-  </description>
- </item>
- <item href="/org.eclipse.dali.doc.user/ref_add_persistence.htm" title="Adding Persistence">
-  <action pluginId="org.eclipse.dali.ui" class="org.eclipse.dali.ui.actions.AddPersistenceNatureToIJavaProjectActionDelegate" param1=" " />
-  <description>
-Now you will "add persistence" to the project.
-Right-click the Java project and select Java Persistence->Add Java Persistence.
-Complete the Add Persistence dialog by specifying your database connection information. If you do not have an active database connection, click "Add Connections" to create one. 
-The "Add Java Persistence" dialog is automatically displayed when you click the "Click to Perform" button. 
-If you do not use the "Click to Perform" button below, click the "Click to Skip" button to advance to the next step.
-  </description>
- </item>
- <item title="Adding JPA Libraries">
-  <description>
-To add your JPA library JARs, click "Configure the project build path." The Java Build Path" page of the Properties dialog appears. 
-Add the JAP library JARs to your project. 
-After adding the necessary libraries, click the "Click to Complete" button to advance to the next step.
-  </description>
- </item>
- <item title="Creating a persistence.xml File" skip="true">
-  <description>
-To create a persistence.xml file for your project, select the "Create persistence.xml" option. Complete the remaining fields on the the Add Persistence dialog and click "Finish."  If you do not want to create a persistence.xml file, unselect the option and click the "Click to Skip" button to advance to the next step.
-  </description>
- </item>
- <item title="Finish">
-  <description>
-Congratulations! You have successfully added persistence to your Java project. Complete the additional cheat sheets to add Java persistent entities and map those entities to database tables.
-  </description>
- </item>
+To start work working on this cheat sheet click the &quot;Click to Begin&quot; button below. 
+
+Let&apos;s get started!
+      </description>
+   </intro>
+   <item title="Setup the Environment" dialog="false" skip="true" href="/org.eclipse.datatools.doc.user/c_database_development_setup.html">
+      <description>
+         Your environment must be set up before you can perform the steps in this cheat sheet. 
+
+Create a database profile and connect to the database.
+
+The Database Connection dialog automatically appears when you click the &quot;Click to Perform&quot; button.
+      </description>
+      <command serialization="org.eclipse.datatools.sqltools.sqleditor.attachProfileAction" confirm="false">
+      </command>
+   </item>
+   <item title="Create a JPA Project" dialog="false" skip="false" href="/org.eclipse.jpt.doc.user/task_create_new_project.htm">
+      <description>
+         Use the New Project Wizard to create a JPA project. 
+Select <b>File-&gt;New-&gt;Project...</b> and choose <b>JPA-&gt;JPA Project</b> in the list. 
+
+On the first page of the wizard, enter a project name and location, select your target runtime, and select a predefined project configuration.
+
+Click <b>Next</b> to display the next page of the wizard.
+
+The &quot;New JPA Project&quot; wizard is automatically displayed when you click the &quot;Click to Perform&quot; button.
+      </description>
+      <action class="org.eclipse.jdt.internal.ui.wizards.OpenProjectWizardAction" pluginId="org.eclipse.jdt.ui" confirm="false">
+      </action>
+   </item>
+   <item title="Select Project Facet" dialog="false" skip="false" href="/org.eclipse.jst.j2ee.doc.user/topics/ph-projects.html">
+      <description>
+         Use the Project Facet page to select a predefined project configuration or specific specific facets to include in the project. 
+
+Click &quot;Next&quot; to display the next page of the wizard.
+      </description>
+   </item>
+   <item title="Specify the JPA Facet" dialog="false" skip="false" href="/org.eclipse.jdt.doc.user/ref_jpa_facet.htm">
+      <description>
+         Use the JPA Facet page to specify the the vendor-specific JPA platform, the database connection to use, and the specific JPA implementation library. 
+
+You can also specify if Dali should create an orm.xml file.
+
+If you do not have an active database connection, click <b>Add Connections</b> to create one. 
+
+If you do not have a defined JPA implementation library, click <b>Configure default JPA implementation library</b> or <b>Configure user libraries</b> to define one. 
+
+Click <b>Finish</b> to complete the wizard and open the open the project.
+      </description>
+   </item>
+   <item title="Finish" dialog="false" skip="false">
+      <description>
+         Congratulations! You have successfully created a JPA project. Complete the additional cheat sheets to add Java persistent entities and map those entities to database tables.
+      </description>
+   </item>
 </cheatsheet>

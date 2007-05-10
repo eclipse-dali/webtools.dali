@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 3, 2007 9:19:12 -->
+<!-- Run date = May 9, 2007 10:03:45 -->
 <meta name="OAC_IGNORE_SKIP_NAV" content="true" />
 <title>JPA Facet page</title>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
@@ -53,16 +53,23 @@
 <td align="left" headers="r3c1-t3 r1c3-t3"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t3" headers="r1c1-t3">JPA Implementation Library</td>
-<td align="left" headers="r4c1-t3 r1c2-t3">Select the libraries or JARs that contain the Java Persistence API (JPA) and entities to be added to the project's Java Build Path.
+<td align="left" id="r4c1-t3" headers="r1c1-t3">JPA Implementation</td>
+<td align="left" headers="r4c1-t3 r1c2-t3">Select to use the <span class="bold">JPA implementation provided by the server at runtime</span>, or select a specific <span class="bold">implementation library</span> that contain the Java Persistence API (JPA) and entities to be added to the project's Java Build Path.
 <p>Click <span class="bold">Configure default JPA implementation library</span> to create a default library for the project or click <span class="bold">Configure user libraries</span> to define additional libraries.</p>
 </td>
-<td align="left" headers="r4c1-t3 r1c3-t3"><br /></td>
+<td align="left" headers="r4c1-t3 r1c3-t3">Determined by server.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t3" headers="r1c1-t3">Create orm.xml</td>
-<td align="left" headers="r5c1-t3 r1c2-t3">Specify if Dali should create a default <code>orm.xml</code> file for your entity mappings and persistence unit defaults.</td>
-<td align="left" headers="r5c1-t3 r1c3-t3">Selected</td>
+<td align="left" id="r5c1-t3" headers="r1c1-t3">Persistent class management</td>
+<td align="left" headers="r5c1-t3 r1c2-t3">Specify if Dali will <span class="bold">discover annotated classes automatically</span>, or if the <span class="bold">annotated classes must be listed in the persistence.xml</span> file.
+<p><span class="bold">Note</span>: To insure application portability, you should explicitly list the managed persistence classes that are included in the persistence unit.</p>
+</td>
+<td align="left" headers="r5c1-t3 r1c3-t3">Determined by server.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t3" headers="r1c1-t3">Create orm.xml</td>
+<td align="left" headers="r6c1-t3 r1c2-t3">Specify if Dali should create a default <code>orm.xml</code> file for your entity mappings and persistence unit defaults.</td>
+<td align="left" headers="r6c1-t3 r1c3-t3">Selected</td>
 </tr>
 </tbody>
 </table>

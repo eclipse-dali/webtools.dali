@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 3, 2007 9:19:08 -->
+<!-- Run date = May 9, 2007 10:03:40 -->
 <meta name="OAC_IGNORE_SKIP_NAV" content="true" />
 <title>Creating a new JPA project</title>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
@@ -39,7 +39,7 @@
 <p><a id="sthref51" name="sthref51"></a><a id="sthref52" name="sthref52"></a>On the New Project dialog, select <span class="bold">JPA &gt; JPA Project</span> and click <span class="bold">Next</span>. The New JPA Project wizard appears.</p>
 <div class="figure"><a id="sthref53" name="sthref53"></a>
 <p class="titleinfigure"><a id="sthref54" name="sthref54"></a>New JPA Project</p>
-<img src="img/new_jpa_project_dialog.png" alt="Using the Java Persistence &gt; Add Java Persistence menu option." title="Using the Java Persistence &gt; Add Java Persistence menu option." /><br /></div>
+<img src="img/new_jpa_project_dialog.png" alt="The New JPA Project dialog." title="The New JPA Project dialog." /><br /></div>
 <!-- class="figure" --></li>
 <li>
 <p>Complete the fields on the <a href="ref_new_jpa_project.htm#CACBJAGC">New JPA Project page</a> to specify the project name and location, target runtime, and pre-defined configuration.</p>
@@ -48,24 +48,38 @@
 <p>Click <span class="bold">Next</span>. The Project Facets page appears.</p>
 </li>
 <li>
-<p>Select.... informationPending</p>
-<p>The JPA Facet page appears.</p>
+<p>Select the project facets to use to create the project and click <span class="bold">Next</span>. The JPA Facet page appears.</p>
 <div class="figure"><a id="sthref55" name="sthref55"></a>
 <p class="titleinfigure"><a id="sthref56" name="sthref56"></a>New JPA Project</p>
-<img src="img/jpa_facet_dialog.png" alt="Using the Java Persistence &gt; Add Java Persistence menu option." title="Using the Java Persistence &gt; Add Java Persistence menu option." /><br /></div>
+<img src="img/jpa_facet_dialog.png" alt="The JPA Facet dialog" title="The JPA Facet dialog" /><br /></div>
 <!-- class="figure" --></li>
 <li>
 <p>Complete the fields on the <a href="ref_jpa_facet.htm#CACIFDIF">JPA Facet page</a> to specify your vender-specific platform, database connection, and JPA implementation library.</p>
+<div align="center">
+<div class="inftblnote"><br />
+<table class="Note oac_no_warn" summary="This is a layout table to format a note" title="This is a layout table to format a note" dir="ltr" border="1" width="80%" frame="hsides" rules="groups" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Note:</p>
+If the server runtime does not provide a JPA implementation, you must explicitly select a JPA implementation library.
+<p>To insure the portability of your application, you must explicitly list the managed persistence classes that are included in the persistence unit. If the server supports EJB 3.0, the persistent classes will be discovered automatically.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnote" --></div>
 </li>
 <li>
-<p>Click <span class="bold">Finish</span>. You should now open the <a href="ref_persistence_perspective.htm#BABIFBDB">JPA perspective</a>.</p>
+<p>Click <span class="bold">Finish</span>. You should now open the <a href="ref_persistence_perspective.htm#BABIFBDB">JPA Development perspective</a>.</p>
 </li>
 </ol>
 <p>&nbsp;</p>
 <img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
 <br />
 <br />
-<a href="ref_persistence_perspective.htm#BABIFBDB">JPA perspective</a>
+<a href="ref_persistence_perspective.htm#BABIFBDB">JPA Development perspective</a>
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related tasks" title="Related tasks" /><br />
 <br />
