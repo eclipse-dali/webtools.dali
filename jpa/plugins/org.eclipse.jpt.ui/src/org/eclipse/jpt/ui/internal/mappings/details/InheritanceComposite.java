@@ -330,6 +330,7 @@ public class InheritanceComposite extends BaseJpaComposite {
 		}
 		else {
 			this.discriminatorColumn = null;
+			this.connectionProfile = null;
 		}
 	}
 	
@@ -361,8 +362,7 @@ public class InheritanceComposite extends BaseJpaComposite {
 
 	private ConnectionProfile getConnectionProfile() {
 		if(this.connectionProfile == null) {
-			IJpaProject jpaProject = this.entity.getJpaProject();
-			this.connectionProfile = jpaProject.connectionProfile();
+			this.connectionProfile = this.entity.getJpaProject().connectionProfile();
 		}
 		return this.connectionProfile;
 	}

@@ -294,6 +294,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	protected void doPopulate(EObject obj) {
 		super.doPopulate(obj);
 		if (obj == null) {
+			this.connectionProfile = null;
 			return;
 		}
 		populateTableNameCombo();

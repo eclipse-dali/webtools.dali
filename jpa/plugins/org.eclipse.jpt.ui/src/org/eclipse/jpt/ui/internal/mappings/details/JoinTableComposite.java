@@ -351,6 +351,7 @@ public class JoinTableComposite extends BaseJpaComposite
 		if (this.joinTable == null) {
 			this.joinColumnsComposite.populate(null);
 			this.inverseJoinColumnsComposite.populate(null);
+			this.connectionProfile = null;
 			return;
 		}
 		

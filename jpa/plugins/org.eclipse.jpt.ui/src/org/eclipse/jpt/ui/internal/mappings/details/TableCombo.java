@@ -9,7 +9,6 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
-
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -39,17 +38,26 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public class TableCombo extends BaseJpaController
 {
 	private ITable table;
+
 	private Adapter listener;
+
+	/**
+	 * Caching the connectionProfile so we can remove the listener. If the
+	 * cached table object has been removed from the model then we no longer
+	 * have access to parent and cannot find the connectionProfile
+	 */
+	private ConnectionProfile connectionProfile;
+
 	private ConnectionListener connectionListener;
-	
+
 	private CCombo combo;
-	
+
 	public TableCombo(Composite parent, CommandStack theCommandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, theCommandStack, widgetFactory);
 		this.listener = buildTableListener();
 		this.connectionListener = buildConnectionListener();
 	}
-	
+
 	private Adapter buildTableListener() {
 		return new AdapterImpl() {
 			public void notifyChanged(Notification notification) {
@@ -58,15 +66,14 @@ public class TableCombo extends BaseJpaController
 		};
 	}
 
-    private ConnectionListener buildConnectionListener() {
+	private ConnectionListener buildConnectionListener() {
 		return new ConnectionListener() {
-
 			public void aboutToClose(Connection connection) {
-				// not interested to this event.
+			// not interested to this event.
 			}
 
 			public void closed(Connection connection) {
-				getCombo().getDisplay().asyncExec( new Runnable() {
+				getCombo().getDisplay().asyncExec(new Runnable() {
 					public void run() {
 						if (getControl().isDisposed()) {
 							return;
@@ -77,7 +84,7 @@ public class TableCombo extends BaseJpaController
 			}
 
 			public void modified(Connection connection) {
-				getCombo().getDisplay().asyncExec( new Runnable() {
+				getCombo().getDisplay().asyncExec(new Runnable() {
 					public void run() {
 						if (getControl().isDisposed()) {
 							return;
@@ -93,7 +100,7 @@ public class TableCombo extends BaseJpaController
 			}
 
 			public void opened(Connection connection) {
-				getCombo().getDisplay().asyncExec( new Runnable() {
+				getCombo().getDisplay().asyncExec(new Runnable() {
 					public void run() {
 						if (getControl().isDisposed()) {
 							return;
@@ -104,9 +111,9 @@ public class TableCombo extends BaseJpaController
 			}
 
 			public void databaseChanged(Connection connection, final Database database) {
-				getControl().getDisplay().asyncExec( new Runnable() {
+				getControl().getDisplay().asyncExec(new Runnable() {
 					public void run() {
-						if(database == TableCombo.this.getDatabase()) {
+						if (database == TableCombo.this.getDatabase()) {
 							if (!getControl().isDisposed()) {
 								TableCombo.this.populateTableCombo();
 							}
@@ -114,11 +121,11 @@ public class TableCombo extends BaseJpaController
 					}
 				});
 			}
-			
+
 			public void schemaChanged(Connection connection, final Schema schema) {
-				getControl().getDisplay().asyncExec( new Runnable() {
+				getControl().getDisplay().asyncExec(new Runnable() {
 					public void run() {
-						if(schema == TableCombo.this.getTableSchema()) {
+						if (schema == TableCombo.this.getTableSchema()) {
 							if (!getControl().isDisposed()) {
 								TableCombo.this.populateTableCombo();
 							}
@@ -128,11 +135,11 @@ public class TableCombo extends BaseJpaController
 			}
 
 			public void tableChanged(Connection connection, final Table table) {
-				// not interested to this event.
+			// not interested to this event.
 			}
 		};
-    }
-    
+	}
+
 	@Override
 	protected void buildWidget(Composite parent) {
 		this.combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
@@ -149,22 +156,19 @@ public class TableCombo extends BaseJpaController
 						return;
 					}
 				}
-				
 				if (tableText != null && combo.getItemCount() > 0 && tableText.equals(combo.getItem(0))) {
 					tableText = null;
 				}
-
 				if (table.getSpecifiedName() == null && tableText != null) {
 					table.setSpecifiedName(tableText);
 				}
-
 				if (table.getSpecifiedName() != null && !table.getSpecifiedName().equals(tableText)) {
 					table.setSpecifiedName(tableText);
 				}
 			}
 		});
 	}
-	
+
 	protected void tableChanged(Notification notification) {
 		if (notification.getFeatureID(ITable.class) == JpaCoreMappingsPackage.ITABLE__SPECIFIED_NAME) {
 			Display.getDefault().asyncExec(new Runnable() {
@@ -207,13 +211,17 @@ public class TableCombo extends BaseJpaController
 			});
 		}
 	}
+
 	public void doPopulate(EObject obj) {
 		this.table = (ITable) obj;
 		if (this.table != null) {
 			populateTableCombo();
 		}
+		else {
+			this.connectionProfile = null;
+		}
 	}
-	
+
 	public void doPopulate() {
 		if (this.table != null) {
 			populateTableCombo();
@@ -221,42 +229,45 @@ public class TableCombo extends BaseJpaController
 	}
 
 	protected Database getDatabase() {
-		return this.getConnectionProfile().getDatabase();
+		return getConnectionProfile().getDatabase();
 	}
 
 	protected Schema getTableSchema() {
-		return this.getConnectionProfile().getDatabase().schemaNamed(table.getSchema());
+		return getConnectionProfile().getDatabase().schemaNamed(table.getSchema());
 	}
-	
+
 	private ConnectionProfile getConnectionProfile() {
-		return this.table.getJpaProject().connectionProfile();
+		if (this.connectionProfile == null) {
+			this.connectionProfile = this.table.getJpaProject().connectionProfile();
+		}
+		return this.connectionProfile;
 	}
-	
+
 	private void populateTableCombo() {
 		if (this.table == null) {
 			return;
 		}
-		//TODO don't do instanceof check here - check on Table, or isRoot check on Entity
-		//this.tableCombo.setEnabled(!(this.table instanceof SingleTableInheritanceChildTableImpl));
+		// TODO don't do instanceof check here - check on Table, or isRoot check
+		// on Entity
+		// this.tableCombo.setEnabled(!(this.table instanceof
+		// SingleTableInheritanceChildTableImpl));
 		populateDefaultTableName();
-
-		if (this.getConnectionProfile().isConnected()) {
-			this.combo.remove(1, this.combo.getItemCount()-1);
+		if (getConnectionProfile().isConnected()) {
+			this.combo.remove(1, this.combo.getItemCount() - 1);
 			Schema schema = this.getTableSchema();
 			if (schema != null) {
 				Iterator<String> tables = schema.tableNames();
-				for (Iterator<String> stream = CollectionTools.sort( tables); stream.hasNext(); ) {
+				for (Iterator<String> stream = CollectionTools.sort(tables); stream.hasNext();) {
 					this.combo.add(stream.next());
 				}
 			}
 		}
 		else {
-			this.combo.remove(1, this.combo.getItemCount()-1);
+			this.combo.remove(1, this.combo.getItemCount() - 1);
 		}
-		
 		populateTableName();
 	}
-	
+
 	protected void populateDefaultTableName() {
 		if (this.table == null) {
 			return;
@@ -265,13 +276,15 @@ public class TableCombo extends BaseJpaController
 		int selectionIndex = combo.getSelectionIndex();
 		combo.setItem(0, NLS.bind(JptUiMappingsMessages.TableComposite_defaultWithOneParam, defaultTableName));
 		if (selectionIndex == 0) {
-			//combo text does not update when switching between 2 mappings of the same type
-			//that both have a default column name.  clear the selection and then set it again
+			// combo text does not update when switching between 2 mappings of
+			// the same type
+			// that both have a default column name. clear the selection and
+			// then set it again
 			combo.clearSelection();
 			combo.select(0);
-		}		
+		}
 	}
-	
+
 	protected void populateTableName() {
 		if (this.table == null) {
 			return;
@@ -293,12 +306,12 @@ public class TableCombo extends BaseJpaController
 	public CCombo getCombo() {
 		return this.combo;
 	}
-	
+
 	@Override
 	public Control getControl() {
 		return getCombo();
 	}
-	
+
 	@Override
 	protected void disengageListeners() {
 		if (this.table != null) {
@@ -306,21 +319,20 @@ public class TableCombo extends BaseJpaController
 			this.table.eAdapters().remove(this.listener);
 		}
 	}
-	
+
 	@Override
 	protected void engageListeners() {
 		if (this.table != null) {
 			this.table.eAdapters().add(this.listener);
 			this.addConnectionListener();
-		}		
+		}
 	}
-	
+
 	private void addConnectionListener() {
 		this.getConnectionProfile().addConnectionListener(this.connectionListener);
 	}
-	
+
 	private void removeConnectionListener() {
 		this.getConnectionProfile().removeConnectionListener(this.connectionListener);
 	}
-	
 }

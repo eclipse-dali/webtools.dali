@@ -335,9 +335,8 @@ public class ColumnComposite extends BaseJpaComposite
 	}
 
 	private ConnectionProfile getConnectionProfile() {
-		if(this.connectionProfile == null) {
-			IJpaProject jpaProject = this.column.getJpaProject();
-			this.connectionProfile = jpaProject.connectionProfile();
+		if (this.connectionProfile == null) {
+			this.connectionProfile = this.column.getJpaProject().connectionProfile();
 		}
 		return this.connectionProfile;
 	}
@@ -456,6 +455,9 @@ public class ColumnComposite extends BaseJpaComposite
 		if (this.column != null) {
 			populateColumnCombo();
 			populateTableCombo();
+		}
+		else {
+			this.connectionProfile = null;
 		}
 		this.insertableComboViewer.populate();
 		this.updatableComboViewer.populate();
