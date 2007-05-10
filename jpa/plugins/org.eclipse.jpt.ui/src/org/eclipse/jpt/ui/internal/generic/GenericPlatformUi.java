@@ -26,13 +26,13 @@ public class GenericPlatformUi extends BaseJpaPlatformUi
 	}
 	
 	public void generateDLL(IJpaProject project, IStructuredSelection selection) {
-		this.displayWarning(JptUiMessages.GenericPlatformUiDialog_warningTitle, JptUiMessages.GenericPlatformUiDialog_warningText);
+		this.displayNotSupportedMessage(JptUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle, JptUiMessages.GenericPlatformUiDialog_notSupportedMessageText);
 	}
 
-	protected void displayWarning(String title, String message) {
+	protected void displayNotSupportedMessage(String title, String message) {
 	    String formattedMessage = MessageFormat.format( message, (Object [])(new String [] { message}));
 	    Shell currentShell = Display.getCurrent().getActiveShell();
-	    MessageDialog.openWarning(currentShell, title, formattedMessage);	  
+	    MessageDialog.openInformation(currentShell, title, formattedMessage);	  
 	}
 	
 }

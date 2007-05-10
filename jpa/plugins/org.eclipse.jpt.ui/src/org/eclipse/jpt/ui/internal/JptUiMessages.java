@@ -78,9 +78,9 @@ public class JptUiMessages extends NLS
 
 	public static String GenerateEntitiesWizardPage_tables;
 
-	public static String GenericPlatformUiDialog_warningTitle;
+	public static String GenericPlatformUiDialog_notSupportedMessageTitle;
 
-	public static String GenericPlatformUiDialog_warningText;
+	public static String GenericPlatformUiDialog_notSupportedMessageText;
 
 	public static String JpaPreferencePage_defaultJpaLib;
 	
