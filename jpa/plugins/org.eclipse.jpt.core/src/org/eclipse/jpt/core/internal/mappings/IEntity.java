@@ -47,6 +47,7 @@ import org.eclipse.jpt.db.internal.Table;
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IEntity#getDefaultAssociationOverrides <em>Default Association Overrides</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IEntity#getNamedQueries <em>Named Queries</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IEntity#getNamedNativeQueries <em>Named Native Queries</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.mappings.IEntity#getIdClass <em>Id Class</em>}</li>
  * </ul>
  * </p>
  *
@@ -478,6 +479,32 @@ public interface IEntity extends ITypeMapping
 	 * @generated
 	 */
 	EList<INamedNativeQuery> getNamedNativeQueries();
+
+	/**
+	 * Returns the value of the '<em><b>Id Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Id Class</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Id Class</em>' attribute.
+	 * @see #setIdClass(String)
+	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_IdClass()
+	 * @model
+	 * @generated
+	 */
+	String getIdClass();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.IEntity#getIdClass <em>Id Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id Class</em>' attribute.
+	 * @see #getIdClass()
+	 * @generated
+	 */
+	void setIdClass(String value);
 
 	/**
 	 * <!-- begin-user-doc -->

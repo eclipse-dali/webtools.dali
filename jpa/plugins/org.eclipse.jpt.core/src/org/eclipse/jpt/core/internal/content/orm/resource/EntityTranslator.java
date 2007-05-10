@@ -61,7 +61,7 @@ public class EntityTranslator extends TypeMappingTranslator
 			getTableTranslator(),
 			getSecondaryTableTranslator(),
 			createPrimaryKeyJoinColumnsTranslator(),
-			createPlaceHolderTranslator(ENTITY__ID_CLASS),
+			createIdClassTranslator(),
 			createInheritanceTranslator(),
 			createDiscriminatorValueTranslator(),
 			getDiscriminatorColumnTranslator(),
@@ -176,4 +176,9 @@ public class EntityTranslator extends TypeMappingTranslator
 			}
 		};
 	}
+	
+	protected Translator createIdClassTranslator() {
+		return new Translator(ID_CLASS + "/" + ID_CLASS__CLASS, JpaCoreMappingsPackage.eINSTANCE.getIEntity_IdClass(), DOM_ATTRIBUTE);
+	}
+
 }

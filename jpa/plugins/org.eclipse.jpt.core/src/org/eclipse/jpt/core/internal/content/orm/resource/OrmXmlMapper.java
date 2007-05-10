@@ -61,7 +61,6 @@ public interface OrmXmlMapper
 	String ENTITY__DESCRIPTION = "description";  //$NON-NLS-1$
 	String ENTITY__TABLE = "table";  //$NON-NLS-1$
 	String ENTITY__PRIMARY_KEY_JOIN_COLUMN = "primary-key-join-column";  //$NON-NLS-1$
-	String ENTITY__ID_CLASS = "id-class";  //$NON-NLS-1$
 	String ENTITY__INHERITANCE = "inheritance";  //$NON-NLS-1$
 	String ENTITY__DISCRIMINATOR_VALUE = "discriminator-value";  //$NON-NLS-1$
 	String ENTITY__DISCRIMINATOR_COLUMN = "discriminator-column";  //$NON-NLS-1$
@@ -101,7 +100,10 @@ public interface OrmXmlMapper
 	String JOIN_TABLE = "join-table";  //$NON-NLS-1$
 	String ID = "id";  //$NON-NLS-1$
 	String ID__TEMPORAL = "temporal";  //$NON-NLS-1$
-	String GENERATED_VALUE = "generated-value";  //$NON-NLS-1$
+	String ID_CLASS = "id-class";  //$NON-NLS-1$
+	String ID_CLASS__CLASS = "class";  //$NON-NLS-1$
+	
+		String GENERATED_VALUE = "generated-value";  //$NON-NLS-1$
 	String GENERATED_VALUE__STRATEGY = "strategy";  //$NON-NLS-1$
 	String GENERATED_VALUE__GENERATOR = "generator";  //$NON-NLS-1$
 	String GENERATOR__NAME = "name";  //$NON-NLS-1$

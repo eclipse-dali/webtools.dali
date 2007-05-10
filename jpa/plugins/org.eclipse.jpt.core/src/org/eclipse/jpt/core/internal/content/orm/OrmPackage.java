@@ -664,13 +664,22 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS__PERSISTENT_TYPE = XML_TYPE_MAPPING__PERSISTENT_TYPE;
 
 	/**
+	 * The feature id for the '<em><b>Id Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__ID_CLASS = XML_TYPE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = XML_TYPE_MAPPING_FEATURE_COUNT + 0;
+	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = XML_TYPE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal <em>Xml Entity Internal</em>}' class.
@@ -962,13 +971,22 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ENTITY_INTERNAL__NAMED_NATIVE_QUERIES = XML_TYPE_MAPPING_FEATURE_COUNT + 23;
 
 	/**
+	 * The feature id for the '<em><b>Id Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_INTERNAL__ID_CLASS = XML_TYPE_MAPPING_FEATURE_COUNT + 24;
+
+	/**
 	 * The feature id for the '<em><b>Secondary Tables</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__SECONDARY_TABLES = XML_TYPE_MAPPING_FEATURE_COUNT + 24;
+	public static final int XML_ENTITY_INTERNAL__SECONDARY_TABLES = XML_TYPE_MAPPING_FEATURE_COUNT + 25;
 
 	/**
 	 * The feature id for the '<em><b>Virtual Secondary Tables</b></em>' containment reference list.
@@ -977,7 +995,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES = XML_TYPE_MAPPING_FEATURE_COUNT + 25;
+	public static final int XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES = XML_TYPE_MAPPING_FEATURE_COUNT + 26;
 
 	/**
 	 * The number of structural features of the '<em>Xml Entity Internal</em>' class.
@@ -986,7 +1004,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_INTERNAL_FEATURE_COUNT = XML_TYPE_MAPPING_FEATURE_COUNT + 26;
+	public static final int XML_ENTITY_INTERNAL_FEATURE_COUNT = XML_TYPE_MAPPING_FEATURE_COUNT + 27;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml <em>Xml Entity For Xml</em>}' class.
@@ -1250,6 +1268,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ENTITY__NAMED_NATIVE_QUERIES = JpaCoreMappingsPackage.IENTITY__NAMED_NATIVE_QUERIES;
+
+	/**
+	 * The feature id for the '<em><b>Id Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__ID_CLASS = JpaCoreMappingsPackage.IENTITY__ID_CLASS;
 
 	/**
 	 * The feature id for the '<em><b>Secondary Tables</b></em>' containment reference list.

@@ -333,13 +333,22 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_ENTITY__NAMED_NATIVE_QUERIES = JAVA_TYPE_MAPPING_FEATURE_COUNT + 21;
 
 	/**
+	 * The feature id for the '<em><b>Id Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_ENTITY__ID_CLASS = JAVA_TYPE_MAPPING_FEATURE_COUNT + 22;
+
+	/**
 	 * The number of structural features of the '<em>Java Entity</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_ENTITY_FEATURE_COUNT = JAVA_TYPE_MAPPING_FEATURE_COUNT + 22;
+	public static final int JAVA_ENTITY_FEATURE_COUNT = JAVA_TYPE_MAPPING_FEATURE_COUNT + 23;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaMappedSuperclass <em>Java Mapped Superclass</em>}' class.
@@ -370,13 +379,22 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_MAPPED_SUPERCLASS__TABLE_NAME = JAVA_TYPE_MAPPING__TABLE_NAME;
 
 	/**
+	 * The feature id for the '<em><b>Id Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_MAPPED_SUPERCLASS__ID_CLASS = JAVA_TYPE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Java Mapped Superclass</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_MAPPED_SUPERCLASS_FEATURE_COUNT = JAVA_TYPE_MAPPING_FEATURE_COUNT + 0;
+	public static final int JAVA_MAPPED_SUPERCLASS_FEATURE_COUNT = JAVA_TYPE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbeddable <em>Java Embeddable</em>}' class.

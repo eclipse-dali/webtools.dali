@@ -37,6 +37,7 @@ import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElement
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.mappings.DiscriminatorType;
 import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
@@ -313,6 +314,26 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	 */
 	protected EList<INamedNativeQuery> namedNativeQueries;
 
+	/**
+	 * The default value of the '{@link #getIdClass() <em>Id Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIdClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ID_CLASS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getIdClass() <em>Id Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIdClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected String idClass = ID_CLASS_EDEFAULT;
+
 	private AnnotationElementAdapter nameAdapter;
 
 	private AnnotationElementAdapter inheritanceStrategyAdapter;
@@ -322,6 +343,14 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	private AnnotationAdapter tableGeneratorAnnotationAdapter;
 
 	private AnnotationAdapter sequenceGeneratorAnnotationAdapter;
+
+	private final AnnotationAdapter idClassAnnotationAdapter;
+
+	private final AnnotationElementAdapter idClassValueAdapter;
+
+	public static final DeclarationAnnotationAdapter ID_CLASS_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ID_CLASS);
+
+	private static final DeclarationAnnotationElementAdapter ID_CLASS_VALUE_ADAPTER = buildIdClassValueAdapter();
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ENTITY);
 
@@ -350,6 +379,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		this.nameAdapter = new ShortCircuitAnnotationElementAdapter(getType(), NAME_ADAPTER);
 		this.inheritanceStrategyAdapter = new ShortCircuitAnnotationElementAdapter(type, INHERITANCE_STRATEGY_ADAPTER);
 		this.discriminatorValueAdapter = new ShortCircuitAnnotationElementAdapter(type, DISCRIMINATOR_VALUE_ADAPTER);
+		this.idClassAnnotationAdapter = new MemberAnnotationAdapter(this.getType(), ID_CLASS_ADAPTER);
+		this.idClassValueAdapter = new ShortCircuitAnnotationElementAdapter(this.getType(), ID_CLASS_VALUE_ADAPTER);
 		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
 		this.tableGeneratorAnnotationAdapter = new MemberAnnotationAdapter(getType(), JavaTableGenerator.DECLARATION_ANNOTATION_ADAPTER);
 		this.sequenceGeneratorAnnotationAdapter = new MemberAnnotationAdapter(getType(), JavaSequenceGenerator.DECLARATION_ANNOTATION_ADAPTER);
@@ -419,6 +450,15 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				break;
 			case JpaCoreMappingsPackage.IENTITY__SEQUENCE_GENERATOR :
 				attributeChanged(notification.getNewValue(), this.sequenceGeneratorAnnotationAdapter);
+				break;
+			case JpaCoreMappingsPackage.IENTITY__ID_CLASS :
+				String idClass = (String) notification.getNewValue();
+				if (idClass == null) {
+					this.idClassAnnotationAdapter.removeAnnotation();
+				}
+				else {
+					this.idClassValueAdapter.setValue(idClass);
+				}
 			default :
 				break;
 		}
@@ -1770,6 +1810,39 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Id Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Id Class</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Id Class</em>' attribute.
+	 * @see #setIdClass(String)
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIEntity_IdClass()
+	 * @model
+	 * @generated
+	 */
+	public String getIdClass() {
+		return idClass;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaEntity#getIdClass <em>Id Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id Class</em>' attribute.
+	 * @see #getIdClass()
+	 * @generated
+	 */
+	public void setIdClass(String newIdClass) {
+		String oldIdClass = idClass;
+		idClass = newIdClass;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ENTITY__ID_CLASS, oldIdClass, idClass));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model
@@ -1903,6 +1976,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				return getNamedQueries();
 			case JpaJavaMappingsPackage.JAVA_ENTITY__NAMED_NATIVE_QUERIES :
 				return getNamedNativeQueries();
+			case JpaJavaMappingsPackage.JAVA_ENTITY__ID_CLASS :
+				return getIdClass();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1970,6 +2045,9 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				getNamedNativeQueries().clear();
 				getNamedNativeQueries().addAll((Collection<? extends INamedNativeQuery>) newValue);
 				return;
+			case JpaJavaMappingsPackage.JAVA_ENTITY__ID_CLASS :
+				setIdClass((String) newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -2027,6 +2105,9 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 			case JpaJavaMappingsPackage.JAVA_ENTITY__NAMED_NATIVE_QUERIES :
 				getNamedNativeQueries().clear();
 				return;
+			case JpaJavaMappingsPackage.JAVA_ENTITY__ID_CLASS :
+				setIdClass(ID_CLASS_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -2083,6 +2164,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				return namedQueries != null && !namedQueries.isEmpty();
 			case JpaJavaMappingsPackage.JAVA_ENTITY__NAMED_NATIVE_QUERIES :
 				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
+			case JpaJavaMappingsPackage.JAVA_ENTITY__ID_CLASS :
+				return ID_CLASS_EDEFAULT == null ? idClass != null : !ID_CLASS_EDEFAULT.equals(idClass);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -2140,6 +2223,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 					return JpaCoreMappingsPackage.IENTITY__NAMED_QUERIES;
 				case JpaJavaMappingsPackage.JAVA_ENTITY__NAMED_NATIVE_QUERIES :
 					return JpaCoreMappingsPackage.IENTITY__NAMED_NATIVE_QUERIES;
+				case JpaJavaMappingsPackage.JAVA_ENTITY__ID_CLASS :
+					return JpaCoreMappingsPackage.IENTITY__ID_CLASS;
 				default :
 					return -1;
 			}
@@ -2200,6 +2285,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 					return JpaJavaMappingsPackage.JAVA_ENTITY__NAMED_QUERIES;
 				case JpaCoreMappingsPackage.IENTITY__NAMED_NATIVE_QUERIES :
 					return JpaJavaMappingsPackage.JAVA_ENTITY__NAMED_NATIVE_QUERIES;
+				case JpaCoreMappingsPackage.IENTITY__ID_CLASS :
+					return JpaJavaMappingsPackage.JAVA_ENTITY__ID_CLASS;
 				default :
 					return -1;
 			}
@@ -2227,6 +2314,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		result.append(defaultDiscriminatorValue);
 		result.append(", specifiedDiscriminatorValue: ");
 		result.append(specifiedDiscriminatorValue);
+		result.append(", idClass: ");
+		result.append(idClass);
 		result.append(')');
 		return result.toString();
 	}
@@ -2276,6 +2365,17 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		this.setDefaultDiscriminatorValue(this.javaDefaultDiscriminatorValue());
 		this.updateTableGeneratorFromJava(astRoot);
 		this.updateSequenceGeneratorFromJava(astRoot);
+		this.updateIdClassFromJava(astRoot);
+	}
+	
+	private void updateIdClassFromJava(CompilationUnit astRoot) {
+		if (this.idClassAnnotationAdapter.getAnnotation(astRoot) == null) {
+			
+			this.setIdClass(null);
+		}
+		else {
+			this.setIdClass((String) this.idClassValueAdapter.getValue(astRoot));
+		}
 	}
 
 	private JavaTable getJavaTable() {
@@ -2813,4 +2913,10 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	private static DeclarationAnnotationElementAdapter buildDiscriminatorValueAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter(DISCRIMINATOR_ANNOTATION_ADAPTER, JPA.DISCRIMINATOR_VALUE__VALUE);
 	}
+	
+	// ********** static methods **********
+	private static DeclarationAnnotationElementAdapter buildIdClassValueAdapter() {
+		return new ConversionDeclarationAnnotationElementAdapter(ID_CLASS_ADAPTER, JPA.ID_CLASS__VALUE, false, SimpleTypeStringExpressionConverter.instance());
+	}
+
 }

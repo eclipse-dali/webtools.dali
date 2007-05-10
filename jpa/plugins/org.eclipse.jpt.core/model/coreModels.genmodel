@@ -151,7 +151,9 @@
         <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/OrderingType/PRIMARY_KEY"/>
         <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/OrderingType/CUSTOM"/>
       </genEnums>
-      <genClasses ecoreClass="core.ecore#//mappings/IMappedSuperclass"/>
+      <genClasses ecoreClass="core.ecore#//mappings/IMappedSuperclass">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IMappedSuperclass/idClass"/>
+      </genClasses>
       <genClasses ecoreClass="core.ecore#//mappings/IEntity">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IEntity/specifiedName"/>
         <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IEntity/defaultName"/>
@@ -182,6 +184,7 @@
             ecoreFeature="ecore:EReference core.ecore#//mappings/IEntity/defaultAssociationOverrides"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/IEntity/namedQueries"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/IEntity/namedNativeQueries"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IEntity/idClass"/>
         <genOperations ecoreOperation="core.ecore#//mappings/IEntity/discriminatorValueIsAllowed"/>
         <genOperations ecoreOperation="core.ecore#//mappings/IEntity/getSecondaryTables"/>
         <genOperations ecoreOperation="core.ecore#//mappings/IEntity/parentEntity"/>

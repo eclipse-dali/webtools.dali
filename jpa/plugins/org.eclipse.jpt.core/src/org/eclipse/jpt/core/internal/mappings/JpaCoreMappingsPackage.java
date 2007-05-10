@@ -101,13 +101,22 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IMAPPED_SUPERCLASS__TABLE_NAME = JpaCorePackage.ITYPE_MAPPING__TABLE_NAME;
 
 	/**
+	 * The feature id for the '<em><b>Id Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IMAPPED_SUPERCLASS__ID_CLASS = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>IMapped Superclass</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IMAPPED_SUPERCLASS_FEATURE_COUNT = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 0;
+	public static final int IMAPPED_SUPERCLASS_FEATURE_COUNT = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.IEntity <em>IEntity</em>}' class.
@@ -336,13 +345,22 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IENTITY__NAMED_NATIVE_QUERIES = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 21;
 
 	/**
+	 * The feature id for the '<em><b>Id Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IENTITY__ID_CLASS = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 22;
+
+	/**
 	 * The number of structural features of the '<em>IEntity</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IENTITY_FEATURE_COUNT = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 22;
+	public static final int IENTITY_FEATURE_COUNT = JpaCorePackage.ITYPE_MAPPING_FEATURE_COUNT + 23;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.IEmbeddable <em>IEmbeddable</em>}' class.
@@ -3923,6 +3941,19 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IMappedSuperclass#getIdClass <em>Id Class</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id Class</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.IMappedSuperclass#getIdClass()
+	 * @see #getIMappedSuperclass()
+	 * @generated
+	 */
+	public EAttribute getIMappedSuperclass_IdClass() {
+		return (EAttribute) iMappedSuperclassEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.mappings.IEntity <em>IEntity</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4218,6 +4249,19 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 */
 	public EReference getIEntity_NamedNativeQueries() {
 		return (EReference) iEntityEClass.getEStructuralFeatures().get(21);
+	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IEntity#getIdClass <em>Id Class</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id Class</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.IEntity#getIdClass()
+	 * @see #getIEntity()
+	 * @generated
+	 */
+	public EAttribute getIEntity_IdClass() {
+		return (EAttribute) iEntityEClass.getEStructuralFeatures().get(22);
 	}
 
 	/**
@@ -6347,6 +6391,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		isCreated = true;
 		// Create classes and their features
 		iMappedSuperclassEClass = createEClass(IMAPPED_SUPERCLASS);
+		createEAttribute(iMappedSuperclassEClass, IMAPPED_SUPERCLASS__ID_CLASS);
 		iEntityEClass = createEClass(IENTITY);
 		createEAttribute(iEntityEClass, IENTITY__SPECIFIED_NAME);
 		createEAttribute(iEntityEClass, IENTITY__DEFAULT_NAME);
@@ -6370,6 +6415,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		createEReference(iEntityEClass, IENTITY__DEFAULT_ASSOCIATION_OVERRIDES);
 		createEReference(iEntityEClass, IENTITY__NAMED_QUERIES);
 		createEReference(iEntityEClass, IENTITY__NAMED_NATIVE_QUERIES);
+		createEAttribute(iEntityEClass, IENTITY__ID_CLASS);
 		iEmbeddableEClass = createEClass(IEMBEDDABLE);
 		iTableEClass = createEClass(ITABLE);
 		createEAttribute(iTableEClass, ITABLE__NAME);
@@ -6616,6 +6662,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		iQueryHintEClass.getESuperTypes().add(theJpaCorePackage.getIJpaSourceObject());
 		// Initialize classes and features; add operations and parameters
 		initEClass(iMappedSuperclassEClass, IMappedSuperclass.class, "IMappedSuperclass", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getIMappedSuperclass_IdClass(), theEcorePackage.getEString(), "idClass", null, 0, 1, IMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iEntityEClass, IEntity.class, "IEntity", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIEntity_SpecifiedName(), ecorePackage.getEString(), "specifiedName", null, 0, 1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIEntity_DefaultName(), ecorePackage.getEString(), "defaultName", null, 0, 1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -6639,6 +6686,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEReference(getIEntity_DefaultAssociationOverrides(), this.getIAssociationOverride(), null, "defaultAssociationOverrides", null, 0, -1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIEntity_NamedQueries(), this.getINamedQuery(), null, "namedQueries", null, 0, -1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIEntity_NamedNativeQueries(), this.getINamedNativeQuery(), null, "namedNativeQueries", null, 0, -1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getIEntity_IdClass(), theEcorePackage.getEString(), "idClass", null, 0, 1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		addEOperation(iEntityEClass, ecorePackage.getEBoolean(), "discriminatorValueIsAllowed", 0, 1);
 		addEOperation(iEntityEClass, this.getISecondaryTable(), "getSecondaryTables", 0, -1);
 		addEOperation(iEntityEClass, this.getIEntity(), "parentEntity", 0, 1);
@@ -6875,6 +6923,14 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		public static final EClass IMAPPED_SUPERCLASS = eINSTANCE.getIMappedSuperclass();
 
 		/**
+		 * The meta object literal for the '<em><b>Id Class</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute IMAPPED_SUPERCLASS__ID_CLASS = eINSTANCE.getIMappedSuperclass_IdClass();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.IEntity <em>IEntity</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -7059,6 +7115,14 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference IENTITY__NAMED_NATIVE_QUERIES = eINSTANCE.getIEntity_NamedNativeQueries();
+
+		/**
+		 * The meta object literal for the '<em><b>Id Class</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute IENTITY__ID_CLASS = eINSTANCE.getIEntity_IdClass();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.IEmbeddable <em>IEmbeddable</em>}' class.

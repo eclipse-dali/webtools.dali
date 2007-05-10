@@ -118,7 +118,9 @@
   </eClassifiers>
   <eSubpackages name="mappings" nsURI="jpt.core.mappings.xmi" nsPrefix="jpt.core.mappings">
     <eClassifiers xsi:type="ecore:EClass" name="IMappedSuperclass" abstract="true"
-        interface="true" eSuperTypes="#//ITypeMapping"/>
+        interface="true" eSuperTypes="#//ITypeMapping">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="idClass" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="IEntity" abstract="true" interface="true"
         eSuperTypes="#//ITypeMapping">
       <eOperations name="discriminatorValueIsAllowed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -177,6 +179,7 @@
           eType="#//mappings/INamedQuery" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="namedNativeQueries" upperBound="-1"
           eType="#//mappings/INamedNativeQuery" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="idClass" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="IEmbeddable" abstract="true" interface="true"
         eSuperTypes="#//ITypeMapping"/>

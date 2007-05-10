@@ -10,6 +10,7 @@ package org.eclipse.jpt.core.internal.content.orm.resource;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
+import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -37,7 +38,7 @@ public class MappedSuperclassTranslator extends TypeMappingTranslator
 			createAccessTypeTranslator(),
 			createMetadataCompleteTranslator(),
 			createPlaceHolderTranslator(ENTITY__DESCRIPTION),
-			createPlaceHolderTranslator(ENTITY__ID_CLASS),
+			createIdClassTranslator(),
 			createPlaceHolderTranslator(ENTITY__EXCLUDE_DEFAULT_LISTENERS),
 			createPlaceHolderTranslator(ENTITY__EXCLUDE_SUPERCLASS_LISTENERS),
 			createPlaceHolderTranslator(ENTITY__ENTITY_LISTENERS),
@@ -52,5 +53,8 @@ public class MappedSuperclassTranslator extends TypeMappingTranslator
 		};
 	}
 
+	protected Translator createIdClassTranslator() {
+		return new Translator(ID_CLASS + "/" + ID_CLASS__CLASS, JpaCoreMappingsPackage.eINSTANCE.getIMappedSuperclass_IdClass(), DOM_ATTRIBUTE);
+	}
 
 }

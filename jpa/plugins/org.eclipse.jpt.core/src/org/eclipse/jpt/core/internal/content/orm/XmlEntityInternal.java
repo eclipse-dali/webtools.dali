@@ -304,6 +304,26 @@ public class XmlEntityInternal extends XmlTypeMapping
 	protected EList<INamedNativeQuery> namedNativeQueries;
 
 	/**
+	 * The default value of the '{@link #getIdClass() <em>Id Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIdClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ID_CLASS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getIdClass() <em>Id Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIdClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected String idClass = ID_CLASS_EDEFAULT;
+
+	/**
 	 * The cached value of the '{@link #getVirtualSecondaryTables() <em>Virtual Secondary Tables</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -984,6 +1004,39 @@ public class XmlEntityInternal extends XmlTypeMapping
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Id Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Id Class</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Id Class</em>' attribute.
+	 * @see #setIdClass(String)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIEntity_IdClass()
+	 * @model
+	 * @generated
+	 */
+	public String getIdClass() {
+		return idClass;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal#getIdClass <em>Id Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id Class</em>' attribute.
+	 * @see #getIdClass()
+	 * @generated
+	 */
+	public void setIdClass(String newIdClass) {
+		String oldIdClass = idClass;
+		idClass = newIdClass;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS, oldIdClass, idClass));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model
@@ -1224,6 +1277,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 				return getNamedQueries();
 			case OrmPackage.XML_ENTITY_INTERNAL__NAMED_NATIVE_QUERIES :
 				return getNamedNativeQueries();
+			case OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS :
+				return getIdClass();
 			case OrmPackage.XML_ENTITY_INTERNAL__SECONDARY_TABLES :
 				return getSecondaryTables();
 			case OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES :
@@ -1301,6 +1356,9 @@ public class XmlEntityInternal extends XmlTypeMapping
 				getNamedNativeQueries().clear();
 				getNamedNativeQueries().addAll((Collection<? extends INamedNativeQuery>) newValue);
 				return;
+			case OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS :
+				setIdClass((String) newValue);
+				return;
 			case OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES :
 				getVirtualSecondaryTables().clear();
 				getVirtualSecondaryTables().addAll((Collection<? extends ISecondaryTable>) newValue);
@@ -1368,6 +1426,9 @@ public class XmlEntityInternal extends XmlTypeMapping
 			case OrmPackage.XML_ENTITY_INTERNAL__NAMED_NATIVE_QUERIES :
 				getNamedNativeQueries().clear();
 				return;
+			case OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS :
+				setIdClass(ID_CLASS_EDEFAULT);
+				return;
 			case OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES :
 				getVirtualSecondaryTables().clear();
 				return;
@@ -1431,6 +1492,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 				return namedQueries != null && !namedQueries.isEmpty();
 			case OrmPackage.XML_ENTITY_INTERNAL__NAMED_NATIVE_QUERIES :
 				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
+			case OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS :
+				return ID_CLASS_EDEFAULT == null ? idClass != null : !ID_CLASS_EDEFAULT.equals(idClass);
 			case OrmPackage.XML_ENTITY_INTERNAL__SECONDARY_TABLES :
 				return !getSecondaryTables().isEmpty();
 			case OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES :
@@ -1502,6 +1565,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 					return JpaCoreMappingsPackage.IENTITY__NAMED_QUERIES;
 				case OrmPackage.XML_ENTITY_INTERNAL__NAMED_NATIVE_QUERIES :
 					return JpaCoreMappingsPackage.IENTITY__NAMED_NATIVE_QUERIES;
+				case OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS :
+					return JpaCoreMappingsPackage.IENTITY__ID_CLASS;
 				default :
 					return -1;
 			}
@@ -1582,6 +1647,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 					return OrmPackage.XML_ENTITY_INTERNAL__NAMED_QUERIES;
 				case JpaCoreMappingsPackage.IENTITY__NAMED_NATIVE_QUERIES :
 					return OrmPackage.XML_ENTITY_INTERNAL__NAMED_NATIVE_QUERIES;
+				case JpaCoreMappingsPackage.IENTITY__ID_CLASS :
+					return OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS;
 				default :
 					return -1;
 			}
@@ -1619,6 +1686,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 		result.append(defaultDiscriminatorValue);
 		result.append(", specifiedDiscriminatorValue: ");
 		result.append(specifiedDiscriminatorValue);
+		result.append(", idClass: ");
+		result.append(idClass);
 		result.append(')');
 		return result.toString();
 	}

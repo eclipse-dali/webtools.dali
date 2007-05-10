@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
@@ -636,6 +637,6 @@ public abstract class JavaMultiRelationshipMapping
 
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter buildMapKeyNameAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(MAP_KEY_ADAPTER, JPA.MAP_KEY__NAME, false);
+		return new ConversionDeclarationAnnotationElementAdapter(MAP_KEY_ADAPTER, JPA.MAP_KEY__NAME, false);
 	}
 }
