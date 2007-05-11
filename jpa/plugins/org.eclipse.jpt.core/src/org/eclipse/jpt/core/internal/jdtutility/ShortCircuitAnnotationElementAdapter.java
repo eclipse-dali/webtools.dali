@@ -18,20 +18,20 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * Wrap another annotation element adapter and short-circuit the
  * #setValue method if the value has not changed.
  */
-public class ShortCircuitAnnotationElementAdapter
-	implements AnnotationElementAdapter
+public class ShortCircuitAnnotationElementAdapter<T>
+	implements AnnotationElementAdapter<T>
 {
 	/** the wrapped adapter */
-	private final AnnotationElementAdapter adapter;
+	private final AnnotationElementAdapter<T> adapter;
 
 
 	// ********** constructor **********
 
-	public ShortCircuitAnnotationElementAdapter(Member member, DeclarationAnnotationElementAdapter daea) {
-		this(new MemberAnnotationElementAdapter(member, daea));
+	public ShortCircuitAnnotationElementAdapter(Member member, DeclarationAnnotationElementAdapter<T> daea) {
+		this(new MemberAnnotationElementAdapter<T>(member, daea));
 	}
 
-	public ShortCircuitAnnotationElementAdapter(AnnotationElementAdapter adapter) {
+	public ShortCircuitAnnotationElementAdapter(AnnotationElementAdapter<T> adapter) {
 		super();
 		this.adapter = adapter;
 	}
@@ -39,15 +39,15 @@ public class ShortCircuitAnnotationElementAdapter
 
 	// ********** AnnotationElementAdapter implementation **********
 
-	public Object getValue() {
+	public T getValue() {
 		return this.adapter.getValue();
 	}
 
-	public Object getValue(CompilationUnit astRoot) {
+	public T getValue(CompilationUnit astRoot) {
 		return this.adapter.getValue(astRoot);
 	}
 
-	public void setValue(Object value) {
+	public void setValue(T value) {
 		this.setValue(this.adapter.getValue(), value);
 	}
 
@@ -79,7 +79,7 @@ public class ShortCircuitAnnotationElementAdapter
 	 * set the adapter's value to the specified new value if it
 	 * is different from the specified old value
 	 */
-	protected void setValue(Object oldValue, Object newValue) {
+	protected void setValue(T oldValue, T newValue) {
 		if (oldValue == null) {
 			if (newValue == null) {  // null => null
 				// do nothing
@@ -102,7 +102,7 @@ public class ShortCircuitAnnotationElementAdapter
 	/**
 	 * both values are non-null when this method is called
 	 */
-	protected boolean valuesAreEqual(Object oldValue, Object newValue) {
+	protected boolean valuesAreEqual(T oldValue, T newValue) {
 		return newValue.equals(oldValue);
 	}
 

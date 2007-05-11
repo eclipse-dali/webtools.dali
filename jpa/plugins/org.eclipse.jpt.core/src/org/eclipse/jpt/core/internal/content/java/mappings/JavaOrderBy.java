@@ -432,6 +432,6 @@ public class JavaOrderBy extends JavaEObject implements IOrderBy
 
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter buildValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ORDER_BY__VALUE, false);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ORDER_BY__VALUE, false);
 	}
 } // JavaOrderBy

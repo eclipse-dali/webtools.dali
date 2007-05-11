@@ -18,14 +18,14 @@ import org.eclipse.jdt.core.dom.NumberLiteral;
  * (e.g. "48").
  */
 public final class NumberStringExpressionConverter
-	extends AbstractExpressionConverter<NumberLiteral, String>
+	extends AbstractExpressionConverter<String, NumberLiteral>
 {
-	private static ExpressionConverter<NumberLiteral, String> INSTANCE;
+	private static ExpressionConverter<String, NumberLiteral> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<NumberLiteral, String> instance() {
+	public static ExpressionConverter<String, NumberLiteral> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new NumberStringExpressionConverter();
 		}

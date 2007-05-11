@@ -25,8 +25,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * Most obvious implementation of the interface.
  * Assume the element's value is an Expression.
  */
-public class ExpressionDeclarationAnnotationElementAdapter
-	implements DeclarationAnnotationElementAdapter
+public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
+	implements DeclarationAnnotationElementAdapter<E>
 {
 	/**
 	 * Adapter used to manipulate the element's annotation.
@@ -81,16 +81,16 @@ public class ExpressionDeclarationAnnotationElementAdapter
 
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
-	public Object getValue(ModifiedDeclaration declaration) {
+	public E getValue(ModifiedDeclaration declaration) {
 		// return the expression unmodified
 		return this.expression(declaration);
 	}
 
-	public void setValue(Object value, ModifiedDeclaration declaration) {
-		this.setValue((Expression) value, this.annotationAdapter.getAnnotation(declaration), declaration);
+	public void setValue(E value, ModifiedDeclaration declaration) {
+		this.setValue(value, this.annotationAdapter.getAnnotation(declaration), declaration);
 	}
 
-	public Expression expression(ModifiedDeclaration declaration) {
+	public E expression(ModifiedDeclaration declaration) {
 		return this.expression(this.annotationAdapter.getAnnotation(declaration));
 	}
 
@@ -114,7 +114,7 @@ public class ExpressionDeclarationAnnotationElementAdapter
 	 * (An element name of "value" will return the value of a single
 	 * member annotation.)
 	 */
-	protected Expression expression(Annotation annotation) {
+	protected E expression(Annotation annotation) {
 		if (annotation == null) {
 			return this.expressionNoAnnotation();
 		}
@@ -130,7 +130,7 @@ public class ExpressionDeclarationAnnotationElementAdapter
 		throw new IllegalArgumentException("unknown annotation type: " + annotation);
 	}
 
-	protected Expression expressionNoAnnotation() {
+	protected E expressionNoAnnotation() {
 		return null;
 	}
 
@@ -139,7 +139,7 @@ public class ExpressionDeclarationAnnotationElementAdapter
 	 * with the adapter's element name.
 	 * Return null if the annotation has no such element.
 	 */
-	protected Expression expressionMarkerAnnotation(MarkerAnnotation annotation) {
+	protected E expressionMarkerAnnotation(MarkerAnnotation annotation) {
 		return null;
 	}
 
@@ -148,8 +148,13 @@ public class ExpressionDeclarationAnnotationElementAdapter
 	 * with the adapter's element name.
 	 * Return null if the annotation has no such element.
 	 */
-	protected Expression expressionSingleMemberAnnotation(SingleMemberAnnotation annotation) {
-		return this.elementName.equals("value") ? annotation.getValue() : null;
+	protected E expressionSingleMemberAnnotation(SingleMemberAnnotation annotation) {
+		return this.downcast(this.elementName.equals("value") ? annotation.getValue() : null);
+	}
+
+	@SuppressWarnings("unchecked")
+	private E downcast(Expression e) {
+		return (E) e;
 	}
 
 	/**
@@ -157,9 +162,9 @@ public class ExpressionDeclarationAnnotationElementAdapter
 	 * with the adapter's element name.
 	 * Return null if the annotation has no such element.
 	 */
-	protected Expression expressionNormalAnnotation(NormalAnnotation annotation) {
+	protected E expressionNormalAnnotation(NormalAnnotation annotation) {
 		MemberValuePair pair = this.memberValuePair(annotation);
-		return (pair == null) ? null : pair.getValue();
+		return this.downcast((pair == null) ? null : pair.getValue());
 	}
 
 

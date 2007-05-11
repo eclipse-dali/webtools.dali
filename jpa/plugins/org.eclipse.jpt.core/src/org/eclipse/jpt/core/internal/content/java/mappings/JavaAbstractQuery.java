@@ -136,11 +136,11 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 	}
 
 	protected DeclarationAnnotationElementAdapter nameAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter(daa, nameElementName());
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, nameElementName());
 	}
 
 	protected DeclarationAnnotationElementAdapter queryAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter(daa, queryElementName());
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, queryElementName());
 	}
 
 	protected abstract String nameElementName();
@@ -625,6 +625,6 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 
 	// ********** static methods **********
 	protected static DeclarationAnnotationElementAdapter buildAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter(annotationAdapter, elementName);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(annotationAdapter, elementName);
 	}
 } // JavaAbstractQuery

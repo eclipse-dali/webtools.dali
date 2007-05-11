@@ -13,19 +13,19 @@ import java.util.Arrays;
 
 /**
  * Wrap another annotation element adapter and short-circuit the
- * #setValue method if the value has not changed. Overrides valuesAreEqual
+ * #setValue method if the value has not changed. Overrides #valuesAreEqual()
  * to check equality on arrays
  */
-public class ShortCircuitArrayAnnotationElementAdapter 
-	extends ShortCircuitAnnotationElementAdapter
+public class ShortCircuitArrayAnnotationElementAdapter<T>
+	extends ShortCircuitAnnotationElementAdapter<T[]>
 {
 	// ********** constructor **********
 
-	public ShortCircuitArrayAnnotationElementAdapter(Member member, DeclarationAnnotationElementAdapter daea) {
+	public ShortCircuitArrayAnnotationElementAdapter(Member member, DeclarationAnnotationElementAdapter<T[]> daea) {
 		super(member, daea);
 	}
 
-	public ShortCircuitArrayAnnotationElementAdapter(AnnotationElementAdapter adapter) {
+	public ShortCircuitArrayAnnotationElementAdapter(AnnotationElementAdapter<T[]> adapter) {
 		super(adapter);
 	}
 
@@ -33,11 +33,8 @@ public class ShortCircuitArrayAnnotationElementAdapter
 	// ********** AnnotationElementAdapter implementation **********
 
 	@Override
-	protected boolean valuesAreEqual(Object oldValue, Object newValue) {
-		Object[] oldValueArray = (Object[]) oldValue;
-		Object[] newValueArray = (Object[]) newValue;
-		
-		return Arrays.equals(newValueArray, oldValueArray);
+	protected boolean valuesAreEqual(T[] oldValue, T[] newValue) {
+		return Arrays.equals(newValue, oldValue);
 	}
 
 }

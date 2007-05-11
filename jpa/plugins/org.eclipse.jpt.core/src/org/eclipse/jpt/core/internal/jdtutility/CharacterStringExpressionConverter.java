@@ -18,14 +18,14 @@ import org.eclipse.jdt.core.dom.CharacterLiteral;
  * (e.g. "A").
  */
 public final class CharacterStringExpressionConverter
-	extends AbstractExpressionConverter<CharacterLiteral, String>
+	extends AbstractExpressionConverter<String, CharacterLiteral>
 {
-	private static ExpressionConverter<CharacterLiteral, String> INSTANCE;
+	private static ExpressionConverter<String, CharacterLiteral> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<CharacterLiteral, String> instance() {
+	public static ExpressionConverter<String, CharacterLiteral> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new CharacterStringExpressionConverter();
 		}

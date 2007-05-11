@@ -53,7 +53,7 @@ public class JavaBasicProvider
 	}
 
 	public boolean defaultApplies(Attribute attribute, DefaultsContext defaultsContext) {
-		return signatureIsBasic(attribute.typeSignature(), attribute.getDeclaringType().jdtType());
+		return signatureIsBasic(attribute.typeSignature(), attribute.getDeclaringType().getJdtMember());
 	}
 
 	public IJavaAttributeMapping buildMapping(Attribute attribute) {

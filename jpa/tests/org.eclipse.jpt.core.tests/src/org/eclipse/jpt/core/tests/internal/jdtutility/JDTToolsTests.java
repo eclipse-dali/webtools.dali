@@ -115,7 +115,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 
 		this.createTestType("@annot.TestAnnotation(foo=enums.TestEnum.BAZ)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.TestAnnotation");
-		DeclarationAnnotationElementAdapter daea = new ConversionDeclarationAnnotationElementAdapter(daa, "foo");
+		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		FieldAttribute field = this.idField();
 
 		String actual = JDTTools.resolveEnum(this.jdtType().getCompilationUnit(), field.annotationElementExpression(daea));
@@ -128,7 +128,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 
 		this.createTestType("static enums.TestEnum.BAZ", "@annot.TestAnnotation(foo=BAZ)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.TestAnnotation");
-		DeclarationAnnotationElementAdapter daea = new ConversionDeclarationAnnotationElementAdapter(daa, "foo");
+		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		FieldAttribute field = this.idField();
 
 		String actual = JDTTools.resolveEnum(this.jdtType().getCompilationUnit(), field.annotationElementExpression(daea));
@@ -141,7 +141,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 
 		this.createTestType("static enums.TestEnum.*", "@annot.TestAnnotation(foo=BAZ)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.TestAnnotation");
-		DeclarationAnnotationElementAdapter daea = new ConversionDeclarationAnnotationElementAdapter(daa, "foo");
+		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		FieldAttribute field = this.idField();
 
 		String actual = JDTTools.resolveEnum(this.jdtType().getCompilationUnit(), field.annotationElementExpression(daea));
@@ -154,7 +154,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 
 		this.createTestType("enums.TestEnum", "@annot.TestAnnotation(foo=TestEnum.BAZ)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.TestAnnotation");
-		DeclarationAnnotationElementAdapter daea = new ConversionDeclarationAnnotationElementAdapter(daa, "foo");
+		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		FieldAttribute field = this.idField();
 
 		String actual = JDTTools.resolveEnum(this.jdtType().getCompilationUnit(), field.annotationElementExpression(daea));

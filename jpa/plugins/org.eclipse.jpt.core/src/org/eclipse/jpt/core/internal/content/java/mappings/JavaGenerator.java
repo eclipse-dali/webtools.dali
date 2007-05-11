@@ -560,7 +560,7 @@ public abstract class JavaGenerator extends JavaEObject implements IGenerator
 
 	// ********** static methods **********
 	protected static DeclarationAnnotationElementAdapter buildAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter(annotationAdapter, elementName);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(annotationAdapter, elementName);
 	}
 
 	protected static DeclarationAnnotationElementAdapter buildNumberAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {

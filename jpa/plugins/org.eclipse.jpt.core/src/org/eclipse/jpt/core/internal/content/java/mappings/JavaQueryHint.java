@@ -111,11 +111,11 @@ public class JavaQueryHint extends JavaEObject implements IQueryHint
 	}
 
 	protected DeclarationAnnotationElementAdapter nameAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter(daa, JPA.QUERY_HINT__NAME);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.QUERY_HINT__NAME);
 	}
 
 	protected DeclarationAnnotationElementAdapter valueAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter(daa, JPA.QUERY_HINT__VALUE);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.QUERY_HINT__VALUE);
 	}
 
 	@Override

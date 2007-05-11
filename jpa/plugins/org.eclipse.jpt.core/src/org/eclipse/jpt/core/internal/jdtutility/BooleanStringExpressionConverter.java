@@ -18,14 +18,14 @@ import org.eclipse.jdt.core.dom.BooleanLiteral;
  * (e.g. "true").
  */
 public final class BooleanStringExpressionConverter
-	extends AbstractExpressionConverter<BooleanLiteral, String>
+	extends AbstractExpressionConverter<String, BooleanLiteral>
 {
-	private static ExpressionConverter<BooleanLiteral, String> INSTANCE;
+	private static ExpressionConverter<String, BooleanLiteral> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<BooleanLiteral, String> instance() {
+	public static ExpressionConverter<String, BooleanLiteral> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new BooleanStringExpressionConverter();
 		}

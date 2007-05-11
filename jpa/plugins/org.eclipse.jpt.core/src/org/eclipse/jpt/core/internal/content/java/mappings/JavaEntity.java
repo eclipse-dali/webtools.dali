@@ -404,7 +404,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	}
 
 	private static DeclarationAnnotationElementAdapter buildNameAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ENTITY__NAME, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ENTITY__NAME, false); // false = do not remove annotation when empty
 	}
 
 	/**
@@ -2911,7 +2911,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	}
 
 	private static DeclarationAnnotationElementAdapter buildDiscriminatorValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter(DISCRIMINATOR_ANNOTATION_ADAPTER, JPA.DISCRIMINATOR_VALUE__VALUE);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DISCRIMINATOR_ANNOTATION_ADAPTER, JPA.DISCRIMINATOR_VALUE__VALUE);
 	}
 	
 	// ********** static methods **********

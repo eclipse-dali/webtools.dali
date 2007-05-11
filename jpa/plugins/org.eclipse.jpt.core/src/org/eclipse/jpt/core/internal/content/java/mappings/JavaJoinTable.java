@@ -87,11 +87,11 @@ public class JavaJoinTable extends AbstractJavaTable implements IJoinTable
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.JOIN_TABLE);
 
-	private static final DeclarationAnnotationElementAdapter NAME_ADAPTER = new ConversionDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__NAME);
+	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__NAME);
 
-	private static final DeclarationAnnotationElementAdapter SCHEMA_ADAPTER = new ConversionDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__SCHEMA);
+	private static final DeclarationAnnotationElementAdapter<String> SCHEMA_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__SCHEMA);
 
-	private static final DeclarationAnnotationElementAdapter CATALOG_ADAPTER = new ConversionDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__CATALOG);
+	private static final DeclarationAnnotationElementAdapter<String> CATALOG_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__CATALOG);
 
 	protected JavaJoinTable() {
 		super();
@@ -106,19 +106,19 @@ public class JavaJoinTable extends AbstractJavaTable implements IJoinTable
 
 	// ********** AbstractJavaTable implementation **********
 	@Override
-	protected DeclarationAnnotationElementAdapter nameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> nameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @JoinTable is never nested
 		return NAME_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter schemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> schemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @JoinTable is never nested
 		return SCHEMA_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter catalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> catalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @JoinTable is never nested
 		return CATALOG_ADAPTER;
 	}
@@ -149,6 +149,7 @@ public class JavaJoinTable extends AbstractJavaTable implements IJoinTable
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void specifiedJoinColumnsChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
@@ -185,6 +186,7 @@ public class JavaJoinTable extends AbstractJavaTable implements IJoinTable
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void specifiedInverseJoinColumnsChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :

@@ -15,14 +15,15 @@ import org.eclipse.jdt.core.dom.Expression;
 /**
  * Provide clients with a pluggable way to manipulate an
  * annotation element modifying a "declaration".
+ * T is the type of the object to be passed to and returned by the adapter.
  */
-public interface DeclarationAnnotationElementAdapter {
+public interface DeclarationAnnotationElementAdapter<T> {
 
 	/**
 	 * Given the specified declaration, return the value of the
 	 * annotation element. Return null if the element is not present.
 	 */
-	Object getValue(ModifiedDeclaration declaration);
+	T getValue(ModifiedDeclaration declaration);
 
 	/**
 	 * Given the specified declaration, set the value of the
@@ -30,7 +31,7 @@ public interface DeclarationAnnotationElementAdapter {
 	 * to null will cause the element to be removed from its
 	 * annotation.
 	 */
-	void setValue(Object value, ModifiedDeclaration declaration);
+	void setValue(T value, ModifiedDeclaration declaration);
 
 	/**
 	 * Given the specified declaration, return the element's value expression.

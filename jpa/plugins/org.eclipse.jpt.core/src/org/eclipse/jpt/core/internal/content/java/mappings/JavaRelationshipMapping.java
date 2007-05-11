@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
@@ -38,7 +39,10 @@ import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.mappings.RelationshipMappingTools;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
@@ -54,7 +58,7 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	implements IRelationshipMapping
 {
-	private AnnotationElementAdapter targetEntityAdapter;
+	private AnnotationElementAdapter<String> targetEntityAdapter;
 
 	//	private AnnotationElementAdapter cascadeAdapter;
 	/**
@@ -62,7 +66,7 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	 * but the 1:1 and m:1 mappings have a default of EAGER,
 	 * while the 1:m and m:m mappings have a default of LAZY
 	 */
-	private AnnotationElementAdapter fetchAdapter;
+	private AnnotationElementAdapter<String> fetchAdapter;
 
 	/**
 	 * The default value of the '{@link #getTargetEntity() <em>Target Entity</em>}' attribute.
@@ -135,14 +139,14 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 		this.fetchAdapter = this.buildAnnotationElementAdapter(this.fetchAdapter());
 	}
 
-	protected AnnotationElementAdapter buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter daea) {
-		return new ShortCircuitAnnotationElementAdapter(this.getAttribute(), daea);
+	protected AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
+		return new ShortCircuitAnnotationElementAdapter<String>(this.getAttribute(), daea);
 	}
 
 	/**
 	 * return the Java adapter's 'targetEntity' element adapter config
 	 */
-	protected abstract DeclarationAnnotationElementAdapter targetEntityAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String> targetEntityAdapter();
 
 	/**
 	 * return the Java adapter's 'cascade' element adapter config
@@ -151,7 +155,7 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	/**
 	 * return the Java adapter's 'fetch' element adapter config
 	 */
-	protected abstract DeclarationAnnotationElementAdapter fetchAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String> fetchAdapter();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -444,7 +448,7 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		setDefaultTargetEntity(this.javaDefaultTargetEntity());
-		setSpecifiedTargetEntity((String) this.targetEntityAdapter.getValue(astRoot));
+		setSpecifiedTargetEntity(this.targetEntityAdapter.getValue(astRoot));
 		//setCascade(CascadeType.fromJavaAnnotationValue(this.cascadeAdapter.getValue(astRoot)));
 		this.updateFetchFromJava(astRoot);
 	}
@@ -500,38 +504,51 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 		setResolvedTargetEntity(null);
 	}
 
-	public Iterator<String> possibleMappedByAttributeNames() {
-		IEntity targetEntity = getResolvedTargetEntity();
-		if (targetEntity == null) {
-			return EmptyIterator.instance();
-		}
-		return new TransformationIterator<IPersistentAttribute, String>(targetEntity.getPersistentType().attributes()) {
+	public Iterator<String> candidateMappedByAttributeNames() {
+		IEntity targetEntity = this.getResolvedTargetEntity();
+		return (targetEntity == null) ?
+			EmptyIterator.<String>instance()
+		:
+			this.attributeNames(targetEntity.getPersistentType().attributes());
+	}
+
+	private Iterator<String> attributeNames(Iterator<IPersistentAttribute> attributes) {
+		return new TransformationIterator<IPersistentAttribute, String>(attributes) {
+			@Override
 			protected String transform(IPersistentAttribute attribute) {
 				return attribute.getName();
 			}
 		};
 	}
 
+	protected Iterator<String> candidateMappedByAttributeNames(Filter<String> filter) {
+		return new FilteringIterator<String>(this.candidateMappedByAttributeNames(), filter);
+	}
+
+	protected Iterator<String> quotedCandidateMappedByAttributeNames(Filter<String> filter) {
+		return StringTools.quote(this.candidateMappedByAttributeNames(filter));
+	}
+
 	// ********** convenience methods **********
-	protected AnnotationElementAdapter getFetchAdapter() {
+	protected AnnotationElementAdapter<String> getFetchAdapter() {
 		return this.fetchAdapter;
 	}
 
 	// ********** static methods **********
-	protected static DeclarationAnnotationElementAdapter buildTargetEntityAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+	protected static DeclarationAnnotationElementAdapter<String> buildTargetEntityAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		// TODO what about QualifiedType?
 		return buildAnnotationElementAdapter(annotationAdapter, elementName, SimpleTypeStringExpressionConverter.instance());
 	}
 
-	protected static DeclarationAnnotationElementAdapter buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+	protected static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return buildAnnotationElementAdapter(annotationAdapter, elementName, StringExpressionConverter.instance());
 	}
 
-	protected static DeclarationAnnotationElementAdapter buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<?, String> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter(annotationAdapter, elementName, false, converter);
+	protected static <T extends Expression> DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String, T> converter) {
+		return new ConversionDeclarationAnnotationElementAdapter<String, T>(annotationAdapter, elementName, false, converter);
 	}
 
-	protected static DeclarationAnnotationElementAdapter buildEnumAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+	protected static DeclarationAnnotationElementAdapter<String> buildEnumAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return new EnumDeclarationAnnotationElementAdapter(annotationAdapter, elementName, false);
 	}
 

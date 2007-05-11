@@ -51,6 +51,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaJoinTable;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToOne;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaMappedSuperclassProvider;
+import org.eclipse.jpt.core.internal.content.java.mappings.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOne;
@@ -228,11 +229,11 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		adapters.add(JavaId.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaJoinColumn.SINGLE_DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaJoinColumn.MULTIPLE_DECLARATION_ANNOTATION_ADAPTER); // JoinColumns
-		adapters.add(JavaJoinTable.DECLARATION_ANNOTATION_ADAPTER);
+		adapters.add(JavaJoinTable.DECLARATION_ANNOTATION_ADAPTER); 
 		adapters.add(JavaBasic.LOB_ADAPTER);
 		adapters.add(JavaManyToMany.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaManyToOne.DECLARATION_ANNOTATION_ADAPTER);
-		// TODO ?		adapters.add(JavaMultiRelationshipMapping.MAP_KEY_ADAPTER);
+		adapters.add(JavaMultiRelationshipMapping.MAP_KEY_ADAPTER);
 		adapters.add(JavaOneToMany.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaOneToOne.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaOrderBy.DECLARATION_ANNOTATION_ADAPTER);
@@ -648,7 +649,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	public IType jdtType() {
-		return getType().jdtType();
+		return getType().getJdtMember();
 	}
 
 	/**
@@ -799,7 +800,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	public IJpaContentNode contentNodeAt(int offset) {
-		ICompilationUnit unit = this.type.jdtType().getCompilationUnit();
+		ICompilationUnit unit = this.type.compilationUnit();
 		if (unit == null) {
 			return null;
 		}
@@ -816,7 +817,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		}
 		switch (javaElement.getElementType()) {
 			case IJavaElement.TYPE :
-				if (((IType) javaElement).getKey().equals(this.type.jdtType().getKey())) {
+				if (((IType) javaElement).getKey().equals(this.type.getJdtMember().getKey())) {
 					return this;
 				}
 				break;

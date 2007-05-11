@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.jdtutility;
 import java.beans.Introspector;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
@@ -35,23 +34,21 @@ public class MethodAttribute extends Attribute {
 		super(getMethod);
 	}
 
-	public IMethod jdtMethod() {
-		return (IMethod) this.getJdtMember();
+	@Override
+	public IMethod getJdtMember() {
+		return (IMethod) super.getJdtMember();
 	}
 
-	MethodDeclaration methodDeclaration() {
-		return (MethodDeclaration) this.bodyDeclaration();
-	}
-
-	MethodDeclaration methodDeclaration(CompilationUnit astRoot) {
-		return (MethodDeclaration) this.bodyDeclaration(astRoot);
+	@Override
+	public MethodDeclaration bodyDeclaration() {
+		return (MethodDeclaration) super.bodyDeclaration();
 	}
 
 
 	// ********** Member implementation **********
 
 	@Override
-	public BodyDeclaration bodyDeclaration(CompilationUnit astRoot) {
+	public MethodDeclaration bodyDeclaration(CompilationUnit astRoot) {
 		String methodName = this.getName();
 		for (MethodDeclaration methodDeclaration : this.declaringTypeDeclaration(astRoot).getMethods()) {
 			if (methodDeclaration.getName().getFullyQualifiedName().equals(methodName)
@@ -88,7 +85,7 @@ public class MethodAttribute extends Attribute {
 	@Override
 	public String typeSignature() {
 		try {
-			return this.jdtMethod().getReturnType();
+			return this.getJdtMember().getReturnType();
 		} catch (JavaModelException ex) {
 			throw new RuntimeException(ex);
 		}

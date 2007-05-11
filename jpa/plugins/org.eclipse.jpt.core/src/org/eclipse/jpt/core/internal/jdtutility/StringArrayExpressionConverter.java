@@ -20,30 +20,33 @@ import org.eclipse.jdt.core.dom.StringLiteral;
  * E is the type of the expressions to be found in the array initializer.
  */
 public class StringArrayExpressionConverter<E extends Expression>
-	extends AbstractExpressionConverter<ArrayInitializer, String[]>
+	extends AbstractExpressionConverter<String[], ArrayInitializer>
 {
-	private final ExpressionConverter<E, String> elementConverter;
+	private final ExpressionConverter<String, E> elementConverter;
 
-	public StringArrayExpressionConverter(ExpressionConverter<E, String> elementConverter) {
+	public StringArrayExpressionConverter(ExpressionConverter<String, E> elementConverter) {
 		super();
 		this.elementConverter = elementConverter;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected ArrayInitializer convert_(String[] strings, AST ast) {
 		ArrayInitializer arrayInitializer = ast.newArrayInitializer();
-		List<Expression> expressions = arrayInitializer.expressions();
+		List<Expression> expressions = this.expressions(arrayInitializer);
 		for (String string : strings) {
 			expressions.add(this.elementConverter.convert(string, ast));
 		}
 		return arrayInitializer;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
+	private List<Expression> expressions(ArrayInitializer arrayInitializer) {
+		return arrayInitializer.expressions();
+	}
+
+	@Override
 	protected String[] convert_(ArrayInitializer arrayInitializer) {
-		List<E> expressions = arrayInitializer.expressions();
+		List<E> expressions = this.downcastExpressions(arrayInitializer);
 		int len = expressions.size();
 		String[] strings = new String[len];
 		for (int i = len; i-- > 0; ) {
@@ -52,6 +55,15 @@ public class StringArrayExpressionConverter<E extends Expression>
 		return strings;
 	}
 
+	@SuppressWarnings("unchecked")
+	private List<E> downcastExpressions(ArrayInitializer arrayInitializer) {
+		return arrayInitializer.expressions();
+	}
+
+	/**
+	 * Build an expression converter for an annotation element of type String[].
+	 *     @Foo(bar={"text0", "text1"})
+	 */
 	public static StringArrayExpressionConverter<StringLiteral> forStringLiterals() {
 		return new StringArrayExpressionConverter<StringLiteral>(StringExpressionConverter.instance());
 	}

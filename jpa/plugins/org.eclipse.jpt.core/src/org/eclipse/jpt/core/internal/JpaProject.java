@@ -537,7 +537,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		for (IJpaFile jpaFile : persistenceFiles) {
 			JpaCompilationUnit compilationUnit = (JpaCompilationUnit) jpaFile.getContent();
 			for (JavaPersistentType persistentType : compilationUnit.getTypes()) {
-				if (type.equals(persistentType.getType().jdtType())) {
+				if (type.equals(persistentType.getType().getJdtMember())) {
 					return persistentType;
 				}
 			}

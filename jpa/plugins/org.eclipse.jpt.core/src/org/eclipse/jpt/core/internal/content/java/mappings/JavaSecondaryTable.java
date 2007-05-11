@@ -99,6 +99,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void specifiedPKJoinColumnsChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
@@ -394,18 +395,18 @@ public class JavaSecondaryTable extends AbstractJavaTable
 
 	// ********** AbstractJavaTable implementation **********
 	@Override
-	protected DeclarationAnnotationElementAdapter nameAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter(daa, JPA.SECONDARY_TABLE__NAME);
+	protected DeclarationAnnotationElementAdapter<String> nameAdapter(DeclarationAnnotationAdapter daa) {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.SECONDARY_TABLE__NAME);
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter schemaAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter(daa, JPA.SECONDARY_TABLE__SCHEMA);
+	protected DeclarationAnnotationElementAdapter<String> schemaAdapter(DeclarationAnnotationAdapter daa) {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.SECONDARY_TABLE__SCHEMA);
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter catalogAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter(daa, JPA.SECONDARY_TABLE__CATALOG);
+	protected DeclarationAnnotationElementAdapter<String> catalogAdapter(DeclarationAnnotationAdapter daa) {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.SECONDARY_TABLE__CATALOG);
 	}
 
 	public IPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(int index) {

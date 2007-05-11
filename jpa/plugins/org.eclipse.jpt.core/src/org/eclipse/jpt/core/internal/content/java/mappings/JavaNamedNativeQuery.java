@@ -97,11 +97,11 @@ public class JavaNamedNativeQuery extends JavaAbstractQuery
 
 	// ********** initialization **********
 	protected DeclarationAnnotationElementAdapter resultClassAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter(daa, JPA.NAMED_NATIVE_QUERY__RESULT_CLASS);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.NAMED_NATIVE_QUERY__RESULT_CLASS);
 	}
 
 	protected DeclarationAnnotationElementAdapter resultSetMappingAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter(daa, JPA.NAMED_NATIVE_QUERY__RESULT_SET_MAPPING);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.NAMED_NATIVE_QUERY__RESULT_SET_MAPPING);
 	}
 
 	@Override

@@ -338,6 +338,6 @@ public class JavaGeneratedValue extends JavaEObject implements IGeneratedValue
 	}
 
 	private static DeclarationAnnotationElementAdapter buildGeneratorAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.GENERATED_VALUE__GENERATOR, false);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.GENERATED_VALUE__GENERATOR, false);
 	}
 } // JavaGeneratedValue

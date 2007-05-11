@@ -15,30 +15,35 @@ import org.eclipse.jdt.core.dom.Expression;
 /**
  * Behaviorless implementation.
  */
-public class NullDeclarationAnnotationElementAdapter implements DeclarationAnnotationElementAdapter {
+public class NullDeclarationAnnotationElementAdapter<T>
+	implements DeclarationAnnotationElementAdapter<T>
+{
 
 	// singleton
-	private static final NullDeclarationAnnotationElementAdapter INSTANCE = new NullDeclarationAnnotationElementAdapter();
+	@SuppressWarnings("unchecked")
+	private static final DeclarationAnnotationElementAdapter INSTANCE
+			= new NullDeclarationAnnotationElementAdapter();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static DeclarationAnnotationElementAdapter instance() {
+	@SuppressWarnings("unchecked")
+	public static <S> DeclarationAnnotationElementAdapter<S> instance() {
 		return INSTANCE;
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private NullDeclarationAnnotationElementAdapter() {
 		super();
 	}
 
-	public Object getValue(ModifiedDeclaration declaration) {
+	public T getValue(ModifiedDeclaration declaration) {
 		return null;
 	}
 
-	public void setValue(Object value, ModifiedDeclaration declaration) {
+	public void setValue(T value, ModifiedDeclaration declaration) {
 		// do nothing
 	}
 

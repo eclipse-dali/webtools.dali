@@ -17,16 +17,16 @@ import org.eclipse.jpt.utility.internal.StringTools;
  /**
  * Adapt a member and a declaration annotation element adapter.
  */
-public class MemberAnnotationElementAdapter
-	implements AnnotationElementAdapter
+public class MemberAnnotationElementAdapter<T>
+	implements AnnotationElementAdapter<T>
 {
 	private final Member member;
-	private final DeclarationAnnotationElementAdapter daea;
+	private final DeclarationAnnotationElementAdapter<T> daea;
 
 
 	// ********** constructor **********
 
-	public MemberAnnotationElementAdapter(Member member, DeclarationAnnotationElementAdapter daea) {
+	public MemberAnnotationElementAdapter(Member member, DeclarationAnnotationElementAdapter<T> daea) {
 		super();
 		this.member = member;
 		this.daea = daea;
@@ -35,15 +35,15 @@ public class MemberAnnotationElementAdapter
 
 	// ********** AnnotationElementAdapter implementation **********
 
-	public Object getValue() {
+	public T getValue() {
 		return this.daea.getValue(this.member.modifiedDeclaration());
 	}
 
-	public Object getValue(CompilationUnit astRoot) {
+	public T getValue(CompilationUnit astRoot) {
 		return this.daea.getValue(this.member.modifiedDeclaration(astRoot));
 	}
 
-	public void setValue(Object value) {
+	public void setValue(T value) {
 		this.edit(this.buildSetValueEditor(value));
 	}
 
@@ -75,18 +75,18 @@ public class MemberAnnotationElementAdapter
 		this.member.edit(editor);
 	}
 
-	protected Member.Editor buildSetValueEditor(Object value) {
-		return new SetValueEditor(value, this.daea);
+	protected Member.Editor buildSetValueEditor(T value) {
+		return new SetValueEditor<T>(value, this.daea);
 	}
 
 
 	// ********** member classes **********
 
-	protected static class SetValueEditor implements Member.Editor {
-		private final DeclarationAnnotationElementAdapter daea;
-		private final Object value;
+	protected static class SetValueEditor<T> implements Member.Editor {
+		private final DeclarationAnnotationElementAdapter<T> daea;
+		private final T value;
 
-		SetValueEditor(Object value, DeclarationAnnotationElementAdapter daea) {
+		SetValueEditor(T value, DeclarationAnnotationElementAdapter<T> daea) {
 			super();
 			this.value = value;
 			this.daea = daea;

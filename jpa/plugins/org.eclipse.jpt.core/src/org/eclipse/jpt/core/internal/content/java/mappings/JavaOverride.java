@@ -83,7 +83,7 @@ public abstract class JavaOverride extends JavaEObject implements IOverride
 	protected abstract String nameElementName();
 
 	private AnnotationElementAdapter buildAdapter(String elementName) {
-		return new ShortCircuitAnnotationElementAdapter(this.member, new ConversionDeclarationAnnotationElementAdapter(this.daa, elementName));
+		return new ShortCircuitAnnotationElementAdapter(this.member, ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, elementName));
 	}
 
 	/**

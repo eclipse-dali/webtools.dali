@@ -13,7 +13,9 @@ import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.content.java.JavaEObject;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -124,11 +126,11 @@ public abstract class JavaNamedColumn extends JavaEObject
 	private final DeclarationAnnotationAdapter daa;
 
 	// hold this so we can get the 'name' text range
-	private final DeclarationAnnotationElementAdapter nameDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 
-	private final AnnotationElementAdapter nameAdapter;
+	private final AnnotationElementAdapter<String> nameAdapter;
 
-	private final AnnotationElementAdapter columnDefinitionAdapter;
+	private final AnnotationElementAdapter<String> columnDefinitionAdapter;
 
 	protected JavaNamedColumn() {
 		super();
@@ -145,27 +147,27 @@ public abstract class JavaNamedColumn extends JavaEObject
 		this.columnDefinitionAdapter = this.buildShortCircuitStringElementAdapter(this.columnDefinitionElementName());
 	}
 
-	protected DeclarationAnnotationElementAdapter buildStringElementAdapter(String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter(this.daa, elementName);
+	protected DeclarationAnnotationElementAdapter<String> buildStringElementAdapter(String elementName) {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, elementName);
 	}
 
-	protected DeclarationAnnotationElementAdapter buildBooleanElementAdapter(String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter(this.daa, elementName, BooleanStringExpressionConverter.instance());
+	protected DeclarationAnnotationElementAdapter<String> buildBooleanElementAdapter(String elementName) {
+		return new ConversionDeclarationAnnotationElementAdapter<String, BooleanLiteral>(this.daa, elementName, BooleanStringExpressionConverter.instance());
 	}
 
-	protected DeclarationAnnotationElementAdapter buildIntElementAdapter(String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter(this.daa, elementName, NumberStringExpressionConverter.instance());
+	protected DeclarationAnnotationElementAdapter<String> buildIntElementAdapter(String elementName) {
+		return new ConversionDeclarationAnnotationElementAdapter<String, NumberLiteral>(this.daa, elementName, NumberStringExpressionConverter.instance());
 	}
 
-	protected AnnotationElementAdapter buildShortCircuitElementAdapter(DeclarationAnnotationElementAdapter daea) {
-		return new ShortCircuitAnnotationElementAdapter(this.member, daea);
+	protected AnnotationElementAdapter<String> buildShortCircuitElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
+		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
 	}
 
-	protected AnnotationElementAdapter buildShortCircuitStringElementAdapter(String elementName) {
+	protected AnnotationElementAdapter<String> buildShortCircuitStringElementAdapter(String elementName) {
 		return this.buildShortCircuitElementAdapter(this.buildStringElementAdapter(elementName));
 	}
 
-	protected AnnotationElementAdapter buildShortCircuitBooleanElementAdapter(String elementName) {
+	protected AnnotationElementAdapter<String> buildShortCircuitBooleanElementAdapter(String elementName) {
 		return this.buildShortCircuitElementAdapter(this.buildBooleanElementAdapter(elementName));
 	}
 
@@ -182,10 +184,10 @@ public abstract class JavaNamedColumn extends JavaEObject
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(INamedColumn.class)) {
 			case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_NAME :
-				this.nameAdapter.setValue(notification.getNewValue());
+				this.nameAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaJavaMappingsPackage.JAVA_COLUMN__COLUMN_DEFINITION :
-				this.columnDefinitionAdapter.setValue(notification.getNewValue());
+				this.columnDefinitionAdapter.setValue((String) notification.getNewValue());
 				break;
 			default :
 				break;
@@ -452,11 +454,11 @@ public abstract class JavaNamedColumn extends JavaEObject
 		return (textRange != null) ? textRange : this.owner.getTextRange();
 	}
 
-	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter elementAdapter) {
+	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter) {
 		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter));
 	}
 
-	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter elementAdapter, CompilationUnit astRoot) {
+	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter, CompilationUnit astRoot) {
 		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter, astRoot));
 	}
 
@@ -472,13 +474,13 @@ public abstract class JavaNamedColumn extends JavaEObject
 		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
 	}
 
-	protected boolean elementTouches(DeclarationAnnotationElementAdapter elementAdapter, int pos, CompilationUnit astRoot) {
+	protected boolean elementTouches(DeclarationAnnotationElementAdapter<?> elementAdapter, int pos, CompilationUnit astRoot) {
 		return this.elementTouches(this.member.annotationElementTextRange(elementAdapter, astRoot), pos);
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-		this.setSpecifiedName((String) this.nameAdapter.getValue(astRoot));
-		this.setColumnDefinition((String) this.columnDefinitionAdapter.getValue(astRoot));
+		this.setSpecifiedName(this.nameAdapter.getValue(astRoot));
+		this.setColumnDefinition(this.columnDefinitionAdapter.getValue(astRoot));
 	}
 
 	public boolean isConnected() {

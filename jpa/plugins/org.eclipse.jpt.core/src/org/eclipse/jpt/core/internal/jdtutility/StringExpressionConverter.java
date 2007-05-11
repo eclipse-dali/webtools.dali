@@ -17,14 +17,14 @@ import org.eclipse.jdt.core.dom.StringLiteral;
  * Convert a string literal to/from a string (e.g. "text").
  */
 public final class StringExpressionConverter
-	extends AbstractExpressionConverter<StringLiteral, String>
+	extends AbstractExpressionConverter<String, StringLiteral>
 {
-	private static ExpressionConverter<StringLiteral, String> INSTANCE;
+	private static ExpressionConverter<String, StringLiteral> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<StringLiteral, String> instance() {
+	public static ExpressionConverter<String, StringLiteral> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new StringExpressionConverter();
 		}

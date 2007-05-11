@@ -117,7 +117,7 @@ public abstract class Member {
 	 * this will throw a NPE for a top-level type
 	 */
 	TypeDeclaration declaringTypeDeclaration(CompilationUnit astRoot) {
-		return this.declaringType.typeDeclaration(astRoot);
+		return this.declaringType.bodyDeclaration(astRoot);
 	}
 
 	@Override
@@ -250,27 +250,27 @@ public abstract class Member {
 
 	// ********** annotation elements **********
 
-	public Object annotationElementValue(DeclarationAnnotationElementAdapter adapter, CompilationUnit astRoot) {
+	public <T> T annotationElementValue(DeclarationAnnotationElementAdapter<T> adapter, CompilationUnit astRoot) {
 		return adapter.getValue(this.modifiedDeclaration(astRoot));
 	}
 
-	public Object annotationElementValue(DeclarationAnnotationElementAdapter adapter) {
+	public <T> T annotationElementValue(DeclarationAnnotationElementAdapter<T> adapter) {
 		return this.annotationElementValue(adapter, this.astRoot());
 	}
 
-	public Expression annotationElementExpression(DeclarationAnnotationElementAdapter adapter, CompilationUnit astRoot) {
+	public Expression annotationElementExpression(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
 		return adapter.expression(this.modifiedDeclaration(astRoot));
 	}
 
-	public Expression annotationElementExpression(DeclarationAnnotationElementAdapter adapter) {
+	public Expression annotationElementExpression(DeclarationAnnotationElementAdapter<?> adapter) {
 		return this.annotationElementExpression(adapter, this.astRoot());
 	}
 
-	public boolean containsAnnotationElement(DeclarationAnnotationElementAdapter adapter, CompilationUnit astRoot) {
+	public boolean containsAnnotationElement(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
 		return this.annotationElementExpression(adapter, astRoot) != null;
 	}
 
-	public boolean containsAnnotationElement(DeclarationAnnotationElementAdapter adapter) {
+	public boolean containsAnnotationElement(DeclarationAnnotationElementAdapter<?> adapter) {
 		return this.containsAnnotationElement(adapter, this.astRoot());
 	}
 
@@ -278,7 +278,7 @@ public abstract class Member {
 	 * Return the text range corresponding to the specified element.
 	 * If the element is missing, return null.
 	 */
-	public ITextRange annotationElementTextRange(DeclarationAnnotationElementAdapter adapter, CompilationUnit astRoot) {
+	public ITextRange annotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
 		return this.textRange(this.annotationElementExpression(adapter, astRoot));
 	}
 
@@ -286,7 +286,7 @@ public abstract class Member {
 	 * Return the text range corresponding to the specified element.
 	 * If the element is missing, return null.
 	 */
-	public ITextRange annotationElementTextRange(DeclarationAnnotationElementAdapter adapter) {
+	public ITextRange annotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter) {
 		return this.annotationElementTextRange(adapter, this.astRoot());
 	}
 
@@ -294,7 +294,7 @@ public abstract class Member {
 	 * Return the AST node corresponding to the specified element.
 	 * If the element is missing, return its parent node.
 	 */
-	public ASTNode annotationElementASTNode(DeclarationAnnotationElementAdapter adapter, CompilationUnit astRoot) {
+	public ASTNode annotationElementASTNode(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
 		return adapter.astNode(this.modifiedDeclaration(astRoot));
 	}
 
@@ -302,14 +302,14 @@ public abstract class Member {
 	 * Return the AST node corresponding to the specified element.
 	 * If the element is missing, return its parent node.
 	 */
-	public ASTNode annotationElementASTNode(DeclarationAnnotationElementAdapter adapter) {
+	public ASTNode annotationElementASTNode(DeclarationAnnotationElementAdapter<?> adapter) {
 		return this.annotationElementASTNode(adapter, this.astRoot());
 	}
 
 	/**
 	 * Set the value of the specified element.
 	 */
-	public void setAnnotationElementValue(final DeclarationAnnotationElementAdapter adapter, final Object value) {
+	public <T> void setAnnotationElementValue(final DeclarationAnnotationElementAdapter<T> adapter, final T value) {
 		this.edit(new Editor() {
 			public void edit(ModifiedDeclaration declaration) {
 				adapter.setValue(value, declaration);

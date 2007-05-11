@@ -11,18 +11,19 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.Name;
 
 /**
  * Wrap a declaration annotation element adapter and simply
  * add an import for the enum when necessary.
  */
 public class EnumDeclarationAnnotationElementAdapter
-	implements DeclarationAnnotationElementAdapter
+	implements DeclarationAnnotationElementAdapter<String>
 {
 	/**
 	 * The wrapped adapter that returns and takes name strings (enums).
 	 */
-	private final ConversionDeclarationAnnotationElementAdapter adapter;
+	private final ConversionDeclarationAnnotationElementAdapter<String, Name> adapter;
 
 
 	// ********** constructors **********
@@ -44,10 +45,10 @@ public class EnumDeclarationAnnotationElementAdapter
 	}
 
 	public EnumDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
-		this(new ConversionDeclarationAnnotationElementAdapter(annotationAdapter, elementName, removeAnnotationWhenEmpty, NameStringExpressionConverter.instance()));
+		this(new ConversionDeclarationAnnotationElementAdapter<String, Name>(annotationAdapter, elementName, removeAnnotationWhenEmpty, NameStringExpressionConverter.instance()));
 	}
 
-	protected EnumDeclarationAnnotationElementAdapter(ConversionDeclarationAnnotationElementAdapter adapter) {
+	protected EnumDeclarationAnnotationElementAdapter(ConversionDeclarationAnnotationElementAdapter<String, Name> adapter) {
 		super();
 		this.adapter = adapter;
 	}
@@ -55,11 +56,11 @@ public class EnumDeclarationAnnotationElementAdapter
 
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
-	public Object getValue(ModifiedDeclaration declaration) {
+	public String getValue(ModifiedDeclaration declaration) {
 		return this.resolve(this.adapter.expression(declaration), declaration);
 	}
 
-	public void setValue(Object value, ModifiedDeclaration declaration) {
+	public void setValue(String value, ModifiedDeclaration declaration) {
 		this.adapter.setValue(this.convertToShortName(value, declaration), declaration);
 	}
 
@@ -75,7 +76,7 @@ public class EnumDeclarationAnnotationElementAdapter
 	// ********** internal methods **********
 
 	/**
-	 * resolve the enum's short name
+	 * resolve the enum
 	 */
 	protected String resolve(Expression enumExpression, ModifiedDeclaration declaration) {
 		return (enumExpression == null) ? null : JDTTools.resolveEnum(declaration.iCompilationUnit(), enumExpression);
@@ -84,13 +85,12 @@ public class EnumDeclarationAnnotationElementAdapter
 	/**
 	 * convert the fully-qualified enum to a static import and its short name
 	 */
-	protected String convertToShortName(Object value, ModifiedDeclaration declaration) {
-		if (value == null) {
+	protected String convertToShortName(String string, ModifiedDeclaration declaration) {
+		if (string == null) {
 			return null;
 		}
-		String enum_ = (String) value;
-		declaration.addStaticImport(enum_);  // e.g. "javax.persistence.FetchType.EAGER"
-		return this.shortName(enum_);  // e.g. "EAGER"
+		declaration.addStaticImport(string);  // e.g. "javax.persistence.FetchType.EAGER"
+		return this.shortName(string);  // e.g. "EAGER"
 	}
 
 	protected String shortTypeName(String name) {

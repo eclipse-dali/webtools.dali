@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.jdtutility;
 import java.util.List;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
@@ -28,23 +27,21 @@ public class FieldAttribute extends Attribute {
 		super(field);
 	}
 
-	public IField jdtField() {
-		return (IField) this.getJdtMember();
+	@Override
+	public IField getJdtMember() {
+		return (IField) super.getJdtMember();
 	}
 
-	FieldDeclaration fieldDeclaration() {
-		return (FieldDeclaration) this.bodyDeclaration();
-	}
-
-	FieldDeclaration fieldDeclaration(CompilationUnit astRoot) {
-		return (FieldDeclaration) this.bodyDeclaration(astRoot);
+	@Override
+	public FieldDeclaration bodyDeclaration() {
+		return (FieldDeclaration) super.bodyDeclaration();
 	}
 
 
 	// ********** Member implementation **********
 
 	@Override
-	public BodyDeclaration bodyDeclaration(CompilationUnit astRoot) {
+	public FieldDeclaration bodyDeclaration(CompilationUnit astRoot) {
 		String fieldName = this.getName();
 		for (FieldDeclaration fieldDeclaration : this.declaringTypeDeclaration(astRoot).getFields()) {
 			// handle multiple fields declared in a single statement:
@@ -74,7 +71,7 @@ public class FieldAttribute extends Attribute {
 	@Override
 	public String typeSignature() {
 		try {
-			return this.jdtField().getTypeSignature();
+			return this.getJdtMember().getTypeSignature();
 		} catch (JavaModelException ex) {
 			throw new RuntimeException(ex);
 		}

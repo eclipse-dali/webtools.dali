@@ -20,14 +20,14 @@ import org.eclipse.jdt.core.dom.TypeLiteral;
  * (e.g. "java.lang.Object").
  */
 public final class SimpleTypeStringExpressionConverter
-	extends AbstractExpressionConverter<TypeLiteral, String>
+	extends AbstractExpressionConverter<String, TypeLiteral>
 {
-	private static ExpressionConverter<TypeLiteral, String> INSTANCE;
+	private static ExpressionConverter<String, TypeLiteral> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<TypeLiteral, String> instance() {
+	public static ExpressionConverter<String, TypeLiteral> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new SimpleTypeStringExpressionConverter();
 		}

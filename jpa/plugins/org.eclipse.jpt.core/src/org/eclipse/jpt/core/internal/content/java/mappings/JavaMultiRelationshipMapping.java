@@ -25,7 +25,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
@@ -71,7 +70,7 @@ public abstract class JavaMultiRelationshipMapping
 	 */
 	protected String mappedBy = MAPPED_BY_EDEFAULT;
 
-	private final AnnotationElementAdapter mappedByAdapter;
+	private final AnnotationElementAdapter<String> mappedByAdapter;
 
 	/**
 	 * The default value of the '{@link #getFetch() <em>Fetch</em>}' attribute.
@@ -135,11 +134,11 @@ public abstract class JavaMultiRelationshipMapping
 
 	private final AnnotationAdapter mapKeyAnnotationAdapter;
 
-	private final AnnotationElementAdapter mapKeyNameAdapter;
+	private final AnnotationElementAdapter<String> mapKeyNameAdapter;
 
 	public static final DeclarationAnnotationAdapter MAP_KEY_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.MAP_KEY);
 
-	private static final DeclarationAnnotationElementAdapter MAP_KEY_NAME_ADAPTER = buildMapKeyNameAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> MAP_KEY_NAME_ADAPTER = buildMapKeyNameAdapter();
 
 	protected JavaMultiRelationshipMapping() {
 		throw new UnsupportedOperationException("Use JavaMultiRelationshipMapping(Attribute) instead");
@@ -149,7 +148,7 @@ public abstract class JavaMultiRelationshipMapping
 		super(attribute);
 		this.mappedByAdapter = this.buildAnnotationElementAdapter(this.mappedByAdapter());
 		this.mapKeyAnnotationAdapter = new MemberAnnotationAdapter(this.getAttribute(), MAP_KEY_ADAPTER);
-		this.mapKeyNameAdapter = new ShortCircuitAnnotationElementAdapter(attribute, MAP_KEY_NAME_ADAPTER);
+		this.mapKeyNameAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, MAP_KEY_NAME_ADAPTER);
 		this.joinTable = JpaJavaMappingsFactory.eINSTANCE.createJavaJoinTable(buildOwner(), attribute);
 		((InternalEObject) this.joinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE, null, null);
 		this.orderBy = JpaJavaMappingsFactory.eINSTANCE.createJavaOrderBy(attribute);
@@ -161,12 +160,12 @@ public abstract class JavaMultiRelationshipMapping
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(IMultiRelationshipMapping.class)) {
 			case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY :
-				String mapKey = (String) notification.getNewValue();
-				if (mapKey == null) {
+				String mk = (String) notification.getNewValue();
+				if (mk == null) {
 					this.mapKeyAnnotationAdapter.removeAnnotation();
 				}
 				else {
-					this.mapKeyNameAdapter.setValue(mapKey);
+					this.mapKeyNameAdapter.setValue(mk);
 				}
 				break;
 			case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__FETCH :
@@ -177,7 +176,7 @@ public abstract class JavaMultiRelationshipMapping
 		}
 		switch (notification.getFeatureID(INonOwningMapping.class)) {
 			case JpaCoreMappingsPackage.INON_OWNING_MAPPING__MAPPED_BY :
-				this.mappedByAdapter.setValue(notification.getNewValue());
+				this.mappedByAdapter.setValue((String) notification.getNewValue());
 				break;
 			default :
 				break;
@@ -199,7 +198,7 @@ public abstract class JavaMultiRelationshipMapping
 	/**
 	 * return the Java adapter's 'mappedBy' element adapter config
 	 */
-	protected abstract DeclarationAnnotationElementAdapter mappedByAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String> mappedByAdapter();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -576,7 +575,7 @@ public abstract class JavaMultiRelationshipMapping
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		setMappedBy((String) this.mappedByAdapter.getValue(astRoot));
+		setMappedBy(this.mappedByAdapter.getValue(astRoot));
 		this.getJavaOrderBy().updateFromJava(astRoot);
 		this.getJavaJoinTable().updateFromJava(astRoot);
 		updateMapKeyFromJava(astRoot);
@@ -587,7 +586,7 @@ public abstract class JavaMultiRelationshipMapping
 			this.setMapKey(null);
 		}
 		else {
-			this.setMapKey((String) this.mapKeyNameAdapter.getValue(astRoot));
+			this.setMapKey(this.mapKeyNameAdapter.getValue(astRoot));
 		}
 	}
 
@@ -604,6 +603,10 @@ public abstract class JavaMultiRelationshipMapping
 		setFetch(DefaultLazyFetchType.fromJavaAnnotationValue(this.getFetchAdapter().getValue(astRoot)));
 	}
 
+	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.mappedByAdapter(), pos, astRoot);
+	}
+
 	@Override
 	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
@@ -613,6 +616,9 @@ public abstract class JavaMultiRelationshipMapping
 		result = this.getJavaJoinTable().candidateValuesFor(pos, filter, astRoot);
 		if (result != null) {
 			return result;
+		}
+		if (this.mappedByTouches(pos, astRoot)) {
+			return this.quotedCandidateMappedByAttributeNames(filter);
 		}
 		return null;
 	}
@@ -640,7 +646,7 @@ public abstract class JavaMultiRelationshipMapping
 	}
 
 	// ********** static methods **********
-	private static DeclarationAnnotationElementAdapter buildMapKeyNameAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter(MAP_KEY_ADAPTER, JPA.MAP_KEY__NAME, false);
+	private static DeclarationAnnotationElementAdapter<String> buildMapKeyNameAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(MAP_KEY_ADAPTER, JPA.MAP_KEY__NAME, false);
 	}
 }

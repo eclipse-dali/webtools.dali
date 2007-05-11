@@ -32,11 +32,11 @@ public class JavaTable extends AbstractJavaTable
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.TABLE);
 
-	private static final DeclarationAnnotationElementAdapter NAME_ADAPTER = new ConversionDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__NAME);
+	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__NAME);
 
-	private static final DeclarationAnnotationElementAdapter SCHEMA_ADAPTER = new ConversionDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__SCHEMA);
+	private static final DeclarationAnnotationElementAdapter<String> SCHEMA_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__SCHEMA);
 
-	private static final DeclarationAnnotationElementAdapter CATALOG_ADAPTER = new ConversionDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__CATALOG);
+	private static final DeclarationAnnotationElementAdapter<String> CATALOG_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__CATALOG);
 
 	protected JavaTable() {
 		super();
@@ -48,19 +48,19 @@ public class JavaTable extends AbstractJavaTable
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter nameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> nameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @Table is never nested
 		return NAME_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter schemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> schemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @Table is never nested
 		return SCHEMA_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter catalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> catalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @Table is never nested
 		return CATALOG_ADAPTER;
 	}

@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.dom.Expression;
 /**
  * Adapt a Java annotation element with a simple-to-use interface.
  */
-public interface AnnotationElementAdapter {
+public interface AnnotationElementAdapter<T> {
 
 	/**
 	 * Return the value of the adapter's annotation element.
@@ -25,7 +25,7 @@ public interface AnnotationElementAdapter {
 	 * might be more performant.
 	 * @see #getValue(org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
-	Object getValue();
+	T getValue();
 
 	/**
 	 * Given the specified compilation unit, return the value of the
@@ -33,14 +33,14 @@ public interface AnnotationElementAdapter {
 	 * Return null if the element is not present.
 	 * @see #getValue()
 	 */
-	Object getValue(CompilationUnit astRoot);
+	T getValue(CompilationUnit astRoot);
 
 	/**
 	 * Set the value of the adapter's annotation element.
 	 * Setting the value of the element to null will cause
 	 * the element to be removed from its annotation.
 	 */
-	void setValue(Object value);
+	void setValue(T value);
 
 	/**
 	 * Return the expression value of the adapter's annotation element.

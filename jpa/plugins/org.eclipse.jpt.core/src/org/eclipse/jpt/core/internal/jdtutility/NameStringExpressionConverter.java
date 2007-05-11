@@ -18,14 +18,14 @@ import org.eclipse.jdt.core.dom.Name;
  * (e.g. "com.xxx.Foo.VALUE1" or "value").
  */
 public final class NameStringExpressionConverter
-	extends AbstractExpressionConverter<Name, String>
+	extends AbstractExpressionConverter<String, Name>
 {
-	private static ExpressionConverter<Name, String> INSTANCE;
+	private static ExpressionConverter<String, Name> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<Name, String> instance() {
+	public static ExpressionConverter<String, Name> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new NameStringExpressionConverter();
 		}

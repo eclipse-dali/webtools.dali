@@ -14,7 +14,6 @@ import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
-import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
@@ -24,21 +23,19 @@ public class Type extends Member {
 		super(type);
 	}
 
-	public IType jdtType() {
-		return (IType) this.getJdtMember();
+	@Override
+	public IType getJdtMember() {
+		return (IType) super.getJdtMember();
 	}
 
-	TypeDeclaration typeDeclaration() {
-		return (TypeDeclaration) this.bodyDeclaration();
-	}
-
-	TypeDeclaration typeDeclaration(CompilationUnit astRoot) {
-		return (TypeDeclaration) this.bodyDeclaration(astRoot);
+	@Override
+	public TypeDeclaration bodyDeclaration() {
+		return (TypeDeclaration) super.bodyDeclaration();
 	}
 
 	public boolean isAbstract() {
 		try {
-			return Flags.isAbstract(this.jdtType().getFlags());
+			return Flags.isAbstract(this.getJdtMember().getFlags());
 		} catch (JavaModelException ex) {
 			throw new RuntimeException(ex);
 		}
@@ -50,18 +47,18 @@ public class Type extends Member {
 	}
 
 	public String getFullyQualifiedName() {
-		return this.jdtType().getFullyQualifiedName();
+		return this.getJdtMember().getFullyQualifiedName();
 	}
 
 
 	// ********** Member implementation **********
 
 	@Override
-	public BodyDeclaration bodyDeclaration(CompilationUnit astRoot) {
+	public TypeDeclaration bodyDeclaration(CompilationUnit astRoot) {
 		String name = this.getName();
 		for (AbstractTypeDeclaration typeDeclaration : this.types(astRoot)) {
 			if (typeDeclaration.getName().getFullyQualifiedName().equals(name)) {
-				return typeDeclaration;
+				return (TypeDeclaration) typeDeclaration;  // assume no enum or annotation declarations
 			}
 		}
 		return null;

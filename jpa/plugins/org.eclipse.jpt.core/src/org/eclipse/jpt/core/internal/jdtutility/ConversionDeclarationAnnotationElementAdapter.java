@@ -11,25 +11,28 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Wrap a declaration annotation element adapter that deals with AST
  * expressions, converting them to/from various other objects.
+ * T is the type of the object to be passed to and returned by the adapter.
+ * E is the type of the expression to be converted by the converter.
  */
-public class ConversionDeclarationAnnotationElementAdapter
-	implements DeclarationAnnotationElementAdapter
+public class ConversionDeclarationAnnotationElementAdapter<T, E extends Expression>
+	implements DeclarationAnnotationElementAdapter<T>
 {
 	/**
 	 * The wrapped adapter that returns and takes AST expressions.
 	 */
-	private final DeclarationAnnotationElementAdapter adapter;
+	private final DeclarationAnnotationElementAdapter<E> adapter;
 
 	/**
 	 * The converter that converts AST expressions to other objects
 	 * (e.g. Strings).
 	 */
-	private final ExpressionConverter converter;
+	private final ExpressionConverter<T, E> converter;
 
 
 	// ********** constructors **********
@@ -39,16 +42,16 @@ public class ConversionDeclarationAnnotationElementAdapter
 	 * remove the annotation when the last element is removed;
 	 * the default expression converter expects string literals.
 	 */
-	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter) {
-		this(annotationAdapter, StringExpressionConverter.instance());
+	public static ConversionDeclarationAnnotationElementAdapter<String, StringLiteral> forStrings(DeclarationAnnotationAdapter annotationAdapter) {
+		return new ConversionDeclarationAnnotationElementAdapter<String, StringLiteral>(annotationAdapter, StringExpressionConverter.instance());
 	}
 
 	/**
 	 * The default element name is "value"; the default behavior is to
 	 * remove the annotation when the last element is removed.
 	 */
-	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, ExpressionConverter converter) {
-		this(new ExpressionDeclarationAnnotationElementAdapter(annotationAdapter), converter);
+	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, ExpressionConverter<T, E> converter) {
+		this(new ExpressionDeclarationAnnotationElementAdapter<E>(annotationAdapter), converter);
 	}
 
 	/**
@@ -56,30 +59,30 @@ public class ConversionDeclarationAnnotationElementAdapter
 	 * element is removed; the default expression converter expects
 	 * string literals.
 	 */
-	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		this(annotationAdapter, elementName, StringExpressionConverter.instance());
+	public static ConversionDeclarationAnnotationElementAdapter<String, StringLiteral> forStrings(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+		return new ConversionDeclarationAnnotationElementAdapter<String, StringLiteral>(annotationAdapter, elementName, StringExpressionConverter.instance());
 	}
 
 	/**
 	 * The default behavior is to remove the annotation when the last
 	 * element is removed.
 	 */
-	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter converter) {
-		this(new ExpressionDeclarationAnnotationElementAdapter(annotationAdapter, elementName), converter);
+	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<T, E> converter) {
+		this(new ExpressionDeclarationAnnotationElementAdapter<E>(annotationAdapter, elementName), converter);
 	}
 
 	/**
 	 * The default expression converter expects string literals.
 	 */
-	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
-		this(annotationAdapter, elementName, removeAnnotationWhenEmpty, StringExpressionConverter.instance());
+	public static ConversionDeclarationAnnotationElementAdapter<String, StringLiteral> forStrings(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
+		return new ConversionDeclarationAnnotationElementAdapter<String, StringLiteral>(annotationAdapter, elementName, removeAnnotationWhenEmpty, StringExpressionConverter.instance());
 	}
 
-	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty, ExpressionConverter converter) {
-		this(new ExpressionDeclarationAnnotationElementAdapter(annotationAdapter, elementName, removeAnnotationWhenEmpty), converter);
+	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty, ExpressionConverter<T, E> converter) {
+		this(new ExpressionDeclarationAnnotationElementAdapter<E>(annotationAdapter, elementName, removeAnnotationWhenEmpty), converter);
 	}
 
-	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationElementAdapter adapter, ExpressionConverter converter) {
+	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationElementAdapter<E> adapter, ExpressionConverter<T, E> converter) {
 		super();
 		this.adapter = adapter;
 		this.converter = converter;
@@ -88,11 +91,11 @@ public class ConversionDeclarationAnnotationElementAdapter
 
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
-	public Object getValue(ModifiedDeclaration declaration) {
-		return this.converter.convert((Expression) this.adapter.getValue(declaration));
+	public T getValue(ModifiedDeclaration declaration) {
+		return this.converter.convert(this.adapter.getValue(declaration));
 	}
 
-	public void setValue(Object value, ModifiedDeclaration declaration) {
+	public void setValue(T value, ModifiedDeclaration declaration) {
 		this.adapter.setValue(this.converter.convert(value, this.adapter.astNode(declaration).getAST()), declaration);
 	}
 
