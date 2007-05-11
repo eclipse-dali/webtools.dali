@@ -124,17 +124,18 @@ public class XmlEntityContext extends XmlTypeContext
 	@Override
 	public void refreshDefaults(DefaultsContext parentDefaults) {
 		super.refreshDefaults(parentDefaults);
+		DefaultsContext defaultsContext = wrapDefaultsContext(parentDefaults);
 		refreshDefaultAttributeOverrides();
 		refreshDefaultAssociationOverrides();
 		refreshDefaultSecondaryTables();
 		for (SecondaryTableContext context : this.secondaryTableContexts) {
-			context.refreshDefaults(parentDefaults);
+			context.refreshDefaults(defaultsContext);
 		}
 		for (AttributeOverrideContext context : this.attributeOverrideContexts) {
-			context.refreshDefaults(parentDefaults);
+			context.refreshDefaults(defaultsContext);
 		}
 		for (AssociationOverrideContext context : this.associationOverrideContexts) {
-			context.refreshDefaults(parentDefaults);
+			context.refreshDefaults(defaultsContext);
 		}
 	}
 	
