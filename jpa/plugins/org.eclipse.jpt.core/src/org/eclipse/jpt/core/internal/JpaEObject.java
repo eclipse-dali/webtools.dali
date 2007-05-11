@@ -17,6 +17,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.db.internal.Database;
 
 /**
  * <!-- begin-user-doc -->
@@ -61,6 +63,14 @@ public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 
 	public IResource getResource() {
 		return this.getJpaProject().getProject();
+	}
+
+	public ConnectionProfile connectionProfile() {
+		return this.getJpaProject().connectionProfile();
+	}
+
+	public Database database() {
+		return this.connectionProfile().getDatabase();
 	}
 
 	// ********** change notification **********

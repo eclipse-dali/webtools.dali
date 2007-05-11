@@ -32,13 +32,13 @@ public class JavaManyToOne extends JavaSingleRelationshipMapping
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.MANY_TO_ONE);
 
-	private static final DeclarationAnnotationElementAdapter TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_ONE__TARGET_ENTITY);
+	private static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_ONE__TARGET_ENTITY);
 
-	private static final DeclarationAnnotationElementAdapter CASCADE_ADAPTER = buildEnumAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_ONE__CASCADE);
+	private static final DeclarationAnnotationElementAdapter<String> CASCADE_ADAPTER = buildEnumAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_ONE__CASCADE);
 
-	private static final DeclarationAnnotationElementAdapter FETCH_ADAPTER = buildEnumAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_ONE__FETCH);
+	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildEnumAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_ONE__FETCH);
 
-	private static final DeclarationAnnotationElementAdapter OPTIONAL_ADAPTER = buildOptionalAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_ONE__OPTIONAL);
+	private static final DeclarationAnnotationElementAdapter<String> OPTIONAL_ADAPTER = buildOptionalAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_ONE__OPTIONAL);
 
 	protected JavaManyToOne() {
 		throw new UnsupportedOperationException("Use JavaManyToOne(Attribute) instead");
@@ -49,23 +49,27 @@ public class JavaManyToOne extends JavaSingleRelationshipMapping
 	}
 
 	// ********** initialization **********
+	@Override
 	protected DeclarationAnnotationAdapter declarationAnnotationAdapter() {
 		return DECLARATION_ANNOTATION_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter targetEntityAdapter() {
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> targetEntityAdapter() {
 		return TARGET_ENTITY_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter cascadeAdapter() {
+	protected DeclarationAnnotationElementAdapter<String> cascadeAdapter() {
 		return CASCADE_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter fetchAdapter() {
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> fetchAdapter() {
 		return FETCH_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter optionalAdapter() {
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> optionalAdapter() {
 		return OPTIONAL_ADAPTER;
 	}
 

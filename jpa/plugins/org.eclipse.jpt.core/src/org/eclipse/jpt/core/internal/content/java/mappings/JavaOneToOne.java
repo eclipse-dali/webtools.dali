@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.mappings.IOneToOne;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.utility.internal.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -58,19 +60,19 @@ public class JavaOneToOne extends JavaSingleRelationshipMapping
 	 */
 	protected String mappedBy = MAPPED_BY_EDEFAULT;
 
-	private AnnotationElementAdapter mappedByAdapter;
+	private AnnotationElementAdapter<String> mappedByAdapter;
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ONE_TO_ONE);
 
-	private static final DeclarationAnnotationElementAdapter TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__TARGET_ENTITY);
+	private static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__TARGET_ENTITY);
 
-	private static final DeclarationAnnotationElementAdapter CASCADE_ADAPTER = buildEnumAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__CASCADE);
+	private static final DeclarationAnnotationElementAdapter<String> CASCADE_ADAPTER = buildEnumAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__CASCADE);
 
-	private static final DeclarationAnnotationElementAdapter FETCH_ADAPTER = buildEnumAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__FETCH);
+	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildEnumAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__FETCH);
 
-	private static final DeclarationAnnotationElementAdapter OPTIONAL_ADAPTER = buildOptionalAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__OPTIONAL);
+	private static final DeclarationAnnotationElementAdapter<String> OPTIONAL_ADAPTER = buildOptionalAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__OPTIONAL);
 
-	private static final DeclarationAnnotationElementAdapter MAPPED_BY_ADAPTER = buildAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__MAPPED_BY);
+	private static final DeclarationAnnotationElementAdapter<String> MAPPED_BY_ADAPTER = buildAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__MAPPED_BY);
 
 	protected JavaOneToOne() {
 		throw new UnsupportedOperationException("Use JavaOneToOne(Attribute) instead");
@@ -86,7 +88,7 @@ public class JavaOneToOne extends JavaSingleRelationshipMapping
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(INonOwningMapping.class)) {
 			case JpaCoreMappingsPackage.INON_OWNING_MAPPING__MAPPED_BY :
-				this.mappedByAdapter.setValue(notification.getNewValue());
+				this.mappedByAdapter.setValue((String) notification.getNewValue());
 				break;
 			default :
 				break;
@@ -94,23 +96,27 @@ public class JavaOneToOne extends JavaSingleRelationshipMapping
 	}
 
 	// ********** initialization **********
+	@Override
 	protected DeclarationAnnotationAdapter declarationAnnotationAdapter() {
 		return DECLARATION_ANNOTATION_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter targetEntityAdapter() {
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> targetEntityAdapter() {
 		return TARGET_ENTITY_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter cascadeAdapter() {
+	protected DeclarationAnnotationElementAdapter<String> cascadeAdapter() {
 		return CASCADE_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter fetchAdapter() {
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> fetchAdapter() {
 		return FETCH_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter optionalAdapter() {
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> optionalAdapter() {
 		return OPTIONAL_ADAPTER;
 	}
 
@@ -295,7 +301,23 @@ public class JavaOneToOne extends JavaSingleRelationshipMapping
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		setMappedBy((String) this.mappedByAdapter.getValue(astRoot));
+		setMappedBy(this.mappedByAdapter.getValue(astRoot));
+	}
+
+	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(MAPPED_BY_ADAPTER, pos, astRoot);
+	}
+
+	@Override
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		if (this.mappedByTouches(pos, astRoot)) {
+			return this.quotedCandidateMappedByAttributeNames(filter);
+		}
+		return null;
 	}
 
 	@Override

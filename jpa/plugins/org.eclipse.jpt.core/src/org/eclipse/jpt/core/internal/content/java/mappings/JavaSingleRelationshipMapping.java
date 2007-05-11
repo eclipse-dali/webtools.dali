@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
@@ -48,7 +49,7 @@ import org.eclipse.jpt.utility.internal.Filter;
 public abstract class JavaSingleRelationshipMapping
 	extends JavaRelationshipMapping implements ISingleRelationshipMapping
 {
-	private AnnotationElementAdapter optionalAdapter;
+	private AnnotationElementAdapter<String> optionalAdapter;
 
 	/**
 	 * The default value of the '{@link #getFetch() <em>Fetch</em>}' attribute.
@@ -149,24 +150,25 @@ public abstract class JavaSingleRelationshipMapping
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void specifiedJoinColumnsChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
 				specifiedJoinColumnAdded(notification.getPosition(), (IJoinColumn) notification.getNewValue());
 				break;
 			case Notification.ADD_MANY :
-				specifiedJoinColumnsAdded(notification.getPosition(), (List) notification.getNewValue());
+				specifiedJoinColumnsAdded(notification.getPosition(), (List<IJoinColumn>) notification.getNewValue());
 				break;
 			case Notification.REMOVE :
 				specifiedJoinColumnRemoved(notification.getPosition(), (IJoinColumn) notification.getOldValue());
 				break;
 			case Notification.REMOVE_MANY :
 				if (notification.getPosition() == Notification.NO_INDEX) {
-					specifiedJoinColumnsCleared((List) notification.getOldValue());
+					specifiedJoinColumnsCleared((List<IJoinColumn>) notification.getOldValue());
 				}
 				else {
 					// Notification.getNewValue() returns an array of the positions of objects that were removed
-					specifiedJoinColumnsRemoved((int[]) notification.getNewValue(), (List) notification.getOldValue());
+					specifiedJoinColumnsRemoved((int[]) notification.getNewValue(), (List<IJoinColumn>) notification.getOldValue());
 				}
 				break;
 			case Notification.SET :
@@ -198,12 +200,12 @@ public abstract class JavaSingleRelationshipMapping
 		}
 	}
 
-	public void specifiedJoinColumnsAdded(int index, List joinColumns) {
+	public void specifiedJoinColumnsAdded(int index, List<IJoinColumn> joinColumns) {
 		//JoinColumn was added to persistence model when udating from java, do not need
 		//to edit the java in this case. TODO is there a better way to handle this??
 		if (!joinColumns.isEmpty() && ((JavaJoinColumn) joinColumns.get(0)).annotation(getAttribute().astRoot()) == null) {
 			this.synchJoinColumnAnnotationsAfterAdd(index + joinColumns.size());
-			for (Iterator stream = joinColumns.iterator(); stream.hasNext();) {
+			for (Iterator<IJoinColumn> stream = joinColumns.iterator(); stream.hasNext();) {
 				JavaJoinColumn joinColumn = (JavaJoinColumn) stream.next();
 				joinColumn.newAnnotation();
 			}
@@ -215,16 +217,16 @@ public abstract class JavaSingleRelationshipMapping
 		this.synchJoinColumnAnnotationsAfterRemove(index);
 	}
 
-	public void specifiedJoinColumnsRemoved(int[] indexes, List joinColumns) {
-		for (Iterator stream = joinColumns.iterator(); stream.hasNext();) {
+	public void specifiedJoinColumnsRemoved(int[] indexes, List<IJoinColumn> joinColumns) {
+		for (Iterator<IJoinColumn> stream = joinColumns.iterator(); stream.hasNext();) {
 			JavaJoinColumn joinColumn = (JavaJoinColumn) stream.next();
 			joinColumn.removeAnnotation();
 		}
 		this.synchJoinColumnAnnotationsAfterRemove(indexes[0]);
 	}
 
-	public void specifiedJoinColumnsCleared(List joinColumns) {
-		for (Iterator stream = joinColumns.iterator(); stream.hasNext();) {
+	public void specifiedJoinColumnsCleared(List<IJoinColumn> joinColumns) {
+		for (Iterator<IJoinColumn> stream = joinColumns.iterator(); stream.hasNext();) {
 			JavaJoinColumn joinColumn = (JavaJoinColumn) stream.next();
 			joinColumn.removeAnnotation();
 		}
@@ -235,11 +237,11 @@ public abstract class JavaSingleRelationshipMapping
 	}
 
 	public void specifiedJoinColumnMoved(int sourceIndex, int targetIndex, IJoinColumn joinColumn) {
-		List joinColumns = getSpecifiedJoinColumns();
+		List<IJoinColumn> joinColumns = getSpecifiedJoinColumns();
 		int begin = Math.min(sourceIndex, targetIndex);
 		int end = Math.max(sourceIndex, targetIndex);
 		for (int i = begin; i-- > end;) {
-			this.synch((IJoinColumn) joinColumns.get(i), i);
+			this.synch(joinColumns.get(i), i);
 		}
 	}
 
@@ -248,9 +250,9 @@ public abstract class JavaSingleRelationshipMapping
 	 * starting at the end of the list to prevent overlap
 	 */
 	private void synchJoinColumnAnnotationsAfterAdd(int index) {
-		List joinColumns = getSpecifiedJoinColumns();
+		List<IJoinColumn> joinColumns = getSpecifiedJoinColumns();
 		for (int i = joinColumns.size(); i-- > index;) {
-			this.synch((IJoinColumn) joinColumns.get(i), i);
+			this.synch(joinColumns.get(i), i);
 		}
 	}
 
@@ -259,9 +261,9 @@ public abstract class JavaSingleRelationshipMapping
 	 * starting at the specified index to prevent overlap
 	 */
 	private void synchJoinColumnAnnotationsAfterRemove(int index) {
-		List joinColumns = getSpecifiedJoinColumns();
+		List<IJoinColumn> joinColumns = getSpecifiedJoinColumns();
 		for (int i = index; i < joinColumns.size(); i++) {
-			this.synch((IJoinColumn) joinColumns.get(i), i);
+			this.synch(joinColumns.get(i), i);
 		}
 	}
 
@@ -272,7 +274,7 @@ public abstract class JavaSingleRelationshipMapping
 	/**
 	 * return the Java adapter's 'optional' element adapter config
 	 */
-	protected abstract DeclarationAnnotationElementAdapter optionalAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String> optionalAdapter();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -599,7 +601,7 @@ public abstract class JavaSingleRelationshipMapping
 	 */
 	private void updateSpecifiedJoinColumnsFromJava(CompilationUnit astRoot) {
 		// synchronize the model join columns with the Java source
-		List joinColumns = getSpecifiedJoinColumns();
+		List<IJoinColumn> joinColumns = getSpecifiedJoinColumns();
 		int persSize = joinColumns.size();
 		int javaSize = 0;
 		boolean allJavaAnnotationsFound = false;
@@ -635,6 +637,7 @@ public abstract class JavaSingleRelationshipMapping
 		}
 	}
 
+	@Override
 	protected void updateFetchFromJava(CompilationUnit astRoot) {
 		setFetch(DefaultEagerFetchType.fromJavaAnnotationValue(this.getFetchAdapter().getValue(astRoot)));
 	}
@@ -642,6 +645,7 @@ public abstract class JavaSingleRelationshipMapping
 	/**
 	 * extend to eliminate any "container" types
 	 */
+	@Override
 	protected String javaDefaultTargetEntity() {
 		String typeName = super.javaDefaultTargetEntity();
 		// if the attribute is a container, don't use it
@@ -676,7 +680,7 @@ public abstract class JavaSingleRelationshipMapping
 	}
 
 	// ********** static methods **********
-	protected static DeclarationAnnotationElementAdapter buildOptionalAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter(annotationAdapter, elementName, false, BooleanStringExpressionConverter.instance());
+	protected static DeclarationAnnotationElementAdapter<String> buildOptionalAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+		return new ConversionDeclarationAnnotationElementAdapter<String, BooleanLiteral>(annotationAdapter, elementName, false, BooleanStringExpressionConverter.instance());
 	}
 } // JavaSingleRelationshipMapping

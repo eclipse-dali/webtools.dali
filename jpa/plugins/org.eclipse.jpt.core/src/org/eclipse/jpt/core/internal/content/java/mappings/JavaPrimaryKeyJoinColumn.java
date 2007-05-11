@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -31,6 +32,10 @@ import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -48,9 +53,9 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn
 	private final IndexedAnnotationAdapter annotationAdapter;
 
 	// hold this so we can get the 'referenced column name' text range
-	private final DeclarationAnnotationElementAdapter referencedColumnNameDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<String> referencedColumnNameDeclarationAdapter;
 
-	private final AnnotationElementAdapter referencedColumnNameAdapter;
+	private final AnnotationElementAdapter<String> referencedColumnNameAdapter;
 
 	public static final SimpleDeclarationAnnotationAdapter SINGLE_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.PRIMARY_KEY_JOIN_COLUMN);
 
@@ -132,7 +137,7 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(IAbstractJoinColumn.class)) {
 			case JpaJavaMappingsPackage.JAVA_PRIMARY_KEY_JOIN_COLUMN__SPECIFIED_REFERENCED_COLUMN_NAME :
-				this.referencedColumnNameAdapter.setValue(notification.getNewValue());
+				this.referencedColumnNameAdapter.setValue((String) notification.getNewValue());
 				break;
 			default :
 				break;
@@ -382,6 +387,35 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn
 		return getOwner().dbReferencedColumnTable();
 	}
 
+	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.referencedColumnNameDeclarationAdapter, pos, astRoot);
+	}
+
+	private Iterator<String> candidateReferencedColumnNames() {
+		Table table = this.getOwner().dbReferencedColumnTable();
+		return (table != null) ? table.columnNames() : EmptyIterator.<String>instance();
+	}
+
+	private Iterator<String> candidateReferencedColumnNames(Filter<String> filter) {
+		return new FilteringIterator<String>(this.candidateReferencedColumnNames(), filter);
+	}
+
+	private Iterator<String> quotedCandidateReferencedColumnNames(Filter<String> filter) {
+		return StringTools.quote(this.candidateReferencedColumnNames(filter));
+	}
+
+	@Override
+	protected Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		if (this.referencedColumnNameTouches(pos, astRoot)) {
+			return this.quotedCandidateReferencedColumnNames(filter);
+		}
+		return null;
+	}
+
 	public boolean isReferencedColumnResolved() {
 		return dbReferencedColumn() != null;
 	}
@@ -405,7 +439,7 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		setSpecifiedReferencedColumnName((String) this.referencedColumnNameAdapter.getValue(astRoot));
+		setSpecifiedReferencedColumnName(this.referencedColumnNameAdapter.getValue(astRoot));
 	}
 
 	void moveAnnotation(int newIndex) {

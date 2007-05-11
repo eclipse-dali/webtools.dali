@@ -421,6 +421,11 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 	}
 
 	@Override
+	public boolean tableIsAllowed() {
+		return true;
+	}
+
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		this.setLength(this.lengthAdapter.getValue(astRoot));

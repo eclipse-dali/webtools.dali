@@ -37,13 +37,13 @@ import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 public class JavaDiscriminatorColumn extends JavaNamedColumn
 	implements IDiscriminatorColumn
 {
-	private AnnotationElementAdapter discriminatorTypeAdapter;
+	private AnnotationElementAdapter<String> discriminatorTypeAdapter;
 
 	private IntAnnotationElementAdapter lengthAdapter;
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.DISCRIMINATOR_COLUMN);
 
-	private static final DeclarationAnnotationElementAdapter DISCRIMINATOR_TYPE_ADAPTER = buildDiscriminatorTypeAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> DISCRIMINATOR_TYPE_ADAPTER = buildDiscriminatorTypeAdapter();
 
 	/**
 	 * The default value of the '{@link #getDiscriminatorType() <em>Discriminator Type</em>}' attribute.
@@ -445,7 +445,7 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 	}
 
 	// ********** static methods **********
-	private static DeclarationAnnotationElementAdapter buildDiscriminatorTypeAdapter() {
+	private static DeclarationAnnotationElementAdapter<String> buildDiscriminatorTypeAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE);
 	}
 } // JavaDiscriminatorColumn

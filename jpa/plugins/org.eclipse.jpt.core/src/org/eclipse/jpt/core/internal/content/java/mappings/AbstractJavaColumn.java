@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -22,6 +23,10 @@ import org.eclipse.jpt.core.internal.mappings.DefaultFalseBoolean;
 import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
 import org.eclipse.jpt.core.internal.mappings.IAbstractColumn;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -167,17 +172,17 @@ public abstract class AbstractJavaColumn extends JavaNamedColumn
 	protected String defaultTable = DEFAULT_TABLE_EDEFAULT;
 
 	// hold this so we can get the 'table' text range
-	private final DeclarationAnnotationElementAdapter tableDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<String> tableDeclarationAdapter;
 
-	private final AnnotationElementAdapter tableAdapter;
+	private final AnnotationElementAdapter<String> tableAdapter;
 
-	private final AnnotationElementAdapter uniqueAdapter;
+	private final AnnotationElementAdapter<String> uniqueAdapter;
 
-	private final AnnotationElementAdapter nullableAdapter;
+	private final AnnotationElementAdapter<String> nullableAdapter;
 
-	private final AnnotationElementAdapter insertableAdapter;
+	private final AnnotationElementAdapter<String> insertableAdapter;
 
-	private final AnnotationElementAdapter updatableAdapter;
+	private final AnnotationElementAdapter<String> updatableAdapter;
 
 	protected AbstractJavaColumn() {
 		super();
@@ -209,7 +214,7 @@ public abstract class AbstractJavaColumn extends JavaNamedColumn
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(IAbstractColumn.class)) {
 			case JpaJavaMappingsPackage.ABSTRACT_JAVA_COLUMN__SPECIFIED_TABLE :
-				this.tableAdapter.setValue(notification.getNewValue());
+				this.tableAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaJavaMappingsPackage.ABSTRACT_JAVA_COLUMN__UNIQUE :
 				this.uniqueAdapter.setValue(((DefaultFalseBoolean) notification.getNewValue()).convertToJavaAnnotationValue());
@@ -644,10 +649,47 @@ public abstract class AbstractJavaColumn extends JavaNamedColumn
 		return this.elementTextRange(this.tableDeclarationAdapter);
 	}
 
+	public boolean tableTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.tableDeclarationAdapter, pos, astRoot);
+	}
+
+	private Iterator<String> candidateTableNames() {
+		return this.tableIsAllowed() ?
+			this.getOwner().getTypeMapping().associatedTableNamesIncludingInherited()
+		:
+			EmptyIterator.<String>instance();
+	}
+
+	private Iterator<String> candidateTableNames(Filter<String> filter) {
+		return new FilteringIterator<String>(this.candidateTableNames(), filter);
+	}
+
+	private Iterator<String> quotedCandidateTableNames(Filter<String> filter) {
+		return StringTools.quote(this.candidateTableNames(filter));
+	}
+
+	/**
+	 * Return whether the 'table' element is allowed. It is not allowed for
+	 * join columns inside of join tables.
+	 */
+	public abstract boolean tableIsAllowed();
+
+	@Override
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		if (this.tableTouches(pos, astRoot)) {
+			return this.quotedCandidateTableNames(filter);
+		}
+		return null;
+	}
+
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		this.setSpecifiedTable((String) this.tableAdapter.getValue(astRoot));
+		this.setSpecifiedTable(this.tableAdapter.getValue(astRoot));
 		this.setUnique(DefaultFalseBoolean.fromJavaAnnotationValue(this.uniqueAdapter.getValue(astRoot)));
 		this.setNullable(DefaultTrueBoolean.fromJavaAnnotationValue(this.nullableAdapter.getValue(astRoot)));
 		this.setInsertable(DefaultTrueBoolean.fromJavaAnnotationValue(this.insertableAdapter.getValue(astRoot)));

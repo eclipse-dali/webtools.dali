@@ -35,7 +35,7 @@ public interface IJoinColumn extends IAbstractColumn, IAbstractJoinColumn
 		/**
 		 * return the list of join columns containing the join column
 		 */
-		List joinColumns();
+		List<IJoinColumn> joinColumns();
 
 		/**
 		 * return whether the specified table cannot be explicitly specified

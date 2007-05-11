@@ -34,11 +34,11 @@ import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
-import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
@@ -221,19 +221,19 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	private final DeclarationAnnotationAdapter daa;
 
 	// hold this so we can get the 'name' text range
-	private final DeclarationAnnotationElementAdapter nameDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 
 	// hold this so we can get the 'schema' text range
-	private final DeclarationAnnotationElementAdapter schemaDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<String> schemaDeclarationAdapter;
 
 	// hold this so we can get the 'catalog' text range
-	private final DeclarationAnnotationElementAdapter catalogDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<String> catalogDeclarationAdapter;
 
-	private final AnnotationElementAdapter nameAdapter;
+	private final AnnotationElementAdapter<String> nameAdapter;
 
-	private final AnnotationElementAdapter schemaAdapter;
+	private final AnnotationElementAdapter<String> schemaAdapter;
 
-	private final AnnotationElementAdapter catalogAdapter;
+	private final AnnotationElementAdapter<String> catalogAdapter;
 
 	protected AbstractJavaTable() {
 		super();
@@ -248,38 +248,38 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		this.nameDeclarationAdapter = this.nameAdapter(daa);
 		this.schemaDeclarationAdapter = this.schemaAdapter(daa);
 		this.catalogDeclarationAdapter = this.catalogAdapter(daa);
-		this.nameAdapter = new ShortCircuitAnnotationElementAdapter(this.member, this.nameDeclarationAdapter);
-		this.schemaAdapter = new ShortCircuitAnnotationElementAdapter(this.member, this.schemaDeclarationAdapter);
-		this.catalogAdapter = new ShortCircuitAnnotationElementAdapter(this.member, this.catalogDeclarationAdapter);
+		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.member, this.nameDeclarationAdapter);
+		this.schemaAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.member, this.schemaDeclarationAdapter);
+		this.catalogAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.member, this.catalogDeclarationAdapter);
 	}
 
 	/**
 	 * Build and return a declaration element adapter for the table's 'name' element
 	 */
-	protected abstract DeclarationAnnotationElementAdapter nameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
+	protected abstract DeclarationAnnotationElementAdapter<String> nameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
 
 	/**
 	 * Build and return a declaration element adapter for the table's 'schema' element
 	 */
-	protected abstract DeclarationAnnotationElementAdapter schemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
+	protected abstract DeclarationAnnotationElementAdapter<String> schemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
 
 	/**
 	 * Build and return a declaration element adapter for the table's 'catalog' element
 	 */
-	protected abstract DeclarationAnnotationElementAdapter catalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
+	protected abstract DeclarationAnnotationElementAdapter<String> catalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
 
 	@Override
 	protected void notifyChanged(Notification notification) {
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(ITable.class)) {
 			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__SPECIFIED_NAME :
-				this.nameAdapter.setValue(notification.getNewValue());
+				this.nameAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__SPECIFIED_SCHEMA :
-				this.schemaAdapter.setValue(notification.getNewValue());
+				this.schemaAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__SPECIFIED_CATALOG :
-				this.catalogAdapter.setValue(notification.getNewValue());
+				this.catalogAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaJavaMappingsPackage.ABSTRACT_JAVA_TABLE__UNIQUE_CONSTRAINTS :
 				uniqueConstraintsChanged(notification);
@@ -289,6 +289,7 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void uniqueConstraintsChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
@@ -869,9 +870,9 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	}
 
 	protected void updateFromJava(CompilationUnit astRoot) {
-		this.setSpecifiedName((String) this.nameAdapter.getValue(astRoot));
-		this.setSpecifiedSchema((String) this.schemaAdapter.getValue(astRoot));
-		this.setSpecifiedCatalog((String) this.catalogAdapter.getValue(astRoot));
+		this.setSpecifiedName(this.nameAdapter.getValue(astRoot));
+		this.setSpecifiedSchema(this.schemaAdapter.getValue(astRoot));
+		this.setSpecifiedCatalog(this.catalogAdapter.getValue(astRoot));
 		this.updateUniqueConstraintsFromJava(astRoot);
 	}
 
@@ -881,12 +882,12 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	 */
 	private void updateUniqueConstraintsFromJava(CompilationUnit astRoot) {
 		// synchronize the model join columns with the Java source
-		List<IUniqueConstraint> uniqueConstraints = this.getUniqueConstraints();
-		int persSize = uniqueConstraints.size();
+		List<IUniqueConstraint> constraints = this.getUniqueConstraints();
+		int persSize = constraints.size();
 		int javaSize = 0;
 		boolean allJavaAnnotationsFound = false;
 		for (int i = 0; i < persSize; i++) {
-			JavaUniqueConstraint uniqueConstraint = (JavaUniqueConstraint) uniqueConstraints.get(i);
+			JavaUniqueConstraint uniqueConstraint = (JavaUniqueConstraint) constraints.get(i);
 			if (uniqueConstraint.annotation(astRoot) == null) {
 				allJavaAnnotationsFound = true;
 				break; // no need to go any further
@@ -898,7 +899,7 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 			// remove any model join columns beyond those that correspond to the Java annotations
 			while (persSize > javaSize) {
 				persSize--;
-				uniqueConstraints.remove(persSize);
+				constraints.remove(persSize);
 			}
 		}
 		else {
@@ -944,19 +945,19 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		return this.dbTable() != null;
 	}
 
-	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter elementAdapter) {
+	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter) {
 		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter));
 	}
 
-	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter elementAdapter, CompilationUnit astRoot) {
+	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter, CompilationUnit astRoot) {
 		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter, astRoot));
 	}
 
-	protected boolean elementTouches(DeclarationAnnotationElementAdapter elementAdapter, int pos) {
+	protected boolean elementTouches(DeclarationAnnotationElementAdapter<?> elementAdapter, int pos) {
 		return this.elementTouches(this.member.annotationElementTextRange(elementAdapter), pos);
 	}
 
-	protected boolean elementTouches(DeclarationAnnotationElementAdapter elementAdapter, int pos, CompilationUnit astRoot) {
+	protected boolean elementTouches(DeclarationAnnotationElementAdapter<?> elementAdapter, int pos, CompilationUnit astRoot) {
 		return this.elementTouches(this.member.annotationElementTextRange(elementAdapter, astRoot), pos);
 	}
 
@@ -987,16 +988,9 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		return null;
 	}
 
-	private ConnectionProfile connectionProfile() {
-		return this.getJpaProject().connectionProfile();
-	}
-
-	private Database database() {
-		return this.connectionProfile().getDatabase();
-	}
-
 	private Iterator<String> candidateNames() {
-		return this.dbSchema().tableNames();
+		Schema dbSchema = this.dbSchema();
+		return (dbSchema != null) ? dbSchema.tableNames() : EmptyIterator.<String>instance();
 	}
 
 	private Iterator<String> candidateNames(Filter<String> filter) {
@@ -1046,12 +1040,12 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	}
 
 	// bjv look at this
-	public void uniqueConstraintsAdded(int index, List<IUniqueConstraint> uniqueConstraints) {
+	public void uniqueConstraintsAdded(int index, List<IUniqueConstraint> constraints) {
 		// JoinColumn was added to jpa model when updating from java, do not need
 		// to edit the java in this case. TODO is there a better way to handle this??
-		if (!uniqueConstraints.isEmpty() && ((JavaUniqueConstraint) uniqueConstraints.get(0)).annotation(getMember().astRoot()) == null) {
-			this.synchUniqueConstraintAnnotationsAfterAdd(index + uniqueConstraints.size());
-			for (IUniqueConstraint uniqueConstraint : uniqueConstraints) {
+		if (!constraints.isEmpty() && ((JavaUniqueConstraint) constraints.get(0)).annotation(getMember().astRoot()) == null) {
+			this.synchUniqueConstraintAnnotationsAfterAdd(index + constraints.size());
+			for (IUniqueConstraint uniqueConstraint : constraints) {
 				((JavaUniqueConstraint) uniqueConstraint).newAnnotation();
 			}
 		}
@@ -1062,15 +1056,15 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		this.synchUniqueConstraintAnnotationsAfterRemove(index);
 	}
 
-	public void uniqueConstraintsRemoved(int[] indexes, List<IUniqueConstraint> uniqueConstraints) {
-		for (IUniqueConstraint uniqueConstraint : uniqueConstraints) {
+	public void uniqueConstraintsRemoved(int[] indexes, List<IUniqueConstraint> constraints) {
+		for (IUniqueConstraint uniqueConstraint : constraints) {
 			((JavaUniqueConstraint) uniqueConstraint).removeAnnotation();
 		}
 		this.synchUniqueConstraintAnnotationsAfterRemove(indexes[0]);
 	}
 
-	public void uniqueConstraintsCleared(List<IUniqueConstraint> uniqueConstraints) {
-		for (IUniqueConstraint uniqueConstraint : uniqueConstraints) {
+	public void uniqueConstraintsCleared(List<IUniqueConstraint> constraints) {
+		for (IUniqueConstraint uniqueConstraint : constraints) {
 			((JavaUniqueConstraint) uniqueConstraint).removeAnnotation();
 		}
 	}
@@ -1080,11 +1074,11 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	}
 
 	public void uniqueConstraintMoved(int sourceIndex, int targetIndex, IUniqueConstraint uniqueConstraint) {
-		List<IUniqueConstraint> uniqueConstraints = this.getUniqueConstraints();
+		List<IUniqueConstraint> constraints = this.getUniqueConstraints();
 		int begin = Math.min(sourceIndex, targetIndex);
 		int end = Math.max(sourceIndex, targetIndex);
 		for (int i = begin; i-- > end;) {
-			this.synch(uniqueConstraints.get(i), i);
+			this.synch(constraints.get(i), i);
 		}
 	}
 
@@ -1093,9 +1087,9 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	 * starting at the end of the list to prevent overlap
 	 */
 	private void synchUniqueConstraintAnnotationsAfterAdd(int index) {
-		List<IUniqueConstraint> uniqueConstraints = this.getUniqueConstraints();
-		for (int i = uniqueConstraints.size(); i-- > index;) {
-			this.synch(uniqueConstraints.get(i), i);
+		List<IUniqueConstraint> constraints = this.getUniqueConstraints();
+		for (int i = constraints.size(); i-- > index;) {
+			this.synch(constraints.get(i), i);
 		}
 	}
 

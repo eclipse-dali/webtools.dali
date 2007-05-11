@@ -114,14 +114,12 @@ public interface ISecondaryTable extends ITable
 			return this.secondaryTable.typeMapping();
 		}
 
-		//TODO 1 do these 2 need to be swapped??
 		public Table dbTable(String tableName) {
 			return this.secondaryTable.dbTable();
 		}
 
-		//TODO 2 do these 2 need to be swapped??
 		public Table dbReferencedColumnTable() {
 			return getTypeMapping().primaryDbTable();
 		}
 	}
-} // ISecondaryTable
+}

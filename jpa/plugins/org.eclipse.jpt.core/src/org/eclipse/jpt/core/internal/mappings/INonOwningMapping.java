@@ -57,7 +57,7 @@ public interface INonOwningMapping extends IRelationshipMapping
 	 */
 	void setMappedBy(String value);
 
-	Iterator<String> possibleMappedByAttributeNames();
+	Iterator<String> candidateMappedByAttributeNames();
 	
 	boolean mappedByIsValid(IAttributeMapping mappedByMapping);
 	

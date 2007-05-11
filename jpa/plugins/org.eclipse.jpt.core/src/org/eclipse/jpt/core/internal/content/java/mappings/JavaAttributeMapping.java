@@ -107,7 +107,7 @@ public abstract class JavaAttributeMapping extends JavaEObject
 		return (textRange == null) ? this.getPersistentAttribute().getTextRange() : textRange;
 	}
 	
-	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter elementAdapter) {
+	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter) {
 		return this.elementTextRange(this.attribute.annotationElementTextRange(elementAdapter));
 	}
 
@@ -129,6 +129,14 @@ public abstract class JavaAttributeMapping extends JavaEObject
 
 	public String primaryKeyColumnName() {
 		return null;
+	}
+
+	protected boolean elementTouches(DeclarationAnnotationElementAdapter<?> elementAdapter, int pos) {
+		return this.elementTouches(this.attribute.annotationElementTextRange(elementAdapter), pos);
+	}
+
+	protected boolean elementTouches(DeclarationAnnotationElementAdapter<?> elementAdapter, int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.attribute.annotationElementTextRange(elementAdapter, astRoot), pos);
 	}
 
 	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {

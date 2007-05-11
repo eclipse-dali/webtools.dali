@@ -97,7 +97,7 @@ public class MappedByCombo extends BaseJpaController
 		if (this.combo.getItemCount() > 0) {
 			this.combo.removeAll();
 		}
-		for (Iterator<String> i = this.nonOwningMapping.possibleMappedByAttributeNames(); i.hasNext(); ) {
+		for (Iterator<String> i = this.nonOwningMapping.candidateMappedByAttributeNames(); i.hasNext(); ) {
 			this.combo.add(i.next());
 		}
 	}

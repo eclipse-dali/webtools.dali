@@ -420,7 +420,7 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 		return getTargetEntity().lastIndexOf('.') != -1;
 	}
 
-	public Iterator<String> possibleMappedByAttributeNames() {
+	public Iterator<String> candidateMappedByAttributeNames() {
 		IEntity targetEntity = getResolvedTargetEntity();
 		if (targetEntity == null) {
 			return EmptyIterator.instance();
