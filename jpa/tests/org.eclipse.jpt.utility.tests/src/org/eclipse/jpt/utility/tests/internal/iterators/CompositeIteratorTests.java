@@ -215,6 +215,7 @@ public class CompositeIteratorTests extends TestCase {
 		return this.buildCompositeIterator(this.buildUnmodifiableIterators());
 	}
 
+	// leave unchecked so we can override in subclass
 	@SuppressWarnings("unchecked")
 	Iterator<String> buildCompositeIterator(Iterator iterators) {
 		return new CompositeIterator<String>(iterators);

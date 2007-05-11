@@ -374,6 +374,7 @@ public class CompositeListIteratorTests extends CompositeIteratorTests {
 		assertEquals(0, i);
 	}
 
+	// unchecked so we can override the unchecked method in superclass
 	@Override
 	@SuppressWarnings("unchecked")
 	Iterator<String> buildCompositeIterator(Iterator iterators) {
