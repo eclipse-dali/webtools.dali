@@ -119,8 +119,8 @@ public class NullTypeMapping extends JpaEObject
 		throw new UnsupportedOperationException("getJpaFile()");
 	}
 
-	public ITextRange getTextRange() {
-		throw new UnsupportedOperationException("getTextRange()");
+	public ITextRange validationTextRange() {
+		throw new UnsupportedOperationException("validationTextRange()");
 	}
 
 	/**

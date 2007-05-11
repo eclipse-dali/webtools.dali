@@ -152,11 +152,22 @@ public abstract class XmlEObject extends JpaEObject implements IXmlEObject
 		return getJpaFile().getResource();
 	}
 
-	public ITextRange getTextRange() {
-		return buildTextRange(node);
+	public ITextRange validationTextRange() {
+		return fullTextRange();
+	}
+
+	public ITextRange selectionTextRange() {
+		return fullTextRange();
+	}
+
+	public ITextRange fullTextRange() {
+		return buildTextRange(this.node);
 	}
 
 	protected ITextRange buildTextRange(IDOMNode domNode) {
+		if (domNode == null) {
+			return null;
+		}
 		return new DOMNodeTextRange(domNode);
 	}
 

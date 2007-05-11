@@ -336,7 +336,7 @@ public class JavaQueryHint extends JavaEObject implements IQueryHint
 	}
 
 	// ********* IJpaSourceObject implementation ***********
-	public ITextRange getTextRange() {
+	public ITextRange validationTextRange() {
 		return this.member.annotationTextRange(this.idaa);
 	}
 

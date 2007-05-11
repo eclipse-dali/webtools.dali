@@ -48,7 +48,7 @@ public class PrimaryKeyJoinColumnContext extends AbstractJoinColumnContext<IPrim
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,
 						new String[] {column.getName()}, 
-						column, column.getNameTextRange())
+						column, column.nameTextRange())
 			);
 		}
 		
@@ -58,7 +58,7 @@ public class PrimaryKeyJoinColumnContext extends AbstractJoinColumnContext<IPrim
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
 						new String[] {column.getReferencedColumnName(), column.getName()}, 
-						column, column.getReferencedColumnNameTextRange())
+						column, column.referencedColumnNameTextRange())
 			);
 		}
 	}

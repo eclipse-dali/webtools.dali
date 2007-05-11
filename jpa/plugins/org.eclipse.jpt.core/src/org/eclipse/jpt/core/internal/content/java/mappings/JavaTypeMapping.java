@@ -210,9 +210,9 @@ public abstract class JavaTypeMapping extends JavaEObject
 		return this.type;
 	}
 
-	public ITextRange getTextRange() {
+	public ITextRange validationTextRange() {
 		ITextRange textRange = this.type.annotationTextRange(this.declarationAnnotationAdapter());
-		return (textRange != null) ? textRange : this.getPersistentType().getTextRange();
+		return (textRange != null) ? textRange : this.getPersistentType().validationTextRange();
 	}
 
 	public Table primaryDbTable() {

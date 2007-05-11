@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: IAbstractJoinColumn.java,v 1.6 2007/05/09 22:43:58 kmoore Exp $
+ * $Id: IAbstractJoinColumn.java,v 1.7 2007/05/11 19:33:48 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.mappings;
 
@@ -102,7 +102,7 @@ public interface IAbstractJoinColumn extends INamedColumn
 	/**
 	 * Return the (best guess) text location of the referenced column name
 	 */
-	ITextRange getReferencedColumnNameTextRange();
+	ITextRange referencedColumnNameTextRange();
 
 	/**
 	 * Re-declared to return INamedColumn.Owner.

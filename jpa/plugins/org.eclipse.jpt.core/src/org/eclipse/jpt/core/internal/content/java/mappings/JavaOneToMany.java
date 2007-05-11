@@ -88,10 +88,8 @@ public class JavaOneToMany extends JavaMultiRelationshipMapping
 	protected DeclarationAnnotationElementAdapter<String> mappedByAdapter() {
 		return MAPPED_BY_ADAPTER;
 	}
-	
-	
+
 	// ********** INonOwningMapping implementation **********
-	
 	public boolean mappedByIsValid(IAttributeMapping mappedByMapping) {
 		String mappedByKey = mappedByMapping.getKey();
 		return (mappedByKey == IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);

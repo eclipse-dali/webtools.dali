@@ -91,7 +91,7 @@ public class AttributeOverrideContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_TABLE,
 						new String[] {attributeOverride.getName(), table, column.getName()},
-						column, column.getTableTextRange())
+						column, column.tableTextRange())
 				);
 			}
 			else {
@@ -100,7 +100,7 @@ public class AttributeOverrideContext extends BaseContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
 							new String[] {table, column.getName()}, 
-							column, column.getTableTextRange())
+							column, column.tableTextRange())
 					);
 			}
 			doContinue = false;
@@ -113,7 +113,7 @@ public class AttributeOverrideContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
 						new String[] {attributeOverride.getName(), column.getName()}, 
-						column, column.getNameTextRange())
+						column, column.nameTextRange())
 				);
 			}
 			else {
@@ -122,7 +122,7 @@ public class AttributeOverrideContext extends BaseContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 							new String[] {column.getName()}, 
-							column, column.getNameTextRange())
+							column, column.nameTextRange())
 					);
 			}
 		}

@@ -102,11 +102,11 @@ public abstract class JavaAttributeMapping extends JavaEObject
 		return this.attribute;
 	}
 
-	public ITextRange getTextRange() {
+	public ITextRange validationTextRange() {
 		ITextRange textRange = attribute.annotationTextRange(this.declarationAnnotationAdapter());
-		return (textRange == null) ? this.getPersistentAttribute().getTextRange() : textRange;
+		return (textRange == null) ? this.getPersistentAttribute().validationTextRange() : textRange;
 	}
-	
+
 	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter) {
 		return this.elementTextRange(this.attribute.annotationElementTextRange(elementAdapter));
 	}
@@ -165,8 +165,8 @@ public abstract class JavaAttributeMapping extends JavaEObject
 			return JavaAttributeMapping.this.typeMapping();
 		}
 
-		public ITextRange getTextRange() {
-			return JavaAttributeMapping.this.getTextRange();
+		public ITextRange validationTextRange() {
+			return JavaAttributeMapping.this.validationTextRange();
 		}
 
 		public Table dbTable(String tableName) {

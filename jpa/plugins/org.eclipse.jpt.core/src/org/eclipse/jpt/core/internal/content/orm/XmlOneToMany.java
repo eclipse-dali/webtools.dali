@@ -57,10 +57,8 @@ public class XmlOneToMany extends XmlMultiRelationshipMappingInternal
 	public int xmlSequence() {
 		return 4;
 	}
-	
-	
+
 	// ********** INonOwningMapping implementation **********
-	
 	public boolean mappedByIsValid(IAttributeMapping mappedByMapping) {
 		String mappedByKey = mappedByMapping.getKey();
 		return (mappedByKey == IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);

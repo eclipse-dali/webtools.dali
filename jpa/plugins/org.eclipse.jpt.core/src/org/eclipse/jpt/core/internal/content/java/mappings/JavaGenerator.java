@@ -547,7 +547,7 @@ public abstract class JavaGenerator extends JavaEObject implements IGenerator
 		return result.toString();
 	}
 
-	public ITextRange getTextRange() {
+	public ITextRange validationTextRange() {
 		return this.member.annotationTextRange(this.annotationAdapter());
 	}
 

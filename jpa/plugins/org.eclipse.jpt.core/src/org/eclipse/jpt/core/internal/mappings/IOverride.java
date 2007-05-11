@@ -75,6 +75,6 @@ public interface IOverride extends IJpaSourceObject
 
 		boolean isVirtual(IOverride override);
 
-		ITextRange getTextRange();
+		ITextRange validationTextRange();
 	}
 }

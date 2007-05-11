@@ -134,8 +134,8 @@ public interface IAssociationOverride extends IOverride
 			return true;
 		}
 
-		public ITextRange getTextRange() {
-			return this.associationOverride.getTextRange();
+		public ITextRange validationTextRange() {
+			return this.associationOverride.validationTextRange();
 		}
 
 		public ITypeMapping getTypeMapping() {

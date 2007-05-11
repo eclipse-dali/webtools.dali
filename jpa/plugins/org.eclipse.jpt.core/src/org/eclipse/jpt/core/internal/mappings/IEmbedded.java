@@ -137,8 +137,8 @@ public interface IEmbedded extends IAttributeMapping
 			return embedded.getDefaultAttributeOverrides().contains(override);
 		}
 
-		public ITextRange getTextRange() {
-			return embedded.getTextRange();
+		public ITextRange validationTextRange() {
+			return embedded.validationTextRange();
 		}
 	}
 }

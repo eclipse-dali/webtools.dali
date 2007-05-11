@@ -393,7 +393,7 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn
 
 	private Iterator<String> candidateReferencedColumnNames() {
 		Table table = this.getOwner().dbReferencedColumnTable();
-		return (table != null) ? table.columnNames() : EmptyIterator.<String>instance();
+		return (table != null) ? table.columnNames() : EmptyIterator.<String> instance();
 	}
 
 	private Iterator<String> candidateReferencedColumnNames(Filter<String> filter) {
@@ -420,7 +420,7 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn
 		return dbReferencedColumn() != null;
 	}
 
-	public ITextRange getReferencedColumnNameTextRange() {
+	public ITextRange referencedColumnNameTextRange() {
 		return elementTextRange(this.referencedColumnNameDeclarationAdapter);
 	}
 

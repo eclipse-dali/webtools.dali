@@ -645,7 +645,7 @@ public abstract class AbstractJavaColumn extends JavaNamedColumn
 		return this.getTable();
 	}
 
-	public ITextRange getTableTextRange() {
+	public ITextRange tableTextRange() {
 		return this.elementTextRange(this.tableDeclarationAdapter);
 	}
 
@@ -654,10 +654,7 @@ public abstract class AbstractJavaColumn extends JavaNamedColumn
 	}
 
 	private Iterator<String> candidateTableNames() {
-		return this.tableIsAllowed() ?
-			this.getOwner().getTypeMapping().associatedTableNamesIncludingInherited()
-		:
-			EmptyIterator.<String>instance();
+		return this.tableIsAllowed() ? this.getOwner().getTypeMapping().associatedTableNamesIncludingInherited() : EmptyIterator.<String> instance();
 	}
 
 	private Iterator<String> candidateTableNames(Filter<String> filter) {

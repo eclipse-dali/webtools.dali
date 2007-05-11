@@ -449,9 +449,9 @@ public abstract class JavaNamedColumn extends JavaEObject
 		return this.owner;
 	}
 
-	public ITextRange getTextRange() {
+	public ITextRange validationTextRange() {
 		ITextRange textRange = this.member.annotationTextRange(this.daa);
-		return (textRange != null) ? textRange : this.owner.getTextRange();
+		return (textRange != null) ? textRange : this.owner.validationTextRange();
 	}
 
 	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter) {
@@ -462,11 +462,11 @@ public abstract class JavaNamedColumn extends JavaEObject
 		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter, astRoot));
 	}
 
-	public ITextRange getNameTextRange() {
+	public ITextRange nameTextRange() {
 		return this.elementTextRange(this.nameDeclarationAdapter);
 	}
 
-	public ITextRange getNameTextRange(CompilationUnit astRoot) {
+	public ITextRange nameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 

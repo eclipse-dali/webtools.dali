@@ -289,8 +289,16 @@ public class JpaCompilationUnit extends JavaEObject
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
-	public ITextRange getTextRange() {
+	public ITextRange fullTextRange() {
 		return new ASTNodeTextRange(this.astRoot());
+	}
+
+	public ITextRange validationTextRange() {
+		return this.selectionTextRange();
+	}
+
+	public ITextRange selectionTextRange() {
+		return this.fullTextRange();
 	}
 
 	public Object getId() {
@@ -329,7 +337,7 @@ public class JpaCompilationUnit extends JavaEObject
 
 	public IJpaContentNode getContentNode(int offset) {
 		for (JavaPersistentType javaType : this.getTypes()) {
-			if (javaType.containsOffset(offset)) {
+			if (javaType.includes(offset)) {
 				IJpaContentNode contentNode = javaType.contentNodeAt(offset);
 				if (contentNode != null) {
 					return contentNode;

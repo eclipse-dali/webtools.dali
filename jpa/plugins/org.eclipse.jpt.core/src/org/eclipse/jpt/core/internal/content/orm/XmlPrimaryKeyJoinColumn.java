@@ -406,11 +406,11 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 		return dbReferencedColumn() != null;
 	}
 
-	public ITextRange getReferencedColumnNameTextRange() {
+	public ITextRange referencedColumnNameTextRange() {
 		if (node == null) {
-			return owner.getTextRange();
+			return owner.validationTextRange();
 		}
 		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
-		return (referencedColumnNameNode == null) ? getTextRange() : buildTextRange(referencedColumnNameNode);
+		return (referencedColumnNameNode == null) ? validationTextRange() : buildTextRange(referencedColumnNameNode);
 	}
 }

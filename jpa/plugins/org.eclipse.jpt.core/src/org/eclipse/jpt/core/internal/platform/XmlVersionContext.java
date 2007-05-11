@@ -90,7 +90,7 @@ public class XmlVersionContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
 						new String[] {version.getPersistentAttribute().getName(), table, column.getName()},
-						column, column.getTableTextRange())
+						column, column.tableTextRange())
 				);
 			}
 			else {
@@ -99,7 +99,7 @@ public class XmlVersionContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
 						new String[] {table, column.getName()}, 
-						column, column.getTableTextRange())
+						column, column.tableTextRange())
 				);
 			}
 			doContinue = false;
@@ -112,7 +112,7 @@ public class XmlVersionContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
 						new String[] {version.getPersistentAttribute().getName(), column.getName()}, 
-						column, column.getNameTextRange())
+						column, column.nameTextRange())
 				);
 			}
 			else {
@@ -121,7 +121,7 @@ public class XmlVersionContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 						new String[] {column.getName()}, 
-						column, column.getNameTextRange())
+						column, column.nameTextRange())
 				);
 			}
 		}

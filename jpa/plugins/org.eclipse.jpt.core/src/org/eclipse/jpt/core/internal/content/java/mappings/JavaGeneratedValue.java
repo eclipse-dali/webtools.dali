@@ -322,7 +322,7 @@ public class JavaGeneratedValue extends JavaEObject implements IGeneratedValue
 		return result.toString();
 	}
 
-	public ITextRange getTextRange() {
+	public ITextRange validationTextRange() {
 		return this.member.annotationTextRange(DECLARATION_ANNOTATION_ADAPTER);
 	}
 

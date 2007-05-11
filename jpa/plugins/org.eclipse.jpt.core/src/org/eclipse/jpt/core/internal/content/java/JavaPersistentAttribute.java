@@ -516,8 +516,20 @@ public class JavaPersistentAttribute extends JavaEObject
 		return this.attribute;
 	}
 
-	public ITextRange getTextRange() {
+	public boolean includes(int offset) {
+		return this.fullTextRange().includes(offset);
+	}
+
+	public ITextRange fullTextRange() {
 		return this.attribute.textRange();
+	}
+
+	public ITextRange validationTextRange() {
+		return this.selectionTextRange();
+	}
+
+	public ITextRange selectionTextRange() {
+		return this.attribute.nameTextRange();
 	}
 
 	public boolean isFor(IMember member) {

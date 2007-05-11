@@ -903,11 +903,11 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 		return this.getTable();
 	}
 
-	public ITextRange getTableTextRange() {
+	public ITextRange tableTextRange() {
 		if (node == null) {
-			return owner.getTextRange();
+			return owner.validationTextRange();
 		}
 		IDOMNode tableNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.ENTITY__TABLE);
-		return (tableNode == null) ? getTextRange() : buildTextRange(tableNode);
+		return (tableNode == null) ? validationTextRange() : buildTextRange(tableNode);
 	}
 }

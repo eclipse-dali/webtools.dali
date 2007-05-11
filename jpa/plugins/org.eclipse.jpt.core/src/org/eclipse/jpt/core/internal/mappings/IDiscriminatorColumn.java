@@ -146,8 +146,8 @@ public interface IDiscriminatorColumn extends INamedColumn
 			return this.entity.dbTable(tableName);
 		}
 
-		public ITextRange getTextRange() {
-			return this.entity.getDiscriminatorColumn().getTextRange();
+		public ITextRange validationTextRange() {
+			return this.entity.getDiscriminatorColumn().validationTextRange();
 		}
 
 		public ITypeMapping getTypeMapping() {

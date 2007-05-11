@@ -25,7 +25,8 @@ public interface IJpaSourceObject extends IJpaEObject
 	IJpaFile getJpaFile();
 
 	/**
-	 * Return the source location for this object.
+	 * Return the text range to be used for validation.  This is the source
+	 * range that will be highlighted for a validation error.
 	 */
-	ITextRange getTextRange();
+	ITextRange validationTextRange();
 }

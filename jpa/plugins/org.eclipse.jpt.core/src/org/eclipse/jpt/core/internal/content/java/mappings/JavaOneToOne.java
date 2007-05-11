@@ -162,13 +162,13 @@ public class JavaOneToOne extends JavaSingleRelationshipMapping
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ONE_TO_ONE__MAPPED_BY, oldMappedBy, mappedBy));
 	}
-	
+
 	public boolean mappedByIsValid(IAttributeMapping mappedByMapping) {
 		String mappedByKey = mappedByMapping.getKey();
 		return (mappedByKey == IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 	}
-	
-	public ITextRange getMappedByTextRange() {
+
+	public ITextRange mappedByTextRange() {
 		return this.elementTextRange(MAPPED_BY_ADAPTER);
 	}
 

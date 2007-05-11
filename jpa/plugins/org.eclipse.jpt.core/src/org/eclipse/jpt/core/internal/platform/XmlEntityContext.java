@@ -352,7 +352,7 @@ public class XmlEntityContext extends XmlTypeContext
 					IMessage.HIGH_SEVERITY,
 					IJpaValidationMessages.ENTITY_NO_ID,
 					new String[] {entity.getName()},
-					entity, entity.getTextRange())
+					entity, entity.validationTextRange())
 			);
 		}
 	}

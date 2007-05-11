@@ -111,18 +111,18 @@ public class XmlOneToOne extends XmlSingleRelationshipMapping
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_ONE__MAPPED_BY, oldMappedBy, mappedBy));
 	}
-	
+
 	public boolean mappedByIsValid(IAttributeMapping mappedByMapping) {
 		String mappedByKey = mappedByMapping.getKey();
 		return (mappedByKey == IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 	}
-	
-	public ITextRange getMappedByTextRange() {
+
+	public ITextRange mappedByTextRange() {
 		if (node == null) {
-			return typeMapping().getTextRange();
+			return typeMapping().validationTextRange();
 		}
 		IDOMNode mappedByNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.MAPPED_BY);
-		return (mappedByNode == null) ? getTextRange() : buildTextRange(mappedByNode);
+		return (mappedByNode == null) ? validationTextRange() : buildTextRange(mappedByNode);
 	}
 
 	/**

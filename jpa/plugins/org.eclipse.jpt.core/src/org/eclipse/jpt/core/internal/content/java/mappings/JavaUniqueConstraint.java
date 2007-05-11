@@ -251,7 +251,7 @@ public class JavaUniqueConstraint extends JavaEObject
 		return result.toString();
 	}
 
-	public ITextRange getTextRange() {
+	public ITextRange validationTextRange() {
 		return this.member.annotationTextRange(this.idaa);
 	}
 

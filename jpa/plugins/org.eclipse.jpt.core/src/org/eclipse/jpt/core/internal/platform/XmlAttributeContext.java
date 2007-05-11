@@ -105,7 +105,7 @@ public abstract class XmlAttributeContext extends BaseContext
 				JpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					IJpaValidationMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME,
-					persistentAttribute, persistentAttribute.getNameTextRange())
+					persistentAttribute, persistentAttribute.nameTextRange())
 			);
 		}
 	}
@@ -120,7 +120,7 @@ public abstract class XmlAttributeContext extends BaseContext
 					IMessage.HIGH_SEVERITY,
 					IJpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
 					new String[] {persistentAttribute.getName(), persistentAttribute.persistentType().getClass_()},
-					persistentAttribute, persistentAttribute.getNameTextRange())
+					persistentAttribute, persistentAttribute.nameTextRange())
 			);
 		}
 	}
@@ -134,7 +134,7 @@ public abstract class XmlAttributeContext extends BaseContext
 					IMessage.HIGH_SEVERITY,
 					IJpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
 					new String[] {attributeMapping.getPersistentAttribute().getName()},
-					attributeMapping, attributeMapping.getTextRange())
+					attributeMapping, attributeMapping.validationTextRange())
 			);
 		}
 	}

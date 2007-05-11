@@ -85,7 +85,7 @@ public class XmlBasicContext extends XmlAttributeContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
 						new String[] {basic.getPersistentAttribute().getName(), table, column.getName()},
-						column, column.getTableTextRange())
+						column, column.tableTextRange())
 				);
 			}
 			else {
@@ -94,7 +94,7 @@ public class XmlBasicContext extends XmlAttributeContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
 						new String[] {table, column.getName()}, 
-						column, column.getTableTextRange())
+						column, column.tableTextRange())
 				);
 			}
 			doContinue = false;
@@ -107,7 +107,7 @@ public class XmlBasicContext extends XmlAttributeContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
 						new String[] {basic.getPersistentAttribute().getName(), column.getName()}, 
-						column, column.getNameTextRange())
+						column, column.nameTextRange())
 				);
 			}
 			else {
@@ -116,7 +116,7 @@ public class XmlBasicContext extends XmlAttributeContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 						new String[] {column.getName()}, 
-						column, column.getNameTextRange())
+						column, column.nameTextRange())
 				);
 			}
 		}

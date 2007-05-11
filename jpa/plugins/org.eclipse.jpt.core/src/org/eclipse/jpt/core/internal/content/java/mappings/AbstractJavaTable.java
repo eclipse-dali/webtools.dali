@@ -785,11 +785,11 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 	}
 
 	// ********** ITable implementation **********
-	public ITextRange getNameTextRange() {
+	public ITextRange nameTextRange() {
 		return this.elementTextRange(this.nameDeclarationAdapter);
 	}
 
-	public ITextRange getNameTextRange(CompilationUnit astRoot) {
+	public ITextRange nameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
@@ -797,11 +797,11 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
 	}
 
-	public ITextRange getSchemaTextRange() {
+	public ITextRange schemaTextRange() {
 		return this.elementTextRange(this.schemaDeclarationAdapter);
 	}
 
-	public ITextRange getSchemaTextRange(CompilationUnit astRoot) {
+	public ITextRange schemaTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.schemaDeclarationAdapter, astRoot);
 	}
 
@@ -809,11 +809,11 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		return this.elementTouches(this.schemaDeclarationAdapter, pos, astRoot);
 	}
 
-	public ITextRange getCatalogTextRange() {
+	public ITextRange catalogTextRange() {
 		return this.elementTextRange(this.catalogDeclarationAdapter);
 	}
 
-	public ITextRange getCatalogTextRange(CompilationUnit astRoot) {
+	public ITextRange catalogTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.catalogDeclarationAdapter, astRoot);
 	}
 
@@ -918,9 +918,9 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		}
 	}
 
-	public ITextRange getTextRange() {
+	public ITextRange validationTextRange() {
 		ITextRange textRange = this.member.annotationTextRange(this.daa);
-		return (textRange != null) ? textRange : this.getOwner().getTextRange();
+		return (textRange != null) ? textRange : this.getOwner().validationTextRange();
 	}
 
 	public Table dbTable() {
@@ -990,7 +990,7 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 
 	private Iterator<String> candidateNames() {
 		Schema dbSchema = this.dbSchema();
-		return (dbSchema != null) ? dbSchema.tableNames() : EmptyIterator.<String>instance();
+		return (dbSchema != null) ? dbSchema.tableNames() : EmptyIterator.<String> instance();
 	}
 
 	private Iterator<String> candidateNames(Filter<String> filter) {

@@ -596,8 +596,8 @@ public interface IEntity extends ITypeMapping
 			return this.entity;
 		}
 
-		public ITextRange getTextRange() {
-			return entity.getTextRange();
+		public ITextRange validationTextRange() {
+			return entity.validationTextRange();
 		}
 	}
 
@@ -662,8 +662,8 @@ public interface IEntity extends ITypeMapping
 			this.entity = entity;
 		}
 
-		public ITextRange getTextRange() {
-			return entity.getTextRange();
+		public ITextRange validationTextRange() {
+			return entity.validationTextRange();
 		}
 
 		public ITypeMapping getTypeMapping() {

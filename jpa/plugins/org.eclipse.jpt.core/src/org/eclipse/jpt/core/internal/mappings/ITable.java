@@ -249,9 +249,9 @@ public interface ITable extends IJpaSourceObject
 	 */
 	boolean isResolved();
 
-	ITextRange getNameTextRange();
+	ITextRange nameTextRange();
 
-	ITextRange getSchemaTextRange();
+	ITextRange schemaTextRange();
 
 	Owner getOwner();
 
@@ -263,7 +263,7 @@ public interface ITable extends IJpaSourceObject
 	 */
 	interface Owner
 	{
-		ITextRange getTextRange();
+		ITextRange validationTextRange();
 
 		ITypeMapping getTypeMapping();
 	}

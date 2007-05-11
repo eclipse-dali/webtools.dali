@@ -136,7 +136,7 @@ public interface INamedColumn extends IJpaSourceObject
 	/**
 	 * Return the (best guess) text location of the column's name.
 	 */
-	ITextRange getNameTextRange();
+	ITextRange nameTextRange();
 
 	/**
 	 * Return whether the column's datasource is connected
@@ -165,7 +165,7 @@ public interface INamedColumn extends IJpaSourceObject
 		 * Return the column owner's text range. This can be returned by the
 		 * column when its annotation is not present.
 		 */
-		ITextRange getTextRange();
+		ITextRange validationTextRange();
 
 		/**
 		 * Return the wrapper for the datasource table for the given table name

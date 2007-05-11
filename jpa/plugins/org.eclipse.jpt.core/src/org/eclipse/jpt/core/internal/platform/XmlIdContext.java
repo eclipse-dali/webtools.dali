@@ -113,7 +113,7 @@ public class XmlIdContext extends XmlAttributeContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
 						new String[] {id.getPersistentAttribute().getName(), table, column.getName()},
-						column, column.getTableTextRange())
+						column, column.tableTextRange())
 				);
 			}
 			else {
@@ -122,7 +122,7 @@ public class XmlIdContext extends XmlAttributeContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
 						new String[] {table, column.getName()}, 
-						column, column.getTableTextRange())
+						column, column.tableTextRange())
 				);
 			}
 			doContinue = false;
@@ -135,7 +135,7 @@ public class XmlIdContext extends XmlAttributeContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
 						new String[] {id.getPersistentAttribute().getName(), column.getName()}, 
-						column, column.getNameTextRange())
+						column, column.nameTextRange())
 				);
 			}
 			else {
@@ -144,7 +144,7 @@ public class XmlIdContext extends XmlAttributeContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 						new String[] {column.getName()}, 
-						column, column.getNameTextRange())
+						column, column.nameTextRange())
 				);
 			}
 		}
@@ -169,7 +169,7 @@ public class XmlIdContext extends XmlAttributeContext
 					IMessage.HIGH_SEVERITY,
 					IJpaValidationMessages.GENERATED_VALUE_UNRESOLVED_GENERATOR,
 					new String[] {generatorName}, 
-					generatedValue, generatedValue.getTextRange())
+					generatedValue, generatedValue.validationTextRange())
 			);
 		}
 	}

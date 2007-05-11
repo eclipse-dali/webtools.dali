@@ -233,8 +233,8 @@ public class JavaAttributeOverride extends JavaOverride
 			return JavaAttributeOverride.this.getOwner().getTypeMapping();
 		}
 
-		public ITextRange getTextRange() {
-			return JavaAttributeOverride.this.getTextRange();
+		public ITextRange validationTextRange() {
+			return JavaAttributeOverride.this.validationTextRange();
 		}
 
 		public Table dbTable(String tableName) {

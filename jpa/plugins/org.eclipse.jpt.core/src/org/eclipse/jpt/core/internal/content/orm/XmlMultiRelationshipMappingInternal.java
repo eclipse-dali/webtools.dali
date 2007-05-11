@@ -130,8 +130,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 
 	private IJoinTable.Owner buildJoinTableOwner() {
 		return new IJoinTable.Owner() {
-			public ITextRange getTextRange() {
-				return XmlMultiRelationshipMappingInternal.this.getTextRange();
+			public ITextRange validationTextRange() {
+				return XmlMultiRelationshipMappingInternal.this.validationTextRange();
 			}
 
 			public ITypeMapping getTypeMapping() {
@@ -182,13 +182,13 @@ public abstract class XmlMultiRelationshipMappingInternal
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAPPED_BY, oldMappedBy, mappedBy));
 	}
-	
-	public ITextRange getMappedByTextRange() {
+
+	public ITextRange mappedByTextRange() {
 		if (node == null) {
-			return typeMapping().getTextRange();
+			return typeMapping().validationTextRange();
 		}
 		IDOMNode mappedByNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.MAPPED_BY);
-		return (mappedByNode == null) ? getTextRange() : buildTextRange(mappedByNode);
+		return (mappedByNode == null) ? validationTextRange() : buildTextRange(mappedByNode);
 	}
 
 	/**

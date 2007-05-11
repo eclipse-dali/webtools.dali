@@ -312,8 +312,8 @@ public class XmlAttributeOverride extends XmlOverride
 
 	public class ColumnOwner implements INamedColumn.Owner
 	{
-		public ITextRange getTextRange() {
-			return XmlAttributeOverride.this.getTextRange();
+		public ITextRange validationTextRange() {
+			return XmlAttributeOverride.this.validationTextRange();
 		}
 
 		public ITypeMapping getTypeMapping() {

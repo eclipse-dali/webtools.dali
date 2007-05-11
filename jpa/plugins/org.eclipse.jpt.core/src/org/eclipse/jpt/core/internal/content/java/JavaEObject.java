@@ -90,7 +90,7 @@ public abstract class JavaEObject extends JpaEObject
 	 * annotation's text range).
 	 */
 	protected ITextRange elementTextRange(ITextRange elementTextRange) {
-		return (elementTextRange != null) ? elementTextRange : this.getTextRange();
+		return (elementTextRange != null) ? elementTextRange : this.validationTextRange();
 	}
 
 	/**

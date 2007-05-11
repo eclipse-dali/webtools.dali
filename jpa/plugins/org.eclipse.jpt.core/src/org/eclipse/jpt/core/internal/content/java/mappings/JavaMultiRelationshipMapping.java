@@ -185,8 +185,8 @@ public abstract class JavaMultiRelationshipMapping
 
 	private ITable.Owner buildOwner() {
 		return new ITable.Owner() {
-			public ITextRange getTextRange() {
-				return JavaMultiRelationshipMapping.this.getTextRange();
+			public ITextRange validationTextRange() {
+				return JavaMultiRelationshipMapping.this.validationTextRange();
 			}
 
 			public ITypeMapping getTypeMapping() {
@@ -242,8 +242,8 @@ public abstract class JavaMultiRelationshipMapping
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY, oldMappedBy, mappedBy));
 	}
-	
-	public ITextRange getMappedByTextRange() {
+
+	public ITextRange mappedByTextRange() {
 		return this.elementTextRange(this.mappedByAdapter());
 	}
 

@@ -33,4 +33,17 @@ public interface IJpaContentNode extends IJpaSourceObject
 	 * Return a unique identifier for all of this class of content nodes
 	 */
 	Object getId();
+
+	/**
+	 * Return the text range for this contentNode.  This is the all-inclusive
+	 * text range to be used for finding a particular content node given a source location.
+	 */
+	ITextRange fullTextRange();
+
+	/**
+	 * Return the text range to be used for selection. This is the text you want selected
+	 * when selecting the object in the editor. StructureView uses this for selection
+	 * from the structure to the source editor.
+	 */
+	ITextRange selectionTextRange();
 }

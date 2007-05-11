@@ -347,7 +347,7 @@ public abstract class XmlTypeContext extends BaseContext
 				JpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					IJpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CLASS,
-					persistentType, persistentType.getClassTextRange())
+					persistentType, persistentType.classTextRange())
 			);
 		}
 	}
@@ -361,7 +361,7 @@ public abstract class XmlTypeContext extends BaseContext
 					IMessage.HIGH_SEVERITY,
 					IJpaValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,
 					new String[] {persistentType.getClass_()},
-					persistentType, persistentType.getClassTextRange())
+					persistentType, persistentType.classTextRange())
 			);
 		}
 	}

@@ -157,7 +157,7 @@ public class JavaClassRef extends XmlEObject
 	}
 
 	@Override
-	public ITextRange getTextRange() {
+	public ITextRange validationTextRange() {
 		IDOMNode textNode = (IDOMNode) DOMUtilities.getChildTextNode(node);
 		if (textNode != null) {
 			return buildTextRange(textNode);

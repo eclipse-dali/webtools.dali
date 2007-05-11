@@ -98,7 +98,7 @@ public abstract class JavaAttributeContext extends BaseContext
 					IMessage.HIGH_SEVERITY,
 					IJpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
 					new String[] {attributeMapping.getPersistentAttribute().getName()},
-					attributeMapping, attributeMapping.getTextRange())
+					attributeMapping, attributeMapping.validationTextRange())
 			);
 		}
 	}

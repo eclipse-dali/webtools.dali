@@ -371,7 +371,7 @@ public class PersistenceUnitContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.ENTITY_MAPPINGS_MULTIPLE_METADATA,
 						new String[] {persistenceUnit.getName()},
-						metadata, metadata.getTextRange())
+						metadata, metadata.validationTextRange())
 				);
 			}
 		}
@@ -384,7 +384,7 @@ public class PersistenceUnitContext extends BaseContext
 					JpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
-						mappingFileRef, mappingFileRef.getTextRange())
+						mappingFileRef, mappingFileRef.validationTextRange())
 				);
 			}
 		}
@@ -400,7 +400,7 @@ public class PersistenceUnitContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
 						new String[] {mappingFileRef.getFileName()}, 
-						mappingFileRef, mappingFileRef.getTextRange())
+						mappingFileRef, mappingFileRef.validationTextRange())
 				);
 			}
 		}
@@ -416,7 +416,7 @@ public class PersistenceUnitContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE,
 						new String[] {mappingFileRef.getFileName()}, 
-						mappingFileRef, mappingFileRef.getTextRange())
+						mappingFileRef, mappingFileRef.validationTextRange())
 				);
 			}
 		} 
@@ -440,7 +440,7 @@ public class PersistenceUnitContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE,
 						new String[] {mappingFileRef.getFileName()}, 
-						mappingFileRef, mappingFileRef.getTextRange())
+						mappingFileRef, mappingFileRef.validationTextRange())
 				);
 			}
 		}
@@ -465,7 +465,7 @@ public class PersistenceUnitContext extends BaseContext
 					JpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS,
-						javaClassRef, javaClassRef.getTextRange())
+						javaClassRef, javaClassRef.validationTextRange())
 				);
 			}
 		}
@@ -480,7 +480,7 @@ public class PersistenceUnitContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
 						new String[] {javaClass.getQualifiedName()}, 
-						javaClassRef, javaClassRef.getTextRange())
+						javaClassRef, javaClassRef.validationTextRange())
 				);
 			}
 		}
@@ -497,7 +497,7 @@ public class PersistenceUnitContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
 						new String[] {javaClassRef.getJavaClass().getQualifiedName()}, 
-						javaClassRef, javaClassRef.getTextRange())
+						javaClassRef, javaClassRef.validationTextRange())
 				);
 			}
 		} 
@@ -523,7 +523,7 @@ public class PersistenceUnitContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
 						new String[] {javaClassRef.getJavaClass().getQualifiedName()}, 
-						javaClassRef, javaClassRef.getTextRange())
+						javaClassRef, javaClassRef.validationTextRange())
 				);
 			}
 		}

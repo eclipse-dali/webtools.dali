@@ -19,6 +19,7 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.JpaFile;
 import org.eclipse.jpt.core.internal.XmlEObject;
@@ -349,6 +350,14 @@ public class PersistenceXmlRootContentNode extends XmlEObject
 	public IJpaContentNode getContentNode(int offset) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public ITextRange selectionTextRange() {
+		return validationTextRange();
+	}
+
+	public ITextRange fullTextRange() {
+		return validationTextRange();
 	}
 
 	public Object getId() {

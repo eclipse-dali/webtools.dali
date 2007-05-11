@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -130,12 +131,10 @@ public class TextEditorSelectionParticipant
 		suppressNotification = true;
 		IJpaContentNode selectedNode = newSelection.getSelectedNode();
 		
-//		ITextRange range = selectedElement.getTextRange();
-//		
-//		if (range != null) {
-//			//TODO
-//			((ITextEditor) this.editor).selectAndReveal(range.getOffset(), range.getLength());
-//		}
+		ITextRange textRange = selectedNode.selectionTextRange();
+		if (textRange != null) {
+			this.editor.selectAndReveal(textRange.getOffset(), textRange.getLength());
+		}
 		suppressNotification = false;
 	}
 	

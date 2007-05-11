@@ -105,7 +105,7 @@ public abstract class JavaSingleRelationshipMappingContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
 						new String[] {table, joinColumn.getName()}, 
-						joinColumn, joinColumn.getTableTextRange())
+						joinColumn, joinColumn.tableTextRange())
 				);
 				doContinue = false;
 			}
@@ -116,7 +116,7 @@ public abstract class JavaSingleRelationshipMappingContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
 						new String[] {joinColumn.getName()}, 
-						joinColumn, joinColumn.getNameTextRange())
+						joinColumn, joinColumn.nameTextRange())
 				);
 			}
 			
@@ -126,7 +126,7 @@ public abstract class JavaSingleRelationshipMappingContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn, joinColumn.getReferencedColumnNameTextRange())
+						joinColumn, joinColumn.referencedColumnNameTextRange())
 				);
 			}
 		}

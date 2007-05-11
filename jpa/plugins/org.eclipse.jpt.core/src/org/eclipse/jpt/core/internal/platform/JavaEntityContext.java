@@ -244,7 +244,7 @@ public class JavaEntityContext extends JavaTypeContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
 						new String[] {schema, table.getName()}, 
-						table, table.getSchemaTextRange())
+						table, table.schemaTextRange())
 				);
 			doContinue = false;
 		}
@@ -255,7 +255,7 @@ public class JavaEntityContext extends JavaTypeContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.TABLE_UNRESOLVED_NAME,
 						new String[] {table.getName()}, 
-						table, table.getNameTextRange())
+						table, table.nameTextRange())
 				);
 		}
 	}
@@ -273,7 +273,7 @@ public class JavaEntityContext extends JavaTypeContext
 					IMessage.HIGH_SEVERITY,
 					IJpaValidationMessages.ENTITY_NO_ID,
 					new String[] {entity.getName()},
-					entity, entity.getTextRange())
+					entity, entity.validationTextRange())
 			);
 		}
 	}

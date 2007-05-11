@@ -84,7 +84,7 @@ public abstract class XmlSingleRelationshipMappingContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_TABLE,
 							new String[] {mapping.getPersistentAttribute().getName(), table, joinColumn.getName()},
-							joinColumn, joinColumn.getTableTextRange())
+							joinColumn, joinColumn.tableTextRange())
 					);
 				}
 				else {
@@ -93,7 +93,7 @@ public abstract class XmlSingleRelationshipMappingContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
 							new String[] {table, joinColumn.getName()}, 
-							joinColumn, joinColumn.getTableTextRange())
+							joinColumn, joinColumn.tableTextRange())
 					);
 				}
 				doContinue = false;
@@ -106,7 +106,7 @@ public abstract class XmlSingleRelationshipMappingContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME,
 							new String[] {mapping.getPersistentAttribute().getName(), joinColumn.getName()}, 
-							joinColumn, joinColumn.getNameTextRange())
+							joinColumn, joinColumn.nameTextRange())
 					);
 				}
 				else {
@@ -115,7 +115,7 @@ public abstract class XmlSingleRelationshipMappingContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
 							new String[] {joinColumn.getName()}, 
-							joinColumn, joinColumn.getNameTextRange())
+							joinColumn, joinColumn.nameTextRange())
 					);
 				}
 			}
@@ -127,7 +127,7 @@ public abstract class XmlSingleRelationshipMappingContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 							new String[] {mapping.getPersistentAttribute().getName(), joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-							joinColumn, joinColumn.getReferencedColumnNameTextRange())
+							joinColumn, joinColumn.referencedColumnNameTextRange())
 					);
 				}
 				else {
@@ -136,7 +136,7 @@ public abstract class XmlSingleRelationshipMappingContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 							new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-							joinColumn, joinColumn.getReferencedColumnNameTextRange())
+							joinColumn, joinColumn.referencedColumnNameTextRange())
 					);
 				}
 			}

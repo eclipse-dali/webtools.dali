@@ -120,7 +120,7 @@ public class JoinColumnContext extends AbstractJoinColumnContext<IJoinColumn>
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
 						new String[] {mapping.getPersistentAttribute().getName(), column.getName()}, 
-						column, column.getNameTextRange())
+						column, column.nameTextRange())
 				);
 			}
 			else {
@@ -129,7 +129,7 @@ public class JoinColumnContext extends AbstractJoinColumnContext<IJoinColumn>
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 						new String[] {column.getName()}, 
-						column, column.getNameTextRange())
+						column, column.nameTextRange())
 				);
 			}
 		}

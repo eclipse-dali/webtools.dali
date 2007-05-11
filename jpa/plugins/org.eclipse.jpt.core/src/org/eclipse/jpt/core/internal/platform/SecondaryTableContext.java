@@ -87,7 +87,7 @@ public class SecondaryTableContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,
 						new String[] {schema, secondaryTable.getName()}, 
-						secondaryTable, secondaryTable.getSchemaTextRange())
+						secondaryTable, secondaryTable.schemaTextRange())
 				);
 			doContinue = false;
 		}
@@ -98,7 +98,7 @@ public class SecondaryTableContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME,
 						new String[] {secondaryTable.getName()}, 
-						secondaryTable, secondaryTable.getNameTextRange())
+						secondaryTable, secondaryTable.nameTextRange())
 				);
 		}
 	}

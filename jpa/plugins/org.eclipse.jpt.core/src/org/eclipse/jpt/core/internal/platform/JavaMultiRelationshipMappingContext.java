@@ -95,7 +95,7 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
 						new String[] {schema, joinTable.getName()}, 
-						joinTable, joinTable.getSchemaTextRange())
+						joinTable, joinTable.schemaTextRange())
 				);
 			doContinue = false;
 		}
@@ -106,7 +106,7 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
 						new String[] {joinTable.getName()}, 
-						joinTable, joinTable.getNameTextRange())
+						joinTable, joinTable.nameTextRange())
 				);
 			doContinue = false;
 		}
@@ -120,7 +120,7 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
 						new String[] {joinColumn.getName()}, 
-						joinColumn, joinColumn.getNameTextRange())
+						joinColumn, joinColumn.nameTextRange())
 				);
 			}
 			
@@ -130,7 +130,7 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn, joinColumn.getReferencedColumnNameTextRange())
+						joinColumn, joinColumn.referencedColumnNameTextRange())
 				);
 			}
 		}
@@ -144,7 +144,7 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
 						new String[] {joinColumn.getName()}, 
-						joinColumn, joinColumn.getNameTextRange())
+						joinColumn, joinColumn.nameTextRange())
 				);
 			}
 			
@@ -154,7 +154,7 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn, joinColumn.getReferencedColumnNameTextRange())
+						joinColumn, joinColumn.referencedColumnNameTextRange())
 				);
 			}
 		}
@@ -178,7 +178,7 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
 						new String[] {mappedBy}, 
-						mapping, mapping.getMappedByTextRange())
+						mapping, mapping.mappedByTextRange())
 				);
 			return;
 		}
@@ -189,7 +189,7 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
 						new String[] {mappedBy}, 
-						mapping, mapping.getMappedByTextRange())
+						mapping, mapping.mappedByTextRange())
 				);
 		}
 	}

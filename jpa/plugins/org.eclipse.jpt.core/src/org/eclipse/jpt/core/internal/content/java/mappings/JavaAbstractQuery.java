@@ -619,7 +619,7 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 	}
 
 	// ********* IJpaSourceObject implementation ***********
-	public ITextRange getTextRange() {
+	public ITextRange validationTextRange() {
 		return this.member.annotationTextRange(this.idaa);
 	}
 

@@ -335,7 +335,7 @@ public class BaseJpaProjectContext extends BaseContext
 						JpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.PERSISTENCE_XML_INVALID_CONTENT,
-							root, root.getTextRange())
+							root, root.validationTextRange())
 					);
 				okToContinueValidation = false;
 			}
@@ -350,7 +350,7 @@ public class BaseJpaProjectContext extends BaseContext
 					JpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT,
-						persistence, persistence.getTextRange())
+						persistence, persistence.validationTextRange())
 				);
 			okToContinueValidation = false;
 		}
@@ -364,7 +364,7 @@ public class BaseJpaProjectContext extends BaseContext
 					JpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS,
-						persistence, persistence.getTextRange())
+						persistence, persistence.validationTextRange())
 				);
 			okToContinueValidation = false;
 		}
@@ -378,7 +378,7 @@ public class BaseJpaProjectContext extends BaseContext
 							JpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								IJpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
-								jpType.getMapping(), jpType.getMapping().getTextRange())
+								jpType.getMapping(), jpType.getMapping().validationTextRange())
 						);
 				}
 			}

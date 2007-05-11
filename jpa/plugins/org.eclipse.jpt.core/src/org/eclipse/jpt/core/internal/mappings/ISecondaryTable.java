@@ -106,8 +106,8 @@ public interface ISecondaryTable extends ITable
 			this.secondaryTable = secondaryTable;
 		}
 
-		public ITextRange getTextRange() {
-			return this.secondaryTable.getTextRange();
+		public ITextRange validationTextRange() {
+			return this.secondaryTable.validationTextRange();
 		}
 
 		public ITypeMapping getTypeMapping() {

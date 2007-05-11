@@ -388,8 +388,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 
 	private ITable.Owner buildTableOwner() {
 		return new ITable.Owner() {
-			public ITextRange getTextRange() {
-				return JavaEntity.this.getTextRange();
+			public ITextRange validationTextRange() {
+				return JavaEntity.this.validationTextRange();
 			}
 
 			public ITypeMapping getTypeMapping() {
@@ -2367,10 +2367,9 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		this.updateSequenceGeneratorFromJava(astRoot);
 		this.updateIdClassFromJava(astRoot);
 	}
-	
+
 	private void updateIdClassFromJava(CompilationUnit astRoot) {
 		if (this.idClassAnnotationAdapter.getAnnotation(astRoot) == null) {
-			
 			this.setIdClass(null);
 		}
 		else {
@@ -2795,8 +2794,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 
 	private ITable.Owner buildSecondaryTableOwner() {
 		return new ITable.Owner() {
-			public ITextRange getTextRange() {
-				return JavaEntity.this.getTextRange();
+			public ITextRange validationTextRange() {
+				return JavaEntity.this.validationTextRange();
 			}
 
 			public ITypeMapping getTypeMapping() {
@@ -2913,10 +2912,9 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	private static DeclarationAnnotationElementAdapter buildDiscriminatorValueAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DISCRIMINATOR_ANNOTATION_ADAPTER, JPA.DISCRIMINATOR_VALUE__VALUE);
 	}
-	
+
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter buildIdClassValueAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter(ID_CLASS_ADAPTER, JPA.ID_CLASS__VALUE, false, SimpleTypeStringExpressionConverter.instance());
 	}
-
 }

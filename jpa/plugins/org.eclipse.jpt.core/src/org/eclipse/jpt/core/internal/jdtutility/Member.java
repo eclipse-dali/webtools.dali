@@ -13,6 +13,7 @@ import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -25,6 +26,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.SimpleTextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.text.edits.TextEdit;
 
@@ -108,9 +110,31 @@ public abstract class Member {
 	public ITextRange textRange(CompilationUnit astRoot) {
 		return this.textRange(this.bodyDeclaration(astRoot));
 	}
-
+	
 	ITextRange textRange(ASTNode astNode) {
 		return (astNode == null) ? null : new ASTNodeTextRange(astNode);
+	}
+
+	public ITextRange nameTextRange() {
+		return this.nameTextRange(this.astRoot());
+	}
+	
+	public ITextRange nameTextRange(CompilationUnit astRoot) {
+		ISourceRange sourceRange = this.nameSourceRange();
+		return 
+			new SimpleTextRange(
+				sourceRange.getOffset(), 
+				sourceRange.getLength(),
+				astRoot.getLineNumber(sourceRange.getOffset()));
+	}
+	
+	private ISourceRange nameSourceRange() {
+		try {
+			return getJdtMember().getNameRange();
+		}
+		catch (JavaModelException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	/**

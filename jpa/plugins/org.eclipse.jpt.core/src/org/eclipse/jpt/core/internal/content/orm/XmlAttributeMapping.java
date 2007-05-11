@@ -334,13 +334,13 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	}
 
 	@Override
-	public ITextRange getTextRange() {
-		return (this.isVirtual()) ? this.getPersistentType().getAttributesTextRange() : super.getTextRange();
+	public ITextRange validationTextRange() {
+		return (this.isVirtual()) ? this.getPersistentType().attributesTextRange() : super.validationTextRange();
 	}
 
-	public ITextRange getNameTextRange() {
+	public ITextRange nameTextRange() {
 		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.NAME);
-		return (nameNode != null) ? this.buildTextRange(nameNode) : this.getTextRange();
+		return (nameNode != null) ? this.buildTextRange(nameNode) : this.validationTextRange();
 	}
 
 	public boolean isOverridableAttributeMapping() {
@@ -358,8 +358,8 @@ public abstract class XmlAttributeMapping extends XmlEObject
 
 	public class ColumnOwner implements INamedColumn.Owner
 	{
-		public ITextRange getTextRange() {
-			return XmlAttributeMapping.this.getTextRange();
+		public ITextRange validationTextRange() {
+			return XmlAttributeMapping.this.validationTextRange();
 		}
 
 		public ITypeMapping getTypeMapping() {

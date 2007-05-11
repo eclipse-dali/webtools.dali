@@ -441,12 +441,12 @@ public class XmlJoinColumn extends AbstractXmlColumn implements IJoinColumn
 		return dbReferencedColumn() != null;
 	}
 
-	public ITextRange getReferencedColumnNameTextRange() {
+	public ITextRange referencedColumnNameTextRange() {
 		if (node == null) {
-			return owner.getTextRange();
+			return owner.validationTextRange();
 		}
 		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
-		return (referencedColumnNameNode == null) ? getTextRange() : buildTextRange(referencedColumnNameNode);
+		return (referencedColumnNameNode == null) ? validationTextRange() : buildTextRange(referencedColumnNameNode);
 	}
 
 	public void refreshDefaults(DefaultsContext defaultsContext) {

@@ -885,7 +885,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 			}
 		};
 	}
-	
+
 	public XmlPersistentAttribute attributeNamed(String attributeName) {
 		Iterator<XmlPersistentAttribute> attributes = attributesNamed(attributeName);
 		if (attributes.hasNext()) {
@@ -895,36 +895,43 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 			return null;
 		}
 	}
-	
+
 	public IPersistentAttribute resolveAttribute(String attributeName) {
 		Iterator<XmlPersistentAttribute> attributes = attributesNamed(attributeName);
 		if (attributes.hasNext()) {
 			XmlPersistentAttribute attribute = attributes.next();
-			
 			if (attributes.hasNext()) {
 				// more than one
 				return null;
-			} else {
+			}
+			else {
 				return attribute;
 			}
-		} else if (parentPersistentType() != null) {
+		}
+		else if (parentPersistentType() != null) {
 			return parentPersistentType().resolveAttribute(attributeName);
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
 
 	@Override
-	public ITextRange getTextRange() {
-		return getMapping().getTextRange();
+	public ITextRange validationTextRange() {
+		return selectionTextRange();
 	}
 
-	public ITextRange getClassTextRange() {
-		return getMapping().getClassTextRange();
+	@Override
+	public ITextRange selectionTextRange() {
+		return getMapping().selectionTextRange();
 	}
 
-	public ITextRange getAttributesTextRange() {
-		return getMapping().getAttributesTextRange();
+	public ITextRange classTextRange() {
+		return getMapping().classTextRange();
+	}
+
+	public ITextRange attributesTextRange() {
+		return getMapping().attributesTextRange();
 	}
 
 

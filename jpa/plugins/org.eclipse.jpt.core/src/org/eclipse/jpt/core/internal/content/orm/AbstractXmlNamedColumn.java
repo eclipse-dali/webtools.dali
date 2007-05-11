@@ -460,12 +460,12 @@ public abstract class AbstractXmlNamedColumn extends XmlEObject
 		return dbColumn() != null;
 	}
 
-	public ITextRange getNameTextRange() {
+	public ITextRange nameTextRange() {
 		if (node == null) {
-			return owner.getTextRange();
+			return owner.validationTextRange();
 		}
 		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.NAME);
-		return (nameNode == null) ? getTextRange() : buildTextRange(nameNode);
+		return (nameNode == null) ? validationTextRange() : buildTextRange(nameNode);
 	}
 
 	public void refreshDefaults(DefaultsContext defaultsContext) {

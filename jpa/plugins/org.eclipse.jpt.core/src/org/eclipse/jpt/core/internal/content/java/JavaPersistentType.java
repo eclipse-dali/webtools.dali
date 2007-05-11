@@ -21,12 +21,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -229,7 +226,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		adapters.add(JavaId.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaJoinColumn.SINGLE_DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaJoinColumn.MULTIPLE_DECLARATION_ANNOTATION_ADAPTER); // JoinColumns
-		adapters.add(JavaJoinTable.DECLARATION_ANNOTATION_ADAPTER); 
+		adapters.add(JavaJoinTable.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaBasic.LOB_ADAPTER);
 		adapters.add(JavaManyToMany.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaManyToOne.DECLARATION_ANNOTATION_ADAPTER);
@@ -737,7 +734,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 			}
 		};
 	}
-	
+
 	protected Iterator<JavaPersistentAttribute> attributesNamed(final String attributeName) {
 		return new FilteringIterator<JavaPersistentAttribute>(getAttributes().iterator()) {
 			@Override
@@ -746,7 +743,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 			}
 		};
 	}
-	
+
 	public JavaPersistentAttribute attributeNamed(String attributeName) {
 		Iterator<JavaPersistentAttribute> attributes = attributesNamed(attributeName);
 		if (attributes.hasNext()) {
@@ -756,32 +753,24 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 			return null;
 		}
 	}
-	
+
 	public IPersistentAttribute resolveAttribute(String attributeName) {
 		Iterator<JavaPersistentAttribute> attributes = attributesNamed(attributeName);
 		if (attributes.hasNext()) {
 			JavaPersistentAttribute attribute = attributes.next();
-			
 			if (attributes.hasNext()) {
 				// more than one
 				return null;
-			} else {
+			}
+			else {
 				return attribute;
 			}
-		} else if (parentPersistentType() != null) {
+		}
+		else if (parentPersistentType() != null) {
 			return parentPersistentType().resolveAttribute(attributeName);
-		} else {
+		}
+		else {
 			return null;
-		}
-	}
-
-	public boolean containsOffset(int offset) {
-		try {
-			ISourceRange sourceRange = jdtType().getSourceRange();
-			return (sourceRange.getOffset() <= offset) && (offset < sourceRange.getOffset() + sourceRange.getLength());
-		}
-		catch (JavaModelException jme) {
-			return false;
 		}
 	}
 
@@ -800,34 +789,28 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	public IJpaContentNode contentNodeAt(int offset) {
-		ICompilationUnit unit = this.type.compilationUnit();
-		if (unit == null) {
-			return null;
-		}
-		IJavaElement javaElement = null;
-		try {
-			javaElement = unit.getElementAt(offset);
-		}
-		catch (JavaModelException ex) {
-			// fall through
-		}
-		if (javaElement == null) {
-			// typically happens between the package declarations and the source type
-			return null;
-		}
-		switch (javaElement.getElementType()) {
-			case IJavaElement.TYPE :
-				if (((IType) javaElement).getKey().equals(this.type.getJdtMember().getKey())) {
-					return this;
-				}
-				break;
-			case IJavaElement.FIELD :
-			case IJavaElement.METHOD :
-				return this.persistentAttributeFor((IMember) javaElement);
-			default :
-				break;
+		for (JavaPersistentAttribute persistentAttribute : this.getAttributes()) {
+			if (persistentAttribute.includes(offset)) {
+				return persistentAttribute;
+			}
 		}
 		return this;
+	}
+
+	public boolean includes(int offset) {
+		return this.fullTextRange().includes(offset);
+	}
+
+	public ITextRange fullTextRange() {
+		return this.type.textRange();
+	}
+
+	public ITextRange validationTextRange() {
+		return this.selectionTextRange();
+	}
+
+	public ITextRange selectionTextRange() {
+		return this.type.nameTextRange();
 	}
 
 	public ITextRange getTextRange() {

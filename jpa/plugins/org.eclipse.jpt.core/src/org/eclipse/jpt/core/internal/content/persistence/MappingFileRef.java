@@ -192,7 +192,7 @@ public class MappingFileRef extends XmlEObject
 	}
 
 	@Override
-	public ITextRange getTextRange() {
+	public ITextRange validationTextRange() {
 		IDOMNode textNode = (IDOMNode) DOMUtilities.getChildTextNode(node);
 		return (textNode == null) ? buildTextRange(node) : buildTextRange(textNode);
 	}

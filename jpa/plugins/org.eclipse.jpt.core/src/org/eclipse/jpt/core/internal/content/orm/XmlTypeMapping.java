@@ -616,23 +616,23 @@ public abstract class XmlTypeMapping extends XmlEObject implements ITypeMapping
 
 	public void refreshDefaults(DefaultsContext defaultsContext) {}
 
-	public ITextRange getClassTextRange() {
+	public ITextRange classTextRange() {
 		IDOMNode classNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.CLASS);
 		if (classNode != null) {
 			return buildTextRange(classNode);
 		}
 		else {
-			return getTextRange();
+			return validationTextRange();
 		}
 	}
 
-	public ITextRange getAttributesTextRange() {
+	public ITextRange attributesTextRange() {
 		IDOMNode attributesNode = (IDOMNode) DOMUtilities.getNodeChild(node, OrmXmlMapper.ATTRIBUTES);
 		if (attributesNode != null) {
 			return buildTextRange(attributesNode);
 		}
 		else {
-			return getTextRange();
+			return validationTextRange();
 		}
 	}
 

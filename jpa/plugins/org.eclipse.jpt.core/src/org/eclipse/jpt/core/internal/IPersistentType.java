@@ -95,7 +95,7 @@ public interface IPersistentType extends IJpaContentNode
 	 * @return
 	 */
 	Iterator<IPersistentAttribute> allAttributes();
-	
+
 	/**
 	 * Return the attribute named <code>attributeName</code> if
 	 * it exists locally on this type
@@ -107,7 +107,7 @@ public interface IPersistentType extends IJpaContentNode
 	 * is distinct and exists within the context of this type
 	 */
 	IPersistentAttribute resolveAttribute(String attributeName);
-	
+
 	Iterator<IPersistentType> inheritanceHierarchy();
 
 	/**

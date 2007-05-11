@@ -63,7 +63,7 @@ public class TableContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
 						new String[] {schema, table.getName()}, 
-						table, table.getSchemaTextRange())
+						table, table.schemaTextRange())
 				);
 			doContinue = false;
 		}
@@ -74,7 +74,7 @@ public class TableContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.TABLE_UNRESOLVED_NAME,
 						new String[] {table.getName()}, 
-						table, table.getNameTextRange())
+						table, table.nameTextRange())
 				);
 		}
 	}

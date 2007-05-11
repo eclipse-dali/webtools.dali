@@ -136,7 +136,7 @@ public class JoinTableContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA,
 						new String[] {mapping.getPersistentAttribute().getName(), schema, table.getName()}, 
-						table, table.getSchemaTextRange())
+						table, table.schemaTextRange())
 				);
 				
 			}
@@ -146,7 +146,7 @@ public class JoinTableContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
 						new String[] {schema, table.getName()}, 
-						table, table.getSchemaTextRange())
+						table, table.schemaTextRange())
 				);
 			}
 			doContinue = false;
@@ -159,7 +159,7 @@ public class JoinTableContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME,
 						new String[] {mapping.getPersistentAttribute().getName(), table.getName()}, 
-						table, table.getNameTextRange())
+						table, table.nameTextRange())
 				);
 			}
 			else {
@@ -168,7 +168,7 @@ public class JoinTableContext extends BaseContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
 						new String[] {table.getName()}, 
-						table, table.getNameTextRange())
+						table, table.nameTextRange())
 				);
 			}
 		}

@@ -506,10 +506,7 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 
 	public Iterator<String> candidateMappedByAttributeNames() {
 		IEntity targetEntity = this.getResolvedTargetEntity();
-		return (targetEntity == null) ?
-			EmptyIterator.<String>instance()
-		:
-			this.attributeNames(targetEntity.getPersistentType().attributes());
+		return (targetEntity == null) ? EmptyIterator.<String> instance() : this.attributeNames(targetEntity.getPersistentType().attributes());
 	}
 
 	private Iterator<String> attributeNames(Iterator<IPersistentAttribute> attributes) {

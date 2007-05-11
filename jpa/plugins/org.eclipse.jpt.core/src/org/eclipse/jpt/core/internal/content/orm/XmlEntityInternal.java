@@ -344,8 +344,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 
 	private ITable.Owner buildTableOwner() {
 		return new ITable.Owner() {
-			public ITextRange getTextRange() {
-				return XmlEntityInternal.this.getTextRange();
+			public ITextRange validationTextRange() {
+				return XmlEntityInternal.this.validationTextRange();
 			}
 
 			public ITypeMapping getTypeMapping() {
@@ -1912,8 +1912,8 @@ public class XmlEntityInternal extends XmlTypeMapping
 
 	private ITable.Owner buildSecondaryTableOwner() {
 		return new ITable.Owner() {
-			public ITextRange getTextRange() {
-				return XmlEntityInternal.this.getTextRange();
+			public ITextRange validationTextRange() {
+				return XmlEntityInternal.this.validationTextRange();
 			}
 
 			public ITypeMapping getTypeMapping() {

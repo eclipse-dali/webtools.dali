@@ -933,25 +933,25 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 		setDefaultSchema((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TABLE_SCHEMA_KEY));
 	}
 
-	public ITextRange getNameTextRange() {
+	public ITextRange nameTextRange() {
 		if (node == null) {
-			return owner.getTextRange();
+			return owner.validationTextRange();
 		}
 		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.NAME);
-		return (nameNode == null) ? getTextRange() : buildTextRange(nameNode);
+		return (nameNode == null) ? validationTextRange() : buildTextRange(nameNode);
 	}
 
-	public ITextRange getSchemaTextRange() {
+	public ITextRange schemaTextRange() {
 		if (node == null) {
-			return owner.getTextRange();
+			return owner.validationTextRange();
 		}
 		IDOMNode schemaNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.SCHEMA);
-		return (schemaNode == null) ? getTextRange() : buildTextRange(schemaNode);
+		return (schemaNode == null) ? validationTextRange() : buildTextRange(schemaNode);
 	}
 
 	@Override
-	public ITextRange getTextRange() {
-		return (node == null) ? owner.getTextRange() : super.getTextRange();
+	public ITextRange validationTextRange() {
+		return (node == null) ? owner.validationTextRange() : super.validationTextRange();
 	}
 
 	public Owner getOwner() {

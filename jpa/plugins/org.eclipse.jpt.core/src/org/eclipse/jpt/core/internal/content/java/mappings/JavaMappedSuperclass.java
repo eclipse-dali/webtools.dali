@@ -74,7 +74,6 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 
 	private static final DeclarationAnnotationElementAdapter ID_CLASS_VALUE_ADAPTER = buildIdClassValueAdapter();
 
-
 	protected JavaMappedSuperclass() {
 		throw new UnsupportedOperationException("Use JavaMappedSuperclass(Type) instead");
 	}
@@ -307,26 +306,24 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 			}
 		};
 	}
-	
+
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		this.updateIdClassFromJava(astRoot);
 	}
-	
+
 	private void updateIdClassFromJava(CompilationUnit astRoot) {
 		if (this.idClassAnnotationAdapter.getAnnotation(astRoot) == null) {
-			
 			this.setIdClass(null);
 		}
 		else {
 			this.setIdClass((String) this.idClassValueAdapter.getValue(astRoot));
 		}
 	}
-	
+
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter buildIdClassValueAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter(ID_CLASS_ADAPTER, JPA.ID_CLASS__VALUE, false, SimpleTypeStringExpressionConverter.instance());
 	}
-
 }

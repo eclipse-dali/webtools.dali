@@ -217,12 +217,12 @@ public abstract class XmlOverride extends XmlEObject implements IOverride
 	}
 
 	@Override
-	public ITextRange getTextRange() {
+	public ITextRange validationTextRange() {
 		if (node == null) {
-			return getOwner().getTextRange();
+			return getOwner().validationTextRange();
 		}
 		else {
-			return super.getTextRange();
+			return super.validationTextRange();
 		}
 	}
 

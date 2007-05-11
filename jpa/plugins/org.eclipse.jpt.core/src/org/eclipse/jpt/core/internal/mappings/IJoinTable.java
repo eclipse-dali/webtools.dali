@@ -183,8 +183,8 @@ public interface IJoinTable extends ITable
 			return false;
 		}
 
-		public ITextRange getTextRange() {
-			return joinTable.getTextRange();
+		public ITextRange validationTextRange() {
+			return joinTable.validationTextRange();
 		}
 
 		public ITypeMapping getTypeMapping() {

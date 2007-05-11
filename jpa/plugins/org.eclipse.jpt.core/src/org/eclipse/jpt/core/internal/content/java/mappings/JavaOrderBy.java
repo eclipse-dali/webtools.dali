@@ -426,7 +426,7 @@ public class JavaOrderBy extends JavaEObject implements IOrderBy
 	}
 
 	//******** IJpaSourceObject implementation *********/
-	public ITextRange getTextRange() {
+	public ITextRange validationTextRange() {
 		return this.member.annotationTextRange(DECLARATION_ANNOTATION_ADAPTER);
 	}
 

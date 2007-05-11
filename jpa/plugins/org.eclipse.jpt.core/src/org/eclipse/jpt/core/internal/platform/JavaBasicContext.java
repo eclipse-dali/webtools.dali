@@ -55,7 +55,7 @@ public class JavaBasicContext extends JavaAttributeContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
 						new String[] {table, column.getName()}, 
-						column, column.getTableTextRange())
+						column, column.tableTextRange())
 				);
 			doContinue = false;
 		}
@@ -66,7 +66,7 @@ public class JavaBasicContext extends JavaAttributeContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.COLUMN_UNRESOLVED_NAME,
 						new String[] {column.getName()}, 
-						column, column.getNameTextRange())
+						column, column.nameTextRange())
 				);
 		}
 	}

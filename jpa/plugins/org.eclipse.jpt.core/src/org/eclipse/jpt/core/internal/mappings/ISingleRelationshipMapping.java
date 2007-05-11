@@ -191,9 +191,8 @@ public interface ISingleRelationshipMapping extends IRelationshipMapping
 			return true;
 		}
 
-		public ITextRange getTextRange() {
-			// TODO Auto-generated method stub
-			return singleRelationshipMapping.getTextRange();
+		public ITextRange validationTextRange() {
+			return singleRelationshipMapping.validationTextRange();
 		}
 
 		public ITypeMapping getTypeMapping() {

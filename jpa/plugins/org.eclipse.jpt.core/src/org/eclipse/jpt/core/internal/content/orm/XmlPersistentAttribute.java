@@ -327,12 +327,22 @@ public class XmlPersistentAttribute extends XmlEObject
 	}
 
 	@Override
-	public ITextRange getTextRange() {
-		return (this.isVirtual()) ? this.persistentType().getAttributesTextRange() : this.getMapping().getTextRange();
+	public ITextRange fullTextRange() {
+		return (this.isVirtual()) ? null : super.fullTextRange();
 	}
 
-	public ITextRange getNameTextRange() {
-		return getMapping().getNameTextRange();
+	@Override
+	public ITextRange validationTextRange() {
+		return (this.isVirtual()) ? this.persistentType().attributesTextRange() : this.getMapping().validationTextRange();
+	}
+
+	@Override
+	public ITextRange selectionTextRange() {
+		return (isVirtual()) ? null : fullTextRange();
+	}
+
+	public ITextRange nameTextRange() {
+		return getMapping().nameTextRange();
 	}
 
 	public boolean isOverridableAttribute() {

@@ -69,7 +69,7 @@ public class AssociationOverrideContext extends BaseContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_TABLE,
 							new String[] {associationOverride.getName(), table, joinColumn.getName()},
-							joinColumn, joinColumn.getTableTextRange())
+							joinColumn, joinColumn.tableTextRange())
 					);
 				}
 				else {
@@ -78,7 +78,7 @@ public class AssociationOverrideContext extends BaseContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
 							new String[] {table, joinColumn.getName()}, 
-							joinColumn, joinColumn.getTableTextRange())
+							joinColumn, joinColumn.tableTextRange())
 					);
 				}
 				doContinue = false;
@@ -91,7 +91,7 @@ public class AssociationOverrideContext extends BaseContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME,
 							new String[] {associationOverride.getName(), joinColumn.getName()}, 
-							joinColumn, joinColumn.getNameTextRange())
+							joinColumn, joinColumn.nameTextRange())
 					);
 				}
 				else {
@@ -100,7 +100,7 @@ public class AssociationOverrideContext extends BaseContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
 							new String[] {joinColumn.getName()}, 
-							joinColumn, joinColumn.getNameTextRange())
+							joinColumn, joinColumn.nameTextRange())
 					);
 				}
 			}
@@ -112,7 +112,7 @@ public class AssociationOverrideContext extends BaseContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 							new String[] {associationOverride.getName(), joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-							joinColumn, joinColumn.getReferencedColumnNameTextRange())
+							joinColumn, joinColumn.referencedColumnNameTextRange())
 					);
 				}
 				else {
@@ -121,7 +121,7 @@ public class AssociationOverrideContext extends BaseContext
 							IMessage.HIGH_SEVERITY,
 							IJpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
 							new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-							joinColumn, joinColumn.getReferencedColumnNameTextRange())
+							joinColumn, joinColumn.referencedColumnNameTextRange())
 					);
 				}
 			}

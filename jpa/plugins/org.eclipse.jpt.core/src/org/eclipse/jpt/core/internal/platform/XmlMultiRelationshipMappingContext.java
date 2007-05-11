@@ -95,7 +95,7 @@ public abstract class XmlMultiRelationshipMappingContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
 						new String[] {mappedBy}, 
-						mapping, mapping.getMappedByTextRange())
+						mapping, mapping.mappedByTextRange())
 				);
 			return;
 		}
@@ -106,7 +106,7 @@ public abstract class XmlMultiRelationshipMappingContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
 						new String[] {mappedBy}, 
-						mapping, mapping.getMappedByTextRange())
+						mapping, mapping.mappedByTextRange())
 				);
 		}
 	}
