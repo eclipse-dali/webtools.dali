@@ -79,9 +79,8 @@ final class Catalog extends DTPWrapper implements Comparable<Catalog> {
 
 	// ***** schemata
 
-	@SuppressWarnings("unchecked")
 	synchronized Set<Schema> buildSchemata() {
-		EList<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.dtpCatalog.getSchemas();
+		EList<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.dtpSchemata();
 		
 		Set<Schema> result = new HashSet<Schema>( dtpSchemata.size());
 		for (org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema : dtpSchemata) {
@@ -89,7 +88,12 @@ final class Catalog extends DTPWrapper implements Comparable<Catalog> {
 		}
 		return result;
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	private EList<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata() {
+		return this.dtpCatalog.getSchemas();
+	}
+
 	private Schema wrap( org.eclipse.datatools.modelbase.sql.schema.Schema schema) {
 
 		return new Schema( this.database, schema);

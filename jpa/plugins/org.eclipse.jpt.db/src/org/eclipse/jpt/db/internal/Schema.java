@@ -136,8 +136,12 @@ public final class Schema extends DTPWrapper implements Comparable<Schema> {
 	}
 
 	@SuppressWarnings("unchecked")
+	private Collection<org.eclipse.datatools.modelbase.sql.tables.Table> dtpTables() {
+		return this.dtpSchema.getTables();
+	}
+
 	private Set<Table> buildTables() {
-		Collection<org.eclipse.datatools.modelbase.sql.tables.Table> dtpTables = this.dtpSchema.getTables();
+		Collection<org.eclipse.datatools.modelbase.sql.tables.Table> dtpTables = this.dtpTables();
 		Set<Table> result = new HashSet<Table>( dtpTables.size());
 		for (org.eclipse.datatools.modelbase.sql.tables.Table dtpTable : dtpTables) {
 			result.add( this.wrap(dtpTable));
@@ -220,8 +224,12 @@ public final class Schema extends DTPWrapper implements Comparable<Schema> {
 	}
 
 	@SuppressWarnings("unchecked")
+	private Collection<org.eclipse.datatools.modelbase.sql.schema.Sequence> dtpSequences() {
+		return this.dtpSchema.getSequences();
+	}
+
 	private Set<Sequence> buildSequences() {
-		Collection<org.eclipse.datatools.modelbase.sql.schema.Sequence> dtpSequences = this.dtpSchema.getSequences();
+		Collection<org.eclipse.datatools.modelbase.sql.schema.Sequence> dtpSequences = this.dtpSequences();
 		Set<Sequence> result = new HashSet<Sequence>( dtpSequences.size());
 		for (org.eclipse.datatools.modelbase.sql.schema.Sequence dtpSequence : dtpSequences) {
 			result.add( this.wrap(dtpSequence));

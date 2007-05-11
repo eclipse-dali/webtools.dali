@@ -147,13 +147,17 @@ public final class DTPDatabaseWrapper extends Database {
 	}
 
 	@SuppressWarnings("unchecked")
+	private EList<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata() {
+		return this.dtpDatabase.getSchemas();
+	}
+
 	private Set<Schema> buildSchemata() {
 		Set<Schema> result;
 		if( this.supportsCatalogs()) {
 			result = this.getSchemataForCatalogNamed( this.profile.getCatalogName());
 		}
 		else {
-			EList<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.dtpDatabase.getSchemas();
+			EList<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.dtpSchemata();
 			result = new HashSet<Schema>( dtpSchemata.size());
 			for (org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema : dtpSchemata) {
 				result.add( this.wrap(dtpSchema));
@@ -164,14 +168,17 @@ public final class DTPDatabaseWrapper extends Database {
 	
 	// ***** catalogs
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean supportsCatalogs() {
-		EList<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.dtpDatabase.getSchemas();
+		EList<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.dtpSchemata();
 		return ( dtpSchemata == null || dtpSchemata.size() == 0);
 	}
 
 	@SuppressWarnings("unchecked")
+	private EList<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs() {
+		return this.dtpDatabase.getCatalogs();
+	}
+
 	@Override
 	public String getDefaultCatalogName() {
 		
@@ -179,7 +186,7 @@ public final class DTPDatabaseWrapper extends Database {
 			return "";
 		}
 		String userName = this.profile.getUserName();
-		for (org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog : (EList<org.eclipse.datatools.modelbase.sql.schema.Catalog>) this.dtpDatabase.getCatalogs()) {
+		for (org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog : this.dtpCatalogs()) {
 			if( dtpCatalog.getName().length() == 0) {	// special catalog that contains all schemata
 				return "";
 			}
@@ -198,10 +205,9 @@ public final class DTPDatabaseWrapper extends Database {
 		return this.catalogs;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Set<Catalog> buildCatalogs() {
 		
-		EList<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs = this.dtpDatabase.getCatalogs();
+		EList<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs = this.dtpCatalogs();
 		if( dtpCatalogs == null) {
 			return Collections.emptySet();
 		}

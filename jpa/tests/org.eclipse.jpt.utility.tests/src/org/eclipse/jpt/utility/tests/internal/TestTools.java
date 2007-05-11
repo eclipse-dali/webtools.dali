@@ -12,6 +12,7 @@ package org.eclipse.jpt.utility.tests.internal;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -34,7 +35,6 @@ public final class TestTools {
 	 * specified object to a byte array; then de-serializing the byte array and
 	 * returning the resultant object
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> T serialize(T o) throws IOException, ClassNotFoundException {
 		ByteArrayOutputStream baOutStream = new ByteArrayOutputStream(2000);
 		ObjectOutputStream outStream = new ObjectOutputStream(baOutStream);
@@ -43,10 +43,15 @@ public final class TestTools {
 
 		ByteArrayInputStream baInStream = new ByteArrayInputStream(baOutStream.toByteArray());
 		ObjectInputStream inStream = new ObjectInputStream(baInStream);
-		T o2 = (T) inStream.readObject();
+		T o2 = readObject(inStream);
 		inStream.close();
 
 		return o2;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T> T readObject(ObjectInput objectInput) throws IOException, ClassNotFoundException {
+		return (T) objectInput.readObject();
 	}
 
 	/**

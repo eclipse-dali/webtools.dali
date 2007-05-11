@@ -161,8 +161,12 @@ public final class Table extends DTPWrapper implements Comparable<Table> {
 	}
 
 	@SuppressWarnings("unchecked")
+	private Collection<org.eclipse.datatools.modelbase.sql.tables.Column> dtpColumns() {
+		return this.dtpTable.getColumns();
+	}
+
 	private Set<Column> buildColumns() {
-		Collection<org.eclipse.datatools.modelbase.sql.tables.Column> dtpColumns = this.dtpTable.getColumns();
+		Collection<org.eclipse.datatools.modelbase.sql.tables.Column> dtpColumns = this.dtpColumns();
 		Set<Column> result = new HashSet<Column>(dtpColumns.size());
 		for (org.eclipse.datatools.modelbase.sql.tables.Column c : dtpColumns) {
 			result.add(new Column(this, c));
@@ -246,6 +250,10 @@ public final class Table extends DTPWrapper implements Comparable<Table> {
 	}
 
 	@SuppressWarnings("unchecked")
+	private Collection<org.eclipse.datatools.modelbase.sql.tables.Column> columns(PrimaryKey pk) {
+		return pk.getMembers();
+	}
+
 	private Set<Column> buildPrimaryKeyColumns() {
 		if ( ! (this.dtpTable instanceof BaseTable)) {
 			return Collections.emptySet();
@@ -255,7 +263,7 @@ public final class Table extends DTPWrapper implements Comparable<Table> {
 			// no PK was defined
 			return Collections.emptySet();
 		}
-		Collection<org.eclipse.datatools.modelbase.sql.tables.Column> pkColumns = pk.getMembers();
+		Collection<org.eclipse.datatools.modelbase.sql.tables.Column> pkColumns = this.columns(pk);
 		Set<Column> result = new HashSet<Column>(pkColumns.size());
 		for (org.eclipse.datatools.modelbase.sql.tables.Column pkColumn : pkColumns) {
 			result.add(this.column(pkColumn));
@@ -286,11 +294,15 @@ public final class Table extends DTPWrapper implements Comparable<Table> {
 	}
 
 	@SuppressWarnings("unchecked")
+	private Collection<org.eclipse.datatools.modelbase.sql.constraints.ForeignKey> dtpForeignKeys() {
+		return ((BaseTable) this.dtpTable).getForeignKeys();
+	}
+
 	private Set<ForeignKey> buildForeignKeys() {
 		if ( ! (this.dtpTable instanceof BaseTable)) {
 			return Collections.emptySet();
 		}
-		Collection<org.eclipse.datatools.modelbase.sql.constraints.ForeignKey> dtpForeignKeys = ((BaseTable) this.dtpTable).getForeignKeys();
+		Collection<org.eclipse.datatools.modelbase.sql.constraints.ForeignKey> dtpForeignKeys = this.dtpForeignKeys();
 		Set<ForeignKey> result = new HashSet<ForeignKey>(dtpForeignKeys.size());
 		for (org.eclipse.datatools.modelbase.sql.constraints.ForeignKey dtpForeignKey : dtpForeignKeys) {
 			result.add(new ForeignKey(this, dtpForeignKey));

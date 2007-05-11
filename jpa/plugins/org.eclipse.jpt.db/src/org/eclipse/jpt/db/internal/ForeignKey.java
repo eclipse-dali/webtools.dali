@@ -187,10 +187,19 @@ public final class ForeignKey extends DTPWrapper implements Comparable<ForeignKe
 	}
 
 	@SuppressWarnings("unchecked")
+	private List<org.eclipse.datatools.modelbase.sql.tables.Column> dtpBaseColumns() {
+		return this.dtpForeignKey.getMembers();
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<org.eclipse.datatools.modelbase.sql.tables.Column> dtpRefColumns() {
+		return this.dtpForeignKey.getUniqueConstraint().getMembers();
+	}
+
 	private Set<ColumnPair> buildColumnPairs() {
-		List<org.eclipse.datatools.modelbase.sql.tables.Column> baseColumns = this.dtpForeignKey.getMembers();
+		List<org.eclipse.datatools.modelbase.sql.tables.Column> baseColumns = this.dtpBaseColumns();
 		int size = baseColumns.size();
-		List<org.eclipse.datatools.modelbase.sql.tables.Column> refColumns = this.dtpForeignKey.getUniqueConstraint().getMembers();
+		List<org.eclipse.datatools.modelbase.sql.tables.Column> refColumns = this.dtpRefColumns();
 		if (refColumns.size() != size) {
 			throw new IllegalStateException("mismatched sizes: " + size + " vs. " + refColumns.size());
 		}
