@@ -33,6 +33,7 @@ import org.eclipse.jpt.core.internal.mappings.IEmbedded;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
+import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -100,6 +101,7 @@ public class JavaEmbedded extends JavaAttributeMapping implements IEmbedded
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void attributeOverridesChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
@@ -529,6 +531,21 @@ public class JavaEmbedded extends JavaAttributeMapping implements IEmbedded
 
 	private JavaAttributeOverride createJavaAttributeOverride(int index) {
 		return JavaAttributeOverride.createAttributeOverride(new AttributeOverrideOwner(this), this.getAttribute(), index);
+	}
+
+	@Override
+	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		for (IAttributeOverride override : this.getAttributeOverrides()) {
+			result = ((JavaAttributeOverride) override).connectedCandidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
 	}
 
 	//******* static methods *********

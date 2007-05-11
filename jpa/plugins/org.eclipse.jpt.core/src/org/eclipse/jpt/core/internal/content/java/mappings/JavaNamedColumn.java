@@ -29,10 +29,10 @@ import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAda
 import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.db.internal.Column;
-import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
@@ -483,11 +483,6 @@ public abstract class JavaNamedColumn extends JavaEObject
 		this.setColumnDefinition(this.columnDefinitionAdapter.getValue(astRoot));
 	}
 
-	public boolean isConnected() {
-		ConnectionProfile cp = this.getJpaProject().connectionProfile();
-		return cp != null && cp.isConnected();
-	}
-
 	public Column dbColumn() {
 		Table table = this.dbTable();
 		return (table == null) ? null : table.columnNamed(this.getName());
@@ -507,22 +502,14 @@ public abstract class JavaNamedColumn extends JavaEObject
 	}
 
 	/**
-	 * name
-	 */
-	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		if (this.isConnected()) {
-			Iterator<String> result = this.connectedCandidateValuesFor(pos, filter, astRoot);
-			if (result != null) {
-				return result;
-			}
-		}
-		return null;
-	}
-
-	/**
 	 * called if the database is connected
 	 */
-	protected Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+	@Override
+	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 		if (this.nameTouches(pos, astRoot)) {
 			return this.quotedCandidateNames(filter);
 		}
@@ -530,7 +517,8 @@ public abstract class JavaNamedColumn extends JavaEObject
 	}
 
 	private Iterator<String> candidateNames() {
-		return this.dbTable().columnNames();
+		Table dbTable = this.dbTable();
+		return (dbTable != null) ? dbTable.columnNames() : EmptyIterator.<String>instance();
 	}
 
 	private Iterator<String> candidateNames(Filter<String> filter) {

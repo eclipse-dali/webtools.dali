@@ -9,16 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java;
 
+import java.util.Iterator;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
 import org.eclipse.jpt.core.internal.IJpaSourceObject;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaEObject;
+import org.eclipse.jpt.utility.internal.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -91,6 +94,24 @@ public abstract class JavaEObject extends JpaEObject
 	 */
 	protected ITextRange elementTextRange(ITextRange elementTextRange) {
 		return (elementTextRange != null) ? elementTextRange : this.validationTextRange();
+	}
+
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		if (this.isConnected()) {
+			Iterator<String> result = this.connectedCandidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * called if the database is connected, allowing us to get candidates
+	 * from the various database tables etc.
+	 */
+	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		return null;
 	}
 
 	/**

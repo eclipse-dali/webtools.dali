@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
-import java.util.Iterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -26,7 +25,6 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.utility.internal.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -137,10 +135,6 @@ public abstract class JavaAttributeMapping extends JavaEObject
 
 	protected boolean elementTouches(DeclarationAnnotationElementAdapter<?> elementAdapter, int pos, CompilationUnit astRoot) {
 		return this.elementTouches(this.attribute.annotationElementTextRange(elementAdapter, astRoot), pos);
-	}
-
-	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		return null;
 	}
 
 	public boolean isOverridableAttributeMapping() {

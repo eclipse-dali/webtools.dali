@@ -41,15 +41,15 @@ public class JavaGeneratedValue extends JavaEObject implements IGeneratedValue
 {
 	private Member member;
 
-	private final AnnotationElementAdapter strategyAdapter;
+	private final AnnotationElementAdapter<String> strategyAdapter;
 
-	private final AnnotationElementAdapter generatorAdapter;
+	private final AnnotationElementAdapter<String> generatorAdapter;
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.GENERATED_VALUE);
 
-	private static final DeclarationAnnotationElementAdapter STRATEGY_ADAPTER = buildStrategyAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> STRATEGY_ADAPTER = buildStrategyAdapter();
 
-	private static final DeclarationAnnotationElementAdapter GENERATOR_ADAPTER = buildGeneratorAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> GENERATOR_ADAPTER = buildGeneratorAdapter();
 
 	/**
 	 * The default value of the '{@link #getStrategy() <em>Strategy</em>}' attribute.
@@ -98,8 +98,8 @@ public class JavaGeneratedValue extends JavaEObject implements IGeneratedValue
 	protected JavaGeneratedValue(Member member) {
 		super();
 		this.member = member;
-		this.strategyAdapter = new ShortCircuitAnnotationElementAdapter(this.member, STRATEGY_ADAPTER);
-		this.generatorAdapter = new ShortCircuitAnnotationElementAdapter(this.member, GENERATOR_ADAPTER);
+		this.strategyAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.member, STRATEGY_ADAPTER);
+		this.generatorAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.member, GENERATOR_ADAPTER);
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class JavaGeneratedValue extends JavaEObject implements IGeneratedValue
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(IGeneratedValue.class)) {
 			case JpaJavaMappingsPackage.JAVA_GENERATED_VALUE__GENERATOR :
-				this.generatorAdapter.setValue(notification.getNewValue());
+				this.generatorAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaJavaMappingsPackage.JAVA_GENERATED_VALUE__STRATEGY :
 				this.strategyAdapter.setValue(((GenerationType) notification.getNewValue()).convertToJavaAnnotationValue());
@@ -329,15 +329,15 @@ public class JavaGeneratedValue extends JavaEObject implements IGeneratedValue
 	// ********** java annotations -> persistence model **********
 	public void updateFromJava(CompilationUnit astRoot) {
 		setStrategy(GenerationType.fromJavaAnnotationValue(this.strategyAdapter.getValue(astRoot)));
-		setGenerator((String) this.generatorAdapter.getValue(astRoot));
+		setGenerator(this.generatorAdapter.getValue(astRoot));
 	}
 
 	// ********** static methods **********
-	private static DeclarationAnnotationElementAdapter buildStrategyAdapter() {
+	private static DeclarationAnnotationElementAdapter<String> buildStrategyAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.GENERATED_VALUE__STRATEGY, false);
 	}
 
-	private static DeclarationAnnotationElementAdapter buildGeneratorAdapter() {
+	private static DeclarationAnnotationElementAdapter<String> buildGeneratorAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.GENERATED_VALUE__GENERATOR, false);
 	}
 } // JavaGeneratedValue

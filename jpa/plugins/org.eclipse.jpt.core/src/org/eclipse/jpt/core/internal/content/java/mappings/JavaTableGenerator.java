@@ -44,37 +44,37 @@ import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 public class JavaTableGenerator extends JavaGenerator
 	implements ITableGenerator
 {
-	private final AnnotationElementAdapter tableAdapter;
+	private final AnnotationElementAdapter<String> tableAdapter;
 
-	private final AnnotationElementAdapter catalogAdapter;
+	private final AnnotationElementAdapter<String> catalogAdapter;
 
-	private final AnnotationElementAdapter schemaAdapter;
+	private final AnnotationElementAdapter<String> schemaAdapter;
 
-	private final AnnotationElementAdapter pkColumnNameAdapter;
+	private final AnnotationElementAdapter<String> pkColumnNameAdapter;
 
-	private final AnnotationElementAdapter valueColumnNameAdapter;
+	private final AnnotationElementAdapter<String> valueColumnNameAdapter;
 
-	private final AnnotationElementAdapter pkColumnValueAdapter;
+	private final AnnotationElementAdapter<String> pkColumnValueAdapter;
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.TABLE_GENERATOR);
 
-	private static final DeclarationAnnotationElementAdapter NAME_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__NAME);
+	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__NAME);
 
-	private static final DeclarationAnnotationElementAdapter INITIAL_VALUE_ADAPTER = buildNumberAdapter(JPA.TABLE_GENERATOR__INITIAL_VALUE);
+	private static final DeclarationAnnotationElementAdapter<String> INITIAL_VALUE_ADAPTER = buildNumberAdapter(JPA.TABLE_GENERATOR__INITIAL_VALUE);
 
-	private static final DeclarationAnnotationElementAdapter ALLOCATION_SIZE_ADAPTER = buildNumberAdapter(JPA.TABLE_GENERATOR__ALLOCATION_SIZE);
+	private static final DeclarationAnnotationElementAdapter<String> ALLOCATION_SIZE_ADAPTER = buildNumberAdapter(JPA.TABLE_GENERATOR__ALLOCATION_SIZE);
 
-	private static final DeclarationAnnotationElementAdapter TABLE_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__TABLE);
+	private static final DeclarationAnnotationElementAdapter<String> TABLE_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__TABLE);
 
-	private static final DeclarationAnnotationElementAdapter CATALOG_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__CATALOG);
+	private static final DeclarationAnnotationElementAdapter<String> CATALOG_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__CATALOG);
 
-	private static final DeclarationAnnotationElementAdapter SCHEMA_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__SCHEMA);
+	private static final DeclarationAnnotationElementAdapter<String> SCHEMA_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__SCHEMA);
 
-	private static final DeclarationAnnotationElementAdapter PK_COLUMN_NAME_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__PK_COLUMN_NAME);
+	private static final DeclarationAnnotationElementAdapter<String> PK_COLUMN_NAME_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__PK_COLUMN_NAME);
 
-	private static final DeclarationAnnotationElementAdapter VALUE_COLUMN_NAME_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__VALUE_COLUMN_NAME);
+	private static final DeclarationAnnotationElementAdapter<String> VALUE_COLUMN_NAME_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__VALUE_COLUMN_NAME);
 
-	private static final DeclarationAnnotationElementAdapter PK_COLUMN_VALUE_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__PK_COLUMN_VALUE);
+	private static final DeclarationAnnotationElementAdapter<String> PK_COLUMN_VALUE_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__PK_COLUMN_VALUE);
 
 	/**
 	 * The default value of the '{@link #getTable() <em>Table</em>}' attribute.
@@ -405,22 +405,22 @@ public class JavaTableGenerator extends JavaGenerator
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(ITableGenerator.class)) {
 			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_TABLE :
-				this.tableAdapter.setValue(notification.getNewValue());
+				this.tableAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_CATALOG :
-				this.catalogAdapter.setValue(notification.getNewValue());
+				this.catalogAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_SCHEMA :
-				this.schemaAdapter.setValue(notification.getNewValue());
+				this.schemaAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_VALUE_COLUMN_NAME :
-				this.valueColumnNameAdapter.setValue(notification.getNewValue());
+				this.valueColumnNameAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_PK_COLUMN_NAME :
-				this.pkColumnNameAdapter.setValue(notification.getNewValue());
+				this.pkColumnNameAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE :
-				this.pkColumnValueAdapter.setValue(notification.getNewValue());
+				this.pkColumnValueAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaJavaMappingsPackage.JAVA_TABLE_GENERATOR__UNIQUE_CONSTRAINTS :
 				uniqueConstraintsChanged(notification);
@@ -430,6 +430,7 @@ public class JavaTableGenerator extends JavaGenerator
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void uniqueConstraintsChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
@@ -467,19 +468,23 @@ public class JavaTableGenerator extends JavaGenerator
 	}
 
 	// ********** initialization **********
+	@Override
 	protected DeclarationAnnotationAdapter annotationAdapter() {
 		return DECLARATION_ANNOTATION_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter nameAdapter() {
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> nameAdapter() {
 		return NAME_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter initialValueAdapter() {
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> initialValueAdapter() {
 		return INITIAL_VALUE_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter allocationSizeAdapter() {
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> allocationSizeAdapter() {
 		return ALLOCATION_SIZE_ADAPTER;
 	}
 
@@ -1177,12 +1182,12 @@ public class JavaTableGenerator extends JavaGenerator
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		setSpecifiedTable((String) this.tableAdapter.getValue(astRoot));
-		setSpecifiedCatalog((String) this.catalogAdapter.getValue(astRoot));
-		setSpecifiedSchema((String) this.schemaAdapter.getValue(astRoot));
-		setSpecifiedPkColumnName((String) this.pkColumnNameAdapter.getValue(astRoot));
-		setSpecifiedValueColumnName((String) this.valueColumnNameAdapter.getValue(astRoot));
-		setSpecifiedPkColumnValue((String) this.pkColumnValueAdapter.getValue(astRoot));
+		setSpecifiedTable(this.tableAdapter.getValue(astRoot));
+		setSpecifiedCatalog(this.catalogAdapter.getValue(astRoot));
+		setSpecifiedSchema(this.schemaAdapter.getValue(astRoot));
+		setSpecifiedPkColumnName(this.pkColumnNameAdapter.getValue(astRoot));
+		setSpecifiedValueColumnName(this.valueColumnNameAdapter.getValue(astRoot));
+		setSpecifiedPkColumnValue(this.pkColumnValueAdapter.getValue(astRoot));
 		this.updateUniqueConstraintsFromJava(astRoot);
 	}
 
@@ -1192,12 +1197,12 @@ public class JavaTableGenerator extends JavaGenerator
 	 */
 	private void updateUniqueConstraintsFromJava(CompilationUnit astRoot) {
 		// synchronize the model join columns with the Java source
-		List<IUniqueConstraint> uniqueConstraints = this.getUniqueConstraints();
-		int persSize = uniqueConstraints.size();
+		List<IUniqueConstraint> constraints = this.getUniqueConstraints();
+		int persSize = constraints.size();
 		int javaSize = 0;
 		boolean allJavaAnnotationsFound = false;
 		for (int i = 0; i < persSize; i++) {
-			JavaUniqueConstraint uniqueConstraint = (JavaUniqueConstraint) uniqueConstraints.get(i);
+			JavaUniqueConstraint uniqueConstraint = (JavaUniqueConstraint) constraints.get(i);
 			if (uniqueConstraint.annotation(astRoot) == null) {
 				allJavaAnnotationsFound = true;
 				break; // no need to go any further
@@ -1209,7 +1214,7 @@ public class JavaTableGenerator extends JavaGenerator
 			// remove any model join columns beyond those that correspond to the Java annotations
 			while (persSize > javaSize) {
 				persSize--;
-				uniqueConstraints.remove(persSize);
+				constraints.remove(persSize);
 			}
 		}
 		else {
@@ -1255,12 +1260,12 @@ public class JavaTableGenerator extends JavaGenerator
 	}
 
 	// bjv look at this
-	public void uniqueConstraintsAdded(int index, List<IUniqueConstraint> uniqueConstraints) {
+	public void uniqueConstraintsAdded(int index, List<IUniqueConstraint> constraints) {
 		// JoinColumn was added to jpa model when updating from java, do not need
 		// to edit the java in this case. TODO is there a better way to handle this??
-		if (!uniqueConstraints.isEmpty() && ((JavaUniqueConstraint) uniqueConstraints.get(0)).annotation(getMember().astRoot()) == null) {
-			this.synchUniqueConstraintAnnotationsAfterAdd(index + uniqueConstraints.size());
-			for (IUniqueConstraint uniqueConstraint : uniqueConstraints) {
+		if (!constraints.isEmpty() && ((JavaUniqueConstraint) constraints.get(0)).annotation(getMember().astRoot()) == null) {
+			this.synchUniqueConstraintAnnotationsAfterAdd(index + constraints.size());
+			for (IUniqueConstraint uniqueConstraint : constraints) {
 				((JavaUniqueConstraint) uniqueConstraint).newAnnotation();
 			}
 		}
@@ -1271,15 +1276,15 @@ public class JavaTableGenerator extends JavaGenerator
 		this.synchUniqueConstraintAnnotationsAfterRemove(index);
 	}
 
-	public void uniqueConstraintsRemoved(int[] indexes, List<IUniqueConstraint> uniqueConstraints) {
-		for (IUniqueConstraint uniqueConstraint : uniqueConstraints) {
+	public void uniqueConstraintsRemoved(int[] indexes, List<IUniqueConstraint> constraints) {
+		for (IUniqueConstraint uniqueConstraint : constraints) {
 			((JavaUniqueConstraint) uniqueConstraint).removeAnnotation();
 		}
 		this.synchUniqueConstraintAnnotationsAfterRemove(indexes[0]);
 	}
 
-	public void uniqueConstraintsCleared(List<IUniqueConstraint> uniqueConstraints) {
-		for (IUniqueConstraint uniqueConstraint : uniqueConstraints) {
+	public void uniqueConstraintsCleared(List<IUniqueConstraint> constraints) {
+		for (IUniqueConstraint uniqueConstraint : constraints) {
 			((JavaUniqueConstraint) uniqueConstraint).removeAnnotation();
 		}
 	}
@@ -1289,11 +1294,11 @@ public class JavaTableGenerator extends JavaGenerator
 	}
 
 	public void uniqueConstraintMoved(int sourceIndex, int targetIndex, IUniqueConstraint uniqueConstraint) {
-		List<IUniqueConstraint> uniqueConstraints = this.getUniqueConstraints();
+		List<IUniqueConstraint> constraints = this.getUniqueConstraints();
 		int begin = Math.min(sourceIndex, targetIndex);
 		int end = Math.max(sourceIndex, targetIndex);
 		for (int i = begin; i-- > end;) {
-			this.synch(uniqueConstraints.get(i), i);
+			this.synch(constraints.get(i), i);
 		}
 	}
 
@@ -1302,9 +1307,9 @@ public class JavaTableGenerator extends JavaGenerator
 	 * starting at the end of the list to prevent overlap
 	 */
 	private void synchUniqueConstraintAnnotationsAfterAdd(int index) {
-		List<IUniqueConstraint> uniqueConstraints = this.getUniqueConstraints();
-		for (int i = uniqueConstraints.size(); i-- > index;) {
-			this.synch(uniqueConstraints.get(i), i);
+		List<IUniqueConstraint> constraints = this.getUniqueConstraints();
+		for (int i = constraints.size(); i-- > index;) {
+			this.synch(constraints.get(i), i);
 		}
 	}
 
@@ -1324,11 +1329,11 @@ public class JavaTableGenerator extends JavaGenerator
 	}
 
 	// ********** static methods **********
-	private static DeclarationAnnotationElementAdapter buildAdapter(String elementName) {
+	private static DeclarationAnnotationElementAdapter<String> buildAdapter(String elementName) {
 		return buildAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
 	}
 
-	private static DeclarationAnnotationElementAdapter buildNumberAdapter(String elementName) {
+	private static DeclarationAnnotationElementAdapter<String> buildNumberAdapter(String elementName) {
 		return buildNumberAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
 	}
 } // JavaTableGenerator

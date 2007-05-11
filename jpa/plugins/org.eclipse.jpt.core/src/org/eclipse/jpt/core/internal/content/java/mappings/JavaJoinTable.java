@@ -772,13 +772,13 @@ public class JavaJoinTable extends AbstractJavaTable implements IJoinTable
 			return result;
 		}
 		for (IJoinColumn column : this.getJoinColumns()) {
-			result = ((JavaJoinColumn) column).candidateValuesFor(pos, filter, astRoot);
+			result = ((JavaJoinColumn) column).connectedCandidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
 		for (IJoinColumn column : this.getInverseJoinColumns()) {
-			result = ((JavaJoinColumn) column).candidateValuesFor(pos, filter, astRoot);
+			result = ((JavaJoinColumn) column).connectedCandidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}

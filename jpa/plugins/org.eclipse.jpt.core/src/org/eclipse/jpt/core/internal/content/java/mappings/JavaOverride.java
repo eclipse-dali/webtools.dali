@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -17,6 +18,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.content.java.JavaEObject;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
@@ -24,6 +26,9 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.mappings.IOverride;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -65,7 +70,9 @@ public abstract class JavaOverride extends JavaEObject implements IOverride
 
 	private final IndexedAnnotationAdapter annotationAdapter;
 
-	private final AnnotationElementAdapter nameAdapter;
+	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
+
+	private final AnnotationElementAdapter<String> nameAdapter;
 
 	protected JavaOverride() {
 		throw new UnsupportedOperationException("use JavaAttributeOverride(Owner, Member, IndexedDeclarationAnnotationAdapter)");
@@ -77,14 +84,11 @@ public abstract class JavaOverride extends JavaEObject implements IOverride
 		this.member = member;
 		this.daa = daa;
 		this.annotationAdapter = new MemberIndexedAnnotationAdapter(member, daa);
-		this.nameAdapter = this.buildAdapter(JPA.ATTRIBUTE_OVERRIDE__NAME);
+		this.nameDeclarationAdapter = ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, this.nameElementName());
+		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.member, this.nameDeclarationAdapter);
 	}
 
 	protected abstract String nameElementName();
-
-	private AnnotationElementAdapter buildAdapter(String elementName) {
-		return new ShortCircuitAnnotationElementAdapter(this.member, ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, elementName));
-	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -269,8 +273,38 @@ public abstract class JavaOverride extends JavaEObject implements IOverride
 		return this.annotationAdapter.getAnnotation(astRoot);
 	}
 
+	protected boolean elementTouches(DeclarationAnnotationElementAdapter<?> elementAdapter, int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.member.annotationElementTextRange(elementAdapter, astRoot), pos);
+	}
+
+	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
+	}
+
+	protected abstract Iterator<String> candidateNames();
+
+	private Iterator<String> candidateNames(Filter<String> filter) {
+		return new FilteringIterator<String>(this.candidateNames(), filter);
+	}
+
+	private Iterator<String> quotedCandidateNames(Filter<String> filter) {
+		return StringTools.quote(this.candidateNames(filter));
+	}
+
+	@Override
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		if (this.nameTouches(pos, astRoot)) {
+			return this.quotedCandidateNames(filter);
+		}
+		return null;
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
-		setName((String) this.nameAdapter.getValue(astRoot));
+		setName(this.nameAdapter.getValue(astRoot));
 	}
 
 	// ********** persistence model -> java annotations **********

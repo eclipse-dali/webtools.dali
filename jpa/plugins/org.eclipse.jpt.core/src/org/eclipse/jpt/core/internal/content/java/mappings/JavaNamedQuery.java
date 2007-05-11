@@ -60,6 +60,7 @@ public class JavaNamedQuery extends JavaAbstractQuery implements INamedQuery
 		return JpaJavaMappingsPackage.Literals.JAVA_NAMED_QUERY;
 	}
 
+	@Override
 	protected JavaQueryHint createJavaQueryHint(int index) {
 		return JavaQueryHint.createNamedQueryQueryHint(this, this.getMember(), index);
 	}

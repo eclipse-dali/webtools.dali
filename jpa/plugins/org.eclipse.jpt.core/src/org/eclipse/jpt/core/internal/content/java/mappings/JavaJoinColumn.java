@@ -430,7 +430,7 @@ public class JavaJoinColumn extends AbstractJavaColumn implements IJoinColumn
 	}
 
 	@Override
-	protected Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
 		if (result != null) {
 			return result;

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -33,6 +34,7 @@ import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.utility.internal.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -523,6 +525,21 @@ public class JavaSecondaryTable extends AbstractJavaTable
 
 	private void synch(IPrimaryKeyJoinColumn joinColumn, int index) {
 		((JavaPrimaryKeyJoinColumn) joinColumn).moveAnnotation(index);
+	}
+
+	@Override
+	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		for (IPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
+			result = ((JavaPrimaryKeyJoinColumn) column).connectedCandidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
 	}
 
 	// ********** static methods **********

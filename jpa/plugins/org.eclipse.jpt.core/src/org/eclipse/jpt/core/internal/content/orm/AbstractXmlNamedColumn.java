@@ -440,11 +440,6 @@ public abstract class AbstractXmlNamedColumn extends XmlEObject
 		return owner;
 	}
 
-	public boolean isConnected() {
-		ConnectionProfile cp = this.getJpaProject().connectionProfile();
-		return cp != null && cp.isConnected();
-	}
-
 	public Column dbColumn() {
 		Table table = this.dbTable();
 		return (table == null) ? null : table.columnNamed(getName());

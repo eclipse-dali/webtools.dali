@@ -27,9 +27,9 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * These assumptions work reasonably enough with the JPA requirements.
  */
 public class IntAnnotationElementAdapter {
-	private final AnnotationElementAdapter adapter;
+	private final AnnotationElementAdapter<String> adapter;
 
-	public IntAnnotationElementAdapter(AnnotationElementAdapter adapter) {
+	public IntAnnotationElementAdapter(AnnotationElementAdapter<String> adapter) {
 		super();
 		this.adapter = adapter;
 	}
@@ -77,14 +77,14 @@ public class IntAnnotationElementAdapter {
 		this.adapter.setValue(this.convertIntToValue(value));
 	}
 
-	protected Object convertIntToValue(int intValue) {
+	protected String convertIntToValue(int intValue) {
 		return this.convertStringToValue(this.convertIntToString(intValue));
 	}
 
 	/**
 	 * assume the wrapped adapter expects a string
 	 */
-	protected Object convertStringToValue(String stringValue) {
+	protected String convertStringToValue(String stringValue) {
 		return stringValue;
 	}
 

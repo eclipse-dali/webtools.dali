@@ -22,7 +22,7 @@ public class JavaJpaFileContentProvider implements IJpaFileContentProvider
 	 * Restrict access
 	 */
 	private JavaJpaFileContentProvider() {
-		
+		super();
 	}
 	
 	public IJpaRootContentNode buildRootContent(IFile resourceFile) {

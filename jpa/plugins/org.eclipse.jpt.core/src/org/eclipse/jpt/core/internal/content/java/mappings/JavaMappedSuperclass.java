@@ -14,6 +14,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.TypeLiteral;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
@@ -66,13 +67,13 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 
 	private final AnnotationAdapter idClassAnnotationAdapter;
 
-	private final AnnotationElementAdapter idClassValueAdapter;
+	private final AnnotationElementAdapter<String> idClassValueAdapter;
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.MAPPED_SUPERCLASS);
 
 	public static final DeclarationAnnotationAdapter ID_CLASS_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ID_CLASS);
 
-	private static final DeclarationAnnotationElementAdapter ID_CLASS_VALUE_ADAPTER = buildIdClassValueAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> ID_CLASS_VALUE_ADAPTER = buildIdClassValueAdapter();
 
 	protected JavaMappedSuperclass() {
 		throw new UnsupportedOperationException("Use JavaMappedSuperclass(Type) instead");
@@ -81,7 +82,7 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 	protected JavaMappedSuperclass(Type type) {
 		super(type);
 		this.idClassAnnotationAdapter = new MemberAnnotationAdapter(this.getType(), ID_CLASS_ADAPTER);
-		this.idClassValueAdapter = new ShortCircuitAnnotationElementAdapter(this.getType(), ID_CLASS_VALUE_ADAPTER);
+		this.idClassValueAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.getType(), ID_CLASS_VALUE_ADAPTER);
 	}
 
 	@Override
@@ -101,12 +102,12 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(IMappedSuperclass.class)) {
 			case JpaCoreMappingsPackage.IMAPPED_SUPERCLASS__ID_CLASS :
-				String idClass = (String) notification.getNewValue();
-				if (idClass == null) {
+				String newIdClass = (String) notification.getNewValue();
+				if (newIdClass == null) {
 					this.idClassAnnotationAdapter.removeAnnotation();
 				}
 				else {
-					this.idClassValueAdapter.setValue(idClass);
+					this.idClassValueAdapter.setValue(newIdClass);
 				}
 			default :
 				break;
@@ -318,12 +319,12 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 			this.setIdClass(null);
 		}
 		else {
-			this.setIdClass((String) this.idClassValueAdapter.getValue(astRoot));
+			this.setIdClass(this.idClassValueAdapter.getValue(astRoot));
 		}
 	}
 
 	// ********** static methods **********
-	private static DeclarationAnnotationElementAdapter buildIdClassValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter(ID_CLASS_ADAPTER, JPA.ID_CLASS__VALUE, false, SimpleTypeStringExpressionConverter.instance());
+	private static DeclarationAnnotationElementAdapter<String> buildIdClassValueAdapter() {
+		return new ConversionDeclarationAnnotationElementAdapter<String, TypeLiteral>(ID_CLASS_ADAPTER, JPA.ID_CLASS__VALUE, false, SimpleTypeStringExpressionConverter.instance());
 	}
 }

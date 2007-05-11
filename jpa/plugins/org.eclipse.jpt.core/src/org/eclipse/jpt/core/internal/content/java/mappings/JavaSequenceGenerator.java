@@ -34,17 +34,17 @@ import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 public class JavaSequenceGenerator extends JavaGenerator
 	implements ISequenceGenerator
 {
-	private final AnnotationElementAdapter sequenceNameAdapter;
+	private final AnnotationElementAdapter<String> sequenceNameAdapter;
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.SEQUENCE_GENERATOR);
 
-	private static final DeclarationAnnotationElementAdapter NAME_ADAPTER = buildAdapter(JPA.SEQUENCE_GENERATOR__NAME);
+	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildAdapter(JPA.SEQUENCE_GENERATOR__NAME);
 
-	private static final DeclarationAnnotationElementAdapter INITIAL_VALUE_ADAPTER = buildNumberAdapter(JPA.SEQUENCE_GENERATOR__INITIAL_VALUE);
+	private static final DeclarationAnnotationElementAdapter<String> INITIAL_VALUE_ADAPTER = buildNumberAdapter(JPA.SEQUENCE_GENERATOR__INITIAL_VALUE);
 
-	private static final DeclarationAnnotationElementAdapter ALLOCATION_SIZE_ADAPTER = buildNumberAdapter(JPA.SEQUENCE_GENERATOR__ALLOCATION_SIZE);
+	private static final DeclarationAnnotationElementAdapter<String> ALLOCATION_SIZE_ADAPTER = buildNumberAdapter(JPA.SEQUENCE_GENERATOR__ALLOCATION_SIZE);
 
-	private static final DeclarationAnnotationElementAdapter SEQUENCE_NAME_ADAPTER = buildAdapter(JPA.SEQUENCE_GENERATOR__SEQUENCE_NAME);
+	private static final DeclarationAnnotationElementAdapter<String> SEQUENCE_NAME_ADAPTER = buildAdapter(JPA.SEQUENCE_GENERATOR__SEQUENCE_NAME);
 
 	/**
 	 * The default value of the '{@link #getSequenceName() <em>Sequence Name</em>}' attribute.
@@ -110,7 +110,7 @@ public class JavaSequenceGenerator extends JavaGenerator
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(ISequenceGenerator.class)) {
 			case JpaJavaMappingsPackage.JAVA_SEQUENCE_GENERATOR__SPECIFIED_SEQUENCE_NAME :
-				this.sequenceNameAdapter.setValue(notification.getNewIntValue());
+				this.sequenceNameAdapter.setValue((String) notification.getNewValue());
 				break;
 			default :
 				break;
@@ -118,19 +118,23 @@ public class JavaSequenceGenerator extends JavaGenerator
 	}
 
 	// ********** initialization **********
+	@Override
 	protected DeclarationAnnotationAdapter annotationAdapter() {
 		return DECLARATION_ANNOTATION_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter nameAdapter() {
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> nameAdapter() {
 		return NAME_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter initialValueAdapter() {
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> initialValueAdapter() {
 		return INITIAL_VALUE_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter allocationSizeAdapter() {
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> allocationSizeAdapter() {
 		return ALLOCATION_SIZE_ADAPTER;
 	}
 
@@ -330,15 +334,15 @@ public class JavaSequenceGenerator extends JavaGenerator
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		setSpecifiedSequenceName((String) this.sequenceNameAdapter.getValue(astRoot));
+		setSpecifiedSequenceName(this.sequenceNameAdapter.getValue(astRoot));
 	}
 
 	// ********** static methods **********
-	private static DeclarationAnnotationElementAdapter buildAdapter(String elementName) {
+	private static DeclarationAnnotationElementAdapter<String> buildAdapter(String elementName) {
 		return buildAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
 	}
 
-	private static DeclarationAnnotationElementAdapter buildNumberAdapter(String elementName) {
+	private static DeclarationAnnotationElementAdapter<String> buildNumberAdapter(String elementName) {
 		return buildNumberAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
 	}
 } // JavaSequenceGenerator

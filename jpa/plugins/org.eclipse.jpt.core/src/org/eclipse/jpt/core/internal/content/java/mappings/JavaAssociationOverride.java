@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -18,6 +19,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.jdtutility.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedDeclarationAnnotationAdapter;
@@ -27,6 +29,7 @@ import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.utility.internal.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -92,6 +95,7 @@ public class JavaAssociationOverride extends JavaOverride
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void specifiedJoinColumnsChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
@@ -424,6 +428,26 @@ public class JavaAssociationOverride extends JavaOverride
 		((JavaJoinColumn) joinColumn).moveAnnotation(index);
 	}
 
+	@Override
+	protected Iterator<String> candidateNames() {
+		return this.getOwner().getTypeMapping().overridableAssociationNames();
+	}
+
+	@Override
+	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		for (IJoinColumn column : this.getJoinColumns()) {
+			result = ((JavaJoinColumn) column).connectedCandidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+
 	static JavaAssociationOverride createAssociationOverride(Owner owner, Member member, int index) {
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaAssociationOverride(owner, member, buildAnnotationAdapter(index));
 	}
@@ -431,4 +455,4 @@ public class JavaAssociationOverride extends JavaOverride
 	private static IndexedDeclarationAnnotationAdapter buildAnnotationAdapter(int index) {
 		return new CombinationIndexedDeclarationAnnotationAdapter(SINGLE_DECLARATION_ANNOTATION_ADAPTER, MULTIPLE_DECLARATION_ANNOTATION_ADAPTER, index, JPA.ASSOCIATION_OVERRIDE);
 	}
-} // JavaAssociationOverride
+}

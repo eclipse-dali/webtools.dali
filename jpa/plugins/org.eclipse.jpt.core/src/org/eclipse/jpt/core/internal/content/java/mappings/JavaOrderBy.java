@@ -89,11 +89,11 @@ public class JavaOrderBy extends JavaEObject implements IOrderBy
 
 	private final AnnotationAdapter annotationAdapter;
 
-	private final AnnotationElementAdapter valueAdapter;
+	private final AnnotationElementAdapter<String> valueAdapter;
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ORDER_BY);
 
-	private static final DeclarationAnnotationElementAdapter VALUE_ADAPTER = buildValueAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 
 	protected JavaOrderBy() {
 		throw new UnsupportedOperationException("User JavaOrderBy(Member) instead");
@@ -103,7 +103,7 @@ public class JavaOrderBy extends JavaEObject implements IOrderBy
 		super();
 		this.member = member;
 		this.annotationAdapter = this.buildOrderByAnnotationAdapter();
-		this.valueAdapter = new ShortCircuitAnnotationElementAdapter(this.member, VALUE_ADAPTER);
+		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.member, VALUE_ADAPTER);
 	}
 
 	private AnnotationAdapter buildOrderByAnnotationAdapter() {
@@ -116,7 +116,7 @@ public class JavaOrderBy extends JavaEObject implements IOrderBy
 		switch (notification.getFeatureID(IOrderBy.class)) {
 			case JpaJavaMappingsPackage.JAVA_ORDER_BY__VALUE :
 				if (getType() == OrderingType.CUSTOM) {
-					this.valueAdapter.setValue(notification.getNewValue());
+					this.valueAdapter.setValue((String) notification.getNewValue());
 				}
 				break;
 			case JpaJavaMappingsPackage.JAVA_ORDER_BY__TYPE :
@@ -415,7 +415,7 @@ public class JavaOrderBy extends JavaEObject implements IOrderBy
 		else {
 			throw new IllegalStateException("unknown annotation type: " + annotation);
 		}
-		setValue((String) this.valueAdapter.getValue(astRoot));
+		setValue(this.valueAdapter.getValue(astRoot));
 	}
 
 	/**
@@ -431,7 +431,7 @@ public class JavaOrderBy extends JavaEObject implements IOrderBy
 	}
 
 	// ********** static methods **********
-	private static DeclarationAnnotationElementAdapter buildValueAdapter() {
+	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ORDER_BY__VALUE, false);
 	}
 } // JavaOrderBy

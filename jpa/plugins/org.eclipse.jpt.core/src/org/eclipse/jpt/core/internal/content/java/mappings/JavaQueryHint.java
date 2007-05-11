@@ -48,9 +48,9 @@ public class JavaQueryHint extends JavaEObject implements IQueryHint
 
 	private final IndexedAnnotationAdapter annotationAdapter;
 
-	private final AnnotationElementAdapter nameAdapter;
+	private final AnnotationElementAdapter<String> nameAdapter;
 
-	private final AnnotationElementAdapter valueAdapter;
+	private final AnnotationElementAdapter<String> valueAdapter;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -106,15 +106,15 @@ public class JavaQueryHint extends JavaEObject implements IQueryHint
 	}
 
 	// ********** initialization **********
-	protected AnnotationElementAdapter buildAdapter(DeclarationAnnotationElementAdapter daea) {
-		return new ShortCircuitAnnotationElementAdapter(this.member, daea);
+	protected AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
+		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
 	}
 
-	protected DeclarationAnnotationElementAdapter nameAdapter(DeclarationAnnotationAdapter daa) {
+	protected DeclarationAnnotationElementAdapter<String> nameAdapter(DeclarationAnnotationAdapter daa) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.QUERY_HINT__NAME);
 	}
 
-	protected DeclarationAnnotationElementAdapter valueAdapter(DeclarationAnnotationAdapter daa) {
+	protected DeclarationAnnotationElementAdapter<String> valueAdapter(DeclarationAnnotationAdapter daa) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.QUERY_HINT__VALUE);
 	}
 
@@ -123,10 +123,10 @@ public class JavaQueryHint extends JavaEObject implements IQueryHint
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(IQueryHint.class)) {
 			case JpaCoreMappingsPackage.IQUERY_HINT__NAME :
-				this.nameAdapter.setValue(notification.getNewValue());
+				this.nameAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaCoreMappingsPackage.IQUERY_HINT__VALUE :
-				this.valueAdapter.setValue(notification.getNewValue());
+				this.valueAdapter.setValue((String) notification.getNewValue());
 				break;
 			default :
 				break;
@@ -341,8 +341,8 @@ public class JavaQueryHint extends JavaEObject implements IQueryHint
 	}
 
 	protected void updateFromJava(CompilationUnit astRoot) {
-		this.setName((String) this.nameAdapter.getValue(astRoot));
-		this.setValue((String) this.valueAdapter.getValue(astRoot));
+		this.setName(this.nameAdapter.getValue(astRoot));
+		this.setValue(this.valueAdapter.getValue(astRoot));
 	}
 
 	/**

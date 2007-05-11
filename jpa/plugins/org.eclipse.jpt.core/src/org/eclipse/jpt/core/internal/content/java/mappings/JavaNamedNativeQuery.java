@@ -81,9 +81,9 @@ public class JavaNamedNativeQuery extends JavaAbstractQuery
 
 	public static final SimpleDeclarationAnnotationAdapter MULTIPLE_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.NAMED_NATIVE_QUERIES);
 
-	private final AnnotationElementAdapter resultClassAdapter;
+	private final AnnotationElementAdapter<String> resultClassAdapter;
 
-	private final AnnotationElementAdapter resultSetMappingAdapter;
+	private final AnnotationElementAdapter<String> resultSetMappingAdapter;
 
 	protected JavaNamedNativeQuery() {
 		throw new UnsupportedOperationException("Use JavaNamedNativeQuery(Member) instead");
@@ -96,11 +96,11 @@ public class JavaNamedNativeQuery extends JavaAbstractQuery
 	}
 
 	// ********** initialization **********
-	protected DeclarationAnnotationElementAdapter resultClassAdapter(DeclarationAnnotationAdapter daa) {
+	protected DeclarationAnnotationElementAdapter<String> resultClassAdapter(DeclarationAnnotationAdapter daa) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.NAMED_NATIVE_QUERY__RESULT_CLASS);
 	}
 
-	protected DeclarationAnnotationElementAdapter resultSetMappingAdapter(DeclarationAnnotationAdapter daa) {
+	protected DeclarationAnnotationElementAdapter<String> resultSetMappingAdapter(DeclarationAnnotationAdapter daa) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.NAMED_NATIVE_QUERY__RESULT_SET_MAPPING);
 	}
 
@@ -119,10 +119,10 @@ public class JavaNamedNativeQuery extends JavaAbstractQuery
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(INamedNativeQuery.class)) {
 			case JpaCoreMappingsPackage.INAMED_NATIVE_QUERY__RESULT_CLASS :
-				this.resultClassAdapter.setValue(notification.getNewValue());
+				this.resultClassAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaCoreMappingsPackage.INAMED_NATIVE_QUERY__RESULT_SET_MAPPING :
-				this.resultSetMappingAdapter.setValue(notification.getNewValue());
+				this.resultSetMappingAdapter.setValue((String) notification.getNewValue());
 				break;
 			default :
 				break;
@@ -334,10 +334,11 @@ public class JavaNamedNativeQuery extends JavaAbstractQuery
 	@Override
 	protected void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		this.setResultClass((String) this.resultClassAdapter.getValue(astRoot));
-		this.setResultSetMapping((String) this.resultSetMappingAdapter.getValue(astRoot));
+		this.setResultClass(this.resultClassAdapter.getValue(astRoot));
+		this.setResultSetMapping(this.resultSetMappingAdapter.getValue(astRoot));
 	}
 
+	@Override
 	protected JavaQueryHint createJavaQueryHint(int index) {
 		return JavaQueryHint.createNamedNativeQueryQueryHint(this, this.getMember(), index);
 	}
@@ -350,4 +351,4 @@ public class JavaNamedNativeQuery extends JavaAbstractQuery
 	private static IndexedDeclarationAnnotationAdapter buildAnnotationAdapter(int index) {
 		return new CombinationIndexedDeclarationAnnotationAdapter(SINGLE_DECLARATION_ANNOTATION_ADAPTER, MULTIPLE_DECLARATION_ANNOTATION_ADAPTER, index, JPA.NAMED_NATIVE_QUERY);
 	}
-} // JavaNamedNativeQuery
+}

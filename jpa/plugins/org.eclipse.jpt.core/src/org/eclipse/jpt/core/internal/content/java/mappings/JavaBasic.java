@@ -21,6 +21,7 @@ import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.WorkingCopyOwner;
+import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
@@ -60,33 +61,33 @@ import org.eclipse.jpt.utility.internal.Filter;
  */
 public class JavaBasic extends JavaAttributeMapping implements IBasic
 {
-	private final AnnotationElementAdapter optionalAdapter;
+	private final AnnotationElementAdapter<String> optionalAdapter;
 
-	private final AnnotationElementAdapter fetchAdapter;
+	private final AnnotationElementAdapter<String> fetchAdapter;
 
 	private final AnnotationAdapter temporalAnnotationAdapter;
 
-	private final AnnotationElementAdapter temporalValueAdapter;
+	private final AnnotationElementAdapter<String> temporalValueAdapter;
 
 	private final AnnotationAdapter enumeratedAnnotationAdapter;
 
-	private final AnnotationElementAdapter enumeratedValueAdapter;
+	private final AnnotationElementAdapter<String> enumeratedValueAdapter;
 
 	private final BooleanAnnotationAdapter lobAdapter;
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.BASIC);
 
-	private static final DeclarationAnnotationElementAdapter OPTIONAL_ADAPTER = buildOptionalAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> OPTIONAL_ADAPTER = buildOptionalAdapter();
 
-	private static final DeclarationAnnotationElementAdapter FETCH_ADAPTER = buildFetchAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildFetchAdapter();
 
 	public static final DeclarationAnnotationAdapter TEMPORAL_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.TEMPORAL);
 
-	private static final DeclarationAnnotationElementAdapter TEMPORAL_VALUE_ADAPTER = buildTemporalValueAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> TEMPORAL_VALUE_ADAPTER = buildTemporalValueAdapter();
 
 	public static final DeclarationAnnotationAdapter ENUMERATED_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ENUMERATED);
 
-	private static final DeclarationAnnotationElementAdapter ENUMERATED_VALUE_ADAPTER = buildEnumeratedValueAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> ENUMERATED_VALUE_ADAPTER = buildEnumeratedValueAdapter();
 
 	public static final DeclarationAnnotationAdapter LOB_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.LOB);
 
@@ -208,13 +209,13 @@ public class JavaBasic extends JavaAttributeMapping implements IBasic
 		super(attribute);
 		this.column = JavaColumn.createColumnMappingColumn(buildColumnOwner(), getAttribute());
 		((InternalEObject) this.column).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_BASIC__COLUMN, null, null);
-		this.optionalAdapter = new ShortCircuitAnnotationElementAdapter(attribute, OPTIONAL_ADAPTER);
-		this.fetchAdapter = new ShortCircuitAnnotationElementAdapter(attribute, FETCH_ADAPTER);
+		this.optionalAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, OPTIONAL_ADAPTER);
+		this.fetchAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
 		this.lobAdapter = new SimpleBooleanAnnotationAdapter(new MemberAnnotationAdapter(attribute, LOB_ADAPTER));
 		this.temporalAnnotationAdapter = new MemberAnnotationAdapter(this.getAttribute(), TEMPORAL_ADAPTER);
-		this.temporalValueAdapter = new ShortCircuitAnnotationElementAdapter(attribute, TEMPORAL_VALUE_ADAPTER);
+		this.temporalValueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, TEMPORAL_VALUE_ADAPTER);
 		this.enumeratedAnnotationAdapter = new MemberAnnotationAdapter(this.getAttribute(), ENUMERATED_ADAPTER);
-		this.enumeratedValueAdapter = new ShortCircuitAnnotationElementAdapter(attribute, ENUMERATED_VALUE_ADAPTER);
+		this.enumeratedValueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, ENUMERATED_VALUE_ADAPTER);
 	}
 
 	@Override
@@ -738,11 +739,11 @@ public class JavaBasic extends JavaAttributeMapping implements IBasic
 	}
 
 	// ********** static methods **********
-	private static DeclarationAnnotationElementAdapter buildOptionalAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__OPTIONAL, false, BooleanStringExpressionConverter.instance());
+	private static DeclarationAnnotationElementAdapter<String> buildOptionalAdapter() {
+		return new ConversionDeclarationAnnotationElementAdapter<String, BooleanLiteral>(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__OPTIONAL, false, BooleanStringExpressionConverter.instance());
 	}
 
-	private static DeclarationAnnotationElementAdapter buildFetchAdapter() {
+	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__FETCH, false);
 	}
 
@@ -927,11 +928,11 @@ public class JavaBasic extends JavaAttributeMapping implements IBasic
 	}
 
 	// ********** static methods **********
-	private static DeclarationAnnotationElementAdapter buildTemporalValueAdapter() {
+	private static DeclarationAnnotationElementAdapter<String> buildTemporalValueAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(TEMPORAL_ADAPTER, JPA.TEMPORAL__VALUE, false);
 	}
 
-	private static DeclarationAnnotationElementAdapter buildEnumeratedValueAdapter() {
+	private static DeclarationAnnotationElementAdapter<String> buildEnumeratedValueAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(ENUMERATED_ADAPTER, JPA.ENUMERATED__VALUE, false);
 	}
 }

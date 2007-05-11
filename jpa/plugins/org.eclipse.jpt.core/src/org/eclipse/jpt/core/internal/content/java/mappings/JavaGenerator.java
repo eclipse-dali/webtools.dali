@@ -13,6 +13,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.content.java.JavaEObject;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -39,7 +40,7 @@ public abstract class JavaGenerator extends JavaEObject implements IGenerator
 {
 	private final Member member;
 
-	private final AnnotationElementAdapter nameAdapter;
+	private final AnnotationElementAdapter<String> nameAdapter;
 
 	private final IntAnnotationElementAdapter initialValueAdapter;
 
@@ -192,7 +193,7 @@ public abstract class JavaGenerator extends JavaEObject implements IGenerator
 				this.initialValueAdapter.setValue(notification.getNewIntValue());
 				break;
 			case JpaJavaMappingsPackage.JAVA_GENERATOR__NAME :
-				this.nameAdapter.setValue(notification.getNewValue());
+				this.nameAdapter.setValue((String) notification.getNewValue());
 				break;
 			default :
 				break;
@@ -200,21 +201,21 @@ public abstract class JavaGenerator extends JavaEObject implements IGenerator
 	}
 
 	// ********** initialization **********
-	protected AnnotationElementAdapter buildAdapter(DeclarationAnnotationElementAdapter daea) {
-		return new ShortCircuitAnnotationElementAdapter(this.member, daea);
+	protected AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
+		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
 	}
 
-	protected IntAnnotationElementAdapter buildIntAdapter(DeclarationAnnotationElementAdapter daea) {
+	protected IntAnnotationElementAdapter buildIntAdapter(DeclarationAnnotationElementAdapter<String> daea) {
 		return new IntAnnotationElementAdapter(this.buildAdapter(daea));
 	}
 
 	protected abstract DeclarationAnnotationAdapter annotationAdapter();
 
-	protected abstract DeclarationAnnotationElementAdapter nameAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String> nameAdapter();
 
-	protected abstract DeclarationAnnotationElementAdapter initialValueAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String> initialValueAdapter();
 
-	protected abstract DeclarationAnnotationElementAdapter allocationSizeAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String> allocationSizeAdapter();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -553,17 +554,17 @@ public abstract class JavaGenerator extends JavaEObject implements IGenerator
 
 	// ********** java annotations -> persistence model **********
 	public void updateFromJava(CompilationUnit astRoot) {
-		setName((String) this.nameAdapter.getValue(astRoot));
+		setName(this.nameAdapter.getValue(astRoot));
 		setSpecifiedInitialValue(this.initialValueAdapter.getValue(astRoot));
 		setSpecifiedAllocationSize(this.allocationSizeAdapter.getValue(astRoot));
 	}
 
 	// ********** static methods **********
-	protected static DeclarationAnnotationElementAdapter buildAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+	protected static DeclarationAnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(annotationAdapter, elementName);
 	}
 
-	protected static DeclarationAnnotationElementAdapter buildNumberAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter(annotationAdapter, elementName, NumberStringExpressionConverter.instance());
+	protected static DeclarationAnnotationElementAdapter<String> buildNumberAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+		return new ConversionDeclarationAnnotationElementAdapter<String, NumberLiteral>(annotationAdapter, elementName, NumberStringExpressionConverter.instance());
 	}
 } // JavaGenerator

@@ -585,7 +585,12 @@ public class JavaPersistentAttribute extends JavaEObject
 		return this.specifiedMapping == null;
 	}
 
+	@Override
 	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 		return this.getMapping().candidateValuesFor(pos, filter, astRoot);
 	}
 

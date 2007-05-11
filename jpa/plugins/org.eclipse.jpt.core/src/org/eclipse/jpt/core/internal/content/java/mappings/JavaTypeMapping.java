@@ -23,7 +23,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
@@ -240,10 +239,6 @@ public abstract class JavaTypeMapping extends JavaEObject
 	}
 
 	public Iterator<ITable> associatedTablesIncludingInherited() {
-		return EmptyIterator.instance();
-	}
-
-	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		return EmptyIterator.instance();
 	}
 

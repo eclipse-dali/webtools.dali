@@ -33,7 +33,6 @@ import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
-import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.Filter;
@@ -932,11 +931,6 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		return this.database().schemaNamed(this.getSchema());
 	}
 
-	public boolean isConnected() {
-		ConnectionProfile cp = this.connectionProfile();
-		return (cp != null) && cp.isConnected();
-	}
-
 	public boolean hasResolvedSchema() {
 		return this.dbSchema() != null;
 	}
@@ -961,21 +955,16 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		return this.elementTouches(this.member.annotationElementTextRange(elementAdapter, astRoot), pos);
 	}
 
-	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		if (this.isConnected()) {
-			Iterator<String> result = this.connectedCandidateValuesFor(pos, filter, astRoot);
-			if (result != null) {
-				return result;
-			}
-		}
-		return null;
-	}
-
 	/**
 	 * called if the database is connected
 	 * name, schema, catalog
 	 */
-	protected Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+	@Override
+	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 		if (this.nameTouches(pos, astRoot)) {
 			return this.quotedCandidateNames(filter);
 		}

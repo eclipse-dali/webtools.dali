@@ -73,6 +73,11 @@ public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 		return this.connectionProfile().getDatabase();
 	}
 
+	public boolean isConnected() {
+		ConnectionProfile cp = this.connectionProfile();
+		return (cp != null) && cp.isConnected();
+	}
+
 	// ********** change notification **********
 	/**
 	 * override to prevent notification when the object's state is unchanged

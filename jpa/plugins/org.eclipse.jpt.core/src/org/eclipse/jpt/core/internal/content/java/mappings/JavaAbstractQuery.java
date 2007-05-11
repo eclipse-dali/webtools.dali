@@ -54,16 +54,16 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 	private final IndexedDeclarationAnnotationAdapter idaa;
 
 	// hold this so we can get the 'name' text range
-	private final DeclarationAnnotationElementAdapter nameDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 
 	// hold this so we can get the 'query' text range
-	private final DeclarationAnnotationElementAdapter queryDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<String> queryDeclarationAdapter;
 
 	private final IndexedAnnotationAdapter annotationAdapter;
 
-	private final AnnotationElementAdapter nameAdapter;
+	private final AnnotationElementAdapter<String> nameAdapter;
 
-	private final AnnotationElementAdapter queryAdapter;
+	private final AnnotationElementAdapter<String> queryAdapter;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -131,15 +131,15 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 	}
 
 	// ********** initialization **********
-	protected AnnotationElementAdapter buildAdapter(DeclarationAnnotationElementAdapter daea) {
-		return new ShortCircuitAnnotationElementAdapter(this.member, daea);
+	protected AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
+		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
 	}
 
-	protected DeclarationAnnotationElementAdapter nameAdapter(DeclarationAnnotationAdapter daa) {
+	protected DeclarationAnnotationElementAdapter<String> nameAdapter(DeclarationAnnotationAdapter daa) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, nameElementName());
 	}
 
-	protected DeclarationAnnotationElementAdapter queryAdapter(DeclarationAnnotationAdapter daa) {
+	protected DeclarationAnnotationElementAdapter<String> queryAdapter(DeclarationAnnotationAdapter daa) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, queryElementName());
 	}
 
@@ -152,10 +152,10 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(IQuery.class)) {
 			case JpaCoreMappingsPackage.IQUERY__NAME :
-				this.nameAdapter.setValue(notification.getNewValue());
+				this.nameAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaCoreMappingsPackage.IQUERY__QUERY :
-				this.queryAdapter.setValue(notification.getNewValue());
+				this.queryAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaCoreMappingsPackage.IQUERY__HINTS :
 				hintsChanged(notification);
@@ -165,6 +165,7 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void hintsChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
@@ -472,12 +473,12 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 	}
 
 	// bjv look at this
-	public void hintsAdded(int index, List<IQueryHint> hints) {
+	public void hintsAdded(int index, List<IQueryHint> queryHints) {
 		//JoinColumn was added to persistence model when udating from java, do not need
 		//to edit the java in this case. TODO is there a better way to handle this??
-		if (!hints.isEmpty() && ((JavaQueryHint) hints.get(0)).annotation(getMember().astRoot()) == null) {
-			this.synchHintAnnotationsAfterAdd(index + hints.size());
-			for (IQueryHint hint : hints) {
+		if (!queryHints.isEmpty() && ((JavaQueryHint) queryHints.get(0)).annotation(getMember().astRoot()) == null) {
+			this.synchHintAnnotationsAfterAdd(index + queryHints.size());
+			for (IQueryHint hint : queryHints) {
 				((JavaQueryHint) hint).newAnnotation();
 			}
 		}
@@ -488,15 +489,15 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 		this.synchHintAnnotationsAfterRemove(index);
 	}
 
-	public void hintsRemoved(int[] indexes, List<IQueryHint> hints) {
-		for (IQueryHint hint : hints) {
+	public void hintsRemoved(int[] indexes, List<IQueryHint> queryHints) {
+		for (IQueryHint hint : queryHints) {
 			((JavaQueryHint) hint).removeAnnotation();
 		}
 		this.synchHintAnnotationsAfterRemove(indexes[0]);
 	}
 
-	public void hintsCleared(List<IQueryHint> hints) {
-		for (IQueryHint hint : hints) {
+	public void hintsCleared(List<IQueryHint> queryHints) {
+		for (IQueryHint hint : queryHints) {
 			((JavaQueryHint) hint).removeAnnotation();
 		}
 	}
@@ -506,11 +507,11 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 	}
 
 	public void hintMoved(int sourceIndex, int targetIndex, IQueryHint hint) {
-		List<IQueryHint> hints = this.getHints();
+		List<IQueryHint> queryHints = this.getHints();
 		int begin = Math.min(sourceIndex, targetIndex);
 		int end = Math.max(sourceIndex, targetIndex);
 		for (int i = begin; i-- > end;) {
-			this.synch(hints.get(i), i);
+			this.synch(queryHints.get(i), i);
 		}
 	}
 
@@ -519,9 +520,9 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 	 * starting at the end of the list to prevent overlap
 	 */
 	private void synchHintAnnotationsAfterAdd(int index) {
-		List<IQueryHint> hints = this.getHints();
-		for (int i = hints.size(); i-- > index;) {
-			this.synch(hints.get(i), i);
+		List<IQueryHint> queryHints = this.getHints();
+		for (int i = queryHints.size(); i-- > index;) {
+			this.synch(queryHints.get(i), i);
 		}
 	}
 
@@ -530,9 +531,9 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 	 * starting at the specified index to prevent overlap
 	 */
 	private void synchHintAnnotationsAfterRemove(int index) {
-		List<IQueryHint> hints = this.getHints();
-		for (int i = index; i < hints.size(); i++) {
-			this.synch(hints.get(i), i);
+		List<IQueryHint> queryHints = this.getHints();
+		for (int i = index; i < queryHints.size(); i++) {
+			this.synch(queryHints.get(i), i);
 		}
 	}
 
@@ -548,8 +549,8 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 	}
 
 	protected void updateFromJava(CompilationUnit astRoot) {
-		this.setName((String) this.nameAdapter.getValue(astRoot));
-		this.setQuery((String) this.queryAdapter.getValue(astRoot));
+		this.setName(this.nameAdapter.getValue(astRoot));
+		this.setQuery(this.queryAdapter.getValue(astRoot));
 		this.updateQueryHintsFromJava(astRoot);
 	}
 
@@ -624,7 +625,7 @@ public abstract class JavaAbstractQuery extends JavaEObject implements IQuery
 	}
 
 	// ********** static methods **********
-	protected static DeclarationAnnotationElementAdapter buildAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+	protected static DeclarationAnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(annotationAdapter, elementName);
 	}
 } // JavaAbstractQuery

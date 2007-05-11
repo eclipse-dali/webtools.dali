@@ -745,36 +745,25 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	public JavaPersistentAttribute attributeNamed(String attributeName) {
-		Iterator<JavaPersistentAttribute> attributes = attributesNamed(attributeName);
-		if (attributes.hasNext()) {
-			return attributes.next();
-		}
-		else {
-			return null;
-		}
+		Iterator<JavaPersistentAttribute> stream = attributesNamed(attributeName);
+		return (stream.hasNext()) ? stream.next() : null;
 	}
 
 	public IPersistentAttribute resolveAttribute(String attributeName) {
-		Iterator<JavaPersistentAttribute> attributes = attributesNamed(attributeName);
-		if (attributes.hasNext()) {
-			JavaPersistentAttribute attribute = attributes.next();
-			if (attributes.hasNext()) {
-				// more than one
-				return null;
-			}
-			else {
-				return attribute;
-			}
+		Iterator<JavaPersistentAttribute> stream = attributesNamed(attributeName);
+		if (stream.hasNext()) {
+			JavaPersistentAttribute attribute = stream.next();
+			return (stream.hasNext()) ? null /*more than one*/ : attribute;
 		}
-		else if (parentPersistentType() != null) {
-			return parentPersistentType().resolveAttribute(attributeName);
-		}
-		else {
-			return null;
-		}
+		return (parentPersistentType() == null) ? null : parentPersistentType().resolveAttribute(attributeName);
 	}
 
+	@Override
 	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 		Iterator<String> values = this.mapping.candidateValuesFor(pos, filter, astRoot);
 		if (values != null) {
 			return values;

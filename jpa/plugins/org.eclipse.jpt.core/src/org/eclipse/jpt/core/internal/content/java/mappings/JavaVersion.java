@@ -47,13 +47,13 @@ public class JavaVersion extends JavaAttributeMapping implements IVersion
 {
 	private final AnnotationAdapter temporalAnnotationAdapter;
 
-	private final AnnotationElementAdapter temporalValueAdapter;
+	private final AnnotationElementAdapter<String> temporalValueAdapter;
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.VERSION);
 
 	private static final DeclarationAnnotationAdapter TEMPORAL_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.TEMPORAL);
 
-	private static final DeclarationAnnotationElementAdapter TEMPORAL_VALUE_ADAPTER = buildTemporalValueAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> TEMPORAL_VALUE_ADAPTER = buildTemporalValueAdapter();
 
 	/**
 	 * The cached value of the '{@link #getColumn() <em>Column</em>}' containment reference.
@@ -94,7 +94,7 @@ public class JavaVersion extends JavaAttributeMapping implements IVersion
 		this.column = JavaColumn.createColumnMappingColumn(buildColumnOwner(), getAttribute());
 		((InternalEObject) this.column).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_VERSION__COLUMN, null, null);
 		this.temporalAnnotationAdapter = new MemberAnnotationAdapter(this.getAttribute(), TEMPORAL_ADAPTER);
-		this.temporalValueAdapter = new ShortCircuitAnnotationElementAdapter(attribute, TEMPORAL_VALUE_ADAPTER);
+		this.temporalValueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, TEMPORAL_VALUE_ADAPTER);
 	}
 
 	/**
@@ -390,7 +390,7 @@ public class JavaVersion extends JavaAttributeMapping implements IVersion
 	}
 
 	// ********** static methods **********
-	private static DeclarationAnnotationElementAdapter buildTemporalValueAdapter() {
+	private static DeclarationAnnotationElementAdapter<String> buildTemporalValueAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(TEMPORAL_ADAPTER, JPA.TEMPORAL__VALUE, false);
 	}
 }

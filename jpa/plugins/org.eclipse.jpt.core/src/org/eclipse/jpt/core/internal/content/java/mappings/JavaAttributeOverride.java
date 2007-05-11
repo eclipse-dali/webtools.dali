@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -27,6 +28,7 @@ import org.eclipse.jpt.core.internal.mappings.IColumnMapping;
 import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.utility.internal.Filter;
 
 /**
  * <!-- begin-user-doc -->
@@ -213,7 +215,29 @@ public class JavaAttributeOverride extends JavaOverride
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		((JavaColumn) getColumn()).updateFromJava(astRoot);
+		this.getJavaColumn().updateFromJava(astRoot);
+	}
+
+	private JavaColumn getJavaColumn() {
+		return (JavaColumn) this.column;
+	}
+
+	@Override
+	protected Iterator<String> candidateNames() {
+		return this.getOwner().getTypeMapping().overridableAttributeNames();
+	}
+
+	@Override
+	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		result = this.getJavaColumn().connectedCandidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		return null;
 	}
 
 	// ********** static methods **********

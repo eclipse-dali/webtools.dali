@@ -967,11 +967,6 @@ public abstract class AbstractXmlTable extends XmlEObject implements ITable
 		return getJpaProject().connectionProfile().getDatabase().schemaNamed(getSchema());
 	}
 
-	public boolean isConnected() {
-		ConnectionProfile connectionProfile = getJpaProject().connectionProfile();
-		return connectionProfile != null && connectionProfile.isConnected();
-	}
-
 	public boolean hasResolvedSchema() {
 		return dbSchema() != null;
 	}

@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.TypeLiteral;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.IPersistentType;
@@ -334,11 +335,11 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	 */
 	protected String idClass = ID_CLASS_EDEFAULT;
 
-	private AnnotationElementAdapter nameAdapter;
+	private AnnotationElementAdapter<String> nameAdapter;
 
-	private AnnotationElementAdapter inheritanceStrategyAdapter;
+	private AnnotationElementAdapter<String> inheritanceStrategyAdapter;
 
-	private final AnnotationElementAdapter discriminatorValueAdapter;
+	private final AnnotationElementAdapter<String> discriminatorValueAdapter;
 
 	private AnnotationAdapter tableGeneratorAnnotationAdapter;
 
@@ -346,23 +347,23 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 
 	private final AnnotationAdapter idClassAnnotationAdapter;
 
-	private final AnnotationElementAdapter idClassValueAdapter;
+	private final AnnotationElementAdapter<String> idClassValueAdapter;
 
 	public static final DeclarationAnnotationAdapter ID_CLASS_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ID_CLASS);
 
-	private static final DeclarationAnnotationElementAdapter ID_CLASS_VALUE_ADAPTER = buildIdClassValueAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> ID_CLASS_VALUE_ADAPTER = buildIdClassValueAdapter();
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ENTITY);
 
-	private static final DeclarationAnnotationElementAdapter NAME_ADAPTER = buildNameAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
 
 	private static final DeclarationAnnotationAdapter INHERITANCE_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.INHERITANCE);
 
-	private static final DeclarationAnnotationElementAdapter INHERITANCE_STRATEGY_ADAPTER = buildStrategyAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> INHERITANCE_STRATEGY_ADAPTER = buildStrategyAdapter();
 
 	private static final DeclarationAnnotationAdapter DISCRIMINATOR_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.DISCRIMINATOR_VALUE);
 
-	private static final DeclarationAnnotationElementAdapter DISCRIMINATOR_VALUE_ADAPTER = buildDiscriminatorValueAdapter();
+	private static final DeclarationAnnotationElementAdapter<String> DISCRIMINATOR_VALUE_ADAPTER = buildDiscriminatorValueAdapter();
 
 	protected JavaEntity() {
 		this(null);
@@ -376,11 +377,11 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		((InternalEObject) this.discriminatorColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_ENTITY__DISCRIMINATOR_COLUMN, null, null);
 		//		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(IPrimaryKeyJoinColumnModelAdapter.DEFAULT));
 		//		this.eAdapters().add(this.buildListener());
-		this.nameAdapter = new ShortCircuitAnnotationElementAdapter(getType(), NAME_ADAPTER);
-		this.inheritanceStrategyAdapter = new ShortCircuitAnnotationElementAdapter(type, INHERITANCE_STRATEGY_ADAPTER);
-		this.discriminatorValueAdapter = new ShortCircuitAnnotationElementAdapter(type, DISCRIMINATOR_VALUE_ADAPTER);
+		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getType(), NAME_ADAPTER);
+		this.inheritanceStrategyAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, INHERITANCE_STRATEGY_ADAPTER);
+		this.discriminatorValueAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, DISCRIMINATOR_VALUE_ADAPTER);
 		this.idClassAnnotationAdapter = new MemberAnnotationAdapter(this.getType(), ID_CLASS_ADAPTER);
-		this.idClassValueAdapter = new ShortCircuitAnnotationElementAdapter(this.getType(), ID_CLASS_VALUE_ADAPTER);
+		this.idClassValueAdapter = new ShortCircuitAnnotationElementAdapter<String>(this.getType(), ID_CLASS_VALUE_ADAPTER);
 		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
 		this.tableGeneratorAnnotationAdapter = new MemberAnnotationAdapter(getType(), JavaTableGenerator.DECLARATION_ANNOTATION_ADAPTER);
 		this.sequenceGeneratorAnnotationAdapter = new MemberAnnotationAdapter(getType(), JavaSequenceGenerator.DECLARATION_ANNOTATION_ADAPTER);
@@ -403,7 +404,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		return DECLARATION_ANNOTATION_ADAPTER;
 	}
 
-	private static DeclarationAnnotationElementAdapter buildNameAdapter() {
+	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ENTITY__NAME, false); // false = do not remove annotation when empty
 	}
 
@@ -419,13 +420,13 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		super.notifyChanged(notification);
 		switch (notification.getFeatureID(IEntity.class)) {
 			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_NAME :
-				this.nameAdapter.setValue(notification.getNewValue());
+				this.nameAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaJavaMappingsPackage.JAVA_ENTITY__INHERITANCE_STRATEGY :
 				this.inheritanceStrategyAdapter.setValue(((InheritanceType) notification.getNewValue()).convertToJavaAnnotationValue());
 				break;
 			case JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_DISCRIMINATOR_VALUE :
-				this.discriminatorValueAdapter.setValue(notification.getNewValue());
+				this.discriminatorValueAdapter.setValue((String) notification.getNewValue());
 				break;
 			case JpaCoreMappingsPackage.IENTITY__SPECIFIED_ATTRIBUTE_OVERRIDES :
 				this.attributeOverridesChanged(notification);
@@ -452,18 +453,19 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				attributeChanged(notification.getNewValue(), this.sequenceGeneratorAnnotationAdapter);
 				break;
 			case JpaCoreMappingsPackage.IENTITY__ID_CLASS :
-				String idClass = (String) notification.getNewValue();
-				if (idClass == null) {
+				String newIdClass = (String) notification.getNewValue();
+				if (newIdClass == null) {
 					this.idClassAnnotationAdapter.removeAnnotation();
 				}
 				else {
-					this.idClassValueAdapter.setValue(idClass);
+					this.idClassValueAdapter.setValue(newIdClass);
 				}
 			default :
 				break;
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void attributeOverridesChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
@@ -477,11 +479,11 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				break;
 			case Notification.REMOVE_MANY :
 				if (notification.getPosition() == Notification.NO_INDEX) {
-					attributeOverridesCleared((List) notification.getOldValue());
+					attributeOverridesCleared((List<JavaAttributeOverride>) notification.getOldValue());
 				}
 				else {
 					// Notification.getNewValue() returns an array of the positions of objects that were removed
-					attributeOverridesRemoved((int[]) notification.getNewValue(), (List) notification.getOldValue());
+					attributeOverridesRemoved((int[]) notification.getNewValue(), (List<JavaAttributeOverride>) notification.getOldValue());
 				}
 				break;
 			case Notification.SET :
@@ -500,6 +502,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void associationOverridesChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
@@ -540,24 +543,25 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		throw new IllegalStateException("'defaultJoinColumns' cannot be changed");
 	}
 
+	@SuppressWarnings("unchecked")
 	void secondaryTablesChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
 				secondaryTableAdded(notification.getPosition(), (JavaSecondaryTable) notification.getNewValue());
 				break;
 			case Notification.ADD_MANY :
-				secondaryTablesAdded(notification.getPosition(), (List) notification.getNewValue());
+				secondaryTablesAdded(notification.getPosition(), (List<ISecondaryTable>) notification.getNewValue());
 				break;
 			case Notification.REMOVE :
 				secondaryTableRemoved(notification.getPosition(), (JavaSecondaryTable) notification.getOldValue());
 				break;
 			case Notification.REMOVE_MANY :
 				if (notification.getPosition() == Notification.NO_INDEX) {
-					secondaryTablesCleared((List) notification.getOldValue());
+					secondaryTablesCleared((List<ISecondaryTable>) notification.getOldValue());
 				}
 				else {
 					// Notification.getNewValue() returns an array of the positions of objects that were removed
-					secondaryTablesRemoved((int[]) notification.getNewValue(), (List) notification.getOldValue());
+					secondaryTablesRemoved((int[]) notification.getNewValue(), (List<ISecondaryTable>) notification.getOldValue());
 				}
 				break;
 			case Notification.SET :
@@ -576,24 +580,25 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void specifiedPrimaryKeyJoinColumnsChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
 				specifiedPrimaryKeyJoinColumnAdded(notification.getPosition(), (JavaPrimaryKeyJoinColumn) notification.getNewValue());
 				break;
 			case Notification.ADD_MANY :
-				specifiedPrimaryKeyJoinColumnsAdded(notification.getPosition(), (List) notification.getNewValue());
+				specifiedPrimaryKeyJoinColumnsAdded(notification.getPosition(), (List<IPrimaryKeyJoinColumn>) notification.getNewValue());
 				break;
 			case Notification.REMOVE :
 				specifiedPrimaryKeyJoinColumnRemoved(notification.getPosition(), (JavaPrimaryKeyJoinColumn) notification.getOldValue());
 				break;
 			case Notification.REMOVE_MANY :
 				if (notification.getPosition() == Notification.NO_INDEX) {
-					specifiedPrimaryKeyJoinColumnsCleared((List) notification.getOldValue());
+					specifiedPrimaryKeyJoinColumnsCleared((List<IPrimaryKeyJoinColumn>) notification.getOldValue());
 				}
 				else {
 					// Notification.getNewValue() returns an array of the positions of objects that were removed
-					specifiedPrimaryKeyJoinColumnsRemoved((int[]) notification.getNewValue(), (List) notification.getOldValue());
+					specifiedPrimaryKeyJoinColumnsRemoved((int[]) notification.getNewValue(), (List<IPrimaryKeyJoinColumn>) notification.getOldValue());
 				}
 				break;
 			case Notification.SET :
@@ -612,6 +617,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void namedQueriesChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
@@ -648,6 +654,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	void namedNativeQueriesChanged(Notification notification) {
 		switch (notification.getEventType()) {
 			case Notification.ADD :
@@ -964,7 +971,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		this.synchPKJCAnnotationsAfterRemove(indexes[0]);
 	}
 
-	public void specifiedPrimaryKeyJoinColumnsCleared(List primaryKeyJoinColumns) {
+	public void specifiedPrimaryKeyJoinColumnsCleared(List<IPrimaryKeyJoinColumn> primaryKeyJoinColumns) {
 		for (Iterator<IPrimaryKeyJoinColumn> stream = primaryKeyJoinColumns.iterator(); stream.hasNext();) {
 			JavaPrimaryKeyJoinColumn primaryKeyJoinColumn = (JavaPrimaryKeyJoinColumn) stream.next();
 			primaryKeyJoinColumn.removeAnnotation();
@@ -1000,7 +1007,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	 * starting at the specified index to prevent overlap
 	 */
 	private void synchPKJCAnnotationsAfterRemove(int index) {
-		List primaryKeyJoinColumns = getSpecifiedPrimaryKeyJoinColumns();
+		List<IPrimaryKeyJoinColumn> primaryKeyJoinColumns = getSpecifiedPrimaryKeyJoinColumns();
 		for (int i = index; i < primaryKeyJoinColumns.size(); i++) {
 			this.synch((JavaPrimaryKeyJoinColumn) primaryKeyJoinColumns.get(i), i);
 		}
@@ -1023,12 +1030,12 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		}
 	}
 
-	public void namedQueriesAdded(int index, List<JavaNamedQuery> namedQueries) {
+	public void namedQueriesAdded(int index, List<JavaNamedQuery> queries) {
 		//JoinColumn was added to persistence model when udating from java, do not need
 		//to edit the java in this case. TODO is there a better way to handle this??
-		if (!namedQueries.isEmpty() && namedQueries.get(0).annotation(getType().astRoot()) == null) {
-			this.synchNamedQueryAnnotationsAfterAdd(index + namedQueries.size());
-			for (JavaNamedQuery namedQuery : namedQueries) {
+		if (!queries.isEmpty() && queries.get(0).annotation(getType().astRoot()) == null) {
+			this.synchNamedQueryAnnotationsAfterAdd(index + queries.size());
+			for (JavaNamedQuery namedQuery : queries) {
 				namedQuery.newAnnotation();
 			}
 		}
@@ -1039,15 +1046,15 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		this.synchNamedQueryAnnotationsAfterRemove(index);
 	}
 
-	public void namedQueriesRemoved(int[] indexes, List<JavaNamedQuery> namedQueries) {
-		for (JavaNamedQuery namedQuery : namedQueries) {
+	public void namedQueriesRemoved(int[] indexes, List<JavaNamedQuery> queries) {
+		for (JavaNamedQuery namedQuery : queries) {
 			namedQuery.removeAnnotation();
 		}
 		this.synchNamedQueryAnnotationsAfterRemove(indexes[0]);
 	}
 
-	public void namedQueriesCleared(List<JavaNamedQuery> namedQueries) {
-		for (JavaNamedQuery namedQuery : namedQueries) {
+	public void namedQueriesCleared(List<JavaNamedQuery> queries) {
+		for (JavaNamedQuery namedQuery : queries) {
 			namedQuery.removeAnnotation();
 		}
 	}
@@ -1057,11 +1064,11 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	}
 
 	public void namedQueryMoved(int sourceIndex, int targetIndex, JavaNamedQuery namedQuery) {
-		List<INamedQuery> namedQueries = getNamedQueries();
+		List<INamedQuery> queries = getNamedQueries();
 		int begin = Math.min(sourceIndex, targetIndex);
 		int end = Math.max(sourceIndex, targetIndex);
 		for (int i = begin; i-- > end;) {
-			this.synch((JavaNamedQuery) namedQueries.get(i), i);
+			this.synch((JavaNamedQuery) queries.get(i), i);
 		}
 	}
 
@@ -1070,9 +1077,9 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	 * starting at the end of the list to prevent overlap
 	 */
 	private void synchNamedQueryAnnotationsAfterAdd(int index) {
-		List<INamedQuery> namedQueries = getNamedQueries();
-		for (int i = namedQueries.size(); i-- > index;) {
-			this.synch((JavaNamedQuery) namedQueries.get(i), i);
+		List<INamedQuery> queries = getNamedQueries();
+		for (int i = queries.size(); i-- > index;) {
+			this.synch((JavaNamedQuery) queries.get(i), i);
 		}
 	}
 
@@ -1081,9 +1088,9 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	 * starting at the specified index to prevent overlap
 	 */
 	private void synchNamedQueryAnnotationsAfterRemove(int index) {
-		List<INamedQuery> namedQueries = getNamedQueries();
-		for (int i = index; i < namedQueries.size(); i++) {
-			this.synch((JavaNamedQuery) namedQueries.get(i), i);
+		List<INamedQuery> queries = getNamedQueries();
+		for (int i = index; i < queries.size(); i++) {
+			this.synch((JavaNamedQuery) queries.get(i), i);
 		}
 	}
 
@@ -1104,12 +1111,12 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		}
 	}
 
-	public void namedNativeQueriesAdded(int index, List<JavaNamedNativeQuery> namedQueries) {
+	public void namedNativeQueriesAdded(int index, List<JavaNamedNativeQuery> queries) {
 		//JoinColumn was added to persistence model when udating from java, do not need
 		//to edit the java in this case. TODO is there a better way to handle this??
-		if (!namedQueries.isEmpty() && namedQueries.get(0).annotation(getType().astRoot()) == null) {
-			this.synchNamedNativeQueryAnnotationsAfterAdd(index + namedQueries.size());
-			for (JavaNamedNativeQuery namedQuery : namedQueries) {
+		if (!queries.isEmpty() && queries.get(0).annotation(getType().astRoot()) == null) {
+			this.synchNamedNativeQueryAnnotationsAfterAdd(index + queries.size());
+			for (JavaNamedNativeQuery namedQuery : queries) {
 				namedQuery.newAnnotation();
 			}
 		}
@@ -1120,15 +1127,15 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		this.synchNamedNativeQueryAnnotationsAfterRemove(index);
 	}
 
-	public void namedNativeQueriesRemoved(int[] indexes, List<JavaNamedNativeQuery> namedQueries) {
-		for (JavaNamedNativeQuery namedQuery : namedQueries) {
+	public void namedNativeQueriesRemoved(int[] indexes, List<JavaNamedNativeQuery> queries) {
+		for (JavaNamedNativeQuery namedQuery : queries) {
 			namedQuery.removeAnnotation();
 		}
 		this.synchNamedNativeQueryAnnotationsAfterRemove(indexes[0]);
 	}
 
-	public void namedNativeQueriesCleared(List<JavaNamedNativeQuery> namedQueries) {
-		for (JavaNamedNativeQuery namedQuery : namedQueries) {
+	public void namedNativeQueriesCleared(List<JavaNamedNativeQuery> queries) {
+		for (JavaNamedNativeQuery namedQuery : queries) {
 			namedQuery.removeAnnotation();
 		}
 	}
@@ -1138,11 +1145,11 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	}
 
 	public void namedNativeQueryMoved(int sourceIndex, int targetIndex, JavaNamedNativeQuery namedQuery) {
-		List<INamedNativeQuery> namedQueries = getNamedNativeQueries();
+		List<INamedNativeQuery> queries = getNamedNativeQueries();
 		int begin = Math.min(sourceIndex, targetIndex);
 		int end = Math.max(sourceIndex, targetIndex);
 		for (int i = begin; i-- > end;) {
-			this.synch((JavaNamedNativeQuery) namedQueries.get(i), i);
+			this.synch((JavaNamedNativeQuery) queries.get(i), i);
 		}
 	}
 
@@ -1151,9 +1158,9 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	 * starting at the end of the list to prevent overlap
 	 */
 	private void synchNamedNativeQueryAnnotationsAfterAdd(int index) {
-		List<INamedNativeQuery> namedQueries = getNamedNativeQueries();
-		for (int i = namedQueries.size(); i-- > index;) {
-			this.synch((JavaNamedNativeQuery) namedQueries.get(i), i);
+		List<INamedNativeQuery> queries = getNamedNativeQueries();
+		for (int i = queries.size(); i-- > index;) {
+			this.synch((JavaNamedNativeQuery) queries.get(i), i);
 		}
 	}
 
@@ -1162,9 +1169,9 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	 * starting at the specified index to prevent overlap
 	 */
 	private void synchNamedNativeQueryAnnotationsAfterRemove(int index) {
-		List<INamedNativeQuery> namedQueries = getNamedNativeQueries();
-		for (int i = index; i < namedQueries.size(); i++) {
-			this.synch((JavaNamedNativeQuery) namedQueries.get(i), i);
+		List<INamedNativeQuery> queries = getNamedNativeQueries();
+		for (int i = index; i < queries.size(); i++) {
+			this.synch((JavaNamedNativeQuery) queries.get(i), i);
 		}
 	}
 
@@ -2352,16 +2359,17 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
-		this.setSpecifiedName((String) this.getType().annotationElementValue(NAME_ADAPTER, astRoot));
+		this.setSpecifiedName(this.getType().annotationElementValue(NAME_ADAPTER, astRoot));
 		this.setDefaultName(this.getType().getName());
 		this.getJavaTable().updateFromJava(astRoot);
 		this.updateSecondaryTablesFromJava(astRoot);
 		this.updateNamedQueriesFromJava(astRoot);
 		this.updateNamedNativeQueriesFromJava(astRoot);
+		this.updateSpecifiedPrimaryKeyJoinColumnsFromJava(astRoot);
 		this.updateAttributeOverridesFromJava(astRoot);
 		this.setInheritanceStrategy(InheritanceType.fromJavaAnnotationValue(this.inheritanceStrategyAdapter.getValue(astRoot)));
 		this.getJavaDiscriminatorColumn().updateFromJava(astRoot);
-		this.setSpecifiedDiscriminatorValue((String) this.discriminatorValueAdapter.getValue(astRoot));
+		this.setSpecifiedDiscriminatorValue(this.discriminatorValueAdapter.getValue(astRoot));
 		this.setDefaultDiscriminatorValue(this.javaDefaultDiscriminatorValue());
 		this.updateTableGeneratorFromJava(astRoot);
 		this.updateSequenceGeneratorFromJava(astRoot);
@@ -2371,9 +2379,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	private void updateIdClassFromJava(CompilationUnit astRoot) {
 		if (this.idClassAnnotationAdapter.getAnnotation(astRoot) == null) {
 			this.setIdClass(null);
-		}
-		else {
-			this.setIdClass((String) this.idClassValueAdapter.getValue(astRoot));
+		} else {
+			this.setIdClass(this.idClassValueAdapter.getValue(astRoot));
 		}
 	}
 
@@ -2387,30 +2394,38 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 
 	private void updateTableGeneratorFromJava(CompilationUnit astRoot) {
 		if (this.tableGeneratorAnnotationAdapter.getAnnotation(astRoot) == null) {
-			if (getTableGenerator() != null) {
+			if (this.tableGenerator != null) {
 				setTableGenerator(null);
 			}
 		}
 		else {
-			if (getTableGenerator() == null) {
+			if (this.tableGenerator == null) {
 				setTableGenerator(createTableGenerator());
 			}
-			((JavaTableGenerator) getTableGenerator()).updateFromJava(astRoot);
+			this.getJavaTableGenerator().updateFromJava(astRoot);
 		}
+	}
+
+	private JavaTableGenerator getJavaTableGenerator() {
+		return (JavaTableGenerator) this.tableGenerator;
 	}
 
 	private void updateSequenceGeneratorFromJava(CompilationUnit astRoot) {
 		if (this.sequenceGeneratorAnnotationAdapter.getAnnotation(astRoot) == null) {
-			if (getSequenceGenerator() != null) {
+			if (this.sequenceGenerator != null) {
 				setSequenceGenerator(null);
 			}
 		}
 		else {
-			if (getSequenceGenerator() == null) {
+			if (this.sequenceGenerator == null) {
 				setSequenceGenerator(createSequenceGenerator());
 			}
-			((JavaSequenceGenerator) getSequenceGenerator()).updateFromJava(astRoot);
+			this.getJavaSequenceGenerator().updateFromJava(astRoot);
 		}
+	}
+
+	private JavaSequenceGenerator getJavaSequenceGenerator() {
+		return (JavaSequenceGenerator) this.sequenceGenerator;
 	}
 
 	/**
@@ -2610,7 +2625,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	 * the same size; then we delegate to the join columns to synch
 	 * themselves up
 	 */
-	private void updatePersSpecifiedPrimaryKeyJoinColumns(CompilationUnit astRoot) {
+	private void updateSpecifiedPrimaryKeyJoinColumnsFromJava(CompilationUnit astRoot) {
 		// synchronize the model primary key join columns with the Java source
 		List<IPrimaryKeyJoinColumn> pkJoinColumns = getSpecifiedPrimaryKeyJoinColumns();
 		int persSize = pkJoinColumns.size();
@@ -2861,60 +2876,64 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 
 	@Override
 	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result;
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 		result = this.getJavaTable().candidateValuesFor(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		//		result = this.secondaryTablesCandidateValuesFor(pos, astRoot);
-		//		if (result != null) {
-		//			return result;
-		//		}
-		//
-		//		result = this.specifiedPrimaryKeyJoinColumnsCandidateValuesFor(pos, astRoot);
-		//		if (result != null) {
-		//			return result;
-		//		}
-		//
-		//		result = this.attributeOverridesCandidateValuesFor(pos, astRoot);
-		//		if (result != null) {
-		//			return result;
-		//		}
-		//
-		//		result = this.associationOverridesCandidateValuesFor(pos, astRoot);
-		//		if (result != null) {
-		//			return result;
-		//		}
-		//
-		//		result = this.getJavaDiscriminatorColumn().candidateValuesFor(pos, astRoot);
-		//		if (result != null) {
-		//			return result;
-		//		}
-		//
-		//		result = this.tableGeneratorCandidateValuesFor(pos, astRoot);
-		//		if (result != null) {
-		//			return result;
-		//		}
-		//
-		//		result = this.sequenceGeneratorCandidateValuesFor(pos, astRoot);
-		//		if (result != null) {
-		//			return result;
-		//		}
-		//
+		for (ISecondaryTable sTable : this.getSecondaryTables()) {
+			result = ((JavaSecondaryTable) sTable).connectedCandidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		for (IPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
+			result = ((JavaPrimaryKeyJoinColumn) column).connectedCandidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		for (IAttributeOverride override : this.getAttributeOverrides()) {
+			result = ((JavaAttributeOverride) override).connectedCandidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		for (IAssociationOverride override : this.getAssociationOverrides()) {
+			result = ((JavaAssociationOverride) override).connectedCandidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		result = this.getJavaDiscriminatorColumn().candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		result = this.getJavaTableGenerator().candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		result = this.getJavaSequenceGenerator().candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 		return null;
 	}
 
 	// ********** static methods **********
-	protected static DeclarationAnnotationElementAdapter buildStrategyAdapter() {
+	protected static DeclarationAnnotationElementAdapter<String> buildStrategyAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(INHERITANCE_ANNOTATION_ADAPTER, JPA.INHERITANCE__STRATEGY);
 	}
 
-	private static DeclarationAnnotationElementAdapter buildDiscriminatorValueAdapter() {
+	private static DeclarationAnnotationElementAdapter<String> buildDiscriminatorValueAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DISCRIMINATOR_ANNOTATION_ADAPTER, JPA.DISCRIMINATOR_VALUE__VALUE);
 	}
 
 	// ********** static methods **********
-	private static DeclarationAnnotationElementAdapter buildIdClassValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter(ID_CLASS_ADAPTER, JPA.ID_CLASS__VALUE, false, SimpleTypeStringExpressionConverter.instance());
+	private static DeclarationAnnotationElementAdapter<String> buildIdClassValueAdapter() {
+		return new ConversionDeclarationAnnotationElementAdapter<String, TypeLiteral>(ID_CLASS_ADAPTER, JPA.ID_CLASS__VALUE, false, SimpleTypeStringExpressionConverter.instance());
 	}
 }
