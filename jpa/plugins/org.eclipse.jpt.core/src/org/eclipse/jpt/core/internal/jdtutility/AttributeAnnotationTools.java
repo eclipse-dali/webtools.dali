@@ -49,19 +49,17 @@ public class AttributeAnnotationTools {
 			throw new RuntimeException(ex);
 		}
 	}
-
+	
+	/**
+	 * According to the spec, "All non-transient instance variables that are not 
+	 * annotated with the Transient annotation are persistent."
+	 */
 	private static boolean fieldIsPersistable_(IField field) throws JavaModelException {
 		int flags = field.getFlags();
 		if (Flags.isStatic(flags)) {
 			return false;
 		}
-		if (Flags.isPublic(flags)) {
-			return false;
-		}
 		if (Flags.isTransient(flags)) {
-			return false;
-		}
-		if (Flags.isFinal(flags)) {
 			return false;
 		}
 		return true;

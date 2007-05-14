@@ -9,11 +9,14 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
+import org.eclipse.jdt.core.Flags;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
+import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -86,7 +89,45 @@ public abstract class JavaAttributeContext extends BaseContext
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
 		
+		addModifierMessages(messages);
+		
 		addInvalidMappingMessage(messages);
+	}
+	
+	protected void addModifierMessages(List<IMessage> messages) {
+		JavaPersistentAttribute attribute = 
+				(JavaPersistentAttribute) attributeMapping.getPersistentAttribute();
+		if (attribute.getAttribute().isField()) {
+			int flags;
+			
+			try {
+				flags = attribute.getAttribute().getJdtMember().getFlags();
+			} catch (JavaModelException jme) { 
+				/* no error to log, in that case */ 
+				return;
+			}
+			
+			if (Flags.isFinal(flags)) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD,
+						new String[] {attribute.getName()},
+						attribute, attribute.validationTextRange())
+				);
+			}
+			
+			if (Flags.isPublic(flags)) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD,
+						new String[] {attribute.getName()},
+						attribute, attribute.validationTextRange())
+				);
+				
+			}
+		}
 	}
 	
 	protected void addInvalidMappingMessage(List<IMessage> messages) {

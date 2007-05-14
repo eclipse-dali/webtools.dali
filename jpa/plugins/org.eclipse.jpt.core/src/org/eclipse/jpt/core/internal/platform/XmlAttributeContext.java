@@ -9,6 +9,8 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
+import org.eclipse.jdt.core.Flags;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentType;
@@ -96,6 +98,7 @@ public abstract class XmlAttributeContext extends BaseContext
 	protected void addAttributeMessages(List<IMessage> messages) {
 		addUnspecifiedAttributeMessage(messages);
 		addUnresolvedAttributeMessage(messages);
+		addModifierMessages(messages);
 	}
 	
 	protected void addUnspecifiedAttributeMessage(List<IMessage> messages) {
@@ -122,6 +125,41 @@ public abstract class XmlAttributeContext extends BaseContext
 					new String[] {persistentAttribute.getName(), persistentAttribute.persistentType().getClass_()},
 					persistentAttribute, persistentAttribute.nameTextRange())
 			);
+		}
+	}
+	
+	protected void addModifierMessages(List<IMessage> messages) {
+		XmlPersistentAttribute attribute = xmlAttributeMapping.getPersistentAttribute();
+		
+		if (attribute.getAttribute() != null && attribute.getAttribute().isField()) {
+			int flags;
+			try {
+				flags = attribute.getAttribute().getJdtMember().getFlags();
+			} catch (JavaModelException jme) { 
+				/* no error to log, in that case */ 
+				return;
+			}
+			
+			if (Flags.isFinal(flags)) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD,
+						new String[] {attribute.getName()},
+						attribute, attribute.validationTextRange())
+				);
+			}
+			
+			if (Flags.isPublic(flags)) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD,
+						new String[] {attribute.getName()},
+						attribute, attribute.validationTextRange())
+				);
+				
+			}
 		}
 	}
 	
