@@ -317,6 +317,10 @@ public abstract class JavaMultiRelationshipMapping
 		}
 		return msgs;
 	}
+	
+	public boolean isJoinTableSpecified() {
+		return getJavaJoinTable().isSpecified();
+	}
 
 	/**
 	 * Returns the value of the '<em><b>Order By</b></em>' containment reference.

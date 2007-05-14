@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaMultiRelationship
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
+import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -70,22 +71,20 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 	
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
+		JavaMultiRelationshipMapping mapping = getMapping();
 		
+		if (getMapping().isJoinTableSpecified()) {
+			addJoinTableMessages(messages);
+		}
 		if (getMapping().getMappedBy() != null) {
 			addMappedByMessages(messages);
-		}
-		else {
-			addJoinTableMessages(messages);
 		}
 	}
 	
 	protected void addJoinTableMessages(List<IMessage> messages) {
-		if (getMapping().getMappedBy() != null) {
-			//do not add joinTable problems for the non-owning side, this is defined
-			//by the side that specifies mappedBy
-			return;
-		}
-		IJoinTable joinTable = getMapping().getJoinTable();
+		JavaMultiRelationshipMapping mapping = getMapping();
+		IJoinTable joinTable = mapping.getJoinTable();
+		
 		boolean doContinue = joinTable.isConnected();
 		String schema = joinTable.getSchema();
 		
@@ -163,6 +162,17 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 	protected void addMappedByMessages(List<IMessage> messages) {
 		JavaMultiRelationshipMapping mapping = getMapping();
 		String mappedBy = mapping.getMappedBy();
+		
+		if (mapping.isJoinTableSpecified()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE,
+						mapping.getJoinTable(), mapping.getJoinTable().validationTextRange())
+				);
+						
+		}
+		
 		IEntity targetEntity = mapping.getResolvedTargetEntity();
 		
 		if (targetEntity == null) {
@@ -189,6 +199,24 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
 						new String[] {mappedBy}, 
+						mapping, mapping.mappedByTextRange())
+				);
+			return;
+		}
+		
+		INonOwningMapping mappedByMapping;
+		try {
+			mappedByMapping = (INonOwningMapping) attribute.getMapping();
+		} catch (ClassCastException cce) {
+			// there is no error then
+			return;
+		}
+		
+		if (mappedByMapping.getMappedBy() != null) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
 						mapping, mapping.mappedByTextRange())
 				);
 		}

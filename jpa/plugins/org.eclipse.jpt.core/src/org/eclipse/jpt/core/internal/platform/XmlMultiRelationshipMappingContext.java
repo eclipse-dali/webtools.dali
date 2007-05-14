@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingInternal;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
+import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -80,6 +81,17 @@ public abstract class XmlMultiRelationshipMappingContext
 	protected void addMappedByMessages(List<IMessage> messages) {
 		XmlMultiRelationshipMapping mapping = multiRelationshipMapping();
 		String mappedBy = mapping.getMappedBy();
+		
+		if (mapping.isJoinTableSpecified()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE,
+						mapping.getJoinTable(), mapping.getJoinTable().validationTextRange())
+				);
+						
+		}
+		
 		IEntity targetEntity = mapping.getResolvedTargetEntity();
 		
 		if (targetEntity == null) {
@@ -106,6 +118,24 @@ public abstract class XmlMultiRelationshipMappingContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
 						new String[] {mappedBy}, 
+						mapping, mapping.mappedByTextRange())
+				);
+			return;
+		}
+		
+		INonOwningMapping mappedByMapping;
+		try {
+			mappedByMapping = (INonOwningMapping) attribute.getMapping();
+		} catch (ClassCastException cce) {
+			// there is no error then
+			return;
+		}
+		
+		if (mappedByMapping.getMappedBy() != null) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
 						mapping, mapping.mappedByTextRange())
 				);
 		}

@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.orm.XmlOneToOne;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
+import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -65,6 +66,24 @@ public class XmlOneToOneContext
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
 						new String[] {mappedBy}, 
+						mapping, mapping.mappedByTextRange())
+				);
+			return;
+		}
+		
+		INonOwningMapping mappedByMapping;
+		try {
+			mappedByMapping = (INonOwningMapping) attribute.getMapping();
+		} catch (ClassCastException cce) {
+			// there is no error then
+			return;
+		}
+		
+		if (mappedByMapping.getMappedBy() != null) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
 						mapping, mapping.mappedByTextRange())
 				);
 		}

@@ -522,6 +522,10 @@ public class JavaJoinTable extends AbstractJavaTable implements IJoinTable
 		super.refreshDefaults(defaultsContext);
 		this.setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_TABLE_NAME_KEY));
 	}
+	
+	public boolean isSpecified() {
+		return getMember().containsAnnotation(DECLARATION_ANNOTATION_ADAPTER);
+	}
 
 	/**
 	 * here we just worry about getting the join column lists the same size;

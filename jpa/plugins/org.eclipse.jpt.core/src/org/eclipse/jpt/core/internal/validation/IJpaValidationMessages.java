@@ -64,6 +64,10 @@ public interface IJpaValidationMessages
 	
 	public static final String MAPPING_INVALID_MAPPED_BY = "MAPPING_INVALID_MAPPED_BY";
 	
+	public static final String MAPPING_MAPPED_BY_WITH_JOIN_TABLE = "MAPPING_MAPPED_BY_WITH_JOIN_TABLE";
+	
+	public static final String MAPPING_MAPPED_BY_ON_BOTH_SIDES = "MAPPING_MAPPED_BY_ON_BOTH_SIDES";
+	
 	public static final String TABLE_UNRESOLVED_SCHEMA = "TABLE_UNRESOLVED_SCHEMA";
 	
 	public static final String TABLE_UNRESOLVED_NAME = "TABLE_UNRESOLVED_NAME";

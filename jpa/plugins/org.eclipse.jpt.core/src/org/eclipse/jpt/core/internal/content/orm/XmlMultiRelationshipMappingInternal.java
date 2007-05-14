@@ -261,6 +261,11 @@ public abstract class XmlMultiRelationshipMappingInternal
 		}
 		return msgs;
 	}
+	
+	public boolean isJoinTableSpecified() {
+		XmlJoinTable joinTable = getJoinTableForXml();
+		return joinTable != null && joinTable.isSpecified();
+	}
 
 	/**
 	 * Returns the value of the '<em><b>Order By</b></em>' containment reference.
