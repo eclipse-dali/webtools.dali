@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm.resource;
 
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -25,7 +24,7 @@ public abstract class RelationshipTranslator extends AttributeMappingTranslator
 	//placeholder until we support in our model, this allow us
 	//to keep the elements in the proper order
 	protected Translator createCascadeTranslator() {
-		return new Translator(CASCADE , (EStructuralFeature) null);
+		return new CascadeTranslator(CASCADE , JpaCoreMappingsPackage.eINSTANCE.getIRelationshipMapping_Cascade());
 	}
 	
 	protected Translator createMappedByTranslator() {

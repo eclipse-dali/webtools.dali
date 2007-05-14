@@ -10,11 +10,13 @@ package org.eclipse.jpt.core.internal.content.orm;
 
 import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.IPersistentType;
+import org.eclipse.jpt.core.internal.mappings.ICascade;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
@@ -96,6 +98,16 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 	 * @ordered
 	 */
 	protected IEntity resolvedTargetEntity;
+
+	/**
+	 * The cached value of the '{@link #getCascade() <em>Cascade</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascade()
+	 * @generated
+	 * @ordered
+	 */
+	protected ICascade cascade;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -233,6 +245,83 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY, oldResolvedTargetEntity, resolvedTargetEntity));
 	}
 
+	/**
+	 * Returns the value of the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cascade</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cascade</em>' containment reference.
+	 * @see #setCascade(ICascade)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIRelationshipMapping_Cascade()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public ICascade getCascade() {
+		return cascade;
+	}
+
+	public ICascade createCascade() {
+		return OrmFactory.eINSTANCE.createXmlCascade();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetCascade(ICascade newCascade, NotificationChain msgs) {
+		ICascade oldCascade = cascade;
+		cascade = newCascade;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE, oldCascade, newCascade);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlRelationshipMapping#getCascade <em>Cascade</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade</em>' containment reference.
+	 * @see #getCascade()
+	 * @generated
+	 */
+	public void setCascade(ICascade newCascade) {
+		if (newCascade != cascade) {
+			NotificationChain msgs = null;
+			if (cascade != null)
+				msgs = ((InternalEObject) cascade).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE, null, msgs);
+			if (newCascade != null)
+				msgs = ((InternalEObject) newCascade).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE, null, msgs);
+			msgs = basicSetCascade(newCascade, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE, newCascade, newCascade));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE :
+				return basicSetCascade(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
 	//TODO should we allow setting through the ecore, that would make this method
 	//public and part of the ITable api.  only the model needs to be setting the default,
 	//but the ui needs to be listening for changes to the default.
@@ -261,6 +350,8 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 				if (resolve)
 					return getResolvedTargetEntity();
 				return basicGetResolvedTargetEntity();
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE :
+				return getCascade();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -270,6 +361,7 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -278,6 +370,9 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 				return;
 			case OrmPackage.XML_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY :
 				setResolvedTargetEntity((IEntity) newValue);
+				return;
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE :
+				setCascade((ICascade) newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -296,6 +391,9 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 				return;
 			case OrmPackage.XML_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY :
 				setResolvedTargetEntity((IEntity) null);
+				return;
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE :
+				setCascade((ICascade) null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -317,6 +415,8 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 				return DEFAULT_TARGET_ENTITY_EDEFAULT == null ? defaultTargetEntity != null : !DEFAULT_TARGET_ENTITY_EDEFAULT.equals(defaultTargetEntity);
 			case OrmPackage.XML_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY :
 				return resolvedTargetEntity != null;
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE :
+				return cascade != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -338,6 +438,8 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 					return JpaCoreMappingsPackage.IRELATIONSHIP_MAPPING__DEFAULT_TARGET_ENTITY;
 				case OrmPackage.XML_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY :
 					return JpaCoreMappingsPackage.IRELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
+				case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE :
+					return JpaCoreMappingsPackage.IRELATIONSHIP_MAPPING__CASCADE;
 				default :
 					return -1;
 			}
@@ -362,6 +464,8 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 					return OrmPackage.XML_RELATIONSHIP_MAPPING__DEFAULT_TARGET_ENTITY;
 				case JpaCoreMappingsPackage.IRELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY :
 					return OrmPackage.XML_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
+				case JpaCoreMappingsPackage.IRELATIONSHIP_MAPPING__CASCADE :
+					return OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE;
 				default :
 					return -1;
 			}

@@ -317,7 +317,7 @@ public abstract class JavaMultiRelationshipMapping
 		}
 		return msgs;
 	}
-	
+
 	public boolean isJoinTableSpecified() {
 		return getJavaJoinTable().isSpecified();
 	}

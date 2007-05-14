@@ -2379,7 +2379,8 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	private void updateIdClassFromJava(CompilationUnit astRoot) {
 		if (this.idClassAnnotationAdapter.getAnnotation(astRoot) == null) {
 			this.setIdClass(null);
-		} else {
+		}
+		else {
 			this.setIdClass(this.idClassValueAdapter.getValue(astRoot));
 		}
 	}

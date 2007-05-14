@@ -1178,13 +1178,22 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IRELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY = JpaCorePackage.IATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IRELATIONSHIP_MAPPING__CASCADE = JpaCorePackage.IATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>IRelationship Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IRELATIONSHIP_MAPPING_FEATURE_COUNT = JpaCorePackage.IATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+	public static final int IRELATIONSHIP_MAPPING_FEATURE_COUNT = JpaCorePackage.IATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.INonOwningMapping <em>INon Owning Mapping</em>}' class.
@@ -1231,6 +1240,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int INON_OWNING_MAPPING__RESOLVED_TARGET_ENTITY = IRELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int INON_OWNING_MAPPING__CASCADE = IRELATIONSHIP_MAPPING__CASCADE;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
@@ -1295,6 +1313,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int IMULTI_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY = INON_OWNING_MAPPING__RESOLVED_TARGET_ENTITY;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IMULTI_RELATIONSHIP_MAPPING__CASCADE = INON_OWNING_MAPPING__CASCADE;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
@@ -1397,6 +1424,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IONE_TO_MANY__RESOLVED_TARGET_ENTITY = IMULTI_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
 
 	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IONE_TO_MANY__CASCADE = IMULTI_RELATIONSHIP_MAPPING__CASCADE;
+
+	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1495,6 +1531,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int IMANY_TO_MANY__RESOLVED_TARGET_ENTITY = IMULTI_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IMANY_TO_MANY__CASCADE = IMULTI_RELATIONSHIP_MAPPING__CASCADE;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
@@ -1597,6 +1642,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int ISINGLE_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY = IRELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
 
 	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ISINGLE_RELATIONSHIP_MAPPING__CASCADE = IRELATIONSHIP_MAPPING__CASCADE;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1697,6 +1751,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IMANY_TO_ONE__RESOLVED_TARGET_ENTITY = ISINGLE_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
 
 	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IMANY_TO_ONE__CASCADE = ISINGLE_RELATIONSHIP_MAPPING__CASCADE;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1795,6 +1858,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int IONE_TO_ONE__RESOLVED_TARGET_ENTITY = ISINGLE_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IONE_TO_ONE__CASCADE = ISINGLE_RELATIONSHIP_MAPPING__CASCADE;
 
 	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
@@ -3390,6 +3462,70 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IQUERY_HINT_FEATURE_COUNT = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 2;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.ICascade <em>ICascade</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.mappings.ICascade
+	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getICascade()
+	 * @generated
+	 */
+	public static final int ICASCADE = 41;
+
+	/**
+	 * The feature id for the '<em><b>All</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ICASCADE__ALL = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Persist</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ICASCADE__PERSIST = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Merge</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ICASCADE__MERGE = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Remove</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ICASCADE__REMOVE = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Refresh</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ICASCADE__REFRESH = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 4;
+
+	/**
+	 * The number of structural features of the '<em>ICascade</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ICASCADE_FEATURE_COUNT = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 5;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.DefaultEagerFetchType <em>Default Eager Fetch Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3397,7 +3533,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDefaultEagerFetchType()
 	 * @generated
 	 */
-	public static final int DEFAULT_EAGER_FETCH_TYPE = 41;
+	public static final int DEFAULT_EAGER_FETCH_TYPE = 42;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType <em>Default Lazy Fetch Type</em>}' enum.
@@ -3407,7 +3543,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDefaultLazyFetchType()
 	 * @generated
 	 */
-	public static final int DEFAULT_LAZY_FETCH_TYPE = 42;
+	public static final int DEFAULT_LAZY_FETCH_TYPE = 43;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.DefaultFalseBoolean <em>Default False Boolean</em>}' enum.
@@ -3417,7 +3553,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDefaultFalseBoolean()
 	 * @generated
 	 */
-	public static final int DEFAULT_FALSE_BOOLEAN = 43;
+	public static final int DEFAULT_FALSE_BOOLEAN = 44;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean <em>Default True Boolean</em>}' enum.
@@ -3427,7 +3563,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDefaultTrueBoolean()
 	 * @generated
 	 */
-	public static final int DEFAULT_TRUE_BOOLEAN = 44;
+	public static final int DEFAULT_TRUE_BOOLEAN = 45;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.TemporalType <em>Temporal Type</em>}' enum.
@@ -3437,7 +3573,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 45;
+	public static final int TEMPORAL_TYPE = 46;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -3447,7 +3583,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 46;
+	public static final int INHERITANCE_TYPE = 47;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.DiscriminatorType <em>Discriminator Type</em>}' enum.
@@ -3457,7 +3593,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 47;
+	public static final int DISCRIMINATOR_TYPE = 48;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.GenerationType <em>Generation Type</em>}' enum.
@@ -3467,7 +3603,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 48;
+	public static final int GENERATION_TYPE = 49;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.EnumType <em>Enum Type</em>}' enum.
@@ -3477,7 +3613,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 49;
+	public static final int ENUM_TYPE = 50;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.OrderingType <em>Ordering Type</em>}' enum.
@@ -3487,7 +3623,17 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getOrderingType()
 	 * @generated
 	 */
-	public static final int ORDERING_TYPE = 50;
+	public static final int ORDERING_TYPE = 51;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.CascadeType <em>Cascade Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.mappings.CascadeType
+	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getCascadeType()
+	 * @generated
+	 */
+	public static final int CASCADE_TYPE = 52;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -3781,6 +3927,13 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass iCascadeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EEnum defaultEagerFetchTypeEEnum = null;
 
 	/**
@@ -3845,6 +3998,13 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EEnum orderingTypeEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum cascadeTypeEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -5015,6 +5175,19 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 */
 	public EReference getIRelationshipMapping_ResolvedTargetEntity() {
 		return (EReference) iRelationshipMappingEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.mappings.IRelationshipMapping#getCascade <em>Cascade</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Cascade</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.IRelationshipMapping#getCascade()
+	 * @see #getIRelationshipMapping()
+	 * @generated
+	 */
+	public EReference getIRelationshipMapping_Cascade() {
+		return (EReference) iRelationshipMappingEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -6241,6 +6414,83 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.mappings.ICascade <em>ICascade</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>ICascade</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.ICascade
+	 * @generated
+	 */
+	public EClass getICascade() {
+		return iCascadeEClass;
+	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.ICascade#isAll <em>All</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>All</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.ICascade#isAll()
+	 * @see #getICascade()
+	 * @generated
+	 */
+	public EAttribute getICascade_All() {
+		return (EAttribute) iCascadeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.ICascade#isPersist <em>Persist</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Persist</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.ICascade#isPersist()
+	 * @see #getICascade()
+	 * @generated
+	 */
+	public EAttribute getICascade_Persist() {
+		return (EAttribute) iCascadeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.ICascade#isMerge <em>Merge</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Merge</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.ICascade#isMerge()
+	 * @see #getICascade()
+	 * @generated
+	 */
+	public EAttribute getICascade_Merge() {
+		return (EAttribute) iCascadeEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.ICascade#isRemove <em>Remove</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Remove</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.ICascade#isRemove()
+	 * @see #getICascade()
+	 * @generated
+	 */
+	public EAttribute getICascade_Remove() {
+		return (EAttribute) iCascadeEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.ICascade#isRefresh <em>Refresh</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Refresh</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.ICascade#isRefresh()
+	 * @see #getICascade()
+	 * @generated
+	 */
+	public EAttribute getICascade_Refresh() {
+		return (EAttribute) iCascadeEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.jpt.core.internal.mappings.DefaultEagerFetchType <em>Default Eager Fetch Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6361,6 +6611,18 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.core.internal.mappings.CascadeType <em>Cascade Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Cascade Type</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.CascadeType
+	 * @generated
+	 */
+	public EEnum getCascadeType() {
+		return cascadeTypeEEnum;
+	}
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6475,6 +6737,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		createEAttribute(iRelationshipMappingEClass, IRELATIONSHIP_MAPPING__SPECIFIED_TARGET_ENTITY);
 		createEAttribute(iRelationshipMappingEClass, IRELATIONSHIP_MAPPING__DEFAULT_TARGET_ENTITY);
 		createEReference(iRelationshipMappingEClass, IRELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY);
+		createEReference(iRelationshipMappingEClass, IRELATIONSHIP_MAPPING__CASCADE);
 		iNonOwningMappingEClass = createEClass(INON_OWNING_MAPPING);
 		createEAttribute(iNonOwningMappingEClass, INON_OWNING_MAPPING__MAPPED_BY);
 		iMultiRelationshipMappingEClass = createEClass(IMULTI_RELATIONSHIP_MAPPING);
@@ -6571,6 +6834,12 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		iQueryHintEClass = createEClass(IQUERY_HINT);
 		createEAttribute(iQueryHintEClass, IQUERY_HINT__NAME);
 		createEAttribute(iQueryHintEClass, IQUERY_HINT__VALUE);
+		iCascadeEClass = createEClass(ICASCADE);
+		createEAttribute(iCascadeEClass, ICASCADE__ALL);
+		createEAttribute(iCascadeEClass, ICASCADE__PERSIST);
+		createEAttribute(iCascadeEClass, ICASCADE__MERGE);
+		createEAttribute(iCascadeEClass, ICASCADE__REMOVE);
+		createEAttribute(iCascadeEClass, ICASCADE__REFRESH);
 		// Create enums
 		defaultEagerFetchTypeEEnum = createEEnum(DEFAULT_EAGER_FETCH_TYPE);
 		defaultLazyFetchTypeEEnum = createEEnum(DEFAULT_LAZY_FETCH_TYPE);
@@ -6582,6 +6851,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		generationTypeEEnum = createEEnum(GENERATION_TYPE);
 		enumTypeEEnum = createEEnum(ENUM_TYPE);
 		orderingTypeEEnum = createEEnum(ORDERING_TYPE);
+		cascadeTypeEEnum = createEEnum(CASCADE_TYPE);
 	}
 
 	/**
@@ -6660,6 +6930,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		iNamedNativeQueryEClass.getESuperTypes().add(theJpaCorePackage.getIJpaSourceObject());
 		iNamedNativeQueryEClass.getESuperTypes().add(this.getIQuery());
 		iQueryHintEClass.getESuperTypes().add(theJpaCorePackage.getIJpaSourceObject());
+		iCascadeEClass.getESuperTypes().add(theJpaCorePackage.getIJpaSourceObject());
 		// Initialize classes and features; add operations and parameters
 		initEClass(iMappedSuperclassEClass, IMappedSuperclass.class, "IMappedSuperclass", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIMappedSuperclass_IdClass(), theEcorePackage.getEString(), "idClass", null, 0, 1, IMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -6752,6 +7023,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEAttribute(getIRelationshipMapping_SpecifiedTargetEntity(), ecorePackage.getEString(), "specifiedTargetEntity", null, 0, 1, IRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIRelationshipMapping_DefaultTargetEntity(), ecorePackage.getEString(), "defaultTargetEntity", null, 0, 1, IRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIRelationshipMapping_ResolvedTargetEntity(), this.getIEntity(), null, "resolvedTargetEntity", null, 0, 1, IRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getIRelationshipMapping_Cascade(), this.getICascade(), null, "cascade", null, 0, 1, IRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iNonOwningMappingEClass, INonOwningMapping.class, "INonOwningMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getINonOwningMapping_MappedBy(), theEcorePackage.getEString(), "mappedBy", null, 0, 1, INonOwningMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iMultiRelationshipMappingEClass, IMultiRelationshipMapping.class, "IMultiRelationshipMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -6849,6 +7121,12 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEClass(iQueryHintEClass, IQueryHint.class, "IQueryHint", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIQueryHint_Name(), theEcorePackage.getEString(), "name", null, 0, 1, IQueryHint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIQueryHint_Value(), theEcorePackage.getEString(), "value", null, 0, 1, IQueryHint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(iCascadeEClass, ICascade.class, "ICascade", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getICascade_All(), theEcorePackage.getEBoolean(), "all", null, 0, 1, ICascade.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getICascade_Persist(), theEcorePackage.getEBoolean(), "persist", null, 0, 1, ICascade.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getICascade_Merge(), theEcorePackage.getEBoolean(), "merge", null, 0, 1, ICascade.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getICascade_Remove(), theEcorePackage.getEBoolean(), "remove", null, 0, 1, ICascade.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getICascade_Refresh(), theEcorePackage.getEBoolean(), "refresh", null, 0, 1, ICascade.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		// Initialize enums and add enum literals
 		initEEnum(defaultEagerFetchTypeEEnum, DefaultEagerFetchType.class, "DefaultEagerFetchType");
 		addEEnumLiteral(defaultEagerFetchTypeEEnum, DefaultEagerFetchType.DEFAULT);
@@ -6895,6 +7173,12 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		addEEnumLiteral(orderingTypeEEnum, OrderingType.NONE);
 		addEEnumLiteral(orderingTypeEEnum, OrderingType.PRIMARY_KEY);
 		addEEnumLiteral(orderingTypeEEnum, OrderingType.CUSTOM);
+		initEEnum(cascadeTypeEEnum, CascadeType.class, "CascadeType");
+		addEEnumLiteral(cascadeTypeEEnum, CascadeType.ALL);
+		addEEnumLiteral(cascadeTypeEEnum, CascadeType.PERSIST);
+		addEEnumLiteral(cascadeTypeEEnum, CascadeType.MERGE);
+		addEEnumLiteral(cascadeTypeEEnum, CascadeType.REMOVE);
+		addEEnumLiteral(cascadeTypeEEnum, CascadeType.REFRESH);
 	}
 
 
@@ -7623,6 +7907,14 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference IRELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY = eINSTANCE.getIRelationshipMapping_ResolvedTargetEntity();
+
+		/**
+		 * The meta object literal for the '<em><b>Cascade</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference IRELATIONSHIP_MAPPING__CASCADE = eINSTANCE.getIRelationshipMapping_Cascade();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.INonOwningMapping <em>INon Owning Mapping</em>}' class.
@@ -8443,6 +8735,56 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		public static final EAttribute IQUERY_HINT__VALUE = eINSTANCE.getIQueryHint_Value();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.ICascade <em>ICascade</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.mappings.ICascade
+		 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getICascade()
+		 * @generated
+		 */
+		public static final EClass ICASCADE = eINSTANCE.getICascade();
+
+		/**
+		 * The meta object literal for the '<em><b>All</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute ICASCADE__ALL = eINSTANCE.getICascade_All();
+
+		/**
+		 * The meta object literal for the '<em><b>Persist</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute ICASCADE__PERSIST = eINSTANCE.getICascade_Persist();
+
+		/**
+		 * The meta object literal for the '<em><b>Merge</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute ICASCADE__MERGE = eINSTANCE.getICascade_Merge();
+
+		/**
+		 * The meta object literal for the '<em><b>Remove</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute ICASCADE__REMOVE = eINSTANCE.getICascade_Remove();
+
+		/**
+		 * The meta object literal for the '<em><b>Refresh</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute ICASCADE__REFRESH = eINSTANCE.getICascade_Refresh();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.DefaultEagerFetchType <em>Default Eager Fetch Type</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -8541,5 +8883,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EEnum ORDERING_TYPE = eINSTANCE.getOrderingType();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.CascadeType <em>Cascade Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.mappings.CascadeType
+		 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getCascadeType()
+		 * @generated
+		 */
+		public static final EEnum CASCADE_TYPE = eINSTANCE.getCascadeType();
 	}
 } //JpaCoreMappingsPackage

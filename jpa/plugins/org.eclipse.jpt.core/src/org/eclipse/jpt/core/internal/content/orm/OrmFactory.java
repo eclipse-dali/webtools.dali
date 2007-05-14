@@ -152,6 +152,8 @@ public class OrmFactory extends EFactoryImpl
 				return createXmlQueryHint();
 			case OrmPackage.XML_UNIQUE_CONSTRAINT :
 				return createXmlUniqueConstraint();
+			case OrmPackage.XML_CASCADE :
+				return createXmlCascade();
 			default :
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -628,6 +630,16 @@ public class OrmFactory extends EFactoryImpl
 	public XmlUniqueConstraint createXmlUniqueConstraint() {
 		XmlUniqueConstraint xmlUniqueConstraint = new XmlUniqueConstraint();
 		return xmlUniqueConstraint;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlCascade createXmlCascade() {
+		XmlCascade xmlCascade = new XmlCascade();
+		return xmlCascade;
 	}
 
 	public XmlPrimaryKeyJoinColumn createXmlPrimaryKeyJoinColumn(IAbstractJoinColumn.Owner owner) {

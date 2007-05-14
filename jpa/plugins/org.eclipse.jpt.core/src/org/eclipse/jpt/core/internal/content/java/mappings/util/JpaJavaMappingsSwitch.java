@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaAssociationOverri
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAttributeOverride;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaBasic;
+import org.eclipse.jpt.core.internal.content.java.mappings.JavaCascade;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaColumn;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbeddable;
@@ -69,6 +70,7 @@ import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IBasic;
+import org.eclipse.jpt.core.internal.mappings.ICascade;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.IColumnMapping;
 import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn;
@@ -1139,6 +1141,23 @@ public class JpaJavaMappingsSwitch<T>
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case JpaJavaMappingsPackage.JAVA_CASCADE : {
+				JavaCascade javaCascade = (JavaCascade) theEObject;
+				T result = caseJavaCascade(javaCascade);
+				if (result == null)
+					result = caseJavaEObject(javaCascade);
+				if (result == null)
+					result = caseICascade(javaCascade);
+				if (result == null)
+					result = caseJpaEObject(javaCascade);
+				if (result == null)
+					result = caseIJpaSourceObject(javaCascade);
+				if (result == null)
+					result = caseIJpaEObject(javaCascade);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			default :
 				return defaultCase(theEObject);
 		}
@@ -1726,6 +1745,21 @@ public class JpaJavaMappingsSwitch<T>
 	 * @generated
 	 */
 	public T caseJavaUniqueConstraint(JavaUniqueConstraint object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpretting the object as an instance of '<em>Java Cascade</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpretting the object as an instance of '<em>Java Cascade</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseJavaCascade(JavaCascade object) {
 		return null;
 	}
 
@@ -2446,6 +2480,21 @@ public class JpaJavaMappingsSwitch<T>
 	 * @generated
 	 */
 	public T caseIUniqueConstraint(IUniqueConstraint object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpretting the object as an instance of '<em>ICascade</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpretting the object as an instance of '<em>ICascade</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseICascade(ICascade object) {
 		return null;
 	}
 

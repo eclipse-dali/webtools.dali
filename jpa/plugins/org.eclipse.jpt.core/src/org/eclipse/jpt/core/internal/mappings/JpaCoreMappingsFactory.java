@@ -103,6 +103,8 @@ public class JpaCoreMappingsFactory extends EFactoryImpl
 				return createEnumTypeFromString(eDataType, initialValue);
 			case JpaCoreMappingsPackage.ORDERING_TYPE :
 				return createOrderingTypeFromString(eDataType, initialValue);
+			case JpaCoreMappingsPackage.CASCADE_TYPE :
+				return createCascadeTypeFromString(eDataType, initialValue);
 			default :
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -136,6 +138,8 @@ public class JpaCoreMappingsFactory extends EFactoryImpl
 				return convertEnumTypeToString(eDataType, instanceValue);
 			case JpaCoreMappingsPackage.ORDERING_TYPE :
 				return convertOrderingTypeToString(eDataType, instanceValue);
+			case JpaCoreMappingsPackage.CASCADE_TYPE :
+				return convertCascadeTypeToString(eDataType, instanceValue);
 			default :
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -348,6 +352,27 @@ public class JpaCoreMappingsFactory extends EFactoryImpl
 	 * @generated
 	 */
 	public String convertOrderingTypeToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CascadeType createCascadeTypeFromString(EDataType eDataType, String initialValue) {
+		CascadeType result = CascadeType.get(initialValue);
+		if (result == null)
+			throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertCascadeTypeToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

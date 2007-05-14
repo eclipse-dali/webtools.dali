@@ -261,7 +261,7 @@ public abstract class XmlMultiRelationshipMappingInternal
 		}
 		return msgs;
 	}
-	
+
 	public boolean isJoinTableSpecified() {
 		XmlJoinTable joinTable = getJoinTableForXml();
 		return joinTable != null && joinTable.isSpecified();

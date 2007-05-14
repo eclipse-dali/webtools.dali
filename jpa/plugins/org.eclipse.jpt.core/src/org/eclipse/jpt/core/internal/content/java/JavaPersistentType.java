@@ -753,7 +753,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		Iterator<JavaPersistentAttribute> stream = attributesNamed(attributeName);
 		if (stream.hasNext()) {
 			JavaPersistentAttribute attribute = stream.next();
-			return (stream.hasNext()) ? null /*more than one*/ : attribute;
+			return (stream.hasNext()) ? null /*more than one*/: attribute;
 		}
 		return (parentPersistentType() == null) ? null : parentPersistentType().resolveAttribute(attributeName);
 	}

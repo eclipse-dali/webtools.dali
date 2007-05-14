@@ -1838,13 +1838,22 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY = XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_RELATIONSHIP_MAPPING__CASCADE = XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>Xml Relationship Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_RELATIONSHIP_MAPPING_FEATURE_COUNT = XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+	public static final int XML_RELATIONSHIP_MAPPING_FEATURE_COUNT = XML_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingInternal <em>Xml Multi Relationship Mapping Internal</em>}' class.
@@ -1900,6 +1909,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__RESOLVED_TARGET_ENTITY = XML_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__CASCADE = XML_RELATIONSHIP_MAPPING__CASCADE;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
@@ -2057,6 +2075,15 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MULTI_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY = JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
 
 	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING__CASCADE = JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__CASCADE;
+
+	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2164,6 +2191,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ONE_TO_MANY__RESOLVED_TARGET_ENTITY = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__RESOLVED_TARGET_ENTITY;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__CASCADE = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__CASCADE;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
@@ -2291,6 +2327,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MANY_TO_MANY__RESOLVED_TARGET_ENTITY = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__RESOLVED_TARGET_ENTITY;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__CASCADE = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__CASCADE;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
@@ -3847,6 +3892,15 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_SINGLE_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY = XML_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
 
 	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SINGLE_RELATIONSHIP_MAPPING__CASCADE = XML_RELATIONSHIP_MAPPING__CASCADE;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3956,6 +4010,15 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_ONE__RESOLVED_TARGET_ENTITY = XML_SINGLE_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
 
 	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_ONE__CASCADE = XML_SINGLE_RELATIONSHIP_MAPPING__CASCADE;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4063,6 +4126,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ONE_TO_ONE__RESOLVED_TARGET_ENTITY = XML_SINGLE_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_ONE__CASCADE = XML_SINGLE_RELATIONSHIP_MAPPING__CASCADE;
 
 	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
@@ -5585,6 +5657,70 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_UNIQUE_CONSTRAINT_FEATURE_COUNT = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlCascade <em>Xml Cascade</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlCascade
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlCascade()
+	 * @generated
+	 */
+	public static final int XML_CASCADE = 59;
+
+	/**
+	 * The feature id for the '<em><b>All</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CASCADE__ALL = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Persist</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CASCADE__PERSIST = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Merge</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CASCADE__MERGE = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Remove</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CASCADE__REMOVE = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Refresh</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CASCADE__REFRESH = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 4;
+
+	/**
+	 * The number of structural features of the '<em>Xml Cascade</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CASCADE_FEATURE_COUNT = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 5;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -5996,6 +6132,13 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlUniqueConstraintEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlCascadeEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -7841,6 +7984,18 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.orm.XmlCascade <em>Xml Cascade</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Cascade</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlCascade
+	 * @generated
+	 */
+	public EClass getXmlCascade() {
+		return xmlCascadeEClass;
+	}
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -8010,6 +8165,7 @@ public class OrmPackage extends EPackageImpl
 		xmlNamedNativeQueryEClass = createEClass(XML_NAMED_NATIVE_QUERY);
 		xmlQueryHintEClass = createEClass(XML_QUERY_HINT);
 		xmlUniqueConstraintEClass = createEClass(XML_UNIQUE_CONSTRAINT);
+		xmlCascadeEClass = createEClass(XML_CASCADE);
 	}
 
 	/**
@@ -8154,6 +8310,8 @@ public class OrmPackage extends EPackageImpl
 		xmlQueryHintEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIQueryHint());
 		xmlUniqueConstraintEClass.getESuperTypes().add(theJpaCorePackage.getXmlEObject());
 		xmlUniqueConstraintEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIUniqueConstraint());
+		xmlCascadeEClass.getESuperTypes().add(theJpaCorePackage.getXmlEObject());
+		xmlCascadeEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getICascade());
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlRootContentNodeEClass, XmlRootContentNode.class, "XmlRootContentNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlRootContentNode_EntityMappings(), this.getEntityMappingsInternal(), this.getEntityMappingsInternal_Root(), "entityMappings", null, 1, 1, XmlRootContentNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
@@ -8297,6 +8455,7 @@ public class OrmPackage extends EPackageImpl
 		initEClass(xmlNamedNativeQueryEClass, XmlNamedNativeQuery.class, "XmlNamedNativeQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlQueryHintEClass, XmlQueryHint.class, "XmlQueryHint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlUniqueConstraintEClass, XmlUniqueConstraint.class, "XmlUniqueConstraint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(xmlCascadeEClass, XmlCascade.class, "XmlCascade", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		// Create resource
 		createResource(eNS_URI);
 	}
@@ -9553,5 +9712,15 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_UNIQUE_CONSTRAINT = eINSTANCE.getXmlUniqueConstraint();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlCascade <em>Xml Cascade</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.orm.XmlCascade
+		 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlCascade()
+		 * @generated
+		 */
+		public static final EClass XML_CASCADE = eINSTANCE.getXmlCascade();
 	}
 } //OrmPackage

@@ -518,7 +518,7 @@ public abstract class JavaNamedColumn extends JavaEObject
 
 	private Iterator<String> candidateNames() {
 		Table dbTable = this.dbTable();
-		return (dbTable != null) ? dbTable.columnNames() : EmptyIterator.<String>instance();
+		return (dbTable != null) ? dbTable.columnNames() : EmptyIterator.<String> instance();
 	}
 
 	private Iterator<String> candidateNames(Filter<String> filter) {

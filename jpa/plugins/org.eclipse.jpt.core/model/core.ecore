@@ -295,6 +295,8 @@
           changeable="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="resolvedTargetEntity"
           eType="#//mappings/IEntity"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="cascade" eType="#//mappings/ICascade"
+          containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="INonOwningMapping" abstract="true"
         interface="true" eSuperTypes="#//mappings/IRelationshipMapping">
@@ -557,6 +559,21 @@
         eSuperTypes="#//IJpaSourceObject">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="CascadeType">
+      <eLiterals name="ALL" literal="All"/>
+      <eLiterals name="PERSIST" value="1" literal="Persist"/>
+      <eLiterals name="MERGE" value="2" literal="Merge"/>
+      <eLiterals name="REMOVE" value="3" literal="Remove"/>
+      <eLiterals name="REFRESH" value="4" literal="Refresh"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ICascade" abstract="true" interface="true"
+        eSuperTypes="#//IJpaSourceObject">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="all" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="persist" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="merge" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="remove" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="refresh" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>

@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IBasic;
+import org.eclipse.jpt.core.internal.mappings.ICascade;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.IColumnMapping;
 import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn;
@@ -319,6 +320,11 @@ public class JpaCoreMappingsAdapterFactory extends AdapterFactoryImpl
 		@Override
 		public Adapter caseIQueryHint(IQueryHint object) {
 			return createIQueryHintAdapter();
+		}
+
+		@Override
+		public Adapter caseICascade(ICascade object) {
+			return createICascadeAdapter();
 		}
 
 		@Override
@@ -931,6 +937,20 @@ public class JpaCoreMappingsAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createIQueryHintAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.mappings.ICascade <em>ICascade</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.mappings.ICascade
+	 * @generated
+	 */
+	public Adapter createICascadeAdapter() {
 		return null;
 	}
 

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -27,12 +28,14 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.EnumArrayDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.StringExpressionConverter;
+import org.eclipse.jpt.core.internal.mappings.ICascade;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
@@ -60,7 +63,6 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 {
 	private AnnotationElementAdapter<String> targetEntityAdapter;
 
-	//	private AnnotationElementAdapter cascadeAdapter;
 	/**
 	 * all the relationship mappings have a 'fetch' setting;
 	 * but the 1:1 and m:1 mappings have a default of EAGER,
@@ -128,6 +130,16 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	 */
 	protected IEntity resolvedTargetEntity;
 
+	/**
+	 * The cached value of the '{@link #getCascade() <em>Cascade</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascade()
+	 * @generated
+	 * @ordered
+	 */
+	protected ICascade cascade;
+
 	protected JavaRelationshipMapping() {
 		throw new UnsupportedOperationException("Use JavaRelationshipMapping(Attribute) instead");
 	}
@@ -135,7 +147,6 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	protected JavaRelationshipMapping(Attribute attribute) {
 		super(attribute);
 		this.targetEntityAdapter = this.buildAnnotationElementAdapter(this.targetEntityAdapter());
-		//		this.cascadeAdapter = this.buildAnnotationElementAdapter(this.cascadeAdapter());
 		this.fetchAdapter = this.buildAnnotationElementAdapter(this.fetchAdapter());
 	}
 
@@ -151,11 +162,29 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	/**
 	 * return the Java adapter's 'cascade' element adapter config
 	 */
-	//	protected abstract DeclarationAnnotationElementAdapter cascadeAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String[]> cascadeAdapter();
+
 	/**
 	 * return the Java adapter's 'fetch' element adapter config
 	 */
 	protected abstract DeclarationAnnotationElementAdapter<String> fetchAdapter();
+
+	@Override
+	protected void notifyChanged(Notification notification) {
+		super.notifyChanged(notification);
+		switch (notification.getFeatureID(IRelationshipMapping.class)) {
+			case JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__SPECIFIED_TARGET_ENTITY :
+				this.targetEntityAdapter.setValue((String) notification.getNewValue());
+				break;
+			case JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__CASCADE :
+				if (notification.getNewValue() == null && notification.getOldValue() != null) {
+					((JavaCascade) notification.getOldValue()).getCascadeAdapter().setValue(null);
+				}
+				break;
+			default :
+				break;
+		}
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -210,16 +239,11 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	 * @see #getSpecifiedTargetEntity()
 	 * @generated
 	 */
-	public void setSpecifiedTargetEntityGen(String newSpecifiedTargetEntity) {
+	public void setSpecifiedTargetEntity(String newSpecifiedTargetEntity) {
 		String oldSpecifiedTargetEntity = specifiedTargetEntity;
 		specifiedTargetEntity = newSpecifiedTargetEntity;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__SPECIFIED_TARGET_ENTITY, oldSpecifiedTargetEntity, specifiedTargetEntity));
-	}
-
-	public void setSpecifiedTargetEntity(String newSpecifiedTargetEntity) {
-		this.targetEntityAdapter.setValue(newSpecifiedTargetEntity);
-		setSpecifiedTargetEntityGen(newSpecifiedTargetEntity);
 	}
 
 	/**
@@ -297,6 +321,79 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cascade</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cascade</em>' containment reference.
+	 * @see #setCascade(ICascade)
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIRelationshipMapping_Cascade()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public ICascade getCascade() {
+		return cascade;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetCascade(ICascade newCascade, NotificationChain msgs) {
+		ICascade oldCascade = cascade;
+		cascade = newCascade;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__CASCADE, oldCascade, newCascade);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaRelationshipMapping#getCascade <em>Cascade</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade</em>' containment reference.
+	 * @see #getCascade()
+	 * @generated
+	 */
+	public void setCascade(ICascade newCascade) {
+		if (newCascade != cascade) {
+			NotificationChain msgs = null;
+			if (cascade != null)
+				msgs = ((InternalEObject) cascade).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__CASCADE, null, msgs);
+			if (newCascade != null)
+				msgs = ((InternalEObject) newCascade).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__CASCADE, null, msgs);
+			msgs = basicSetCascade(newCascade, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__CASCADE, newCascade, newCascade));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__CASCADE :
+				return basicSetCascade(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -314,6 +411,8 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 				if (resolve)
 					return getResolvedTargetEntity();
 				return basicGetResolvedTargetEntity();
+			case JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__CASCADE :
+				return getCascade();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -323,6 +422,7 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -331,6 +431,9 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 				return;
 			case JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY :
 				setResolvedTargetEntity((IEntity) newValue);
+				return;
+			case JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__CASCADE :
+				setCascade((ICascade) newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -349,6 +452,9 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 				return;
 			case JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY :
 				setResolvedTargetEntity((IEntity) null);
+				return;
+			case JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__CASCADE :
+				setCascade((ICascade) null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -370,6 +476,8 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 				return DEFAULT_TARGET_ENTITY_EDEFAULT == null ? defaultTargetEntity != null : !DEFAULT_TARGET_ENTITY_EDEFAULT.equals(defaultTargetEntity);
 			case JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY :
 				return resolvedTargetEntity != null;
+			case JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__CASCADE :
+				return cascade != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -391,6 +499,8 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 					return JpaCoreMappingsPackage.IRELATIONSHIP_MAPPING__DEFAULT_TARGET_ENTITY;
 				case JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY :
 					return JpaCoreMappingsPackage.IRELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
+				case JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__CASCADE :
+					return JpaCoreMappingsPackage.IRELATIONSHIP_MAPPING__CASCADE;
 				default :
 					return -1;
 			}
@@ -415,6 +525,8 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 					return JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__DEFAULT_TARGET_ENTITY;
 				case JpaCoreMappingsPackage.IRELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY :
 					return JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
+				case JpaCoreMappingsPackage.IRELATIONSHIP_MAPPING__CASCADE :
+					return JpaJavaMappingsPackage.JAVA_RELATIONSHIP_MAPPING__CASCADE;
 				default :
 					return -1;
 			}
@@ -449,8 +561,14 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 		super.updateFromJava(astRoot);
 		setDefaultTargetEntity(this.javaDefaultTargetEntity());
 		setSpecifiedTargetEntity(this.targetEntityAdapter.getValue(astRoot));
-		//setCascade(CascadeType.fromJavaAnnotationValue(this.cascadeAdapter.getValue(astRoot)));
 		this.updateFetchFromJava(astRoot);
+		if (this.cascade != null) {
+			((JavaCascade) this.cascade).updateFromJava(astRoot);
+		}
+		else if (cascadeAdapter().expression(getAttribute().modifiedDeclaration()) != null) {
+			setCascade(createCascade());
+			((JavaCascade) this.cascade).updateFromJava(astRoot);
+		}
 	}
 
 	/**
@@ -526,6 +644,10 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 		return StringTools.quote(this.candidateMappedByAttributeNames(filter));
 	}
 
+	public ICascade createCascade() {
+		return JpaJavaMappingsFactory.eINSTANCE.createJavaCascade(getAttribute(), cascadeAdapter());
+	}
+
 	// ********** convenience methods **********
 	protected AnnotationElementAdapter<String> getFetchAdapter() {
 		return this.fetchAdapter;
@@ -547,6 +669,10 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 
 	protected static DeclarationAnnotationElementAdapter<String> buildEnumAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return new EnumDeclarationAnnotationElementAdapter(annotationAdapter, elementName, false);
+	}
+
+	protected static DeclarationAnnotationElementAdapter<String[]> buildEnumArrayAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+		return new EnumArrayDeclarationAnnotationElementAdapter(annotationAdapter, elementName, false);
 	}
 
 	public boolean targetEntityIsValid(String targetEntity) {

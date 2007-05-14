@@ -43,6 +43,7 @@ import org.eclipse.jpt.core.internal.content.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.internal.content.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.internal.content.orm.XmlBasic;
+import org.eclipse.jpt.core.internal.content.orm.XmlCascade;
 import org.eclipse.jpt.core.internal.content.orm.XmlColumn;
 import org.eclipse.jpt.core.internal.content.orm.XmlDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.content.orm.XmlEmbeddable;
@@ -89,6 +90,7 @@ import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IBasic;
+import org.eclipse.jpt.core.internal.mappings.ICascade;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.IColumnMapping;
 import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn;
@@ -478,6 +480,11 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 		}
 
 		@Override
+		public Adapter caseXmlCascade(XmlCascade object) {
+			return createXmlCascadeAdapter();
+		}
+
+		@Override
 		public Adapter caseIJpaEObject(IJpaEObject object) {
 			return createIJpaEObjectAdapter();
 		}
@@ -735,6 +742,11 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 		@Override
 		public Adapter caseIUniqueConstraint(IUniqueConstraint object) {
 			return createIUniqueConstraintAdapter();
+		}
+
+		@Override
+		public Adapter caseICascade(ICascade object) {
+			return createICascadeAdapter();
 		}
 
 		@Override
@@ -1555,6 +1567,20 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.orm.XmlCascade <em>Xml Cascade</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlCascade
+	 * @generated
+	 */
+	public Adapter createXmlCascadeAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.IJpaEObject <em>IJpa EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -2083,6 +2109,20 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createIUniqueConstraintAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.mappings.ICascade <em>ICascade</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.mappings.ICascade
+	 * @generated
+	 */
+	public Adapter createICascadeAdapter() {
 		return null;
 	}
 

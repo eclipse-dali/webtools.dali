@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IBasic;
+import org.eclipse.jpt.core.internal.mappings.ICascade;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.IColumnMapping;
 import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn;
@@ -686,6 +687,17 @@ public class JpaCoreMappingsSwitch<T>
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case JpaCoreMappingsPackage.ICASCADE : {
+				ICascade iCascade = (ICascade) theEObject;
+				T result = caseICascade(iCascade);
+				if (result == null)
+					result = caseIJpaSourceObject(iCascade);
+				if (result == null)
+					result = caseIJpaEObject(iCascade);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			default :
 				return defaultCase(theEObject);
 		}
@@ -1303,6 +1315,21 @@ public class JpaCoreMappingsSwitch<T>
 	 * @generated
 	 */
 	public T caseIQueryHint(IQueryHint object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpretting the object as an instance of '<em>ICascade</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpretting the object as an instance of '<em>ICascade</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseICascade(ICascade object) {
 		return null;
 	}
 

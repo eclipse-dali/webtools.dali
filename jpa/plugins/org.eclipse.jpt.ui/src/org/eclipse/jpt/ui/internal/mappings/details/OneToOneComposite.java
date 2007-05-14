@@ -13,10 +13,8 @@ import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
-import org.eclipse.jpt.core.internal.mappings.IBasic;
 import org.eclipse.jpt.core.internal.mappings.IOneToOne;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
 import org.eclipse.swt.SWT;
@@ -37,6 +35,8 @@ public class OneToOneComposite extends BaseJpaComposite
 	private MappedByCombo mappedByCombo;
 
 	private EnumComboViewer optionalComboViewer;
+
+	private CascadeComposite cascadeComposite;
 
 	private JoinColumnComposite joinColumnComposite;
 		
@@ -104,6 +104,13 @@ public class OneToOneComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		this.optionalComboViewer.getControl().setLayoutData(gridData);
 
+		this.cascadeComposite = new CascadeComposite(generalComposite, this.commandStack, getWidgetFactory());
+		gridData = new GridData();
+		gridData.horizontalSpan = 3;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		this.cascadeComposite.getControl().setLayoutData(gridData);
+
 		this.joinColumnComposite = new JoinColumnComposite(generalComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -122,6 +129,7 @@ public class OneToOneComposite extends BaseJpaComposite
 		this.fetchTypeComboViewer.populate(CommonWidgets.buildSingleRelationshipMappingFetchEnumHolder(this.oneToOne));
 		this.mappedByCombo.populate(this.oneToOne);
 		this.optionalComboViewer.populate(new OptionalHolder(this.oneToOne));
+		this.cascadeComposite.populate(this.oneToOne);
 		this.joinColumnComposite.populate(this.oneToOne);
 	}
 	
@@ -130,6 +138,7 @@ public class OneToOneComposite extends BaseJpaComposite
 		this.fetchTypeComboViewer.populate();
 		this.mappedByCombo.populate();
 		this.optionalComboViewer.populate();
+		this.cascadeComposite.populate();
 		this.joinColumnComposite.populate();
 	}
 	
@@ -145,6 +154,7 @@ public class OneToOneComposite extends BaseJpaComposite
 		this.fetchTypeComboViewer.dispose();
 		this.mappedByCombo.dispose();
 		this.optionalComboViewer.dispose();
+		this.cascadeComposite.dispose();
 		this.joinColumnComposite.dispose();
 		super.dispose();
 	}

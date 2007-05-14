@@ -36,6 +36,8 @@ public class OneToManyComposite extends BaseJpaComposite
 	
 	private MappedByCombo mappedByCombo;
 
+	private CascadeComposite cascadeComposite;
+	
 	private OrderByComposite orderByComposite;
 
 	private JoinTableComposite joinTableComposite;
@@ -90,7 +92,7 @@ public class OneToManyComposite extends BaseJpaComposite
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.fetchTypeComboViewer.getControl().setLayoutData(gridData);
-		helpSystem.setHelp(fetchTypeComboViewer.getControl(), IJpaHelpContextIds.MAPPING_FETCH_TYPE);
+		helpSystem.setHelp(this.fetchTypeComboViewer.getControl(), IJpaHelpContextIds.MAPPING_FETCH_TYPE);
 
 		CommonWidgets.buildMappedByLabel(generalComposite, getWidgetFactory());
 		this.mappedByCombo = new MappedByCombo(generalComposite, this.commandStack, getWidgetFactory());
@@ -99,10 +101,16 @@ public class OneToManyComposite extends BaseJpaComposite
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.mappedByCombo.getControl().setLayoutData(gridData);
-		helpSystem.setHelp(mappedByCombo.getControl(), IJpaHelpContextIds.MAPPING_MAPPED_BY);
+		helpSystem.setHelp(this.mappedByCombo.getControl(), IJpaHelpContextIds.MAPPING_MAPPED_BY);
 		
-
-		this.orderByComposite = new OrderByComposite(composite, this.commandStack, getWidgetFactory());
+		this.cascadeComposite = new CascadeComposite(generalComposite, this.commandStack, getWidgetFactory());
+		gridData = new GridData();
+		gridData.horizontalSpan = 3;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		this.cascadeComposite.getControl().setLayoutData(gridData);
+	
+		this.orderByComposite = new OrderByComposite(generalComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -140,6 +148,7 @@ public class OneToManyComposite extends BaseJpaComposite
 		this.fetchTypeComboViewer.populate(CommonWidgets.buildMultiRelationshipMappingFetchEnumHolder(this.oneToMany));
 		this.targetEntityChooser.populate(this.oneToMany);
 		this.mappedByCombo.populate(this.oneToMany);
+		this.cascadeComposite.populate(this.oneToMany);
 		if (this.oneToMany != null) {
 			this.joinTableComposite.populate(this.oneToMany.getJoinTable());
 			this.orderByComposite.populate(this.oneToMany.getOrderBy());
@@ -154,6 +163,7 @@ public class OneToManyComposite extends BaseJpaComposite
 		this.fetchTypeComboViewer.populate();
 		this.targetEntityChooser.populate();
 		this.mappedByCombo.populate();
+		this.cascadeComposite.populate();
 		this.joinTableComposite.populate();
 		this.orderByComposite.populate();
 	}
@@ -169,6 +179,7 @@ public class OneToManyComposite extends BaseJpaComposite
 		this.fetchTypeComboViewer.dispose();
 		this.targetEntityChooser.dispose();
 		this.mappedByCombo.dispose();
+		this.cascadeComposite.dispose();
 		this.joinTableComposite.dispose();
 		this.orderByComposite.dispose();
 		super.dispose();

@@ -500,9 +500,9 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 		super.refreshDefaults(defaultsContext);
 		setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_TABLE_NAME_KEY));
 	}
-	
+
 	public boolean isSpecified() {
-		return node != null; 
+		return node != null;
 	}
 
 	public IRelationshipMapping relationshipMapping() {

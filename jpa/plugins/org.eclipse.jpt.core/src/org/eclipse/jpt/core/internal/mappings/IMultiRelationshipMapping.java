@@ -73,7 +73,7 @@ public interface IMultiRelationshipMapping extends INonOwningMapping
 	 * @generated
 	 */
 	IJoinTable getJoinTable();
-	
+
 	/**
 	 * All multi-relationship mappings have a join table, even if it has to be
 	 * calculated from default settings.  However, it is important to note 

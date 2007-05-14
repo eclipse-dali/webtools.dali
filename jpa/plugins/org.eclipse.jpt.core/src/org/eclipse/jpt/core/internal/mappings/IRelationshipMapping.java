@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.internal.IAttributeMapping;
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IRelationshipMapping#getSpecifiedTargetEntity <em>Specified Target Entity</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IRelationshipMapping#getDefaultTargetEntity <em>Default Target Entity</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IRelationshipMapping#getResolvedTargetEntity <em>Resolved Target Entity</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.mappings.IRelationshipMapping#getCascade <em>Cascade</em>}</li>
  * </ul>
  * </p>
  *
@@ -115,6 +116,32 @@ public interface IRelationshipMapping extends IAttributeMapping
 	void setResolvedTargetEntity(IEntity value);
 
 	/**
+	 * Returns the value of the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cascade</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cascade</em>' containment reference.
+	 * @see #setCascade(ICascade)
+	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIRelationshipMapping_Cascade()
+	 * @model containment="true"
+	 * @generated
+	 */
+	ICascade getCascade();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.IRelationshipMapping#getCascade <em>Cascade</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade</em>' containment reference.
+	 * @see #getCascade()
+	 * @generated
+	 */
+	void setCascade(ICascade value);
+
+	/**
 	 * Return whether the specified 'targetEntity' is valid.
 	 */
 	boolean targetEntityIsValid(String targetEntity);
@@ -131,4 +158,6 @@ public interface IRelationshipMapping extends IAttributeMapping
 	 * @return
 	 */
 	IEntity getEntity();
+
+	ICascade createCascade();
 }

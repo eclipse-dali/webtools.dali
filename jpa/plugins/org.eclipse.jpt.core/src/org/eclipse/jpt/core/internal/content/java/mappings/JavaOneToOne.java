@@ -66,7 +66,7 @@ public class JavaOneToOne extends JavaSingleRelationshipMapping
 
 	private static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__TARGET_ENTITY);
 
-	private static final DeclarationAnnotationElementAdapter<String> CASCADE_ADAPTER = buildEnumAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__CASCADE);
+	private static final DeclarationAnnotationElementAdapter<String[]> CASCADE_ADAPTER = buildEnumArrayAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__CASCADE);
 
 	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildEnumAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__FETCH);
 
@@ -106,7 +106,7 @@ public class JavaOneToOne extends JavaSingleRelationshipMapping
 		return TARGET_ENTITY_ADAPTER;
 	}
 
-	protected DeclarationAnnotationElementAdapter<String> cascadeAdapter() {
+	protected DeclarationAnnotationElementAdapter<String[]> cascadeAdapter() {
 		return CASCADE_ADAPTER;
 	}
 

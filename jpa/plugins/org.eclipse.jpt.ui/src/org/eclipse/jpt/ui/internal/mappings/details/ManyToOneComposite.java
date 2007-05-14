@@ -37,6 +37,10 @@ public class ManyToOneComposite extends BaseJpaComposite
 	
 	private EnumComboViewer optionalComboViewer;
 
+	private OrderByComposite orderByComposite;
+
+	private CascadeComposite cascadeComposite;
+
 	private JoinColumnComposite joinColumnComposite;
 		
 	public ManyToOneComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -93,6 +97,13 @@ public class ManyToOneComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		this.optionalComboViewer.getControl().setLayoutData(gridData);
 
+		this.cascadeComposite = new CascadeComposite(generalComposite, this.commandStack, getWidgetFactory());
+		gridData = new GridData();
+		gridData.horizontalSpan = 3;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		this.cascadeComposite.getControl().setLayoutData(gridData);
+
 		this.joinColumnComposite = new JoinColumnComposite(generalComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -110,6 +121,7 @@ public class ManyToOneComposite extends BaseJpaComposite
 		this.targetEntityChooser.populate(this.manyToOne);
 		this.fetchTypeComboViewer.populate(CommonWidgets.buildSingleRelationshipMappingFetchEnumHolder(this.manyToOne));
 		this.optionalComboViewer.populate(new OptionalHolder(this.manyToOne));
+		this.cascadeComposite.populate(this.manyToOne);
 		this.joinColumnComposite.populate(this.manyToOne);
 	}
 	
@@ -117,6 +129,7 @@ public class ManyToOneComposite extends BaseJpaComposite
 		this.targetEntityChooser.populate();
 		this.fetchTypeComboViewer.populate();
 		this.optionalComboViewer.populate();
+		this.cascadeComposite.populate();
 		this.joinColumnComposite.populate();
 	}
 	
@@ -131,6 +144,7 @@ public class ManyToOneComposite extends BaseJpaComposite
 		this.targetEntityChooser.dispose();
 		this.fetchTypeComboViewer.dispose();
 		this.optionalComboViewer.dispose();
+		this.cascadeComposite.dispose();
 		this.joinColumnComposite.dispose();
 		super.dispose();
 	}

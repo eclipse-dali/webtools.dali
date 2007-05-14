@@ -42,6 +42,7 @@ import org.eclipse.jpt.core.internal.content.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.internal.content.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.internal.content.orm.XmlBasic;
+import org.eclipse.jpt.core.internal.content.orm.XmlCascade;
 import org.eclipse.jpt.core.internal.content.orm.XmlColumn;
 import org.eclipse.jpt.core.internal.content.orm.XmlDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.content.orm.XmlEmbeddable;
@@ -88,6 +89,7 @@ import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IBasic;
+import org.eclipse.jpt.core.internal.mappings.ICascade;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.IColumnMapping;
 import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn;
@@ -1458,6 +1460,25 @@ public class OrmSwitch<T>
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.XML_CASCADE : {
+				XmlCascade xmlCascade = (XmlCascade) theEObject;
+				T result = caseXmlCascade(xmlCascade);
+				if (result == null)
+					result = caseXmlEObject(xmlCascade);
+				if (result == null)
+					result = caseICascade(xmlCascade);
+				if (result == null)
+					result = caseJpaEObject(xmlCascade);
+				if (result == null)
+					result = caseIXmlEObject(xmlCascade);
+				if (result == null)
+					result = caseIJpaSourceObject(xmlCascade);
+				if (result == null)
+					result = caseIJpaEObject(xmlCascade);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			default :
 				return defaultCase(theEObject);
 		}
@@ -2304,6 +2325,21 @@ public class OrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpretting the object as an instance of '<em>Xml Cascade</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpretting the object as an instance of '<em>Xml Cascade</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlCascade(XmlCascade object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpretting the object as an instance of '<em>IJpa EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -2885,6 +2921,21 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseIUniqueConstraint(IUniqueConstraint object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpretting the object as an instance of '<em>ICascade</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpretting the object as an instance of '<em>ICascade</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseICascade(ICascade object) {
 		return null;
 	}
 

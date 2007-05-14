@@ -30,7 +30,14 @@ public interface OrmXmlMapper
 	String BASIC__ENUMERATED = "enumerated";  //$NON-NLS-1$
 	
 	String CASCADE = "cascade";  //$NON-NLS-1$
+	String CASCADE__CASCADE_ALL = "cascade-all";  //$NON-NLS-1$
+	String CASCADE__CASCADE_PERSIST = "cascade-persist";  //$NON-NLS-1$
+	String CASCADE__CASCADE_MERGE = "cascade-merge";  //$NON-NLS-1$
+	String CASCADE__CASCADE_REMOVE = "cascade-remove";  //$NON-NLS-1$	
+	String CASCADE__CASCADE_REFRESH = "cascade-refresh";  //$NON-NLS-1$	
+	
 	String CASCADE_PERSIST = "cascade-persist";  //$NON-NLS-1$
+	
 	String CATALOG = "catalog";  //$NON-NLS-1$
 	String CLASS = "class";  //$NON-NLS-1$
 	String COLUMN = "column";  //$NON-NLS-1$

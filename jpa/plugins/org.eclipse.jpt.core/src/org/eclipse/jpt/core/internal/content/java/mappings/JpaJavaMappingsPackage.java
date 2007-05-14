@@ -804,13 +804,22 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY = JAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_RELATIONSHIP_MAPPING__CASCADE = JAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>Java Relationship Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT = JAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+	public static final int JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT = JAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaSingleRelationshipMapping <em>Java Single Relationship Mapping</em>}' class.
@@ -857,6 +866,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int JAVA_SINGLE_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY = JAVA_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_SINGLE_RELATIONSHIP_MAPPING__CASCADE = JAVA_RELATIONSHIP_MAPPING__CASCADE;
 
 	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
@@ -959,6 +977,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_MANY_TO_ONE__RESOLVED_TARGET_ENTITY = JAVA_SINGLE_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
 
 	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_MANY_TO_ONE__CASCADE = JAVA_SINGLE_RELATIONSHIP_MAPPING__CASCADE;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1057,6 +1084,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int JAVA_ONE_TO_ONE__RESOLVED_TARGET_ENTITY = JAVA_SINGLE_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_ONE_TO_ONE__CASCADE = JAVA_SINGLE_RELATIONSHIP_MAPPING__CASCADE;
 
 	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
@@ -1168,6 +1204,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY = JAVA_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
 
 	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING__CASCADE = JAVA_RELATIONSHIP_MAPPING__CASCADE;
+
+	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1268,6 +1313,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_ONE_TO_MANY__RESOLVED_TARGET_ENTITY = JAVA_MULTI_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
 
 	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_ONE_TO_MANY__CASCADE = JAVA_MULTI_RELATIONSHIP_MAPPING__CASCADE;
+
+	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1366,6 +1420,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int JAVA_MANY_TO_MANY__RESOLVED_TARGET_ENTITY = JAVA_MULTI_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_MANY_TO_MANY__CASCADE = JAVA_MULTI_RELATIONSHIP_MAPPING__CASCADE;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
@@ -3443,6 +3506,70 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_UNIQUE_CONSTRAINT_FEATURE_COUNT = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaCascade <em>Java Cascade</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JavaCascade
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaCascade()
+	 * @generated
+	 */
+	public static final int JAVA_CASCADE = 43;
+
+	/**
+	 * The feature id for the '<em><b>All</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_CASCADE__ALL = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Persist</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_CASCADE__PERSIST = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Merge</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_CASCADE__MERGE = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Remove</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_CASCADE__REMOVE = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Refresh</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_CASCADE__REFRESH = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 4;
+
+	/**
+	 * The number of structural features of the '<em>Java Cascade</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_CASCADE_FEATURE_COUNT = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 5;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3735,6 +3862,13 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass javaUniqueConstraintEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass javaCascadeEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -4330,6 +4464,18 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaCascade <em>Java Cascade</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Java Cascade</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JavaCascade
+	 * @generated
+	 */
+	public EClass getJavaCascade() {
+		return javaCascadeEClass;
+	}
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaSecondaryTable <em>Java Secondary Table</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4414,6 +4560,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		javaNamedNativeQueryEClass = createEClass(JAVA_NAMED_NATIVE_QUERY);
 		javaQueryHintEClass = createEClass(JAVA_QUERY_HINT);
 		javaUniqueConstraintEClass = createEClass(JAVA_UNIQUE_CONSTRAINT);
+		javaCascadeEClass = createEClass(JAVA_CASCADE);
 	}
 
 	/**
@@ -4527,6 +4674,8 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		javaQueryHintEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIQueryHint());
 		javaUniqueConstraintEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
 		javaUniqueConstraintEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIUniqueConstraint());
+		javaCascadeEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
+		javaCascadeEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getICascade());
 		// Initialize classes and features; add operations and parameters
 		initEClass(javaTypeMappingEClass, JavaTypeMapping.class, "JavaTypeMapping", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaEntityEClass, JavaEntity.class, "JavaEntity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -4571,6 +4720,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		initEClass(javaNamedNativeQueryEClass, JavaNamedNativeQuery.class, "JavaNamedNativeQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaQueryHintEClass, JavaQueryHint.class, "JavaQueryHint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaUniqueConstraintEClass, JavaUniqueConstraint.class, "JavaUniqueConstraint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(javaCascadeEClass, JavaCascade.class, "JavaCascade", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 	}
 
 
@@ -5007,6 +5157,16 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass JAVA_UNIQUE_CONSTRAINT = eINSTANCE.getJavaUniqueConstraint();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaCascade <em>Java Cascade</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JavaCascade
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaCascade()
+		 * @generated
+		 */
+		public static final EClass JAVA_CASCADE = eINSTANCE.getJavaCascade();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaSecondaryTable <em>Java Secondary Table</em>}' class.

@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.NullDeclarationAnnotationAdapter;
@@ -146,6 +147,8 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 				return createJavaQueryHint();
 			case JpaJavaMappingsPackage.JAVA_UNIQUE_CONSTRAINT :
 				return createJavaUniqueConstraint();
+			case JpaJavaMappingsPackage.JAVA_CASCADE :
+				return createJavaCascade();
 			default :
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -397,6 +400,15 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 
 	public JavaUniqueConstraint createJavaUniqueConstraint() {
 		throw new UnsupportedOperationException("Use createJavaUniqueConstraint(Member, IndexedDeclarationAnnotationAdapter) instead");
+	}
+
+	public JavaCascade createJavaCascade() {
+		throw new UnsupportedOperationException("Use createJavaCascade(Attribute, DeclarationAnnotationElementAdapter) instead");
+	}
+
+	public JavaCascade createJavaCascade(Attribute attribute, DeclarationAnnotationElementAdapter<String[]> cascadeAdapter) {
+		JavaCascade javaCascade = new JavaCascade(attribute, cascadeAdapter);
+		return javaCascade;
 	}
 
 	public JavaUniqueConstraint createJavaUniqueConstraint(Member member, IndexedDeclarationAnnotationAdapter idaa) {

@@ -151,6 +151,13 @@
         <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/OrderingType/PRIMARY_KEY"/>
         <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/OrderingType/CUSTOM"/>
       </genEnums>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="core.ecore#//mappings/CascadeType">
+        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/CascadeType/ALL"/>
+        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/CascadeType/PERSIST"/>
+        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/CascadeType/MERGE"/>
+        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/CascadeType/REMOVE"/>
+        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/CascadeType/REFRESH"/>
+      </genEnums>
       <genClasses ecoreClass="core.ecore#//mappings/IMappedSuperclass">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IMappedSuperclass/idClass"/>
       </genClasses>
@@ -265,6 +272,7 @@
         <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IRelationshipMapping/defaultTargetEntity"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference core.ecore#//mappings/IRelationshipMapping/resolvedTargetEntity"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference core.ecore#//mappings/IRelationshipMapping/cascade"/>
       </genClasses>
       <genClasses ecoreClass="core.ecore#//mappings/INonOwningMapping">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/INonOwningMapping/mappedBy"/>
@@ -382,6 +390,13 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IQueryHint/name"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IQueryHint/value"/>
       </genClasses>
+      <genClasses image="false" ecoreClass="core.ecore#//mappings/ICascade">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/ICascade/all"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/ICascade/persist"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/ICascade/merge"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/ICascade/remove"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/ICascade/refresh"/>
+      </genClasses>
     </nestedGenPackages>
   </genPackages>
   <genPackages prefix="JpaJava" basePackage="org.eclipse.jpt.core.internal.content"
@@ -453,6 +468,7 @@
       <genClasses ecoreClass="java.ecore#//mappings/JavaNamedNativeQuery"/>
       <genClasses ecoreClass="java.ecore#//mappings/JavaQueryHint"/>
       <genClasses ecoreClass="java.ecore#//mappings/JavaUniqueConstraint"/>
+      <genClasses ecoreClass="java.ecore#//mappings/JavaCascade"/>
     </nestedGenPackages>
   </genPackages>
   <genPackages prefix="Orm" basePackage="org.eclipse.jpt.core.internal.content" disposableProviderFactory="true"
@@ -624,6 +640,7 @@
     <genClasses ecoreClass="orm.ecore#//XmlNamedNativeQuery"/>
     <genClasses ecoreClass="orm.ecore#//XmlQueryHint"/>
     <genClasses ecoreClass="orm.ecore#//XmlUniqueConstraint"/>
+    <genClasses ecoreClass="orm.ecore#//XmlCascade"/>
   </genPackages>
   <genPackages prefix="Persistence" basePackage="org.eclipse.jpt.core.internal.content"
       disposableProviderFactory="true" ecorePackage="persistence.ecore#/">

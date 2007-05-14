@@ -33,9 +33,12 @@ public class ManyToManyComposite extends BaseJpaComposite
 
 	private MappedByCombo mappedByCombo;
 
+	private CascadeComposite cascadeComposite;
+
+	private OrderByComposite orderByComposite;
+
 	private JoinTableComposite joinTableComposite;
 	
-	private OrderByComposite orderByComposite;
 
 	public ManyToManyComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, SWT.NULL, commandStack, widgetFactory);
@@ -96,6 +99,14 @@ public class ManyToManyComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		this.mappedByCombo.getControl().setLayoutData(gridData);
 
+		this.cascadeComposite = new CascadeComposite(generalComposite, this.commandStack, getWidgetFactory());
+		gridData = new GridData();
+		gridData.horizontalSpan = 3;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		this.cascadeComposite.getControl().setLayoutData(gridData);
+
+
 		this.orderByComposite = new OrderByComposite(composite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
@@ -133,6 +144,7 @@ public class ManyToManyComposite extends BaseJpaComposite
 		this.targetEntityChooser.populate(this.manyToMany);
 		this.fetchTypeComboViewer.populate(CommonWidgets.buildMultiRelationshipMappingFetchEnumHolder(this.manyToMany));
 		this.mappedByCombo.populate(this.manyToMany);
+		this.cascadeComposite.populate(this.manyToMany);
 		if (this.manyToMany != null) {
 			this.joinTableComposite.populate(this.manyToMany.getJoinTable());
 			this.orderByComposite.populate(this.manyToMany.getOrderBy());
@@ -147,6 +159,7 @@ public class ManyToManyComposite extends BaseJpaComposite
 		this.targetEntityChooser.populate();
 		this.fetchTypeComboViewer.populate();
 		this.mappedByCombo.populate();
+		this.cascadeComposite.populate();
 		this.joinTableComposite.populate();
 		this.orderByComposite.populate();
 	}
@@ -162,6 +175,7 @@ public class ManyToManyComposite extends BaseJpaComposite
 		this.targetEntityChooser.dispose();
 		this.fetchTypeComboViewer.dispose();
 		this.mappedByCombo.dispose();
+		this.cascadeComposite.dispose();
 		this.joinTableComposite.dispose();
 		this.orderByComposite.dispose();
 		super.dispose();

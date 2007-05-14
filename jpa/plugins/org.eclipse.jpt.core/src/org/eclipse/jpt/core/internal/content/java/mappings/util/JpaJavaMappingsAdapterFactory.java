@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaAssociationOverri
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAttributeOverride;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaBasic;
+import org.eclipse.jpt.core.internal.content.java.mappings.JavaCascade;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaColumn;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbeddable;
@@ -70,6 +71,7 @@ import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IBasic;
+import org.eclipse.jpt.core.internal.mappings.ICascade;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.IColumnMapping;
 import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn;
@@ -379,6 +381,11 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 		}
 
 		@Override
+		public Adapter caseJavaCascade(JavaCascade object) {
+			return createJavaCascadeAdapter();
+		}
+
+		@Override
 		public Adapter caseIJpaEObject(IJpaEObject object) {
 			return createIJpaEObjectAdapter();
 		}
@@ -621,6 +628,11 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 		@Override
 		public Adapter caseIUniqueConstraint(IUniqueConstraint object) {
 			return createIUniqueConstraintAdapter();
+		}
+
+		@Override
+		public Adapter caseICascade(ICascade object) {
+			return createICascadeAdapter();
 		}
 
 		@Override
@@ -1185,6 +1197,20 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createJavaUniqueConstraintAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaCascade <em>Java Cascade</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JavaCascade
+	 * @generated
+	 */
+	public Adapter createJavaCascadeAdapter() {
 		return null;
 	}
 
@@ -1857,6 +1883,20 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createIUniqueConstraintAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.mappings.ICascade <em>ICascade</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.mappings.ICascade
+	 * @generated
+	 */
+	public Adapter createICascadeAdapter() {
 		return null;
 	}
 
