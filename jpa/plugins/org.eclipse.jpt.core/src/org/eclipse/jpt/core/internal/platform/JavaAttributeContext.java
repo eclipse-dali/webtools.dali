@@ -97,7 +97,8 @@ public abstract class JavaAttributeContext extends BaseContext
 	protected void addModifierMessages(List<IMessage> messages) {
 		JavaPersistentAttribute attribute = 
 				(JavaPersistentAttribute) attributeMapping.getPersistentAttribute();
-		if (attribute.getAttribute().isField()) {
+		if (attribute.getMapping().getKey() != IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY
+				&& attribute.getAttribute().isField()) {
 			int flags;
 			
 			try {

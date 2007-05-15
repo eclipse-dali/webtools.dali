@@ -131,7 +131,9 @@ public abstract class XmlAttributeContext extends BaseContext
 	protected void addModifierMessages(List<IMessage> messages) {
 		XmlPersistentAttribute attribute = xmlAttributeMapping.getPersistentAttribute();
 		
-		if (attribute.getAttribute() != null && attribute.getAttribute().isField()) {
+		if (attribute.getMapping().getKey() != IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY
+				&& attribute.getAttribute() != null 
+				&& attribute.getAttribute().isField()) {
 			int flags;
 			try {
 				flags = attribute.getAttribute().getJdtMember().getFlags();
