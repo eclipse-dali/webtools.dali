@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
+import java.util.Set;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -125,7 +126,7 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int SPECIFIED_LENGTH_FOR_XML_EDEFAULT = 0;
+	protected static final int SPECIFIED_LENGTH_FOR_XML_EDEFAULT = -1;
 
 	protected XmlDiscriminatorColumn() {
 		throw new UnsupportedOperationException();
@@ -133,6 +134,13 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 
 	protected XmlDiscriminatorColumn(INamedColumn.Owner owner) {
 		super(owner);
+	}
+	
+	@Override
+	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
+		super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
+		insignificantXmlFeatureIds.add(OrmPackage.XML_DISCRIMINATOR_COLUMN__LENGTH);
+		insignificantXmlFeatureIds.add(OrmPackage.XML_DISCRIMINATOR_COLUMN__DEFAULT_LENGTH);
 	}
 
 	/**

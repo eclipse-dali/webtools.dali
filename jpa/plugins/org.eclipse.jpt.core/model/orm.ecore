@@ -244,7 +244,7 @@
         eType="ecore:EEnum core.ecore#//mappings/DiscriminatorType" volatile="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedLengthForXml"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
-        volatile="true"/>
+        volatile="true" defaultValueLiteral="-1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlSecondaryTable" eSuperTypes="#//AbstractXmlTable core.ecore#//mappings/ISecondaryTable"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlPrimaryKeyJoinColumn" eSuperTypes="#//AbstractXmlNamedColumn core.ecore#//mappings/IPrimaryKeyJoinColumn">
