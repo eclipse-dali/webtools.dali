@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
+import java.util.Iterator;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>IMulti Relationship Mapping</b></em>'.
@@ -121,4 +123,6 @@ public interface IMultiRelationshipMapping extends INonOwningMapping
 	 * @generated
 	 */
 	void setMapKey(String value);
-} // IMultiRelationshipMapping
+
+	Iterator<String> candidateMapKeyNames();
+}

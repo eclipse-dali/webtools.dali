@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -263,8 +264,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 	}
 
 	public boolean isJoinTableSpecified() {
-		XmlJoinTable joinTable = getJoinTableForXml();
-		return joinTable != null && joinTable.isSpecified();
+		XmlJoinTable table = getJoinTableForXml();
+		return table != null && table.isSpecified();
 	}
 
 	/**
@@ -635,4 +636,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 		super.initializeFromXmlMulitRelationshipMapping(oldMapping);
 		setFetch(oldMapping.getFetch());
 	}
-} // XmlMultiRelationshipMapping
+
+	public Iterator<String> candidateMapKeyNames() {
+		return this.allTargetEntityAttributeNames();
+	}
+}

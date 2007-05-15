@@ -14,7 +14,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.mappings.ICascade;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
@@ -24,7 +23,6 @@ import org.eclipse.jpt.core.internal.mappings.RelationshipMappingTools;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -524,16 +522,13 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 		return getTargetEntity().lastIndexOf('.') != -1;
 	}
 
+	public Iterator<String> allTargetEntityAttributeNames() {
+		IEntity targetEntity = this.getResolvedTargetEntity();
+		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.getPersistentType().allAttributeNames();
+	}
+
 	public Iterator<String> candidateMappedByAttributeNames() {
-		IEntity targetEntity = getResolvedTargetEntity();
-		if (targetEntity == null) {
-			return EmptyIterator.instance();
-		}
-		return new TransformationIterator<IPersistentAttribute, String>(targetEntity.getPersistentType().attributes()) {
-			protected String transform(IPersistentAttribute attribute) {
-				return attribute.getName();
-			}
-		};
+		return this.allTargetEntityAttributeNames();
 	}
 
 	@Override
@@ -552,4 +547,4 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 		}
 		setResolvedTargetEntity(null);
 	}
-} // XmlRelationshipMapping
+}

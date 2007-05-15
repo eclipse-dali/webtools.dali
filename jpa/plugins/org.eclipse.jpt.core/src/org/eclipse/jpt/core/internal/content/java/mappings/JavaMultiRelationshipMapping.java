@@ -36,6 +36,8 @@ import org.eclipse.jpt.core.internal.mappings.IOrderBy;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -147,7 +149,7 @@ public abstract class JavaMultiRelationshipMapping
 	protected JavaMultiRelationshipMapping(Attribute attribute) {
 		super(attribute);
 		this.mappedByAdapter = this.buildAnnotationElementAdapter(this.mappedByAdapter());
-		this.mapKeyAnnotationAdapter = new MemberAnnotationAdapter(this.getAttribute(), MAP_KEY_ADAPTER);
+		this.mapKeyAnnotationAdapter = new MemberAnnotationAdapter(attribute, MAP_KEY_ADAPTER);
 		this.mapKeyNameAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, MAP_KEY_NAME_ADAPTER);
 		this.joinTable = JpaJavaMappingsFactory.eINSTANCE.createJavaJoinTable(buildOwner(), attribute);
 		((InternalEObject) this.joinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE, null, null);
@@ -586,12 +588,7 @@ public abstract class JavaMultiRelationshipMapping
 	}
 
 	private void updateMapKeyFromJava(CompilationUnit astRoot) {
-		if (this.mapKeyAnnotationAdapter.getAnnotation(astRoot) == null) {
-			this.setMapKey(null);
-		}
-		else {
-			this.setMapKey(this.mapKeyNameAdapter.getValue(astRoot));
-		}
+		this.setMapKey(this.mapKeyNameAdapter.getValue(astRoot));
 	}
 
 	private JavaJoinTable getJavaJoinTable() {
@@ -607,8 +604,24 @@ public abstract class JavaMultiRelationshipMapping
 		setFetch(DefaultLazyFetchType.fromJavaAnnotationValue(this.getFetchAdapter().getValue(astRoot)));
 	}
 
-	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
+	private boolean mappedByTouches(int pos, CompilationUnit astRoot) {
 		return this.elementTouches(this.mappedByAdapter(), pos, astRoot);
+	}
+
+	private boolean mapKeyNameTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(MAP_KEY_NAME_ADAPTER, pos, astRoot);
+	}
+
+	public Iterator<String> candidateMapKeyNames() {
+		return this.allTargetEntityAttributeNames();
+	}
+
+	protected Iterator<String> candidateMapKeyNames(Filter<String> filter) {
+		return new FilteringIterator<String>(this.candidateMapKeyNames(), filter);
+	}
+
+	protected Iterator<String> quotedCandidateMapKeyNames(Filter<String> filter) {
+		return StringTools.quote(this.candidateMapKeyNames(filter));
 	}
 
 	@Override
@@ -623,6 +636,9 @@ public abstract class JavaMultiRelationshipMapping
 		}
 		if (this.mappedByTouches(pos, astRoot)) {
 			return this.quotedCandidateMappedByAttributeNames(filter);
+		}
+		if (this.mapKeyNameTouches(pos, astRoot)) {
+			return this.quotedCandidateMapKeyNames(filter);
 		}
 		return null;
 	}

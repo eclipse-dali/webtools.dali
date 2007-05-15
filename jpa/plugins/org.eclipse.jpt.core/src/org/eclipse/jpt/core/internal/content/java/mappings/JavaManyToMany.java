@@ -74,6 +74,7 @@ public class JavaManyToMany extends JavaMultiRelationshipMapping
 		return TARGET_ENTITY_ADAPTER;
 	}
 
+	@Override
 	protected DeclarationAnnotationElementAdapter<String[]> cascadeAdapter() {
 		return CASCADE_ADAPTER;
 	}

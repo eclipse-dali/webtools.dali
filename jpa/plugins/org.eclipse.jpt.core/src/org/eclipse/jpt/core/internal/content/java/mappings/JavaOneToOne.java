@@ -106,6 +106,7 @@ public class JavaOneToOne extends JavaSingleRelationshipMapping
 		return TARGET_ENTITY_ADAPTER;
 	}
 
+	@Override
 	protected DeclarationAnnotationElementAdapter<String[]> cascadeAdapter() {
 		return CASCADE_ADAPTER;
 	}

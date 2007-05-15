@@ -799,12 +799,29 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 		return new ReadOnlyIterator(getPersistentAttributes());
 	}
 
+	public Iterator<String> attributeNames() {
+		return this.attributeNames(this.attributes());
+	}
+
+	private Iterator<String> attributeNames(Iterator<IPersistentAttribute> attrs) {
+		return new TransformationIterator<IPersistentAttribute, String>(attrs) {
+			@Override
+			protected String transform(IPersistentAttribute attribute) {
+				return attribute.getName();
+			}
+		};
+	}
+
 	public Iterator<IPersistentAttribute> allAttributes() {
 		return new CompositeIterator(new TransformationIterator(this.inheritanceHierarchy()) {
 			protected Object transform(Object next) {
 				return ((IPersistentType) next).attributes();
 			}
 		});
+	}
+
+	public Iterator<String> allAttributeNames() {
+		return this.attributeNames(this.allAttributes());
 	}
 
 	public Iterator<IPersistentType> inheritanceHierarchy() {

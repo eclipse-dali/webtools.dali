@@ -19,7 +19,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
@@ -46,7 +45,6 @@ import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -622,18 +620,13 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 		setResolvedTargetEntity(null);
 	}
 
-	public Iterator<String> candidateMappedByAttributeNames() {
+	public Iterator<String> allTargetEntityAttributeNames() {
 		IEntity targetEntity = this.getResolvedTargetEntity();
-		return (targetEntity == null) ? EmptyIterator.<String> instance() : this.attributeNames(targetEntity.getPersistentType().attributes());
+		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.getPersistentType().allAttributeNames();
 	}
 
-	private Iterator<String> attributeNames(Iterator<IPersistentAttribute> attributes) {
-		return new TransformationIterator<IPersistentAttribute, String>(attributes) {
-			@Override
-			protected String transform(IPersistentAttribute attribute) {
-				return attribute.getName();
-			}
-		};
+	public Iterator<String> candidateMappedByAttributeNames() {
+		return this.allTargetEntityAttributeNames();
 	}
 
 	protected Iterator<String> candidateMappedByAttributeNames(Filter<String> filter) {

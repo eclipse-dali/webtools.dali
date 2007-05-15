@@ -819,6 +819,19 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		return new ReadOnlyIterator<IPersistentAttribute>(getAttributes());
 	}
 
+	public Iterator<String> attributeNames() {
+		return this.attributeNames(this.attributes());
+	}
+
+	private Iterator<String> attributeNames(Iterator<IPersistentAttribute> attrs) {
+		return new TransformationIterator<IPersistentAttribute, String>(attrs) {
+			@Override
+			protected String transform(IPersistentAttribute attribute) {
+				return attribute.getName();
+			}
+		};
+	}
+
 	public Iterator<IPersistentAttribute> allAttributes() {
 		return new CompositeIterator<IPersistentAttribute>(new TransformationIterator<IPersistentType, Iterator<IPersistentAttribute>>(this.inheritanceHierarchy()) {
 			@Override
@@ -826,6 +839,10 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 				return pt.attributes();
 			}
 		});
+	}
+
+	public Iterator<String> allAttributeNames() {
+		return this.attributeNames(this.allAttributes());
 	}
 
 	public Iterator<IPersistentType> inheritanceHierarchy() {

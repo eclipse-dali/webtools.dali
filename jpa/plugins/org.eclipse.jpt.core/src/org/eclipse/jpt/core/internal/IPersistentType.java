@@ -85,16 +85,18 @@ public interface IPersistentType extends IJpaContentNode
 
 	/**
 	 * Return a read-only iterator of the contained IPersistentAttributes
-	 * @return
 	 */
 	Iterator<IPersistentAttribute> attributes();
+
+	Iterator<String> attributeNames();
 
 	/**
 	 * Return a read-only iterator of the all the IPersistentAttributes
 	 * in the hierarchy
-	 * @return
 	 */
 	Iterator<IPersistentAttribute> allAttributes();
+
+	Iterator<String> allAttributeNames();
 
 	/**
 	 * Return the attribute named <code>attributeName</code> if
