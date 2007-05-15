@@ -39,6 +39,10 @@ public abstract class XmlAttributeContext extends BaseContext
 	protected void initialize() {
 		
 	}
+	
+	public XmlPersistentAttribute getAttribute() {
+		return xmlAttributeMapping.getPersistentAttribute();
+	}
 
 	public void refreshDefaults(DefaultsContext defaultsContext) {
 		JavaPersistentType javaPersistentType = this.xmlAttributeMapping.getPersistentType().findJavaPersistentType();

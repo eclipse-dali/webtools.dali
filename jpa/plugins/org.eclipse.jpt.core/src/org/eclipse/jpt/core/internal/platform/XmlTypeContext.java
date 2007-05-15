@@ -239,7 +239,7 @@ public abstract class XmlTypeContext extends BaseContext
 			String javaAttributeName = javaAttribute.getName();
 			javaAttributeNames.add(javaAttributeName);
 			XmlPersistentAttribute xmlAttribute = xmlPersistentType.attributeNamed(javaAttributeName);
-			if (xmlAttribute == null) {
+			if (xmlAttribute == null && ! xmlPersistentType.getMapping().isXmlMetadataComplete()) {
 				createAndAddXmlAttributeFrom(javaAttribute, xmlPersistentType);
 			}
 		}
@@ -258,13 +258,21 @@ public abstract class XmlTypeContext extends BaseContext
 		for (XmlAttributeMapping mapping : xmlPersistentType.getVirtualAttributeMappings()) {
 			String attributeName = mapping.getPersistentAttribute().getName();
 			if (! javaAttributeNames.contains(attributeName)
-					|| specifiedXmlAttributeNames.contains(attributeName)) {
+					|| specifiedXmlAttributeNames.contains(attributeName)
+					|| xmlPersistentType.getMapping().isXmlMetadataComplete()) {
 				mappingsToRemove.add(mapping);
 			}
 		}
 		
-		xmlPersistentType.getVirtualAttributeMappings().removeAll(mappingsToRemove);
-
+		for (XmlAttributeMapping xmlAttributeMapping : mappingsToRemove) {
+			xmlPersistentType.getVirtualAttributeMappings().remove(xmlAttributeMapping);
+			for (XmlAttributeContext virtualAttributeContext : new ArrayList<XmlAttributeContext>(virtualAttributeMappingContexts)) {
+				if (virtualAttributeContext.getAttribute() == xmlAttributeMapping.getPersistentAttribute()) {
+					virtualAttributeMappingContexts.remove(virtualAttributeContext);
+				}
+			}
+		}
+		
 		for (XmlAttributeMapping xmlAttributeMapping : this.xmlTypeMapping.getPersistentType().getVirtualAttributeMappings()) {
 			this.virtualAttributeMappingContexts.add(buildContext(xmlAttributeMapping));
 		}
