@@ -61,6 +61,9 @@ public class JpaStructureView extends AbstractJpaView
 			
 			setLinkedWithEditor(i != null && i.intValue() == 1);
 		}
+		else {
+			setLinkedWithEditor(true);
+		}
 		
 		super.init(site, memento);
 	}
@@ -104,6 +107,12 @@ public class JpaStructureView extends AbstractJpaView
 	
 	@Override
 	public void select(Selection newSelection) {
+		if (!isLinkedWithEditor()) {
+			//The only selection we are concerned with is the editor, so we can select
+			//nothing if the user has set linkedWithEditor to false.  If we ever depend
+			//on selection from any other views, this assumption will no longer work
+			return;
+		}
 		Selection currentSelection = getSelection();
 		
 		if (newSelection.equals(currentSelection)) {
