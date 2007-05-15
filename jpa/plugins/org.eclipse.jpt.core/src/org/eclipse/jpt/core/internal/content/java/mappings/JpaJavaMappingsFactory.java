@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IOverride;
 import org.eclipse.jpt.core.internal.mappings.ITable;
+import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.INamedColumn.Owner;
 
 /**
@@ -411,8 +412,8 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 		return javaCascade;
 	}
 
-	public JavaUniqueConstraint createJavaUniqueConstraint(Member member, IndexedDeclarationAnnotationAdapter idaa) {
-		JavaUniqueConstraint javaUniqueConstraint = new JavaUniqueConstraint(member, idaa);
+	public JavaUniqueConstraint createJavaUniqueConstraint(IUniqueConstraint.Owner owner, Member member, IndexedDeclarationAnnotationAdapter idaa) {
+		JavaUniqueConstraint javaUniqueConstraint = new JavaUniqueConstraint(owner, member, idaa);
 		return javaUniqueConstraint;
 	}
 

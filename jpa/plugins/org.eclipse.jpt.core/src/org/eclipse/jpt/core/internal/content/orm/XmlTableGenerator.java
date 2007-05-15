@@ -23,6 +23,8 @@ import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
+import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.internal.Table;
 
 /**
  * <!-- begin-user-doc -->
@@ -1056,4 +1058,13 @@ public class XmlTableGenerator extends XmlGenerator implements ITableGenerator
 	protected XmlUniqueConstraint createXmlJavaUniqueConstraint(int index) {
 		return OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 	}
-} // XmlTableGenerator
+
+	public Table dbTable() {
+		Schema schema = this.dbSchema();
+		return (schema == null) ? null : schema.tableNamed(this.getTable());
+	}
+
+	public Schema dbSchema() {
+		return this.database().schemaNamed(this.getSchema());
+	}
+}

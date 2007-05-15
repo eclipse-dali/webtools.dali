@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Collection;
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -35,6 +36,9 @@ import org.eclipse.jpt.core.internal.jdtutility.StringArrayExpressionConverter;
 import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -59,6 +63,8 @@ public class JavaUniqueConstraint extends JavaEObject
 	 */
 	protected EList<String> columnNames;
 
+	private final IUniqueConstraint.Owner owner;
+
 	private final Member member;
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.UNIQUE_CONSTRAINT);
@@ -73,11 +79,12 @@ public class JavaUniqueConstraint extends JavaEObject
 
 	protected JavaUniqueConstraint() {
 		super();
-		throw new UnsupportedOperationException("Use JavaUniqueConstraint(Member) instead");
+		throw new UnsupportedOperationException("Use JavaUniqueConstraint(IUniqueConstraint.Owner, Member, IndexedDeclarationAnnotationAdapter) instead");
 	}
 
-	protected JavaUniqueConstraint(Member member, IndexedDeclarationAnnotationAdapter idaa) {
+	protected JavaUniqueConstraint(IUniqueConstraint.Owner owner, Member member, IndexedDeclarationAnnotationAdapter idaa) {
 		super();
+		this.owner = owner;
 		this.member = member;
 		this.idaa = idaa;
 		this.annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
@@ -252,8 +259,44 @@ public class JavaUniqueConstraint extends JavaEObject
 		return result.toString();
 	}
 
+	public IUniqueConstraint.Owner getOwner() {
+		return this.owner;
+	}
+
 	public ITextRange validationTextRange() {
 		return this.member.annotationTextRange(this.idaa);
+	}
+
+	protected boolean elementTouches(DeclarationAnnotationElementAdapter<?> elementAdapter, int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.member.annotationElementTextRange(elementAdapter, astRoot), pos);
+	}
+
+	private boolean columnNamesTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.columnNamesDeclarationAdapter, pos, astRoot);
+	}
+
+	private Iterator<String> candidateColumnNames() {
+		return this.getOwner().candidateUniqueConstraintColumnNames();
+	}
+
+	private Iterator<String> candidateColumnNames(Filter<String> filter) {
+		return new FilteringIterator<String>(this.candidateColumnNames(), filter);
+	}
+
+	private Iterator<String> quotedCandidateColumnNames(Filter<String> filter) {
+		return StringTools.quote(this.candidateColumnNames(filter));
+	}
+
+	@Override
+	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		if (this.columnNamesTouches(pos, astRoot)) {
+			return this.quotedCandidateColumnNames(filter);
+		}
+		return null;
 	}
 
 	/**
@@ -292,32 +335,32 @@ public class JavaUniqueConstraint extends JavaEObject
 	}
 
 	// ********** static methods **********
-	static JavaUniqueConstraint createSecondaryTableUniqueConstraint(JavaSecondaryTable secondaryTable, Member member, int index) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaUniqueConstraint(member, buildSecondaryTableUniqueConstraintAnnotationAdapter(secondaryTable, index));
+	static JavaUniqueConstraint createSecondaryTableUniqueConstraint(IUniqueConstraint.Owner owner, DeclarationAnnotationAdapter declarationAnnotationAdapter, Member member, int index) {
+		return JpaJavaMappingsFactory.eINSTANCE.createJavaUniqueConstraint(owner, member, buildSecondaryTableUniqueConstraintAnnotationAdapter(declarationAnnotationAdapter, index));
 	}
 
-	private static IndexedDeclarationAnnotationAdapter buildSecondaryTableUniqueConstraintAnnotationAdapter(JavaSecondaryTable secondaryTable, int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(secondaryTable.getDeclarationAnnotationAdapter(), JPA.SECONDARY_TABLE__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
+	private static IndexedDeclarationAnnotationAdapter buildSecondaryTableUniqueConstraintAnnotationAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter, int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(declarationAnnotationAdapter, JPA.SECONDARY_TABLE__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
 	}
 
-	static JavaUniqueConstraint createJoinTableUniqueConstraint(Member member, int index) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaUniqueConstraint(member, buildJoinTableUniqueConstraintAnnotationAdapter(index));
+	static JavaUniqueConstraint createJoinTableUniqueConstraint(IUniqueConstraint.Owner owner, Member member, int index) {
+		return JpaJavaMappingsFactory.eINSTANCE.createJavaUniqueConstraint(owner, member, buildJoinTableUniqueConstraintAnnotationAdapter(index));
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildJoinTableUniqueConstraintAnnotationAdapter(int index) {
 		return new NestedIndexedDeclarationAnnotationAdapter(JavaJoinTable.DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
 	}
 
-	static JavaUniqueConstraint createTableUniqueConstraint(Member member, int index) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaUniqueConstraint(member, buildTableUniqueConstraintAnnotationAdapter(index));
+	static JavaUniqueConstraint createTableUniqueConstraint(IUniqueConstraint.Owner owner, Member member, int index) {
+		return JpaJavaMappingsFactory.eINSTANCE.createJavaUniqueConstraint(owner, member, buildTableUniqueConstraintAnnotationAdapter(index));
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildTableUniqueConstraintAnnotationAdapter(int index) {
 		return new NestedIndexedDeclarationAnnotationAdapter(JavaTable.DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
 	}
 
-	static JavaUniqueConstraint createTableGeneratorUniqueConstraint(Member member, int index) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaUniqueConstraint(member, buildTableGeneratorUniqueConstraintAnnotationAdapter(index));
+	static JavaUniqueConstraint createTableGeneratorUniqueConstraint(IUniqueConstraint.Owner owner, Member member, int index) {
+		return JpaJavaMappingsFactory.eINSTANCE.createJavaUniqueConstraint(owner, member, buildTableGeneratorUniqueConstraintAnnotationAdapter(index));
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildTableGeneratorUniqueConstraintAnnotationAdapter(int index) {

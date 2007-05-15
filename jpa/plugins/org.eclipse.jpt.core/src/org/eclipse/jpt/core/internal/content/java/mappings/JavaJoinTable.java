@@ -792,7 +792,7 @@ public class JavaJoinTable extends AbstractJavaTable implements IJoinTable
 
 	@Override
 	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
-		return JavaUniqueConstraint.createJoinTableUniqueConstraint(getMember(), index);
+		return JavaUniqueConstraint.createJoinTableUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
 	}
 
 	// ********** IJoinTable implementation **********

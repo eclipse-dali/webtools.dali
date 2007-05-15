@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.internal.IJpaSourceObject;
 import org.eclipse.jpt.core.internal.ITextRange;
@@ -266,5 +267,16 @@ public interface ITable extends IJpaSourceObject
 		ITextRange validationTextRange();
 
 		ITypeMapping getTypeMapping();
+	}
+
+	class UniqueConstraintOwner implements IUniqueConstraint.Owner {
+		private final ITable table;
+		public UniqueConstraintOwner(ITable table) {
+			super();
+			this.table = table;
+		}
+		public Iterator<String> candidateUniqueConstraintColumnNames() {
+			return this.table.dbTable().columnNames();
+		}
 	}
 }

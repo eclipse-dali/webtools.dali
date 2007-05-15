@@ -974,6 +974,12 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		if (this.catalogTouches(pos, astRoot)) {
 			return this.quotedCandidateCatalogs(filter);
 		}
+		for (IUniqueConstraint constraint : this.getUniqueConstraints()) {
+			result = ((JavaUniqueConstraint) constraint).connectedCandidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
 		return null;
 	}
 

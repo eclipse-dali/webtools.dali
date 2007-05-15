@@ -30,6 +30,8 @@ import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
+import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.internal.Table;
 
 /**
  * <!-- begin-user-doc -->
@@ -1242,7 +1244,16 @@ public class JavaTableGenerator extends JavaGenerator
 	}
 
 	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
-		return JavaUniqueConstraint.createTableGeneratorUniqueConstraint(getMember(), index);
+		return JavaUniqueConstraint.createTableGeneratorUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
+	}
+
+	public Table dbTable() {
+		Schema schema = this.dbSchema();
+		return (schema == null) ? null : schema.tableNamed(this.getTable());
+	}
+
+	public Schema dbSchema() {
+		return this.database().schemaNamed(this.getSchema());
 	}
 
 	// ********** jpa model -> java annotations **********

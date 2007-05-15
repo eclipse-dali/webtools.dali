@@ -201,7 +201,7 @@ public interface IJoinTable extends ITable
 	 * owner for "forward-pointer" JoinColumns;
 	 * these point at the target/inverse entity
 	 */
-	public class InverseJoinColumnOwner extends AbstractJoinColumnOwner
+	class InverseJoinColumnOwner extends AbstractJoinColumnOwner
 	{
 		public InverseJoinColumnOwner(IJoinTable joinTable) {
 			super(joinTable);
@@ -219,6 +219,7 @@ public interface IJoinTable extends ITable
 			return getJoinTable().relationshipMapping().getPersistentAttribute().getName();
 		}
 
+		@Override
 		public Table dbTable(String tableName) {
 			Table dbTable = super.dbTable(tableName);
 			if (dbTable != null) {
@@ -239,7 +240,7 @@ public interface IJoinTable extends ITable
 	 * owner for "back-pointer" JoinColumns;
 	 * these point at the source/owning entity
 	 */
-	public class JoinColumnOwner extends AbstractJoinColumnOwner
+	class JoinColumnOwner extends AbstractJoinColumnOwner
 	{
 		public JoinColumnOwner(IJoinTable joinTable) {
 			super(joinTable);
@@ -272,6 +273,7 @@ public interface IJoinTable extends ITable
 			return null;
 		}
 
+		@Override
 		public Table dbTable(String tableName) {
 			Table dbTable = super.dbTable(tableName);
 			if (dbTable != null) {

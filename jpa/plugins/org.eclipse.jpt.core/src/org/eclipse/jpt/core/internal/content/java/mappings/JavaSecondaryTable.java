@@ -429,7 +429,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 
 	@Override
 	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
-		return JavaUniqueConstraint.createSecondaryTableUniqueConstraint(this, getMember(), index);
+		return JavaUniqueConstraint.createSecondaryTableUniqueConstraint(new UniqueConstraintOwner(this), this.getDeclarationAnnotationAdapter(), getMember(), index);
 	}
 
 	// ********** persistence model -> java annotations **********

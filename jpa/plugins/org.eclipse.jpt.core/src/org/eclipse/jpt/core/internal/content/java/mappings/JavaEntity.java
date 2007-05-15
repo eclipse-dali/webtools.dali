@@ -2913,13 +2913,19 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		if (result != null) {
 			return result;
 		}
-		result = this.getJavaTableGenerator().candidateValuesFor(pos, filter, astRoot);
-		if (result != null) {
-			return result;
+		JavaTableGenerator jtg = this.getJavaTableGenerator();
+		if (jtg != null) {
+			result = jtg.candidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
 		}
-		result = this.getJavaSequenceGenerator().candidateValuesFor(pos, filter, astRoot);
-		if (result != null) {
-			return result;
+		JavaSequenceGenerator jsg = this.getJavaSequenceGenerator();
+		if (jsg != null) {
+			result = jsg.candidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
 		}
 		return null;
 	}

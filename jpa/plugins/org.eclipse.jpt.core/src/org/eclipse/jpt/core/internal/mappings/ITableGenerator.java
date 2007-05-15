@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
+import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.internal.Table;
 
 /**
  * <!-- begin-user-doc -->
@@ -403,4 +406,20 @@ public interface ITableGenerator extends IGenerator
 	void refreshDefaults(DefaultsContext defaultsContext);
 
 	IUniqueConstraint createUniqueConstraint(int index);
-} // ITableGenerator
+
+	Schema dbSchema();
+
+	Table dbTable();
+
+
+	class UniqueConstraintOwner implements IUniqueConstraint.Owner {
+		private final ITableGenerator tableGenerator;
+		public UniqueConstraintOwner(ITableGenerator tableGenerator) {
+			super();
+			this.tableGenerator = tableGenerator;
+		}
+		public Iterator<String> candidateUniqueConstraintColumnNames() {
+			return this.tableGenerator.dbTable().columnNames();
+		}
+	}
+}

@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.internal.IJpaSourceObject;
 
@@ -44,4 +45,13 @@ public interface IUniqueConstraint extends IJpaSourceObject
 	 * @generated
 	 */
 	EList<String> getColumnNames();
-} // IUniqueConstraint
+
+
+	/**
+	 * All containers must implement this interface.
+	 */
+	interface Owner {
+		Iterator<String> candidateUniqueConstraintColumnNames();
+	}
+
+}

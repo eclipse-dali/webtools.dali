@@ -83,6 +83,6 @@ public class JavaTable extends AbstractJavaTable
 
 	@Override
 	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
-		return JavaUniqueConstraint.createTableUniqueConstraint(getMember(), index);
+		return JavaUniqueConstraint.createTableUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
 	}
 }
