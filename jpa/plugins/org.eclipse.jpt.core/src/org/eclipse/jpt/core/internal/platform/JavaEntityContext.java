@@ -194,8 +194,8 @@ public class JavaEntityContext extends JavaTypeContext
 			String override = i.next();
 			if (!getEntity().containsAssociationOverride(override)) {
 				JavaAssociationOverride associationOverride = JpaJavaMappingsFactory.eINSTANCE.createJavaAssociationOverride(new IEntity.AssociationOverrideOwner(getEntity()), getEntity().getType());
-				associationOverride.setName(override);
 				getEntity().getDefaultAssociationOverrides().add(associationOverride);
+				associationOverride.setName(override);
 			}
 			
 		}
