@@ -297,8 +297,12 @@ public class JpaCompilationUnit extends JavaEObject
 		return this.selectionTextRange();
 	}
 
+	/**
+	 * Return null for selection textRange.  Entire java file will appear selected when
+	 * switching files otherwise
+	 */
 	public ITextRange selectionTextRange() {
-		return this.fullTextRange();
+		return null;
 	}
 
 	public Object getId() {
