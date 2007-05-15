@@ -933,4 +933,4 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 			this.parentPersistentType = possibleParent.parentPersistentType();
 		}
 	}
-} // JavaType
+}

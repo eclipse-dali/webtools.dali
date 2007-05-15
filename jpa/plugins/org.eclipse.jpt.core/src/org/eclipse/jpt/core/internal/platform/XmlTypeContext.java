@@ -244,10 +244,21 @@ public abstract class XmlTypeContext extends BaseContext
 			}
 		}
 		
-		//remove any default mappings that are not included in the javaAttributeNames collection
+		Collection<String> specifiedXmlAttributeNames = new ArrayList<String>();
+		for (XmlPersistentAttribute specifiedAttribute : xmlPersistentType.getSpecifiedPersistentAttributes()) {
+			String attributeName = specifiedAttribute.getName();
+			if (! StringTools.stringIsEmpty(attributeName)) {
+				specifiedXmlAttributeNames.add(attributeName);
+			}
+		}
+		
+		// remove virtual attribute if there's no java representation 
+		// *or* if it is mapped specifically
 		Collection<XmlAttributeMapping> mappingsToRemove = new ArrayList<XmlAttributeMapping>();
 		for (XmlAttributeMapping mapping : xmlPersistentType.getVirtualAttributeMappings()) {
-			if (!javaAttributeNames.contains(mapping.getPersistentAttribute().getName())) {
+			String attributeName = mapping.getPersistentAttribute().getName();
+			if (! javaAttributeNames.contains(attributeName)
+					|| specifiedXmlAttributeNames.contains(attributeName)) {
 				mappingsToRemove.add(mapping);
 			}
 		}
