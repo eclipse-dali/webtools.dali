@@ -69,6 +69,7 @@ import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
@@ -736,7 +737,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	protected Iterator<JavaPersistentAttribute> attributesNamed(final String attributeName) {
-		return new FilteringIterator<JavaPersistentAttribute>(getAttributes().iterator()) {
+		return new FilteringIterator<JavaPersistentAttribute>(attributes()) {
 			@Override
 			protected boolean accept(Object o) {
 				return attributeName.equals(((JavaPersistentAttribute) o).getName());
@@ -768,7 +769,8 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		if (values != null) {
 			return values;
 		}
-		for (JavaPersistentAttribute attribute : this.getAttributes()) {
+		for (Iterator<JavaPersistentAttribute> i = attributes() ; i.hasNext(); ) {
+			JavaPersistentAttribute attribute = i.next();
 			values = attribute.candidateValuesFor(pos, filter, astRoot);
 			if (values != null) {
 				return values;
@@ -778,12 +780,13 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	public IJpaContentNode contentNodeAt(int offset) {
-		for (JavaPersistentAttribute persistentAttribute : this.getAttributes()) {
+		for (Iterator<JavaPersistentAttribute> i = attributes(); i.hasNext(); ) {
+			JavaPersistentAttribute persistentAttribute = i.next();
 			if (persistentAttribute.includes(offset)) {
 				return persistentAttribute;
-			}
+			}			
 		}
-		return this;
+		return null;
 	}
 
 	public boolean includes(int offset) {
@@ -807,7 +810,8 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	private JavaPersistentAttribute persistentAttributeFor(IMember member) {
-		for (JavaPersistentAttribute attribute : this.getAttributes()) {
+		for (Iterator<JavaPersistentAttribute> i = attributes(); i.hasNext(); ) {
+			JavaPersistentAttribute attribute = i.next();
 			if (attribute.isFor(member)) {
 				return attribute;
 			}
@@ -815,15 +819,16 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		return null;
 	}
 
-	public Iterator<IPersistentAttribute> attributes() {
-		return new ReadOnlyIterator<IPersistentAttribute>(getAttributes());
+	//TODO CloneIterator
+	public Iterator<JavaPersistentAttribute> attributes() {
+		return new CloneIterator<JavaPersistentAttribute>(getAttributes());
 	}
 
 	public Iterator<String> attributeNames() {
 		return this.attributeNames(this.attributes());
 	}
 
-	private Iterator<String> attributeNames(Iterator<IPersistentAttribute> attrs) {
+	private Iterator<String> attributeNames(Iterator<? extends IPersistentAttribute> attrs) {
 		return new TransformationIterator<IPersistentAttribute, String>(attrs) {
 			@Override
 			protected String transform(IPersistentAttribute attribute) {
@@ -836,7 +841,8 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		return new CompositeIterator<IPersistentAttribute>(new TransformationIterator<IPersistentType, Iterator<IPersistentAttribute>>(this.inheritanceHierarchy()) {
 			@Override
 			protected Iterator<IPersistentAttribute> transform(IPersistentType pt) {
-				return pt.attributes();
+				//TODO how to remove this warning?
+				return (Iterator<IPersistentAttribute>) pt.attributes();
 			}
 		});
 	}

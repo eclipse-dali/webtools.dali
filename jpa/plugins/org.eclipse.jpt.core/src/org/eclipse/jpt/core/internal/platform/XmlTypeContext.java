@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
+import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.content.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.content.orm.XmlAttributeMapping;
@@ -333,8 +334,8 @@ public abstract class XmlTypeContext extends BaseContext
 		Collection<IPersistentAttribute> javaAttributes = new ArrayList<IPersistentAttribute>();
 		JavaPersistentType javaPersistentType = javaPersistentType();
 		if (javaPersistentType != null) {
-			for (Iterator<IPersistentAttribute> i = javaPersistentType.attributes(); i.hasNext(); ) {
-				IPersistentAttribute persistentAttribute = i.next();
+			for (Iterator<JavaPersistentAttribute> i = javaPersistentType.attributes(); i.hasNext(); ) {
+				JavaPersistentAttribute persistentAttribute = i.next();
 				javaAttributes.add(persistentAttribute);
 			}
 		}
