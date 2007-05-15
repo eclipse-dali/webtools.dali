@@ -377,7 +377,7 @@
 		<topic label="Understanding persistence" href="concept_persistence.htm"/>
 	</context>
 	<context id="orm_package">
-		<description>The Java package that contains the persitent entities to which the orm.xml file applies.</description>
+		<description>The Java package that contains the persistent entities to which the orm.xml file applies.</description>
 		<topic label="Managing the orm.xml file" href="task_manage_orm.htm"/>
 		<topic label="JPA Details" href="ref_details_orm.htm"/>
 	</context>

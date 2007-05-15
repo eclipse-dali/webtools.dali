@@ -49,8 +49,8 @@
         <topic href="tasks005.htm#BABFEICE" label="Embeddable" />
         <topic href="tasks006.htm#BABDAGCI" label="Mapped superclass" />
       </topic>
-      <topic href="task_inheritance.htm#CIHGBIEI" label="Specifying additional tables" />
-      <topic href="task_inheritance001.htm#CIHCCCJD" label="Specifying entity inheritance" />
+      <topic href="task_additonal_tables.htm#CIHGBIEI" label="Specifying additional tables" />
+      <topic href="task_inheritance.htm#CIHCCCJD" label="Specifying entity inheritance" />
       <topic href="task_mapping.htm#BABDGBIJ" label="Mapping an entity">
         <topic href="tasks007.htm#BABBABCE" label="Basic mapping" />
         <topic href="tasks008.htm#BABCBHDF" label="Embedded mapping" />
@@ -101,15 +101,14 @@
       <topic label="Dialogs">
         <topic href="task_generate_entities.htm#CACDAFJD" label="Generate Entities from Tables dialog" />
         <topic href="reference012.htm#CACCGEHC" label="Edit Join Columns Dialog" />
-        <topic href="reference013.htm#CACHJAGB" label="Database Connection Dialog" />
       </topic>
       <topic href="ref_persistence_perspective.htm#BABIFBDB" label="JPA Development perspective" />
       <topic label="Icons and buttons">
-        <topic href="reference015.htm#CACGEACG" label="Icons" />
-        <topic href="reference016.htm#CACDJCEI" label="Buttons" />
+        <topic href="reference014.htm#CACGEACG" label="Icons" />
+        <topic href="reference015.htm#CACDJCEI" label="Buttons" />
       </topic>
-      <topic href="reference017.htm#sthref245" label="Javadoc" />
-      <topic href="reference018.htm#CACBBDIB" label="Dali Developer Documentation" />
+      <topic href="reference016.htm#sthref239" label="Javadoc" />
+      <topic href="reference017.htm#CACBBDIB" label="Dali Developer Documentation" />
     </topic>
     <topic href="tips_and_tricks.htm" label="Tips and tricks" />
     <topic href="whats_new.htm" label=" What's new" />
