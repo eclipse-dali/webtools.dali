@@ -346,6 +346,7 @@ public class JpaCompilationUnit extends JavaEObject
 				if (contentNode != null) {
 					return contentNode;
 				}
+				return javaType;
 			}
 		}
 		return this;

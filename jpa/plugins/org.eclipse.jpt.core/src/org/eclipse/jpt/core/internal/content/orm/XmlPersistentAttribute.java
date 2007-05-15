@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.XmlEObject;
+import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -313,8 +314,8 @@ public class XmlPersistentAttribute extends XmlEObject
 		if (javaPersistentType == null) {
 			return null;
 		}
-		for (Iterator<IPersistentAttribute> i = javaPersistentType.attributes(); i.hasNext();) {
-			IPersistentAttribute persistentAttribute = i.next();
+		for (Iterator<JavaPersistentAttribute> i = javaPersistentType.attributes(); i.hasNext();) {
+			JavaPersistentAttribute persistentAttribute = i.next();
 			if (persistentAttribute.getName().equals(getName())) {
 				return persistentAttribute.getAttribute();
 			}

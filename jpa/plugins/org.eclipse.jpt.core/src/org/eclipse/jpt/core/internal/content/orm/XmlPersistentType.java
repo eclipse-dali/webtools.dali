@@ -795,15 +795,15 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 		return (javaPersistentType == null) ? null : javaPersistentType.getType();
 	}
 
-	public Iterator<IPersistentAttribute> attributes() {
-		return new ReadOnlyIterator(getPersistentAttributes());
+	public Iterator<XmlPersistentAttribute> attributes() {
+		return new ReadOnlyIterator<XmlPersistentAttribute>(getPersistentAttributes());
 	}
 
 	public Iterator<String> attributeNames() {
 		return this.attributeNames(this.attributes());
 	}
 
-	private Iterator<String> attributeNames(Iterator<IPersistentAttribute> attrs) {
+	private Iterator<String> attributeNames(Iterator<? extends IPersistentAttribute> attrs) {
 		return new TransformationIterator<IPersistentAttribute, String>(attrs) {
 			@Override
 			protected String transform(IPersistentAttribute attribute) {
@@ -813,9 +813,11 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	}
 
 	public Iterator<IPersistentAttribute> allAttributes() {
-		return new CompositeIterator(new TransformationIterator(this.inheritanceHierarchy()) {
-			protected Object transform(Object next) {
-				return ((IPersistentType) next).attributes();
+		return new CompositeIterator<IPersistentAttribute>(new TransformationIterator<IPersistentType, Iterator<IPersistentAttribute>>(this.inheritanceHierarchy()) {
+			@Override
+			protected Iterator<IPersistentAttribute> transform(IPersistentType pt) {
+				//TODO how to remove this warning?
+				return (Iterator<IPersistentAttribute>) pt.attributes();
 			}
 		});
 	}
