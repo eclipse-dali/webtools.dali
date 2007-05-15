@@ -148,7 +148,7 @@ public class JavaCascade extends JavaEObject implements ICascade
 
 	private Attribute attribute;
 
-	private AnnotationElementAdapter cascadeAdapter;
+	private AnnotationElementAdapter<String[]> cascadeAdapter;
 
 	private DeclarationAnnotationElementAdapter<String[]> cascadeDeclarationAdapter;
 
@@ -156,7 +156,7 @@ public class JavaCascade extends JavaEObject implements ICascade
 		super();
 		this.attribute = attribute;
 		this.cascadeDeclarationAdapter = cascadeAdapter;
-		this.cascadeAdapter = new ShortCircuitArrayAnnotationElementAdapter(this.attribute, cascadeAdapter);
+		this.cascadeAdapter = new ShortCircuitArrayAnnotationElementAdapter<String>(this.attribute, cascadeAdapter);
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class JavaCascade extends JavaEObject implements ICascade
 	}
 
 	private void updateJavaAnnotation(boolean isSet, CascadeType cascadeType) {
-		String[] javaValue = (String[]) this.cascadeAdapter.getValue();
+		String[] javaValue = this.cascadeAdapter.getValue();
 		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValue(javaValue);
 		Collection<CascadeType> cascadeCollection = CollectionTools.collection(cascadeTypes);
 		if (cascadeCollection.contains(cascadeType)) {
@@ -208,7 +208,7 @@ public class JavaCascade extends JavaEObject implements ICascade
 		}
 	}
 
-	protected AnnotationElementAdapter getCascadeAdapter() {
+	protected AnnotationElementAdapter<String[]> getCascadeAdapter() {
 		return this.cascadeAdapter;
 	}
 
@@ -570,7 +570,7 @@ public class JavaCascade extends JavaEObject implements ICascade
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-		String[] javaValue = (String[]) this.cascadeAdapter.getValue(astRoot);
+		String[] javaValue = this.cascadeAdapter.getValue(astRoot);
 		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValue(javaValue);
 		Collection<CascadeType> cascadeCollection = CollectionTools.collection(cascadeTypes);
 		setAll(cascadeCollection.contains(CascadeType.ALL));
@@ -579,4 +579,4 @@ public class JavaCascade extends JavaEObject implements ICascade
 		setRemove(cascadeCollection.contains(CascadeType.REMOVE));
 		setRefresh(cascadeCollection.contains(CascadeType.REFRESH));
 	}
-} // JavaCascade
+}
