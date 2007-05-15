@@ -139,8 +139,8 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 	@Override
 	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
 		super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
-		insignificantXmlFeatureIds.add(OrmPackage.XML_DISCRIMINATOR_COLUMN__LENGTH);
-		insignificantXmlFeatureIds.add(OrmPackage.XML_DISCRIMINATOR_COLUMN__DEFAULT_LENGTH);
+		insignificantXmlFeatureIds.add(JpaCoreMappingsPackage.IDISCRIMINATOR_COLUMN__LENGTH);
+		insignificantXmlFeatureIds.add(JpaCoreMappingsPackage.IDISCRIMINATOR_COLUMN__DEFAULT_LENGTH);
 	}
 
 	/**
