@@ -10,11 +10,8 @@ package org.eclipse.jpt.ui.internal.views;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.jdt.internal.ui.JavaPluginImages;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -24,7 +21,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
-import org.eclipse.jpt.ui.internal.IPreferenceConstants;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.jface.NullLabelProvider;
@@ -35,16 +31,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IMemento;
-import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.PartInitException;
 
 public class JpaStructureView extends AbstractJpaView 
 {
-	private boolean linkedWithEditor;
-	
 	private StructureComposite structureComposite;
 	
 	
@@ -53,49 +43,12 @@ public class JpaStructureView extends AbstractJpaView
 	}
 	
 	
-	/* @see IViewPart#init(IViewSite, IMemento) */
-	public void init(IViewSite site, IMemento memento) throws PartInitException {
-		if (memento != null) {
-			Integer i = memento.getInteger(
-					IPreferenceConstants.LINK_STRUCTURE_VIEW_TO_EDITOR);
-			
-			setLinkedWithEditor(i != null && i.intValue() == 1);
-		}
-		else {
-			setLinkedWithEditor(true);
-		}
-		
-		super.init(site, memento);
-	}
-	
 	@Override
 	public void subcreatePartControl(Composite parent) {
 		structureComposite = 
 			new StructureComposite(pageBook, SWT.NULL);
+	}
 		
-		IActionBars actionBars = ((IViewSite) getSite()).getActionBars();
-		IToolBarManager toolBarManager= actionBars.getToolBarManager();
-		if (toolBarManager != null) {
-			toolBarManager.add(new ToggleLinkingAction());
-		}
-	}
-	
-	/* @see IPersistable#saveState(IMemento) */
-	public void saveState(IMemento memento) {
-		memento.putInteger(
-				IPreferenceConstants.LINK_STRUCTURE_VIEW_TO_EDITOR, 
-				linkedWithEditor ? 1 : 0);
-		super.saveState(memento);
-	}
-	
-	public boolean isLinkedWithEditor() {
-		return linkedWithEditor;
-	}
-
-	public void setLinkedWithEditor(boolean newValue) {
-		linkedWithEditor = newValue;
-	}
-	
 	public Selection getSelection() {
 		if (structureComposite.isVisible()) {
 			return structureComposite.getSelection(); 
@@ -107,12 +60,6 @@ public class JpaStructureView extends AbstractJpaView
 	
 	@Override
 	public void select(Selection newSelection) {
-		if (!isLinkedWithEditor()) {
-			//The only selection we are concerned with is the editor, so we can select
-			//nothing if the user has set linkedWithEditor to false.  If we ever depend
-			//on selection from any other views, this assumption will no longer work
-			return;
-		}
 		Selection currentSelection = getSelection();
 		
 		if (newSelection.equals(currentSelection)) {
@@ -271,27 +218,6 @@ public class JpaStructureView extends AbstractJpaView
 			}
 			
 			return provider;	
-		}
-	}
-	
-	private class ToggleLinkingAction extends Action 
-	{
-		public ToggleLinkingAction() {
-			super(JptUiMessages.JpaStructureView_linkWithEditorText);
-			setDescription(JptUiMessages.JpaStructureView_linkWithEditorDesc);
-			setToolTipText(JptUiMessages.JpaStructureView_linkWithEditorTooltip);
-			//TODO shouldn't be accessing this
-			JavaPluginImages.setLocalImageDescriptors(this, "synced.gif"); //$NON-NLS-1$		
-			// PlatformUI.getWorkbench().getHelpSystem().setHelp(this,
-			// IJavaHelpContextIds.LINK_EDITOR_ACTION);
-			setChecked(isLinkedWithEditor());
-		}
-	
-		/**
-		 * Runs the action.
-		 */
-		public void run() {
-			setLinkedWithEditor(isChecked());
 		}
 	}
 }
