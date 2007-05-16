@@ -233,7 +233,7 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	protected AbstractXmlColumn(INamedColumn.Owner owner) {
 		super(owner);
 	}
-	
+
 	@Override
 	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
 		super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);

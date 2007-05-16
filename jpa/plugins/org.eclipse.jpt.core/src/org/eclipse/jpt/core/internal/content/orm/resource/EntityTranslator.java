@@ -135,7 +135,7 @@ public class EntityTranslator extends TypeMappingTranslator
 	}
 	
 	protected Translator createInheritanceTranslator() {
-		return new EnumeratorTranslator(ENTITY__INHERITANCE + "/" + STRATEGY, MAPPINGS_PKG.getIEntity_InheritanceStrategy(), DOM_ATTRIBUTE);
+		return new InheritanceTranslator(ENTITY__INHERITANCE, JPA_CORE_XML_PKG.getXmlEntityForXml_InheritanceForXml());
 	}
 	
 	protected Translator createPrimaryKeyJoinColumnsTranslator() {
@@ -178,7 +178,7 @@ public class EntityTranslator extends TypeMappingTranslator
 	}
 	
 	protected Translator createIdClassTranslator() {
-		return new Translator(ID_CLASS + "/" + ID_CLASS__CLASS, JpaCoreMappingsPackage.eINSTANCE.getIEntity_IdClass(), DOM_ATTRIBUTE);
+		return new IdClassTranslator(ID_CLASS, JPA_CORE_XML_PKG.getXmlEntityForXml_IdClassForXml());
 	}
 
 }

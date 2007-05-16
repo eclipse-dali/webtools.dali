@@ -135,7 +135,7 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 	protected XmlDiscriminatorColumn(INamedColumn.Owner owner) {
 		super(owner);
 	}
-	
+
 	@Override
 	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
 		super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);

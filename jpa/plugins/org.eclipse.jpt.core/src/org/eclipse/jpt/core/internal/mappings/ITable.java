@@ -269,12 +269,16 @@ public interface ITable extends IJpaSourceObject
 		ITypeMapping getTypeMapping();
 	}
 
-	class UniqueConstraintOwner implements IUniqueConstraint.Owner {
+
+	class UniqueConstraintOwner implements IUniqueConstraint.Owner
+	{
 		private final ITable table;
+
 		public UniqueConstraintOwner(ITable table) {
 			super();
 			this.table = table;
 		}
+
 		public Iterator<String> candidateUniqueConstraintColumnNames() {
 			return this.table.dbTable().columnNames();
 		}

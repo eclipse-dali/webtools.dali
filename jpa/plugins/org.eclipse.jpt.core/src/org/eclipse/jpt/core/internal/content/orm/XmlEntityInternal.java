@@ -12,8 +12,10 @@ package org.eclipse.jpt.core.internal.content.orm;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -63,6 +65,26 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 public class XmlEntityInternal extends XmlTypeMapping
 	implements XmlEntityForXml, XmlEntity
 {
+	/**
+	 * The cached value of the '{@link #getIdClassForXml() <em>Id Class For Xml</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIdClassForXml()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlIdClass idClassForXml;
+
+	/**
+	 * The cached value of the '{@link #getInheritanceForXml() <em>Inheritance For Xml</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInheritanceForXml()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlInheritance inheritanceForXml;
+
 	/**
 	 * The default value of the '{@link #getSpecifiedName() <em>Specified Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -340,6 +362,57 @@ public class XmlEntityInternal extends XmlTypeMapping
 		this.discriminatorColumn = OrmFactory.eINSTANCE.createXmlDiscriminatorColumn(new IDiscriminatorColumn.Owner(this));
 		((InternalEObject) this.discriminatorColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__DISCRIMINATOR_COLUMN, null, null);
 		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
+		this.eAdapters().add(this.buildListener());
+	}
+
+	protected Adapter buildListener() {
+		return new AdapterImpl() {
+			@Override
+			public void notifyChanged(Notification notification) {
+				XmlEntityInternal.this.notifyChanged(notification);
+			}
+		};
+	}
+
+	protected void notifyChanged(Notification notification) {
+		switch (notification.getFeatureID(IEntity.class)) {
+			case JpaCoreMappingsPackage.IENTITY__ID_CLASS :
+				idClassChanged();
+				break;
+			case JpaCoreMappingsPackage.IENTITY__INHERITANCE_STRATEGY :
+				inheritanceStrategyChanged();
+				break;
+			default :
+				break;
+		}
+		switch (notification.getFeatureID(XmlEntityForXml.class)) {
+			case OrmPackage.XML_ENTITY_FOR_XML__ID_CLASS_FOR_XML :
+				xmlIdClassChanged();
+				break;
+			case OrmPackage.XML_ENTITY_FOR_XML__INHERITANCE_FOR_XML :
+				xmlInheritanceChanged();
+				break;
+			default :
+				break;
+		}
+	}
+
+	protected void inheritanceStrategyChanged() {
+		if (getInheritanceStrategy() == InheritanceType.DEFAULT) {
+			setInheritanceForXml(null);
+		}
+		else {
+			if (getInheritanceForXml() == null) {
+				setInheritanceForXml(OrmFactory.eINSTANCE.createXmlInheritance());
+			}
+			getInheritanceForXml().setStrategy(getInheritanceStrategy());
+		}
+	}
+
+	protected void xmlInheritanceChanged() {
+		if (getInheritanceForXml() == null) {
+			setInheritanceStrategy(null);
+		}
 	}
 
 	private ITable.Owner buildTableOwner() {
@@ -494,6 +567,12 @@ public class XmlEntityInternal extends XmlTypeMapping
 			virtualSecondaryTables = new EObjectContainmentEList<ISecondaryTable>(ISecondaryTable.class, this, OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES);
 		}
 		return virtualSecondaryTables;
+	}
+
+	protected void xmlIdClassChanged() {
+		if (getIdClassForXml() == null) {
+			setIdClass(null);
+		}
 	}
 
 	public boolean containsSecondaryTable(String name) {
@@ -1036,6 +1115,18 @@ public class XmlEntityInternal extends XmlTypeMapping
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS, oldIdClass, idClass));
 	}
 
+	protected void idClassChanged() {
+		if (getIdClass() == null) {
+			setIdClassForXml(null);
+		}
+		else {
+			if (getIdClassForXml() == null) {
+				setIdClassForXml(OrmFactory.eINSTANCE.createXmlIdClass());
+			}
+			getIdClassForXml().setValue(getIdClass());
+		}
+	}
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1157,6 +1248,124 @@ public class XmlEntityInternal extends XmlTypeMapping
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Id Class For Xml</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Id Class For Xml</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Id Class For Xml</em>' containment reference.
+	 * @see #setIdClassForXml(XmlIdClass)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntityForXml_IdClassForXml()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlIdClass getIdClassForXml() {
+		return idClassForXml;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetIdClassForXml(XmlIdClass newIdClassForXml, NotificationChain msgs) {
+		XmlIdClass oldIdClassForXml = idClassForXml;
+		idClassForXml = newIdClassForXml;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML, oldIdClassForXml, newIdClassForXml);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal#getIdClassForXml <em>Id Class For Xml</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id Class For Xml</em>' containment reference.
+	 * @see #getIdClassForXml()
+	 * @generated
+	 */
+	public void setIdClassForXml(XmlIdClass newIdClassForXml) {
+		if (newIdClassForXml != idClassForXml) {
+			NotificationChain msgs = null;
+			if (idClassForXml != null)
+				msgs = ((InternalEObject) idClassForXml).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML, null, msgs);
+			if (newIdClassForXml != null)
+				msgs = ((InternalEObject) newIdClassForXml).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML, null, msgs);
+			msgs = basicSetIdClassForXml(newIdClassForXml, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML, newIdClassForXml, newIdClassForXml));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Inheritance For Xml</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Inheritance For Xml</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Inheritance For Xml</em>' containment reference.
+	 * @see #setInheritanceForXml(XmlInheritance)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntityForXml_InheritanceForXml()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlInheritance getInheritanceForXml() {
+		return inheritanceForXml;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetInheritanceForXml(XmlInheritance newInheritanceForXml, NotificationChain msgs) {
+		XmlInheritance oldInheritanceForXml = inheritanceForXml;
+		inheritanceForXml = newInheritanceForXml;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML, oldInheritanceForXml, newInheritanceForXml);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal#getInheritanceForXml <em>Inheritance For Xml</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Inheritance For Xml</em>' containment reference.
+	 * @see #getInheritanceForXml()
+	 * @generated
+	 */
+	public void setInheritanceForXml(XmlInheritance newInheritanceForXml) {
+		if (newInheritanceForXml != inheritanceForXml) {
+			NotificationChain msgs = null;
+			if (inheritanceForXml != null)
+				msgs = ((InternalEObject) inheritanceForXml).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML, null, msgs);
+			if (newInheritanceForXml != null)
+				msgs = ((InternalEObject) newInheritanceForXml).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML, null, msgs);
+			msgs = basicSetInheritanceForXml(newInheritanceForXml, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML, newInheritanceForXml, newInheritanceForXml));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1164,6 +1373,10 @@ public class XmlEntityInternal extends XmlTypeMapping
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML :
+				return basicSetIdClassForXml(null, msgs);
+			case OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML :
+				return basicSetInheritanceForXml(null, msgs);
 			case OrmPackage.XML_ENTITY_INTERNAL__TABLE :
 				return basicSetTable(null, msgs);
 			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES :
@@ -1233,6 +1446,10 @@ public class XmlEntityInternal extends XmlTypeMapping
 				return getTableForXml();
 			case OrmPackage.XML_ENTITY_INTERNAL__DISCRIMINATOR_COLUMN_FOR_XML :
 				return getDiscriminatorColumnForXml();
+			case OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML :
+				return getIdClassForXml();
+			case OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML :
+				return getInheritanceForXml();
 			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_NAME :
 				return getSpecifiedName();
 			case OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_NAME :
@@ -1301,6 +1518,12 @@ public class XmlEntityInternal extends XmlTypeMapping
 				return;
 			case OrmPackage.XML_ENTITY_INTERNAL__DISCRIMINATOR_COLUMN_FOR_XML :
 				setDiscriminatorColumnForXml((XmlDiscriminatorColumn) newValue);
+				return;
+			case OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML :
+				setIdClassForXml((XmlIdClass) newValue);
+				return;
+			case OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML :
+				setInheritanceForXml((XmlInheritance) newValue);
 				return;
 			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_NAME :
 				setSpecifiedName((String) newValue);
@@ -1381,6 +1604,12 @@ public class XmlEntityInternal extends XmlTypeMapping
 			case OrmPackage.XML_ENTITY_INTERNAL__DISCRIMINATOR_COLUMN_FOR_XML :
 				setDiscriminatorColumnForXml((XmlDiscriminatorColumn) null);
 				return;
+			case OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML :
+				setIdClassForXml((XmlIdClass) null);
+				return;
+			case OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML :
+				setInheritanceForXml((XmlInheritance) null);
+				return;
 			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_NAME :
 				setSpecifiedName(SPECIFIED_NAME_EDEFAULT);
 				return;
@@ -1448,6 +1677,10 @@ public class XmlEntityInternal extends XmlTypeMapping
 				return getTableForXml() != null;
 			case OrmPackage.XML_ENTITY_INTERNAL__DISCRIMINATOR_COLUMN_FOR_XML :
 				return getDiscriminatorColumnForXml() != null;
+			case OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML :
+				return idClassForXml != null;
+			case OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML :
+				return inheritanceForXml != null;
 			case OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_NAME :
 				return SPECIFIED_NAME_EDEFAULT == null ? specifiedName != null : !SPECIFIED_NAME_EDEFAULT.equals(specifiedName);
 			case OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_NAME :
@@ -1515,6 +1748,10 @@ public class XmlEntityInternal extends XmlTypeMapping
 					return OrmPackage.XML_ENTITY_FOR_XML__TABLE_FOR_XML;
 				case OrmPackage.XML_ENTITY_INTERNAL__DISCRIMINATOR_COLUMN_FOR_XML :
 					return OrmPackage.XML_ENTITY_FOR_XML__DISCRIMINATOR_COLUMN_FOR_XML;
+				case OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML :
+					return OrmPackage.XML_ENTITY_FOR_XML__ID_CLASS_FOR_XML;
+				case OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML :
+					return OrmPackage.XML_ENTITY_FOR_XML__INHERITANCE_FOR_XML;
 				default :
 					return -1;
 			}
@@ -1597,6 +1834,10 @@ public class XmlEntityInternal extends XmlTypeMapping
 					return OrmPackage.XML_ENTITY_INTERNAL__TABLE_FOR_XML;
 				case OrmPackage.XML_ENTITY_FOR_XML__DISCRIMINATOR_COLUMN_FOR_XML :
 					return OrmPackage.XML_ENTITY_INTERNAL__DISCRIMINATOR_COLUMN_FOR_XML;
+				case OrmPackage.XML_ENTITY_FOR_XML__ID_CLASS_FOR_XML :
+					return OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML;
+				case OrmPackage.XML_ENTITY_FOR_XML__INHERITANCE_FOR_XML :
+					return OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML;
 				default :
 					return -1;
 			}

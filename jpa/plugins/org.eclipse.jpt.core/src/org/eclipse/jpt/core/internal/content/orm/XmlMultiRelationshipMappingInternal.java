@@ -9,8 +9,10 @@
 package org.eclipse.jpt.core.internal.content.orm;
 
 import java.util.Iterator;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -121,12 +123,67 @@ public abstract class XmlMultiRelationshipMappingInternal
 	 */
 	protected String mapKey = MAP_KEY_EDEFAULT;
 
+	/**
+	 * The cached value of the '{@link #getMapKeyForXml() <em>Map Key For Xml</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMapKeyForXml()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlMapKey mapKeyForXml;
+
 	protected XmlMultiRelationshipMappingInternal() {
 		super();
 		this.joinTable = OrmFactory.eINSTANCE.createXmlJoinTable(buildJoinTableOwner());
 		((InternalEObject) this.joinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE, null, null);
 		this.orderBy = OrmFactory.eINSTANCE.createXmlOrderBy();
 		((InternalEObject) this.orderBy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY, null, null);
+		this.eAdapters().add(this.buildListener());
+	}
+
+	protected Adapter buildListener() {
+		return new AdapterImpl() {
+			@Override
+			public void notifyChanged(Notification notification) {
+				XmlMultiRelationshipMappingInternal.this.notifyChanged(notification);
+			}
+		};
+	}
+
+	protected void notifyChanged(Notification notification) {
+		switch (notification.getFeatureID(IMultiRelationshipMapping.class)) {
+			case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY :
+				mapKeyChanged();
+				break;
+			default :
+				break;
+		}
+		switch (notification.getFeatureID(XmlMultiRelationshipMappingForXml.class)) {
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML :
+				xmlMapKeyChanged();
+				break;
+			default :
+				break;
+		}
+	}
+
+	protected void mapKeyChanged() {
+		if (getMapKey() == null) {
+			setMapKeyForXml(null);
+		}
+		else {
+			if (getMapKeyForXml() == null) {
+				setMapKeyForXml(OrmFactory.eINSTANCE.createXmlMapKey());
+			}
+			getMapKeyForXml().setName(getMapKey());
+		}
+	}
+
+	protected void xmlMapKeyChanged() {
+		if (getMapKeyForXml() == null) {
+			setMapKey(null);
+		}
 	}
 
 	private IJoinTable.Owner buildJoinTableOwner() {
@@ -378,6 +435,65 @@ public abstract class XmlMultiRelationshipMappingInternal
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Map Key For Xml</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Map Key For Xml</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Map Key For Xml</em>' containment reference.
+	 * @see #setMapKeyForXml(XmlMapKey)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlMultiRelationshipMappingForXml_MapKeyForXml()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlMapKey getMapKeyForXml() {
+		return mapKeyForXml;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetMapKeyForXml(XmlMapKey newMapKeyForXml, NotificationChain msgs) {
+		XmlMapKey oldMapKeyForXml = mapKeyForXml;
+		mapKeyForXml = newMapKeyForXml;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML, oldMapKeyForXml, newMapKeyForXml);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingInternal#getMapKeyForXml <em>Map Key For Xml</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Map Key For Xml</em>' containment reference.
+	 * @see #getMapKeyForXml()
+	 * @generated
+	 */
+	public void setMapKeyForXml(XmlMapKey newMapKeyForXml) {
+		if (newMapKeyForXml != mapKeyForXml) {
+			NotificationChain msgs = null;
+			if (mapKeyForXml != null)
+				msgs = ((InternalEObject) mapKeyForXml).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML, null, msgs);
+			if (newMapKeyForXml != null)
+				msgs = ((InternalEObject) newMapKeyForXml).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML, null, msgs);
+			msgs = basicSetMapKeyForXml(newMapKeyForXml, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML, newMapKeyForXml, newMapKeyForXml));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -389,6 +505,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 				return basicSetJoinTable(null, msgs);
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY :
 				return basicSetOrderBy(null, msgs);
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML :
+				return basicSetMapKeyForXml(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -415,6 +533,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 				return getJoinTableForXml();
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML :
 				return getOrderByForXml();
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML :
+				return getMapKeyForXml();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -441,6 +561,9 @@ public abstract class XmlMultiRelationshipMappingInternal
 				return;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML :
 				setOrderByForXml((XmlOrderBy) newValue);
+				return;
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML :
+				setMapKeyForXml((XmlMapKey) newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -469,6 +592,9 @@ public abstract class XmlMultiRelationshipMappingInternal
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML :
 				setOrderByForXml((XmlOrderBy) null);
 				return;
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML :
+				setMapKeyForXml((XmlMapKey) null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -495,6 +621,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 				return getJoinTableForXml() != null;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML :
 				return getOrderByForXml() != null;
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML :
+				return mapKeyForXml != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -534,6 +662,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__JOIN_TABLE_FOR_XML;
 				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML :
 					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__ORDER_BY_FOR_XML;
+				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML :
+					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__MAP_KEY_FOR_XML;
 				default :
 					return -1;
 			}
@@ -582,6 +712,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML;
 				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__ORDER_BY_FOR_XML :
 					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML;
+				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__MAP_KEY_FOR_XML :
+					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML;
 				default :
 					return -1;
 			}

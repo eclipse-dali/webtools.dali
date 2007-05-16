@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: Oracle. - initial API and implementation
+ *  Copyright (c) 2007 Oracle. All rights reserved. This
+ *  program and the accompanying materials are made available under the terms of
+ *  the Eclipse Public License v1.0 which accompanies this distribution, and is
+ *  available at http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm.resource;
 
@@ -15,8 +15,7 @@ import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
 import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
-
-public class MapKeyTranslator extends Translator implements OrmXmlMapper
+public class InheritanceTranslator extends Translator implements OrmXmlMapper
 {
 	protected static final OrmPackage JPA_CORE_XML_PKG = 
 		OrmPackage.eINSTANCE;
@@ -24,7 +23,7 @@ public class MapKeyTranslator extends Translator implements OrmXmlMapper
 	
 	private Translator[] children;	
 	
-	public MapKeyTranslator(String domNameAndPath, EStructuralFeature aFeature) {
+	public InheritanceTranslator(String domNameAndPath, EStructuralFeature aFeature) {
 		super(domNameAndPath, aFeature);
 	}
 	
@@ -38,16 +37,16 @@ public class MapKeyTranslator extends Translator implements OrmXmlMapper
 	protected Translator[] createChildren() {
 		return new Translator[] {
 			IDTranslator.INSTANCE,
-			createNameTranslator(),
+			createStrategyTranslator(),
 		};
 	}
 	
-	protected Translator createNameTranslator() {
-		return new Translator(MAP_KEY__NAME, JPA_CORE_XML_PKG.getXmlMapKey_Name(), DOM_ATTRIBUTE);
+	protected Translator createStrategyTranslator() {
+		return new EnumeratorTranslator(INHERITANCE__STRATEGY, JPA_CORE_XML_PKG.getXmlInheritance_Strategy(), DOM_ATTRIBUTE);
 	}
 
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return OrmFactory.eINSTANCE.createXmlIdClass();
+		return OrmFactory.eINSTANCE.createXmlInheritance();
 	}
 }

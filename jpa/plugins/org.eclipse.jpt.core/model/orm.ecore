@@ -90,6 +90,10 @@
         volatile="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="discriminatorColumnForXml"
         eType="#//XmlDiscriminatorColumn" volatile="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="idClassForXml" eType="#//XmlIdClass"
+        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inheritanceForXml" eType="#//XmlInheritance"
+        containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" abstract="true" interface="true"
       eSuperTypes="core.ecore#//mappings/IEntity">
@@ -121,6 +125,8 @@
         volatile="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="orderByForXml" eType="#//XmlOrderBy"
         volatile="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyForXml" eType="#//XmlMapKey"
+        containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMultiRelationshipMapping" abstract="true"
       interface="true" eSuperTypes="core.ecore#//mappings/IMultiRelationshipMapping"/>
@@ -262,4 +268,15 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlQueryHint" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IQueryHint"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlUniqueConstraint" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IUniqueConstraint"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlCascade" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/ICascade"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlIdClass" eSuperTypes="core.ecore#//XmlEObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        defaultValueLiteral=""/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlInheritance" eSuperTypes="core.ecore#//XmlEObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="strategy" eType="ecore:EEnum core.ecore#//mappings/InheritanceType"
+        defaultValueLiteral=""/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMapKey" eSuperTypes="core.ecore#//XmlEObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
 </ecore:EPackage>

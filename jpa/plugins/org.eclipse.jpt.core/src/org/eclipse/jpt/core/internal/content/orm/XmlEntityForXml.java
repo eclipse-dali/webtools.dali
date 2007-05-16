@@ -21,6 +21,8 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getTableForXml <em>Table For Xml</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getDiscriminatorColumnForXml <em>Discriminator Column For Xml</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getIdClassForXml <em>Id Class For Xml</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getInheritanceForXml <em>Inheritance For Xml</em>}</li>
  * </ul>
  * </p>
  *
@@ -81,4 +83,56 @@ public interface XmlEntityForXml extends EObject
 	 * @generated
 	 */
 	void setDiscriminatorColumnForXml(XmlDiscriminatorColumn value);
+
+	/**
+	 * Returns the value of the '<em><b>Id Class For Xml</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Id Class For Xml</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Id Class For Xml</em>' containment reference.
+	 * @see #setIdClassForXml(XmlIdClass)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntityForXml_IdClassForXml()
+	 * @model containment="true"
+	 * @generated
+	 */
+	XmlIdClass getIdClassForXml();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getIdClassForXml <em>Id Class For Xml</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id Class For Xml</em>' containment reference.
+	 * @see #getIdClassForXml()
+	 * @generated
+	 */
+	void setIdClassForXml(XmlIdClass value);
+
+	/**
+	 * Returns the value of the '<em><b>Inheritance For Xml</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Inheritance For Xml</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Inheritance For Xml</em>' containment reference.
+	 * @see #setInheritanceForXml(XmlInheritance)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntityForXml_InheritanceForXml()
+	 * @model containment="true"
+	 * @generated
+	 */
+	XmlInheritance getInheritanceForXml();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityForXml#getInheritanceForXml <em>Inheritance For Xml</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Inheritance For Xml</em>' containment reference.
+	 * @see #getInheritanceForXml()
+	 * @generated
+	 */
+	void setInheritanceForXml(XmlInheritance value);
 } // XmlEntityForXml

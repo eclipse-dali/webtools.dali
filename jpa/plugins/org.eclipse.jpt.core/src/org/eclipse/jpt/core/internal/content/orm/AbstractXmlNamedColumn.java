@@ -145,7 +145,7 @@ public abstract class AbstractXmlNamedColumn extends XmlEObject
 		super();
 		this.owner = owner;
 	}
-	
+
 	@Override
 	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
 		super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);

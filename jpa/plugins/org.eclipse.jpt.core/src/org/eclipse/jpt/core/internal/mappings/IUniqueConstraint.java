@@ -50,8 +50,8 @@ public interface IUniqueConstraint extends IJpaSourceObject
 	/**
 	 * All containers must implement this interface.
 	 */
-	interface Owner {
+	interface Owner
+	{
 		Iterator<String> candidateUniqueConstraintColumnNames();
 	}
-
 }

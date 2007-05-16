@@ -412,12 +412,15 @@ public interface ITableGenerator extends IGenerator
 	Table dbTable();
 
 
-	class UniqueConstraintOwner implements IUniqueConstraint.Owner {
+	class UniqueConstraintOwner implements IUniqueConstraint.Owner
+	{
 		private final ITableGenerator tableGenerator;
+
 		public UniqueConstraintOwner(ITableGenerator tableGenerator) {
 			super();
 			this.tableGenerator = tableGenerator;
 		}
+
 		public Iterator<String> candidateUniqueConstraintColumnNames() {
 			return this.tableGenerator.dbTable().columnNames();
 		}

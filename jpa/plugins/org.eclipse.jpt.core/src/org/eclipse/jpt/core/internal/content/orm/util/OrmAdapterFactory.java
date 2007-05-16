@@ -55,10 +55,13 @@ import org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal;
 import org.eclipse.jpt.core.internal.content.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.internal.content.orm.XmlGenerator;
 import org.eclipse.jpt.core.internal.content.orm.XmlId;
+import org.eclipse.jpt.core.internal.content.orm.XmlIdClass;
+import org.eclipse.jpt.core.internal.content.orm.XmlInheritance;
 import org.eclipse.jpt.core.internal.content.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.internal.content.orm.XmlJoinTable;
 import org.eclipse.jpt.core.internal.content.orm.XmlManyToMany;
 import org.eclipse.jpt.core.internal.content.orm.XmlManyToOne;
+import org.eclipse.jpt.core.internal.content.orm.XmlMapKey;
 import org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml;
@@ -482,6 +485,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 		@Override
 		public Adapter caseXmlCascade(XmlCascade object) {
 			return createXmlCascadeAdapter();
+		}
+
+		@Override
+		public Adapter caseXmlIdClass(XmlIdClass object) {
+			return createXmlIdClassAdapter();
+		}
+
+		@Override
+		public Adapter caseXmlInheritance(XmlInheritance object) {
+			return createXmlInheritanceAdapter();
+		}
+
+		@Override
+		public Adapter caseXmlMapKey(XmlMapKey object) {
+			return createXmlMapKeyAdapter();
 		}
 
 		@Override
@@ -1577,6 +1595,48 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createXmlCascadeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.orm.XmlIdClass <em>Xml Id Class</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlIdClass
+	 * @generated
+	 */
+	public Adapter createXmlIdClassAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.orm.XmlInheritance <em>Xml Inheritance</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlInheritance
+	 * @generated
+	 */
+	public Adapter createXmlInheritanceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.orm.XmlMapKey <em>Xml Map Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlMapKey
+	 * @generated
+	 */
+	public Adapter createXmlMapKeyAdapter() {
 		return null;
 	}
 

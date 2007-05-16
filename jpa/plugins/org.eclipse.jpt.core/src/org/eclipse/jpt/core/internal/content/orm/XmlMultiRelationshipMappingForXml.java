@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml#getJoinTableForXml <em>Join Table For Xml</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml#getOrderByForXml <em>Order By For Xml</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml#getMapKeyForXml <em>Map Key For Xml</em>}</li>
  * </ul>
  * </p>
  *
@@ -80,4 +81,30 @@ public interface XmlMultiRelationshipMappingForXml extends EObject
 	 * @generated
 	 */
 	void setOrderByForXml(XmlOrderBy value);
+
+	/**
+	 * Returns the value of the '<em><b>Map Key For Xml</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Map Key For Xml</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Map Key For Xml</em>' containment reference.
+	 * @see #setMapKeyForXml(XmlMapKey)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlMultiRelationshipMappingForXml_MapKeyForXml()
+	 * @model containment="true"
+	 * @generated
+	 */
+	XmlMapKey getMapKeyForXml();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml#getMapKeyForXml <em>Map Key For Xml</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Map Key For Xml</em>' containment reference.
+	 * @see #getMapKeyForXml()
+	 * @generated
+	 */
+	void setMapKeyForXml(XmlMapKey value);
 } // XmlMultiRelationshipMappingForXml

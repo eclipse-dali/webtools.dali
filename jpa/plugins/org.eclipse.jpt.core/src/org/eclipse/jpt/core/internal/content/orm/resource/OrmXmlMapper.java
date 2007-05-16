@@ -69,6 +69,7 @@ public interface OrmXmlMapper
 	String ENTITY__TABLE = "table";  //$NON-NLS-1$
 	String ENTITY__PRIMARY_KEY_JOIN_COLUMN = "primary-key-join-column";  //$NON-NLS-1$
 	String ENTITY__INHERITANCE = "inheritance";  //$NON-NLS-1$
+	String INHERITANCE__STRATEGY = "strategy";  //$NON-NLS-1$
 	String ENTITY__DISCRIMINATOR_VALUE = "discriminator-value";  //$NON-NLS-1$
 	String ENTITY__DISCRIMINATOR_COLUMN = "discriminator-column";  //$NON-NLS-1$
 	String ENTITY__SEQUENCE_GENERATOR = "sequence-generator";  //$NON-NLS-1$
@@ -162,7 +163,7 @@ public interface OrmXmlMapper
 	String SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMN = "primary-key-join-column";  //$NON-NLS-1$
 	String SEQUENCE_GENERATOR = "sequence-generator";  //$NON-NLS-1$
 	String SEQUENCE_GENERATOR__SEQUENCE_NAME = "sequence-name";  //$NON-NLS-1$
-	String STRATEGY = "strategy";  //$NON-NLS-1$
+	
 	String TABLE_GENERATOR = "table-generator";  //$NON-NLS-1$
 	String TABLE_GENERATOR__TABLE = "table";  //$NON-NLS-1$
 	String TABLE_GENERATOR__CATALOG = "catalog";  //$NON-NLS-1$

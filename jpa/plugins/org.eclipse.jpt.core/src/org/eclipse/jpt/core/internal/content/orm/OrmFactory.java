@@ -154,6 +154,12 @@ public class OrmFactory extends EFactoryImpl
 				return createXmlUniqueConstraint();
 			case OrmPackage.XML_CASCADE :
 				return createXmlCascade();
+			case OrmPackage.XML_ID_CLASS :
+				return createXmlIdClass();
+			case OrmPackage.XML_INHERITANCE :
+				return createXmlInheritance();
+			case OrmPackage.XML_MAP_KEY :
+				return createXmlMapKey();
 			default :
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -640,6 +646,36 @@ public class OrmFactory extends EFactoryImpl
 	public XmlCascade createXmlCascade() {
 		XmlCascade xmlCascade = new XmlCascade();
 		return xmlCascade;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlIdClass createXmlIdClass() {
+		XmlIdClass xmlIdClass = new XmlIdClass();
+		return xmlIdClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlInheritance createXmlInheritance() {
+		XmlInheritance xmlInheritance = new XmlInheritance();
+		return xmlInheritance;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlMapKey createXmlMapKey() {
+		XmlMapKey xmlMapKey = new XmlMapKey();
+		return xmlMapKey;
 	}
 
 	public XmlPrimaryKeyJoinColumn createXmlPrimaryKeyJoinColumn(IAbstractJoinColumn.Owner owner) {

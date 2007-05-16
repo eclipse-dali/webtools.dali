@@ -51,6 +51,6 @@ public abstract class MultiRelationshipTranslator extends RelationshipTranslator
 	}
 	
 	protected Translator createMapKeyTranslator() {
-		return new Translator(MAP_KEY + "/" + MAP_KEY__NAME, JpaCoreMappingsPackage.eINSTANCE.getIMultiRelationshipMapping_MapKey(), DOM_ATTRIBUTE);
+		return new MapKeyTranslator(MAP_KEY, JPA_CORE_XML_PKG.getXmlMultiRelationshipMappingForXml_MapKeyForXml());
 	}
 }

@@ -54,10 +54,13 @@ import org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal;
 import org.eclipse.jpt.core.internal.content.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.internal.content.orm.XmlGenerator;
 import org.eclipse.jpt.core.internal.content.orm.XmlId;
+import org.eclipse.jpt.core.internal.content.orm.XmlIdClass;
+import org.eclipse.jpt.core.internal.content.orm.XmlInheritance;
 import org.eclipse.jpt.core.internal.content.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.internal.content.orm.XmlJoinTable;
 import org.eclipse.jpt.core.internal.content.orm.XmlManyToMany;
 import org.eclipse.jpt.core.internal.content.orm.XmlManyToOne;
+import org.eclipse.jpt.core.internal.content.orm.XmlMapKey;
 import org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml;
@@ -1479,6 +1482,57 @@ public class OrmSwitch<T>
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.XML_ID_CLASS : {
+				XmlIdClass xmlIdClass = (XmlIdClass) theEObject;
+				T result = caseXmlIdClass(xmlIdClass);
+				if (result == null)
+					result = caseXmlEObject(xmlIdClass);
+				if (result == null)
+					result = caseJpaEObject(xmlIdClass);
+				if (result == null)
+					result = caseIXmlEObject(xmlIdClass);
+				if (result == null)
+					result = caseIJpaEObject(xmlIdClass);
+				if (result == null)
+					result = caseIJpaSourceObject(xmlIdClass);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.XML_INHERITANCE : {
+				XmlInheritance xmlInheritance = (XmlInheritance) theEObject;
+				T result = caseXmlInheritance(xmlInheritance);
+				if (result == null)
+					result = caseXmlEObject(xmlInheritance);
+				if (result == null)
+					result = caseJpaEObject(xmlInheritance);
+				if (result == null)
+					result = caseIXmlEObject(xmlInheritance);
+				if (result == null)
+					result = caseIJpaEObject(xmlInheritance);
+				if (result == null)
+					result = caseIJpaSourceObject(xmlInheritance);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.XML_MAP_KEY : {
+				XmlMapKey xmlMapKey = (XmlMapKey) theEObject;
+				T result = caseXmlMapKey(xmlMapKey);
+				if (result == null)
+					result = caseXmlEObject(xmlMapKey);
+				if (result == null)
+					result = caseJpaEObject(xmlMapKey);
+				if (result == null)
+					result = caseIXmlEObject(xmlMapKey);
+				if (result == null)
+					result = caseIJpaEObject(xmlMapKey);
+				if (result == null)
+					result = caseIJpaSourceObject(xmlMapKey);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			default :
 				return defaultCase(theEObject);
 		}
@@ -2336,6 +2390,51 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseXmlCascade(XmlCascade object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpretting the object as an instance of '<em>Xml Id Class</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpretting the object as an instance of '<em>Xml Id Class</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlIdClass(XmlIdClass object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpretting the object as an instance of '<em>Xml Inheritance</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpretting the object as an instance of '<em>Xml Inheritance</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlInheritance(XmlInheritance object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpretting the object as an instance of '<em>Xml Map Key</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpretting the object as an instance of '<em>Xml Map Key</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlMapKey(XmlMapKey object) {
 		return null;
 	}
 

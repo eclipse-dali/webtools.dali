@@ -72,7 +72,6 @@ import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
@@ -769,7 +768,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		if (values != null) {
 			return values;
 		}
-		for (Iterator<JavaPersistentAttribute> i = attributes() ; i.hasNext(); ) {
+		for (Iterator<JavaPersistentAttribute> i = attributes(); i.hasNext();) {
 			JavaPersistentAttribute attribute = i.next();
 			values = attribute.candidateValuesFor(pos, filter, astRoot);
 			if (values != null) {
@@ -780,11 +779,11 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	public IJpaContentNode contentNodeAt(int offset) {
-		for (Iterator<JavaPersistentAttribute> i = attributes(); i.hasNext(); ) {
+		for (Iterator<JavaPersistentAttribute> i = attributes(); i.hasNext();) {
 			JavaPersistentAttribute persistentAttribute = i.next();
 			if (persistentAttribute.includes(offset)) {
 				return persistentAttribute;
-			}			
+			}
 		}
 		return null;
 	}
@@ -810,7 +809,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	private JavaPersistentAttribute persistentAttributeFor(IMember member) {
-		for (Iterator<JavaPersistentAttribute> i = attributes(); i.hasNext(); ) {
+		for (Iterator<JavaPersistentAttribute> i = attributes(); i.hasNext();) {
 			JavaPersistentAttribute attribute = i.next();
 			if (attribute.isFor(member)) {
 				return attribute;

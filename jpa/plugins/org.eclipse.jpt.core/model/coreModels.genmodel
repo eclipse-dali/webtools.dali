@@ -527,6 +527,8 @@
     <genClasses ecoreClass="orm.ecore#//XmlEntityForXml">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntityForXml/tableForXml"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntityForXml/discriminatorColumnForXml"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntityForXml/idClassForXml"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntityForXml/inheritanceForXml"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlEntity">
       <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/secondaryTables"/>
@@ -547,6 +549,7 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlMultiRelationshipMappingForXml">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference orm.ecore#//XmlMultiRelationshipMappingForXml/joinTableForXml"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference orm.ecore#//XmlMultiRelationshipMappingForXml/orderByForXml"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference orm.ecore#//XmlMultiRelationshipMappingForXml/mapKeyForXml"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlMultiRelationshipMapping"/>
     <genClasses ecoreClass="orm.ecore#//XmlOneToMany"/>
@@ -641,6 +644,15 @@
     <genClasses ecoreClass="orm.ecore#//XmlQueryHint"/>
     <genClasses ecoreClass="orm.ecore#//XmlUniqueConstraint"/>
     <genClasses ecoreClass="orm.ecore#//XmlCascade"/>
+    <genClasses ecoreClass="orm.ecore#//XmlIdClass">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlIdClass/value"/>
+    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlInheritance">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlInheritance/strategy"/>
+    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlMapKey">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlMapKey/name"/>
+    </genClasses>
   </genPackages>
   <genPackages prefix="Persistence" basePackage="org.eclipse.jpt.core.internal.content"
       disposableProviderFactory="true" ecorePackage="persistence.ecore#/">
