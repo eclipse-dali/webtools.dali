@@ -237,10 +237,12 @@ public class XmlEntityContext extends XmlTypeContext
 		JavaEntity javaEntity = getJavaEntity();
 		if (javaEntity != null && !getXmlTypeMapping().isXmlMetadataComplete()) {
 			for (ISecondaryTable secondaryTable : javaEntity.getSecondaryTables()) {
-				if (!getEntity().containsSecondaryTable(secondaryTable.getName())) {
-					ISecondaryTable defaultSecondaryTable = getEntity().createSecondaryTable(0);
-					defaultSecondaryTable.setSpecifiedName(secondaryTable.getName());
-					getEntity().getVirtualSecondaryTables().add(defaultSecondaryTable);
+				if (secondaryTable.getName() != null) {
+					if (!getEntity().containsSecondaryTable(secondaryTable.getName())) {
+						ISecondaryTable defaultSecondaryTable = getEntity().createSecondaryTable(0);
+						defaultSecondaryTable.setSpecifiedName(secondaryTable.getName());
+						getEntity().getVirtualSecondaryTables().add(defaultSecondaryTable);
+					}
 				}
 			}
 		}
