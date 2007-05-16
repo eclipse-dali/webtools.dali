@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.wizards;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.wizard.WizardPage;
@@ -110,12 +111,12 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		return layout;
 	}
 
-	public Collection getTables() {
+	public Collection<Table> getTables() {
 		Schema schema = this.getProjectUserSchema();
 		if ( schema != null && schema.getName() != null) {
 			return CollectionTools.collection( schema.tables());
 		}
-		return new ArrayList();
+		return Collections.<Table>emptyList();
 	}
 
 	private void updateGenerateEntitiesPage( Schema schema) {
@@ -222,7 +223,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 			return JptDbPlugin.getDefault().getConnectionProfileRepository().profileNamed( profileName);
 		}
 		
-		private Iterator dtpConnectionProfileNames() {
+		private Iterator<String> dtpConnectionProfileNames() {
 			return JptDbPlugin.getDefault().getConnectionProfileRepository().profileNames();
 		}
 
@@ -253,7 +254,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		private void populateConnectionCombo() {
 			// clear out connection entries from previous login.
 			this.connectionCombo.removeAll();
-			for ( Iterator i = CollectionTools.sort( this.dtpConnectionProfileNames()); i.hasNext();) {
+			for ( Iterator<String> i = CollectionTools.sort( this.dtpConnectionProfileNames()); i.hasNext();) {
 				this.connectionCombo.add( ( String) i.next());
 			}
 
@@ -280,7 +281,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 			// clear out schema entries from previous connection selection
 			this.schemaCombo.removeAll();
 			ConnectionProfile connectionProfile = this.getConnectionProfileNamed( getConnectionProfileName());
-			for ( Iterator stream = CollectionTools.sort( connectionProfile.getDatabase().schemaNames()); stream.hasNext();) {
+			for ( Iterator<String> stream = CollectionTools.sort( connectionProfile.getDatabase().schemaNames()); stream.hasNext();) {
 				this.schemaCombo.add( ( String) stream.next());
 			}
 			// set login user name as default schema

@@ -19,6 +19,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.gen.internal.EntityGenerator;
 import org.eclipse.jpt.gen.internal.PackageGenerator;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -41,7 +42,7 @@ public class GenerateEntitiesWizard extends Wizard {
 
 	private boolean synchronizePersistenceXml;
 	
-	private Collection selectedTables;
+	private Collection<Table> selectedTables;
 
 	public GenerateEntitiesWizard( IJpaProject jpaProject, IStructuredSelection selection) {
 		super();
@@ -104,11 +105,11 @@ public class GenerateEntitiesWizard extends Wizard {
 		}
 	}
 	
-	Collection getPossibleTables() {
+	Collection<Table> getPossibleTables() {
 		if ( this.dbSettingsPage != null) {
 			return this.dbSettingsPage.getTables();
 		}
-		return ( this.projectUserSchemaExists()) ? CollectionTools.collection( this.getProjectUserSchema().tables()) : Collections.emptyList();
+		return ( this.projectUserSchemaExists()) ? CollectionTools.collection( this.getProjectUserSchema().tables()) : Collections.<Table>emptyList();
 	}
 	
 	ConnectionProfile getProjectConnectionProfile() {
@@ -132,7 +133,7 @@ public class GenerateEntitiesWizard extends Wizard {
 		return this.entityGeneratorConfig;
 	}
 
-	public Collection getSelectedTables() {
+	public Collection<Table> getSelectedTables() {
 		return this.selectedTables;
 	}
 	
@@ -161,7 +162,7 @@ public class GenerateEntitiesWizard extends Wizard {
 	 * The dbSettingsPage is mainly the source of changes, 
 	 * and the generateEntitiesPage needs to be kept in sync.
 	 */
-	void updatePossibleTables( Collection possibleTables) {
+	void updatePossibleTables( Collection<Table> possibleTables) {
 		this.generateEntitiesPage.updateTablesListViewer( possibleTables);
 	}
 

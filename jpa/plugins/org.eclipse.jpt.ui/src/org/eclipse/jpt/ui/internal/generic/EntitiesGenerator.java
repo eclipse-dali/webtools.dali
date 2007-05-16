@@ -50,14 +50,17 @@ public class EntitiesGenerator
 	// ********** constructors **********
 
 	static public void generate( IJpaProject project, IStructuredSelection selection) {
-		( new EntitiesGenerator( project, selection)).generate();
+		if(project == null) {
+			throw new NullPointerException();
+		}
+		new EntitiesGenerator( project, selection).generate();
 	}
 	
 	public EntitiesGenerator() {
 		super();
 	}
 
-	public EntitiesGenerator( IJpaProject project, IStructuredSelection selection) {
+	private EntitiesGenerator( IJpaProject project, IStructuredSelection selection) {
 		super();
 		this.project = project;
 		this.selection = selection;

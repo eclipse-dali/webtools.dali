@@ -9,8 +9,10 @@
  ******************************************************************************/   
 package org.eclipse.jpt.ui.internal.wizards;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -70,7 +72,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 	private boolean generateSerialVersionUID = true;
 	private boolean generateEmbeddedIdForCompoundPK = true;
 	private boolean synchronizePersistenceXml = false;
-	private Map overrideEntityNames;
+	private Map<Table, String> overrideEntityNames;
 	
 	static final String[] TABLE_TABLE_COLUMN_PROPERTIES = { "table", "entityName" };
 	private static final int TABLE_COLUMN_INDEX = 0;
@@ -136,7 +138,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		createButtonComposite(tablesGroup);
 		
 		GenerateEntitiesWizard generateEntitiesWizard = ((GenerateEntitiesWizard)this.getWizard());
-		Collection possibleTables = generateEntitiesWizard.getPossibleTables();
+		Collection<Table> possibleTables = generateEntitiesWizard.getPossibleTables();
 		initTablesSelectionControl(possibleTables);
 		
 		//set initial selection state of the synchronize classes checkbox
@@ -159,8 +161,8 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		doStatusUpdate();
 	}
 	
-	private void initTablesSelectionControl(Collection possibleTables) {
-		this.overrideEntityNames = new HashMap(possibleTables.size());
+	private void initTablesSelectionControl(Collection<Table> possibleTables) {
+		this.overrideEntityNames = new HashMap<Table, String>(possibleTables.size());
 		this.tableTable.setInput(possibleTables);
 	}
 
@@ -298,15 +300,18 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		return new TableTableCellModifier();
 	}
 	
-	Collection getSelectedTables() {
-		return Arrays.asList(this.tableTable.getCheckedElements());
+	Collection<Table> getSelectedTables() {
+		ArrayList<Table> selectedTables = new ArrayList<Table>();
+		for (Object selectedTable : this.tableTable.getCheckedElements())
+			selectedTables.add((Table) selectedTable);
+		return selectedTables;
 	}
 	
 	private boolean hasTablesSelected() {
 		return (this.tableTable != null) ? (this.getSelectedTables().size() > 0) : false;
 	}
 	
-	void updateTablesListViewer(Collection possibleTables) {
+	void updateTablesListViewer(Collection<Table> possibleTables) {
 		if (this.tableTable != null) {
 			this.initTablesSelectionControl(possibleTables);
 		}
@@ -436,7 +441,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 	 * key = table
 	 * value = override entity name
 	 */
-	Map getOverrideEntityNames() {
+	Map<Table, String> getOverrideEntityNames() {
 		return this.overrideEntityNames;
 	}
 
