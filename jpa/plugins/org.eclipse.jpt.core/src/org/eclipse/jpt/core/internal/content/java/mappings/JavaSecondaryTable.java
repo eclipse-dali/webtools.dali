@@ -416,7 +416,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	}
 
 	private JavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(int index) {
-		return JavaPrimaryKeyJoinColumn.createSecondaryTableJoinColumn(this, buildPkJoinColumnOwner(), this.getMember(), index);
+		return JavaPrimaryKeyJoinColumn.createSecondaryTableJoinColumn(this.getDeclarationAnnotationAdapter(), buildPkJoinColumnOwner(), this.getMember(), index);
 	}
 
 	protected IAbstractJoinColumn.Owner buildPkJoinColumnOwner() {

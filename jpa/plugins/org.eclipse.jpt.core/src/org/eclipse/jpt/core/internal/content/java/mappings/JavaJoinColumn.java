@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.CombinationIndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedDeclarationAnnotationAdapter;
@@ -490,12 +491,12 @@ public class JavaJoinColumn extends AbstractJavaColumn implements IJoinColumn
 		return new CombinationIndexedDeclarationAnnotationAdapter(SINGLE_DECLARATION_ANNOTATION_ADAPTER, MULTIPLE_DECLARATION_ANNOTATION_ADAPTER, index, JPA.JOIN_COLUMN);
 	}
 
-	static JavaJoinColumn createAssociationOverrideJoinColumn(JavaAssociationOverride associationOverride, IJoinColumn.Owner owner, Member member, int index) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaJoinColumn(owner, member, buildAssociationOverrideAnnotationAdapter(associationOverride, index));
+	static JavaJoinColumn createAssociationOverrideJoinColumn(DeclarationAnnotationAdapter associationOverrideAdapter, IJoinColumn.Owner owner, Member member, int index) {
+		return JpaJavaMappingsFactory.eINSTANCE.createJavaJoinColumn(owner, member, buildAssociationOverrideAnnotationAdapter(associationOverrideAdapter, index));
 	}
 
-	private static IndexedDeclarationAnnotationAdapter buildAssociationOverrideAnnotationAdapter(JavaAssociationOverride associationOverride, int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(associationOverride.getDeclarationAnnotationAdapter(), JPA.ASSOCIATION_OVERRIDE__JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
+	private static IndexedDeclarationAnnotationAdapter buildAssociationOverrideAnnotationAdapter(DeclarationAnnotationAdapter associationOverrideAdapter, int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(associationOverrideAdapter, JPA.ASSOCIATION_OVERRIDE__JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
 	}
 
 	static JavaJoinColumn createJoinTableJoinColumn(IJoinColumn.Owner owner, Member member, int index) {

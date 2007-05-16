@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.CombinationIndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedDeclarationAnnotationAdapter;
@@ -455,12 +456,12 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn
 	}
 
 	// ********** static methods **********
-	static JavaPrimaryKeyJoinColumn createSecondaryTableJoinColumn(JavaSecondaryTable secondaryTable, IAbstractJoinColumn.Owner owner, Member member, int index) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaPrimaryKeyJoinColumn(owner, member, buildSecondaryTableAnnotationAdapter(secondaryTable, index));
+	static JavaPrimaryKeyJoinColumn createSecondaryTableJoinColumn(DeclarationAnnotationAdapter secondaryTableAdapter, IAbstractJoinColumn.Owner owner, Member member, int index) {
+		return JpaJavaMappingsFactory.eINSTANCE.createJavaPrimaryKeyJoinColumn(owner, member, buildSecondaryTableAnnotationAdapter(secondaryTableAdapter, index));
 	}
 
-	private static IndexedDeclarationAnnotationAdapter buildSecondaryTableAnnotationAdapter(JavaSecondaryTable secondaryTable, int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(secondaryTable.getDeclarationAnnotationAdapter(), JPA.SECONDARY_TABLE__PK_JOIN_COLUMNS, index, JPA.PRIMARY_KEY_JOIN_COLUMN);
+	private static IndexedDeclarationAnnotationAdapter buildSecondaryTableAnnotationAdapter(DeclarationAnnotationAdapter secondaryTableAdapter, int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(secondaryTableAdapter, JPA.SECONDARY_TABLE__PK_JOIN_COLUMNS, index, JPA.PRIMARY_KEY_JOIN_COLUMN);
 	}
 
 	static JavaPrimaryKeyJoinColumn createEntityPrimaryKeyJoinColumn(IAbstractJoinColumn.Owner owner, Member member, int index) {

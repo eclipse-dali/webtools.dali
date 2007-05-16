@@ -340,7 +340,7 @@ public class JavaNamedNativeQuery extends JavaAbstractQuery
 
 	@Override
 	protected JavaQueryHint createJavaQueryHint(int index) {
-		return JavaQueryHint.createNamedNativeQueryQueryHint(this, this.getMember(), index);
+		return JavaQueryHint.createNamedNativeQueryQueryHint(this.getDeclarationAnnotationAdapter(), this.getMember(), index);
 	}
 
 	// ********** static methods **********

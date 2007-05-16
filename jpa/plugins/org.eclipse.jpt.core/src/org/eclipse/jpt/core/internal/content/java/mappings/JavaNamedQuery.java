@@ -62,7 +62,7 @@ public class JavaNamedQuery extends JavaAbstractQuery implements INamedQuery
 
 	@Override
 	protected JavaQueryHint createJavaQueryHint(int index) {
-		return JavaQueryHint.createNamedQueryQueryHint(this, this.getMember(), index);
+		return JavaQueryHint.createNamedQueryQueryHint(this.getDeclarationAnnotationAdapter(), this.getMember(), index);
 	}
 
 	// ********** static methods **********
