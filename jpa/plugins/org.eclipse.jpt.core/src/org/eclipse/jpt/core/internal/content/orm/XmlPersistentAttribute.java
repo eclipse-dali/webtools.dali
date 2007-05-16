@@ -297,7 +297,7 @@ public class XmlPersistentAttribute extends XmlEObject
 		return getMapping().getPersistentType();
 	}
 
-	public ITypeMapping typeMapping() {
+	public XmlTypeMapping typeMapping() {
 		return persistentType().getMapping();
 	}
 

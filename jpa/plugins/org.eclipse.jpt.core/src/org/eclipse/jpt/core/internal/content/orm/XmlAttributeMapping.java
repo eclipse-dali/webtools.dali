@@ -321,7 +321,7 @@ public abstract class XmlAttributeMapping extends XmlEObject
 		return null;
 	}
 
-	public ITypeMapping typeMapping() {
+	public XmlTypeMapping typeMapping() {
 		return this.getPersistentType().getMapping();
 	}
 

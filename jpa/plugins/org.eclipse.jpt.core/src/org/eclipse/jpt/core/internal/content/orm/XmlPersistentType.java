@@ -452,8 +452,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 				return provider.buildAttributeMapping();
 			}
 		}
-		//TODO throw an exception? what about the NullJavaTypeMapping?
-		return null;
+		return OrmFactory.eINSTANCE.createXmlNullAttributeMapping();
 	}
 
 	public Collection<IXmlTypeMappingProvider> typeMappingProviders() {

@@ -225,7 +225,6 @@ public abstract class XmlTypeContext extends BaseContext
 		}
 	}
 	
-	
 	protected void refreshPersistentType(DefaultsContext defaultsContext) {
 		XmlPersistentType xmlPersistentType = this.getXmlTypeMapping().getPersistentType();
 		xmlPersistentType.refreshDefaults(defaultsContext);
@@ -240,8 +239,18 @@ public abstract class XmlTypeContext extends BaseContext
 			String javaAttributeName = javaAttribute.getName();
 			javaAttributeNames.add(javaAttributeName);
 			XmlPersistentAttribute xmlAttribute = xmlPersistentType.attributeNamed(javaAttributeName);
-			if (xmlAttribute == null && ! xmlPersistentType.getMapping().isXmlMetadataComplete()) {
+			if (xmlAttribute == null) {
 				createAndAddXmlAttributeFrom(javaAttribute, xmlPersistentType);
+			}
+			else {
+				if (xmlAttribute.isVirtual()) {
+					if (xmlAttribute.typeMapping().isXmlMetadataComplete()) {
+						xmlAttribute.setSpecifiedMappingKey(javaAttribute.defaultMappingKey());
+					}
+					else {
+						xmlAttribute.setSpecifiedMappingKey(javaAttribute.mappingKey());	
+					}
+				}
 			}
 		}
 		
@@ -259,25 +268,19 @@ public abstract class XmlTypeContext extends BaseContext
 		for (XmlAttributeMapping mapping : xmlPersistentType.getVirtualAttributeMappings()) {
 			String attributeName = mapping.getPersistentAttribute().getName();
 			if (! javaAttributeNames.contains(attributeName)
-					|| specifiedXmlAttributeNames.contains(attributeName)
-					|| xmlPersistentType.getMapping().isXmlMetadataComplete()) {
+					|| specifiedXmlAttributeNames.contains(attributeName)) {
 				mappingsToRemove.add(mapping);
 			}
 		}
 		
 		for (XmlAttributeMapping xmlAttributeMapping : mappingsToRemove) {
 			xmlPersistentType.getVirtualAttributeMappings().remove(xmlAttributeMapping);
-			for (XmlAttributeContext virtualAttributeContext : new ArrayList<XmlAttributeContext>(virtualAttributeMappingContexts)) {
-				if (virtualAttributeContext.getAttribute() == xmlAttributeMapping.getPersistentAttribute()) {
-					virtualAttributeMappingContexts.remove(virtualAttributeContext);
-				}
-			}
 		}
 		
 		for (XmlAttributeMapping xmlAttributeMapping : this.xmlTypeMapping.getPersistentType().getVirtualAttributeMappings()) {
 			this.virtualAttributeMappingContexts.add(buildContext(xmlAttributeMapping));
 		}
-}
+	}
 	
 	private void createAndAddXmlAttributeFrom(IPersistentAttribute javaAttribute, XmlPersistentType persistentType) {
 		//TODO also need to check xml mapping meta data complete flags and 
