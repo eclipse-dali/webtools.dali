@@ -339,7 +339,7 @@ public class XmlPersistentAttribute extends XmlEObject
 
 	@Override
 	public ITextRange selectionTextRange() {
-		return (isVirtual()) ? null : fullTextRange();
+		return (isVirtual()) ? null : this.getMapping().selectionTextRange();
 	}
 
 	public ITextRange nameTextRange() {
