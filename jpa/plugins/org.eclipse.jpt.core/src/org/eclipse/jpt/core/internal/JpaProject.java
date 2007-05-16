@@ -760,21 +760,12 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy())
-			return super.toString();
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (discoverAnnotatedClasses: ");
-		if (discoverAnnotatedClassesESet)
-			result.append(discoverAnnotatedClasses);
-		else
-			result.append("<unset>");
-		result.append(')');
+		result.append(" (" + getProject().toString() + ")");
 		return result.toString();
 	}
 

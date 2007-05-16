@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
-import org.eclipse.jem.java.JavaRefPackage;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.content.java.JpaJavaPackage;
 import org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage;
@@ -335,7 +334,7 @@ public class PersistencePackage extends EPackageImpl
 	public static final int JAVA_CLASS_REF = 4;
 
 	/**
-	 * The feature id for the '<em><b>Java Class</b></em>' reference.
+	 * The feature id for the '<em><b>Java Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -553,7 +552,6 @@ public class PersistencePackage extends EPackageImpl
 		isInited = true;
 		// Initialize simple dependencies
 		EcorePackage.eINSTANCE.eClass();
-		JavaRefPackage.eINSTANCE.eClass();
 		XMLTypePackage.eINSTANCE.eClass();
 		// Obtain or create and register interdependencies
 		JpaCorePackage theJpaCorePackage = (JpaCorePackage) (EPackage.Registry.INSTANCE.getEPackage(JpaCorePackage.eNS_URI) instanceof JpaCorePackage ? EPackage.Registry.INSTANCE.getEPackage(JpaCorePackage.eNS_URI) : JpaCorePackage.eINSTANCE);
@@ -824,16 +822,16 @@ public class PersistencePackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.jpt.core.internal.content.persistence.JavaClassRef#getJavaClass <em>Java Class</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.content.persistence.JavaClassRef#getJavaClass <em>Java Class</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Java Class</em>'.
+	 * @return the meta object for the attribute '<em>Java Class</em>'.
 	 * @see org.eclipse.jpt.core.internal.content.persistence.JavaClassRef#getJavaClass()
 	 * @see #getJavaClassRef()
 	 * @generated
 	 */
-	public EReference getJavaClassRef_JavaClass() {
-		return (EReference) javaClassRefEClass.getEStructuralFeatures().get(0);
+	public EAttribute getJavaClassRef_JavaClass() {
+		return (EAttribute) javaClassRefEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1013,7 +1011,7 @@ public class PersistencePackage extends EPackageImpl
 		mappingFileRefEClass = createEClass(MAPPING_FILE_REF);
 		createEAttribute(mappingFileRefEClass, MAPPING_FILE_REF__FILE_NAME);
 		javaClassRefEClass = createEClass(JAVA_CLASS_REF);
-		createEReference(javaClassRefEClass, JAVA_CLASS_REF__JAVA_CLASS);
+		createEAttribute(javaClassRefEClass, JAVA_CLASS_REF__JAVA_CLASS);
 		propertiesEClass = createEClass(PROPERTIES);
 		createEReference(propertiesEClass, PROPERTIES__PROPERTIES);
 		propertyEClass = createEClass(PROPERTY);
@@ -1052,7 +1050,6 @@ public class PersistencePackage extends EPackageImpl
 		JpaCorePackage theJpaCorePackage = (JpaCorePackage) EPackage.Registry.INSTANCE.getEPackage(JpaCorePackage.eNS_URI);
 		XMLTypePackage theXMLTypePackage = (XMLTypePackage) EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 		EcorePackage theEcorePackage = (EcorePackage) EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
-		JavaRefPackage theJavaRefPackage = (JavaRefPackage) EPackage.Registry.INSTANCE.getEPackage(JavaRefPackage.eNS_URI);
 		// Create type parameters
 		// Set bounds for type parameters
 		// Add supertypes to classes
@@ -1084,9 +1081,9 @@ public class PersistencePackage extends EPackageImpl
 		initEAttribute(getPersistenceUnit_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPersistenceUnit_TransactionType(), this.getPersistenceUnitTransactionType(), "transactionType", "JTA", 0, 1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(mappingFileRefEClass, MappingFileRef.class, "MappingFileRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getMappingFileRef_FileName(), theEcorePackage.getEString(), "fileName", null, 1, 1, MappingFileRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getMappingFileRef_FileName(), theEcorePackage.getEString(), "fileName", null, 0, 1, MappingFileRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEClass(javaClassRefEClass, JavaClassRef.class, "JavaClassRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getJavaClassRef_JavaClass(), theJavaRefPackage.getJavaClass(), null, "javaClass", null, 1, 1, JavaClassRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getJavaClassRef_JavaClass(), theEcorePackage.getEString(), "javaClass", null, 0, 1, JavaClassRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEClass(propertiesEClass, Properties.class, "Properties", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getProperties_Properties(), this.getProperty(), null, "properties", null, 0, -1, Properties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(propertyEClass, Property.class, "Property", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1279,12 +1276,12 @@ public class PersistencePackage extends EPackageImpl
 		public static final EClass JAVA_CLASS_REF = eINSTANCE.getJavaClassRef();
 
 		/**
-		 * The meta object literal for the '<em><b>Java Class</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Java Class</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference JAVA_CLASS_REF__JAVA_CLASS = eINSTANCE.getJavaClassRef_JavaClass();
+		public static final EAttribute JAVA_CLASS_REF__JAVA_CLASS = eINSTANCE.getJavaClassRef_JavaClass();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.persistence.Properties <em>Properties</em>}' class.

@@ -95,7 +95,7 @@ public class MappingFileRef extends XmlEObject
 	 * @return the value of the '<em>File Name</em>' attribute.
 	 * @see #setFileName(String)
 	 * @see org.eclipse.jpt.core.internal.content.persistence.PersistencePackage#getMappingFileRef_FileName()
-	 * @model unique="false" required="true" ordered="false"
+	 * @model unique="false" ordered="false"
 	 * @generated
 	 */
 	public String getFileName() {

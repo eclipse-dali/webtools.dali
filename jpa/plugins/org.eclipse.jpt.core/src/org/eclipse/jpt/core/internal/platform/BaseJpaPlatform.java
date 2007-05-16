@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaJpaFileContentProvider;
@@ -88,7 +89,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		this.project = jpaProject;
 	}
 
-	// ********** Persistence Unit **********
+	// ********** Persistence Unit ********************************************
 
 	public boolean containsPersistenceUnitNamed(String name) {
 		return ((BaseJpaProjectContext)this.context).containsPersistenceUnitNamed(name);
@@ -106,7 +107,17 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		return ((BaseJpaProjectContext)this.context).persistenceUnitContextsSize();
 	}
 
-	// **********
+	
+	// ********** Persistent Types ********************************************
+
+	public Iterator<IPersistentType> persistentTypes(String persistenceUnitName) {
+		PersistenceUnitContext puContext = 
+			((BaseJpaProjectContext) this.context).persistenceUnitContext(persistenceUnitName);
+		return (puContext == null) ? null : puContext.persistentTypes();
+	}
+	
+	
+	// ************************************************************************
 	
 	public Collection<IJpaFileContentProvider> jpaFileContentProviders() {
 		if (this.contentProviders == null) {

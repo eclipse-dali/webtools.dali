@@ -5,7 +5,7 @@
     creationCommands="false" creationIcons="false" editDirectory="" editorDirectory=""
     modelPluginID="org.eclipse.jpt.core" modelName="Core" editPluginClass="" editorPluginClass=""
     suppressInterfaces="true" codeFormatting="true" testsDirectory="" testSuiteClass=""
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore javaModel.genmodel#//java">
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
   <foreignModel>core.ecore</foreignModel>
   <foreignModel>java.ecore</foreignModel>
   <foreignModel>orm.ecore</foreignModel>
@@ -687,7 +687,7 @@
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//MappingFileRef/fileName"/>
     </genClasses>
     <genClasses ecoreClass="persistence.ecore#//JavaClassRef">
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference persistence.ecore#//JavaClassRef/javaClass"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//JavaClassRef/javaClass"/>
     </genClasses>
     <genClasses ecoreClass="persistence.ecore#//Properties">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//Properties/properties"/>

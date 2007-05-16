@@ -14,9 +14,10 @@ import junit.framework.TestSuite;
 import org.eclipse.jpt.core.tests.internal.content.java.mappings.JptCoreContentJavaMappingsTests;
 import org.eclipse.jpt.core.tests.internal.jdtutility.JptCoreJdtUtilityTests;
 import org.eclipse.jpt.core.tests.internal.model.JptCoreModelTests;
+import org.eclipse.jpt.core.tests.internal.platform.JptCorePlatformTests;
 
 /**
- * Runs all JPA Core Tests
+ * Runs all JPT Core Tests
  */
 public class JptCoreTests {
 
@@ -25,6 +26,7 @@ public class JptCoreTests {
 		suite.addTest(JptCoreContentJavaMappingsTests.suite());
 		suite.addTest(JptCoreModelTests.suite());
 		suite.addTest(JptCoreJdtUtilityTests.suite());
+		suite.addTest(JptCorePlatformTests.suite());
 		return suite;
 	}
 	

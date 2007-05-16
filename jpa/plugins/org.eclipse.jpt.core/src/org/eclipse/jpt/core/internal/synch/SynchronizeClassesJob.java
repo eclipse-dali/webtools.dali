@@ -18,8 +18,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jem.java.JavaClass;
-import org.eclipse.jem.java.JavaRefFactory;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IMappingKeys;
@@ -97,8 +95,7 @@ public class SynchronizeClassesJob extends Job
 		for (Iterator<String> stream = mappedTypeNames(persistenceUnit); stream.hasNext(); ) {
 			String typeName = stream.next();
 			JavaClassRef classRef = PersistenceFactory.eINSTANCE.createJavaClassRef();
-			JavaClass javaClass = (JavaClass) JavaRefFactory.eINSTANCE.reflectType(typeName, resource.getResourceSet());
-			classRef.setJavaClass(javaClass);
+			classRef.setJavaClass(typeName);
 			persistenceUnit.getClasses().add(classRef);
 		}
 		

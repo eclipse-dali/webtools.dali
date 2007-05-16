@@ -55,7 +55,9 @@ public interface IJpaPlatform
 	 */
 	void setProject(IJpaProject jpaProject);
 
-	// ********** Persistence Unit **********
+	
+	// ********** Persistence Unit ********************************************
+	
 	boolean containsPersistenceUnitNamed(String name);
 
 	PersistenceUnit persistenceUnitNamed(String name);
@@ -64,7 +66,17 @@ public interface IJpaPlatform
 
 	int persistenceUnitSize();
 
-	// **********
+	
+	// ********** Persistent Types ********************************************
+	
+	/**
+	 * Return all persistent types for the persistence unit with the given name
+	 */
+	Iterator<IPersistentType> persistentTypes(String persistenceUnitName);
+	
+	
+	// ************************************************************************
+	
 	/**
 	 * Get the valid persistence XML files from the project
 	 */

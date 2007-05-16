@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.content.orm.XmlRootContentNode;
 import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.internal.mappings.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class MappingFileContext extends BaseContext
@@ -147,6 +148,15 @@ public class MappingFileContext extends BaseContext
 			}
 		}
 		return false;	
+	}
+	
+	Iterator<IPersistentType> persistentTypes() {
+		return new TransformationIterator<XmlTypeContext, IPersistentType>(xmlTypeContexts.iterator()) {
+			@Override
+			protected IPersistentType transform(XmlTypeContext next) {
+				return next.getPersistentType();
+			}
+		};
 	}
 	
 	@Override

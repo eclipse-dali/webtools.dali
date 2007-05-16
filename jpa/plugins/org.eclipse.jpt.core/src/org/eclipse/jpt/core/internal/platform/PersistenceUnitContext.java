@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jem.java.JavaClass;
 import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaProject;
@@ -183,11 +182,7 @@ public class PersistenceUnitContext extends BaseContext
 	}
 	
 	private JavaPersistentType javaPersistentTypeFor(JavaClassRef javaClassRef) {
-		JavaClass javaClass = javaClassRef.getJavaClass();
-		if (javaClass == null) {
-			return null;
-		}
-		IType type = (IType) javaClass.getReflectionType();
+		IType type = javaClassRef.findJdtType();
 		return jpaProject().findJavaPersistentType(type);
 	}
 
@@ -212,6 +207,26 @@ public class PersistenceUnitContext extends BaseContext
 	
 	PersistenceUnit persistenceUnit() {
 		return this.persistenceUnit;
+	}
+	
+	Iterator<IPersistentType> persistentTypes() {
+		return 
+			new CompositeIterator<IPersistentType>(
+					new CompositeIterator<IPersistentType>(
+							new TransformationIterator<MappingFileContext, Iterator<IPersistentType>>(mappingFileContexts.iterator()) {
+								@Override
+								protected Iterator<IPersistentType> transform(MappingFileContext next) {
+									return next.persistentTypes();
+								}
+							}
+						),
+					new TransformationIterator<JavaTypeContext, IPersistentType>(javaPersistentTypeContexts.iterator()) {
+						@Override
+						protected IPersistentType transform(JavaTypeContext next) {
+							return next.getPersistentType();
+						}
+					}
+				);
 	}
 	
 	public void refreshDefaults(DefaultsContext parentDefaults) {
@@ -459,8 +474,8 @@ public class PersistenceUnitContext extends BaseContext
 	
 	protected void addUnspecifiedClassMessages(List<IMessage> messages) {
 		for (JavaClassRef javaClassRef : persistenceUnit.getClasses()) {
-			JavaClass javaClass = javaClassRef.getJavaClass();
-			if (javaClass == null) {
+			String javaClass = javaClassRef.getJavaClass();
+			if (StringTools.stringIsEmpty(javaClass)) {
 				messages.add(
 					JpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -473,13 +488,13 @@ public class PersistenceUnitContext extends BaseContext
 	
 	protected void addUnresolvedClassMessages(List<IMessage> messages) {
 		for (JavaClassRef javaClassRef : persistenceUnit.getClasses()) {
-			JavaClass javaClass = javaClassRef.getJavaClass();
-			if (javaClass != null && javaClass.getReflectionType() == null) {
+			String javaClass = javaClassRef.getJavaClass();
+			if (! StringTools.stringIsEmpty(javaClass) && javaClassRef.findJdtType() == null) {
 				messages.add(
 					JpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
-						new String[] {javaClass.getQualifiedName()}, 
+						new String[] {javaClass}, 
 						javaClassRef, javaClassRef.validationTextRange())
 				);
 			}
@@ -488,15 +503,15 @@ public class PersistenceUnitContext extends BaseContext
 	
 	protected void addInvalidClassContentMessages(List<IMessage> messages) {
 		for (JavaClassRef javaClassRef : persistenceUnit.getClasses()) {
-			JavaClass javaClass = javaClassRef.getJavaClass();
-			if (javaClass != null && javaClass.getReflectionType() != null 
+			String javaClass = javaClassRef.getJavaClass();
+			if (! StringTools.stringIsEmpty(javaClass) && javaClassRef.findJdtType() != null 
 					&& (javaPersistentTypeFor(javaClassRef) == null
 							|| javaPersistentTypeFor(javaClassRef).getMappingKey() == IMappingKeys.NULL_TYPE_MAPPING_KEY)) {
 				messages.add(
 					JpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
-						new String[] {javaClassRef.getJavaClass().getQualifiedName()}, 
+						new String[] {javaClassRef.getJavaClass()}, 
 						javaClassRef, javaClassRef.validationTextRange())
 				);
 			}
@@ -509,20 +524,19 @@ public class PersistenceUnitContext extends BaseContext
 						new TransformationIterator(persistenceUnit.getClasses().iterator()) {
 							@Override
 							protected Object transform(Object next) {
-								JavaClass javaClass = ((JavaClassRef) next).getJavaClass();
-								return (javaClass == null) ? null : javaClass.getQualifiedName();
+								return ((JavaClassRef) next).getJavaClass();
 							}
 						}
 				)
 		);
 		for (JavaClassRef javaClassRef : persistenceUnit.getClasses()) {
 			if (javaClassRef.getJavaClass() != null
-					&& fileBag.count(javaClassRef.getJavaClass().getQualifiedName()) > 1) {
+					&& fileBag.count(javaClassRef.getJavaClass()) > 1) {
 				messages.add(
 					JpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
-						new String[] {javaClassRef.getJavaClass().getQualifiedName()}, 
+						new String[] {javaClassRef.getJavaClass()}, 
 						javaClassRef, javaClassRef.validationTextRange())
 				);
 			}

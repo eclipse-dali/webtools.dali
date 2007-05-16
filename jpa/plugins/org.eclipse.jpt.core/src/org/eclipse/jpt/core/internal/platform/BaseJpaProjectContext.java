@@ -204,11 +204,21 @@ public class BaseJpaProjectContext extends BaseContext
 	private Iterator<PersistenceUnitContext> persistenceUnitContexts() {
 		return this.persistenceUnitContexts.iterator();
 	}
-
+	
 	int persistenceUnitContextsSize() {
 		return this.persistenceUnitContexts.size();
 	}
 
+	PersistenceUnitContext persistenceUnitContext(String persistenceUnitName) {
+		for (Iterator<PersistenceUnitContext> stream = persistenceUnitContexts(); stream.hasNext(); ) {
+			PersistenceUnitContext puContext = stream.next();
+			if (puContext.persistenceUnit().getName().equals(persistenceUnitName)) {
+				return puContext;
+			}
+		}
+		return null;
+	}
+	
 	Iterator<PersistenceUnit> persistenceUnits() {
 		return new TransformationIterator<PersistenceUnitContext, PersistenceUnit>(this.persistenceUnitContexts()) {
 			@Override
