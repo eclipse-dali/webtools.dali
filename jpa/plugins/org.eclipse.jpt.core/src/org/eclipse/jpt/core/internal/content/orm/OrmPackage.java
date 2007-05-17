@@ -15,7 +15,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-import org.eclipse.jem.java.JavaRefPackage;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.content.java.JpaJavaPackage;
 import org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage;
@@ -673,13 +672,22 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS__ID_CLASS = XML_TYPE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Id Class For Xml</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML = XML_TYPE_MAPPING_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = XML_TYPE_MAPPING_FEATURE_COUNT + 1;
+	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = XML_TYPE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal <em>Xml Entity Internal</em>}' class.
@@ -6373,7 +6381,6 @@ public class OrmPackage extends EPackageImpl
 		isInited = true;
 		// Initialize simple dependencies
 		EcorePackage.eINSTANCE.eClass();
-		JavaRefPackage.eINSTANCE.eClass();
 		// Obtain or create and register interdependencies
 		JpaCorePackage theJpaCorePackage = (JpaCorePackage) (EPackage.Registry.INSTANCE.getEPackage(JpaCorePackage.eNS_URI) instanceof JpaCorePackage ? EPackage.Registry.INSTANCE.getEPackage(JpaCorePackage.eNS_URI) : JpaCorePackage.eINSTANCE);
 		JpaCoreMappingsPackage theJpaCoreMappingsPackage = (JpaCoreMappingsPackage) (EPackage.Registry.INSTANCE.getEPackage(JpaCoreMappingsPackage.eNS_URI) instanceof JpaCoreMappingsPackage ? EPackage.Registry.INSTANCE.getEPackage(JpaCoreMappingsPackage.eNS_URI) : JpaCoreMappingsPackage.eINSTANCE);
@@ -6962,6 +6969,19 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EClass getXmlMappedSuperclass() {
 		return xmlMappedSuperclassEClass;
+	}
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass#getIdClassForXml <em>Id Class For Xml</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Id Class For Xml</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass#getIdClassForXml()
+	 * @see #getXmlMappedSuperclass()
+	 * @generated
+	 */
+	public EReference getXmlMappedSuperclass_IdClassForXml() {
+		return (EReference) xmlMappedSuperclassEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -8360,6 +8380,7 @@ public class OrmPackage extends EPackageImpl
 		createEReference(xmlPersistentTypeEClass, XML_PERSISTENT_TYPE__SPECIFIED_PERSISTENT_ATTRIBUTES);
 		createEReference(xmlPersistentTypeEClass, XML_PERSISTENT_TYPE__VIRTUAL_PERSISTENT_ATTRIBUTES);
 		xmlMappedSuperclassEClass = createEClass(XML_MAPPED_SUPERCLASS);
+		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML);
 		xmlEntityInternalEClass = createEClass(XML_ENTITY_INTERNAL);
 		xmlEntityForXmlEClass = createEClass(XML_ENTITY_FOR_XML);
 		createEReference(xmlEntityForXmlEClass, XML_ENTITY_FOR_XML__TABLE_FOR_XML);
@@ -8660,6 +8681,7 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getXmlPersistentType_SpecifiedPersistentAttributes(), this.getXmlPersistentAttribute(), null, "specifiedPersistentAttributes", null, 0, -1, XmlPersistentType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlPersistentType_VirtualPersistentAttributes(), this.getXmlPersistentAttribute(), null, "virtualPersistentAttributes", null, 0, -1, XmlPersistentType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(xmlMappedSuperclassEClass, XmlMappedSuperclass.class, "XmlMappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlMappedSuperclass_IdClassForXml(), this.getXmlIdClass(), null, "idClassForXml", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(xmlEntityInternalEClass, XmlEntityInternal.class, "XmlEntityInternal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlEntityForXmlEClass, XmlEntityForXml.class, "XmlEntityForXml", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlEntityForXml_TableForXml(), this.getXmlTable(), null, "tableForXml", null, 0, 1, XmlEntityForXml.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -9152,6 +9174,14 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MAPPED_SUPERCLASS = eINSTANCE.getXmlMappedSuperclass();
+
+		/**
+		 * The meta object literal for the '<em><b>Id Class For Xml</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML = eINSTANCE.getXmlMappedSuperclass_IdClassForXml();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlEntityInternal <em>Xml Entity Internal</em>}' class.

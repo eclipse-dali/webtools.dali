@@ -230,7 +230,7 @@ public class JavaEmbedded extends JavaAttributeMapping implements IEmbedded
 	}
 
 	public EList<IAttributeOverride> getAttributeOverrides() {
-		EList<IAttributeOverride> list = new BasicEList<IAttributeOverride>();
+		EList<IAttributeOverride> list = new EObjectContainmentEList<IAttributeOverride>(IAttributeOverride.class, this, JpaJavaMappingsPackage.JAVA_EMBEDDED__ATTRIBUTE_OVERRIDES);
 		list.addAll(getSpecifiedAttributeOverrides());
 		list.addAll(getDefaultAttributeOverrides());
 		return list;

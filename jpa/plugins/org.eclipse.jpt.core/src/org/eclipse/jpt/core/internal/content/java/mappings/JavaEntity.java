@@ -1641,7 +1641,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	}
 
 	public EList<IAttributeOverride> getAttributeOverrides() {
-		EList<IAttributeOverride> list = new BasicEList<IAttributeOverride>();
+		EList<IAttributeOverride> list = new EObjectContainmentEList<IAttributeOverride>(IAttributeOverride.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__ATTRIBUTE_OVERRIDES);
 		list.addAll(getSpecifiedAttributeOverrides());
 		list.addAll(getDefaultAttributeOverrides());
 		return list;
@@ -1726,7 +1726,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	}
 
 	public EList<IAssociationOverride> getAssociationOverrides() {
-		EList<IAssociationOverride> list = new BasicEList<IAssociationOverride>();
+		EList<IAssociationOverride> list = new EObjectContainmentEList<IAssociationOverride>(IAssociationOverride.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__ASSOCIATION_OVERRIDES);
 		list.addAll(getSpecifiedAssociationOverrides());
 		list.addAll(getDefaultAssociationOverrides());
 		return list;

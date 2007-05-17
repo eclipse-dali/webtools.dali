@@ -303,7 +303,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	 * @generated NOT
 	 */
 	public EList<XmlAttributeMapping> getAttributeMappings() {
-		EList<XmlAttributeMapping> list = new BasicEList<XmlAttributeMapping>();
+		EList<XmlAttributeMapping> list = new EObjectContainmentEList<XmlAttributeMapping>(XmlAttributeMapping.class, this, OrmPackage.XML_PERSISTENT_TYPE__ATTRIBUTE_MAPPINGS);
 		list.addAll(getSpecifiedAttributeMappings());
 		list.addAll(getVirtualAttributeMappings());
 		return list;
@@ -380,7 +380,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	 * @generated NOT
 	 */
 	public EList<XmlPersistentAttribute> getPersistentAttributes() {
-		EList<XmlPersistentAttribute> list = new BasicEList<XmlPersistentAttribute>();
+		EList<XmlPersistentAttribute> list = new EObjectEList<XmlPersistentAttribute>(XmlPersistentAttribute.class, this, OrmPackage.XML_PERSISTENT_TYPE__PERSISTENT_ATTRIBUTES);
 		list.addAll(getSpecifiedPersistentAttributes());
 		list.addAll(getVirtualPersistentAttributes());
 		return list;

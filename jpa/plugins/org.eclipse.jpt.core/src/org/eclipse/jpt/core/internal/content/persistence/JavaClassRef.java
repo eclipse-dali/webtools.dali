@@ -109,7 +109,7 @@ public class JavaClassRef extends XmlEObject
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.JAVA_CLASS_REF__JAVA_CLASS, oldJavaClass, javaClass));
 	}
-	
+
 	public IType findJdtType() {
 		String fqClassName = getJavaClass();
 		if (StringTools.stringIsEmpty(fqClassName)) {

@@ -10,8 +10,12 @@
 package org.eclipse.jpt.core.internal.content.orm;
 
 import java.util.Iterator;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
@@ -27,6 +31,12 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
  * An implementation of the model object '<em><b>Xml Mapped Superclass</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass#getIdClassForXml <em>Id Class For Xml</em>}</li>
+ * </ul>
+ * </p>
  *
  * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlMappedSuperclass()
  * @model kind="class"
@@ -56,12 +66,62 @@ public class XmlMappedSuperclass extends XmlTypeMapping
 	protected String idClass = ID_CLASS_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getIdClassForXml() <em>Id Class For Xml</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @see #getIdClassForXml()
 	 * @generated
+	 * @ordered
 	 */
+	protected XmlIdClass idClassForXml;
+
 	protected XmlMappedSuperclass() {
 		super();
+		this.eAdapters().add(this.buildListener());
+	}
+
+	protected Adapter buildListener() {
+		return new AdapterImpl() {
+			@Override
+			public void notifyChanged(Notification notification) {
+				XmlMappedSuperclass.this.notifyChanged(notification);
+			}
+		};
+	}
+
+	protected void notifyChanged(Notification notification) {
+		switch (notification.getFeatureID(IMappedSuperclass.class)) {
+			case JpaCoreMappingsPackage.IMAPPED_SUPERCLASS__ID_CLASS :
+				idClassChanged();
+				break;
+			default :
+				break;
+		}
+		switch (notification.getFeatureID(XmlMappedSuperclass.class)) {
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML :
+				xmlIdClassChanged();
+				break;
+			default :
+				break;
+		}
+	}
+
+	protected void idClassChanged() {
+		if (getIdClass() == null) {
+			setIdClassForXml(null);
+		}
+		else {
+			if (getIdClassForXml() == null) {
+				setIdClassForXml(OrmFactory.eINSTANCE.createXmlIdClass());
+			}
+			getIdClassForXml().setValue(getIdClass());
+		}
+	}
+
+	protected void xmlIdClassChanged() {
+		if (getIdClassForXml() == null) {
+			setIdClass(null);
+		}
 	}
 
 	/**
@@ -108,6 +168,79 @@ public class XmlMappedSuperclass extends XmlTypeMapping
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Id Class For Xml</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Id Class For Xml</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Id Class For Xml</em>' containment reference.
+	 * @see #setIdClassForXml(XmlIdClass)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlMappedSuperclass_IdClassForXml()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlIdClass getIdClassForXml() {
+		return idClassForXml;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetIdClassForXml(XmlIdClass newIdClassForXml, NotificationChain msgs) {
+		XmlIdClass oldIdClassForXml = idClassForXml;
+		idClassForXml = newIdClassForXml;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML, oldIdClassForXml, newIdClassForXml);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMappedSuperclass#getIdClassForXml <em>Id Class For Xml</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id Class For Xml</em>' containment reference.
+	 * @see #getIdClassForXml()
+	 * @generated
+	 */
+	public void setIdClassForXml(XmlIdClass newIdClassForXml) {
+		if (newIdClassForXml != idClassForXml) {
+			NotificationChain msgs = null;
+			if (idClassForXml != null)
+				msgs = ((InternalEObject) idClassForXml).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML, null, msgs);
+			if (newIdClassForXml != null)
+				msgs = ((InternalEObject) newIdClassForXml).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML, null, msgs);
+			msgs = basicSetIdClassForXml(newIdClassForXml, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML, newIdClassForXml, newIdClassForXml));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML :
+				return basicSetIdClassForXml(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -117,6 +250,8 @@ public class XmlMappedSuperclass extends XmlTypeMapping
 		switch (featureID) {
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS :
 				return getIdClass();
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML :
+				return getIdClassForXml();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -131,6 +266,9 @@ public class XmlMappedSuperclass extends XmlTypeMapping
 		switch (featureID) {
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS :
 				setIdClass((String) newValue);
+				return;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML :
+				setIdClassForXml((XmlIdClass) newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -147,6 +285,9 @@ public class XmlMappedSuperclass extends XmlTypeMapping
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS :
 				setIdClass(ID_CLASS_EDEFAULT);
 				return;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML :
+				setIdClassForXml((XmlIdClass) null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -161,6 +302,8 @@ public class XmlMappedSuperclass extends XmlTypeMapping
 		switch (featureID) {
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS :
 				return ID_CLASS_EDEFAULT == null ? idClass != null : !ID_CLASS_EDEFAULT.equals(idClass);
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML :
+				return idClassForXml != null;
 		}
 		return super.eIsSet(featureID);
 	}

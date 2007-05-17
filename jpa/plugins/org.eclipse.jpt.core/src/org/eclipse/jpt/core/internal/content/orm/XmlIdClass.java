@@ -80,12 +80,12 @@ public class XmlIdClass extends XmlEObject
 		}
 	}
 
-	private XmlEntityInternal xmlEntity() {
-		return (XmlEntityInternal) eContainer();
+	private Owner owner() {
+		return (Owner) eContainer();
 	}
 
 	protected void valueChanged() {
-		xmlEntity().setIdClass(getValue());
+		owner().setIdClass(getValue());
 	}
 
 	/**
@@ -204,5 +204,11 @@ public class XmlIdClass extends XmlEObject
 		result.append(value);
 		result.append(')');
 		return result.toString();
+	}
+
+
+	public interface Owner
+	{
+		void setIdClass(String idClass);
 	}
 } // XmlIdClass

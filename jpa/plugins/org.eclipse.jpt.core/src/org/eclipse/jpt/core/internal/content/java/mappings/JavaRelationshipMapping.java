@@ -21,7 +21,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
-import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -595,9 +594,8 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 		return JDTTools.resolve(Signature.toString(signature), jdtType);
 	}
 
-	//TODO grr, this will cause ClassCastExceptions, how should I handle it??
 	public IEntity getEntity() {
-		ITypeMapping typeMapping = ((JavaPersistentType) eContainer().eContainer()).getMapping();
+		ITypeMapping typeMapping = typeMapping();
 		if (typeMapping instanceof IEntity) {
 			return (IEntity) typeMapping;
 		}

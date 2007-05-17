@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-import org.eclipse.jem.java.JavaRefPackage;
 import org.eclipse.jpt.core.internal.content.java.JpaJavaPackage;
 import org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
@@ -827,7 +826,6 @@ public class JpaCorePackage extends EPackageImpl
 		isInited = true;
 		// Initialize simple dependencies
 		EcorePackage.eINSTANCE.eClass();
-		JavaRefPackage.eINSTANCE.eClass();
 		// Obtain or create and register interdependencies
 		JpaCoreMappingsPackage theJpaCoreMappingsPackage = (JpaCoreMappingsPackage) (EPackage.Registry.INSTANCE.getEPackage(JpaCoreMappingsPackage.eNS_URI) instanceof JpaCoreMappingsPackage ? EPackage.Registry.INSTANCE.getEPackage(JpaCoreMappingsPackage.eNS_URI) : JpaCoreMappingsPackage.eINSTANCE);
 		JpaJavaPackage theJpaJavaPackage = (JpaJavaPackage) (EPackage.Registry.INSTANCE.getEPackage(JpaJavaPackage.eNS_URI) instanceof JpaJavaPackage ? EPackage.Registry.INSTANCE.getEPackage(JpaJavaPackage.eNS_URI) : JpaJavaPackage.eINSTANCE);

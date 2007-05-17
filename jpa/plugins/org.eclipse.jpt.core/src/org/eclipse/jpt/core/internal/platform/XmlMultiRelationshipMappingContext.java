@@ -46,8 +46,8 @@ public abstract class XmlMultiRelationshipMappingContext
 	}
 	
 	protected String joinTableDefaultName(DefaultsContext defaultsContext) {
-		ITable owningTable = multiRelationshipMapping().getEntity().getTable();
-		if (owningTable == null) {
+		String tableName = multiRelationshipMapping().typeMapping().getTableName();
+		if (tableName == null) {
 			return null;
 		}
 		IEntity targetEntity = targetEntity(defaultsContext);
@@ -55,7 +55,7 @@ public abstract class XmlMultiRelationshipMappingContext
 			return null;
 		}
 		ITable targetTable = targetEntity.getTable();
-		return (targetTable == null) ? null : owningTable.getName() + "_" + targetTable.getName();
+		return (targetTable == null) ? null : tableName + "_" + targetTable.getName();
 	}
 
 	protected XmlMultiRelationshipMappingInternal multiRelationshipMapping() {

@@ -542,7 +542,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	 * @generated NOT
 	 */
 	public EList<ISecondaryTable> getSecondaryTables() {
-		EList<ISecondaryTable> list = new BasicEList<ISecondaryTable>();
+		EList<ISecondaryTable> list = new EObjectContainmentEList<ISecondaryTable>(ISecondaryTable.class, this, OrmPackage.XML_ENTITY_INTERNAL__SECONDARY_TABLES);
 		list.addAll(getSpecifiedSecondaryTables());
 		list.addAll(getVirtualSecondaryTables());
 		return list;
@@ -943,7 +943,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	}
 
 	public EList<IAttributeOverride> getAttributeOverrides() {
-		EList<IAttributeOverride> list = new BasicEList<IAttributeOverride>();
+		EList<IAttributeOverride> list = new EObjectContainmentEList<IAttributeOverride>(IAttributeOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__ATTRIBUTE_OVERRIDES);
 		list.addAll(getSpecifiedAttributeOverrides());
 		list.addAll(getDefaultAttributeOverrides());
 		return list;
@@ -992,7 +992,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	}
 
 	public EList<IAssociationOverride> getAssociationOverrides() {
-		EList<IAssociationOverride> list = new BasicEList<IAssociationOverride>();
+		EList<IAssociationOverride> list = new EObjectContainmentEList<IAssociationOverride>(IAssociationOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__ASSOCIATION_OVERRIDES);
 		list.addAll(getSpecifiedAssociationOverrides());
 		list.addAll(getDefaultAssociationOverrides());
 		return list;

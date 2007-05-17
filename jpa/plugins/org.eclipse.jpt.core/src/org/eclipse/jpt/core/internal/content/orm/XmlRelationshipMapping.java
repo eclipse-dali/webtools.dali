@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.IPersistentType;
+import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.mappings.ICascade;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
@@ -499,9 +500,12 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 		return RelationshipMappingTools.targetEntityIsValid(targetEntity);
 	}
 
-	//TODO grr, this will cause ClassCastExceptions, how should I handle it??
 	public IEntity getEntity() {
-		return (IEntity) ((XmlPersistentType) eContainer()).getMapping();
+		ITypeMapping typeMapping = getPersistentType().getMapping();
+		if (typeMapping instanceof IEntity) {
+			return (IEntity) typeMapping;
+		}
+		return null;
 	}
 
 	public String fullyQualifiedTargetEntity() {

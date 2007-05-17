@@ -522,7 +522,9 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference orm.ecore#//XmlPersistentType/specifiedPersistentAttributes"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference orm.ecore#//XmlPersistentType/virtualPersistentAttributes"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlMappedSuperclass"/>
+    <genClasses ecoreClass="orm.ecore#//XmlMappedSuperclass">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlMappedSuperclass/idClassForXml"/>
+    </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlEntityInternal"/>
     <genClasses ecoreClass="orm.ecore#//XmlEntityForXml">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntityForXml/tableForXml"/>

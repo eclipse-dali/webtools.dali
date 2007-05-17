@@ -83,7 +83,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="virtualPersistentAttributes"
         upperBound="-1" eType="#//XmlPersistentAttribute" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//XmlTypeMapping core.ecore#//mappings/IMappedSuperclass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//XmlTypeMapping core.ecore#//mappings/IMappedSuperclass">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="idClassForXml" eType="#//XmlIdClass"
+        containment="true" resolveProxies="false"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEntityInternal" eSuperTypes="#//XmlTypeMapping #//XmlEntityForXml #//XmlEntity"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEntityForXml" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="tableForXml" eType="#//XmlTable"
