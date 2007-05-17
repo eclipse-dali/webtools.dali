@@ -18,6 +18,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
@@ -91,7 +92,7 @@ public class XmlEmbedded extends XmlAttributeMapping implements IEmbedded
 	}
 
 	public EList<IAttributeOverride> getAttributeOverrides() {
-		EList<IAttributeOverride> list = new EObjectContainmentEList<IAttributeOverride>(IAttributeOverride.class, this, OrmPackage.XML_EMBEDDED__ATTRIBUTE_OVERRIDES);
+		EList<IAttributeOverride> list = new EObjectEList<IAttributeOverride>(IAttributeOverride.class, this, OrmPackage.XML_EMBEDDED__ATTRIBUTE_OVERRIDES);
 		list.addAll(getSpecifiedAttributeOverrides());
 		list.addAll(getDefaultAttributeOverrides());
 		return list;

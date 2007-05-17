@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
@@ -943,7 +944,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	}
 
 	public EList<IAttributeOverride> getAttributeOverrides() {
-		EList<IAttributeOverride> list = new EObjectContainmentEList<IAttributeOverride>(IAttributeOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__ATTRIBUTE_OVERRIDES);
+		EList<IAttributeOverride> list = new EObjectEList<IAttributeOverride>(IAttributeOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__ATTRIBUTE_OVERRIDES);
 		list.addAll(getSpecifiedAttributeOverrides());
 		list.addAll(getDefaultAttributeOverrides());
 		return list;
@@ -992,7 +993,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	}
 
 	public EList<IAssociationOverride> getAssociationOverrides() {
-		EList<IAssociationOverride> list = new EObjectContainmentEList<IAssociationOverride>(IAssociationOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__ASSOCIATION_OVERRIDES);
+		EList<IAssociationOverride> list = new EObjectEList<IAssociationOverride>(IAssociationOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__ASSOCIATION_OVERRIDES);
 		list.addAll(getSpecifiedAssociationOverrides());
 		list.addAll(getDefaultAssociationOverrides());
 		return list;

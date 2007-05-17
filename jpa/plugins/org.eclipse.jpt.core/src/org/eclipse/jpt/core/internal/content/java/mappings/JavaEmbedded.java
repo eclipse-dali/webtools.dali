@@ -19,6 +19,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
@@ -230,7 +231,7 @@ public class JavaEmbedded extends JavaAttributeMapping implements IEmbedded
 	}
 
 	public EList<IAttributeOverride> getAttributeOverrides() {
-		EList<IAttributeOverride> list = new EObjectContainmentEList<IAttributeOverride>(IAttributeOverride.class, this, JpaJavaMappingsPackage.JAVA_EMBEDDED__ATTRIBUTE_OVERRIDES);
+		EList<IAttributeOverride> list = new EObjectEList<IAttributeOverride>(IAttributeOverride.class, this, JpaJavaMappingsPackage.JAVA_EMBEDDED__ATTRIBUTE_OVERRIDES);
 		list.addAll(getSpecifiedAttributeOverrides());
 		list.addAll(getDefaultAttributeOverrides());
 		return list;

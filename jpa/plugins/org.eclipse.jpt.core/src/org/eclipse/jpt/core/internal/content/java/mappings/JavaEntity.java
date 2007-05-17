@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -1641,7 +1642,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	}
 
 	public EList<IAttributeOverride> getAttributeOverrides() {
-		EList<IAttributeOverride> list = new EObjectContainmentEList<IAttributeOverride>(IAttributeOverride.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__ATTRIBUTE_OVERRIDES);
+		EList<IAttributeOverride> list = new EObjectEList<IAttributeOverride>(IAttributeOverride.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__ATTRIBUTE_OVERRIDES);
 		list.addAll(getSpecifiedAttributeOverrides());
 		list.addAll(getDefaultAttributeOverrides());
 		return list;
@@ -1726,7 +1727,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	}
 
 	public EList<IAssociationOverride> getAssociationOverrides() {
-		EList<IAssociationOverride> list = new EObjectContainmentEList<IAssociationOverride>(IAssociationOverride.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__ASSOCIATION_OVERRIDES);
+		EList<IAssociationOverride> list = new EObjectEList<IAssociationOverride>(IAssociationOverride.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__ASSOCIATION_OVERRIDES);
 		list.addAll(getSpecifiedAssociationOverrides());
 		list.addAll(getDefaultAssociationOverrides());
 		return list;

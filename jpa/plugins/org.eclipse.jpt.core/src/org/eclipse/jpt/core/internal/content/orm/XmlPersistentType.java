@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.BasicInternalEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -303,7 +304,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	 * @generated NOT
 	 */
 	public EList<XmlAttributeMapping> getAttributeMappings() {
-		EList<XmlAttributeMapping> list = new EObjectContainmentEList<XmlAttributeMapping>(XmlAttributeMapping.class, this, OrmPackage.XML_PERSISTENT_TYPE__ATTRIBUTE_MAPPINGS);
+		EList<XmlAttributeMapping> list = new EObjectEList<XmlAttributeMapping>(XmlAttributeMapping.class, this, OrmPackage.XML_PERSISTENT_TYPE__ATTRIBUTE_MAPPINGS);
 		list.addAll(getSpecifiedAttributeMappings());
 		list.addAll(getVirtualAttributeMappings());
 		return list;
