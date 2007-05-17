@@ -17,7 +17,7 @@ public class JptCorePlatformTests
 {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCorePlatformTests.class.getName());
-		suite.addTestSuite(BaseJpaPlatformTests.class);
+//		suite.addTestSuite(BaseJpaPlatformTests.class);
 		return suite;
 	}
 
