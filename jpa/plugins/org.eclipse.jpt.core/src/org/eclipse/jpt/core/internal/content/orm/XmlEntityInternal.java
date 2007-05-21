@@ -12,11 +12,11 @@ package org.eclipse.jpt.core.internal.content.orm;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -414,6 +414,14 @@ public class XmlEntityInternal extends XmlTypeMapping
 		if (getInheritanceForXml() == null) {
 			setInheritanceStrategy(null);
 		}
+	}
+	
+	@Override
+	protected void addInsignificantFeatureIdsTo(Set<Integer> insignificantFeatureIds) {
+		super.addInsignificantFeatureIdsTo(insignificantFeatureIds);
+		insignificantFeatureIds.add(OrmPackage.XML_ENTITY_INTERNAL__SECONDARY_TABLES);
+		insignificantFeatureIds.add(OrmPackage.XML_ENTITY_INTERNAL__ATTRIBUTE_OVERRIDES);
+		insignificantFeatureIds.add(OrmPackage.XML_ENTITY_INTERNAL__ASSOCIATION_OVERRIDES);
 	}
 
 	private ITable.Owner buildTableOwner() {
