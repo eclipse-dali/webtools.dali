@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IImportDeclaration;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -27,6 +28,7 @@ import org.eclipse.jdt.internal.codeassist.SelectionEngine;
 import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.internal.core.SearchableEnvironment;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 
 public class JDTTools {
 
@@ -73,6 +75,18 @@ public class JDTTools {
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		parser.setSource(compilationUnit);
 		return (CompilationUnit) parser.createAST(null);
+	}
+	
+	public static IType findType(String packageName, String qualifiedTypeName, IJavaProject javaProject) {
+		try {
+			if (javaProject != null) {
+				return javaProject.findType(packageName, qualifiedTypeName.replace('$', '.'));
+			}
+		} 
+		catch (JavaModelException jme) {
+			JptCorePlugin.log(jme);
+		}
+		return null;
 	}
 
 	/**

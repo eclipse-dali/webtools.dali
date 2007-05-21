@@ -16,18 +16,15 @@ import java.util.List;
 import java.util.Set;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.BasicInternalEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jem.internal.adapters.jdom.JDOMSearchHelper;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
@@ -733,7 +730,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 		};
 		while (name[0].length() != 0) {
 			name = moveDot(name);
-			IType type = JDOMSearchHelper.findType(name[0], name[1], getJpaProject().getJavaProject());
+			IType type = JDTTools.findType(name[0], name[1], getJpaProject().getJavaProject());
 			if (type != null)
 				return type;
 		}

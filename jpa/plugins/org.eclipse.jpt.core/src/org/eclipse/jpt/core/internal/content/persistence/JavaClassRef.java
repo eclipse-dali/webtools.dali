@@ -13,9 +13,9 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jem.internal.adapters.jdom.JDOMSearchHelper;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.XmlEObject;
+import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.internal.emf.utilities.DOMUtilities;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
@@ -118,7 +118,8 @@ public class JavaClassRef extends XmlEObject
 		int dotIndex = fqClassName.lastIndexOf('.');
 		String packageName = (dotIndex >= 0) ? fqClassName.substring(0, dotIndex) : "";
 		String className = (dotIndex >= 0) ? fqClassName.substring(dotIndex + 1, fqClassName.length()) : fqClassName;
-		return JDOMSearchHelper.findType(packageName, className, getJpaProject().getJavaProject());
+		
+		return JDTTools.findType(packageName, className, getJpaProject().getJavaProject());
 	}
 
 	/**
