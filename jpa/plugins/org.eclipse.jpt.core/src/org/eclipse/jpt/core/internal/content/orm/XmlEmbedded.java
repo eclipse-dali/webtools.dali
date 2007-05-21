@@ -345,6 +345,9 @@ public class XmlEmbedded extends XmlAttributeMapping implements IEmbedded
 
 	//******* static methods *********
 	public static IEmbeddable embeddableFor(Attribute attribute, DefaultsContext defaultsContext) {
+		if (attribute == null) {
+			return null;
+		}
 		String resolvedTypeName = attribute.resolvedTypeName();
 		if (resolvedTypeName == null) {
 			return null;
