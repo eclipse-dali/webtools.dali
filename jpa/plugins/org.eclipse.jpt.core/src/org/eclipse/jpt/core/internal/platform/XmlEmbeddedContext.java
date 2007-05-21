@@ -15,9 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaAttributeOverride;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbedded;
-import org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsFactory;
+import org.eclipse.jpt.core.internal.content.orm.OrmFactory;
+import org.eclipse.jpt.core.internal.content.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.internal.content.orm.XmlEmbedded;
 import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
@@ -58,7 +58,7 @@ public class XmlEmbeddedContext
 		for (Iterator<String> i = getEmbedded().allOverridableAttributeNames(); i.hasNext(); ) {
 			String override = i.next();
 			if (!getEmbedded().containsAttributeOverride(override)) {
-				JavaAttributeOverride attributeOverride = JpaJavaMappingsFactory.eINSTANCE.createJavaAttributeOverride(new IEmbedded.AttributeOverrideOwner(getEmbedded()), getEmbedded().getPersistentAttribute().getAttribute());
+				XmlAttributeOverride attributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverride(new IEmbedded.AttributeOverrideOwner(getEmbedded()));
 				attributeOverride.setName(override);
 				getEmbedded().getDefaultAttributeOverrides().add(attributeOverride);
 			}
