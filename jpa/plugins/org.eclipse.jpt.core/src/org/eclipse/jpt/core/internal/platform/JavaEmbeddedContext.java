@@ -56,8 +56,8 @@ public class JavaEmbeddedContext extends JavaAttributeContext
 			String override = i.next();
 			if (!getEmbedded().containsAttributeOverride(override)) {
 				JavaAttributeOverride attributeOverride = JpaJavaMappingsFactory.eINSTANCE.createJavaAttributeOverride(new IEmbedded.AttributeOverrideOwner(getEmbedded()), getEmbedded().getPersistentAttribute().getAttribute());
-				attributeOverride.setName(override);
 				getEmbedded().getDefaultAttributeOverrides().add(attributeOverride);
+				attributeOverride.setName(override);
 			}
 		}
 		

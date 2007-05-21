@@ -59,8 +59,8 @@ public class XmlEmbeddedContext
 			String override = i.next();
 			if (!getEmbedded().containsAttributeOverride(override)) {
 				XmlAttributeOverride attributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverride(new IEmbedded.AttributeOverrideOwner(getEmbedded()));
-				attributeOverride.setName(override);
 				getEmbedded().getDefaultAttributeOverrides().add(attributeOverride);
+				attributeOverride.setName(override);
 			}
 		}
 		
