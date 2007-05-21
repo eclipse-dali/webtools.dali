@@ -396,26 +396,33 @@ public class JpaModelManager
 					// could be problems here ...
 					JpaProject jpaProject = (JpaProject) model.getJpaProject(project);
 					switch (delta.getKind()) {
-						case IResourceDelta.ADDED :
-							// shouldn't have to do anything - model should be created with facet
+						case IResourceDelta.REMOVED :
+							// we should have already handled this in the PRE_DELETE event
 							break;
 						
-						case IResourceDelta.REMOVED :
-							// not really sure what should be done here ...
-							break;
+						case IResourceDelta.ADDED :
+							// if project is renamed (for instance, we should act as though it's been opened)
+							// fall through
 						
 						case IResourceDelta.CHANGED : 
 							if ((delta.getFlags() & IResourceDelta.OPEN) != 0) {
-								if (project.isOpen() && jpaProject == null) {
-									try {
-										JpaModelManager.instance().createFilledJpaProject(project);
-									}
-									catch (CoreException ce) {
-										JptCorePlugin.log(ce);
+								if (project.isOpen()) {
+									// project has been opened, but don't create it if it's already there 
+									// (which can happen on project creation)
+									if (jpaProject == null) {
+										try {
+											JpaModelManager.instance().createFilledJpaProject(project);
+										}
+										catch (CoreException ce) {
+											JptCorePlugin.log(ce);
+										}
 									}
 								} 
 								else {
-									model.disposeProject(jpaProject);
+									// project has been closed.  dispose jpa project if it exists.
+									if (jpaProject != null) {
+										model.disposeProject(jpaProject);
+									}
 								}
 							}
 							else if ((delta.getFlags() & IResourceDelta.DESCRIPTION) != 0) {
@@ -517,6 +524,7 @@ public class JpaModelManager
 		ElementChangeProcessor() {
 			super();
 		}
+		
 		public void elementChanged(ElementChangedEvent event) {
 			JpaModelManager.instance().model.handleEvent(event);
 		}
