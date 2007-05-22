@@ -272,7 +272,12 @@ public class XmlPersistentAttribute extends XmlEObject
 		if (newKey == oldKey) {
 			return;
 		}
+		XmlAttributeMapping oldMapping = getMapping();
 		this.persistentType().changeMapping(this.getMapping(), newKey);
+		XmlAttributeMapping newMapping = getMapping();
+		if (eNotificationRequired()) {
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENT_ATTRIBUTE__MAPPING, oldMapping, newMapping));
+		}
 	}
 
 	public Object getId() {
