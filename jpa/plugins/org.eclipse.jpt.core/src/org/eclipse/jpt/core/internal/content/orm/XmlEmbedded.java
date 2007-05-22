@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.content.orm;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -74,6 +75,13 @@ public class XmlEmbedded extends XmlAttributeMapping implements IEmbedded
 	 */
 	protected XmlEmbedded() {
 		super();
+	}
+
+	
+	@Override
+	protected void addInsignificantFeatureIdsTo(Set<Integer> insignificantFeatureIds) {
+		super.addInsignificantFeatureIdsTo(insignificantFeatureIds);
+		insignificantFeatureIds.add(OrmPackage.XML_EMBEDDED__ATTRIBUTE_OVERRIDES);
 	}
 
 	@Override
