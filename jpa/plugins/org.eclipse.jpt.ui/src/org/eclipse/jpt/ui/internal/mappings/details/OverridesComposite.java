@@ -261,6 +261,7 @@ public class OverridesComposite extends BaseJpaComposite
 			this.selectedOverride = null;
 			this.columnComposite.populate(null);
 			this.joinColumnsComposite.populate(null);
+			this.listViewer.setInput(null);
 			return;
 		}
 		
@@ -329,6 +330,17 @@ public class OverridesComposite extends BaseJpaComposite
 		switch (notification.getFeatureID(IEntity.class)) {
 			case JpaCoreMappingsPackage.IENTITY__SPECIFIED_ATTRIBUTE_OVERRIDES :
 			case JpaCoreMappingsPackage.IENTITY__SPECIFIED_ASSOCIATION_OVERRIDES :
+			case JpaCoreMappingsPackage.IENTITY__DEFAULT_ATTRIBUTE_OVERRIDES :
+			case JpaCoreMappingsPackage.IENTITY__DEFAULT_ASSOCIATION_OVERRIDES :
+				Display.getDefault().asyncExec(new Runnable() {
+					public void run() {
+						if (listViewer.getList().isDisposed()) {
+							return;
+						}
+						listViewer.refresh();
+					}
+				});
+
 				if (notification.getEventType() == Notification.ADD) {
 					((IOverride) notification.getNewValue()).eAdapters().add(this.overrideListener);
 					final Object newValue = notification.getNewValue();
@@ -357,17 +369,6 @@ public class OverridesComposite extends BaseJpaComposite
 						override.eAdapters().remove(this.overrideListener);
 					}
 				}
-				break;
-			case JpaCoreMappingsPackage.IENTITY__DEFAULT_ATTRIBUTE_OVERRIDES :
-			case JpaCoreMappingsPackage.IENTITY__DEFAULT_ASSOCIATION_OVERRIDES :
-				Display.getDefault().asyncExec(new Runnable() {
-					public void run() {
-						if (listViewer.getList().isDisposed()) {
-							return;
-						}
-						listViewer.refresh();
-					}
-				});
 				break;
 		}
 	}
