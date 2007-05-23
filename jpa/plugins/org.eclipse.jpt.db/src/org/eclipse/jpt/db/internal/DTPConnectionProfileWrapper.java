@@ -178,6 +178,21 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 	public String getUserName() {
 		return this.getProperties().getProperty( IDBDriverDefinitionConstants.USERNAME_PROP_ID);
 	}
+
+	@Override
+	public String getUserPassword() {
+		return this.getProperties().getProperty( IDBDriverDefinitionConstants.PASSWORD_PROP_ID);
+	}
+
+	@Override
+	public String getDriverClass() {
+		return this.getProperties().getProperty( IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
+	}
+
+	@Override
+	public String getUrl() {
+		return this.getProperties().getProperty( IDBDriverDefinitionConstants.URL_PROP_ID);
+	}
 	
 	@Override
 	public String getInstanceId() {

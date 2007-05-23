@@ -111,8 +111,14 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	public abstract String getDatabaseVendor();
 	
 	public abstract String getDatabaseVersion();
-
+	
+	public abstract String getDriverClass();
+	
+	public abstract String getUrl();
+	
 	public abstract String getUserName();
+	
+	public abstract String getUserPassword();
 	
 	public abstract String getInstanceId();
 

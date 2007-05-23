@@ -115,6 +115,21 @@ public final class NullConnectionProfile extends ConnectionProfile {
 	public String getUserName() {
 		return "";
 	}
+
+	@Override
+	public String getUserPassword() {
+		return "";
+	}
+
+	@Override
+	public String getDriverClass() {
+		return "";
+	}
+
+	@Override
+	public String getUrl() {
+		return "";
+	}
 	
 	@Override
 	public String getInstanceId() {
