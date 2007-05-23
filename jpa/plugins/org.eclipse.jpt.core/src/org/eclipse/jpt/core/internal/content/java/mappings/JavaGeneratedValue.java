@@ -326,6 +326,10 @@ public class JavaGeneratedValue extends JavaEObject implements IGeneratedValue
 		return this.member.annotationTextRange(DECLARATION_ANNOTATION_ADAPTER);
 	}
 
+	public ITextRange generatorTextRange() {
+		return elementTextRange(this.member.annotationElementTextRange(GENERATOR_ADAPTER));
+	}
+
 	// ********** java annotations -> persistence model **********
 	public void updateFromJava(CompilationUnit astRoot) {
 		setStrategy(GenerationType.fromJavaAnnotationValue(this.strategyAdapter.getValue(astRoot)));

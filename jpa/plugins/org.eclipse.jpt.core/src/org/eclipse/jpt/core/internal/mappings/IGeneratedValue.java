@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.mappings;
 
 import org.eclipse.jpt.core.internal.IJpaSourceObject;
+import org.eclipse.jpt.core.internal.ITextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -84,4 +85,9 @@ public interface IGeneratedValue extends IJpaSourceObject
 	 * @generated
 	 */
 	void setGenerator(String value);
+
+	/**
+	 * Return the (best guess) text location of the generator.
+	 */
+	ITextRange generatorTextRange();
 } // IGeneratedValue

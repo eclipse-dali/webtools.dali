@@ -27,7 +27,7 @@ public class GeneratedValueTranslator extends Translator implements OrmXmlMapper
 	private Translator[] children;	
 	
 	public GeneratedValueTranslator(String domNameAndPath, EStructuralFeature aFeature) {
-		super(domNameAndPath, aFeature);
+		super(domNameAndPath, aFeature, END_TAG_NO_INDENT);
 	}
 	
 	public Translator[] getChildren(Object target, int versionID) {
@@ -46,7 +46,7 @@ public class GeneratedValueTranslator extends Translator implements OrmXmlMapper
 	}
 	
 	protected Translator createStrategyTranslator() {
-		return new Translator(GENERATED_VALUE__STRATEGY, MAPPINGS_PKG.getIGeneratedValue_Strategy(), DOM_ATTRIBUTE);
+		return new EnumeratorTranslator(GENERATED_VALUE__STRATEGY, MAPPINGS_PKG.getIGeneratedValue_Strategy(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createGeneratorTranslator() {

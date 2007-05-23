@@ -136,10 +136,10 @@
       </genEnums>
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="core.ecore#//mappings/GenerationType">
         <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/GenerationType/Default"/>
-        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/GenerationType/Auto"/>
-        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/GenerationType/Identity"/>
-        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/GenerationType/Sequence"/>
-        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/GenerationType/Table"/>
+        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/GenerationType/AUTO"/>
+        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/GenerationType/IDENTITY"/>
+        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/GenerationType/SEQUENCE"/>
+        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/GenerationType/TABLE"/>
       </genEnums>
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="core.ecore#//mappings/EnumType">
         <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/EnumType/Default"/>

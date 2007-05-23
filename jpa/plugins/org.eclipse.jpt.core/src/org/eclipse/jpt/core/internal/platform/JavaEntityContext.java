@@ -105,6 +105,7 @@ public class JavaEntityContext extends JavaTypeContext
 	 * in the java
 	 */
 	protected void populateGeneratorRepository(GeneratorRepository generatorRepository) {
+		super.populateGeneratorRepository(generatorRepository);
 		ITableGenerator tableGenerator = getEntity().getTableGenerator();
 		if (tableGenerator != null)  {
 			generatorRepository.addGenerator(tableGenerator);

@@ -521,10 +521,10 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="GenerationType">
       <eLiterals name="Default" literal="Default (Auto)"/>
-      <eLiterals name="Auto" value="1"/>
-      <eLiterals name="Identity" value="2"/>
-      <eLiterals name="Sequence" value="3"/>
-      <eLiterals name="Table" value="4"/>
+      <eLiterals name="AUTO" value="1" literal="Auto"/>
+      <eLiterals name="IDENTITY" value="2" literal="Identity"/>
+      <eLiterals name="SEQUENCE" value="3" literal="Sequence"/>
+      <eLiterals name="TABLE" value="4" literal="Table"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="EnumType">
       <eLiterals name="Default" literal="Default (Ordinal)"/>

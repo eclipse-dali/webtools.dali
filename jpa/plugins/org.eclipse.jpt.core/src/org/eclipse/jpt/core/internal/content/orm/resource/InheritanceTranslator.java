@@ -24,7 +24,7 @@ public class InheritanceTranslator extends Translator implements OrmXmlMapper
 	private Translator[] children;	
 	
 	public InheritanceTranslator(String domNameAndPath, EStructuralFeature aFeature) {
-		super(domNameAndPath, aFeature);
+		super(domNameAndPath, aFeature, END_TAG_NO_INDENT);
 	}
 	
 	public Translator[] getChildren(Object target, int versionID) {

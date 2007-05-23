@@ -40,41 +40,41 @@ public enum GenerationType implements Enumerator {
 	 */
 	DEFAULT(0, "Default", "Default (Auto)"),
 	/**
-	 * The '<em><b>Auto</b></em>' literal object.
+	 * The '<em><b>AUTO</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #AUTO_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	AUTO(1, "Auto", "Auto"),
+	AUTO(1, "AUTO", "Auto"),
 	/**
-	 * The '<em><b>Identity</b></em>' literal object.
+	 * The '<em><b>IDENTITY</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #IDENTITY_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	IDENTITY(2, "Identity", "Identity"),
+	IDENTITY(2, "IDENTITY", "Identity"),
 	/**
-	 * The '<em><b>Sequence</b></em>' literal object.
+	 * The '<em><b>SEQUENCE</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #SEQUENCE_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	SEQUENCE(3, "Sequence", "Sequence"),
+	SEQUENCE(3, "SEQUENCE", "Sequence"),
 	/**
-	 * The '<em><b>Table</b></em>' literal object.
+	 * The '<em><b>TABLE</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #TABLE_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	TABLE(4, "Table", "Table");
+	TABLE(4, "TABLE", "Table");
 	/**
 	 * The '<em><b>Default</b></em>' literal value.
 	 * <!-- begin-user-doc -->
@@ -91,7 +91,7 @@ public enum GenerationType implements Enumerator {
 	public static final int DEFAULT_VALUE = 0;
 
 	/**
-	 * The '<em><b>Auto</b></em>' literal value.
+	 * The '<em><b>AUTO</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>Auto</b></em>' literal object isn't clear,
@@ -99,14 +99,14 @@ public enum GenerationType implements Enumerator {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #AUTO
-	 * @model name="Auto"
+	 * @model literal="Auto"
 	 * @generated
 	 * @ordered
 	 */
 	public static final int AUTO_VALUE = 1;
 
 	/**
-	 * The '<em><b>Identity</b></em>' literal value.
+	 * The '<em><b>IDENTITY</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>Identity</b></em>' literal object isn't clear,
@@ -114,14 +114,14 @@ public enum GenerationType implements Enumerator {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #IDENTITY
-	 * @model name="Identity"
+	 * @model literal="Identity"
 	 * @generated
 	 * @ordered
 	 */
 	public static final int IDENTITY_VALUE = 2;
 
 	/**
-	 * The '<em><b>Sequence</b></em>' literal value.
+	 * The '<em><b>SEQUENCE</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>Sequence</b></em>' literal object isn't clear,
@@ -129,14 +129,14 @@ public enum GenerationType implements Enumerator {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #SEQUENCE
-	 * @model name="Sequence"
+	 * @model literal="Sequence"
 	 * @generated
 	 * @ordered
 	 */
 	public static final int SEQUENCE_VALUE = 3;
 
 	/**
-	 * The '<em><b>Table</b></em>' literal value.
+	 * The '<em><b>TABLE</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>Table</b></em>' literal object isn't clear,
@@ -144,7 +144,7 @@ public enum GenerationType implements Enumerator {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #TABLE
-	 * @model name="Table"
+	 * @model literal="Table"
 	 * @generated
 	 * @ordered
 	 */

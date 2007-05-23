@@ -18,7 +18,7 @@ public class SequenceGeneratorTranslator extends GeneratorTranslator
 {
 	
 	public SequenceGeneratorTranslator(String domNameAndPath, EStructuralFeature aFeature) {
-		super(domNameAndPath, aFeature, NO_STYLE);
+		super(domNameAndPath, aFeature, END_TAG_NO_INDENT);
 	}
 	
 	protected Translator[] createChildren() {

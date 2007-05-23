@@ -1136,15 +1136,9 @@ public class XmlEntityInternal extends XmlTypeMapping
 		}
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated NOT
-	 */
 	public boolean discriminatorValueIsAllowed() {
 		Type type = getPersistentType().findType();
-		return (type == null) ? false : type.isAbstract();
+		return (type == null) ? false : !type.isAbstract();
 	}
 
 	public IEntity parentEntity() {

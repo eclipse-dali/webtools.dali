@@ -110,7 +110,7 @@ public class JavaIdContext extends JavaAttributeContext
 					IMessage.HIGH_SEVERITY,
 					IJpaValidationMessages.GENERATED_VALUE_UNRESOLVED_GENERATOR,
 					new String[] {generatorName}, 
-					generatedValue, generatedValue.validationTextRange())
+					generatedValue, generatedValue.generatorTextRange())
 			);
 		}
 	}

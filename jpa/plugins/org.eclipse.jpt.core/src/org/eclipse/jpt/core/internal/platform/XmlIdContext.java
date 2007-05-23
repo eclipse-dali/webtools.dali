@@ -97,6 +97,7 @@ public class XmlIdContext extends XmlAttributeContext
 		if (entityOwned()) {
 			addColumnMessages(messages);
 		}
+		addGeneratorMessages(messages);
 	}
 	
 	protected void addColumnMessages(List<IMessage> messages) {
