@@ -265,17 +265,17 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaCompo
 
 	void editPrimaryKeyJoinColumn() {
 		IPrimaryKeyJoinColumn joinColumn = getSelectedJoinColumn();
-		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(this.getControl().getShell(), joinColumn);
+		PrimaryKeyJoinColumnInSecondaryTableDialog dialog = new PrimaryKeyJoinColumnInSecondaryTableDialog(this.getControl().getShell(), joinColumn);
 		editJoinColumnFromDialog(dialog, joinColumn);
 	}
 	
-	private void editJoinColumnFromDialog(PrimaryKeyJoinColumnDialog dialog, IPrimaryKeyJoinColumn joinColumn) {
+	private void editJoinColumnFromDialog(PrimaryKeyJoinColumnInSecondaryTableDialog dialog, IPrimaryKeyJoinColumn joinColumn) {
 		if (dialog.open() == Window.OK) {
 			editJoinColumnDialogOkd(dialog, joinColumn);
 		}
 	}
 	
-	private void editJoinColumnDialogOkd(PrimaryKeyJoinColumnDialog dialog, IPrimaryKeyJoinColumn joinColumn) {
+	private void editJoinColumnDialogOkd(PrimaryKeyJoinColumnInSecondaryTableDialog dialog, IPrimaryKeyJoinColumn joinColumn) {
 		String name = dialog.getSelectedName();
 		String referencedColumnName = dialog.getReferencedColumnName();
 
