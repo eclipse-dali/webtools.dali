@@ -165,7 +165,7 @@ public interface IJoinTable extends ITable
 		}
 
 		public IRelationshipMapping getRelationshipMapping() {
-			return joinTable.relationshipMapping();
+			return this.joinTable.relationshipMapping();
 		}
 
 		/**
@@ -184,15 +184,15 @@ public interface IJoinTable extends ITable
 		}
 
 		public ITextRange validationTextRange() {
-			return joinTable.validationTextRange();
+			return this.joinTable.validationTextRange();
 		}
 
 		public ITypeMapping getTypeMapping() {
-			return joinTable.getOwner().getTypeMapping();
+			return this.joinTable.getOwner().getTypeMapping();
 		}
 
 		public Table dbTable(String tableName) {
-			return (joinTable.getName().equals(tableName)) ? joinTable.dbTable() : null;
+			return (this.joinTable.getName().equals(tableName)) ? this.joinTable.dbTable() : null;
 		}
 	}
 

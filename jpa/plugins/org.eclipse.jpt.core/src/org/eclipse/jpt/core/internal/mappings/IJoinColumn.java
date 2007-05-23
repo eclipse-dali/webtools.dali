@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
-import java.util.List;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,11 +31,6 @@ public interface IJoinColumn extends IAbstractColumn, IAbstractJoinColumn
 	 */
 	interface Owner extends IAbstractJoinColumn.Owner
 	{
-		/**
-		 * return the list of join columns containing the join column
-		 */
-		List<IJoinColumn> joinColumns();
-
 		/**
 		 * return whether the specified table cannot be explicitly specified
 		 * in the join column's 'table' element

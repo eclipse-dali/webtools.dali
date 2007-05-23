@@ -28,11 +28,10 @@ public class PrimaryKeyJoinColumnContext extends AbstractJoinColumnContext<IPrim
 	}
 
 	protected String buildDefaultName() {
-		IEntity entity = (IEntity) getColumn().getOwner().getTypeMapping();
-		
-		if (entity.getPrimaryKeyJoinColumns().size() != 1) {
+		if (getColumn().getOwner().joinColumns().size() != 1) {
 			return null;
 		}
+		IEntity entity = (IEntity) getColumn().getOwner().getTypeMapping();
 		String pkColumnName = entity.parentEntity().primaryKeyColumnName();
 		return pkColumnName;
 	}

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.mappings;
 
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
@@ -664,20 +665,24 @@ public interface IEntity extends ITypeMapping
 		}
 
 		public ITextRange validationTextRange() {
-			return entity.validationTextRange();
+			return this.entity.validationTextRange();
 		}
 
 		public ITypeMapping getTypeMapping() {
-			return entity;
+			return this.entity;
 		}
 
 		public Table dbTable(String tableName) {
-			return entity.dbTable(tableName);
+			return this.entity.dbTable(tableName);
 		}
 
 		public Table dbReferencedColumnTable() {
-			IEntity parentEntity = entity.parentEntity();
+			IEntity parentEntity = this.entity.parentEntity();
 			return (parentEntity == null) ? null : parentEntity.primaryDbTable();
+		}
+		
+		public List<IPrimaryKeyJoinColumn> joinColumns() {
+			return this.entity.getPrimaryKeyJoinColumns();
 		}
 	}
 }

@@ -2,10 +2,11 @@
  * <copyright>
  * </copyright>
  *
- * $Id: IAbstractJoinColumn.java,v 1.7 2007/05/11 19:33:48 kmoore Exp $
+ * $Id: IAbstractJoinColumn.java,v 1.8 2007/05/23 18:40:10 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.mappings;
 
+import java.util.List;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.db.internal.Column;
@@ -105,9 +106,9 @@ public interface IAbstractJoinColumn extends INamedColumn
 	ITextRange referencedColumnNameTextRange();
 
 	/**
-	 * Re-declared to return INamedColumn.Owner.
+	 * Re-declared to return IAbstractJoinColumn.Owner.
 	 */
-	Owner getOwner();
+	IAbstractJoinColumn.Owner getOwner();
 
 
 	interface Owner extends INamedColumn.Owner
@@ -116,5 +117,11 @@ public interface IAbstractJoinColumn extends INamedColumn
 		 * Return the wrapper for the datasource table for the referenced column
 		 */
 		Table dbReferencedColumnTable();
+		
+		/**
+		 * return the list of join columns containing the join column
+		 */
+		List<? extends IAbstractJoinColumn> joinColumns();
+
 	}
 }

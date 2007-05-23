@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
+import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.ITypeMapping;
@@ -120,6 +121,9 @@ public interface ISecondaryTable extends ITable
 
 		public Table dbReferencedColumnTable() {
 			return getTypeMapping().primaryDbTable();
+		}
+		public List<IPrimaryKeyJoinColumn> joinColumns() {
+			return this.secondaryTable.getPrimaryKeyJoinColumns();
 		}
 	}
 }

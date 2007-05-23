@@ -164,7 +164,7 @@ public interface ISingleRelationshipMapping extends IRelationshipMapping
 			return this.singleRelationshipMapping.getPersistentAttribute().typeMapping().getTableName();
 		}
 
-		public List joinColumns() {
+		public List<IJoinColumn> joinColumns() {
 			return this.singleRelationshipMapping.getJoinColumns();
 		}
 
@@ -177,7 +177,7 @@ public interface ISingleRelationshipMapping extends IRelationshipMapping
 		}
 
 		public IRelationshipMapping getRelationshipMapping() {
-			return singleRelationshipMapping;
+			return this.singleRelationshipMapping;
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {
@@ -192,11 +192,11 @@ public interface ISingleRelationshipMapping extends IRelationshipMapping
 		}
 
 		public ITextRange validationTextRange() {
-			return singleRelationshipMapping.validationTextRange();
+			return this.singleRelationshipMapping.validationTextRange();
 		}
 
 		public ITypeMapping getTypeMapping() {
-			return singleRelationshipMapping.typeMapping();
+			return this.singleRelationshipMapping.typeMapping();
 		}
 
 		public Table dbTable(String tableName) {

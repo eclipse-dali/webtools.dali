@@ -106,7 +106,7 @@ public interface IAssociationOverride extends IOverride
 			return this.associationOverride.getOwner().getTypeMapping().getTableName();
 		}
 
-		public List joinColumns() {
+		public List<IJoinColumn> joinColumns() {
 			return this.associationOverride.getJoinColumns();
 		}
 
