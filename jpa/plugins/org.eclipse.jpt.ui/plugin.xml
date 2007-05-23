@@ -100,9 +100,9 @@
 			</enablement>
 
 			<action
-				class="org.eclipse.jpt.ui.internal.actions.GenerateDLLAction"
-				id="org.eclipse.jpt.ui.generateDLL"
-				label="%generateDLL"
+				class="org.eclipse.jpt.ui.internal.actions.GenerateDDLAction"
+				id="org.eclipse.jpt.ui.generateDDL"
+				label="%generateDDL"
 				menubarPath="org.eclipse.jpt.ui.project.JPATools/content"/>
 				
 		</objectContribution>

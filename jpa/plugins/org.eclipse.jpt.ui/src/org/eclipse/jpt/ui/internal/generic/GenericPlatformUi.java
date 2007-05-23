@@ -25,7 +25,7 @@ public class GenericPlatformUi extends BaseJpaPlatformUi
 		super();
 	}
 	
-	public void generateDLL(IJpaProject project, IStructuredSelection selection) {
+	public void generateDDL(IJpaProject project, IStructuredSelection selection) {
 		this.displayNotSupportedMessage(JptUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle, JptUiMessages.GenericPlatformUiDialog_notSupportedMessageText);
 	}
 

@@ -14,18 +14,18 @@ import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.PlatformRegistry;
 
 /**
- *  GenerateDLLAction
+ *  GenerateDDLAction
  */
-public class GenerateDLLAction extends ProjectAction {
+public class GenerateDDLAction extends ProjectAction {
 	
-	public GenerateDLLAction() {
+	public GenerateDDLAction() {
 		super();
 	}
 
 	protected void execute(IJpaProject project) {
         String vendorId = project.getPlatform().getId();
 		
-        this.jpaPlatformUI(vendorId).generateDLL(project, this.getCurrentSelection());
+        this.jpaPlatformUI(vendorId).generateDDL(project, this.getCurrentSelection());
 	}
 	
 	private IJpaPlatformUi jpaPlatformUI(String vendorId) {

@@ -22,7 +22,7 @@ public interface IJpaPlatformUi
 	
 	Collection<IJpaDetailsProvider> detailsProviders();
 	
-	void generateDLL(IJpaProject project, IStructuredSelection selection);
+	void generateDDL(IJpaProject project, IStructuredSelection selection);
 	
 	void generateEntities(IJpaProject project, IStructuredSelection selection);
 }
