@@ -73,12 +73,12 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		
 		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.TableGeneratorComposite_name);
 		
-		this.nameViewer = buildNameViewer(composite);
+		this.nameTextWidget = buildNameText(composite);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		this.nameViewer.getTextWidget().setLayoutData(gridData);
-		helpSystem.setHelp(this.nameViewer.getTextWidget(), IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME);
+		this.nameTextWidget.setLayoutData(gridData);
+		helpSystem.setHelp(this.nameTextWidget, IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME);
 		
 		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.TableGeneratorComposite_table);
 		

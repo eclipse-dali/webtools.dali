@@ -14,18 +14,15 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.ITextListener;
-import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.TextEvent;
-import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jpt.core.internal.mappings.IGenerator;
 import org.eclipse.jpt.core.internal.mappings.IId;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
@@ -37,7 +34,7 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 	private E generator;
 	private Adapter generatorListener;
 
-	protected ITextViewer nameViewer;
+	protected Text nameTextWidget;
 
 	public GeneratorComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, SWT.NULL, commandStack, widgetFactory);
@@ -58,16 +55,15 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 	 * @param parent
 	 * @return
 	 */
-	protected ITextViewer buildNameViewer(Composite parent) {
-		final TextViewer textViewer = new TextViewer(parent, SWT.SINGLE | SWT.BORDER);
-		textViewer.setDocument(new Document());
-		textViewer.addTextListener(new ITextListener() {
-			public void textChanged(TextEvent event) {
+	protected Text buildNameText(Composite parent) {
+		final Text text = getWidgetFactory().createText(parent, null);
+		text.addModifyListener(new ModifyListener() {
+			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if (isPopulating()) {
 					return;
 				}
 				
-				String name = textViewer.getDocument().get();
+				String name = text.getText();
 				if (name.equals("")) { //$NON-NLS-1$
 					if (getGenerator().getName() == null) {
 						return;
@@ -81,7 +77,7 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 				generator.setName(name);
 			}
 		});
-		return textViewer;
+		return text;
 	}
 
 	protected abstract E createGenerator();
@@ -127,18 +123,17 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 
 	protected void generatorChanged(Notification notification) {
 		if (notification.getFeatureID(IGenerator.class) == JpaCoreMappingsPackage.IGENERATOR__NAME) {
-			final String name = notification.getNewStringValue();
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (getControl().isDisposed()) {
 						return;
 					}
-					if (nameViewer.getDocument().get() == null || !nameViewer.getDocument().get().equals(name)) {
-						if (name == null) {
+					if (nameTextWidget.getText() == null || !nameTextWidget.getText().equals(getGenerator().getName())) {
+						if (getGenerator().getName() == null) {
 							clearNameViewer();
 						}
 						else {
-							nameViewer.getDocument().set(name);
+							nameTextWidget.setText(getGenerator().getName());
 						}
 					}
 				}
@@ -149,8 +144,8 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 	private void populateNameViewer() {
 		String name = this.getGenerator().getName();
 		if (name != null) {
-			if (!this.nameViewer.getDocument().get().equals(name)) {
-				this.nameViewer.getDocument().set(name);
+			if (!this.nameTextWidget.getText().equals(name)) {
+				this.nameTextWidget.setText(name);
 			}
 		}
 		else {
@@ -167,11 +162,6 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 	}
 
 	protected void clearNameViewer() {
-		this.nameViewer.getDocument().set(""); //$NON-NLS-1$
-	}
-	
-	public void dispose() {
-		disengageListeners();
-		super.dispose();
+		this.nameTextWidget.setText(""); //$NON-NLS-1$
 	}
 }

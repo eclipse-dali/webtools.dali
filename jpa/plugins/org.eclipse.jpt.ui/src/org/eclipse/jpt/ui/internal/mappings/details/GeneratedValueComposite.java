@@ -152,14 +152,13 @@ public class GeneratedValueComposite extends BaseJpaComposite
 
 	protected void generatedValueChanged(Notification notification) {
 		if (notification.getFeatureID(IGeneratedValue.class) == JpaCoreMappingsPackage.IGENERATED_VALUE__STRATEGY) {
-			final GenerationType strategy = (GenerationType) notification.getNewValue();
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (getControl().isDisposed()) {
 						return;
 					}
-					if (selectedStrategy() != strategy) {
-						strategyComboViewer.setSelection(new StructuredSelection(strategy));
+					if (selectedStrategy() != generatedValue.getStrategy()) {
+						strategyComboViewer.setSelection(new StructuredSelection(generatedValue.getStrategy()));
 					}
 				}
 			});
@@ -187,6 +186,7 @@ public class GeneratedValueComposite extends BaseJpaComposite
 		}
 		if (this.generatedValue == null) {
 			this.strategyComboViewer.getCombo().deselectAll();
+			this.generatorNameCombo.setText("");
 			this.populating = false;
 			return;
 		}
@@ -226,7 +226,7 @@ public class GeneratedValueComposite extends BaseJpaComposite
 	private void populateGeneratorName() {
 		String generatorName = this.generatedValue.getGenerator();
 		if (generatorName == null || generatorName.equals("")) {
-			this.generatorNameCombo.clearSelection();
+			this.generatorNameCombo.setText("");
 		}
 		else if (!this.generatorNameCombo.getText().equals(generatorName)) {
 			this.generatorNameCombo.setText(generatorName);

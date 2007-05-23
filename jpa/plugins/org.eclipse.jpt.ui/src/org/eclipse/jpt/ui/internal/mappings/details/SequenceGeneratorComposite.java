@@ -64,12 +64,12 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		composite.setLayout(layout);
 		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.SequenceGeneratorComposite_name);
 		
-		this.nameViewer = buildNameViewer(composite);
+		this.nameTextWidget = buildNameText(composite);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		this.nameViewer.getTextWidget().setLayoutData(gridData);
-		helpSystem.setHelp(nameViewer.getTextWidget(), IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME);
+		this.nameTextWidget.setLayoutData(gridData);
+		helpSystem.setHelp(this.nameTextWidget, IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME);
 		
 		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.SequenceGeneratorComposite_sequence);
 		
