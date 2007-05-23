@@ -49,6 +49,7 @@ import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.INamedNativeQuery;
 import org.eclipse.jpt.core.internal.mappings.INamedQuery;
+import org.eclipse.jpt.core.internal.mappings.IOverride;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
 import org.eclipse.jpt.core.internal.mappings.ISequenceGenerator;
@@ -1649,34 +1650,27 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	}
 
 	public boolean containsAttributeOverride(String name) {
-		return containsAttributeOverride(name, getAttributeOverrides());
+		return containsOverride(name, getAttributeOverrides());
 	}
 
 	public boolean containsSpecifiedAttributeOverride(String name) {
-		return containsAttributeOverride(name, getSpecifiedAttributeOverrides());
-	}
-
-	private boolean containsAttributeOverride(String name, List<IAttributeOverride> attributeOverrides) {
-		for (IAttributeOverride attributeOverride : attributeOverrides) {
-			String attributeOverrideName = attributeOverride.getName();
-			if (attributeOverrideName != null && attributeOverrideName.equals(name)) {
-				return true;
-			}
-		}
-		return false;
+		return containsOverride(name, getSpecifiedAttributeOverrides());
 	}
 
 	public boolean containsAssociationOverride(String name) {
-		return containsAssociationOverride(name, getAssociationOverrides());
+		return containsOverride(name, getAssociationOverrides());
 	}
 
 	public boolean containsSpecifiedAssociationOverride(String name) {
-		return containsAssociationOverride(name, getSpecifiedAssociationOverrides());
+		return containsOverride(name, getSpecifiedAssociationOverrides());
 	}
 
-	private boolean containsAssociationOverride(String name, List<IAssociationOverride> associationOverrides) {
-		for (IAssociationOverride associationOverride : associationOverrides) {
-			String overrideName = associationOverride.getName();
+	private boolean containsOverride(String name, List<? extends IOverride> overrides) {
+		for (IOverride override : overrides) {
+			String overrideName = override.getName();
+			if (overrideName == null && name == null) {
+				return true;
+			}
 			if (overrideName != null && overrideName.equals(name)) {
 				return true;
 			}
@@ -2368,6 +2362,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		this.updateNamedNativeQueriesFromJava(astRoot);
 		this.updateSpecifiedPrimaryKeyJoinColumnsFromJava(astRoot);
 		this.updateAttributeOverridesFromJava(astRoot);
+		this.updateAssociationOverridesFromJava(astRoot);
 		this.setInheritanceStrategy(InheritanceType.fromJavaAnnotationValue(this.inheritanceStrategyAdapter.getValue(astRoot)));
 		this.getJavaDiscriminatorColumn().updateFromJava(astRoot);
 		this.setSpecifiedDiscriminatorValue(this.discriminatorValueAdapter.getValue(astRoot));
@@ -2490,6 +2485,48 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 				else {
 					getSpecifiedAttributeOverrides().add(attributeOverride);
 					attributeOverride.updateFromJava(astRoot);
+					javaSize++;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * here we just worry about getting the attribute override lists the same size;
+	 * then we delegate to the attribute overrides to synch themselves up
+	 */
+	private void updateAssociationOverridesFromJava(CompilationUnit astRoot) {
+		// synchronize the model attribute overrides with the Java source
+		List<IAssociationOverride> associationOverrides = getSpecifiedAssociationOverrides();
+		int persSize = associationOverrides.size();
+		int javaSize = 0;
+		boolean allJavaAnnotationsFound = false;
+		for (int i = 0; i < persSize; i++) {
+			JavaAssociationOverride associationOverride = (JavaAssociationOverride) associationOverrides.get(i);
+			if (associationOverride.annotation(astRoot) == null) {
+				allJavaAnnotationsFound = true;
+				break; // no need to go any further
+			}
+			associationOverride.updateFromJava(astRoot);
+			javaSize++;
+		}
+		if (allJavaAnnotationsFound) {
+			// remove any model attribute overrides beyond those that correspond to the Java annotations
+			while (persSize > javaSize) {
+				persSize--;
+				associationOverrides.remove(persSize);
+			}
+		}
+		else {
+			// add new model attribute overrides until they match the Java annotations
+			while (!allJavaAnnotationsFound) {
+				JavaAssociationOverride associationOverride = this.createJavaAssociationOverride(javaSize);
+				if (associationOverride.annotation(astRoot) == null) {
+					allJavaAnnotationsFound = true;
+				}
+				else {
+					getSpecifiedAssociationOverrides().add(associationOverride);
+					associationOverride.updateFromJava(astRoot);
 					javaSize++;
 				}
 			}

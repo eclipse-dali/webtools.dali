@@ -498,7 +498,10 @@ public class JavaEmbedded extends JavaAttributeMapping implements IEmbedded
 	private boolean containsAttributeOverride(String name, List<IAttributeOverride> attributeOverrides) {
 		for (IAttributeOverride attributeOverride : attributeOverrides) {
 			String attributeOverrideName = attributeOverride.getName();
-			if (attributeOverrideName != null && attributeOverrideName.equals(name)) {
+			if (attributeOverrideName == null && name == null) {
+				return true;
+			}
+			if (attributeOverrideName.equals(name)) {
 				return true;
 			}
 		}

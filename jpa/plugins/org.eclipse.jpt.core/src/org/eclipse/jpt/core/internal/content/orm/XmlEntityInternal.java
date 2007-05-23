@@ -36,6 +36,7 @@ import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.INamedNativeQuery;
 import org.eclipse.jpt.core.internal.mappings.INamedQuery;
+import org.eclipse.jpt.core.internal.mappings.IOverride;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
 import org.eclipse.jpt.core.internal.mappings.ISequenceGenerator;
@@ -551,7 +552,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	 * @generated NOT
 	 */
 	public EList<ISecondaryTable> getSecondaryTables() {
-		EList<ISecondaryTable> list = new EObjectContainmentEList<ISecondaryTable>(ISecondaryTable.class, this, OrmPackage.XML_ENTITY_INTERNAL__SECONDARY_TABLES);
+		EList<ISecondaryTable> list = new EObjectEList<ISecondaryTable>(ISecondaryTable.class, this, OrmPackage.XML_ENTITY_INTERNAL__SECONDARY_TABLES);
 		list.addAll(getSpecifiedSecondaryTables());
 		list.addAll(getVirtualSecondaryTables());
 		return list;
@@ -2121,34 +2122,27 @@ public class XmlEntityInternal extends XmlTypeMapping
 	}
 
 	public boolean containsAttributeOverride(String name) {
-		return containsAttributeOverride(name, getAttributeOverrides());
+		return containsOverride(name, getAttributeOverrides());
 	}
 
 	public boolean containsSpecifiedAttributeOverride(String name) {
-		return containsAttributeOverride(name, getSpecifiedAttributeOverrides());
-	}
-
-	private boolean containsAttributeOverride(String name, List<IAttributeOverride> attributeOverrides) {
-		for (IAttributeOverride attributeOverride : attributeOverrides) {
-			String attributeOverrideName = attributeOverride.getName();
-			if (attributeOverrideName != null && attributeOverrideName.equals(name)) {
-				return true;
-			}
-		}
-		return false;
+		return containsOverride(name, getSpecifiedAttributeOverrides());
 	}
 
 	public boolean containsAssociationOverride(String name) {
-		return containsAssociationOverride(name, getAssociationOverrides());
+		return containsOverride(name, getAssociationOverrides());
 	}
 
 	public boolean containsSpecifiedAssociationOverride(String name) {
-		return containsAssociationOverride(name, getSpecifiedAssociationOverrides());
+		return containsOverride(name, getSpecifiedAssociationOverrides());
 	}
 
-	private boolean containsAssociationOverride(String name, List<IAssociationOverride> associationOverrides) {
-		for (IAssociationOverride associationOverride : associationOverrides) {
-			String overrideName = associationOverride.getName();
+	private boolean containsOverride(String name, List<? extends IOverride> overrides) {
+		for (IOverride override : overrides) {
+			String overrideName = override.getName();
+			if (overrideName == null && name == null) {
+				return true;
+			}
 			if (overrideName != null && overrideName.equals(name)) {
 				return true;
 			}

@@ -613,6 +613,9 @@ public interface IEntity extends ITypeMapping
 		}
 
 		private IColumnMapping columnMapping(String attributeName) {
+			if (attributeName == null) {
+				return null;
+			}
 			for (Iterator<IPersistentAttribute> stream = this.entity.getPersistentType().allAttributes(); stream.hasNext();) {
 				IPersistentAttribute persAttribute = stream.next();
 				if (attributeName.equals(persAttribute.getName())) {
@@ -640,9 +643,7 @@ public interface IEntity extends ITypeMapping
 			for (Iterator<IPersistentAttribute> stream = this.entity.getPersistentType().allAttributes(); stream.hasNext();) {
 				IPersistentAttribute persAttribute = stream.next();
 				if (attributeName.equals(persAttribute.getName())) {
-					if (persAttribute.getMapping() instanceof IColumnMapping) {
-						return persAttribute.getMapping();
-					}
+					return persAttribute.getMapping();
 				}
 			}
 			return null;
