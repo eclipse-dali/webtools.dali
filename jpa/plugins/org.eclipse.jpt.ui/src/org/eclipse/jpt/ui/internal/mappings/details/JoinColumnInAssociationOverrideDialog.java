@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
-import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
+import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.swt.widgets.Shell;
@@ -49,10 +49,10 @@ public class JoinColumnInAssociationOverrideDialog extends JoinColumnDialog {
 	
 	protected Table getReferencedNameTable() {
 		IAttributeMapping attributeMapping = this.associationOverride.getOwner().attributeMapping(this.associationOverride.getName());
-		if (attributeMapping == null) {
+		if (attributeMapping == null || !(attributeMapping instanceof IRelationshipMapping)) {
 			return null;
 		}
-		IEntity targetEntity = ((ISingleRelationshipMapping) attributeMapping).getResolvedTargetEntity();
+		IEntity targetEntity = ((IRelationshipMapping) attributeMapping).getResolvedTargetEntity();
 		if (targetEntity != null) {
 			return targetEntity.primaryDbTable();
 		}

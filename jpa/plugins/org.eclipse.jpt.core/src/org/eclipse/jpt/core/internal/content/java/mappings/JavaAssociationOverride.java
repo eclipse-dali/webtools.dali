@@ -448,6 +448,54 @@ public class JavaAssociationOverride extends JavaOverride
 		return null;
 	}
 
+	@Override
+	public void updateFromJava(CompilationUnit astRoot) {
+		super.updateFromJava(astRoot);
+		updateSpecifiedJoinColumnsFromJava(astRoot);
+	}
+	
+	/**
+	 * here we just worry about getting the join column lists the same size;
+	 * then we delegate to the join columns to synch themselves up
+	 */
+	private void updateSpecifiedJoinColumnsFromJava(CompilationUnit astRoot) {
+		// synchronize the model join columns with the Java source
+		List<IJoinColumn> joinColumns = getSpecifiedJoinColumns();
+		int persSize = joinColumns.size();
+		int javaSize = 0;
+		boolean allJavaAnnotationsFound = false;
+		for (int i = 0; i < persSize; i++) {
+			JavaJoinColumn joinColumn = (JavaJoinColumn) joinColumns.get(i);
+			if (joinColumn.annotation(astRoot) == null) {
+				allJavaAnnotationsFound = true;
+				break; // no need to go any further
+			}
+			joinColumn.updateFromJava(astRoot);
+			javaSize++;
+		}
+		if (allJavaAnnotationsFound) {
+			// remove any model join columns beyond those that correspond to the Java annotations
+			while (persSize > javaSize) {
+				persSize--;
+				joinColumns.remove(persSize);
+			}
+		}
+		else {
+			// add new model join columns until they match the Java annotations
+			while (!allJavaAnnotationsFound) {
+				JavaJoinColumn joinColumn = this.createJavaJoinColumn(javaSize);
+				if (joinColumn.annotation(astRoot) == null) {
+					allJavaAnnotationsFound = true;
+				}
+				else {
+					getSpecifiedJoinColumns().add(joinColumn);
+					joinColumn.updateFromJava(astRoot);
+					javaSize++;
+				}
+			}
+		}
+	}
+
 	static JavaAssociationOverride createAssociationOverride(Owner owner, Member member, int index) {
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaAssociationOverride(owner, member, buildAnnotationAdapter(index));
 	}

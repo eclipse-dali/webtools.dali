@@ -245,7 +245,9 @@ public class OverridesComposite extends BaseJpaComposite
 		
 			public Object[] getElements(Object inputElement) {
 				IEntity entity = (IEntity) inputElement;
-				return CollectionTools.addAll(entity.getAttributeOverrides().toArray(), entity.getAssociationOverrides());
+				return CollectionTools.addAll(
+					entity.getAttributeOverrides().toArray(new IOverride[entity.getAttributeOverrides().size()]), 
+					entity.getAssociationOverrides());
 			}
 		};
 	}

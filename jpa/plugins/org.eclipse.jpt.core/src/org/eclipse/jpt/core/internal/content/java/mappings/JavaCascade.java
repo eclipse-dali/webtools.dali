@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Collection;
+import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -186,7 +187,7 @@ public class JavaCascade extends JavaEObject implements ICascade
 	private void updateJavaAnnotation(boolean isSet, CascadeType cascadeType) {
 		String[] javaValue = this.cascadeAdapter.getValue();
 		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValue(javaValue);
-		Collection<CascadeType> cascadeCollection = CollectionTools.collection(cascadeTypes);
+		List<CascadeType> cascadeCollection = CollectionTools.list(cascadeTypes);
 		if (cascadeCollection.contains(cascadeType)) {
 			if (!isSet) {
 				if (javaValue.length == 1) {
