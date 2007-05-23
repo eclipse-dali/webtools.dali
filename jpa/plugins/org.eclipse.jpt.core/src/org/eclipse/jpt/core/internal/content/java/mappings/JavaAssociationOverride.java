@@ -430,17 +430,17 @@ public class JavaAssociationOverride extends JavaOverride
 
 	@Override
 	protected Iterator<String> candidateNames() {
-		return this.getOwner().getTypeMapping().overridableAssociationNames();
+		return this.getOwner().getTypeMapping().allOverridableAssociationNames();
 	}
 
 	@Override
-	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		for (IJoinColumn column : this.getJoinColumns()) {
-			result = ((JavaJoinColumn) column).connectedCandidateValuesFor(pos, filter, astRoot);
+			result = ((JavaJoinColumn) column).candidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
@@ -453,7 +453,7 @@ public class JavaAssociationOverride extends JavaOverride
 		super.updateFromJava(astRoot);
 		updateSpecifiedJoinColumnsFromJava(astRoot);
 	}
-	
+
 	/**
 	 * here we just worry about getting the join column lists the same size;
 	 * then we delegate to the join columns to synch themselves up

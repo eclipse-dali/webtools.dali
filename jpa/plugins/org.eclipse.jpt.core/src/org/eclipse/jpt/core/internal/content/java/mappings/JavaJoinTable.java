@@ -770,19 +770,19 @@ public class JavaJoinTable extends AbstractJavaTable implements IJoinTable
 	}
 
 	@Override
-	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		for (IJoinColumn column : this.getJoinColumns()) {
-			result = ((JavaJoinColumn) column).connectedCandidateValuesFor(pos, filter, astRoot);
+			result = ((JavaJoinColumn) column).candidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
 		for (IJoinColumn column : this.getInverseJoinColumns()) {
-			result = ((JavaJoinColumn) column).connectedCandidateValuesFor(pos, filter, astRoot);
+			result = ((JavaJoinColumn) column).candidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}

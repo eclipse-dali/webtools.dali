@@ -955,6 +955,21 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		return this.elementTouches(this.member.annotationElementTextRange(elementAdapter, astRoot), pos);
 	}
 
+	@Override
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		for (IUniqueConstraint constraint : this.getUniqueConstraints()) {
+			result = ((JavaUniqueConstraint) constraint).candidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * called if the database is connected
 	 * name, schema, catalog
@@ -973,12 +988,6 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		}
 		if (this.catalogTouches(pos, astRoot)) {
 			return this.quotedCandidateCatalogs(filter);
-		}
-		for (IUniqueConstraint constraint : this.getUniqueConstraints()) {
-			result = ((JavaUniqueConstraint) constraint).connectedCandidateValuesFor(pos, filter, astRoot);
-			if (result != null) {
-				return result;
-			}
 		}
 		return null;
 	}

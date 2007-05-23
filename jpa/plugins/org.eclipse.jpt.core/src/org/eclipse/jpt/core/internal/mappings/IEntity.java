@@ -558,10 +558,6 @@ public interface IEntity extends ITypeMapping
 
 	IAssociationOverride createAssociationOverride(int index);
 
-	Iterator<String> allOverridableAttributeNames();
-
-	Iterator<String> allOverridableAssociationNames();
-
 	boolean containsAttributeOverride(String name);
 
 	boolean containsSpecifiedAttributeOverride(String name);
@@ -680,7 +676,7 @@ public interface IEntity extends ITypeMapping
 			IEntity parentEntity = this.entity.parentEntity();
 			return (parentEntity == null) ? null : parentEntity.primaryDbTable();
 		}
-		
+
 		public List<IPrimaryKeyJoinColumn> joinColumns() {
 			return this.entity.getPrimaryKeyJoinColumns();
 		}

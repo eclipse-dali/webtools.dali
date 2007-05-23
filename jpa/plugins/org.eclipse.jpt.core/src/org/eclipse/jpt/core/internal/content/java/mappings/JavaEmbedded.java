@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -538,13 +537,13 @@ public class JavaEmbedded extends JavaAttributeMapping implements IEmbedded
 	}
 
 	@Override
-	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		for (IAttributeOverride override : this.getAttributeOverrides()) {
-			result = ((JavaAttributeOverride) override).connectedCandidateValuesFor(pos, filter, astRoot);
+			result = ((JavaAttributeOverride) override).candidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}

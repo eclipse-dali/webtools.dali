@@ -68,14 +68,6 @@ public class XmlEmbeddable extends XmlTypeMapping implements IEmbeddable
 		return EmptyIterator.instance();
 	}
 
-	public Iterator<String> overridableAssociationNames() {
-		return EmptyIterator.instance();
-	}
-
-	public Iterator<String> overridableAttributeNames() {
-		return EmptyIterator.instance();
-	}
-
 	@Override
 	public int xmlSequence() {
 		return 2;

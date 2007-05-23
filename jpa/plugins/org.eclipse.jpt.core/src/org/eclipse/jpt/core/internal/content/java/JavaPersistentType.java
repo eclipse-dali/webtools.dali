@@ -768,9 +768,8 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		if (values != null) {
 			return values;
 		}
-		for (Iterator<JavaPersistentAttribute> i = attributes(); i.hasNext();) {
-			JavaPersistentAttribute attribute = i.next();
-			values = attribute.candidateValuesFor(pos, filter, astRoot);
+		for (Iterator<JavaPersistentAttribute> stream = attributes(); stream.hasNext();) {
+			values = stream.next().candidateValuesFor(pos, filter, astRoot);
 			if (values != null) {
 				return values;
 			}

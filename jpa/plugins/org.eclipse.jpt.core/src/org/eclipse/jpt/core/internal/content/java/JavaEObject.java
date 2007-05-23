@@ -107,8 +107,11 @@ public abstract class JavaEObject extends JpaEObject
 	}
 
 	/**
-	 * called if the database is connected, allowing us to get candidates
-	 * from the various database tables etc.
+	 * This method is called if the database is connected, allowing us to
+	 * get candidates from the various database tables etc.
+	 * This method should NOT be cascaded to "child" objects; it should
+	 * only return candidates for the current object. The cascading is
+	 * handled by #candidateValuesFor(int, Filter, CompilationUnit).
 	 */
 	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		return null;

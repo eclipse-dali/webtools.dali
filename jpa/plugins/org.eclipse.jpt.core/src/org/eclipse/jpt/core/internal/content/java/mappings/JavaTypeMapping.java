@@ -250,6 +250,14 @@ public abstract class JavaTypeMapping extends JavaEObject
 		return EmptyIterator.instance();
 	}
 
+	public Iterator<String> allOverridableAttributeNames() {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<String> allOverridableAssociationNames() {
+		return EmptyIterator.instance();
+	}
+
 	public boolean tableNameIsInvalid(String tableName) {
 		return false;
 	}

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -28,6 +29,7 @@ import org.eclipse.jpt.core.internal.mappings.DefaultFalseBoolean;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
@@ -655,5 +657,21 @@ public abstract class XmlTypeMapping extends XmlEObject implements ITypeMapping
 	 */
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
 		return true;
+	}
+
+	public Iterator<String> overridableAssociationNames() {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<String> overridableAttributeNames() {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<String> allOverridableAssociationNames() {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<String> allOverridableAttributeNames() {
+		return EmptyIterator.instance();
 	}
 }

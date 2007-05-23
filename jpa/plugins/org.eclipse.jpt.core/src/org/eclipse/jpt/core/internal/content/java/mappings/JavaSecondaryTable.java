@@ -528,13 +528,13 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	}
 
 	@Override
-	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		for (IPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
-			result = ((JavaPrimaryKeyJoinColumn) column).connectedCandidateValuesFor(pos, filter, astRoot);
+			result = ((JavaPrimaryKeyJoinColumn) column).candidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}

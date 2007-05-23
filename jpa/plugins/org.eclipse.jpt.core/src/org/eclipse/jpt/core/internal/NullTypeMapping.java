@@ -249,6 +249,14 @@ public class NullTypeMapping extends JpaEObject
 		return EmptyIterator.instance();
 	}
 
+	public Iterator<String> allOverridableAssociationNames() {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<String> allOverridableAttributeNames() {
+		return EmptyIterator.instance();
+	}
+
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
 		// it's not so much that all mapping keys are allowed.
 		// it's just that they're not really invalid, per se

@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -2490,7 +2489,7 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 			}
 		}
 	}
-	
+
 	/**
 	 * here we just worry about getting the attribute override lists the same size;
 	 * then we delegate to the attribute overrides to synch themselves up
@@ -2924,25 +2923,25 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 			return result;
 		}
 		for (ISecondaryTable sTable : this.getSecondaryTables()) {
-			result = ((JavaSecondaryTable) sTable).connectedCandidateValuesFor(pos, filter, astRoot);
+			result = ((JavaSecondaryTable) sTable).candidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
 		for (IPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
-			result = ((JavaPrimaryKeyJoinColumn) column).connectedCandidateValuesFor(pos, filter, astRoot);
+			result = ((JavaPrimaryKeyJoinColumn) column).candidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
 		for (IAttributeOverride override : this.getAttributeOverrides()) {
-			result = ((JavaAttributeOverride) override).connectedCandidateValuesFor(pos, filter, astRoot);
+			result = ((JavaAttributeOverride) override).candidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
 		for (IAssociationOverride override : this.getAssociationOverrides()) {
-			result = ((JavaAssociationOverride) override).connectedCandidateValuesFor(pos, filter, astRoot);
+			result = ((JavaAssociationOverride) override).candidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}

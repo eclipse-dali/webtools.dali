@@ -122,6 +122,10 @@ public interface ITypeMapping extends IJpaSourceObject
 	 */
 	Iterator<String> overridableAssociationNames();
 
+	Iterator<String> allOverridableAttributeNames();
+
+	Iterator<String> allOverridableAssociationNames();
+
 	/**
 	 * Return whether the given attribute mapping key is valid for this particular
 	 * type mapping

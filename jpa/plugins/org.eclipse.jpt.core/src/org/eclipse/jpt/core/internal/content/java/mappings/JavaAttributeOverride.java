@@ -224,16 +224,16 @@ public class JavaAttributeOverride extends JavaOverride
 
 	@Override
 	protected Iterator<String> candidateNames() {
-		return this.getOwner().getTypeMapping().overridableAttributeNames();
+		return this.getOwner().getTypeMapping().allOverridableAttributeNames();
 	}
 
 	@Override
-	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = this.getJavaColumn().connectedCandidateValuesFor(pos, filter, astRoot);
+		result = this.getJavaColumn().candidateValuesFor(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}

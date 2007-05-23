@@ -50,7 +50,6 @@ import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -416,7 +415,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 			setInheritanceStrategy(null);
 		}
 	}
-	
+
 	@Override
 	protected void addInsignificantFeatureIdsTo(Set<Integer> insignificantFeatureIds) {
 		super.addInsignificantFeatureIdsTo(insignificantFeatureIds);
@@ -2103,14 +2102,6 @@ public class XmlEntityInternal extends XmlTypeMapping
 				return ((ITypeMapping) next).overridableAssociationNames();
 			}
 		});
-	}
-
-	public Iterator<String> overridableAttributeNames() {
-		return EmptyIterator.instance();
-	}
-
-	public Iterator<String> overridableAssociationNames() {
-		return EmptyIterator.instance();
 	}
 
 	public IAttributeOverride createAttributeOverride(int index) {
