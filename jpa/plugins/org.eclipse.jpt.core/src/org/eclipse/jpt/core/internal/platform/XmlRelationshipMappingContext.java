@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
@@ -69,10 +68,7 @@ public abstract class XmlRelationshipMappingContext extends XmlAttributeContext
 			}
 			Attribute attribute = relationshipMapping().getPersistentAttribute().getAttribute();
 			if (attribute != null) {
-				IType iType = relationshipMapping().getPersistentType().findJdtType();
-				if (iType != null) {
-					return JavaRelationshipMapping.buildReferenceEntityTypeName(attribute.typeSignature(), iType);
-				}
+				return JavaRelationshipMapping.buildReferenceEntityTypeName(attribute.typeSignature(), relationshipMapping().getPersistentType().findJdtType());
 			}
 		}
 		return super.getDefault(key, defaultsContext);	

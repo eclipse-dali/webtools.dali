@@ -150,6 +150,8 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	 */
 	protected EList<XmlPersistentAttribute> virtualPersistentAttributes;
 
+	private JavaPersistentType javaPersistentType;
+
 	private Collection<IXmlTypeMappingProvider> typeMappingProviders;
 
 	private IPersistentType parentPersistentType;
@@ -273,11 +275,15 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	 * @see #getClass_()
 	 * @generated
 	 */
-	public void setClass(String newClass) {
+	public void setClassGen(String newClass) {
 		String oldClass = class_;
 		class_ = newClass;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENT_TYPE__CLASS, oldClass, class_));
+	}
+
+	public void setClass(String newClass) {
+		setClassGen(newClass);
 	}
 
 	/**
@@ -764,17 +770,21 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	}
 
 	public JavaPersistentType findJavaPersistentType() {
-		IType iType = findJdtType();
-		if (iType != null) {
-			for (IJpaFile jpaFile : getJpaProject().jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE)) {
-				for (JavaPersistentType javaPersistentType : ((JpaCompilationUnit) jpaFile.getContent()).getTypes()) {
-					if (javaPersistentType.jdtType().equals(iType)) {
-						return javaPersistentType;
+		if (this.javaPersistentType == null) {
+			IType iType = findJdtType();
+			if (iType != null) {
+				for (IJpaFile jpaFile : getJpaProject().jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE)) {
+					for (Iterator i = ((JpaCompilationUnit) jpaFile.getContent()).getTypes().iterator(); i.hasNext();) {
+						JavaPersistentType javaPersistentType = (JavaPersistentType) i.next();
+						if (javaPersistentType.jdtType().equals(iType)) {
+							this.javaPersistentType = javaPersistentType;
+							break;
+						}
 					}
 				}
 			}
 		}
-		return null;
+		return this.javaPersistentType;
 	}
 
 	public Type findType() {

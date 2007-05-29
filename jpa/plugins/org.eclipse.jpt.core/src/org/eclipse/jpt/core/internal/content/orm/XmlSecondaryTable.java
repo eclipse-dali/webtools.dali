@@ -60,7 +60,6 @@ public class XmlSecondaryTable extends AbstractXmlTable
 
 	protected XmlSecondaryTable(Owner owner) {
 		super(owner);
-		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
 	}
 
 	/**

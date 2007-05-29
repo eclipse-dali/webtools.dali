@@ -18,8 +18,6 @@ import org.eclipse.jpt.core.internal.emfutility.DOMUtilities;
 import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
-import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
@@ -196,13 +194,6 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 	 */
 	public String getDefaultReferencedColumnName() {
 		return defaultReferencedColumnName;
-	}
-	
-	protected void setDefaultReferencedColumnName(String newDefaultReferencedColumnName) {
-		String oldDefaultReferencedColumnName = this.defaultReferencedColumnName;
-		this.defaultReferencedColumnName = newDefaultReferencedColumnName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__DEFAULT_REFERENCED_COLUMN_NAME, oldDefaultReferencedColumnName, newDefaultReferencedColumnName));
 	}
 
 	public void setColumnDefinition(String newColumnDefinition) {
@@ -422,10 +413,4 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
 		return (referencedColumnNameNode == null) ? validationTextRange() : buildTextRange(referencedColumnNameNode);
 	}
-	
-	public void refreshDefaults(DefaultsContext defaultsContext) {
-		setDefaultReferencedColumnName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_REFERENCED_COLUMN_NAME_KEY));
-		setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_NAME_KEY));
-	}
-
 }
