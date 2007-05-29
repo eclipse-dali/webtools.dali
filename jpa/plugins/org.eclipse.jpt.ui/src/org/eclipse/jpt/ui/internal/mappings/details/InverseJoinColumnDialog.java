@@ -46,7 +46,7 @@ public class InverseJoinColumnDialog extends JoinColumnInJoinTableDialog {
 				getNameCombo().add((String) i.next());
 			}
 		}
-		if (getJoinColumn() != null && getJoinColumn().getSpecifiedReferencedColumnName() != null) {
+		if (getJoinColumn() != null && getJoinColumn().getSpecifiedName() != null) {
 			getNameCombo().setText(getJoinColumn().getSpecifiedName());
 		}
 		else {
