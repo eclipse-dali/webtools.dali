@@ -474,37 +474,15 @@ public class EntityMappingsInternal extends XmlEObject
 		}
 	}
 
-	/**
-	 * Returns the value of the '<em><b>Package For Xml</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Package For Xml</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Package For Xml</em>' attribute.
-	 * @see #setPackageForXml(String)
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getEntityMappingsForXml_PackageForXml()
-	 * @model volatile="true"
-	 * @generated NOT
-	 */
 	public String getPackageForXml() {
 		return getPackageInternal();
 	}
 
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal#getPackageForXml <em>Package For Xml</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Package For Xml</em>' attribute.
-	 * @see #getPackageForXml()
-	 * @generated NOT
-	 */
 	public void setPackageForXml(String newPackageForXml) {
-		String oldValue = getPackageForXml();
 		setPackageInternal(newPackageForXml);
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS_INTERNAL__PACKAGE_FOR_XML, oldValue, newPackageForXml));
+			//pass in oldValue of null because we don't store the value from the xml, see super.eNotify()
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS_INTERNAL__PACKAGE_FOR_XML, null, newPackageForXml));
 	}
 
 	public void makePersistenceUnitMetadataForXmlNull() {
