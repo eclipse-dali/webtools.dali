@@ -44,7 +44,7 @@
         base-type="org.eclipse.core.runtime.xml"
         file-names="orm.xml"
         id="org.eclipse.jpt.core.content.orm"
-        name="ORM XML Content"
+        name="%ORM_XML_CONTENT"
         priority="normal">
      		Only allowing file names of orm.xml.  Extenders will have to specify a different file name.
      		Limitation with WTP translators for registering files names instead of content types
@@ -53,7 +53,7 @@
         base-type="org.eclipse.core.runtime.xml"
         file-names="persistence.xml"
         id="org.eclipse.jpt.core.content.persistence"
-        name="Persistence XML Content"
+        name="%PERSISTENCE_XML_CONTENT"
         priority="normal">
 	     	Only allowing file names of persistence.xml.
 		</content-type>

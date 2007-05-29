@@ -7,7 +7,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.jpt.db.internal.JptDbPlugin
 Bundle-ClassPath: .
 Bundle-Localization: plugin
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
 Export-Package: org.eclipse.jpt.db.internal
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.datatools.sqltools.editor.core,
