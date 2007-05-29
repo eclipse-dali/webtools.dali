@@ -18,8 +18,4 @@ public class JavaMappedSuperclassContext extends JavaTypeContext
 		super(parentContext, mapping);
 	}
 	
-	public void addToMessages(List<IMessage> messages) {
-		// TODO Auto-generated method stub
-		
-	}
 }
