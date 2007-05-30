@@ -36,6 +36,12 @@ public class JptCorePlugin extends Plugin
 	public final static String FACET_ID = "jpt.jpa";  //$NON-NLS-1$
 	
 	/**
+	 * The identifier for the JPA validation marker
+	 * (value <code>"org.eclipse.jpt.core.jpaProblemMarker"</code>).
+	 */
+	public final static String VALIDATION_MARKER_ID = PLUGIN_ID + ".jpaProblemMarker";
+	
+	/**
 	 * Value of the content-type for orm.xml mappings files. Use this value to retrieve 
 	 * the ORM xml content type from the content type manager, and to add new 
 	 * orm.xml-like extensions to this content type.

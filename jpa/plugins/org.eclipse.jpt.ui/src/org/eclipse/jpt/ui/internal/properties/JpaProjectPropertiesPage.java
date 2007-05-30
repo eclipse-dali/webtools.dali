@@ -148,6 +148,12 @@ public class JpaProjectPropertiesPage
 	
 	public boolean performOk() {
 		JpaProject jpaProject = getJpaProject();
+		
+		// the facet has been uninstalled during our trip to the properties ...
+		if (jpaProject == null) {
+			return true;
+		}
+		
 		try {
 			JpaFacetUtils.setPlatform(jpaProject.getProject(), model.getStringProperty(IJpaFacetDataModelProperties.PLATFORM_ID));
 			JpaFacetUtils.setConnectionName(jpaProject.getProject(), model.getStringProperty(IJpaFacetDataModelProperties.CONNECTION));

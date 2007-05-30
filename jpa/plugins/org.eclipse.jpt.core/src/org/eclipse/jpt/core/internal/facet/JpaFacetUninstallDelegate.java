@@ -9,10 +9,13 @@
 package org.eclipse.jpt.core.internal.facet;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JpaModelManager;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
@@ -23,12 +26,8 @@ public class JpaFacetUninstallDelegate
 			Object config, IProgressMonitor monitor) throws CoreException {
 		
 		if (monitor != null) {
-			monitor.beginTask("", 1); //$NON-NLS-1$
+			monitor.beginTask("", 2); //$NON-NLS-1$
 		}
-		
-		// NB:  WTP Natures (including the JavaEMFNature)
-		//  should have been added with the module facet 
-		//  required by this facet.
 		
 		// TODO
 		//   - remove classpath items?
@@ -39,6 +38,11 @@ public class JpaFacetUninstallDelegate
 			JpaModelManager.instance().disposeJpaProject(jpaProject);
 		}
 		
+		if (monitor != null) {
+			monitor.worked(1);
+		}
+		
+		ResourcesPlugin.getWorkspace().deleteMarkers(project.findMarkers(JptCorePlugin.VALIDATION_MARKER_ID, true, IResource.DEPTH_INFINITE));
 		
 		if (monitor != null) {
 			monitor.worked(1);
