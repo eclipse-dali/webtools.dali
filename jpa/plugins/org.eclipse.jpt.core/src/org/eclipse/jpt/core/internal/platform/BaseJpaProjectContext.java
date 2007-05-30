@@ -12,12 +12,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.internal.IJpaCoreConstants;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
@@ -34,13 +31,17 @@ import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.db.internal.Connection;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
- * The project context used for base jpa projects.  It is assumed that
- * the project contains at least 1 persistence.xml file.  Multiple persistence.xml
+ * The jpaProject context used for base jpa projects.  It is assumed that
+ * the jpaProject contains at least 1 persistence.xml file.  Multiple persistence.xml
  * files will be treated as an error condition, no defaults or validation based
  * on the context of a persistence-unit will be given. Currently no support for default orm.xml
  * files or defaulting annotated java files, we don't know how the information will be packaged.
@@ -52,16 +53,16 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  */
 public class BaseJpaProjectContext extends BaseContext
 {	
-	private IJpaProject project;
+	private IJpaProject jpaProject;
 
 	private List<IJpaFile> validPersistenceXmlFiles;
 	private List<IJpaFile> invalidPersistenceXmlFiles;
 	
 	private Collection<PersistenceUnitContext> persistenceUnitContexts;
 
-	public BaseJpaProjectContext(IJpaProject jpaProject) {
+	public BaseJpaProjectContext(IJpaProject theJpaProject) {
 		super(null);
-		project = jpaProject;
+		jpaProject = theJpaProject;
 		validPersistenceXmlFiles = new ArrayList<IJpaFile>();
 		invalidPersistenceXmlFiles = new ArrayList<IJpaFile>();
 		persistenceUnitContexts = new ArrayList<PersistenceUnitContext>();
@@ -85,29 +86,18 @@ public class BaseJpaProjectContext extends BaseContext
 	}
 	
 	private Collection<IJpaFile> persistenceXmlFiles() {
-		return this.project.jpaFiles(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);
+		return this.jpaProject.jpaFiles(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);
 	}
 	
 	private boolean isValidPersistenceXmlLocation(IJpaFile jpaFile) {
 		IFile file = jpaFile.getFile();
-		IContainer folder = file.getParent();
-		if ((folder.getType() != IContainer.FOLDER) || ! folder.getName().equals(IJpaCoreConstants.META_INF)) {
-			return false;
-		}
-		IJavaElement sourceFolder = JavaCore.create(((IFolder) folder).getParent());
-		if (sourceFolder == null || sourceFolder.getElementType() != IJavaElement.PACKAGE_FRAGMENT_ROOT) {
-			return false;
-		}
-		try {
-			if (((IPackageFragmentRoot) sourceFolder).getKind() != IPackageFragmentRoot.K_SOURCE) {
-				return false;
-			}
-		}
-		catch (Throwable t) {
-			return false;
-		}
+		IProject project = jpaProject.getProject();
 		
-		return true;
+		// check flexible jpaProject structure
+		IVirtualComponent component = ComponentCore.createComponent(project);
+		IVirtualFolder rootFolder = component.getRootFolder();
+		IVirtualFolder metaInfFolder = rootFolder.getFolder(new Path(IJpaCoreConstants.META_INF));
+		return metaInfFolder.exists() && CollectionTools.contains(metaInfFolder.getUnderlyingFolders(), file.getParent());
 	}
 
 	//TODO need to handle clearing out defaults for JpaFiles that aren't in a persistenceUnit
@@ -116,7 +106,7 @@ public class BaseJpaProjectContext extends BaseContext
 	//our tool can really only show defaults for one or the other. should clear out defaults and
 	//probably have a warning letting the user know why they get no defaults or validation
 	protected void buildPersistenceUnitContexts() {
-		// we currently only support *one* persistence.xml file per project,
+		// we currently only support *one* persistence.xml file per jpaProject,
 		// so we provide no defaults or validation for those that have more or less
 		if (validPersistenceXmlFiles.size() == 1) {
 			IJpaFile file = validPersistenceXmlFiles.get(0);
@@ -140,7 +130,7 @@ public class BaseJpaProjectContext extends BaseContext
 	
 	@Override
 	public IJpaPlatform getPlatform() {
-		return this.project.getPlatform();
+		return this.jpaProject.getPlatform();
 	}
 	
 	protected Iterator<IJpaFile> validPersistenceXmlFiles(){
@@ -178,7 +168,7 @@ public class BaseJpaProjectContext extends BaseContext
 	}
 	
 	protected ConnectionProfile getProjectConnectionProfile() {
-		return this.project.connectionProfile();
+		return this.jpaProject.connectionProfile();
 	}
 	
 	//TODO is the userName what we want to use, or do we need a preference for the user?
@@ -285,27 +275,27 @@ public class BaseJpaProjectContext extends BaseContext
 	protected boolean okToProceedForConnectionValidation = true;
 	
 	protected void addNoConnectionMessage(List<IMessage> messages) {
-		Connection connection = project.getDataSource().getConnection();
+		Connection connection = jpaProject.getDataSource().getConnection();
 		if (connection == null) {
 			messages.add(
 					JpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
 						IJpaValidationMessages.PROJECT_NO_CONNECTION,
-						project)
+						jpaProject)
 				);
 			okToProceedForConnectionValidation = false;
 		}
 	}
 	
 	protected void addInactiveConnectionMessage(List<IMessage> messages) {
-		Connection connection = project.getDataSource().getConnection();
+		Connection connection = jpaProject.getDataSource().getConnection();
 		if (okToProceedForConnectionValidation && ! connection.isConnected()) {
 			messages.add(
 					JpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
 						IJpaValidationMessages.PROJECT_INACTIVE_CONNECTION,
-						new String[] {project.getDataSource().getConnectionProfileName()},
-						project)
+						new String[] {jpaProject.getDataSource().getConnectionProfileName()},
+						jpaProject)
 				);
 		}
 		okToProceedForConnectionValidation = true;
@@ -317,7 +307,7 @@ public class BaseJpaProjectContext extends BaseContext
 					JpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY, 
 						IJpaValidationMessages.PROJECT_NO_PERSISTENCE_XML,
-						project)
+						jpaProject)
 				);
 			okToContinueValidation = false;
 		}
@@ -329,7 +319,7 @@ public class BaseJpaProjectContext extends BaseContext
 					JpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						IJpaValidationMessages.PROJECT_MULTIPLE_PERSISTENCE_XML,
-						project)
+						jpaProject)
 				);
 			okToContinueValidation = false;
 		}
@@ -381,7 +371,7 @@ public class BaseJpaProjectContext extends BaseContext
 	}
 	
 	protected void addOrphanedJavaClassMessages(List<IMessage> messages) {
-		for (IJpaFile jpaFile : project.jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE)) {
+		for (IJpaFile jpaFile : jpaProject.jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE)) {
 			for (JavaPersistentType jpType : ((JpaCompilationUnit) jpaFile.getContent()).getTypes()) {
 				if (jpType.getMappingKey() != IMappingKeys.NULL_TYPE_MAPPING_KEY && ! contains(jpType)) {
 					messages.add(
@@ -396,6 +386,6 @@ public class BaseJpaProjectContext extends BaseContext
 	}
 	
 	public String toString() {
-		return StringTools.buildToStringFor( this, this.project.getJavaProject().getProject().getName());
+		return StringTools.buildToStringFor( this, this.jpaProject.getJavaProject().getProject().getName());
 	}	
 }

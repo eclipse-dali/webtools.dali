@@ -9,21 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.persistence;
 
-import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.XmlEObject;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.internal.emf.utilities.DOMUtilities;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
@@ -198,35 +196,25 @@ public class MappingFileRef extends XmlEObject
 	}
 
 	public IJpaFile getMappingFile() {
+		// check flexible project structure
+		IVirtualComponent component = ComponentCore.createComponent(getJpaProject().getProject());
+		IVirtualFolder virtualRootFolder = component.getRootFolder();
+		IVirtualFile virtualMappingFile = virtualRootFolder.getFile(new Path(fileName));
+		
+		// keep track of whether one has been found so that we may know if multiple exist
 		IJpaFile mappingFile = null;
-		for (Iterator stream = javaSourceFolders(); stream.hasNext();) {
-			IFolder sourceFolder = (IFolder) ((IPackageFragmentRoot) stream.next()).getResource();
-			IFile file = sourceFolder.getFile(fileName);
-			IJpaFile jpaFile = JptCorePlugin.getJpaFile(file);
-			if (mappingFile != null && jpaFile != null) {
-				return null; // multiple possibilities == not resolved
+		for (IFile underlyingFile : virtualMappingFile.getUnderlyingFiles()) {
+			IJpaFile jpaFile = JptCorePlugin.getJpaFile(underlyingFile);
+			if (jpaFile != null) {
+				if (mappingFile != null) {
+					return null;  // multiple do exist
+				}
+				else {
+					mappingFile = jpaFile;
+				}
 			}
-			mappingFile = jpaFile;
 		}
+		
 		return mappingFile;
-	}
-
-	private Iterator javaSourceFolders() {
-		Iterator nestedIterator = EmptyIterator.instance();
-		try {
-			nestedIterator = CollectionTools.iterator(getJpaProject().getJavaProject().getPackageFragmentRoots());
-		}
-		catch (JavaModelException jme) { /* do nothing */}
-		return new FilteringIterator(nestedIterator) {
-			@Override
-			protected boolean accept(Object o) {
-				try {
-					return ((IPackageFragmentRoot) o).getKind() == IPackageFragmentRoot.K_SOURCE;
-				}
-				catch (JavaModelException jme) {
-					return false;
-				}
-			}
-		};
 	}
 }
