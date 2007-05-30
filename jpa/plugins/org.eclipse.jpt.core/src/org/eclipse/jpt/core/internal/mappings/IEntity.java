@@ -558,6 +558,8 @@ public interface IEntity extends ITypeMapping
 
 	IAssociationOverride createAssociationOverride(int index);
 
+	IAttributeOverride attributeOverrideNamed(String name);
+	
 	boolean containsAttributeOverride(String name);
 
 	boolean containsSpecifiedAttributeOverride(String name);

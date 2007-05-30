@@ -1648,6 +1648,10 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		return list;
 	}
 
+	public IAttributeOverride attributeOverrideNamed(String name) {
+		return (IAttributeOverride) overrideNamed(name, getAttributeOverrides());
+	}
+	
 	public boolean containsAttributeOverride(String name) {
 		return containsOverride(name, getAttributeOverrides());
 	}
@@ -1664,17 +1668,21 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		return containsOverride(name, getSpecifiedAssociationOverrides());
 	}
 
-	private boolean containsOverride(String name, List<? extends IOverride> overrides) {
+	private IOverride overrideNamed(String name, List<? extends IOverride> overrides) {
 		for (IOverride override : overrides) {
 			String overrideName = override.getName();
 			if (overrideName == null && name == null) {
-				return true;
+				return override;
 			}
 			if (overrideName != null && overrideName.equals(name)) {
-				return true;
+				return override;
 			}
 		}
-		return false;
+		return null;
+	}
+
+	private boolean containsOverride(String name, List<? extends IOverride> overrides) {
+		return overrideNamed(name, overrides) != null;
 	}
 
 	/**

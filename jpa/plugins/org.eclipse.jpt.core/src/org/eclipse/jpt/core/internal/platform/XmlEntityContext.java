@@ -39,7 +39,7 @@ public class XmlEntityContext extends XmlTypeContext
 	
 	private JavaTable javaTable;
 	
-	private Collection<AttributeOverrideContext> attributeOverrideContexts;
+	private Collection<XmlAttributeOverrideContext> attributeOverrideContexts;
 
 	private Collection<AssociationOverrideContext> associationOverrideContexts;
 
@@ -50,10 +50,10 @@ public class XmlEntityContext extends XmlTypeContext
 		this.secondaryTableContexts = buildSecondaryTableContexts();
 	}
 	
-	protected Collection<AttributeOverrideContext> buildAttributeOverrideContexts() {
-		Collection<AttributeOverrideContext> contexts = new ArrayList<AttributeOverrideContext>();
+	protected Collection<XmlAttributeOverrideContext> buildAttributeOverrideContexts() {
+		Collection<XmlAttributeOverrideContext> contexts = new ArrayList<XmlAttributeOverrideContext>();
 		for (IAttributeOverride attributeOverride : getEntity().getAttributeOverrides()) {
-			contexts.add(new AttributeOverrideContext(this, attributeOverride));
+			contexts.add(new XmlAttributeOverrideContext(this, attributeOverride));
 		}
 		
 		return contexts;
@@ -131,7 +131,7 @@ public class XmlEntityContext extends XmlTypeContext
 		for (SecondaryTableContext context : this.secondaryTableContexts) {
 			context.refreshDefaults(defaultsContext);
 		}
-		for (AttributeOverrideContext context : this.attributeOverrideContexts) {
+		for (XmlAttributeOverrideContext context : this.attributeOverrideContexts) {
 			context.refreshDefaults(defaultsContext);
 		}
 		for (AssociationOverrideContext context : this.associationOverrideContexts) {
@@ -332,7 +332,7 @@ public class XmlEntityContext extends XmlTypeContext
 			context.addToMessages(messages);
 		}
 
-		for (AttributeOverrideContext aoContext : attributeOverrideContexts) {
+		for (XmlAttributeOverrideContext aoContext : attributeOverrideContexts) {
 			aoContext.addToMessages(messages);
 		}
 		

@@ -45,26 +45,41 @@ public class AttributeOverrideContext extends BaseContext
 		
 			public Object getDefault(String key) {
 				if (key.equals(BaseJpaPlatform.DEFAULT_COLUMN_NAME_KEY)) {
-					IColumnMapping columnMapping = (IColumnMapping) attributeOverride.getOwner().attributeMapping(attributeOverride.getName());
-					if (columnMapping == null) {
-						return null;
-					}
-					return columnMapping.getColumn().getName();
+					return buildDefaultColumnName();
 				}
 				else if (key.equals(BaseJpaPlatform.DEFAULT_COLUMN_TABLE_KEY)) {
-					IColumnMapping columnMapping = (IColumnMapping) attributeOverride.getOwner().attributeMapping(attributeOverride.getName());
-					if (columnMapping == null) {
-						return null;
-					}
-					String specifiedTable = columnMapping.getColumn().getSpecifiedTable();
-					if (specifiedTable != null) {
-						return specifiedTable;
+					String tableName = buildDefaultTableName();
+					if (tableName != null) {
+						return tableName;
 					}
 				
 				}
 				return defaultsContext.getDefault(key);
 			}
 		};
+	}
+	
+	/**
+	 * The mapping that the attribute override is overriding
+	 */
+	protected IColumnMapping columnMapping() {
+		return (IColumnMapping) this.attributeOverride.getOwner().attributeMapping(this.attributeOverride.getName());
+	}
+	
+	protected String buildDefaultColumnName() {
+		IColumnMapping columnMapping = columnMapping();
+		if (columnMapping == null) {
+			return null;
+		}
+		return columnMapping.getColumn().getName();
+	}
+	
+	protected String buildDefaultTableName() {
+		IColumnMapping columnMapping = columnMapping();
+		if (columnMapping == null) {
+			return null;
+		}
+		return columnMapping.getColumn().getSpecifiedTable();
 	}
 	
 	public void refreshDefaults(DefaultsContext defaultsContext) {
