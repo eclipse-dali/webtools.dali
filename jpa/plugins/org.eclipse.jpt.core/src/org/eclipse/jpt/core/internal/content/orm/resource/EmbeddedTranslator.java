@@ -39,7 +39,7 @@ public class EmbeddedTranslator extends AttributeMappingTranslator
 		};
 	}
 	private Translator createAttributeOverridesTranslator() {
-		return new AttributeOverrideTranslator(EMBEDDED__ATTRIBUTE_OVERRIDE, MAPPINGS_PKG.getIEmbedded_SpecifiedAttributeOverrides(), buildAttributeOverrideBuilder());
+		return new AttributeOverridesTranslator(EMBEDDED__ATTRIBUTE_OVERRIDE, MAPPINGS_PKG.getIEmbedded_SpecifiedAttributeOverrides(), buildAttributeOverrideBuilder());
 	}
 	
 	private AttributeOverrideBuilder buildAttributeOverrideBuilder() {

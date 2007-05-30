@@ -27,7 +27,7 @@ public class EntityTranslator extends TypeMappingTranslator
 		JpaCoreMappingsPackage.eINSTANCE;
 	
 	private TableTranslator tableTranslator;
-	private SecondaryTableTranslator secondaryTableTranslator;
+	private SecondaryTablesTranslator secondaryTablesTranslator;
 	private DiscriminatorColumnTranslator discriminatorColumnTranslator;
 	
 	private IEntity entity;
@@ -35,7 +35,7 @@ public class EntityTranslator extends TypeMappingTranslator
 	public EntityTranslator() {
 		super(ENTITY);
 		this.tableTranslator = createTableTranslator();
-		this.secondaryTableTranslator = createSecondaryTableTranslator();
+		this.secondaryTablesTranslator = createSecondaryTableTranslator();
 		this.discriminatorColumnTranslator = createDiscriminatorColumnTranslator();
 	}
 	
@@ -44,7 +44,7 @@ public class EntityTranslator extends TypeMappingTranslator
 	public EObject createEMFObject(String nodeName, String readAheadName) {
 		this.entity = JPA_CORE_XML_FACTORY.createXmlEntityInternal();
 		this.tableTranslator.setEntity(this.entity);
-		this.secondaryTableTranslator.setEntity(this.entity);
+		this.secondaryTablesTranslator.setEntity(this.entity);
 		this.discriminatorColumnTranslator.setEntity(this.entity);
 		return this.entity;
 	}
@@ -95,7 +95,7 @@ public class EntityTranslator extends TypeMappingTranslator
 	}
 	
 	private Translator getSecondaryTableTranslator() {
-		return this.secondaryTableTranslator;
+		return this.secondaryTablesTranslator;
 	}	
 	
 	private Translator getDiscriminatorColumnTranslator() {
@@ -106,8 +106,8 @@ public class EntityTranslator extends TypeMappingTranslator
 		return new TableTranslator();
 	}
 	
-	private SecondaryTableTranslator createSecondaryTableTranslator() {
-		return new SecondaryTableTranslator();
+	private SecondaryTablesTranslator createSecondaryTableTranslator() {
+		return new SecondaryTablesTranslator();
 	}
 	
 	private DiscriminatorColumnTranslator createDiscriminatorColumnTranslator() {
@@ -154,7 +154,7 @@ public class EntityTranslator extends TypeMappingTranslator
 	}
 	
 	private Translator createAttributeOverridesTranslator() {
-		return new AttributeOverrideTranslator(ENTITY__ATTRIBUTE_OVERRIDE, MAPPINGS_PKG.getIEntity_SpecifiedAttributeOverrides(), buildAttributeOverrideBuilder());
+		return new AttributeOverridesTranslator(ENTITY__ATTRIBUTE_OVERRIDE, MAPPINGS_PKG.getIEntity_SpecifiedAttributeOverrides(), buildAttributeOverrideBuilder());
 	}
 	
 	private AttributeOverrideBuilder buildAttributeOverrideBuilder() {
@@ -166,7 +166,7 @@ public class EntityTranslator extends TypeMappingTranslator
 	}
 	
 	private Translator createAssociationOverridesTranslator() {
-		return new AssociationOverrideTranslator(ENTITY__ASSOCIATION_OVERRIDE, MAPPINGS_PKG.getIEntity_SpecifiedAssociationOverrides(), buildAssociationOverrideBuilder());
+		return new AssociationOverridesTranslator(ENTITY__ASSOCIATION_OVERRIDE, MAPPINGS_PKG.getIEntity_SpecifiedAssociationOverrides(), buildAssociationOverrideBuilder());
 	}
 	
 	private AssociationOverrideBuilder buildAssociationOverrideBuilder() {
