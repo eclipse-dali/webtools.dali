@@ -294,7 +294,7 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 		ISelection selection = this.secondaryTablesListViewer.getSelection();
 		if (selection instanceof StructuredSelection) {
 			for (Iterator<ISecondaryTable> i = ((StructuredSelection) selection).iterator(); i.hasNext(); ) {
-				this.entity.getSecondaryTables().remove(i.next());
+				this.entity.getSpecifiedSecondaryTables().remove(i.next());
 			}
 		}
 	}
