@@ -34,7 +34,6 @@ public abstract class XmlMultiRelationshipMappingContext
 	public void refreshDefaults(final DefaultsContext defaultsContext) {
 		super.refreshDefaults(defaultsContext);
 		this.joinTableContext.refreshDefaults(defaultsContext);
-		multiRelationshipMapping().getOrderBy().refreshDefaults(defaultsContext);
 	}
 	
 	@Override

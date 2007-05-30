@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml#getJoinTableForXml <em>Join Table For Xml</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml#getOrderByForXml <em>Order By For Xml</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml#getMapKeyForXml <em>Map Key For Xml</em>}</li>
  * </ul>
  * </p>
@@ -55,32 +54,6 @@ public interface XmlMultiRelationshipMappingForXml extends EObject
 	 * @generated
 	 */
 	void setJoinTableForXml(XmlJoinTable value);
-
-	/**
-	 * Returns the value of the '<em><b>Order By For Xml</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Order By For Xml</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Order By For Xml</em>' reference.
-	 * @see #setOrderByForXml(XmlOrderBy)
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlMultiRelationshipMappingForXml_OrderByForXml()
-	 * @model resolveProxies="false" volatile="true"
-	 * @generated
-	 */
-	XmlOrderBy getOrderByForXml();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml#getOrderByForXml <em>Order By For Xml</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Order By For Xml</em>' reference.
-	 * @see #getOrderByForXml()
-	 * @generated
-	 */
-	void setOrderByForXml(XmlOrderBy value);
 
 	/**
 	 * Returns the value of the '<em><b>Map Key For Xml</b></em>' containment reference.

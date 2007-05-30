@@ -1332,13 +1332,22 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IMULTI_RELATIONSHIP_MAPPING__MAPPED_BY = INON_OWNING_MAPPING__MAPPED_BY;
 
 	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IMULTI_RELATIONSHIP_MAPPING__ORDER_BY = INON_OWNING_MAPPING_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IMULTI_RELATIONSHIP_MAPPING__FETCH = INON_OWNING_MAPPING_FEATURE_COUNT + 0;
+	public static final int IMULTI_RELATIONSHIP_MAPPING__FETCH = INON_OWNING_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
@@ -1347,16 +1356,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE = INON_OWNING_MAPPING_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int IMULTI_RELATIONSHIP_MAPPING__ORDER_BY = INON_OWNING_MAPPING_FEATURE_COUNT + 2;
+	public static final int IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE = INON_OWNING_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
@@ -1441,6 +1441,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IONE_TO_MANY__MAPPED_BY = IMULTI_RELATIONSHIP_MAPPING__MAPPED_BY;
 
 	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IONE_TO_MANY__ORDER_BY = IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1457,15 +1466,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int IONE_TO_MANY__JOIN_TABLE = IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
-
-	/**
-	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int IONE_TO_MANY__ORDER_BY = IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 
 	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
@@ -1550,6 +1550,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IMANY_TO_MANY__MAPPED_BY = IMULTI_RELATIONSHIP_MAPPING__MAPPED_BY;
 
 	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IMANY_TO_MANY__ORDER_BY = IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1566,15 +1575,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int IMANY_TO_MANY__JOIN_TABLE = IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
-
-	/**
-	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int IMANY_TO_MANY__ORDER_BY = IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 
 	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
@@ -3231,43 +3231,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int IGENERATED_VALUE_FEATURE_COUNT = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.IOrderBy <em>IOrder By</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.mappings.IOrderBy
-	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIOrderBy()
-	 * @generated
-	 */
-	public static final int IORDER_BY = 36;
-
-	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int IORDER_BY__VALUE = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int IORDER_BY__TYPE = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>IOrder By</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int IORDER_BY_FEATURE_COUNT = JpaCorePackage.IJPA_SOURCE_OBJECT_FEATURE_COUNT + 2;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.IQuery <em>IQuery</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3275,7 +3238,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIQuery()
 	 * @generated
 	 */
-	public static final int IQUERY = 37;
+	public static final int IQUERY = 36;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3321,7 +3284,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getINamedQuery()
 	 * @generated
 	 */
-	public static final int INAMED_QUERY = 38;
+	public static final int INAMED_QUERY = 37;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3367,7 +3330,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getINamedNativeQuery()
 	 * @generated
 	 */
-	public static final int INAMED_NATIVE_QUERY = 39;
+	public static final int INAMED_NATIVE_QUERY = 38;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3431,7 +3394,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIQueryHint()
 	 * @generated
 	 */
-	public static final int IQUERY_HINT = 40;
+	public static final int IQUERY_HINT = 39;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3468,7 +3431,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getICascade()
 	 * @generated
 	 */
-	public static final int ICASCADE = 41;
+	public static final int ICASCADE = 40;
 
 	/**
 	 * The feature id for the '<em><b>All</b></em>' attribute.
@@ -3532,7 +3495,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDefaultEagerFetchType()
 	 * @generated
 	 */
-	public static final int DEFAULT_EAGER_FETCH_TYPE = 42;
+	public static final int DEFAULT_EAGER_FETCH_TYPE = 41;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType <em>Default Lazy Fetch Type</em>}' enum.
@@ -3542,7 +3505,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDefaultLazyFetchType()
 	 * @generated
 	 */
-	public static final int DEFAULT_LAZY_FETCH_TYPE = 43;
+	public static final int DEFAULT_LAZY_FETCH_TYPE = 42;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.DefaultFalseBoolean <em>Default False Boolean</em>}' enum.
@@ -3552,7 +3515,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDefaultFalseBoolean()
 	 * @generated
 	 */
-	public static final int DEFAULT_FALSE_BOOLEAN = 44;
+	public static final int DEFAULT_FALSE_BOOLEAN = 43;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean <em>Default True Boolean</em>}' enum.
@@ -3562,7 +3525,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDefaultTrueBoolean()
 	 * @generated
 	 */
-	public static final int DEFAULT_TRUE_BOOLEAN = 45;
+	public static final int DEFAULT_TRUE_BOOLEAN = 44;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.TemporalType <em>Temporal Type</em>}' enum.
@@ -3572,7 +3535,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 46;
+	public static final int TEMPORAL_TYPE = 45;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -3582,7 +3545,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 47;
+	public static final int INHERITANCE_TYPE = 46;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.DiscriminatorType <em>Discriminator Type</em>}' enum.
@@ -3592,7 +3555,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 48;
+	public static final int DISCRIMINATOR_TYPE = 47;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.GenerationType <em>Generation Type</em>}' enum.
@@ -3602,7 +3565,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 49;
+	public static final int GENERATION_TYPE = 48;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.EnumType <em>Enum Type</em>}' enum.
@@ -3612,17 +3575,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 50;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.OrderingType <em>Ordering Type</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.mappings.OrderingType
-	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getOrderingType()
-	 * @generated
-	 */
-	public static final int ORDERING_TYPE = 51;
+	public static final int ENUM_TYPE = 49;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.CascadeType <em>Cascade Type</em>}' enum.
@@ -3632,7 +3585,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getCascadeType()
 	 * @generated
 	 */
-	public static final int CASCADE_TYPE = 52;
+	public static final int CASCADE_TYPE = 50;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -3891,13 +3844,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass iOrderByEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass iQueryEClass = null;
 
 	/**
@@ -3990,13 +3936,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EEnum enumTypeEEnum = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EEnum orderingTypeEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -5226,6 +5165,19 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getOrderBy <em>Order By</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Order By</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getOrderBy()
+	 * @see #getIMultiRelationshipMapping()
+	 * @generated
+	 */
+	public EAttribute getIMultiRelationshipMapping_OrderBy() {
+		return (EAttribute) iMultiRelationshipMappingEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getFetch <em>Fetch</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5235,7 +5187,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getIMultiRelationshipMapping_Fetch() {
-		return (EAttribute) iMultiRelationshipMappingEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) iMultiRelationshipMappingEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -5248,19 +5200,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getIMultiRelationshipMapping_JoinTable() {
-		return (EReference) iMultiRelationshipMappingEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getOrderBy <em>Order By</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Order By</em>'.
-	 * @see org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getOrderBy()
-	 * @see #getIMultiRelationshipMapping()
-	 * @generated
-	 */
-	public EReference getIMultiRelationshipMapping_OrderBy() {
 		return (EReference) iMultiRelationshipMappingEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -6235,44 +6174,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.mappings.IOrderBy <em>IOrder By</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>IOrder By</em>'.
-	 * @see org.eclipse.jpt.core.internal.mappings.IOrderBy
-	 * @generated
-	 */
-	public EClass getIOrderBy() {
-		return iOrderByEClass;
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IOrderBy#getValue <em>Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Value</em>'.
-	 * @see org.eclipse.jpt.core.internal.mappings.IOrderBy#getValue()
-	 * @see #getIOrderBy()
-	 * @generated
-	 */
-	public EAttribute getIOrderBy_Value() {
-		return (EAttribute) iOrderByEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IOrderBy#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Type</em>'.
-	 * @see org.eclipse.jpt.core.internal.mappings.IOrderBy#getType()
-	 * @see #getIOrderBy()
-	 * @generated
-	 */
-	public EAttribute getIOrderBy_Type() {
-		return (EAttribute) iOrderByEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.mappings.IQuery <em>IQuery</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6597,18 +6498,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for enum '{@link org.eclipse.jpt.core.internal.mappings.OrderingType <em>Ordering Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Ordering Type</em>'.
-	 * @see org.eclipse.jpt.core.internal.mappings.OrderingType
-	 * @generated
-	 */
-	public EEnum getOrderingType() {
-		return orderingTypeEEnum;
-	}
-
-	/**
 	 * Returns the meta object for enum '{@link org.eclipse.jpt.core.internal.mappings.CascadeType <em>Cascade Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6739,9 +6628,9 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		iNonOwningMappingEClass = createEClass(INON_OWNING_MAPPING);
 		createEAttribute(iNonOwningMappingEClass, INON_OWNING_MAPPING__MAPPED_BY);
 		iMultiRelationshipMappingEClass = createEClass(IMULTI_RELATIONSHIP_MAPPING);
+		createEAttribute(iMultiRelationshipMappingEClass, IMULTI_RELATIONSHIP_MAPPING__ORDER_BY);
 		createEAttribute(iMultiRelationshipMappingEClass, IMULTI_RELATIONSHIP_MAPPING__FETCH);
 		createEReference(iMultiRelationshipMappingEClass, IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE);
-		createEReference(iMultiRelationshipMappingEClass, IMULTI_RELATIONSHIP_MAPPING__ORDER_BY);
 		createEAttribute(iMultiRelationshipMappingEClass, IMULTI_RELATIONSHIP_MAPPING__MAP_KEY);
 		iOneToManyEClass = createEClass(IONE_TO_MANY);
 		iManyToManyEClass = createEClass(IMANY_TO_MANY);
@@ -6818,9 +6707,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		iGeneratedValueEClass = createEClass(IGENERATED_VALUE);
 		createEAttribute(iGeneratedValueEClass, IGENERATED_VALUE__STRATEGY);
 		createEAttribute(iGeneratedValueEClass, IGENERATED_VALUE__GENERATOR);
-		iOrderByEClass = createEClass(IORDER_BY);
-		createEAttribute(iOrderByEClass, IORDER_BY__VALUE);
-		createEAttribute(iOrderByEClass, IORDER_BY__TYPE);
 		iQueryEClass = createEClass(IQUERY);
 		createEAttribute(iQueryEClass, IQUERY__NAME);
 		createEAttribute(iQueryEClass, IQUERY__QUERY);
@@ -6848,7 +6734,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		discriminatorTypeEEnum = createEEnum(DISCRIMINATOR_TYPE);
 		generationTypeEEnum = createEEnum(GENERATION_TYPE);
 		enumTypeEEnum = createEEnum(ENUM_TYPE);
-		orderingTypeEEnum = createEEnum(ORDERING_TYPE);
 		cascadeTypeEEnum = createEEnum(CASCADE_TYPE);
 	}
 
@@ -6921,7 +6806,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		iTableGeneratorEClass.getESuperTypes().add(this.getIGenerator());
 		iSequenceGeneratorEClass.getESuperTypes().add(this.getIGenerator());
 		iGeneratedValueEClass.getESuperTypes().add(theJpaCorePackage.getIJpaSourceObject());
-		iOrderByEClass.getESuperTypes().add(theJpaCorePackage.getIJpaSourceObject());
 		iQueryEClass.getESuperTypes().add(theJpaCorePackage.getIJpaSourceObject());
 		iNamedQueryEClass.getESuperTypes().add(theJpaCorePackage.getIJpaSourceObject());
 		iNamedQueryEClass.getESuperTypes().add(this.getIQuery());
@@ -7025,10 +6909,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEClass(iNonOwningMappingEClass, INonOwningMapping.class, "INonOwningMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getINonOwningMapping_MappedBy(), theEcorePackage.getEString(), "mappedBy", null, 0, 1, INonOwningMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iMultiRelationshipMappingEClass, IMultiRelationshipMapping.class, "IMultiRelationshipMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getIMultiRelationshipMapping_OrderBy(), theEcorePackage.getEString(), "orderBy", null, 0, 1, IMultiRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getIMultiRelationshipMapping_Fetch(), this.getDefaultLazyFetchType(), "fetch", null, 0, 1, IMultiRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIMultiRelationshipMapping_JoinTable(), this.getIJoinTable(), null, "joinTable", null, 1, 1, IMultiRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getIMultiRelationshipMapping_OrderBy(), this.getIOrderBy(), null, "orderBy", null, 1, 1, IMultiRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIMultiRelationshipMapping_MapKey(), theEcorePackage.getEString(), "mapKey", null, 0, 1, IMultiRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		addEOperation(iMultiRelationshipMappingEClass, ecorePackage.getEBoolean(), "isNoOrdering", 1, 1);
+		addEOperation(iMultiRelationshipMappingEClass, null, "setNoOrdering");
+		addEOperation(iMultiRelationshipMappingEClass, theEcorePackage.getEBoolean(), "isOrderByPk", 1, 1);
+		addEOperation(iMultiRelationshipMappingEClass, null, "setOrderByPk");
+		addEOperation(iMultiRelationshipMappingEClass, theEcorePackage.getEBoolean(), "isCustomOrdering", 1, 1);
 		initEClass(iOneToManyEClass, IOneToMany.class, "IOneToMany", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iManyToManyEClass, IManyToMany.class, "IManyToMany", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iSingleRelationshipMappingEClass, ISingleRelationshipMapping.class, "ISingleRelationshipMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -7105,9 +6994,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEClass(iGeneratedValueEClass, IGeneratedValue.class, "IGeneratedValue", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIGeneratedValue_Strategy(), this.getGenerationType(), "strategy", null, 0, 1, IGeneratedValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIGeneratedValue_Generator(), theEcorePackage.getEString(), "generator", null, 0, 1, IGeneratedValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEClass(iOrderByEClass, IOrderBy.class, "IOrderBy", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getIOrderBy_Value(), theEcorePackage.getEString(), "value", null, 0, 1, IOrderBy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getIOrderBy_Type(), this.getOrderingType(), "type", null, 0, 1, IOrderBy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iQueryEClass, IQuery.class, "IQuery", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIQuery_Name(), theEcorePackage.getEString(), "name", null, 0, 1, IQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIQuery_Query(), theEcorePackage.getEString(), "query", null, 0, 1, IQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -7167,10 +7053,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		addEEnumLiteral(enumTypeEEnum, EnumType.DEFAULT);
 		addEEnumLiteral(enumTypeEEnum, EnumType.ORDINAL);
 		addEEnumLiteral(enumTypeEEnum, EnumType.STRING);
-		initEEnum(orderingTypeEEnum, OrderingType.class, "OrderingType");
-		addEEnumLiteral(orderingTypeEEnum, OrderingType.NONE);
-		addEEnumLiteral(orderingTypeEEnum, OrderingType.PRIMARY_KEY);
-		addEEnumLiteral(orderingTypeEEnum, OrderingType.CUSTOM);
 		initEEnum(cascadeTypeEEnum, CascadeType.class, "CascadeType");
 		addEEnumLiteral(cascadeTypeEEnum, CascadeType.ALL);
 		addEEnumLiteral(cascadeTypeEEnum, CascadeType.PERSIST);
@@ -7943,6 +7825,14 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		public static final EClass IMULTI_RELATIONSHIP_MAPPING = eINSTANCE.getIMultiRelationshipMapping();
 
 		/**
+		 * The meta object literal for the '<em><b>Order By</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute IMULTI_RELATIONSHIP_MAPPING__ORDER_BY = eINSTANCE.getIMultiRelationshipMapping_OrderBy();
+
+		/**
 		 * The meta object literal for the '<em><b>Fetch</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -7957,14 +7847,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE = eINSTANCE.getIMultiRelationshipMapping_JoinTable();
-
-		/**
-		 * The meta object literal for the '<em><b>Order By</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference IMULTI_RELATIONSHIP_MAPPING__ORDER_BY = eINSTANCE.getIMultiRelationshipMapping_OrderBy();
 
 		/**
 		 * The meta object literal for the '<em><b>Map Key</b></em>' attribute feature.
@@ -8611,32 +8493,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		public static final EAttribute IGENERATED_VALUE__GENERATOR = eINSTANCE.getIGeneratedValue_Generator();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.IOrderBy <em>IOrder By</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.mappings.IOrderBy
-		 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIOrderBy()
-		 * @generated
-		 */
-		public static final EClass IORDER_BY = eINSTANCE.getIOrderBy();
-
-		/**
-		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute IORDER_BY__VALUE = eINSTANCE.getIOrderBy_Value();
-
-		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute IORDER_BY__TYPE = eINSTANCE.getIOrderBy_Type();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.IQuery <em>IQuery</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -8871,16 +8727,6 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EEnum ENUM_TYPE = eINSTANCE.getEnumType();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.OrderingType <em>Ordering Type</em>}' enum.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.mappings.OrderingType
-		 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getOrderingType()
-		 * @generated
-		 */
-		public static final EEnum ORDERING_TYPE = eINSTANCE.getOrderingType();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.CascadeType <em>Cascade Type</em>}' enum.

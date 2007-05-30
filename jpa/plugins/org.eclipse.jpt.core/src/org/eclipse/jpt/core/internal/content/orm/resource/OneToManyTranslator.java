@@ -35,7 +35,6 @@ public class OneToManyTranslator extends MultiRelationshipTranslator
 			createFetchTypeTranslator(),
 			createMappedByTranslator(),
 			createOrderByTranslator(),
-			//getOrderByTranslator(),
 			createMapKeyTranslator(),
 			getJoinTableTranslator(),
 			createCascadeTranslator()

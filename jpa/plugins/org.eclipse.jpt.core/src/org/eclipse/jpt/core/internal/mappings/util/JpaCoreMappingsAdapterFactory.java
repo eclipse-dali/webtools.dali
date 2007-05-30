@@ -45,7 +45,6 @@ import org.eclipse.jpt.core.internal.mappings.INamedQuery;
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.mappings.IOneToMany;
 import org.eclipse.jpt.core.internal.mappings.IOneToOne;
-import org.eclipse.jpt.core.internal.mappings.IOrderBy;
 import org.eclipse.jpt.core.internal.mappings.IOverride;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IQuery;
@@ -295,11 +294,6 @@ public class JpaCoreMappingsAdapterFactory extends AdapterFactoryImpl
 		@Override
 		public Adapter caseIGeneratedValue(IGeneratedValue object) {
 			return createIGeneratedValueAdapter();
-		}
-
-		@Override
-		public Adapter caseIOrderBy(IOrderBy object) {
-			return createIOrderByAdapter();
 		}
 
 		@Override
@@ -867,20 +861,6 @@ public class JpaCoreMappingsAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createIGeneratedValueAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.mappings.IOrderBy <em>IOrder By</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.mappings.IOrderBy
-	 * @generated
-	 */
-	public Adapter createIOrderByAdapter() {
 		return null;
 	}
 

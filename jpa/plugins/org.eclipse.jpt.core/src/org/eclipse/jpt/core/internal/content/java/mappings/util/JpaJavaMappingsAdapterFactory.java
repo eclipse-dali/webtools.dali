@@ -51,7 +51,6 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullAttributeMapp
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOne;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaOrderBy;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOverride;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaQueryHint;
@@ -94,7 +93,6 @@ import org.eclipse.jpt.core.internal.mappings.INamedQuery;
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.mappings.IOneToMany;
 import org.eclipse.jpt.core.internal.mappings.IOneToOne;
-import org.eclipse.jpt.core.internal.mappings.IOrderBy;
 import org.eclipse.jpt.core.internal.mappings.IOverride;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IQuery;
@@ -351,11 +349,6 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 		}
 
 		@Override
-		public Adapter caseJavaOrderBy(JavaOrderBy object) {
-			return createJavaOrderByAdapter();
-		}
-
-		@Override
 		public Adapter caseJavaAbstractQuery(JavaAbstractQuery object) {
 			return createJavaAbstractQueryAdapter();
 		}
@@ -598,11 +591,6 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 		@Override
 		public Adapter caseISequenceGenerator(ISequenceGenerator object) {
 			return createISequenceGeneratorAdapter();
-		}
-
-		@Override
-		public Adapter caseIOrderBy(IOrderBy object) {
-			return createIOrderByAdapter();
 		}
 
 		@Override
@@ -1113,20 +1101,6 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createJavaSequenceGeneratorAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaOrderBy <em>Java Order By</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JavaOrderBy
-	 * @generated
-	 */
-	public Adapter createJavaOrderByAdapter() {
 		return null;
 	}
 
@@ -1799,20 +1773,6 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createISequenceGeneratorAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.mappings.IOrderBy <em>IOrder By</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.mappings.IOrderBy
-	 * @generated
-	 */
-	public Adapter createIOrderByAdapter() {
 		return null;
 	}
 

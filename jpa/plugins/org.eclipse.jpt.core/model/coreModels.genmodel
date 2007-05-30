@@ -146,11 +146,6 @@
         <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/EnumType/ORDINAL"/>
         <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/EnumType/STRING"/>
       </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="core.ecore#//mappings/OrderingType">
-        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/OrderingType/NONE"/>
-        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/OrderingType/PRIMARY_KEY"/>
-        <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/OrderingType/CUSTOM"/>
-      </genEnums>
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="core.ecore#//mappings/CascadeType">
         <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/CascadeType/ALL"/>
         <genEnumLiterals ecoreEnumLiteral="core.ecore#//mappings/CascadeType/PERSIST"/>
@@ -278,11 +273,15 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/INonOwningMapping/mappedBy"/>
       </genClasses>
       <genClasses ecoreClass="core.ecore#//mappings/IMultiRelationshipMapping">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IMultiRelationshipMapping/orderBy"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IMultiRelationshipMapping/fetch"/>
         <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference core.ecore#//mappings/IMultiRelationshipMapping/joinTable"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference core.ecore#//mappings/IMultiRelationshipMapping/orderBy"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IMultiRelationshipMapping/mapKey"/>
+        <genOperations ecoreOperation="core.ecore#//mappings/IMultiRelationshipMapping/isNoOrdering"/>
+        <genOperations ecoreOperation="core.ecore#//mappings/IMultiRelationshipMapping/setNoOrdering"/>
+        <genOperations ecoreOperation="core.ecore#//mappings/IMultiRelationshipMapping/isOrderByPk"/>
+        <genOperations ecoreOperation="core.ecore#//mappings/IMultiRelationshipMapping/setOrderByPk"/>
+        <genOperations ecoreOperation="core.ecore#//mappings/IMultiRelationshipMapping/isCustomOrdering"/>
       </genClasses>
       <genClasses ecoreClass="core.ecore#//mappings/IOneToMany"/>
       <genClasses ecoreClass="core.ecore#//mappings/IManyToMany"/>
@@ -372,10 +371,6 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IGeneratedValue/strategy"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IGeneratedValue/generator"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="core.ecore#//mappings/IOrderBy">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IOrderBy/value"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IOrderBy/type"/>
-      </genClasses>
       <genClasses image="false" ecoreClass="core.ecore#//mappings/IQuery">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IQuery/name"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute core.ecore#//mappings/IQuery/query"/>
@@ -462,7 +457,6 @@
       <genClasses ecoreClass="java.ecore#//mappings/JavaGenerator"/>
       <genClasses ecoreClass="java.ecore#//mappings/JavaTableGenerator"/>
       <genClasses ecoreClass="java.ecore#//mappings/JavaSequenceGenerator"/>
-      <genClasses ecoreClass="java.ecore#//mappings/JavaOrderBy"/>
       <genClasses image="false" ecoreClass="java.ecore#//mappings/JavaAbstractQuery"/>
       <genClasses ecoreClass="java.ecore#//mappings/JavaNamedQuery"/>
       <genClasses ecoreClass="java.ecore#//mappings/JavaNamedNativeQuery"/>
@@ -550,7 +544,6 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlMultiRelationshipMappingInternal"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlMultiRelationshipMappingForXml">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference orm.ecore#//XmlMultiRelationshipMappingForXml/joinTableForXml"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference orm.ecore#//XmlMultiRelationshipMappingForXml/orderByForXml"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference orm.ecore#//XmlMultiRelationshipMappingForXml/mapKeyForXml"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlMultiRelationshipMapping"/>
@@ -639,7 +632,6 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlGenerator"/>
     <genClasses ecoreClass="orm.ecore#//XmlSequenceGenerator"/>
     <genClasses ecoreClass="orm.ecore#//XmlTableGenerator"/>
-    <genClasses ecoreClass="orm.ecore#//XmlOrderBy"/>
     <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlQuery"/>
     <genClasses ecoreClass="orm.ecore#//XmlNamedQuery"/>
     <genClasses ecoreClass="orm.ecore#//XmlNamedNativeQuery"/>

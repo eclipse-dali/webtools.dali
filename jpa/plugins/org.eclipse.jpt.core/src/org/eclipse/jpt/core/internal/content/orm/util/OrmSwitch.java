@@ -70,7 +70,6 @@ import org.eclipse.jpt.core.internal.content.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.internal.content.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlOneToMany;
 import org.eclipse.jpt.core.internal.content.orm.XmlOneToOne;
-import org.eclipse.jpt.core.internal.content.orm.XmlOrderBy;
 import org.eclipse.jpt.core.internal.content.orm.XmlOverride;
 import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.orm.XmlPersistentType;
@@ -115,7 +114,6 @@ import org.eclipse.jpt.core.internal.mappings.INamedQuery;
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.mappings.IOneToMany;
 import org.eclipse.jpt.core.internal.mappings.IOneToOne;
-import org.eclipse.jpt.core.internal.mappings.IOrderBy;
 import org.eclipse.jpt.core.internal.mappings.IOverride;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IQuery;
@@ -1341,25 +1339,6 @@ public class OrmSwitch<T>
 					result = defaultCase(theEObject);
 				return result;
 			}
-			case OrmPackage.XML_ORDER_BY : {
-				XmlOrderBy xmlOrderBy = (XmlOrderBy) theEObject;
-				T result = caseXmlOrderBy(xmlOrderBy);
-				if (result == null)
-					result = caseXmlEObject(xmlOrderBy);
-				if (result == null)
-					result = caseIOrderBy(xmlOrderBy);
-				if (result == null)
-					result = caseJpaEObject(xmlOrderBy);
-				if (result == null)
-					result = caseIXmlEObject(xmlOrderBy);
-				if (result == null)
-					result = caseIJpaSourceObject(xmlOrderBy);
-				if (result == null)
-					result = caseIJpaEObject(xmlOrderBy);
-				if (result == null)
-					result = defaultCase(theEObject);
-				return result;
-			}
 			case OrmPackage.ABSTRACT_XML_QUERY : {
 				AbstractXmlQuery abstractXmlQuery = (AbstractXmlQuery) theEObject;
 				T result = caseAbstractXmlQuery(abstractXmlQuery);
@@ -2289,21 +2268,6 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Order By</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Order By</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseXmlOrderBy(XmlOrderBy object) {
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpretting the object as an instance of '<em>Abstract Xml Query</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -2930,21 +2894,6 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseITableGenerator(ITableGenerator object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IOrder By</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IOrder By</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIOrderBy(IOrderBy object) {
 		return null;
 	}
 

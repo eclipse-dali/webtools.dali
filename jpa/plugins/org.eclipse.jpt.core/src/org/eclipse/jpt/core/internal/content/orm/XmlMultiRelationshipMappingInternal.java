@@ -21,11 +21,13 @@ import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.orm.resource.OrmXmlMapper;
 import org.eclipse.jpt.core.internal.emfutility.DOMUtilities;
 import org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType;
+import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
 import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
-import org.eclipse.jpt.core.internal.mappings.IOrderBy;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.core.internal.platform.DefaultsContext;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
@@ -64,6 +66,26 @@ public abstract class XmlMultiRelationshipMappingInternal
 	protected String mappedBy = MAPPED_BY_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getOrderBy() <em>Order By</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOrderBy()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ORDER_BY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getOrderBy() <em>Order By</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOrderBy()
+	 * @generated
+	 * @ordered
+	 */
+	protected String orderBy = ORDER_BY_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getFetch() <em>Fetch</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -92,16 +114,6 @@ public abstract class XmlMultiRelationshipMappingInternal
 	 * @ordered
 	 */
 	protected IJoinTable joinTable;
-
-	/**
-	 * The cached value of the '{@link #getOrderBy() <em>Order By</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOrderBy()
-	 * @generated
-	 * @ordered
-	 */
-	protected IOrderBy orderBy;
 
 	/**
 	 * The default value of the '{@link #getMapKey() <em>Map Key</em>}' attribute.
@@ -137,8 +149,6 @@ public abstract class XmlMultiRelationshipMappingInternal
 		super();
 		this.joinTable = OrmFactory.eINSTANCE.createXmlJoinTable(buildJoinTableOwner());
 		((InternalEObject) this.joinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE, null, null);
-		this.orderBy = OrmFactory.eINSTANCE.createXmlOrderBy();
-		((InternalEObject) this.orderBy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY, null, null);
 		this.eAdapters().add(this.buildListener());
 	}
 
@@ -241,6 +251,89 @@ public abstract class XmlMultiRelationshipMappingInternal
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAPPED_BY, oldMappedBy, mappedBy));
 	}
 
+	/**
+	 * Returns the value of the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Order By</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Order By</em>' attribute.
+	 * @see #setOrderBy(String)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIMultiRelationshipMapping_OrderBy()
+	 * @model unique="false" ordered="false"
+	 * @generated
+	 */
+	public String getOrderBy() {
+		return orderBy;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingInternal#getOrderBy <em>Order By</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Order By</em>' attribute.
+	 * @see #getOrderBy()
+	 * @generated
+	 */
+	public void setOrderBy(String newOrderBy) {
+		String oldOrderBy = orderBy;
+		orderBy = newOrderBy;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY, oldOrderBy, orderBy));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false" required="true" ordered="false"
+	 * @generated NOT
+	 */
+	public boolean isNoOrdering() {
+		return getOrderBy() == null;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated NOT
+	 */
+	public void setNoOrdering() {
+		setOrderBy(null);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false" required="true" ordered="false"
+	 * @generated NOT
+	 */
+	public boolean isOrderByPk() {
+		return "".equals(getOrderBy());
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated NOT
+	 */
+	public void setOrderByPk() {
+		setOrderBy("");
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false" required="true" ordered="false"
+	 * @generated NOT
+	 */
+	public boolean isCustomOrdering() {
+		return ! StringTools.stringIsEmpty(getOrderBy());
+	}
+
 	public ITextRange mappedByTextRange() {
 		if (node == null) {
 			return typeMapping().validationTextRange();
@@ -326,41 +419,6 @@ public abstract class XmlMultiRelationshipMappingInternal
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Order By</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Order By</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Order By</em>' containment reference.
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIMultiRelationshipMapping_OrderBy()
-	 * @model containment="true" required="true" changeable="false"
-	 * @generated
-	 */
-	public IOrderBy getOrderBy() {
-		return orderBy;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetOrderBy(IOrderBy newOrderBy, NotificationChain msgs) {
-		IOrderBy oldOrderBy = orderBy;
-		orderBy = newOrderBy;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY, oldOrderBy, newOrderBy);
-			if (msgs == null)
-				msgs = notification;
-			else
-				msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
 	 * Returns the value of the '<em><b>Map Key</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -415,23 +473,6 @@ public abstract class XmlMultiRelationshipMappingInternal
 		if (newJoinTableForXml == null) {
 			getJoinTableInternal().unsetAllAttributes();
 		}
-	}
-
-	public XmlOrderBy getOrderByForXml() {
-		if (getOrderByInternal().isAllFeaturesUnset()) {
-			return null;
-		}
-		return getOrderByInternal();
-	}
-
-	private XmlOrderBy getOrderByInternal() {
-		return (XmlOrderBy) getOrderBy();
-	}
-
-	public void setOrderByForXml(XmlOrderBy newOrderByForXml) {
-		XmlOrderBy oldValue = newOrderByForXml == null ? (XmlOrderBy) getOrderBy() : null;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML, oldValue, newOrderByForXml));
 	}
 
 	/**
@@ -503,8 +544,6 @@ public abstract class XmlMultiRelationshipMappingInternal
 		switch (featureID) {
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE :
 				return basicSetJoinTable(null, msgs);
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY :
-				return basicSetOrderBy(null, msgs);
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML :
 				return basicSetMapKeyForXml(null, msgs);
 		}
@@ -521,18 +560,16 @@ public abstract class XmlMultiRelationshipMappingInternal
 		switch (featureID) {
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAPPED_BY :
 				return getMappedBy();
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY :
+				return getOrderBy();
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__FETCH :
 				return getFetch();
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE :
 				return getJoinTable();
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY :
-				return getOrderBy();
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY :
 				return getMapKey();
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML :
 				return getJoinTableForXml();
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML :
-				return getOrderByForXml();
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML :
 				return getMapKeyForXml();
 		}
@@ -550,6 +587,9 @@ public abstract class XmlMultiRelationshipMappingInternal
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAPPED_BY :
 				setMappedBy((String) newValue);
 				return;
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY :
+				setOrderBy((String) newValue);
+				return;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__FETCH :
 				setFetch((DefaultLazyFetchType) newValue);
 				return;
@@ -558,9 +598,6 @@ public abstract class XmlMultiRelationshipMappingInternal
 				return;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML :
 				setJoinTableForXml((XmlJoinTable) newValue);
-				return;
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML :
-				setOrderByForXml((XmlOrderBy) newValue);
 				return;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML :
 				setMapKeyForXml((XmlMapKey) newValue);
@@ -580,6 +617,9 @@ public abstract class XmlMultiRelationshipMappingInternal
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAPPED_BY :
 				setMappedBy(MAPPED_BY_EDEFAULT);
 				return;
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY :
+				setOrderBy(ORDER_BY_EDEFAULT);
+				return;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__FETCH :
 				setFetch(FETCH_EDEFAULT);
 				return;
@@ -588,9 +628,6 @@ public abstract class XmlMultiRelationshipMappingInternal
 				return;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML :
 				setJoinTableForXml((XmlJoinTable) null);
-				return;
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML :
-				setOrderByForXml((XmlOrderBy) null);
 				return;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML :
 				setMapKeyForXml((XmlMapKey) null);
@@ -609,18 +646,16 @@ public abstract class XmlMultiRelationshipMappingInternal
 		switch (featureID) {
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAPPED_BY :
 				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
+			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY :
+				return ORDER_BY_EDEFAULT == null ? orderBy != null : !ORDER_BY_EDEFAULT.equals(orderBy);
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__FETCH :
 				return fetch != FETCH_EDEFAULT;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE :
 				return joinTable != null;
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY :
-				return orderBy != null;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY :
 				return MAP_KEY_EDEFAULT == null ? mapKey != null : !MAP_KEY_EDEFAULT.equals(mapKey);
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML :
 				return getJoinTableForXml() != null;
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML :
-				return getOrderByForXml() != null;
 			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML :
 				return mapKeyForXml != null;
 		}
@@ -644,12 +679,12 @@ public abstract class XmlMultiRelationshipMappingInternal
 		}
 		if (baseClass == IMultiRelationshipMapping.class) {
 			switch (derivedFeatureID) {
+				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY :
+					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__FETCH :
 					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__FETCH;
 				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE :
 					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
-				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY :
-					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY :
 					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 				default :
@@ -660,8 +695,6 @@ public abstract class XmlMultiRelationshipMappingInternal
 			switch (derivedFeatureID) {
 				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML :
 					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__JOIN_TABLE_FOR_XML;
-				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML :
-					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__ORDER_BY_FOR_XML;
 				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML :
 					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__MAP_KEY_FOR_XML;
 				default :
@@ -694,12 +727,12 @@ public abstract class XmlMultiRelationshipMappingInternal
 		}
 		if (baseClass == IMultiRelationshipMapping.class) {
 			switch (baseFeatureID) {
+				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY :
+					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY;
 				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__FETCH :
 					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__FETCH;
 				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE :
 					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE;
-				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY :
-					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY;
 				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY :
 					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY;
 				default :
@@ -710,8 +743,6 @@ public abstract class XmlMultiRelationshipMappingInternal
 			switch (baseFeatureID) {
 				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__JOIN_TABLE_FOR_XML :
 					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML;
-				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__ORDER_BY_FOR_XML :
-					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML;
 				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__MAP_KEY_FOR_XML :
 					return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML;
 				default :
@@ -739,6 +770,8 @@ public abstract class XmlMultiRelationshipMappingInternal
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (mappedBy: ");
 		result.append(mappedBy);
+		result.append(", orderBy: ");
+		result.append(orderBy);
 		result.append(", fetch: ");
 		result.append(fetch);
 		result.append(", mapKey: ");
@@ -755,14 +788,6 @@ public abstract class XmlMultiRelationshipMappingInternal
 		setJoinTableForXmlGen(getJoinTableForXml());
 	}
 
-	public void makeOrderByForXmlNull() {
-		setOrderByForXml(null);
-	}
-
-	public void makeOrderByForXmlNonNull() {
-		setOrderByForXml(getOrderByForXml());
-	}
-
 	@Override
 	public void initializeFromXmlMulitRelationshipMapping(XmlMultiRelationshipMappingInternal oldMapping) {
 		super.initializeFromXmlMulitRelationshipMapping(oldMapping);
@@ -771,5 +796,21 @@ public abstract class XmlMultiRelationshipMappingInternal
 
 	public Iterator<String> candidateMapKeyNames() {
 		return this.allTargetEntityAttributeNames();
+	}
+
+	public void refreshDefaults(DefaultsContext defaultsContext) {
+		super.refreshDefaults(defaultsContext);
+		// TODO
+		//		if (isOrderByPk()) {
+		//			refreshDefaultOrderBy(defaultsContext);
+		//		}
+	}
+
+	//primary key ordering when just the @OrderBy annotation is present
+	protected void refreshDefaultOrderBy(DefaultsContext defaultsContext) {
+		IEntity targetEntity = getResolvedTargetEntity();
+		if (targetEntity != null) {
+			setOrderBy(targetEntity.primaryKeyAttributeName() + " ASC");
+		}
 	}
 }

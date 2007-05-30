@@ -1221,13 +1221,22 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING__FETCH = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 1;
+	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING__FETCH = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
@@ -1236,16 +1245,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 3;
+	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE = JAVA_RELATIONSHIP_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
@@ -1330,6 +1330,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_ONE_TO_MANY__MAPPED_BY = JAVA_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY;
 
 	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_ONE_TO_MANY__ORDER_BY = JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1346,15 +1355,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int JAVA_ONE_TO_MANY__JOIN_TABLE = JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
-
-	/**
-	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JAVA_ONE_TO_MANY__ORDER_BY = JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 
 	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
@@ -1439,6 +1439,15 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_MANY_TO_MANY__MAPPED_BY = JAVA_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY;
 
 	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_MANY_TO_MANY__ORDER_BY = JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1455,15 +1464,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int JAVA_MANY_TO_MANY__JOIN_TABLE = JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
-
-	/**
-	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JAVA_MANY_TO_MANY__ORDER_BY = JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 
 	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
@@ -3247,43 +3247,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_SEQUENCE_GENERATOR_FEATURE_COUNT = JAVA_GENERATOR_FEATURE_COUNT + 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaOrderBy <em>Java Order By</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JavaOrderBy
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaOrderBy()
-	 * @generated
-	 */
-	public static final int JAVA_ORDER_BY = 37;
-
-	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JAVA_ORDER_BY__VALUE = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JAVA_ORDER_BY__TYPE = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>Java Order By</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JAVA_ORDER_BY_FEATURE_COUNT = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 2;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaAbstractQuery <em>Java Abstract Query</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3291,7 +3254,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaAbstractQuery()
 	 * @generated
 	 */
-	public static final int JAVA_ABSTRACT_QUERY = 38;
+	public static final int JAVA_ABSTRACT_QUERY = 37;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3337,7 +3300,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaNamedQuery()
 	 * @generated
 	 */
-	public static final int JAVA_NAMED_QUERY = 39;
+	public static final int JAVA_NAMED_QUERY = 38;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3383,7 +3346,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaNamedNativeQuery()
 	 * @generated
 	 */
-	public static final int JAVA_NAMED_NATIVE_QUERY = 40;
+	public static final int JAVA_NAMED_NATIVE_QUERY = 39;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3447,7 +3410,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaQueryHint()
 	 * @generated
 	 */
-	public static final int JAVA_QUERY_HINT = 41;
+	public static final int JAVA_QUERY_HINT = 40;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3484,7 +3447,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaUniqueConstraint()
 	 * @generated
 	 */
-	public static final int JAVA_UNIQUE_CONSTRAINT = 42;
+	public static final int JAVA_UNIQUE_CONSTRAINT = 41;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -3512,7 +3475,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaCascade()
 	 * @generated
 	 */
-	public static final int JAVA_CASCADE = 43;
+	public static final int JAVA_CASCADE = 42;
 
 	/**
 	 * The feature id for the '<em><b>All</b></em>' attribute.
@@ -3819,13 +3782,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass javaSequenceGeneratorEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass javaOrderByEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -4390,18 +4346,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaOrderBy <em>Java Order By</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Java Order By</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JavaOrderBy
-	 * @generated
-	 */
-	public EClass getJavaOrderBy() {
-		return javaOrderByEClass;
-	}
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaAbstractQuery <em>Java Abstract Query</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4552,7 +4496,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		javaGeneratorEClass = createEClass(JAVA_GENERATOR);
 		javaTableGeneratorEClass = createEClass(JAVA_TABLE_GENERATOR);
 		javaSequenceGeneratorEClass = createEClass(JAVA_SEQUENCE_GENERATOR);
-		javaOrderByEClass = createEClass(JAVA_ORDER_BY);
 		javaAbstractQueryEClass = createEClass(JAVA_ABSTRACT_QUERY);
 		javaNamedQueryEClass = createEClass(JAVA_NAMED_QUERY);
 		javaNamedNativeQueryEClass = createEClass(JAVA_NAMED_NATIVE_QUERY);
@@ -4660,8 +4603,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		javaTableGeneratorEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getITableGenerator());
 		javaSequenceGeneratorEClass.getESuperTypes().add(this.getJavaGenerator());
 		javaSequenceGeneratorEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getISequenceGenerator());
-		javaOrderByEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
-		javaOrderByEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIOrderBy());
 		javaAbstractQueryEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
 		javaAbstractQueryEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIQuery());
 		javaNamedQueryEClass.getESuperTypes().add(this.getJavaAbstractQuery());
@@ -4712,7 +4653,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		initEClass(javaGeneratorEClass, JavaGenerator.class, "JavaGenerator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaTableGeneratorEClass, JavaTableGenerator.class, "JavaTableGenerator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaSequenceGeneratorEClass, JavaSequenceGenerator.class, "JavaSequenceGenerator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEClass(javaOrderByEClass, JavaOrderBy.class, "JavaOrderBy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaAbstractQueryEClass, JavaAbstractQuery.class, "JavaAbstractQuery", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaNamedQueryEClass, JavaNamedQuery.class, "JavaNamedQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaNamedNativeQueryEClass, JavaNamedNativeQuery.class, "JavaNamedNativeQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -5095,16 +5035,6 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass JAVA_SEQUENCE_GENERATOR = eINSTANCE.getJavaSequenceGenerator();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaOrderBy <em>Java Order By</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JavaOrderBy
-		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaOrderBy()
-		 * @generated
-		 */
-		public static final EClass JAVA_ORDER_BY = eINSTANCE.getJavaOrderBy();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaAbstractQuery <em>Java Abstract Query</em>}' class.

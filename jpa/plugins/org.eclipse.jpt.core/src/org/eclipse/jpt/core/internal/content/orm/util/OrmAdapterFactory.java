@@ -71,7 +71,6 @@ import org.eclipse.jpt.core.internal.content.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.internal.content.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlOneToMany;
 import org.eclipse.jpt.core.internal.content.orm.XmlOneToOne;
-import org.eclipse.jpt.core.internal.content.orm.XmlOrderBy;
 import org.eclipse.jpt.core.internal.content.orm.XmlOverride;
 import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.orm.XmlPersistentType;
@@ -116,7 +115,6 @@ import org.eclipse.jpt.core.internal.mappings.INamedQuery;
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.mappings.IOneToMany;
 import org.eclipse.jpt.core.internal.mappings.IOneToOne;
-import org.eclipse.jpt.core.internal.mappings.IOrderBy;
 import org.eclipse.jpt.core.internal.mappings.IOverride;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IQuery;
@@ -453,11 +451,6 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 		}
 
 		@Override
-		public Adapter caseXmlOrderBy(XmlOrderBy object) {
-			return createXmlOrderByAdapter();
-		}
-
-		@Override
 		public Adapter caseAbstractXmlQuery(AbstractXmlQuery object) {
 			return createAbstractXmlQueryAdapter();
 		}
@@ -730,11 +723,6 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 		@Override
 		public Adapter caseITableGenerator(ITableGenerator object) {
 			return createITableGeneratorAdapter();
-		}
-
-		@Override
-		public Adapter caseIOrderBy(IOrderBy object) {
-			return createIOrderByAdapter();
 		}
 
 		@Override
@@ -1501,20 +1489,6 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.orm.XmlOrderBy <em>Xml Order By</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlOrderBy
-	 * @generated
-	 */
-	public Adapter createXmlOrderByAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.orm.AbstractXmlQuery <em>Abstract Xml Query</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -2085,20 +2059,6 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createITableGeneratorAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.mappings.IOrderBy <em>IOrder By</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.mappings.IOrderBy
-	 * @generated
-	 */
-	public Adapter createIOrderByAdapter() {
 		return null;
 	}
 

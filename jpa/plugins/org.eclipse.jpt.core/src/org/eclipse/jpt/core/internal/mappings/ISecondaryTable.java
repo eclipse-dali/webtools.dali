@@ -122,6 +122,7 @@ public interface ISecondaryTable extends ITable
 		public Table dbReferencedColumnTable() {
 			return getTypeMapping().primaryDbTable();
 		}
+
 		public List<IPrimaryKeyJoinColumn> joinColumns() {
 			return this.secondaryTable.getPrimaryKeyJoinColumns();
 		}

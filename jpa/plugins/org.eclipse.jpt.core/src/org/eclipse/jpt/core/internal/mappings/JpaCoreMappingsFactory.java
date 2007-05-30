@@ -101,8 +101,6 @@ public class JpaCoreMappingsFactory extends EFactoryImpl
 				return createGenerationTypeFromString(eDataType, initialValue);
 			case JpaCoreMappingsPackage.ENUM_TYPE :
 				return createEnumTypeFromString(eDataType, initialValue);
-			case JpaCoreMappingsPackage.ORDERING_TYPE :
-				return createOrderingTypeFromString(eDataType, initialValue);
 			case JpaCoreMappingsPackage.CASCADE_TYPE :
 				return createCascadeTypeFromString(eDataType, initialValue);
 			default :
@@ -136,8 +134,6 @@ public class JpaCoreMappingsFactory extends EFactoryImpl
 				return convertGenerationTypeToString(eDataType, instanceValue);
 			case JpaCoreMappingsPackage.ENUM_TYPE :
 				return convertEnumTypeToString(eDataType, instanceValue);
-			case JpaCoreMappingsPackage.ORDERING_TYPE :
-				return convertOrderingTypeToString(eDataType, instanceValue);
 			case JpaCoreMappingsPackage.CASCADE_TYPE :
 				return convertCascadeTypeToString(eDataType, instanceValue);
 			default :
@@ -331,27 +327,6 @@ public class JpaCoreMappingsFactory extends EFactoryImpl
 	 * @generated
 	 */
 	public String convertEnumTypeToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public OrderingType createOrderingTypeFromString(EDataType eDataType, String initialValue) {
-		OrderingType result = OrderingType.get(initialValue);
-		if (result == null)
-			throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertOrderingTypeToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

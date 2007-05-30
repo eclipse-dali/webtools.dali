@@ -77,7 +77,6 @@
     <eClassifiers xsi:type="ecore:EClass" name="JavaGenerator" abstract="true" eSuperTypes="#//JavaEObject core.ecore#//mappings/IGenerator"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaTableGenerator" eSuperTypes="#//mappings/JavaGenerator core.ecore#//mappings/ITableGenerator"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaSequenceGenerator" eSuperTypes="#//mappings/JavaGenerator core.ecore#//mappings/ISequenceGenerator"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaOrderBy" eSuperTypes="#//JavaEObject core.ecore#//mappings/IOrderBy"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaAbstractQuery" abstract="true"
         eSuperTypes="#//JavaEObject core.ecore#//mappings/IQuery"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaNamedQuery" eSuperTypes="#//mappings/JavaAbstractQuery core.ecore#//mappings/INamedQuery"/>

@@ -1973,13 +1973,22 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAPPED_BY = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__FETCH = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 1;
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__FETCH = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
@@ -1988,16 +1997,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 3;
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
@@ -2018,22 +2018,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 5;
 
 	/**
-	 * The feature id for the '<em><b>Order By For Xml</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 6;
-
-	/**
 	 * The feature id for the '<em><b>Map Key For Xml</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 7;
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAP_KEY_FOR_XML = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Xml Multi Relationship Mapping Internal</em>' class.
@@ -2042,7 +2033,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL_FEATURE_COUNT = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 8;
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL_FEATURE_COUNT = XML_RELATIONSHIP_MAPPING_FEATURE_COUNT + 7;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml <em>Xml Multi Relationship Mapping For Xml</em>}' class.
@@ -2064,22 +2055,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__JOIN_TABLE_FOR_XML = 0;
 
 	/**
-	 * The feature id for the '<em><b>Order By For Xml</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__ORDER_BY_FOR_XML = 1;
-
-	/**
 	 * The feature id for the '<em><b>Map Key For Xml</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__MAP_KEY_FOR_XML = 2;
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__MAP_KEY_FOR_XML = 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml Multi Relationship Mapping For Xml</em>' class.
@@ -2088,7 +2070,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML_FEATURE_COUNT = 3;
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML_FEATURE_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMapping <em>Xml Multi Relationship Mapping</em>}' class.
@@ -2155,6 +2137,15 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY = JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAPPED_BY;
 
 	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY = JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2171,15 +2162,6 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE = JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
-
-	/**
-	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY = JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 
 	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
@@ -2273,6 +2255,15 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_MANY__MAPPED_BY = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAPPED_BY;
 
 	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__ORDER_BY = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2291,15 +2282,6 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_MANY__JOIN_TABLE = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE;
 
 	/**
-	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__ORDER_BY = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY;
-
-	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2316,15 +2298,6 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ONE_TO_MANY__JOIN_TABLE_FOR_XML = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML;
-
-	/**
-	 * The feature id for the '<em><b>Order By For Xml</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__ORDER_BY_FOR_XML = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML;
 
 	/**
 	 * The feature id for the '<em><b>Map Key For Xml</b></em>' containment reference.
@@ -2418,6 +2391,15 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY__MAPPED_BY = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAPPED_BY;
 
 	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__ORDER_BY = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY;
+
+	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2436,15 +2418,6 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY__JOIN_TABLE = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE;
 
 	/**
-	 * The feature id for the '<em><b>Order By</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__ORDER_BY = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY;
-
-	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2461,15 +2434,6 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MANY_TO_MANY__JOIN_TABLE_FOR_XML = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE_FOR_XML;
-
-	/**
-	 * The feature id for the '<em><b>Order By For Xml</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__ORDER_BY_FOR_XML = XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY_FOR_XML;
 
 	/**
 	 * The feature id for the '<em><b>Map Key For Xml</b></em>' containment reference.
@@ -5479,43 +5443,6 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_TABLE_GENERATOR_FEATURE_COUNT = XML_GENERATOR_FEATURE_COUNT + 19;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlOrderBy <em>Xml Order By</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlOrderBy
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlOrderBy()
-	 * @generated
-	 */
-	public static final int XML_ORDER_BY = 53;
-
-	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ORDER_BY__VALUE = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ORDER_BY__TYPE = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>Xml Order By</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ORDER_BY_FEATURE_COUNT = JpaCorePackage.XML_EOBJECT_FEATURE_COUNT + 2;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.AbstractXmlQuery <em>Abstract Xml Query</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5523,7 +5450,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getAbstractXmlQuery()
 	 * @generated
 	 */
-	public static final int ABSTRACT_XML_QUERY = 54;
+	public static final int ABSTRACT_XML_QUERY = 53;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5569,7 +5496,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlNamedQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_QUERY = 55;
+	public static final int XML_NAMED_QUERY = 54;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5615,7 +5542,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlNamedNativeQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_NATIVE_QUERY = 56;
+	public static final int XML_NAMED_NATIVE_QUERY = 55;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5679,7 +5606,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlQueryHint()
 	 * @generated
 	 */
-	public static final int XML_QUERY_HINT = 57;
+	public static final int XML_QUERY_HINT = 56;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5716,7 +5643,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlUniqueConstraint()
 	 * @generated
 	 */
-	public static final int XML_UNIQUE_CONSTRAINT = 58;
+	public static final int XML_UNIQUE_CONSTRAINT = 57;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -5744,7 +5671,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlCascade()
 	 * @generated
 	 */
-	public static final int XML_CASCADE = 59;
+	public static final int XML_CASCADE = 58;
 
 	/**
 	 * The feature id for the '<em><b>All</b></em>' attribute.
@@ -5808,7 +5735,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlIdClass()
 	 * @generated
 	 */
-	public static final int XML_ID_CLASS = 60;
+	public static final int XML_ID_CLASS = 59;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -5836,7 +5763,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlInheritance()
 	 * @generated
 	 */
-	public static final int XML_INHERITANCE = 61;
+	public static final int XML_INHERITANCE = 60;
 
 	/**
 	 * The feature id for the '<em><b>Strategy</b></em>' attribute.
@@ -5864,7 +5791,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlMapKey()
 	 * @generated
 	 */
-	public static final int XML_MAP_KEY = 62;
+	public static final int XML_MAP_KEY = 61;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -6254,13 +6181,6 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlTableGeneratorEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass xmlOrderByEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -7257,19 +7177,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml#getOrderByForXml <em>Order By For Xml</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Order By For Xml</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml#getOrderByForXml()
-	 * @see #getXmlMultiRelationshipMappingForXml()
-	 * @generated
-	 */
-	public EReference getXmlMultiRelationshipMappingForXml_OrderByForXml() {
-		return (EReference) xmlMultiRelationshipMappingForXmlEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
 	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingForXml#getMapKeyForXml <em>Map Key For Xml</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7279,7 +7186,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EReference getXmlMultiRelationshipMappingForXml_MapKeyForXml() {
-		return (EReference) xmlMultiRelationshipMappingForXmlEClass.getEStructuralFeatures().get(2);
+		return (EReference) xmlMultiRelationshipMappingForXmlEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -8148,18 +8055,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.orm.XmlOrderBy <em>Xml Order By</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Order By</em>'.
-	 * @see org.eclipse.jpt.core.internal.content.orm.XmlOrderBy
-	 * @generated
-	 */
-	public EClass getXmlOrderBy() {
-		return xmlOrderByEClass;
-	}
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.orm.AbstractXmlQuery <em>Abstract Xml Query</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -8403,7 +8298,6 @@ public class OrmPackage extends EPackageImpl
 		xmlMultiRelationshipMappingInternalEClass = createEClass(XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL);
 		xmlMultiRelationshipMappingForXmlEClass = createEClass(XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML);
 		createEReference(xmlMultiRelationshipMappingForXmlEClass, XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__JOIN_TABLE_FOR_XML);
-		createEReference(xmlMultiRelationshipMappingForXmlEClass, XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__ORDER_BY_FOR_XML);
 		createEReference(xmlMultiRelationshipMappingForXmlEClass, XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__MAP_KEY_FOR_XML);
 		xmlMultiRelationshipMappingEClass = createEClass(XML_MULTI_RELATIONSHIP_MAPPING);
 		xmlOneToManyEClass = createEClass(XML_ONE_TO_MANY);
@@ -8474,7 +8368,6 @@ public class OrmPackage extends EPackageImpl
 		xmlGeneratorEClass = createEClass(XML_GENERATOR);
 		xmlSequenceGeneratorEClass = createEClass(XML_SEQUENCE_GENERATOR);
 		xmlTableGeneratorEClass = createEClass(XML_TABLE_GENERATOR);
-		xmlOrderByEClass = createEClass(XML_ORDER_BY);
 		abstractXmlQueryEClass = createEClass(ABSTRACT_XML_QUERY);
 		xmlNamedQueryEClass = createEClass(XML_NAMED_QUERY);
 		xmlNamedNativeQueryEClass = createEClass(XML_NAMED_NATIVE_QUERY);
@@ -8619,8 +8512,6 @@ public class OrmPackage extends EPackageImpl
 		xmlSequenceGeneratorEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getISequenceGenerator());
 		xmlTableGeneratorEClass.getESuperTypes().add(this.getXmlGenerator());
 		xmlTableGeneratorEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getITableGenerator());
-		xmlOrderByEClass.getESuperTypes().add(theJpaCorePackage.getXmlEObject());
-		xmlOrderByEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIOrderBy());
 		abstractXmlQueryEClass.getESuperTypes().add(theJpaCorePackage.getXmlEObject());
 		abstractXmlQueryEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIQuery());
 		xmlNamedQueryEClass.getESuperTypes().add(this.getAbstractXmlQuery());
@@ -8704,7 +8595,6 @@ public class OrmPackage extends EPackageImpl
 		initEClass(xmlMultiRelationshipMappingInternalEClass, XmlMultiRelationshipMappingInternal.class, "XmlMultiRelationshipMappingInternal", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlMultiRelationshipMappingForXmlEClass, XmlMultiRelationshipMappingForXml.class, "XmlMultiRelationshipMappingForXml", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlMultiRelationshipMappingForXml_JoinTableForXml(), this.getXmlJoinTable(), null, "joinTableForXml", null, 0, 1, XmlMultiRelationshipMappingForXml.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlMultiRelationshipMappingForXml_OrderByForXml(), this.getXmlOrderBy(), null, "orderByForXml", null, 0, 1, XmlMultiRelationshipMappingForXml.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMultiRelationshipMappingForXml_MapKeyForXml(), this.getXmlMapKey(), null, "mapKeyForXml", null, 0, 1, XmlMultiRelationshipMappingForXml.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(xmlMultiRelationshipMappingEClass, XmlMultiRelationshipMapping.class, "XmlMultiRelationshipMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlOneToManyEClass, XmlOneToMany.class, "XmlOneToMany", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -8777,7 +8667,6 @@ public class OrmPackage extends EPackageImpl
 		initEClass(xmlGeneratorEClass, XmlGenerator.class, "XmlGenerator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlSequenceGeneratorEClass, XmlSequenceGenerator.class, "XmlSequenceGenerator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlTableGeneratorEClass, XmlTableGenerator.class, "XmlTableGenerator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEClass(xmlOrderByEClass, XmlOrderBy.class, "XmlOrderBy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(abstractXmlQueryEClass, AbstractXmlQuery.class, "AbstractXmlQuery", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlNamedQueryEClass, XmlNamedQuery.class, "XmlNamedQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(xmlNamedNativeQueryEClass, XmlNamedNativeQuery.class, "XmlNamedNativeQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -9386,14 +9275,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__JOIN_TABLE_FOR_XML = eINSTANCE.getXmlMultiRelationshipMappingForXml_JoinTableForXml();
-
-		/**
-		 * The meta object literal for the '<em><b>Order By For Xml</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MULTI_RELATIONSHIP_MAPPING_FOR_XML__ORDER_BY_FOR_XML = eINSTANCE.getXmlMultiRelationshipMappingForXml_OrderByForXml();
 
 		/**
 		 * The meta object literal for the '<em><b>Map Key For Xml</b></em>' containment reference feature.
@@ -10018,16 +9899,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_TABLE_GENERATOR = eINSTANCE.getXmlTableGenerator();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlOrderBy <em>Xml Order By</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.content.orm.XmlOrderBy
-		 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlOrderBy()
-		 * @generated
-		 */
-		public static final EClass XML_ORDER_BY = eINSTANCE.getXmlOrderBy();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.orm.AbstractXmlQuery <em>Abstract Xml Query</em>}' class.

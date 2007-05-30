@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.Signature;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.ITypeMapping;
@@ -29,12 +30,13 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType;
+import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
 import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
-import org.eclipse.jpt.core.internal.mappings.IOrderBy;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -72,7 +74,25 @@ public abstract class JavaMultiRelationshipMapping
 	 */
 	protected String mappedBy = MAPPED_BY_EDEFAULT;
 
-	private final AnnotationElementAdapter<String> mappedByAdapter;
+	/**
+	 * The default value of the '{@link #getOrderBy() <em>Order By</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOrderBy()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ORDER_BY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getOrderBy() <em>Order By</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOrderBy()
+	 * @generated
+	 * @ordered
+	 */
+	protected String orderBy = ORDER_BY_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getFetch() <em>Fetch</em>}' attribute.
@@ -105,16 +125,6 @@ public abstract class JavaMultiRelationshipMapping
 	protected IJoinTable joinTable;
 
 	/**
-	 * The cached value of the '{@link #getOrderBy() <em>Order By</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOrderBy()
-	 * @generated
-	 * @ordered
-	 */
-	protected IOrderBy orderBy;
-
-	/**
 	 * The default value of the '{@link #getMapKey() <em>Map Key</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -134,6 +144,22 @@ public abstract class JavaMultiRelationshipMapping
 	 */
 	protected String mapKey = MAP_KEY_EDEFAULT;
 
+	private final AnnotationElementAdapter<String> mappedByAdapter;
+
+	/*
+	 * The @OrderBy annotation is a bit wack:
+	 *     - no annotation at all means "no ordering"
+	 *     - an annotation with no 'value' means "order by ascending primary key"
+	 *     - an annotation with a 'value' means "order by the settings in the 'value' string"
+	 */
+	private final AnnotationAdapter orderByAnnotationAdapter;
+
+	private final AnnotationElementAdapter<String> orderByValueAdapter;
+
+	public static final DeclarationAnnotationAdapter ORDER_BY_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ORDER_BY);
+
+	private static final DeclarationAnnotationElementAdapter<String> ORDER_BY_VALUE_ADAPTER = buildOrderByValueAdapter();
+
 	private final AnnotationAdapter mapKeyAnnotationAdapter;
 
 	private final AnnotationElementAdapter<String> mapKeyNameAdapter;
@@ -149,18 +175,51 @@ public abstract class JavaMultiRelationshipMapping
 	protected JavaMultiRelationshipMapping(Attribute attribute) {
 		super(attribute);
 		this.mappedByAdapter = this.buildAnnotationElementAdapter(this.mappedByAdapter());
+		this.orderByAnnotationAdapter = new MemberAnnotationAdapter(attribute, ORDER_BY_ADAPTER);
+		this.orderByValueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, ORDER_BY_VALUE_ADAPTER);
 		this.mapKeyAnnotationAdapter = new MemberAnnotationAdapter(attribute, MAP_KEY_ADAPTER);
 		this.mapKeyNameAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, MAP_KEY_NAME_ADAPTER);
 		this.joinTable = JpaJavaMappingsFactory.eINSTANCE.createJavaJoinTable(buildOwner(), attribute);
 		((InternalEObject) this.joinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE, null, null);
-		this.orderBy = JpaJavaMappingsFactory.eINSTANCE.createJavaOrderBy(attribute);
-		((InternalEObject) this.orderBy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY, null, null);
 	}
+
+	/**
+	 * return the Java adapter's 'mappedBy' element adapter config
+	 */
+	protected abstract DeclarationAnnotationElementAdapter<String> mappedByAdapter();
 
 	@Override
 	protected void notifyChanged(Notification notification) {
 		super.notifyChanged(notification);
+		switch (notification.getFeatureID(INonOwningMapping.class)) {
+			case JpaCoreMappingsPackage.INON_OWNING_MAPPING__MAPPED_BY :
+				this.mappedByAdapter.setValue((String) notification.getNewValue());
+				break;
+			default :
+				break;
+		}
 		switch (notification.getFeatureID(IMultiRelationshipMapping.class)) {
+			case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY :
+				String orderBy = (String) notification.getNewValue();
+				if (orderBy == null) {
+					this.orderByAnnotationAdapter.removeAnnotation();
+				}
+				else if ("".equals(orderBy)) {
+					Annotation orderByAnnotation = this.orderByAnnotationAdapter.getAnnotation();
+					if (orderByAnnotation != null) {
+						// if the value is already "", then leave it alone (short circuit java change cycle)
+						if (!"".equals(orderByValueAdapter.getValue())) {
+							this.orderByValueAdapter.setValue(null);
+						}
+					}
+					else {
+						this.orderByAnnotationAdapter.newMarkerAnnotation();
+					}
+				}
+				else {
+					this.orderByValueAdapter.setValue(orderBy);
+				}
+				break;
 			case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY :
 				String mk = (String) notification.getNewValue();
 				if (mk == null) {
@@ -172,13 +231,6 @@ public abstract class JavaMultiRelationshipMapping
 				break;
 			case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__FETCH :
 				this.getFetchAdapter().setValue(((DefaultLazyFetchType) notification.getNewValue()).convertToJavaAnnotationValue());
-				break;
-			default :
-				break;
-		}
-		switch (notification.getFeatureID(INonOwningMapping.class)) {
-			case JpaCoreMappingsPackage.INON_OWNING_MAPPING__MAPPED_BY :
-				this.mappedByAdapter.setValue((String) notification.getNewValue());
 				break;
 			default :
 				break;
@@ -196,11 +248,6 @@ public abstract class JavaMultiRelationshipMapping
 			}
 		};
 	}
-
-	/**
-	 * return the Java adapter's 'mappedBy' element adapter config
-	 */
-	protected abstract DeclarationAnnotationElementAdapter<String> mappedByAdapter();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -243,6 +290,89 @@ public abstract class JavaMultiRelationshipMapping
 		mappedBy = newMappedBy;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY, oldMappedBy, mappedBy));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Order By</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Order By</em>' attribute.
+	 * @see #setOrderBy(String)
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIMultiRelationshipMapping_OrderBy()
+	 * @model unique="false" ordered="false"
+	 * @generated
+	 */
+	public String getOrderBy() {
+		return orderBy;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaMultiRelationshipMapping#getOrderBy <em>Order By</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Order By</em>' attribute.
+	 * @see #getOrderBy()
+	 * @generated
+	 */
+	public void setOrderBy(String newOrderBy) {
+		String oldOrderBy = orderBy;
+		orderBy = newOrderBy;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY, oldOrderBy, orderBy));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false" required="true" ordered="false"
+	 * @generated NOT
+	 */
+	public boolean isNoOrdering() {
+		return getOrderBy() == null;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated NOT
+	 */
+	public void setNoOrdering() {
+		setOrderBy(null);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false" required="true" ordered="false"
+	 * @generated NOT
+	 */
+	public boolean isOrderByPk() {
+		return "".equals(getOrderBy());
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated NOT
+	 */
+	public void setOrderByPk() {
+		setOrderBy("");
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false" required="true" ordered="false"
+	 * @generated NOT
+	 */
+	public boolean isCustomOrdering() {
+		return ! StringTools.stringIsEmpty(getOrderBy());
 	}
 
 	public ITextRange mappedByTextRange() {
@@ -325,41 +455,6 @@ public abstract class JavaMultiRelationshipMapping
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Order By</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Order By</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Order By</em>' containment reference.
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIMultiRelationshipMapping_OrderBy()
-	 * @model containment="true" required="true" changeable="false"
-	 * @generated
-	 */
-	public IOrderBy getOrderBy() {
-		return orderBy;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetOrderBy(IOrderBy newOrderBy, NotificationChain msgs) {
-		IOrderBy oldOrderBy = orderBy;
-		orderBy = newOrderBy;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY, oldOrderBy, newOrderBy);
-			if (msgs == null)
-				msgs = notification;
-			else
-				msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
 	 * Returns the value of the '<em><b>Map Key</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -402,8 +497,6 @@ public abstract class JavaMultiRelationshipMapping
 		switch (featureID) {
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE :
 				return basicSetJoinTable(null, msgs);
-			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY :
-				return basicSetOrderBy(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -418,12 +511,12 @@ public abstract class JavaMultiRelationshipMapping
 		switch (featureID) {
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY :
 				return getMappedBy();
+			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY :
+				return getOrderBy();
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__FETCH :
 				return getFetch();
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE :
 				return getJoinTable();
-			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY :
-				return getOrderBy();
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY :
 				return getMapKey();
 		}
@@ -440,6 +533,9 @@ public abstract class JavaMultiRelationshipMapping
 		switch (featureID) {
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY :
 				setMappedBy((String) newValue);
+				return;
+			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY :
+				setOrderBy((String) newValue);
 				return;
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__FETCH :
 				setFetch((DefaultLazyFetchType) newValue);
@@ -462,6 +558,9 @@ public abstract class JavaMultiRelationshipMapping
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY :
 				setMappedBy(MAPPED_BY_EDEFAULT);
 				return;
+			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY :
+				setOrderBy(ORDER_BY_EDEFAULT);
+				return;
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__FETCH :
 				setFetch(FETCH_EDEFAULT);
 				return;
@@ -482,12 +581,12 @@ public abstract class JavaMultiRelationshipMapping
 		switch (featureID) {
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY :
 				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
+			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY :
+				return ORDER_BY_EDEFAULT == null ? orderBy != null : !ORDER_BY_EDEFAULT.equals(orderBy);
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__FETCH :
 				return fetch != FETCH_EDEFAULT;
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE :
 				return joinTable != null;
-			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY :
-				return orderBy != null;
 			case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY :
 				return MAP_KEY_EDEFAULT == null ? mapKey != null : !MAP_KEY_EDEFAULT.equals(mapKey);
 		}
@@ -511,12 +610,12 @@ public abstract class JavaMultiRelationshipMapping
 		}
 		if (baseClass == IMultiRelationshipMapping.class) {
 			switch (derivedFeatureID) {
+				case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY :
+					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 				case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__FETCH :
 					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__FETCH;
 				case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE :
 					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
-				case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY :
-					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 				case JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY :
 					return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 				default :
@@ -543,12 +642,12 @@ public abstract class JavaMultiRelationshipMapping
 		}
 		if (baseClass == IMultiRelationshipMapping.class) {
 			switch (baseFeatureID) {
+				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY :
+					return JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__FETCH :
 					return JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__FETCH;
 				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__JOIN_TABLE :
 					return JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
-				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY :
-					return JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 				case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY :
 					return JpaJavaMappingsPackage.JAVA_MULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 				default :
@@ -570,6 +669,8 @@ public abstract class JavaMultiRelationshipMapping
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (mappedBy: ");
 		result.append(mappedBy);
+		result.append(", orderBy: ");
+		result.append(orderBy);
 		result.append(", fetch: ");
 		result.append(fetch);
 		result.append(", mapKey: ");
@@ -578,13 +679,51 @@ public abstract class JavaMultiRelationshipMapping
 		return result.toString();
 	}
 
+	public void refreshDefaults(DefaultsContext defaultsContext) {
+		super.refreshDefaults(defaultsContext);
+		// TODO
+		//		if (isOrderByPk()) {
+		//			refreshDefaultOrderBy(defaultsContext);
+		//		}
+	}
+
+	//primary key ordering when just the @OrderBy annotation is present
+	protected void refreshDefaultOrderBy(DefaultsContext defaultsContext) {
+		IEntity targetEntity = getResolvedTargetEntity();
+		if (targetEntity != null) {
+			setOrderBy(targetEntity.primaryKeyAttributeName() + " ASC");
+		}
+	}
+
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		setMappedBy(this.mappedByAdapter.getValue(astRoot));
-		this.getJavaOrderBy().updateFromJava(astRoot);
+		updateOrderByFromJava(astRoot);
 		this.getJavaJoinTable().updateFromJava(astRoot);
 		updateMapKeyFromJava(astRoot);
+	}
+
+	private void updateOrderByFromJava(CompilationUnit astRoot) {
+		String orderBy = this.orderByValueAdapter.getValue(astRoot);
+		if (orderBy == null) {
+			if (orderByAnnotation(astRoot) == null) {
+				this.setNoOrdering();
+			}
+			else {
+				this.setOrderByPk();
+			}
+		}
+		else if ("".equals(orderBy)) {
+			this.setOrderByPk();
+		}
+		else {
+			this.setOrderBy(orderBy);
+		}
+	}
+
+	private Annotation orderByAnnotation(CompilationUnit astRoot) {
+		return this.orderByAnnotationAdapter.getAnnotation(astRoot);
 	}
 
 	private void updateMapKeyFromJava(CompilationUnit astRoot) {
@@ -593,10 +732,6 @@ public abstract class JavaMultiRelationshipMapping
 
 	private JavaJoinTable getJavaJoinTable() {
 		return (JavaJoinTable) this.joinTable;
-	}
-
-	private JavaOrderBy getJavaOrderBy() {
-		return (JavaOrderBy) this.orderBy;
 	}
 
 	@Override
@@ -666,6 +801,10 @@ public abstract class JavaMultiRelationshipMapping
 	}
 
 	// ********** static methods **********
+	private static DeclarationAnnotationElementAdapter<String> buildOrderByValueAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(ORDER_BY_ADAPTER, JPA.ORDER_BY__VALUE, false);
+	}
+
 	private static DeclarationAnnotationElementAdapter<String> buildMapKeyNameAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(MAP_KEY_ADAPTER, JPA.MAP_KEY__NAME, false);
 	}

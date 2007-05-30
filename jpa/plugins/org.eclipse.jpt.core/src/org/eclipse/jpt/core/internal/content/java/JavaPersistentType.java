@@ -52,7 +52,6 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaMultiRelationship
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOne;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaOrderBy;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaTableGenerator;
@@ -230,10 +229,10 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		adapters.add(JavaBasic.LOB_ADAPTER);
 		adapters.add(JavaManyToMany.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaManyToOne.DECLARATION_ANNOTATION_ADAPTER);
+		adapters.add(JavaMultiRelationshipMapping.ORDER_BY_ADAPTER);
 		adapters.add(JavaMultiRelationshipMapping.MAP_KEY_ADAPTER);
 		adapters.add(JavaOneToMany.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaOneToOne.DECLARATION_ANNOTATION_ADAPTER);
-		adapters.add(JavaOrderBy.DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaPrimaryKeyJoinColumn.MULTIPLE_DECLARATION_ANNOTATION_ADAPTER);
 		adapters.add(JavaPrimaryKeyJoinColumn.SINGLE_DECLARATION_ANNOTATION_ADAPTER); // PrimaryKeyJoinColumns
 		adapters.add(JavaSequenceGenerator.DECLARATION_ANNOTATION_ADAPTER);

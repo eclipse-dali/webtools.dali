@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -77,7 +76,6 @@ public class XmlEmbedded extends XmlAttributeMapping implements IEmbedded
 		super();
 	}
 
-	
 	@Override
 	protected void addInsignificantFeatureIdsTo(Set<Integer> insignificantFeatureIds) {
 		super.addInsignificantFeatureIdsTo(insignificantFeatureIds);

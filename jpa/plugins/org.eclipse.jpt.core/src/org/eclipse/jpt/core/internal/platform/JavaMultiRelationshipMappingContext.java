@@ -36,7 +36,6 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 	public void refreshDefaultsInternal(DefaultsContext defaultsContext) {
 		super.refreshDefaultsInternal(defaultsContext);
 		this.joinTableContext.refreshDefaults(defaultsContext);
-		getMapping().getOrderBy().refreshDefaults(defaultsContext);
 	}
 	
 	@Override

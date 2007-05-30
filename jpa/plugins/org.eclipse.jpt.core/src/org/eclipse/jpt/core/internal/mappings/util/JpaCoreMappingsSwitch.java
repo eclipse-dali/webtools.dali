@@ -44,7 +44,6 @@ import org.eclipse.jpt.core.internal.mappings.INamedQuery;
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.mappings.IOneToMany;
 import org.eclipse.jpt.core.internal.mappings.IOneToOne;
-import org.eclipse.jpt.core.internal.mappings.IOrderBy;
 import org.eclipse.jpt.core.internal.mappings.IOverride;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IQuery;
@@ -624,17 +623,6 @@ public class JpaCoreMappingsSwitch<T>
 					result = caseIJpaSourceObject(iGeneratedValue);
 				if (result == null)
 					result = caseIJpaEObject(iGeneratedValue);
-				if (result == null)
-					result = defaultCase(theEObject);
-				return result;
-			}
-			case JpaCoreMappingsPackage.IORDER_BY : {
-				IOrderBy iOrderBy = (IOrderBy) theEObject;
-				T result = caseIOrderBy(iOrderBy);
-				if (result == null)
-					result = caseIJpaSourceObject(iOrderBy);
-				if (result == null)
-					result = caseIJpaEObject(iOrderBy);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -1240,21 +1228,6 @@ public class JpaCoreMappingsSwitch<T>
 	 * @generated
 	 */
 	public T caseIGeneratedValue(IGeneratedValue object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IOrder By</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IOrder By</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIOrderBy(IOrderBy object) {
 		return null;
 	}
 

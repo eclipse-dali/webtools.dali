@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>IJoin Column</b></em>'.

@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm.resource;
 
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -17,12 +16,9 @@ public abstract class MultiRelationshipTranslator extends RelationshipTranslator
 {
 	private JoinTableTranslator tableTranslator;
 	
-	//private OrderByRefTranslator orderByTranslator;
-
 	public MultiRelationshipTranslator(String domNameAndPath) {
 		super(domNameAndPath);
 		this.tableTranslator = createTableTranslator();
-		//this.orderByTranslator = createOrderByTranslator();
 	}
 	
 	protected Translator createFetchTypeTranslator() {
@@ -38,17 +34,8 @@ public abstract class MultiRelationshipTranslator extends RelationshipTranslator
 		return this.tableTranslator;
 	}
 
-//	protected OrderByRefTranslator getOrderByTranslator() {
-//		return this.orderByTranslator;
-//	}
-//	
-//	protected OrderByRefTranslator createOrderByTranslator() {
-//		this.orderByTranslator = new OrderByRefTranslator();
-//		return this.orderByTranslator;
-//	}
-
-	protected Translator createOrderByTranslator() {
-		return new Translator(ORDER_BY , (EStructuralFeature) null);
+	protected OrderByTranslator createOrderByTranslator() {
+		return new OrderByTranslator();
 	}
 	
 	protected Translator createMapKeyTranslator() {
@@ -57,6 +44,5 @@ public abstract class MultiRelationshipTranslator extends RelationshipTranslator
 	
 	protected void setMapping(IMultiRelationshipMapping multiRelationshipMapping) {
 		this.getJoinTableTranslator().setMapping(multiRelationshipMapping);
-		//this.getOrderByTranslator().setMapping(mapping);
 	}
 }

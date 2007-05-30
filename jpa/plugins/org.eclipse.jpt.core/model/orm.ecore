@@ -126,8 +126,6 @@
       interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="joinTableForXml" eType="#//XmlJoinTable"
         volatile="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="orderByForXml" eType="#//XmlOrderBy"
-        volatile="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapKeyForXml" eType="#//XmlMapKey"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
@@ -264,7 +262,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlGenerator" abstract="true" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IGenerator"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlSequenceGenerator" eSuperTypes="#//XmlGenerator core.ecore#//mappings/ISequenceGenerator"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTableGenerator" eSuperTypes="#//XmlGenerator core.ecore#//mappings/ITableGenerator"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOrderBy" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IOrderBy"/>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlQuery" abstract="true" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IQuery"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedQuery" eSuperTypes="#//AbstractXmlQuery core.ecore#//mappings/INamedQuery"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlNamedNativeQuery" eSuperTypes="#//AbstractXmlQuery core.ecore#//mappings/INamedNativeQuery"/>

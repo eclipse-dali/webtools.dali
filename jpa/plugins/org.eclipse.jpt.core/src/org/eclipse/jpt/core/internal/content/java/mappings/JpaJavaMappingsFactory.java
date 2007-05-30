@@ -138,8 +138,6 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 				return createJavaTableGenerator();
 			case JpaJavaMappingsPackage.JAVA_SEQUENCE_GENERATOR :
 				return createJavaSequenceGenerator();
-			case JpaJavaMappingsPackage.JAVA_ORDER_BY :
-				return createJavaOrderBy();
 			case JpaJavaMappingsPackage.JAVA_NAMED_QUERY :
 				return createJavaNamedQuery();
 			case JpaJavaMappingsPackage.JAVA_NAMED_NATIVE_QUERY :
@@ -373,10 +371,6 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 		throw new UnsupportedOperationException("Use createJavaSequenceGenerator(Member) instead");
 	}
 
-	public JavaOrderBy createJavaOrderBy() {
-		throw new UnsupportedOperationException("Use createJavaOrderBy(Member) instead");
-	}
-
 	public JavaNamedQuery createJavaNamedQuery() {
 		throw new UnsupportedOperationException("Use createJavaNamedQuery(Member, IndexedDeclarationAnnotationAdapter) instead");
 	}
@@ -420,11 +414,6 @@ public class JpaJavaMappingsFactory extends EFactoryImpl
 	public JavaQueryHint createJavaQueryHint(Member member, IndexedDeclarationAnnotationAdapter idaa) {
 		JavaQueryHint javaQueryHint = new JavaQueryHint(member, idaa);
 		return javaQueryHint;
-	}
-
-	public JavaOrderBy createJavaOrderBy(Member member) {
-		JavaOrderBy javaOrderBy = new JavaOrderBy(member);
-		return javaOrderBy;
 	}
 
 	public JavaSequenceGenerator createJavaSequenceGenerator(Member member) {

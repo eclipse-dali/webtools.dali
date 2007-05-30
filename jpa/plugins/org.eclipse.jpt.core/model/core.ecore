@@ -304,11 +304,19 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="IMultiRelationshipMapping" abstract="true"
         interface="true" eSuperTypes="#//mappings/INonOwningMapping">
+      <eOperations name="isNoOrdering" ordered="false" unique="false" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eOperations name="setNoOrdering" ordered="false" unique="false"/>
+      <eOperations name="isOrderByPk" ordered="false" unique="false" lowerBound="1"
+          eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+      <eOperations name="setOrderByPk" ordered="false" unique="false"/>
+      <eOperations name="isCustomOrdering" ordered="false" unique="false" lowerBound="1"
+          eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="orderBy" ordered="false"
+          unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="fetch" eType="#//mappings/DefaultLazyFetchType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="joinTable" lowerBound="1"
           eType="#//mappings/IJoinTable" changeable="false" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="orderBy" lowerBound="1"
-          eType="#//mappings/IOrderBy" changeable="false" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapKey" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="IOneToMany" abstract="true" interface="true"
@@ -530,16 +538,6 @@
       <eLiterals name="Default" literal="Default (Ordinal)"/>
       <eLiterals name="ORDINAL" value="1" literal="Ordinal"/>
       <eLiterals name="STRING" value="2" literal="String"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="IOrderBy" abstract="true" interface="true"
-        eSuperTypes="#//IJpaSourceObject">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//mappings/OrderingType"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EEnum" name="OrderingType">
-      <eLiterals name="NONE" literal="None"/>
-      <eLiterals name="PRIMARY_KEY" value="1" literal="Primary Key"/>
-      <eLiterals name="CUSTOM" value="2" literal="Custom"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="IQuery" abstract="true" interface="true"
         eSuperTypes="#//IJpaSourceObject">

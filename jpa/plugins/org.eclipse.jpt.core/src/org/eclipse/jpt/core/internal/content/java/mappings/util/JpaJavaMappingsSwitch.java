@@ -50,7 +50,6 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullAttributeMapp
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOne;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaOrderBy;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOverride;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaQueryHint;
@@ -93,7 +92,6 @@ import org.eclipse.jpt.core.internal.mappings.INamedQuery;
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.mappings.IOneToMany;
 import org.eclipse.jpt.core.internal.mappings.IOneToOne;
-import org.eclipse.jpt.core.internal.mappings.IOrderBy;
 import org.eclipse.jpt.core.internal.mappings.IOverride;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IQuery;
@@ -1031,23 +1029,6 @@ public class JpaJavaMappingsSwitch<T>
 					result = defaultCase(theEObject);
 				return result;
 			}
-			case JpaJavaMappingsPackage.JAVA_ORDER_BY : {
-				JavaOrderBy javaOrderBy = (JavaOrderBy) theEObject;
-				T result = caseJavaOrderBy(javaOrderBy);
-				if (result == null)
-					result = caseJavaEObject(javaOrderBy);
-				if (result == null)
-					result = caseIOrderBy(javaOrderBy);
-				if (result == null)
-					result = caseJpaEObject(javaOrderBy);
-				if (result == null)
-					result = caseIJpaSourceObject(javaOrderBy);
-				if (result == null)
-					result = caseIJpaEObject(javaOrderBy);
-				if (result == null)
-					result = defaultCase(theEObject);
-				return result;
-			}
 			case JpaJavaMappingsPackage.JAVA_ABSTRACT_QUERY : {
 				JavaAbstractQuery javaAbstractQuery = (JavaAbstractQuery) theEObject;
 				T result = caseJavaAbstractQuery(javaAbstractQuery);
@@ -1655,21 +1636,6 @@ public class JpaJavaMappingsSwitch<T>
 	 * @generated
 	 */
 	public T caseJavaSequenceGenerator(JavaSequenceGenerator object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Order By</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Order By</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseJavaOrderBy(JavaOrderBy object) {
 		return null;
 	}
 
@@ -2390,21 +2356,6 @@ public class JpaJavaMappingsSwitch<T>
 	 * @generated
 	 */
 	public T caseISequenceGenerator(ISequenceGenerator object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IOrder By</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IOrder By</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIOrderBy(IOrderBy object) {
 		return null;
 	}
 

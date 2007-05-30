@@ -19,9 +19,9 @@ import java.util.Iterator;
  * <p>
  * The following features are supported:
  * <ul>
+ *   <li>{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getOrderBy <em>Order By</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getFetch <em>Fetch</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getJoinTable <em>Join Table</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getOrderBy <em>Order By</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getMapKey <em>Map Key</em>}</li>
  * </ul>
  * </p>
@@ -32,6 +32,32 @@ import java.util.Iterator;
  */
 public interface IMultiRelationshipMapping extends INonOwningMapping
 {
+	/**
+	 * Returns the value of the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Order By</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Order By</em>' attribute.
+	 * @see #setOrderBy(String)
+	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIMultiRelationshipMapping_OrderBy()
+	 * @model unique="false" ordered="false"
+	 * @generated
+	 */
+	String getOrderBy();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping#getOrderBy <em>Order By</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Order By</em>' attribute.
+	 * @see #getOrderBy()
+	 * @generated
+	 */
+	void setOrderBy(String value);
+
 	/**
 	 * Returns the value of the '<em><b>Fetch</b></em>' attribute.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType}.
@@ -84,21 +110,6 @@ public interface IMultiRelationshipMapping extends INonOwningMapping
 	boolean isJoinTableSpecified();
 
 	/**
-	 * Returns the value of the '<em><b>Order By</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Order By</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Order By</em>' containment reference.
-	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIMultiRelationshipMapping_OrderBy()
-	 * @model containment="true" required="true" changeable="false"
-	 * @generated
-	 */
-	IOrderBy getOrderBy();
-
-	/**
 	 * Returns the value of the '<em><b>Map Key</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -123,6 +134,46 @@ public interface IMultiRelationshipMapping extends INonOwningMapping
 	 * @generated
 	 */
 	void setMapKey(String value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false" required="true" ordered="false"
+	 * @generated
+	 */
+	boolean isNoOrdering();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void setNoOrdering();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false" required="true" ordered="false"
+	 * @generated
+	 */
+	boolean isOrderByPk();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void setOrderByPk();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false" required="true" ordered="false"
+	 * @generated
+	 */
+	boolean isCustomOrdering();
 
 	Iterator<String> candidateMapKeyNames();
 }

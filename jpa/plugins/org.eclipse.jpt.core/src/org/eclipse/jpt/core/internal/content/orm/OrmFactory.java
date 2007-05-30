@@ -142,8 +142,6 @@ public class OrmFactory extends EFactoryImpl
 				return createXmlSequenceGenerator();
 			case OrmPackage.XML_TABLE_GENERATOR :
 				return createXmlTableGenerator();
-			case OrmPackage.XML_ORDER_BY :
-				return createXmlOrderBy();
 			case OrmPackage.XML_NAMED_QUERY :
 				return createXmlNamedQuery();
 			case OrmPackage.XML_NAMED_NATIVE_QUERY :
@@ -586,16 +584,6 @@ public class OrmFactory extends EFactoryImpl
 	public XmlTableGenerator createXmlTableGenerator() {
 		XmlTableGenerator xmlTableGenerator = new XmlTableGenerator();
 		return xmlTableGenerator;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlOrderBy createXmlOrderBy() {
-		XmlOrderBy xmlOrderBy = new XmlOrderBy();
-		return xmlOrderBy;
 	}
 
 	/**

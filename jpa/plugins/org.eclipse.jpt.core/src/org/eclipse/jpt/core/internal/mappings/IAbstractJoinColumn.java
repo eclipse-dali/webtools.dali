@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: IAbstractJoinColumn.java,v 1.8 2007/05/23 18:40:10 kmoore Exp $
+ * $Id: IAbstractJoinColumn.java,v 1.9 2007/05/30 20:39:02 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.mappings;
 
@@ -117,11 +117,10 @@ public interface IAbstractJoinColumn extends INamedColumn
 		 * Return the wrapper for the datasource table for the referenced column
 		 */
 		Table dbReferencedColumnTable();
-		
+
 		/**
 		 * return the list of join columns containing the join column
 		 */
 		List<? extends IAbstractJoinColumn> joinColumns();
-
 	}
 }
