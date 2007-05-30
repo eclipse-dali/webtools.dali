@@ -6,8 +6,7 @@ Bundle-SymbolicName: org.eclipse.jpt.gen
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Localization: plugin
-Eclipse-LazyStart: true
-Export-Package: org.eclipse.jpt.gen.internal
+Export-Package: org.eclipse.jpt.gen.internal;x-internal:=true
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.core,
  org.eclipse.jpt.core,

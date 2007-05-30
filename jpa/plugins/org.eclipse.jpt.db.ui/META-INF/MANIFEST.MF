@@ -6,8 +6,7 @@ Bundle-SymbolicName: org.eclipse.jpt.db.ui
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Localization: plugin
-Eclipse-LazyStart: true
-Export-Package: org.eclipse.jpt.db.ui.internal
+Export-Package: org.eclipse.jpt.db.ui.internal;x-internal:=true
 Require-Bundle: org.eclipse.ui,
  org.eclipse.jpt.db,
  org.eclipse.datatools.connectivity.ui,
