@@ -50,19 +50,19 @@ public abstract class AbstractColumnTranslator extends Translator
 	}
 	
 	protected Translator createUniqueTranslator() {
-		return new Translator(COLUMN__UNIQUE, JPA_CORE_XML_PKG.getAbstractXmlColumn_UniqueForXml(), DOM_ATTRIBUTE);
+		return new BooleanEnumeratorTranslator(COLUMN__UNIQUE, JPA_CORE_XML_PKG.getAbstractXmlColumn_UniqueForXml(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createNullableTranslator() {
-		return new Translator(COLUMN__NULLABLE, JPA_CORE_XML_PKG.getAbstractXmlColumn_NullableForXml(), DOM_ATTRIBUTE);
+		return new BooleanEnumeratorTranslator(COLUMN__NULLABLE, JPA_CORE_XML_PKG.getAbstractXmlColumn_NullableForXml(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createInsertableTranslator() {
-		return new Translator(COLUMN__INSERTABLE, JPA_CORE_XML_PKG.getAbstractXmlColumn_InsertableForXml(), DOM_ATTRIBUTE);
+		return new BooleanEnumeratorTranslator(COLUMN__INSERTABLE, JPA_CORE_XML_PKG.getAbstractXmlColumn_InsertableForXml(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createUpdatableTranslator() {
-		return new Translator(COLUMN__UPDATABLE, JPA_CORE_XML_PKG.getAbstractXmlColumn_UpdatableForXml(), DOM_ATTRIBUTE);
+		return new BooleanEnumeratorTranslator(COLUMN__UPDATABLE, JPA_CORE_XML_PKG.getAbstractXmlColumn_UpdatableForXml(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createColumnDefinitionTranslator() {
