@@ -10,6 +10,10 @@ package org.eclipse.jpt.core.internal.content.orm.resource;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
+import org.eclipse.jpt.core.internal.mappings.IBasic;
+import org.eclipse.jpt.core.internal.mappings.IEmbedded;
+import org.eclipse.jpt.core.internal.mappings.IId;
+import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class AttributeMappingsTranslator extends MultiObjectDependencyTranslator
@@ -24,6 +28,7 @@ public class AttributeMappingsTranslator extends MultiObjectDependencyTranslator
 		super(ATTRIBUTES_PATH, JPA_CORE_XML_PKG.getXmlPersistentType_SpecifiedAttributeMappings(), JPA_CORE_XML_PKG.getXmlTypeMapping_PersistentType());
 	}
 	
+	//TODO we're not putting the translator in the translator map in this situation
 	public Translator getDelegateFor(EObject o) {
 		Translator translator = super.getDelegateFor(o);
 		if (translator != null) {
@@ -31,37 +36,43 @@ public class AttributeMappingsTranslator extends MultiObjectDependencyTranslator
 		}
 		switch (o.eClass().getClassifierID()) {
 			case OrmPackage.XML_ID :
-				return new IdTranslator();
-		
+				translator = new IdTranslator();
+				((IdTranslator) translator).setId(((IId) o));
+				break;
 			case OrmPackage.XML_BASIC :
-				return new BasicTranslator();
-				
+				translator = new BasicTranslator();
+				((BasicTranslator) translator).setBasic(((IBasic) o));
+				break;		
 			case OrmPackage.XML_ONE_TO_MANY :
-				return new OneToManyTranslator();
-				
+				translator = new OneToManyTranslator();
+				((OneToManyTranslator) translator).setMapping((IMultiRelationshipMapping) o);
+				break;
 			case OrmPackage.XML_MANY_TO_MANY :
-				return new ManyToManyTranslator();
-				
+				translator = new ManyToManyTranslator();
+				((ManyToManyTranslator) translator).setMapping((IMultiRelationshipMapping) o);
+				break;
 			case OrmPackage.XML_MANY_TO_ONE :
-				return new ManyToOneTranslator();
-				
+				translator = new ManyToOneTranslator();
+				break;
 			case OrmPackage.XML_TRANSIENT :
-				return new TransientTranslator();
-				
+				translator = new TransientTranslator();
+				break;
 			case OrmPackage.XML_EMBEDDED :
-				return new EmbeddedTranslator();
-				
+				translator = new EmbeddedTranslator();
+				((EmbeddedTranslator) translator).setEmbedded((IEmbedded) o);
+				break;
 			case OrmPackage.XML_EMBEDDED_ID :
-				return new EmbeddedIdTranslator();
-				
+				translator = new EmbeddedIdTranslator();
+				break;
 			case OrmPackage.XML_ONE_TO_ONE :
-				return new OneToOneTranslator();
-				
+				translator = new OneToOneTranslator();
+				break;
 			case OrmPackage.XML_VERSION :
-				return new VersionTranslator();
+				translator = new VersionTranslator();
+				break;
 		}
 		
-		return null;
+		return translator;
 	}
 	
 

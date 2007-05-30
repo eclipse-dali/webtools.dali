@@ -9,6 +9,7 @@
 package org.eclipse.jpt.core.internal.content.orm.resource;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.internal.mappings.IBasic;
 import org.eclipse.jpt.core.internal.mappings.IId;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
@@ -30,10 +31,14 @@ public class IdTranslator extends AttributeMappingTranslator
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
 		IId xmlId = JPA_CORE_XML_FACTORY.createXmlId();
-		this.columnTranslator.setColumnMapping(xmlId);
+		this.setId(xmlId);
 		return xmlId;
 	}
 	
+	protected void setId(IId id) {
+		this.columnTranslator.setColumnMapping(id);		
+	}
+
 	@Override
 	protected Translator[] createChildren() {
 		return new Translator[] {

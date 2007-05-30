@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
+import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.wst.common.internal.emf.resource.MultiObjectTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -50,14 +51,21 @@ public class TypeMappingsTranslator extends MultiObjectTranslator
 		
 		switch (o.eClass().getClassifierID()) {
 			case OrmPackage.XML_ENTITY_INTERNAL :
-				return new EntityTranslator();
+				translator = new EntityTranslator();
+				((EntityTranslator) translator).setEntity((IEntity) o);
+				break;
 			case OrmPackage.XML_MAPPED_SUPERCLASS:
-				return new MappedSuperclassTranslator();	
+				translator = new MappedSuperclassTranslator();	
+				break;
 			case OrmPackage.XML_EMBEDDABLE:
-				return new EmbeddableTranslator();	
+				translator = new EmbeddableTranslator();
+				break;
+		}
+		if (translator != null) {
+			this.translatorMap.put(o, translator);
 		}
 		
-		return null;
+		return translator;
 	}
 	
 	@Override

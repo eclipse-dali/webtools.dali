@@ -9,6 +9,7 @@
 package org.eclipse.jpt.core.internal.content.orm.resource;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -52,5 +53,10 @@ public abstract class MultiRelationshipTranslator extends RelationshipTranslator
 	
 	protected Translator createMapKeyTranslator() {
 		return new MapKeyTranslator(MAP_KEY, JPA_CORE_XML_PKG.getXmlMultiRelationshipMappingForXml_MapKeyForXml());
+	}
+	
+	protected void setMapping(IMultiRelationshipMapping multiRelationshipMapping) {
+		this.getJoinTableTranslator().setMapping(multiRelationshipMapping);
+		//this.getOrderByTranslator().setMapping(mapping);
 	}
 }

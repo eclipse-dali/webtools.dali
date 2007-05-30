@@ -22,8 +22,7 @@ public class OneToManyTranslator extends MultiRelationshipTranslator
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
 		XmlOneToMany mapping = JPA_CORE_XML_FACTORY.createXmlOneToMany();
-		this.getJoinTableTranslator().setMapping(mapping);
-		//this.getOrderByTranslator().setMapping(mapping);
+		this.setMapping(mapping);
 		return mapping;
 	}
 	

@@ -42,11 +42,16 @@ public class EntityTranslator extends TypeMappingTranslator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		this.entity = JPA_CORE_XML_FACTORY.createXmlEntityInternal();
+		IEntity entity = JPA_CORE_XML_FACTORY.createXmlEntityInternal();
+		this.setEntity(entity);
+		return entity;
+	}
+	
+	protected void setEntity(IEntity entity) {
+		this.entity = entity;
 		this.tableTranslator.setEntity(this.entity);
 		this.secondaryTablesTranslator.setEntity(this.entity);
-		this.discriminatorColumnTranslator.setEntity(this.entity);
-		return this.entity;
+		this.discriminatorColumnTranslator.setEntity(this.entity);		
 	}
 	
 	@Override

@@ -33,8 +33,12 @@ public class BasicTranslator extends AttributeMappingTranslator
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
 		IBasic xmlBasic = JPA_CORE_XML_FACTORY.createXmlBasic();
-		this.columnTranslator.setColumnMapping(xmlBasic);
+		this.setBasic(xmlBasic);
 		return xmlBasic;
+	}
+	
+	protected void setBasic(IBasic basic) {
+		this.columnTranslator.setColumnMapping(basic);		
 	}
 	
 	@Override

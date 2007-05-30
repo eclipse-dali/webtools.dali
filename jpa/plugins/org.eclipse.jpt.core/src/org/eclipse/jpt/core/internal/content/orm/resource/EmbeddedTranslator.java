@@ -26,8 +26,13 @@ public class EmbeddedTranslator extends AttributeMappingTranslator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		this.embedded = JPA_CORE_XML_FACTORY.createXmlEmbedded();
-		return this.embedded;
+		IEmbedded embedded = JPA_CORE_XML_FACTORY.createXmlEmbedded();
+		this.setEmbedded(embedded);
+		return embedded;
+	}
+	
+	protected void setEmbedded(IEmbedded embedded) {
+		this.embedded = embedded;
 	}
 	
 	@Override
