@@ -19,9 +19,8 @@ import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.TextViewer;
-import org.eclipse.jpt.core.internal.mappings.IOrderBy;
+import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.jpt.core.internal.mappings.OrderingType;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -41,10 +40,10 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 /**
  *
  */
-public class OrderByComposite extends BaseJpaComposite  {
+public class OrderingComposite extends BaseJpaComposite  {
 
-	private IOrderBy orderBy;
-	private Adapter orderingListener;
+	private IMultiRelationshipMapping mapping;
+	private Adapter mappingListener;
 	
 	private Button noOrderingRadioButton;
 	private Button primaryKeyOrderingRadioButton;
@@ -52,16 +51,19 @@ public class OrderByComposite extends BaseJpaComposite  {
 	
 	private ITextViewer orderingTextViewer;
 	
+	// short circuit flag for user typing
+	private boolean updatingCustomOrderBy = false;
+	
 
-	public OrderByComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
+	public OrderingComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, commandStack, widgetFactory);
-		this.orderingListener = buildOrderingListener();
+		this.mappingListener = buildMappingListener();
 	}
 
-	private Adapter buildOrderingListener() {
+	private Adapter buildMappingListener() {
 		return new AdapterImpl() {
 			public void notifyChanged(Notification notification) {
-				orderByChanged(notification);
+				mappingChanged(notification);
 			}
 		};
 	}
@@ -126,7 +128,7 @@ public class OrderByComposite extends BaseJpaComposite  {
 				// ignore
 			}
 			public void widgetSelected(SelectionEvent e) {
-				OrderByComposite.this.noOrderingRadioButtonSelected(e);
+				OrderingComposite.this.noOrderingRadioButtonSelected(e);
 			}
 		});
 
@@ -138,11 +140,10 @@ public class OrderByComposite extends BaseJpaComposite  {
 			//ignore case where radio button is deselected
 			return;
 		}
-		if (this.orderBy.getType() == OrderingType.NONE) {
+		if (this.mapping.isNoOrdering()) {
 			return;
 		}
-		this.orderBy.setType(OrderingType.NONE);
-		this.orderBy.setValue(null);
+		this.mapping.setNoOrdering();
 	}
 	
 	private Button buildPrimaryKeyOrderingRadioButton(Composite parent) {
@@ -155,7 +156,7 @@ public class OrderByComposite extends BaseJpaComposite  {
 				// ignore
 			}
 			public void widgetSelected(SelectionEvent e) {
-				OrderByComposite.this.primaryKeyOrderingRadioButtonSelected(e);
+				OrderingComposite.this.primaryKeyOrderingRadioButtonSelected(e);
 			}
 		});
 		return button;
@@ -166,10 +167,10 @@ public class OrderByComposite extends BaseJpaComposite  {
 			//ignore case where radio button is deselected
 			return;
 		}
-		if (this.orderBy.getType() == OrderingType.PRIMARY_KEY) {
-			return;
+		if (! this.mapping.isOrderByPk()) {
+			this.mapping.setOrderByPk();
 		}
-		this.orderBy.setType(OrderingType.PRIMARY_KEY);
+		setTextViewerEnabled(false);
 	}
 
 	private Button buildCustomOrderingRadioButton(Composite parent) {
@@ -182,7 +183,7 @@ public class OrderByComposite extends BaseJpaComposite  {
 				// ignore
 			}
 			public void widgetSelected(SelectionEvent e) {
-				OrderByComposite.this.customOrderingRadioButtonSelected(e);
+				OrderingComposite.this.customOrderingRadioButtonSelected(e);
 			}
 		});
 
@@ -194,10 +195,7 @@ public class OrderByComposite extends BaseJpaComposite  {
 			//ignore case where radio button is deselected
 			return;
 		}
-		if (this.orderBy.getType() == OrderingType.CUSTOM) {
-			return;
-		}
-		this.orderBy.setType(OrderingType.CUSTOM);
+		setTextViewerEnabled(true);
 	}
 	
 	private ITextViewer buildOrderByTestViewer(Composite parent) {
@@ -216,15 +214,21 @@ public class OrderByComposite extends BaseJpaComposite  {
 			return;
 		}
 		String orderByValue = this.orderingTextViewer.getDocument().get();
-		if (orderByValue.equals(this.orderBy.getValue())) {
+		if (orderByValue.equals(this.mapping.getOrderBy())) {
 			return;
 		}
-		this.orderBy.setValue(orderByValue);
+		
+		this.updatingCustomOrderBy = true;
+		this.mapping.setOrderBy(orderByValue);
+	}
+	
+	private void setTextViewerEnabled(boolean enabled) {
+		this.orderingTextViewer.setEditable(enabled);
+		this.orderingTextViewer.getTextWidget().setEnabled(enabled);
 	}
 
-	private void orderByChanged(Notification notification) {
-		if (notification.getFeatureID(IOrderBy.class) == JpaCoreMappingsPackage.IORDER_BY__VALUE
-			|| notification.getFeatureID(IOrderBy.class) == JpaCoreMappingsPackage.IORDER_BY__TYPE) {
+	private void mappingChanged(Notification notification) {
+		if (notification.getFeatureID(IMultiRelationshipMapping.class) == JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY) {
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					populate();
@@ -235,8 +239,8 @@ public class OrderByComposite extends BaseJpaComposite  {
 
 	@Override
 	protected void doPopulate(EObject obj) {
-		this.orderBy = (IOrderBy) obj;
-		if (this.orderBy == null) {
+		this.mapping = (IMultiRelationshipMapping) obj;
+		if (this.mapping == null) {
 			return;
 		}
 		populateOrderingRadioButtons();		
@@ -249,52 +253,57 @@ public class OrderByComposite extends BaseJpaComposite  {
 
 	@Override
 	protected void engageListeners() {
-		if (this.orderBy != null) {
-			this.orderBy.eAdapters().add(this.orderingListener);
+		if (this.mapping != null) {
+			this.mapping.eAdapters().add(this.mappingListener);
 		}
 	}
 
 	@Override
 	protected void disengageListeners() {
-		if (this.orderBy != null) {
-			this.orderBy.eAdapters().remove(this.orderingListener);
+		if (this.mapping != null) {
+			this.mapping.eAdapters().remove(this.mappingListener);
 		}
 	}
 	
 	private void populateOrderingRadioButtons() {
-		if (this.orderBy.getType() == OrderingType.NONE) {
+		// short circuit if user is typing
+		if (updatingCustomOrderBy) {
+			updatingCustomOrderBy = false;
+			return;
+		}
+		
+		if (this.mapping.isNoOrdering()) {
 			this.primaryKeyOrderingRadioButton.setSelection(false);			
 			this.customOrderingRadioButton.setSelection(false);
 			this.noOrderingRadioButton.setSelection(true);
-			if (!"".equals(this.orderingTextViewer.getDocument().get())) {
+			if (! "".equals(this.orderingTextViewer.getDocument().get())) {
 				this.orderingTextViewer.getDocument().set("");
 			}
 		}
-		else if (this.orderBy.getType() == OrderingType.PRIMARY_KEY) {
+		else if (this.mapping.isOrderByPk()) {
 			this.customOrderingRadioButton.setSelection(false);
 			this.noOrderingRadioButton.setSelection(false);
 			this.primaryKeyOrderingRadioButton.setSelection(true);			
-			String value = this.orderBy.getValue();
-			if (value != null && !value.equals(this.orderingTextViewer.getDocument().get())) {
-				this.orderingTextViewer.getDocument().set(value);
-			}
-			else {
+//			String value = this.ordering.getValue();
+//			if (value != null && !value.equals(this.orderingTextViewer.getDocument().get())) {
+//				this.orderingTextViewer.getDocument().set(value);
+//			}
+//			else {
 				if (!"".equals(this.orderingTextViewer.getDocument().get())) {
 					this.orderingTextViewer.getDocument().set("");				
 				}
-			}
+//			}
 		}
-		else if (this.orderBy.getType() == OrderingType.CUSTOM) {
+		else if (this.mapping.isCustomOrdering()) {
 			this.noOrderingRadioButton.setSelection(false);
 			this.primaryKeyOrderingRadioButton.setSelection(false);			
 			this.customOrderingRadioButton.setSelection(true);
-			String value = this.orderBy.getValue();
+			String value = this.mapping.getOrderBy();
 			if (value != null && !value.equals(this.orderingTextViewer.getDocument().get())) {
 				this.orderingTextViewer.getDocument().set(value);
 			}
 		}
 		
-		this.orderingTextViewer.setEditable(this.orderBy.getType() == OrderingType.CUSTOM);
-		this.orderingTextViewer.getTextWidget().setEnabled(this.orderBy.getType() == OrderingType.CUSTOM);
+		setTextViewerEnabled(this.mapping.isCustomOrdering());
 	}
 }

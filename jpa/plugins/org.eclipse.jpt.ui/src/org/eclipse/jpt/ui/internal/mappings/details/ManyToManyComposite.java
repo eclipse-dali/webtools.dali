@@ -35,7 +35,7 @@ public class ManyToManyComposite extends BaseJpaComposite
 
 	private CascadeComposite cascadeComposite;
 
-	private OrderByComposite orderByComposite;
+	private OrderingComposite orderingComposite;
 
 	private JoinTableComposite joinTableComposite;
 	
@@ -107,12 +107,12 @@ public class ManyToManyComposite extends BaseJpaComposite
 		this.cascadeComposite.getControl().setLayoutData(gridData);
 
 
-		this.orderByComposite = new OrderByComposite(composite, this.commandStack, getWidgetFactory());
+		this.orderingComposite = new OrderingComposite(composite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		this.orderByComposite.getControl().setLayoutData(gridData);
+		this.orderingComposite.getControl().setLayoutData(gridData);
 
 		return generalComposite;
 	}
@@ -147,11 +147,11 @@ public class ManyToManyComposite extends BaseJpaComposite
 		this.cascadeComposite.populate(this.manyToMany);
 		if (this.manyToMany != null) {
 			this.joinTableComposite.populate(this.manyToMany.getJoinTable());
-			this.orderByComposite.populate(this.manyToMany.getOrderBy());
+			this.orderingComposite.populate(this.manyToMany);
 		}
 		else {
 			this.joinTableComposite.populate(null);
-			this.orderByComposite.populate(null);
+			this.orderingComposite.populate(null);
 		}
 	}
 	
@@ -161,7 +161,7 @@ public class ManyToManyComposite extends BaseJpaComposite
 		this.mappedByCombo.populate();
 		this.cascadeComposite.populate();
 		this.joinTableComposite.populate();
-		this.orderByComposite.populate();
+		this.orderingComposite.populate();
 	}
 	
 	protected void engageListeners() {
@@ -177,7 +177,7 @@ public class ManyToManyComposite extends BaseJpaComposite
 		this.mappedByCombo.dispose();
 		this.cascadeComposite.dispose();
 		this.joinTableComposite.dispose();
-		this.orderByComposite.dispose();
+		this.orderingComposite.dispose();
 		super.dispose();
 	}
 

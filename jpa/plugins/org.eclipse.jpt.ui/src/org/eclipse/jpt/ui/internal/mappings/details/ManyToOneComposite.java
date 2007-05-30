@@ -37,7 +37,7 @@ public class ManyToOneComposite extends BaseJpaComposite
 	
 	private EnumComboViewer optionalComboViewer;
 
-	private OrderByComposite orderByComposite;
+	private OrderingComposite orderByComposite;
 
 	private CascadeComposite cascadeComposite;
 

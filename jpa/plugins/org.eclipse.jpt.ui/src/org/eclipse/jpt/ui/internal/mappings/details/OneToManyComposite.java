@@ -38,7 +38,7 @@ public class OneToManyComposite extends BaseJpaComposite
 
 	private CascadeComposite cascadeComposite;
 	
-	private OrderByComposite orderByComposite;
+	private OrderingComposite orderingComposite;
 
 	private JoinTableComposite joinTableComposite;
 	
@@ -110,12 +110,12 @@ public class OneToManyComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		this.cascadeComposite.getControl().setLayoutData(gridData);
 	
-		this.orderByComposite = new OrderByComposite(generalComposite, this.commandStack, getWidgetFactory());
+		this.orderingComposite = new OrderingComposite(generalComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		this.orderByComposite.getControl().setLayoutData(gridData);
+		this.orderingComposite.getControl().setLayoutData(gridData);
 		
 
 		return generalComposite;
@@ -151,11 +151,11 @@ public class OneToManyComposite extends BaseJpaComposite
 		this.cascadeComposite.populate(this.oneToMany);
 		if (this.oneToMany != null) {
 			this.joinTableComposite.populate(this.oneToMany.getJoinTable());
-			this.orderByComposite.populate(this.oneToMany.getOrderBy());
+			this.orderingComposite.populate(this.oneToMany);
 		}
 		else {
 			this.joinTableComposite.populate(null);
-			this.orderByComposite.populate(null);
+			this.orderingComposite.populate(null);
 		}
 	}
 	
@@ -165,7 +165,7 @@ public class OneToManyComposite extends BaseJpaComposite
 		this.mappedByCombo.populate();
 		this.cascadeComposite.populate();
 		this.joinTableComposite.populate();
-		this.orderByComposite.populate();
+		this.orderingComposite.populate();
 	}
 	
 	protected void engageListeners() {
@@ -181,7 +181,7 @@ public class OneToManyComposite extends BaseJpaComposite
 		this.mappedByCombo.dispose();
 		this.cascadeComposite.dispose();
 		this.joinTableComposite.dispose();
-		this.orderByComposite.dispose();
+		this.orderingComposite.dispose();
 		super.dispose();
 	}
 }
