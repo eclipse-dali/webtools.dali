@@ -291,6 +291,10 @@ public class EntityGenerator {
 				this.printColumnAnnotationOn(column.getName(), pw);
 			}
 		}
+		if (column.isLob()) {
+			pw.printAnnotation(JPA.LOB);
+			pw.println();
+		}
 		pw.printVisibility(this.config.fieldVisibility());
 		pw.printTypeDeclaration(column.javaTypeDeclaration());
 		pw.print(' ');

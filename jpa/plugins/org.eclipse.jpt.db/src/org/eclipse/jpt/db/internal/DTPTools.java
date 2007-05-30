@@ -64,6 +64,16 @@ public final class DTPTools {
 		return JDBCTools.javaTypeFor(jdbcTypeForPrimitiveTypeCode(primitiveTypeCode));
 	}
 
+	/**
+	 * Return whether the specified Primitive type is a LOB
+	 * (i.e. a BLOB, CLOB, or NCLOB).
+	 */
+	public static boolean dataTypeIsLob(PrimitiveType primitiveType) {
+		return (primitiveType == PrimitiveType.BINARY_LARGE_OBJECT_LITERAL)
+				|| (primitiveType == PrimitiveType.CHARACTER_LARGE_OBJECT_LITERAL)
+				|| (primitiveType == PrimitiveType.NATIONAL_CHARACTER_LARGE_OBJECT_LITERAL);
+	}
+
 
 	// ********** internal stuff **********
 

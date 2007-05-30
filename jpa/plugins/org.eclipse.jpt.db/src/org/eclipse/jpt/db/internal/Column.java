@@ -29,6 +29,13 @@ public final class Column extends DTPWrapper implements Comparable<Column> {
 	// TODO Object is the default?
 	private static final JavaType DEFAULT_JAVA_TYPE = new JavaType(java.lang.Object.class);
 
+	private static final JavaType BLOB_JAVA_TYPE = new JavaType(java.sql.Blob.class);
+	private static final JavaType BYTE_ARRAY_JAVA_TYPE = new JavaType(byte[].class);
+
+	private static final JavaType CLOB_JAVA_TYPE = new JavaType(java.sql.Clob.class);
+	private static final JavaType STRING_JAVA_TYPE = new JavaType(java.lang.String.class);
+
+
 	// ********** constructors **********
 
 	Column( Table table, org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
@@ -115,9 +122,31 @@ public final class Column extends DTPWrapper implements Comparable<Column> {
 	public JavaType javaType() {
 		DataType dataType = this.dtpColumn.getDataType();
 		return (dataType instanceof PredefinedDataType) ?
-			DTPTools.javaTypeFor(((PredefinedDataType) dataType).getPrimitiveType())
+			this.jpaSpecCompliantJavaType(DTPTools.javaTypeFor(((PredefinedDataType) dataType).getPrimitiveType()))
 		:
 			DEFAULT_JAVA_TYPE;
+	}
+
+	/**
+	 * The JDBC spec says JDBC drivers should be able to map BLOBs and CLOBs
+	 * directly, but the JPA spec does not allow them.
+	 */
+	private JavaType jpaSpecCompliantJavaType(JavaType javaType) {
+		if (javaType.equals(BLOB_JAVA_TYPE)) {
+			return BYTE_ARRAY_JAVA_TYPE;
+		}
+		if (javaType.equals(CLOB_JAVA_TYPE)) {
+			return STRING_JAVA_TYPE;
+		}
+		return javaType;
+	}
+
+	public boolean isLob() {
+		DataType dataType = this.dtpColumn.getDataType();
+		return (dataType instanceof PredefinedDataType) ?
+			DTPTools.dataTypeIsLob(((PredefinedDataType) dataType).getPrimitiveType())
+		:
+			false;
 	}
 
 	boolean wraps( org.eclipse.datatools.modelbase.sql.tables.Column column) {
