@@ -270,7 +270,12 @@ public class JoinColumnComposite
 		this.singleRelationshipMapping.getSpecifiedJoinColumns().add(joinColumn);
 		joinColumn.setSpecifiedName(dialog.getSelectedName());
 		joinColumn.setSpecifiedReferencedColumnName(dialog.getReferencedColumnName());
-		joinColumn.setSpecifiedTable(dialog.getSelectedTable());
+		if (!dialog.isDefaultTableSelected()) {
+			//not checking this for name and referenced column name because there is no
+			//default option when you are adding a second join column.  There is always
+			//at least 1 join column (the default)
+			joinColumn.setSpecifiedTable(dialog.getSelectedTable());
+		}
 	}
 	
 	void editJoinColumn() {
