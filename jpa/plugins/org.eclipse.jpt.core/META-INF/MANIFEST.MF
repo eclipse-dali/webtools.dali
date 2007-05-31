@@ -34,7 +34,7 @@ Require-Bundle: org.eclipse.core.commands,
  org.eclipse.xsd
 Export-Package: org.eclipse.jpt.core.internal; x-friends:="org.eclipse.jpt.ui",
  org.eclipse.jpt.core.internal.content.java; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.content.java.mappings; x-friends:="org.eclipse.jpt.ui, org.eclipse.jpt.gen.internal",
+ org.eclipse.jpt.core.internal.content.java.mappings; x-friends:="org.eclipse.jpt.ui, org.eclipse.jpt.gen",
  org.eclipse.jpt.core.internal.content.java.mappings.util; x-friends:="org.eclipse.jpt.ui",
  org.eclipse.jpt.core.internal.content.java.util; x-friends:="org.eclipse.jpt.ui",
  org.eclipse.jpt.core.internal.content.orm; x-friends:="org.eclipse.jpt.ui",
