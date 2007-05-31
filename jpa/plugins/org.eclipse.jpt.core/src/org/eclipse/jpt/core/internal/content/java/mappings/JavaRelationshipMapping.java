@@ -674,7 +674,7 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	 * return whether the specified non-array type is one of the container
 	 * types allowed by the JPA spec
 	 */
-	protected static boolean typeNamedIsContainer(String typeName) {
+	public static boolean typeNamedIsContainer(String typeName) {
 		return CollectionTools.contains(CONTAINER_TYPE_NAMES, typeName);
 	}
 

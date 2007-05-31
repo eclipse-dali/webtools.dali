@@ -14,8 +14,11 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
+import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.mappings.ICascade;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
@@ -551,4 +554,29 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 		}
 		setResolvedTargetEntity(null);
 	}
+	
+	/**
+	 * the default 'targetEntity' is calculated from the attribute type;
+	 * return null if the attribute type cannot possibly be an entity
+	 */
+	public String javaDefaultTargetEntity() {
+		return this.javaDefaultTargetEntity(this.getPersistentAttribute().getAttribute().typeSignature());
+	}
+
+	protected String javaDefaultTargetEntity(String signature) {
+		IType iType = getPersistentType().findJdtType();
+		if (iType != null) {
+			return buildReferenceEntityTypeName(signature, iType);
+		}
+		return null;
+	}
+
+	// TODO Embeddable???
+	public static String buildReferenceEntityTypeName(String signature, IType jdtType) {
+		if (Signature.getArrayCount(signature) > 0) {
+			return null; // arrays cannot be entities
+		}
+		return JDTTools.resolve(Signature.toString(signature), jdtType);
+	}
+
 }

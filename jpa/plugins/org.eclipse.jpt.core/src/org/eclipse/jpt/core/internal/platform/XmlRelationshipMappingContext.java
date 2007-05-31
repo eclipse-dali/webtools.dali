@@ -71,7 +71,7 @@ public abstract class XmlRelationshipMappingContext extends XmlAttributeContext
 			if (attribute != null) {
 				IType iType = relationshipMapping().getPersistentType().findJdtType();
 				if (iType != null) {
-					return JavaRelationshipMapping.buildReferenceEntityTypeName(attribute.typeSignature(), iType);
+					return relationshipMapping().javaDefaultTargetEntity();
 				}
 			}
 		}

@@ -16,8 +16,11 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.ITypeMapping;
+import org.eclipse.jpt.core.internal.content.java.mappings.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.content.orm.resource.OrmXmlMapper;
 import org.eclipse.jpt.core.internal.emfutility.DOMUtilities;
 import org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType;
@@ -812,5 +815,32 @@ public abstract class XmlMultiRelationshipMappingInternal
 		if (targetEntity != null) {
 			setOrderBy(targetEntity.primaryKeyAttributeName() + " ASC");
 		}
+	}
+	
+	//TODO copied from JavaMultiRelationshipMapping
+	/**
+	 * extract the element type from the specified container signature and
+	 * convert it into a reference entity type name;
+	 * return null if the type is not a valid reference entity type (e.g. it's
+	 * another container or an array or a primitive or other Basic type)
+	 */
+	@Override
+	public String javaDefaultTargetEntity(String signature) {
+		String typeName = super.javaDefaultTargetEntity(signature);
+		return JavaRelationshipMapping.typeNamedIsContainer(typeName) ? this.javaDefaultTargetEntityFromContainer(signature) : null;
+	}
+
+	protected String javaDefaultTargetEntityFromContainer(String signature) {
+		String[] parmSignatures = Signature.getTypeArguments(signature);
+		if ((parmSignatures == null) || (parmSignatures.length != 1)) {
+			return null;
+		}
+		IType iType = getPersistentType().findJdtType();
+		if (iType == null) {
+			return null;
+		}
+		String elementSignature = parmSignatures[0];
+		String elementTypeName = buildReferenceEntityTypeName(elementSignature, iType);
+		return JavaRelationshipMapping.typeNamedIsContainer(elementTypeName) ? null : elementTypeName;
 	}
 }
