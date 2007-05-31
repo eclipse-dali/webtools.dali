@@ -6,7 +6,7 @@ Bundle-SymbolicName: org.eclipse.jpt.gen
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Localization: plugin
-Export-Package: org.eclipse.jpt.gen.internal;x-internal:=true
+Export-Package: org.eclipse.jpt.gen.internal; x-friends:="org.eclipse.jpt.ui"
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.core,
  org.eclipse.jpt.core,
