@@ -51,16 +51,21 @@ public abstract class AbstractJoinColumnDialog<E extends IAbstractJoinColumn> ex
 		this.joinColumn = joinColumn;
 	}
 	
-	protected void configureShell(Shell shell) {
-		super.configureShell(shell);
-		shell.setText(getTitle());
+	protected String getAddTitle() {
+		return JptUiMappingsMessages.JoinColumnDialog_addJoinColumn;
 	}
-	
-	protected String getTitle() {
+
+	protected String getEditTitle() {
 		return JptUiMappingsMessages.JoinColumnDialog_editJoinColumn;
 	}
 	
 	protected Control createDialogArea(Composite parent) {
+		if (this.joinColumn == null) {
+			getShell().setText(getAddTitle());
+		}
+		else {
+			getShell().setText(getEditTitle());
+		}
 		Composite composite = (Composite) super.createDialogArea(parent);
 		GridLayout gridLayout = (GridLayout) composite.getLayout();
 		gridLayout.numColumns = 2;

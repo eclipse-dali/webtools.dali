@@ -80,6 +80,7 @@ public class JptUiMappingsMessages extends NLS
 	public static String JoinTableComposite_overrideDefaultJoinColumns;
 	public static String JoinTableComposite_overrideDefaultInverseJoinColumns;
 
+	public static String JoinColumnDialog_addJoinColumn;
 	public static String JoinColumnDialog_editJoinColumn;
 	public static String JoinColumnDialog_name;
 	public static String JoinColumnDialog_insertable;
