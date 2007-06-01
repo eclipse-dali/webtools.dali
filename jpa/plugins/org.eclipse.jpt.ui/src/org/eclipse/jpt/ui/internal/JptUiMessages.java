@@ -78,6 +78,10 @@ public class JptUiMessages extends NLS
 
 	public static String GenerateEntitiesWizardPage_tables;
 
+	public static String GenerateEntitiesWizardPage_tableColumn;
+	
+	public static String GenerateEntitiesWizardPage_entityNameColumn;
+
 	public static String GenericPlatformUiDialog_notSupportedMessageTitle;
 
 	public static String GenericPlatformUiDialog_notSupportedMessageText;

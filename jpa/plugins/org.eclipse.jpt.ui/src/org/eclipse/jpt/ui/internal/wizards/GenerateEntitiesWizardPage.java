@@ -173,11 +173,11 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		table.setLinesVisible(true);
 		
 		TableColumn tableNameColumn = new TableColumn(table, SWT.NONE, TABLE_COLUMN_INDEX);
-		tableNameColumn.setText("Table");
+		tableNameColumn.setText(JptUiMessages.GenerateEntitiesWizardPage_tableColumn);
 		tableNameColumn.setResizable(true);
 
 		TableColumn entityNameColumn = new TableColumn(table, SWT.NONE, ENTITY_NAME_COLUMN_INDEX);
-		entityNameColumn.setText("Entity Name");
+		entityNameColumn.setText(JptUiMessages.GenerateEntitiesWizardPage_entityNameColumn);
 		entityNameColumn.setResizable(true);
 		
 		GridData gd= new GridData(GridData.FILL_BOTH);
