@@ -207,6 +207,15 @@ public class BasicComposite extends BaseJpaComposite
 		public Object[] enumValues() {
 			return DefaultEagerFetchType.VALUES.toArray();
 		}
+		
+		public Object defaultValue() {
+			return DefaultEagerFetchType.DEFAULT;
+		}
+		
+		public String defaultString() {
+			//TODO move this out of the UI into the model
+			return "Eager";
+		}
 	}
 
 	
@@ -242,6 +251,16 @@ public class BasicComposite extends BaseJpaComposite
 		public Object[] enumValues() {
 			return DefaultTrueBoolean.VALUES.toArray();
 		}
+		
+		public Object defaultValue() {
+			return DefaultTrueBoolean.DEFAULT;
+		}
+		
+		public String defaultString() {
+			//TODO move this out of the UI into the model
+			return "True";
+		}
+
 	}
 
 	
@@ -277,6 +296,20 @@ public class BasicComposite extends BaseJpaComposite
 		public Object[] enumValues() {
 			return TemporalType.VALUES.toArray();
 		}
+		
+		/**
+		 * TemporalType has no Default, return null
+		 */
+		public Object defaultValue() {
+			return null;
+		}
+		
+		/**
+		 * TemporalType has no Default, return null
+		 */
+		public String defaultString() {
+			return null;
+		}
 	}
 	
 	private class EnumeratedTypeHolder extends EObjectImpl implements EnumHolder {
@@ -310,6 +343,15 @@ public class BasicComposite extends BaseJpaComposite
 		
 		public Object[] enumValues() {
 			return EnumType.VALUES.toArray();
+		}
+		
+		public Object defaultValue() {
+			return EnumType.DEFAULT;
+		}
+		
+		public String defaultString() {
+			//TODO move this out of the UI into the model
+			return "Ordinal";
 		}
 	}
 }

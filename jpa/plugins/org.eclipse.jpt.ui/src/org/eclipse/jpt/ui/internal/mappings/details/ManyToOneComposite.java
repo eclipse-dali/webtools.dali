@@ -181,5 +181,13 @@ public class ManyToOneComposite extends BaseJpaComposite
 		public Object[] enumValues() {
 			return DefaultTrueBoolean.VALUES.toArray();
 		}
+		public Object defaultValue() {
+			return DefaultTrueBoolean.DEFAULT;
+		}
+		
+		public String defaultString() {
+			//TODO move this out of the UI into the model
+			return "True";
+		}
 	}
 }

@@ -15,9 +15,13 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.core.internal.IJpaProject;
@@ -42,6 +46,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -215,8 +220,8 @@ public class InheritanceComposite extends BaseJpaComposite {
 	private CComboViewer buildStrategyCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
 		CComboViewer strategyViewer = new CComboViewer(combo);
+		strategyViewer.setLabelProvider(buildStrategyLabelProvider());
 		strategyViewer.add(InheritanceType.VALUES.toArray());
-		
 		strategyViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				InheritanceComposite.this.strategySelectionChanged(event.getSelection());
@@ -224,6 +229,19 @@ public class InheritanceComposite extends BaseJpaComposite {
 		});
 		
 		return strategyViewer;
+	}
+	
+	private IBaseLabelProvider buildStrategyLabelProvider() {
+		return new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element == InheritanceType.DEFAULT) {
+					//TODO need to move this to the model, don't want hardcoded String
+					return NLS.bind(JptUiMappingsMessages.InheritanceComposite_default, "Single Table");
+				}
+				return super.getText(element);
+			}
+		};
 	}
 	
 	void strategySelectionChanged(ISelection selection) {
@@ -270,6 +288,7 @@ public class InheritanceComposite extends BaseJpaComposite {
 	private CComboViewer buildDiscriminatorTypeCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
 		CComboViewer discriminatorTypeViewer = new CComboViewer(combo);
+		discriminatorTypeViewer.setLabelProvider(buildDiscriminatorTypeLabelProvider());
 		discriminatorTypeViewer.add(DiscriminatorType.VALUES.toArray());
 		
 		discriminatorTypeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -279,6 +298,19 @@ public class InheritanceComposite extends BaseJpaComposite {
 		});
 		
 		return discriminatorTypeViewer;
+	}
+	
+	private IBaseLabelProvider buildDiscriminatorTypeLabelProvider() {
+		return new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element == DiscriminatorType.DEFAULT) {
+					//TODO need to move this to the model, don't want hardcoded String
+					return NLS.bind(JptUiMappingsMessages.InheritanceComposite_defaultDiscriminatorType, "String");
+				}
+				return super.getText(element);
+			}
+		};
 	}
 	
 	void discriminatorTypeSelectionChanged(ISelection selection) {

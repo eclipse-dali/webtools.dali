@@ -35,7 +35,7 @@ public enum DefaultTrueBoolean implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	DEFAULT(0, "Default", "Default (False)"), /**
+	DEFAULT(0, "Default", "Default (True)"), /**
 	 * The '<em><b>True</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

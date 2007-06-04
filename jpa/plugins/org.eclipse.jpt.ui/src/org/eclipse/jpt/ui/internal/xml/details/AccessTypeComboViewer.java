@@ -13,14 +13,19 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.core.internal.AccessType;
+import org.eclipse.jpt.core.internal.mappings.InheritanceType;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -53,6 +58,7 @@ public class AccessTypeComboViewer extends BaseJpaController
 	protected void buildWidget(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
 		this.comboViewer = new CComboViewer(combo);
+		this.comboViewer.setLabelProvider(buildAccessTypeLabelProvider());
 		this.comboViewer.add(AccessType.VALUES.toArray());
 		
 		this.comboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -60,6 +66,18 @@ public class AccessTypeComboViewer extends BaseJpaController
 				AccessTypeComboViewer.this.accessTypeSelectionChanged(event.getSelection());
 			}
 		});
+	}
+	
+	private IBaseLabelProvider buildAccessTypeLabelProvider() {
+		return new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element == AccessType.DEFAULT) {
+					return JptUiMappingsMessages.AccessTypeCombo_default;
+				}
+				return super.getText(element);
+			}
+		};
 	}
 	
 	void accessTypeSelectionChanged(ISelection selection) {

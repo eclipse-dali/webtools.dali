@@ -115,7 +115,11 @@ public class OverridesComposite extends BaseJpaComposite
 		this.listViewer.getList().setLayoutData(gridData);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.listViewer.getList(), IJpaHelpContextIds.ENTITY_ATTRIBUTE_OVERRIDES);
 		
-		this.overrideDefaultButton = getWidgetFactory().createButton(attributeOverridesGroup, "Override Default", SWT.CHECK);
+		this.overrideDefaultButton = 
+			getWidgetFactory().createButton(
+				attributeOverridesGroup, 
+				JptUiMappingsMessages.AttributeOverridesComposite_overridDefault, 
+				SWT.CHECK);
 		this.overrideDefaultButton.addSelectionListener(buildOverrideDefaultSelectionListener());
 		gridData = new GridData();
 		gridData.verticalAlignment = SWT.BEGINNING;

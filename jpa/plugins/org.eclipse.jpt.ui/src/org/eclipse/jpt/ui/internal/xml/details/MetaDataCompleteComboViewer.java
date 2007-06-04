@@ -13,16 +13,21 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.internal.mappings.DefaultFalseBoolean;
+import org.eclipse.jpt.core.internal.mappings.InheritanceType;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -55,15 +60,27 @@ public class MetaDataCompleteComboViewer extends BaseJpaController
 	protected void buildWidget(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
 		this.comboViewer = new CComboViewer(combo);
+		this.comboViewer.setLabelProvider(buildLabelProvider());
 		this.comboViewer.add(DefaultFalseBoolean.VALUES.toArray());
-		
 		this.comboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				MetaDataCompleteComboViewer.this.metadataCompleteSelectionChanged(event.getSelection());
 			}
 		});
 	}
-	
+	private IBaseLabelProvider buildLabelProvider() {
+		return new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element == DefaultFalseBoolean.DEFAULT) {
+					//TODO need to move this to the model, don't want hardcoded String
+					return NLS.bind(JptUiMappingsMessages.MetaDataCompleteCombo_Default, "False");
+				}
+				return super.getText(element);
+			}
+		};
+	}
+
 	void metadataCompleteSelectionChanged(ISelection selection) {
 		if (selection instanceof IStructuredSelection) {
 			DefaultFalseBoolean metadataComplete = (DefaultFalseBoolean) ((IStructuredSelection) selection).getFirstElement();

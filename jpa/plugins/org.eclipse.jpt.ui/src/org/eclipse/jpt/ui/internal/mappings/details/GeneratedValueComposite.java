@@ -15,12 +15,15 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.core.internal.mappings.GenerationType;
 import org.eclipse.jpt.core.internal.mappings.IGeneratedValue;
 import org.eclipse.jpt.core.internal.mappings.IId;
+import org.eclipse.jpt.core.internal.mappings.InheritanceType;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.IGeneratorRepository;
 import org.eclipse.jpt.core.internal.platform.NullGeneratorRepository;
@@ -28,6 +31,7 @@ import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
@@ -97,7 +101,7 @@ public class GeneratedValueComposite extends BaseJpaComposite
 	private CComboViewer buildStrategyComboViewer(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
 		CComboViewer viewer = new CComboViewer(combo);
-
+		viewer.setLabelProvider(buildStrategyLabelProvider());
 		viewer.add(GenerationType.VALUES.toArray());
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -118,6 +122,20 @@ public class GeneratedValueComposite extends BaseJpaComposite
 		});
 		return viewer;
 	}
+	
+	private IBaseLabelProvider buildStrategyLabelProvider() {
+		return new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element == GenerationType.DEFAULT) {
+					//TODO need to move this to the model, don't want hardcoded String
+					return NLS.bind(JptUiMappingsMessages.GeneratedValueComposite_default, "Auto");
+				}
+				return super.getText(element);
+			}
+		};
+	}
+	
 
 	protected CCombo buildGeneratorNameCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);

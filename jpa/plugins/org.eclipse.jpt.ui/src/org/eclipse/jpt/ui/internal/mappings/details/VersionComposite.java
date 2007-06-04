@@ -146,6 +146,20 @@ public class VersionComposite extends BaseJpaComposite
 		public Object[] enumValues() {
 			return TemporalType.VALUES.toArray();
 		}
+		
+		/**
+		 * TemporalType has no Default, return null
+		 */
+		public Object defaultValue() {
+			return null;
+		}
+		
+		/**
+		 * TemporalType has no Default, return null
+		 */
+		public String defaultString() {
+			return null;
+		}
 	}
 
 }

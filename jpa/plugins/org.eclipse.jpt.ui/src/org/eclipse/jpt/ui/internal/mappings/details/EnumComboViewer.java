@@ -13,13 +13,18 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jpt.core.internal.mappings.InheritanceType;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -52,14 +57,25 @@ public class EnumComboViewer extends BaseJpaController
 	protected void buildWidget(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
 		this.comboViewer = new CComboViewer(combo);
-		
+		this.comboViewer.setLabelProvider(buildLabelProvider());
 		this.comboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				EnumComboViewer.this.selectionChanged(event.getSelection());
 			}
 		});
 	}
-	
+	protected IBaseLabelProvider buildLabelProvider() {
+		return new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element == enumHolder.defaultValue()) {
+					return NLS.bind(JptUiMappingsMessages.EnumComboViewer_default, enumHolder.defaultString());
+				}
+				return super.getText(element);
+			}
+		};
+	}
+
 	void selectionChanged(ISelection sel) {
 		if (sel instanceof IStructuredSelection) {
 			Object selection = ((IStructuredSelection) sel).getFirstElement();
@@ -176,5 +192,16 @@ public class EnumComboViewer extends BaseJpaController
 		EObject wrappedObject();
 		
 		Object[] enumValues();
+		
+		/**
+		 * Return the Default Enumerator object
+		 */
+		Object defaultValue();
+		
+		/**
+		 * Return the String to be displayed to the user
+		 * Deafult ([defaultString()])
+		 */
+		String defaultString();
 	}
 }

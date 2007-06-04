@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.jpt.core.internal.mappings.DefaultEagerFetchType;
 import org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType;
+import org.eclipse.jpt.core.internal.mappings.EnumType;
 import org.eclipse.jpt.core.internal.mappings.IAbstractColumn;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;
@@ -147,6 +148,15 @@ public class CommonWidgets
 		public Object[] enumValues() {
 			return DefaultLazyFetchType.VALUES.toArray();
 		}
+		
+		public Object defaultValue() {
+			return DefaultLazyFetchType.DEFAULT;
+		}
+		
+		public String defaultString() {
+			//TODO move this out of the UI into the model
+			return "Lazy";
+		}
 	}
 	
 	private static class SingleRelationshipMappingFetchHolder extends EObjectImpl implements EnumHolder {
@@ -181,6 +191,15 @@ public class CommonWidgets
 		
 		public Object[] enumValues() {
 			return DefaultEagerFetchType.VALUES.toArray();
+		}
+		
+		public Object defaultValue() {
+			return DefaultEagerFetchType.DEFAULT;
+		}
+		
+		public String defaultString() {
+			//TODO move this out of the UI into the model
+			return "Eager";
 		}
 	}	
 	private static abstract class ColumnHolder extends EObjectImpl implements StringHolder {

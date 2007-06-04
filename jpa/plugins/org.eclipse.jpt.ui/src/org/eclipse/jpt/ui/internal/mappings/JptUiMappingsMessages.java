@@ -137,6 +137,7 @@ public class JptUiMappingsMessages extends NLS
 	public static String AttributeOverridesComposite_overridDefault;
 	public static String OverridesComposite_joinColumn;
 
+	public static String InheritanceComposite_default;	
 	public static String InheritanceComposite_strategy;	
 	public static String InheritanceComposite_discriminatorValue;	
 	public static String InheritanceComposite_discriminatorValueDefaultWithOneParam;
@@ -184,6 +185,13 @@ public class JptUiMappingsMessages extends NLS
 	public static String SecondaryTableDialog_schema;
 	public static String SecondaryTableDialog_defaultSchema;
 	public static String SecondaryTableDialog_defaultCatalog;	
+	
+	public static String AccessTypeCombo_default;
+	public static String EnumComboViewer_default;
+	public static String MetaDataCompleteCombo_Default;
+	public static String JoinColumnDialog_defaultTrue;
+	public static String InheritanceComposite_defaultDiscriminatorType;
+	public static String GeneratedValueComposite_default;
 	
 	static {
 		// initialize resource bundle

@@ -11,11 +11,14 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
+import org.eclipse.jpt.core.internal.mappings.InheritanceType;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -98,20 +101,35 @@ public abstract class JoinColumnDialog extends AbstractJoinColumnDialog<IJoinCol
 
 	private ComboViewer buildInsertableComboViewer(Composite parent) {
 		ComboViewer viewer = new ComboViewer(parent, SWT.READ_ONLY);
+		viewer.setLabelProvider(buildDefaultTrueLabelProvider());
 		viewer.add(DefaultTrueBoolean.VALUES.toArray());
+		
 		DefaultTrueBoolean sel = (this.joinColumn() == null) ? DefaultTrueBoolean.DEFAULT : this.joinColumn().getInsertable();
 		viewer.setSelection(new StructuredSelection(sel));
 		return viewer;
 	}
+	
+	private IBaseLabelProvider buildDefaultTrueLabelProvider() {
+		return new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element == DefaultTrueBoolean.DEFAULT) {
+					//TODO need to move this to the model, don't want hardcoded String
+					return NLS.bind(JptUiMappingsMessages.JoinColumnDialog_defaultTrue, "True");
+				}
+				return super.getText(element);
+			}
+		};
+	}
 
 	private ComboViewer buildUpdatableComboViewer(Composite parent) {
 		ComboViewer viewer = new ComboViewer(parent, SWT.READ_ONLY);
+		viewer.setLabelProvider(buildDefaultTrueLabelProvider());
 		viewer.add(DefaultTrueBoolean.VALUES.toArray());
 		DefaultTrueBoolean sel = (this.joinColumn() == null) ? DefaultTrueBoolean.DEFAULT : this.joinColumn().getUpdatable();
 		viewer.setSelection(new StructuredSelection(sel));
 		return viewer;
 	}
-
 	
 	protected void populateTableCombo() {
 		this.tableCombo.add(NLS.bind(JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam, defaultTableName()));

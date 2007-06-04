@@ -355,7 +355,7 @@
       <eLiterals name="true" value="2" literal="True"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="DefaultTrueBoolean">
-      <eLiterals name="Default" literal="Default (False)"/>
+      <eLiterals name="Default" literal="Default (True)"/>
       <eLiterals name="true" value="1" literal="True"/>
       <eLiterals name="false" value="2" literal="False"/>
     </eClassifiers>
