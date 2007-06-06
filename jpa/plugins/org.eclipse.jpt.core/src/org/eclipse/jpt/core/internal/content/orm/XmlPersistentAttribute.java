@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.content.orm;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -64,26 +65,26 @@ public class XmlPersistentAttribute extends XmlEObject
 	 */
 	protected String name = NAME_EDEFAULT;
 
-	private Collection<IXmlAttributeMappingProvider> attributeMappingProviders;
+	private List<IXmlAttributeMappingProvider> attributeMappingProviders;
 
 	protected XmlPersistentAttribute() {
 		super();
 		this.attributeMappingProviders = buildAttributeMappingProviders();
 	}
 
-	protected Collection<IXmlAttributeMappingProvider> buildAttributeMappingProviders() {
-		Collection<IXmlAttributeMappingProvider> collection = new ArrayList<IXmlAttributeMappingProvider>();
-		collection.add(XmlBasicProvider.instance());
-		collection.add(XmlTransientProvider.instance());
-		collection.add(XmlIdProvider.instance());
-		collection.add(XmlManyToManyProvider.instance());
-		collection.add(XmlOneToManyProvider.instance());
-		collection.add(XmlManyToOneProvider.instance());
-		collection.add(XmlOneToOneProvider.instance());
-		collection.add(XmlVersionProvider.instance());
-		collection.add(XmlEmbeddedProvider.instance());
-		collection.add(XmlEmbeddedIdProvider.instance());
-		return collection;
+	protected List<IXmlAttributeMappingProvider> buildAttributeMappingProviders() {
+		List<IXmlAttributeMappingProvider> list = new ArrayList<IXmlAttributeMappingProvider>();
+		list.add(XmlEmbeddedProvider.instance()); //bug 190344 need to test default embedded before basic
+		list.add(XmlBasicProvider.instance());
+		list.add(XmlTransientProvider.instance());
+		list.add(XmlIdProvider.instance());
+		list.add(XmlManyToManyProvider.instance());
+		list.add(XmlOneToManyProvider.instance());
+		list.add(XmlManyToOneProvider.instance());
+		list.add(XmlOneToOneProvider.instance());
+		list.add(XmlVersionProvider.instance());
+		list.add(XmlEmbeddedIdProvider.instance());
+		return list;
 	}
 
 	/**

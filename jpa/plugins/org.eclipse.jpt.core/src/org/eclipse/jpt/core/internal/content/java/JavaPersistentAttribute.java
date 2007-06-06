@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.content.java;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -113,7 +114,7 @@ public class JavaPersistentAttribute extends JavaEObject
 	}
 
 	private IJavaAttributeMappingProvider[] buildAttributeMappingProviders() {
-		ArrayList<IJavaAttributeMappingProvider> providers = new ArrayList<IJavaAttributeMappingProvider>();
+		List<IJavaAttributeMappingProvider> providers = new ArrayList<IJavaAttributeMappingProvider>();
 		this.addAttributeMappingProvidersTo(providers);
 		return providers.toArray(new IJavaAttributeMappingProvider[providers.size()]);
 	}
@@ -123,7 +124,8 @@ public class JavaPersistentAttribute extends JavaEObject
 	 * The default includes the JPA spec-defined type mappings of 
 	 * Basic, Id, OneToOne, OneToMany, ManyToOne, ManyToMany, Embeddable, EmbeddedId.
 	 */
-	protected void addAttributeMappingProvidersTo(Collection<IJavaAttributeMappingProvider> providers) {
+	protected void addAttributeMappingProvidersTo(List<IJavaAttributeMappingProvider> providers) {
+		providers.add(JavaEmbeddedProvider.instance()); //bug 190344 need to test default embedded before basic
 		providers.add(JavaBasicProvider.instance());
 		providers.add(JavaIdProvider.instance());
 		providers.add(JavaTransientProvider.instance());
@@ -131,7 +133,6 @@ public class JavaPersistentAttribute extends JavaEObject
 		providers.add(JavaManyToOneProvider.instance());
 		providers.add(JavaManyToManyProvider.instance());
 		providers.add(JavaOneToOneProvider.instance());
-		providers.add(JavaEmbeddedProvider.instance());
 		providers.add(JavaEmbeddedIdProvider.instance());
 		providers.add(JavaVersionProvider.instance());
 	}
