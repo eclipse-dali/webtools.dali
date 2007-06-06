@@ -114,12 +114,12 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	protected void generatorChanged(Notification notification) {
 		super.generatorChanged(notification);
 		if (notification.getFeatureID(ISequenceGenerator.class) == JpaCoreMappingsPackage.ISEQUENCE_GENERATOR__SPECIFIED_SEQUENCE_NAME) {
-			final String sequenceName = notification.getNewStringValue();
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (getControl().isDisposed()) {
 						return;
 					}
+					String sequenceName = getGenerator().getSpecifiedSequenceName();
 					if (sequenceName == null) {
 						sequenceNameCombo.select(0);
 					}

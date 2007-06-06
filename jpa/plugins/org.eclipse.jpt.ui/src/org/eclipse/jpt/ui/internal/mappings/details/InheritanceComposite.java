@@ -542,28 +542,28 @@ public class InheritanceComposite extends BaseJpaComposite {
 	
 	private void entityChanged(Notification notification) {	
 		if (notification.getFeatureID(IEntity.class) == JpaCoreMappingsPackage.IENTITY__INHERITANCE_STRATEGY) {
-			final InheritanceType inheritanceType = (InheritanceType) notification.getNewValue();
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
-					if (((StructuredSelection) strategyViewer.getSelection()).getFirstElement() != inheritanceType) {
+					InheritanceType inheritanceType = entity.getInheritanceStrategy();
+					 if (((StructuredSelection) strategyViewer.getSelection()).getFirstElement() != inheritanceType) {
 						strategyViewer.setSelection(new StructuredSelection(inheritanceType));
 					}					
 				}
 			});
 		}
 		else if (notification.getFeatureID(IEntity.class) == JpaCoreMappingsPackage.IENTITY__SPECIFIED_DISCRIMINATOR_VALUE) {
-			final String columnName = (String) notification.getNewValue();
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (getControl().isDisposed()) {
 						return;
 					}
-					if (discriminatorValueCombo.getText() == null || !discriminatorValueCombo.getText().equals(columnName)) {
-						if (columnName == null) {
+					String discriminatorValue = entity.getSpecifiedDiscriminatorValue();
+					if (discriminatorValueCombo.getText() == null || !discriminatorValueCombo.getText().equals(discriminatorValue)) {
+						if (discriminatorValue == null) {
 							discriminatorValueCombo.select(0);
 						}
 						else {
-							discriminatorValueCombo.setText(columnName);
+							discriminatorValueCombo.setText(discriminatorValue);
 						}
 					}			
 				}
@@ -604,9 +604,9 @@ public class InheritanceComposite extends BaseJpaComposite {
 		}
 
 		else if (notification.getFeatureID(IDiscriminatorColumn.class) == JpaCoreMappingsPackage.IDISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE) {
-			final DiscriminatorType discriminatorType = (DiscriminatorType) notification.getNewValue();
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
+					DiscriminatorType discriminatorType = discriminatorColumn.getDiscriminatorType();
 					if (((StructuredSelection) discriminatorTypeViewer.getSelection()).getFirstElement() != discriminatorType) {
 						discriminatorTypeViewer.setSelection(new StructuredSelection(discriminatorType));
 					}					

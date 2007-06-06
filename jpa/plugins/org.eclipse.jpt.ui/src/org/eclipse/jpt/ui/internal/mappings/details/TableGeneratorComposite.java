@@ -228,12 +228,12 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	protected void generatorChanged(Notification notification) {
 		super.generatorChanged(notification);
 		if (notification.getFeatureID(ITableGenerator.class) == JpaCoreMappingsPackage.ITABLE_GENERATOR__SPECIFIED_TABLE) {
-			final String tableName = notification.getNewStringValue();
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (getControl().isDisposed()) {
 						return;
 					}
+					String tableName = getGenerator().getSpecifiedTable();
 					if (tableName == null) {
 						tableNameCombo.select(0);
 					}
@@ -257,12 +257,12 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			});
 		}
 		else if (notification.getFeatureID(ITableGenerator.class) == JpaCoreMappingsPackage.ITABLE_GENERATOR__SPECIFIED_VALUE_COLUMN_NAME) {
-			final String columnName = notification.getNewStringValue();
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (getControl().isDisposed()) {
 						return;
 					}
+					String columnName = getGenerator().getSpecifiedValueColumnName();
 					if (columnName == null) {
 						valueColumnNameCombo.select(0);
 					}
@@ -273,12 +273,12 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			});
 		}
 		else if (notification.getFeatureID(ITableGenerator.class) == JpaCoreMappingsPackage.ITABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE) {
-			final String columnValue = notification.getNewStringValue();
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (getControl().isDisposed()) {
 						return;
 					}
+					String columnValue = getGenerator().getSpecifiedPkColumnValue();
 					if (columnValue == null) {
 						pkColumnValueCombo.select(0);
 					}
