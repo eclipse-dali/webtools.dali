@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.ui.internal.views.AbstractJpaView;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -66,6 +67,12 @@ public class TextEditorSelectionParticipant
 		if (! newSelection.equals(currentSelection)) {
 			currentSelection = newSelection;
 			
+			// bug 188344 - won't actively change selection manager selection if 
+			// a "JPA" view is the active (and presumably selecting) view
+			if (editor.getEditorSite().getPage().getActivePart() instanceof AbstractJpaView) {
+				return;
+			}
+			
 			if (! suppressNotification) {
 				selectionManager.select(newSelection);
 			}
@@ -107,18 +114,6 @@ public class TextEditorSelectionParticipant
 		}
 		return JptCorePlugin.getJpaFile(file);
 	}
-	
-	//TODO this is working only if the project is an ejb project.
-	//we need to use this nature when we create our facet.  possibly by virture 
-	//of being a facets project we get this through the ModuleCoreNature, not sure - KFM
-//	protected ResourceSet getJEMResourceSet(IFile file) {
-//		JavaEMFNature nature = JavaEMFNature.getRuntime(file.getProject());
-//		if (nature == null) {
-//			return null;
-//		}
-//		return nature.getResourceSet();
-//	}
-
 		
 	public void selectionChanged(SelectionEvent evt) {
 		Selection newSelection = evt.getSelection();
