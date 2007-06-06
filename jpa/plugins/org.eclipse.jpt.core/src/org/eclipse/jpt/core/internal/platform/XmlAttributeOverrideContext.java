@@ -61,6 +61,9 @@ public class XmlAttributeOverrideContext extends AttributeOverrideContext
 	
 	private IAttributeOverride javaAttributeOverride() {
 		JavaEntity javaEntity = ((XmlEntityContext) getParentContext()).getJavaEntity();
+		if (javaEntity == null) {
+			return null;
+		}
 		return javaEntity.attributeOverrideNamed(this.attributeOverride.getName());
 	}
 
