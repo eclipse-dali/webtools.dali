@@ -275,7 +275,7 @@ public class ColumnComposite extends BaseJpaComposite
 	
 	protected void columnChanged(Notification notification) {
 		if (notification.getFeatureID(INamedColumn.class) == JpaCoreMappingsPackage.INAMED_COLUMN__SPECIFIED_NAME) {
-			Display.getDefault().syncExec(new Runnable() {
+			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (getControl().isDisposed() || isPopulating()) {
 						return;
