@@ -29,6 +29,9 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 	public static OrmXmlJpaFileContentProvider INSTANCE = new OrmXmlJpaFileContentProvider();
 	
 	
+	private IFile resourceFile;
+	
+	
 	/**
 	 * Restrict access
 	 */
@@ -38,7 +41,7 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 
 	public IJpaRootContentNode buildRootContent(IFile resourceFile) {
 		OrmXmlResourceFactory.register();
-		
+		this.resourceFile = resourceFile;
 		URI fileURI = URI.createPlatformResourceURI(resourceFile.getFullPath().toString());
 		OrmXmlResource resource = (OrmXmlResource) getResourceSet(resourceFile).getResource(fileURI, true);
 		XmlRootContentNode root = OrmFactory.eINSTANCE.createXmlRootContentNode();
@@ -78,15 +81,17 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 				}
 			}
 			else if (featureId == Resource.RESOURCE__IS_LOADED) {
-				// dumb translator is unloading my resource, reload it
-				if (notification.getNewBooleanValue() == false) {
-					OrmXmlResource resource = (OrmXmlResource) notification.getNotifier();
-					try {
-						resource.load(Collections.EMPTY_MAP);
-					}
-					catch (IOException ioe) {
-						// hmmm, log for now
-						JptCorePlugin.log(ioe);
+				if (resourceFile.exists()) {
+					// dumb translator is unloading my resource, reload it
+					if (notification.getNewBooleanValue() == false) {
+						OrmXmlResource resource = (OrmXmlResource) notification.getNotifier();
+						try {
+							resource.load(Collections.EMPTY_MAP);
+						}
+						catch (IOException ioe) {
+							// hmmm, log for now
+							JptCorePlugin.log(ioe);
+						}
 					}
 				}
 			}

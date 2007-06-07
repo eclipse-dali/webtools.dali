@@ -29,6 +29,10 @@ public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProv
 {
 	public static PersistenceXmlJpaFileContentProvider INSTANCE = new PersistenceXmlJpaFileContentProvider();
 	
+	
+	private IFile resourceFile;
+	
+	
 	/**
 	 * Restrict access
 	 */
@@ -38,7 +42,7 @@ public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProv
 
 	public IJpaRootContentNode buildRootContent(IFile resourceFile) {
 		PersistenceXmlResourceFactory.register();
-		
+		this.resourceFile = resourceFile;
 		URI fileURI = URI.createPlatformResourceURI(resourceFile.getFullPath().toString());
 		PersistenceResource resource = (PersistenceResource) getResourceSet(resourceFile).getResource(fileURI, true);
 		PersistenceXmlRootContentNode root = PersistenceFactory.eINSTANCE.createPersistenceXmlRootContentNode();
@@ -79,15 +83,17 @@ public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProv
 				}
 			}
 			else if (featureId == Resource.RESOURCE__IS_LOADED) {
-				// dumb translator is unloading my resource, reload it
-				if (notification.getNewBooleanValue() == false) {
-					PersistenceResource resource = (PersistenceResource) notification.getNotifier();
-					try {
-						resource.load(Collections.EMPTY_MAP);
-					}
-					catch (IOException ioe) {
-						// hmmm, log for now
-						JptCorePlugin.log(ioe);
+				if (resourceFile.exists()) {
+					// dumb translator is unloading my resource, reload it
+					if (notification.getNewBooleanValue() == false) {
+						PersistenceResource resource = (PersistenceResource) notification.getNotifier();
+						try {
+							resource.load(Collections.EMPTY_MAP);
+						}
+						catch (IOException ioe) {
+							// hmmm, log for now
+							JptCorePlugin.log(ioe);
+						}
 					}
 				}
 			}
