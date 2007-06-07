@@ -16,18 +16,16 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.mappings.DiscriminatorType;
 import org.eclipse.jpt.core.internal.mappings.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
+import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.mappings.InheritanceType;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.db.internal.Connection;
@@ -46,7 +44,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -583,7 +580,7 @@ public class InheritanceComposite extends BaseJpaComposite {
 	}
 
 	protected void discriminatorColumnChanged(Notification notification) {
-		if (notification.getFeatureID(IDiscriminatorColumn.class) == JpaCoreMappingsPackage.IDISCRIMINATOR_COLUMN__SPECIFIED_NAME) {
+		if (notification.getFeatureID(INamedColumn.class) == JpaCoreMappingsPackage.INAMED_COLUMN__SPECIFIED_NAME) {
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (getControl().isDisposed()) {
@@ -593,7 +590,7 @@ public class InheritanceComposite extends BaseJpaComposite {
 				}
 			});
 		}
-		else if (notification.getFeatureID(IDiscriminatorColumn.class) == JpaCoreMappingsPackage.IDISCRIMINATOR_COLUMN__DEFAULT_NAME) {
+		else if (notification.getFeatureID(INamedColumn.class) == JpaCoreMappingsPackage.INAMED_COLUMN__DEFAULT_NAME) {
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					if (getControl().isDisposed()) {
