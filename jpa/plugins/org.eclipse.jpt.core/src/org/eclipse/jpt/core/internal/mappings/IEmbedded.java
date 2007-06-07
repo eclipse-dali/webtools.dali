@@ -97,6 +97,8 @@ public interface IEmbedded extends IAttributeMapping
 
 	Iterator<String> allOverridableAttributeNames();
 
+	IAttributeOverride attributeOverrideNamed(String name);
+
 	boolean containsAttributeOverride(String name);
 
 	boolean containsSpecifiedAttributeOverride(String name);

@@ -216,6 +216,7 @@ public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite
 		if (this.embedded == null) {
 			this.attributeOverride = null;
 			this.columnComposite.populate(null);
+			this.listViewer.setInput(null);
 			return;
 		}
 		

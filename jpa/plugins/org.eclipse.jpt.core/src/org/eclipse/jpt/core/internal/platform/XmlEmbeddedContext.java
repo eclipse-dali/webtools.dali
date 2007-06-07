@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbedded;
 import org.eclipse.jpt.core.internal.content.orm.OrmFactory;
@@ -22,33 +23,58 @@ import org.eclipse.jpt.core.internal.content.orm.XmlEmbedded;
 import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IEmbedded;
+import org.eclipse.jpt.core.internal.platform.XmlAttributeOverrideContext.ParentContext;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class XmlEmbeddedContext
 	extends XmlAttributeContext
 {
-	private Collection<AttributeOverrideContext> attributeOverrideContexts;
+	private Collection<XmlAttributeOverrideContext> attributeOverrideContexts;
 
 	public XmlEmbeddedContext(IContext parentContext, XmlEmbedded mapping) {
 		super(parentContext, mapping);
 		this.attributeOverrideContexts = buildAttributeOverrideContexts();
 	}
 	
-	protected Collection<AttributeOverrideContext> buildAttributeOverrideContexts() {
-		Collection<AttributeOverrideContext> contexts = new ArrayList<AttributeOverrideContext>();
+	protected Collection<XmlAttributeOverrideContext> buildAttributeOverrideContexts() {
+		Collection<XmlAttributeOverrideContext> contexts = new ArrayList<XmlAttributeOverrideContext>();
 		for (IAttributeOverride attributeOverride : getEmbedded().getAttributeOverrides()) {
-			contexts.add(new AttributeOverrideContext(this, attributeOverride));
+			contexts.add(new XmlAttributeOverrideContext(buildParentContext(), attributeOverride));
 		}
 		
 		return contexts;
+	}
+	private ParentContext buildParentContext() {
+		return new XmlAttributeOverrideContext.ParentContext() {
+			public void refreshDefaults(DefaultsContext defaults) {
+				XmlEmbeddedContext.this.refreshDefaults(defaults);
+			}
+			public IJpaPlatform getPlatform() {
+				return XmlEmbeddedContext.this.getPlatform();
+			}
+			public IContext getParentContext() {
+				return XmlEmbeddedContext.this.getParentContext();
+			}
+			public void addToMessages(List<IMessage> messages) {
+				XmlEmbeddedContext.this.addToMessages(messages);
+			}
+			public IAttributeOverride javaAttributeOverride(String overrideName) {
+				if (getEmbedded().isVirtual()) {
+					return getJavaEmbedded().attributeOverrideNamed(overrideName);
+				}
+				//if the xml mapping is specified, then it is as if no annotations are 
+				//specified on the java mapping, so return null
+				return null;
+			}
+		};
 	}
 	
 	@Override
 	public void refreshDefaults(DefaultsContext parentDefaults) {
 		super.refreshDefaults(parentDefaults);
 		refreshDefaultAttributeOverrides();
-		for (AttributeOverrideContext context : this.attributeOverrideContexts) {
+		for (XmlAttributeOverrideContext context : this.attributeOverrideContexts) {
 			context.refreshDefaults(parentDefaults);
 		}
 	}
@@ -79,11 +105,11 @@ public class XmlEmbeddedContext
 	}
 
 	protected XmlTypeMapping getXmlTypeMapping() {
-		return (XmlTypeMapping) getEmbedded().getPersistentAttribute().typeMapping();
+		return getEmbedded().getPersistentAttribute().typeMapping();
 	}
 	
-	private IEmbedded getEmbedded() {
-		return (IEmbedded) attributeMapping();
+	private XmlEmbedded getEmbedded() {
+		return (XmlEmbedded) attributeMapping();
 	}
 	
 	protected JavaEmbedded getJavaEmbedded() {
@@ -99,7 +125,7 @@ public class XmlEmbeddedContext
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
 		
-		for (AttributeOverrideContext aoContext : attributeOverrideContexts) {
+		for (XmlAttributeOverrideContext aoContext : this.attributeOverrideContexts) {
 			aoContext.addToMessages(messages);
 		}
 	}

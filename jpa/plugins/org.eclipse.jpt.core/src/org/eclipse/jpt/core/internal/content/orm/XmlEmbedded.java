@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IEmbeddable;
 import org.eclipse.jpt.core.internal.mappings.IEmbedded;
+import org.eclipse.jpt.core.internal.mappings.IOverride;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -296,25 +297,33 @@ public class XmlEmbedded extends XmlAttributeMapping implements IEmbedded
 		return IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
 
+	public IAttributeOverride attributeOverrideNamed(String name) {
+		return (IAttributeOverride) overrideNamed(name, getAttributeOverrides());
+	}
+
 	public boolean containsAttributeOverride(String name) {
-		return containsAttributeOverride(name, getAttributeOverrides());
+		return containsOverride(name, getAttributeOverrides());
 	}
 
 	public boolean containsSpecifiedAttributeOverride(String name) {
-		return containsAttributeOverride(name, getSpecifiedAttributeOverrides());
+		return containsOverride(name, getSpecifiedAttributeOverrides());
 	}
 
-	private boolean containsAttributeOverride(String name, List<IAttributeOverride> attributeOverrides) {
-		for (IAttributeOverride attributeOverride : attributeOverrides) {
-			String attributeOverrideName = attributeOverride.getName();
-			if (attributeOverrideName == null && name == null) {
-				return true;
+	private IOverride overrideNamed(String name, List<? extends IOverride> overrides) {
+		for (IOverride override : overrides) {
+			String overrideName = override.getName();
+			if (overrideName == null && name == null) {
+				return override;
 			}
-			if (attributeOverrideName.equals(name)) {
-				return true;
+			if (overrideName != null && overrideName.equals(name)) {
+				return override;
 			}
 		}
-		return false;
+		return null;
+	}
+
+	private boolean containsOverride(String name, List<? extends IOverride> overrides) {
+		return overrideNamed(name, overrides) != null;
 	}
 
 	public Iterator<String> allOverridableAttributeNames() {

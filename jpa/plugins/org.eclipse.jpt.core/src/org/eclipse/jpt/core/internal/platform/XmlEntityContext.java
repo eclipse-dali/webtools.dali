@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
@@ -25,6 +26,7 @@ import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
+import org.eclipse.jpt.core.internal.platform.XmlAttributeOverrideContext.ParentContext;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.ClassTools;
@@ -53,10 +55,34 @@ public class XmlEntityContext extends XmlTypeContext
 	protected Collection<XmlAttributeOverrideContext> buildAttributeOverrideContexts() {
 		Collection<XmlAttributeOverrideContext> contexts = new ArrayList<XmlAttributeOverrideContext>();
 		for (IAttributeOverride attributeOverride : getEntity().getAttributeOverrides()) {
-			contexts.add(new XmlAttributeOverrideContext(this, attributeOverride));
+			contexts.add(new XmlAttributeOverrideContext(buildParentContext(), attributeOverride));
 		}
 		
 		return contexts;
+	}
+	
+	private ParentContext buildParentContext() {
+		return new XmlAttributeOverrideContext.ParentContext() {
+			public void refreshDefaults(DefaultsContext defaults) {
+				XmlEntityContext.this.refreshDefaults(defaults);
+			}
+			public IJpaPlatform getPlatform() {
+				return XmlEntityContext.this.getPlatform();
+			}
+			public IContext getParentContext() {
+				return XmlEntityContext.this.getParentContext();
+			}
+			public void addToMessages(List<IMessage> messages) {
+				XmlEntityContext.this.addToMessages(messages);
+			}
+			public IAttributeOverride javaAttributeOverride(String overrideName) {
+				JavaEntity javaEntity = getJavaEntity();
+				if (javaEntity == null) {
+					return null;
+				}
+				return javaEntity.attributeOverrideNamed(overrideName);
+			}
+		};
 	}
 	
 	//only support default joinColumn information for the default association overrides,

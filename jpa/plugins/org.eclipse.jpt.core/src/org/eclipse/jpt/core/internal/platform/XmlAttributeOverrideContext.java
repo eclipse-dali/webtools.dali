@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaEntity;
 import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IColumnMapping;
@@ -16,9 +15,14 @@ import org.eclipse.jpt.core.internal.mappings.IColumnMapping;
 public class XmlAttributeOverrideContext extends AttributeOverrideContext
 {
 	
-	public XmlAttributeOverrideContext(IContext parentContext, IAttributeOverride attributeOverride) {
+	public XmlAttributeOverrideContext(ParentContext parentContext, IAttributeOverride attributeOverride) {
 		super(parentContext, attributeOverride);
 		this.attributeOverride = attributeOverride;
+	}
+	
+	@Override
+	public ParentContext getParentContext() {
+		return (ParentContext) super.getParentContext();
 	}
 	
 	@Override
@@ -59,12 +63,16 @@ public class XmlAttributeOverrideContext extends AttributeOverrideContext
 		return columnMapping.getColumn().getTable();
 	}
 	
+	public interface ParentContext extends IContext {
+		/**
+		 * Return the JavaAttributeOverride that corresponds to the xml attribute override
+		 * with the given name.  Return null if it does not exist
+		 */
+		IAttributeOverride javaAttributeOverride(String overrideName);
+	}
+	
 	private IAttributeOverride javaAttributeOverride() {
-		JavaEntity javaEntity = ((XmlEntityContext) getParentContext()).getJavaEntity();
-		if (javaEntity == null) {
-			return null;
-		}
-		return javaEntity.attributeOverrideNamed(this.attributeOverride.getName());
+		return getParentContext().javaAttributeOverride(this.attributeOverride.getName());
 	}
 
 }
