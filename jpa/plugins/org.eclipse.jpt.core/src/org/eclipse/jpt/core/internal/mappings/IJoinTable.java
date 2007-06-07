@@ -192,6 +192,9 @@ public interface IJoinTable extends ITable
 		}
 
 		public Table dbTable(String tableName) {
+			if (this.joinTable.getName() == null) {
+				return null;
+			}
 			return (this.joinTable.getName().equals(tableName)) ? this.joinTable.dbTable() : null;
 		}
 	}
