@@ -534,9 +534,10 @@ public class InheritanceComposite extends BaseJpaComposite {
 			}
 		}
 		else {
-			if (this.discriminatorValueCombo.getSelectionIndex() != 0) {
-				this.discriminatorValueCombo.select(0);
-			}
+			//combo text does not update when switching between 2 entities that both have a default discriminator value.  
+			//clear the selection and then set it again
+			this.discriminatorValueCombo.clearSelection();
+			this.discriminatorValueCombo.select(0);
 		}
 	}
 	
