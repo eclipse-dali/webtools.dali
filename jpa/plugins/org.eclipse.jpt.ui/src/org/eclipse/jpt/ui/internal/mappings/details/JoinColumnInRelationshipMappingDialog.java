@@ -38,7 +38,7 @@ public class JoinColumnInRelationshipMappingDialog extends JoinColumnDialog {
 	}
 	
 	protected Schema getSchema() {
-		return this.singleRelationshipMapping.getEntity().getTable().dbSchema();
+		return this.singleRelationshipMapping.typeMapping().dbSchema();
 	}
 	
 	protected Table getNameTable() {
