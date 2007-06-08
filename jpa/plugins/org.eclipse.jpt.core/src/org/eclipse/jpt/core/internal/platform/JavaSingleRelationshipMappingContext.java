@@ -88,7 +88,9 @@ public abstract class JavaSingleRelationshipMappingContext
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
 		
-		addJoinColumnMessages(messages);
+		if (entityOwned()) {
+			addJoinColumnMessages(messages);
+		}
 	}
 	
 	protected void addJoinColumnMessages(List<IMessage> messages) {
