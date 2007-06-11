@@ -357,30 +357,36 @@ public class JpaCompilationUnit extends JavaEObject
 	}
 
 	private void synchWithJavaDelta(IJavaElementDelta delta) {
-		boolean processChildren = false;
 		switch (delta.getElement().getElementType()) {
 			case IJavaElement.JAVA_MODEL :
 			case IJavaElement.JAVA_PROJECT :
 			case IJavaElement.PACKAGE_FRAGMENT_ROOT :
 			case IJavaElement.PACKAGE_FRAGMENT :
-				processChildren = true;
+				this.synchChildrenWithJavaDelta(delta);
 				break;
 			case IJavaElement.COMPILATION_UNIT :
+				this.synchCompilationUnitWithJavaDelta(delta);
 				break;
 			default :
-				// the event is somehow lower than a compilation unit
-				return;
+				break;  // the event is somehow lower than a compilation unit
 		}
-		if (processChildren) {
-			for (IJavaElementDelta child : delta.getAffectedChildren()) {
-				synchWithJavaDelta(child);
-			}
+	}
+
+	private void synchChildrenWithJavaDelta(IJavaElementDelta delta) {
+		for (IJavaElementDelta child : delta.getAffectedChildren()) {
+			this.synchWithJavaDelta(child);  // recurse
 		}
-		// discard if change is not for this compilation unit
-		if (!delta.getElement().equals(this.compilationUnit)) {
+	}
+
+	private void synchCompilationUnitWithJavaDelta(IJavaElementDelta delta) {
+		// ignore changes to/from primary working copy - no content has changed
+		if ((delta.getFlags() & IJavaElementDelta.F_PRIMARY_WORKING_COPY) != 0) {
 			return;
 		}
-		this.synchronizePersistentTypes();
+		// synchronize if the change is for this compilation unit
+		if (delta.getElement().equals(this.compilationUnit)) {
+			this.synchronizePersistentTypes();
+		}
 	}
 
 	private void synchronizePersistentTypes() {
