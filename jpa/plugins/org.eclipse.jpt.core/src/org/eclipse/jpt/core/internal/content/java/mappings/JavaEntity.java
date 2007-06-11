@@ -1656,6 +1656,10 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 		return containsOverride(name, getAttributeOverrides());
 	}
 
+	public boolean containsDefaultAttributeOverride(String name) {
+		return containsOverride(name, getDefaultAttributeOverrides());
+	}
+
 	public boolean containsSpecifiedAttributeOverride(String name) {
 		return containsOverride(name, getSpecifiedAttributeOverrides());
 	}
@@ -1667,6 +1671,11 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 	public boolean containsSpecifiedAssociationOverride(String name) {
 		return containsOverride(name, getSpecifiedAssociationOverrides());
 	}
+	
+	public boolean containsDefaultAssociationOverride(String name) {
+		return containsOverride(name, getDefaultAssociationOverrides());
+	}
+
 
 	private IOverride overrideNamed(String name, List<? extends IOverride> overrides) {
 		for (IOverride override : overrides) {

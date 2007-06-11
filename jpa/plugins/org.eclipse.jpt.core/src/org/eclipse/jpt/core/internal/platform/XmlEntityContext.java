@@ -202,11 +202,16 @@ public class XmlEntityContext extends XmlTypeContext
 				overridesToRemove.add(attributeOverride);					
 			}
 			else if (!attributeNames.contains(attributeOverride.getName())) {
-				if (javaEntity != null 
-					&& !getXmlTypeMapping().isXmlMetadataComplete()
-					&& !javaEntity.containsSpecifiedAttributeOverride(attributeOverride.getName())) {
-			
-				overridesToRemove.add(attributeOverride);
+				if (javaEntity == null) {
+					overridesToRemove.add(attributeOverride);					
+				}
+				else if (getXmlTypeMapping().isXmlMetadataComplete()) {
+					if (!javaEntity.containsDefaultAttributeOverride(attributeOverride.getName())) {
+						overridesToRemove.add(attributeOverride);											
+					}
+				}
+				else if (!javaEntity.containsSpecifiedAttributeOverride(attributeOverride.getName())) {
+					overridesToRemove.add(attributeOverride);
 				}
 			}
 		}
@@ -242,16 +247,21 @@ public class XmlEntityContext extends XmlTypeContext
 	
 		//remove any default mappings that are not included in the attributeNames collection
 		Collection<IAssociationOverride> overridesToRemove = new ArrayList<IAssociationOverride>();
-		for (IAssociationOverride attributeOverride : getEntity().getDefaultAssociationOverrides()) {
-			if (getEntity().containsSpecifiedAssociationOverride(attributeOverride.getName())) {
-				overridesToRemove.add(attributeOverride);					
+		for (IAssociationOverride associationOverride : getEntity().getDefaultAssociationOverrides()) {
+			if (getEntity().containsSpecifiedAttributeOverride(associationOverride.getName())) {
+				overridesToRemove.add(associationOverride);					
 			}
-			else if (!attributeNames.contains(attributeOverride.getName())) {
-				if (javaEntity != null 
-					&& !getXmlTypeMapping().isXmlMetadataComplete()
-					&& !javaEntity.containsSpecifiedAssociationOverride(attributeOverride.getName())) {
-			
-				overridesToRemove.add(attributeOverride);
+			else if (!attributeNames.contains(associationOverride.getName())) {
+				if (javaEntity == null) {
+					overridesToRemove.add(associationOverride);					
+				}
+				else if (getXmlTypeMapping().isXmlMetadataComplete()) {
+					if (!javaEntity.containsDefaultAssociationOverride(associationOverride.getName())) {
+						overridesToRemove.add(associationOverride);											
+					}
+				}
+				else if (!javaEntity.containsSpecifiedAssociationOverride(associationOverride.getName())) {
+					overridesToRemove.add(associationOverride);
 				}
 			}
 		}
