@@ -118,7 +118,6 @@ public class JavaClassRef extends XmlEObject
 		int dotIndex = fqClassName.lastIndexOf('.');
 		String packageName = (dotIndex >= 0) ? fqClassName.substring(0, dotIndex) : "";
 		String className = (dotIndex >= 0) ? fqClassName.substring(dotIndex + 1, fqClassName.length()) : fqClassName;
-		
 		return JDTTools.findType(packageName, className, getJpaProject().getJavaProject());
 	}
 

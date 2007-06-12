@@ -51,7 +51,7 @@ public class MappingFileRef extends XmlEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String FILE_NAME_EDEFAULT = null;
+	protected static final String FILE_NAME_EDEFAULT = "";
 
 	/**
 	 * The cached value of the '{@link #getFileName() <em>File Name</em>}' attribute.
@@ -84,6 +84,7 @@ public class MappingFileRef extends XmlEObject
 
 	/**
 	 * Returns the value of the '<em><b>File Name</b></em>' attribute.
+	 * The default value is <code>""</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>File Name</em>' attribute isn't clear,
@@ -93,7 +94,7 @@ public class MappingFileRef extends XmlEObject
 	 * @return the value of the '<em>File Name</em>' attribute.
 	 * @see #setFileName(String)
 	 * @see org.eclipse.jpt.core.internal.content.persistence.PersistencePackage#getMappingFileRef_FileName()
-	 * @model unique="false" ordered="false"
+	 * @model default="" unique="false" ordered="false"
 	 * @generated
 	 */
 	public String getFileName() {
@@ -200,21 +201,19 @@ public class MappingFileRef extends XmlEObject
 		IVirtualComponent component = ComponentCore.createComponent(getJpaProject().getProject());
 		IVirtualFolder virtualRootFolder = component.getRootFolder();
 		IVirtualFile virtualMappingFile = virtualRootFolder.getFile(new Path(fileName));
-		
 		// keep track of whether one has been found so that we may know if multiple exist
 		IJpaFile mappingFile = null;
 		for (IFile underlyingFile : virtualMappingFile.getUnderlyingFiles()) {
 			IJpaFile jpaFile = JptCorePlugin.getJpaFile(underlyingFile);
 			if (jpaFile != null) {
 				if (mappingFile != null) {
-					return null;  // multiple do exist
+					return null; // multiple do exist
 				}
 				else {
 					mappingFile = jpaFile;
 				}
 			}
 		}
-		
 		return mappingFile;
 	}
 }

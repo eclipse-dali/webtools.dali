@@ -1081,7 +1081,7 @@ public class PersistencePackage extends EPackageImpl
 		initEAttribute(getPersistenceUnit_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPersistenceUnit_TransactionType(), this.getPersistenceUnitTransactionType(), "transactionType", "JTA", 0, 1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(mappingFileRefEClass, MappingFileRef.class, "MappingFileRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getMappingFileRef_FileName(), theEcorePackage.getEString(), "fileName", null, 0, 1, MappingFileRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getMappingFileRef_FileName(), theEcorePackage.getEString(), "fileName", "", 0, 1, MappingFileRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEClass(javaClassRefEClass, JavaClassRef.class, "JavaClassRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getJavaClassRef_JavaClass(), theEcorePackage.getEString(), "javaClass", null, 0, 1, JavaClassRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEClass(propertiesEClass, Properties.class, "Properties", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

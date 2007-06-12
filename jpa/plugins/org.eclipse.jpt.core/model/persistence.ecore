@@ -43,7 +43,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MappingFileRef" eSuperTypes="core.ecore#//XmlEObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" ordered="false"
-        unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+        unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        defaultValueLiteral=""/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JavaClassRef" eSuperTypes="core.ecore#//XmlEObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="javaClass" ordered="false"
