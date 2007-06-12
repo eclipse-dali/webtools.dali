@@ -15,7 +15,6 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jpt.core.internal.IJpaCoreConstants;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
@@ -34,6 +33,7 @@ import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
@@ -96,7 +96,7 @@ public class BaseJpaProjectContext extends BaseContext
 		// check flexible jpaProject structure
 		IVirtualComponent component = ComponentCore.createComponent(project);
 		IVirtualFolder rootFolder = component.getRootFolder();
-		IVirtualFolder metaInfFolder = rootFolder.getFolder(new Path(IJpaCoreConstants.META_INF));
+		IVirtualFolder metaInfFolder = rootFolder.getFolder(new Path(jpaProject.rootDeployLocation() + '/' + J2EEConstants.META_INF));
 		return metaInfFolder.exists() && CollectionTools.contains(metaInfFolder.getUnderlyingFolders(), file.getParent());
 	}
 

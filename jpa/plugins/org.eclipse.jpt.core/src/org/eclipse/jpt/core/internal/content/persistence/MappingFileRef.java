@@ -200,7 +200,7 @@ public class MappingFileRef extends XmlEObject
 		// check flexible project structure
 		IVirtualComponent component = ComponentCore.createComponent(getJpaProject().getProject());
 		IVirtualFolder virtualRootFolder = component.getRootFolder();
-		IVirtualFile virtualMappingFile = virtualRootFolder.getFile(new Path(fileName));
+		IVirtualFile virtualMappingFile = virtualRootFolder.getFile(new Path(getJpaProject().rootDeployLocation() + '/' + fileName));
 		// keep track of whether one has been found so that we may know if multiple exist
 		IJpaFile mappingFile = null;
 		for (IFile underlyingFile : virtualMappingFile.getUnderlyingFiles()) {

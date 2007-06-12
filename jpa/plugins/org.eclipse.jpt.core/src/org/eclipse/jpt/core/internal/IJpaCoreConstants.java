@@ -25,9 +25,4 @@ public interface IJpaCoreConstants
 	 * Configuration option
 	 */
 	public static final String DISCOVER_ANNOTATED_CLASSES = JptCorePlugin.PLUGIN_ID + ".discoverAnnotatedClasses";  //$NON-NLS-1$
-	
-	/**
-	 * Name of META-INF directory
-	 */
-	public static final String META_INF = "META-INF";
 }

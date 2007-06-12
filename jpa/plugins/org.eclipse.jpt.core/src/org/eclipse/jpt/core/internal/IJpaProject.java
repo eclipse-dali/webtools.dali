@@ -91,6 +91,14 @@ public interface IJpaProject extends IJpaEObject
 	 * @generated
 	 */
 	void setDiscoverAnnotatedClasses(boolean discoverAnnotatedClasses);
+	
+	/**
+	 * Return the root "deploy path" for this project.
+	 * 
+	 * Web projects return "WEB-INF/classes".
+	 * All other projects simply return "".
+	 */
+	String rootDeployLocation();
 
 	/**
 	 * Returns the IJpaFile corresponding to the given IFile.

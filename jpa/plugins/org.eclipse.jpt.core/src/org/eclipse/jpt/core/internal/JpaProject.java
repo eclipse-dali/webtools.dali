@@ -48,6 +48,9 @@ import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
+import org.eclipse.jst.j2ee.internal.J2EEConstants;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -432,6 +435,20 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 */
 	public boolean isSetDiscoverAnnotatedClasses() {
 		return discoverAnnotatedClassesESet;
+	}
+	
+	public String rootDeployLocation() {
+		String metaInfLocation = "";
+		try {
+			if (FacetedProjectFramework.hasProjectFacet(project, IModuleConstants.JST_WEB_MODULE)) {
+				metaInfLocation = J2EEConstants.WEB_INF_CLASSES;
+			}
+		}
+		catch (CoreException ce) {
+			// if exception occurs, we'll take the default location
+			JptCorePlugin.log(ce);
+		}
+		return metaInfLocation;
 	}
 
 	@Override
