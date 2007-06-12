@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.content.orm;
 
 import java.util.Iterator;
+import java.util.Set;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -167,6 +168,12 @@ public abstract class XmlTypeMapping extends XmlEObject implements ITypeMapping
 
 	protected XmlPersistentType createXmlPersistentType() {
 		return OrmFactory.eINSTANCE.createXmlPersistentType(getKey());
+	}
+	
+	@Override
+	protected void addInsignificantFeatureIdsTo(Set<Integer> insignificantFeatureIds) {
+		super.addInsignificantFeatureIdsTo(insignificantFeatureIds);
+		insignificantFeatureIds.add(OrmPackage.XML_TYPE_MAPPING__PERSISTENT_TYPE);
 	}
 
 	/**
@@ -597,7 +604,6 @@ public abstract class XmlTypeMapping extends XmlEObject implements ITypeMapping
 	 * @param oldMapping
 	 */
 	public void initializeFrom(XmlTypeMapping oldMapping) {
-		setPersistentType(oldMapping.getPersistentType());
 	}
 
 	public IJpaContentNode getContentNode(int offset) {

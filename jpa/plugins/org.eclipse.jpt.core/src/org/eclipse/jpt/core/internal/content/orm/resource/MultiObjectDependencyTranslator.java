@@ -33,6 +33,10 @@ public abstract class MultiObjectDependencyTranslator extends DependencyTranslat
 		return translatorMap.get(o);
 	}
 	
+	public void setDelegateFor(EObject o, Translator t) {
+		translatorMap.put(o, t);
+	}
+	
 	public abstract Translator getDelegateFor(String domName, String readAheadName);
 	
 	public EObject createEMFObject(String nodeName, String readAheadName) {

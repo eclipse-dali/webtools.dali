@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.content.orm.resource;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.wst.common.internal.emf.resource.MultiObjectTranslator;
@@ -85,6 +86,11 @@ public class TypeMappingsTranslator extends MultiObjectTranslator
 	@Override
 	public boolean isDependencyParent() {
 		return true;
+	}
+	
+	@Override
+	public EStructuralFeature getDependencyFeature() {
+		return JPA_CORE_XML_PKG.getXmlTypeMapping_PersistentType();
 	}
 	
 	@Override

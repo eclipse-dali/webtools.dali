@@ -513,7 +513,6 @@ public class EntityMappingsInternal extends XmlEObject
 
 	/**
 	 * Returns the value of the '<em><b>Root</b></em>' reference.
-	 * The default value is <code>""</code>.
 	 * It is bidirectional and its opposite is '{@link org.eclipse.jpt.core.internal.content.orm.XmlRootContentNode#getEntityMappings <em>Entity Mappings</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -641,7 +640,6 @@ public class EntityMappingsInternal extends XmlEObject
 
 	/**
 	 * Returns the value of the '<em><b>Persistence Unit Metadata Internal</b></em>' containment reference.
-	 * The default value is <code>""</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Persistence Unit Metadata Internal</em>' containment reference isn't clear,
@@ -1553,6 +1551,7 @@ public class EntityMappingsInternal extends XmlEObject
 
 	public void changeMapping(XmlTypeMapping oldMapping, String newMappingKey) {
 		XmlTypeMapping newTypeMapping = buildXmlTypeMapping(oldMapping.getPersistentType().typeMappingProviders(), newMappingKey);
+		newTypeMapping.setPersistentType(oldMapping.getPersistentType());
 		getTypeMappings().remove(oldMapping);
 		newTypeMapping.initializeFrom(oldMapping);
 		insertTypeMapping(newTypeMapping);
@@ -1638,7 +1637,14 @@ public class EntityMappingsInternal extends XmlEObject
 
 		@Override
 		protected void didAdd(int index, XmlTypeMapping newObject) {
-			getPersistentTypes().add(index, newObject.getPersistentType());
+			XmlPersistentType type = newObject.getPersistentType();
+			if (getPersistentTypes().contains(type)) {
+				// the type has been remapped.  don't remove, simply move.
+				getPersistentTypes().move(index, type);
+			}
+			else {
+				getPersistentTypes().add(index, type);
+			}
 		}
 
 		@Override
@@ -1659,7 +1665,12 @@ public class EntityMappingsInternal extends XmlEObject
 
 		@Override
 		protected void didRemove(int index, XmlTypeMapping oldObject) {
-			getPersistentTypes().remove(oldObject.getPersistentType());
+			XmlPersistentType type = oldObject.getPersistentType();
+			if (type != null) {
+				// the type has been remapped.  don't remove, simply move.
+				// (see didAdd(int, XmlTypeMapping) )
+				getPersistentTypes().remove(oldObject.getPersistentType());
+			}
 		}
 
 		@Override

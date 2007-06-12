@@ -172,6 +172,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	@Override
 	protected void addInsignificantFeatureIdsTo(Set<Integer> insignificantFeatureIds) {
 		super.addInsignificantFeatureIdsTo(insignificantFeatureIds);
+		insignificantFeatureIds.add(OrmPackage.XML_PERSISTENT_TYPE__ATTRIBUTE_MAPPINGS);
 		insignificantFeatureIds.add(OrmPackage.XML_PERSISTENT_TYPE__PERSISTENT_ATTRIBUTES);
 		insignificantFeatureIds.add(OrmPackage.XML_PERSISTENT_TYPE__SPECIFIED_PERSISTENT_ATTRIBUTES);
 		insignificantFeatureIds.add(OrmPackage.XML_PERSISTENT_TYPE__VIRTUAL_PERSISTENT_ATTRIBUTES);
@@ -423,12 +424,21 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	protected void changeMapping(XmlAttributeMapping oldMapping, String newMappingKey) {
 		boolean virtual = oldMapping.isVirtual();
 		XmlAttributeMapping newAttributeMapping = buildAttributeMapping(oldMapping.getPersistentAttribute().attributeMappingProviders(), newMappingKey);
+		// we can't set the attribute to null, but we can set it to a dummy placeholder one
+		// we do this to get the translators to *wake up* and remove adapters from the attribute
+		XmlPersistentAttribute nullAttribute = OrmFactory.eINSTANCE.createXmlPersistentAttribute();
+		XmlPersistentAttribute attribute = oldMapping.getPersistentAttribute();
+		oldMapping.setPersistentAttribute(nullAttribute);
+		
 		if (virtual) {
+			getVirtualPersistentAttributes().remove(attribute);
 			getVirtualAttributeMappings().remove(oldMapping);
 		}
 		else {
+			getSpecifiedPersistentAttributes().remove(attribute);
 			getSpecifiedAttributeMappings().remove(oldMapping);
 		}
+		newAttributeMapping.setPersistentAttribute(attribute);
 		oldMapping.initializeOn(newAttributeMapping);
 		if (virtual) {
 			insertAttributeMapping(newAttributeMapping, getVirtualAttributeMappings());

@@ -9,6 +9,7 @@
 package org.eclipse.jpt.core.internal.content.orm.resource;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.mappings.IBasic;
 import org.eclipse.jpt.core.internal.mappings.IEmbedded;
@@ -31,9 +32,11 @@ public class AttributeMappingsTranslator extends MultiObjectDependencyTranslator
 	//TODO we're not putting the translator in the translator map in this situation
 	public Translator getDelegateFor(EObject o) {
 		Translator translator = super.getDelegateFor(o);
+		
 		if (translator != null) {
 			return translator;
 		}
+		
 		switch (o.eClass().getClassifierID()) {
 			case OrmPackage.XML_ID :
 				translator = new IdTranslator();
@@ -72,6 +75,7 @@ public class AttributeMappingsTranslator extends MultiObjectDependencyTranslator
 				break;
 		}
 		
+		setDelegateFor(o, translator);
 		return translator;
 	}
 	
@@ -114,6 +118,11 @@ public class AttributeMappingsTranslator extends MultiObjectDependencyTranslator
 	@Override
 	public boolean isDependencyParent() {
 		return true;
+	}
+	
+	@Override
+	public EStructuralFeature getDependencyFeature() {
+		return JPA_CORE_XML_PKG.getXmlAttributeMapping_PersistentAttribute();
 	}
 	
 	@Override

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
+import java.util.Set;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -79,6 +80,12 @@ public abstract class XmlAttributeMapping extends XmlEObject
 
 	protected INamedColumn.Owner buildOwner() {
 		return new ColumnOwner();
+	}
+	
+	@Override
+	protected void addInsignificantFeatureIdsTo(Set<Integer> insignificantFeatureIds) {
+		super.addInsignificantFeatureIdsTo(insignificantFeatureIds);
+		insignificantFeatureIds.add(OrmPackage.XML_ATTRIBUTE_MAPPING__PERSISTENT_ATTRIBUTE);
 	}
 
 	/**
@@ -238,7 +245,6 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	protected abstract void initializeOn(XmlAttributeMapping newMapping);
 
 	public void initializeFromXmlAttributeMapping(XmlAttributeMapping oldMapping) {
-		setPersistentAttribute(oldMapping.getPersistentAttribute());
 	}
 
 	public void initializeFromXmlBasicMapping(XmlBasic oldMapping) {
