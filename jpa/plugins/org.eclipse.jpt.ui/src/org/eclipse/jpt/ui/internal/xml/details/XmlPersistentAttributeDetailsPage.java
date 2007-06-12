@@ -14,12 +14,14 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
+import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.content.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.orm.XmlPersistentType;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
+import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.swt.SWT;
@@ -161,4 +163,11 @@ public class XmlPersistentAttributeDetailsPage
 			}
 		}
 	}
+	
+	@Override
+	//TODO Not really how I would want to implement this, but it is low risk fix for bug 192035 for 1.0RC3
+	protected IAttributeMappingUiProvider[] uiProvidersFor(IPersistentAttribute persistentAttribute) {
+		return attributeMappingUiProviders().toArray(new IAttributeMappingUiProvider[attributeMappingUiProviders().size()]);
+	}
+
 }

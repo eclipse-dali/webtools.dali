@@ -221,7 +221,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 		};
 	}
 	
-	IAttributeMappingUiProvider[] uiProvidersFor(IPersistentAttribute persistentAttribute) {
+	protected IAttributeMappingUiProvider[] uiProvidersFor(IPersistentAttribute persistentAttribute) {
 		IAttributeMappingUiProvider[] providers = new IAttributeMappingUiProvider[attributeMappingUiProviders().size() +1];
 		providers[0] =  this.nullAttributeMappingUiProvider;
 		for (IAttributeMappingUiProvider uiProvider : defaultAttributeMappingUiProviders()) {
