@@ -232,10 +232,6 @@ public class JavaEntityContext extends JavaTypeContext
 		for (AssociationOverrideContext aoContext : associationOverrideContexts) {
 			aoContext.addToMessages(messages);
 		}
-		
-		for (PrimaryKeyJoinColumnContext context : pkJoinColumnContexts) {
-			context.addToMessages(messages);
-		}
 	}
 	
 	protected void addTableMessages(List<IMessage> messages) {
