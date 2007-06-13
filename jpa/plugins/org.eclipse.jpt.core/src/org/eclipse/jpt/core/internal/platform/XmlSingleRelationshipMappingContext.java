@@ -66,11 +66,18 @@ public abstract class XmlSingleRelationshipMappingContext
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
 		
-		if (entityOwned()) {
+		//bug 192287 - do not want joinColumn validation errors on the non-owning side
+		//of a bidirectional relationship.  This is a low risk fix for RC3, but a better
+		//solution would be to not have the default joinColumns on the non-owning side.
+		//This would fix another bug that we show default joinColumns in this situation.
+		if (entityOwned() && isOwningSide()) {
 			addJoinColumnMessages(messages);
 		}
 	}
 	
+	protected abstract boolean isOwningSide();
+	
+
 	protected void addJoinColumnMessages(List<IMessage> messages) {
 		XmlSingleRelationshipMapping mapping = singleRelationshipMapping();
 		ITypeMapping typeMapping = mapping.typeMapping();

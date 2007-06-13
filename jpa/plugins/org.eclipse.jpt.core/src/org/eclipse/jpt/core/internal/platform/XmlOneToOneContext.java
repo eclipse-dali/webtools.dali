@@ -88,4 +88,9 @@ public class XmlOneToOneContext
 				);
 		}
 	}
+	
+	@Override
+	protected boolean isOwningSide() {
+		return getMapping().getMappedBy() == null;
+	}
 }

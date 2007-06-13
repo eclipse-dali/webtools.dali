@@ -16,4 +16,9 @@ public class XmlManyToOneContext
 	public XmlManyToOneContext(IContext parentContext, XmlManyToOne mapping) {
 		super(parentContext, mapping);
 	}
+	
+	//ManyToOne mapping is always the owning side
+	protected boolean isOwningSide() {
+		return true;
+	}
 }

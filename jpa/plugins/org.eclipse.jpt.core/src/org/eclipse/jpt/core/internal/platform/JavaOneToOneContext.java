@@ -86,4 +86,9 @@ public class JavaOneToOneContext extends JavaSingleRelationshipMappingContext
 				);
 		}
 	}
+	
+	@Override
+	protected boolean isOwningSide() {
+		return getMapping().getMappedBy() == null;
+	}
 }

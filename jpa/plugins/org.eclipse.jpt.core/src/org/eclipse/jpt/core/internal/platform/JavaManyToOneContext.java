@@ -21,4 +21,10 @@ public class JavaManyToOneContext extends JavaSingleRelationshipMappingContext
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
 	}
+	
+	//ManyToOne mapping is always the owning side
+	protected boolean isOwningSide() {
+		return true;
+	}
+
 }
