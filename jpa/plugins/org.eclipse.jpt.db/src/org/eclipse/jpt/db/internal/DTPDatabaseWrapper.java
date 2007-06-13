@@ -193,6 +193,9 @@ public final class DTPDatabaseWrapper extends Database {
 			else if( dtpCatalog.getName().equals( userName)) {
 				return userName;		// returns user name as default catalog
 			}
+			else if( dtpCatalog.getName().equals( this.getName())) {
+				return this.getName();		 // special catalog with same name as DB (PostgreSQL)
+			}
 		}
 		throw new NoSuchElementException();
 	}
