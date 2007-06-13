@@ -13,6 +13,7 @@ import java.util.Properties;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.IManagedConnection;
 import org.eclipse.datatools.connectivity.db.generic.IDBDriverDefinitionConstants;
+import org.eclipse.datatools.connectivity.drivers.DriverManager;
 import org.eclipse.datatools.sqltools.core.DatabaseIdentifier;
 import org.eclipse.datatools.sqltools.core.profile.ProfileUtil;
 
@@ -202,6 +203,16 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 	@Override
 	public String getProviderId() {
 		return this.dtpConnectionProfile.getProviderId();
+	}
+
+	@Override
+	public String getDriverDefinitionId() {
+		return this.getProperties().getProperty( DTPConnectionProfileWrapper.DRIVER_DEFINITION_PROP_ID);
+	}
+
+	@Override
+	public String getDriverJarList() {
+		return DriverManager.getInstance().getDriverInstanceByID( this.getDriverDefinitionId()).getJarList();
 	}
 	
 	private Properties getProperties() {

@@ -123,6 +123,10 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	public abstract String getInstanceId();
 
 	public abstract String getProviderId();
+
+	public abstract String getDriverDefinitionId();
+	
+	public abstract String getDriverJarList();
 	
 	public abstract boolean isConnected();
 

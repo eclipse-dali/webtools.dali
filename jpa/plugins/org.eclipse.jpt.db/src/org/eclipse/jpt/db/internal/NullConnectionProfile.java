@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
+import org.eclipse.datatools.connectivity.drivers.DriverManager;
 import org.eclipse.jpt.utility.internal.ClassTools;
 
 /**
@@ -138,6 +139,16 @@ public final class NullConnectionProfile extends ConnectionProfile {
 
 	@Override
 	public String getProviderId() {
+		return "";
+	}
+
+	@Override
+	public String getDriverDefinitionId() {
+		return "";
+	}
+
+	@Override
+	public String getDriverJarList() {
 		return "";
 	}
 	
