@@ -352,14 +352,6 @@ public class PersistenceXmlRootContentNode extends XmlEObject
 		return null;
 	}
 
-	public ITextRange selectionTextRange() {
-		return validationTextRange();
-	}
-
-	public ITextRange fullTextRange() {
-		return validationTextRange();
-	}
-
 	public Object getId() {
 		return IPersistenceXmlContentNodes.PERSISTENCEXML_ROOT_ID;
 	}
