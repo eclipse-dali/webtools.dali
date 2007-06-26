@@ -31,6 +31,8 @@
       <import feature="org.eclipse.datatools.modelbase.feature"/>
       <import feature="org.eclipse.datatools.sqldevtools.feature"/>
       <import feature="org.eclipse.datatools.enablement.feature"/>
+      <import plugin="org.eclipse.datatools.connectivity.db.generic.ui"/>
+      <import plugin="org.eclipse.datatools.connectivity.db.generic"/>  
       <import plugin="org.eclipse.datatools.doc.user"/>
       <import plugin="org.eclipse.jdt.core"/>
       <import plugin="org.eclipse.core.commands"/>
