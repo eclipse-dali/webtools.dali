@@ -138,6 +138,10 @@ public class JDTTools {
 		if (resolvedTypes.length > 1) {
 			return null;
 		}
+		if (resolvedTypes[0][0].length() == 0) {
+			//handle Default package case - bug #193618
+			return resolvedTypes[0][1];
+		}
 		return resolvedTypes[0][0] + "." + resolvedTypes[0][1];
 	}
 
