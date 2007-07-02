@@ -34,7 +34,6 @@ public class JpaPerspectiveFactory implements IPerspectiveFactory {
 		IFolderLayout outputFolder = layout.createFolder(
 				"bottom", IPageLayout.BOTTOM, (float) 0.60, editorArea); //$NON-NLS-1$
 		outputFolder.addView(IPageLayout.ID_PROBLEM_VIEW);
-		outputFolder.addView("org.eclipse.pde.runtime.LogView"); //$NON-NLS-1$
 		outputFolder.addPlaceholder(IPageLayout.ID_BOOKMARKS);
 		outputFolder.addPlaceholder(IProgressConstants.PROGRESS_VIEW_ID);
 
