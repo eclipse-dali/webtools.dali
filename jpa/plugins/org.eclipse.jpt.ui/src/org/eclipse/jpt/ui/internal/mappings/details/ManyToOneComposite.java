@@ -120,7 +120,7 @@ public class ManyToOneComposite extends BaseJpaComposite
 		this.manyToOne = (IManyToOne) obj;
 		this.targetEntityChooser.populate(this.manyToOne);
 		this.fetchTypeComboViewer.populate(CommonWidgets.buildSingleRelationshipMappingFetchEnumHolder(this.manyToOne));
-		this.optionalComboViewer.populate(new OptionalHolder(this.manyToOne));
+		this.optionalComboViewer.populate(CommonWidgets.buildOptionalHolder(this.manyToOne));
 		this.cascadeComposite.populate(this.manyToOne);
 		this.joinColumnComposite.populate(this.manyToOne);
 	}
@@ -147,47 +147,5 @@ public class ManyToOneComposite extends BaseJpaComposite
 		this.cascadeComposite.dispose();
 		this.joinColumnComposite.dispose();
 		super.dispose();
-	}
-	
-	private class OptionalHolder extends EObjectImpl implements EnumHolder {
-		
-		private IManyToOne manyToOne;
-		
-		OptionalHolder(IManyToOne manyToOne) {
-			super();
-			this.manyToOne = manyToOne;
-		}
-		
-		public Object get() {
-			return this.manyToOne.getOptional();
-		}
-		
-		public void set(Object enumSetting) {
-			this.manyToOne.setOptional((DefaultTrueBoolean) enumSetting);
-		}
-		
-		public Class featureClass() {
-			return IManyToOne.class;
-		}
-		
-		public int featureId() {
-			return JpaCoreMappingsPackage.IMANY_TO_ONE__OPTIONAL;
-		}
-		
-		public EObject wrappedObject() {
-			return this.manyToOne;
-		}
-		
-		public Object[] enumValues() {
-			return DefaultTrueBoolean.VALUES.toArray();
-		}
-		public Object defaultValue() {
-			return DefaultTrueBoolean.DEFAULT;
-		}
-		
-		public String defaultString() {
-			//TODO move this out of the UI into the model
-			return "True";
-		}
 	}
 }

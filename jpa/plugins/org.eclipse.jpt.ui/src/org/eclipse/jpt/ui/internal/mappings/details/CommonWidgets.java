@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.jpt.core.internal.mappings.DefaultEagerFetchType;
 import org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType;
+import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
 import org.eclipse.jpt.core.internal.mappings.EnumType;
 import org.eclipse.jpt.core.internal.mappings.IAbstractColumn;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
@@ -99,7 +100,11 @@ public class CommonWidgets
 	public static EnumHolder buildSingleRelationshipMappingFetchEnumHolder(ISingleRelationshipMapping mapping) {
 		return new SingleRelationshipMappingFetchHolder(mapping);
 	}
-		
+	
+	public static EnumHolder buildOptionalHolder(ISingleRelationshipMapping mapping) {
+		return new OptionalHolder(mapping);
+	}
+	
 	public static Label buildColumnLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
 		return widgetFactory.createLabel(parent, JptUiMappingsMessages.ColumnChooser_label);
 	}
@@ -257,4 +262,49 @@ public class CommonWidgets
 			getColumn().setSpecifiedTable(newName);
 		}
 	}
+	
+	private static class OptionalHolder extends EObjectImpl implements EnumHolder {
+		
+		private ISingleRelationshipMapping mapping;
+		
+		OptionalHolder(ISingleRelationshipMapping mapping) {
+			super();
+			this.mapping = mapping;
+		}
+		
+		public Object get() {
+			return this.mapping.getOptional();
+		}
+		
+		public void set(Object enumSetting) {
+			this.mapping.setOptional((DefaultTrueBoolean) enumSetting);
+		}
+		
+		public Class featureClass() {
+			return ISingleRelationshipMapping.class;
+		}
+		
+		public int featureId() {
+			return JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__OPTIONAL;
+		}
+		
+		public EObject wrappedObject() {
+			return this.mapping;
+		}
+		
+		public Object[] enumValues() {
+			return DefaultTrueBoolean.VALUES.toArray();
+		}
+		
+		public Object defaultValue() {
+			return DefaultTrueBoolean.DEFAULT;
+		}
+		
+		public String defaultString() {
+			//TODO move this out of the UI into the model
+			return "True";
+		}
+
+	}
+
 }

@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
 import org.eclipse.jpt.core.internal.mappings.IOneToOne;
+import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
@@ -128,7 +129,7 @@ public class OneToOneComposite extends BaseJpaComposite
 		this.targetEntityChooser.populate(this.oneToOne);
 		this.fetchTypeComboViewer.populate(CommonWidgets.buildSingleRelationshipMappingFetchEnumHolder(this.oneToOne));
 		this.mappedByCombo.populate(this.oneToOne);
-		this.optionalComboViewer.populate(new OptionalHolder(this.oneToOne));
+		this.optionalComboViewer.populate(CommonWidgets.buildOptionalHolder(this.oneToOne));
 		this.cascadeComposite.populate(this.oneToOne);
 		this.joinColumnComposite.populate(this.oneToOne);
 	}
@@ -159,48 +160,5 @@ public class OneToOneComposite extends BaseJpaComposite
 		super.dispose();
 	}
 
-	private class OptionalHolder extends EObjectImpl implements EnumHolder {
-		
-		private IOneToOne oneToOne;
-		
-		OptionalHolder(IOneToOne oneToOne) {
-			super();
-			this.oneToOne = oneToOne;
-		}
-		
-		public Object get() {
-			return this.oneToOne.getOptional();
-		}
-		
-		public void set(Object enumSetting) {
-			this.oneToOne.setOptional((DefaultTrueBoolean) enumSetting);
-		}
-		
-		public Class featureClass() {
-			return IOneToOne.class;
-		}
-		
-		public int featureId() {
-			return JpaCoreMappingsPackage.IONE_TO_ONE__OPTIONAL;
-		}
-		
-		public EObject wrappedObject() {
-			return this.oneToOne;
-		}
-		
-		public Object[] enumValues() {
-			return DefaultTrueBoolean.VALUES.toArray();
-		}
-		
-		public Object defaultValue() {
-			return DefaultTrueBoolean.DEFAULT;
-		}
-		
-		public String defaultString() {
-			//TODO move this out of the UI into the model
-			return "True";
-		}
-
-	}
 
 }
