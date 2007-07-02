@@ -532,7 +532,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	}
 
 	public Iterator<IJpaFile> jpaFiles() {
-		return new ReadOnlyIterator<IJpaFile>(getFiles().iterator());
+		return new CloneIterator<IJpaFile>(getFiles());
 	}
 
 	public Collection<IJpaFile> jpaFiles(String contentType) {
