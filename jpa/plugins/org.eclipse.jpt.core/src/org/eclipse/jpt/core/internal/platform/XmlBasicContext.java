@@ -66,6 +66,7 @@ public class XmlBasicContext extends XmlAttributeContext
 	}
 	
 	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
 		if (entityOwned()) {
 			addColumnMessages(messages);
 		}
