@@ -248,7 +248,7 @@ public class XmlEntityContext extends XmlTypeContext
 		//remove any default mappings that are not included in the attributeNames collection
 		Collection<IAssociationOverride> overridesToRemove = new ArrayList<IAssociationOverride>();
 		for (IAssociationOverride associationOverride : getEntity().getDefaultAssociationOverrides()) {
-			if (getEntity().containsSpecifiedAttributeOverride(associationOverride.getName())) {
+			if (getEntity().containsSpecifiedAssociationOverride(associationOverride.getName())) {
 				overridesToRemove.add(associationOverride);					
 			}
 			else if (!attributeNames.contains(associationOverride.getName())) {
