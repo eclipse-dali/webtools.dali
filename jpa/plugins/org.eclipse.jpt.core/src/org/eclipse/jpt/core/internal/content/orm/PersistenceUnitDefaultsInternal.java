@@ -668,7 +668,7 @@ public class PersistenceUnitDefaultsInternal extends XmlEObject
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_DEFAULTS_INTERNAL__CASCADE_PERSIST_INTERNAL, oldCascadePersistInternal, cascadePersistInternal));
 			//notification so the UI is updated when the xml changes, can't call the UI api 
 			//because it has other side effects
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_DEFAULTS_INTERNAL__CASCADE_PERSIST, newCascadePersistInternal, newCascadePersistInternal));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_DEFAULTS_INTERNAL__CASCADE_PERSIST, oldCascadePersistInternal, newCascadePersistInternal));
 		}
 	}
 
