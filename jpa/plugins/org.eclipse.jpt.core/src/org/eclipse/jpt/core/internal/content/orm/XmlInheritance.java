@@ -103,7 +103,6 @@ public class XmlInheritance extends XmlEObject
 
 	/**
 	 * Returns the value of the '<em><b>Strategy</b></em>' attribute.
-	 * The default value is <code>""</code>.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.mappings.InheritanceType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -115,7 +114,7 @@ public class XmlInheritance extends XmlEObject
 	 * @see org.eclipse.jpt.core.internal.mappings.InheritanceType
 	 * @see #setStrategy(InheritanceType)
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlInheritance_Strategy()
-	 * @model default=""
+	 * @model
 	 * @generated
 	 */
 	public InheritanceType getStrategy() {

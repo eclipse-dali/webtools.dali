@@ -19,7 +19,6 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
-import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.JpaFile;
 import org.eclipse.jpt.core.internal.XmlEObject;
@@ -75,7 +74,6 @@ public class PersistenceXmlRootContentNode extends XmlEObject
 
 	/**
 	 * Returns the value of the '<em><b>Jpa File</b></em>' container reference.
-	 * The default value is <code>""</code>.
 	 * It is bidirectional and its opposite is '{@link org.eclipse.jpt.core.internal.JpaFile#getContent <em>Content</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -86,7 +84,7 @@ public class PersistenceXmlRootContentNode extends XmlEObject
 	 * @return the value of the '<em>Jpa File</em>' container reference.
 	 * @see org.eclipse.jpt.core.internal.content.persistence.PersistencePackage#getIJpaRootContentNode_JpaFile()
 	 * @see org.eclipse.jpt.core.internal.JpaFile#getContent
-	 * @model opposite="content" changeable="false"
+	 * @model opposite="content" transient="false" changeable="false"
 	 * @generated
 	 */
 	public IJpaFile getJpaFile() {

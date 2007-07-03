@@ -48,7 +48,7 @@ public interface IEmbedded extends IAttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEmbedded_AttributeOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAttributeOverride" containment="true" transient="true" changeable="false" volatile="true"
+	 * @model containment="true" transient="true" changeable="false" volatile="true"
 	 * @generated
 	 */
 	EList<IAttributeOverride> getAttributeOverrides();
@@ -64,7 +64,7 @@ public interface IEmbedded extends IAttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Attribute Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEmbedded_SpecifiedAttributeOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAttributeOverride" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IAttributeOverride> getSpecifiedAttributeOverrides();
@@ -80,7 +80,7 @@ public interface IEmbedded extends IAttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Attribute Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEmbedded_DefaultAttributeOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAttributeOverride" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IAttributeOverride> getDefaultAttributeOverrides();

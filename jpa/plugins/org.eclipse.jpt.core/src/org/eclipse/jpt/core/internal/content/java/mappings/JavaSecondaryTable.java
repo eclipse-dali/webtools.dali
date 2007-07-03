@@ -163,7 +163,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Primary Key Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getISecondaryTable_SpecifiedPrimaryKeyJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
@@ -184,7 +184,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Primary Key Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getISecondaryTable_DefaultPrimaryKeyJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns() {

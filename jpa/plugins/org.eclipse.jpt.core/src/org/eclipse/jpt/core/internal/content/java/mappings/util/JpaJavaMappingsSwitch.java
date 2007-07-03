@@ -1145,13 +1145,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Entity</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Entity</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Entity</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Entity</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1160,13 +1160,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Mapped Superclass</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Mapped Superclass</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Mapped Superclass</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Mapped Superclass</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1175,13 +1175,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Embeddable</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Embeddable</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Embeddable</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Embeddable</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1190,13 +1190,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Null Type Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Null Type Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Null Type Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Null Type Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1205,13 +1205,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Null Attribute Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Null Attribute Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Null Attribute Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Null Attribute Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1220,13 +1220,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Basic</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Basic</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Basic</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Basic</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1235,13 +1235,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Id</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Id</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Id</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Id</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1250,13 +1250,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Transient</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Transient</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Transient</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Transient</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1265,13 +1265,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Version</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Version</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Version</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Version</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1280,13 +1280,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Embedded Id</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Embedded Id</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Embedded Id</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Embedded Id</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1295,13 +1295,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Embedded</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Embedded</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Embedded</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Embedded</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1310,13 +1310,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Attribute Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Attribute Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Attribute Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Attribute Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1325,13 +1325,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Type Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Type Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Type Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Type Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1340,13 +1340,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Abstract Java Table</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Abstract Java Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Abstract Java Table</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Abstract Java Table</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1355,13 +1355,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Table</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Table</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Table</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1370,13 +1370,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1385,13 +1385,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Relationship Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Relationship Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Relationship Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Relationship Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1400,13 +1400,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Single Relationship Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Single Relationship Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Single Relationship Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Single Relationship Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1415,13 +1415,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java One To Many</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java One To Many</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java One To Many</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java One To Many</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1430,13 +1430,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Many To Many</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Many To Many</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Many To Many</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Many To Many</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1445,13 +1445,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Join Table</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Join Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Join Table</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Join Table</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1460,13 +1460,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Named Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Named Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Named Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Named Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1475,13 +1475,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Abstract Java Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Abstract Java Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Abstract Java Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Abstract Java Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1490,13 +1490,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Join Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Join Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Join Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Join Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1505,13 +1505,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Override</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Override</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Override</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Override</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1520,13 +1520,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Attribute Override</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Attribute Override</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Attribute Override</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Attribute Override</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1535,13 +1535,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Association Override</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Association Override</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Association Override</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Association Override</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1550,13 +1550,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Discriminator Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Discriminator Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Discriminator Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Discriminator Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1565,13 +1565,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Primary Key Join Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Primary Key Join Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Primary Key Join Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Primary Key Join Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1580,13 +1580,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Generated Value</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Generated Value</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Generated Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Generated Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1595,13 +1595,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Generator</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Generator</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Generator</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Generator</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1610,13 +1610,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Table Generator</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Table Generator</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Table Generator</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Table Generator</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1625,13 +1625,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Sequence Generator</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Sequence Generator</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Sequence Generator</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Sequence Generator</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1640,13 +1640,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Abstract Query</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Abstract Query</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Abstract Query</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Abstract Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1655,13 +1655,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Named Query</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Named Query</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Named Query</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Named Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1670,13 +1670,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Named Native Query</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Named Native Query</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Named Native Query</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Named Native Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1685,13 +1685,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Query Hint</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Query Hint</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Query Hint</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Query Hint</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1700,13 +1700,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Unique Constraint</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Unique Constraint</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Unique Constraint</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Unique Constraint</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1715,13 +1715,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Cascade</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Cascade</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Cascade</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Cascade</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1730,13 +1730,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Secondary Table</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Secondary Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Secondary Table</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Secondary Table</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1745,13 +1745,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJpa EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJpa EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJpa EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJpa EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1760,13 +1760,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Jpa EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Jpa EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Jpa EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Jpa EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1775,13 +1775,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJpa Source Object</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJpa Source Object</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJpa Source Object</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJpa Source Object</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1790,13 +1790,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1805,13 +1805,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Many To One</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Many To One</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Many To One</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Many To One</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1820,13 +1820,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java One To One</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java One To One</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java One To One</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java One To One</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1835,13 +1835,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Multi Relationship Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Multi Relationship Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Multi Relationship Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Multi Relationship Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1850,13 +1850,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IType Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IType Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IType Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IType Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1865,13 +1865,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJava Type Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJava Type Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJava Type Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJava Type Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1880,13 +1880,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IEntity</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IEntity</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IEntity</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IEntity</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1895,13 +1895,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IMapped Superclass</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IMapped Superclass</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IMapped Superclass</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IMapped Superclass</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1910,13 +1910,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IEmbeddable</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IEmbeddable</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IEmbeddable</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IEmbeddable</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1925,13 +1925,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IAttribute Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IAttribute Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IAttribute Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IAttribute Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1940,13 +1940,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJava Attribute Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJava Attribute Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJava Attribute Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJava Attribute Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1955,13 +1955,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IColumn Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IColumn Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IColumn Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IColumn Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1970,13 +1970,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IBasic</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IBasic</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IBasic</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IBasic</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1985,13 +1985,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IId</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IId</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IId</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IId</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2000,13 +2000,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ITransient</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ITransient</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ITransient</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ITransient</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2015,13 +2015,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IVersion</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IVersion</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IVersion</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IVersion</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2030,13 +2030,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IEmbedded Id</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IEmbedded Id</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IEmbedded Id</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IEmbedded Id</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2045,13 +2045,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IEmbedded</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IEmbedded</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IEmbedded</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IEmbedded</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2060,13 +2060,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ITable</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ITable</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ITable</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ITable</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2075,13 +2075,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IColumn</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IColumn</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IColumn</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IColumn</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2090,13 +2090,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IAbstract Join Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IAbstract Join Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IAbstract Join Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IAbstract Join Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2105,13 +2105,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IRelationship Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IRelationship Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IRelationship Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IRelationship Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2120,13 +2120,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IMulti Relationship Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IMulti Relationship Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IMulti Relationship Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IMulti Relationship Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2135,13 +2135,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IOne To Many</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IOne To Many</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IOne To Many</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IOne To Many</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2150,13 +2150,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IMany To Many</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IMany To Many</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IMany To Many</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IMany To Many</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2165,13 +2165,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJoin Table</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJoin Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJoin Table</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJoin Table</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2180,13 +2180,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>INamed Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>INamed Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>INamed Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>INamed Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2195,13 +2195,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IAbstract Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IAbstract Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IAbstract Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IAbstract Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2210,13 +2210,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJoin Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJoin Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJoin Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJoin Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2225,13 +2225,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IOverride</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IOverride</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IOverride</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IOverride</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2240,13 +2240,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IAttribute Override</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IAttribute Override</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IAttribute Override</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IAttribute Override</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2255,13 +2255,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IAssociation Override</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IAssociation Override</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IAssociation Override</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IAssociation Override</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2270,13 +2270,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IDiscriminator Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IDiscriminator Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IDiscriminator Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IDiscriminator Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2285,13 +2285,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IPrimary Key Join Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IPrimary Key Join Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IPrimary Key Join Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IPrimary Key Join Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2300,13 +2300,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IGenerated Value</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IGenerated Value</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IGenerated Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IGenerated Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2315,13 +2315,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IGenerator</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IGenerator</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IGenerator</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IGenerator</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2330,13 +2330,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ITable Generator</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ITable Generator</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ITable Generator</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ITable Generator</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2345,13 +2345,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ISequence Generator</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ISequence Generator</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ISequence Generator</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ISequence Generator</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2360,13 +2360,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IQuery</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IQuery</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IQuery</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IQuery</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2375,13 +2375,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>INamed Query</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>INamed Query</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>INamed Query</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>INamed Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2390,13 +2390,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>INamed Native Query</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>INamed Native Query</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>INamed Native Query</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>INamed Native Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2405,13 +2405,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IQuery Hint</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IQuery Hint</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IQuery Hint</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IQuery Hint</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2420,13 +2420,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IUnique Constraint</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IUnique Constraint</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IUnique Constraint</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IUnique Constraint</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2435,13 +2435,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ICascade</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ICascade</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ICascade</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ICascade</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2450,13 +2450,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ISecondary Table</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ISecondary Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ISecondary Table</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ISecondary Table</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2465,13 +2465,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ISingle Relationship Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ISingle Relationship Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ISingle Relationship Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ISingle Relationship Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2480,13 +2480,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IMany To One</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IMany To One</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IMany To One</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IMany To One</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2495,13 +2495,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IOne To One</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IOne To One</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IOne To One</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IOne To One</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2510,13 +2510,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>INon Owning Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>INon Owning Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>INon Owning Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>INon Owning Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2525,13 +2525,13 @@ public class JpaJavaMappingsSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch, but this is the last case anyway.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */

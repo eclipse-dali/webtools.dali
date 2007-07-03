@@ -554,7 +554,7 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 		}
 		setResolvedTargetEntity(null);
 	}
-	
+
 	/**
 	 * the default 'targetEntity' is calculated from the attribute type;
 	 * return null if the attribute type cannot possibly be an entity
@@ -578,5 +578,4 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 		}
 		return JDTTools.resolve(Signature.toString(signature), jdtType);
 	}
-
 }

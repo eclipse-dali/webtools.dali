@@ -568,7 +568,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Virtual Secondary Tables</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntity_VirtualSecondaryTables()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.ISecondaryTable" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<ISecondaryTable> getVirtualSecondaryTables() {
@@ -613,7 +613,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Secondary Tables</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIEntity_SpecifiedSecondaryTables()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.ISecondaryTable" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<ISecondaryTable> getSpecifiedSecondaryTables() {
@@ -920,7 +920,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Primary Key Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIEntity_SpecifiedPrimaryKeyJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
@@ -941,7 +941,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Primary Key Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIEntity_DefaultPrimaryKeyJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns() {
@@ -969,7 +969,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Attribute Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIEntity_SpecifiedAttributeOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAttributeOverride" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IAttributeOverride> getSpecifiedAttributeOverrides() {
@@ -990,7 +990,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Attribute Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIEntity_DefaultAttributeOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAttributeOverride" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IAttributeOverride> getDefaultAttributeOverrides() {
@@ -1018,7 +1018,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Association Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIEntity_SpecifiedAssociationOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAssociationOverride" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IAssociationOverride> getSpecifiedAssociationOverrides() {
@@ -1039,7 +1039,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Association Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIEntity_DefaultAssociationOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAssociationOverride" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IAssociationOverride> getDefaultAssociationOverrides() {
@@ -1060,7 +1060,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Queries</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIEntity_NamedQueries()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.INamedQuery" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<INamedQuery> getNamedQueries() {
@@ -1081,7 +1081,7 @@ public class XmlEntityInternal extends XmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Native Queries</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIEntity_NamedNativeQueries()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.INamedNativeQuery" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<INamedNativeQuery> getNamedNativeQueries() {

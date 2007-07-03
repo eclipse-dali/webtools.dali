@@ -107,7 +107,7 @@ public class Persistence extends XmlEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Persistence Units</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.persistence.PersistencePackage#getPersistence_PersistenceUnits()
-	 * @model type="org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<PersistenceUnit> getPersistenceUnits() {

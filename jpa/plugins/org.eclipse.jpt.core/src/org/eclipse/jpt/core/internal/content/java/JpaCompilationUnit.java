@@ -89,7 +89,6 @@ public class JpaCompilationUnit extends JavaEObject
 
 	/**
 	 * Returns the value of the '<em><b>Jpa File</b></em>' container reference.
-	 * The default value is <code>""</code>.
 	 * It is bidirectional and its opposite is '{@link org.eclipse.jpt.core.internal.JpaFile#getContent <em>Content</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -100,7 +99,7 @@ public class JpaCompilationUnit extends JavaEObject
 	 * @return the value of the '<em>Jpa File</em>' container reference.
 	 * @see org.eclipse.jpt.core.internal.content.java.JpaJavaPackage#getIJpaRootContentNode_JpaFile()
 	 * @see org.eclipse.jpt.core.internal.JpaFile#getContent
-	 * @model opposite="content" changeable="false"
+	 * @model opposite="content" transient="false" changeable="false"
 	 * @generated
 	 */
 	@Override
@@ -121,7 +120,7 @@ public class JpaCompilationUnit extends JavaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Types</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.java.JpaJavaPackage#getJpaCompilationUnit_Types()
-	 * @model type="org.eclipse.jpt.core.internal.content.java.JavaPersistentType" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<JavaPersistentType> getTypes() {
@@ -368,13 +367,13 @@ public class JpaCompilationUnit extends JavaEObject
 				this.synchCompilationUnitWithJavaDelta(delta);
 				break;
 			default :
-				break;  // the event is somehow lower than a compilation unit
+				break; // the event is somehow lower than a compilation unit
 		}
 	}
 
 	private void synchChildrenWithJavaDelta(IJavaElementDelta delta) {
 		for (IJavaElementDelta child : delta.getAffectedChildren()) {
-			this.synchWithJavaDelta(child);  // recurse
+			this.synchWithJavaDelta(child); // recurse
 		}
 	}
 

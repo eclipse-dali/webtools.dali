@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.content.java;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.notify.Notification;

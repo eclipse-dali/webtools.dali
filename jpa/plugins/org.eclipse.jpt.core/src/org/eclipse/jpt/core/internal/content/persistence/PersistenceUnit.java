@@ -388,7 +388,7 @@ public class PersistenceUnit extends XmlEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapping Files</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.persistence.PersistencePackage#getPersistenceUnit_MappingFiles()
-	 * @model type="org.eclipse.jpt.core.internal.content.persistence.MappingFileRef" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<MappingFileRef> getMappingFiles() {
@@ -405,7 +405,7 @@ public class PersistenceUnit extends XmlEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Jar Files</em>' attribute list.
 	 * @see org.eclipse.jpt.core.internal.content.persistence.PersistencePackage#getPersistenceUnit_JarFiles()
-	 * @model type="java.lang.String" unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public EList<String> getJarFiles() {
@@ -422,7 +422,7 @@ public class PersistenceUnit extends XmlEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Classes</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.persistence.PersistencePackage#getPersistenceUnit_Classes()
-	 * @model type="org.eclipse.jpt.core.internal.content.persistence.JavaClassRef" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<JavaClassRef> getClasses() {

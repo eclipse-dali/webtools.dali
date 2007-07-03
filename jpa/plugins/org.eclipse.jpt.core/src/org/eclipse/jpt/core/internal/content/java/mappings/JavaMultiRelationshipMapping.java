@@ -372,7 +372,7 @@ public abstract class JavaMultiRelationshipMapping
 	 * @generated NOT
 	 */
 	public boolean isCustomOrdering() {
-		return ! StringTools.stringIsEmpty(getOrderBy());
+		return !StringTools.stringIsEmpty(getOrderBy());
 	}
 
 	public ITextRange mappedByTextRange() {

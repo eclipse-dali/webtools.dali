@@ -596,7 +596,6 @@ public class PersistenceUnitDefaultsInternal extends XmlEObject
 
 	/**
 	 * Returns the value of the '<em><b>Access Internal</b></em>' attribute.
-	 * The default value is <code>""</code>.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.AccessType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -608,7 +607,7 @@ public class PersistenceUnitDefaultsInternal extends XmlEObject
 	 * @see org.eclipse.jpt.core.internal.AccessType
 	 * @see #setAccessInternal(AccessType)
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitDefaultsInternal_AccessInternal()
-	 * @model default=""
+	 * @model
 	 * @generated
 	 */
 	public AccessType getAccessInternal() {

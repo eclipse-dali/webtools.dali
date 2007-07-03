@@ -197,7 +197,7 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 	public String getDefaultReferencedColumnName() {
 		return defaultReferencedColumnName;
 	}
-	
+
 	protected void setDefaultReferencedColumnName(String newDefaultReferencedColumnName) {
 		String oldDefaultReferencedColumnName = this.defaultReferencedColumnName;
 		this.defaultReferencedColumnName = newDefaultReferencedColumnName;
@@ -422,10 +422,9 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
 		return (referencedColumnNameNode == null) ? validationTextRange() : buildTextRange(referencedColumnNameNode);
 	}
-	
+
 	public void refreshDefaults(DefaultsContext defaultsContext) {
 		setDefaultReferencedColumnName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_REFERENCED_COLUMN_NAME_KEY));
 		setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_NAME_KEY));
 	}
-
 }

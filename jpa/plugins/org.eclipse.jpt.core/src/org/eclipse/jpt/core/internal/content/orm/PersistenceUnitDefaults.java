@@ -87,7 +87,6 @@ public interface PersistenceUnitDefaults extends IXmlEObject
 
 	/**
 	 * Returns the value of the '<em><b>Access</b></em>' attribute.
-	 * The default value is <code>""</code>.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.AccessType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -99,7 +98,7 @@ public interface PersistenceUnitDefaults extends IXmlEObject
 	 * @see org.eclipse.jpt.core.internal.AccessType
 	 * @see #setAccess(AccessType)
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getPersistenceUnitDefaults_Access()
-	 * @model default="" volatile="true"
+	 * @model volatile="true"
 	 * @generated
 	 */
 	AccessType getAccess();

@@ -14,7 +14,7 @@ import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -137,12 +137,12 @@ public class JavaUniqueConstraint extends JavaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column Names</em>' attribute list.
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIUniqueConstraint_ColumnNames()
-	 * @model type="java.lang.String"
+	 * @model unique="false"
 	 * @generated
 	 */
 	public EList<String> getColumnNames() {
 		if (columnNames == null) {
-			columnNames = new EDataTypeUniqueEList<String>(String.class, this, JpaJavaMappingsPackage.JAVA_UNIQUE_CONSTRAINT__COLUMN_NAMES);
+			columnNames = new EDataTypeEList<String>(String.class, this, JpaJavaMappingsPackage.JAVA_UNIQUE_CONSTRAINT__COLUMN_NAMES);
 		}
 		return columnNames;
 	}

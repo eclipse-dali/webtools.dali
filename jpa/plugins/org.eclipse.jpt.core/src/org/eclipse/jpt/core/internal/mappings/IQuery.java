@@ -95,7 +95,7 @@ public interface IQuery extends IJpaSourceObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Hints</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIQuery_Hints()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IQueryHint" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IQueryHint> getHints();

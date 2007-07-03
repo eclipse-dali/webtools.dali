@@ -71,7 +71,7 @@ public class Properties extends XmlEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Properties</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.persistence.PersistencePackage#getProperties_Properties()
-	 * @model type="org.eclipse.jpt.core.internal.content.persistence.Property" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<Property> getProperties() {

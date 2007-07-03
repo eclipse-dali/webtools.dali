@@ -334,7 +334,7 @@ public abstract class XmlMultiRelationshipMappingInternal
 	 * @generated NOT
 	 */
 	public boolean isCustomOrdering() {
-		return ! StringTools.stringIsEmpty(getOrderBy());
+		return !StringTools.stringIsEmpty(getOrderBy());
 	}
 
 	public ITextRange mappedByTextRange() {
@@ -816,7 +816,7 @@ public abstract class XmlMultiRelationshipMappingInternal
 			setOrderBy(targetEntity.primaryKeyAttributeName() + " ASC");
 		}
 	}
-	
+
 	//TODO copied from JavaMultiRelationshipMapping
 	/**
 	 * extract the element type from the specified container signature and

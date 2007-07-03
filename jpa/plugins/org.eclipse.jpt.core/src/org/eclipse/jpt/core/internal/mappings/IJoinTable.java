@@ -52,7 +52,7 @@ public interface IJoinTable extends ITable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIJoinTable_JoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IJoinColumn" containment="true" transient="true" changeable="false" volatile="true"
+	 * @model containment="true" transient="true" changeable="false" volatile="true"
 	 * @generated
 	 */
 	EList<IJoinColumn> getJoinColumns();
@@ -68,7 +68,7 @@ public interface IJoinTable extends ITable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIJoinTable_SpecifiedJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IJoinColumn> getSpecifiedJoinColumns();
@@ -84,7 +84,7 @@ public interface IJoinTable extends ITable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIJoinTable_DefaultJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IJoinColumn> getDefaultJoinColumns();
@@ -100,7 +100,7 @@ public interface IJoinTable extends ITable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Inverse Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIJoinTable_InverseJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IJoinColumn" containment="true" transient="true" changeable="false" volatile="true"
+	 * @model containment="true" transient="true" changeable="false" volatile="true"
 	 * @generated
 	 */
 	EList<IJoinColumn> getInverseJoinColumns();
@@ -116,7 +116,7 @@ public interface IJoinTable extends ITable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Inverse Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIJoinTable_SpecifiedInverseJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IJoinColumn> getSpecifiedInverseJoinColumns();
@@ -132,7 +132,7 @@ public interface IJoinTable extends ITable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Inverse Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIJoinTable_DefaultInverseJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IJoinColumn> getDefaultInverseJoinColumns();

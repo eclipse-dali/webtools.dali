@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.content.orm;
 import java.util.Collection;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.jpt.core.internal.XmlEObject;
 import org.eclipse.jpt.core.internal.mappings.IUniqueConstraint;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
@@ -69,12 +69,12 @@ public class XmlUniqueConstraint extends XmlEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column Names</em>' attribute list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIUniqueConstraint_ColumnNames()
-	 * @model type="java.lang.String"
+	 * @model unique="false"
 	 * @generated
 	 */
 	public EList<String> getColumnNames() {
 		if (columnNames == null) {
-			columnNames = new EDataTypeUniqueEList<String>(String.class, this, OrmPackage.XML_UNIQUE_CONSTRAINT__COLUMN_NAMES);
+			columnNames = new EDataTypeEList<String>(String.class, this, OrmPackage.XML_UNIQUE_CONSTRAINT__COLUMN_NAMES);
 		}
 		return columnNames;
 	}

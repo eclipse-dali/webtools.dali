@@ -53,7 +53,6 @@ public abstract class AbstractTableTranslator extends Translator
 	}
 	
 	protected Translator createUniqueConstraintTranslator() {
-		return new Translator(UNIQUE_CONSTRAINT, (EStructuralFeature) null);
-		//TODO return new UniqueConstraintTranslator(UNIQUE_CONSTRAINT, MAPPINGS_PKG.getITable_UniqueConstraints());
+		return new UniqueConstraintTranslator();
 	}
 }

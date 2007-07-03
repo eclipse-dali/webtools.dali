@@ -9,9 +9,7 @@
 package org.eclipse.jpt.core.internal.content.orm.resource;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.content.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -20,15 +18,15 @@ public class UniqueConstraintTranslator extends Translator implements OrmXmlMapp
 {
 	protected static final JpaCoreMappingsPackage MAPPINGS_PKG = 
 		JpaCoreMappingsPackage.eINSTANCE;
-	protected static final OrmPackage JPA_CORE_XML_PKG = 
-		OrmPackage.eINSTANCE;
 	
 	
 	private Translator[] children;	
 	
-	public UniqueConstraintTranslator(String domNameAndPath, EStructuralFeature aFeature) {
-		super(domNameAndPath, aFeature);
+	
+	public UniqueConstraintTranslator() {
+		super(UNIQUE_CONSTRAINT, MAPPINGS_PKG.getITable_UniqueConstraints());
 	}
+	
 	
 	public Translator[] getChildren(Object target, int versionID) {
 		if (children == null) {
@@ -45,7 +43,7 @@ public class UniqueConstraintTranslator extends Translator implements OrmXmlMapp
 	}
 	
 	protected Translator creatColumnNamesTranslator() {
-		return new Translator(UNIQUE_CONSTRAINT__COLUMN_NAME, MAPPINGS_PKG.getITable_UniqueConstraints());
+		return new Translator(UNIQUE_CONSTRAINT__COLUMN_NAME, MAPPINGS_PKG.getIUniqueConstraint_ColumnNames());
 	}
 	
 	@Override

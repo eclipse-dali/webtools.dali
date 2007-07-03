@@ -1518,13 +1518,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1533,13 +1533,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Root Content Node</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Root Content Node</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Root Content Node</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Root Content Node</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1548,13 +1548,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Entity Mappings Internal</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Entity Mappings Internal</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Entity Mappings Internal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Entity Mappings Internal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1563,13 +1563,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Entity Mappings</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Entity Mappings</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Entity Mappings</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Entity Mappings</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1578,13 +1578,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Entity Mappings For Xml</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Entity Mappings For Xml</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Entity Mappings For Xml</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Entity Mappings For Xml</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1593,13 +1593,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Type Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Type Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Type Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Type Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1608,13 +1608,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Persistent Type</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Persistent Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Persistent Type</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Persistent Type</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1623,13 +1623,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Embeddable</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Embeddable</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Embeddable</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Embeddable</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1638,13 +1638,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Attribute Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Attribute Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Attribute Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Attribute Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1653,13 +1653,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Null Attribute Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Null Attribute Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Null Attribute Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Null Attribute Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1668,13 +1668,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Persistent Attribute</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Persistent Attribute</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Persistent Attribute</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Persistent Attribute</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1683,13 +1683,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Basic</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Basic</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Basic</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Basic</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1698,13 +1698,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Id</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Id</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Id</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Id</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1713,13 +1713,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Transient</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Transient</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Transient</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Transient</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1728,13 +1728,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Embedded</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Embedded</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Embedded</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Embedded</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1743,13 +1743,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Embedded Id</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Embedded Id</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Embedded Id</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Embedded Id</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1758,13 +1758,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Version</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Version</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Version</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Version</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1773,13 +1773,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Multi Relationship Mapping Internal</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Multi Relationship Mapping Internal</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Multi Relationship Mapping Internal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Multi Relationship Mapping Internal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1788,13 +1788,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Multi Relationship Mapping For Xml</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Multi Relationship Mapping For Xml</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Multi Relationship Mapping For Xml</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Multi Relationship Mapping For Xml</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1803,13 +1803,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Multi Relationship Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Multi Relationship Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Multi Relationship Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Multi Relationship Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1818,13 +1818,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml One To Many</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml One To Many</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml One To Many</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml One To Many</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1833,13 +1833,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Many To Many</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Many To Many</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Many To Many</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Many To Many</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1848,13 +1848,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Persistence Unit Metadata Internal</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Persistence Unit Metadata Internal</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Persistence Unit Metadata Internal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Persistence Unit Metadata Internal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1863,13 +1863,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Persistence Unit Metadata</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Persistence Unit Metadata</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Persistence Unit Metadata</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Persistence Unit Metadata</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1878,13 +1878,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Persistence Unit Metadata For Xml</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Persistence Unit Metadata For Xml</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Persistence Unit Metadata For Xml</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Persistence Unit Metadata For Xml</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1893,13 +1893,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Persistence Unit Defaults Internal</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Persistence Unit Defaults Internal</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Persistence Unit Defaults Internal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Persistence Unit Defaults Internal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1908,13 +1908,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Persistence Unit Defaults</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Persistence Unit Defaults</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Persistence Unit Defaults</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Persistence Unit Defaults</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1923,13 +1923,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Persistence Unit Defaults For Xml</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Persistence Unit Defaults For Xml</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Persistence Unit Defaults For Xml</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Persistence Unit Defaults For Xml</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1938,13 +1938,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Table</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Table</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Table</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1953,13 +1953,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Abstract Xml Named Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Abstract Xml Named Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Abstract Xml Named Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Abstract Xml Named Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1968,13 +1968,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Abstract Xml Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Abstract Xml Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Abstract Xml Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Abstract Xml Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1983,13 +1983,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1998,13 +1998,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Join Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Join Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Join Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Join Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2013,13 +2013,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IXml Column Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IXml Column Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IXml Column Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IXml Column Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2028,13 +2028,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Many To One</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Many To One</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Many To One</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Many To One</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2043,13 +2043,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml One To One</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml One To One</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml One To One</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml One To One</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2058,13 +2058,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Single Relationship Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Single Relationship Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Single Relationship Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Single Relationship Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2073,13 +2073,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Relationship Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Relationship Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Relationship Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Relationship Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2088,13 +2088,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Join Table</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Join Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Join Table</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Join Table</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2103,13 +2103,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Abstract Xml Table</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Abstract Xml Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Abstract Xml Table</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Abstract Xml Table</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2118,13 +2118,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Override</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Override</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Override</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Override</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2133,13 +2133,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Attribute Override</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Attribute Override</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Attribute Override</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Attribute Override</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2148,13 +2148,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Association Override</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Association Override</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Association Override</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Association Override</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2163,13 +2163,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Discriminator Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Discriminator Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Discriminator Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Discriminator Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2178,13 +2178,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Secondary Table</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Secondary Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Secondary Table</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Secondary Table</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2193,13 +2193,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Primary Key Join Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Primary Key Join Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Primary Key Join Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Primary Key Join Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2208,13 +2208,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Generated Value</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Generated Value</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Generated Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Generated Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2223,13 +2223,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Generator</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Generator</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Generator</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Generator</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2238,13 +2238,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Sequence Generator</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Sequence Generator</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Sequence Generator</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Sequence Generator</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2253,13 +2253,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Table Generator</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Table Generator</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Table Generator</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Table Generator</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2268,13 +2268,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Abstract Xml Query</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Abstract Xml Query</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Abstract Xml Query</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Abstract Xml Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2283,13 +2283,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Named Query</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Named Query</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Named Query</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Named Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2298,13 +2298,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Named Native Query</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Named Native Query</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Named Native Query</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Named Native Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2313,13 +2313,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Query Hint</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Query Hint</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Query Hint</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Query Hint</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2328,13 +2328,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Unique Constraint</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Unique Constraint</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Unique Constraint</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Unique Constraint</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2343,13 +2343,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Cascade</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Cascade</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Cascade</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Cascade</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2358,13 +2358,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Id Class</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Id Class</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Id Class</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Id Class</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2373,13 +2373,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Inheritance</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Inheritance</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Inheritance</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Inheritance</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2388,13 +2388,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Map Key</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Map Key</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Map Key</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Map Key</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2403,13 +2403,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJpa EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJpa EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJpa EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJpa EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2418,13 +2418,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Jpa EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Jpa EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Jpa EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Jpa EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2433,13 +2433,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJpa Source Object</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJpa Source Object</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJpa Source Object</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJpa Source Object</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2448,13 +2448,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IXml EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IXml EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IXml EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IXml EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2463,13 +2463,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJpa Content Node</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJpa Content Node</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJpa Content Node</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJpa Content Node</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2478,13 +2478,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJpa Root Content Node</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJpa Root Content Node</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJpa Root Content Node</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJpa Root Content Node</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2493,13 +2493,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Mapped Superclass</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Mapped Superclass</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Mapped Superclass</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Mapped Superclass</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2508,13 +2508,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Entity Internal</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Entity Internal</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Entity Internal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Entity Internal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2523,13 +2523,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Entity For Xml</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Entity For Xml</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Entity For Xml</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Entity For Xml</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2538,13 +2538,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Entity</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Entity</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Entity</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Entity</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2553,13 +2553,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IAttribute Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IAttribute Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IAttribute Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IAttribute Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2568,13 +2568,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IColumn Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IColumn Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IColumn Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IColumn Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2583,13 +2583,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IPersistent Attribute</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IPersistent Attribute</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IPersistent Attribute</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IPersistent Attribute</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2598,13 +2598,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ITable</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ITable</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ITable</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ITable</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2613,13 +2613,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>INamed Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>INamed Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>INamed Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>INamed Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2628,13 +2628,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IAbstract Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IAbstract Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IAbstract Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IAbstract Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2643,13 +2643,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IColumn</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IColumn</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IColumn</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IColumn</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2658,13 +2658,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IAbstract Join Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IAbstract Join Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IAbstract Join Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IAbstract Join Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2673,13 +2673,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJoin Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJoin Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJoin Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJoin Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2688,13 +2688,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ISingle Relationship Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ISingle Relationship Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ISingle Relationship Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ISingle Relationship Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2703,13 +2703,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IMany To One</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IMany To One</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IMany To One</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IMany To One</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2718,13 +2718,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IOne To One</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IOne To One</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IOne To One</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IOne To One</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2733,13 +2733,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJoin Table</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJoin Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJoin Table</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJoin Table</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2748,13 +2748,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IOverride</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IOverride</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IOverride</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IOverride</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2763,13 +2763,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IAttribute Override</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IAttribute Override</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IAttribute Override</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IAttribute Override</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2778,13 +2778,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IAssociation Override</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IAssociation Override</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IAssociation Override</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IAssociation Override</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2793,13 +2793,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IDiscriminator Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IDiscriminator Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IDiscriminator Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IDiscriminator Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2808,13 +2808,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ISecondary Table</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ISecondary Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ISecondary Table</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ISecondary Table</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2823,13 +2823,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IPrimary Key Join Column</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IPrimary Key Join Column</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IPrimary Key Join Column</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IPrimary Key Join Column</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2838,13 +2838,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IGenerated Value</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IGenerated Value</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IGenerated Value</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IGenerated Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2853,13 +2853,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IGenerator</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IGenerator</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IGenerator</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IGenerator</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2868,13 +2868,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ISequence Generator</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ISequence Generator</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ISequence Generator</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ISequence Generator</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2883,13 +2883,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ITable Generator</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ITable Generator</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ITable Generator</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ITable Generator</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2898,13 +2898,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IQuery</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IQuery</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IQuery</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IQuery</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2913,13 +2913,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>INamed Query</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>INamed Query</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>INamed Query</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>INamed Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2928,13 +2928,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>INamed Native Query</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>INamed Native Query</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>INamed Native Query</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>INamed Native Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2943,13 +2943,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IQuery Hint</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IQuery Hint</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IQuery Hint</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IQuery Hint</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2958,13 +2958,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IUnique Constraint</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IUnique Constraint</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IUnique Constraint</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IUnique Constraint</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2973,13 +2973,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ICascade</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ICascade</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ICascade</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ICascade</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -2988,13 +2988,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IBasic</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IBasic</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IBasic</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IBasic</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3003,13 +3003,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IId</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IId</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IId</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IId</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3018,13 +3018,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>ITransient</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>ITransient</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>ITransient</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>ITransient</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3033,13 +3033,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IEmbedded</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IEmbedded</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IEmbedded</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IEmbedded</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3048,13 +3048,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IEmbedded Id</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IEmbedded Id</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IEmbedded Id</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IEmbedded Id</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3063,13 +3063,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IVersion</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IVersion</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IVersion</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IVersion</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3078,13 +3078,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IRelationship Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IRelationship Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IRelationship Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IRelationship Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3093,13 +3093,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>INon Owning Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>INon Owning Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>INon Owning Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>INon Owning Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3108,13 +3108,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IMulti Relationship Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IMulti Relationship Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IMulti Relationship Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IMulti Relationship Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3123,13 +3123,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IOne To Many</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IOne To Many</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IOne To Many</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IOne To Many</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3138,13 +3138,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IMany To Many</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IMany To Many</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IMany To Many</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IMany To Many</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3153,13 +3153,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IPersistent Type</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IPersistent Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IPersistent Type</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IPersistent Type</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3168,13 +3168,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IMapped Superclass</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IMapped Superclass</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IMapped Superclass</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IMapped Superclass</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3183,13 +3183,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IEntity</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IEntity</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IEntity</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IEntity</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3198,13 +3198,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IEmbeddable</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IEmbeddable</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IEmbeddable</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IEmbeddable</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3213,13 +3213,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IType Mapping</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IType Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IType Mapping</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IType Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -3228,13 +3228,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch, but this is the last case anyway.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */

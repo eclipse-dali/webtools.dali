@@ -299,7 +299,6 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 
 	/**
 	 * Returns the value of the '<em><b>Mapping</b></em>' containment reference.
-	 * The default value is <code>""</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Mapping</em>' containment reference isn't clear,
@@ -393,7 +392,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attributes</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.java.JpaJavaPackage#getJavaPersistentType_Attributes()
-	 * @model type="org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<JavaPersistentAttribute> getAttributes() {
@@ -405,7 +404,6 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 
 	/**
 	 * Returns the value of the '<em><b>Access</b></em>' attribute.
-	 * The default value is <code>""</code>.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.AccessType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -416,7 +414,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	 * @return the value of the '<em>Access</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.AccessType
 	 * @see org.eclipse.jpt.core.internal.content.java.JpaJavaPackage#getJavaPersistentType_Access()
-	 * @model default="" changeable="false"
+	 * @model changeable="false"
 	 * @generated
 	 */
 	public AccessType getAccess() {

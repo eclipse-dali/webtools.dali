@@ -313,7 +313,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Attribute Mappings</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlPersistentType_SpecifiedAttributeMappings()
-	 * @model type="org.eclipse.jpt.core.internal.content.orm.XmlAttributeMapping" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<XmlAttributeMapping> getSpecifiedAttributeMappingsGen() {
@@ -341,7 +341,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Virtual Attribute Mappings</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlPersistentType_VirtualAttributeMappings()
-	 * @model type="org.eclipse.jpt.core.internal.content.orm.XmlAttributeMapping" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<XmlAttributeMapping> getVirtualAttributeMappingsGen() {
@@ -390,7 +390,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Persistent Attributes</em>' reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlPersistentType_SpecifiedPersistentAttributes()
-	 * @model type="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute" resolveProxies="false"
+	 * @model resolveProxies="false"
 	 * @generated
 	 */
 	public EList<XmlPersistentAttribute> getSpecifiedPersistentAttributes() {
@@ -411,7 +411,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Virtual Persistent Attributes</em>' reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlPersistentType_VirtualPersistentAttributes()
-	 * @model type="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute" resolveProxies="false"
+	 * @model resolveProxies="false"
 	 * @generated
 	 */
 	public EList<XmlPersistentAttribute> getVirtualPersistentAttributes() {
@@ -429,7 +429,6 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 		XmlPersistentAttribute nullAttribute = OrmFactory.eINSTANCE.createXmlPersistentAttribute();
 		XmlPersistentAttribute attribute = oldMapping.getPersistentAttribute();
 		oldMapping.setPersistentAttribute(nullAttribute);
-		
 		if (virtual) {
 			getVirtualPersistentAttributes().remove(attribute);
 			getVirtualAttributeMappings().remove(oldMapping);

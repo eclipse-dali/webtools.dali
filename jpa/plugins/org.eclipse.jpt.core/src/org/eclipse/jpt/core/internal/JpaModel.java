@@ -90,7 +90,7 @@ public class JpaModel extends JpaEObject implements IJpaModel
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Projects</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaModel_Projects()
-	 * @model type="org.eclipse.jpt.core.internal.IJpaProject" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IJpaProject> getProjects() {

@@ -993,7 +993,7 @@ public class EntityMappingsInternal extends XmlEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Type Mappings</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getEntityMappingsInternal_TypeMappings()
-	 * @model type="org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<XmlTypeMapping> getTypeMappingsGen() {
@@ -1021,7 +1021,7 @@ public class EntityMappingsInternal extends XmlEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Persistent Types</em>' reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getEntityMappingsInternal_PersistentTypes()
-	 * @model type="org.eclipse.jpt.core.internal.content.orm.XmlPersistentType" resolveProxies="false"
+	 * @model resolveProxies="false"
 	 * @generated
 	 */
 	public EList<XmlPersistentType> getPersistentTypes() {
@@ -1054,7 +1054,7 @@ public class EntityMappingsInternal extends XmlEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table Generators</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getEntityMappingsInternal_TableGenerators()
-	 * @model type="org.eclipse.jpt.core.internal.content.orm.XmlTableGenerator" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<XmlTableGenerator> getTableGenerators() {
@@ -1075,7 +1075,7 @@ public class EntityMappingsInternal extends XmlEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Queries</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getEntityMappingsInternal_NamedQueries()
-	 * @model type="org.eclipse.jpt.core.internal.content.orm.XmlNamedQuery" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<XmlNamedQuery> getNamedQueries() {
@@ -1096,7 +1096,7 @@ public class EntityMappingsInternal extends XmlEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Native Queries</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getEntityMappingsInternal_NamedNativeQueries()
-	 * @model type="org.eclipse.jpt.core.internal.content.orm.XmlNamedNativeQuery" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<XmlNamedNativeQuery> getNamedNativeQueries() {
@@ -1117,7 +1117,7 @@ public class EntityMappingsInternal extends XmlEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Sequence Generators</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getEntityMappingsInternal_SequenceGenerators()
-	 * @model type="org.eclipse.jpt.core.internal.content.orm.XmlSequenceGenerator" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<XmlSequenceGenerator> getSequenceGenerators() {

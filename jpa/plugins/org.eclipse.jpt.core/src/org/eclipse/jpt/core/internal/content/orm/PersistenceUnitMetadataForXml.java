@@ -58,7 +58,6 @@ public interface PersistenceUnitMetadataForXml extends IXmlEObject
 
 	/**
 	 * Returns the value of the '<em><b>Persistence Unit Defaults For Xml</b></em>' reference.
-	 * The default value is <code>""</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Persistence Unit Defaults For Xml</em>' reference isn't clear,

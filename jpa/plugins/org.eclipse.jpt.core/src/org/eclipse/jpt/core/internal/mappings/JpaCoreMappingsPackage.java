@@ -6840,10 +6840,10 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEReference(getIEntity_NamedQueries(), this.getINamedQuery(), null, "namedQueries", null, 0, -1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIEntity_NamedNativeQueries(), this.getINamedNativeQuery(), null, "namedNativeQueries", null, 0, -1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIEntity_IdClass(), theEcorePackage.getEString(), "idClass", null, 0, 1, IEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		addEOperation(iEntityEClass, ecorePackage.getEBoolean(), "discriminatorValueIsAllowed", 0, 1);
-		addEOperation(iEntityEClass, this.getISecondaryTable(), "getSecondaryTables", 0, -1);
-		addEOperation(iEntityEClass, this.getIEntity(), "parentEntity", 0, 1);
-		addEOperation(iEntityEClass, this.getIEntity(), "rootEntity", 0, 1);
+		addEOperation(iEntityEClass, ecorePackage.getEBoolean(), "discriminatorValueIsAllowed", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(iEntityEClass, this.getISecondaryTable(), "getSecondaryTables", 0, -1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(iEntityEClass, this.getIEntity(), "parentEntity", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(iEntityEClass, this.getIEntity(), "rootEntity", 0, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(iEmbeddableEClass, IEmbeddable.class, "IEmbeddable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iTableEClass, ITable.class, "ITable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getITable_Name(), ecorePackage.getEString(), "name", null, 0, 1, ITable.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -6857,7 +6857,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEAttribute(getITable_DefaultSchema(), ecorePackage.getEString(), "defaultSchema", null, 0, 1, ITable.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getITable_UniqueConstraints(), this.getIUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, ITable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iUniqueConstraintEClass, IUniqueConstraint.class, "IUniqueConstraint", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getIUniqueConstraint_ColumnNames(), theEcorePackage.getEString(), "columnNames", null, 0, -1, IUniqueConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getIUniqueConstraint_ColumnNames(), theEcorePackage.getEString(), "columnNames", null, 0, -1, IUniqueConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iNamedColumnEClass, INamedColumn.class, "INamedColumn", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getINamedColumn_Name(), ecorePackage.getEString(), "name", null, 0, 1, INamedColumn.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getINamedColumn_SpecifiedName(), ecorePackage.getEString(), "specifiedName", null, 0, 1, INamedColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -6876,7 +6876,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEAttribute(getIColumn_Precision(), ecorePackage.getEInt(), "precision", null, 0, 1, IColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIColumn_Scale(), ecorePackage.getEInt(), "scale", null, 0, 1, IColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iColumnMappingEClass, IColumnMapping.class, "IColumnMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		addEOperation(iColumnMappingEClass, this.getIColumn(), "getColumn", 0, 1);
+		addEOperation(iColumnMappingEClass, this.getIColumn(), "getColumn", 0, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(iBasicEClass, IBasic.class, "IBasic", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIBasic_Fetch(), this.getDefaultEagerFetchType(), "fetch", null, 0, 1, IBasic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIBasic_Optional(), this.getDefaultTrueBoolean(), "optional", null, 0, 1, IBasic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -6899,7 +6899,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEReference(getIEmbedded_AttributeOverrides(), this.getIAttributeOverride(), null, "attributeOverrides", null, 0, -1, IEmbedded.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIEmbedded_SpecifiedAttributeOverrides(), this.getIAttributeOverride(), null, "specifiedAttributeOverrides", null, 0, -1, IEmbedded.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIEmbedded_DefaultAttributeOverrides(), this.getIAttributeOverride(), null, "defaultAttributeOverrides", null, 0, -1, IEmbedded.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		addEOperation(iEmbeddedEClass, this.getIEmbeddable(), "embeddable", 0, 1);
+		addEOperation(iEmbeddedEClass, this.getIEmbeddable(), "embeddable", 0, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(iRelationshipMappingEClass, IRelationshipMapping.class, "IRelationshipMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIRelationshipMapping_TargetEntity(), ecorePackage.getEString(), "targetEntity", null, 0, 1, IRelationshipMapping.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIRelationshipMapping_SpecifiedTargetEntity(), ecorePackage.getEString(), "specifiedTargetEntity", null, 0, 1, IRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -6913,11 +6913,11 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEAttribute(getIMultiRelationshipMapping_Fetch(), this.getDefaultLazyFetchType(), "fetch", null, 0, 1, IMultiRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getIMultiRelationshipMapping_JoinTable(), this.getIJoinTable(), null, "joinTable", null, 1, 1, IMultiRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIMultiRelationshipMapping_MapKey(), theEcorePackage.getEString(), "mapKey", null, 0, 1, IMultiRelationshipMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		addEOperation(iMultiRelationshipMappingEClass, ecorePackage.getEBoolean(), "isNoOrdering", 1, 1);
-		addEOperation(iMultiRelationshipMappingEClass, null, "setNoOrdering");
-		addEOperation(iMultiRelationshipMappingEClass, theEcorePackage.getEBoolean(), "isOrderByPk", 1, 1);
-		addEOperation(iMultiRelationshipMappingEClass, null, "setOrderByPk");
-		addEOperation(iMultiRelationshipMappingEClass, theEcorePackage.getEBoolean(), "isCustomOrdering", 1, 1);
+		addEOperation(iMultiRelationshipMappingEClass, ecorePackage.getEBoolean(), "isNoOrdering", 1, 1, !IS_UNIQUE, !IS_ORDERED);
+		addEOperation(iMultiRelationshipMappingEClass, null, "setNoOrdering", 0, 1, !IS_UNIQUE, !IS_ORDERED);
+		addEOperation(iMultiRelationshipMappingEClass, theEcorePackage.getEBoolean(), "isOrderByPk", 1, 1, !IS_UNIQUE, !IS_ORDERED);
+		addEOperation(iMultiRelationshipMappingEClass, null, "setOrderByPk", 0, 1, !IS_UNIQUE, !IS_ORDERED);
+		addEOperation(iMultiRelationshipMappingEClass, theEcorePackage.getEBoolean(), "isCustomOrdering", 1, 1, !IS_UNIQUE, !IS_ORDERED);
 		initEClass(iOneToManyEClass, IOneToMany.class, "IOneToMany", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iManyToManyEClass, IManyToMany.class, "IManyToMany", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iSingleRelationshipMappingEClass, ISingleRelationshipMapping.class, "ISingleRelationshipMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -6957,7 +6957,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEReference(getISecondaryTable_PrimaryKeyJoinColumns(), this.getIPrimaryKeyJoinColumn(), null, "primaryKeyJoinColumns", null, 0, -1, ISecondaryTable.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getISecondaryTable_SpecifiedPrimaryKeyJoinColumns(), this.getIPrimaryKeyJoinColumn(), null, "specifiedPrimaryKeyJoinColumns", null, 0, -1, ISecondaryTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getISecondaryTable_DefaultPrimaryKeyJoinColumns(), this.getIPrimaryKeyJoinColumn(), null, "defaultPrimaryKeyJoinColumns", null, 0, -1, ISecondaryTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		addEOperation(iSecondaryTableEClass, theJpaCorePackage.getITypeMapping(), "typeMapping", 0, 1);
+		addEOperation(iSecondaryTableEClass, theJpaCorePackage.getITypeMapping(), "typeMapping", 0, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(iPrimaryKeyJoinColumnEClass, IPrimaryKeyJoinColumn.class, "IPrimaryKeyJoinColumn", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iGeneratorEClass, IGenerator.class, "IGenerator", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIGenerator_Name(), ecorePackage.getEString(), "name", null, 0, 1, IGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

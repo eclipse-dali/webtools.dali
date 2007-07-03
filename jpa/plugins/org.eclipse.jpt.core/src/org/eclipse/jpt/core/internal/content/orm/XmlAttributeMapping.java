@@ -81,7 +81,7 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	protected INamedColumn.Owner buildOwner() {
 		return new ColumnOwner();
 	}
-	
+
 	@Override
 	protected void addInsignificantFeatureIdsTo(Set<Integer> insignificantFeatureIds) {
 		super.addInsignificantFeatureIdsTo(insignificantFeatureIds);
@@ -244,8 +244,7 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	 */
 	protected abstract void initializeOn(XmlAttributeMapping newMapping);
 
-	public void initializeFromXmlAttributeMapping(XmlAttributeMapping oldMapping) {
-	}
+	public void initializeFromXmlAttributeMapping(XmlAttributeMapping oldMapping) {}
 
 	public void initializeFromXmlBasicMapping(XmlBasic oldMapping) {
 		initializeFromXmlAttributeMapping(oldMapping);

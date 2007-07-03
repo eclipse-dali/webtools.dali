@@ -50,7 +50,7 @@ public class JoinTableTranslator extends AbstractTableTranslator
 			createSchemaTranslator(),
 			createJoinColumnsTranslator(),
 			createInverseJoinColumnsTranslator(),
-			createUniqueConstraintTranslator(),
+			createUniqueConstraintTranslator()
 		};
 	}
 	

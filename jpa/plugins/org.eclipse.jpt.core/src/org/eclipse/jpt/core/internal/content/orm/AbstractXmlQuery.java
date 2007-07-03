@@ -181,7 +181,7 @@ public abstract class AbstractXmlQuery extends XmlEObject implements IQuery
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Hints</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIQuery_Hints()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IQueryHint" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IQueryHint> getHints() {

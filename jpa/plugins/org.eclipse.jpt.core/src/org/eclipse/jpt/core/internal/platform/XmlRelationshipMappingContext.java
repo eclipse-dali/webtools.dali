@@ -12,7 +12,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.mappings.IEntity;

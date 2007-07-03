@@ -52,7 +52,7 @@ public class SecondaryTableTranslator extends AbstractTableTranslator
 			createCatalogTranslator(),
 			createSchemaTranslator(),
 			createPrimaryKeyJoinColumnsTranslator(),
-			createUniqueConstraintTranslator(),
+			createUniqueConstraintTranslator()
 		};
 	}
 	

@@ -125,7 +125,7 @@ public interface IEntity extends ITypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Secondary Tables</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_SpecifiedSecondaryTables()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.ISecondaryTable" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<ISecondaryTable> getSpecifiedSecondaryTables();
@@ -137,7 +137,7 @@ public interface IEntity extends ITypeMapping
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" type="org.eclipse.jpt.core.internal.mappings.ISecondaryTable"
+	 * @model kind="operation"
 	 * @generated
 	 */
 	EList<ISecondaryTable> getSecondaryTables();
@@ -316,7 +316,7 @@ public interface IEntity extends ITypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_PrimaryKeyJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn" containment="true" transient="true" changeable="false" volatile="true"
+	 * @model containment="true" transient="true" changeable="false" volatile="true"
 	 * @generated
 	 */
 	EList<IPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
@@ -332,7 +332,7 @@ public interface IEntity extends ITypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Primary Key Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_SpecifiedPrimaryKeyJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
@@ -348,7 +348,7 @@ public interface IEntity extends ITypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Primary Key Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_DefaultPrimaryKeyJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns();
@@ -364,7 +364,7 @@ public interface IEntity extends ITypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_AttributeOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAttributeOverride" containment="true" transient="true" changeable="false" volatile="true"
+	 * @model containment="true" transient="true" changeable="false" volatile="true"
 	 * @generated
 	 */
 	EList<IAttributeOverride> getAttributeOverrides();
@@ -380,7 +380,7 @@ public interface IEntity extends ITypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Attribute Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_SpecifiedAttributeOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAttributeOverride" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IAttributeOverride> getSpecifiedAttributeOverrides();
@@ -396,7 +396,7 @@ public interface IEntity extends ITypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Attribute Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_DefaultAttributeOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAttributeOverride" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IAttributeOverride> getDefaultAttributeOverrides();
@@ -412,7 +412,7 @@ public interface IEntity extends ITypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Association Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_AssociationOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAssociationOverride" containment="true" transient="true" changeable="false" volatile="true"
+	 * @model containment="true" transient="true" changeable="false" volatile="true"
 	 * @generated
 	 */
 	EList<IAssociationOverride> getAssociationOverrides();
@@ -428,7 +428,7 @@ public interface IEntity extends ITypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Association Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_SpecifiedAssociationOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAssociationOverride" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IAssociationOverride> getSpecifiedAssociationOverrides();
@@ -444,7 +444,7 @@ public interface IEntity extends ITypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Association Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_DefaultAssociationOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAssociationOverride" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IAssociationOverride> getDefaultAssociationOverrides();
@@ -460,7 +460,7 @@ public interface IEntity extends ITypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Queries</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_NamedQueries()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.INamedQuery" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<INamedQuery> getNamedQueries();
@@ -476,7 +476,7 @@ public interface IEntity extends ITypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Native Queries</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIEntity_NamedNativeQueries()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.INamedNativeQuery" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<INamedNativeQuery> getNamedNativeQueries();
@@ -559,7 +559,7 @@ public interface IEntity extends ITypeMapping
 	IAssociationOverride createAssociationOverride(int index);
 
 	IAttributeOverride attributeOverrideNamed(String name);
-	
+
 	boolean containsAttributeOverride(String name);
 
 	boolean containsSpecifiedAttributeOverride(String name);

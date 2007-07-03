@@ -248,7 +248,7 @@ public class JavaEmbedded extends JavaAttributeMapping implements IEmbedded
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Attribute Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIEmbedded_SpecifiedAttributeOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAttributeOverride" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IAttributeOverride> getSpecifiedAttributeOverrides() {
@@ -269,7 +269,7 @@ public class JavaEmbedded extends JavaAttributeMapping implements IEmbedded
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Attribute Overrides</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIEmbedded_DefaultAttributeOverrides()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IAttributeOverride" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IAttributeOverride> getDefaultAttributeOverrides() {

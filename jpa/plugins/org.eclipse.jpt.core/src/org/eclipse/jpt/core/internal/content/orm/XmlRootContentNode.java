@@ -77,7 +77,6 @@ public class XmlRootContentNode extends XmlEObject
 
 	/**
 	 * Returns the value of the '<em><b>Jpa File</b></em>' container reference.
-	 * The default value is <code>""</code>.
 	 * It is bidirectional and its opposite is '{@link org.eclipse.jpt.core.internal.JpaFile#getContent <em>Content</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -88,7 +87,7 @@ public class XmlRootContentNode extends XmlEObject
 	 * @return the value of the '<em>Jpa File</em>' container reference.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIJpaRootContentNode_JpaFile()
 	 * @see org.eclipse.jpt.core.internal.JpaFile#getContent
-	 * @model opposite="content" changeable="false"
+	 * @model opposite="content" transient="false" changeable="false"
 	 * @generated
 	 */
 	public IJpaFile getJpaFile() {

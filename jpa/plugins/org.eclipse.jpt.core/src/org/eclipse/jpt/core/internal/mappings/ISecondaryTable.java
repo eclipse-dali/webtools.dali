@@ -46,7 +46,7 @@ public interface ISecondaryTable extends ITable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getISecondaryTable_PrimaryKeyJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn" containment="true" transient="true" changeable="false" volatile="true"
+	 * @model containment="true" transient="true" changeable="false" volatile="true"
 	 * @generated
 	 */
 	EList<IPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
@@ -62,7 +62,7 @@ public interface ISecondaryTable extends ITable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Primary Key Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getISecondaryTable_SpecifiedPrimaryKeyJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
@@ -78,7 +78,7 @@ public interface ISecondaryTable extends ITable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Primary Key Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getISecondaryTable_DefaultPrimaryKeyJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns();

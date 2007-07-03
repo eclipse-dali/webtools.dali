@@ -42,7 +42,7 @@ public interface XmlEntity extends IEntity
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Secondary Tables</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntity_SecondaryTables()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.ISecondaryTable" containment="true" transient="true" changeable="false" volatile="true"
+	 * @model containment="true" transient="true" changeable="false" volatile="true"
 	 * @generated
 	 */
 	EList<ISecondaryTable> getSecondaryTables();
@@ -58,7 +58,7 @@ public interface XmlEntity extends IEntity
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Virtual Secondary Tables</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlEntity_VirtualSecondaryTables()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.ISecondaryTable" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<ISecondaryTable> getVirtualSecondaryTables();

@@ -44,7 +44,7 @@ public class XmlIdClass extends XmlEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String VALUE_EDEFAULT = "";
+	protected static final String VALUE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
@@ -100,7 +100,6 @@ public class XmlIdClass extends XmlEObject
 
 	/**
 	 * Returns the value of the '<em><b>Value</b></em>' attribute.
-	 * The default value is <code>""</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Value</em>' attribute isn't clear,
@@ -110,7 +109,7 @@ public class XmlIdClass extends XmlEObject
 	 * @return the value of the '<em>Value</em>' attribute.
 	 * @see #setValue(String)
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getXmlIdClass_Value()
-	 * @model default=""
+	 * @model
 	 * @generated
 	 */
 	public String getValue() {

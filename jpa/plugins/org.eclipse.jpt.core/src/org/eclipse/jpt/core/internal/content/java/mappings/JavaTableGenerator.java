@@ -842,7 +842,7 @@ public class JavaTableGenerator extends JavaGenerator
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Unique Constraints</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getITableGenerator_UniqueConstraints()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IUniqueConstraint" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IUniqueConstraint> getUniqueConstraints() {

@@ -32,7 +32,6 @@ public interface EntityMappings extends EObject
 {
 	/**
 	 * Returns the value of the '<em><b>Persistence Unit Metadata</b></em>' reference.
-	 * The default value is <code>""</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Persistence Unit Metadata</em>' reference isn't clear,

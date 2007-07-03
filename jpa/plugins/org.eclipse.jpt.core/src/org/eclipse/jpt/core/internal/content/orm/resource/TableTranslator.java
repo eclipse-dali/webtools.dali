@@ -43,7 +43,7 @@ public class TableTranslator extends AbstractTableTranslator
 			createNameTranslator(),
 			createCatalogTranslator(),
 			createSchemaTranslator(),
-			createUniqueConstraintTranslator(),
+			createUniqueConstraintTranslator()
 		};
 	}
 

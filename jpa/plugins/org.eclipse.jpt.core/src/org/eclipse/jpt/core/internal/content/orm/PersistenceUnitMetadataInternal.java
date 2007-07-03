@@ -302,7 +302,6 @@ public class PersistenceUnitMetadataInternal extends XmlEObject
 
 	/**
 	 * Returns the value of the '<em><b>Persistence Unit Defaults Internal</b></em>' containment reference.
-	 * The default value is <code>""</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Persistence Unit Defaults Internal</em>' containment reference isn't clear,

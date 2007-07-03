@@ -169,7 +169,7 @@ public abstract class XmlTypeMapping extends XmlEObject implements ITypeMapping
 	protected XmlPersistentType createXmlPersistentType() {
 		return OrmFactory.eINSTANCE.createXmlPersistentType(getKey());
 	}
-	
+
 	@Override
 	protected void addInsignificantFeatureIdsTo(Set<Integer> insignificantFeatureIds) {
 		super.addInsignificantFeatureIdsTo(insignificantFeatureIds);
@@ -603,8 +603,7 @@ public abstract class XmlTypeMapping extends XmlEObject implements ITypeMapping
 	 * fromthe old ITypeMapping (oldMapping)
 	 * @param oldMapping
 	 */
-	public void initializeFrom(XmlTypeMapping oldMapping) {
-	}
+	public void initializeFrom(XmlTypeMapping oldMapping) {}
 
 	public IJpaContentNode getContentNode(int offset) {
 		return getPersistentType().getContentNode(offset);

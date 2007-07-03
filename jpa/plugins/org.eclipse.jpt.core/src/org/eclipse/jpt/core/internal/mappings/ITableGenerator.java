@@ -398,7 +398,7 @@ public interface ITableGenerator extends IGenerator
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Unique Constraints</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getITableGenerator_UniqueConstraints()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IUniqueConstraint" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IUniqueConstraint> getUniqueConstraints();

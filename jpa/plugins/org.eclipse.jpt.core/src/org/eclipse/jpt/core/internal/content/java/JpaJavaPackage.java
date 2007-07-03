@@ -642,21 +642,21 @@ public class JpaJavaPackage extends EPackageImpl
 		iJavaAttributeMappingEClass.getESuperTypes().add(theJpaCorePackage.getIAttributeMapping());
 		// Initialize classes and features; add operations and parameters
 		initEClass(javaEObjectEClass, JavaEObject.class, "JavaEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		addEOperation(javaEObjectEClass, theJpaCorePackage.getIJpaFile(), "getJpaFile", 0, 1);
-		addEOperation(javaEObjectEClass, theJpaCorePackage.getIJpaRootContentNode(), "getRoot", 0, 1);
+		addEOperation(javaEObjectEClass, theJpaCorePackage.getIJpaFile(), "getJpaFile", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(javaEObjectEClass, theJpaCorePackage.getIJpaRootContentNode(), "getRoot", 0, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(jpaCompilationUnitEClass, JpaCompilationUnit.class, "JpaCompilationUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getJpaCompilationUnit_Types(), this.getJavaPersistentType(), null, "types", null, 0, -1, JpaCompilationUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(javaPersistentTypeEClass, JavaPersistentType.class, "JavaPersistentType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getJavaPersistentType_Mapping(), this.getIJavaTypeMapping(), null, "mapping", "", 1, 1, JavaPersistentType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getJavaPersistentType_Mapping(), this.getIJavaTypeMapping(), null, "mapping", null, 1, 1, JavaPersistentType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getJavaPersistentType_Attributes(), this.getJavaPersistentAttribute(), null, "attributes", null, 0, -1, JavaPersistentType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getJavaPersistentType_Access(), theJpaCorePackage.getAccessType(), "access", "", 0, 1, JavaPersistentType.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getJavaPersistentType_Access(), theJpaCorePackage.getAccessType(), "access", null, 0, 1, JavaPersistentType.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(javaPersistentAttributeEClass, JavaPersistentAttribute.class, "JavaPersistentAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getJavaPersistentAttribute_DefaultMapping(), this.getIJavaAttributeMapping(), null, "defaultMapping", null, 1, 1, JavaPersistentAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getJavaPersistentAttribute_SpecifiedMapping(), this.getIJavaAttributeMapping(), null, "specifiedMapping", null, 1, 1, JavaPersistentAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iJavaTypeMappingEClass, IJavaTypeMapping.class, "IJavaTypeMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		addEOperation(iJavaTypeMappingEClass, null, "initialize");
+		addEOperation(iJavaTypeMappingEClass, null, "initialize", 0, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(iJavaAttributeMappingEClass, IJavaAttributeMapping.class, "IJavaAttributeMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		addEOperation(iJavaAttributeMappingEClass, null, "initialize");
+		addEOperation(iJavaAttributeMappingEClass, null, "initialize", 0, 1, IS_UNIQUE, IS_ORDERED);
 		// Create resource
 		createResource(eNS_URI);
 	}

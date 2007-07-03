@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
-import static org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean.DEFAULT_VALUE;
-import static org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean.FALSE_VALUE;
-import static org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean.TRUE_VALUE;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -61,7 +58,7 @@ public enum DefaultTrueBoolean implements Enumerator {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #DEFAULT
-	 * @model name="Default" literal="Default (False)"
+	 * @model name="Default" literal="Default (True)"
 	 * @generated
 	 * @ordered
 	 */

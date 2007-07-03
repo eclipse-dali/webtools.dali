@@ -41,7 +41,7 @@ public interface IUniqueConstraint extends IJpaSourceObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column Names</em>' attribute list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIUniqueConstraint_ColumnNames()
-	 * @model type="java.lang.String"
+	 * @model unique="false"
 	 * @generated
 	 */
 	EList<String> getColumnNames();

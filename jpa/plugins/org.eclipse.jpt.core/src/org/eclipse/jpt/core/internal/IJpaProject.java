@@ -91,7 +91,7 @@ public interface IJpaProject extends IJpaEObject
 	 * @generated
 	 */
 	void setDiscoverAnnotatedClasses(boolean discoverAnnotatedClasses);
-	
+
 	/**
 	 * Return the root "deploy path" for this project.
 	 * 

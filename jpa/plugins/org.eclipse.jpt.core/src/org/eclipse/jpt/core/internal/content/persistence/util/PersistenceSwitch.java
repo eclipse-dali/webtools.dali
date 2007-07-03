@@ -229,13 +229,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Persistence</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Persistence</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Persistence</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Persistence</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -244,13 +244,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Unit</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Unit</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Unit</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Unit</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -259,13 +259,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Mapping File Ref</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Mapping File Ref</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Mapping File Ref</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Mapping File Ref</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -274,13 +274,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Java Class Ref</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Java Class Ref</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Java Class Ref</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Java Class Ref</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -289,13 +289,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Properties</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Properties</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Properties</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Properties</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -304,13 +304,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Property</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Property</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Property</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Property</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -319,13 +319,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJpa EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJpa EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJpa EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJpa EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -334,13 +334,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Jpa EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Jpa EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Jpa EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Jpa EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -349,13 +349,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJpa Source Object</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJpa Source Object</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJpa Source Object</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJpa Source Object</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -364,13 +364,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IXml EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IXml EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IXml EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IXml EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -379,13 +379,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml Root Content Node</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Root Content Node</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml Root Content Node</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Root Content Node</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -394,13 +394,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>Xml EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>Xml EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -409,13 +409,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJpa Content Node</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJpa Content Node</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJpa Content Node</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJpa Content Node</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -424,13 +424,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>IJpa Root Content Node</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>IJpa Root Content Node</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>IJpa Root Content Node</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>IJpa Root Content Node</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -439,13 +439,13 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpretting the object as an instance of '<em>EObject</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch, but this is the last case anyway.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpretting the object as an instance of '<em>EObject</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */

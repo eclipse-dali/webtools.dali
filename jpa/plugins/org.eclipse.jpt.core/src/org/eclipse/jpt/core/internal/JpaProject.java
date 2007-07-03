@@ -47,7 +47,6 @@ import org.eclipse.jpt.core.internal.platform.IContext;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
@@ -436,7 +435,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	public boolean isSetDiscoverAnnotatedClasses() {
 		return discoverAnnotatedClassesESet;
 	}
-	
+
 	public String rootDeployLocation() {
 		String metaInfLocation = "";
 		try {
@@ -467,7 +466,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Files</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaProject_Files()
-	 * @model type="org.eclipse.jpt.core.internal.IJpaFile" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IJpaFile> getFiles() {

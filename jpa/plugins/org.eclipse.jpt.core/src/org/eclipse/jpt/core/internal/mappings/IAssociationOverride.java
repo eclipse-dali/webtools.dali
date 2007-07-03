@@ -46,7 +46,7 @@ public interface IAssociationOverride extends IOverride
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIAssociationOverride_JoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IJoinColumn" containment="true" transient="true" changeable="false" volatile="true"
+	 * @model containment="true" transient="true" changeable="false" volatile="true"
 	 * @generated
 	 */
 	EList<IJoinColumn> getJoinColumns();
@@ -62,7 +62,7 @@ public interface IAssociationOverride extends IOverride
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIAssociationOverride_SpecifiedJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IJoinColumn> getSpecifiedJoinColumns();
@@ -78,7 +78,7 @@ public interface IAssociationOverride extends IOverride
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIAssociationOverride_DefaultJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<IJoinColumn> getDefaultJoinColumns();

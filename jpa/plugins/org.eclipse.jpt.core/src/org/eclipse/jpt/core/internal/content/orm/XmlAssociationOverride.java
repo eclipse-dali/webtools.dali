@@ -93,7 +93,7 @@ public class XmlAssociationOverride extends XmlOverride
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Specified Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIAssociationOverride_SpecifiedJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IJoinColumn> getSpecifiedJoinColumns() {
@@ -114,7 +114,7 @@ public class XmlAssociationOverride extends XmlOverride
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Default Join Columns</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIAssociationOverride_DefaultJoinColumns()
-	 * @model type="org.eclipse.jpt.core.internal.mappings.IJoinColumn" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<IJoinColumn> getDefaultJoinColumns() {

@@ -13,11 +13,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JavaPersistentType" eSuperTypes="#//JavaEObject core.ecore#//IPersistentType">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" lowerBound="1"
-        eType="#//IJavaTypeMapping" defaultValueLiteral="" containment="true"/>
+        eType="#//IJavaTypeMapping" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
         eType="#//JavaPersistentAttribute" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="ecore:EEnum core.ecore#//AccessType"
-        changeable="false" defaultValueLiteral=""/>
+        changeable="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JavaPersistentAttribute" eSuperTypes="#//JavaEObject core.ecore#//IPersistentAttribute">
     <eStructuralFeatures xsi:type="ecore:EReference" name="defaultMapping" lowerBound="1"
