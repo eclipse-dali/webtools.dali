@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.IJpaFile;
@@ -36,10 +38,16 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class PersistenceUnitContext extends BaseContext
 {	
+	protected final static String IMPLIED_MAPPING_FILE_LOCATION = "META-INF/orm.xml";
+	
 	private PersistenceUnit persistenceUnit;
 	
 	private List<PersistenceUnitMetadata> persistenceUnitMetadatas;  // datas ??  datae ??  datata ??
@@ -86,13 +94,29 @@ public class PersistenceUnitContext extends BaseContext
 	
 	protected List<MappingFileContext> buildMappingFileContexts() {
 		List<MappingFileContext> contexts = new ArrayList<MappingFileContext>();
-		for (MappingFileRef mappingFileRef : persistenceUnit.getMappingFiles()) {
-			XmlRootContentNode xmlRootContentNode = xmlRootContentNodeFor(mappingFileRef);
-			if (xmlRootContentNode != null && xmlRootContentNode.getEntityMappings() != null) {
-				contexts.add(new MappingFileContext(this, xmlRootContentNode));
-			}
+		for (XmlRootContentNode content : allUniqueMappingFileContents()) {
+			contexts.add(new MappingFileContext(this, content));
 		}
 		return contexts;
+	}
+	
+	protected List<XmlRootContentNode> allUniqueMappingFileContents() {
+		List<XmlRootContentNode> contents = new ArrayList<XmlRootContentNode>();
+		for (MappingFileRef mappingFileRef : persistenceUnit.getMappingFiles()) {
+			XmlRootContentNode xmlRootContentNode = xmlRootContentNodeFor(mappingFileRef);
+			if (xmlRootContentNode != null 
+					&& xmlRootContentNode.getEntityMappings() != null
+					&& ! contents.contains(xmlRootContentNode)) {
+				contents.add(xmlRootContentNode);
+			}
+		}
+		XmlRootContentNode impliedMappingFileContent = impliedMappingFileContent();
+		if (impliedMappingFileContent != null
+					&& impliedMappingFileContent.getEntityMappings() != null
+					&& ! contents.contains(impliedMappingFileContent)) {
+			contents.add(impliedMappingFileContent);
+		}
+		return contents;
 	}
 	
 	private XmlRootContentNode xmlRootContentNodeFor(MappingFileRef mappingFileRef) {
@@ -100,6 +124,33 @@ public class PersistenceUnitContext extends BaseContext
 		if (jpaFile != null) {
 			try {
 				return (XmlRootContentNode) jpaFile.getContent();
+			}
+			catch (ClassCastException cce) { /* do nothing, return null */ }
+		}
+		return null;
+	}
+	
+	protected XmlRootContentNode impliedMappingFileContent() {
+		// check flexible project structure
+		IVirtualComponent component = ComponentCore.createComponent(persistenceUnit.getJpaProject().getProject());
+		IVirtualFolder virtualRootFolder = component.getRootFolder();
+		IVirtualFile virtualMappingFile = virtualRootFolder.getFile(new Path(IMPLIED_MAPPING_FILE_LOCATION));
+		// keep track of whether one has been found so that we may know if multiple exist
+		IJpaFile mappingFile = null;
+		for (IFile underlyingFile : virtualMappingFile.getUnderlyingFiles()) {
+			IJpaFile jpaFile = JptCorePlugin.getJpaFile(underlyingFile);
+			if (jpaFile != null) {
+				if (mappingFile != null) {
+					return null; // multiple do exist
+				}
+				else {
+					mappingFile = jpaFile;
+				}
+			}
+		}
+		if (mappingFile != null) {
+			try {
+				return (XmlRootContentNode) mappingFile.getContent();
 			}
 			catch (ClassCastException cce) { /* do nothing, return null */ }
 		}

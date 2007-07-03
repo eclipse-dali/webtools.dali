@@ -25,7 +25,6 @@ import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
 import org.eclipse.jpt.core.internal.content.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.content.orm.OrmXmlResource;
-import org.eclipse.jpt.core.internal.content.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.content.persistence.Persistence;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit;
@@ -79,13 +78,6 @@ public class JpaFacetPostInstallDelegate
 		persistence.setVersion("1.0");
 		PersistenceUnit pUnit = PersistenceFactory.eINSTANCE.createPersistenceUnit();
 		pUnit.setName(project.getName());
-		
-		if (dataModel.getBooleanProperty(CREATE_ORM_XML)) {
-			MappingFileRef mappingFile = PersistenceFactory.eINSTANCE.createMappingFileRef();
-			mappingFile.setFileName(ORM_XML_FILE_PATH);
-			pUnit.getMappingFiles().add(mappingFile);
-		}
-		
 		persistence.getPersistenceUnits().add(pUnit);
 		
 		try {
