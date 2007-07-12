@@ -123,7 +123,7 @@ public class PersistenceTranslator extends RootTranslator
 	}
 	
 	private static Translator createPropertyTranslator() {
-		GenericTranslator translator = new GenericTranslator(PROPERTY, PERSISTENCE_PKG.getProperties_Properties());
+		GenericTranslator translator = new GenericTranslator(PROPERTY, PERSISTENCE_PKG.getProperties_Properties(), END_TAG_NO_INDENT);
 		translator.setChildren(
 			new Translator[] {
 				createPropertyNameTranslator(),
@@ -134,10 +134,10 @@ public class PersistenceTranslator extends RootTranslator
 	}
 	
 	private static Translator createPropertyNameTranslator() {
-		return new Translator(PROPERTY_NAME, PERSISTENCE_PKG.getProperty_Name());
+		return new Translator(PROPERTY_NAME, PERSISTENCE_PKG.getProperty_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private static Translator createPropertyValueTranslator() {
-		return new Translator(PROPERTY_VALUE, PERSISTENCE_PKG.getProperty_Value());
+		return new Translator(PROPERTY_VALUE, PERSISTENCE_PKG.getProperty_Value(), DOM_ATTRIBUTE);
 	}
 }
