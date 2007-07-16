@@ -14,4 +14,6 @@ public interface IPersistenceXmlContentNodes
 {
 	String PERSISTENCEXML_ROOT_ID = JptCorePlugin.PLUGIN_ID + ".persistencexml.Root";
 	
+	String PERSISTENCE_UNIT_ID = JptCorePlugin.PLUGIN_ID + ".persistencexml.PersistenceUnit";
+	
 }

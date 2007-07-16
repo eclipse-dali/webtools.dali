@@ -127,13 +127,15 @@ public class PersistenceSwitch<T>
 				if (result == null)
 					result = caseXmlEObject(persistence);
 				if (result == null)
+					result = caseIJpaContentNode(persistence);
+				if (result == null)
 					result = caseJpaEObject(persistence);
 				if (result == null)
 					result = caseIXmlEObject(persistence);
 				if (result == null)
-					result = caseIJpaEObject(persistence);
-				if (result == null)
 					result = caseIJpaSourceObject(persistence);
+				if (result == null)
+					result = caseIJpaEObject(persistence);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -144,13 +146,15 @@ public class PersistenceSwitch<T>
 				if (result == null)
 					result = caseXmlEObject(persistenceUnit);
 				if (result == null)
+					result = caseIJpaContentNode(persistenceUnit);
+				if (result == null)
 					result = caseJpaEObject(persistenceUnit);
 				if (result == null)
 					result = caseIXmlEObject(persistenceUnit);
 				if (result == null)
-					result = caseIJpaEObject(persistenceUnit);
-				if (result == null)
 					result = caseIJpaSourceObject(persistenceUnit);
+				if (result == null)
+					result = caseIJpaEObject(persistenceUnit);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;

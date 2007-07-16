@@ -7,7 +7,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistence" eType="#//Persistence"
         eOpposite="#//Persistence/root"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Persistence" eSuperTypes="core.ecore#//XmlEObject">
+  <eClassifiers xsi:type="ecore:EClass" name="Persistence" eSuperTypes="core.ecore#//XmlEObject core.ecore#//IJpaContentNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceUnits" upperBound="-1"
         eType="#//PersistenceUnit" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" unique="false"
@@ -16,7 +16,7 @@
         lowerBound="1" eType="#//PersistenceXmlRootContentNode" resolveProxies="false"
         eOpposite="#//PersistenceXmlRootContentNode/persistence"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnit" eSuperTypes="core.ecore#//XmlEObject">
+  <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnit" eSuperTypes="core.ecore#//XmlEObject core.ecore#//IJpaContentNode">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" unique="false"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="provider" unique="false"
