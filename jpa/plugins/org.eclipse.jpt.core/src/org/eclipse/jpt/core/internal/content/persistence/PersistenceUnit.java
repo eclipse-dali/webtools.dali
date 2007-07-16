@@ -18,7 +18,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.XmlEObject;
+import org.eclipse.jpt.core.internal.content.persistence.resource.IPersistenceXmlContentNodes;
 
 /**
  * <!-- begin-user-doc -->
@@ -46,7 +48,7 @@ import org.eclipse.jpt.core.internal.XmlEObject;
  * @model kind="class"
  * @generated
  */
-public class PersistenceUnit extends XmlEObject
+public class PersistenceUnit extends XmlEObject implements IJpaContentNode
 {
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
@@ -873,5 +875,9 @@ public class PersistenceUnit extends XmlEObject
 			result.append("<unset>");
 		result.append(')');
 		return result.toString();
+	}
+
+	public Object getId() {
+		return IPersistenceXmlContentNodes.PERSISTENCE_UNIT_ID;
 	}
 }

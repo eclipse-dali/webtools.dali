@@ -9,6 +9,7 @@
 package org.eclipse.jpt.core.internal.content.persistence;
 
 import java.util.Collection;
+import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -17,9 +18,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.XmlEObject;
+import org.eclipse.jpt.core.internal.content.persistence.resource.IPersistenceXmlContentNodes;
 
 /**
  * <!-- begin-user-doc -->
@@ -39,7 +42,7 @@ import org.eclipse.jpt.core.internal.XmlEObject;
  * @model kind="class"
  * @generated
  */
-public class Persistence extends XmlEObject
+public class Persistence extends XmlEObject implements IJpaContentNode
 {
 	/**
 	 * The cached value of the '{@link #getPersistenceUnits() <em>Persistence Units</em>}' containment reference list.
@@ -344,5 +347,19 @@ public class Persistence extends XmlEObject
 	public IJpaProject getJpaProject() {
 		IJpaFile file = getJpaFile();
 		return (file == null) ? null : file.getJpaProject();
+	}
+
+	public IJpaContentNode getContentNode(int offset) {
+		for (Iterator<PersistenceUnit> i = getPersistenceUnits().iterator(); i.hasNext();) {
+			PersistenceUnit persistenceUnit = i.next();
+			if (persistenceUnit.getNode().contains(offset)) {
+				return persistenceUnit;
+			}
+		}
+		return this;
+	}
+
+	public Object getId() {
+		return IPersistenceXmlContentNodes.PERSISTENCEXML_ROOT_ID;
 	}
 }

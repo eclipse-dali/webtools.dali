@@ -1056,7 +1056,9 @@ public class PersistencePackage extends EPackageImpl
 		persistenceXmlRootContentNodeEClass.getESuperTypes().add(theJpaCorePackage.getXmlEObject());
 		persistenceXmlRootContentNodeEClass.getESuperTypes().add(theJpaCorePackage.getIJpaRootContentNode());
 		persistenceEClass.getESuperTypes().add(theJpaCorePackage.getXmlEObject());
+		persistenceEClass.getESuperTypes().add(theJpaCorePackage.getIJpaContentNode());
 		persistenceUnitEClass.getESuperTypes().add(theJpaCorePackage.getXmlEObject());
+		persistenceUnitEClass.getESuperTypes().add(theJpaCorePackage.getIJpaContentNode());
 		mappingFileRefEClass.getESuperTypes().add(theJpaCorePackage.getXmlEObject());
 		javaClassRefEClass.getESuperTypes().add(theJpaCorePackage.getXmlEObject());
 		propertiesEClass.getESuperTypes().add(theJpaCorePackage.getXmlEObject());

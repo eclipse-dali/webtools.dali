@@ -346,8 +346,10 @@ public class PersistenceXmlRootContentNode extends XmlEObject
 	}
 
 	public IJpaContentNode getContentNode(int offset) {
-		// TODO Auto-generated method stub
-		return null;
+		if (getPersistence() == null || !getPersistence().getNode().contains(offset)) {
+			return this;
+		}
+		return getPersistence().getContentNode(offset);
 	}
 
 	public Object getId() {
