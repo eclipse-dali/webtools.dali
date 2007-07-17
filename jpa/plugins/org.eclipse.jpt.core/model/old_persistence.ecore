@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="persistence"
-    nsURI="jpt.persistence.xmi" nsPrefix="org.eclipse.jpt.core.resource.persistence">
+    nsURI="persistence.xmi" nsPrefix="org.eclipse.jpt.core.content.persistence">
   <eClassifiers xsi:type="ecore:EClass" name="PersistenceXmlRootContentNode" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//IJpaRootContentNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistence" eType="#//Persistence"
         eOpposite="#//Persistence/root"/>

@@ -3,12 +3,12 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="orm"
     nsURI="jpt.orm.xmi" nsPrefix="org.eclipse.jpt.core.content.orm">
-  <eClassifiers xsi:type="ecore:EClass" name="XmlRootContentNode" eSuperTypes="core.ecore#//XmlEObject core.ecore#//IJpaRootContentNode">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlRootContentNode" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//IJpaRootContentNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityMappings" ordered="false"
         unique="false" lowerBound="1" eType="#//EntityMappingsInternal" resolveProxies="false"
         eOpposite="#//EntityMappingsInternal/root"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EntityMappingsInternal" eSuperTypes="core.ecore#//XmlEObject core.ecore#//IJpaContentNode #//EntityMappingsForXml #//EntityMappings">
+  <eClassifiers xsi:type="ecore:EClass" name="EntityMappingsInternal" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//IJpaContentNode #//EntityMappingsForXml #//EntityMappings">
     <eStructuralFeatures xsi:type="ecore:EReference" name="root" ordered="false" unique="false"
         lowerBound="1" eType="#//XmlRootContentNode" resolveProxies="false" eOpposite="#//XmlRootContentNode/entityMappings"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -25,9 +25,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedCatalog" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="catalog" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         changeable="false" volatile="true" transient="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultAccess" eType="ecore:EEnum core.ecore#//AccessType"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedAccess" eType="ecore:EEnum core.ecore#//AccessType"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="ecore:EEnum core.ecore#//AccessType"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultAccess" eType="ecore:EEnum old_core.ecore#//AccessType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedAccess" eType="ecore:EEnum old_core.ecore#//AccessType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="ecore:EEnum old_core.ecore#//AccessType"
         changeable="false" volatile="true" transient="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeMappings" upperBound="-1"
         eType="#//XmlTypeMapping" containment="true" resolveProxies="false"/>
@@ -55,16 +55,16 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="packageForXml" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         volatile="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlTypeMapping" abstract="true" eSuperTypes="core.ecore#//XmlEObject core.ecore#//ITypeMapping">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultAccess" eType="ecore:EEnum core.ecore#//AccessType"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedAccess" eType="ecore:EEnum core.ecore#//AccessType"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="ecore:EEnum core.ecore#//AccessType"
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTypeMapping" abstract="true" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//ITypeMapping">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultAccess" eType="ecore:EEnum old_core.ecore#//AccessType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedAccess" eType="ecore:EEnum old_core.ecore#//AccessType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="ecore:EEnum old_core.ecore#//AccessType"
         changeable="false" volatile="true" transient="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metadataComplete" eType="ecore:EEnum core.ecore#//mappings/DefaultFalseBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metadataComplete" eType="ecore:EEnum old_core.ecore#//mappings/DefaultFalseBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistentType" lowerBound="1"
         eType="#//XmlPersistentType" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlPersistentType" eSuperTypes="core.ecore#//XmlEObject core.ecore#//IPersistentType">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlPersistentType" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//IPersistentType">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="class" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributeMappings" upperBound="-1"
         eType="#//XmlAttributeMapping" changeable="false" volatile="true" transient="true"
@@ -81,7 +81,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="virtualPersistentAttributes"
         upperBound="-1" eType="#//XmlPersistentAttribute" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//XmlTypeMapping core.ecore#//mappings/IMappedSuperclass">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//XmlTypeMapping old_core.ecore#//mappings/IMappedSuperclass">
     <eStructuralFeatures xsi:type="ecore:EReference" name="idClassForXml" eType="#//XmlIdClass"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
@@ -97,29 +97,29 @@
         containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" abstract="true" interface="true"
-      eSuperTypes="core.ecore#//mappings/IEntity">
+      eSuperTypes="old_core.ecore#//mappings/IEntity">
     <eStructuralFeatures xsi:type="ecore:EReference" name="secondaryTables" upperBound="-1"
-        eType="ecore:EClass core.ecore#//mappings/ISecondaryTable" changeable="false"
+        eType="ecore:EClass old_core.ecore#//mappings/ISecondaryTable" changeable="false"
         volatile="true" transient="true" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="virtualSecondaryTables"
-        upperBound="-1" eType="ecore:EClass core.ecore#//mappings/ISecondaryTable"
+        upperBound="-1" eType="ecore:EClass old_core.ecore#//mappings/ISecondaryTable"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="#//XmlTypeMapping core.ecore#//mappings/IEmbeddable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="#//XmlTypeMapping old_core.ecore#//mappings/IEmbeddable"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeMapping" abstract="true"
-      eSuperTypes="core.ecore#//XmlEObject core.ecore#//IAttributeMapping">
+      eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//IAttributeMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistentAttribute" lowerBound="1"
         eType="#//XmlPersistentAttribute" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlNullAttributeMapping" eSuperTypes="#//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlBasic" eSuperTypes="#//XmlAttributeMapping core.ecore#//mappings/IBasic #//IXmlColumnMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlId" eSuperTypes="#//XmlAttributeMapping core.ecore#//mappings/IId #//IXmlColumnMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlTransient" eSuperTypes="#//XmlAttributeMapping core.ecore#//mappings/ITransient"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="#//XmlAttributeMapping core.ecore#//mappings/IEmbedded"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" eSuperTypes="#//XmlAttributeMapping core.ecore#//mappings/IEmbeddedId"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlVersion" eSuperTypes="#//XmlAttributeMapping core.ecore#//mappings/IVersion #//IXmlColumnMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBasic" eSuperTypes="#//XmlAttributeMapping old_core.ecore#//mappings/IBasic #//IXmlColumnMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlId" eSuperTypes="#//XmlAttributeMapping old_core.ecore#//mappings/IId #//IXmlColumnMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTransient" eSuperTypes="#//XmlAttributeMapping old_core.ecore#//mappings/ITransient"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="#//XmlAttributeMapping old_core.ecore#//mappings/IEmbedded"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" eSuperTypes="#//XmlAttributeMapping old_core.ecore#//mappings/IEmbeddedId"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlVersion" eSuperTypes="#//XmlAttributeMapping old_core.ecore#//mappings/IVersion #//IXmlColumnMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMultiRelationshipMappingInternal"
-      abstract="true" eSuperTypes="#//XmlRelationshipMapping core.ecore#//mappings/IMultiRelationshipMapping #//XmlMultiRelationshipMappingForXml #//XmlMultiRelationshipMapping"/>
+      abstract="true" eSuperTypes="#//XmlRelationshipMapping old_core.ecore#//mappings/IMultiRelationshipMapping #//XmlMultiRelationshipMappingForXml #//XmlMultiRelationshipMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMultiRelationshipMappingForXml" abstract="true"
       interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="joinTableForXml" eType="#//XmlJoinTable"
@@ -128,13 +128,13 @@
         containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMultiRelationshipMapping" abstract="true"
-      interface="true" eSuperTypes="core.ecore#//mappings/IMultiRelationshipMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="#//XmlMultiRelationshipMappingInternal core.ecore#//mappings/IOneToMany"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="#//XmlMultiRelationshipMappingInternal core.ecore#//mappings/IManyToMany"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlPersistentAttribute" eSuperTypes="core.ecore#//XmlEObject core.ecore#//IPersistentAttribute">
+      interface="true" eSuperTypes="old_core.ecore#//mappings/IMultiRelationshipMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="#//XmlMultiRelationshipMappingInternal old_core.ecore#//mappings/IOneToMany"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="#//XmlMultiRelationshipMappingInternal old_core.ecore#//mappings/IManyToMany"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlPersistentAttribute" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//IPersistentAttribute">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnitMetadataInternal" eSuperTypes="core.ecore#//XmlEObject #//PersistenceUnitMetadataForXml #//PersistenceUnitMetadata">
+  <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnitMetadataInternal" eSuperTypes="old_core.ecore#//XmlEObject #//PersistenceUnitMetadataForXml #//PersistenceUnitMetadata">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlMappingMetadataCompleteInternal"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceUnitDefaultsInternal"
@@ -142,69 +142,69 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnitMetadata" abstract="true"
-      interface="true" eSuperTypes="core.ecore#//IXmlEObject">
+      interface="true" eSuperTypes="old_core.ecore#//IXmlEObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlMappingMetadataComplete"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" volatile="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceUnitDefaults"
         eType="#//PersistenceUnitDefaults" changeable="false" volatile="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnitMetadataForXml" abstract="true"
-      interface="true" eSuperTypes="core.ecore#//IXmlEObject">
+      interface="true" eSuperTypes="old_core.ecore#//IXmlEObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlMappingMetadataCompleteForXml"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" volatile="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceUnitDefaultsForXml"
         eType="#//PersistenceUnitDefaultsForXml" volatile="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnitDefaultsInternal" eSuperTypes="core.ecore#//XmlEObject #//PersistenceUnitDefaults #//PersistenceUnitDefaultsForXml">
+  <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnitDefaultsInternal" eSuperTypes="old_core.ecore#//XmlEObject #//PersistenceUnitDefaults #//PersistenceUnitDefaultsForXml">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="schemaInternal" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="catalogInternal" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="accessInternal" eType="ecore:EEnum core.ecore#//AccessType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="accessInternal" eType="ecore:EEnum old_core.ecore#//AccessType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadePersistInternal"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnitDefaults" abstract="true"
-      interface="true" eSuperTypes="core.ecore#//IXmlEObject">
+      interface="true" eSuperTypes="old_core.ecore#//IXmlEObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="schema" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         volatile="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="catalog" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         volatile="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="ecore:EEnum core.ecore#//AccessType"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="ecore:EEnum old_core.ecore#//AccessType"
         volatile="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadePersist" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         volatile="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnitDefaultsForXml" abstract="true"
-      interface="true" eSuperTypes="core.ecore#//IXmlEObject">
+      interface="true" eSuperTypes="old_core.ecore#//IXmlEObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="schemaForXml" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         volatile="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="catalogForXml" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         volatile="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="accessForXml" eType="ecore:EEnum core.ecore#//AccessType"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="accessForXml" eType="ecore:EEnum old_core.ecore#//AccessType"
         volatile="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadePersistForXml" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         volatile="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlTable" eSuperTypes="#//AbstractXmlTable core.ecore#//mappings/ITable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTable" eSuperTypes="#//AbstractXmlTable old_core.ecore#//mappings/ITable"/>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlNamedColumn" abstract="true"
-      eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/INamedColumn">
+      eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//mappings/INamedColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedNameForXml" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         volatile="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnDefinitionForXml"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" volatile="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlColumn" abstract="true" eSuperTypes="#//AbstractXmlNamedColumn core.ecore#//mappings/IAbstractColumn">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uniqueForXml" eType="ecore:EEnum core.ecore#//mappings/DefaultFalseBoolean"
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlColumn" abstract="true" eSuperTypes="#//AbstractXmlNamedColumn old_core.ecore#//mappings/IAbstractColumn">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uniqueForXml" eType="ecore:EEnum old_core.ecore#//mappings/DefaultFalseBoolean"
         volatile="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nullableForXml" eType="ecore:EEnum core.ecore#//mappings/DefaultTrueBoolean"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nullableForXml" eType="ecore:EEnum old_core.ecore#//mappings/DefaultTrueBoolean"
         volatile="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="insertableForXml" eType="ecore:EEnum core.ecore#//mappings/DefaultTrueBoolean"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="insertableForXml" eType="ecore:EEnum old_core.ecore#//mappings/DefaultTrueBoolean"
         volatile="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="updatableForXml" eType="ecore:EEnum core.ecore#//mappings/DefaultTrueBoolean"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="updatableForXml" eType="ecore:EEnum old_core.ecore#//mappings/DefaultTrueBoolean"
         volatile="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedTableForXml" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         volatile="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlColumn" eSuperTypes="#//AbstractXmlColumn core.ecore#//mappings/IColumn">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlColumn" eSuperTypes="#//AbstractXmlColumn old_core.ecore#//mappings/IColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lengthForXml" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         volatile="true" defaultValueLiteral="255"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="precisionForXml" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
@@ -212,25 +212,25 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="scaleForXml" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         volatile="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinColumn" eSuperTypes="#//AbstractXmlColumn core.ecore#//mappings/IJoinColumn">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinColumn" eSuperTypes="#//AbstractXmlColumn old_core.ecore#//mappings/IJoinColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedReferencedColumnNameForXml"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" volatile="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IXmlColumnMapping" abstract="true" interface="true"
-      eSuperTypes="core.ecore#//mappings/IColumnMapping">
+      eSuperTypes="old_core.ecore#//mappings/IColumnMapping">
     <eOperations name="makeColumnForXmlNonNull"/>
     <eOperations name="makeColumnForXmlNull"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="columnForXml" eType="#//XmlColumn"
         volatile="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" eSuperTypes="#//XmlSingleRelationshipMapping core.ecore#//mappings/IManyToOne"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne" eSuperTypes="#//XmlSingleRelationshipMapping core.ecore#//mappings/IOneToOne"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" eSuperTypes="#//XmlSingleRelationshipMapping old_core.ecore#//mappings/IManyToOne"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne" eSuperTypes="#//XmlSingleRelationshipMapping old_core.ecore#//mappings/IOneToOne"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlSingleRelationshipMapping" abstract="true"
-      eSuperTypes="#//XmlRelationshipMapping core.ecore#//mappings/ISingleRelationshipMapping"/>
+      eSuperTypes="#//XmlRelationshipMapping old_core.ecore#//mappings/ISingleRelationshipMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlRelationshipMapping" abstract="true"
-      eSuperTypes="#//XmlAttributeMapping core.ecore#//mappings/IRelationshipMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinTable" eSuperTypes="#//AbstractXmlTable core.ecore#//mappings/IJoinTable"/>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlTable" abstract="true" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/ITable">
+      eSuperTypes="#//XmlAttributeMapping old_core.ecore#//mappings/IRelationshipMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinTable" eSuperTypes="#//AbstractXmlTable old_core.ecore#//mappings/IJoinTable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlTable" abstract="true" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//mappings/ITable">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedNameForXml" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         volatile="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedCatalogForXml"
@@ -238,38 +238,38 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedSchemaForXml"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" volatile="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOverride" abstract="true" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IOverride"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeOverride" eSuperTypes="#//XmlOverride core.ecore#//mappings/IAttributeOverride #//IXmlColumnMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverride" eSuperTypes="#//XmlOverride core.ecore#//mappings/IAssociationOverride"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlDiscriminatorColumn" eSuperTypes="#//AbstractXmlNamedColumn core.ecore#//mappings/IDiscriminatorColumn">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOverride" abstract="true" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//mappings/IOverride"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeOverride" eSuperTypes="#//XmlOverride old_core.ecore#//mappings/IAttributeOverride #//IXmlColumnMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverride" eSuperTypes="#//XmlOverride old_core.ecore#//mappings/IAssociationOverride"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlDiscriminatorColumn" eSuperTypes="#//AbstractXmlNamedColumn old_core.ecore#//mappings/IDiscriminatorColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="discriminatorTypeForXml"
-        eType="ecore:EEnum core.ecore#//mappings/DiscriminatorType" volatile="true"/>
+        eType="ecore:EEnum old_core.ecore#//mappings/DiscriminatorType" volatile="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedLengthForXml"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
         volatile="true" defaultValueLiteral="-1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlSecondaryTable" eSuperTypes="#//AbstractXmlTable core.ecore#//mappings/ISecondaryTable"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlPrimaryKeyJoinColumn" eSuperTypes="#//AbstractXmlNamedColumn core.ecore#//mappings/IPrimaryKeyJoinColumn">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlSecondaryTable" eSuperTypes="#//AbstractXmlTable old_core.ecore#//mappings/ISecondaryTable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlPrimaryKeyJoinColumn" eSuperTypes="#//AbstractXmlNamedColumn old_core.ecore#//mappings/IPrimaryKeyJoinColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedReferencedColumnNameForXml"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" volatile="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlGeneratedValue" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IGeneratedValue"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlGenerator" abstract="true" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IGenerator"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlSequenceGenerator" eSuperTypes="#//XmlGenerator core.ecore#//mappings/ISequenceGenerator"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlTableGenerator" eSuperTypes="#//XmlGenerator core.ecore#//mappings/ITableGenerator"/>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlQuery" abstract="true" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IQuery"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedQuery" eSuperTypes="#//AbstractXmlQuery core.ecore#//mappings/INamedQuery"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedNativeQuery" eSuperTypes="#//AbstractXmlQuery core.ecore#//mappings/INamedNativeQuery"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlQueryHint" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IQueryHint"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlUniqueConstraint" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/IUniqueConstraint"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlCascade" eSuperTypes="core.ecore#//XmlEObject core.ecore#//mappings/ICascade"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlIdClass" eSuperTypes="core.ecore#//XmlEObject">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlGeneratedValue" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//mappings/IGeneratedValue"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlGenerator" abstract="true" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//mappings/IGenerator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlSequenceGenerator" eSuperTypes="#//XmlGenerator old_core.ecore#//mappings/ISequenceGenerator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTableGenerator" eSuperTypes="#//XmlGenerator old_core.ecore#//mappings/ITableGenerator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlQuery" abstract="true" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//mappings/IQuery"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedQuery" eSuperTypes="#//AbstractXmlQuery old_core.ecore#//mappings/INamedQuery"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedNativeQuery" eSuperTypes="#//AbstractXmlQuery old_core.ecore#//mappings/INamedNativeQuery"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlQueryHint" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//mappings/IQueryHint"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlUniqueConstraint" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//mappings/IUniqueConstraint"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlCascade" eSuperTypes="old_core.ecore#//XmlEObject old_core.ecore#//mappings/ICascade"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlIdClass" eSuperTypes="old_core.ecore#//XmlEObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlInheritance" eSuperTypes="core.ecore#//XmlEObject">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="strategy" eType="ecore:EEnum core.ecore#//mappings/InheritanceType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlInheritance" eSuperTypes="old_core.ecore#//XmlEObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="strategy" eType="ecore:EEnum old_core.ecore#//mappings/InheritanceType"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMapKey" eSuperTypes="core.ecore#//XmlEObject">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMapKey" eSuperTypes="old_core.ecore#//XmlEObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
