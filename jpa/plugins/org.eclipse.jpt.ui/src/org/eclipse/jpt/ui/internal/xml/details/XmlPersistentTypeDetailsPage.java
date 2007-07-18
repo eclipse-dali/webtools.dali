@@ -10,6 +10,7 @@ package org.eclipse.jpt.ui.internal.xml.details;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
@@ -41,10 +42,28 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage
 	
 	private AccessTypeComboViewer accessComboViewer;
 	
+	//Storing these here instead of querying IJpaPlatformUI, because the orm.xml schema
+	//is not extensible.  We only need to support extensibility for java
+	private List<ITypeMappingUiProvider> xmlTypeMappingUiProviders;
+
 	public XmlPersistentTypeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, widgetFactory);
 	}
+
+	public List<ITypeMappingUiProvider> typeMappingUiProviders() {
+		if (this.xmlTypeMappingUiProviders == null) {
+			this.xmlTypeMappingUiProviders = new ArrayList<ITypeMappingUiProvider>();
+			this.addXmlTypeMappingUiProvidersTo(this.xmlTypeMappingUiProviders);
+		}
+		return this.xmlTypeMappingUiProviders;
+	}
 	
+	protected void addXmlTypeMappingUiProvidersTo(Collection<ITypeMappingUiProvider> providers) {
+		providers.add(EntityUiProvider.instance());
+		providers.add(MappedSuperclassUiProvider.instance());			
+		providers.add(EmbeddableUiProvider.instance());			
+	}
+
 	protected Collection<ITypeMappingUiProvider> buildTypeMappingUiProviders() {
 		Collection<ITypeMappingUiProvider> typeMappingUiProviders = new ArrayList<ITypeMappingUiProvider>();
 		typeMappingUiProviders.add(EntityUiProvider.instance());

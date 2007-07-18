@@ -195,7 +195,7 @@ public class AddPersistentClassDialog extends StatusDialog
 	
 	public String getMappingKey() {
 		StructuredSelection selection = (StructuredSelection) mappingCombo.getSelection();
-		return (selection.isEmpty()) ? null : ((ITypeMappingUiProvider) selection.getFirstElement()).key();
+		return (selection.isEmpty()) ? null : ((ITypeMappingUiProvider) selection.getFirstElement()).mappingKey();
 	}
 	
 	protected IType chooseType() {

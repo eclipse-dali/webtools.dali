@@ -37,7 +37,7 @@ public class NullTypeMappingUiProvider implements ITypeMappingUiProvider
 		super();
 	}
 	
-	public String key() {
+	public String mappingKey() {
 		return null;
 	}
 	

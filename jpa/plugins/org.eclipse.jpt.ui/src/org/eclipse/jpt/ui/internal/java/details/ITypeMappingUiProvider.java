@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.java.details;
 
 import org.eclipse.emf.common.command.CommandStack;
+import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -19,7 +20,7 @@ public interface ITypeMappingUiProvider
 	/**
 	 * A unique string that corresponds to the key of a MappingProvider in the core
 	 */
-	String key();
+	String mappingKey();
 	
 	/**
 	 * A label to be displayed to the label as an option in the mapping type combo box 
@@ -37,7 +38,7 @@ public interface ITypeMappingUiProvider
 	 * @param widgetFactory
 	 * @return
 	 */
-	IJpaComposite buildPersistentTypeMappingComposite(
+	IJpaComposite<ITypeMapping> buildPersistentTypeMappingComposite(
 			Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory);
 	
 }

@@ -37,7 +37,7 @@ public class EntityUiProvider implements ITypeMappingUiProvider
 		super();
 	}
 
-	public String key() {
+	public String mappingKey() {
 		return IMappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 	

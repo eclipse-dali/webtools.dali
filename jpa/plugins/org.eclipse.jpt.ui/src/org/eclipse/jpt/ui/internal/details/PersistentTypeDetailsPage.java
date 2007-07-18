@@ -8,10 +8,10 @@
  ******************************************************************************/        
 package org.eclipse.jpt.ui.internal.details;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.notify.Adapter;
@@ -28,13 +28,10 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IPersistentType;
+import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddableUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.EntityUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.MappedSuperclassUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.NullTypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -53,32 +50,19 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 	
 	private CComboViewer typeMappingCombo;
 	
-	/**
-	 * A Map of mapping Composites of type IPersistenceComposite that is keyed on IConfigurationElement
-	 */
-	private Map composites;
+	private Map<String, IJpaComposite<ITypeMapping>> composites;
 	
 	protected PageBook typeMappingPageBook;
 	
-	private IJpaComposite visibleMappingComposite;
-	
-	private Collection<ITypeMappingUiProvider> typeMappingUiProviders;
+	private IJpaComposite<ITypeMapping> visibleMappingComposite;
 	
 	public PersistentTypeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, SWT.NONE, new BasicCommandStack(), widgetFactory);
 		this.persistentTypeListener = buildPersistentTypeListener();
-		this.composites = new HashMap();
-		this.typeMappingUiProviders = buildTypeMappingUiProviders();
+		this.composites = new HashMap<String, IJpaComposite<ITypeMapping>>();
 	}
 	
-	protected Collection<ITypeMappingUiProvider> buildTypeMappingUiProviders() {
-		Collection<ITypeMappingUiProvider> typeMappingUiProviders = new ArrayList<ITypeMappingUiProvider>();
-		typeMappingUiProviders.add(NullTypeMappingUiProvider.instance());
-		typeMappingUiProviders.add(EntityUiProvider.instance());
-		typeMappingUiProviders.add(MappedSuperclassUiProvider.instance());			
-		typeMappingUiProviders.add(EmbeddableUiProvider.instance());			
-		return typeMappingUiProviders;
-	}
+	protected abstract List<ITypeMappingUiProvider> typeMappingUiProviders();
 	
 	private Adapter buildPersistentTypeListener() {
 		return new AdapterImpl() {
@@ -127,7 +111,7 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 			public Object[] getElements(Object inputElement) {
 				return (persistentType == null) ?
 						new String[] {}:
-						PersistentTypeDetailsPage.this.typeMappingUiProviders.toArray();
+						PersistentTypeDetailsPage.this.typeMappingUiProviders().toArray();
 			}
 			
 			public void inputChanged(
@@ -149,14 +133,10 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 		typeMappingPageBook = new PageBook(parent, SWT.NONE);
 		return typeMappingPageBook;
 	}
-		
-	private IJpaProject getJpaProject() {
-		return getPersistentType().getJpaProject();
-	}
-
+	
 	private ITypeMappingUiProvider typeMappingUiProvider(String key) {
-		for (ITypeMappingUiProvider provider : this.typeMappingUiProviders) {
-			if (provider.key() == key) {
+		for (ITypeMappingUiProvider provider : this.typeMappingUiProviders()) {
+			if (provider.mappingKey() == key) {
 				return provider;
 			}
 		}
@@ -169,7 +149,7 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 		}
 		if (event.getSelection() instanceof StructuredSelection) {
 			ITypeMappingUiProvider provider = (ITypeMappingUiProvider) ((StructuredSelection) event.getSelection()).getFirstElement();
-			persistentType.setMappingKey(provider.key());
+			persistentType.setMappingKey(provider.mappingKey());
 		}
 	}
 	
@@ -211,7 +191,7 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 		}
 		
 		String mappingKey = persistentType.getMapping().getKey();
-		setComboData(mappingKey, persistentType.candidateMappingKeys());
+		setComboData(mappingKey);
 		
 		populateMappingPage(mappingKey);
 	}
@@ -239,7 +219,7 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 		visibleMappingComposite.populate(persistentType.getMapping());
 	}
 	
-	private void setComboData(String mappingKey, Iterator availableMappingKeys) {
+	private void setComboData(String mappingKey) {
 		if (persistentType != typeMappingCombo.getInput()) {
 			typeMappingCombo.setInput(persistentType);
 		}
@@ -250,25 +230,23 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 		}
 	}
 	
-	private IJpaComposite mappingCompositeFor(String key) {
-		IJpaComposite mappingComposite = (IJpaComposite) composites.get(key);
+	private IJpaComposite<ITypeMapping> mappingCompositeFor(String key) {
+		IJpaComposite<ITypeMapping> mappingComposite = this.composites.get(key);
 		if (mappingComposite != null) {
 			return mappingComposite;
 		}
 		
-		mappingComposite = buildMappingComposite(typeMappingPageBook, key);
+		mappingComposite = buildMappingComposite(this.typeMappingPageBook, key);
 		
 		if (mappingComposite != null) {
-			composites.put(key, mappingComposite);
+			this.composites.put(key, mappingComposite);
 		}
 		
 		return mappingComposite;
 	}
 	
-	protected IJpaComposite buildMappingComposite(PageBook pageBook, String key)  {
-		//TODO what about null composite?
+	protected IJpaComposite<ITypeMapping> buildMappingComposite(PageBook pageBook, String key)  {
 		return typeMappingUiProvider(key).buildPersistentTypeMappingComposite(pageBook, this.commandStack, getWidgetFactory());
-//		return new NullComposite(pageBook, commandStack);
 	}
 
 //TODO focus??
@@ -279,14 +257,14 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 	
 	public void dispose() {
 		disengageListeners();
-		for (Iterator i = composites.values().iterator(); i.hasNext(); ) {
-			((IJpaComposite) i.next()).dispose();
+		for (Iterator<IJpaComposite<ITypeMapping>> i = this.composites.values().iterator(); i.hasNext(); ) {
+			i.next().dispose();
 		}
 		super.dispose();
 	}
 	
 	public IPersistentType getPersistentType() {
-		return persistentType;
+		return this.persistentType;
 	}
 
 }

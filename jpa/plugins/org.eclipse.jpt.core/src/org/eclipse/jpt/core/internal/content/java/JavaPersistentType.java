@@ -723,15 +723,6 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		return null;
 	}
 
-	public Iterator<String> candidateMappingKeys() {
-		return new TransformationIterator<IJavaTypeMappingProvider, String>(new ArrayIterator<IJavaTypeMappingProvider>(this.typeMappingProviders)) {
-			@Override
-			protected String transform(IJavaTypeMappingProvider p) {
-				return p.key();
-			}
-		};
-	}
-
 	protected Iterator<JavaPersistentAttribute> attributesNamed(final String attributeName) {
 		return new FilteringIterator<JavaPersistentAttribute>(attributes()) {
 			@Override

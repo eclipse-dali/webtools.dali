@@ -16,6 +16,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public abstract class BaseJpaController 
 {
+	//****** we are using this commandStack in 0 places ********
+	//do we plan to use it in the future? *should* we be using it? are we removing emf?
 	protected CommandStack commandStack;
 	
 	protected TabbedPropertySheetWidgetFactory widgetFactory;

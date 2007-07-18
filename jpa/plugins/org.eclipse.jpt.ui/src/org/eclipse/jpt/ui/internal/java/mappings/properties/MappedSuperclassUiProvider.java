@@ -37,7 +37,7 @@ public class MappedSuperclassUiProvider implements ITypeMappingUiProvider
 		super();
 	}
 
-	public String key() {
+	public String mappingKey() {
 		return IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
 	}
 	

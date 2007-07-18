@@ -57,11 +57,6 @@ public interface IPersistentType extends IJpaContentNode
 	void setMappingKey(String value);
 
 	/**
-	 * Returns an iterator on all mapping keys that are available for this type.
-	 */
-	Iterator<String> candidateMappingKeys();
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Mapping</em>' containment reference isn't clear,

@@ -514,14 +514,6 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
-	public Iterator candidateMappingKeys() {
-		Collection mappingKeys = new ArrayList();
-		for (IXmlTypeMappingProvider provider : typeMappingProviders()) {
-			mappingKeys.add(provider.key());
-		}
-		return mappingKeys.iterator();
-	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
