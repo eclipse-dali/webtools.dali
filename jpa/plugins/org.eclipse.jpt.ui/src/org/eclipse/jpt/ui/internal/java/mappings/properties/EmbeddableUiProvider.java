@@ -20,6 +20,23 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class EmbeddableUiProvider implements ITypeMappingUiProvider
 {
+	// singleton
+	private static final EmbeddableUiProvider INSTANCE = new EmbeddableUiProvider();
+
+	/**
+	 * Return the singleton.
+	 */
+	public static ITypeMappingUiProvider instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure non-instantiability.
+	 */
+	private EmbeddableUiProvider() {
+		super();
+	}
+
 	public String key() {
 		return IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
 	}

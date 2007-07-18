@@ -29,7 +29,7 @@ public class GenerateDDLAction extends ProjectAction {
 	}
 	
 	private IJpaPlatformUi jpaPlatformUI(String vendorId) {
-        return PlatformRegistry.INSTANCE.getJpaPlatform(vendorId); 
+        return PlatformRegistry.instance().getJpaPlatform(vendorId); 
 	}
 
 }

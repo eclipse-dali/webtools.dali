@@ -47,9 +47,9 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage
 	
 	protected Collection<ITypeMappingUiProvider> buildTypeMappingUiProviders() {
 		Collection<ITypeMappingUiProvider> typeMappingUiProviders = new ArrayList<ITypeMappingUiProvider>();
-		typeMappingUiProviders.add(new EntityUiProvider());
-		typeMappingUiProviders.add(new MappedSuperclassUiProvider());			
-		typeMappingUiProviders.add(new EmbeddableUiProvider());			
+		typeMappingUiProviders.add(EntityUiProvider.instance());
+		typeMappingUiProviders.add(MappedSuperclassUiProvider.instance());			
+		typeMappingUiProviders.add(EmbeddableUiProvider.instance());			
 		return typeMappingUiProviders;
 	}
 	

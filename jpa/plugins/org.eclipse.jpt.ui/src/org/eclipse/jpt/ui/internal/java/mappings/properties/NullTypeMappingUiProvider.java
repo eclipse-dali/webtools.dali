@@ -20,6 +20,23 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class NullTypeMappingUiProvider implements ITypeMappingUiProvider
 {
+	// singleton
+	private static final NullTypeMappingUiProvider INSTANCE = new NullTypeMappingUiProvider();
+
+	/**
+	 * Return the singleton.
+	 */
+	public static ITypeMappingUiProvider instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure non-instantiability.
+	 */
+	private NullTypeMappingUiProvider() {
+		super();
+	}
+	
 	public String key() {
 		return null;
 	}
