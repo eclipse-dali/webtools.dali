@@ -96,7 +96,7 @@ public class ConversionDeclarationAnnotationElementAdapter<T, E extends Expressi
 	}
 
 	public void setValue(T value, ModifiedDeclaration declaration) {
-		this.adapter.setValue(this.converter.convert(value, this.adapter.astNode(declaration).getAST()), declaration);
+		this.adapter.setValue(this.converter.convert(value, declaration.getAST()), declaration);
 	}
 
 	public Expression expression(ModifiedDeclaration declaration) {

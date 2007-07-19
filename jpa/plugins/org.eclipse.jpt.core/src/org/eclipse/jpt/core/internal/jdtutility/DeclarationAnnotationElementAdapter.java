@@ -21,7 +21,8 @@ public interface DeclarationAnnotationElementAdapter<T> {
 
 	/**
 	 * Given the specified declaration, return the value of the
-	 * annotation element. Return null if the element is not present.
+	 * annotation element. Return null or an empty array
+	 * if the element is not present.
 	 */
 	T getValue(ModifiedDeclaration declaration);
 
