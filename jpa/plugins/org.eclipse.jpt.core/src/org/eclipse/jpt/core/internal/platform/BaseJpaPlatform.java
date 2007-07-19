@@ -122,9 +122,9 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	public Collection<IJpaFileContentProvider> jpaFileContentProviders() {
 		if (this.contentProviders == null) {
 			this.contentProviders = new ArrayList<IJpaFileContentProvider>();
-			this.contentProviders.add(PersistenceXmlJpaFileContentProvider.INSTANCE);
-			this.contentProviders.add(JavaJpaFileContentProvider.INSTANCE);
-			this.contentProviders.add(OrmXmlJpaFileContentProvider.INSTANCE);
+			this.contentProviders.add(PersistenceXmlJpaFileContentProvider.instance());
+			this.contentProviders.add(JavaJpaFileContentProvider.instance());
+			this.contentProviders.add(OrmXmlJpaFileContentProvider.instance());
 		}
 		return this.contentProviders;
 	}
