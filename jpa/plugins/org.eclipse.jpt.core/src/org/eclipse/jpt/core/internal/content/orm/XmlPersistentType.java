@@ -1,11 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
- * Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
 import java.util.ArrayList;
@@ -816,9 +817,10 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 
 	public Iterator<IPersistentType> inheritanceHierarchy() {
 		// using a chain iterator to traverse up the inheritance tree
-		return new ChainIterator(this) {
-			protected Object nextLink(Object currentLink) {
-				return ((IPersistentType) currentLink).parentPersistentType();
+		return new ChainIterator<IPersistentType>(this) {
+			@Override
+			protected IPersistentType nextLink(IPersistentType pt) {
+				return pt.parentPersistentType();
 			}
 		};
 	}
@@ -841,8 +843,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	}
 
 	public IJpaContentNode getContentNode(int offset) {
-		for (Iterator i = getSpecifiedAttributeMappings().iterator(); i.hasNext();) {
-			XmlAttributeMapping mapping = (XmlAttributeMapping) i.next();
+		for (XmlAttributeMapping mapping : this.getSpecifiedAttributeMappings()) {
 			if (mapping.getNode().contains(offset)) {
 				return mapping.getContentNode(offset);
 			}
@@ -895,25 +896,14 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 
 	public XmlPersistentAttribute attributeNamed(String attributeName) {
 		Iterator<XmlPersistentAttribute> attributes = attributesNamed(attributeName);
-		if (attributes.hasNext()) {
-			return attributes.next();
-		}
-		else {
-			return null;
-		}
+		return attributes.hasNext() ? attributes.next() : null;
 	}
 
 	public IPersistentAttribute resolveAttribute(String attributeName) {
 		Iterator<XmlPersistentAttribute> attributes = attributesNamed(attributeName);
 		if (attributes.hasNext()) {
 			XmlPersistentAttribute attribute = attributes.next();
-			if (attributes.hasNext()) {
-				// more than one
-				return null;
-			}
-			else {
-				return attribute;
-			}
+			return attributes.hasNext() ? null /* more than one */ : attribute;
 		}
 		else if (parentPersistentType() != null) {
 			return parentPersistentType().resolveAttribute(attributeName);
@@ -945,7 +935,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	private abstract class AttributeMappingsList<E>
 		extends EObjectContainmentEList<XmlAttributeMapping>
 	{
-		private AttributeMappingsList(int feature) {
+		AttributeMappingsList(int feature) {
 			super(XmlAttributeMapping.class, XmlPersistentType.this, feature);
 		}
 
@@ -966,7 +956,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 		}
 
 		@Override
-		protected void didClear(int size, Object[] oldObjects) {
+		protected void didClear(int len, Object[] oldObjects) {
 			persistentAttributes().clear();
 		}
 
@@ -990,7 +980,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	private class SpecifiedAttributeMappingsList<E>
 		extends AttributeMappingsList<XmlAttributeMapping>
 	{
-		private SpecifiedAttributeMappingsList() {
+		SpecifiedAttributeMappingsList() {
 			super(OrmPackage.XML_PERSISTENT_TYPE__SPECIFIED_ATTRIBUTE_MAPPINGS);
 		}
 
@@ -1004,7 +994,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	private class VirtualAttributeMappingsList<E>
 		extends AttributeMappingsList<XmlAttributeMapping>
 	{
-		private VirtualAttributeMappingsList() {
+		VirtualAttributeMappingsList() {
 			super(OrmPackage.XML_PERSISTENT_TYPE__VIRTUAL_ATTRIBUTE_MAPPINGS);
 		}
 
