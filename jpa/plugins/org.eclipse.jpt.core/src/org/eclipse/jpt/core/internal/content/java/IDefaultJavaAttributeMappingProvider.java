@@ -10,18 +10,22 @@
 package org.eclipse.jpt.core.internal.content.java;
 
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 
 /**
  * Map a string key to an attribute mapping and its corresponding
- * Java annotation adapter.
+ * Java annotation adapter.  
  */
-public interface IJavaAttributeMappingProvider {
+public interface IDefaultJavaAttributeMappingProvider extends IJavaAttributeMappingProvider {
 
-	String key();
-
-	IJavaAttributeMapping buildMapping(Attribute attribute);
-
-	DeclarationAnnotationAdapter declarationAnnotationAdapter();
+	/**
+	 * Given the Attribute and DefaultContext return whether the default mapping applies.
+	 * This will be used to determine the default mapping in the case where no 
+	 * mapping has been specified.
+	 * @param attribute
+	 * @param defaultsContext
+	 * @return
+	 */
+	boolean defaultApplies(Attribute attribute, DefaultsContext defaultsContext);
 
 }

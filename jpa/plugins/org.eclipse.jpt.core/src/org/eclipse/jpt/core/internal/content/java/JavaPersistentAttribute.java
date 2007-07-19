@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.content.java;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
@@ -84,14 +85,12 @@ public class JavaPersistentAttribute extends JavaEObject
 	private Attribute attribute;
 
 	// TODO move these to the platform
-	private IJavaAttributeMappingProvider[] attributeMappingProviders;
+	private Collection<IJavaAttributeMappingProvider> attributeMappingProviders;
 
-	/**
-	 * the "null" attribute mapping is used when the attribute is neither
-	 * modified with a mapping annotation nor mapped by a "default" mapping
-	 */
-	// TODO move this to the platform
-	private IJavaAttributeMappingProvider nullAttributeMappingProvider;
+	// TODO move these to the platform
+	//This is a list because defaults need to be tested in a particular order.  There might
+	//be overlap in the default definitions
+	private List<IDefaultJavaAttributeMappingProvider> defaultAttributeMappingProviders;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -105,15 +104,15 @@ public class JavaPersistentAttribute extends JavaEObject
 	protected JavaPersistentAttribute(Attribute attribute) {
 		super();
 		this.attribute = attribute;
-		this.attributeMappingProviders = this.buildAttributeMappingProviders();
-		this.nullAttributeMappingProvider = this.buildNullAttributeMappingProvider();
-		this.setDefaultMapping(this.nullAttributeMappingProvider.buildMapping(this.attribute));
+		this.setDefaultMapping(this.nullAttributeMappingProvider().buildMapping(this.attribute));
 	}
 
-	private IJavaAttributeMappingProvider[] buildAttributeMappingProviders() {
-		List<IJavaAttributeMappingProvider> providers = new ArrayList<IJavaAttributeMappingProvider>();
-		this.addAttributeMappingProvidersTo(providers);
-		return providers.toArray(new IJavaAttributeMappingProvider[providers.size()]);
+	private Collection<IJavaAttributeMappingProvider> attributeMappingProviders() {
+		if (this.attributeMappingProviders == null) {
+			this.attributeMappingProviders = new ArrayList<IJavaAttributeMappingProvider>();
+			this.addAttributeMappingProvidersTo(this.attributeMappingProviders);	
+		}
+		return this.attributeMappingProviders;
 	}
 
 	/**
@@ -121,8 +120,8 @@ public class JavaPersistentAttribute extends JavaEObject
 	 * The default includes the JPA spec-defined type mappings of 
 	 * Basic, Id, OneToOne, OneToMany, ManyToOne, ManyToMany, Embeddable, EmbeddedId.
 	 */
-	protected void addAttributeMappingProvidersTo(List<IJavaAttributeMappingProvider> providers) {
-		providers.add(JavaEmbeddedProvider.instance()); //bug 190344 need to test default embedded before basic
+	protected void addAttributeMappingProvidersTo(Collection<IJavaAttributeMappingProvider> providers) {
+		providers.add(JavaEmbeddedProvider.instance());
 		providers.add(JavaBasicProvider.instance());
 		providers.add(JavaIdProvider.instance());
 		providers.add(JavaTransientProvider.instance());
@@ -133,8 +132,30 @@ public class JavaPersistentAttribute extends JavaEObject
 		providers.add(JavaEmbeddedIdProvider.instance());
 		providers.add(JavaVersionProvider.instance());
 	}
+	
+	private List<IDefaultJavaAttributeMappingProvider> defaultAttributeMappingProviders() {
+		if (this.defaultAttributeMappingProviders == null) {
+			this.defaultAttributeMappingProviders = new ArrayList<IDefaultJavaAttributeMappingProvider>();
+			this.addDefaultAttributeMappingProvidersTo(this.defaultAttributeMappingProviders);	
+		}
+		return this.defaultAttributeMappingProviders;
+	}
+	
+	/**
+	 * Override this to specify more or different attribute mapping providers.
+	 * The default includes the JPA spec-defined type mappings of 
+	 * Basic and Embedded
+	 */
+	protected void addDefaultAttributeMappingProvidersTo(List<IDefaultJavaAttributeMappingProvider> providers) {
+		providers.add(JavaEmbeddedProvider.instance()); //bug 190344 need to test default embedded before basic
+		providers.add(JavaBasicProvider.instance());
+	}
 
-	protected IJavaAttributeMappingProvider buildNullAttributeMappingProvider() {
+	/**
+	 * the "null" attribute mapping is used when the attribute is neither
+	 * modified with a mapping annotation nor mapped by a "default" mapping
+	 */
+	protected IJavaAttributeMappingProvider nullAttributeMappingProvider() {
 		return JavaNullAttributeMappingProvider.instance();
 	}
 
@@ -489,7 +510,7 @@ public class JavaPersistentAttribute extends JavaEObject
 	 * throw an exception if the provider is not found
 	 */
 	private IJavaAttributeMappingProvider attributeMappingProviderFor(String attributeMappingKey) {
-		for (IJavaAttributeMappingProvider provider : this.attributeMappingProviders) {
+		for (IJavaAttributeMappingProvider provider : this.attributeMappingProviders()) {
 			if (provider.key() == attributeMappingKey) {
 				return provider;
 			}
@@ -564,7 +585,7 @@ public class JavaPersistentAttribute extends JavaEObject
 	 * return null if we can't find a mapping annotation on the attribute
 	 */
 	private IJavaAttributeMappingProvider javaAttributeMappingProvider(CompilationUnit astRoot) {
-		for (IJavaAttributeMappingProvider provider : this.attributeMappingProviders) {
+		for (IJavaAttributeMappingProvider provider : this.attributeMappingProviders()) {
 			if (this.attribute.containsAnnotation(provider.declarationAnnotationAdapter(), astRoot)) {
 				return provider;
 			}
@@ -615,12 +636,12 @@ public class JavaPersistentAttribute extends JavaEObject
 	 * return the null provider if we can't find a provider
 	 */
 	private IJavaAttributeMappingProvider defaultAttributeMappingProvider(DefaultsContext defaultsContext) {
-		for (IJavaAttributeMappingProvider provider : this.attributeMappingProviders) {
+		for (IDefaultJavaAttributeMappingProvider provider : this.defaultAttributeMappingProviders()) {
 			if (provider.defaultApplies(this.attribute, defaultsContext)) {
 				return provider;
 			}
 		}
-		return this.nullAttributeMappingProvider;
+		return this.nullAttributeMappingProvider();
 	}
 
 	public boolean isOverridableAttribute() {

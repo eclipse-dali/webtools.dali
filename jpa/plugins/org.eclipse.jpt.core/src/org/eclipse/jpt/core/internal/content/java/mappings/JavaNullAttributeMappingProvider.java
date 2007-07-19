@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 
 /**
  * This mapping provider implementation is used to create a JavaNullAttributeMapping.
@@ -43,10 +42,6 @@ public class JavaNullAttributeMappingProvider
 
 	public String key() {
 		return null;
-	}
-	
-	public boolean defaultApplies(Attribute attribute, DefaultsContext defaultsContext) {
-		return false;
 	}
 
 	public IJavaAttributeMapping buildMapping(Attribute attribute) {

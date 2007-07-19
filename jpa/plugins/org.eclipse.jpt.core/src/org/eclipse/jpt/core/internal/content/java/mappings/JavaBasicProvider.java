@@ -16,8 +16,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.WorkingCopyOwner;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.content.java.IDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
-import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
@@ -28,7 +28,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * 
  */
 public class JavaBasicProvider
-	implements IJavaAttributeMappingProvider
+	implements IDefaultJavaAttributeMappingProvider
 {
 
 	// singleton
@@ -37,7 +37,7 @@ public class JavaBasicProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static IJavaAttributeMappingProvider instance() {
+	public static IDefaultJavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
 

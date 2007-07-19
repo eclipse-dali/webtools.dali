@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentType;
+import org.eclipse.jpt.core.internal.content.java.IDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
-import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.mappings.IEmbeddable;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.internal.platform.DefaultsContext;
  * 
  */
 public class JavaEmbeddedProvider
-	implements IJavaAttributeMappingProvider
+	implements IDefaultJavaAttributeMappingProvider
 {
 
 	// singleton
@@ -31,7 +31,7 @@ public class JavaEmbeddedProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static IJavaAttributeMappingProvider instance() {
+	public static IDefaultJavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
 
