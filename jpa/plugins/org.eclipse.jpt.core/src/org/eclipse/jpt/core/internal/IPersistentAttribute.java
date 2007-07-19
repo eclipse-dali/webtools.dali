@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 
 /**
@@ -83,11 +82,6 @@ public interface IPersistentAttribute extends IJpaContentNode
 	 * cleared and the attribute's mapping to be its "default" mapping.
 	 */
 	void setSpecifiedMappingKey(String key);
-
-	/**
-	 * Return all the attribute's mapping keys.
-	 */
-	Iterator<String> candidateMappingKeys();
 
 	/**
 	 * Return the attribute's Java attribute.

@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -22,6 +25,16 @@ import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.orm.XmlPersistentType;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.mappings.properties.BasicMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddedIdMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddedMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.mappings.properties.IdMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.mappings.properties.ManyToManyMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.mappings.properties.ManyToOneMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToManyMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToOneMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.mappings.properties.TransientMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.mappings.properties.VersionMappingUiProvider;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.swt.SWT;
@@ -42,6 +55,8 @@ public class XmlPersistentAttributeDetailsPage
 	
 	private IPersistentType persistentType;
 	
+	private List<IAttributeMappingUiProvider> attributeMappingUiProviders;
+
 	public XmlPersistentAttributeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, widgetFactory);
 		buildPersistentTypeListener();
@@ -67,7 +82,46 @@ public class XmlPersistentAttributeDetailsPage
 				});
 		}
 	}
+
+	@Override
+	public List<IAttributeMappingUiProvider> attributeMappingUiProviders() {
+		if (this.attributeMappingUiProviders == null) {
+			this.attributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider>();
+			this.addAttributeMappingUiProvidersTo(this.attributeMappingUiProviders);
+		}
+		return this.attributeMappingUiProviders;
+
+	}
+
+	protected void addAttributeMappingUiProvidersTo(List<IAttributeMappingUiProvider> providers) {
+		providers.add(BasicMappingUiProvider.instance());
+		providers.add(EmbeddedMappingUiProvider.instance());
+		providers.add(EmbeddedIdMappingUiProvider.instance());
+		providers.add(IdMappingUiProvider.instance());			
+		providers.add(ManyToManyMappingUiProvider.instance());			
+		providers.add(ManyToOneMappingUiProvider.instance());			
+		providers.add(OneToManyMappingUiProvider.instance());			
+		providers.add(OneToOneMappingUiProvider.instance());
+		providers.add(TransientMappingUiProvider.instance());
+		providers.add(VersionMappingUiProvider.instance());
+	}
 	
+	@Override
+	protected List<IAttributeMappingUiProvider> defaultAttributeMappingUiProviders() {
+		return Collections.emptyList();
+	}
+	
+	@Override
+	protected IAttributeMappingUiProvider defaultAttributeMappingUiProvider(String key) {
+		throw new UnsupportedOperationException("Xml attributeMappings should not be default");
+	}
+	
+	@Override
+	//bug 192035 - no default mapping option in xml
+	protected IAttributeMappingUiProvider[] attributeMappingUiProvidersFor(IPersistentAttribute persistentAttribute) {
+		return attributeMappingUiProviders().toArray(new IAttributeMappingUiProvider[attributeMappingUiProviders().size()]);
+	}
+
 	@Override
 	protected void initializeLayout(Composite composite) {
 		composite.setLayout(new GridLayout(2, false));
@@ -163,11 +217,4 @@ public class XmlPersistentAttributeDetailsPage
 			}
 		}
 	}
-	
-	@Override
-	//TODO Not really how I would want to implement this, but it is low risk fix for bug 192035 for 1.0RC3
-	protected IAttributeMappingUiProvider[] uiProvidersFor(IPersistentAttribute persistentAttribute) {
-		return attributeMappingUiProviders().toArray(new IAttributeMappingUiProvider[attributeMappingUiProviders().size()]);
-	}
-
 }

@@ -40,8 +40,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.utility.internal.Filter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -497,15 +495,6 @@ public class JavaPersistentAttribute extends JavaEObject
 			}
 		}
 		throw new IllegalArgumentException("Unsupported attribute mapping key: " + attributeMappingKey);
-	}
-
-	public Iterator<String> candidateMappingKeys() {
-		return new TransformationIterator<IJavaAttributeMappingProvider, String>(new ArrayIterator<IJavaAttributeMappingProvider>(this.attributeMappingProviders)) {
-			@Override
-			protected String transform(IJavaAttributeMappingProvider provider) {
-				return provider.key();
-			}
-		};
 	}
 
 	public Object getId() {

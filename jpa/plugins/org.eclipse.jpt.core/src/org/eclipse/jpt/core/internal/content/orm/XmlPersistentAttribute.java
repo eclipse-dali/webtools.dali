@@ -24,7 +24,6 @@ import org.eclipse.jpt.core.internal.XmlEObject;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -285,15 +284,6 @@ public class XmlPersistentAttribute extends XmlEObject
 		return IXmlContentNodes.PERSISTENT_ATTRIBUTE_ID;
 	}
 
-	public Iterator<String> candidateMappingKeys() {
-		return new TransformationIterator<IXmlAttributeMappingProvider, String>(this.attributeMappingProviders.iterator()) {
-			@Override
-			protected String transform(IXmlAttributeMappingProvider provider) {
-				return provider.key();
-			}
-		};
-	}
-
 	public Collection<IXmlAttributeMappingProvider> attributeMappingProviders() {
 		return this.attributeMappingProviders;
 	}
@@ -315,7 +305,7 @@ public class XmlPersistentAttribute extends XmlEObject
 	}
 
 	public Attribute getAttribute() {
-		JavaPersistentType javaPersistentType = ((XmlPersistentType) typeMapping().getPersistentType()).findJavaPersistentType();
+		JavaPersistentType javaPersistentType = typeMapping().getPersistentType().findJavaPersistentType();
 		if (javaPersistentType == null) {
 			return null;
 		}

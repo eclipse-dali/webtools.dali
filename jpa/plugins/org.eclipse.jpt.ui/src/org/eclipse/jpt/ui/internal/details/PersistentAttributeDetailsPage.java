@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.notify.Adapter;
@@ -33,14 +34,11 @@ import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.BasicMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.DefaultBasicMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.DefaultEmbeddedMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddedIdMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddedMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.IdMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.ManyToManyMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.ManyToOneMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.NullAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToManyMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.TransientMappingUiProvider;
@@ -59,7 +57,6 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 	private IPersistentAttribute attribute;
 	private IAttributeMapping attributeMapping;
 	private Adapter persistentAttributeListener;
-	private Adapter attributeMappingListener;
 	
 	private String currentMappingKey;
 	
@@ -67,32 +64,14 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 	
 	private Map<String, IJpaComposite<IAttributeMapping>> mappingComposites;
 	protected PageBook mappingPageBook;	
-	private IJpaComposite<IAttributeMapping> currentMappingComposite;
-	
-	/**
-	 * These IAtttributeMappingUiProviders will be used as elements in the attributeMapping combo
-	 * The first element in the combo will be one of the defaultAttributemappingUiProviders or
-	 * if none of those apply the nullAttriubteMappingUiProvider will be used. The rest of the elements
-	 * will be the attributeMappingUiProviders.  The defaultAttributeMappingUiProvider is
-	 * determined by matching its key with the key of the current attriubteMapping.  
-	 */
-	private Collection<IAttributeMappingUiProvider> attributeMappingUiProviders;
-	private Collection<IAttributeMappingUiProvider> defaultAttributeMappingUiProviders;
-	private IAttributeMappingUiProvider nullAttributeMappingUiProvider;
+	private IJpaComposite<IAttributeMapping> currentMappingComposite;	
 	
 	public PersistentAttributeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, SWT.NONE, new BasicCommandStack(), widgetFactory);
 		persistentAttributeListener = buildAttributeListener();
-		attributeMappingListener = buildAttributeMappingListener();
 		mappingComposites = new HashMap<String, IJpaComposite<IAttributeMapping>>();
-		this.attributeMappingUiProviders = buildAttributeMappingUiProviders();
-		this.defaultAttributeMappingUiProviders = buildDefaultAttributeMappingUiProviders();
-		this.nullAttributeMappingUiProvider = buildNullAttributeMappingUiProvider();
 	}
 	
-	protected IAttributeMappingUiProvider buildNullAttributeMappingUiProvider() {
-		return NullAttributeMappingUiProvider.instance();
-	}
 	
 	protected Collection<IAttributeMappingUiProvider> buildAttributeMappingUiProviders() {
 		Collection<IAttributeMappingUiProvider> providers = new ArrayList<IAttributeMappingUiProvider>();
@@ -109,37 +88,20 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 		return providers;
 	}
 	
-	protected  Collection<IAttributeMappingUiProvider> attributeMappingUiProviders() {
-		return this.attributeMappingUiProviders;
-	}
+	protected abstract List<IAttributeMappingUiProvider> attributeMappingUiProviders();
 	
-	protected Collection<IAttributeMappingUiProvider> buildDefaultAttributeMappingUiProviders() {
-		Collection<IAttributeMappingUiProvider> providers = new ArrayList<IAttributeMappingUiProvider>();
-		providers.add(DefaultBasicMappingUiProvider.instance());		
-		providers.add(DefaultEmbeddedMappingUiProvider.instance());		
-		return providers;
-	}
-	
-	protected  Collection<IAttributeMappingUiProvider> defaultAttributeMappingUiProviders() {
-		return this.defaultAttributeMappingUiProviders;
-	}
-	
-	private IAttributeMappingUiProvider attributeMappingUiProvider(String key) {
+	protected abstract List<IAttributeMappingUiProvider> defaultAttributeMappingUiProviders();
+		
+	protected IAttributeMappingUiProvider attributeMappingUiProvider(String key) {
 		for (IAttributeMappingUiProvider provider : attributeMappingUiProviders()) {
 			if (provider.key() == key) {
 				return provider;
 			}
 		}
-		return this.nullAttributeMappingUiProvider;
+		throw new IllegalArgumentException();
 	}
-	private IAttributeMappingUiProvider defaultAttributeMappingUiProvider(String key) {
-		for (IAttributeMappingUiProvider provider : defaultAttributeMappingUiProviders()) {
-			if (provider.key() == key) {
-				return provider;
-			}
-		}
-		return this.nullAttributeMappingUiProvider;
-	}
+	
+	protected abstract IAttributeMappingUiProvider defaultAttributeMappingUiProvider(String key);
 	
 	private Adapter buildAttributeListener() {
 		return new AdapterImpl() {
@@ -150,7 +112,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 		};
 	}
 	
-	void persistentAttributeChanged(Notification notification) {
+	protected void persistentAttributeChanged(Notification notification) {
 		switch (notification.getFeatureID(IPersistentAttribute.class)) {
 			case JpaCorePackage.IPERSISTENT_ATTRIBUTE__MAPPING:
 				Display.getDefault().asyncExec(
@@ -161,28 +123,6 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 					});
 				break;
 		}
-	}
-	
-	private Adapter buildAttributeMappingListener() {
-		return new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				attributeMappingChanged(notification);
-			}
-		};
-	}
-	
-	void attributeMappingChanged(Notification notification) {
-//		switch (notification.getFeatureID(IAttributeMapping.class)) {
-//			case JpaCorePackage.IATTRIBUTE_MAPPING__DEFAULT:
-//				Display.getDefault().asyncExec(
-//					new Runnable() {
-//						public void run() {
-//							populate();
-//						}
-//					});
-//				break;
-//		}
 	}
 		
 	protected Label buildMappingLabel(Composite parent) {
@@ -212,7 +152,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 				if (inputElement == null) {
 					return new Object[]{};
 				}
-				return uiProvidersFor((IPersistentAttribute) inputElement);
+				return attributeMappingUiProvidersFor((IPersistentAttribute) inputElement);
 			}
 			
 			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
@@ -221,22 +161,8 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 		};
 	}
 	
-	protected IAttributeMappingUiProvider[] uiProvidersFor(IPersistentAttribute persistentAttribute) {
-		IAttributeMappingUiProvider[] providers = new IAttributeMappingUiProvider[attributeMappingUiProviders().size() +1];
-		providers[0] =  this.nullAttributeMappingUiProvider;
-		for (IAttributeMappingUiProvider uiProvider : defaultAttributeMappingUiProviders()) {
-			if (uiProvider.key() == persistentAttribute.defaultMappingKey()) {
-				providers[0] = uiProvider;
-				break;
-			}
-		}
-		int i = 1;
-		for (IAttributeMappingUiProvider uiProvider : attributeMappingUiProviders()) {
-			providers[i++] = uiProvider;
-		}
-		return providers;
-	}
-
+	protected abstract IAttributeMappingUiProvider[] attributeMappingUiProvidersFor(IPersistentAttribute persistentAttribute);
+	
 	private IBaseLabelProvider buildLabelProvider() {
 		return new LabelProvider() {
 			@Override
@@ -285,9 +211,6 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 	protected void engageListeners() {
 		if (attribute != null) {
 			attribute.eAdapters().add(persistentAttributeListener);
-			if (attributeMapping != null) {
-				attributeMapping.eAdapters().add(attributeMappingListener);
-			}
 		}
 	}
 	
@@ -295,9 +218,6 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 	protected void disengageListeners() {
 		if (attribute != null) {
 			attribute.eAdapters().remove(persistentAttributeListener);
-			if (attributeMapping != null) {
-				attributeMapping.eAdapters().remove(attributeMappingListener);
-			}
 		}
 	}
 	
@@ -316,7 +236,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 			return;
 		}
 		attributeMapping = attribute.getMapping();
-		setComboData(attribute.candidateMappingKeys());
+		setComboData();
 		
 		populateMappingPage(attributeMapping == null ? null : attributeMapping.getKey());
 	}
@@ -344,7 +264,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 		currentMappingComposite.populate(attributeMapping);
 	}
 	
-	private void setComboData(Iterator<String> availableMappingKeys) {
+	private void setComboData() {
 		if (attribute != mappingCombo.getInput()) {
 			mappingCombo.setInput(attribute);
 		}

@@ -9,7 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
+import java.util.List;
+import org.eclipse.jpt.core.internal.IPersistentAttribute;
+import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
+import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
+import org.eclipse.jpt.ui.internal.java.mappings.properties.NullAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -23,6 +28,60 @@ public class JavaPersistentAttributeDetailsPage
 {
 	public JavaPersistentAttributeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, widgetFactory);
+	}
+	
+	protected IJpaPlatformUi getJpaPlatformUi() {
+		String platformId = getAttribute().getJpaProject().getPlatform().getId();
+		return PlatformRegistry.instance().getJpaPlatform(platformId);
+	}
+	
+	@Override
+	protected List<IAttributeMappingUiProvider> attributeMappingUiProviders() {
+		return getJpaPlatformUi().javaAttributeMappingUiProviders();
+	}
+	
+	protected IAttributeMappingUiProvider nullAttributeMappingUiProvider() {
+		return NullAttributeMappingUiProvider.instance();
+	}
+
+	@Override
+	protected List<IAttributeMappingUiProvider> defaultAttributeMappingUiProviders() {
+		return getJpaPlatformUi().defaultJavaAttributeMappingUiProviders();
+	}
+
+
+	/**
+	 * These IAtttributeMappingUiProviders will be used as elements in the attributeMapping combo
+	 * The first element in the combo will be one of the defaultAttributeMappingUiProviders or
+	 * if none of those apply the nullAttributeMappingUiProvider will be used. The rest of the elements
+	 * will be the attributeMappingUiProviders.  The defaultAttributeMappingUiProvider is
+	 * determined by matching its key with the key of the current attributeMapping.  
+	 */
+	@Override
+	protected IAttributeMappingUiProvider[] attributeMappingUiProvidersFor(IPersistentAttribute persistentAttribute) {
+		IAttributeMappingUiProvider[] providers = new IAttributeMappingUiProvider[attributeMappingUiProviders().size() +1];
+		providers[0] =  this.nullAttributeMappingUiProvider();
+		for (IAttributeMappingUiProvider uiProvider : defaultAttributeMappingUiProviders()) {
+			if (uiProvider.key() == persistentAttribute.defaultMappingKey()) {
+				providers[0] = uiProvider;
+				break;
+			}
+		}
+		int i = 1;
+		for (IAttributeMappingUiProvider uiProvider : attributeMappingUiProviders()) {
+			providers[i++] = uiProvider;
+		}
+		return providers;
+	}
+	
+	@Override
+	protected IAttributeMappingUiProvider defaultAttributeMappingUiProvider(String key) {
+		for (IAttributeMappingUiProvider provider : defaultAttributeMappingUiProviders()) {
+			if (provider.key() == key) {
+				return provider;
+			}
+		}
+		return this.nullAttributeMappingUiProvider();
 	}
 	
 	@Override

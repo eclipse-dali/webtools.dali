@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
+import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
 
@@ -35,6 +36,19 @@ public interface IJpaPlatformUi
 	 */
 	List<ITypeMappingUiProvider> javaTypeMappingUiProviders();
 	
+	/**
+	 * Return the attribute mapping UI providers for java.  This will populate
+	 * the attribute mapping combo box in order and display IAttributeMappingUiProvider.label().
+	 * It will also be used to create the appropriate composite given an attribute mapping. 
+	 */
+	List<IAttributeMappingUiProvider> javaAttributeMappingUiProviders();
+
+	/**
+	 * Return the default attribute mapping UI providers for java.  These will be used
+	 * to provide a default mapping option if one applies in java.
+	 */
+	List<IAttributeMappingUiProvider> defaultJavaAttributeMappingUiProviders();
+
 	void generateDDL(IJpaProject project, IStructuredSelection selection);
 	
 	void generateEntities(IJpaProject project, IStructuredSelection selection);
