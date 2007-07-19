@@ -27,8 +27,15 @@ import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceXml
 
 public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProvider
 {
-	public static PersistenceXmlJpaFileContentProvider INSTANCE = new PersistenceXmlJpaFileContentProvider();
+	//singleton
+	private static final PersistenceXmlJpaFileContentProvider INSTANCE = new PersistenceXmlJpaFileContentProvider();
 	
+	/**
+	 * Return the singleton.
+	 */
+	public static IJpaFileContentProvider instance() {
+		return INSTANCE;
+	}
 	
 	private IFile resourceFile;
 	

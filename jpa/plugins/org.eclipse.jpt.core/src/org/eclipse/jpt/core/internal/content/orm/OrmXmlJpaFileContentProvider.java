@@ -26,8 +26,15 @@ import org.eclipse.jpt.core.internal.content.orm.resource.OrmXmlResourceFactory;
 
 public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 {
-	public static OrmXmlJpaFileContentProvider INSTANCE = new OrmXmlJpaFileContentProvider();
+	//singleton
+	private static final OrmXmlJpaFileContentProvider INSTANCE = new OrmXmlJpaFileContentProvider();
 	
+	/**
+	 * Return the singleton.
+	 */
+	public static IJpaFileContentProvider instance() {
+		return INSTANCE;
+	}
 	
 	private IFile resourceFile;
 	

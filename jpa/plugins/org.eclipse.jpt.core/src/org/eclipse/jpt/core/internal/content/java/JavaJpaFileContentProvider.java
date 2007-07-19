@@ -16,8 +16,16 @@ import org.eclipse.jpt.core.internal.JptCorePlugin;
 
 public class JavaJpaFileContentProvider implements IJpaFileContentProvider
 {
-	public static JavaJpaFileContentProvider INSTANCE = new JavaJpaFileContentProvider();
+	//singleton
+	private static final JavaJpaFileContentProvider INSTANCE = new JavaJpaFileContentProvider();
 	
+	/**
+	 * Return the singleton.
+	 */
+	public static IJpaFileContentProvider instance() {
+		return INSTANCE;
+	}
+
 	/**
 	 * Restrict access
 	 */
