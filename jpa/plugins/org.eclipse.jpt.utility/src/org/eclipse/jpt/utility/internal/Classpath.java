@@ -581,7 +581,7 @@ public class Classpath
 	 * duplicate entries eliminated.
 	 */
 	public Classpath compressed() {
-		return new Classpath((Entry[]) CollectionTools.removeDuplicateElements(this.entries));
+		return new Classpath(CollectionTools.removeDuplicateElements(this.entries));
 	}
 
 	/**
@@ -705,7 +705,7 @@ public class Classpath
 				zipFile = new ZipFile(this.canonicalFile);
 				zipEntry = zipFile.getEntry(zipEntryName);
 			} catch (IOException ex) {
-				zipEntry = null;	// something is wrong, clear out the entry
+				// something is wrong, leave the entry null
 			} finally {
 				try {
 					if (zipFile != null) {
