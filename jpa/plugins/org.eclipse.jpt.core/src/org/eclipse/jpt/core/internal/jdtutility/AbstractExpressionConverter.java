@@ -27,7 +27,14 @@ public abstract class AbstractExpressionConverter<T, E extends Expression>
 	}
 
 	public E convert(T object, AST ast) {
-		return (object == null) ? null : this.convert_(object, ast);
+		return (object == null) ? this.convertNull(ast) : this.convert_(object, ast);
+	}
+
+	/**
+	 * Return the expression for a null object.
+	 */
+	protected E convertNull(AST ast) {
+		return null;
 	}
 
 	/**
@@ -37,7 +44,14 @@ public abstract class AbstractExpressionConverter<T, E extends Expression>
 	protected abstract E convert_(T object, AST ast);
 
 	public T convert(E expression) {
-		return (expression == null) ? null : this.convert_(expression);
+		return (expression == null) ? this.convertNull() : this.convert_(expression);
+	}
+
+	/**
+	 * Return the object for a null expression.
+	 */
+	protected T convertNull() {
+		return null;
 	}
 
 	/**
