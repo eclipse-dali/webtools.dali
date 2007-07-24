@@ -487,20 +487,27 @@ public class PersistenceUnitContext extends BaseContext
 			}
 		} 
 	}
-	
+
+	protected HashBag<String> mappingFileNameBag() {
+		List<MappingFileRef> refs = this.persistenceUnit.getMappingFiles();
+		HashBag<String> fileNameBag = new HashBag<String>(refs.size());
+		CollectionTools.addAll(fileNameBag, this.fileRefNames(refs.iterator()));
+		return fileNameBag;
+	}
+
+	protected Iterator<String> fileRefNames(Iterator<MappingFileRef> refs) {
+		return new TransformationIterator<MappingFileRef, String>(refs) {
+			@Override
+			protected String transform(MappingFileRef ref) {
+				return ref.getFileName();
+			}
+		};
+	}
+
 	protected void addDuplicateMappingFileMessages(List<IMessage> messages) {
-		HashBag fileBag = new HashBag(
-				CollectionTools.collection(
-						new TransformationIterator(persistenceUnit.getMappingFiles().iterator()) {
-							@Override
-							protected Object transform(Object next) {
-								return ((MappingFileRef) next).getFileName();
-							}
-						}
-				)
-		);
+		HashBag<String> fileNameBag = this.mappingFileNameBag();
 		for (MappingFileRef mappingFileRef : persistenceUnit.getMappingFiles()) {
-			if (fileBag.count(mappingFileRef.getFileName()) > 1) {
+			if (fileNameBag.count(mappingFileRef.getFileName()) > 1) {
 				messages.add(
 					JpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -569,20 +576,27 @@ public class PersistenceUnitContext extends BaseContext
 		} 
 	}
 	
+	protected HashBag<String> classNameBag() {
+		List<JavaClassRef> refs = this.persistenceUnit.getClasses();
+		HashBag<String> classNameBag = new HashBag<String>(refs.size());
+		CollectionTools.addAll(classNameBag, this.classRefNames(refs.iterator()));
+		return classNameBag;
+	}
+
+	protected Iterator<String> classRefNames(Iterator<JavaClassRef> refs) {
+		return new TransformationIterator<JavaClassRef, String>(refs) {
+			@Override
+			protected String transform(JavaClassRef ref) {
+				return ref.getJavaClass();
+			}
+		};
+	}
+
 	protected void addDuplicateClassMessages(List<IMessage> messages) {
-		HashBag fileBag = new HashBag(
-				CollectionTools.collection(
-						new TransformationIterator(persistenceUnit.getClasses().iterator()) {
-							@Override
-							protected Object transform(Object next) {
-								return ((JavaClassRef) next).getJavaClass();
-							}
-						}
-				)
-		);
+		HashBag<String> classNameBag = this.classNameBag();
 		for (JavaClassRef javaClassRef : persistenceUnit.getClasses()) {
 			if (javaClassRef.getJavaClass() != null
-					&& fileBag.count(javaClassRef.getJavaClass()) > 1) {
+					&& classNameBag.count(javaClassRef.getJavaClass()) > 1) {
 				messages.add(
 					JpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -594,6 +608,7 @@ public class PersistenceUnitContext extends BaseContext
 		}
 	}
 	
+	@Override
 	public String toString() {
 		return StringTools.buildToStringFor( this, this.persistenceUnit.getName());
 	}	

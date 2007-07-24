@@ -92,10 +92,9 @@ public class SynchronizeClassesJob extends Job
 		PersistenceResource resource = (PersistenceResource) persistenceUnit.eResource();
 		
 		persistenceUnit.getClasses().clear();
-		for (Iterator<String> stream = mappedTypeNames(persistenceUnit); stream.hasNext(); ) {
-			String typeName = stream.next();
+		for (Iterator<String> stream = this.sortedMappedTypeNames(persistenceUnit); stream.hasNext(); ) {
 			JavaClassRef classRef = PersistenceFactory.eINSTANCE.createJavaClassRef();
-			classRef.setJavaClass(typeName);
+			classRef.setJavaClass(stream.next());
 			persistenceUnit.getClasses().add(classRef);
 		}
 		
@@ -111,15 +110,17 @@ public class SynchronizeClassesJob extends Job
 		return Status.OK_STATUS;
 	}
 	
+	private Iterator<String> sortedMappedTypeNames(PersistenceUnit persistenceUnit) {
+		return CollectionTools.sort(this.mappedTypeNames(persistenceUnit));
+	}
+	
 	private Iterator<String> mappedTypeNames(PersistenceUnit persistenceUnit) {
-		return CollectionTools.sort(
-			new TransformationIterator<IPersistentType, String>(mappedTypes(persistenceUnit)) {
-				@Override
-				protected String transform(IPersistentType next) {
-					return next.findJdtType().getFullyQualifiedName();
-				}
+		return new TransformationIterator<IPersistentType, String>(this.mappedTypes(persistenceUnit)) {
+			@Override
+			protected String transform(IPersistentType pType) {
+				return pType.findJdtType().getFullyQualifiedName();
 			}
-		);
+		};
 	}
 	
 	private Iterator<IPersistentType> mappedTypes(PersistenceUnit persistenceUnit) {
