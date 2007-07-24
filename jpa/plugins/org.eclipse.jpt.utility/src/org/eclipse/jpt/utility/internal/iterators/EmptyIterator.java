@@ -22,7 +22,7 @@ public final class EmptyIterator<E>
 
 	// singleton
 	@SuppressWarnings("unchecked")
-	private static EmptyIterator INSTANCE = new EmptyIterator();
+	private static final EmptyIterator INSTANCE = new EmptyIterator();
 
 	/**
 	 * Return the singleton.
