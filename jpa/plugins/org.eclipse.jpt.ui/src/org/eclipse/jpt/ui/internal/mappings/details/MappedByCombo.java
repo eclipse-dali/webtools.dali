@@ -109,6 +109,9 @@ public class MappedByCombo extends BaseJpaController
 				this.combo.setText(mappedBy);
 			}
 		}
+		else {
+			this.combo.setText("");
+		}
 	}
 	
 	@Override
