@@ -27,6 +27,8 @@ public class CompositeIterator<E>
 	private Iterator<? extends E> lastIteratorToReturnNext;
 
 
+	// ********** constructors **********
+
 	/**
 	 * Construct an iterator with the specified collection of iterators.
 	 */
@@ -66,6 +68,9 @@ public class CompositeIterator<E>
 	public CompositeIterator(Iterator<? extends E>... iterators) {
 		this(new ArrayIterator<Iterator<? extends E>>(iterators));
 	}
+
+
+	// ********** Iterator implementation **********
 
 	public boolean hasNext() {
 		try {
@@ -109,6 +114,9 @@ public class CompositeIterator<E>
 			this.currentIterator = this.iterators.next();
 		}
 	}
+
+
+	// ********** overrides **********
 
 	@Override
 	public String toString() {
