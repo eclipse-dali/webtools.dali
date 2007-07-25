@@ -49,7 +49,7 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
  * @model kind="class"
  * @generated
  */
-public class JavaEmbedded extends JavaAttributeMapping implements IEmbedded
+public class JavaEmbedded extends JavaAttributeMapping implements IJavaEmbedded
 {
 	/**
 	 * The cached value of the '{@link #getSpecifiedAttributeOverrides() <em>Specified Attribute Overrides</em>}' containment reference list.
@@ -395,6 +395,12 @@ public class JavaEmbedded extends JavaAttributeMapping implements IEmbedded
 					return -1;
 			}
 		}
+		if (baseClass == IJavaEmbedded.class) {
+			switch (derivedFeatureID) {
+				default :
+					return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -413,6 +419,12 @@ public class JavaEmbedded extends JavaAttributeMapping implements IEmbedded
 					return JpaJavaMappingsPackage.JAVA_EMBEDDED__SPECIFIED_ATTRIBUTE_OVERRIDES;
 				case JpaCoreMappingsPackage.IEMBEDDED__DEFAULT_ATTRIBUTE_OVERRIDES :
 					return JpaJavaMappingsPackage.JAVA_EMBEDDED__DEFAULT_ATTRIBUTE_OVERRIDES;
+				default :
+					return -1;
+			}
+		}
+		if (baseClass == IJavaEmbedded.class) {
+			switch (baseFeatureID) {
 				default :
 					return -1;
 			}

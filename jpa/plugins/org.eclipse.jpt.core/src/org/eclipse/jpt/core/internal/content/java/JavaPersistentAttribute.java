@@ -110,7 +110,7 @@ public class JavaPersistentAttribute extends JavaEObject
 	private Collection<IJavaAttributeMappingProvider> attributeMappingProviders() {
 		if (this.attributeMappingProviders == null) {
 			this.attributeMappingProviders = new ArrayList<IJavaAttributeMappingProvider>();
-			this.addAttributeMappingProvidersTo(this.attributeMappingProviders);	
+			this.addAttributeMappingProvidersTo(this.attributeMappingProviders);
 		}
 		return this.attributeMappingProviders;
 	}
@@ -132,15 +132,15 @@ public class JavaPersistentAttribute extends JavaEObject
 		providers.add(JavaEmbeddedIdProvider.instance());
 		providers.add(JavaVersionProvider.instance());
 	}
-	
+
 	private List<IDefaultJavaAttributeMappingProvider> defaultAttributeMappingProviders() {
 		if (this.defaultAttributeMappingProviders == null) {
 			this.defaultAttributeMappingProviders = new ArrayList<IDefaultJavaAttributeMappingProvider>();
-			this.addDefaultAttributeMappingProvidersTo(this.defaultAttributeMappingProviders);	
+			this.addDefaultAttributeMappingProvidersTo(this.defaultAttributeMappingProviders);
 		}
 		return this.defaultAttributeMappingProviders;
 	}
-	
+
 	/**
 	 * Override this to specify more or different attribute mapping providers.
 	 * The default includes the JPA spec-defined type mappings of 

@@ -420,6 +420,19 @@
     </genClasses>
     <nestedGenPackages prefix="JpaJavaMappings" basePackage="org.eclipse.jpt.core.internal.content.java"
         disposableProviderFactory="true" ecorePackage="old_java.ecore#//mappings">
+      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaEntity"/>
+      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaEmbeddable"/>
+      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaMappedSuperclass"/>
+      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaBasic"/>
+      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaEmbedded"/>
+      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaEmbeddedId"/>
+      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaId"/>
+      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaManyToMany"/>
+      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaManyToOne"/>
+      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaOneToMany"/>
+      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaOneToOne"/>
+      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaTransient"/>
+      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaVersion"/>
       <genClasses image="false" ecoreClass="old_java.ecore#//mappings/JavaTypeMapping"/>
       <genClasses ecoreClass="old_java.ecore#//mappings/JavaEntity"/>
       <genClasses ecoreClass="old_java.ecore#//mappings/JavaMappedSuperclass"/>

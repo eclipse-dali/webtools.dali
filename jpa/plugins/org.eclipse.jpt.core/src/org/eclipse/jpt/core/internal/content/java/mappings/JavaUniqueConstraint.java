@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;

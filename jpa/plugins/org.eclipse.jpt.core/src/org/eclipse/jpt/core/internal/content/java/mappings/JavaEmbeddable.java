@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.mappings.IEmbeddable;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +25,7 @@ import org.eclipse.jpt.core.internal.mappings.IEmbeddable;
  * @model kind="class"
  * @generated
  */
-public class JavaEmbeddable extends JavaTypeMapping implements IEmbeddable
+public class JavaEmbeddable extends JavaTypeMapping implements IJavaEmbeddable
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.EMBEDDABLE);
 

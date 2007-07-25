@@ -38,7 +38,7 @@ import org.eclipse.jpt.utility.internal.Filter;
  * @generated
  */
 public class JavaOneToOne extends JavaSingleRelationshipMapping
-	implements IOneToOne
+	implements IJavaOneToOne
 {
 	/**
 	 * The default value of the '{@link #getMappedBy() <em>Mapped By</em>}' attribute.
@@ -252,6 +252,12 @@ public class JavaOneToOne extends JavaSingleRelationshipMapping
 					return -1;
 			}
 		}
+		if (baseClass == IJavaOneToOne.class) {
+			switch (derivedFeatureID) {
+				default :
+					return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -271,6 +277,12 @@ public class JavaOneToOne extends JavaSingleRelationshipMapping
 			}
 		}
 		if (baseClass == IOneToOne.class) {
+			switch (baseFeatureID) {
+				default :
+					return -1;
+			}
+		}
+		if (baseClass == IJavaOneToOne.class) {
 			switch (baseFeatureID) {
 				default :
 					return -1;

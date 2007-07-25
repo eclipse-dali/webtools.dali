@@ -23,6 +23,19 @@ import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaEObject;
 import org.eclipse.jpt.core.internal.content.java.mappings.AbstractJavaColumn;
 import org.eclipse.jpt.core.internal.content.java.mappings.AbstractJavaTable;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddedId;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaId;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToMany;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToOne;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaMappedSuperclass;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToMany;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToOne;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAbstractQuery;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAssociationOverride;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAttributeMapping;
@@ -163,6 +176,71 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	protected JpaJavaMappingsSwitch<Adapter> modelSwitch = new JpaJavaMappingsSwitch<Adapter>() {
+		@Override
+		public Adapter caseIJavaEntity(IJavaEntity object) {
+			return createIJavaEntityAdapter();
+		}
+
+		@Override
+		public Adapter caseIJavaEmbeddable(IJavaEmbeddable object) {
+			return createIJavaEmbeddableAdapter();
+		}
+
+		@Override
+		public Adapter caseIJavaMappedSuperclass(IJavaMappedSuperclass object) {
+			return createIJavaMappedSuperclassAdapter();
+		}
+
+		@Override
+		public Adapter caseIJavaBasic(IJavaBasic object) {
+			return createIJavaBasicAdapter();
+		}
+
+		@Override
+		public Adapter caseIJavaEmbedded(IJavaEmbedded object) {
+			return createIJavaEmbeddedAdapter();
+		}
+
+		@Override
+		public Adapter caseIJavaEmbeddedId(IJavaEmbeddedId object) {
+			return createIJavaEmbeddedIdAdapter();
+		}
+
+		@Override
+		public Adapter caseIJavaId(IJavaId object) {
+			return createIJavaIdAdapter();
+		}
+
+		@Override
+		public Adapter caseIJavaManyToMany(IJavaManyToMany object) {
+			return createIJavaManyToManyAdapter();
+		}
+
+		@Override
+		public Adapter caseIJavaManyToOne(IJavaManyToOne object) {
+			return createIJavaManyToOneAdapter();
+		}
+
+		@Override
+		public Adapter caseIJavaOneToMany(IJavaOneToMany object) {
+			return createIJavaOneToManyAdapter();
+		}
+
+		@Override
+		public Adapter caseIJavaOneToOne(IJavaOneToOne object) {
+			return createIJavaOneToOneAdapter();
+		}
+
+		@Override
+		public Adapter caseIJavaTransient(IJavaTransient object) {
+			return createIJavaTransientAdapter();
+		}
+
+		@Override
+		public Adapter caseIJavaVersion(IJavaVersion object) {
+			return createIJavaVersionAdapter();
+		}
+
 		@Override
 		public Adapter caseJavaTypeMapping(JavaTypeMapping object) {
 			return createJavaTypeMappingAdapter();
@@ -384,18 +462,8 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 		}
 
 		@Override
-		public Adapter caseJpaEObject(JpaEObject object) {
-			return createJpaEObjectAdapter();
-		}
-
-		@Override
 		public Adapter caseIJpaSourceObject(IJpaSourceObject object) {
 			return createIJpaSourceObjectAdapter();
-		}
-
-		@Override
-		public Adapter caseJavaEObject(JavaEObject object) {
-			return createJavaEObjectAdapter();
 		}
 
 		@Override
@@ -414,13 +482,13 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 		}
 
 		@Override
-		public Adapter caseIMappedSuperclass(IMappedSuperclass object) {
-			return createIMappedSuperclassAdapter();
+		public Adapter caseIEmbeddable(IEmbeddable object) {
+			return createIEmbeddableAdapter();
 		}
 
 		@Override
-		public Adapter caseIEmbeddable(IEmbeddable object) {
-			return createIEmbeddableAdapter();
+		public Adapter caseIMappedSuperclass(IMappedSuperclass object) {
+			return createIMappedSuperclassAdapter();
 		}
 
 		@Override
@@ -444,18 +512,8 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 		}
 
 		@Override
-		public Adapter caseIId(IId object) {
-			return createIIdAdapter();
-		}
-
-		@Override
-		public Adapter caseITransient(ITransient object) {
-			return createITransientAdapter();
-		}
-
-		@Override
-		public Adapter caseIVersion(IVersion object) {
-			return createIVersionAdapter();
+		public Adapter caseIEmbedded(IEmbedded object) {
+			return createIEmbeddedAdapter();
 		}
 
 		@Override
@@ -464,13 +522,28 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 		}
 
 		@Override
-		public Adapter caseIEmbedded(IEmbedded object) {
-			return createIEmbeddedAdapter();
+		public Adapter caseIId(IId object) {
+			return createIIdAdapter();
 		}
 
 		@Override
 		public Adapter caseIRelationshipMapping(IRelationshipMapping object) {
 			return createIRelationshipMappingAdapter();
+		}
+
+		@Override
+		public Adapter caseINonOwningMapping(INonOwningMapping object) {
+			return createINonOwningMappingAdapter();
+		}
+
+		@Override
+		public Adapter caseIMultiRelationshipMapping(IMultiRelationshipMapping object) {
+			return createIMultiRelationshipMappingAdapter();
+		}
+
+		@Override
+		public Adapter caseIManyToMany(IManyToMany object) {
+			return createIManyToManyAdapter();
 		}
 
 		@Override
@@ -484,8 +557,8 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 		}
 
 		@Override
-		public Adapter caseINonOwningMapping(INonOwningMapping object) {
-			return createINonOwningMappingAdapter();
+		public Adapter caseIOneToMany(IOneToMany object) {
+			return createIOneToManyAdapter();
 		}
 
 		@Override
@@ -494,18 +567,23 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 		}
 
 		@Override
-		public Adapter caseIMultiRelationshipMapping(IMultiRelationshipMapping object) {
-			return createIMultiRelationshipMappingAdapter();
+		public Adapter caseITransient(ITransient object) {
+			return createITransientAdapter();
 		}
 
 		@Override
-		public Adapter caseIOneToMany(IOneToMany object) {
-			return createIOneToManyAdapter();
+		public Adapter caseIVersion(IVersion object) {
+			return createIVersionAdapter();
 		}
 
 		@Override
-		public Adapter caseIManyToMany(IManyToMany object) {
-			return createIManyToManyAdapter();
+		public Adapter caseJpaEObject(JpaEObject object) {
+			return createJpaEObjectAdapter();
+		}
+
+		@Override
+		public Adapter caseJavaEObject(JavaEObject object) {
+			return createJavaEObjectAdapter();
 		}
 
 		@Override
@@ -640,6 +718,188 @@ public class JpaJavaMappingsAdapterFactory extends AdapterFactoryImpl
 	@Override
 	public Adapter createAdapter(Notifier target) {
 		return modelSwitch.doSwitch((EObject) target);
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity <em>IJava Entity</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity
+	 * @generated
+	 */
+	public Adapter createIJavaEntityAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable <em>IJava Embeddable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable
+	 * @generated
+	 */
+	public Adapter createIJavaEmbeddableAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaMappedSuperclass <em>IJava Mapped Superclass</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaMappedSuperclass
+	 * @generated
+	 */
+	public Adapter createIJavaMappedSuperclassAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic <em>IJava Basic</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic
+	 * @generated
+	 */
+	public Adapter createIJavaBasicAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded <em>IJava Embedded</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded
+	 * @generated
+	 */
+	public Adapter createIJavaEmbeddedAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddedId <em>IJava Embedded Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddedId
+	 * @generated
+	 */
+	public Adapter createIJavaEmbeddedIdAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaId <em>IJava Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaId
+	 * @generated
+	 */
+	public Adapter createIJavaIdAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToMany <em>IJava Many To Many</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToMany
+	 * @generated
+	 */
+	public Adapter createIJavaManyToManyAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToOne <em>IJava Many To One</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToOne
+	 * @generated
+	 */
+	public Adapter createIJavaManyToOneAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToMany <em>IJava One To Many</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToMany
+	 * @generated
+	 */
+	public Adapter createIJavaOneToManyAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToOne <em>IJava One To One</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToOne
+	 * @generated
+	 */
+	public Adapter createIJavaOneToOneAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient <em>IJava Transient</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient
+	 * @generated
+	 */
+	public Adapter createIJavaTransientAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion <em>IJava Version</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion
+	 * @generated
+	 */
+	public Adapter createIJavaVersionAdapter() {
+		return null;
 	}
 
 	/**

@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.mappings.IManyToOne;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +27,7 @@ import org.eclipse.jpt.core.internal.mappings.IManyToOne;
  * @generated
  */
 public class JavaManyToOne extends JavaSingleRelationshipMapping
-	implements IManyToOne
+	implements IJavaManyToOne
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.MANY_TO_ONE);
 

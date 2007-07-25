@@ -74,7 +74,7 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
  * @model kind="class"
  * @generated
  */
-public class JavaEntity extends JavaTypeMapping implements IEntity
+public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 {
 	/**
 	 * The default value of the '{@link #getSpecifiedName() <em>Specified Name</em>}' attribute.
@@ -2246,6 +2246,12 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 					return -1;
 			}
 		}
+		if (baseClass == IJavaEntity.class) {
+			switch (derivedFeatureID) {
+				default :
+					return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -2304,6 +2310,12 @@ public class JavaEntity extends JavaTypeMapping implements IEntity
 					return JpaJavaMappingsPackage.JAVA_ENTITY__NAMED_NATIVE_QUERIES;
 				case JpaCoreMappingsPackage.IENTITY__ID_CLASS :
 					return JpaJavaMappingsPackage.JAVA_ENTITY__ID_CLASS;
+				default :
+					return -1;
+			}
+		}
+		if (baseClass == IJavaEntity.class) {
+			switch (baseFeatureID) {
 				default :
 					return -1;
 			}

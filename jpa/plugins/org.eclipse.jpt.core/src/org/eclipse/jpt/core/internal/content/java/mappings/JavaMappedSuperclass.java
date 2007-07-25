@@ -43,7 +43,7 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
  * @generated
  */
 public class JavaMappedSuperclass extends JavaTypeMapping
-	implements IMappedSuperclass
+	implements IJavaMappedSuperclass
 {
 	/**
 	 * The default value of the '{@link #getIdClass() <em>Id Class</em>}' attribute.
@@ -230,6 +230,12 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 					return -1;
 			}
 		}
+		if (baseClass == IJavaMappedSuperclass.class) {
+			switch (derivedFeatureID) {
+				default :
+					return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -244,6 +250,12 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 			switch (baseFeatureID) {
 				case JpaCoreMappingsPackage.IMAPPED_SUPERCLASS__ID_CLASS :
 					return JpaJavaMappingsPackage.JAVA_MAPPED_SUPERCLASS__ID_CLASS;
+				default :
+					return -1;
+			}
+		}
+		if (baseClass == IJavaMappedSuperclass.class) {
+			switch (baseFeatureID) {
 				default :
 					return -1;
 			}

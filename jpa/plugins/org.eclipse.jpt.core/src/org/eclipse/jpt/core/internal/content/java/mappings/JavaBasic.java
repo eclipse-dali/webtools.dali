@@ -59,7 +59,7 @@ import org.eclipse.jpt.utility.internal.Filter;
  * @model kind="class"
  * @generated
  */
-public class JavaBasic extends JavaAttributeMapping implements IBasic
+public class JavaBasic extends JavaAttributeMapping implements IJavaBasic
 {
 	private final AnnotationElementAdapter<String> optionalAdapter;
 
@@ -628,6 +628,12 @@ public class JavaBasic extends JavaAttributeMapping implements IBasic
 					return -1;
 			}
 		}
+		if (baseClass == IJavaBasic.class) {
+			switch (derivedFeatureID) {
+				default :
+					return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -658,6 +664,12 @@ public class JavaBasic extends JavaAttributeMapping implements IBasic
 					return JpaJavaMappingsPackage.JAVA_BASIC__TEMPORAL;
 				case JpaCoreMappingsPackage.IBASIC__ENUMERATED :
 					return JpaJavaMappingsPackage.JAVA_BASIC__ENUMERATED;
+				default :
+					return -1;
+			}
+		}
+		if (baseClass == IJavaBasic.class) {
+			switch (baseFeatureID) {
 				default :
 					return -1;
 			}

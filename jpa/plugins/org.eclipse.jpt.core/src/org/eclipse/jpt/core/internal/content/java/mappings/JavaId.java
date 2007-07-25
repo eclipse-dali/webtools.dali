@@ -47,7 +47,7 @@ import org.eclipse.jpt.utility.internal.Filter;
  * @model kind="class"
  * @generated
  */
-public class JavaId extends JavaAttributeMapping implements IId
+public class JavaId extends JavaAttributeMapping implements IJavaId
 {
 	private AnnotationAdapter generatedValueAnnotationAdapter;
 
@@ -588,6 +588,12 @@ public class JavaId extends JavaAttributeMapping implements IId
 					return -1;
 			}
 		}
+		if (baseClass == IJavaId.class) {
+			switch (derivedFeatureID) {
+				default :
+					return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -616,6 +622,12 @@ public class JavaId extends JavaAttributeMapping implements IId
 					return JpaJavaMappingsPackage.JAVA_ID__TABLE_GENERATOR;
 				case JpaCoreMappingsPackage.IID__SEQUENCE_GENERATOR :
 					return JpaJavaMappingsPackage.JAVA_ID__SEQUENCE_GENERATOR;
+				default :
+					return -1;
+			}
+		}
+		if (baseClass == IJavaId.class) {
+			switch (baseFeatureID) {
 				default :
 					return -1;
 			}

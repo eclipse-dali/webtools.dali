@@ -22,6 +22,19 @@ import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaEObject;
 import org.eclipse.jpt.core.internal.content.java.mappings.AbstractJavaColumn;
 import org.eclipse.jpt.core.internal.content.java.mappings.AbstractJavaTable;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddedId;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaId;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToMany;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToOne;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaMappedSuperclass;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToMany;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToOne;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient;
+import org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAbstractQuery;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAssociationOverride;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAttributeMapping;
@@ -178,6 +191,255 @@ public class JpaJavaMappingsSwitch<T>
 	 */
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
+			case JpaJavaMappingsPackage.IJAVA_ENTITY : {
+				IJavaEntity iJavaEntity = (IJavaEntity) theEObject;
+				T result = caseIJavaEntity(iJavaEntity);
+				if (result == null)
+					result = caseIJavaTypeMapping(iJavaEntity);
+				if (result == null)
+					result = caseIEntity(iJavaEntity);
+				if (result == null)
+					result = caseITypeMapping(iJavaEntity);
+				if (result == null)
+					result = caseIJpaSourceObject(iJavaEntity);
+				if (result == null)
+					result = caseIJpaEObject(iJavaEntity);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case JpaJavaMappingsPackage.IJAVA_EMBEDDABLE : {
+				IJavaEmbeddable iJavaEmbeddable = (IJavaEmbeddable) theEObject;
+				T result = caseIJavaEmbeddable(iJavaEmbeddable);
+				if (result == null)
+					result = caseIJavaTypeMapping(iJavaEmbeddable);
+				if (result == null)
+					result = caseIEmbeddable(iJavaEmbeddable);
+				if (result == null)
+					result = caseITypeMapping(iJavaEmbeddable);
+				if (result == null)
+					result = caseIJpaSourceObject(iJavaEmbeddable);
+				if (result == null)
+					result = caseIJpaEObject(iJavaEmbeddable);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case JpaJavaMappingsPackage.IJAVA_MAPPED_SUPERCLASS : {
+				IJavaMappedSuperclass iJavaMappedSuperclass = (IJavaMappedSuperclass) theEObject;
+				T result = caseIJavaMappedSuperclass(iJavaMappedSuperclass);
+				if (result == null)
+					result = caseIJavaTypeMapping(iJavaMappedSuperclass);
+				if (result == null)
+					result = caseIMappedSuperclass(iJavaMappedSuperclass);
+				if (result == null)
+					result = caseITypeMapping(iJavaMappedSuperclass);
+				if (result == null)
+					result = caseIJpaSourceObject(iJavaMappedSuperclass);
+				if (result == null)
+					result = caseIJpaEObject(iJavaMappedSuperclass);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case JpaJavaMappingsPackage.IJAVA_BASIC : {
+				IJavaBasic iJavaBasic = (IJavaBasic) theEObject;
+				T result = caseIJavaBasic(iJavaBasic);
+				if (result == null)
+					result = caseIJavaAttributeMapping(iJavaBasic);
+				if (result == null)
+					result = caseIBasic(iJavaBasic);
+				if (result == null)
+					result = caseIAttributeMapping(iJavaBasic);
+				if (result == null)
+					result = caseIColumnMapping(iJavaBasic);
+				if (result == null)
+					result = caseIJpaSourceObject(iJavaBasic);
+				if (result == null)
+					result = caseIJpaEObject(iJavaBasic);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case JpaJavaMappingsPackage.IJAVA_EMBEDDED : {
+				IJavaEmbedded iJavaEmbedded = (IJavaEmbedded) theEObject;
+				T result = caseIJavaEmbedded(iJavaEmbedded);
+				if (result == null)
+					result = caseIJavaAttributeMapping(iJavaEmbedded);
+				if (result == null)
+					result = caseIEmbedded(iJavaEmbedded);
+				if (result == null)
+					result = caseIAttributeMapping(iJavaEmbedded);
+				if (result == null)
+					result = caseIJpaSourceObject(iJavaEmbedded);
+				if (result == null)
+					result = caseIJpaEObject(iJavaEmbedded);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case JpaJavaMappingsPackage.IJAVA_EMBEDDED_ID : {
+				IJavaEmbeddedId iJavaEmbeddedId = (IJavaEmbeddedId) theEObject;
+				T result = caseIJavaEmbeddedId(iJavaEmbeddedId);
+				if (result == null)
+					result = caseIJavaAttributeMapping(iJavaEmbeddedId);
+				if (result == null)
+					result = caseIEmbeddedId(iJavaEmbeddedId);
+				if (result == null)
+					result = caseIAttributeMapping(iJavaEmbeddedId);
+				if (result == null)
+					result = caseIJpaSourceObject(iJavaEmbeddedId);
+				if (result == null)
+					result = caseIJpaEObject(iJavaEmbeddedId);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case JpaJavaMappingsPackage.IJAVA_ID : {
+				IJavaId iJavaId = (IJavaId) theEObject;
+				T result = caseIJavaId(iJavaId);
+				if (result == null)
+					result = caseIJavaAttributeMapping(iJavaId);
+				if (result == null)
+					result = caseIId(iJavaId);
+				if (result == null)
+					result = caseIAttributeMapping(iJavaId);
+				if (result == null)
+					result = caseIColumnMapping(iJavaId);
+				if (result == null)
+					result = caseIJpaSourceObject(iJavaId);
+				if (result == null)
+					result = caseIJpaEObject(iJavaId);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case JpaJavaMappingsPackage.IJAVA_MANY_TO_MANY : {
+				IJavaManyToMany iJavaManyToMany = (IJavaManyToMany) theEObject;
+				T result = caseIJavaManyToMany(iJavaManyToMany);
+				if (result == null)
+					result = caseIJavaAttributeMapping(iJavaManyToMany);
+				if (result == null)
+					result = caseIManyToMany(iJavaManyToMany);
+				if (result == null)
+					result = caseIAttributeMapping(iJavaManyToMany);
+				if (result == null)
+					result = caseIMultiRelationshipMapping(iJavaManyToMany);
+				if (result == null)
+					result = caseIJpaSourceObject(iJavaManyToMany);
+				if (result == null)
+					result = caseINonOwningMapping(iJavaManyToMany);
+				if (result == null)
+					result = caseIJpaEObject(iJavaManyToMany);
+				if (result == null)
+					result = caseIRelationshipMapping(iJavaManyToMany);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case JpaJavaMappingsPackage.IJAVA_MANY_TO_ONE : {
+				IJavaManyToOne iJavaManyToOne = (IJavaManyToOne) theEObject;
+				T result = caseIJavaManyToOne(iJavaManyToOne);
+				if (result == null)
+					result = caseIJavaAttributeMapping(iJavaManyToOne);
+				if (result == null)
+					result = caseIManyToOne(iJavaManyToOne);
+				if (result == null)
+					result = caseIAttributeMapping(iJavaManyToOne);
+				if (result == null)
+					result = caseISingleRelationshipMapping(iJavaManyToOne);
+				if (result == null)
+					result = caseIJpaSourceObject(iJavaManyToOne);
+				if (result == null)
+					result = caseIRelationshipMapping(iJavaManyToOne);
+				if (result == null)
+					result = caseIJpaEObject(iJavaManyToOne);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case JpaJavaMappingsPackage.IJAVA_ONE_TO_MANY : {
+				IJavaOneToMany iJavaOneToMany = (IJavaOneToMany) theEObject;
+				T result = caseIJavaOneToMany(iJavaOneToMany);
+				if (result == null)
+					result = caseIJavaAttributeMapping(iJavaOneToMany);
+				if (result == null)
+					result = caseIOneToMany(iJavaOneToMany);
+				if (result == null)
+					result = caseIAttributeMapping(iJavaOneToMany);
+				if (result == null)
+					result = caseIMultiRelationshipMapping(iJavaOneToMany);
+				if (result == null)
+					result = caseIJpaSourceObject(iJavaOneToMany);
+				if (result == null)
+					result = caseINonOwningMapping(iJavaOneToMany);
+				if (result == null)
+					result = caseIJpaEObject(iJavaOneToMany);
+				if (result == null)
+					result = caseIRelationshipMapping(iJavaOneToMany);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case JpaJavaMappingsPackage.IJAVA_ONE_TO_ONE : {
+				IJavaOneToOne iJavaOneToOne = (IJavaOneToOne) theEObject;
+				T result = caseIJavaOneToOne(iJavaOneToOne);
+				if (result == null)
+					result = caseIJavaAttributeMapping(iJavaOneToOne);
+				if (result == null)
+					result = caseIOneToOne(iJavaOneToOne);
+				if (result == null)
+					result = caseIAttributeMapping(iJavaOneToOne);
+				if (result == null)
+					result = caseISingleRelationshipMapping(iJavaOneToOne);
+				if (result == null)
+					result = caseINonOwningMapping(iJavaOneToOne);
+				if (result == null)
+					result = caseIJpaSourceObject(iJavaOneToOne);
+				if (result == null)
+					result = caseIRelationshipMapping(iJavaOneToOne);
+				if (result == null)
+					result = caseIJpaEObject(iJavaOneToOne);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case JpaJavaMappingsPackage.IJAVA_TRANSIENT : {
+				IJavaTransient iJavaTransient = (IJavaTransient) theEObject;
+				T result = caseIJavaTransient(iJavaTransient);
+				if (result == null)
+					result = caseIJavaAttributeMapping(iJavaTransient);
+				if (result == null)
+					result = caseITransient(iJavaTransient);
+				if (result == null)
+					result = caseIAttributeMapping(iJavaTransient);
+				if (result == null)
+					result = caseIJpaSourceObject(iJavaTransient);
+				if (result == null)
+					result = caseIJpaEObject(iJavaTransient);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case JpaJavaMappingsPackage.IJAVA_VERSION : {
+				IJavaVersion iJavaVersion = (IJavaVersion) theEObject;
+				T result = caseIJavaVersion(iJavaVersion);
+				if (result == null)
+					result = caseIJavaAttributeMapping(iJavaVersion);
+				if (result == null)
+					result = caseIVersion(iJavaVersion);
+				if (result == null)
+					result = caseIAttributeMapping(iJavaVersion);
+				if (result == null)
+					result = caseIColumnMapping(iJavaVersion);
+				if (result == null)
+					result = caseIJpaSourceObject(iJavaVersion);
+				if (result == null)
+					result = caseIJpaEObject(iJavaVersion);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			case JpaJavaMappingsPackage.JAVA_TYPE_MAPPING : {
 				JavaTypeMapping javaTypeMapping = (JavaTypeMapping) theEObject;
 				T result = caseJavaTypeMapping(javaTypeMapping);
@@ -203,17 +465,19 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseJavaTypeMapping(javaEntity);
 				if (result == null)
-					result = caseIEntity(javaEntity);
+					result = caseIJavaEntity(javaEntity);
 				if (result == null)
 					result = caseJavaEObject(javaEntity);
 				if (result == null)
 					result = caseIJavaTypeMapping(javaEntity);
 				if (result == null)
-					result = caseITypeMapping(javaEntity);
+					result = caseIEntity(javaEntity);
 				if (result == null)
 					result = caseJpaEObject(javaEntity);
 				if (result == null)
 					result = caseIJpaSourceObject(javaEntity);
+				if (result == null)
+					result = caseITypeMapping(javaEntity);
 				if (result == null)
 					result = caseIJpaEObject(javaEntity);
 				if (result == null)
@@ -226,17 +490,19 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseJavaTypeMapping(javaMappedSuperclass);
 				if (result == null)
-					result = caseIMappedSuperclass(javaMappedSuperclass);
+					result = caseIJavaMappedSuperclass(javaMappedSuperclass);
 				if (result == null)
 					result = caseJavaEObject(javaMappedSuperclass);
 				if (result == null)
 					result = caseIJavaTypeMapping(javaMappedSuperclass);
 				if (result == null)
-					result = caseITypeMapping(javaMappedSuperclass);
+					result = caseIMappedSuperclass(javaMappedSuperclass);
 				if (result == null)
 					result = caseJpaEObject(javaMappedSuperclass);
 				if (result == null)
 					result = caseIJpaSourceObject(javaMappedSuperclass);
+				if (result == null)
+					result = caseITypeMapping(javaMappedSuperclass);
 				if (result == null)
 					result = caseIJpaEObject(javaMappedSuperclass);
 				if (result == null)
@@ -249,17 +515,19 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseJavaTypeMapping(javaEmbeddable);
 				if (result == null)
-					result = caseIEmbeddable(javaEmbeddable);
+					result = caseIJavaEmbeddable(javaEmbeddable);
 				if (result == null)
 					result = caseJavaEObject(javaEmbeddable);
 				if (result == null)
 					result = caseIJavaTypeMapping(javaEmbeddable);
 				if (result == null)
-					result = caseITypeMapping(javaEmbeddable);
+					result = caseIEmbeddable(javaEmbeddable);
 				if (result == null)
 					result = caseJpaEObject(javaEmbeddable);
 				if (result == null)
 					result = caseIJpaSourceObject(javaEmbeddable);
+				if (result == null)
+					result = caseITypeMapping(javaEmbeddable);
 				if (result == null)
 					result = caseIJpaEObject(javaEmbeddable);
 				if (result == null)
@@ -312,19 +580,21 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseJavaAttributeMapping(javaBasic);
 				if (result == null)
-					result = caseIBasic(javaBasic);
+					result = caseIJavaBasic(javaBasic);
 				if (result == null)
 					result = caseJavaEObject(javaBasic);
 				if (result == null)
 					result = caseIJavaAttributeMapping(javaBasic);
 				if (result == null)
-					result = caseIAttributeMapping(javaBasic);
-				if (result == null)
-					result = caseIColumnMapping(javaBasic);
+					result = caseIBasic(javaBasic);
 				if (result == null)
 					result = caseJpaEObject(javaBasic);
 				if (result == null)
 					result = caseIJpaSourceObject(javaBasic);
+				if (result == null)
+					result = caseIAttributeMapping(javaBasic);
+				if (result == null)
+					result = caseIColumnMapping(javaBasic);
 				if (result == null)
 					result = caseIJpaEObject(javaBasic);
 				if (result == null)
@@ -337,19 +607,21 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseJavaAttributeMapping(javaId);
 				if (result == null)
-					result = caseIId(javaId);
+					result = caseIJavaId(javaId);
 				if (result == null)
 					result = caseJavaEObject(javaId);
 				if (result == null)
 					result = caseIJavaAttributeMapping(javaId);
 				if (result == null)
-					result = caseIAttributeMapping(javaId);
-				if (result == null)
-					result = caseIColumnMapping(javaId);
+					result = caseIId(javaId);
 				if (result == null)
 					result = caseJpaEObject(javaId);
 				if (result == null)
 					result = caseIJpaSourceObject(javaId);
+				if (result == null)
+					result = caseIAttributeMapping(javaId);
+				if (result == null)
+					result = caseIColumnMapping(javaId);
 				if (result == null)
 					result = caseIJpaEObject(javaId);
 				if (result == null)
@@ -362,17 +634,19 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseJavaAttributeMapping(javaTransient);
 				if (result == null)
-					result = caseITransient(javaTransient);
+					result = caseIJavaTransient(javaTransient);
 				if (result == null)
 					result = caseJavaEObject(javaTransient);
 				if (result == null)
 					result = caseIJavaAttributeMapping(javaTransient);
 				if (result == null)
-					result = caseIAttributeMapping(javaTransient);
+					result = caseITransient(javaTransient);
 				if (result == null)
 					result = caseJpaEObject(javaTransient);
 				if (result == null)
 					result = caseIJpaSourceObject(javaTransient);
+				if (result == null)
+					result = caseIAttributeMapping(javaTransient);
 				if (result == null)
 					result = caseIJpaEObject(javaTransient);
 				if (result == null)
@@ -385,19 +659,21 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseJavaAttributeMapping(javaVersion);
 				if (result == null)
-					result = caseIVersion(javaVersion);
+					result = caseIJavaVersion(javaVersion);
 				if (result == null)
 					result = caseJavaEObject(javaVersion);
 				if (result == null)
 					result = caseIJavaAttributeMapping(javaVersion);
 				if (result == null)
-					result = caseIAttributeMapping(javaVersion);
-				if (result == null)
-					result = caseIColumnMapping(javaVersion);
+					result = caseIVersion(javaVersion);
 				if (result == null)
 					result = caseJpaEObject(javaVersion);
 				if (result == null)
 					result = caseIJpaSourceObject(javaVersion);
+				if (result == null)
+					result = caseIAttributeMapping(javaVersion);
+				if (result == null)
+					result = caseIColumnMapping(javaVersion);
 				if (result == null)
 					result = caseIJpaEObject(javaVersion);
 				if (result == null)
@@ -410,17 +686,19 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseJavaAttributeMapping(javaEmbeddedId);
 				if (result == null)
-					result = caseIEmbeddedId(javaEmbeddedId);
+					result = caseIJavaEmbeddedId(javaEmbeddedId);
 				if (result == null)
 					result = caseJavaEObject(javaEmbeddedId);
 				if (result == null)
 					result = caseIJavaAttributeMapping(javaEmbeddedId);
 				if (result == null)
-					result = caseIAttributeMapping(javaEmbeddedId);
+					result = caseIEmbeddedId(javaEmbeddedId);
 				if (result == null)
 					result = caseJpaEObject(javaEmbeddedId);
 				if (result == null)
 					result = caseIJpaSourceObject(javaEmbeddedId);
+				if (result == null)
+					result = caseIAttributeMapping(javaEmbeddedId);
 				if (result == null)
 					result = caseIJpaEObject(javaEmbeddedId);
 				if (result == null)
@@ -433,17 +711,19 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseJavaAttributeMapping(javaEmbedded);
 				if (result == null)
-					result = caseIEmbedded(javaEmbedded);
+					result = caseIJavaEmbedded(javaEmbedded);
 				if (result == null)
 					result = caseJavaEObject(javaEmbedded);
 				if (result == null)
 					result = caseIJavaAttributeMapping(javaEmbedded);
 				if (result == null)
-					result = caseIAttributeMapping(javaEmbedded);
+					result = caseIEmbedded(javaEmbedded);
 				if (result == null)
 					result = caseJpaEObject(javaEmbedded);
 				if (result == null)
 					result = caseIJpaSourceObject(javaEmbedded);
+				if (result == null)
+					result = caseIAttributeMapping(javaEmbedded);
 				if (result == null)
 					result = caseIJpaEObject(javaEmbedded);
 				if (result == null)
@@ -506,25 +786,27 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseJavaSingleRelationshipMapping(javaManyToOne);
 				if (result == null)
-					result = caseIManyToOne(javaManyToOne);
+					result = caseIJavaManyToOne(javaManyToOne);
 				if (result == null)
 					result = caseJavaRelationshipMapping(javaManyToOne);
 				if (result == null)
 					result = caseISingleRelationshipMapping(javaManyToOne);
 				if (result == null)
+					result = caseIJavaAttributeMapping(javaManyToOne);
+				if (result == null)
+					result = caseIManyToOne(javaManyToOne);
+				if (result == null)
 					result = caseJavaAttributeMapping(javaManyToOne);
 				if (result == null)
 					result = caseIRelationshipMapping(javaManyToOne);
 				if (result == null)
-					result = caseJavaEObject(javaManyToOne);
-				if (result == null)
-					result = caseIJavaAttributeMapping(javaManyToOne);
-				if (result == null)
 					result = caseIAttributeMapping(javaManyToOne);
 				if (result == null)
-					result = caseJpaEObject(javaManyToOne);
+					result = caseJavaEObject(javaManyToOne);
 				if (result == null)
 					result = caseIJpaSourceObject(javaManyToOne);
+				if (result == null)
+					result = caseJpaEObject(javaManyToOne);
 				if (result == null)
 					result = caseIJpaEObject(javaManyToOne);
 				if (result == null)
@@ -537,27 +819,29 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseJavaSingleRelationshipMapping(javaOneToOne);
 				if (result == null)
-					result = caseIOneToOne(javaOneToOne);
+					result = caseIJavaOneToOne(javaOneToOne);
 				if (result == null)
 					result = caseJavaRelationshipMapping(javaOneToOne);
 				if (result == null)
 					result = caseISingleRelationshipMapping(javaOneToOne);
 				if (result == null)
-					result = caseINonOwningMapping(javaOneToOne);
+					result = caseIJavaAttributeMapping(javaOneToOne);
+				if (result == null)
+					result = caseIOneToOne(javaOneToOne);
 				if (result == null)
 					result = caseJavaAttributeMapping(javaOneToOne);
 				if (result == null)
 					result = caseIRelationshipMapping(javaOneToOne);
 				if (result == null)
-					result = caseJavaEObject(javaOneToOne);
-				if (result == null)
-					result = caseIJavaAttributeMapping(javaOneToOne);
-				if (result == null)
 					result = caseIAttributeMapping(javaOneToOne);
 				if (result == null)
-					result = caseJpaEObject(javaOneToOne);
+					result = caseINonOwningMapping(javaOneToOne);
+				if (result == null)
+					result = caseJavaEObject(javaOneToOne);
 				if (result == null)
 					result = caseIJpaSourceObject(javaOneToOne);
+				if (result == null)
+					result = caseJpaEObject(javaOneToOne);
 				if (result == null)
 					result = caseIJpaEObject(javaOneToOne);
 				if (result == null)
@@ -599,11 +883,15 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseJavaMultiRelationshipMapping(javaOneToMany);
 				if (result == null)
-					result = caseIOneToMany(javaOneToMany);
+					result = caseIJavaOneToMany(javaOneToMany);
 				if (result == null)
 					result = caseJavaRelationshipMapping(javaOneToMany);
 				if (result == null)
 					result = caseIMultiRelationshipMapping(javaOneToMany);
+				if (result == null)
+					result = caseIJavaAttributeMapping(javaOneToMany);
+				if (result == null)
+					result = caseIOneToMany(javaOneToMany);
 				if (result == null)
 					result = caseJavaAttributeMapping(javaOneToMany);
 				if (result == null)
@@ -611,15 +899,13 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseINonOwningMapping(javaOneToMany);
 				if (result == null)
-					result = caseJavaEObject(javaOneToMany);
-				if (result == null)
-					result = caseIJavaAttributeMapping(javaOneToMany);
-				if (result == null)
 					result = caseIAttributeMapping(javaOneToMany);
 				if (result == null)
-					result = caseJpaEObject(javaOneToMany);
+					result = caseJavaEObject(javaOneToMany);
 				if (result == null)
 					result = caseIJpaSourceObject(javaOneToMany);
+				if (result == null)
+					result = caseJpaEObject(javaOneToMany);
 				if (result == null)
 					result = caseIJpaEObject(javaOneToMany);
 				if (result == null)
@@ -632,11 +918,15 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseJavaMultiRelationshipMapping(javaManyToMany);
 				if (result == null)
-					result = caseIManyToMany(javaManyToMany);
+					result = caseIJavaManyToMany(javaManyToMany);
 				if (result == null)
 					result = caseJavaRelationshipMapping(javaManyToMany);
 				if (result == null)
 					result = caseIMultiRelationshipMapping(javaManyToMany);
+				if (result == null)
+					result = caseIJavaAttributeMapping(javaManyToMany);
+				if (result == null)
+					result = caseIManyToMany(javaManyToMany);
 				if (result == null)
 					result = caseJavaAttributeMapping(javaManyToMany);
 				if (result == null)
@@ -644,15 +934,13 @@ public class JpaJavaMappingsSwitch<T>
 				if (result == null)
 					result = caseINonOwningMapping(javaManyToMany);
 				if (result == null)
-					result = caseJavaEObject(javaManyToMany);
-				if (result == null)
-					result = caseIJavaAttributeMapping(javaManyToMany);
-				if (result == null)
 					result = caseIAttributeMapping(javaManyToMany);
 				if (result == null)
-					result = caseJpaEObject(javaManyToMany);
+					result = caseJavaEObject(javaManyToMany);
 				if (result == null)
 					result = caseIJpaSourceObject(javaManyToMany);
+				if (result == null)
+					result = caseJpaEObject(javaManyToMany);
 				if (result == null)
 					result = caseIJpaEObject(javaManyToMany);
 				if (result == null)
@@ -1142,6 +1430,201 @@ public class JpaJavaMappingsSwitch<T>
 			default :
 				return defaultCase(theEObject);
 		}
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IJava Entity</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IJava Entity</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIJavaEntity(IJavaEntity object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IJava Embeddable</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IJava Embeddable</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIJavaEmbeddable(IJavaEmbeddable object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IJava Mapped Superclass</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IJava Mapped Superclass</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIJavaMappedSuperclass(IJavaMappedSuperclass object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IJava Basic</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IJava Basic</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIJavaBasic(IJavaBasic object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IJava Embedded</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IJava Embedded</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIJavaEmbedded(IJavaEmbedded object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IJava Embedded Id</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IJava Embedded Id</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIJavaEmbeddedId(IJavaEmbeddedId object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IJava Id</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IJava Id</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIJavaId(IJavaId object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IJava Many To Many</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IJava Many To Many</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIJavaManyToMany(IJavaManyToMany object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IJava Many To One</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IJava Many To One</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIJavaManyToOne(IJavaManyToOne object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IJava One To Many</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IJava One To Many</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIJavaOneToMany(IJavaOneToMany object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IJava One To One</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IJava One To One</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIJavaOneToOne(IJavaOneToOne object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IJava Transient</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IJava Transient</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIJavaTransient(IJavaTransient object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IJava Version</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IJava Version</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIJavaVersion(IJavaVersion object) {
+		return null;
 	}
 
 	/**

@@ -903,7 +903,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 		Iterator<XmlPersistentAttribute> attributes = attributesNamed(attributeName);
 		if (attributes.hasNext()) {
 			XmlPersistentAttribute attribute = attributes.next();
-			return attributes.hasNext() ? null /* more than one */ : attribute;
+			return attributes.hasNext() ? null /* more than one */: attribute;
 		}
 		else if (parentPersistentType() != null) {
 			return parentPersistentType().resolveAttribute(attributeName);

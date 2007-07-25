@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.mappings.IManyToMany;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,7 +28,7 @@ import org.eclipse.jpt.core.internal.mappings.IManyToMany;
  * @generated
  */
 public class JavaManyToMany extends JavaMultiRelationshipMapping
-	implements IManyToMany
+	implements IJavaManyToMany
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.MANY_TO_MANY);
 

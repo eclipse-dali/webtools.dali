@@ -43,7 +43,7 @@ import org.eclipse.jpt.utility.internal.Filter;
  * @model kind="class"
  * @generated
  */
-public class JavaVersion extends JavaAttributeMapping implements IVersion
+public class JavaVersion extends JavaAttributeMapping implements IJavaVersion
 {
 	private final AnnotationAdapter temporalAnnotationAdapter;
 
@@ -290,6 +290,12 @@ public class JavaVersion extends JavaAttributeMapping implements IVersion
 					return -1;
 			}
 		}
+		if (baseClass == IJavaVersion.class) {
+			switch (derivedFeatureID) {
+				default :
+					return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -312,6 +318,12 @@ public class JavaVersion extends JavaAttributeMapping implements IVersion
 					return JpaJavaMappingsPackage.JAVA_VERSION__COLUMN;
 				case JpaCoreMappingsPackage.IVERSION__TEMPORAL :
 					return JpaJavaMappingsPackage.JAVA_VERSION__TEMPORAL;
+				default :
+					return -1;
+			}
+		}
+		if (baseClass == IJavaVersion.class) {
+			switch (baseFeatureID) {
 				default :
 					return -1;
 			}

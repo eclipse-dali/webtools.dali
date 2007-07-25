@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.mappings.IEmbeddedId;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +25,8 @@ import org.eclipse.jpt.core.internal.mappings.IEmbeddedId;
  * @model kind="class"
  * @generated
  */
-public class JavaEmbeddedId extends JavaAttributeMapping implements IEmbeddedId
+public class JavaEmbeddedId extends JavaAttributeMapping
+	implements IJavaEmbeddedId
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.EMBEDDED_ID);
 

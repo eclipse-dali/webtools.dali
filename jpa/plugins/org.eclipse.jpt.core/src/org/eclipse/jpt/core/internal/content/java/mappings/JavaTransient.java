@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.mappings.ITransient;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +25,8 @@ import org.eclipse.jpt.core.internal.mappings.ITransient;
  * @model kind="class"
  * @generated
  */
-public class JavaTransient extends JavaAttributeMapping implements ITransient
+public class JavaTransient extends JavaAttributeMapping
+	implements IJavaTransient
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.TRANSIENT);
 

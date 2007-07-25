@@ -69,6 +69,1036 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final JpaJavaMappingsPackage eINSTANCE = org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage.init();
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity <em>IJava Entity</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaEntity()
+	 * @generated
+	 */
+	public static final int IJAVA_ENTITY = 0;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__NAME = JpaJavaPackage.IJAVA_TYPE_MAPPING__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Table Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__TABLE_NAME = JpaJavaPackage.IJAVA_TYPE_MAPPING__TABLE_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Specified Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__SPECIFIED_NAME = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Default Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__DEFAULT_NAME = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Table</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__TABLE = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Specified Secondary Tables</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__SPECIFIED_SECONDARY_TABLES = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__PRIMARY_KEY_JOIN_COLUMNS = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Specified Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Default Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Inheritance Strategy</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__INHERITANCE_STRATEGY = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 7;
+
+	/**
+	 * The feature id for the '<em><b>Default Discriminator Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__DEFAULT_DISCRIMINATOR_VALUE = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Specified Discriminator Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__SPECIFIED_DISCRIMINATOR_VALUE = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 9;
+
+	/**
+	 * The feature id for the '<em><b>Discriminator Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__DISCRIMINATOR_VALUE = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 10;
+
+	/**
+	 * The feature id for the '<em><b>Discriminator Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__DISCRIMINATOR_COLUMN = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 11;
+
+	/**
+	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__SEQUENCE_GENERATOR = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 12;
+
+	/**
+	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__TABLE_GENERATOR = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 13;
+
+	/**
+	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__ATTRIBUTE_OVERRIDES = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 14;
+
+	/**
+	 * The feature id for the '<em><b>Specified Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__SPECIFIED_ATTRIBUTE_OVERRIDES = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 15;
+
+	/**
+	 * The feature id for the '<em><b>Default Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__DEFAULT_ATTRIBUTE_OVERRIDES = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 16;
+
+	/**
+	 * The feature id for the '<em><b>Association Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__ASSOCIATION_OVERRIDES = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 17;
+
+	/**
+	 * The feature id for the '<em><b>Specified Association Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__SPECIFIED_ASSOCIATION_OVERRIDES = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 18;
+
+	/**
+	 * The feature id for the '<em><b>Default Association Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__DEFAULT_ASSOCIATION_OVERRIDES = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 19;
+
+	/**
+	 * The feature id for the '<em><b>Named Queries</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__NAMED_QUERIES = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 20;
+
+	/**
+	 * The feature id for the '<em><b>Named Native Queries</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__NAMED_NATIVE_QUERIES = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 21;
+
+	/**
+	 * The feature id for the '<em><b>Id Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY__ID_CLASS = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 22;
+
+	/**
+	 * The number of structural features of the '<em>IJava Entity</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ENTITY_FEATURE_COUNT = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 23;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable <em>IJava Embeddable</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaEmbeddable()
+	 * @generated
+	 */
+	public static final int IJAVA_EMBEDDABLE = 1;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_EMBEDDABLE__NAME = JpaJavaPackage.IJAVA_TYPE_MAPPING__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Table Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_EMBEDDABLE__TABLE_NAME = JpaJavaPackage.IJAVA_TYPE_MAPPING__TABLE_NAME;
+
+	/**
+	 * The number of structural features of the '<em>IJava Embeddable</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_EMBEDDABLE_FEATURE_COUNT = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaMappedSuperclass <em>IJava Mapped Superclass</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaMappedSuperclass
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaMappedSuperclass()
+	 * @generated
+	 */
+	public static final int IJAVA_MAPPED_SUPERCLASS = 2;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MAPPED_SUPERCLASS__NAME = JpaJavaPackage.IJAVA_TYPE_MAPPING__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Table Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MAPPED_SUPERCLASS__TABLE_NAME = JpaJavaPackage.IJAVA_TYPE_MAPPING__TABLE_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Id Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MAPPED_SUPERCLASS__ID_CLASS = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>IJava Mapped Superclass</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MAPPED_SUPERCLASS_FEATURE_COUNT = JpaJavaPackage.IJAVA_TYPE_MAPPING_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic <em>IJava Basic</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaBasic()
+	 * @generated
+	 */
+	public static final int IJAVA_BASIC = 3;
+
+	/**
+	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_BASIC__FETCH = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_BASIC__OPTIONAL = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_BASIC__COLUMN = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Lob</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_BASIC__LOB = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Temporal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_BASIC__TEMPORAL = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Enumerated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_BASIC__ENUMERATED = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
+
+	/**
+	 * The number of structural features of the '<em>IJava Basic</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_BASIC_FEATURE_COUNT = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded <em>IJava Embedded</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaEmbedded()
+	 * @generated
+	 */
+	public static final int IJAVA_EMBEDDED = 4;
+
+	/**
+	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_EMBEDDED__ATTRIBUTE_OVERRIDES = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Specified Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_EMBEDDED__SPECIFIED_ATTRIBUTE_OVERRIDES = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Default Attribute Overrides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_EMBEDDED__DEFAULT_ATTRIBUTE_OVERRIDES = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>IJava Embedded</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_EMBEDDED_FEATURE_COUNT = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddedId <em>IJava Embedded Id</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddedId
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaEmbeddedId()
+	 * @generated
+	 */
+	public static final int IJAVA_EMBEDDED_ID = 5;
+
+	/**
+	 * The number of structural features of the '<em>IJava Embedded Id</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_EMBEDDED_ID_FEATURE_COUNT = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaId <em>IJava Id</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaId
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaId()
+	 * @generated
+	 */
+	public static final int IJAVA_ID = 6;
+
+	/**
+	 * The feature id for the '<em><b>Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ID__COLUMN = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Generated Value</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ID__GENERATED_VALUE = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Temporal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ID__TEMPORAL = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ID__TABLE_GENERATOR = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ID__SEQUENCE_GENERATOR = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+
+	/**
+	 * The number of structural features of the '<em>IJava Id</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ID_FEATURE_COUNT = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToMany <em>IJava Many To Many</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToMany
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaManyToMany()
+	 * @generated
+	 */
+	public static final int IJAVA_MANY_TO_MANY = 7;
+
+	/**
+	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_MANY__TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Specified Target Entity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_MANY__SPECIFIED_TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Default Target Entity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_MANY__DEFAULT_TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Resolved Target Entity</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_MANY__RESOLVED_TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_MANY__CASCADE = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_MANY__MAPPED_BY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_MANY__ORDER_BY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_MANY__FETCH = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
+
+	/**
+	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_MANY__JOIN_TABLE = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_MANY__MAP_KEY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 9;
+
+	/**
+	 * The number of structural features of the '<em>IJava Many To Many</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_MANY_FEATURE_COUNT = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 10;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToOne <em>IJava Many To One</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToOne
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaManyToOne()
+	 * @generated
+	 */
+	public static final int IJAVA_MANY_TO_ONE = 8;
+
+	/**
+	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_ONE__TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Specified Target Entity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_ONE__SPECIFIED_TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Default Target Entity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_ONE__DEFAULT_TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Resolved Target Entity</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_ONE__RESOLVED_TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_ONE__CASCADE = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_ONE__FETCH = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_ONE__JOIN_COLUMNS = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Specified Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_ONE__SPECIFIED_JOIN_COLUMNS = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
+
+	/**
+	 * The feature id for the '<em><b>Default Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_ONE__DEFAULT_JOIN_COLUMNS = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_ONE__OPTIONAL = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 9;
+
+	/**
+	 * The number of structural features of the '<em>IJava Many To One</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_MANY_TO_ONE_FEATURE_COUNT = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 10;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToMany <em>IJava One To Many</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToMany
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaOneToMany()
+	 * @generated
+	 */
+	public static final int IJAVA_ONE_TO_MANY = 9;
+
+	/**
+	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_MANY__TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Specified Target Entity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_MANY__SPECIFIED_TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Default Target Entity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_MANY__DEFAULT_TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Resolved Target Entity</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_MANY__RESOLVED_TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_MANY__CASCADE = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_MANY__MAPPED_BY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Order By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_MANY__ORDER_BY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_MANY__FETCH = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
+
+	/**
+	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_MANY__JOIN_TABLE = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Map Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_MANY__MAP_KEY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 9;
+
+	/**
+	 * The number of structural features of the '<em>IJava One To Many</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_MANY_FEATURE_COUNT = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 10;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToOne <em>IJava One To One</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToOne
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaOneToOne()
+	 * @generated
+	 */
+	public static final int IJAVA_ONE_TO_ONE = 10;
+
+	/**
+	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_ONE__TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Specified Target Entity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_ONE__SPECIFIED_TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Default Target Entity</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_ONE__DEFAULT_TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Resolved Target Entity</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_ONE__RESOLVED_TARGET_ENTITY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_ONE__CASCADE = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_ONE__FETCH = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_ONE__JOIN_COLUMNS = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Specified Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_ONE__SPECIFIED_JOIN_COLUMNS = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
+
+	/**
+	 * The feature id for the '<em><b>Default Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_ONE__DEFAULT_JOIN_COLUMNS = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_ONE__OPTIONAL = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 9;
+
+	/**
+	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_ONE__MAPPED_BY = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 10;
+
+	/**
+	 * The number of structural features of the '<em>IJava One To One</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_ONE_TO_ONE_FEATURE_COUNT = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 11;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient <em>IJava Transient</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaTransient()
+	 * @generated
+	 */
+	public static final int IJAVA_TRANSIENT = 11;
+
+	/**
+	 * The number of structural features of the '<em>IJava Transient</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_TRANSIENT_FEATURE_COUNT = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion <em>IJava Version</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaVersion()
+	 * @generated
+	 */
+	public static final int IJAVA_VERSION = 12;
+
+	/**
+	 * The feature id for the '<em><b>Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_VERSION__COLUMN = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Temporal</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_VERSION__TEMPORAL = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>IJava Version</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int IJAVA_VERSION_FEATURE_COUNT = JpaJavaPackage.IJAVA_ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaTypeMapping <em>Java Type Mapping</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -76,7 +1106,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaTypeMapping()
 	 * @generated
 	 */
-	public static final int JAVA_TYPE_MAPPING = 0;
+	public static final int JAVA_TYPE_MAPPING = 13;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -113,7 +1143,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaEntity()
 	 * @generated
 	 */
-	public static final int JAVA_ENTITY = 1;
+	public static final int JAVA_ENTITY = 14;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -357,7 +1387,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaMappedSuperclass()
 	 * @generated
 	 */
-	public static final int JAVA_MAPPED_SUPERCLASS = 2;
+	public static final int JAVA_MAPPED_SUPERCLASS = 15;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -403,7 +1433,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaEmbeddable()
 	 * @generated
 	 */
-	public static final int JAVA_EMBEDDABLE = 3;
+	public static final int JAVA_EMBEDDABLE = 16;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -440,7 +1470,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaNullTypeMapping()
 	 * @generated
 	 */
-	public static final int JAVA_NULL_TYPE_MAPPING = 4;
+	public static final int JAVA_NULL_TYPE_MAPPING = 17;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -477,7 +1507,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaAttributeMapping()
 	 * @generated
 	 */
-	public static final int JAVA_ATTRIBUTE_MAPPING = 5;
+	public static final int JAVA_ATTRIBUTE_MAPPING = 18;
 
 	/**
 	 * The number of structural features of the '<em>Java Attribute Mapping</em>' class.
@@ -496,7 +1526,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaNullAttributeMapping()
 	 * @generated
 	 */
-	public static final int JAVA_NULL_ATTRIBUTE_MAPPING = 19;
+	public static final int JAVA_NULL_ATTRIBUTE_MAPPING = 32;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaBasic <em>Java Basic</em>}' class.
@@ -506,7 +1536,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaBasic()
 	 * @generated
 	 */
-	public static final int JAVA_BASIC = 6;
+	public static final int JAVA_BASIC = 19;
 
 	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
@@ -579,7 +1609,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaId()
 	 * @generated
 	 */
-	public static final int JAVA_ID = 7;
+	public static final int JAVA_ID = 20;
 
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
@@ -643,7 +1673,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaTransient()
 	 * @generated
 	 */
-	public static final int JAVA_TRANSIENT = 8;
+	public static final int JAVA_TRANSIENT = 21;
 
 	/**
 	 * The number of structural features of the '<em>Java Transient</em>' class.
@@ -662,7 +1692,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaVersion()
 	 * @generated
 	 */
-	public static final int JAVA_VERSION = 9;
+	public static final int JAVA_VERSION = 22;
 
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
@@ -699,7 +1729,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaEmbeddedId()
 	 * @generated
 	 */
-	public static final int JAVA_EMBEDDED_ID = 10;
+	public static final int JAVA_EMBEDDED_ID = 23;
 
 	/**
 	 * The number of structural features of the '<em>Java Embedded Id</em>' class.
@@ -718,7 +1748,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaEmbedded()
 	 * @generated
 	 */
-	public static final int JAVA_EMBEDDED = 11;
+	public static final int JAVA_EMBEDDED = 24;
 
 	/**
 	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
@@ -764,7 +1794,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaRelationshipMapping()
 	 * @generated
 	 */
-	public static final int JAVA_RELATIONSHIP_MAPPING = 12;
+	public static final int JAVA_RELATIONSHIP_MAPPING = 25;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -828,7 +1858,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaSingleRelationshipMapping()
 	 * @generated
 	 */
-	public static final int JAVA_SINGLE_RELATIONSHIP_MAPPING = 13;
+	public static final int JAVA_SINGLE_RELATIONSHIP_MAPPING = 26;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -937,7 +1967,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaManyToOne()
 	 * @generated
 	 */
-	public static final int JAVA_MANY_TO_ONE = 14;
+	public static final int JAVA_MANY_TO_ONE = 27;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1046,7 +2076,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaOneToOne()
 	 * @generated
 	 */
-	public static final int JAVA_ONE_TO_ONE = 15;
+	public static final int JAVA_ONE_TO_ONE = 28;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1164,7 +2194,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaMultiRelationshipMapping()
 	 * @generated
 	 */
-	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING = 16;
+	public static final int JAVA_MULTI_RELATIONSHIP_MAPPING = 29;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1273,7 +2303,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaOneToMany()
 	 * @generated
 	 */
-	public static final int JAVA_ONE_TO_MANY = 17;
+	public static final int JAVA_ONE_TO_MANY = 30;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1382,7 +2412,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaManyToMany()
 	 * @generated
 	 */
-	public static final int JAVA_MANY_TO_MANY = 18;
+	public static final int JAVA_MANY_TO_MANY = 31;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1500,7 +2530,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getAbstractJavaTable()
 	 * @generated
 	 */
-	public static final int ABSTRACT_JAVA_TABLE = 20;
+	public static final int ABSTRACT_JAVA_TABLE = 33;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1609,7 +2639,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaTable()
 	 * @generated
 	 */
-	public static final int JAVA_TABLE = 21;
+	public static final int JAVA_TABLE = 34;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1718,7 +2748,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaJoinTable()
 	 * @generated
 	 */
-	public static final int JAVA_JOIN_TABLE = 23;
+	public static final int JAVA_JOIN_TABLE = 36;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaColumn <em>Java Column</em>}' class.
@@ -1728,7 +2758,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaColumn()
 	 * @generated
 	 */
-	public static final int JAVA_COLUMN = 26;
+	public static final int JAVA_COLUMN = 39;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaJoinColumn <em>Java Join Column</em>}' class.
@@ -1738,7 +2768,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaJoinColumn()
 	 * @generated
 	 */
-	public static final int JAVA_JOIN_COLUMN = 27;
+	public static final int JAVA_JOIN_COLUMN = 40;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaAttributeOverride <em>Java Attribute Override</em>}' class.
@@ -1748,7 +2778,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaAttributeOverride()
 	 * @generated
 	 */
-	public static final int JAVA_ATTRIBUTE_OVERRIDE = 29;
+	public static final int JAVA_ATTRIBUTE_OVERRIDE = 42;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaAssociationOverride <em>Java Association Override</em>}' class.
@@ -1758,7 +2788,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaAssociationOverride()
 	 * @generated
 	 */
-	public static final int JAVA_ASSOCIATION_OVERRIDE = 30;
+	public static final int JAVA_ASSOCIATION_OVERRIDE = 43;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaDiscriminatorColumn <em>Java Discriminator Column</em>}' class.
@@ -1768,7 +2798,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaDiscriminatorColumn()
 	 * @generated
 	 */
-	public static final int JAVA_DISCRIMINATOR_COLUMN = 31;
+	public static final int JAVA_DISCRIMINATOR_COLUMN = 44;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaPrimaryKeyJoinColumn <em>Java Primary Key Join Column</em>}' class.
@@ -1778,7 +2808,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaPrimaryKeyJoinColumn()
 	 * @generated
 	 */
-	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN = 32;
+	public static final int JAVA_PRIMARY_KEY_JOIN_COLUMN = 45;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaGeneratedValue <em>Java Generated Value</em>}' class.
@@ -1788,7 +2818,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaGeneratedValue()
 	 * @generated
 	 */
-	public static final int JAVA_GENERATED_VALUE = 33;
+	public static final int JAVA_GENERATED_VALUE = 46;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaGenerator <em>Java Generator</em>}' class.
@@ -1798,7 +2828,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaGenerator()
 	 * @generated
 	 */
-	public static final int JAVA_GENERATOR = 34;
+	public static final int JAVA_GENERATOR = 47;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaTableGenerator <em>Java Table Generator</em>}' class.
@@ -1808,7 +2838,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaTableGenerator()
 	 * @generated
 	 */
-	public static final int JAVA_TABLE_GENERATOR = 35;
+	public static final int JAVA_TABLE_GENERATOR = 48;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaSequenceGenerator <em>Java Sequence Generator</em>}' class.
@@ -1818,7 +2848,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaSequenceGenerator()
 	 * @generated
 	 */
-	public static final int JAVA_SEQUENCE_GENERATOR = 36;
+	public static final int JAVA_SEQUENCE_GENERATOR = 49;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaSecondaryTable <em>Java Secondary Table</em>}' class.
@@ -1828,7 +2858,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaSecondaryTable()
 	 * @generated
 	 */
-	public static final int JAVA_SECONDARY_TABLE = 22;
+	public static final int JAVA_SECONDARY_TABLE = 35;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2117,7 +3147,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaNamedColumn()
 	 * @generated
 	 */
-	public static final int JAVA_NAMED_COLUMN = 24;
+	public static final int JAVA_NAMED_COLUMN = 37;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2172,7 +3202,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getAbstractJavaColumn()
 	 * @generated
 	 */
-	public static final int ABSTRACT_JAVA_COLUMN = 25;
+	public static final int ABSTRACT_JAVA_COLUMN = 38;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2560,7 +3590,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaOverride()
 	 * @generated
 	 */
-	public static final int JAVA_OVERRIDE = 28;
+	public static final int JAVA_OVERRIDE = 41;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3254,7 +4284,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaAbstractQuery()
 	 * @generated
 	 */
-	public static final int JAVA_ABSTRACT_QUERY = 37;
+	public static final int JAVA_ABSTRACT_QUERY = 50;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3300,7 +4330,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaNamedQuery()
 	 * @generated
 	 */
-	public static final int JAVA_NAMED_QUERY = 38;
+	public static final int JAVA_NAMED_QUERY = 51;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3346,7 +4376,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaNamedNativeQuery()
 	 * @generated
 	 */
-	public static final int JAVA_NAMED_NATIVE_QUERY = 39;
+	public static final int JAVA_NAMED_NATIVE_QUERY = 52;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3410,7 +4440,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaQueryHint()
 	 * @generated
 	 */
-	public static final int JAVA_QUERY_HINT = 40;
+	public static final int JAVA_QUERY_HINT = 53;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3447,7 +4477,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaUniqueConstraint()
 	 * @generated
 	 */
-	public static final int JAVA_UNIQUE_CONSTRAINT = 41;
+	public static final int JAVA_UNIQUE_CONSTRAINT = 54;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -3475,7 +4505,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getJavaCascade()
 	 * @generated
 	 */
-	public static final int JAVA_CASCADE = 42;
+	public static final int JAVA_CASCADE = 55;
 
 	/**
 	 * The feature id for the '<em><b>All</b></em>' attribute.
@@ -3530,6 +4560,97 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int JAVA_CASCADE_FEATURE_COUNT = JpaJavaPackage.JAVA_EOBJECT_FEATURE_COUNT + 5;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaEntityEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaEmbeddableEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaMappedSuperclassEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaBasicEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaEmbeddedEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaEmbeddedIdEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaIdEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaManyToManyEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaManyToOneEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaOneToManyEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaOneToOneEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaTransientEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iJavaVersionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -3911,6 +5032,162 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		// Mark meta-data to indicate it can't be changed
 		theJpaJavaMappingsPackage.freeze();
 		return theJpaJavaMappingsPackage;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity <em>IJava Entity</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava Entity</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity
+	 * @generated
+	 */
+	public EClass getIJavaEntity() {
+		return iJavaEntityEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable <em>IJava Embeddable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava Embeddable</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable
+	 * @generated
+	 */
+	public EClass getIJavaEmbeddable() {
+		return iJavaEmbeddableEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaMappedSuperclass <em>IJava Mapped Superclass</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava Mapped Superclass</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaMappedSuperclass
+	 * @generated
+	 */
+	public EClass getIJavaMappedSuperclass() {
+		return iJavaMappedSuperclassEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic <em>IJava Basic</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava Basic</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic
+	 * @generated
+	 */
+	public EClass getIJavaBasic() {
+		return iJavaBasicEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded <em>IJava Embedded</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava Embedded</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded
+	 * @generated
+	 */
+	public EClass getIJavaEmbedded() {
+		return iJavaEmbeddedEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddedId <em>IJava Embedded Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava Embedded Id</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddedId
+	 * @generated
+	 */
+	public EClass getIJavaEmbeddedId() {
+		return iJavaEmbeddedIdEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaId <em>IJava Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava Id</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaId
+	 * @generated
+	 */
+	public EClass getIJavaId() {
+		return iJavaIdEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToMany <em>IJava Many To Many</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava Many To Many</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToMany
+	 * @generated
+	 */
+	public EClass getIJavaManyToMany() {
+		return iJavaManyToManyEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToOne <em>IJava Many To One</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava Many To One</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToOne
+	 * @generated
+	 */
+	public EClass getIJavaManyToOne() {
+		return iJavaManyToOneEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToMany <em>IJava One To Many</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava One To Many</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToMany
+	 * @generated
+	 */
+	public EClass getIJavaOneToMany() {
+		return iJavaOneToManyEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToOne <em>IJava One To One</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava One To One</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToOne
+	 * @generated
+	 */
+	public EClass getIJavaOneToOne() {
+		return iJavaOneToOneEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient <em>IJava Transient</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava Transient</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient
+	 * @generated
+	 */
+	public EClass getIJavaTransient() {
+		return iJavaTransientEClass;
+	}
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion <em>IJava Version</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IJava Version</em>'.
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion
+	 * @generated
+	 */
+	public EClass getIJavaVersion() {
+		return iJavaVersionEClass;
 	}
 
 	/**
@@ -4459,6 +5736,19 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 			return;
 		isCreated = true;
 		// Create classes and their features
+		iJavaEntityEClass = createEClass(IJAVA_ENTITY);
+		iJavaEmbeddableEClass = createEClass(IJAVA_EMBEDDABLE);
+		iJavaMappedSuperclassEClass = createEClass(IJAVA_MAPPED_SUPERCLASS);
+		iJavaBasicEClass = createEClass(IJAVA_BASIC);
+		iJavaEmbeddedEClass = createEClass(IJAVA_EMBEDDED);
+		iJavaEmbeddedIdEClass = createEClass(IJAVA_EMBEDDED_ID);
+		iJavaIdEClass = createEClass(IJAVA_ID);
+		iJavaManyToManyEClass = createEClass(IJAVA_MANY_TO_MANY);
+		iJavaManyToOneEClass = createEClass(IJAVA_MANY_TO_ONE);
+		iJavaOneToManyEClass = createEClass(IJAVA_ONE_TO_MANY);
+		iJavaOneToOneEClass = createEClass(IJAVA_ONE_TO_ONE);
+		iJavaTransientEClass = createEClass(IJAVA_TRANSIENT);
+		iJavaVersionEClass = createEClass(IJAVA_VERSION);
 		javaTypeMappingEClass = createEClass(JAVA_TYPE_MAPPING);
 		javaEntityEClass = createEClass(JAVA_ENTITY);
 		javaMappedSuperclassEClass = createEClass(JAVA_MAPPED_SUPERCLASS);
@@ -4532,43 +5822,69 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		// Create type parameters
 		// Set bounds for type parameters
 		// Add supertypes to classes
+		iJavaEntityEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaTypeMapping());
+		iJavaEntityEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIEntity());
+		iJavaEmbeddableEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaTypeMapping());
+		iJavaEmbeddableEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIEmbeddable());
+		iJavaMappedSuperclassEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaTypeMapping());
+		iJavaMappedSuperclassEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIMappedSuperclass());
+		iJavaBasicEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaAttributeMapping());
+		iJavaBasicEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIBasic());
+		iJavaEmbeddedEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaAttributeMapping());
+		iJavaEmbeddedEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIEmbedded());
+		iJavaEmbeddedIdEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaAttributeMapping());
+		iJavaEmbeddedIdEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIEmbeddedId());
+		iJavaIdEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaAttributeMapping());
+		iJavaIdEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIId());
+		iJavaManyToManyEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaAttributeMapping());
+		iJavaManyToManyEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIManyToMany());
+		iJavaManyToOneEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaAttributeMapping());
+		iJavaManyToOneEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIManyToOne());
+		iJavaOneToManyEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaAttributeMapping());
+		iJavaOneToManyEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIOneToMany());
+		iJavaOneToOneEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaAttributeMapping());
+		iJavaOneToOneEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIOneToOne());
+		iJavaTransientEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaAttributeMapping());
+		iJavaTransientEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getITransient());
+		iJavaVersionEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaAttributeMapping());
+		iJavaVersionEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIVersion());
 		javaTypeMappingEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
 		javaTypeMappingEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaTypeMapping());
 		javaEntityEClass.getESuperTypes().add(this.getJavaTypeMapping());
-		javaEntityEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIEntity());
+		javaEntityEClass.getESuperTypes().add(this.getIJavaEntity());
 		javaMappedSuperclassEClass.getESuperTypes().add(this.getJavaTypeMapping());
-		javaMappedSuperclassEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIMappedSuperclass());
+		javaMappedSuperclassEClass.getESuperTypes().add(this.getIJavaMappedSuperclass());
 		javaEmbeddableEClass.getESuperTypes().add(this.getJavaTypeMapping());
-		javaEmbeddableEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIEmbeddable());
+		javaEmbeddableEClass.getESuperTypes().add(this.getIJavaEmbeddable());
 		javaNullTypeMappingEClass.getESuperTypes().add(this.getJavaTypeMapping());
 		javaAttributeMappingEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
 		javaAttributeMappingEClass.getESuperTypes().add(theJpaJavaPackage.getIJavaAttributeMapping());
 		javaBasicEClass.getESuperTypes().add(this.getJavaAttributeMapping());
-		javaBasicEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIBasic());
+		javaBasicEClass.getESuperTypes().add(this.getIJavaBasic());
 		javaIdEClass.getESuperTypes().add(this.getJavaAttributeMapping());
-		javaIdEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIId());
+		javaIdEClass.getESuperTypes().add(this.getIJavaId());
 		javaTransientEClass.getESuperTypes().add(this.getJavaAttributeMapping());
-		javaTransientEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getITransient());
+		javaTransientEClass.getESuperTypes().add(this.getIJavaTransient());
 		javaVersionEClass.getESuperTypes().add(this.getJavaAttributeMapping());
-		javaVersionEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIVersion());
+		javaVersionEClass.getESuperTypes().add(this.getIJavaVersion());
 		javaEmbeddedIdEClass.getESuperTypes().add(this.getJavaAttributeMapping());
-		javaEmbeddedIdEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIEmbeddedId());
+		javaEmbeddedIdEClass.getESuperTypes().add(this.getIJavaEmbeddedId());
 		javaEmbeddedEClass.getESuperTypes().add(this.getJavaAttributeMapping());
-		javaEmbeddedEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIEmbedded());
+		javaEmbeddedEClass.getESuperTypes().add(this.getIJavaEmbedded());
 		javaRelationshipMappingEClass.getESuperTypes().add(this.getJavaAttributeMapping());
 		javaRelationshipMappingEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIRelationshipMapping());
 		javaSingleRelationshipMappingEClass.getESuperTypes().add(this.getJavaRelationshipMapping());
 		javaSingleRelationshipMappingEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getISingleRelationshipMapping());
 		javaManyToOneEClass.getESuperTypes().add(this.getJavaSingleRelationshipMapping());
-		javaManyToOneEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIManyToOne());
+		javaManyToOneEClass.getESuperTypes().add(this.getIJavaManyToOne());
 		javaOneToOneEClass.getESuperTypes().add(this.getJavaSingleRelationshipMapping());
-		javaOneToOneEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIOneToOne());
+		javaOneToOneEClass.getESuperTypes().add(this.getIJavaOneToOne());
 		javaMultiRelationshipMappingEClass.getESuperTypes().add(this.getJavaRelationshipMapping());
 		javaMultiRelationshipMappingEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIMultiRelationshipMapping());
 		javaOneToManyEClass.getESuperTypes().add(this.getJavaMultiRelationshipMapping());
-		javaOneToManyEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIOneToMany());
+		javaOneToManyEClass.getESuperTypes().add(this.getIJavaOneToMany());
 		javaManyToManyEClass.getESuperTypes().add(this.getJavaMultiRelationshipMapping());
-		javaManyToManyEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getIManyToMany());
+		javaManyToManyEClass.getESuperTypes().add(this.getIJavaManyToMany());
 		javaNullAttributeMappingEClass.getESuperTypes().add(this.getJavaAttributeMapping());
 		abstractJavaTableEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
 		abstractJavaTableEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getITable());
@@ -4616,6 +5932,19 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		javaCascadeEClass.getESuperTypes().add(theJpaJavaPackage.getJavaEObject());
 		javaCascadeEClass.getESuperTypes().add(theJpaCoreMappingsPackage.getICascade());
 		// Initialize classes and features; add operations and parameters
+		initEClass(iJavaEntityEClass, IJavaEntity.class, "IJavaEntity", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(iJavaEmbeddableEClass, IJavaEmbeddable.class, "IJavaEmbeddable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(iJavaMappedSuperclassEClass, IJavaMappedSuperclass.class, "IJavaMappedSuperclass", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(iJavaBasicEClass, IJavaBasic.class, "IJavaBasic", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(iJavaEmbeddedEClass, IJavaEmbedded.class, "IJavaEmbedded", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(iJavaEmbeddedIdEClass, IJavaEmbeddedId.class, "IJavaEmbeddedId", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(iJavaIdEClass, IJavaId.class, "IJavaId", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(iJavaManyToManyEClass, IJavaManyToMany.class, "IJavaManyToMany", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(iJavaManyToOneEClass, IJavaManyToOne.class, "IJavaManyToOne", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(iJavaOneToManyEClass, IJavaOneToMany.class, "IJavaOneToMany", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(iJavaOneToOneEClass, IJavaOneToOne.class, "IJavaOneToOne", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(iJavaTransientEClass, IJavaTransient.class, "IJavaTransient", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(iJavaVersionEClass, IJavaVersion.class, "IJavaVersion", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaTypeMappingEClass, JavaTypeMapping.class, "JavaTypeMapping", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaEntityEClass, JavaEntity.class, "JavaEntity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(javaMappedSuperclassEClass, JavaMappedSuperclass.class, "JavaMappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -4676,6 +6005,136 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 */
 	public interface Literals
 	{
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity <em>IJava Entity</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaEntity()
+		 * @generated
+		 */
+		public static final EClass IJAVA_ENTITY = eINSTANCE.getIJavaEntity();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable <em>IJava Embeddable</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaEmbeddable()
+		 * @generated
+		 */
+		public static final EClass IJAVA_EMBEDDABLE = eINSTANCE.getIJavaEmbeddable();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaMappedSuperclass <em>IJava Mapped Superclass</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaMappedSuperclass
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaMappedSuperclass()
+		 * @generated
+		 */
+		public static final EClass IJAVA_MAPPED_SUPERCLASS = eINSTANCE.getIJavaMappedSuperclass();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic <em>IJava Basic</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaBasic()
+		 * @generated
+		 */
+		public static final EClass IJAVA_BASIC = eINSTANCE.getIJavaBasic();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded <em>IJava Embedded</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaEmbedded()
+		 * @generated
+		 */
+		public static final EClass IJAVA_EMBEDDED = eINSTANCE.getIJavaEmbedded();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddedId <em>IJava Embedded Id</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddedId
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaEmbeddedId()
+		 * @generated
+		 */
+		public static final EClass IJAVA_EMBEDDED_ID = eINSTANCE.getIJavaEmbeddedId();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaId <em>IJava Id</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaId
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaId()
+		 * @generated
+		 */
+		public static final EClass IJAVA_ID = eINSTANCE.getIJavaId();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToMany <em>IJava Many To Many</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToMany
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaManyToMany()
+		 * @generated
+		 */
+		public static final EClass IJAVA_MANY_TO_MANY = eINSTANCE.getIJavaManyToMany();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToOne <em>IJava Many To One</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToOne
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaManyToOne()
+		 * @generated
+		 */
+		public static final EClass IJAVA_MANY_TO_ONE = eINSTANCE.getIJavaManyToOne();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToMany <em>IJava One To Many</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToMany
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaOneToMany()
+		 * @generated
+		 */
+		public static final EClass IJAVA_ONE_TO_MANY = eINSTANCE.getIJavaOneToMany();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToOne <em>IJava One To One</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToOne
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaOneToOne()
+		 * @generated
+		 */
+		public static final EClass IJAVA_ONE_TO_ONE = eINSTANCE.getIJavaOneToOne();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient <em>IJava Transient</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaTransient()
+		 * @generated
+		 */
+		public static final EClass IJAVA_TRANSIENT = eINSTANCE.getIJavaTransient();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion <em>IJava Version</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion
+		 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIJavaVersion()
+		 * @generated
+		 */
+		public static final EClass IJAVA_VERSION = eINSTANCE.getIJavaVersion();
+
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaEntity <em>Java Entity</em>}' class.
 		 * <!-- begin-user-doc -->
