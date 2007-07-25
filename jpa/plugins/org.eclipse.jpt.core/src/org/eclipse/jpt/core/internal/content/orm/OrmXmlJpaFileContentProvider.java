@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.content.orm;
 
 import java.io.IOException;
 import java.util.Collections;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -19,6 +20,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
+import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
@@ -36,29 +38,28 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 		return INSTANCE;
 	}
 	
-	private IFile resourceFile;
-	
 	
 	/**
 	 * Restrict access
 	 */
 	private OrmXmlJpaFileContentProvider() {
-		
+		super();
 	}
 
-	public IJpaRootContentNode buildRootContent(IFile resourceFile) {
+	public IJpaRootContentNode buildRootContent(IJpaFile jpaFile) {
+		IFile resourceFile = jpaFile.getFile();
 		OrmXmlResourceFactory.register();
-		this.resourceFile = resourceFile;
-		URI fileURI = URI.createPlatformResourceURI(resourceFile.getFullPath().toString());
+		URI fileURI = URI.createPlatformResourceURI(resourceFile.getFullPath().toString(), true);
 		OrmXmlResource resource = (OrmXmlResource) getResourceSet(resourceFile).getResource(fileURI, true);
 		XmlRootContentNode root = OrmFactory.eINSTANCE.createXmlRootContentNode();
+		jpaFile.setContent(root);
 		root.setEntityMappings(resource.getXmlFileContent());
-		resource.eAdapters().add(buildRootNodeListener(root));
+		resource.eAdapters().add(buildRootNodeListener(resourceFile, root));
 		return root;
 	}
 	
-	private Adapter buildRootNodeListener(XmlRootContentNode root) {
-		return new RootAdapter(root);
+	private Adapter buildRootNodeListener(IFile resourceFile, XmlRootContentNode root) {
+		return new RootAdapter(resourceFile, root);
 	}
 
 	protected ResourceSet getResourceSet(IFile file) {
@@ -72,23 +73,26 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 	
 	private class RootAdapter extends AdapterImpl 
 	{
-		XmlRootContentNode root;
+		final IFile resourceFile;
+		final XmlRootContentNode rootContentNode;
 		
-		private RootAdapter(XmlRootContentNode rootContentNode) {
+		RootAdapter(IFile resourceFile, XmlRootContentNode rootContentNode) {
 			super();
-			root = rootContentNode;
+			this.resourceFile = resourceFile;
+			this.rootContentNode = rootContentNode;
 		}
+		@Override
 		public void notifyChanged(Notification notification) {
 			int featureId = notification.getFeatureID(Resource.class);
 			if (featureId == Resource.RESOURCE__CONTENTS) {
 				if (notification.getEventType() == Notification.ADD
 						|| notification.getEventType() == Notification.REMOVE) {
 					OrmXmlResource resource = (OrmXmlResource) notification.getNotifier();
-					root.setEntityMappings(resource.getXmlFileContent());
+					this.rootContentNode.setEntityMappings(resource.getXmlFileContent());
 				}
 			}
 			else if (featureId == Resource.RESOURCE__IS_LOADED) {
-				if (resourceFile.exists()) {
+				if (this.resourceFile.exists()) {
 					// dumb translator is unloading my resource, reload it
 					if (notification.getNewBooleanValue() == false) {
 						OrmXmlResource resource = (OrmXmlResource) notification.getNotifier();

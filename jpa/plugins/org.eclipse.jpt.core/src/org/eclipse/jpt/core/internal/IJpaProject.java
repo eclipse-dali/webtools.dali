@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -18,6 +19,8 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.utility.internal.CommandExecutor;
+import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -134,4 +137,22 @@ public interface IJpaProject extends IJpaEObject
 	Iterator<IMessage> validationMessages();
 
 	ConnectionProfile connectionProfile();
+
+	/**
+	 * Return a thread-specific implementation of the CommandExecutor
+	 * interface that will be used to execute a command to modify a shared
+	 * document.
+	 */
+	CommandExecutor getThreadLocalModifySharedDocumentCommandExecutor();
+
+	/**
+	 * Set a thread-specific implementation of the CommandExecutor
+	 * interface that will be used to execute a command to modify a shared
+	 * document. This allows background clients to modify documents that are
+	 * already present in the UI.
+	 */
+	void setThreadLocalModifySharedDocumentCommandExecutor(CommandExecutor commandExecutor);
+
+	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();
+
 }

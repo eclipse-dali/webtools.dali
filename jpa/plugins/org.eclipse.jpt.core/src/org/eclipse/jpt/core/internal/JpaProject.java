@@ -1,18 +1,20 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -23,7 +25,9 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
@@ -46,6 +50,8 @@ import org.eclipse.jpt.core.internal.facet.JpaFacetUtils;
 import org.eclipse.jpt.core.internal.platform.IContext;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.JptDbPlugin;
+import org.eclipse.jpt.utility.internal.CommandExecutor;
+import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -158,13 +164,18 @@ public class JpaProject extends JpaEObject implements IJpaProject
 
 	private IJobChangeListener resynchJobListener;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	protected JpaProject() {
+	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
+
+	private ThreadLocal<CommandExecutor> threadLocalModifySharedDocumentCommandExecutor = new ThreadLocal<CommandExecutor>();
+
+
+	JpaProject() {
 		super();
+	}
+
+	protected JpaProject(IProject project) {
+		this();
+		this.project = project;
 		this.resynchJob = buildResynchJob();
 		this.resynchJobListener = buildResynchJobListener();
 		Job.getJobManager().addJobChangeListener(this.resynchJobListener);
@@ -211,10 +222,6 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 */
 	public IProject getProject() {
 		return project;
-	}
-
-	void setProject(IProject theProject) {
-		project = theProject;
 	}
 
 	public IJavaProject getJavaProject() {
@@ -509,16 +516,11 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * @see IJpaProject#getJpaFile(IFile)
 	 */
 	public synchronized IJpaFile getJpaFile(IFile file) {
-		IJpaFile jpaFile = getJpaFileInternal(file);
-		if (jpaFile != null) {
+		IJpaFile jpaFile = this.getJpaFileInternal(file);
+		if (this.filled) {
 			return jpaFile;
 		}
-		else if (!filled) {
-			return createJpaFile(file);
-		}
-		else {
-			return null;
-		}
+		return (jpaFile != null) ? jpaFile : this.createJpaFile(file);
 	}
 
 	synchronized IJpaFile getJpaFileInternal(IFile file) {
@@ -622,16 +624,42 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		};
 	}
 
-	synchronized IJpaFile createJpaFile(IFile file) {
-		if (!JavaCore.create(getProject()).isOnClasspath(file)) {
-			return null;
-		}
-		IJpaFile jpaFile = JpaFileContentRegistry.getFile(this, file);
 		// PWFTODO 
 		// Return a NullPersistenceFile if no content found?
-		if (jpaFile != null) {
-			getFiles().add(jpaFile);
-			return jpaFile;
+	synchronized IJpaFile createJpaFile(IFile file) {
+		if (!JavaCore.create(this.project).isOnClasspath(file)) {
+			return null;
+		}
+
+		IContentType contentType = this.contentType(file);
+		if (contentType == null) {
+			return null;
+		}
+
+		String contentTypeId = contentType.getId();
+		IJpaFileContentProvider provider = this.getPlatform().fileContentProvider(contentTypeId);
+		if (provider == null) {
+			return null;
+		}
+
+		JpaFile jpaFile = JpaCoreFactory.eINSTANCE.createJpaFile();
+		this.getFiles().add(jpaFile);
+		jpaFile.setFile(file);
+		jpaFile.setContentId(contentTypeId);
+		provider.buildRootContent(jpaFile);
+		return jpaFile;
+	}
+
+	//attempting to get the contentType based on the file contents.
+	//have to check the file contents instead of just the file name
+	//because for xml we base it on the rootElement name
+	private IContentType contentType(IFile file) {
+		try {
+			return Platform.getContentTypeManager().findContentTypeFor(file.getContents(), file.getName());
+		} catch (IOException ex) {
+			JptCorePlugin.log(ex);
+		} catch (CoreException ex) {
+			JptCorePlugin.log(ex);
 		}
 		return null;
 	}
@@ -775,9 +803,6 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		return super.eIsSet(featureID);
 	}
 
-	/**
-	 * @generated NOT
-	 */
 	@Override
 	public String toString() {
 		StringBuffer result = new StringBuffer(super.toString());
@@ -785,8 +810,35 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		return result.toString();
 	}
 
+	@Override
 	public ConnectionProfile connectionProfile() {
 		String profileName = getDataSource().getConnectionProfileName();
 		return JptDbPlugin.getDefault().getConnectionProfileRepository().profileNamed(profileName);
+	}
+
+	public CommandExecutor getThreadLocalModifySharedDocumentCommandExecutor() {
+		CommandExecutor commandExecutor = this.threadLocalModifySharedDocumentCommandExecutor.get();
+		return (commandExecutor != null) ? commandExecutor : CommandExecutor.Default.instance();
+	}
+
+	public void setThreadLocalModifySharedDocumentCommandExecutor(CommandExecutor commandExecutor) {
+		this.threadLocalModifySharedDocumentCommandExecutor.set(commandExecutor);
+	}
+
+	public CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
+		if (this.modifySharedDocumentCommandExecutorProvider == null) {
+			this.modifySharedDocumentCommandExecutorProvider = new ModifySharedDocumentCommandExecutorProvider();
+		}
+		return this.modifySharedDocumentCommandExecutorProvider;
+	}
+
+	// ********** member class **********
+	private class ModifySharedDocumentCommandExecutorProvider implements CommandExecutorProvider {
+		ModifySharedDocumentCommandExecutorProvider() {
+			super();
+		}
+		public CommandExecutor commandExecutor() {
+			return JpaProject.this.getThreadLocalModifySharedDocumentCommandExecutor();
+		}
 	}
 }

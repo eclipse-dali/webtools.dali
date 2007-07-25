@@ -36,8 +36,16 @@ import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 
 public class JpaModelManager
 {
-	private static JpaModelManager INSTANCE;
+	final JpaModel model;
 	
+	private final IResourceChangeListener resourceChangeListener;
+	
+	private final IElementChangedListener elementChangeListener;
+	
+	private final IPropertyChangeListener preferencesListener;
+	
+
+	private static JpaModelManager INSTANCE;
 	
 	/**
 	 * Returns the singleton JpaModelManager
@@ -50,49 +58,28 @@ public class JpaModelManager
 	}
 	
 	
-	/**
-	 * Unique handle onto the JpaModel
-	 */
-	JpaModel model;
-	
-	/**
-	 * Processes resource changes
-	 */
-	private IResourceChangeListener resourceChangeListener;
-	
-	/**
-	 * Process element changes
-	 */
-	private IElementChangedListener elementChangeListener;
-	
-	/**
-	 * Process changes to preferences
-	 */
-	private IPropertyChangeListener preferencesListener;
-	
-	
 	private JpaModelManager() {
 		super();
-		model = JpaCoreFactory.eINSTANCE.createJpaModel();
-		resourceChangeListener = new ResourceChangeListener();
-		elementChangeListener = new ElementChangeListener();
-		preferencesListener = new PreferencesListener();
+		this.model = JpaCoreFactory.eINSTANCE.createJpaModel();
+		this.resourceChangeListener = new ResourceChangeListener();
+		this.elementChangeListener = new ElementChangeListener();
+		this.preferencesListener = new PreferencesListener();
 	}
 	
-	public void startup() {
+	void start() {
 		try {
-			buildWorkspace();
+			this.buildWorkspace();
 			ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
 			JavaCore.addElementChangedListener(elementChangeListener);
 			JptCorePlugin.getPlugin().getPluginPreferences().addPropertyChangeListener(preferencesListener);
 		}
-		catch (RuntimeException re) {
-			JptCorePlugin.log(re);
-			shutdown();
+		catch (RuntimeException ex) {
+			JptCorePlugin.log(ex);
+			this.stop();
 		}
 	}
 	
-	public void shutdown() {
+	void stop() {
 		JptCorePlugin.getPlugin().getPluginPreferences().removePropertyChangeListener(preferencesListener);
 		JavaCore.removeElementChangedListener(elementChangeListener);
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
@@ -145,7 +132,7 @@ public class JpaModelManager
 			return null;
 		}
 		
-		return model.getJpaProject(project);
+		return this.model.getJpaProject(project);
 	}
 	
 	/**
@@ -188,8 +175,7 @@ public class JpaModelManager
 	public synchronized IJpaProject createJpaProject(IProject project) 
 			throws CoreException {
 		if (FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID)) {
-			JpaProject jpaProject = JpaCoreFactory.eINSTANCE.createJpaProject();
-			jpaProject.setProject(project);
+			JpaProject jpaProject = JpaCoreFactory.eINSTANCE.createJpaProject(project);
 			model.getProjects().add(jpaProject);
 			return jpaProject;
 		}
@@ -230,7 +216,7 @@ public class JpaModelManager
 		}
 		
 		IProject project = file.getProject();
-		JpaProject jpaProject = (JpaProject) getJpaProject(project);
+		JpaProject jpaProject = (JpaProject) this.getJpaProject(project);
 		if (jpaProject == null) {
 			return null;
 		}
@@ -495,42 +481,43 @@ public class JpaModelManager
 	}
 	
 	
+	// ********** element change listener **********	
+
 	private static class ElementChangeListener 
 		implements IElementChangedListener
 	{
-		ThreadLocal<ElementChangeProcessor> elementChangeProcessors = new ThreadLocal<ElementChangeProcessor>();
+		ThreadLocal<ElementChangeProcessor> elementChangeProcessor = new ThreadLocal<ElementChangeProcessor>();
 		
 		ElementChangeListener() {
 			super();
 		}
 		
 		public void elementChanged(ElementChangedEvent event) {
-			getElementChangeProcessor().elementChanged(event);
+			this.getElementChangeProcessor().elementChanged(event);
 		}
 		
 		public ElementChangeProcessor getElementChangeProcessor() {
-			ElementChangeProcessor processor = this.elementChangeProcessors.get();
+			ElementChangeProcessor processor = this.elementChangeProcessor.get();
 			if (processor == null) {
 				processor = new ElementChangeProcessor();
-				this.elementChangeProcessors.set(processor);
+				this.elementChangeProcessor.set(processor);
 			}
 			return processor;
 		}
-	}
-	
-	
-	private static class ElementChangeProcessor
-	{
-		ElementChangeProcessor() {
-			super();
-		}
-		
-		public void elementChanged(ElementChangedEvent event) {
-			JpaModelManager.instance().model.handleEvent(event);
+
+		private static class ElementChangeProcessor {
+			ElementChangeProcessor() {
+				super();
+			}
+			public void elementChanged(ElementChangedEvent event) {
+				JpaModelManager.instance().model.handleEvent(event);
+			}
 		}
 	}
 	
 	
+	// ********** preferences listener **********	
+
 	private static class PreferencesListener
 		implements IPropertyChangeListener
 	{
@@ -542,10 +529,11 @@ public class JpaModelManager
 				try {
 					JavaCore.setClasspathVariable("DEFAULT_JPA_LIB", new Path((String) event.getNewValue()), null);
 				}
-				catch (JavaModelException jme) {
-					JptCorePlugin.log(jme);
+				catch (JavaModelException ex) {
+					JptCorePlugin.log(ex);
 				}
 			}
 		}
 	}
+
 }

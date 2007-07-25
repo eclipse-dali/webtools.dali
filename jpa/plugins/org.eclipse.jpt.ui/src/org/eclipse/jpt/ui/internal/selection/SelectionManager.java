@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2007 Oracle. All rights reserved. This
- *  program and the accompanying materials are made available under the terms of
- *  the Eclipse Public License v1.0 which accompanies this distribution, and is
- *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: Oracle. - initial API and implementation
- *  
- *******************************************************************************/
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.selection;
 
 import java.util.Collections;
@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPageListener;
@@ -32,11 +33,11 @@ public class SelectionManager
 	implements ISelectionManager
 {
 	/* The set of pages for which this object is managing selections */
-	private Set pages;
+	private Set<IWorkbenchPage> pages;
 	
 	/* The map of <code>ISelectionParticipant</code>s (keyed by part) this object
 	   is using to manage selections */
-	private Map selectionParticipants;
+	private Map<IWorkbenchPart, ISelectionParticipant> selectionParticipants;
 	
 	private IPageListener pageListener;
 	
@@ -50,8 +51,8 @@ public class SelectionManager
 	
 	public SelectionManager() {
 		super();
-		pages = Collections.synchronizedSet(new HashSet());
-		selectionParticipants = Collections.synchronizedMap(new HashMap());
+		pages = Collections.synchronizedSet(new HashSet<IWorkbenchPage>());
+		selectionParticipants = Collections.synchronizedMap(new HashMap<IWorkbenchPart, ISelectionParticipant>());
 		pageListener = new PageListener();
 		partListener = new PartListener();
 		currentSelection = Selection.NULL_SELECTION;
@@ -63,7 +64,7 @@ public class SelectionManager
 		initPage(aWindow.getActivePage());
 	}
 	
-	private void initPage(IWorkbenchPage page) {
+	void initPage(IWorkbenchPage page) {
 		if ((page != null) && (! pages.contains(page))) {
 			page.addPartListener(partListener);
 			pages.add(page);
@@ -73,14 +74,14 @@ public class SelectionManager
 		}
 	}
 	
-	private void disposePage(IWorkbenchPage page) {
+	void disposePage(IWorkbenchPage page) {
 		if ((page != null) && (pages.contains(page))) {
 			page.removePartListener(partListener);
 			pages.remove(page);
 		}
 	}
 	
-	private void initPart(IWorkbenchPart part) {
+	void initPart(IWorkbenchPart part) {
 		if (part != null) {
 			if (selectionParticipants.get(part) == null) {
 				ISelectionParticipant selectionParticipant = 
@@ -92,21 +93,21 @@ public class SelectionManager
 		}
 	}
 	
-	private void selectPart(IWorkbenchPart part) {
+	void selectPart(IWorkbenchPart part) {
 		ISelectionParticipant selectionParticipant = getSelectionParticipant(part);
 		if (selectionParticipant != null) {
 			select(selectionParticipant.getSelection());
 		}
 	}
 	
-	private void hidePart(IWorkbenchPart part) {
+	void hidePart(IWorkbenchPart part) {
 		ISelectionParticipant selectionParticipant = getSelectionParticipant(part);
 		if ((selectionParticipant != null) && (selectionParticipant.disposeOnHide())) {
 			closePart(part);
 		}
 	}
 	
-	private void closePart(IWorkbenchPart part) {
+	void closePart(IWorkbenchPart part) {
 		ISelectionParticipant selectionParticipant = getSelectionParticipant(part);
 		if (selectionParticipant != null) {
 			disposePart(part);
@@ -114,15 +115,13 @@ public class SelectionManager
 		}
 	}
 	
-	private void disposePart(IWorkbenchPart part) {
+	void disposePart(IWorkbenchPart part) {
 		if ((part != null) && (selectionParticipants.containsKey(part))) {
-			ISelectionParticipant selectionParticipant = 
-				(ISelectionParticipant) selectionParticipants.remove(part);
-			selectionParticipant.dispose();
+			selectionParticipants.remove(part).dispose();
 		}
 	}
 	
-	private void checkForNoEditors() {
+	void checkForNoEditors() {
 		IWorkbenchPage activePage = window.getActivePage();
 		if ((activePage == null)
 				|| (activePage.getActiveEditor() == null)) {
@@ -174,13 +173,13 @@ public class SelectionManager
 	}
 	
 	private void fireSelectionChange(SelectionEvent event) {
-		for (Iterator stream = selectionParticipants.values().iterator(); stream.hasNext(); ) {
-			((ISelectionParticipant) stream.next()).selectionChanged(event);
+		for (ISelectionParticipant sp : selectionParticipants.values()) {
+			sp.selectionChanged(event);
 		}
 	}
 	
 	private ISelectionParticipant getSelectionParticipant(IWorkbenchPart part) {
-		return (ISelectionParticipant) selectionParticipants.get(part);
+		return selectionParticipants.get(part);
 	}
 		
 	public Selection getCurrentSelection() {
@@ -191,61 +190,77 @@ public class SelectionManager
 		window.removePageListener(pageListener);
 		selectionParticipants.clear();
 		
-		for (Iterator stream = new CloneIterator(pages); stream.hasNext(); ) {
-			disposePage((IWorkbenchPage) stream.next());
+		for (Iterator<IWorkbenchPage> stream = new CloneIterator<IWorkbenchPage>(this.pages); stream.hasNext(); ) {
+			this.disposePage(stream.next());
 		}
-		
-		for (Iterator stream = new CloneIterator(selectionParticipants.keySet()); stream.hasNext(); ) {
-			disposePart((IWorkbenchPart) stream.next());
+
+		for (Iterator<IWorkbenchPart> stream = new CloneIterator<IWorkbenchPart>(selectionParticipants.keySet()); stream.hasNext(); ) {
+			this.disposePart(stream.next());
 		}
 	}
 	
 	
 	private class PageListener implements IPageListener
 	{
-		public void pageActivated(IWorkbenchPage page) {}
+		public void pageActivated(IWorkbenchPage page) {
+			// nop
+		}
+		
+		PageListener() {
+			super();
+		}
 		
 		public void pageClosed(IWorkbenchPage page) {
-			disposePage(page);
+			SelectionManager.this.disposePage(page);
 		}
 		
 		public void pageOpened(IWorkbenchPage page) {
-			initPage(page);
+			SelectionManager.this.initPage(page);
 		}
 	}
 	
 	
 	private class PartListener implements IPartListener2
 	{
+		PartListener() {
+			super();
+		}
+		
 		public void partActivated(IWorkbenchPartReference partRef) {
 			IWorkbenchPart part = partRef.getPart(false);
 			if (part != null) {
-				initPart(part);
-				selectPart(part);
+				SelectionManager.this.initPart(part);
+				SelectionManager.this.selectPart(part);
 			}
 		}
 		
-		public void partBroughtToTop(IWorkbenchPartReference partRef) {}
+		public void partBroughtToTop(IWorkbenchPartReference partRef) {
+			// nop
+		}
 		
 		public void partClosed(IWorkbenchPartReference partRef) {
 			IWorkbenchPart part = partRef.getPart(false);
 			if (part != null) {
-				closePart(part);
-				disposePart(part);
-				checkForNoEditors();
+				SelectionManager.this.closePart(part);
+				SelectionManager.this.disposePart(part);
+				SelectionManager.this.checkForNoEditors();
 			}
 		}
 		
-		public void partDeactivated(IWorkbenchPartReference partRef) {}
+		public void partDeactivated(IWorkbenchPartReference partRef) {
+			// nop
+		}
 		
 		public void partHidden(IWorkbenchPartReference partRef) {
 			IWorkbenchPart part = partRef.getPart(false);
 			if (part != null) {
-				hidePart(part);
+				SelectionManager.this.hidePart(part);
 			}
 		}
 		
-		public void partInputChanged(IWorkbenchPartReference partRef) {}
+		public void partInputChanged(IWorkbenchPartReference partRef) {
+			// nop
+		}
 		
 		public void partOpened(IWorkbenchPartReference partRef) {
 			IWorkbenchPart part = partRef.getPart(false);

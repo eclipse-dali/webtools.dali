@@ -10,10 +10,12 @@
 package org.eclipse.jpt.core.internal.jdtutility;
 
 import java.beans.Introspector;
+
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
 /**
  * Adapt and extend a jdt method.
@@ -30,8 +32,8 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
  */
 public class MethodAttribute extends Attribute {
 
-	public MethodAttribute(IMethod getMethod) {
-		super(getMethod);
+	public MethodAttribute(IMethod getMethod, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+		super(getMethod, modifySharedDocumentCommandExecutorProvider);
 	}
 
 	@Override

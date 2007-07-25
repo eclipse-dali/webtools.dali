@@ -1,15 +1,14 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import org.eclipse.core.resources.IFile;
 
 /**
  * A JpaProject corresponds to an IProject and containts of JpaFiles.
@@ -28,7 +27,7 @@ public interface IJpaFileContentProvider
 	 * The file passed in will have a contentType that matches
 	 * the one returned by the contentType() method.
 	 */
-	IJpaRootContentNode buildRootContent(IFile file);
+	IJpaRootContentNode buildRootContent(IJpaFile jpaFile);
 	
 	/**
 	 * Return the contentType of the file to be included in the JpaProject.

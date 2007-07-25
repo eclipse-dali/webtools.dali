@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -65,6 +66,7 @@ import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
+import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -598,8 +600,15 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		return result.toString();
 	}
 
+	/**
+	 * delegate to the type's project (there is one provider per project)
+	 */
+	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
+		return this.getJpaProject().modifySharedDocumentCommandExecutorProvider();
+	}
+
 	public void setJdtType(IType iType, CompilationUnit astRoot) {
-		this.type = new Type(iType);
+		this.type = new Type(iType, this.modifySharedDocumentCommandExecutorProvider());
 		this.setAccess(this.javaAccessType(astRoot));
 		this.createAndSetPersistentTypeMappingFromJava(this.javaTypeMappingKey(astRoot));
 	}
@@ -613,10 +622,10 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	public JavaPersistentAttribute createJavaPersistentAttribute(IMember member) {
 		Attribute attribute = null;
 		if (member instanceof IField) {
-			attribute = new FieldAttribute((IField) member);
+			attribute = new FieldAttribute((IField) member, this.modifySharedDocumentCommandExecutorProvider());
 		}
 		else if (member instanceof IMethod) {
-			attribute = new MethodAttribute((IMethod) member);
+			attribute = new MethodAttribute((IMethod) member, this.modifySharedDocumentCommandExecutorProvider());
 		}
 		else {
 			throw new IllegalArgumentException();
@@ -804,7 +813,6 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		return null;
 	}
 
-	//TODO CloneIterator
 	public Iterator<JavaPersistentAttribute> attributes() {
 		return new CloneIterator<JavaPersistentAttribute>(getAttributes());
 	}
@@ -875,7 +883,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		boolean hasPersistableProperties = false;
 		for (IField field : AttributeAnnotationTools.persistableFields(jdtType)) {
 			hasPersistableFields = true;
-			FieldAttribute fa = new FieldAttribute(field);
+			FieldAttribute fa = new FieldAttribute(field, null);  // a bit hacky...
 			if (fa.containsAnyAnnotation(this.attributeMappingAnnotationAdapters, astRoot)) {
 				// any field is annotated => FIELD
 				return AccessType.FIELD;
@@ -883,7 +891,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		}
 		for (IMethod method : AttributeAnnotationTools.persistablePropertyGetters(jdtType)) {
 			hasPersistableProperties = true;
-			MethodAttribute ma = new MethodAttribute(method);
+			MethodAttribute ma = new MethodAttribute(method, null);  // a bit hacky...
 			if (ma.containsAnyAnnotation(this.attributeMappingAnnotationAdapters, astRoot)) {
 				// none of the fields are annotated and a getter is annotated => PROPERTY
 				return AccessType.PROPERTY;

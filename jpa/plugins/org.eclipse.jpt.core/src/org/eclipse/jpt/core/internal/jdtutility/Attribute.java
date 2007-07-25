@@ -10,14 +10,15 @@
 package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.IMember;
+import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
 /**
  * Combine behavior common to FieldAttribute and MethodAttribute.
  */
 public abstract class Attribute extends Member {
 
-	Attribute(IMember jdtMember) {
-		super(jdtMember);
+	Attribute(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+		super(jdtMember, modifySharedDocumentCommandExecutorProvider);
 	}
 
 	public boolean isField() {

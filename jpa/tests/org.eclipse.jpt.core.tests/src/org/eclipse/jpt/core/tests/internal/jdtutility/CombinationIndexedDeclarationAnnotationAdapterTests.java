@@ -444,7 +444,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.createTestType("@annot.JoinColumn(text=\"blah\",num=42)");
 		String expected1 = "@JoinColumns({";
 		String expected2 = "@JoinColumn(text=\"blah\", num=42),null,";
-		String expected3 = "@JoinColumn})";
+		String expected3 = "@JoinColumn" + CR + "    })";
 		this.assertSourceDoesNotContain(expected1);
 		this.assertSourceDoesNotContain(expected2);
 		this.assertSourceDoesNotContain(expected3);

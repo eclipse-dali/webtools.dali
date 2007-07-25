@@ -27,19 +27,19 @@ public class JptCorePlugin extends Plugin
 	 * The plug-in identifier of the persistence support
 	 * (value <code>"org.eclipse.jpt.core"</code>).
 	 */
-	public final static String PLUGIN_ID = "org.eclipse.jpt.core";  //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.jpt.core";  //$NON-NLS-1$
 	
 	/**
 	 * The identifier for the JPA facet
 	 * (value <code>"jpt.jpa"</code>).
 	 */
-	public final static String FACET_ID = "jpt.jpa";  //$NON-NLS-1$
+	public static final String FACET_ID = "jpt.jpa";  //$NON-NLS-1$
 	
 	/**
 	 * The identifier for the JPA validation marker
 	 * (value <code>"org.eclipse.jpt.core.jpaProblemMarker"</code>).
 	 */
-	public final static String VALIDATION_MARKER_ID = PLUGIN_ID + ".jpaProblemMarker";
+	public static final String VALIDATION_MARKER_ID = PLUGIN_ID + ".jpaProblemMarker";
 	
 	/**
 	 * Value of the content-type for orm.xml mappings files. Use this value to retrieve 
@@ -53,6 +53,13 @@ public class JptCorePlugin extends Plugin
 	public static final String PERSISTENCE_XML_CONTENT_TYPE = PLUGIN_ID + ".content.persistence"; //$NON-NLS-1$
 
 	public static final String JAVA_CONTENT_TYPE = JavaCore.JAVA_SOURCE_CONTENT_TYPE;
+
+	/**
+	 * Return the current workspace's model manager.
+	 */
+	private static JpaModelManager modelManager() {
+		return JpaModelManager.instance();
+	}
 	
 	/**
 	 * Returns the singular IJpaModel corresponding to the current workspace.
@@ -60,7 +67,7 @@ public class JptCorePlugin extends Plugin
 	 * @return the singular IJpaModel corresponding to the current workspace.
 	 */
 	public static IJpaModel getJpaModel() {
-		return JpaModelManager.instance().getJpaModel();
+		return modelManager().getJpaModel();
 	}
 	
 	/**
@@ -74,7 +81,7 @@ public class JptCorePlugin extends Plugin
 	 * IJpaProject
 	 */
 	public static IJpaProject getJpaProject(IProject project) {
-		return JpaModelManager.instance().getJpaProject(project);
+		return modelManager().getJpaProject(project);
 	}
 	
 	/**
@@ -88,7 +95,7 @@ public class JptCorePlugin extends Plugin
 	 * IJpaFile
 	 */
 	public static IJpaFile getJpaFile(IFile file) {
-		return JpaModelManager.instance().getJpaFile(file);
+		return modelManager().getJpaFile(file);
 	}
 	
 	/**
@@ -109,10 +116,15 @@ public class JptCorePlugin extends Plugin
 	public static void log(Throwable throwable) {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, throwable.getLocalizedMessage(), throwable));
 	}
-	
-	
+
+
+	// ********** plug-in implementation **********
+
 	public JptCorePlugin() {
 		super();
+		if (INSTANCE != null) {
+			throw new IllegalStateException();
+		}
 		INSTANCE = this;
 	}
 	
@@ -120,7 +132,7 @@ public class JptCorePlugin extends Plugin
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		JpaModelManager.instance().startup();
+		modelManager().start();
 		OrmInit.init();
 		PersistenceInit.init();
 	}
@@ -128,7 +140,7 @@ public class JptCorePlugin extends Plugin
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		try {
-			JpaModelManager.instance().shutdown();
+			modelManager().stop();
 		}
 		finally {
 			super.stop(context);

@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -13,10 +13,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.IJpaRootContentNode;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
@@ -128,7 +131,16 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		}
 		return this.contentProviders;
 	}
-	
+
+	public IJpaFileContentProvider fileContentProvider(String contentTypeId) {
+		for (IJpaFileContentProvider provider : this.jpaFileContentProviders()) {
+			if (provider.contentType().equals(contentTypeId)) {
+				return provider;
+			}
+		}
+		return null;
+	}
+
 	public IContext buildProjectContext() {
 		this.context = new BaseJpaProjectContext(getProject());
 		return this.context;

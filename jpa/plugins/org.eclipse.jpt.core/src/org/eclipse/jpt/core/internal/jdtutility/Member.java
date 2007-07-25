@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
+import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.ISourceRange;
@@ -27,7 +28,11 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.SimpleTextRange;
+import org.eclipse.jpt.utility.internal.Command;
+import org.eclipse.jpt.utility.internal.CommandExecutor;
+import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
 
 /**
@@ -40,14 +45,17 @@ public abstract class Member {
 	/** this will be null for a top-level type */
 	private final Type declaringType;
 
+	private final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
+
 
 	// ********** constructor **********
 
-	Member(IMember jdtMember) {
+	Member(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
 		super();
 		this.jdtMember = jdtMember;
 		IType jdtDeclaringType = jdtMember.getDeclaringType();
-		this.declaringType = (jdtDeclaringType == null) ? null : new Type(jdtDeclaringType);
+		this.declaringType = (jdtDeclaringType == null) ? null : new Type(jdtDeclaringType, modifySharedDocumentCommandExecutorProvider);
+		this.modifySharedDocumentCommandExecutorProvider = modifySharedDocumentCommandExecutorProvider;
 	}
 
 
@@ -374,12 +382,12 @@ public abstract class Member {
 			compilationUnit.becomeWorkingCopy(null);
 		}
 
-		ITextFileBuffer buffer = FileBuffers.getTextFileBufferManager().getTextFileBuffer(compilationUnit.getResource().getFullPath());
-		boolean textEditorPresent = (buffer != null);
-		IDocument doc = textEditorPresent ?
-			buffer.getDocument()
-		:
-			new Document(compilationUnit.getBuffer().getContents());
+		ITextFileBuffer buffer = FileBuffers.getTextFileBufferManager().getTextFileBuffer(compilationUnit.getResource().getFullPath(), LocationKind.NORMALIZE);
+		boolean sharedDocument = (buffer != null);  // documents are typically shared when they are already open in an editor
+		IDocument doc = sharedDocument ?
+				buffer.getDocument()
+			:
+				new Document(compilationUnit.getBuffer().getContents());
 
 		CompilationUnit astRoot = this.astRoot();
 		astRoot.recordModifications();
@@ -387,14 +395,34 @@ public abstract class Member {
 		editor.edit(this.modifiedDeclaration(astRoot));
 
 		TextEdit edits = astRoot.rewrite(doc, compilationUnit.getJavaProject().getOptions(true));
-		AnnotationEditFormatter formatter = new AnnotationEditFormatter(doc);
-		formatter.apply(edits);
+		if (sharedDocument) {
+			this.modifySharedDocumentCommandExecutor().execute(new ModifySharedDocumentCommand(edits, doc));
+		} else {
+			this.applyEdits(edits, doc);
+		}
 
-		if ( ! textEditorPresent) {
+		if ( ! sharedDocument) {
 			compilationUnit.getBuffer().setContents(doc.get());
-			compilationUnit.commitWorkingCopy(true, null);
+			compilationUnit.commitWorkingCopy(true, null);  // true="force"
 			compilationUnit.discardWorkingCopy();
 		}
+	}
+
+	/**
+	 * apply the specified edits to the specified document,
+	 * reformatting the document if necessary
+	 */
+	void applyEdits(TextEdit edits, IDocument doc) throws MalformedTreeException, BadLocationException {
+		edits.apply(doc, TextEdit.UPDATE_REGIONS);
+		this.annotationEditFormatter().format(doc, edits);
+	}
+
+	private AnnotationEditFormatter annotationEditFormatter() {
+		return DefaultAnnotationEditFormatter.instance();
+	}
+
+	private CommandExecutor modifySharedDocumentCommandExecutor() {
+		return this.modifySharedDocumentCommandExecutorProvider.commandExecutor();
 	}
 
 
@@ -410,6 +438,35 @@ public abstract class Member {
 		 * Edit the specified declaration.
 		 */
 		void edit(ModifiedDeclaration declaration);
+
+	}
+
+
+	// ********** modify shared document command class **********
+
+	/**
+	 * simple command that calls back to the member to apply the edits
+	 * in the same way as if the document were not shared
+	 */
+	class ModifySharedDocumentCommand implements Command {
+		private final TextEdit edits;
+		private final IDocument doc;
+
+		ModifySharedDocumentCommand(TextEdit edits, IDocument doc) {
+			super();
+			this.edits = edits;
+			this.doc = doc;
+		}
+
+		public void execute() {
+			try {
+				Member.this.applyEdits(this.edits, this.doc);
+			} catch (MalformedTreeException ex) {
+				throw new RuntimeException(ex);
+			} catch (BadLocationException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 
 	}
 

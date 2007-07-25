@@ -10,17 +10,19 @@
 package org.eclipse.jpt.core.internal.jdtutility;
 
 import java.util.List;
+
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
 public class Type extends Member {
 
-	public Type(IType type) {
-		super(type);
+	public Type(IType type, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+		super(type, modifySharedDocumentCommandExecutorProvider);
 	}
 
 	@Override

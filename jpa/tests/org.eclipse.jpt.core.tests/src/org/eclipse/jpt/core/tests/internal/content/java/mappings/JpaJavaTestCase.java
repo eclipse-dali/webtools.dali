@@ -1,19 +1,19 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.content.java.mappings;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.IJpaFile;
+import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
@@ -48,6 +48,19 @@ public abstract class JpaJavaTestCase extends AnnotationTestCase {
 			}
 		}
 		throw new IllegalArgumentException("missing type: " + typeName);
+	}
+
+	protected JavaPersistentAttribute javaPersistentAttributeNamed(String attributeName) {
+		return this.javaPersistentAttributeNamed(attributeName, FULLY_QUALIFIED_TYPE_NAME);
+	}
+
+	protected JavaPersistentAttribute javaPersistentAttributeNamed(String attributeName, String typeName) {
+		for (JavaPersistentAttribute attribute : this.javaPersistentTypeNamed(typeName).getAttributes()) {
+			if (attribute.getName().equals(attributeName)) {
+				return attribute;
+			}
+		}
+		throw new IllegalArgumentException("missing attribute: " + typeName + "." + attributeName);
 	}
 
 	protected Type typeNamed(String typeName) {

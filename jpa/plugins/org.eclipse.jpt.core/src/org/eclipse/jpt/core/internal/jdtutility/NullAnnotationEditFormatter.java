@@ -14,11 +14,28 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
 
-public interface AnnotationEditFormatter {
+public final class NullAnnotationEditFormatter
+	implements AnnotationEditFormatter
+{
+
+	private static NullAnnotationEditFormatter INSTANCE = new NullAnnotationEditFormatter();
 
 	/**
-	 * Review the specified edits and format the specified document as needed.
+	 * Return the singleton.
 	 */
-	void format(IDocument doc, TextEdit editTree) throws MalformedTreeException, BadLocationException;
+	public static AnnotationEditFormatter instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure single instance.
+	 */
+	private NullAnnotationEditFormatter() {
+		super();
+	}
+
+	public void format(IDocument doc, TextEdit editTree) throws MalformedTreeException, BadLocationException {
+		// no formatting
+	}
 
 }

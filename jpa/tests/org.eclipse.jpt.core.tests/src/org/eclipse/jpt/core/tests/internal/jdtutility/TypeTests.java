@@ -27,7 +27,7 @@ public class TypeTests extends AnnotationTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.jdtType = this.createTestType();
-		this.testType = new Type(this.jdtType);
+		this.testType = this.buildType(this.jdtType);
 	}
 
 	@Override

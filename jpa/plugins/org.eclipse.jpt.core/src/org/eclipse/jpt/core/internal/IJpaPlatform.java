@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This program and the 
- * accompanying materials are made available under the terms of the Eclipse 
- * Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit;
@@ -80,9 +81,10 @@ public interface IJpaPlatform
 	 * Return a collection of IJpaFileContentProviders.  These will be used to 
 	 * determine which files will be read from an IProject based on contentType.
 	 * These contentProviders should have unique contentTypes. 
-	 * @return
 	 */
 	Collection<IJpaFileContentProvider> jpaFileContentProviders();
+
+	IJpaFileContentProvider fileContentProvider(String contentTypeId);
 
 	/**
 	 * Build a project context to be used when resynching the intra-model
@@ -93,7 +95,6 @@ public interface IJpaPlatform
 	 * and the mapping files and classes it contains.
 	 * 
 	 * @see refreshDefaults(Object)
-	 * @return
 	 */
 	IContext buildProjectContext();
 

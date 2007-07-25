@@ -10,11 +10,13 @@
 package org.eclipse.jpt.core.internal.jdtutility;
 
 import java.util.List;
+
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
 /**
  * Adapt and extend a jdt field.
@@ -23,8 +25,8 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
  */
 public class FieldAttribute extends Attribute {
 
-	public FieldAttribute(IField field) {
-		super(field);
+	public FieldAttribute(IField field, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+		super(field, modifySharedDocumentCommandExecutorProvider);
 	}
 
 	@Override

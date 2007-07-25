@@ -7,18 +7,18 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.jdtutility;
+package org.eclipse.jpt.utility.internal;
 
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.text.edits.MalformedTreeException;
-import org.eclipse.text.edits.TextEdit;
-
-public interface AnnotationEditFormatter {
+/**
+ * Yet another level of indirection to allow clients to control
+ * how a command is executed by the server
+ * (e.g. dispatching the command to the UI thread).
+ */
+public interface CommandExecutorProvider {
 
 	/**
-	 * Review the specified edits and format the specified document as needed.
+	 * Return the appropriate command executor.
 	 */
-	void format(IDocument doc, TextEdit editTree) throws MalformedTreeException, BadLocationException;
+	CommandExecutor commandExecutor();
 
 }
