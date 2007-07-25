@@ -37,6 +37,7 @@ import org.eclipse.jpt.core.internal.JpaFile;
 import org.eclipse.jpt.core.internal.jdtutility.ASTNodeTextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AttributeAnnotationTools;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
+import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
@@ -378,9 +379,10 @@ public class JpaCompilationUnit extends JavaEObject
 	}
 
 	private void synchCompilationUnitWithJavaDelta(IJavaElementDelta delta) {
-		// ignore changes to/from primary working copy - no content has changed
-		// this checks that no flags other than F_PRIMARY_WORKING_COPY are set
-		if ((delta.getFlags() & ~IJavaElementDelta.F_PRIMARY_WORKING_COPY) == 0) {
+		// ignore changes to/from primary working copy - no content has changed;
+		// and make sure there are no other flags set that indicate both a change to/from
+		// primary working copy AND content has changed
+		if (BitTools.onlyFlagIsSet(delta.getFlags(), IJavaElementDelta.F_PRIMARY_WORKING_COPY)) {
 			return;
 		}
 		// synchronize if the change is for this compilation unit
