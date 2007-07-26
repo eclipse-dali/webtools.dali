@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
@@ -43,8 +44,8 @@ public class JavaOneToOneProvider
 		return IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public IJavaAttributeMapping buildMapping(Attribute attribute) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaOneToOne(attribute);
+	public IJavaAttributeMapping buildMapping(Attribute attribute, IJpaFactory factory) {
+		return factory.createJavaOneToOne(attribute);
 	}
 
 	public DeclarationAnnotationAdapter declarationAnnotationAdapter() {

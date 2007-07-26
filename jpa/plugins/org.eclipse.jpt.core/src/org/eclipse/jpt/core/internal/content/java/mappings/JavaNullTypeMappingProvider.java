@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMappingProvider;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -44,7 +45,7 @@ public class JavaNullTypeMappingProvider
 		return null;
 	}
 
-	public IJavaTypeMapping buildMapping(Type type) {
+	public IJavaTypeMapping buildMapping(Type type, IJpaFactory factory) {
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaNullTypeMapping(type);
 	}
 

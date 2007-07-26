@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.WorkingCopyOwner;
+import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.content.java.IDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
@@ -56,8 +57,8 @@ public class JavaBasicProvider
 		return signatureIsBasic(attribute.typeSignature(), attribute.getDeclaringType().getJdtMember());
 	}
 
-	public IJavaAttributeMapping buildMapping(Attribute attribute) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaBasic(attribute);
+	public IJavaAttributeMapping buildMapping(Attribute attribute, IJpaFactory factory) {
+		return factory.createJavaBasic(attribute);
 	}
 
 	public DeclarationAnnotationAdapter declarationAnnotationAdapter() {

@@ -49,8 +49,6 @@ import org.eclipse.jpt.utility.internal.Filter;
 public abstract class JavaSingleRelationshipMapping
 	extends JavaRelationshipMapping implements ISingleRelationshipMapping
 {
-	private AnnotationElementAdapter<String> optionalAdapter;
-
 	/**
 	 * The default value of the '{@link #getFetch() <em>Fetch</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -110,6 +108,8 @@ public abstract class JavaSingleRelationshipMapping
 	 * @ordered
 	 */
 	protected DefaultTrueBoolean optional = OPTIONAL_EDEFAULT;
+
+	private AnnotationElementAdapter<String> optionalAdapter;
 
 	protected JavaSingleRelationshipMapping() {
 		throw new UnsupportedOperationException("Use JavaSingleRelationshipMapping(Attribute) instead");

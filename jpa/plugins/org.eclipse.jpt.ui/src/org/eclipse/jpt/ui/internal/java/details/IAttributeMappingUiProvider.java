@@ -22,7 +22,7 @@ public interface IAttributeMappingUiProvider
 	 * A unique string that corresponds to the key of a MappingProvider in the core
 	 * (IJavaAttributeMappingProvider and/or IXmlAttributeMappingProvider)
 	 */
-	String key();
+	String attributeMappingKey();
 
 	/**
 	 * A label to be displayed to the label as an option in the mapping type combo box 

@@ -39,7 +39,7 @@ public class EmbeddedMappingUiProvider
 		super();
 	}
 
-	public String key() {
+	public String attributeMappingKey() {
 		return IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
 	

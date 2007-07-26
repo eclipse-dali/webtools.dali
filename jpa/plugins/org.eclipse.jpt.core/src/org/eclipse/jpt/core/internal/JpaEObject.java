@@ -65,6 +65,14 @@ public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 		return this.getJpaProject().getProject();
 	}
 
+	public IJpaPlatform jpaPlatform() {
+		return getJpaProject().getPlatform();
+	}
+
+	public IJpaFactory jpaFactory() {
+		return jpaPlatform().getJpaFactory();
+	}
+
 	public ConnectionProfile connectionProfile() {
 		return this.getJpaProject().connectionProfile();
 	}

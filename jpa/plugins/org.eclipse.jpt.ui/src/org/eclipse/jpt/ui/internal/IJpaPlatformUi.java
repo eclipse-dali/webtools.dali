@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal;
 
-import java.util.Collection;
-import java.util.List;
-
+import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
@@ -22,32 +21,33 @@ import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
 
 public interface IJpaPlatformUi
 {
-	//TODO make these Collections IterableIterators(?) once Brian checks in
-	//changes to our utility Iterators to make them Iterable
+	Iterator<IJpaStructureProvider> structureProviders();
 	
-	Collection<IJpaStructureProvider> structureProviders();
+	IJpaStructureProvider structureProvider(String fileContentType);
 	
-	Collection<IJpaDetailsProvider> detailsProviders();
+	Iterator<IJpaDetailsProvider> detailsProviders();
+	
+	IJpaDetailsProvider detailsProvider(String fileContentType);
 	
 	/**
 	 * Return the type mapping UI providers for java.  This will populate
 	 * the type mapping combo box in order and displaying ITypeMappingUiProvider.label().
 	 * It will also be used to create the appropriate composite given a type mapping. 
 	 */
-	List<ITypeMappingUiProvider> javaTypeMappingUiProviders();
+	ListIterator<ITypeMappingUiProvider> javaTypeMappingUiProviders();
 	
 	/**
 	 * Return the attribute mapping UI providers for java.  This will populate
 	 * the attribute mapping combo box in order and display IAttributeMappingUiProvider.label().
 	 * It will also be used to create the appropriate composite given an attribute mapping. 
 	 */
-	List<IAttributeMappingUiProvider> javaAttributeMappingUiProviders();
+	ListIterator<IAttributeMappingUiProvider> javaAttributeMappingUiProviders();
 
 	/**
 	 * Return the default attribute mapping UI providers for java.  These will be used
 	 * to provide a default mapping option if one applies in java.
 	 */
-	List<IAttributeMappingUiProvider> defaultJavaAttributeMappingUiProviders();
+	ListIterator<IAttributeMappingUiProvider> defaultJavaAttributeMappingUiProviders();
 
 	void generateDDL(IJpaProject project, IStructuredSelection selection);
 	

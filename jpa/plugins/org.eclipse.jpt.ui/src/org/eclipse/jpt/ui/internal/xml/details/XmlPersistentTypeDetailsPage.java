@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.xml.details;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
@@ -26,6 +27,7 @@ import org.eclipse.jpt.ui.internal.java.mappings.properties.MappedSuperclassUiPr
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComboViewer.AccessHolder;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -50,26 +52,18 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage
 		super(parent, widgetFactory);
 	}
 
-	public List<ITypeMappingUiProvider> typeMappingUiProviders() {
+	public ListIterator<ITypeMappingUiProvider> typeMappingUiProviders() {
 		if (this.xmlTypeMappingUiProviders == null) {
 			this.xmlTypeMappingUiProviders = new ArrayList<ITypeMappingUiProvider>();
 			this.addXmlTypeMappingUiProvidersTo(this.xmlTypeMappingUiProviders);
 		}
-		return this.xmlTypeMappingUiProviders;
+		return new CloneListIterator<ITypeMappingUiProvider>(this.xmlTypeMappingUiProviders);
 	}
 	
 	protected void addXmlTypeMappingUiProvidersTo(Collection<ITypeMappingUiProvider> providers) {
 		providers.add(EntityUiProvider.instance());
 		providers.add(MappedSuperclassUiProvider.instance());			
 		providers.add(EmbeddableUiProvider.instance());			
-	}
-
-	protected Collection<ITypeMappingUiProvider> buildTypeMappingUiProviders() {
-		Collection<ITypeMappingUiProvider> typeMappingUiProviders = new ArrayList<ITypeMappingUiProvider>();
-		typeMappingUiProviders.add(EntityUiProvider.instance());
-		typeMappingUiProviders.add(MappedSuperclassUiProvider.instance());			
-		typeMappingUiProviders.add(EmbeddableUiProvider.instance());			
-		return typeMappingUiProviders;
 	}
 	
 	@Override

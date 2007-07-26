@@ -11,8 +11,9 @@ package org.eclipse.jpt.ui.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
-
+import java.util.ListIterator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
@@ -40,6 +41,8 @@ import org.eclipse.jpt.ui.internal.java.structure.JavaStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
 import org.eclipse.jpt.ui.internal.xml.details.XmlDetailsProvider;
 import org.eclipse.jpt.ui.internal.xml.structure.XmlStructureProvider;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 {
@@ -56,12 +59,12 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 
 	// ********** behavior **********
 	
-	public Collection<IJpaDetailsProvider> detailsProviders() {
+	public Iterator<IJpaDetailsProvider> detailsProviders() {
 		if (this.detailsProviders == null) {
 			this.detailsProviders = new ArrayList<IJpaDetailsProvider>();
 			this.addDetailsProvidersTo(this.detailsProviders);
 		}
-		return this.detailsProviders;
+		return new CloneIterator<IJpaDetailsProvider>(this.detailsProviders);
 	}
 	
 	/**
@@ -73,12 +76,22 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 		providers.add(new XmlDetailsProvider());
 	}
 	
-	public Collection<IJpaStructureProvider> structureProviders() {
+	public IJpaDetailsProvider detailsProvider(String fileContentType) {
+		for (Iterator<IJpaDetailsProvider> i = this.detailsProviders(); i.hasNext(); ) {
+			IJpaDetailsProvider provider = i.next();
+			if (provider.fileContentType().equals(fileContentType)) {
+				return provider;
+			}
+		}
+		return null;
+	}
+	
+	public Iterator<IJpaStructureProvider> structureProviders() {
 		if (this.structureProviders == null) {
 			this.structureProviders = new ArrayList<IJpaStructureProvider>();
 			this.addStructureProvidersTo(this.structureProviders);
 		}
-		return this.structureProviders;
+		return new CloneIterator<IJpaStructureProvider>(this.structureProviders);
 	}
 	
 	/**
@@ -90,12 +103,22 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 		providers.add(new XmlStructureProvider());
 	}
 
-	public List<ITypeMappingUiProvider> javaTypeMappingUiProviders() {
+	public IJpaStructureProvider structureProvider(String fileContentType) {
+		for (Iterator<IJpaStructureProvider> i = this.structureProviders(); i.hasNext(); ) {
+			IJpaStructureProvider provider = i.next();
+			if (provider.fileContentType().equals(fileContentType)) {
+				return provider;
+			}
+		}
+		return null;
+	}
+	
+	public ListIterator<ITypeMappingUiProvider> javaTypeMappingUiProviders() {
 		if (this.javaTypeMappingUiProviders == null) {
 			this.javaTypeMappingUiProviders = new ArrayList<ITypeMappingUiProvider>();
 			this.addJavaTypeMappingUiProvidersTo(this.javaTypeMappingUiProviders);
 		}
-		return this.javaTypeMappingUiProviders;
+		return new CloneListIterator<ITypeMappingUiProvider>(this.javaTypeMappingUiProviders);
 	}
 	
 	/**
@@ -110,19 +133,19 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 		providers.add(EmbeddableUiProvider.instance());			
 	}
 	
-	public List<IAttributeMappingUiProvider> javaAttributeMappingUiProviders() {
+	public ListIterator<IAttributeMappingUiProvider> javaAttributeMappingUiProviders() {
 		if (this.javaAttributeMappingUiProviders == null) {
 			this.javaAttributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider>();
 			this.addJavaAttributeMappingUiProvidersTo(this.javaAttributeMappingUiProviders);
 		}
-		return this.javaAttributeMappingUiProviders;
+		return new CloneListIterator<IAttributeMappingUiProvider>(this.javaAttributeMappingUiProviders);
 
 	}
 	
 	/**
 	 * Override this to specify more or different java attribute mapping ui providers.
 	 * The default includes the JPA spec-defined basic, embedded, embeddedId, id, 
-	 * manyToMany, manyToOne, oneToMany, transient, and version
+	 * manyToMany, manyToOne, oneToMany, oneToOne, transient, and version
 	 */
 	protected void addJavaAttributeMappingUiProvidersTo(List<IAttributeMappingUiProvider> providers) {
 		providers.add(BasicMappingUiProvider.instance());
@@ -137,12 +160,12 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 		providers.add(VersionMappingUiProvider.instance());
 	}
 	
-	public List<IAttributeMappingUiProvider> defaultJavaAttributeMappingUiProviders() {
+	public ListIterator<IAttributeMappingUiProvider> defaultJavaAttributeMappingUiProviders() {
 		if (this.defaultJavaAttributeMappingUiProviders == null) {
 			this.defaultJavaAttributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider>();
 			this.addDefaultJavaAttributeMappingUiProvidersTo(this.defaultJavaAttributeMappingUiProviders);
 		}
-		return this.defaultJavaAttributeMappingUiProviders;
+		return new CloneListIterator<IAttributeMappingUiProvider>(this.defaultJavaAttributeMappingUiProviders);
 
 	}
 	

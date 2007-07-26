@@ -1,20 +1,22 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0, which accompanies this distribution
- * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved. This program and the 
+ * accompanying materials are made available under the terms of the Eclipse 
+ * Public License v1.0, which accompanies this distribution and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
+import java.util.ListIterator;
+import org.eclipse.jpt.core.internal.content.java.IDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
+import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
+import org.eclipse.jpt.core.internal.content.java.IJavaTypeMappingProvider;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.IContext;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -56,6 +58,8 @@ public interface IJpaPlatform
 	 */
 	void setProject(IJpaProject jpaProject);
 
+	IJpaFactory getJpaFactory();
+
 	// ********** Persistence Unit ********************************************
 	boolean containsPersistenceUnitNamed(String name);
 
@@ -78,13 +82,35 @@ public interface IJpaPlatform
 	Iterator<IJpaFile> validPersistenceXmlFiles();
 
 	/**
-	 * Return a collection of IJpaFileContentProviders.  These will be used to 
+	 * Return an Iterator of IJpaFileContentProviders.  These will be used to 
 	 * determine which files will be read from an IProject based on contentType.
 	 * These contentProviders should have unique contentTypes. 
 	 */
-	Collection<IJpaFileContentProvider> jpaFileContentProviders();
+	Iterator<IJpaFileContentProvider> jpaFileContentProviders();
 
 	IJpaFileContentProvider fileContentProvider(String contentTypeId);
+
+	/**
+	 * Return an Iterator of IJavaTypeMappingProviders.  These define which
+	 * IJavaTypeMappings are supported and which annotation applies. 
+	 */
+	Iterator<IJavaTypeMappingProvider> javaTypeMappingProviders();
+
+	IJavaTypeMappingProvider javaTypeMappingProvider(String typeMappingKey);
+	
+	/**
+	 * Return an Iterator of IJavaAttributeMappingProviders.  These define which
+	 * IJavaAttributeMappings are supported and which annotation applies. 
+	 */
+	Iterator<IJavaAttributeMappingProvider> javaAttributeMappingProviders();
+
+	IJavaAttributeMappingProvider javaAttributeMappingProvider(String attributeMappingKey);
+	
+	/**
+	 * Return a ListIterator of IDefaultJavaAttributeMappingProvider.  This is a List
+	 * because the defaults are checked in order.
+	 */
+	ListIterator<IDefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders();
 
 	/**
 	 * Build a project context to be used when resynching the intra-model

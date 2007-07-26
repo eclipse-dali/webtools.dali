@@ -40,7 +40,7 @@ public class NullAttributeMappingUiProvider
 	}
 
 
-	public String key() {
+	public String attributeMappingKey() {
 		return null;
 	}
 	

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java;
 
+import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 
@@ -18,9 +19,19 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
  */
 public interface IJavaAttributeMappingProvider {
 
+	/**
+	 * A unique String that corresponds to the IJavaAttributeMapping key 
+	 */
 	String key();
 
-	IJavaAttributeMapping buildMapping(Attribute attribute);
+	/**
+	 * Create an IJavaAttributeMapping for the given attribute.  Use the IJpaFactory
+	 * for creation so that extenders can create their own IJpaFactory instead of 
+	 * creating their own attributeMappingProvider.
+	 * @param attribute
+	 * @param jpaFactory
+	 */
+	IJavaAttributeMapping buildMapping(Attribute attribute, IJpaFactory jpaFactory);
 
 	DeclarationAnnotationAdapter declarationAnnotationAdapter();
 

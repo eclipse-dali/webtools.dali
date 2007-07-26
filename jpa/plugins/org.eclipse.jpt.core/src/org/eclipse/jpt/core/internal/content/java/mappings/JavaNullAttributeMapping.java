@@ -32,7 +32,7 @@ public class JavaNullAttributeMapping extends JavaAttributeMapping
 		throw new UnsupportedOperationException("Use JavaNullAttributeMapping(Attribute) instead");
 	}
 
-	protected JavaNullAttributeMapping(Attribute attribute) {
+	public JavaNullAttributeMapping(Attribute attribute) {
 		super(attribute);
 	}
 

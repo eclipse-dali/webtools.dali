@@ -38,7 +38,7 @@ public class IdMappingUiProvider
 		super();
 	}
 
-	public String key() {
+	public String attributeMappingKey() {
 		return IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
 	}
 	

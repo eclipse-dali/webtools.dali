@@ -39,7 +39,7 @@ public class TransientMappingUiProvider
 		super();
 	}
 
-	public String key() {
+	public String attributeMappingKey() {
 		return IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}
 	

@@ -38,7 +38,7 @@ public class ManyToManyMappingUiProvider
 		super();
 	}
 
-	public String key() {
+	public String attributeMappingKey() {
 		return IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 	

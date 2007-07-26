@@ -439,7 +439,7 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 	}
 
 	// ********** static methods **********
-	static JavaColumn createColumnMappingColumn(Owner owner, Member member) {
+	public static JavaColumn createColumnMappingColumn(Owner owner, Member member) {
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaColumn(owner, member, MAPPING_DECLARATION_ANNOTATION_ADAPTER);
 	}
 

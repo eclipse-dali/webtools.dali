@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
@@ -44,7 +45,11 @@ public class JavaNullAttributeMappingProvider
 		return null;
 	}
 
-	public IJavaAttributeMapping buildMapping(Attribute attribute) {
+	//Do not use the IJpaFactory for building this mapping, see constructor for JavaPersistentAttribute
+	//where we do no have access to the factory during constrution.  This is not a mapping that
+	//needs to be extensible, but it is easier to have a mappingProvider for it so we don't have 
+	//to handle null provider separately
+	public IJavaAttributeMapping buildMapping(Attribute attribute, IJpaFactory factory) {
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaNullAttributeMapping(attribute);
 	}
 

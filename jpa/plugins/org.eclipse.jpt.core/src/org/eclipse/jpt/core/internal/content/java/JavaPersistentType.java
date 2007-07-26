@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -38,19 +37,15 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaAssociationOverri
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAttributeOverride;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaBasic;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaColumn;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbeddableProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbedded;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbeddedId;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaEntityProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaGeneratedValue;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaId;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaJoinColumn;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaJoinTable;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToOne;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaMappedSuperclassProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaMultiRelationshipMapping;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOne;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaPrimaryKeyJoinColumn;
@@ -156,8 +151,6 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 
 	private Type type;
 
-	private IJavaTypeMappingProvider[] typeMappingProviders;
-
 	private DeclarationAnnotationAdapter[] attributeMappingAnnotationAdapters;
 
 	/**
@@ -179,26 +172,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 
 	protected JavaPersistentType() {
 		super();
-		this.typeMappingProviders = this.buildTypeMappingProviders();
 		this.attributeMappingAnnotationAdapters = this.buildAttributeMappingAnnotationAdapters();
-	}
-
-	private IJavaTypeMappingProvider[] buildTypeMappingProviders() {
-		ArrayList<IJavaTypeMappingProvider> providers = new ArrayList<IJavaTypeMappingProvider>();
-		this.addTypeMappingProvidersTo(providers);
-		return providers.toArray(new IJavaTypeMappingProvider[providers.size()]);
-	}
-
-	/**
-	 * Override this to specify more or different type mapping providers.
-	 * The default includes the JPA spec-defined type mappings of 
-	 * Entity, MappedSuperclass, and Embeddable
-	 */
-	protected void addTypeMappingProvidersTo(Collection<IJavaTypeMappingProvider> providers) {
-		providers.add(JavaNullTypeMappingProvider.instance());
-		providers.add(JavaEntityProvider.instance());
-		providers.add(JavaMappedSuperclassProvider.instance());
-		providers.add(JavaEmbeddableProvider.instance());
 	}
 
 	private DeclarationAnnotationAdapter[] buildAttributeMappingAnnotationAdapters() {
@@ -370,16 +344,15 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	private DeclarationAnnotationAdapter annotationAdapterForTypeMappingKey(String typeMappingKey) {
-		return this.typeMappingProviderFor(typeMappingKey).declarationAnnotationAdapter();
+		return this.typeMappingProvider(typeMappingKey).declarationAnnotationAdapter();
 	}
 
-	private IJavaTypeMappingProvider typeMappingProviderFor(String typeMappingKey) {
-		for (IJavaTypeMappingProvider provider : this.typeMappingProviders) {
-			if (provider.key() == typeMappingKey) {
-				return provider;
-			}
-		}
-		throw new IllegalArgumentException("Unsupported type mapping key: " + typeMappingKey);
+	protected Iterator<IJavaTypeMappingProvider> typeMappingProviders() {
+		return jpaPlatform().javaTypeMappingProviders();
+	}
+
+	private IJavaTypeMappingProvider typeMappingProvider(String typeMappingKey) {
+		return jpaPlatform().javaTypeMappingProvider(typeMappingKey);
 	}
 
 	/**
@@ -639,7 +612,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	private IJavaTypeMapping buildJavaTypeMapping(String key) {
-		return this.typeMappingProviderFor(key).buildMapping(this.type);
+		return this.typeMappingProvider(key).buildMapping(this.type, this.jpaFactory());
 	}
 
 	public Type getType() {
@@ -723,7 +696,8 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	private String javaTypeMappingKey(CompilationUnit astRoot) {
-		for (IJavaTypeMappingProvider provider : this.typeMappingProviders) {
+		for (Iterator<IJavaTypeMappingProvider> i = this.typeMappingProviders(); i.hasNext(); ) {
+			IJavaTypeMappingProvider provider = i.next();
 			if (this.type.containsAnnotation(provider.declarationAnnotationAdapter(), astRoot)) {
 				return provider.key();
 			}

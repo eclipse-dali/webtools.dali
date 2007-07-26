@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
@@ -43,8 +44,8 @@ public class JavaVersionProvider
 		return IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public IJavaAttributeMapping buildMapping(Attribute attribute) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaVersion(attribute);
+	public IJavaAttributeMapping buildMapping(Attribute attribute, IJpaFactory factory) {
+		return factory.createJavaVersion(attribute);
 	}
 
 	public DeclarationAnnotationAdapter declarationAnnotationAdapter() {

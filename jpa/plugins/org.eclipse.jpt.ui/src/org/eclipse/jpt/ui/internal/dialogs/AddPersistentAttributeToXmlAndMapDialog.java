@@ -160,7 +160,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 	
 	public String getMappingKey() {
 		StructuredSelection selection = (StructuredSelection) mappingCombo.getSelection();
-		return (selection.isEmpty()) ? null : ((IAttributeMappingUiProvider) selection.getFirstElement()).key();
+		return (selection.isEmpty()) ? null : ((IAttributeMappingUiProvider) selection.getFirstElement()).attributeMappingKey();
 	}
 	
 	private void validate() {

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java;
 
+import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 
@@ -18,9 +19,19 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
  */
 public interface IJavaTypeMappingProvider {
 
+	/**
+	 * A unique String that corresponds to the IJavaTypeMapping key 
+	 */
 	String key();
 
-	IJavaTypeMapping buildMapping(Type type);
+	/**
+	 * Create an IJavaTypeMapping for the given attribute.  Use the IJpaFactory
+	 * for creation so that extenders can create their own IJpaFactory instead of 
+	 * creating their own typeMappingProvider.
+	 * @param type
+	 * @param jpaFactory
+	 */
+	IJavaTypeMapping buildMapping(Type type, IJpaFactory factory);
 
 	DeclarationAnnotationAdapter declarationAnnotationAdapter();
 

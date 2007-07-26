@@ -36,4 +36,8 @@ public interface IJpaEObject extends EObject
 	 * Return the resource that most directly contains this object
 	 */
 	IResource getResource();
+
+	IJpaFactory jpaFactory();
+
+	IJpaPlatform jpaPlatform();
 }

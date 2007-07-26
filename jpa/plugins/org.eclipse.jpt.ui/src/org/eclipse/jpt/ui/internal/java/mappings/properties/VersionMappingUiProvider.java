@@ -39,7 +39,7 @@ public class VersionMappingUiProvider
 		super();
 	}
 
-	public String key() {
+	public String attributeMappingKey() {
 		return IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
 	

@@ -9,8 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
@@ -31,12 +30,12 @@ public class JavaPersistentTypeDetailsPage extends
 	}
 	
 	protected IJpaPlatformUi getJpaPlatformUi() {
-		String platformId = getPersistentType().getJpaProject().getPlatform().getId();
+		String platformId = getPersistentType().jpaPlatform().getId();
 		return PlatformRegistry.instance().getJpaPlatform(platformId);
 	}
 	
 	@Override
-	protected List<ITypeMappingUiProvider> typeMappingUiProviders() {
+	protected ListIterator<ITypeMappingUiProvider> typeMappingUiProviders() {
 		return getJpaPlatformUi().javaTypeMappingUiProviders();
 	}
 

@@ -38,7 +38,7 @@ public class DefaultEmbeddedMappingUiProvider
 		super();
 	}
 	
-	public String key() {
+	public String attributeMappingKey() {
 		return IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
 	

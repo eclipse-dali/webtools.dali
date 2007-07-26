@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
+import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMappingProvider;
@@ -43,8 +44,8 @@ public class JavaMappedSuperclassProvider
 		return IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
 	}
 
-	public IJavaTypeMapping buildMapping(Type type) {
-		return JpaJavaMappingsFactory.eINSTANCE.createJavaMappedSuperclass(type);
+	public IJavaTypeMapping buildMapping(Type type, IJpaFactory factory) {
+		return factory.createJavaMappedSuperclass(type);
 	}
 
 	public DeclarationAnnotationAdapter declarationAnnotationAdapter() {

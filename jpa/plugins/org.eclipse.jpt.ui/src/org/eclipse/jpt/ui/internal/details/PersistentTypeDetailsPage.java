@@ -8,10 +8,9 @@
  ******************************************************************************/        
 package org.eclipse.jpt.ui.internal.details;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.notify.Adapter;
@@ -26,13 +25,13 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
-import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
@@ -62,8 +61,18 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 		this.composites = new HashMap<String, IJpaComposite<ITypeMapping>>();
 	}
 	
-	protected abstract List<ITypeMappingUiProvider> typeMappingUiProviders();
+	protected abstract ListIterator<ITypeMappingUiProvider> typeMappingUiProviders();
 	
+	private ITypeMappingUiProvider typeMappingUiProvider(String key) {
+		for (ListIterator<ITypeMappingUiProvider> i = this.typeMappingUiProviders(); i.hasNext();) {
+			ITypeMappingUiProvider provider = i.next();
+			if (provider.mappingKey() == key) {
+				return provider;
+			}
+		}
+		throw new IllegalArgumentException("Unsupported type mapping UI provider key: " + key);
+	}
+
 	private Adapter buildPersistentTypeListener() {
 		return new AdapterImpl() {
 			public void notifyChanged(Notification notification) {
@@ -91,15 +100,15 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 	
 	protected CComboViewer buildTypeMappingCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
-		typeMappingCombo = new CComboViewer(combo);
-		typeMappingCombo.setContentProvider(buildContentProvider());
-		typeMappingCombo.setLabelProvider(buildLabelProvider());
-		typeMappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
+		this.typeMappingCombo = new CComboViewer(combo);
+		this.typeMappingCombo.setContentProvider(buildContentProvider());
+		this.typeMappingCombo.setLabelProvider(buildLabelProvider());
+		this.typeMappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				typeMappingChanged(event);
 			}
 		});
-		return typeMappingCombo;
+		return this.typeMappingCombo;
 	}
 	
 	private IContentProvider buildContentProvider() {
@@ -111,7 +120,7 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 			public Object[] getElements(Object inputElement) {
 				return (persistentType == null) ?
 						new String[] {}:
-						PersistentTypeDetailsPage.this.typeMappingUiProviders().toArray();
+						CollectionTools.array(PersistentTypeDetailsPage.this.typeMappingUiProviders());
 			}
 			
 			public void inputChanged(
@@ -130,18 +139,10 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 	}
 	
 	protected PageBook buildTypeMappingPageBook(Composite parent) {
-		typeMappingPageBook = new PageBook(parent, SWT.NONE);
-		return typeMappingPageBook;
+		this.typeMappingPageBook = new PageBook(parent, SWT.NONE);
+		return this.typeMappingPageBook;
 	}
 	
-	private ITypeMappingUiProvider typeMappingUiProvider(String key) {
-		for (ITypeMappingUiProvider provider : this.typeMappingUiProviders()) {
-			if (provider.mappingKey() == key) {
-				return provider;
-			}
-		}
-		throw new IllegalArgumentException("unsupported type mapping UI provider key: " + key);
-	}
 	
 	private void typeMappingChanged(SelectionChangedEvent event) {
 		if (isPopulating()) {
@@ -149,13 +150,13 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 		}
 		if (event.getSelection() instanceof StructuredSelection) {
 			ITypeMappingUiProvider provider = (ITypeMappingUiProvider) ((StructuredSelection) event.getSelection()).getFirstElement();
-			persistentType.setMappingKey(provider.mappingKey());
+			this.persistentType.setMappingKey(provider.mappingKey());
 		}
 	}
 	
 	@Override
 	protected void doPopulate(IJpaContentNode persistentTypeNode) {
-		persistentType = (IPersistentType) persistentTypeNode;
+		this.persistentType = (IPersistentType) persistentTypeNode;
 		populateMappingComboAndPage();
 	}
 	
@@ -165,68 +166,68 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 	}
 	
 	protected void engageListeners() {
-		if (persistentType != null) {
-			persistentType.eAdapters().add(persistentTypeListener);
+		if (this.persistentType != null) {
+			this.persistentType.eAdapters().add(this.persistentTypeListener);
 		}
 	}
 	
 	protected void disengageListeners() {
-		if (persistentType != null) {
-			persistentType.eAdapters().remove(persistentTypeListener);
+		if (this.persistentType != null) {
+			this.persistentType.eAdapters().remove(this.persistentTypeListener);
 		}
 	}
 	
 	private void populateMappingComboAndPage() {
-		if (persistentType == null) {
-			currentMappingKey = null;
-			typeMappingCombo.setInput(null);
-			typeMappingCombo.setSelection(StructuredSelection.EMPTY);
+		if (this.persistentType == null) {
+			this.currentMappingKey = null;
+			this.typeMappingCombo.setInput(null);
+			this.typeMappingCombo.setSelection(StructuredSelection.EMPTY);
 			
-			if (visibleMappingComposite != null) {
-				visibleMappingComposite.populate(null);
-				visibleMappingComposite = null;
+			if (this.visibleMappingComposite != null) {
+				this.visibleMappingComposite.populate(null);
+				this.visibleMappingComposite = null;
 			}
 			
 			return;
 		}
 		
-		String mappingKey = persistentType.getMapping().getKey();
+		String mappingKey = this.persistentType.getMapping().getKey();
 		setComboData(mappingKey);
 		
 		populateMappingPage(mappingKey);
 	}
 	
 	private void populateMappingPage(String mappingKey) {
-		if (visibleMappingComposite != null) {
-			if (mappingKey  == currentMappingKey) {
-				if (visibleMappingComposite != null) {
-					visibleMappingComposite.populate(persistentType.getMapping());
+		if (this.visibleMappingComposite != null) {
+			if (mappingKey  == this.currentMappingKey) {
+				if (this.visibleMappingComposite != null) {
+					this.visibleMappingComposite.populate(this.persistentType.getMapping());
 					return;
 				}
 			}
 			else {
-				visibleMappingComposite.populate(null);
+				this.visibleMappingComposite.populate(null);
 				// don't return
 			}
 		}
 		
-		currentMappingKey = mappingKey;
+		this.currentMappingKey = mappingKey;
 		
 		IJpaComposite mappingComposite = mappingCompositeFor(mappingKey);
-		typeMappingPageBook.showPage(mappingComposite.getControl());
+		this.typeMappingPageBook.showPage(mappingComposite.getControl());
 		
-		visibleMappingComposite = mappingComposite;
-		visibleMappingComposite.populate(persistentType.getMapping());
+		this.visibleMappingComposite = mappingComposite;
+		this.visibleMappingComposite.populate(this.persistentType.getMapping());
 	}
 	
 	private void setComboData(String mappingKey) {
-		if (persistentType != typeMappingCombo.getInput()) {
-			typeMappingCombo.setInput(persistentType);
+		if (this.persistentType != this.typeMappingCombo.getInput()) {
+			this.typeMappingCombo.setInput(this.persistentType);
 		}
 		
 		ITypeMappingUiProvider provider = typeMappingUiProvider(mappingKey);
-		if (! provider.equals(((StructuredSelection) typeMappingCombo.getSelection()).getFirstElement())) {
-			typeMappingCombo.setSelection(new StructuredSelection(provider));
+		if (! provider.equals(((StructuredSelection) this.typeMappingCombo.getSelection()).getFirstElement())) {
+			this.typeMappingCombo.setSelection(new StructuredSelection(provider));
 		}
 	}
 	

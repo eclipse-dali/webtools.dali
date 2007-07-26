@@ -39,7 +39,7 @@ public class BasicMappingUiProvider
 		super();
 	}
 	
-	public String key() {
+	public String attributeMappingKey() {
 		return IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 	

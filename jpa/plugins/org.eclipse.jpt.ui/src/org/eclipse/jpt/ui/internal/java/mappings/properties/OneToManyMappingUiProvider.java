@@ -38,7 +38,7 @@ public class OneToManyMappingUiProvider
 		super();
 	}
 
-	public String key() {
+	public String attributeMappingKey() {
 		return IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 	

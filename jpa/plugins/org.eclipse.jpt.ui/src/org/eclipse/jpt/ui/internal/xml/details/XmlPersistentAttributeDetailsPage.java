@@ -10,9 +10,9 @@
 package org.eclipse.jpt.ui.internal.xml.details;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -36,7 +36,10 @@ import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToOneMappingUiPro
 import org.eclipse.jpt.ui.internal.java.mappings.properties.TransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.VersionMappingUiProvider;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -84,12 +87,12 @@ public class XmlPersistentAttributeDetailsPage
 	}
 
 	@Override
-	public List<IAttributeMappingUiProvider> attributeMappingUiProviders() {
+	public ListIterator<IAttributeMappingUiProvider> attributeMappingUiProviders() {
 		if (this.attributeMappingUiProviders == null) {
 			this.attributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider>();
 			this.addAttributeMappingUiProvidersTo(this.attributeMappingUiProviders);
 		}
-		return this.attributeMappingUiProviders;
+		return new CloneListIterator<IAttributeMappingUiProvider>(this.attributeMappingUiProviders);
 
 	}
 
@@ -107,8 +110,8 @@ public class XmlPersistentAttributeDetailsPage
 	}
 	
 	@Override
-	protected List<IAttributeMappingUiProvider> defaultAttributeMappingUiProviders() {
-		return Collections.emptyList();
+	protected ListIterator<IAttributeMappingUiProvider> defaultAttributeMappingUiProviders() {
+		return EmptyListIterator.instance();
 	}
 	
 	@Override
@@ -119,7 +122,7 @@ public class XmlPersistentAttributeDetailsPage
 	@Override
 	//bug 192035 - no default mapping option in xml
 	protected IAttributeMappingUiProvider[] attributeMappingUiProvidersFor(IPersistentAttribute persistentAttribute) {
-		return attributeMappingUiProviders().toArray(new IAttributeMappingUiProvider[attributeMappingUiProviders().size()]);
+		return CollectionTools.array(attributeMappingUiProviders(), new IAttributeMappingUiProvider[CollectionTools.size(attributeMappingUiProviders())]);
 	}
 
 	@Override
