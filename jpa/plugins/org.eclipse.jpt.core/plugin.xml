@@ -181,6 +181,14 @@
 		</validator>
 		
 	</extension>
+ <extension
+       point="org.eclipse.emf.ecore.generated_package">
+    <package
+          class="org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage"
+          genModel="model/old_coreModels.genmodel"
+          uri="http://org.eclipse.jpt.core/old_java.ecore">
+    </package>
+ </extension>
 	
 	
 </plugin>
