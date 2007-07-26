@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -213,15 +214,15 @@ public class NullTypeMapping extends JpaEObject
 
 	public void javaElementChanged(ElementChangedEvent event) {}
 
-	public Iterator associatedTableNamesIncludingInherited() {
+	public Iterator<String> associatedTableNamesIncludingInherited() {
 		return EmptyIterator.instance();
 	}
 
-	public Iterator associatedTables() {
+	public Iterator<ITable> associatedTables() {
 		return EmptyIterator.instance();
 	}
 
-	public Iterator associatedTablesIncludingInherited() {
+	public Iterator<ITable> associatedTablesIncludingInherited() {
 		return EmptyIterator.instance();
 	}
 
