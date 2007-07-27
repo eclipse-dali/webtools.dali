@@ -96,7 +96,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	
 	private IContext context;
 	
-	public BaseJpaPlatform() {
+	protected BaseJpaPlatform() {
 		super();
 		this.jpaFactory = createJpaFactory();
 	}
