@@ -49,6 +49,8 @@ public interface IJpaPlatformUi
 	 */
 	ListIterator<IAttributeMappingUiProvider> defaultJavaAttributeMappingUiProviders();
 
+	IJpaUiFactory getJpaUiFactory();
+
 	void generateDDL(IJpaProject project, IStructuredSelection selection);
 	
 	void generateEntities(IJpaProject project, IStructuredSelection selection);

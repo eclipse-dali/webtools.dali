@@ -53,12 +53,21 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 	private List<IAttributeMappingUiProvider> javaAttributeMappingUiProviders;
 	private List<IAttributeMappingUiProvider> defaultJavaAttributeMappingUiProviders;
 	
+	private IJpaUiFactory jpaUiFactory;
+	
 	protected BaseJpaPlatformUi() {
 		super();
+		this.jpaUiFactory = createJpaUiFactory();
 	}
 
 	// ********** behavior **********
 	
+	protected abstract IJpaUiFactory createJpaUiFactory();
+
+	public IJpaUiFactory getJpaUiFactory() {
+		return this.jpaUiFactory;
+	}
+
 	public Iterator<IJpaDetailsProvider> detailsProviders() {
 		if (this.detailsProviders == null) {
 			this.detailsProviders = new ArrayList<IJpaDetailsProvider>();

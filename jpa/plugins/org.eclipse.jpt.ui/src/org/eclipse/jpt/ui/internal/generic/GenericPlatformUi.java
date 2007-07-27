@@ -10,11 +10,12 @@
 package org.eclipse.jpt.ui.internal.generic;
 
 import java.text.MessageFormat;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.ui.internal.BaseJpaPlatformUi;
+import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
+import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -23,6 +24,11 @@ public class GenericPlatformUi extends BaseJpaPlatformUi
 {
 	public GenericPlatformUi() {
 		super();
+	}
+	
+	@Override
+	protected IJpaUiFactory createJpaUiFactory() {
+		return new GenericJpaUiFactory();
 	}
 	
 	public void generateDDL(IJpaProject project, IStructuredSelection selection) {

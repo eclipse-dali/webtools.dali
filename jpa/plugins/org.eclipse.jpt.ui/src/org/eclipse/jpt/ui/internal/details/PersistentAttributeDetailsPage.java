@@ -28,7 +28,10 @@ import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
+import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
+import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -58,6 +61,15 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 		super(parent, SWT.NONE, new BasicCommandStack(), widgetFactory);
 		this.persistentAttributeListener = buildAttributeListener();
 		this.mappingComposites = new HashMap<String, IJpaComposite<IAttributeMapping>>();
+	}
+	
+	protected IJpaPlatformUi jpaPlatformUi() {
+		String platformId = getAttribute().getJpaProject().getPlatform().getId();
+		return PlatformRegistry.instance().getJpaPlatform(platformId);
+	}
+
+	protected IJpaUiFactory jpaUiFactory() {
+		return jpaPlatformUi().getJpaUiFactory();
 	}
 	
 	protected abstract ListIterator<IAttributeMappingUiProvider> attributeMappingUiProviders();
@@ -152,10 +164,10 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 	
 	protected IJpaComposite<IAttributeMapping> buildMappingComposite(PageBook pageBook, String key) {
 		if (this.attributeMapping == null || this.attributeMapping.isDefault()) {
-			return defaultAttributeMappingUiProvider(key).buildAttributeMappingComposite(pageBook, this.commandStack, getWidgetFactory());
+			return defaultAttributeMappingUiProvider(key).buildAttributeMappingComposite(jpaUiFactory(), pageBook, this.commandStack, getWidgetFactory());
 		}
 
-		return attributeMappingUiProvider(key).buildAttributeMappingComposite(pageBook, this.commandStack, getWidgetFactory());
+		return attributeMappingUiProvider(key).buildAttributeMappingComposite(jpaUiFactory(), pageBook, this.commandStack, getWidgetFactory());
 	}
 		
 	void mappingChanged(SelectionChangedEvent event) {

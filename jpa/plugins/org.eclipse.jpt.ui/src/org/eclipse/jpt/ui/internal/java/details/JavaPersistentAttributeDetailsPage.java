@@ -11,8 +11,6 @@ package org.eclipse.jpt.ui.internal.java.details;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
-import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
-import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.NullAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
@@ -31,14 +29,10 @@ public class JavaPersistentAttributeDetailsPage
 		super(parent, widgetFactory);
 	}
 	
-	protected IJpaPlatformUi getJpaPlatformUi() {
-		String platformId = getAttribute().getJpaProject().getPlatform().getId();
-		return PlatformRegistry.instance().getJpaPlatform(platformId);
-	}
 	
 	@Override
 	protected ListIterator<IAttributeMappingUiProvider> attributeMappingUiProviders() {
-		return getJpaPlatformUi().javaAttributeMappingUiProviders();
+		return jpaPlatformUi().javaAttributeMappingUiProviders();
 	}
 	
 	protected IAttributeMappingUiProvider nullAttributeMappingUiProvider() {
@@ -47,7 +41,7 @@ public class JavaPersistentAttributeDetailsPage
 
 	@Override
 	protected ListIterator<IAttributeMappingUiProvider> defaultAttributeMappingUiProviders() {
-		return getJpaPlatformUi().defaultJavaAttributeMappingUiProviders();
+		return jpaPlatformUi().defaultJavaAttributeMappingUiProviders();
 	}
 
 
