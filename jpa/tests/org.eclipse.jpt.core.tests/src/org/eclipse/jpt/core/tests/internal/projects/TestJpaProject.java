@@ -17,12 +17,17 @@ public class TestJpaProject extends TestJavaProject {
 	private IJpaProject jpaProject;
 
 	public static final String JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
+	
+	
+	// ********** builders *****************************
+	
+	public static TestJpaProject buildJpaProject(String baseProjectName, boolean autoBuild)
+			throws CoreException {
+		String projectName = baseProjectName + String.valueOf(System.currentTimeMillis()).substring(7);
+		return new TestJpaProject(baseProjectName, autoBuild);
+	}
 
 	// ********** constructors/initialization **********
-
-	public TestJpaProject() throws CoreException {
-		this("TestJpaProject");
-	}
 
 	public TestJpaProject(String projectName) throws CoreException {
 		this(projectName, false);
