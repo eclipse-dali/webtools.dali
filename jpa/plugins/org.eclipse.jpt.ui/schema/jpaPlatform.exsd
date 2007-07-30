@@ -64,7 +64,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.eclipse.jpt.ui.internal.IJpaPlatformUI"/>
+                  <meta.attribute kind="java" basedOn="org.eclipse.jpt.ui.internal.IJpaPlatformUi"/>
                </appInfo>
             </annotation>
          </attribute>
