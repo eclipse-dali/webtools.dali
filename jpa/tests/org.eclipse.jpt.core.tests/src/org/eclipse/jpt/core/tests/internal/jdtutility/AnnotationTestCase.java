@@ -30,6 +30,7 @@ import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
@@ -69,6 +70,7 @@ public abstract class AnnotationTestCase extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		ProjectUtility.deleteAllProjects();
 		this.javaProject = this.buildJavaProject(PROJECT_NAME, false);  // false = no auto-build
 	}
 
@@ -79,7 +81,7 @@ public abstract class AnnotationTestCase extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 //		this.dumpSource();
-		this.javaProject.dispose();
+//		this.javaProject.dispose();
 		this.javaProject = null;
 		super.tearDown();
 	}
