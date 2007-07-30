@@ -165,17 +165,8 @@ public class JpaModel extends JpaEObject implements IJpaModel
 	 */
 	void dispose() {
 		for (Iterator<IJpaProject> stream = new CloneIterator<IJpaProject>(getProjects()); stream.hasNext();) {
-			disposeProject((JpaProject) stream.next());
+			((JpaProject) stream.next()).dispose();
 		}
-	}
-
-	/**
-	 * INTERNAL ONLY
-	 * Dispose project and remove it
-	 */
-	void disposeProject(JpaProject jpaProject) {
-		jpaProject.dispose();
-		getProjects().remove(jpaProject);
 	}
 
 	/**

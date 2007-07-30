@@ -202,7 +202,7 @@ public class JpaModelManager
 	 * Dispose the IJpaProject
 	 */
 	public void disposeJpaProject(IJpaProject jpaProject) {
-		model.disposeProject((JpaProject) jpaProject);
+		((JpaProject) jpaProject).dispose();
 	}
 	
 	/**
@@ -407,7 +407,7 @@ public class JpaModelManager
 								else {
 									// project has been closed.  dispose jpa project if it exists.
 									if (jpaProject != null) {
-										model.disposeProject(jpaProject);
+										jpaProject.dispose();
 									}
 								}
 							}
@@ -435,7 +435,7 @@ public class JpaModelManager
 		private void projectBeingDeleted(IProject project) {
 			// could be problems here ...
 			JpaProject jpaProject = (JpaProject) model.getJpaProject(project);
-			model.disposeProject(jpaProject);
+			jpaProject.dispose();
 		}
 		
 		/**

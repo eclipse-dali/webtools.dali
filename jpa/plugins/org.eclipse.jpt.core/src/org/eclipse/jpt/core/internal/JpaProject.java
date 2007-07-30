@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -50,6 +49,7 @@ import org.eclipse.jpt.core.internal.facet.JpaFacetUtils;
 import org.eclipse.jpt.core.internal.platform.IContext;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.JptDbPlugin;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -182,7 +182,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	}
 
 	private Job buildResynchJob() {
-		return new Job("Resynching JPA model ...") {
+		Job job = new Job("Resynching JPA model ...") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				IContext contextHierarchy = getPlatform().buildProjectContext();
@@ -190,6 +190,8 @@ public class JpaProject extends JpaEObject implements IJpaProject
 				return Status.OK_STATUS;
 			}
 		};
+		job.setRule(project);
+		return job;
 	}
 
 	private IJobChangeListener buildResynchJobListener() {
@@ -198,8 +200,11 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			public void done(IJobChangeEvent event) {
 				super.done(event);
 				if (event.getJob() == JpaProject.this.resynchJob) {
-					JpaProject.this.resynching = false;
-					if (JpaProject.this.needsToResynch) {
+					resynching = false;
+					if (event.getResult().matches(IStatus.CANCEL)) {
+						needsToResynch = false;
+					}
+					else if (needsToResynch) {
 						resynch();
 					}
 				}
@@ -565,22 +570,26 @@ public class JpaProject extends JpaEObject implements IJpaProject
 
 	/**
 	 * INTERNAL ONLY
-	 * Dispose of project before it is removed
+	 * Dispose and remove project
 	 */
 	void dispose() {
-		for (Iterator<IJpaFile> stream = new CloneIterator<IJpaFile>(getFiles()); stream.hasNext();) {
-			disposeFile((JpaFile) stream.next());
-		}
-		Job.getJobManager().removeJobChangeListener(this.resynchJobListener);
+		Job job = new Job("Disposing JPA project ...") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				dispose_();
+				return Status.OK_STATUS;
+			}
+		};
+		job.setRule(project);
+		job.schedule();
 	}
-
-	/**
-	 * INTERNAL ONLY
-	 * Dispose file and remove it
-	 */
-	void disposeFile(JpaFile jpaFile) {
-		jpaFile.dispose();
-		getFiles().remove(jpaFile);
+	
+	private void dispose_() {
+		Job.getJobManager().removeJobChangeListener(resynchJobListener);
+		for (IJpaFile jpaFile : CollectionTools.collection(getFiles())) {
+			((JpaFile) jpaFile).dispose();
+		}
+		((JpaModel) getModel()).getProjects().remove(this);
 	}
 
 	/**
@@ -611,7 +620,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 						case IResourceDelta.REMOVED :
 							JpaFile jpaFile = (JpaFile) getJpaFile(file);
 							if (jpaFile != null) {
-								disposeFile(jpaFile);
+								jpaFile.dispose();
 								JpaProject.this.resynch();//TODO different api for this?
 							}
 							break;
