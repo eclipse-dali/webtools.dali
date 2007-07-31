@@ -5,7 +5,8 @@
     creationCommands="false" creationIcons="false" editDirectory="" editorDirectory=""
     modelPluginID="org.eclipse.jpt.core" modelName="Core" editPluginClass="" editorPluginClass=""
     suppressInterfaces="true" codeFormatting="true" testsDirectory="" testSuiteClass=""
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
+    usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
   <foreignModel>old_core.ecore</foreignModel>
   <foreignModel>old_java.ecore</foreignModel>
   <foreignModel>old_orm.ecore</foreignModel>
