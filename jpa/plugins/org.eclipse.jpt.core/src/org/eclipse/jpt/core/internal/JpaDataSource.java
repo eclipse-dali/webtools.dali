@@ -196,8 +196,14 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 		getProject().resynch();
 	}
 
-	public Connection getConnection() {
-		return ConnectionProfileRepository.instance().getConnectionWithProfileNamed(getConnectionProfileName());
+	public boolean isConnected() {
+		ConnectionProfile profile = ConnectionProfileRepository.instance().profileNamed(getConnectionProfileName());
+		return profile.isConnected();
+	}
+
+	public boolean hasAConnection() {
+		ConnectionProfile profile = ConnectionProfileRepository.instance().profileNamed(getConnectionProfileName());
+		return !profile.isNull();
 	}
 
 	/**

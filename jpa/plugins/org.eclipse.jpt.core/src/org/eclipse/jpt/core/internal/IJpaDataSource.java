@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import org.eclipse.jpt.db.internal.Connection;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,5 +32,7 @@ public interface IJpaDataSource extends IJpaEObject
 
 	void setConnectionProfileName(String newConnectionProfileName);
 
-	Connection getConnection();
+	boolean isConnected();
+	
+	boolean hasAConnection();
 }
