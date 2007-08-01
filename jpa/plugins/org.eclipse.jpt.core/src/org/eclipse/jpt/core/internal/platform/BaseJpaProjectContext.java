@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Path;
@@ -28,7 +29,6 @@ import org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceXmlRootContentNode;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.db.internal.Connection;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -275,8 +275,7 @@ public class BaseJpaProjectContext extends BaseContext
 	protected boolean okToProceedForConnectionValidation = true;
 	
 	protected void addNoConnectionMessage(List<IMessage> messages) {
-		Connection connection = jpaProject.getDataSource().getConnection();
-		if (connection == null) {
+		if (! jpaProject.getDataSource().hasAConnection()) {
 			messages.add(
 					JpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
@@ -288,8 +287,7 @@ public class BaseJpaProjectContext extends BaseContext
 	}
 	
 	protected void addInactiveConnectionMessage(List<IMessage> messages) {
-		Connection connection = jpaProject.getDataSource().getConnection();
-		if (okToProceedForConnectionValidation && ! connection.isConnected()) {
+		if (okToProceedForConnectionValidation && ! jpaProject.getDataSource().isConnected()) {
 			messages.add(
 					JpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,

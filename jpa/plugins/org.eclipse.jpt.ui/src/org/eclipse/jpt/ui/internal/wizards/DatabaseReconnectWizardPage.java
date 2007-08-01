@@ -45,7 +45,7 @@ import org.eclipse.ui.PlatformUI;
 public class DatabaseReconnectWizardPage extends WizardPage {
 	private IJpaProject jpaProject;
 
-	private Connection connection;
+	private ConnectionProfile profile;
 	private ConnectionListener connectionListener;
 	private DatabaseGroup databaseGroup;
 
@@ -131,8 +131,8 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 
 	private void removeConnectionListener() {
 		if ( this.connectionListener != null) {
-			if ( this.connection != null) {
-				this.connection.removeConnectionListener( this.connectionListener);
+			if ( this.profile != null) {
+				this.profile.removeConnectionListener( this.connectionListener);
 			}
 			this.connectionListener = null;
 		}
@@ -237,16 +237,14 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		}
 
 		private void openConnectionProfileNamed( String connectionProfileName) {
-			if( DatabaseReconnectWizardPage.this.connection != null) {
-				DatabaseReconnectWizardPage.this.removeConnectionListener();
-			}
-			ConnectionProfile profile = JptDbPlugin.getDefault().getConnectionProfileRepository().profileNamed( connectionProfileName);
-			profile.connect();
-			DatabaseReconnectWizardPage.this.connection = profile.getConnection();
-			if( DatabaseReconnectWizardPage.this.connection != null) {
+			DatabaseReconnectWizardPage.this.removeConnectionListener();
+
+			DatabaseReconnectWizardPage.this.profile = JptDbPlugin.getDefault().getConnectionProfileRepository().profileNamed( connectionProfileName);
+			DatabaseReconnectWizardPage.this.profile.connect();
+			if( DatabaseReconnectWizardPage.this.profile.isConnected()) {
 				this.populateSchemaCombo();
 				DatabaseReconnectWizardPage.this.connectionListener = this.buildConnectionListener();
-				DatabaseReconnectWizardPage.this.connection.addConnectionListener( DatabaseReconnectWizardPage.this.connectionListener);
+				DatabaseReconnectWizardPage.this.profile.addConnectionListener( DatabaseReconnectWizardPage.this.connectionListener);
 			}
 			return;
 		}
@@ -329,13 +327,13 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 				}
 
 				public void opened( Connection connection) {
-					if( DatabaseReconnectWizardPage.this.connection.equals( connection)) {
+					if( DatabaseReconnectWizardPage.this.profile.contains( connection)) {
 						DatabaseGroup.this.populateSchemaCombo();
 					}
 				}
 
 				public void aboutToClose( Connection connection) {
-					if( DatabaseReconnectWizardPage.this.connection.equals( connection)) {
+					if( DatabaseReconnectWizardPage.this.profile.contains( connection)) {
 						DatabaseReconnectWizardPage.this.removeConnectionListener();
 					}
 				}

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.facet;
 
 import java.util.Arrays;
 import java.util.Set;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
@@ -151,7 +152,7 @@ public class JpaFacetDataModelProvider
 	}
 	
 	private IStatus validateConnection(String connectionName) {
-		if (connectionName == null || connectionName.equals("") || ! ConnectionProfileRepository.instance().getConnectionWithProfileNamed(connectionName).isConnected()) {
+		if (connectionName == null || connectionName.equals("") || ! ConnectionProfileRepository.instance().profileNamed(connectionName).isConnected()) {
 			return new Status(IStatus.INFO, JptCorePlugin.PLUGIN_ID, JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED);
 		}
 		else {

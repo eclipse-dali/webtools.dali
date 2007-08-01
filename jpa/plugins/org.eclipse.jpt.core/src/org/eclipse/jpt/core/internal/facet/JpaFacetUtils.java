@@ -99,7 +99,7 @@ public class JpaFacetUtils
 			throw new IllegalArgumentException(project.getName());
 		}
 		
-		if (ConnectionProfileRepository.instance().getConnectionWithProfileNamed(connectionName) == null) {
+		if (ConnectionProfileRepository.instance().profileNamed(connectionName).isNull()) {
 			throw new IllegalArgumentException(connectionName);
 		}
 		
