@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="java"
-    nsURI="jpt.java.xmi" nsPrefix="org.eclipse.jpt.core.content.java">
+    nsURI="http://org.eclipse.jpt.core/old_java.ecore" nsPrefix="org.eclipse.jpt.core.content.java">
   <eClassifiers xsi:type="ecore:EClass" name="JavaEObject" abstract="true" eSuperTypes="old_core.ecore#//JpaEObject old_core.ecore#//IJpaSourceObject">
     <eOperations name="getJpaFile" eType="ecore:EClass old_core.ecore#//IJpaFile"/>
     <eOperations name="getRoot" eType="ecore:EClass old_core.ecore#//IJpaRootContentNode"/>
@@ -34,29 +34,55 @@
     <eOperations name="initialize"/>
   </eClassifiers>
   <eSubpackages name="mappings" nsURI="jpt.core.java.mappings.xmi" nsPrefix="jpt.core.java.mappings">
+    <eClassifiers xsi:type="ecore:EClass" name="IJavaEntity" abstract="true" interface="true"
+        eSuperTypes="#//IJavaTypeMapping old_core.ecore#//mappings/IEntity"/>
+    <eClassifiers xsi:type="ecore:EClass" name="IJavaEmbeddable" abstract="true" interface="true"
+        eSuperTypes="#//IJavaTypeMapping old_core.ecore#//mappings/IEmbeddable"/>
+    <eClassifiers xsi:type="ecore:EClass" name="IJavaMappedSuperclass" abstract="true"
+        interface="true" eSuperTypes="#//IJavaTypeMapping old_core.ecore#//mappings/IMappedSuperclass"/>
+    <eClassifiers xsi:type="ecore:EClass" name="IJavaBasic" abstract="true" interface="true"
+        eSuperTypes="#//IJavaAttributeMapping old_core.ecore#//mappings/IBasic"/>
+    <eClassifiers xsi:type="ecore:EClass" name="IJavaEmbedded" abstract="true" interface="true"
+        eSuperTypes="#//IJavaAttributeMapping old_core.ecore#//mappings/IEmbedded"/>
+    <eClassifiers xsi:type="ecore:EClass" name="IJavaEmbeddedId" abstract="true" interface="true"
+        eSuperTypes="#//IJavaAttributeMapping old_core.ecore#//mappings/IEmbeddedId"/>
+    <eClassifiers xsi:type="ecore:EClass" name="IJavaId" abstract="true" interface="true"
+        eSuperTypes="#//IJavaAttributeMapping old_core.ecore#//mappings/IId"/>
+    <eClassifiers xsi:type="ecore:EClass" name="IJavaManyToMany" abstract="true" interface="true"
+        eSuperTypes="#//IJavaAttributeMapping old_core.ecore#//mappings/IManyToMany"/>
+    <eClassifiers xsi:type="ecore:EClass" name="IJavaManyToOne" abstract="true" interface="true"
+        eSuperTypes="#//IJavaAttributeMapping old_core.ecore#//mappings/IManyToOne"/>
+    <eClassifiers xsi:type="ecore:EClass" name="IJavaOneToMany" abstract="true" interface="true"
+        eSuperTypes="#//IJavaAttributeMapping old_core.ecore#//mappings/IOneToMany"/>
+    <eClassifiers xsi:type="ecore:EClass" name="IJavaOneToOne" abstract="true" interface="true"
+        eSuperTypes="#//IJavaAttributeMapping old_core.ecore#//mappings/IOneToOne"/>
+    <eClassifiers xsi:type="ecore:EClass" name="IJavaTransient" abstract="true" interface="true"
+        eSuperTypes="#//IJavaAttributeMapping old_core.ecore#//mappings/ITransient"/>
+    <eClassifiers xsi:type="ecore:EClass" name="IJavaVersion" abstract="true" interface="true"
+        eSuperTypes="#//IJavaAttributeMapping old_core.ecore#//mappings/IVersion"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaTypeMapping" abstract="true" eSuperTypes="#//JavaEObject #//IJavaTypeMapping"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaEntity" eSuperTypes="#//mappings/JavaTypeMapping old_core.ecore#//mappings/IEntity"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaMappedSuperclass" eSuperTypes="#//mappings/JavaTypeMapping old_core.ecore#//mappings/IMappedSuperclass"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaEmbeddable" eSuperTypes="#//mappings/JavaTypeMapping old_core.ecore#//mappings/IEmbeddable"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaEntity" eSuperTypes="#//mappings/JavaTypeMapping #//mappings/IJavaEntity"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaMappedSuperclass" eSuperTypes="#//mappings/JavaTypeMapping #//mappings/IJavaMappedSuperclass"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaEmbeddable" eSuperTypes="#//mappings/JavaTypeMapping #//mappings/IJavaEmbeddable"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaNullTypeMapping" eSuperTypes="#//mappings/JavaTypeMapping"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaAttributeMapping" abstract="true"
         eSuperTypes="#//JavaEObject #//IJavaAttributeMapping"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaBasic" eSuperTypes="#//mappings/JavaAttributeMapping old_core.ecore#//mappings/IBasic"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaId" eSuperTypes="#//mappings/JavaAttributeMapping old_core.ecore#//mappings/IId"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaTransient" eSuperTypes="#//mappings/JavaAttributeMapping old_core.ecore#//mappings/ITransient"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaVersion" eSuperTypes="#//mappings/JavaAttributeMapping old_core.ecore#//mappings/IVersion"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaEmbeddedId" eSuperTypes="#//mappings/JavaAttributeMapping old_core.ecore#//mappings/IEmbeddedId"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaEmbedded" eSuperTypes="#//mappings/JavaAttributeMapping old_core.ecore#//mappings/IEmbedded"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaBasic" eSuperTypes="#//mappings/JavaAttributeMapping #//mappings/IJavaBasic"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaId" eSuperTypes="#//mappings/JavaAttributeMapping #//mappings/IJavaId"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaTransient" eSuperTypes="#//mappings/JavaAttributeMapping #//mappings/IJavaTransient"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaVersion" eSuperTypes="#//mappings/JavaAttributeMapping #//mappings/IJavaVersion"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaEmbeddedId" eSuperTypes="#//mappings/JavaAttributeMapping #//mappings/IJavaEmbeddedId"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaEmbedded" eSuperTypes="#//mappings/JavaAttributeMapping #//mappings/IJavaEmbedded"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaRelationshipMapping" abstract="true"
         eSuperTypes="#//mappings/JavaAttributeMapping old_core.ecore#//mappings/IRelationshipMapping"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaSingleRelationshipMapping" abstract="true"
         eSuperTypes="#//mappings/JavaRelationshipMapping old_core.ecore#//mappings/ISingleRelationshipMapping"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaManyToOne" eSuperTypes="#//mappings/JavaSingleRelationshipMapping old_core.ecore#//mappings/IManyToOne"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaOneToOne" eSuperTypes="#//mappings/JavaSingleRelationshipMapping old_core.ecore#//mappings/IOneToOne"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaManyToOne" eSuperTypes="#//mappings/JavaSingleRelationshipMapping #//mappings/IJavaManyToOne"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaOneToOne" eSuperTypes="#//mappings/JavaSingleRelationshipMapping #//mappings/IJavaOneToOne"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaMultiRelationshipMapping" abstract="true"
         eSuperTypes="#//mappings/JavaRelationshipMapping old_core.ecore#//mappings/IMultiRelationshipMapping"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaOneToMany" eSuperTypes="#//mappings/JavaMultiRelationshipMapping old_core.ecore#//mappings/IOneToMany"/>
-    <eClassifiers xsi:type="ecore:EClass" name="JavaManyToMany" eSuperTypes="#//mappings/JavaMultiRelationshipMapping old_core.ecore#//mappings/IManyToMany"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaOneToMany" eSuperTypes="#//mappings/JavaMultiRelationshipMapping #//mappings/IJavaOneToMany"/>
+    <eClassifiers xsi:type="ecore:EClass" name="JavaManyToMany" eSuperTypes="#//mappings/JavaMultiRelationshipMapping #//mappings/IJavaManyToMany"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaNullAttributeMapping" eSuperTypes="#//mappings/JavaAttributeMapping"/>
     <eClassifiers xsi:type="ecore:EClass" name="AbstractJavaTable" abstract="true"
         eSuperTypes="#//JavaEObject old_core.ecore#//mappings/ITable"/>

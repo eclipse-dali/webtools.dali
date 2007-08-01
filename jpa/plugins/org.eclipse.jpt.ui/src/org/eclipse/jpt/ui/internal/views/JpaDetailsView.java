@@ -105,7 +105,7 @@ public class JpaDetailsView extends AbstractJpaView
 		
 		if (provider == null) {
 			String platformId = contentNode.getJpaProject().getPlatform().getId();
-			IJpaPlatformUi jpaPlatformUI = PlatformRegistry.instance().getJpaPlatform(platformId);
+			IJpaPlatformUi jpaPlatformUI = PlatformRegistry.INSTANCE.getJpaPlatform(platformId);
 			for (IJpaDetailsProvider p : jpaPlatformUI.detailsProviders()) {
 				if (p.fileContentType().equals(contentId)) {
 					provider = p;

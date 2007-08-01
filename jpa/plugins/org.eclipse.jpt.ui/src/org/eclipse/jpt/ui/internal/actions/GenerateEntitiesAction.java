@@ -28,7 +28,7 @@ public class GenerateEntitiesAction extends ProjectAction {
 	}
 	
 	private IJpaPlatformUi jpaPlatformUI(String vendorId) {
-        return PlatformRegistry.instance().getJpaPlatform(vendorId); 
+        return PlatformRegistry.INSTANCE.getJpaPlatform(vendorId); 
 	}
 
 }

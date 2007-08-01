@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.iterators;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 
@@ -49,7 +51,7 @@ public class CloneListIterator<E>
 	 * The modification methods will not be supported,
 	 * unless a subclass overrides them.
 	 */
-	public CloneListIterator(List<E> list) {
+	public CloneListIterator(List<? extends E> list) {
 		this(list, Mutator.ReadOnly.<E>instance());
 	}
 
@@ -57,15 +59,19 @@ public class CloneListIterator<E>
 	 * Construct a list iterator on a copy of the specified list.
 	 * Use the specified list mutator to modify the original list.
 	 */
-	@SuppressWarnings("unchecked")
-	public CloneListIterator(List<E> list, Mutator<E> mutator) {
+	public CloneListIterator(List<? extends E> list, Mutator<E> mutator) {
 		super();
 		// build a copy of the list and keep it in synch with original (if the mutator allows changes)
 		// that way the nested list iterator will maintain some of our state
-		this.nestedListIterator = CollectionTools.list((E[]) list.toArray()).listIterator();
+		this.nestedListIterator = CollectionTools.list(buildArray(list)).listIterator();
 		this.mutator = mutator;
 		this.cursor = 0;
 		this.state = UNKNOWN;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T> T[] buildArray(Collection<? extends T> c) {
+		return (T[]) c.toArray();
 	}
 
 
@@ -163,6 +169,9 @@ public class CloneListIterator<E>
 	protected void set(int index, E o) {
 		this.mutator.set(index, o);
 	}
+
+
+	// ********** overrides **********
 
 	@Override
 	public String toString() {

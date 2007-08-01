@@ -105,6 +105,21 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(Arrays.equals(new int[] { 1, 2, 99, 3, 4 }, a));
 	}
 
+	public void testAddAllCollectionIterable() {
+		List<String> l1 = this.buildStringList1();
+		Iterable<String> i2 = this.buildStringList2();
+		Set<String> s1 = this.buildStringSet1();
+		Iterable<String> i3 = this.buildStringList1(); // same elements as s1
+
+		assertTrue(CollectionTools.addAll(l1, i2.iterator()));
+		assertEquals(6, l1.size());
+		assertTrue(l1.containsAll(this.buildStringList2()));
+
+		assertFalse(CollectionTools.addAll(s1, i3.iterator()));
+		assertEquals(3, s1.size());
+		assertTrue(s1.containsAll(this.buildStringList1()));
+	}
+
 	public void testAddAllCollectionIterator1() {
 		List<String> l1 = this.buildStringList1();
 		List<String> l2 = this.buildStringList2();
@@ -179,6 +194,15 @@ public class CollectionToolsTests extends TestCase {
 
 		assertEquals(6, newArray.length);
 		assertTrue(CollectionTools.containsAll(newArray, c));
+	}
+
+	public void testAddAllObjectArrayIterable() {
+		String[] a = this.buildStringArray1();
+		Iterable<String> i = this.buildStringList1();
+		String[] newArray = CollectionTools.addAll(a, i);
+
+		assertEquals(6, newArray.length);
+		assertTrue(CollectionTools.containsAll(newArray, this.buildStringList1()));
 	}
 
 	public void testAddAllObjectArrayIterator1() {
@@ -283,6 +307,27 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(Arrays.equals(new int[] { 1, 2, 99, 99, 99, 3, 4 }, a));
 	}
 
+	public void testArrayIterable() {
+		Iterable<String> iterable = this.buildStringList1();
+		Object[] a = CollectionTools.array(iterable);
+		assertEquals(3, a.length);
+		assertTrue(CollectionTools.containsAll(a, this.buildStringList1().iterator()));
+	}
+
+	public void testArrayIterableObjectArray1() {
+		Iterable<String> iterable = this.buildStringList1();
+		String[] a = CollectionTools.array(iterable, new String[0]);
+		assertEquals(3, a.length);
+		assertTrue(CollectionTools.containsAll(a, this.buildStringList1().iterator()));
+	}
+
+	public void testArrayIterableObjectArray2() {
+		Iterable<String> iterable = this.buildStringList1();
+		Object[] a = CollectionTools.array(iterable, new Object[0]);
+		assertEquals(3, a.length);
+		assertTrue(CollectionTools.containsAll(a, this.buildStringList1().iterator()));
+	}
+
 	public void testArrayIterator() {
 		Object[] a = CollectionTools.array(this.buildStringList1().iterator());
 		assertEquals(3, a.length);
@@ -311,6 +356,13 @@ public class CollectionToolsTests extends TestCase {
 		Bag<Object> b = CollectionTools.<Object>bag(this.buildStringVector1().elements());
 		assertEquals(3, b.size());
 		assertTrue(b.containsAll(this.buildStringVector1()));
+	}
+
+	public void testBagIterable() {
+		Iterable<String> iterable = this.buildStringList1();
+		Bag<String> b = CollectionTools.bag(iterable);
+		assertEquals(3, b.size());
+		assertTrue(b.containsAll(this.buildStringList1()));
 	}
 
 	public void testBagIterator1() {
@@ -354,6 +406,13 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(c.containsAll(this.buildStringVector1()));
 	}
 
+	public void testCollectionIterable() {
+		Iterable<String> iterable = this.buildStringList1();
+		Collection<String> c = CollectionTools.collection(iterable);
+		assertEquals(3, c.size());
+		assertTrue(c.containsAll(this.buildStringList1()));
+	}
+
 	public void testCollectionIterator1() {
 		Collection<String> c = CollectionTools.collection(this.buildStringList1().iterator());
 		assertEquals(3, c.size());
@@ -391,6 +450,15 @@ public class CollectionToolsTests extends TestCase {
 		assertFalse(CollectionTools.contains(c.elements(), null));
 		c.add(null);
 		assertTrue(CollectionTools.contains(c.elements(), null));
+	}
+
+	public void testContainsIterableObject() {
+		Collection<String> c = this.buildStringList1();
+		Iterable<String> iterable = c;
+		assertTrue(CollectionTools.contains(iterable, "one"));
+		assertFalse(CollectionTools.contains(iterable, null));
+		c.add(null);
+		assertTrue(CollectionTools.contains(iterable, null));
 	}
 
 	public void testContainsIteratorObject1() {
@@ -438,6 +506,11 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(CollectionTools.contains(a2, 55));
 	}
 
+	public void testContainsAllCollectionIterable() {
+		Iterable<String> iterable = this.buildStringList1();
+		assertTrue(CollectionTools.containsAll(this.buildStringList1(), iterable));
+	}
+
 	public void testContainsAllCollectionIterator1() {
 		assertTrue(CollectionTools.containsAll(this.buildStringList1(), this.buildStringList1().iterator()));
 	}
@@ -461,6 +534,27 @@ public class CollectionToolsTests extends TestCase {
 	public void testContainsAllCollectionObjectArray2() {
 		Object[] a = new Object[] { "zero", "one", "two" };
 		assertTrue(CollectionTools.containsAll(this.buildStringList1(), a));
+	}
+
+	public void testContainsAllIterableCollection() {
+		Iterable<String> iterable = this.buildStringList1();
+		assertTrue(CollectionTools.containsAll(iterable, this.buildStringList1()));
+	}
+
+	public void testContainsAllIterableIterable() {
+		Iterable<String> iterable1 = this.buildStringList1();
+		Iterable<String> iterable2 = this.buildStringList1();
+		assertTrue(CollectionTools.containsAll(iterable1, iterable2));
+	}
+
+	public void testContainsAllIterableIterator() {
+		Iterable<String> iterable = this.buildStringList1();
+		assertTrue(CollectionTools.containsAll(iterable, this.buildStringList1().iterator()));
+	}
+
+	public void testContainsAllIterableObjectArray() {
+		Iterable<String> iterable = this.buildStringList1();
+		assertTrue(CollectionTools.containsAll(iterable, this.buildObjectArray1()));
 	}
 
 	public void testContainsAllIteratorCollection1() {
@@ -505,6 +599,11 @@ public class CollectionToolsTests extends TestCase {
 
 	public void testContainsAllObjectArrayIterator() {
 		assertTrue(CollectionTools.containsAll(this.buildObjectArray1(), this.buildStringList1().iterator()));
+	}
+
+	public void testContainsAllObjectArrayIterable() {
+		Iterable<String> iterable = this.buildStringList1();
+		assertTrue(CollectionTools.containsAll(this.buildObjectArray1(), iterable));
 	}
 
 	public void testContainsAllObjectArrayObjectArray() {
@@ -1150,6 +1249,14 @@ public class CollectionToolsTests extends TestCase {
 		assertEquals(6, CollectionTools.insertionIndexOf(a, "A", c));
 	}
 
+	public void testIterableObjectArray() {
+		String[] strings = this.buildStringArray1();
+		int i = 0;
+		for (String string : CollectionTools.iterable(strings)) {
+			assertEquals(strings[i++], string);
+		}
+	}
+
 	public void testIteratorObjectArray() {
 		String[] a = this.buildStringArray1();
 		int i = 0;
@@ -1184,6 +1291,11 @@ public class CollectionToolsTests extends TestCase {
 		assertEquals(1, CollectionTools.lastIndexOf(a, 10));
 		a = CollectionTools.add(a, 30);
 		assertEquals(a.length - 1, CollectionTools.lastIndexOf(a, 30));
+	}
+
+	public void testListIterable() {
+		Iterable<String> iterable = this.buildStringList1();
+		assertEquals(this.buildStringList1(), CollectionTools.list(iterable));
 	}
 
 	public void testListIterator1() {
@@ -1318,6 +1430,22 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(CollectionTools.contains(a, 50));
 	}
 
+	public void testRemoveAllCollectionIterable() {
+		Collection<String> c = this.buildStringList1();
+		Iterable<String> iterable = this.buildStringList1();
+		assertTrue(CollectionTools.removeAll(c, iterable));
+		assertEquals(0, c.size());
+		assertFalse(c.contains("one"));
+		assertFalse(c.contains("two"));
+		assertFalse(c.contains("three"));
+
+		c = this.buildStringList1();
+		iterable = this.buildStringList2();
+		assertFalse(CollectionTools.removeAll(c, iterable));
+		assertEquals(this.buildStringList1().size(), c.size());
+		assertEquals(this.buildStringList1(), c);
+	}
+
 	public void testRemoveAllCollectionIterator1() {
 		Collection<String> c = this.buildStringList1();
 		assertTrue(CollectionTools.removeAll(c, this.buildStringList1().iterator()));
@@ -1341,14 +1469,16 @@ public class CollectionToolsTests extends TestCase {
 		c.add("d");
 		c.add("d");
 		String[] a = new String[] { "a", "d" };
-		assertTrue(CollectionTools.removeAll(c, new ArrayIterator<String>(a)));
+		Iterator<String> iterator = new ArrayIterator<String>(a);
+		assertTrue(CollectionTools.removeAll(c, iterator));
 		assertEquals(2, c.size());
 		assertFalse(c.contains("a"));
 		assertTrue(c.contains("b"));
 		assertTrue(c.contains("c"));
 		assertFalse(c.contains("d"));
 
-		assertFalse(CollectionTools.removeAll(c, new ArrayIterator<String>(a)));
+		iterator = new ArrayIterator<String>(a);
+		assertFalse(CollectionTools.removeAll(c, iterator));
 	}
 
 	public void testRemoveAllCollectionIterator3() {
@@ -1360,14 +1490,16 @@ public class CollectionToolsTests extends TestCase {
 		c.add("d");
 		c.add("d");
 		String[] a = new String[] { "a", "d" };
-		assertTrue(CollectionTools.removeAll(c, new ArrayIterator<String>(a)));
+		Iterator<String> iterator = new ArrayIterator<String>(a);
+		assertTrue(CollectionTools.removeAll(c, iterator));
 		assertEquals(2, c.size());
 		assertFalse(c.contains("a"));
 		assertTrue(c.contains("b"));
 		assertTrue(c.contains("c"));
 		assertFalse(c.contains("d"));
 
-		assertFalse(CollectionTools.removeAll(c, new ArrayIterator<String>(a)));
+		iterator = new ArrayIterator<String>(a);
+		assertFalse(CollectionTools.removeAll(c, iterator));
 	}
 
 	public void testRemoveAllCollectionObjectArray1() {
@@ -1561,6 +1693,21 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(Arrays.equals(new int[] { 13, 1, 13, 7, 13, 99 }, a));
 	}
 
+	public void testRetainAllCollectionIterable() {
+		Collection<String> c = this.buildStringList1();
+		Iterable<String> iterable = this.buildStringList1();
+		assertFalse(CollectionTools.retainAll(c, iterable));
+		assertEquals(this.buildStringList1().size(), c.size());
+		assertEquals(this.buildStringList1(), c);
+
+		iterable = this.buildStringList2();
+		assertTrue(CollectionTools.retainAll(c, iterable));
+		assertEquals(0, c.size());
+		assertFalse(c.contains("one"));
+		assertFalse(c.contains("two"));
+		assertFalse(c.contains("three"));
+	}
+
 	public void testRetainAllCollectionIterator1() {
 		Collection<String> c = this.buildStringList1();
 		assertFalse(CollectionTools.retainAll(c, this.buildStringList1().iterator()));
@@ -1664,6 +1811,14 @@ public class CollectionToolsTests extends TestCase {
 		assertEquals(0, a[2]);
 	}
 
+	public void testReverseListIterable() {
+		Iterable<String> iterable = this.buildStringList1();
+		List<String> actual = CollectionTools.reverseList(iterable);
+		List<String> expected = this.buildStringList1();
+		Collections.reverse(expected);
+		assertEquals(expected, actual);
+	}
+
 	public void testReverseListIterator1() {
 		List<String> actual = CollectionTools.reverseList(this.buildStringList1().iterator());
 		List<String> expected = this.buildStringList1();
@@ -1726,6 +1881,11 @@ public class CollectionToolsTests extends TestCase {
 		assertEquals(0, a[2]);
 	}
 
+	public void testSetIterable() {
+		Iterable<String> iterable = this.buildStringSet1();
+		assertEquals(this.buildStringSet1(), CollectionTools.set(iterable));
+	}
+
 	public void testSetIterator1() {
 		assertEquals(this.buildStringSet1(), CollectionTools.set(this.buildStringSet1().iterator()));
 	}
@@ -1784,12 +1944,29 @@ public class CollectionToolsTests extends TestCase {
 		assertEquals("foo", stream.next());
 	}
 
+	public void testSizeIterable() {
+		Iterable<Object> iterable = this.buildObjectList1();
+		assertEquals(3, CollectionTools.size(iterable));
+	}
+
 	public void testSizeIterator() {
 		assertEquals(3, CollectionTools.size(this.buildObjectList1().iterator()));
 	}
 
+	public void testSortedSetIterable() {
+		SortedSet<String> ss1 = new TreeSet<String>();
+		ss1.add("0");
+		ss1.add("2");
+		ss1.add("3");
+		ss1.add("1");
+
+		Iterable<String> iterable = ss1;
+		SortedSet<String> set2 = CollectionTools.<String>sortedSet(iterable);
+		assertEquals(ss1, set2);
+	}
+
 	public void testSortedSetIterator1() {
-		assertEquals(this.buildSortedStringSet1(), CollectionTools.set(this.buildSortedStringSet1().iterator()));
+		assertEquals(this.buildSortedStringSet1(), CollectionTools.sortedSet(this.buildSortedStringSet1().iterator()));
 	}
 
 	public void testSortedSetIterator2() {
@@ -1805,6 +1982,51 @@ public class CollectionToolsTests extends TestCase {
 
 	public void testSortedSetObjectArray() {
 		assertEquals(this.buildSortedStringSet1(), CollectionTools.set(this.buildSortedStringSet1().toArray()));
+	}
+
+	public void testSubArrayObjectArrayIntInt() {
+		String[] array = new String[] {"foo", "bar", "baz", "joo", "jar", "jaz"};
+		String[] result = new String[] {"foo", "bar", "baz", "joo"};
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 0, 4)));
+
+		result = new String[] {"jar"};
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 4, 1)));
+
+		result = new String[0];
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 5, 0)));
+
+		result = new String[] {"joo", "jar", "jaz"};
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 3, 3)));
+	}
+
+	public void testSubArrayIntArrayIntInt() {
+		int[] array = new int[] {77, 99, 333, 4, 9090, 42};
+		int[] result = new int[] {77, 99, 333, 4};
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 0, 4)));
+
+		result = new int[] {9090};
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 4, 1)));
+
+		result = new int[0];
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 5, 0)));
+
+		result = new int[] {4, 9090, 42};
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 3, 3)));
+	}
+
+	public void testSubArrayCharArrayIntInt() {
+		char[] array = new char[] {'a', 'b', 'c', 'd', 'e', 'f'};
+		char[] result = new char[] {'a', 'b', 'c', 'd'};
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 0, 4)));
+
+		result = new char[] {'e'};
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 4, 1)));
+
+		result = new char[0];
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 5, 0)));
+
+		result = new char[] {'d', 'e', 'f'};
+		assertTrue(Arrays.equals(result, CollectionTools.subArray(array, 3, 3)));
 	}
 
 	public void testSwapObjectArray() {
@@ -1871,6 +2093,13 @@ public class CollectionToolsTests extends TestCase {
 		assertEquals("one", array[i++]);
 		assertEquals("two", array[i++]);
 		assertEquals(i, array.length);
+	}
+
+	public void testVectorIterable() {
+		Iterable<String> iterable = this.buildStringList1();
+		Vector<String> v = CollectionTools.vector(iterable);
+		assertEquals(3, v.size());
+		assertTrue(v.containsAll(this.buildStringList1()));
 	}
 
 	public void testVectorIterator1() {

@@ -202,7 +202,7 @@ public class JpaStructureView extends AbstractJpaView
 			
 			if (provider == null) {
 				String vendorId = contentNode.getJpaProject().getPlatform().getId();
-				IJpaPlatformUi jpaPlatformUI = PlatformRegistry.instance().getJpaPlatform(vendorId);
+				IJpaPlatformUi jpaPlatformUI = PlatformRegistry.INSTANCE.getJpaPlatform(vendorId);
 				for (IJpaStructureProvider p : jpaPlatformUI.structureProviders()) {
 					if (p.fileContentType().equals(contentId)) {
 						provider = p;

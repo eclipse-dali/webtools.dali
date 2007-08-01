@@ -73,10 +73,10 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 	
 	protected Collection<ITypeMappingUiProvider> buildTypeMappingUiProviders() {
 		Collection<ITypeMappingUiProvider> typeMappingUiProviders = new ArrayList<ITypeMappingUiProvider>();
-		typeMappingUiProviders.add(NullTypeMappingUiProvider.instance());
-		typeMappingUiProviders.add(EntityUiProvider.instance());
-		typeMappingUiProviders.add(MappedSuperclassUiProvider.instance());			
-		typeMappingUiProviders.add(EmbeddableUiProvider.instance());			
+		typeMappingUiProviders.add(new NullTypeMappingUiProvider());
+		typeMappingUiProviders.add(new EntityUiProvider());
+		typeMappingUiProviders.add(new MappedSuperclassUiProvider());			
+		typeMappingUiProviders.add(new EmbeddableUiProvider());			
 		return typeMappingUiProviders;
 	}
 	

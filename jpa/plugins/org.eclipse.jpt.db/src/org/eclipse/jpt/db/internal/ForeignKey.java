@@ -201,7 +201,8 @@ public final class ForeignKey extends DTPWrapper implements Comparable<ForeignKe
 		int size = baseColumns.size();
 		List<org.eclipse.datatools.modelbase.sql.tables.Column> refColumns = this.dtpRefColumns();
 		if (refColumns.size() != size) {
-			throw new IllegalStateException("mismatched sizes: " + size + " vs. " + refColumns.size());
+			throw new IllegalStateException(this.getBaseTable().getName() + "." + this.getName() +
+								" - mismatched sizes: " + size + " vs. " + refColumns.size());
 		}
 		Set<ColumnPair> result = new HashSet<ColumnPair>(baseColumns.size());
 		for (int i = baseColumns.size(); i-- > 0; ) {

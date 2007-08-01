@@ -23,16 +23,8 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 public class PlatformRegistry 
 {
-	// singleton
-	private static final PlatformRegistry INSTANCE = new PlatformRegistry();
-
-	/**
-	 * Return the singleton.
-	 */
-	public static PlatformRegistry instance() {
-		return INSTANCE;
-	}
-
+	public static final PlatformRegistry INSTANCE = new PlatformRegistry();
+	
 	private static final String EXTENSION_ID = 
 		"jpaPlatform"; //$NON-NLS-1$
 	

@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.iterators;
 
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
@@ -22,7 +23,7 @@ public final class EmptyListIterator<E>
 
 	// singleton
 	@SuppressWarnings("unchecked")
-	private static EmptyListIterator INSTANCE = new EmptyListIterator();
+	private static final EmptyListIterator INSTANCE = new EmptyListIterator();
 
 	/**
 	 * Return the singleton.

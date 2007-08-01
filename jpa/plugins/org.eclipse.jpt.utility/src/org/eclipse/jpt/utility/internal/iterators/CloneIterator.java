@@ -45,7 +45,7 @@ public class CloneIterator<E>
 	 * The <code>#remove()</code> method will not be supported,
 	 * unless a subclass overrides the <code>#remove(Object)</code>.
 	 */
-	public CloneIterator(Collection<E> c) {
+	public CloneIterator(Collection<? extends E> c) {
 		this(c, Mutator.ReadOnly.<E>instance());
 	}
 
@@ -54,13 +54,17 @@ public class CloneIterator<E>
 	 * Use the specified mutator to remove objects from the
 	 * original collection.
 	 */
-	@SuppressWarnings("unchecked")
-	public CloneIterator(Collection<E> c, Mutator<E> mutator) {
+	public CloneIterator(Collection<? extends E> c, Mutator<E> mutator) {
 		super();
-		this.nestedIterator = new ArrayIterator<E>((E[]) c.toArray());
+		this.nestedIterator = new ArrayIterator<E>(buildArray(c));
 		this.current = null;
 		this.mutator = mutator;
 		this.removeAllowed = false;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T> T[] buildArray(Collection<? extends T> c) {
+		return (T[]) c.toArray();
 	}
 
 

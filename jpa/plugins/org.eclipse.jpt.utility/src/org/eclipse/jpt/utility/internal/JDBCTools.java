@@ -124,7 +124,7 @@ public final class JDBCTools{
 		addJDBCToJavaTypeMappingTo(Types.LONGVARBINARY, byte[].class, mappings);
 		addJDBCToJavaTypeMappingTo(Types.LONGVARCHAR, java.lang.String.class, mappings);
 		// not sure why this is defined in java.sql.Types
-//		addJDBCMappingTo(Types.NULL, java.lang.Object.class, mappings);
+//		addJDBCToJavaTypeMappingTo(Types.NULL, java.lang.Object.class, mappings);
 		addJDBCToJavaTypeMappingTo(Types.NUMERIC, java.math.BigDecimal.class, mappings);
 		addJDBCToJavaTypeMappingTo(Types.OTHER, java.lang.Object.class, mappings);	// ???
 		addJDBCToJavaTypeMappingTo(Types.REAL, float.class, mappings);

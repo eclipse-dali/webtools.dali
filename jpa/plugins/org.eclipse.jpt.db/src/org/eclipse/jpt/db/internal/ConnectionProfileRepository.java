@@ -77,11 +77,6 @@ public class ConnectionProfileRepository {
 			this.profileListener = null;
 		}
 	}
-
-	public Connection getConnectionWithProfileNamed( String name) {
-		return this.profileNamed( name).getConnection();
-	}
-	
 	
 	@Override
 	public String toString() {

@@ -20,23 +20,6 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class MappedSuperclassUiProvider implements ITypeMappingUiProvider
 {
-	// singleton
-	private static final MappedSuperclassUiProvider INSTANCE = new MappedSuperclassUiProvider();
-
-	/**
-	 * Return the singleton.
-	 */
-	public static ITypeMappingUiProvider instance() {
-		return INSTANCE;
-	}
-
-	/**
-	 * Ensure non-instantiability.
-	 */
-	private MappedSuperclassUiProvider() {
-		super();
-	}
-
 	public String key() {
 		return IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
 	}

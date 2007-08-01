@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.jdtutility;
 
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.Expression;
@@ -25,7 +26,9 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 	/**
 	 * The wrapped adapter that returns and takes name strings (enums).
 	 */
-	private final ConversionDeclarationAnnotationElementAdapter<String[], ArrayInitializer> adapter;
+	private final ConversionDeclarationAnnotationElementAdapter<String[], Expression> adapter;
+
+	private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
 
 	// ********** constructors **********
@@ -40,21 +43,28 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 
 	/**
 	 * The default behavior is to remove the annotation when the last
-	 * element is removed.
+	 * element is removed and remove the array initializer if it is empty.
 	 */
 	public EnumArrayDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		this(annotationAdapter, elementName, true);
 	}
 
+	/**
+	 * The default behavior is to remove the array initializer if it is empty.
+	 */
 	public EnumArrayDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
-		this(new ConversionDeclarationAnnotationElementAdapter<String[], ArrayInitializer>(annotationAdapter, elementName, removeAnnotationWhenEmpty, buildExpressionConverter()));
+		this(annotationAdapter, elementName, removeAnnotationWhenEmpty, true);
 	}
 
-	private static ExpressionConverter<String[], ArrayInitializer> buildExpressionConverter() {
-		return new StringArrayExpressionConverter<Name>(NameStringExpressionConverter.instance());
+	public EnumArrayDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty, boolean removeArrayInitializerWhenEmpty) {
+		this(new ConversionDeclarationAnnotationElementAdapter<String[], Expression>(annotationAdapter, elementName, removeAnnotationWhenEmpty, buildExpressionConverter(removeArrayInitializerWhenEmpty)));
 	}
 
-	protected EnumArrayDeclarationAnnotationElementAdapter(ConversionDeclarationAnnotationElementAdapter<String[], ArrayInitializer> adapter) {
+	private static ExpressionConverter<String[], Expression> buildExpressionConverter(boolean removeArrayInitializerWhenEmpty) {
+		return new AnnotationStringArrayExpressionConverter<Name>(NameStringExpressionConverter.instance(), removeArrayInitializerWhenEmpty);
+	}
+
+	protected EnumArrayDeclarationAnnotationElementAdapter(ConversionDeclarationAnnotationElementAdapter<String[], Expression> adapter) {
 		super();
 		this.adapter = adapter;
 	}
@@ -63,6 +73,7 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
 	public String[] getValue(ModifiedDeclaration declaration) {
+		// ignore the adapter's getValue() - we want the expression
 		return this.resolve(this.adapter.expression(declaration), declaration);
 	}
 
@@ -82,20 +93,39 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 	// ********** internal methods **********
 
 	/**
-	 * resolve the enums
+	 * resolve the enums, which can be
+	 *     null
+	 * or
+	 *     {FOO, BAR, BAZ}
+	 * or
+	 *     FOO
 	 */
 	protected String[] resolve(Expression enumsExpression, ModifiedDeclaration declaration) {
 		if (enumsExpression == null) {
-			return null;
+			return EMPTY_STRING_ARRAY;
+		} else if (enumsExpression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
+			return this.resolveArray((ArrayInitializer) enumsExpression, declaration);
+		} else {
+			return this.resolveSingleElement(enumsExpression, declaration);
 		}
-		ArrayInitializer ai = (ArrayInitializer) enumsExpression;
+	}
+
+	protected String[] resolveArray(ArrayInitializer ai, ModifiedDeclaration declaration) {
 		List<Expression> expressions = this.expressions(ai);
 		int len = expressions.size();
 		String[] enums = new String[len];
 		for (int i = len; i-- > 0; ) {
-			enums[i] = JDTTools.resolveEnum(declaration.iCompilationUnit(), expressions.get(i));
+			enums[i] = this.resolveEnum(expressions.get(i), declaration);
 		}
 		return enums;
+	}
+
+	protected String[] resolveSingleElement(Expression enumExpression, ModifiedDeclaration declaration) {
+		return new String[] {this.resolveEnum(enumExpression, declaration)};
+	}
+
+	protected String resolveEnum(Expression enumExpression, ModifiedDeclaration declaration) {
+		return JDTTools.resolveEnum(declaration.iCompilationUnit(), enumExpression);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -104,7 +134,8 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 	}
 
 	/**
-	 * convert the fully-qualified enums to static imports and short names
+	 * convert the fully-qualified enums to static imports and short names;
+	 * NB: the imports are added as a side-effect :-(
 	 */
 	protected String[] convertToShortNames(String[] enums, ModifiedDeclaration declaration) {
 		if (enums == null) {

@@ -1109,8 +1109,8 @@ public class EntityGenerator {
 		public Iterator<Map.Entry<String, String>> importEntries() {
 			return new FilteringIterator<Map.Entry<String, String>>(this.sortedImportEntries()) {
 				@Override
-				@SuppressWarnings("unchecked")
 				protected boolean accept(Object next) {
+					@SuppressWarnings("unchecked")
 					String pkg = ((Map.Entry<String, String>) next).getValue();
 					if (pkg.equals("")
 							|| pkg.equals("java.lang")

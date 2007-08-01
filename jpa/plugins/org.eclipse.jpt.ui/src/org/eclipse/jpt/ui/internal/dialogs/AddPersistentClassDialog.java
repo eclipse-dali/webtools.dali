@@ -116,9 +116,9 @@ public class AddPersistentClassDialog extends StatusDialog
 				
 				public Object[] getElements(Object inputElement) {
 					return new Object[] {
-						MappedSuperclassUiProvider.instance(), 
-						EntityUiProvider.instance(), 
-						EmbeddableUiProvider.instance()
+						new MappedSuperclassUiProvider(), 
+						new EntityUiProvider(), 
+						new EmbeddableUiProvider()
 					};
 				}
 				

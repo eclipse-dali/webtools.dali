@@ -379,7 +379,8 @@ public class JpaCompilationUnit extends JavaEObject
 
 	private void synchCompilationUnitWithJavaDelta(IJavaElementDelta delta) {
 		// ignore changes to/from primary working copy - no content has changed
-		if ((delta.getFlags() & IJavaElementDelta.F_PRIMARY_WORKING_COPY) != 0) {
+		// this checks that no flags other than F_PRIMARY_WORKING_COPY are set
+		if ((delta.getFlags() & ~IJavaElementDelta.F_PRIMARY_WORKING_COPY) == 0) {
 			return;
 		}
 		// synchronize if the change is for this compilation unit

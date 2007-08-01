@@ -11,6 +11,7 @@ package org.eclipse.jpt.db.internal;
 
 import java.util.Properties;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.IManagedConnection;
 import org.eclipse.datatools.connectivity.db.generic.IDBDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.drivers.DriverManager;
@@ -141,7 +142,7 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 	@Override
 	public boolean isConnected() {
 
-		return this.getConnection().isConnected();
+		return this.dtpConnectionProfile.getConnectionState() != IConnectionProfile.DISCONNECTED_STATE;
 	}
 	
 	@Override

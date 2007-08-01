@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.facet;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -99,25 +98,15 @@ public class JpaFacetDataModelProvider
 	public DataModelPropertyDescriptor[] getValidPropertyDescriptors(String propertyName) {
 		if (JPA_LIBRARY.equals(propertyName)) {
 			String[] libraries = JavaCore.getUserLibraryNames();
+			Arrays.sort(libraries);
 			DataModelPropertyDescriptor[] descriptors = new DataModelPropertyDescriptor[libraries.length + 1];
 			
-			for (int i = 0; i < libraries.length ; i ++) {
-				descriptors[i + 1] = new DataModelPropertyDescriptor(libraries[i], libraries[i]);
-			}
-			
-			if(descriptors.length > 2){
-				Arrays.sort(descriptors, 0, descriptors.length - 2, 
-						new Comparator() {
-							public int compare(Object arg0, Object arg1) {
-								DataModelPropertyDescriptor d1 = (DataModelPropertyDescriptor)arg0;
-								DataModelPropertyDescriptor d2 = (DataModelPropertyDescriptor)arg1;
-								return d1.getPropertyDescription().compareTo(d2.getPropertyDescription());
-							}
-						}
-					);
-			}
-			
 			descriptors[0] = new DataModelPropertyDescriptor("", WTPCommonPlugin.getResourceString(WTPCommonMessages.RUNTIME_NONE, null));
+			
+			int i = 1;
+			for (String library : libraries) {
+				descriptors[i++] = new DataModelPropertyDescriptor(library, library);
+			}	
 			return descriptors;
 		}
 		
