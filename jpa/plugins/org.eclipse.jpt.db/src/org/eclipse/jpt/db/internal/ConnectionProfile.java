@@ -83,9 +83,14 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 		}
 	}
 
+	public boolean contains( Connection connection) {
+		return this.getConnection().equals( connection);
+	}
+
+
 	// ********** queries **********
 	
-	public Connection getConnection() {
+	Connection getConnection() {
 		
 		if( this.connection == null) {
 			this.connection = this.buildConnection();
