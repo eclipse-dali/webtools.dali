@@ -104,7 +104,6 @@ public abstract class DTPPlatformTests extends TestCase {
 		this.connect();
 		
         this.verifyDatabaseVersionNumber();
-        this.verifyConnection();
         this.verifyDatabaseContent();
 
         this.disconnect();
@@ -153,16 +152,6 @@ public abstract class DTPPlatformTests extends TestCase {
         String expectedVendor = this.databaseVendor();
         errorMessage = "Expected vendor: " + expectedVendor + " but the actual vendor was: " + actualVendor;
         assertEquals( errorMessage, actualVendor, expectedVendor);
-    }
-    
-    private void verifyConnection() {
-    	Connection connection = this.getProfile().getConnection();
-    	Assert.assertNotNull( connection);
-
-        String actualFactory = connection.getFactoryId();
-        String expectedFactory = DTPConnectionProfileWrapper.CONNECTION_TYPE;
-    	String errorMessage = "Expected factory: " + expectedFactory + " but the actual factory was: " + actualFactory;
-    	assertEquals( errorMessage, actualFactory, expectedFactory);
     }
     
     private void verifyDatabaseContent() {
