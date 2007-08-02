@@ -10,8 +10,6 @@
 package org.eclipse.jpt.ui.internal.actions;
 
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
-import org.eclipse.jpt.ui.internal.PlatformRegistry;
 
 /**
  *  GenerateDDLAction
@@ -23,13 +21,6 @@ public class GenerateDDLAction extends ProjectAction {
 	}
 
 	protected void execute(IJpaProject project) {
-        String vendorId = project.getPlatform().getId();
-		
-        this.jpaPlatformUI(vendorId).generateDDL(project, this.getCurrentSelection());
+        this.jpaPlatformUi(project).generateDDL(project, this.getCurrentSelection());
 	}
-	
-	private IJpaPlatformUi jpaPlatformUI(String vendorId) {
-        return PlatformRegistry.instance().getJpaPlatform(vendorId); 
-	}
-
 }

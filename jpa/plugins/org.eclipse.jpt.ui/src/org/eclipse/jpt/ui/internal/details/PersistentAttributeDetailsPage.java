@@ -65,7 +65,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 	
 	protected IJpaPlatformUi jpaPlatformUi() {
 		String platformId = getAttribute().getJpaProject().getPlatform().getId();
-		return PlatformRegistry.instance().getJpaPlatform(platformId);
+		return PlatformRegistry.instance().jpaPlatform(platformId);
 	}
 
 	protected IJpaUiFactory jpaUiFactory() {

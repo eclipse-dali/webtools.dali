@@ -25,6 +25,7 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 public class JpaPlatformRegistry 
 {
+	// singleton
 	private static final JpaPlatformRegistry INSTANCE = new JpaPlatformRegistry();
 	
 	/**

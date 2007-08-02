@@ -29,14 +29,14 @@ public class JavaPersistentTypeDetailsPage extends
 		super(parent, widgetFactory);
 	}
 	
-	protected IJpaPlatformUi getJpaPlatformUi() {
+	protected IJpaPlatformUi jpaPlatformUi() {
 		String platformId = getPersistentType().jpaPlatform().getId();
-		return PlatformRegistry.instance().getJpaPlatform(platformId);
+		return PlatformRegistry.instance().jpaPlatform(platformId);
 	}
 	
 	@Override
 	protected ListIterator<ITypeMappingUiProvider> typeMappingUiProviders() {
-		return getJpaPlatformUi().javaTypeMappingUiProviders();
+		return jpaPlatformUi().javaTypeMappingUiProviders();
 	}
 
 	@Override

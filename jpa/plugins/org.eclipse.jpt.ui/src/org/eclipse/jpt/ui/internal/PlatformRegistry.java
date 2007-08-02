@@ -91,8 +91,8 @@ public class PlatformRegistry
 		this.jpaPlatforms.put(platformId, configElement);
 	}
 	
-	public IJpaPlatformUi getJpaPlatform(String vendorId) {
-		IConfigurationElement registeredConfigElement = this.jpaPlatforms.get(vendorId);
+	public IJpaPlatformUi jpaPlatform(String platformId) {
+		IConfigurationElement registeredConfigElement = this.jpaPlatforms.get(platformId);
 		
 		if (registeredConfigElement == null) {
 			return null;

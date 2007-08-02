@@ -204,7 +204,7 @@ public class JpaProjectPropertiesPage
 			platformCombo.setContentProvider(
 					new IStructuredContentProvider() {
 						public Object[] getElements(Object inputElement) {
-							return CollectionTools.array(JpaPlatformRegistry.INSTANCE.allJpaPlatformIds());
+							return CollectionTools.array(JpaPlatformRegistry.instance().allJpaPlatformIds());
 						}
 						
 						public void dispose() {}
@@ -219,7 +219,7 @@ public class JpaProjectPropertiesPage
 						}
 						
 						public String getText(Object element) {
-							return JpaPlatformRegistry.INSTANCE.getJpaPlatformLabel((String) element);
+							return JpaPlatformRegistry.instance().jpaPlatformLabel((String) element);
 						}
 						
 						public void addListener(ILabelProviderListener listener) {}

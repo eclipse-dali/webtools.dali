@@ -66,7 +66,7 @@ public class JpaFacetUtils
 			throw new IllegalArgumentException(project.getName());
 		}
 		
-		if (JpaPlatformRegistry.INSTANCE.getJpaPlatform(jpaPlatformId) == null) {
+		if (JpaPlatformRegistry.instance().jpaPlatform(jpaPlatformId) == null) {
 			throw new IllegalArgumentException(jpaPlatformId);
 		}
 		

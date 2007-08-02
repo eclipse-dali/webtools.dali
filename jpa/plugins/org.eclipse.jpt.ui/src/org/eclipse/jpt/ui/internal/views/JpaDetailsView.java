@@ -105,7 +105,7 @@ public class JpaDetailsView extends AbstractJpaView
 		
 		if (provider == null) {
 			String platformId = contentNode.jpaPlatform().getId();
-			IJpaPlatformUi jpaPlatformUI = PlatformRegistry.instance().getJpaPlatform(platformId);
+			IJpaPlatformUi jpaPlatformUI = PlatformRegistry.instance().jpaPlatform(platformId);
 			provider = jpaPlatformUI.detailsProvider(contentId);
 			
 			//TODO this view and the detailsProviders Map is not created on a per project basis.

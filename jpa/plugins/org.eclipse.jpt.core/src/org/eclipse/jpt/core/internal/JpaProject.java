@@ -289,7 +289,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * @see IJpaProject#setPlatform(String)
 	 */
 	public void setPlatform(String platformId) {
-		setPlatform(JpaPlatformRegistry.INSTANCE.getJpaPlatform(platformId));
+		setPlatform(JpaPlatformRegistry.instance().jpaPlatform(platformId));
 	}
 
 	/**
