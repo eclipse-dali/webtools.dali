@@ -25,8 +25,15 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 public class JpaPlatformRegistry 
 {
-	public static final JpaPlatformRegistry INSTANCE = new JpaPlatformRegistry();
+	private static final JpaPlatformRegistry INSTANCE = new JpaPlatformRegistry();
 	
+	/**
+	 * Return the singleton.
+	 */
+	public static JpaPlatformRegistry instance() {
+		return INSTANCE;
+	}
+
 	private static final String EXTENSION_ID = 
 		"jpaPlatform"; //$NON-NLS-1$
 	
@@ -98,7 +105,7 @@ public class JpaPlatformRegistry
 	 *     IJpaProject, either when creating the project, or when changing the 
 	 *     platform.
 	 */
-	public IJpaPlatform getJpaPlatform(String id) {
+	public IJpaPlatform jpaPlatform(String id) {
 		IConfigurationElement registeredConfigElement = this.jpaPlatforms.get(id);
 		
 		if (registeredConfigElement == null) {
@@ -129,7 +136,7 @@ public class JpaPlatformRegistry
 	 * Return the label for the platform with the given id.
 	 * This does not load the platform's plugin classes.
 	 */
-	public String getJpaPlatformLabel(String id) {
+	public String jpaPlatformLabel(String id) {
 		return jpaPlatforms.get(id).getAttribute(AT_LABEL);
 	}
 	
