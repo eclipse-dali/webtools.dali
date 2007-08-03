@@ -47,7 +47,7 @@ public class ModelInitializationTests extends TestCase {
 	 * pre-existing entities added.
 	 */
 	private TestFacetedProject buildTestProject() throws CoreException {
-		TestFacetedProject testProject = new TestFacetedProject(ClassTools.shortClassNameForObject(this), true);
+		TestFacetedProject testProject = TestFacetedProject.buildFacetedProject(ClassTools.shortClassNameForObject(this), true);
 		testProject.installFacet("jst.java", "5.0");
 		testProject.installFacet("jst.utility", "1.0");
 		testProject.createFile(

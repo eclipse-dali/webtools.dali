@@ -18,6 +18,14 @@ public class TestFacetedProject extends TestPlatformProject {
 	private IFacetedProject facetedProject;
 
 
+	// ********** builders *****************************
+	
+	public static TestFacetedProject buildFacetedProject(String baseProjectName, boolean autoBuild)
+			throws CoreException {
+		return new TestFacetedProject(uniqueProjectName(baseProjectName), autoBuild);
+	}
+	
+	
 	// ********** constructors/initialization **********
 
 	public TestFacetedProject(String projectName) throws CoreException {

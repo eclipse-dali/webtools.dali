@@ -23,10 +23,10 @@ public class TestJpaProject extends TestJavaProject {
 	
 	public static TestJpaProject buildJpaProject(String baseProjectName, boolean autoBuild)
 			throws CoreException {
-		String projectName = baseProjectName + String.valueOf(System.currentTimeMillis()).substring(7);
-		return new TestJpaProject(baseProjectName, autoBuild);
+		return new TestJpaProject(uniqueProjectName(baseProjectName), autoBuild);
 	}
 
+	
 	// ********** constructors/initialization **********
 
 	public TestJpaProject(String projectName) throws CoreException {

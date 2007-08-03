@@ -36,11 +36,15 @@ public class TestJavaProject extends TestFacetedProject {
 	private IPackageFragmentRoot sourceFolder;
 
 
-	// ********** constructors/initialization **********
-
-	public TestJavaProject() throws CoreException {
-		this("TestJavaProject");
+	// ********** builders *****************************
+	
+	public static TestJavaProject buildJavaProject(String baseProjectName, boolean autoBuild)
+			throws CoreException {
+		return new TestJavaProject(uniqueProjectName(baseProjectName), autoBuild);
 	}
+	
+	
+	// ********** constructors/initialization **********
 
 	public TestJavaProject(String projectName) throws CoreException {
 		this(projectName, false);
