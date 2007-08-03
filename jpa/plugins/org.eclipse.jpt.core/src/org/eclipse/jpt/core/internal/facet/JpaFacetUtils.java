@@ -99,10 +99,6 @@ public class JpaFacetUtils
 			throw new IllegalArgumentException(project.getName());
 		}
 		
-		if (ConnectionProfileRepository.instance().profileNamed(connectionName).isNull()) {
-			throw new IllegalArgumentException(connectionName);
-		}
-		
 		jpaProject.setDataSource(connectionName);
 		project.setPersistentProperty(CONNECTION_KEY, connectionName);
 	}
