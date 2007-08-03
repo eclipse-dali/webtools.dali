@@ -227,7 +227,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	public Iterator<IJavaAttributeMappingProvider> javaAttributeMappingProviders() {
 		if (this.javaAttributeMappingProviders == null) {
 			this.javaAttributeMappingProviders = new ArrayList<IJavaAttributeMappingProvider>();
-			this.addAttributeMappingProvidersTo(this.javaAttributeMappingProviders);
+			this.addJavaAttributeMappingProvidersTo(this.javaAttributeMappingProviders);
 		}
 		return new CloneIterator<IJavaAttributeMappingProvider>(this.javaAttributeMappingProviders);
 	}
@@ -237,7 +237,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 * The default includes the JPA spec-defined attribute mappings of 
 	 * Basic, Id, Transient OneToOne, OneToMany, ManyToOne, ManyToMany, Embeddable, EmbeddedId, Version.
 	 */
-	protected void addAttributeMappingProvidersTo(Collection<IJavaAttributeMappingProvider> providers) {
+	protected void addJavaAttributeMappingProvidersTo(Collection<IJavaAttributeMappingProvider> providers) {
 		providers.add(JavaBasicProvider.instance());
 		providers.add(JavaIdProvider.instance());
 		providers.add(JavaTransientProvider.instance());
