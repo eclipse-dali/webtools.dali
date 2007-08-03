@@ -20,7 +20,8 @@ import org.eclipse.jpt.core.tests.internal.projects.TestFacetedProject;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
-public class ModelInitializationTests extends TestCase {
+public class ModelInitializationTests extends TestCase 
+{
 	private IJpaModel jpaModel;
 	
 	
@@ -47,7 +48,7 @@ public class ModelInitializationTests extends TestCase {
 	 * pre-existing entities added.
 	 */
 	private TestFacetedProject buildTestProject() throws CoreException {
-		TestFacetedProject testProject = new TestFacetedProject(ClassTools.shortClassNameForObject(this), true);
+		TestFacetedProject testProject = TestFacetedProject.buildFacetedProject(ClassTools.shortClassNameForObject(this), true);
 		testProject.installFacet("jst.java", "5.0");
 		testProject.installFacet("jst.utility", "1.0");
 		testProject.createFile(

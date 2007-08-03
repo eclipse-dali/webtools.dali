@@ -13,7 +13,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 
-public class TestJpaProject extends TestJavaProject {
+public class TestJpaProject extends TestJavaProject 
+{
 	private IJpaProject jpaProject;
 
 	public static final String JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
@@ -23,10 +24,10 @@ public class TestJpaProject extends TestJavaProject {
 	
 	public static TestJpaProject buildJpaProject(String baseProjectName, boolean autoBuild)
 			throws CoreException {
-		String projectName = baseProjectName + String.valueOf(System.currentTimeMillis()).substring(7);
-		return new TestJpaProject(baseProjectName, autoBuild);
+		return new TestJpaProject(uniqueProjectName(baseProjectName), autoBuild);
 	}
-
+	
+	
 	// ********** constructors/initialization **********
 
 	public TestJpaProject(String projectName) throws CoreException {

@@ -28,24 +28,29 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * This builds and holds a "general" project.
  * Support for adding natures, folders, and files.
  */
-public class TestPlatformProject {
-
-	private final IProject project;
-
+public class TestPlatformProject 
+{
 	/** carriage return */
 	public static final String CR = System.getProperty("line.separator");
-
-
+	
+	
+	private final IProject project;
+	
+	
+	// ********** builders *****************************
+	
+	public static TestPlatformProject buildPlatformProject(String baseProjectName, boolean autoBuild)
+			throws CoreException {
+		return new TestPlatformProject(uniqueProjectName(baseProjectName), autoBuild);
+	}
+	
+	public static String uniqueProjectName(String baseProjectName) {
+		return baseProjectName + String.valueOf(System.currentTimeMillis()).substring(7);
+	}
+	
+	
 	// ********** constructors/initialization **********
-
-	public TestPlatformProject() throws CoreException {
-		this(false);
-	}
-
-	public TestPlatformProject(boolean autoBuild) throws CoreException {
-		this("TestProject", autoBuild);
-	}
-
+	
 	public TestPlatformProject(String projectName, boolean autoBuild) throws CoreException {
 		super();
 		this.setAutoBuild(autoBuild);  // workspace-wide setting
