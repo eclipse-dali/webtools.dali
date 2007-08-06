@@ -14,6 +14,10 @@ import junit.framework.TestSuite;
 public class JptCoreModelTests {
 
 	public static Test suite() {
+		return suite(true);
+	}
+	
+	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptCoreModelTests.class.getPackage().getName());
 		suite.addTestSuite(ModelInitializationTests.class);
 		return suite;

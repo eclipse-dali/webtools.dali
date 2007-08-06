@@ -15,8 +15,14 @@ import junit.framework.TestSuite;
 public class JptCoreContentJavaMappingsTests {
 
 	public static Test suite() {
+		return suite(true);
+	}
+	
+	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptCoreContentJavaMappingsTests.class.getName());
-		suite.addTestSuite(JavaEntityTests.class);
+		if (all) {
+			suite.addTestSuite(JavaEntityTests.class);
+		}
 		return suite;
 	}
 
