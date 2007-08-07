@@ -18,8 +18,8 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 
 /**
- * This will apply TextEdit's to a doc and do some extra work to cleanup some
- * of the nasty Eclipse annotation formatting (e.g. arrays of annotations).
+ * This implementation will clean up some of the nasty Eclipse annotation
+ * formatting (or lack thereof); e.g. arrays of annotations.
  */
 public final class DefaultAnnotationEditFormatter
 	implements AnnotationEditFormatter
