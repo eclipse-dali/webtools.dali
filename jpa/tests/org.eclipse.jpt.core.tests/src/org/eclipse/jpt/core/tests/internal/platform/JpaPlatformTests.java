@@ -50,6 +50,7 @@ public class JpaPlatformTests extends TestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		JpaPlatformExtensionTests.verifyExtensionTestProjectExists();
 		ProjectUtility.deleteAllProjects();
 		testProject = this.buildJpaProject(TestJpaProject.uniqueProjectName(PROJECT_NAME), false);  // false = no auto-build
 	}

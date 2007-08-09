@@ -11,7 +11,13 @@
 package org.eclipse.jpt.core.tests.internal.platform;
 
 import junit.framework.TestCase;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.resource.java.JpaPlatform;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class JpaPlatformExtensionTests extends TestCase
@@ -26,8 +32,25 @@ public class JpaPlatformExtensionTests extends TestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		verifyExtensionTestProjectExists();
 	}
 
+	public static void verifyExtensionTestProjectExists() {
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint extensionPoint = 
+			registry.getExtensionPoint(JptCorePlugin.PLUGIN_ID, "jpaPlatform");
+		IExtension[] extensions = extensionPoint.getExtensions();
+		boolean extensionFound = false;
+		for (IExtension extension : extensions) {
+			if (extension.getContributor().getName().equals("testPlugin")) {
+				extensionFound = true;
+			}
+		}
+		if (!extensionFound) {
+			throw new RuntimeException("Missing Extension " + TEST_PLATFORM_ID + ". The ExtensionTestProject plugin must be in your testing workspace.");
+		}
+	}
+	
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
