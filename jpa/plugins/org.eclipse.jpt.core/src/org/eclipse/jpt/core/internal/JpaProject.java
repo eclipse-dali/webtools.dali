@@ -142,6 +142,12 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * This is set to false when that job is completed 
 	 */
 	boolean resynching = false;
+	
+	/**
+	 * Flag to indicate that the disposing job has been scheduled or is running
+	 * (or has been run, in some cases)
+	 */
+	boolean disposing = false;
 
 	/**
 	 * Flag to indicate that the resynchJob needs to be run.  This is
@@ -171,7 +177,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	}
 
 	private Job buildResynchJob() {
-		return new Job("Resynching JPA model ...") {
+		Job job = new Job("Resynching JPA model ...") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				IContext contextHierarchy = getPlatform().buildProjectContext();
@@ -179,6 +185,8 @@ public class JpaProject extends JpaEObject implements IJpaProject
 				return Status.OK_STATUS;
 			}
 		};
+		job.setRule(project);
+		return job;
 	}
 
 	private IJobChangeListener buildResynchJobListener() {
@@ -187,8 +195,11 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			public void done(IJobChangeEvent event) {
 				super.done(event);
 				if (event.getJob() == JpaProject.this.resynchJob) {
-					JpaProject.this.resynching = false;
-					if (JpaProject.this.needsToResynch) {
+					resynching = false;
+					if (event.getResult().matches(IStatus.CANCEL)) {
+						needsToResynch = false;
+					}
+					else if (needsToResynch) {
 						resynch();
 					}
 				}
@@ -563,22 +574,30 @@ public class JpaProject extends JpaEObject implements IJpaProject
 
 	/**
 	 * INTERNAL ONLY
-	 * Dispose of project before it is removed
+	 * Dispose and remove project
 	 */
 	void dispose() {
-		for (Iterator<IJpaFile> stream = new CloneIterator<IJpaFile>(getFiles()); stream.hasNext();) {
-			disposeFile((JpaFile) stream.next());
-		}
-		Job.getJobManager().removeJobChangeListener(this.resynchJobListener);
+		if (disposing) return;
+		
+		disposing = true;
+				
+		Job job = new Job("Disposing JPA project ...") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				dispose_();
+				return Status.OK_STATUS;
+			}
+		};
+		job.setRule(project);
+		job.schedule();
 	}
-
-	/**
-	 * INTERNAL ONLY
-	 * Dispose file and remove it
-	 */
-	void disposeFile(JpaFile jpaFile) {
-		jpaFile.dispose();
-		getFiles().remove(jpaFile);
+	
+	private void dispose_() {
+		Job.getJobManager().removeJobChangeListener(resynchJobListener);
+		for (IJpaFile jpaFile : new ArrayList<IJpaFile>(getFiles())) {
+			((JpaFile) jpaFile).dispose();
+		}
+		((JpaModel) getModel()).getProjects().remove(this);
 	}
 
 	/**
@@ -609,7 +628,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 						case IResourceDelta.REMOVED :
 							JpaFile jpaFile = (JpaFile) getJpaFile(file);
 							if (jpaFile != null) {
-								disposeFile(jpaFile);
+								jpaFile.dispose();
 								JpaProject.this.resynch();//TODO different api for this?
 							}
 							break;
@@ -659,7 +678,9 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	//passing it on to the JpaModel.  We don't currently support
 	//multiple projects having cross-references
 	public void resynch() {
-		if (!this.resynching) {
+		if (disposing) return;
+		
+		if (! resynching) {
 			this.resynching = true;
 			this.needsToResynch = false;
 			this.resynchJob.schedule();

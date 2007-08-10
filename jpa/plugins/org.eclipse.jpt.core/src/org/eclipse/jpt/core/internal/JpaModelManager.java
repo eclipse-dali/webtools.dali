@@ -33,6 +33,8 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
+import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
+import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
 
 public class JpaModelManager
 {
@@ -59,6 +61,11 @@ public class JpaModelManager
 	 * Processes resource changes
 	 */
 	private IResourceChangeListener resourceChangeListener;
+
+	/**
+	 * Processes changes to project facets
+	 */
+	private final IFacetedProjectListener facetedProjectListener;
 	
 	/**
 	 * Process element changes
@@ -75,6 +82,7 @@ public class JpaModelManager
 		super();
 		model = JpaCoreFactory.eINSTANCE.createJpaModel();
 		resourceChangeListener = new ResourceChangeListener();
+		facetedProjectListener = new FacetedProjectListener();
 		elementChangeListener = new ElementChangeListener();
 		preferencesListener = new PreferencesListener();
 	}
@@ -83,6 +91,7 @@ public class JpaModelManager
 		try {
 			buildWorkspace();
 			ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
+			FacetedProjectFramework.addListener(facetedProjectListener, IFacetedProjectEvent.Type.values());
 			JavaCore.addElementChangedListener(elementChangeListener);
 			JptCorePlugin.getPlugin().getPluginPreferences().addPropertyChangeListener(preferencesListener);
 		}
@@ -216,7 +225,7 @@ public class JpaModelManager
 	 * Dispose the IJpaProject
 	 */
 	public void disposeJpaProject(IJpaProject jpaProject) {
-		model.disposeProject((JpaProject) jpaProject);
+		((JpaProject) jpaProject).dispose();
 	}
 	
 	/**
@@ -310,6 +319,7 @@ public class JpaModelManager
 				
 				switch (event.getType()){
 					case IResourceChangeEvent.PRE_DELETE :
+					case IResourceChangeEvent.PRE_CLOSE :
 						try {
 							if ((resource.getType() == IResource.PROJECT)
 									&& (FacetedProjectFramework.hasProjectFacet(
@@ -327,9 +337,6 @@ public class JpaModelManager
 							checkForProjectsBeingAddedOrRemoved(delta);
 							checkForFilesBeingAddedOrRemoved(delta);
 						}
-						return;
-						
-					case IResourceChangeEvent.PRE_CLOSE :
 						return;
 				}
 			}
@@ -417,19 +424,7 @@ public class JpaModelManager
 											JptCorePlugin.log(ce);
 										}
 									}
-								} 
-								else {
-									// project has been closed.  dispose jpa project if it exists.
-									if (jpaProject != null) {
-										model.disposeProject(jpaProject);
-									}
 								}
-							}
-							else if ((delta.getFlags() & IResourceDelta.DESCRIPTION) != 0) {
-								// again, not sure ...
-							} 
-							else {
-								// ...
 							}		
 							break;
 					}
@@ -449,7 +444,7 @@ public class JpaModelManager
 		private void projectBeingDeleted(IProject project) {
 			// could be problems here ...
 			JpaProject jpaProject = (JpaProject) model.getJpaProject(project);
-			model.disposeProject(jpaProject);
+			jpaProject.dispose();
 		}
 		
 		/**
@@ -491,6 +486,67 @@ public class JpaModelManager
 				}
 			}
 			return false;
+		}
+	}
+	
+	
+	private static class FacetedProjectListener 
+		implements IFacetedProjectListener
+	{
+		ThreadLocal<FacetedProjectChangeProcessor> processors = 
+				new ThreadLocal<FacetedProjectChangeProcessor>();
+		
+		FacetedProjectListener() {
+			super();
+		}
+		
+		public void handleEvent(IFacetedProjectEvent event) {
+			getProcessor().handleEvent(event);
+		}
+		
+		public FacetedProjectChangeProcessor getProcessor() {
+			FacetedProjectChangeProcessor processor = processors.get();
+			if (processor == null) { 
+				processor = new FacetedProjectChangeProcessor();
+				processors.set(processor);
+			}
+			return processor;
+		}
+	}
+	
+	
+	private static class FacetedProjectChangeProcessor
+	{
+		private JpaModel model;
+		
+		FacetedProjectChangeProcessor() {
+			model = JpaModelManager.instance().model;
+		}
+		
+		protected void handleEvent(IFacetedProjectEvent event) {
+			IProject project = event.getProject().getProject();
+			JpaProject jpaProject = (JpaProject) model.getJpaProject(project);
+			boolean jpaFacetExists = false;
+			try {
+				jpaFacetExists = FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID);
+			}
+			catch (CoreException ce) {
+				// nothing to do, assume facet doesn't exist
+				JptCorePlugin.log(ce);
+			}
+			
+			if (jpaFacetExists && jpaProject == null) {
+				try {
+					JpaModelManager.instance().createFilledJpaProject(project);
+				}
+				catch (CoreException ce) {
+				// nothing to do, nothing we *can* do
+				JptCorePlugin.log(ce);
+				}
+			}
+			else if (jpaProject != null && ! jpaFacetExists) {
+				jpaProject.dispose();
+			}
 		}
 	}
 	
