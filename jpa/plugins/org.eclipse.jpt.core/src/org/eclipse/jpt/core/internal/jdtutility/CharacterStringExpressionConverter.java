@@ -10,22 +10,22 @@
 package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CharacterLiteral;
+import org.eclipse.jdt.core.dom.Expression;
 
 /**
  * Convert a character literal to/from a string representation of a character
  * (e.g. "A").
  */
 public final class CharacterStringExpressionConverter
-	extends AbstractExpressionConverter<String, CharacterLiteral>
+	extends AbstractExpressionConverter<String>
 {
-	private static ExpressionConverter<String, CharacterLiteral> INSTANCE;
+	private static ExpressionConverter<String> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<String, CharacterLiteral> instance() {
+	public static ExpressionConverter<String> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new CharacterStringExpressionConverter();
 		}
@@ -40,18 +40,16 @@ public final class CharacterStringExpressionConverter
 	}
 	
 	@Override
-	protected CharacterLiteral convert_(String string, AST ast) {
+	protected CharacterLiteral convertObject(String string, AST ast) {
 		CharacterLiteral characterLiteral = ast.newCharacterLiteral();
 		characterLiteral.setCharValue(string.charAt(0));
 		return characterLiteral;
 	}
 
 	@Override
-	protected String convert_(CharacterLiteral characterLiteral) {
-		return (characterLiteral.getNodeType() == ASTNode.CHARACTER_LITERAL) ?
-			Character.toString(characterLiteral.charValue())
-		:
-			null;
+	protected String convertExpression(Expression expression) {
+		Object value = expression.resolveConstantExpressionValue();
+		return (value instanceof Character) ? ((Character) value).toString() : null;
 	}
 
 }

@@ -11,13 +11,13 @@ package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.content.java.JavaEObject;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -97,11 +97,11 @@ public class JavaUniqueConstraint extends JavaEObject
 	}
 
 	protected static DeclarationAnnotationElementAdapter<String[]> buildArrayAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return buildArrayAnnotationElementAdapter(annotationAdapter, elementName, AnnotationStringArrayExpressionConverter.forStringLiterals());
+		return buildArrayAnnotationElementAdapter(annotationAdapter, elementName, AnnotationStringArrayExpressionConverter.forStrings());
 	}
 
-	protected static DeclarationAnnotationElementAdapter<String[]> buildArrayAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String[], Expression> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String[], Expression>(annotationAdapter, elementName, false, converter);
+	protected static DeclarationAnnotationElementAdapter<String[]> buildArrayAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String[]> converter) {
+		return new ConversionDeclarationAnnotationElementAdapter<String[]>(annotationAdapter, elementName, false, converter);
 	}
 
 	@Override

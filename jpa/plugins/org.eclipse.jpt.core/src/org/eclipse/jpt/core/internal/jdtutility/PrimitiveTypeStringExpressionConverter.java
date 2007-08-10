@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.PrimitiveType;
 import org.eclipse.jdt.core.dom.TypeLiteral;
 
@@ -19,14 +20,14 @@ import org.eclipse.jdt.core.dom.TypeLiteral;
  * (e.g. "int").
  */
 public final class PrimitiveTypeStringExpressionConverter
-	extends AbstractExpressionConverter<String, TypeLiteral>
+	extends AbstractExpressionConverter<String>
 {
-	private static ExpressionConverter<String, TypeLiteral> INSTANCE;
+	private static ExpressionConverter<String> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<String, TypeLiteral> instance() {
+	public static ExpressionConverter<String> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new PrimitiveTypeStringExpressionConverter();
 		}
@@ -41,7 +42,7 @@ public final class PrimitiveTypeStringExpressionConverter
 	}
 
 	@Override
-	protected TypeLiteral convert_(String string, AST ast) {
+	protected TypeLiteral convertObject(String string, AST ast) {
 		org.eclipse.jdt.core.dom.Type type = ast.newPrimitiveType(PrimitiveType.toCode(string));
 		TypeLiteral typeLiteral = ast.newTypeLiteral();
 		typeLiteral.setType(type);
@@ -49,9 +50,9 @@ public final class PrimitiveTypeStringExpressionConverter
 	}
 
 	@Override
-	protected String convert_(TypeLiteral typeLiteral) {
-		if (typeLiteral.getNodeType() == ASTNode.TYPE_LITERAL) {
-			org.eclipse.jdt.core.dom.Type type = typeLiteral.getType();
+	protected String convertExpression(Expression expression) {
+		if (expression.getNodeType() == ASTNode.TYPE_LITERAL) {
+			org.eclipse.jdt.core.dom.Type type = ((TypeLiteral) expression).getType();
 			if (type.getNodeType() == ASTNode.PRIMITIVE_TYPE) {
 				return ((PrimitiveType) type).getPrimitiveTypeCode().toString();
 			}

@@ -14,26 +14,35 @@ import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * Gather together just the tiniest bit of common behavior.
- * E is the expression type.
+ * Gather together the common implementation behavior.
  * T is the type of the object to be converted to and from an expression.
+ * 
+ * We're still figuring out Java Generics here.... The methods in this abstract
+ * class work fine with any subclass of Expression E; but a ClassCastException
+ * will occur as soon as we call any method implemented by a subclass
+ * (e.g. StringExpressionConverter) that expects a particular subclass of
+ * Expression (e.g. StringLiteral).
  */
-public abstract class AbstractExpressionConverter<T, E extends Expression>
-	implements ExpressionConverter<T, E>
+public abstract class AbstractExpressionConverter<T>
+	implements ExpressionConverter<T>
 {
 
 	protected AbstractExpressionConverter() {
 		super();
 	}
 
-	public E convert(T object, AST ast) {
-		return (object == null) ? this.convertNull(ast) : this.convert_(object, ast);
+
+	// ********** object -> expression **********
+
+	public Expression convert(T object, AST ast) {
+		return (object == null) ? this.convertNull(ast) : this.convertObject(object, ast);
 	}
 
 	/**
-	 * Return the expression for a null object.
+	 * Return the expression for a null object. By default, a null object will
+	 * be converted into a null expression.
 	 */
-	protected E convertNull(AST ast) {
+	protected Expression convertNull(AST ast) {
 		return null;
 	}
 
@@ -41,14 +50,18 @@ public abstract class AbstractExpressionConverter<T, E extends Expression>
 	 * The specified object is not null.
 	 * @see #convert(T, AST)
 	 */
-	protected abstract E convert_(T object, AST ast);
+	protected abstract Expression convertObject(T object, AST ast);
 
-	public T convert(E expression) {
-		return (expression == null) ? this.convertNull() : this.convert_(expression);
+
+	// ********** expression -> object **********
+
+	public T convert(Expression expression) {
+		return (expression == null) ? this.convertNull() : this.convertExpression(expression);
 	}
 
 	/**
-	 * Return the object for a null expression.
+	 * Return the object for a null expression. By default, a null expression will
+	 * be converted into a null object.
 	 */
 	protected T convertNull() {
 		return null;
@@ -58,7 +71,7 @@ public abstract class AbstractExpressionConverter<T, E extends Expression>
 	 * The specified expression is not null.
 	 * @see #convert(Expression)
 	 */
-	protected abstract T convert_(E expression);
+	protected abstract T convertExpression(Expression expression);
 
 	@Override
 	public String toString() {

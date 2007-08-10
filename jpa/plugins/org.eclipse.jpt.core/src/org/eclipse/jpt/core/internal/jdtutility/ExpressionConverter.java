@@ -15,10 +15,9 @@ import org.eclipse.jdt.core.dom.Expression;
 /**
  * Define the protocol for converting an AST expression back and forth
  * from an arbitrary type (e.g. StringLiteral <=> String).
- * E is the expression type.
  * T is the type of the object to be converted to and from an expression.
  */
-public interface ExpressionConverter<T, E extends Expression> {
+public interface ExpressionConverter<T> {
 
 	/**
 	 * Convert the specified object to an
@@ -26,12 +25,12 @@ public interface ExpressionConverter<T, E extends Expression> {
 	 * The type of the object is determined by the
 	 * contract specified by the client.
 	 */
-	E convert(T object, AST ast);
+	Expression convert(T object, AST ast);
 
 	/**
 	 * Convert the specified expression to an object of some
 	 * pre-determined type.
 	 */
-	T convert(E expression);
+	T convert(Expression expression);
 
 }

@@ -23,7 +23,7 @@ public class EnumDeclarationAnnotationElementAdapter
 	/**
 	 * The wrapped adapter that returns and takes name strings (enums).
 	 */
-	private final ConversionDeclarationAnnotationElementAdapter<String, Name> adapter;
+	private final ConversionDeclarationAnnotationElementAdapter<String> adapter;
 
 
 	// ********** constructors **********
@@ -45,10 +45,10 @@ public class EnumDeclarationAnnotationElementAdapter
 	}
 
 	public EnumDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
-		this(new ConversionDeclarationAnnotationElementAdapter<String, Name>(annotationAdapter, elementName, removeAnnotationWhenEmpty, NameStringExpressionConverter.instance()));
+		this(new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, removeAnnotationWhenEmpty, NameStringExpressionConverter.instance()));
 	}
 
-	protected EnumDeclarationAnnotationElementAdapter(ConversionDeclarationAnnotationElementAdapter<String, Name> adapter) {
+	protected EnumDeclarationAnnotationElementAdapter(ConversionDeclarationAnnotationElementAdapter<String> adapter) {
 		super();
 		this.adapter = adapter;
 	}
@@ -57,7 +57,7 @@ public class EnumDeclarationAnnotationElementAdapter
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
 	public String getValue(ModifiedDeclaration declaration) {
-		return this.resolve(this.adapter.expression(declaration), declaration);
+		return this.resolve(this.adapter.expression(declaration));
 	}
 
 	public void setValue(String value, ModifiedDeclaration declaration) {
@@ -78,8 +78,8 @@ public class EnumDeclarationAnnotationElementAdapter
 	/**
 	 * resolve the enum
 	 */
-	protected String resolve(Expression enumExpression, ModifiedDeclaration declaration) {
-		return (enumExpression == null) ? null : JDTTools.resolveEnum(declaration.iCompilationUnit(), enumExpression);
+	protected String resolve(Expression expression) {
+		return JDTTools.resolveEnum(expression);
 	}
 
 	/**

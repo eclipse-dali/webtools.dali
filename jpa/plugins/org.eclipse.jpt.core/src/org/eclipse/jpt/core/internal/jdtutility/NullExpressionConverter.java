@@ -17,16 +17,16 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * No conversion.
  */
 public final class NullExpressionConverter
-	implements ExpressionConverter<Expression, Expression>
+	implements ExpressionConverter<Expression>
 {
 
 	// singleton
-	private static ExpressionConverter<Expression, Expression> INSTANCE = new NullExpressionConverter();
+	private static ExpressionConverter<Expression> INSTANCE = new NullExpressionConverter();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<Expression, Expression> instance() {
+	public static ExpressionConverter<Expression> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new NullExpressionConverter();
 		}

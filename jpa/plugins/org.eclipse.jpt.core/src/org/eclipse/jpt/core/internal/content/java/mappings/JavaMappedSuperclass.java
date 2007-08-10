@@ -10,11 +10,11 @@
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Iterator;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.TypeLiteral;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
@@ -337,6 +337,6 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter<String> buildIdClassValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String, TypeLiteral>(ID_CLASS_ADAPTER, JPA.ID_CLASS__VALUE, false, SimpleTypeStringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(ID_CLASS_ADAPTER, JPA.ID_CLASS__VALUE, false, SimpleTypeStringExpressionConverter.instance());
 	}
 }

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Iterator;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -18,7 +19,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -562,7 +562,7 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 		if (this.cascade != null) {
 			((JavaCascade) this.cascade).updateFromJava(astRoot);
 		}
-		else if (cascadeAdapter().expression(getAttribute().modifiedDeclaration()) != null) {
+		else if (cascadeAdapter().expression(getAttribute().modifiedDeclaration(astRoot)) != null) {
 			setCascade(createCascade());
 			((JavaCascade) this.cascade).updateFromJava(astRoot);
 		}
@@ -654,8 +654,8 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 		return buildAnnotationElementAdapter(annotationAdapter, elementName, StringExpressionConverter.instance());
 	}
 
-	protected static <T extends Expression> DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String, T> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String, T>(annotationAdapter, elementName, false, converter);
+	protected static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
+		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, false, converter);
 	}
 
 	protected static DeclarationAnnotationElementAdapter<String> buildEnumAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {

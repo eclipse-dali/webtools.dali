@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.NumberLiteral;
 
 /**
@@ -18,14 +18,14 @@ import org.eclipse.jdt.core.dom.NumberLiteral;
  * (e.g. "48").
  */
 public final class NumberStringExpressionConverter
-	extends AbstractExpressionConverter<String, NumberLiteral>
+	extends AbstractExpressionConverter<String>
 {
-	private static ExpressionConverter<String, NumberLiteral> INSTANCE;
+	private static ExpressionConverter<String> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<String, NumberLiteral> instance() {
+	public static ExpressionConverter<String> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new NumberStringExpressionConverter();
 		}
@@ -40,16 +40,14 @@ public final class NumberStringExpressionConverter
 	}
 	
 	@Override
-	protected NumberLiteral convert_(String string, AST ast) {
+	protected NumberLiteral convertObject(String string, AST ast) {
 		return ast.newNumberLiteral(string);
 	}
 
 	@Override
-	protected String convert_(NumberLiteral numberLiteral) {
-		return (numberLiteral.getNodeType() == ASTNode.NUMBER_LITERAL) ?
-			numberLiteral.getToken()
-		:
-			null;
+	protected String convertExpression(Expression expression) {
+		Object value = expression.resolveConstantExpressionValue();
+		return (value instanceof Number) ? ((Number) value).toString() : null;
 	}
 
 }

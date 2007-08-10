@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.TypeLiteral;
@@ -20,14 +21,14 @@ import org.eclipse.jdt.core.dom.TypeLiteral;
  * (e.g. "java.lang.Object").
  */
 public final class SimpleTypeStringExpressionConverter
-	extends AbstractExpressionConverter<String, TypeLiteral>
+	extends AbstractExpressionConverter<String>
 {
-	private static ExpressionConverter<String, TypeLiteral> INSTANCE;
+	private static ExpressionConverter<String> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<String, TypeLiteral> instance() {
+	public static ExpressionConverter<String> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new SimpleTypeStringExpressionConverter();
 		}
@@ -42,7 +43,7 @@ public final class SimpleTypeStringExpressionConverter
 	}
 
 	@Override
-	protected TypeLiteral convert_(String string, AST ast) {
+	protected TypeLiteral convertObject(String string, AST ast) {
 		Name name = ast.newName(string);
 		org.eclipse.jdt.core.dom.Type type = ast.newSimpleType(name);
 		TypeLiteral typeLiteral = ast.newTypeLiteral();
@@ -51,9 +52,9 @@ public final class SimpleTypeStringExpressionConverter
 	}
 
 	@Override
-	protected String convert_(TypeLiteral typeLiteral) {
-		if (typeLiteral.getNodeType() == ASTNode.TYPE_LITERAL) {
-			org.eclipse.jdt.core.dom.Type type = typeLiteral.getType();
+	protected String convertExpression(Expression expression) {
+		if (expression.getNodeType() == ASTNode.TYPE_LITERAL) {
+			org.eclipse.jdt.core.dom.Type type = ((TypeLiteral) expression).getType();
 			if (type.getNodeType() == ASTNode.SIMPLE_TYPE) {
 				return ((SimpleType) type).getName().getFullyQualifiedName();
 			}

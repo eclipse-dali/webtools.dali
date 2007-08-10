@@ -13,8 +13,6 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.Name;
-import org.eclipse.jdt.core.dom.StringLiteral;
 
 /**
  * Convert an array initializer or single expression to/from an array of
@@ -22,24 +20,24 @@ import org.eclipse.jdt.core.dom.StringLiteral;
  * E is the type of the expressions to be found either standalone or
  * as elements in the array initializer.
  */
-public class AnnotationStringArrayExpressionConverter<E extends Expression>
-	extends AbstractExpressionConverter<String[], Expression>
+public class AnnotationStringArrayExpressionConverter
+	extends AbstractExpressionConverter<String[]>
 {
-	private final ExpressionConverter<String, E> elementConverter;
-	private final StringArrayExpressionConverter<E> arrayConverter;
+	private final ExpressionConverter<String> elementConverter;
+	private final StringArrayExpressionConverter arrayConverter;
 
 
 	/**
 	 * The default behavior is to remove the array initializer if it is empty.
 	 */
-	public AnnotationStringArrayExpressionConverter(ExpressionConverter<String, E> elementConverter) {
+	public AnnotationStringArrayExpressionConverter(ExpressionConverter<String> elementConverter) {
 		this(elementConverter, true);
 	}
 
-	public AnnotationStringArrayExpressionConverter(ExpressionConverter<String, E> elementConverter, boolean removeArrayInitializerWhenEmpty) {
+	public AnnotationStringArrayExpressionConverter(ExpressionConverter<String> elementConverter, boolean removeArrayInitializerWhenEmpty) {
 		super();
 		this.elementConverter = elementConverter;
-		this.arrayConverter = new StringArrayExpressionConverter<E>(elementConverter, removeArrayInitializerWhenEmpty);
+		this.arrayConverter = new StringArrayExpressionConverter(elementConverter, removeArrayInitializerWhenEmpty);
 	}
 
 	/**
@@ -47,11 +45,11 @@ public class AnnotationStringArrayExpressionConverter<E extends Expression>
 	 * without braces, instead of an array initializer
 	 */
 	@Override
-	protected Expression convert_(String[] strings, AST ast) {
+	protected Expression convertObject(String[] strings, AST ast) {
 		return (strings.length == 1) ?
 				this.elementConverter.convert(strings[0], ast)
 			:
-				this.arrayConverter.convert_(strings, ast);
+				this.arrayConverter.convertObject(strings, ast);
 	}
 
 	@Override
@@ -64,16 +62,11 @@ public class AnnotationStringArrayExpressionConverter<E extends Expression>
 	 * single-entry array
 	 */
 	@Override
-	protected String[] convert_(Expression expression) {
+	protected String[] convertExpression(Expression expression) {
 		return (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) ?
-				this.arrayConverter.convert_((ArrayInitializer) expression)
+				this.arrayConverter.convertArrayInitializer((ArrayInitializer) expression)
 			:
-				new String[] {this.elementConverter.convert(this.downcastExpression(expression))};
-	}
-
-	@SuppressWarnings("unchecked")
-	private E downcastExpression(Expression expression) {
-		return (E) expression;
+				new String[] {this.elementConverter.convert(expression)};
 	}
 
 
@@ -85,8 +78,8 @@ public class AnnotationStringArrayExpressionConverter<E extends Expression>
 	 * or
 	 *     @Foo(bar="text0")
 	 */
-	public static AnnotationStringArrayExpressionConverter<StringLiteral> forStringLiterals() {
-		return new AnnotationStringArrayExpressionConverter<StringLiteral>(StringExpressionConverter.instance());
+	public static AnnotationStringArrayExpressionConverter forStrings() {
+		return new AnnotationStringArrayExpressionConverter(StringExpressionConverter.instance());
 	}
 
 	/**
@@ -95,8 +88,8 @@ public class AnnotationStringArrayExpressionConverter<E extends Expression>
 	 * or
 	 *     @Foo(bar=BAZ)
 	 */
-	public static AnnotationStringArrayExpressionConverter<Name> forNames() {
-		return new AnnotationStringArrayExpressionConverter<Name>(NameStringExpressionConverter.instance());
+	public static AnnotationStringArrayExpressionConverter forNames() {
+		return new AnnotationStringArrayExpressionConverter(NameStringExpressionConverter.instance());
 	}
 
 }

@@ -10,23 +10,28 @@
 package org.eclipse.jpt.core.internal.jdtutility;
 
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.Expression;
 
 /**
  * Convert an array initializer to/from an array of strings (e.g. {"text0", "text1"}).
- * E is the type of the expressions to be found in the array initializer.
  * 
  * Do NOT use this class for converting array initializers in annotation elements.
  * Java5 has a bit of syntactic sugar that allows a single-element array
- * initializer to not have curly braces. This converter will barf if it encounters
+ * initializer to not have curly braces. This converter will return null if it encounters
  * anything other than an array initializer.
+ * 
+ * Invalid entries in the array initializer will result in null elements in the
+ * resulting string array. This allows clients to manipulate elements at
+ * the appropriate index.
  */
-public class StringArrayExpressionConverter<E extends Expression>
-	extends AbstractExpressionConverter<String[], ArrayInitializer>
+public class StringArrayExpressionConverter
+	extends AbstractExpressionConverter<String[]>
 {
-	private final ExpressionConverter<String, E> elementConverter;
+	private final ExpressionConverter<String> elementConverter;
 	private final boolean removeArrayInitializerWhenEmpty;
 
 	private static final String[] EMPTY_STRING_ARRAY = new String[0];
@@ -35,11 +40,11 @@ public class StringArrayExpressionConverter<E extends Expression>
 	/**
 	 * The default behavior is to remove the array initializer if it is empty.
 	 */
-	public StringArrayExpressionConverter(ExpressionConverter<String, E> elementConverter) {
+	public StringArrayExpressionConverter(ExpressionConverter<String> elementConverter) {
 		this(elementConverter, true);
 	}
 
-	public StringArrayExpressionConverter(ExpressionConverter<String, E> elementConverter, boolean removeArrayInitializerWhenEmpty) {
+	public StringArrayExpressionConverter(ExpressionConverter<String> elementConverter, boolean removeArrayInitializerWhenEmpty) {
 		super();
 		this.elementConverter = elementConverter;
 		this.removeArrayInitializerWhenEmpty = removeArrayInitializerWhenEmpty;
@@ -50,7 +55,7 @@ public class StringArrayExpressionConverter<E extends Expression>
 	 * this method is 'public' so it can be called by
 	 * AnnotationStringArrayExpressionConverter
 	 */
-	public ArrayInitializer convert_(String[] strings, AST ast) {
+	public ArrayInitializer convertObject(String[] strings, AST ast) {
 		if ((strings.length == 0) && this.removeArrayInitializerWhenEmpty) {
 			return null;
 		}
@@ -67,21 +72,29 @@ public class StringArrayExpressionConverter<E extends Expression>
 		return arrayInitializer.expressions();
 	}
 
-	@Override
 	/*
 	 * this method is 'public' so it can be called by
 	 * AnnotationStringArrayExpressionConverter
 	 */
+	@Override
 	public String[] convertNull() {
 		return EMPTY_STRING_ARRAY;
 	}
 
 	@Override
+	protected String[] convertExpression(Expression expression) {
+		return (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) ?
+				this.convertArrayInitializer((ArrayInitializer) expression)
+			:
+				EMPTY_STRING_ARRAY;
+	}
+
 	/*
-	 * 'public' in support of AnnotationStringArrayExpressionConverter
+	 * this method is 'public' so it can be called by
+	 * AnnotationStringArrayExpressionConverter
 	 */
-	public String[] convert_(ArrayInitializer arrayInitializer) {
-		List<E> expressions = this.downcastExpressions(arrayInitializer);
+	public String[] convertArrayInitializer(ArrayInitializer arrayInitializer) {
+		List<Expression> expressions = this.downcastExpressions(arrayInitializer);
 		int len = expressions.size();
 		String[] strings = new String[len];
 		for (int i = len; i-- > 0; ) {
@@ -91,7 +104,7 @@ public class StringArrayExpressionConverter<E extends Expression>
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<E> downcastExpressions(ArrayInitializer arrayInitializer) {
+	private List<Expression> downcastExpressions(ArrayInitializer arrayInitializer) {
 		return arrayInitializer.expressions();
 	}
 

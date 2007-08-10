@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -34,7 +35,6 @@ import org.eclipse.jpt.core.internal.IJpaRootContentNode;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.JpaFile;
-import org.eclipse.jpt.core.internal.jdtutility.ASTNodeTextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AttributeAnnotationTools;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.utility.internal.BitTools;
@@ -289,10 +289,6 @@ public class JpaCompilationUnit extends JavaEObject
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
-	public ITextRange fullTextRange() {
-		return new ASTNodeTextRange(this.astRoot());
-	}
-
 	public ITextRange validationTextRange() {
 		return this.selectionTextRange();
 	}
@@ -446,8 +442,8 @@ public class JpaCompilationUnit extends JavaEObject
 		return EmptyIterator.instance();
 	}
 
-	public CompilationUnit astRoot() {
-		return JDTTools.createASTRoot(this.compilationUnit);
+	private CompilationUnit astRoot() {
+		return JDTTools.buildASTRoot(this.compilationUnit);
 	}
 
 	public void dispose() {
