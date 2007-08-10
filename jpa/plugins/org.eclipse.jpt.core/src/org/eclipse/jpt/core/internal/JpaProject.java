@@ -148,6 +148,12 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * This is set to false when that job is completed 
 	 */
 	boolean resynching = false;
+	
+	/**
+	 * Flag to indicate that the disposing job has been scheduled or is running
+	 * (or has been run, in some cases)
+	 */
+	boolean disposing = false;
 
 	/**
 	 * Flag to indicate that the resynchJob needs to be run.  This is
@@ -573,6 +579,10 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * Dispose and remove project
 	 */
 	void dispose() {
+		if (disposing) return;
+		
+		disposing = true;
+				
 		Job job = new Job("Disposing JPA project ...") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -696,7 +706,9 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	//passing it on to the JpaModel.  We don't currently support
 	//multiple projects having cross-references
 	public void resynch() {
-		if (!this.resynching) {
+		if (disposing) return;
+		
+		if (! this.resynching) {
 			this.resynching = true;
 			this.needsToResynch = false;
 			this.resynchJob.schedule();
