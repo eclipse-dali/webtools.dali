@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.internal.content.persistence.JavaClassRef;
 import org.eclipse.jpt.core.internal.content.persistence.Persistence;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceXmlRootContentNode;
+import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
@@ -33,6 +34,7 @@ public class BaseJpaPlatformTests extends TestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		ProjectUtility.deleteAllProjects();
 		jpaProject = this.buildJpaProject(PROJECT_NAME, false);  // false = no auto-build
 	}
 
@@ -42,7 +44,7 @@ public class BaseJpaPlatformTests extends TestCase
 
 	@Override
 	protected void tearDown() throws Exception {
-		jpaProject.dispose();
+		ProjectUtility.deleteAllProjects();
 		jpaProject = null;
 		super.tearDown();
 	}

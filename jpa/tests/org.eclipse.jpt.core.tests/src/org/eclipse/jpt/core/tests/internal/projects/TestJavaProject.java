@@ -30,8 +30,8 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * This builds and holds a "Java" project.
  * Support for adding packages and types.
  */
-public class TestJavaProject extends TestFacetedProject {
-
+public class TestJavaProject extends TestFacetedProject 
+{
 	private IJavaProject javaProject;
 	private IPackageFragmentRoot sourceFolder;
 
@@ -87,7 +87,7 @@ public class TestJavaProject extends TestFacetedProject {
 	public IType createType(String packageName, String compilationUnitName, SourceWriter sourceWriter) throws CoreException {
 		return this.createType(this.createPackage(packageName), compilationUnitName, sourceWriter);
 	}
-
+	
 	/**
 	 * The source should NOT contain a package declaration;
 	 * it will be added here.

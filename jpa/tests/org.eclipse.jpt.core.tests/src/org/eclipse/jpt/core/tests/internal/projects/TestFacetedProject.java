@@ -14,7 +14,8 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
-public class TestFacetedProject extends TestPlatformProject {
+public class TestFacetedProject extends TestPlatformProject 
+{
 	private IFacetedProject facetedProject;
 
 
@@ -31,7 +32,7 @@ public class TestFacetedProject extends TestPlatformProject {
 	public TestFacetedProject(String projectName) throws CoreException {
 		this(projectName, true);
 	}
-
+	
 	public TestFacetedProject(String projectName, boolean autoBuild) throws CoreException {
 		super(projectName, autoBuild);
 		this.facetedProject = this.createFacetedProject();

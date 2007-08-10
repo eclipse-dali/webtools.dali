@@ -13,7 +13,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 
-public class TestJpaProject extends TestJavaProject {
+public class TestJpaProject extends TestJavaProject 
+{
 	private IJpaProject jpaProject;
 
 	public static final String JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
@@ -25,7 +26,7 @@ public class TestJpaProject extends TestJavaProject {
 			throws CoreException {
 		return new TestJpaProject(uniqueProjectName(baseProjectName), autoBuild);
 	}
-
+	
 	
 	// ********** constructors/initialization **********
 

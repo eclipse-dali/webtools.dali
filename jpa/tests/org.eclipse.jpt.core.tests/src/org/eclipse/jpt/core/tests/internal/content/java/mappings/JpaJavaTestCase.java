@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.synch.SynchronizeClassesJob;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.jpt.core.tests.internal.projects.TestPlatformProject;
 import org.eclipse.jpt.utility.internal.ClassTools;
 
 public abstract class JpaJavaTestCase extends AnnotationTestCase {
@@ -31,7 +32,7 @@ public abstract class JpaJavaTestCase extends AnnotationTestCase {
 
 	@Override
 	protected TestJavaProject buildJavaProject(String projectName, boolean autoBuild) throws Exception {
-		return new TestJpaProject(projectName, autoBuild);
+		return new TestJpaProject(TestPlatformProject.uniqueProjectName(projectName), autoBuild);
 	}
 
 	protected TestJpaProject jpaProject() {

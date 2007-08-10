@@ -30,17 +30,13 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  */
 public class TestPlatformProject 
 {
-	protected static String uniqueProjectName(String baseProjectName) {
-		return baseProjectName + String.valueOf(System.currentTimeMillis()).substring(7);
-	}
-	
-
-	private final IProject project;
-
 	/** carriage return */
 	public static final String CR = System.getProperty("line.separator");
-
-
+	
+	
+	private final IProject project;
+	
+	
 	// ********** builders *****************************
 	
 	public static TestPlatformProject buildPlatformProject(String baseProjectName, boolean autoBuild)
@@ -48,9 +44,13 @@ public class TestPlatformProject
 		return new TestPlatformProject(uniqueProjectName(baseProjectName), autoBuild);
 	}
 	
+	public static String uniqueProjectName(String baseProjectName) {
+		return baseProjectName + String.valueOf(System.currentTimeMillis()).substring(7);
+	}
+	
 	
 	// ********** constructors/initialization **********
-
+	
 	public TestPlatformProject(String projectName, boolean autoBuild) throws CoreException {
 		super();
 		this.setAutoBuild(autoBuild);  // workspace-wide setting

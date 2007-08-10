@@ -20,7 +20,8 @@ import org.eclipse.jpt.core.tests.internal.projects.TestFacetedProject;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
-public class ModelInitializationTests extends TestCase {
+public class ModelInitializationTests extends TestCase 
+{
 	private IJpaModel jpaModel;
 	
 	
