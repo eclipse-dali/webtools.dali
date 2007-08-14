@@ -22,8 +22,8 @@ public abstract class Connection extends DTPWrapper implements Comparable<Connec
 	/**
 	 * Create a wrapper for the given IManagedConnection.
 	 */
-	static Connection createConnection( org.eclipse.datatools.connectivity.IManagedConnection dtpConnection) {
-		return ( dtpConnection == null) ? NullConnection.instance() : new DTPConnectionWrapper( dtpConnection);
+	static Connection createConnection( DTPConnectionProfileWrapper profile) {
+		return ( profile == null) ? NullConnection.instance() : new DTPConnectionWrapper( profile);
 	}
 
 	Connection() {
@@ -32,9 +32,9 @@ public abstract class Connection extends DTPWrapper implements Comparable<Connec
 
 	// ********** listeners **********
 
-	public abstract void addConnectionListener( ConnectionListener listener);
+	abstract void addConnectionListener( ConnectionListener listener);
 
-	public abstract void removeConnectionListener( ConnectionListener listener);
+	abstract void removeConnectionListener( ConnectionListener listener);
 
 
 	// ********** behavior **********
@@ -48,14 +48,8 @@ public abstract class Connection extends DTPWrapper implements Comparable<Connec
 
 	// ********** queries **********
 	
-	public abstract boolean isConnected();
-	
-	public abstract String getFactoryId();
+	abstract String getFactoryId();
 
-	@Override
-	protected boolean connectionIsOnline() {
-		return this.isConnected();
-	}
 
 	// ********** Comparable implementation **********
 

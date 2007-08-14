@@ -13,21 +13,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.datatools.connectivity.ConnectEvent;
-import org.eclipse.datatools.connectivity.IManagedConnectionListener;
+import org.eclipse.datatools.connectivity.IManagedConnection;
+import org.eclipse.datatools.connectivity.IManagedConnectionOfflineListener;
 
 /**
- *  Wrap a DTP Connection
+ *  Wraps to two DTP connections (1 for live connection & 1 for offline).
+ *  The connections are not cached any more, but obtained each time from the ConnectionProfile.
  */
 public final class DTPConnectionWrapper extends Connection {
 	
-	final private org.eclipse.datatools.connectivity.IManagedConnection dtpConnection;
+	final private DTPConnectionProfileWrapper profile;
 	private LocalConnectionListener connectionListener;
 	
 	// ********** constructors **********
 
-	DTPConnectionWrapper( org.eclipse.datatools.connectivity.IManagedConnection dtpConnection) {
+	DTPConnectionWrapper( DTPConnectionProfileWrapper profile) {
 		super();
-		this.dtpConnection = dtpConnection;
+		this.profile = profile;
 		this.initialize();
 	}
 
@@ -35,30 +37,14 @@ public final class DTPConnectionWrapper extends Connection {
 	
 	protected void initialize() {
 		this.connectionListener = new LocalConnectionListener();
-		this.dtpConnection.addConnectionListener( this.connectionListener);
+		this.getDTPConnection().addConnectionListener( this.connectionListener);
+		this.getDTPOfflineConnection().addConnectionListener( this.connectionListener);
 	}
 	
 	@Override
 	protected void dispose() {
-		this.dtpConnection.removeConnectionListener( this.connectionListener);
-	}
-
-	@Override
-	public String getName() {
-
-		return this.dtpConnection.getConnection().getConnectionProfile().getName();
-	}
-	
-	@Override
-	public boolean isConnected() {
-
-		return this.dtpConnection.isConnected();
-	}
-
-	@Override
-	public String getFactoryId() {
-		
-		return this.dtpConnection.getFactoryID();
+		this.getDTPConnection().removeConnectionListener( this.connectionListener);
+		this.getDTPOfflineConnection().removeConnectionListener( this.connectionListener);
 	}
 
 	@Override
@@ -78,17 +64,46 @@ public final class DTPConnectionWrapper extends Connection {
 		
 		this.connectionListener.tableChanged( table, schema, database, eventType);
 	}
+
+	// ********** queries **********
+
+	private IManagedConnection getDTPConnection() {
+
+		return this.profile.getDTPConnection();
+	}
+
+	private IManagedConnection getDTPOfflineConnection() {
+
+		return this.profile.getDTPOfflineConnection();
+	}
+	
+	@Override
+	public String getName() {
+
+		return this.getDTPConnection().getConnection().getConnectionProfile().getName();
+	}
+
+	@Override
+	String getFactoryId() {
+		
+		return this.getDTPConnection().getFactoryID();
+	}
+
+	@Override
+	protected boolean connectionIsOnline() {
+		return this.profile.connectionIsOnline();
+	}
 		
 	// ********** listeners **********
 
 	@Override
-	public void addConnectionListener( ConnectionListener listener) {
+	void addConnectionListener( ConnectionListener listener) {
 		// hook up the specified listener to our intermediate listeners
 		this.connectionListener.addConnectionListener( listener);
 	}
 
 	@Override
-	public void removeConnectionListener( ConnectionListener listener) {
+	void removeConnectionListener( ConnectionListener listener) {
 
 		this.connectionListener.removeConnectionListener( listener);
 	}
@@ -98,7 +113,7 @@ public final class DTPConnectionWrapper extends Connection {
 	/**
 	 * This listener translates and forwards IManagedConnectionListener events to ConnectionListeners.
 	 */
-	private class LocalConnectionListener implements IManagedConnectionListener {
+	private class LocalConnectionListener implements IManagedConnectionOfflineListener {
 		private Collection<ConnectionListener> listeners = new ArrayList<ConnectionListener>();
 
 		LocalConnectionListener() {
@@ -116,15 +131,67 @@ public final class DTPConnectionWrapper extends Connection {
 		// ********** behavior **********
 		
 		public void aboutToClose( ConnectEvent event) {
-			for (ConnectionListener listener : this.listeners) {
-				listener.aboutToClose( DTPConnectionWrapper.this);
+			if( event.getConnection() == DTPConnectionWrapper.this.getDTPConnection()) {
+				for (ConnectionListener listener : this.listeners) {
+					listener.aboutToClose( DTPConnectionWrapper.this);
+				}
+			}
+		}
+
+		public void aboutToDetach( ConnectEvent event) {
+			if( event.getConnection() == DTPConnectionWrapper.this.getDTPOfflineConnection()) {
+				for (ConnectionListener listener : this.listeners) {
+					listener.aboutToClose( DTPConnectionWrapper.this);
+				}
 			}
 		}
 
 		public void closed( ConnectEvent event) {
+			// There is no DETACHED event, therefore closed is sent twice (i.e. by both connections)
 			for (ConnectionListener listener : this.listeners) {
 				listener.closed( DTPConnectionWrapper.this);
 			}
+		}
+
+		public boolean okToClose( ConnectEvent event) {
+			if( event.getConnection() == DTPConnectionWrapper.this.getDTPConnection()) {
+				for (ConnectionListener listener : this.listeners) {
+					if( !listener.okToClose( DTPConnectionWrapper.this)) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
+		public boolean okToDetach( ConnectEvent event) {
+			if( event.getConnection() == DTPConnectionWrapper.this.getDTPOfflineConnection()) {
+				for (ConnectionListener listener : this.listeners) {
+					if( !listener.okToClose( DTPConnectionWrapper.this)) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		
+		public void opened( ConnectEvent event) {
+			if( event.getConnection() == DTPConnectionWrapper.this.getDTPConnection()) {
+				for (ConnectionListener listener : this.listeners) {
+					listener.opened( DTPConnectionWrapper.this);
+				}
+			}
+		}
+
+		public void workingOffline( ConnectEvent event) {
+			for (ConnectionListener listener : this.listeners) {
+				listener.opened( DTPConnectionWrapper.this);
+			}
+		}
+
+		public void aboutToAttach( ConnectEvent event) {
+			// not interested to this event.
+			return;
 		}
 
 		public void modified( ConnectEvent event) {
@@ -132,34 +199,22 @@ public final class DTPConnectionWrapper extends Connection {
 				listener.modified( DTPConnectionWrapper.this);
 			}
 		}
-
-		public boolean okToClose( ConnectEvent event) {
-			for (ConnectionListener listener : this.listeners) {
-				if( !listener.okToClose( DTPConnectionWrapper.this)) {
-					return false;
-				}
-			}
-			return true;
-		}
 		
-		public void opened( ConnectEvent event) {
-			for (ConnectionListener listener : this.listeners) {
-				listener.opened( DTPConnectionWrapper.this);
-			}
-		}
-		
+		@SuppressWarnings("unused")
 		void databaseChanged( Database database, int eventType) {
 			for (ConnectionListener listener : this.listeners) {
 				listener.databaseChanged( DTPConnectionWrapper.this, database);
 			}
 		}
-		
+
+		@SuppressWarnings("unused")
 		void schemaChanged( Schema schema, Database database, int eventType) {
 			for (ConnectionListener listener : this.listeners) {
 				listener.schemaChanged( DTPConnectionWrapper.this, schema);
 			}
 		}
-		
+
+		@SuppressWarnings("unused")
 		void tableChanged( Table table, Schema schema, Database database, int eventType) {
 			for (ConnectionListener listener : this.listeners) {
 				listener.tableChanged( DTPConnectionWrapper.this, table);

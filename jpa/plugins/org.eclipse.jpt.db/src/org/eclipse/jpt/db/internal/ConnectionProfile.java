@@ -12,6 +12,7 @@ package org.eclipse.jpt.db.internal;
 import java.text.Collator;
 import java.util.NoSuchElementException;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 
 /**
@@ -19,7 +20,6 @@ import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
  */
 public abstract class ConnectionProfile extends DTPWrapper implements Comparable<ConnectionProfile> {
 	
-	private Connection connection; // Lazy initialized
 	private Database database; // Lazy initialized
 	private String catalogName;  // Catalog used for this profile
 	
@@ -36,6 +36,7 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	ConnectionProfile( ConnectionProfileRepository profileRepository) {
 		super();
 		this.profileRepository = profileRepository;
+
 		this.connectionListener = buildConnectionListener();
 		this.catalogName = "";
 	}
@@ -45,8 +46,6 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	public abstract void connect();
 	
 	public abstract void disconnect();
-	
-	protected abstract Connection buildConnection();
 	
 	protected abstract Database buildDatabase();
 	
@@ -67,14 +66,7 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	protected void dispose() {
 		this.disengageConnectionListener();
 		
-		this.disposeConnection();
 		this.disposeDatabase();
-	}
-	
-	private void disposeConnection() {
-		if( this.connection != null) {
-			this.getConnection().dispose();
-		}
 	}
 	
 	private void disposeDatabase() {
@@ -82,24 +74,23 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 			this.getDatabase().dispose();
 		}
 	}
+	
+	/**
+	 * Saves the state of the connection profile for working in an offline mode.
+	 * If the connection profile does not support working in an offline mode, no
+	 * exception is thrown and the method will return immediately.
+	 */
+	public abstract IStatus saveWorkOfflineData();
+	
+	public abstract IStatus workOffline();
+	
+	abstract boolean wraps( org.eclipse.datatools.connectivity.IConnectionProfile dtpProfile);
 
-	public boolean contains( Connection connection) {
-		return this.getConnection().equals( connection);
-	}
-
+	public abstract boolean contains( Connection connection);
+	
 
 	// ********** queries **********
 	
-	Connection getConnection() {
-		
-		if( this.connection == null) {
-			this.connection = this.buildConnection();
-			this.engageConnectionListener();
-
-		}
-		return this.connection;
-	}
-
 	public Database getDatabase() {
 		
 		if( this.database == null) {
@@ -134,13 +125,26 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	public abstract String getDriverJarList();
 	
 	public abstract boolean isConnected();
+	
+	public abstract boolean isWorkingOffline();
+	
+	/**
+	 * @return true if connection factories associated with this
+	 *				connection profile's provider support working offline.
+	 */
+	public abstract boolean supportsWorkOfflineMode();
+	
+	/**
+	 * @return true if this connection profile supports working offline and data
+	 *				has been saved for working offline.
+	 */
+	public abstract boolean canWorkOffline();
 
 	@Override
 	protected boolean connectionIsOnline() {
-		return this.isConnected();
+
+		return this.isConnected() && ( ! this.isWorkingOffline());
 	}
-	
-	abstract boolean wraps( org.eclipse.datatools.connectivity.IConnectionProfile dtpProfile);
 	
 	public boolean isNull() {
 		return true;
