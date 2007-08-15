@@ -14,7 +14,7 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 /**
  *  NullConnection
  */
-public final class NullConnection extends Connection {
+final class NullConnection extends Connection {
 
 	private static NullConnection INSTANCE;
 

@@ -17,7 +17,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.db.internal.Connection;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
@@ -317,40 +316,40 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		private ConnectionListener buildConnectionListener() {
 			return new ConnectionListener() {
 
-				public void modified( Connection connection) {
+				public void modified( ConnectionProfile profile) {
 				// not interested to this event.
 				}
 
-				public boolean okToClose( Connection connection) {
+				public boolean okToClose( ConnectionProfile profile) {
 				// not interested to this event.
 					return true;
 				}
 
-				public void opened( Connection connection) {
-					if( DatabaseReconnectWizardPage.this.profile.contains( connection)) {
+				public void opened( ConnectionProfile profile) {
+					if( DatabaseReconnectWizardPage.this.profile.equals( profile)) {
 						DatabaseGroup.this.populateSchemaCombo();
 					}
 				}
 
-				public void aboutToClose( Connection connection) {
-					if( DatabaseReconnectWizardPage.this.profile.contains( connection)) {
+				public void aboutToClose( ConnectionProfile profile) {
+					if( DatabaseReconnectWizardPage.this.profile.equals( profile)) {
 						DatabaseReconnectWizardPage.this.removeConnectionListener();
 					}
 				}
 
-				public void closed( Connection connection) {
+				public void closed( ConnectionProfile profile) {
 				// not interested to this event.
 				}
 
-				public void databaseChanged(Connection connection, final Database database) {
+				public void databaseChanged(ConnectionProfile profile, final Database database) {
 				// not interested to this event.
 				}
 
-				public void schemaChanged(Connection connection, final Schema schema) {
+				public void schemaChanged(ConnectionProfile profile, final Schema schema) {
 				// not interested to this event.
 				}
 
-				public void tableChanged(Connection connection, final Table table) {
+				public void tableChanged(ConnectionProfile profile, final Table table) {
 				// not interested to this event.
 				}
 			};

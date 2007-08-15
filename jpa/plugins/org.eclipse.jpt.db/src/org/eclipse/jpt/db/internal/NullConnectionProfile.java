@@ -83,10 +83,6 @@ public final class NullConnectionProfile extends ConnectionProfile {
 	boolean wraps( org.eclipse.datatools.connectivity.IConnectionProfile dtpProfile) {
 		return false;
 	}
-
-	public boolean contains( Connection connection) {
-		return false;
-	}
 	
 	
 	// ********** queries **********

@@ -195,10 +195,6 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 		return this.dtpConnectionProfile == dtpProfile;
 	}
 
-	public boolean contains( Connection connection) {
-		return this.getConnection().equals( connection);
-	}
-
 		
 	// ********** queries **********
 

@@ -20,7 +20,7 @@ import org.eclipse.datatools.connectivity.IManagedConnectionOfflineListener;
  *  Wraps to two DTP connections (1 for live connection & 1 for offline).
  *  The connections are not cached any more, but obtained each time from the ConnectionProfile.
  */
-public final class DTPConnectionWrapper extends Connection {
+final class DTPConnectionWrapper extends Connection {
 	
 	final private DTPConnectionProfileWrapper profile;
 	private LocalConnectionListener connectionListener;
@@ -133,7 +133,7 @@ public final class DTPConnectionWrapper extends Connection {
 		public void aboutToClose( ConnectEvent event) {
 			if( event.getConnection() == DTPConnectionWrapper.this.getDTPConnection()) {
 				for (ConnectionListener listener : this.listeners) {
-					listener.aboutToClose( DTPConnectionWrapper.this);
+					listener.aboutToClose( DTPConnectionWrapper.this.profile);
 				}
 			}
 		}
@@ -141,7 +141,7 @@ public final class DTPConnectionWrapper extends Connection {
 		public void aboutToDetach( ConnectEvent event) {
 			if( event.getConnection() == DTPConnectionWrapper.this.getDTPOfflineConnection()) {
 				for (ConnectionListener listener : this.listeners) {
-					listener.aboutToClose( DTPConnectionWrapper.this);
+					listener.aboutToClose( DTPConnectionWrapper.this.profile);
 				}
 			}
 		}
@@ -149,14 +149,14 @@ public final class DTPConnectionWrapper extends Connection {
 		public void closed( ConnectEvent event) {
 			// There is no DETACHED event, therefore closed is sent twice (i.e. by both connections)
 			for (ConnectionListener listener : this.listeners) {
-				listener.closed( DTPConnectionWrapper.this);
+				listener.closed( DTPConnectionWrapper.this.profile);
 			}
 		}
 
 		public boolean okToClose( ConnectEvent event) {
 			if( event.getConnection() == DTPConnectionWrapper.this.getDTPConnection()) {
 				for (ConnectionListener listener : this.listeners) {
-					if( !listener.okToClose( DTPConnectionWrapper.this)) {
+					if( !listener.okToClose( DTPConnectionWrapper.this.profile)) {
 						return false;
 					}
 				}
@@ -167,7 +167,7 @@ public final class DTPConnectionWrapper extends Connection {
 		public boolean okToDetach( ConnectEvent event) {
 			if( event.getConnection() == DTPConnectionWrapper.this.getDTPOfflineConnection()) {
 				for (ConnectionListener listener : this.listeners) {
-					if( !listener.okToClose( DTPConnectionWrapper.this)) {
+					if( !listener.okToClose( DTPConnectionWrapper.this.profile)) {
 						return false;
 					}
 				}
@@ -178,14 +178,14 @@ public final class DTPConnectionWrapper extends Connection {
 		public void opened( ConnectEvent event) {
 			if( event.getConnection() == DTPConnectionWrapper.this.getDTPConnection()) {
 				for (ConnectionListener listener : this.listeners) {
-					listener.opened( DTPConnectionWrapper.this);
+					listener.opened( DTPConnectionWrapper.this.profile);
 				}
 			}
 		}
 
 		public void workingOffline( ConnectEvent event) {
 			for (ConnectionListener listener : this.listeners) {
-				listener.opened( DTPConnectionWrapper.this);
+				listener.opened( DTPConnectionWrapper.this.profile);
 			}
 		}
 
@@ -196,28 +196,28 @@ public final class DTPConnectionWrapper extends Connection {
 
 		public void modified( ConnectEvent event) {
 			for (ConnectionListener listener : this.listeners) {
-				listener.modified( DTPConnectionWrapper.this);
+				listener.modified( DTPConnectionWrapper.this.profile);
 			}
 		}
 		
 		@SuppressWarnings("unused")
 		void databaseChanged( Database database, int eventType) {
 			for (ConnectionListener listener : this.listeners) {
-				listener.databaseChanged( DTPConnectionWrapper.this, database);
+				listener.databaseChanged( DTPConnectionWrapper.this.profile, database);
 			}
 		}
 
 		@SuppressWarnings("unused")
 		void schemaChanged( Schema schema, Database database, int eventType) {
 			for (ConnectionListener listener : this.listeners) {
-				listener.schemaChanged( DTPConnectionWrapper.this, schema);
+				listener.schemaChanged( DTPConnectionWrapper.this.profile, schema);
 			}
 		}
 
 		@SuppressWarnings("unused")
 		void tableChanged( Table table, Schema schema, Database database, int eventType) {
 			for (ConnectionListener listener : this.listeners) {
-				listener.tableChanged( DTPConnectionWrapper.this, table);
+				listener.tableChanged( DTPConnectionWrapper.this.profile, table);
 			}
 		}
 	}

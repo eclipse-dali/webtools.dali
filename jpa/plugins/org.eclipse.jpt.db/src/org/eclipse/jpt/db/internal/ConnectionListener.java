@@ -18,14 +18,14 @@ package org.eclipse.jpt.db.internal;
  */
 public interface ConnectionListener {
     
-    public void opened( Connection connection);
-    public void modified( Connection connection);
-    public boolean okToClose( Connection connection);
-    public void aboutToClose( Connection connection);
-    public void closed( Connection connection);
+    public void opened( ConnectionProfile profile);
+    public void modified( ConnectionProfile profile);
+    public boolean okToClose( ConnectionProfile profile);
+    public void aboutToClose( ConnectionProfile profile);
+    public void closed( ConnectionProfile profile);
 
-    public void databaseChanged( Connection connection, Database database);
-    public void schemaChanged( Connection connection, Schema schema);
-    public void tableChanged( Connection connection, Table table);
+    public void databaseChanged( ConnectionProfile profile, Database database);
+    public void schemaChanged( ConnectionProfile profile, Schema schema);
+    public void tableChanged( ConnectionProfile profile, Table table);
 
 }

@@ -85,8 +85,6 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	public abstract IStatus workOffline();
 	
 	abstract boolean wraps( org.eclipse.datatools.connectivity.IConnectionProfile dtpProfile);
-
-	public abstract boolean contains( Connection connection);
 	
 
 	// ********** queries **********
@@ -202,39 +200,39 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
     private ConnectionListener buildConnectionListener() {
 		return new ConnectionListener() {
 
-			public void aboutToClose(Connection c) {
+			public void aboutToClose(ConnectionProfile profile) {
 				// not interested to this event.
 			}
 
-			public void closed(Connection c) {
+			public void closed(ConnectionProfile profile) {
 				ConnectionProfile.this.refreshDatabase();
 			}
 
-			public void modified(Connection c) {
+			public void modified(ConnectionProfile profile) {
 				// not interested to this event.
 				return;
 			}
 
-			public boolean okToClose(Connection c) {
+			public boolean okToClose(ConnectionProfile profile) {
 				// not interested to this event.
 				return true;
 			}
 
-			public void opened(Connection c) {
+			public void opened(ConnectionProfile profile) {
 				ConnectionProfile.this.refreshDatabase();
 			}
 
-			public void databaseChanged(Connection c, final Database db) {
+			public void databaseChanged(ConnectionProfile profile, final Database db) {
 				// not interested to this event.
 				return;
 			}
 			
-			public void schemaChanged(Connection c, final Schema schema) {
+			public void schemaChanged(ConnectionProfile profile, final Schema schema) {
 				// not interested to this event.
 				return;
 			}
 
-			public void tableChanged(Connection c, final Table table) {
+			public void tableChanged(ConnectionProfile profile, final Table table) {
 				// not interested to this event.
 				return;
 			}

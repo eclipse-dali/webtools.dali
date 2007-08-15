@@ -15,7 +15,7 @@ import java.text.Collator;
 /**
  *  Connection wrapper base class.
  */
-public abstract class Connection extends DTPWrapper implements Comparable<Connection> {
+abstract class Connection extends DTPWrapper implements Comparable<Connection> {
 
 	// ********** constructors **********
 
