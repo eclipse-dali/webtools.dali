@@ -30,7 +30,11 @@ public class AllPlatformTests {
 //        suite.addTest( Derby101Tests.suite());
 //        suite.addTest( Oracle9iTests.suite());
 //        suite.addTest( Oracle10gTests.suite());
+//        suite.addTest( Oracle10gXETests.suite());
 //        suite.addTest( SQLServer2005Tests.suite());
+//        suite.addTest( MySQL41Tests.suite());
+//        suite.addTest( PostgreSQL824Tests.suite());
+//        suite.addTest( Sybase12Tests.suite());
 
         return suite;
     }

@@ -16,10 +16,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Properties;
+
 import junit.framework.Assert;
 import junit.framework.TestCase;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.datatools.connectivity.ConnectionProfileException;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
@@ -30,7 +33,6 @@ import org.eclipse.datatools.connectivity.drivers.IPropertySet;
 import org.eclipse.datatools.connectivity.drivers.PropertySetImpl;
 import org.eclipse.datatools.connectivity.drivers.XMLFileManager;
 import org.eclipse.datatools.connectivity.internal.ConnectivityPlugin;
-import org.eclipse.jpt.db.internal.Connection;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
 import org.eclipse.jpt.db.internal.DTPConnectionProfileWrapper;
@@ -125,7 +127,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	
 	public void testGetProfileByName() {
 		// Get Profile By Name
-		IConnectionProfile dtpProfile = ProfileManager.getInstance().getProfileByName( this.profileName());
+		IConnectionProfile dtpProfile = this.getDTPProfile();
 		Assert.assertNotNull( dtpProfile);
 		Assert.assertTrue( dtpProfile.getName().equals( this.profileName()));
 	}
@@ -137,6 +139,26 @@ public abstract class DTPPlatformTests extends TestCase {
 		Assert.assertTrue( dtpProfile.getName().equals( this.profileName()));
 	}
 
+	public void testWorkingOffline() {
+		
+		if( this.getProfile().supportsWorkOfflineMode()) {
+
+			if( ! this.getProfile().canWorkOffline()) {
+				this.connect();
+				this.saveWorkOfflineData();
+				this.disconnect();
+				
+				Assert.assertTrue( this.getProfile().canWorkOffline());
+			}
+			this.workOffline();
+			
+			Assert.assertTrue( this.getProfile().isConnected());
+			Assert.assertTrue( this.getProfile().isWorkingOffline());
+
+			this.disconnect();
+		}
+	}
+		
 	// ********** internal tests **********
 
     private void verifyDatabaseVersionNumber() {
@@ -196,7 +218,8 @@ public abstract class DTPPlatformTests extends TestCase {
     protected void connect() {
 
         this.getProfile().connect();
-		Assert.assertTrue( "Connect failed.", this.getProfile().isConnected());
+		Assert.assertTrue( "Could not connect.", this.getProfile().isConnected());
+		Assert.assertFalse( "Connection corrupted.", this.getProfile().isWorkingOffline());
     }
     
     protected void disconnect() {
@@ -204,6 +227,18 @@ public abstract class DTPPlatformTests extends TestCase {
     	this.getProfile().disconnect();
         Assert.assertFalse( "Disconnect failed.", this.getProfile().isConnected());
     }
+
+	private void workOffline() {
+		IStatus status = this.getProfile().workOffline();
+
+		Assert.assertTrue( "Could not work offline.", status.isOK());
+	}
+
+	private void saveWorkOfflineData() {
+		IStatus status = this.getProfile().saveWorkOfflineData();
+
+		Assert.assertTrue( "Could not save offline data.", status.isOK());
+	}
     
 	// ********** queries **********
 
@@ -212,11 +247,11 @@ public abstract class DTPPlatformTests extends TestCase {
 	    return this.getProfile().getDatabase().schemaNamed( schemaName);
     }
 	
-    protected Collection getTables() {
+    protected Collection<Table> getTables() {
 		
         Schema schema = this.getSchemaNamed( this.getProfile().getUserName());
 		if( schema == null) {
-			return new ArrayList();
+			return new ArrayList<Table>();
 		}
 		return CollectionTools.collection( schema.tables());
     }
@@ -235,6 +270,11 @@ public abstract class DTPPlatformTests extends TestCase {
      
     protected String passwordIsSaved() {
         return "true";
+    }
+
+
+    protected IConnectionProfile getDTPProfile() {
+		return ProfileManager.getInstance().getProfileByName( this.profileName());
     }
 	
     protected String profileName() {
@@ -273,7 +313,7 @@ public abstract class DTPPlatformTests extends TestCase {
     	return dbUrl;
     }
 
-    private ConnectionProfile getProfile() {
+    protected ConnectionProfile getProfile() {
 
     	return this.getProfileNamed( this.profileName());
     }
@@ -347,8 +387,9 @@ public abstract class DTPPlatformTests extends TestCase {
 		
 		ProfileManager profileManager = ProfileManager.getInstance();
 		Assert.assertNotNull( profileManager);
-		IConnectionProfile profile = profileManager.getProfileByName( profileName);
-		if( profile == null) {
+		
+		IConnectionProfile dtpProfile = this.getDTPProfile();
+		if( dtpProfile == null) {
 			Properties basicProperties = buildBasicProperties();
 			ProfileManager.getInstance().createProfile( profileName, this.profileDescription(), this.providerId(), basicProperties);
 		}
