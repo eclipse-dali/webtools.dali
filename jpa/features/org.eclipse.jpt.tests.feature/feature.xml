@@ -21,12 +21,21 @@
          id="org.eclipse.jpt.utility.tests"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
+         version="0.0.0"
+         unpack="false" />
 
    <plugin
          id="org.eclipse.jpt.core.tests"
          download-size="0"
          install-size="0"
-         version="0.0.0" />
+         version="0.0.0"
+         unpack="false" />
+
+   <plugin
+         id="testPlugin"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false" />
 
 </feature>
