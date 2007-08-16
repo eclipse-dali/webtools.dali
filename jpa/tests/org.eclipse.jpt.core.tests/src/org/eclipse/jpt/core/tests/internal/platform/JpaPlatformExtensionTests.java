@@ -56,7 +56,7 @@ public class JpaPlatformExtensionTests extends TestCase
 	}
 	
 	public void testAllJpaPlatformIds() {
-		assertEquals(2, CollectionTools.size(JpaPlatformRegistry.instance().allJpaPlatformIds()));
+		assertTrue(CollectionTools.size(JpaPlatformRegistry.instance().allJpaPlatformIds()) >= 2);
 	}
 	
 	public void testJpaPlatformLabel() {
