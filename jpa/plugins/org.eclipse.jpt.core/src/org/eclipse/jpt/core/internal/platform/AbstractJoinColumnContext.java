@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 
 public abstract class AbstractJoinColumnContext<E extends IAbstractJoinColumn> extends BaseContext

@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.Name;
 
 /**
  * Wrap a declaration annotation element adapter and simply
