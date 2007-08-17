@@ -76,14 +76,10 @@ public abstract class XmlAttributeContext extends BaseContext
 		return attributeMapping().typeMapping().getKey() == IMappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 	
-	public final DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	public final DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
-				return XmlAttributeContext.this.getDefault(key, defaultsContext);
-			}
-		
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+				return XmlAttributeContext.this.getDefault(key, getWrappedDefaultsContext());
 			}
 		};
 	}

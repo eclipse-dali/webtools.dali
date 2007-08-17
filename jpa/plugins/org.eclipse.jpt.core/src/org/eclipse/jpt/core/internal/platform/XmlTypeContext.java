@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
@@ -174,14 +174,15 @@ public abstract class XmlTypeContext extends BaseContext
 		this.javaTypeContext = null;
 	}
 	
-	public DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	public DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
-				return XmlTypeContext.this.getDefault(key, defaultsContext);
+				return XmlTypeContext.this.getDefault(key, getWrappedDefaultsContext());
 			}
-			
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+			@Override
+			public CompilationUnit astRoot() {
+				//TODO need to somehow not build this astRoot every time.  can we store the JavaPersistentType we are finding?
+				return javaPersistentType().getType().astRoot();
 			}
 		};
 	}

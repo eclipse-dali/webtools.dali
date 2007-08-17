@@ -37,12 +37,8 @@ public class AttributeOverrideContext extends BaseContext
 		return new ColumnContext(this, this.attributeOverride.getColumn());
 	}
 	
-	public DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
-			}
-		
+	public DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {	
 			public Object getDefault(String key) {
 				if (key.equals(BaseJpaPlatform.DEFAULT_COLUMN_NAME_KEY)) {
 					return buildDefaultColumnName();
@@ -54,7 +50,7 @@ public class AttributeOverrideContext extends BaseContext
 					}
 				
 				}
-				return defaultsContext.getDefault(key);
+				return super.getDefault(key);
 			}
 		};
 	}

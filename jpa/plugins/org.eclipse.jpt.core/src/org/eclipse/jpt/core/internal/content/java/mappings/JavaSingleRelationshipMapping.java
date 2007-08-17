@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.content.java.mappings;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -22,6 +21,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter;
@@ -646,8 +646,8 @@ public abstract class JavaSingleRelationshipMapping
 	 * extend to eliminate any "container" types
 	 */
 	@Override
-	protected String javaDefaultTargetEntity() {
-		String typeName = super.javaDefaultTargetEntity();
+	protected String javaDefaultTargetEntity(ITypeBinding typeBinding) {
+		String typeName = super.javaDefaultTargetEntity(typeBinding);
 		// if the attribute is a container, don't use it
 		return typeNamedIsContainer(typeName) ? null : typeName;
 	}

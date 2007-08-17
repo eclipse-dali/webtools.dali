@@ -519,8 +519,8 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			}
 		};
 		getProject().accept(visitor, IResource.NONE);
-		resynch();
 		filled = true;
+		resynch();
 	}
 
 	/**
@@ -706,7 +706,8 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	//passing it on to the JpaModel.  We don't currently support
 	//multiple projects having cross-references
 	public void resynch() {
-		if (disposing) return;
+		//don't resynch until the project is filled
+		if (disposing || !filled) return;
 		
 		if (! this.resynching) {
 			this.resynching = true;

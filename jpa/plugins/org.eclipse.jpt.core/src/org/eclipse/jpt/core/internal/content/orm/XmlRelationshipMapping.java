@@ -14,11 +14,11 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.Signature;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
+import org.eclipse.jpt.core.internal.content.java.mappings.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.ICascade;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
@@ -511,7 +511,7 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 		return null;
 	}
 
-	public String fullyQualifiedTargetEntity() {
+	public String fullyQualifiedTargetEntity(CompilationUnit astRoot) {
 		if (getTargetEntity() == null) {
 			return null;
 		}
@@ -542,7 +542,7 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 	public void refreshDefaults(DefaultsContext defaultsContext) {
 		super.refreshDefaults(defaultsContext);
 		setDefaultTargetEntity((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TARGET_ENTITY_KEY));
-		String targetEntity = fullyQualifiedTargetEntity();
+		String targetEntity = fullyQualifiedTargetEntity(defaultsContext.astRoot());
 		if (targetEntity != null) {
 			IPersistentType persistentType = defaultsContext.persistentType(targetEntity);
 			if (persistentType != null) {
@@ -559,23 +559,20 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 	 * the default 'targetEntity' is calculated from the attribute type;
 	 * return null if the attribute type cannot possibly be an entity
 	 */
-	public String javaDefaultTargetEntity() {
-		return this.javaDefaultTargetEntity(this.getPersistentAttribute().getAttribute().typeSignature());
-	}
-
-	protected String javaDefaultTargetEntity(String signature) {
-		IType iType = getPersistentType().findJdtType();
-		if (iType != null) {
-			return buildReferenceEntityTypeName(signature, iType);
+	public String javaDefaultTargetEntity(CompilationUnit astRoot) {
+		ITypeBinding typeBinding = this.getPersistentAttribute().getAttribute().typeBinding(astRoot);
+		if (typeBinding != null) {
+			return this.javaDefaultTargetEntity(typeBinding);
 		}
 		return null;
 	}
 
-	// TODO Embeddable???
-	public static String buildReferenceEntityTypeName(String signature, IType jdtType) {
-		if (Signature.getArrayCount(signature) > 0) {
-			return null; // arrays cannot be entities
-		}
-		return JDTTools.resolve(Signature.toString(signature), jdtType);
+	protected String javaDefaultTargetEntity(ITypeBinding typeBinding) {
+		return buildReferenceEntityTypeName(typeBinding);
 	}
+	
+	protected String buildReferenceEntityTypeName(ITypeBinding typeBinding) {
+		return JavaRelationshipMapping.buildReferenceEntityTypeName(typeBinding);
+	}
+
 }

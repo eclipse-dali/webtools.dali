@@ -13,7 +13,6 @@ import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
@@ -66,14 +65,10 @@ public abstract class JavaAttributeContext extends BaseContext
 		return this.attributeMapping;
 	}
 	
-	public final DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	public final DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
-				return JavaAttributeContext.this.getDefault(key, defaultsContext);
-			}
-		
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+				return JavaAttributeContext.this.getDefault(key, getWrappedDefaultsContext());
 			}
 		};
 	}

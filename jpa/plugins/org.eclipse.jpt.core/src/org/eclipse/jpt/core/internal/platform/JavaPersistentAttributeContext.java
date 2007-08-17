@@ -10,7 +10,6 @@ package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -83,14 +82,10 @@ public class JavaPersistentAttributeContext extends BaseContext
 		return this.javaPersistentAttribute;
 	}
 	
-	public final DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	public final DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
-				return JavaPersistentAttributeContext.this.getDefault(key, defaultsContext);
-			}
-		
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+				return JavaPersistentAttributeContext.this.getDefault(key, getWrappedDefaultsContext());
 			}
 		};
 	}

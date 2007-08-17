@@ -101,18 +101,6 @@ public abstract class JavaTypeMapping extends JavaEObject
 		return this.getType().getName();
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	public void initialize() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
 	public IPersistentType getPersistentType() {
 		return (IPersistentType) this.eContainer();
 	}

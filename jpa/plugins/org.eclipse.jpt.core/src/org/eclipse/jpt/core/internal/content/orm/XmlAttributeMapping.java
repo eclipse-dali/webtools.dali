@@ -314,10 +314,6 @@ public abstract class XmlAttributeMapping extends XmlEObject
 	 */
 	public abstract int xmlSequence();
 
-	public void initialize() {
-	//do nothing as this will be handle by the Xml Translators
-	}
-
 	public void refreshDefaults(DefaultsContext defaultsContext) {
 	// do nothing
 	}

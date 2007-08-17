@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.platform;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
@@ -53,17 +52,14 @@ public class SecondaryTableContext extends BaseContext
 		}
 	}
 	
-	public DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	public DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
+				//TODO hmm, why is this commented out??? this wrapper is doing nothing - kfm 8/17/07
 //				if (key.equals(BaseJpaPlatform.DEFAULT_COLUMN_TABLE_KEY)) {
 //					return getTable().getName();
 //				}
-				return defaultsContext.getDefault(key);
-			}
-			
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+				return super.getDefault(key);
 			}
 		};
 	}

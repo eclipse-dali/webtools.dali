@@ -574,16 +574,18 @@ public class JavaEmbedded extends JavaAttributeMapping implements IJavaEmbedded
 
 	//******* static methods *********
 	public static IEmbeddable embeddableFor(Attribute attribute, DefaultsContext defaultsContext) {
-		String resolvedTypeName = attribute.resolvedTypeName();
+		CompilationUnit astRoot = defaultsContext.astRoot();
+		String resolvedTypeName = attribute.resolvedTypeName(astRoot);
 		if (resolvedTypeName == null) {
 			return null;
 		}
 		IPersistentType persistentType = defaultsContext.persistentType(resolvedTypeName);
 		if (persistentType != null) {
-			if (persistentType.getMapping() instanceof IEmbeddable) {
+			if( persistentType.getMappingKey() == IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
 				return (IEmbeddable) persistentType.getMapping();
 			}
 		}
 		return null;
 	}
+
 } // JavaEmbedded

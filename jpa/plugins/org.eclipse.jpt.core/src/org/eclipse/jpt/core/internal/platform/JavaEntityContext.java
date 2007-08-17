@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAssociationOverride;
@@ -139,7 +140,11 @@ public class JavaEntityContext extends JavaTypeContext
 		}
 	}
 	
-	public DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
+	//TODO the relationship between this class and JavaTypeContext is very confused
+	//we end up wrapping the defaults context multiple times.  Maybe we should
+	//make this more like JavaAttributeContext.  or maybe we need a JavaPersistentTypeContext
+	//I tried to minimize the change so as not to break the defaults calculations
+	private DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
 		DefaultsContext wrappedDefaultsContext = new DefaultsContext() {
 			public Object getDefault(String key) {
 				if (key.equals(BaseJpaPlatform.DEFAULT_TABLE_NAME_KEY)) {
@@ -157,6 +162,9 @@ public class JavaEntityContext extends JavaTypeContext
 		
 			public IPersistentType persistentType(String fullyQualifiedTypeName) {
 				return defaultsContext.persistentType(fullyQualifiedTypeName);
+			}
+			public CompilationUnit astRoot() {
+				return getAstRoot();
 			}
 		};
 		if (this.tableContext != null) {

@@ -76,10 +76,6 @@ public abstract class JavaAttributeMapping extends JavaEObject
 		return JpaJavaMappingsPackage.Literals.JAVA_ATTRIBUTE_MAPPING;
 	}
 
-	public void initialize() {
-		this.updateFromJava(this.attribute.astRoot());
-	}
-
 	public JavaPersistentAttribute getPersistentAttribute() {
 		return (JavaPersistentAttribute) this.eContainer();
 	}

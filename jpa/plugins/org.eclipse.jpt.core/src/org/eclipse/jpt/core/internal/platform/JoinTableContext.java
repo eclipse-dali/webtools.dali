@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.platform;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
@@ -70,8 +69,8 @@ public class JoinTableContext extends BaseContext
 		}
 	}
 	
-	protected DefaultsContext wrapDefaultsContextForJoinColumn(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	protected DefaultsContext wrapDefaultsContextForJoinColumn(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
 				/**
 				 * by default, the join column is, obviously, in the join table;
@@ -80,26 +79,18 @@ public class JoinTableContext extends BaseContext
 				if (key.equals(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_TABLE_KEY)) {
 					return getTable().getName();
 				}
-				return defaultsContext.getDefault(key);
-			}
-			
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+				return super.getDefault(key);
 			}
 		};
 	}
 	
-	protected DefaultsContext wrapDefaultsContextForInverseJoinColumn(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	protected DefaultsContext wrapDefaultsContextForInverseJoinColumn(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
 				if (key.equals(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_TABLE_KEY)) {
 					return getTable().getName();
 				}
-				return defaultsContext.getDefault(key);
-			}
-			
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+				return super.getDefault(key);
 			}
 		};
 	}

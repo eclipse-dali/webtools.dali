@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
@@ -162,6 +163,9 @@ public class BaseJpaProjectContext extends BaseContext
 				return null;
 			}
 			public IPersistentType persistentType(String fullyQualifiedTypeName) {
+				return null;
+			}
+			public CompilationUnit astRoot() {
 				return null;
 			}
 		};

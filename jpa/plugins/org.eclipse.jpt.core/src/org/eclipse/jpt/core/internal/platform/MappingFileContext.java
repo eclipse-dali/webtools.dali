@@ -100,8 +100,8 @@ public class MappingFileContext extends BaseContext
 		}
 	}
 	
-	private DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	private DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
 				if (key.equals(BaseJpaPlatform.DEFAULT_TABLE_SCHEMA_KEY)
 					||  key.equals(BaseJpaPlatform.DEFAULT_TABLE_GENERATOR_SCHEMA_KEY)) {
@@ -117,11 +117,7 @@ public class MappingFileContext extends BaseContext
 					}
 				}
 				
-				return defaultsContext.getDefault(key);
-			}
-			
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+				return super.getDefault(key);
 			}
 		};
 	}

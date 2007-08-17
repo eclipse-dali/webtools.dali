@@ -300,11 +300,8 @@ public class PersistenceUnitContext extends BaseContext
 	}
 	
 	protected DefaultsContext wrapDefaultsContext(DefaultsContext defaults) {
-		final DefaultsContext puDefaults = buildPersistenceUnitDefaults(defaults);
-		return new DefaultsContext(){
-			public Object getDefault(String key) {
-				return puDefaults.getDefault(key);
-			}
+		DefaultsContext puDefaults = buildPersistenceUnitDefaults(defaults);
+		return new DefaultsContextWrapper(puDefaults){
 			public IPersistentType persistentType(String fullyQualifiedTypeName) {
 				for (Iterator<TypeContext> i = typeContexts(); i.hasNext(); ) {
 					TypeContext typeContext = i.next();
@@ -323,14 +320,14 @@ public class PersistenceUnitContext extends BaseContext
 		};
 	}
 	
-	protected DefaultsContext buildPersistenceUnitDefaults(final DefaultsContext defaults) {
+	protected DefaultsContext buildPersistenceUnitDefaults(DefaultsContext defaults) {
 		if (persistenceUnitMetadatas.size() == 1) {
 			final PersistenceUnitDefaults puDefaults = persistenceUnitMetadatas.get(0).getPersistenceUnitDefaults();
 			if (puDefaults.isAllFeaturesUnset()) {
 				return defaults;
 			}
 			
-			return new DefaultsContext() {
+			return new DefaultsContextWrapper(defaults) {
 				public Object getDefault(String key) {
 					if (key.equals(BaseJpaPlatform.DEFAULT_TABLE_SCHEMA_KEY)
 						|| key.equals(BaseJpaPlatform.DEFAULT_TABLE_GENERATOR_SCHEMA_KEY)) {
@@ -351,10 +348,7 @@ public class PersistenceUnitContext extends BaseContext
 							return access;
 						}
 					}
-					return defaults.getDefault(key);
-				}
-				public IPersistentType persistentType(String fullyQualifiedTypeName) {
-					return defaults.persistentType(fullyQualifiedTypeName);
+					return super.getDefault(key);
 				}
 			};
 		}

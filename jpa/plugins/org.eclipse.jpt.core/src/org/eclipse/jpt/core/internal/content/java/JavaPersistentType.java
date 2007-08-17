@@ -27,6 +27,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
@@ -57,7 +58,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.AttributeAnnotationTools;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
@@ -881,29 +881,30 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	public void refreshDefaults(DefaultsContext context) {
 		refreshParentPersistentType(context);
 	}
-
+	
 	private void refreshParentPersistentType(DefaultsContext context) {
-		String superclassTypeSignature = this.superclassTypeSignature();
-		if (superclassTypeSignature == null) {
-			this.parentPersistentType = null;
-			return;
+		ITypeBinding typeBinding = getType().typeBinding(context.astRoot());
+		this.parentPersistentType = parentPersistentType(context, typeBinding);
+	}
+	
+	public static IPersistentType parentPersistentType(DefaultsContext context, ITypeBinding typeBinding) {
+		if (typeBinding == null) {
+			return null;
 		}
-		String fullyQualifiedTypeName = JDTTools.resolveSignature(superclassTypeSignature, this.jdtType());
-		if (fullyQualifiedTypeName == null) {
-			this.parentPersistentType = null;
-			return;
+		ITypeBinding superClassTypeBinding = typeBinding.getSuperclass();
+		if (superClassTypeBinding == null) {
+			return null;
 		}
+		String fullyQualifiedTypeName = superClassTypeBinding.getQualifiedName();
 		IPersistentType possibleParent = context.persistentType(fullyQualifiedTypeName);
 		if (possibleParent == null) {
 			//TODO look to superclass
-			this.parentPersistentType = null;
-			return;
+			return null;
 		}
 		if (possibleParent.getMappingKey() != null) {
-			this.parentPersistentType = possibleParent;
+			return possibleParent;
 		}
-		else {
-			this.parentPersistentType = possibleParent.parentPersistentType();
-		}
+		return possibleParent.parentPersistentType();
+		
 	}
 }

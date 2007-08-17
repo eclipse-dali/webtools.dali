@@ -593,10 +593,6 @@ public abstract class XmlTypeMapping extends XmlEObject implements ITypeMapping
 		return result.toString();
 	}
 
-	public void initialize() {
-	//do nothing as this will be handle by the Xml Translators
-	}
-
 	/**
 	 * ITypeMapping is changed and various ITypeMappings may have
 	 * common settings.  In this method initialize the new ITypeMapping (this)

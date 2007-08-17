@@ -27,17 +27,6 @@ import org.eclipse.jpt.utility.internal.Filter;
  */
 public interface IJavaAttributeMapping extends IAttributeMapping
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * Initialize the model after the AttributeMapping has been
-	 * created and added to its container.  Some things
-	 * can't be accessed.  Build anything that doesn't depend
-	 * on resources throughout the model being built.
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	void initialize();
 
 	void updateFromJava(CompilationUnit astRoot);
 

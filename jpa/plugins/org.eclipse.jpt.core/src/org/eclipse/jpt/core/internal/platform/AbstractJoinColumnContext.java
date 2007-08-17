@@ -31,8 +31,8 @@ public abstract class AbstractJoinColumnContext<E extends IAbstractJoinColumn> e
 		this.column.refreshDefaults(wrapDefaultsContext(defaultsContext));
 	}
 	
-	public DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	public DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
 				if (key.equals(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_NAME_KEY)) {
 					return buildDefaultName();
@@ -40,11 +40,7 @@ public abstract class AbstractJoinColumnContext<E extends IAbstractJoinColumn> e
 				if (key.equals(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_REFERENCED_COLUMN_NAME_KEY)) {
 					return buildDefaultReferencedColumnName();
 				}
-				return defaultsContext.getDefault(key);
-			}
-		
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+				return super.getDefault(key);
 			}
 		};
 	}

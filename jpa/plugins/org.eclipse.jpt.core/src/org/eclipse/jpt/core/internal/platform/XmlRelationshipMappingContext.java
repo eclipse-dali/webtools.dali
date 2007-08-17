@@ -24,7 +24,7 @@ public abstract class XmlRelationshipMappingContext extends XmlAttributeContext
 	}
 	
 	protected IEntity targetEntity(DefaultsContext defaultsContext) {
-		String targetEntity = relationshipMapping().fullyQualifiedTargetEntity();
+		String targetEntity = relationshipMapping().fullyQualifiedTargetEntity(defaultsContext.astRoot());
 		if (targetEntity == null) {
 			return null;
 		}
@@ -70,7 +70,7 @@ public abstract class XmlRelationshipMappingContext extends XmlAttributeContext
 			if (attribute != null) {
 				IType iType = relationshipMapping().getPersistentType().findJdtType();
 				if (iType != null) {
-					return relationshipMapping().javaDefaultTargetEntity();
+					return relationshipMapping().javaDefaultTargetEntity(defaultsContext.astRoot());
 				}
 			}
 		}

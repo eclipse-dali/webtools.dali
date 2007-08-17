@@ -10,15 +10,16 @@
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Iterator;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.Signature;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.TypeLiteral;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -29,7 +30,6 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdap
 import org.eclipse.jpt.core.internal.jdtutility.EnumArrayDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ExpressionConverter;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.StringExpressionConverter;
@@ -549,14 +549,25 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 		return result.toString();
 	}
 
-	public String fullyQualifiedTargetEntity() {
-		return (getTargetEntity() == null) ? null : JDTTools.resolve(getTargetEntity(), this.jdtType());
+	public String fullyQualifiedTargetEntity(CompilationUnit astRoot) {
+		if (getSpecifiedTargetEntity() == null) {
+			return getDefaultTargetEntity(); //already fully qualified, or null which is fine
+		}
+		//not positive this is the right way to handle this
+		Expression expression = this.targetEntityAdapter.expression(astRoot);
+		if (expression.getNodeType() == ASTNode.TYPE_LITERAL) {
+			ITypeBinding resolvedTypeBinding = ((TypeLiteral) expression).getType().resolveBinding();
+			if (resolvedTypeBinding != null) {
+				return resolvedTypeBinding.getQualifiedName();
+			}
+		}
+		return null;
 	}
 
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		setDefaultTargetEntity(this.javaDefaultTargetEntity());
+		updateDefaultTargetEntityFromJava(astRoot);
 		setSpecifiedTargetEntity(this.targetEntityAdapter.getValue(astRoot));
 		this.updateFetchFromJava(astRoot);
 		if (this.cascade != null) {
@@ -566,6 +577,16 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 			setCascade(createCascade());
 			((JavaCascade) this.cascade).updateFromJava(astRoot);
 		}
+	}
+	
+	private void updateDefaultTargetEntityFromJava(CompilationUnit astRoot) {
+		ITypeBinding typeBinding = getAttribute().typeBinding(astRoot);
+		if (typeBinding != null) {
+			setDefaultTargetEntity(javaDefaultTargetEntity(typeBinding));
+		}
+		else {
+			setDefaultTargetEntity(null);
+		}	
 	}
 
 	/**
@@ -578,20 +599,16 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	 * the default 'targetEntity' is calculated from the attribute type;
 	 * return null if the attribute type cannot possibly be an entity
 	 */
-	protected String javaDefaultTargetEntity() {
-		return this.javaDefaultTargetEntity(this.getAttribute().typeSignature());
+	protected String javaDefaultTargetEntity(ITypeBinding typeBinding) {
+		return buildReferenceEntityTypeName(typeBinding);
 	}
 
-	protected String javaDefaultTargetEntity(String signature) {
-		return buildReferenceEntityTypeName(signature, jdtType());
-	}
-
-	// TODO Embeddable???
-	public static String buildReferenceEntityTypeName(String signature, IType jdtType) {
-		if (Signature.getArrayCount(signature) > 0) {
-			return null; // arrays cannot be entities
+//	// TODO Embeddable???
+	public static String buildReferenceEntityTypeName(ITypeBinding typeBinding) {
+		if (!typeBinding.isArray()) { // arrays cannot be entities
+			return typeBinding.getQualifiedName();
 		}
-		return JDTTools.resolve(Signature.toString(signature), jdtType);
+		return null;
 	}
 
 	public IEntity getEntity() {
@@ -605,7 +622,7 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	@Override
 	public void refreshDefaults(DefaultsContext defaultsContext) {
 		super.refreshDefaults(defaultsContext);
-		String targetEntityName = fullyQualifiedTargetEntity();
+		String targetEntityName = fullyQualifiedTargetEntity(defaultsContext.astRoot());
 		if (targetEntityName != null) {
 			IPersistentType persistentType = defaultsContext.persistentType(targetEntityName);
 			if (persistentType != null) {

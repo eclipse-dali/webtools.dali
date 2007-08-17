@@ -114,10 +114,6 @@ public abstract class Member {
 		return new ModifiedDeclaration(this.bodyDeclaration(astRoot));
 	}
 
-	public BodyDeclaration bodyDeclaration() {
-		return this.bodyDeclaration(this.astRoot());
-	}
-
 	public ITextRange textRange() {
 		return this.textRange(this.lightweightASTRoot());
 	}

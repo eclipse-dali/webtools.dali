@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.jdtutility;
 
-import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -23,84 +22,6 @@ public class JDTToolsTests extends AnnotationTestCase {
 	public JDTToolsTests(String name) {
 		super(name);
 	}
-
-	public void testResolveSignature1() throws Exception {
-		this.verifyResolveSignature("String", "java.lang.String");
-	}
-
-	public void testResolveSignature2() throws Exception {
-		this.verifyResolveSignature("List", null);
-	}
-
-	public void testResolveSignature3() throws Exception {
-		this.verifyResolveSignature("int", "int");
-	}
-
-	public void testResolveSignature4() throws Exception {
-		this.verifyResolveSignature("void", "void");
-	}
-
-	public void testResolveSignature5() throws Exception {
-		this.verifyResolveSignature("int[]", "int[]");
-	}
-
-	public void testResolveSignature6() throws Exception {
-		this.verifyResolveSignature("String[]", "java.lang.String[]");
-	}
-
-	public void testResolveSignature7() throws Exception {
-		this.verifyResolveSignature("java.util.List[][][]", "java.util.List[][][]");
-	}
-
-	public void testResolveSignature8a() throws Exception {
-		// inner class
-		this.verifyResolveSignature("java.util.Map.Entry", "java.util.Map.Entry");
-	}
-
-	public void testResolveSignature8b() throws Exception {
-		// inner class
-		this.createTestType("java.util.Map", "");
-		this.verifyResolveSignature2("Map.Entry", "java.util.Map.Entry");
-	}
-
-	public void testResolveSignature8c() throws Exception {
-		// inner class
-		this.createTestType("java.util.Map.Entry", "");
-		this.verifyResolveSignature2("Entry", "java.util.Map.Entry");
-	}
-
-	public void testResolveSignature9() throws Exception {
-		// inner class
-		this.verifyResolveSignature("Character.Subset", "java.lang.Character.Subset");
-	}
-
-	public void testResolveSignature10() throws Exception {
-		// generic type
-		this.verifyResolveSignature("java.util.List<java.lang.String>", "java.util.List");  // ????
-	}
-
-	public void testResolveSignature11() throws Exception {
-		// annotation
-		this.createTestType("java.lang.annotation.Target", "");
-		this.verifyResolveSignature2("Target", "java.lang.annotation.Target");
-	}
-
-	public void testResolveSignature12() throws Exception {
-		this.createTestType("java.lang.annotation.ElementType", "");
-		this.verifyResolveSignature2("ElementType", "java.lang.annotation.ElementType");
-	}
-
-	private void verifyResolveSignature(String unresolvedTypeName, String expected) throws Exception {
-		this.createTestType();
-		this.verifyResolveSignature2(unresolvedTypeName, expected);
-	}
-
-	private void verifyResolveSignature2(String unresolvedTypeName, String expected) throws Exception {
-		String signature = Signature.createTypeSignature(unresolvedTypeName, false);
-		String actual = JDTTools.resolveSignature(signature, this.jdtType());
-		assertEquals(expected, actual);
-	}
-
 
 	private void createEnumAndMembers(String enumName, String enumBody) throws Exception {
 		this.javaProject.createType("enums", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
