@@ -1,2 +1,2 @@
-*.bin.dist.zip
 build.xml
+org.eclipse.jpt_2.0.0.*
