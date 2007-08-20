@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.jdtutility;
 
 import org.eclipse.jdt.core.Signature;
+import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
@@ -118,7 +119,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		FieldAttribute field = this.idField();
 
-		String actual = JDTTools.resolveEnum(this.jdtType().getCompilationUnit(), field.annotationElementExpression(daea));
+		String actual = JDTTools.resolveEnum((Name) field.annotationElementExpression(daea));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 
@@ -131,7 +132,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		FieldAttribute field = this.idField();
 
-		String actual = JDTTools.resolveEnum(this.jdtType().getCompilationUnit(), field.annotationElementExpression(daea));
+		String actual = JDTTools.resolveEnum((Name) field.annotationElementExpression(daea));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 
@@ -144,7 +145,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		FieldAttribute field = this.idField();
 
-		String actual = JDTTools.resolveEnum(this.jdtType().getCompilationUnit(), field.annotationElementExpression(daea));
+		String actual = JDTTools.resolveEnum((Name) field.annotationElementExpression(daea));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 
@@ -157,7 +158,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		FieldAttribute field = this.idField();
 
-		String actual = JDTTools.resolveEnum(this.jdtType().getCompilationUnit(), field.annotationElementExpression(daea));
+		String actual = JDTTools.resolveEnum((Name) field.annotationElementExpression(daea));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 

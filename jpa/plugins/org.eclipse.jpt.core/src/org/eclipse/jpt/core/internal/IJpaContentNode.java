@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -33,12 +33,6 @@ public interface IJpaContentNode extends IJpaSourceObject
 	 * Return a unique identifier for all of this class of content nodes
 	 */
 	Object getId();
-
-	/**
-	 * Return the text range for this contentNode.  This is the all-inclusive
-	 * text range to be used for finding a particular content node given a source location.
-	 */
-	ITextRange fullTextRange();
 
 	/**
 	 * Return the text range to be used for selection. This is the text you want selected

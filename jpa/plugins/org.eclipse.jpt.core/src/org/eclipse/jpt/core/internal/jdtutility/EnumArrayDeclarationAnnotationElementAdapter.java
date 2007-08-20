@@ -14,7 +14,6 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.Name;
 
 /**
  * Wrap a declaration annotation element adapter and simply
@@ -26,7 +25,7 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 	/**
 	 * The wrapped adapter that returns and takes name strings (enums).
 	 */
-	private final ConversionDeclarationAnnotationElementAdapter<String[], Expression> adapter;
+	private final ConversionDeclarationAnnotationElementAdapter<String[]> adapter;
 
 	private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
@@ -57,14 +56,14 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 	}
 
 	public EnumArrayDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty, boolean removeArrayInitializerWhenEmpty) {
-		this(new ConversionDeclarationAnnotationElementAdapter<String[], Expression>(annotationAdapter, elementName, removeAnnotationWhenEmpty, buildExpressionConverter(removeArrayInitializerWhenEmpty)));
+		this(new ConversionDeclarationAnnotationElementAdapter<String[]>(annotationAdapter, elementName, removeAnnotationWhenEmpty, buildExpressionConverter(removeArrayInitializerWhenEmpty)));
 	}
 
-	private static ExpressionConverter<String[], Expression> buildExpressionConverter(boolean removeArrayInitializerWhenEmpty) {
-		return new AnnotationStringArrayExpressionConverter<Name>(NameStringExpressionConverter.instance(), removeArrayInitializerWhenEmpty);
+	private static ExpressionConverter<String[]> buildExpressionConverter(boolean removeArrayInitializerWhenEmpty) {
+		return new AnnotationStringArrayExpressionConverter(NameStringExpressionConverter.instance(), removeArrayInitializerWhenEmpty);
 	}
 
-	protected EnumArrayDeclarationAnnotationElementAdapter(ConversionDeclarationAnnotationElementAdapter<String[], Expression> adapter) {
+	protected EnumArrayDeclarationAnnotationElementAdapter(ConversionDeclarationAnnotationElementAdapter<String[]> adapter) {
 		super();
 		this.adapter = adapter;
 	}
@@ -100,13 +99,13 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 	 * or
 	 *     FOO
 	 */
-	protected String[] resolve(Expression enumsExpression, ModifiedDeclaration declaration) {
-		if (enumsExpression == null) {
+	protected String[] resolve(Expression expression, ModifiedDeclaration declaration) {
+		if (expression == null) {
 			return EMPTY_STRING_ARRAY;
-		} else if (enumsExpression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
-			return this.resolveArray((ArrayInitializer) enumsExpression, declaration);
+		} else if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
+			return this.resolveArray((ArrayInitializer) expression, declaration);
 		} else {
-			return this.resolveSingleElement(enumsExpression, declaration);
+			return this.resolveSingleElement(expression, declaration);
 		}
 	}
 
@@ -115,17 +114,17 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 		int len = expressions.size();
 		String[] enums = new String[len];
 		for (int i = len; i-- > 0; ) {
-			enums[i] = this.resolveEnum(expressions.get(i), declaration);
+			enums[i] = this.resolveEnum(expressions.get(i));
 		}
 		return enums;
 	}
 
 	protected String[] resolveSingleElement(Expression enumExpression, ModifiedDeclaration declaration) {
-		return new String[] {this.resolveEnum(enumExpression, declaration)};
+		return new String[] {this.resolveEnum(enumExpression)};
 	}
 
-	protected String resolveEnum(Expression enumExpression, ModifiedDeclaration declaration) {
-		return JDTTools.resolveEnum(declaration.iCompilationUnit(), enumExpression);
+	protected String resolveEnum(Expression expression) {
+		return JDTTools.resolveEnum(expression);
 	}
 
 	@SuppressWarnings("unchecked")

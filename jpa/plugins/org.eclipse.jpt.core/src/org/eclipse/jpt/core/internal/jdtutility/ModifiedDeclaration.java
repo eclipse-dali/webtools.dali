@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IExtendedModifier;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
@@ -71,7 +72,7 @@ public class ModifiedDeclaration {
 	 * Return the "declaration" AST node.
 	 */
 	public ASTNode getDeclaration() {
-		return this.adapter.getDeclaration();
+		return this.adapter.declaration();
 	}
 
 	/**
@@ -277,19 +278,30 @@ public class ModifiedDeclaration {
 	}
 
 	private String qualifiedName(Annotation annotation) {
-		String name = annotation.getTypeName().getFullyQualifiedName();
-		if (name.indexOf('.') != -1) {
-			return name;  // name is already qualified
-		}
-		String resolvedName = JDTTools.resolve(name, this.type());
-		if (resolvedName != null) {
-			return resolvedName;
+		ITypeBinding typeBinding = annotation.resolveTypeBinding();
+		if (typeBinding != null) {
+			String resolvedName = typeBinding.getQualifiedName();
+			if (resolvedName != null) {
+				return resolvedName;
+			}
 		}
 		// hack(?): check for a matching import because when moving a stand-alone
 		// annotation to its container in CombinationIndexedDeclarationAnnotationAdapter
 		// the container's import is added but then it won't "resolve" upon
 		// subsequent lookups... :-(
-		return this.importFor(name);  // look for a matching import
+		return this.importFor(annotation.getTypeName().getFullyQualifiedName());  // look for a matching import
+
+		// OLD METHOD SOURCE:
+//		String name = annotation.getTypeName().getFullyQualifiedName();
+//		if (name.indexOf('.') != -1) {
+//			return name;  // name is already qualified
+//		}
+//		String resolvedName = JDTTools.resolve(name, this.type());
+//		// hack(?): check for a matching import because when moving a stand-alone
+//		// annotation to its container in CombinationIndexedDeclarationAnnotationAdapter
+//		// the container's import is added but then it won't "resolve" upon
+//		// subsequent lookups... :-(
+//		return this.importFor(name);  // look for a matching import
 	}
 
 	/**
@@ -353,7 +365,7 @@ public class ModifiedDeclaration {
 		/**
 		 * Return the adapted "declaration".
 		 */
-		ASTNode getDeclaration();
+		ASTNode declaration();
 
 		/**
 		 * Return the "declaration"'s list of modifiers.
@@ -369,7 +381,7 @@ public class ModifiedDeclaration {
 			super();
 			this.declaration = declaration;
 		}
-		public ASTNode getDeclaration() {
+		public ASTNode declaration() {
 			return this.declaration;
 		}
 		@SuppressWarnings("unchecked")
@@ -388,7 +400,7 @@ public class ModifiedDeclaration {
 			super();
 			this.declaration = declaration;
 		}
-		public ASTNode getDeclaration() {
+		public ASTNode declaration() {
 			return this.declaration;
 		}
 		@SuppressWarnings("unchecked")
@@ -407,7 +419,7 @@ public class ModifiedDeclaration {
 			super();
 			this.declaration = declaration;
 		}
-		public ASTNode getDeclaration() {
+		public ASTNode declaration() {
 			return this.declaration;
 		}
 		@SuppressWarnings("unchecked")
@@ -426,7 +438,7 @@ public class ModifiedDeclaration {
 			super();
 			this.declaration = declaration;
 		}
-		public ASTNode getDeclaration() {
+		public ASTNode declaration() {
 			return this.declaration;
 		}
 		@SuppressWarnings("unchecked")

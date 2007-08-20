@@ -21,7 +21,6 @@ import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.WorkingCopyOwner;
-import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
@@ -740,7 +739,7 @@ public class JavaBasic extends JavaAttributeMapping implements IBasic
 
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter<String> buildOptionalAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String, BooleanLiteral>(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__OPTIONAL, false, BooleanStringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__OPTIONAL, false, BooleanStringExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
