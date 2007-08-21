@@ -646,10 +646,10 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 		eUnset(OrmPackage.XML_COLUMN__SPECIFIED_TABLE);
 		eUnset(OrmPackage.XML_COLUMN__COLUMN_DEFINITION);
 		eUnset(OrmPackage.XML_COLUMN__INSERTABLE);
-		eUnset(OrmPackage.XML_COLUMN__LENGTH);
+		eUnset(OrmPackage.XML_COLUMN__SPECIFIED_LENGTH);
 		eUnset(OrmPackage.XML_COLUMN__NULLABLE);
-		eUnset(OrmPackage.XML_COLUMN__PRECISION);
-		eUnset(OrmPackage.XML_COLUMN__SCALE);
+		eUnset(OrmPackage.XML_COLUMN__SPECIFIED_PRECISION);
+		eUnset(OrmPackage.XML_COLUMN__SPECIFIED_SCALE);
 		eUnset(OrmPackage.XML_COLUMN__UNIQUE);
 		eUnset(OrmPackage.XML_COLUMN__UPDATABLE);
 	}
