@@ -16,16 +16,8 @@ import junit.framework.TestSuite;
 public class JptCorePlatformTests
 {
 	public static Test suite() {
-		return suite(true);
-	}
-
-	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptCorePlatformTests.class.getName());
-		suite.addTestSuite(JpaPlatformExtensionTests.class);
-		if (all) {
-			suite.addTestSuite(BaseJpaPlatformTests.class);
-			suite.addTestSuite(JpaPlatformTests.class);
-		}
+//		suite.addTestSuite(BaseJpaPlatformTests.class);
 		return suite;
 	}
 

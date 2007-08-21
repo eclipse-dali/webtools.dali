@@ -30,21 +30,17 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * This builds and holds a "Java" project.
  * Support for adding packages and types.
  */
-public class TestJavaProject extends TestFacetedProject 
-{
+public class TestJavaProject extends TestFacetedProject {
+
 	private IJavaProject javaProject;
 	private IPackageFragmentRoot sourceFolder;
 
 
-	// ********** builders *****************************
-	
-	public static TestJavaProject buildJavaProject(String baseProjectName, boolean autoBuild)
-			throws CoreException {
-		return new TestJavaProject(uniqueProjectName(baseProjectName), autoBuild);
-	}
-	
-	
 	// ********** constructors/initialization **********
+
+	public TestJavaProject() throws CoreException {
+		this("TestJavaProject");
+	}
 
 	public TestJavaProject(String projectName) throws CoreException {
 		this(projectName, false);
@@ -87,7 +83,7 @@ public class TestJavaProject extends TestFacetedProject
 	public IType createType(String packageName, String compilationUnitName, SourceWriter sourceWriter) throws CoreException {
 		return this.createType(this.createPackage(packageName), compilationUnitName, sourceWriter);
 	}
-	
+
 	/**
 	 * The source should NOT contain a package declaration;
 	 * it will be added here.
