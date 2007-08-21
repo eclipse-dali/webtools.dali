@@ -3582,13 +3582,31 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_COLUMN__LENGTH = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Specified Length</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_COLUMN__SPECIFIED_LENGTH = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Precision</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_COLUMN__PRECISION = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 1;
+	public static final int XML_COLUMN__PRECISION = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Specified Precision</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_COLUMN__SPECIFIED_PRECISION = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Scale</b></em>' attribute.
@@ -3597,7 +3615,16 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_COLUMN__SCALE = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 2;
+	public static final int XML_COLUMN__SCALE = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Specified Scale</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_COLUMN__SPECIFIED_SCALE = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Length For Xml</b></em>' attribute.
@@ -3606,7 +3633,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_COLUMN__LENGTH_FOR_XML = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 3;
+	public static final int XML_COLUMN__LENGTH_FOR_XML = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Precision For Xml</b></em>' attribute.
@@ -3615,7 +3642,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_COLUMN__PRECISION_FOR_XML = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 4;
+	public static final int XML_COLUMN__PRECISION_FOR_XML = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Scale For Xml</b></em>' attribute.
@@ -3624,7 +3651,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_COLUMN__SCALE_FOR_XML = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 5;
+	public static final int XML_COLUMN__SCALE_FOR_XML = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Xml Column</em>' class.
@@ -3633,7 +3660,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_COLUMN_FEATURE_COUNT = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 6;
+	public static final int XML_COLUMN_FEATURE_COUNT = ABSTRACT_XML_COLUMN_FEATURE_COUNT + 9;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.content.orm.XmlJoinColumn <em>Xml Join Column</em>}' class.

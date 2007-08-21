@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import java.util.Iterator;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;

@@ -103,7 +103,6 @@ public class JavaUniqueConstraint extends JavaEObject
 		return new ConversionDeclarationAnnotationElementAdapter<String[]>(annotationAdapter, elementName, false, converter);
 	}
 
-
 	@Override
 	protected void notifyChanged(Notification notification) {
 		super.notifyChanged(notification);
