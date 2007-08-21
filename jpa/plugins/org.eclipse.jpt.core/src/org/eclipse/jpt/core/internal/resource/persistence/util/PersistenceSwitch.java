@@ -2,16 +2,20 @@
  * <copyright>
  * </copyright>
  *
- * $Id: PersistenceSwitch.java,v 1.1 2007/07/30 20:13:47 pfullbright Exp $
+ * $Id: PersistenceSwitch.java,v 1.2 2007/08/21 16:19:36 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.persistence.util;
 
 import java.util.List;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-
-import org.eclipse.jpt.core.internal.resource.persistence.*;
+import org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef;
+import org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef;
+import org.eclipse.jpt.core.internal.resource.persistence.Persistence;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.internal.resource.persistence.Properties;
+import org.eclipse.jpt.core.internal.resource.persistence.Property;
 
 /**
  * <!-- begin-user-doc -->

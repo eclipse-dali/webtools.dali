@@ -226,8 +226,14 @@
       </genClasses>
       <genClasses ecoreClass="old_core.ecore#//mappings/IColumn">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/IColumn/length"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/IColumn/specifiedLength"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/IColumn/precision"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/IColumn/specifiedPrecision"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/IColumn/scale"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/IColumn/specifiedScale"/>
+        <genOperations ecoreOperation="old_core.ecore#//mappings/IColumn/getDefaultLength"/>
+        <genOperations ecoreOperation="old_core.ecore#//mappings/IColumn/getDefaultPrecision"/>
+        <genOperations ecoreOperation="old_core.ecore#//mappings/IColumn/getDefaultScale"/>
       </genClasses>
       <genClasses ecoreClass="old_core.ecore#//mappings/IColumnMapping">
         <genOperations ecoreOperation="old_core.ecore#//mappings/IColumnMapping/getColumn"/>

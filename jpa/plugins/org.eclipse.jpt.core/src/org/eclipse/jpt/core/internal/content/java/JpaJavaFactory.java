@@ -42,7 +42,7 @@ public class JpaJavaFactory extends EFactoryImpl
 	 */
 	public static JpaJavaFactory init() {
 		try {
-			JpaJavaFactory theJpaJavaFactory = (JpaJavaFactory) EPackage.Registry.INSTANCE.getEFactory("jpt.java.xmi");
+			JpaJavaFactory theJpaJavaFactory = (JpaJavaFactory) EPackage.Registry.INSTANCE.getEFactory("http://org.eclipse.jpt.core/old_java.ecore");
 			if (theJpaJavaFactory != null) {
 				return theJpaJavaFactory;
 			}

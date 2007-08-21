@@ -3421,13 +3421,31 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	public static final int JAVA_COLUMN__LENGTH = ABSTRACT_JAVA_COLUMN_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Specified Length</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_COLUMN__SPECIFIED_LENGTH = ABSTRACT_JAVA_COLUMN_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Precision</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_COLUMN__PRECISION = ABSTRACT_JAVA_COLUMN_FEATURE_COUNT + 1;
+	public static final int JAVA_COLUMN__PRECISION = ABSTRACT_JAVA_COLUMN_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Specified Precision</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_COLUMN__SPECIFIED_PRECISION = ABSTRACT_JAVA_COLUMN_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Scale</b></em>' attribute.
@@ -3436,7 +3454,16 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_COLUMN__SCALE = ABSTRACT_JAVA_COLUMN_FEATURE_COUNT + 2;
+	public static final int JAVA_COLUMN__SCALE = ABSTRACT_JAVA_COLUMN_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Specified Scale</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JAVA_COLUMN__SPECIFIED_SCALE = ABSTRACT_JAVA_COLUMN_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Java Column</em>' class.
@@ -3445,7 +3472,7 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_COLUMN_FEATURE_COUNT = ABSTRACT_JAVA_COLUMN_FEATURE_COUNT + 3;
+	public static final int JAVA_COLUMN_FEATURE_COUNT = ABSTRACT_JAVA_COLUMN_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.

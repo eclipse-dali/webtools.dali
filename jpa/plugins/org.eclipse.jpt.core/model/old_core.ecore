@@ -231,10 +231,21 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="IColumn" abstract="true" interface="true"
         eSuperTypes="#//mappings/IAbstractColumn">
+      <eOperations name="getDefaultLength" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
+      <eOperations name="getDefaultPrecision" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
+      <eOperations name="getDefaultScale" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
-          defaultValueLiteral="255"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="precision" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="scale" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+          changeable="false" volatile="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedLength" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
+          defaultValueLiteral="-1"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="precision" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+          changeable="false" volatile="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedPrecision" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
+          defaultValueLiteral="-1"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="scale" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+          changeable="false" volatile="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="specifiedScale" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
+          defaultValueLiteral="-1"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="IColumnMapping" abstract="true" interface="true">
       <eOperations name="getColumn" eType="#//mappings/IColumn"/>

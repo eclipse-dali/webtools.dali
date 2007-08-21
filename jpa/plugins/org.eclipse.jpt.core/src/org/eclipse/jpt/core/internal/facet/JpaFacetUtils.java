@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.platform.generic.GenericPlatform;
-import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
 import org.osgi.service.prefs.BackingStoreException;
 
 public class JpaFacetUtils

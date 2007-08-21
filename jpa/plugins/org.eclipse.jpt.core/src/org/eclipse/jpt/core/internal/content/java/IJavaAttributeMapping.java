@@ -27,7 +27,6 @@ import org.eclipse.jpt.utility.internal.Filter;
  */
 public interface IJavaAttributeMapping extends IAttributeMapping
 {
-
 	void updateFromJava(CompilationUnit astRoot);
 
 	/**

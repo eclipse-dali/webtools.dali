@@ -97,7 +97,7 @@ public interface IJpaPlatform
 	Iterator<IJavaTypeMappingProvider> javaTypeMappingProviders();
 
 	IJavaTypeMappingProvider javaTypeMappingProvider(String typeMappingKey);
-	
+
 	/**
 	 * Return an Iterator of IJavaAttributeMappingProviders.  These define which
 	 * IJavaAttributeMappings are supported and which annotation applies. 
@@ -105,7 +105,7 @@ public interface IJpaPlatform
 	Iterator<IJavaAttributeMappingProvider> javaAttributeMappingProviders();
 
 	IJavaAttributeMappingProvider javaAttributeMappingProvider(String attributeMappingKey);
-	
+
 	/**
 	 * Return a ListIterator of IDefaultJavaAttributeMappingProvider.  This is a List
 	 * because the defaults are checked in order.

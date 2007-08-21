@@ -20,8 +20,11 @@ import org.eclipse.jpt.core.internal.platform.DefaultsContext;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IColumn#getLength <em>Length</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.mappings.IColumn#getSpecifiedLength <em>Specified Length</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IColumn#getPrecision <em>Precision</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.mappings.IColumn#getSpecifiedPrecision <em>Specified Precision</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.mappings.IColumn#getScale <em>Scale</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.mappings.IColumn#getSpecifiedScale <em>Specified Scale</em>}</li>
  * </ul>
  * </p>
  *
@@ -31,9 +34,14 @@ import org.eclipse.jpt.core.internal.platform.DefaultsContext;
  */
 public interface IColumn extends IAbstractColumn
 {
+	int DEFAULT_LENGTH = 255;
+
+	int DEFAULT_PRECISION = 0;
+
+	int DEFAULT_SCALE = 0;
+
 	/**
 	 * Returns the value of the '<em><b>Length</b></em>' attribute.
-	 * The default value is <code>"255"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Length</em>' attribute isn't clear,
@@ -41,22 +49,38 @@ public interface IColumn extends IAbstractColumn
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Length</em>' attribute.
-	 * @see #setLength(int)
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIColumn_Length()
-	 * @model default="255"
+	 * @model changeable="false" volatile="true" derived="true"
 	 * @generated
 	 */
 	int getLength();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.IColumn#getLength <em>Length</em>}' attribute.
+	 * Returns the value of the '<em><b>Specified Length</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Specified Length</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Length</em>' attribute.
-	 * @see #getLength()
+	 * @return the value of the '<em>Specified Length</em>' attribute.
+	 * @see #setSpecifiedLength(int)
+	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIColumn_SpecifiedLength()
+	 * @model default="-1"
 	 * @generated
 	 */
-	void setLength(int value);
+	int getSpecifiedLength();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.IColumn#getSpecifiedLength <em>Specified Length</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Specified Length</em>' attribute.
+	 * @see #getSpecifiedLength()
+	 * @generated
+	 */
+	void setSpecifiedLength(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Precision</b></em>' attribute.
@@ -67,22 +91,38 @@ public interface IColumn extends IAbstractColumn
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Precision</em>' attribute.
-	 * @see #setPrecision(int)
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIColumn_Precision()
-	 * @model
+	 * @model changeable="false" volatile="true" derived="true"
 	 * @generated
 	 */
 	int getPrecision();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.IColumn#getPrecision <em>Precision</em>}' attribute.
+	 * Returns the value of the '<em><b>Specified Precision</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Specified Precision</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Precision</em>' attribute.
-	 * @see #getPrecision()
+	 * @return the value of the '<em>Specified Precision</em>' attribute.
+	 * @see #setSpecifiedPrecision(int)
+	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIColumn_SpecifiedPrecision()
+	 * @model default="-1"
 	 * @generated
 	 */
-	void setPrecision(int value);
+	int getSpecifiedPrecision();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.IColumn#getSpecifiedPrecision <em>Specified Precision</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Specified Precision</em>' attribute.
+	 * @see #getSpecifiedPrecision()
+	 * @generated
+	 */
+	void setSpecifiedPrecision(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Scale</b></em>' attribute.
@@ -93,22 +133,62 @@ public interface IColumn extends IAbstractColumn
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Scale</em>' attribute.
-	 * @see #setScale(int)
 	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIColumn_Scale()
-	 * @model
+	 * @model changeable="false" volatile="true" derived="true"
 	 * @generated
 	 */
 	int getScale();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.IColumn#getScale <em>Scale</em>}' attribute.
+	 * Returns the value of the '<em><b>Specified Scale</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Specified Scale</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Scale</em>' attribute.
-	 * @see #getScale()
+	 * @return the value of the '<em>Specified Scale</em>' attribute.
+	 * @see #setSpecifiedScale(int)
+	 * @see org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage#getIColumn_SpecifiedScale()
+	 * @model default="-1"
 	 * @generated
 	 */
-	void setScale(int value);
+	int getSpecifiedScale();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.mappings.IColumn#getSpecifiedScale <em>Specified Scale</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Specified Scale</em>' attribute.
+	 * @see #getSpecifiedScale()
+	 * @generated
+	 */
+	void setSpecifiedScale(int value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	int getDefaultLength();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	int getDefaultPrecision();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	int getDefaultScale();
 
 	void refreshDefaults(DefaultsContext defaultsContext);
 

@@ -47,17 +47,27 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int LENGTH_EDEFAULT = 255;
+	protected static final int LENGTH_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getLength() <em>Length</em>}' attribute.
+	 * The default value of the '{@link #getSpecifiedLength() <em>Specified Length</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getLength()
+	 * @see #getSpecifiedLength()
 	 * @generated
 	 * @ordered
 	 */
-	protected int length = LENGTH_EDEFAULT;
+	protected static final int SPECIFIED_LENGTH_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getSpecifiedLength() <em>Specified Length</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSpecifiedLength()
+	 * @generated
+	 * @ordered
+	 */
+	protected int specifiedLength = SPECIFIED_LENGTH_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getPrecision() <em>Precision</em>}' attribute.
@@ -70,14 +80,24 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 	protected static final int PRECISION_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getPrecision() <em>Precision</em>}' attribute.
+	 * The default value of the '{@link #getSpecifiedPrecision() <em>Specified Precision</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getPrecision()
+	 * @see #getSpecifiedPrecision()
 	 * @generated
 	 * @ordered
 	 */
-	protected int precision = PRECISION_EDEFAULT;
+	protected static final int SPECIFIED_PRECISION_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getSpecifiedPrecision() <em>Specified Precision</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSpecifiedPrecision()
+	 * @generated
+	 * @ordered
+	 */
+	protected int specifiedPrecision = SPECIFIED_PRECISION_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getScale() <em>Scale</em>}' attribute.
@@ -90,14 +110,24 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 	protected static final int SCALE_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getScale() <em>Scale</em>}' attribute.
+	 * The default value of the '{@link #getSpecifiedScale() <em>Specified Scale</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getScale()
+	 * @see #getSpecifiedScale()
 	 * @generated
 	 * @ordered
 	 */
-	protected int scale = SCALE_EDEFAULT;
+	protected static final int SPECIFIED_SCALE_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getSpecifiedScale() <em>Specified Scale</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSpecifiedScale()
+	 * @generated
+	 * @ordered
+	 */
+	protected int specifiedScale = SPECIFIED_SCALE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getLengthForXml() <em>Length For Xml</em>}' attribute.
@@ -152,134 +182,148 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 		return OrmPackage.Literals.XML_COLUMN;
 	}
 
-	/**
-	 * Returns the value of the '<em><b>Length</b></em>' attribute.
-	 * The default value is <code>"255"</code>.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Length</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Length</em>' attribute.
-	 * @see #setLength(int)
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIColumn_Length()
-	 * @model default="255"
-	 * @generated
-	 */
 	public int getLength() {
-		return length;
+		return (this.getSpecifiedLength() == SPECIFIED_LENGTH_EDEFAULT) ? getDefaultLength() : this.getSpecifiedLength();
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlColumn#getLength <em>Length</em>}' attribute.
+	 * Returns the value of the '<em><b>Specified Length</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Specified Length</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Length</em>' attribute.
-	 * @see #getLength()
+	 * @return the value of the '<em>Specified Length</em>' attribute.
+	 * @see #setSpecifiedLength(int)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIColumn_SpecifiedLength()
+	 * @model default="-1"
 	 * @generated
 	 */
-	public void setLengthGen(int newLength) {
-		int oldLength = length;
-		length = newLength;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_COLUMN__LENGTH, oldLength, length));
+	public int getSpecifiedLength() {
+		return specifiedLength;
 	}
 
-	public void setLength(int newLength) {
-		setLengthGen(newLength);
-		if (newLength != LENGTH_EDEFAULT) {
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlColumn#getSpecifiedLength <em>Specified Length</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Specified Length</em>' attribute.
+	 * @see #getSpecifiedLength()
+	 * @generated
+	 */
+	public void setSpecifiedLengthGen(int newSpecifiedLength) {
+		int oldSpecifiedLength = specifiedLength;
+		specifiedLength = newSpecifiedLength;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_COLUMN__SPECIFIED_LENGTH, oldSpecifiedLength, specifiedLength));
+	}
+
+	public void setSpecifiedLength(int newSpecifiedLength) {
+		setSpecifiedLengthGen(newSpecifiedLength);
+		if (newSpecifiedLength != LENGTH_EDEFAULT) {
 			getColumnMapping().makeColumnForXmlNonNull();
 		}
-		setLengthForXml(newLength);
+		setLengthForXml(newSpecifiedLength);
 		if (isAllFeaturesUnset()) {
 			getColumnMapping().makeColumnForXmlNull();
 		}
 	}
 
-	/**
-	 * Returns the value of the '<em><b>Precision</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Precision</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Precision</em>' attribute.
-	 * @see #setPrecision(int)
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIColumn_Precision()
-	 * @model
-	 * @generated
-	 */
 	public int getPrecision() {
-		return precision;
+		return (this.getSpecifiedPrecision() == SPECIFIED_PRECISION_EDEFAULT) ? getDefaultPrecision() : this.getSpecifiedPrecision();
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlColumn#getPrecision <em>Precision</em>}' attribute.
+	 * Returns the value of the '<em><b>Specified Precision</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Specified Precision</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Precision</em>' attribute.
-	 * @see #getPrecision()
+	 * @return the value of the '<em>Specified Precision</em>' attribute.
+	 * @see #setSpecifiedPrecision(int)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIColumn_SpecifiedPrecision()
+	 * @model default="-1"
 	 * @generated
 	 */
-	public void setPrecisionGen(int newPrecision) {
-		int oldPrecision = precision;
-		precision = newPrecision;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_COLUMN__PRECISION, oldPrecision, precision));
+	public int getSpecifiedPrecision() {
+		return specifiedPrecision;
 	}
 
-	public void setPrecision(int newPrecision) {
-		setPrecisionGen(newPrecision);
-		if (newPrecision != PRECISION_EDEFAULT) {
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlColumn#getSpecifiedPrecision <em>Specified Precision</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Specified Precision</em>' attribute.
+	 * @see #getSpecifiedPrecision()
+	 * @generated
+	 */
+	public void setSpecifiedPrecisionGen(int newSpecifiedPrecision) {
+		int oldSpecifiedPrecision = specifiedPrecision;
+		specifiedPrecision = newSpecifiedPrecision;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_COLUMN__SPECIFIED_PRECISION, oldSpecifiedPrecision, specifiedPrecision));
+	}
+
+	public void setSpecifiedPrecision(int newSpecifiedPrecision) {
+		setSpecifiedPrecisionGen(newSpecifiedPrecision);
+		if (newSpecifiedPrecision != PRECISION_EDEFAULT) {
 			getColumnMapping().makeColumnForXmlNonNull();
 		}
-		setPrecisionForXml(newPrecision);
+		setPrecisionForXml(newSpecifiedPrecision);
 		if (isAllFeaturesUnset()) {
 			getColumnMapping().makeColumnForXmlNull();
 		}
 	}
 
+	public int getScale() {
+		return (this.getSpecifiedScale() == SPECIFIED_SCALE_EDEFAULT) ? getDefaultScale() : this.getSpecifiedScale();
+	}
+
 	/**
-	 * Returns the value of the '<em><b>Scale</b></em>' attribute.
+	 * Returns the value of the '<em><b>Specified Scale</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Scale</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Specified Scale</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Scale</em>' attribute.
-	 * @see #setScale(int)
-	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIColumn_Scale()
-	 * @model
+	 * @return the value of the '<em>Specified Scale</em>' attribute.
+	 * @see #setSpecifiedScale(int)
+	 * @see org.eclipse.jpt.core.internal.content.orm.OrmPackage#getIColumn_SpecifiedScale()
+	 * @model default="-1"
 	 * @generated
 	 */
-	public int getScale() {
-		return scale;
+	public int getSpecifiedScale() {
+		return specifiedScale;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlColumn#getScale <em>Scale</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.orm.XmlColumn#getSpecifiedScale <em>Specified Scale</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Scale</em>' attribute.
-	 * @see #getScale()
+	 * @param value the new value of the '<em>Specified Scale</em>' attribute.
+	 * @see #getSpecifiedScale()
 	 * @generated
 	 */
-	public void setScaleGen(int newScale) {
-		int oldScale = scale;
-		scale = newScale;
+	public void setSpecifiedScaleGen(int newSpecifiedScale) {
+		int oldSpecifiedScale = specifiedScale;
+		specifiedScale = newSpecifiedScale;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_COLUMN__SCALE, oldScale, scale));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_COLUMN__SPECIFIED_SCALE, oldSpecifiedScale, specifiedScale));
 	}
 
-	public void setScale(int newScale) {
-		setScaleGen(newScale);
-		if (newScale != SCALE_EDEFAULT) {
+	public void setSpecifiedScale(int newSpecifiedScale) {
+		setSpecifiedScaleGen(newSpecifiedScale);
+		if (newSpecifiedScale != SCALE_EDEFAULT) {
 			getColumnMapping().makeColumnForXmlNonNull();
 		}
-		setScaleForXml(newScale);
+		setScaleForXml(newSpecifiedScale);
 		if (isAllFeaturesUnset()) {
 			getColumnMapping().makeColumnForXmlNull();
 		}
@@ -313,7 +357,7 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 	 * @generated NOT
 	 */
 	public void setLengthForXml(int newLengthForXml) {
-		setLengthGen(newLengthForXml);
+		setSpecifiedLengthGen(newLengthForXml);
 		if (eNotificationRequired())
 			//pass in oldValue of null because we don't store the value from the xml, see super.eNotify()
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_COLUMN__LENGTH_FOR_XML, null, newLengthForXml));
@@ -346,7 +390,7 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 	 * @generated NOT
 	 */
 	public void setPrecisionForXml(int newPrecisionForXml) {
-		setPrecisionGen(newPrecisionForXml);
+		setSpecifiedPrecisionGen(newPrecisionForXml);
 		if (eNotificationRequired())
 			//pass in oldValue of null because we don't store the value from the xml, see super.eNotify()
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_COLUMN__PRECISION_FOR_XML, null, newPrecisionForXml));
@@ -379,10 +423,22 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 	 * @generated NOT
 	 */
 	public void setScaleForXml(int newScaleForXml) {
-		setScaleGen(newScaleForXml);
+		setSpecifiedScaleGen(newScaleForXml);
 		if (eNotificationRequired())
 			//pass in oldValue of null because we don't store the value from the xml, see super.eNotify()
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_COLUMN__SCALE_FOR_XML, null, newScaleForXml));
+	}
+
+	public int getDefaultLength() {
+		return DEFAULT_LENGTH;
+	}
+
+	public int getDefaultPrecision() {
+		return DEFAULT_PRECISION;
+	}
+
+	public int getDefaultScale() {
+		return DEFAULT_SCALE;
 	}
 
 	/**
@@ -395,10 +451,16 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 		switch (featureID) {
 			case OrmPackage.XML_COLUMN__LENGTH :
 				return new Integer(getLength());
+			case OrmPackage.XML_COLUMN__SPECIFIED_LENGTH :
+				return new Integer(getSpecifiedLength());
 			case OrmPackage.XML_COLUMN__PRECISION :
 				return new Integer(getPrecision());
+			case OrmPackage.XML_COLUMN__SPECIFIED_PRECISION :
+				return new Integer(getSpecifiedPrecision());
 			case OrmPackage.XML_COLUMN__SCALE :
 				return new Integer(getScale());
+			case OrmPackage.XML_COLUMN__SPECIFIED_SCALE :
+				return new Integer(getSpecifiedScale());
 			case OrmPackage.XML_COLUMN__LENGTH_FOR_XML :
 				return new Integer(getLengthForXml());
 			case OrmPackage.XML_COLUMN__PRECISION_FOR_XML :
@@ -417,14 +479,14 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case OrmPackage.XML_COLUMN__LENGTH :
-				setLength(((Integer) newValue).intValue());
+			case OrmPackage.XML_COLUMN__SPECIFIED_LENGTH :
+				setSpecifiedLength(((Integer) newValue).intValue());
 				return;
-			case OrmPackage.XML_COLUMN__PRECISION :
-				setPrecision(((Integer) newValue).intValue());
+			case OrmPackage.XML_COLUMN__SPECIFIED_PRECISION :
+				setSpecifiedPrecision(((Integer) newValue).intValue());
 				return;
-			case OrmPackage.XML_COLUMN__SCALE :
-				setScale(((Integer) newValue).intValue());
+			case OrmPackage.XML_COLUMN__SPECIFIED_SCALE :
+				setSpecifiedScale(((Integer) newValue).intValue());
 				return;
 			case OrmPackage.XML_COLUMN__LENGTH_FOR_XML :
 				setLengthForXml(((Integer) newValue).intValue());
@@ -447,14 +509,14 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case OrmPackage.XML_COLUMN__LENGTH :
-				setLength(LENGTH_EDEFAULT);
+			case OrmPackage.XML_COLUMN__SPECIFIED_LENGTH :
+				setSpecifiedLength(SPECIFIED_LENGTH_EDEFAULT);
 				return;
-			case OrmPackage.XML_COLUMN__PRECISION :
-				setPrecision(PRECISION_EDEFAULT);
+			case OrmPackage.XML_COLUMN__SPECIFIED_PRECISION :
+				setSpecifiedPrecision(SPECIFIED_PRECISION_EDEFAULT);
 				return;
-			case OrmPackage.XML_COLUMN__SCALE :
-				setScale(SCALE_EDEFAULT);
+			case OrmPackage.XML_COLUMN__SPECIFIED_SCALE :
+				setSpecifiedScale(SPECIFIED_SCALE_EDEFAULT);
 				return;
 			case OrmPackage.XML_COLUMN__LENGTH_FOR_XML :
 				setLengthForXml(LENGTH_FOR_XML_EDEFAULT);
@@ -478,11 +540,17 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case OrmPackage.XML_COLUMN__LENGTH :
-				return length != LENGTH_EDEFAULT;
+				return getLength() != LENGTH_EDEFAULT;
+			case OrmPackage.XML_COLUMN__SPECIFIED_LENGTH :
+				return specifiedLength != SPECIFIED_LENGTH_EDEFAULT;
 			case OrmPackage.XML_COLUMN__PRECISION :
-				return precision != PRECISION_EDEFAULT;
+				return getPrecision() != PRECISION_EDEFAULT;
+			case OrmPackage.XML_COLUMN__SPECIFIED_PRECISION :
+				return specifiedPrecision != SPECIFIED_PRECISION_EDEFAULT;
 			case OrmPackage.XML_COLUMN__SCALE :
-				return scale != SCALE_EDEFAULT;
+				return getScale() != SCALE_EDEFAULT;
+			case OrmPackage.XML_COLUMN__SPECIFIED_SCALE :
+				return specifiedScale != SPECIFIED_SCALE_EDEFAULT;
 			case OrmPackage.XML_COLUMN__LENGTH_FOR_XML :
 				return getLengthForXml() != LENGTH_FOR_XML_EDEFAULT;
 			case OrmPackage.XML_COLUMN__PRECISION_FOR_XML :
@@ -504,10 +572,16 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 			switch (derivedFeatureID) {
 				case OrmPackage.XML_COLUMN__LENGTH :
 					return JpaCoreMappingsPackage.ICOLUMN__LENGTH;
+				case OrmPackage.XML_COLUMN__SPECIFIED_LENGTH :
+					return JpaCoreMappingsPackage.ICOLUMN__SPECIFIED_LENGTH;
 				case OrmPackage.XML_COLUMN__PRECISION :
 					return JpaCoreMappingsPackage.ICOLUMN__PRECISION;
+				case OrmPackage.XML_COLUMN__SPECIFIED_PRECISION :
+					return JpaCoreMappingsPackage.ICOLUMN__SPECIFIED_PRECISION;
 				case OrmPackage.XML_COLUMN__SCALE :
 					return JpaCoreMappingsPackage.ICOLUMN__SCALE;
+				case OrmPackage.XML_COLUMN__SPECIFIED_SCALE :
+					return JpaCoreMappingsPackage.ICOLUMN__SPECIFIED_SCALE;
 				default :
 					return -1;
 			}
@@ -526,10 +600,16 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 			switch (baseFeatureID) {
 				case JpaCoreMappingsPackage.ICOLUMN__LENGTH :
 					return OrmPackage.XML_COLUMN__LENGTH;
+				case JpaCoreMappingsPackage.ICOLUMN__SPECIFIED_LENGTH :
+					return OrmPackage.XML_COLUMN__SPECIFIED_LENGTH;
 				case JpaCoreMappingsPackage.ICOLUMN__PRECISION :
 					return OrmPackage.XML_COLUMN__PRECISION;
+				case JpaCoreMappingsPackage.ICOLUMN__SPECIFIED_PRECISION :
+					return OrmPackage.XML_COLUMN__SPECIFIED_PRECISION;
 				case JpaCoreMappingsPackage.ICOLUMN__SCALE :
 					return OrmPackage.XML_COLUMN__SCALE;
+				case JpaCoreMappingsPackage.ICOLUMN__SPECIFIED_SCALE :
+					return OrmPackage.XML_COLUMN__SPECIFIED_SCALE;
 				default :
 					return -1;
 			}
@@ -547,12 +627,12 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 		if (eIsProxy())
 			return super.toString();
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (length: ");
-		result.append(length);
-		result.append(", precision: ");
-		result.append(precision);
-		result.append(", scale: ");
-		result.append(scale);
+		result.append(" (specifiedLength: ");
+		result.append(specifiedLength);
+		result.append(", specifiedPrecision: ");
+		result.append(specifiedPrecision);
+		result.append(", specifiedScale: ");
+		result.append(specifiedScale);
 		result.append(')');
 		return result.toString();
 	}

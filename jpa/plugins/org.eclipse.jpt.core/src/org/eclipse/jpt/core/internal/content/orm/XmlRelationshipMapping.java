@@ -570,9 +570,8 @@ public abstract class XmlRelationshipMapping extends XmlAttributeMapping
 	protected String javaDefaultTargetEntity(ITypeBinding typeBinding) {
 		return buildReferenceEntityTypeName(typeBinding);
 	}
-	
+
 	protected String buildReferenceEntityTypeName(ITypeBinding typeBinding) {
 		return JavaRelationshipMapping.buildReferenceEntityTypeName(typeBinding);
 	}
-
 }

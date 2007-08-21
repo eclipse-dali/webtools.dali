@@ -696,7 +696,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	private String javaTypeMappingKey(CompilationUnit astRoot) {
-		for (Iterator<IJavaTypeMappingProvider> i = this.typeMappingProviders(); i.hasNext(); ) {
+		for (Iterator<IJavaTypeMappingProvider> i = this.typeMappingProviders(); i.hasNext();) {
 			IJavaTypeMappingProvider provider = i.next();
 			if (this.type.containsAnnotation(provider.declarationAnnotationAdapter(), astRoot)) {
 				return provider.key();
@@ -857,7 +857,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		boolean hasPersistableProperties = false;
 		for (IField field : AttributeAnnotationTools.persistableFields(jdtType)) {
 			hasPersistableFields = true;
-			FieldAttribute fa = new FieldAttribute(field, null);  // a bit hacky...
+			FieldAttribute fa = new FieldAttribute(field, null); // a bit hacky...
 			if (fa.containsAnyAnnotation(this.attributeMappingAnnotationAdapters, astRoot)) {
 				// any field is annotated => FIELD
 				return AccessType.FIELD;
@@ -865,7 +865,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		}
 		for (IMethod method : AttributeAnnotationTools.persistablePropertyGetters(jdtType)) {
 			hasPersistableProperties = true;
-			MethodAttribute ma = new MethodAttribute(method, null);  // a bit hacky...
+			MethodAttribute ma = new MethodAttribute(method, null); // a bit hacky...
 			if (ma.containsAnyAnnotation(this.attributeMappingAnnotationAdapters, astRoot)) {
 				// none of the fields are annotated and a getter is annotated => PROPERTY
 				return AccessType.PROPERTY;
@@ -881,12 +881,12 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	public void refreshDefaults(DefaultsContext context) {
 		refreshParentPersistentType(context);
 	}
-	
+
 	private void refreshParentPersistentType(DefaultsContext context) {
 		ITypeBinding typeBinding = getType().typeBinding(context.astRoot());
 		this.parentPersistentType = parentPersistentType(context, typeBinding);
 	}
-	
+
 	public static IPersistentType parentPersistentType(DefaultsContext context, ITypeBinding typeBinding) {
 		if (typeBinding == null) {
 			return null;
@@ -905,6 +905,5 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 			return possibleParent;
 		}
 		return possibleParent.parentPersistentType();
-		
 	}
 }

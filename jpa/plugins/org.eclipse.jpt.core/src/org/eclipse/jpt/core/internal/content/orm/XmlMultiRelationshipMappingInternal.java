@@ -833,5 +833,4 @@ public abstract class XmlMultiRelationshipMappingInternal
 	protected String javaDefaultTargetEntityFromContainer(ITypeBinding typeBinding) {
 		return JavaMultiRelationshipMapping.javaDefaultTargetEntityFromContainer(typeBinding);
 	}
-	
 }

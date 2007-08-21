@@ -581,11 +581,10 @@ public class JavaEmbedded extends JavaAttributeMapping implements IJavaEmbedded
 		}
 		IPersistentType persistentType = defaultsContext.persistentType(resolvedTypeName);
 		if (persistentType != null) {
-			if( persistentType.getMappingKey() == IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
+			if (persistentType.getMappingKey() == IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
 				return (IEmbeddable) persistentType.getMapping();
 			}
 		}
 		return null;
 	}
-
 } // JavaEmbedded

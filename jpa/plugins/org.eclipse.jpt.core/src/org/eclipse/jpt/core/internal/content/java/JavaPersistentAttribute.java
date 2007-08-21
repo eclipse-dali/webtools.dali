@@ -92,7 +92,6 @@ public class JavaPersistentAttribute extends JavaEObject
 		return jpaPlatform().javaAttributeMappingProviders();
 	}
 
-
 	private ListIterator<IDefaultJavaAttributeMappingProvider> defaultAttributeMappingProviders() {
 		return jpaPlatform().defaultJavaAttributeMappingProviders();
 	}
@@ -525,7 +524,7 @@ public class JavaPersistentAttribute extends JavaEObject
 	 * return null if we can't find a mapping annotation on the attribute
 	 */
 	private IJavaAttributeMappingProvider javaAttributeMappingProvider(CompilationUnit astRoot) {
-		for (Iterator<IJavaAttributeMappingProvider> i = this.attributeMappingProviders(); i.hasNext(); ) {
+		for (Iterator<IJavaAttributeMappingProvider> i = this.attributeMappingProviders(); i.hasNext();) {
 			IJavaAttributeMappingProvider provider = i.next();
 			if (this.attribute.containsAnnotation(provider.declarationAnnotationAdapter(), astRoot)) {
 				return provider;
@@ -577,7 +576,7 @@ public class JavaPersistentAttribute extends JavaEObject
 	 * return the null provider if we can't find a provider
 	 */
 	private IJavaAttributeMappingProvider defaultAttributeMappingProvider(DefaultsContext defaultsContext) {
-		for (Iterator<IDefaultJavaAttributeMappingProvider> i = this.defaultAttributeMappingProviders(); i.hasNext(); ) {
+		for (Iterator<IDefaultJavaAttributeMappingProvider> i = this.defaultAttributeMappingProviders(); i.hasNext();) {
 			IDefaultJavaAttributeMappingProvider provider = i.next();
 			if (provider.defaultApplies(this.attribute, defaultsContext)) {
 				return provider;

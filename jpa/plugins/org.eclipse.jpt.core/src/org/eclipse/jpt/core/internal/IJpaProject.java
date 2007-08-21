@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -154,5 +153,4 @@ public interface IJpaProject extends IJpaEObject
 	void setThreadLocalModifySharedDocumentCommandExecutor(CommandExecutor commandExecutor);
 
 	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();
-
 }

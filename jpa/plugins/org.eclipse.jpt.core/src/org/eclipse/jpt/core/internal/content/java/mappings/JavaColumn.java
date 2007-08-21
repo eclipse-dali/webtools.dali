@@ -42,17 +42,27 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int LENGTH_EDEFAULT = 255;
+	protected static final int LENGTH_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getLength() <em>Length</em>}' attribute.
+	 * The default value of the '{@link #getSpecifiedLength() <em>Specified Length</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getLength()
+	 * @see #getSpecifiedLength()
 	 * @generated
 	 * @ordered
 	 */
-	protected int length = LENGTH_EDEFAULT;
+	protected static final int SPECIFIED_LENGTH_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getSpecifiedLength() <em>Specified Length</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSpecifiedLength()
+	 * @generated
+	 * @ordered
+	 */
+	protected int specifiedLength = SPECIFIED_LENGTH_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getPrecision() <em>Precision</em>}' attribute.
@@ -65,14 +75,24 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 	protected static final int PRECISION_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getPrecision() <em>Precision</em>}' attribute.
+	 * The default value of the '{@link #getSpecifiedPrecision() <em>Specified Precision</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getPrecision()
+	 * @see #getSpecifiedPrecision()
 	 * @generated
 	 * @ordered
 	 */
-	protected int precision = PRECISION_EDEFAULT;
+	protected static final int SPECIFIED_PRECISION_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getSpecifiedPrecision() <em>Specified Precision</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSpecifiedPrecision()
+	 * @generated
+	 * @ordered
+	 */
+	protected int specifiedPrecision = SPECIFIED_PRECISION_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getScale() <em>Scale</em>}' attribute.
@@ -85,14 +105,24 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 	protected static final int SCALE_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getScale() <em>Scale</em>}' attribute.
+	 * The default value of the '{@link #getSpecifiedScale() <em>Specified Scale</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getScale()
+	 * @see #getSpecifiedScale()
 	 * @generated
 	 * @ordered
 	 */
-	protected int scale = SCALE_EDEFAULT;
+	protected static final int SPECIFIED_SCALE_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getSpecifiedScale() <em>Specified Scale</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSpecifiedScale()
+	 * @generated
+	 * @ordered
+	 */
+	protected int specifiedScale = SPECIFIED_SCALE_EDEFAULT;
 
 	private final IntAnnotationElementAdapter lengthAdapter;
 
@@ -178,104 +208,130 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 		return JpaJavaMappingsPackage.Literals.JAVA_COLUMN;
 	}
 
-	/**
-	 * Returns the value of the '<em><b>Length</b></em>' attribute.
-	 * The default value is <code>"255"</code>.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Length</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Length</em>' attribute.
-	 * @see #setLength(int)
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIColumn_Length()
-	 * @model default="255"
-	 * @generated
-	 */
 	public int getLength() {
-		return length;
+		return (this.getSpecifiedLength() == SPECIFIED_LENGTH_EDEFAULT) ? getDefaultLength() : this.getSpecifiedLength();
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaColumn#getLength <em>Length</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Length</em>' attribute.
-	 * @see #getLength()
-	 * @generated
-	 */
-	public void setLength(int newLength) {
-		int oldLength = length;
-		length = newLength;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_COLUMN__LENGTH, oldLength, length));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Precision</b></em>' attribute.
+	 * Returns the value of the '<em><b>Specified Length</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Precision</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Specified Length</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Precision</em>' attribute.
-	 * @see #setPrecision(int)
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIColumn_Precision()
-	 * @model
+	 * @return the value of the '<em>Specified Length</em>' attribute.
+	 * @see #setSpecifiedLength(int)
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIColumn_SpecifiedLength()
+	 * @model default="-1"
 	 * @generated
 	 */
+	public int getSpecifiedLength() {
+		return specifiedLength;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaColumn#getSpecifiedLength <em>Specified Length</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Specified Length</em>' attribute.
+	 * @see #getSpecifiedLength()
+	 * @generated
+	 */
+	public void setSpecifiedLength(int newSpecifiedLength) {
+		int oldSpecifiedLength = specifiedLength;
+		specifiedLength = newSpecifiedLength;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_LENGTH, oldSpecifiedLength, specifiedLength));
+	}
+
 	public int getPrecision() {
-		return precision;
+		return (this.getSpecifiedPrecision() == SPECIFIED_PRECISION_EDEFAULT) ? getDefaultPrecision() : this.getSpecifiedPrecision();
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaColumn#getPrecision <em>Precision</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Precision</em>' attribute.
-	 * @see #getPrecision()
-	 * @generated
-	 */
-	public void setPrecision(int newPrecision) {
-		int oldPrecision = precision;
-		precision = newPrecision;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_COLUMN__PRECISION, oldPrecision, precision));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Scale</b></em>' attribute.
+	 * Returns the value of the '<em><b>Specified Precision</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Scale</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Specified Precision</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Scale</em>' attribute.
-	 * @see #setScale(int)
-	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIColumn_Scale()
-	 * @model
+	 * @return the value of the '<em>Specified Precision</em>' attribute.
+	 * @see #setSpecifiedPrecision(int)
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIColumn_SpecifiedPrecision()
+	 * @model default="-1"
 	 * @generated
 	 */
-	public int getScale() {
-		return scale;
+	public int getSpecifiedPrecision() {
+		return specifiedPrecision;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaColumn#getScale <em>Scale</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaColumn#getSpecifiedPrecision <em>Specified Precision</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Scale</em>' attribute.
-	 * @see #getScale()
+	 * @param value the new value of the '<em>Specified Precision</em>' attribute.
+	 * @see #getSpecifiedPrecision()
 	 * @generated
 	 */
-	public void setScale(int newScale) {
-		int oldScale = scale;
-		scale = newScale;
+	public void setSpecifiedPrecision(int newSpecifiedPrecision) {
+		int oldSpecifiedPrecision = specifiedPrecision;
+		specifiedPrecision = newSpecifiedPrecision;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_COLUMN__SCALE, oldScale, scale));
+			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_PRECISION, oldSpecifiedPrecision, specifiedPrecision));
+	}
+
+	public int getScale() {
+		return (this.getSpecifiedScale() == SPECIFIED_SCALE_EDEFAULT) ? getDefaultScale() : this.getSpecifiedScale();
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Specified Scale</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Specified Scale</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Specified Scale</em>' attribute.
+	 * @see #setSpecifiedScale(int)
+	 * @see org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage#getIColumn_SpecifiedScale()
+	 * @model default="-1"
+	 * @generated
+	 */
+	public int getSpecifiedScale() {
+		return specifiedScale;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.content.java.mappings.JavaColumn#getSpecifiedScale <em>Specified Scale</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Specified Scale</em>' attribute.
+	 * @see #getSpecifiedScale()
+	 * @generated
+	 */
+	public void setSpecifiedScale(int newSpecifiedScale) {
+		int oldSpecifiedScale = specifiedScale;
+		specifiedScale = newSpecifiedScale;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_SCALE, oldSpecifiedScale, specifiedScale));
+	}
+
+	public int getDefaultLength() {
+		return DEFAULT_LENGTH;
+	}
+
+	public int getDefaultPrecision() {
+		return DEFAULT_PRECISION;
+	}
+
+	public int getDefaultScale() {
+		return DEFAULT_SCALE;
 	}
 
 	/**
@@ -288,10 +344,16 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 		switch (featureID) {
 			case JpaJavaMappingsPackage.JAVA_COLUMN__LENGTH :
 				return new Integer(getLength());
+			case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_LENGTH :
+				return new Integer(getSpecifiedLength());
 			case JpaJavaMappingsPackage.JAVA_COLUMN__PRECISION :
 				return new Integer(getPrecision());
+			case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_PRECISION :
+				return new Integer(getSpecifiedPrecision());
 			case JpaJavaMappingsPackage.JAVA_COLUMN__SCALE :
 				return new Integer(getScale());
+			case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_SCALE :
+				return new Integer(getSpecifiedScale());
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -304,14 +366,14 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case JpaJavaMappingsPackage.JAVA_COLUMN__LENGTH :
-				setLength(((Integer) newValue).intValue());
+			case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_LENGTH :
+				setSpecifiedLength(((Integer) newValue).intValue());
 				return;
-			case JpaJavaMappingsPackage.JAVA_COLUMN__PRECISION :
-				setPrecision(((Integer) newValue).intValue());
+			case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_PRECISION :
+				setSpecifiedPrecision(((Integer) newValue).intValue());
 				return;
-			case JpaJavaMappingsPackage.JAVA_COLUMN__SCALE :
-				setScale(((Integer) newValue).intValue());
+			case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_SCALE :
+				setSpecifiedScale(((Integer) newValue).intValue());
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -325,14 +387,14 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case JpaJavaMappingsPackage.JAVA_COLUMN__LENGTH :
-				setLength(LENGTH_EDEFAULT);
+			case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_LENGTH :
+				setSpecifiedLength(SPECIFIED_LENGTH_EDEFAULT);
 				return;
-			case JpaJavaMappingsPackage.JAVA_COLUMN__PRECISION :
-				setPrecision(PRECISION_EDEFAULT);
+			case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_PRECISION :
+				setSpecifiedPrecision(SPECIFIED_PRECISION_EDEFAULT);
 				return;
-			case JpaJavaMappingsPackage.JAVA_COLUMN__SCALE :
-				setScale(SCALE_EDEFAULT);
+			case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_SCALE :
+				setSpecifiedScale(SPECIFIED_SCALE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -347,11 +409,17 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case JpaJavaMappingsPackage.JAVA_COLUMN__LENGTH :
-				return length != LENGTH_EDEFAULT;
+				return getLength() != LENGTH_EDEFAULT;
+			case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_LENGTH :
+				return specifiedLength != SPECIFIED_LENGTH_EDEFAULT;
 			case JpaJavaMappingsPackage.JAVA_COLUMN__PRECISION :
-				return precision != PRECISION_EDEFAULT;
+				return getPrecision() != PRECISION_EDEFAULT;
+			case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_PRECISION :
+				return specifiedPrecision != SPECIFIED_PRECISION_EDEFAULT;
 			case JpaJavaMappingsPackage.JAVA_COLUMN__SCALE :
-				return scale != SCALE_EDEFAULT;
+				return getScale() != SCALE_EDEFAULT;
+			case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_SCALE :
+				return specifiedScale != SPECIFIED_SCALE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -367,10 +435,16 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 			switch (derivedFeatureID) {
 				case JpaJavaMappingsPackage.JAVA_COLUMN__LENGTH :
 					return JpaCoreMappingsPackage.ICOLUMN__LENGTH;
+				case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_LENGTH :
+					return JpaCoreMappingsPackage.ICOLUMN__SPECIFIED_LENGTH;
 				case JpaJavaMappingsPackage.JAVA_COLUMN__PRECISION :
 					return JpaCoreMappingsPackage.ICOLUMN__PRECISION;
+				case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_PRECISION :
+					return JpaCoreMappingsPackage.ICOLUMN__SPECIFIED_PRECISION;
 				case JpaJavaMappingsPackage.JAVA_COLUMN__SCALE :
 					return JpaCoreMappingsPackage.ICOLUMN__SCALE;
+				case JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_SCALE :
+					return JpaCoreMappingsPackage.ICOLUMN__SPECIFIED_SCALE;
 				default :
 					return -1;
 			}
@@ -389,10 +463,16 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 			switch (baseFeatureID) {
 				case JpaCoreMappingsPackage.ICOLUMN__LENGTH :
 					return JpaJavaMappingsPackage.JAVA_COLUMN__LENGTH;
+				case JpaCoreMappingsPackage.ICOLUMN__SPECIFIED_LENGTH :
+					return JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_LENGTH;
 				case JpaCoreMappingsPackage.ICOLUMN__PRECISION :
 					return JpaJavaMappingsPackage.JAVA_COLUMN__PRECISION;
+				case JpaCoreMappingsPackage.ICOLUMN__SPECIFIED_PRECISION :
+					return JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_PRECISION;
 				case JpaCoreMappingsPackage.ICOLUMN__SCALE :
 					return JpaJavaMappingsPackage.JAVA_COLUMN__SCALE;
+				case JpaCoreMappingsPackage.ICOLUMN__SPECIFIED_SCALE :
+					return JpaJavaMappingsPackage.JAVA_COLUMN__SPECIFIED_SCALE;
 				default :
 					return -1;
 			}
@@ -410,12 +490,12 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 		if (eIsProxy())
 			return super.toString();
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (length: ");
-		result.append(length);
-		result.append(", precision: ");
-		result.append(precision);
-		result.append(", scale: ");
-		result.append(scale);
+		result.append(" (specifiedLength: ");
+		result.append(specifiedLength);
+		result.append(", specifiedPrecision: ");
+		result.append(specifiedPrecision);
+		result.append(", specifiedScale: ");
+		result.append(specifiedScale);
 		result.append(')');
 		return result.toString();
 	}
@@ -428,9 +508,9 @@ public class JavaColumn extends AbstractJavaColumn implements IColumn
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		this.setLength(this.lengthAdapter.getValue(astRoot));
-		this.setPrecision(this.precisionAdapter.getValue(astRoot));
-		this.setScale(this.scaleAdapter.getValue(astRoot));
+		this.setSpecifiedLength(this.lengthAdapter.getValue(astRoot));
+		this.setSpecifiedPrecision(this.precisionAdapter.getValue(astRoot));
+		this.setSpecifiedScale(this.scaleAdapter.getValue(astRoot));
 	}
 
 	public void refreshDefaults(DefaultsContext defaultsContext) {
