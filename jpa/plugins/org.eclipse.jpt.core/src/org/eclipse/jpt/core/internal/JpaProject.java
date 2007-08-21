@@ -191,10 +191,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				IContext contextHierarchy = getPlatform().buildProjectContext();
-				long start = System.currentTimeMillis();
 				getPlatform().resynch(contextHierarchy);
-				long end = System.currentTimeMillis();
-				System.out.println((end - start) + " ms - resynch");
 				return Status.OK_STATUS;
 			}
 		};
@@ -504,7 +501,6 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		if (filled) {
 			return;
 		}
-		long start = System.currentTimeMillis();
 		IResourceProxyVisitor visitor = new IResourceProxyVisitor() {
 			public boolean visit(IResourceProxy resource) throws CoreException {
 				switch (resource.getType()) {
@@ -522,8 +518,6 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			}
 		};
 		getProject().accept(visitor, IResource.NONE);
-		long end = System.currentTimeMillis();
-		System.out.println(end - start + " ms - fill");
 		filled = true;
 		resynch();
 	}
