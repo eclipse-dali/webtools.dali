@@ -142,7 +142,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * This is set to false when that job is completed 
 	 */
 	boolean resynching = false;
-
+	
 	/**
 	 * Flag to indicate that the disposing job has been scheduled or is running
 	 * (or has been run, in some cases)
@@ -515,6 +515,10 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		resynch();
 		filled = true;
 	}
+	
+	public boolean isFilled() {
+		return filled;
+	}
 
 	/**
 	 * @see IJpaProject#getJpaFile(IFile)
@@ -577,9 +581,10 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * Dispose and remove project
 	 */
 	void dispose() {
-		if (disposing)
-			return;
+		if (disposing) return;
+		
 		disposing = true;
+				
 		Job job = new Job("Disposing JPA project ...") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -590,7 +595,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		job.setRule(project);
 		job.schedule();
 	}
-
+	
 	private void dispose_() {
 		Job.getJobManager().removeJobChangeListener(resynchJobListener);
 		for (IJpaFile jpaFile : new ArrayList<IJpaFile>(getFiles())) {
@@ -677,9 +682,9 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	//passing it on to the JpaModel.  We don't currently support
 	//multiple projects having cross-references
 	public void resynch() {
-		if (disposing)
-			return;
-		if (!resynching) {
+		if (disposing) return;
+		
+		if (! resynching) {
 			this.resynching = true;
 			this.needsToResynch = false;
 			this.resynchJob.schedule();

@@ -38,6 +38,8 @@ public class JptCoreMessages extends NLS
 	
 	public static String INVALID_PERSISTENCE_XML_CONTENT;
 	
+	public static String ERROR_SYNCHRONIZING_CLASSES_COULD_NOT_VALIDATE;
+	
 	public static String ERROR_WRITING_FILE;
 	
 	
