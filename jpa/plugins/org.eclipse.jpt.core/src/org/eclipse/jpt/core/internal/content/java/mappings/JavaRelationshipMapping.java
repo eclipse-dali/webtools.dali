@@ -578,7 +578,7 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 			((JavaCascade) this.cascade).updateFromJava(astRoot);
 		}
 	}
-	
+
 	private void updateDefaultTargetEntityFromJava(CompilationUnit astRoot) {
 		ITypeBinding typeBinding = getAttribute().typeBinding(astRoot);
 		if (typeBinding != null) {
@@ -586,7 +586,7 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 		}
 		else {
 			setDefaultTargetEntity(null);
-		}	
+		}
 	}
 
 	/**
@@ -603,7 +603,7 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 		return buildReferenceEntityTypeName(typeBinding);
 	}
 
-//	// TODO Embeddable???
+	//	// TODO Embeddable???
 	public static String buildReferenceEntityTypeName(ITypeBinding typeBinding) {
 		if (!typeBinding.isArray()) { // arrays cannot be entities
 			return typeBinding.getQualifiedName();
