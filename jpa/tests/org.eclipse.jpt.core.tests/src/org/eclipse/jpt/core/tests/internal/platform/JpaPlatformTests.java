@@ -11,10 +11,10 @@
 package org.eclipse.jpt.core.tests.internal.platform;
 
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaBasicProvider;
@@ -23,7 +23,6 @@ import org.eclipse.jpt.core.internal.platform.generic.GenericJpaFactory;
 import org.eclipse.jpt.core.internal.platform.generic.GenericPlatform;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class JpaPlatformTests extends TestCase
 {
