@@ -681,10 +681,18 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	private void updatePersistentFields(CompilationUnit astRoot, List<JavaPersistentAttribute> persistentAttributesToRemove) {
-		for (IField field : this.jdtPersistableFields()) {
-			JavaPersistentAttribute persistentAttribute = persistentAttributeFor(field);
+		updatePersistentAttributes(astRoot, persistentAttributesToRemove, this.jdtPersistableFields());
+	}
+
+	private void updatePersistentProperties(CompilationUnit astRoot, List<JavaPersistentAttribute> persistentAttributesToRemove) {
+		updatePersistentAttributes(astRoot, persistentAttributesToRemove, this.jdtPersistableProperties());
+	}
+
+	private void updatePersistentAttributes(CompilationUnit astRoot, List<JavaPersistentAttribute> persistentAttributesToRemove, IMember[] members) {
+		for (IMember member : members) {
+			JavaPersistentAttribute persistentAttribute = persistentAttributeFor(member);
 			if (persistentAttribute == null) {
-				persistentAttribute = addJavaPersistentAttribute(field);
+				persistentAttribute = addJavaPersistentAttribute(member);
 			}
 			else {
 				persistentAttributesToRemove.remove(persistentAttribute);
@@ -693,18 +701,6 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		}
 	}
 
-	private void updatePersistentProperties(CompilationUnit astRoot, List<JavaPersistentAttribute> persistentAttributesToRemove) {
-		for (IMethod method : this.jdtPersistableProperties()) {
-			JavaPersistentAttribute persistentAttribute = persistentAttributeFor(method);
-			if (persistentAttribute == null) {
-				addJavaPersistentAttribute(method);
-			}
-			else {
-				persistentAttributesToRemove.remove(persistentAttribute);
-				persistentAttribute.updateFromJava(astRoot);
-			}
-		}
-	}
 
 	private IField[] jdtPersistableFields() {
 		return AttributeAnnotationTools.persistableFields(jdtType());
