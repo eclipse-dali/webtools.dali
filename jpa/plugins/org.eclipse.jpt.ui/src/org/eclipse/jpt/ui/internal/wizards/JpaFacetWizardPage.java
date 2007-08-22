@@ -349,7 +349,10 @@ public class JpaFacetWizardPage
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
 			
+			boolean useServerLib = model.getBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION);
+			
 			useServerLibButton = createButton(group, 2, JptUiMessages.JpaFacetWizardPage_userServerLibLabel, SWT.RADIO);
+			useServerLibButton.setSelection(useServerLib);
 			useServerLibButton.addSelectionListener(
 					new SelectionListener() {
 						public void widgetDefaultSelected(SelectionEvent e) {
@@ -363,6 +366,7 @@ public class JpaFacetWizardPage
 				);
 			
 			specifyLibButton = createButton(group, 1, JptUiMessages.JpaFacetWizardPage_specifyLibLabel, SWT.RADIO);
+			specifyLibButton.setSelection(! useServerLib);
 			specifyLibButton.addSelectionListener(
 					new SelectionListener() {
 						public void widgetDefaultSelected(SelectionEvent e) {
@@ -457,7 +461,10 @@ public class JpaFacetWizardPage
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
 			
+			boolean discoverClasses = model.getBooleanProperty(DISCOVER_ANNOTATED_CLASSES);
+			
 			discoverClassesButton = createButton(group, 1, JptUiMessages.JpaFacetWizardPage_discoverClassesButton, SWT.RADIO);
+			discoverClassesButton.setSelection(discoverClasses);
 			discoverClassesButton.addSelectionListener(
 				new SelectionListener() {
 						public void widgetDefaultSelected(SelectionEvent e) {
@@ -471,6 +478,7 @@ public class JpaFacetWizardPage
 				);
 			
 			listClassesButton = createButton(group, 1, JptUiMessages.JpaFacetWizardPage_listClassesButton, SWT.RADIO);
+			listClassesButton.setSelection(! discoverClasses);
 			listClassesButton.addSelectionListener(
 				new SelectionListener() {
 						public void widgetDefaultSelected(SelectionEvent e) {
