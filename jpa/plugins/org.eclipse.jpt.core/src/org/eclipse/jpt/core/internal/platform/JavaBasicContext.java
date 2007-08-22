@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaBasic;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
@@ -31,9 +32,9 @@ public class JavaBasicContext extends JavaAttributeContext
 	}
 	
 	@Override
-	public void refreshDefaultsInternal(DefaultsContext defaultsContext) {
-		super.refreshDefaultsInternal(defaultsContext);
-		this.columnContext.refreshDefaults(defaultsContext);
+	protected void refreshDefaultsInternal(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaultsInternal(defaultsContext, monitor);
+		this.columnContext.refreshDefaults(defaultsContext, monitor);
 	}
 	
 	public void addToMessages(List<IMessage> messages) {

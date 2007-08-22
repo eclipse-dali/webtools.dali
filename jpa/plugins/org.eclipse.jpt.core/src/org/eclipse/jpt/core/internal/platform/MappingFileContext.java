@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.platform;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
@@ -89,19 +90,22 @@ public class MappingFileContext extends BaseContext
 		return null;
 	}
 	
-	public void refreshDefaults(DefaultsContext parentDefaults) {
-		super.refreshDefaults(parentDefaults);
+	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
+		super.refreshDefaults(parentDefaults, monitor);
 		ormRoot.getEntityMappings().refreshDefaults(parentDefaults);
 		DefaultsContext wrappedDefaultsContext = wrapDefaultsContext(parentDefaults);
 		for (XmlTypeContext context : this.xmlTypeContexts) {
+			if (monitor.isCanceled()) {
+				return;
+			}
 			if (!context.isRefreshed()) {
-				context.refreshDefaults(wrappedDefaultsContext);
+				context.refreshDefaults(wrappedDefaultsContext, monitor);
 			}
 		}
 	}
 	
-	private DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	private DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
 				if (key.equals(BaseJpaPlatform.DEFAULT_TABLE_SCHEMA_KEY)
 					||  key.equals(BaseJpaPlatform.DEFAULT_TABLE_GENERATOR_SCHEMA_KEY)) {
@@ -117,11 +121,7 @@ public class MappingFileContext extends BaseContext
 					}
 				}
 				
-				return defaultsContext.getDefault(key);
-			}
-			
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+				return super.getDefault(key);
 			}
 		};
 	}

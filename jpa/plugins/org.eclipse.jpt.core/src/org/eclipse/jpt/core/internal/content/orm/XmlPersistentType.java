@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
@@ -835,19 +835,6 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 		return this.parentPersistentType;
 	}
 
-	private String superclassTypeSignature() {
-		IType javaType = this.findJdtType();
-		if (javaType == null) {
-			return null;
-		}
-		try {
-			return javaType.getSuperclassTypeSignature();
-		}
-		catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
-		}
-	}
-
 	public IJpaContentNode getContentNode(int offset) {
 		for (Iterator i = getSpecifiedAttributeMappings().iterator(); i.hasNext();) {
 			XmlAttributeMapping mapping = (XmlAttributeMapping) i.next();
@@ -863,33 +850,15 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	}
 
 	private void refreshParentPersistentType(DefaultsContext context) {
-		String superclassTypeSignature = this.superclassTypeSignature();
-		if (superclassTypeSignature == null) {
+		JavaPersistentType javaPersistentType = findJavaPersistentType();
+		if (javaPersistentType == null) {
 			this.parentPersistentType = null;
 			return;
 		}
-		IType jdtType = this.findJdtType();
-		if (jdtType == null) {
-			this.parentPersistentType = null;
-			return;
-		}
-		String fullyQualifiedTypeName = JDTTools.resolveSignature(superclassTypeSignature, jdtType);
-		if (fullyQualifiedTypeName == null) {
-			this.parentPersistentType = null;
-			return;
-		}
-		IPersistentType possibleParent = context.persistentType(fullyQualifiedTypeName);
-		if (possibleParent != null) {
-			if (possibleParent.getMappingKey() != null) {
-				this.parentPersistentType = possibleParent;
-			}
-			else {
-				this.parentPersistentType = possibleParent.parentPersistentType();
-			}
-		}
-		else {
-			this.parentPersistentType = null;
-		}
+		ITypeBinding typeBinding = javaPersistentType.getType().typeBinding(context.astRoot());
+		IPersistentType parentPersistentType = JavaPersistentType.parentPersistentType(context, typeBinding);
+		this.parentPersistentType = parentPersistentType;
+		return;
 	}
 
 	protected Iterator<XmlPersistentAttribute> attributesNamed(final String attributeName) {

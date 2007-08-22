@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.IPersistentType;
+import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbedded;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IEmbeddable;
@@ -366,16 +366,6 @@ public class XmlEmbedded extends XmlAttributeMapping implements IEmbedded
 		if (attribute == null) {
 			return null;
 		}
-		String resolvedTypeName = attribute.resolvedTypeName();
-		if (resolvedTypeName == null) {
-			return null;
-		}
-		IPersistentType persistentType = defaultsContext.persistentType(resolvedTypeName);
-		if (persistentType != null) {
-			if (persistentType.getMapping() instanceof IEmbeddable) {
-				return (IEmbeddable) persistentType.getMapping();
-			}
-		}
-		return null;
+		return JavaEmbedded.embeddableFor(attribute, defaultsContext);
 	}
 } // XmlEmbedded

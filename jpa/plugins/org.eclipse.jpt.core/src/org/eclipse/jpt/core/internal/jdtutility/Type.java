@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class Type extends Member {
@@ -26,11 +27,6 @@ public class Type extends Member {
 	@Override
 	public IType getJdtMember() {
 		return (IType) super.getJdtMember();
-	}
-
-	@Override
-	public TypeDeclaration bodyDeclaration() {
-		return (TypeDeclaration) super.bodyDeclaration();
 	}
 
 	public boolean isAbstract() {
@@ -64,6 +60,9 @@ public class Type extends Member {
 		return null;
 	}
 	
+	public ITypeBinding typeBinding(CompilationUnit astRoot) {
+		return bodyDeclaration(astRoot).resolveBinding();
+	}
 
 	// ********** miscellaneous **********
 

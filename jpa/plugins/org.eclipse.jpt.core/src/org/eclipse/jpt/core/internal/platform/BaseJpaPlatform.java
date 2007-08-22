@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
@@ -197,13 +199,17 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		}
 	}
 	
-	public void resynch(IContext contextHierarchy) {
-		((BaseJpaProjectContext) contextHierarchy).refreshDefaults();
+	public void resynch(IContext contextHierarchy, IProgressMonitor monitor) {
+		((BaseJpaProjectContext) contextHierarchy).refreshDefaults(monitor);
 	}
 	
 	public void addToMessages(List<IMessage> messages) {
+		//I believe we need to be calling JpaProject.resynch() here.
+		//How can we handle this, we need to resynch and then wait until it is done
+		//resynching before calling this.  what happens if something changes out from
+		//under us while we are resynching??
 		BaseJpaProjectContext context = (BaseJpaProjectContext) buildProjectContext();
-		context.refreshDefaults();
+		context.refreshDefaults(new NullProgressMonitor());
 		context.addToMessages(messages);
 	}
 	

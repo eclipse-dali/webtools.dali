@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITypeMapping;
@@ -32,9 +33,9 @@ public class XmlVersionContext
 	}
 	
 	@Override
-	public void refreshDefaults(DefaultsContext defaultsContext) {
-		super.refreshDefaults(defaultsContext);
-		this.columnContext.refreshDefaults(defaultsContext);
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
+		this.columnContext.refreshDefaults(defaultsContext, monitor);
 	}
 	
 	@Override

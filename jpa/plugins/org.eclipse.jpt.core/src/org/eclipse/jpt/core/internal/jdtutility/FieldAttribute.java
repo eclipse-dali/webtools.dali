@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import java.util.List;
 import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 /**
@@ -31,12 +31,6 @@ public class FieldAttribute extends Attribute {
 	public IField getJdtMember() {
 		return (IField) super.getJdtMember();
 	}
-
-	@Override
-	public FieldDeclaration bodyDeclaration() {
-		return (FieldDeclaration) super.bodyDeclaration();
-	}
-
 
 	// ********** Member implementation **********
 
@@ -69,12 +63,8 @@ public class FieldAttribute extends Attribute {
 	}
 
 	@Override
-	public String typeSignature() {
-		try {
-			return this.getJdtMember().getTypeSignature();
-		} catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
-		}
+	public ITypeBinding typeBinding(CompilationUnit astRoot) {
+		return bodyDeclaration(astRoot).getType().resolveBinding();
 	}
 
 

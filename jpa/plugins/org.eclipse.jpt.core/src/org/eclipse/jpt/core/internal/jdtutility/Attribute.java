@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 
 /**
  * Combine behavior common to FieldAttribute and MethodAttribute.
@@ -30,14 +32,8 @@ public abstract class Attribute extends Member {
 
 	public abstract String attributeName();
 
-	public abstract String typeSignature();
-
-	public boolean isPrimitiveType() {
-		return JDTTools.signatureIsPrimitive(this.typeSignature());
-	}
-
-	public boolean typeIs(String fullyQualifiedTypeName) {
-		return fullyQualifiedTypeName.equals(this.resolvedTypeName());
+	public boolean typeIs(String fullyQualifiedTypeName, CompilationUnit astRoot) {
+		return fullyQualifiedTypeName.equals(this.resolvedTypeName(astRoot));
 	}
 
 	/**
@@ -45,8 +41,14 @@ public abstract class Attribute extends Member {
 	 * Return the fully-qualified type name or return null if it cannot be
 	 * resolved unambiguously.
 	 */
-	public String resolvedTypeName() {
-		return JDTTools.resolveSignature(this.typeSignature(), this.getJdtMember().getDeclaringType());
+	public String resolvedTypeName(CompilationUnit astRoot) {
+		ITypeBinding typeBinding = typeBinding(astRoot);
+		if (typeBinding != null) {
+			return typeBinding.getQualifiedName();
+		}
+		return null;
 	}
 
+
+	public abstract ITypeBinding typeBinding(CompilationUnit astRoot);
 }

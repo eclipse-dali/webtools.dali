@@ -11,8 +11,9 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import java.beans.Introspector;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.IMethodBinding;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 /**
@@ -38,12 +39,6 @@ public class MethodAttribute extends Attribute {
 	public IMethod getJdtMember() {
 		return (IMethod) super.getJdtMember();
 	}
-
-	@Override
-	public MethodDeclaration bodyDeclaration() {
-		return (MethodDeclaration) super.bodyDeclaration();
-	}
-
 
 	// ********** Member implementation **********
 
@@ -81,14 +76,13 @@ public class MethodAttribute extends Attribute {
 		}
 		return Introspector.decapitalize(methodName.substring(beginIndex));
 	}
-
+	
 	@Override
-	public String typeSignature() {
-		try {
-			return this.getJdtMember().getReturnType();
-		} catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
+	public ITypeBinding typeBinding(CompilationUnit astRoot) {
+		IMethodBinding methodBinding = bodyDeclaration(astRoot).resolveBinding();
+		if (methodBinding != null) {
+			return methodBinding.getReturnType();
 		}
+		return null;
 	}
-
 }

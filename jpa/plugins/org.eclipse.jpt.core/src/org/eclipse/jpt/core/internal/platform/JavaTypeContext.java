@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
@@ -26,6 +28,8 @@ public abstract class JavaTypeContext extends BaseContext
 	private Collection<JavaPersistentAttributeContext> javaPersistentAttributeContexts;
 	
 	private boolean refreshed;
+	
+	private CompilationUnit astRoot;
 	
 	public JavaTypeContext(IContext parentContext, IJavaTypeMapping typeMapping) {
 		super(parentContext);
@@ -52,12 +56,33 @@ public abstract class JavaTypeContext extends BaseContext
 		}
 	}
 
-	public void refreshDefaults(DefaultsContext defaultsContext) {
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		this.refreshed = true;
-		this.getPersistentType().refreshDefaults(defaultsContext);
+		DefaultsContext wrappedDefaultsContext = wrapDefaultsContext(defaultsContext);
+		this.getPersistentType().refreshDefaults(wrappedDefaultsContext);
 		for (JavaPersistentAttributeContext context : this.javaPersistentAttributeContexts) {
-			context.refreshDefaults(defaultsContext);
+			if (monitor.isCanceled()) {
+				return;
+			}
+			context.refreshDefaults(wrappedDefaultsContext, monitor);
 		}
+	}
+	
+	private DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
+			@Override
+			public CompilationUnit astRoot() {
+				return JavaTypeContext.this.getAstRoot();
+			}
+		};
+	}
+	
+	protected CompilationUnit getAstRoot() {
+		if (this.astRoot == null) {
+			this.astRoot = getPersistentType().getType().astRoot();
+		}
+		return this.astRoot;
+		
 	}
 	
 	public JavaPersistentType getPersistentType() {

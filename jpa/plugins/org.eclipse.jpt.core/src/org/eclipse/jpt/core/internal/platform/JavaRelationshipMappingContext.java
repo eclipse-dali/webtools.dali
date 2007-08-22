@@ -25,7 +25,7 @@ public abstract class JavaRelationshipMappingContext extends JavaAttributeContex
 	}
 	
 	protected IEntity targetEntity(DefaultsContext defaultsContext) {
-		String targetEntity = getMapping().fullyQualifiedTargetEntity();
+		String targetEntity = getMapping().fullyQualifiedTargetEntity(defaultsContext.astRoot());
 		if (targetEntity == null) {
 			return null;
 		}
@@ -43,7 +43,7 @@ public abstract class JavaRelationshipMappingContext extends JavaAttributeContex
 	@Override
 	protected Object getDefault(String key, DefaultsContext defaultsContext) {
 		if (key.equals(BaseJpaPlatform.DEFAULT_TARGET_ENTITY_KEY)) {
-			return getMapping().fullyQualifiedTargetEntity();
+			return getMapping().fullyQualifiedTargetEntity(defaultsContext.astRoot());
 		}
 		return super.getDefault(key, defaultsContext);
 	}

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.platform;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
@@ -42,9 +43,9 @@ public class AssociationOverrideContext extends BaseContext
 		return contexts;
 	}
 	
-	public void refreshDefaults(DefaultsContext defaultsContext) {
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		for (JoinColumnContext context : this.joinColumnContexts) {
-			context.refreshDefaults(defaultsContext);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 	}
 

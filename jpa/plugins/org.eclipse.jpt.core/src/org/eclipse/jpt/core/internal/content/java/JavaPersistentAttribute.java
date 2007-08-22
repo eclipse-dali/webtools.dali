@@ -476,7 +476,7 @@ public class JavaPersistentAttribute extends JavaEObject
 				this.attribute.removeAnnotation(this.declarationAnnotationAdapterForAttributeMappingKey(oldKey));
 			}
 			this.attribute.newMarkerAnnotation(this.declarationAnnotationAdapterForAttributeMappingKey(newKey));
-			this.specifiedMapping.initialize();
+			this.specifiedMapping.updateFromJava(getAttribute().astRoot());
 		}
 		if (this.eNotificationRequired()) {
 			this.eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING, old, this.getMapping()));
@@ -560,7 +560,6 @@ public class JavaPersistentAttribute extends JavaEObject
 			else {
 				// the mapping has changed
 				this.setSpecifiedMapping(javaProvider.buildMapping(this.attribute));
-				this.specifiedMapping.initialize();
 			}
 			if (this.eNotificationRequired()) {
 				this.eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING, old, this.getMapping()));
@@ -615,7 +614,7 @@ public class JavaPersistentAttribute extends JavaEObject
 		// the "default" mapping has changed
 		IJavaAttributeMapping old = this.getMapping();
 		this.setDefaultMapping(defaultProvider.buildMapping(this.attribute));
-		this.defaultMapping.updateFromJava(this.attribute.astRoot());
+		this.defaultMapping.updateFromJava(defaultsContext.astRoot());
 		if (this.eNotificationRequired()) {
 			this.eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING, old, this.getMapping()));
 		}

@@ -16,10 +16,10 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.Signature;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.ITypeMapping;
+import org.eclipse.jpt.core.internal.content.java.mappings.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.content.orm.resource.OrmXmlMapper;
 import org.eclipse.jpt.core.internal.emfutility.DOMUtilities;
@@ -825,22 +825,12 @@ public abstract class XmlMultiRelationshipMappingInternal
 	 * another container or an array or a primitive or other Basic type)
 	 */
 	@Override
-	public String javaDefaultTargetEntity(String signature) {
-		String typeName = super.javaDefaultTargetEntity(signature);
-		return JavaRelationshipMapping.typeNamedIsContainer(typeName) ? this.javaDefaultTargetEntityFromContainer(signature) : null;
+	protected String javaDefaultTargetEntity(ITypeBinding typeBinding) {
+		String typeName = super.javaDefaultTargetEntity(typeBinding);
+		return JavaRelationshipMapping.typeNamedIsContainer(typeName) ? this.javaDefaultTargetEntityFromContainer(typeBinding) : null;
 	}
 
-	protected String javaDefaultTargetEntityFromContainer(String signature) {
-		String[] parmSignatures = Signature.getTypeArguments(signature);
-		if ((parmSignatures == null) || (parmSignatures.length != 1)) {
-			return null;
-		}
-		IType iType = getPersistentType().findJdtType();
-		if (iType == null) {
-			return null;
-		}
-		String elementSignature = parmSignatures[0];
-		String elementTypeName = buildReferenceEntityTypeName(elementSignature, iType);
-		return JavaRelationshipMapping.typeNamedIsContainer(elementTypeName) ? null : elementTypeName;
+	protected String javaDefaultTargetEntityFromContainer(ITypeBinding typeBinding) {
+		return JavaMultiRelationshipMapping.javaDefaultTargetEntityFromContainer(typeBinding);
 	}
 }

@@ -26,13 +26,9 @@
         eType="#//IJavaAttributeMapping" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IJavaTypeMapping" abstract="true" interface="true"
-      eSuperTypes="core.ecore#//ITypeMapping">
-    <eOperations name="initialize"/>
-  </eClassifiers>
+      eSuperTypes="core.ecore#//ITypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="IJavaAttributeMapping" abstract="true"
-      interface="true" eSuperTypes="core.ecore#//IAttributeMapping">
-    <eOperations name="initialize"/>
-  </eClassifiers>
+      interface="true" eSuperTypes="core.ecore#//IAttributeMapping"/>
   <eSubpackages name="mappings" nsURI="jpt.core.java.mappings.xmi" nsPrefix="jpt.core.java.mappings">
     <eClassifiers xsi:type="ecore:EClass" name="JavaTypeMapping" abstract="true" eSuperTypes="#//JavaEObject #//IJavaTypeMapping"/>
     <eClassifiers xsi:type="ecore:EClass" name="JavaEntity" eSuperTypes="#//mappings/JavaTypeMapping core.ecore#//mappings/IEntity"/>

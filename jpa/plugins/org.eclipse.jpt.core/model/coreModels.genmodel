@@ -418,12 +418,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//JavaPersistentAttribute/defaultMapping"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//JavaPersistentAttribute/specifiedMapping"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="java.ecore#//IJavaTypeMapping">
-      <genOperations ecoreOperation="java.ecore#//IJavaTypeMapping/initialize"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="java.ecore#//IJavaAttributeMapping">
-      <genOperations ecoreOperation="java.ecore#//IJavaAttributeMapping/initialize"/>
-    </genClasses>
+    <genClasses image="false" ecoreClass="java.ecore#//IJavaTypeMapping"/>
+    <genClasses image="false" ecoreClass="java.ecore#//IJavaAttributeMapping"/>
     <nestedGenPackages prefix="JpaJavaMappings" basePackage="org.eclipse.jpt.core.internal.content.java"
         disposableProviderFactory="true" ecorePackage="java.ecore#//mappings">
       <genClasses image="false" ecoreClass="java.ecore#//mappings/JavaTypeMapping"/>

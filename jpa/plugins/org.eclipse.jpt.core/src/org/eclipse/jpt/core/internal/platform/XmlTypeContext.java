@@ -13,9 +13,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
@@ -174,14 +175,15 @@ public abstract class XmlTypeContext extends BaseContext
 		this.javaTypeContext = null;
 	}
 	
-	public DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	public DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
-				return XmlTypeContext.this.getDefault(key, defaultsContext);
+				return XmlTypeContext.this.getDefault(key, getWrappedDefaultsContext());
 			}
-			
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+			@Override
+			public CompilationUnit astRoot() {
+				//TODO need to somehow not build this astRoot every time.  can we store the JavaPersistentType we are finding?
+				return javaPersistentType().getType().astRoot();
 			}
 		};
 	}
@@ -199,29 +201,35 @@ public abstract class XmlTypeContext extends BaseContext
 		return this.refreshed;
 	}
 
-	public void refreshDefaults(DefaultsContext parentDefaults) {
-		super.refreshDefaults(parentDefaults);
+	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
+		super.refreshDefaults(parentDefaults, monitor);
 		this.refreshed = true;
 		if (this.javaTypeContext != null) {
-			this.javaTypeContext.refreshDefaults(parentDefaults);
+			this.javaTypeContext.refreshDefaults(parentDefaults, monitor);
 		}
 		refreshPersistentType(parentDefaults);
 		DefaultsContext wrappedDefaultsContext = wrapDefaultsContext(parentDefaults);
-		refreshTableContext(wrappedDefaultsContext);
+		refreshTableContext(wrappedDefaultsContext, monitor);
 		this.xmlTypeMapping.refreshDefaults(wrappedDefaultsContext);
 		
-		refreshAttributeMappingContextDefaults(wrappedDefaultsContext);
+		refreshAttributeMappingContextDefaults(wrappedDefaultsContext, monitor);
 	}
 	
-	protected void refreshTableContext(DefaultsContext defaultsContext) {
+	protected void refreshTableContext(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 	}
 	
-	public void refreshAttributeMappingContextDefaults(DefaultsContext defaultsContext) {
+	public void refreshAttributeMappingContextDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		for (XmlAttributeContext context : this.attributeMappingContexts) {
-			context.refreshDefaults(context.wrapDefaultsContext(defaultsContext));
+			if (monitor.isCanceled()) {
+				return;
+			}
+			context.refreshDefaults(context.wrapDefaultsContext(defaultsContext), monitor);
 		}
 		for (XmlAttributeContext context : this.virtualAttributeMappingContexts) {
-			context.refreshDefaults(context.wrapDefaultsContext(defaultsContext));
+			if (monitor.isCanceled()) {
+				return;
+			}
+			context.refreshDefaults(context.wrapDefaultsContext(defaultsContext), monitor);
 		}
 	}
 	

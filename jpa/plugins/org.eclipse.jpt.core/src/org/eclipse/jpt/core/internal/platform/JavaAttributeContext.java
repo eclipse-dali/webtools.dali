@@ -9,11 +9,11 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
@@ -53,12 +53,12 @@ public abstract class JavaAttributeContext extends BaseContext
 		return getMapping().typeMapping().getKey() == IMappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 	
-	public final void refreshDefaults(DefaultsContext defaultsContext) {
+	public final void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		defaultsContext = wrapDefaultsContext(defaultsContext);
-		refreshDefaultsInternal(defaultsContext);
+		refreshDefaultsInternal(defaultsContext, monitor);
 	}
 	
-	protected void refreshDefaultsInternal(DefaultsContext defaultsContext) {
+	protected void refreshDefaultsInternal(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		this.attributeMapping.refreshDefaults(defaultsContext);
 	}
 	
@@ -66,14 +66,10 @@ public abstract class JavaAttributeContext extends BaseContext
 		return this.attributeMapping;
 	}
 	
-	public final DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	public final DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
-				return JavaAttributeContext.this.getDefault(key, defaultsContext);
-			}
-		
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+				return JavaAttributeContext.this.getDefault(key, getWrappedDefaultsContext());
 			}
 		};
 	}

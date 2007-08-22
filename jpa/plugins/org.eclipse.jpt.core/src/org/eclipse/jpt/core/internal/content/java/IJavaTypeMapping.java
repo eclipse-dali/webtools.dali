@@ -26,14 +26,6 @@ import org.eclipse.jpt.utility.internal.Filter;
  */
 public interface IJavaTypeMapping extends ITypeMapping
 {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	void initialize();
-
 	void updateFromJava(CompilationUnit astRoot);
 
 	/**

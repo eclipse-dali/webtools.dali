@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IMappingKeys;
@@ -47,8 +48,8 @@ public class XmlEmbeddedContext
 	}
 	private ParentContext buildParentContext() {
 		return new XmlAttributeOverrideContext.ParentContext() {
-			public void refreshDefaults(DefaultsContext defaults) {
-				XmlEmbeddedContext.this.refreshDefaults(defaults);
+			public void refreshDefaults(DefaultsContext defaults, IProgressMonitor monitor) {
+				XmlEmbeddedContext.this.refreshDefaults(defaults, monitor);
 			}
 			public IJpaPlatform getPlatform() {
 				return XmlEmbeddedContext.this.getPlatform();
@@ -71,11 +72,11 @@ public class XmlEmbeddedContext
 	}
 	
 	@Override
-	public void refreshDefaults(DefaultsContext parentDefaults) {
-		super.refreshDefaults(parentDefaults);
+	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
+		super.refreshDefaults(parentDefaults, monitor);
 		refreshDefaultAttributeOverrides();
 		for (XmlAttributeOverrideContext context : this.attributeOverrideContexts) {
-			context.refreshDefaults(parentDefaults);
+			context.refreshDefaults(parentDefaults, monitor);
 		}
 	}
 

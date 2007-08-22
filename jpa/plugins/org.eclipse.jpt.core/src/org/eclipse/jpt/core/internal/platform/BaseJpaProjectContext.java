@@ -14,7 +14,9 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
@@ -137,15 +139,18 @@ public class BaseJpaProjectContext extends BaseContext
 		return validPersistenceXmlFiles.iterator();
 	}
 	
-	public void refreshDefaults() {
-		refreshDefaults(null);
+	public void refreshDefaults(IProgressMonitor monitor) {
+		refreshDefaults(null, monitor);
 	}
 	
-	public void refreshDefaults(DefaultsContext parentDefaults) {
-		super.refreshDefaults(parentDefaults);
+	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
+		super.refreshDefaults(parentDefaults, monitor);
 		DefaultsContext defaultsContext = buildDefaultsContext();
 		for (PersistenceUnitContext context : this.persistenceUnitContexts) {
-			context.refreshDefaults(defaultsContext);
+			if (monitor.isCanceled()) {
+				return;
+			}
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 	}
 	
@@ -162,6 +167,9 @@ public class BaseJpaProjectContext extends BaseContext
 				return null;
 			}
 			public IPersistentType persistentType(String fullyQualifiedTypeName) {
+				return null;
+			}
+			public CompilationUnit astRoot() {
 				return null;
 			}
 		};

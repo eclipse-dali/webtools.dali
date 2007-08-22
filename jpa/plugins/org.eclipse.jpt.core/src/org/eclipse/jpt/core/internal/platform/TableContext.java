@@ -9,7 +9,7 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
-import org.eclipse.jpt.core.internal.IPersistentType;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -31,21 +31,17 @@ public class TableContext extends BaseContext
 		return this.table;
 	}
 	
-	public void refreshDefaults(DefaultsContext defaultsContext) {
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		this.table.refreshDefaults(defaultsContext);
 	}
 	
-	public DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	public DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
 				if (key.equals(BaseJpaPlatform.DEFAULT_COLUMN_TABLE_KEY)) {
 					return getTable().getName();
 				}
-				return defaultsContext.getDefault(key);
-			}
-			
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+				return super.getDefault(key);
 			}
 		};
 	}
