@@ -9,6 +9,7 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
@@ -77,8 +78,10 @@ public class AttributeOverrideContext extends BaseContext
 		return columnMapping.getColumn().getSpecifiedTable();
 	}
 	
-	public void refreshDefaults(DefaultsContext defaultsContext) {
-		this.columnContext.refreshDefaults(wrapDefaultsContext(defaultsContext));
+	@Override
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
+		this.columnContext.refreshDefaults(wrapDefaultsContext(defaultsContext), monitor);
 	}
 
 	@Override

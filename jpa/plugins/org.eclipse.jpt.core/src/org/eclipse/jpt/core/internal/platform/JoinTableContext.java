@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.platform;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.content.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
@@ -57,15 +58,17 @@ public class JoinTableContext extends BaseContext
 		return this.table;
 	}
 	
-	public void refreshDefaults(DefaultsContext defaultsContext) {
+	@Override
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
 		this.table.refreshDefaults(defaultsContext);
 		DefaultsContext joinColumnsDefaultsContext = wrapDefaultsContextForJoinColumn(defaultsContext);
 		for (JoinColumnContext context : this.joinColumnContexts) {
-			context.refreshDefaults(joinColumnsDefaultsContext);
+			context.refreshDefaults(joinColumnsDefaultsContext, monitor);
 		}
 		DefaultsContext inverseJoinColumnsDefaultsContext = wrapDefaultsContextForInverseJoinColumn(defaultsContext);
 		for (JoinColumnContext context : this.inverseJoinColumnContexts) {
-			context.refreshDefaults(inverseJoinColumnsDefaultsContext);
+			context.refreshDefaults(inverseJoinColumnsDefaultsContext, monitor);
 		}
 	}
 	

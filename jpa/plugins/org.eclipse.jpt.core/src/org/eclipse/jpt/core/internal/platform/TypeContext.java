@@ -8,13 +8,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IPersistentType;
 
 public interface TypeContext
 {
 	IPersistentType getPersistentType();
 	
-	void refreshDefaults(DefaultsContext defaultsContext);
+	void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor);
 	
 	boolean isRefreshed();
 }

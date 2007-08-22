@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.IPersistentType;
@@ -117,29 +118,30 @@ public class JavaEntityContext extends JavaTypeContext
 		}
 	}
 
-	public void refreshDefaults(DefaultsContext defaultsContext) {
+	@Override
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		defaultsContext = wrapDefaultsContext(defaultsContext);
-		super.refreshDefaults(defaultsContext);
+		super.refreshDefaults(defaultsContext, monitor);
 		
 		if (this.tableContext != null) {
-			this.tableContext.refreshDefaults(defaultsContext);
+			this.tableContext.refreshDefaults(defaultsContext, monitor);
 		}
 		refreshDefaultAttributeOverrides();
 		refreshDefaultAssociationOverrides();
 		for (SecondaryTableContext context : this.secondaryTableContexts) {
-			context.refreshDefaults(defaultsContext);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 		for (AttributeOverrideContext context : this.attributeOverrideContexts) {
-			context.refreshDefaults(defaultsContext);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 		for (AssociationOverrideContext context : this.associationOverrideContexts) {
-			context.refreshDefaults(defaultsContext);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 		for (PrimaryKeyJoinColumnContext context : this.pkJoinColumnContexts) {
-			context.refreshDefaults(defaultsContext);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 	}
-	
+
 	//TODO the relationship between this class and JavaTypeContext is very confused
 	//we end up wrapping the defaults context multiple times.  Maybe we should
 	//make this more like JavaAttributeContext.  or maybe we need a JavaPersistentTypeContext

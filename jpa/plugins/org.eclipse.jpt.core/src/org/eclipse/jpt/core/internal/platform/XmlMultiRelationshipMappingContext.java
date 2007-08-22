@@ -9,6 +9,7 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingInternal;
@@ -31,9 +32,9 @@ public abstract class XmlMultiRelationshipMappingContext
 	}
 	
 	@Override
-	public void refreshDefaults(final DefaultsContext defaultsContext) {
-		super.refreshDefaults(defaultsContext);
-		this.joinTableContext.refreshDefaults(defaultsContext);
+	public void refreshDefaults(final DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
+		this.joinTableContext.refreshDefaults(defaultsContext, monitor);
 	}
 	
 	@Override

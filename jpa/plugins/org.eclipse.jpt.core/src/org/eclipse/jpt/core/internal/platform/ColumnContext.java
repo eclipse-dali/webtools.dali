@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
 
 public class ColumnContext extends BaseContext
@@ -26,7 +27,9 @@ public class ColumnContext extends BaseContext
 		return this.column;
 	}
 	
-	public void refreshDefaults(DefaultsContext defaultsContext) {
+	@Override
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
 		this.column.refreshDefaults(defaultsContext);
 	}
 }

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.content.java.IDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
@@ -158,7 +159,7 @@ public interface IJpaPlatform
 	 * will be started upon completion.
 	 * @param contextHierarchy
 	 */
-	void resynch(IContext contextHierarchy);
+	void resynch(IContext contextHierarchy, IProgressMonitor monitor);
 
 	/**
 	 * Adds validation messages to the growing list of messages

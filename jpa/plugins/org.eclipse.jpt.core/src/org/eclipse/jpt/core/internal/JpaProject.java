@@ -191,15 +191,36 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		Job job = new Job("Resynching JPA model ...") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				IContext contextHierarchy = getPlatform().buildProjectContext();
-				getPlatform().resynch(contextHierarchy);
-				return Status.OK_STATUS;
+				return runResynch(monitor);
 			}
+
 		};
-		job.setRule(project);
+		job.setRule(this.project);
 		return job;
 	}
 
+	private IStatus runResynch(IProgressMonitor monitor) {
+		IContext contextHierarchy = getPlatform().buildProjectContext();
+		if (monitor.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		}
+		try {
+			getPlatform().resynch(contextHierarchy, monitor);
+		}
+		catch (Throwable e) {//TODO should I cancel the thread if this happens?
+			
+			//exceptions can occur when this thread is running and changes are
+			//made to the java source.  our model is not yet updated to the changed java source.
+			//log these exceptions and assume they won't happen when the resynch runs again
+			//as a result of the java source changes.
+			JptCorePlugin.log(e);
+		}
+		if (monitor.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		}
+		return Status.OK_STATUS;
+	}
+	
 	private IJobChangeListener buildResynchJobListener() {
 		return new JobChangeAdapter() {
 			@Override
@@ -207,10 +228,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 				super.done(event);
 				if (event.getJob() == JpaProject.this.resynchJob) {
 					resynching = false;
-					if (event.getResult().matches(IStatus.CANCEL)) {
-						needsToResynch = false;
-					}
-					else if (needsToResynch) {
+					if (needsToResynch) {
 						resynch();
 					}
 				}
@@ -586,6 +604,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		if (disposing) return;
 		
 		disposing = true;
+		this.resynchJob.cancel();
 				
 		Job job = new Job("Disposing JPA project ...") {
 			@Override
@@ -719,6 +738,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		}
 		else {
 			this.needsToResynch = true;
+			this.resynchJob.cancel();
 		}
 	}
 

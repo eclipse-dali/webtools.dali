@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
@@ -63,8 +64,8 @@ public class XmlEntityContext extends XmlTypeContext
 	
 	private ParentContext buildParentContext() {
 		return new XmlAttributeOverrideContext.ParentContext() {
-			public void refreshDefaults(DefaultsContext defaults) {
-				XmlEntityContext.this.refreshDefaults(defaults);
+			public void refreshDefaults(DefaultsContext defaults, IProgressMonitor monitor) {
+				XmlEntityContext.this.refreshDefaults(defaults, monitor);
 			}
 			public IJpaPlatform getPlatform() {
 				return XmlEntityContext.this.getPlatform();
@@ -148,25 +149,25 @@ public class XmlEntityContext extends XmlTypeContext
 	}
 
 	@Override
-	public void refreshDefaults(DefaultsContext parentDefaults) {
-		super.refreshDefaults(parentDefaults);
+	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
+		super.refreshDefaults(parentDefaults, monitor);
 		DefaultsContext defaultsContext = wrapDefaultsContext(parentDefaults);
 		refreshDefaultAttributeOverrides();
 		refreshDefaultAssociationOverrides();
 		refreshDefaultSecondaryTables();
 		for (SecondaryTableContext context : this.secondaryTableContexts) {
-			context.refreshDefaults(defaultsContext);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 		for (XmlAttributeOverrideContext context : this.attributeOverrideContexts) {
-			context.refreshDefaults(defaultsContext);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 		for (AssociationOverrideContext context : this.associationOverrideContexts) {
-			context.refreshDefaults(defaultsContext);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 	}
 	
-	protected void refreshTableContext(DefaultsContext defaultsContext) {
-		this.tableContext.refreshDefaults(defaultsContext);
+	protected void refreshTableContext(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		this.tableContext.refreshDefaults(defaultsContext, monitor);
 	}
 	
 	protected void refreshDefaultAttributeOverrides() {

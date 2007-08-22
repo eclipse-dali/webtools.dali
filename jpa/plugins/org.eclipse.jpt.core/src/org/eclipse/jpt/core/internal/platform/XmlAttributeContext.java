@@ -9,6 +9,7 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
@@ -43,7 +44,9 @@ public abstract class XmlAttributeContext extends BaseContext
 		return xmlAttributeMapping.getPersistentAttribute();
 	}
 
-	public void refreshDefaults(DefaultsContext defaultsContext) {
+	@Override
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
 		JavaPersistentType javaPersistentType = this.xmlAttributeMapping.getPersistentType().findJavaPersistentType();
 		String name = this.xmlAttributeMapping.getPersistentAttribute().getName();
 		if (name != null && javaPersistentType != null) {

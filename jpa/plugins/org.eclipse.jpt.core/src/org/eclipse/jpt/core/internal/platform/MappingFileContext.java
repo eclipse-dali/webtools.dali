@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.platform;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
@@ -89,13 +90,17 @@ public class MappingFileContext extends BaseContext
 		return null;
 	}
 	
-	public void refreshDefaults(DefaultsContext parentDefaults) {
-		super.refreshDefaults(parentDefaults);
+	@Override
+	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
+		super.refreshDefaults(parentDefaults, monitor);
 		ormRoot.getEntityMappings().refreshDefaults(parentDefaults);
 		DefaultsContext wrappedDefaultsContext = wrapDefaultsContext(parentDefaults);
 		for (XmlTypeContext context : this.xmlTypeContexts) {
+			if (monitor.isCanceled()) {
+				return;
+			}
 			if (!context.isRefreshed()) {
-				context.refreshDefaults(wrappedDefaultsContext);
+				context.refreshDefaults(wrappedDefaultsContext, monitor);
 			}
 		}
 	}

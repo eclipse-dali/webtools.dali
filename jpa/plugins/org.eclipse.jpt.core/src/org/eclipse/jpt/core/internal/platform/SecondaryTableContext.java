@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.platform;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
@@ -45,10 +46,12 @@ public class SecondaryTableContext extends BaseContext
 		return this.secondaryTable;
 	}
 	
-	public void refreshDefaults(DefaultsContext defaultsContext) {
+	@Override
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
 		this.secondaryTable.refreshDefaults(defaultsContext);
 		for (PrimaryKeyJoinColumnContext context : this.pkJoinColumnContexts) {
-			context.refreshDefaults(defaultsContext);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 	}
 	

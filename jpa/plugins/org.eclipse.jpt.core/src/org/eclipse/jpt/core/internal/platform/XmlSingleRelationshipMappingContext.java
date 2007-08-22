@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlSingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
@@ -43,11 +44,11 @@ public abstract class XmlSingleRelationshipMappingContext
 		return (XmlSingleRelationshipMapping) relationshipMapping();
 	}
 
-	
-	public void refreshDefaults(DefaultsContext defaultsContext) {
-		super.refreshDefaults(defaultsContext);
+	@Override
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
 		for (JoinColumnContext context : this.joinColumnContexts) {
-			context.refreshDefaults(defaultsContext);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 	}
 	

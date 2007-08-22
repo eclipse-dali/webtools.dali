@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IPersistentType;
@@ -44,8 +45,8 @@ public abstract class XmlRelationshipMappingContext extends XmlAttributeContext
 	}
 
 	@Override
-	public void refreshDefaults(DefaultsContext defaultsContext) {
-		super.refreshDefaults(defaultsContext);
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
 		relationshipMapping().refreshDefaults(defaultsContext);
 	}
 	

@@ -10,6 +10,7 @@ package org.eclipse.jpt.core.internal.platform;
 
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
@@ -33,9 +34,9 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 	}
 	
 	@Override
-	public void refreshDefaultsInternal(DefaultsContext defaultsContext) {
-		super.refreshDefaultsInternal(defaultsContext);
-		this.joinTableContext.refreshDefaults(defaultsContext);
+	protected void refreshDefaultsInternal(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaultsInternal(defaultsContext, monitor);
+		this.joinTableContext.refreshDefaults(defaultsContext, monitor);
 	}
 	
 	@Override

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
@@ -55,12 +56,17 @@ public abstract class JavaTypeContext extends BaseContext
 		}
 	}
 
-	public void refreshDefaults(DefaultsContext defaultsContext) {
+	@Override
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
 		this.refreshed = true;
 		DefaultsContext wrappedDefaultsContext = wrapDefaultsContext(defaultsContext);
 		this.getPersistentType().refreshDefaults(wrappedDefaultsContext);
 		for (JavaPersistentAttributeContext context : this.javaPersistentAttributeContexts) {
-			context.refreshDefaults(wrappedDefaultsContext);
+			if (monitor.isCanceled()) {
+				return;
+			}
+			context.refreshDefaults(wrappedDefaultsContext, monitor);
 		}
 	}
 	

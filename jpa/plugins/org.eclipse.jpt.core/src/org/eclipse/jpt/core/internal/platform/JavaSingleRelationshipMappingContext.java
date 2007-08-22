@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaSingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
@@ -56,11 +57,12 @@ public abstract class JavaSingleRelationshipMappingContext
 		return entity.getTable();
 	}
 	
-	public void refreshDefaultsInternal(DefaultsContext defaultsContext) {
-		super.refreshDefaultsInternal(defaultsContext);
+	@Override
+	protected void refreshDefaultsInternal(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaultsInternal(defaultsContext, monitor);
 		DefaultsContext joinColumnsDefaultsContext = wrapDefaultsContextForJoinColumn(defaultsContext);
 		for (JoinColumnContext context : this.joinColumnContexts) {
-			context.refreshDefaults(joinColumnsDefaultsContext);
+			context.refreshDefaults(joinColumnsDefaultsContext, monitor);
 		}
 	}
 	

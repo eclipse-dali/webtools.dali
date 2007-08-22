@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 
 public abstract class AbstractJoinColumnContext<E extends IAbstractJoinColumn> extends BaseContext
@@ -26,7 +27,9 @@ public abstract class AbstractJoinColumnContext<E extends IAbstractJoinColumn> e
 		return this.column;
 	}
 	
-	public void refreshDefaults(DefaultsContext defaultsContext) {
+	@Override
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
 		this.column.refreshDefaults(wrapDefaultsContext(defaultsContext));
 	}
 	

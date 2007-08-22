@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.AccessType;
@@ -280,26 +281,36 @@ public class PersistenceUnitContext extends BaseContext
 				);
 	}
 	
-	public void refreshDefaults(DefaultsContext parentDefaults) {
-		super.refreshDefaults(parentDefaults);
+	@Override
+	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
+		super.refreshDefaults(parentDefaults, monitor);
 		for (JavaTypeContext context : this.duplicateJavaPersistentTypes) {
+			if (monitor.isCanceled()) {
+				return;
+			}
 			// context for duplicates not be based on the persistenceUnit defaults,
 			// so we're going to use the one passed here without wrapping it
-			context.refreshDefaults(parentDefaults);
+			context.refreshDefaults(parentDefaults, monitor);
 		}
-		DefaultsContext defaults = wrapDefaultsContext(parentDefaults);
+		DefaultsContext defaults = wrapDefaultsContext(parentDefaults, monitor);
 		for (MappingFileContext context : this.mappingFileContexts) {
-			context.refreshDefaults(defaults);
+			if (monitor.isCanceled()) {
+				return;
+			}
+			context.refreshDefaults(defaults, monitor);
 		}
 		for (JavaTypeContext context : this.javaPersistentTypeContexts) {
-			context.refreshDefaults(defaults);
+			if (monitor.isCanceled()) {
+				return;
+			}
+			context.refreshDefaults(defaults, monitor);
 		}
 		
 		//TODO somehow need to clear out defaults for the duplicateJpaFiles, 
 		//do i have to build JavaTypeContext for those as well?
 	}
-	
-	protected DefaultsContext wrapDefaultsContext(DefaultsContext defaults) {
+
+	protected DefaultsContext wrapDefaultsContext(DefaultsContext defaults, final IProgressMonitor monitor) {
 		DefaultsContext puDefaults = buildPersistenceUnitDefaults(defaults);
 		return new DefaultsContextWrapper(puDefaults){
 			public IPersistentType persistentType(String fullyQualifiedTypeName) {
@@ -310,7 +321,7 @@ public class PersistenceUnitContext extends BaseContext
 					if (jdtType != null 
 							&& fullyQualifiedTypeName.equals(jdtType.getFullyQualifiedName())) {
 						if (! typeContext.isRefreshed()) {
-							typeContext.refreshDefaults(this);
+							typeContext.refreshDefaults(this, monitor);
 						}
 						return persistentType;
 					}

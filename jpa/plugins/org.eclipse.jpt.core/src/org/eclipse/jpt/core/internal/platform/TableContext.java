@@ -9,6 +9,7 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -30,7 +31,9 @@ public class TableContext extends BaseContext
 		return this.table;
 	}
 	
-	public void refreshDefaults(DefaultsContext defaultsContext) {
+	@Override
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
 		this.table.refreshDefaults(defaultsContext);
 	}
 	
