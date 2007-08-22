@@ -148,7 +148,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * This is set to false when that job is completed 
 	 */
 	boolean resynching = false;
-
+	
 	/**
 	 * Flag to indicate that the disposing job has been scheduled or is running
 	 * (or has been run, in some cases)
@@ -173,6 +173,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
 
 	private ThreadLocal<CommandExecutor> threadLocalModifySharedDocumentCommandExecutor = new ThreadLocal<CommandExecutor>();
+
 
 	JpaProject() {
 		super();
@@ -522,6 +523,10 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		resynch();
 	}
 
+	public boolean isFilled() {
+		return filled;
+	}
+
 	/**
 	 * @see IJpaProject#getJpaFile(IFile)
 	 */
@@ -578,9 +583,10 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * Dispose and remove project
 	 */
 	void dispose() {
-		if (disposing)
-			return;
+		if (disposing) return;
+		
 		disposing = true;
+				
 		Job job = new Job("Disposing JPA project ...") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -591,7 +597,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		job.setRule(project);
 		job.schedule();
 	}
-
+	
 	private void dispose_() {
 		Job.getJobManager().removeJobChangeListener(resynchJobListener);
 		for (IJpaFile jpaFile : CollectionTools.collection(getFiles())) {
@@ -641,21 +647,24 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		};
 	}
 
-	// PWFTODO 
-	// Return a NullPersistenceFile if no content found?
+		// PWFTODO 
+		// Return a NullPersistenceFile if no content found?
 	synchronized IJpaFile createJpaFile(IFile file) {
 		if (!JavaCore.create(this.project).isOnClasspath(file)) {
 			return null;
 		}
+
 		IContentType contentType = this.contentType(file);
 		if (contentType == null) {
 			return null;
 		}
+
 		String contentTypeId = contentType.getId();
 		IJpaFileContentProvider provider = this.getPlatform().fileContentProvider(contentTypeId);
 		if (provider == null) {
 			return null;
 		}
+
 		JpaFile jpaFile = JpaCoreFactory.eINSTANCE.createJpaFile();
 		this.getFiles().add(jpaFile);
 		jpaFile.setFile(file);
@@ -670,11 +679,9 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	private IContentType contentType(IFile file) {
 		try {
 			return Platform.getContentTypeManager().findContentTypeFor(file.getContents(), file.getName());
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			JptCorePlugin.log(ex);
-		}
-		catch (CoreException ex) {
+		} catch (CoreException ex) {
 			JptCorePlugin.log(ex);
 		}
 		return null;
@@ -703,10 +710,9 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	//passing it on to the JpaModel.  We don't currently support
 	//multiple projects having cross-references
 	public void resynch() {
-		//don't resynch until the project is filled
-		if (disposing || !filled)
-			return;
-		if (!this.resynching) {
+		if (disposing || ! filled) return;
+		
+		if (! this.resynching) {
 			this.resynching = true;
 			this.needsToResynch = false;
 			this.resynchJob.schedule();
@@ -850,16 +856,17 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		}
 		return this.modifySharedDocumentCommandExecutorProvider;
 	}
-
-
+	
+	
 	// ********** member class **********
-	private class ModifySharedDocumentCommandExecutorProvider
-		implements CommandExecutorProvider
+	
+	private class ModifySharedDocumentCommandExecutorProvider 
+			implements CommandExecutorProvider 
 	{
 		ModifySharedDocumentCommandExecutorProvider() {
 			super();
 		}
-
+		
 		public CommandExecutor commandExecutor() {
 			return JpaProject.this.getThreadLocalModifySharedDocumentCommandExecutor();
 		}
