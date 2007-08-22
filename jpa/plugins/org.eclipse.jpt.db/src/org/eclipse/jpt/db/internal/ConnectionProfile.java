@@ -59,7 +59,6 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 
 	protected void refreshDatabase() {
 		this.disposeDatabase();
-		this.database = null;
     }
     
 	@Override
@@ -72,6 +71,7 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	private void disposeDatabase() {
 		if( this.database != null) {
 			this.getDatabase().dispose();
+			this.database = null;
 		}
 	}
 	
