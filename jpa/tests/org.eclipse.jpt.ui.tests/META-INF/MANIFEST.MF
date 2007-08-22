@@ -5,10 +5,10 @@ Bundle-SymbolicName: org.eclipse.jpt.ui.tests
 Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jpt.core.tests,
+ org.eclipse.jpt.core.tests.extension.resource,
  org.eclipse.jpt.core,
  org.junit,
  org.eclipse.jpt.utility,
- org.eclipse.jpt.ui,
- testPlugin
+ org.eclipse.jpt.ui
 Eclipse-LazyStart: true
 Bundle-Vendor: %providerName

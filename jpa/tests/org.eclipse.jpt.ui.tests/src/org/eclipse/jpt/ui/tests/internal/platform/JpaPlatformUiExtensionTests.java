@@ -2,14 +2,14 @@ package org.eclipse.jpt.ui.tests.internal.platform;
 
 import junit.framework.TestCase;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
-import org.eclipse.jpt.core.internal.platform.generic.GenericPlatform;
+import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
+import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform;
+import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformUi;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.generic.GenericPlatformUi;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class JpaPlatformUiExtensionTests extends TestCase
 {
@@ -18,16 +18,15 @@ public class JpaPlatformUiExtensionTests extends TestCase
 	protected static final String PROJECT_NAME = "ExtensionTestProject";
 	protected static final String PACKAGE_NAME = "extension.test";
 	
-	public static final String TEST_PLUGIN_CLASS = "org.eclipse.tests.TestPlugin";
-	public static final String TEST_PLUGIN_ID = "testPlugin";
-	public static final String TEST_PLUGIN_NAME = "TestPlugin";
+	public static final String TEST_PLUGIN_CLASS = ExtensionTestPlugin.class.getName();
+	public static final String TEST_PLUGIN_ID = ExtensionTestPlugin.PLUGIN_ID;
 
-	public static final String TEST_PLATFORM_ID = "core.testJpaPlatform";
-	public static final String TEST_PLATFORM_CLASS = "org.eclipse.tests.TestJpaPlatform";
+	public static final String TEST_PLATFORM_ID = TestJpaPlatform.PLATFORM_ID;
+	public static final String TEST_PLATFORM_CLASS = TestJpaPlatform.class.getName();
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
 
 	public static final String TEST_UI_PLATFORM_ID = TEST_PLATFORM_ID;
-	public static final String TEST_UI_PLATFORM_CLASS = "org.eclipse.tests.TestJpaPlatformUi";
+	public static final String TEST_UI_PLATFORM_CLASS = TestJpaPlatformUi.class.getName();
 	
 	public JpaPlatformUiExtensionTests(String name) {
 		super(name);

@@ -17,11 +17,13 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
+import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class JpaPlatformExtensionTests extends TestCase
 {
-	public static final String TEST_PLATFORM_ID = "core.testJpaPlatform";
+	public static final String TEST_PLATFORM_ID = TestJpaPlatform.PLATFORM_ID;
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
 	
 	public JpaPlatformExtensionTests(String name) {
@@ -41,7 +43,7 @@ public class JpaPlatformExtensionTests extends TestCase
 		IExtension[] extensions = extensionPoint.getExtensions();
 		boolean extensionFound = false;
 		for (IExtension extension : extensions) {
-			if (extension.getContributor().getName().equals("testPlugin")) {
+			if (extension.getContributor().getName().equals(ExtensionTestPlugin.PLUGIN_ID)) {
 				extensionFound = true;
 			}
 		}

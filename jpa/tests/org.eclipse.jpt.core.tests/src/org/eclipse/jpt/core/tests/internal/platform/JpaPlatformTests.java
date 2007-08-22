@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.tests.internal.platform;
 
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IMappingKeys;
@@ -21,6 +20,11 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaBasicProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaEntityProvider;
 import org.eclipse.jpt.core.internal.platform.generic.GenericJpaFactory;
 import org.eclipse.jpt.core.internal.platform.generic.GenericPlatform;
+import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
+import org.eclipse.jpt.core.tests.extension.resource.TestAttributeMappingProvider;
+import org.eclipse.jpt.core.tests.extension.resource.TestJpaFactory;
+import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform;
+import org.eclipse.jpt.core.tests.extension.resource.TestTypeMappingProvider;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 
@@ -31,16 +35,15 @@ public class JpaPlatformTests extends TestCase
 	protected static final String PROJECT_NAME = "ExtensionTestProject";
 	protected static final String PACKAGE_NAME = "extension.test";
 	
-	public static final String TEST_PLUGIN_CLASS = "org.eclipse.tests.TestPlugin";
-	public static final String TEST_PLUGIN_ID = "testPlugin";
-	public static final String TEST_PLUGIN_NAME = "TestPlugin";
+	public static final String TEST_PLUGIN_CLASS = ExtensionTestPlugin.class.getName();
+	public static final String TEST_PLUGIN_ID = "org.eclipse.jpt.core.tests.extension.resource";
 
-	public static final String TEST_PLATFORM_ID = "core.testJpaPlatform";
-	public static final String TEST_PLATFORM_CLASS = "org.eclipse.tests.TestJpaPlatform";
+	public static final String TEST_PLATFORM_ID = TestJpaPlatform.PLATFORM_ID;
+	public static final String TEST_PLATFORM_CLASS = TestJpaPlatform.class.getName();
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
-	public static final String TEST_JPA_FACTORY = "org.eclipse.tests.TestJpaFactory";
-	public static final String TEST_TYPE_MAPPING_PROVIDER_CLASS = "org.eclipse.tests.TestTypeMappingProvider";
-	public static final String TEST_ATTRIBUTE_MAPPING_PROVIDER_CLASS = "org.eclipse.tests.TestAttributeMappingProvider";
+	public static final String TEST_JPA_FACTORY = TestJpaFactory.class.getName();
+	public static final String TEST_TYPE_MAPPING_PROVIDER_CLASS = TestTypeMappingProvider.class.getName();
+	public static final String TEST_ATTRIBUTE_MAPPING_PROVIDER_CLASS = TestAttributeMappingProvider.class.getName();
 	
 	public JpaPlatformTests(String name) {
 		super(name);
