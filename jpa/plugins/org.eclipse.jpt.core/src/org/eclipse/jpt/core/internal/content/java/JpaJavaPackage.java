@@ -52,7 +52,7 @@ public class JpaJavaPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final String eNS_URI = "http://org.eclipse.jpt.core/old_java.ecore";
+	public static final String eNS_URI = "jpt.java.xmi";
 
 	/**
 	 * The package namespace name.

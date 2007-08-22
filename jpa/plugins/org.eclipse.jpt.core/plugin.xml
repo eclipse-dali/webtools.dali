@@ -184,9 +184,9 @@
  <extension
        point="org.eclipse.emf.ecore.generated_package">
     <package
-          class="org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage"
+          class="org.eclipse.jpt.core.internal.content.java.JpaJavaPackage"
           genModel="model/old_coreModels.genmodel"
-          uri="http://org.eclipse.jpt.core/old_java.ecore">
+          uri="jpt.java.xmi">
     </package>
  </extension>
 	
