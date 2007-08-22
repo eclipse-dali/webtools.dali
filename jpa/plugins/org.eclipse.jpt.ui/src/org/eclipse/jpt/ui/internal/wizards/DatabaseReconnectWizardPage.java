@@ -307,6 +307,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 			ConnectionProfile addedProfile = ConnectionProfileRepository.instance().profileNamed( addedProfileName);
 		
 			if( !addedProfile.isNull()) {
+				addedProfile.connect();
 				this.populateConnectionCombo();
 				this.connectionCombo.select( connectionCombo.indexOf( addedProfile.getName()));
 				this.handleConnectionChange();
