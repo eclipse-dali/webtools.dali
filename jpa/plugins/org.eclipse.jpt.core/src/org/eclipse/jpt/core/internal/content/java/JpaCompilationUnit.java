@@ -381,6 +381,10 @@ public class JpaCompilationUnit extends JavaEObject
 		// synchronize if the change is for this compilation unit
 		if (delta.getElement().equals(this.compilationUnit)) {
 			this.synchronizePersistentTypes();
+			//Do a resynch of our model here instead of when we receive an 
+			//emf change notification event.  We had problems with the java 
+			//model being in a bad state while doing our resynch.
+			getJpaProject().resynch();
 		}
 	}
 

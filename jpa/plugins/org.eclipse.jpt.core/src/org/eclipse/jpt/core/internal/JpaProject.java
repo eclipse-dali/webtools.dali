@@ -686,7 +686,6 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			for (Iterator<IJpaFile> stream = jpaFiles(); stream.hasNext();) {
 				((JpaFile) stream.next()).handleEvent(event);
 			}
-			resynch();
 		}
 	}
 

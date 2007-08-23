@@ -151,6 +151,9 @@ public class XmlEntityContext extends XmlTypeContext
 	@Override
 	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
 		super.refreshDefaults(parentDefaults, monitor);
+		if (monitor.isCanceled()) {
+			return;
+		}
 		DefaultsContext defaultsContext = wrapDefaultsContext(parentDefaults);
 		refreshDefaultAttributeOverrides();
 		refreshDefaultAssociationOverrides();

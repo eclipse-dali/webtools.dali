@@ -207,7 +207,10 @@ public abstract class XmlTypeContext extends BaseContext
 		if (this.javaTypeContext != null) {
 			this.javaTypeContext.refreshDefaults(parentDefaults, monitor);
 		}
-		refreshPersistentType(parentDefaults);
+		refreshPersistentType(parentDefaults, monitor);
+		if (monitor.isCanceled()) {
+			return;
+		}
 		DefaultsContext wrappedDefaultsContext = wrapDefaultsContext(parentDefaults);
 		refreshTableContext(wrappedDefaultsContext, monitor);
 		this.xmlTypeMapping.refreshDefaults(wrappedDefaultsContext);
@@ -233,7 +236,7 @@ public abstract class XmlTypeContext extends BaseContext
 		}
 	}
 	
-	protected void refreshPersistentType(DefaultsContext defaultsContext) {
+	protected void refreshPersistentType(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		XmlPersistentType xmlPersistentType = this.getXmlTypeMapping().getPersistentType();
 		xmlPersistentType.refreshDefaults(defaultsContext);
 		//get the java attribute names
@@ -244,6 +247,9 @@ public abstract class XmlTypeContext extends BaseContext
 		Collection<IPersistentAttribute> javaAttributes = javaAttributes();
 		Collection<String> javaAttributeNames = new ArrayList<String>();
 		for (IPersistentAttribute javaAttribute : javaAttributes) {
+			if (monitor.isCanceled()) {
+				return;
+			}
 			String javaAttributeName = javaAttribute.getName();
 			javaAttributeNames.add(javaAttributeName);
 			XmlPersistentAttribute xmlAttribute = xmlPersistentType.attributeNamed(javaAttributeName);
@@ -264,6 +270,9 @@ public abstract class XmlTypeContext extends BaseContext
 		
 		Collection<String> specifiedXmlAttributeNames = new ArrayList<String>();
 		for (XmlPersistentAttribute specifiedAttribute : xmlPersistentType.getSpecifiedPersistentAttributes()) {
+			if (monitor.isCanceled()) {
+				return;
+			}
 			String attributeName = specifiedAttribute.getName();
 			if (! StringTools.stringIsEmpty(attributeName)) {
 				specifiedXmlAttributeNames.add(attributeName);
@@ -274,6 +283,9 @@ public abstract class XmlTypeContext extends BaseContext
 		// *or* if it is mapped specifically
 		Collection<XmlAttributeMapping> mappingsToRemove = new ArrayList<XmlAttributeMapping>();
 		for (XmlAttributeMapping mapping : xmlPersistentType.getVirtualAttributeMappings()) {
+			if (monitor.isCanceled()) {
+				return;
+			}
 			String attributeName = mapping.getPersistentAttribute().getName();
 			if (! javaAttributeNames.contains(attributeName)
 					|| specifiedXmlAttributeNames.contains(attributeName)) {
