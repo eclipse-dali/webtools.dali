@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
+import java.util.Set;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -170,6 +171,14 @@ public class XmlColumn extends AbstractXmlColumn implements IColumn
 
 	protected XmlColumn(IColumn.Owner owner) {
 		super(owner);
+	}
+
+	@Override
+	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
+		super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
+		insignificantXmlFeatureIds.add(JpaCoreMappingsPackage.ICOLUMN__LENGTH);
+		insignificantXmlFeatureIds.add(JpaCoreMappingsPackage.ICOLUMN__SCALE);
+		insignificantXmlFeatureIds.add(JpaCoreMappingsPackage.ICOLUMN__PRECISION);
 	}
 
 	/**
