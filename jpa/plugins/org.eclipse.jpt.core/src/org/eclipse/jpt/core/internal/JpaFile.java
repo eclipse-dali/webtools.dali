@@ -202,6 +202,7 @@ public class JpaFile extends JpaEObject implements IJpaFile
 	 */
 	void dispose() {
 		getContent().dispose();
+		((JpaProject) getJpaProject()).getFiles().remove(this);
 	}
 
 	/**
