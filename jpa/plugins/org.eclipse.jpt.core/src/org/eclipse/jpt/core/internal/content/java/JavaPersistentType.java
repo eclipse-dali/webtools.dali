@@ -827,15 +827,6 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		return this.parentPersistentType;
 	}
 
-	private String superclassTypeSignature() {
-		try {
-			return this.jdtType().getSuperclassTypeSignature();
-		}
-		catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
-		}
-	}
-
 	/**
 	 * Return the AccessType currently implied by the Java source code:
 	 *     - if only Fields are annotated => FIELD
