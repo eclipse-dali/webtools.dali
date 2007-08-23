@@ -606,7 +606,7 @@ public abstract class JavaRelationshipMapping extends JavaAttributeMapping
 	//	// TODO Embeddable???
 	public static String buildReferenceEntityTypeName(ITypeBinding typeBinding) {
 		if (!typeBinding.isArray()) { // arrays cannot be entities
-			return typeBinding.getQualifiedName();
+			return typeBinding.getTypeDeclaration().getQualifiedName();
 		}
 		return null;
 	}
