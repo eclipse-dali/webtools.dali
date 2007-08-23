@@ -180,10 +180,14 @@ public abstract class XmlTypeContext extends BaseContext
 			public Object getDefault(String key) {
 				return XmlTypeContext.this.getDefault(key, getWrappedDefaultsContext());
 			}
+		};
+	}
+	
+	public DefaultsContext wrapDefaultsContextAstRoot(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			@Override
 			public CompilationUnit astRoot() {
-				//TODO need to somehow not build this astRoot every time.  can we store the JavaPersistentType we are finding?
-				return javaPersistentType().getType().astRoot();
+				return javaTypeContext == null ? null : javaTypeContext.getAstRoot();
 			}
 		};
 	}
@@ -207,11 +211,12 @@ public abstract class XmlTypeContext extends BaseContext
 		if (this.javaTypeContext != null) {
 			this.javaTypeContext.refreshDefaults(parentDefaults, monitor);
 		}
-		refreshPersistentType(parentDefaults, monitor);
+		DefaultsContext wrappedDefaultsContext = wrapDefaultsContextAstRoot(parentDefaults);
+		refreshPersistentType(wrappedDefaultsContext, monitor);
 		if (monitor.isCanceled()) {
 			return;
 		}
-		DefaultsContext wrappedDefaultsContext = wrapDefaultsContext(parentDefaults);
+		wrappedDefaultsContext = wrapDefaultsContext(wrappedDefaultsContext);
 		refreshTableContext(wrappedDefaultsContext, monitor);
 		this.xmlTypeMapping.refreshDefaults(wrappedDefaultsContext);
 		
