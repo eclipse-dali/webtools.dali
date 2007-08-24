@@ -604,7 +604,6 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		if (disposing) return;
 		
 		disposing = true;
-		this.resynchJob.cancel();
 				
 		Job job = new Job("Disposing JPA project ...") {
 			@Override
