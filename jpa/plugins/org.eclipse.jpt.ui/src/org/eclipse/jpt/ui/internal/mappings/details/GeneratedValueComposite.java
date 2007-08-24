@@ -163,8 +163,8 @@ public class GeneratedValueComposite extends BaseJpaComposite
 	}
 
 	private void createGeneratedValue() {
-		IGeneratedValue generatedValue = this.id.createGeneratedValue();
-		this.id.setGeneratedValue(generatedValue);
+		this.generatedValue = this.id.createGeneratedValue();
+		this.id.setGeneratedValue(this.generatedValue);
 	}
 	
 
@@ -203,7 +203,7 @@ public class GeneratedValueComposite extends BaseJpaComposite
 			this.generatedValue = this.id.getGeneratedValue();
 		}
 		if (this.generatedValue == null) {
-			this.strategyComboViewer.getCombo().deselectAll();
+			this.strategyComboViewer.getCombo().setText("");
 			this.generatorNameCombo.setText("");
 			this.populating = false;
 			return;
