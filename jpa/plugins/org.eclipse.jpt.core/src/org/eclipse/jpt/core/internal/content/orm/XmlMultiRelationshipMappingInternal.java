@@ -16,6 +16,7 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.ITypeMapping;
@@ -31,6 +32,7 @@ import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.wst.common.internal.emf.resource.EMF2DOMAdapter;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
@@ -475,6 +477,11 @@ public abstract class XmlMultiRelationshipMappingInternal
 		setJoinTableForXmlGen(newJoinTableForXml);
 		if (newJoinTableForXml == null) {
 			getJoinTableInternal().unsetAllAttributes();
+			//Bug 191067 more translators hackery.  Remove their listener since it is not getting removed by them.
+			//this will allow us to later add this tag back in to the xml.  When we switch to the 
+			//resource model approach in 2.0, we shouldn't need the *forXml objects.
+			Adapter adapter = EcoreUtil.getExistingAdapter(getJoinTableInternal(), EMF2DOMAdapter.ADAPTER_CLASS);
+			getJoinTableInternal().eAdapters().remove(adapter);
 		}
 	}
 

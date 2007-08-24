@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
@@ -52,6 +53,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.wst.common.internal.emf.resource.EMF2DOMAdapter;
 
 /**
  * <!-- begin-user-doc -->
@@ -1247,6 +1249,11 @@ public class XmlEntityInternal extends XmlTypeMapping
 		setDiscriminatorColumnForXmlGen(newDiscriminatorColumnForXml);
 		if (newDiscriminatorColumnForXml == null) {
 			getDiscriminatorColumnInternal().unsetAllAttributes();
+			//Bug 191067 more translators hackery.  Remove their listener since it is not getting removed by them.
+			//this will allow us to later add this tag back in to the xml.  When we switch to the 
+			//resource model approach in 2.0, we shouldn't need the *forXml objects.
+			Adapter adapter = EcoreUtil.getExistingAdapter(getDiscriminatorColumnInternal(), EMF2DOMAdapter.ADAPTER_CLASS);
+			getDiscriminatorColumnInternal().eAdapters().remove(adapter);
 		}
 	}
 

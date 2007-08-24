@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -21,6 +22,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IType;
@@ -32,6 +34,7 @@ import org.eclipse.jpt.core.internal.XmlEObject;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.wst.common.internal.emf.resource.EMF2DOMAdapter;
 
 /**
  * <!-- begin-user-doc -->
@@ -471,6 +474,11 @@ public class EntityMappingsInternal extends XmlEObject
 		setPersistenceUnitMetadataForXmlGen(newPersistenceUnitMetadataForXml);
 		if (newPersistenceUnitMetadataForXml == null) {
 			getPersistenceUnitMetadataInternal().unsetAllAttributes();
+			//Bug 191067 more translators hackery.  Remove their listener since it is not getting removed by them.
+			//this will allow us to later add this tag back in to the xml.  When we switch to the 
+			//resource model approach in 2.0, we shouldn't need the *forXml objects.
+			Adapter adapter = EcoreUtil.getExistingAdapter(getPersistenceUnitMetadataInternal(), EMF2DOMAdapter.ADAPTER_CLASS);
+			getPersistenceUnitMetadataInternal().eAdapters().remove(adapter);
 		}
 	}
 

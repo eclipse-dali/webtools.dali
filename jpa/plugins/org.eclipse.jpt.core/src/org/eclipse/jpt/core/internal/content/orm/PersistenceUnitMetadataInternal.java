@@ -9,12 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jpt.core.internal.XmlEObject;
+import org.eclipse.wst.common.internal.emf.resource.EMF2DOMAdapter;
 
 /**
  * <!-- begin-user-doc -->
@@ -184,6 +187,11 @@ public class PersistenceUnitMetadataInternal extends XmlEObject
 		setPersistenceUnitDefaultsForXmlGen(newPersistenceUnitDefaultsForXml);
 		if (newPersistenceUnitDefaultsForXml == null) {
 			getPersistenceUnitDefaultsInternal().unsetAllAttributes();
+			//Bug 191067 more translators hackery.  Remove their listener since it is not getting removed by them.
+			//this will allow us to later add this tag back in to the xml.  When we switch to the 
+			//resource model approach in 2.0, we shouldn't need the *forXml objects.
+			Adapter adapter = EcoreUtil.getExistingAdapter(getPersistenceUnitDefaultsInternal(), EMF2DOMAdapter.ADAPTER_CLASS);
+			getPersistenceUnitDefaultsInternal().eAdapters().remove(adapter);
 		}
 	}
 

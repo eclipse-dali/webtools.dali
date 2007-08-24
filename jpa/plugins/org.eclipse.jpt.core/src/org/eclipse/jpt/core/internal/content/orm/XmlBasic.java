@@ -9,11 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.mappings.DefaultEagerFetchType;
 import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
@@ -23,6 +25,7 @@ import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.IColumnMapping;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.mappings.TemporalType;
+import org.eclipse.wst.common.internal.emf.resource.EMF2DOMAdapter;
 
 /**
  * <!-- begin-user-doc -->
@@ -420,6 +423,11 @@ public class XmlBasic extends XmlAttributeMapping
 		setColumnForXmlGen(newColumnForXml);
 		if (newColumnForXml == null) {
 			((XmlColumn) getColumn()).unsetAllAttributes();
+			//Bug 191067 more translators hackery.  Remove their listener since it is not getting removed by them.
+			//this will allow us to later add this tag back in to the xml.  When we switch to the 
+			//resource model approach in 2.0, we shouldn't need the *forXml objects.
+			Adapter adapter = EcoreUtil.getExistingAdapter(getColumn(), EMF2DOMAdapter.ADAPTER_CLASS);
+			getColumn().eAdapters().remove(adapter);
 		}
 	}
 
