@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
@@ -95,13 +96,17 @@ public class MappingFileContext extends BaseContext
 		ormRoot.getEntityMappings().refreshDefaults(parentDefaults);
 		DefaultsContext wrappedDefaultsContext = wrapDefaultsContext(parentDefaults);
 		for (XmlTypeContext context : this.xmlTypeContexts) {
-			if (monitor.isCanceled()) {
-				return;
-			}
+			checkCanceled(monitor);
 			if (!context.isRefreshed()) {
 				context.refreshDefaults(wrappedDefaultsContext, monitor);
 			}
 		}
+	}
+	
+	private void checkCanceled(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}		
 	}
 	
 	private DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {

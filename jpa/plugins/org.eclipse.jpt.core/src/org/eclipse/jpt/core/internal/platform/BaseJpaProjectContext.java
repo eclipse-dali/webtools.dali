@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaFile;
@@ -147,13 +148,17 @@ public class BaseJpaProjectContext extends BaseContext
 		super.refreshDefaults(parentDefaults, monitor);
 		DefaultsContext defaultsContext = buildDefaultsContext();
 		for (PersistenceUnitContext context : this.persistenceUnitContexts) {
-			if (monitor.isCanceled()) {
-				return;
-			}
+			checkCanceled(monitor);
 			context.refreshDefaults(defaultsContext, monitor);
 		}
 	}
 	
+	private void checkCanceled(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}		
+	}
+
 	private DefaultsContext buildDefaultsContext() {
 		return new DefaultsContext(){
 			public Object getDefault(String key) {
