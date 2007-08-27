@@ -165,7 +165,7 @@ public class BaseJpaProjectContext extends BaseContext
 			public Object getDefault(String key) {
 				if (key.equals(BaseJpaPlatform.DEFAULT_TABLE_SCHEMA_KEY) 
 					|| key.equals(BaseJpaPlatform.DEFAULT_TABLE_GENERATOR_SCHEMA_KEY)) {
-					return getProjectUserSchema();
+					return getDefaultSchema();
 				}
 				else if (key.equals(BaseJpaPlatform.DEFAULT_TABLE_CATALOG_KEY)) {
 					return getProjectUserCatalog();
@@ -185,10 +185,9 @@ public class BaseJpaProjectContext extends BaseContext
 		return this.jpaProject.connectionProfile();
 	}
 	
-	//TODO is the userName what we want to use, or do we need a preference for the user?
-	private String getProjectUserSchema() {
+	private String getDefaultSchema() {
 		ConnectionProfile profile = this.getProjectConnectionProfile();
-		return  profile.getUserName();
+		return  profile.getDefaultSchema();
 	}
 
 	private String getProjectUserCatalog() {
