@@ -91,14 +91,9 @@ public class JpaPlatformTests extends TestCase
 	public void testJavaTypeMappingProvider() {
 		IJavaTypeMappingProvider provider = jpaProject().getPlatform().javaTypeMappingProvider(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		assertTrue(provider instanceof JavaEntityProvider);
-		boolean exceptionCaught = false;
-		try {
-			provider = jpaProject().getPlatform().javaTypeMappingProvider("test");
-		}
-		catch (IllegalArgumentException e) {
-			exceptionCaught = true;
-		}
-		assertTrue(exceptionCaught);
+		
+		provider = jpaProject().getPlatform().javaTypeMappingProvider("test");
+		assertNull(provider);
 		
 		jpaProject().setPlatform(TEST_PLATFORM_ID);
 		
