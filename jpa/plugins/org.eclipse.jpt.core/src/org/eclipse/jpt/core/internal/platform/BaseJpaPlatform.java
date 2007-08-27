@@ -210,7 +210,6 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 * Entity, MappedSuperclass, and Embeddable
 	 */
 	protected void addJavaTypeMappingProvidersTo(Collection<IJavaTypeMappingProvider> providers) {
-		providers.add(JavaNullTypeMappingProvider.instance());
 		providers.add(JavaEntityProvider.instance());
 		providers.add(JavaMappedSuperclassProvider.instance());
 		providers.add(JavaEmbeddableProvider.instance());
@@ -223,7 +222,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 				return provider;
 			}
 		}
-		throw new IllegalArgumentException("Unsupported java type mapping key: " + typeMappingKey);
+		return null;
 	}
 	
 	public Iterator<IJavaAttributeMappingProvider> javaAttributeMappingProviders() {

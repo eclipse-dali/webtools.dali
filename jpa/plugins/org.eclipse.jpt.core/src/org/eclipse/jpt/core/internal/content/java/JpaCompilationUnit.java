@@ -36,7 +36,9 @@ import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.JpaFile;
 import org.eclipse.jpt.core.internal.jdtutility.AttributeAnnotationTools;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
+import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.BitTools;
+import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
@@ -320,18 +322,22 @@ public class JpaCompilationUnit extends JavaEObject
 		this.synchronizePersistentTypes();
 	}
 
-	public JavaPersistentType addJavaPersistentType(IType primaryType, CompilationUnit astRoot) {
-		return this.addJavaPersistentType(this.createJavaPersistentType(), primaryType, astRoot);
+	public JavaPersistentType addJavaPersistentType(IType primaryType) {
+		JavaPersistentType persistentType = createJavaPersistentType(primaryType);
+		getTypes().add(persistentType);
+		return persistentType;
 	}
 
-	public JavaPersistentType createJavaPersistentType() {
-		return JpaJavaFactory.eINSTANCE.createJavaPersistentType();
+	public JavaPersistentType createJavaPersistentType(IType primaryType) {
+		Type type = new Type(primaryType, this.modifySharedDocumentCommandExecutorProvider());
+		return JpaJavaFactory.eINSTANCE.createJavaPersistentType(type);
 	}
-
-	private JavaPersistentType addJavaPersistentType(JavaPersistentType javaPersistentType, IType primaryType, CompilationUnit astRoot) {
-		this.getTypes().add(javaPersistentType);
-		javaPersistentType.setJdtType(primaryType, astRoot);
-		return javaPersistentType;
+	
+	/**
+	 * delegate to the type's project (there is one provider per project)
+	 */
+	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
+		return this.getJpaProject().modifySharedDocumentCommandExecutorProvider();
 	}
 
 	public IJpaContentNode getContentNode(int offset) {
@@ -394,7 +400,7 @@ public class JpaCompilationUnit extends JavaEObject
 			JavaPersistentType persistentType = this.persistentTypeFor(iType);
 			if (persistentType == null) {
 				if (AttributeAnnotationTools.typeIsPersistable(iType)) {
-					persistentType = this.addJavaPersistentType(iType, astRoot);
+					persistentType = this.addJavaPersistentType(iType);
 				}
 			}
 			if (persistentType != null) {

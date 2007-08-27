@@ -25,7 +25,6 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.AccessType;
@@ -47,6 +46,8 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaJoinTable;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToOne;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaMultiRelationshipMapping;
+import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullAttributeMappingProvider;
+import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOne;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaPrimaryKeyJoinColumn;
@@ -171,8 +172,14 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	private IPersistentType parentPersistentType;
 
 	protected JavaPersistentType() {
+		throw new UnsupportedOperationException();
+	}
+
+	protected JavaPersistentType(Type type) {
 		super();
+		this.type = type;
 		this.attributeMappingAnnotationAdapters = this.buildAttributeMappingAnnotationAdapters();
+		this.setMappingGen(this.nullTypeMappingProvider().buildMapping(this.type, null));
 	}
 
 	private DeclarationAnnotationAdapter[] buildAttributeMappingAnnotationAdapters() {
@@ -352,7 +359,19 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	private IJavaTypeMappingProvider typeMappingProvider(String typeMappingKey) {
-		return jpaPlatform().javaTypeMappingProvider(typeMappingKey);
+		IJavaTypeMappingProvider javaTypeMappingProvider = jpaPlatform().javaTypeMappingProvider(typeMappingKey);
+		if (javaTypeMappingProvider == null) {
+			javaTypeMappingProvider = nullTypeMappingProvider();
+		}
+		return javaTypeMappingProvider;
+	}
+	
+	/**
+	 * the "null" type mapping is used when the types is not modified
+	 * by a mapping annotation
+	 */
+	protected IJavaTypeMappingProvider nullTypeMappingProvider() {
+		return JavaNullTypeMappingProvider.instance();
 	}
 
 	/**
@@ -578,12 +597,6 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	 */
 	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
 		return this.getJpaProject().modifySharedDocumentCommandExecutorProvider();
-	}
-
-	public void setJdtType(IType iType, CompilationUnit astRoot) {
-		this.type = new Type(iType, this.modifySharedDocumentCommandExecutorProvider());
-		this.setAccess(this.javaAccessType(astRoot));
-		this.createAndSetPersistentTypeMappingFromJava(this.javaTypeMappingKey(astRoot));
 	}
 
 	public JavaPersistentAttribute addJavaPersistentAttribute(IMember jdtMember) {
