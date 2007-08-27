@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
@@ -63,11 +64,15 @@ public abstract class JavaTypeContext extends BaseContext
 		DefaultsContext wrappedDefaultsContext = wrapDefaultsContext(defaultsContext);
 		this.getPersistentType().refreshDefaults(wrappedDefaultsContext);
 		for (JavaPersistentAttributeContext context : this.javaPersistentAttributeContexts) {
-			if (monitor.isCanceled()) {
-				return;
-			}
+			checkCanceled(monitor);
 			context.refreshDefaults(wrappedDefaultsContext, monitor);
 		}
+	}
+	
+	private void checkCanceled(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}		
 	}
 	
 	private DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {

@@ -24,6 +24,7 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
@@ -207,16 +208,15 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		try {
 			getPlatform().resynch(contextHierarchy, monitor);
 		}
-		catch (Throwable e) {//TODO should I cancel the thread if this happens?
-			
+		catch (OperationCanceledException e) {
+			return Status.CANCEL_STATUS;
+		}
+		catch (Throwable e) {
 			//exceptions can occur when this thread is running and changes are
 			//made to the java source.  our model is not yet updated to the changed java source.
 			//log these exceptions and assume they won't happen when the resynch runs again
 			//as a result of the java source changes.
 			JptCorePlugin.log(e);
-		}
-		if (monitor.isCanceled()) {
-			return Status.CANCEL_STATUS;
 		}
 		return Status.OK_STATUS;
 	}

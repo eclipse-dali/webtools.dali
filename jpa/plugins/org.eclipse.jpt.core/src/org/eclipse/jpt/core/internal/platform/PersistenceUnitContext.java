@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.AccessType;
@@ -285,29 +286,29 @@ public class PersistenceUnitContext extends BaseContext
 	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
 		super.refreshDefaults(parentDefaults, monitor);
 		for (JavaTypeContext context : this.duplicateJavaPersistentTypes) {
-			if (monitor.isCanceled()) {
-				return;
-			}
+			checkCanceled(monitor);
 			// context for duplicates not be based on the persistenceUnit defaults,
 			// so we're going to use the one passed here without wrapping it
 			context.refreshDefaults(parentDefaults, monitor);
 		}
 		DefaultsContext defaults = wrapDefaultsContext(parentDefaults, monitor);
 		for (MappingFileContext context : this.mappingFileContexts) {
-			if (monitor.isCanceled()) {
-				return;
-			}
+			checkCanceled(monitor);
 			context.refreshDefaults(defaults, monitor);
 		}
 		for (JavaTypeContext context : this.javaPersistentTypeContexts) {
-			if (monitor.isCanceled()) {
-				return;
-			}
+			checkCanceled(monitor);
 			context.refreshDefaults(defaults, monitor);
 		}
 		
 		//TODO somehow need to clear out defaults for the duplicateJpaFiles, 
 		//do i have to build JavaTypeContext for those as well?
+	}
+	
+	private void checkCanceled(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}		
 	}
 
 	protected DefaultsContext wrapDefaultsContext(DefaultsContext defaults, final IProgressMonitor monitor) {

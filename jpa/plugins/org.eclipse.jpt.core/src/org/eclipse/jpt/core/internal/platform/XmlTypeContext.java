@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
@@ -201,6 +202,12 @@ public abstract class XmlTypeContext extends BaseContext
 		return this.refreshed;
 	}
 
+	private void checkCanceled(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}		
+	}
+
 	@Override
 	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
 		super.refreshDefaults(parentDefaults, monitor);
@@ -208,7 +215,7 @@ public abstract class XmlTypeContext extends BaseContext
 		if (this.javaTypeContext != null) {
 			this.javaTypeContext.refreshDefaults(parentDefaults, monitor);
 		}
-		refreshPersistentType(parentDefaults);
+		refreshPersistentType(parentDefaults, monitor);
 		DefaultsContext wrappedDefaultsContext = wrapDefaultsContext(parentDefaults);
 		refreshTableContext(wrappedDefaultsContext, monitor);
 		this.xmlTypeMapping.refreshDefaults(wrappedDefaultsContext);
@@ -221,20 +228,16 @@ public abstract class XmlTypeContext extends BaseContext
 	
 	public void refreshAttributeMappingContextDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		for (XmlAttributeContext context : this.attributeMappingContexts) {
-			if (monitor.isCanceled()) {
-				return;
-			}
+			checkCanceled(monitor);
 			context.refreshDefaults(context.wrapDefaultsContext(defaultsContext), monitor);
 		}
 		for (XmlAttributeContext context : this.virtualAttributeMappingContexts) {
-			if (monitor.isCanceled()) {
-				return;
-			}
+			checkCanceled(monitor);
 			context.refreshDefaults(context.wrapDefaultsContext(defaultsContext), monitor);
 		}
 	}
 	
-	protected void refreshPersistentType(DefaultsContext defaultsContext) {
+	protected void refreshPersistentType(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		XmlPersistentType xmlPersistentType = this.getXmlTypeMapping().getPersistentType();
 		xmlPersistentType.refreshDefaults(defaultsContext);
 		//get the java attribute names
@@ -245,6 +248,7 @@ public abstract class XmlTypeContext extends BaseContext
 		Collection<IPersistentAttribute> javaAttributes = javaAttributes();
 		Collection<String> javaAttributeNames = new ArrayList<String>();
 		for (IPersistentAttribute javaAttribute : javaAttributes) {
+			checkCanceled(monitor);
 			String javaAttributeName = javaAttribute.getName();
 			javaAttributeNames.add(javaAttributeName);
 			XmlPersistentAttribute xmlAttribute = xmlPersistentType.attributeNamed(javaAttributeName);
@@ -265,6 +269,7 @@ public abstract class XmlTypeContext extends BaseContext
 		
 		Collection<String> specifiedXmlAttributeNames = new ArrayList<String>();
 		for (XmlPersistentAttribute specifiedAttribute : xmlPersistentType.getSpecifiedPersistentAttributes()) {
+			checkCanceled(monitor);
 			String attributeName = specifiedAttribute.getName();
 			if (! StringTools.stringIsEmpty(attributeName)) {
 				specifiedXmlAttributeNames.add(attributeName);
@@ -275,6 +280,7 @@ public abstract class XmlTypeContext extends BaseContext
 		// *or* if it is mapped specifically
 		Collection<XmlAttributeMapping> mappingsToRemove = new ArrayList<XmlAttributeMapping>();
 		for (XmlAttributeMapping mapping : xmlPersistentType.getVirtualAttributeMappings()) {
+			checkCanceled(monitor);
 			String attributeName = mapping.getPersistentAttribute().getName();
 			if (! javaAttributeNames.contains(attributeName)
 					|| specifiedXmlAttributeNames.contains(attributeName)) {
