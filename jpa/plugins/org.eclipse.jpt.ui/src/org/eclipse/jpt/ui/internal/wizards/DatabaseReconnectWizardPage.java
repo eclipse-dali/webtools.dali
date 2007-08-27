@@ -112,7 +112,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 	}
 
 	public Collection<Table> getTables() {
-		Schema schema = this.getProjectUserSchema();
+		Schema schema = this.getDefaultSchema();
 		if ( schema != null && schema.getName() != null) {
 			return CollectionTools.collection( schema.tables());
 		}
@@ -143,10 +143,10 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		String profileName = this.jpaProject.getDataSource().getConnectionProfileName();
 		return JptDbPlugin.getDefault().getConnectionProfileRepository().profileNamed( profileName);
 	}
-	
-	Schema getProjectUserSchema() {
-		ConnectionProfile profile = this.getProjectConnectionProfile();
-		return profile.getDatabase().schemaNamed( profile.getUserName());
+
+	Schema getDefaultSchema() {
+		ConnectionProfile profile = getProjectConnectionProfile();
+		return profile.getDatabase().schemaNamed( profile.getDefaultSchema());
 	}
 
 	// ********** member classes **********
@@ -230,10 +230,10 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		private String getProjectConnectionProfileName() {
 			return jpaProject.getDataSource().getConnectionProfileName();
 		}
-		
-		Schema getProjectUserSchema() {
+
+		Schema getDefaultSchema() {
 			ConnectionProfile profile = getProjectConnectionProfile();
-			return profile.getDatabase().schemaNamed( profile.getUserName());
+			return profile.getDatabase().schemaNamed( profile.getDefaultSchema());
 		}
 
 		private void openConnectionProfileNamed( String connectionProfileName) {
@@ -285,7 +285,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 				this.schemaCombo.add( ( String) stream.next());
 			}
 			// set login user name as default schema
-			Schema schema = this.getProjectUserSchema();
+			Schema schema = this.getDefaultSchema();
 			if ( schema != null && schema.getName() != null) {
 				schema =  connectionProfile.getDatabase().schemaNamed( schema.getName()); // verify schema exist
 				if ( schema != null) {
