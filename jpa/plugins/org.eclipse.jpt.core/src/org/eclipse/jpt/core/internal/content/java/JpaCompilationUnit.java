@@ -328,8 +328,8 @@ public class JpaCompilationUnit extends JavaEObject
 	}
 
 	private JavaPersistentType addJavaPersistentType(JavaPersistentType javaPersistentType, IType primaryType, CompilationUnit astRoot) {
-		this.getTypes().add(javaPersistentType);
 		javaPersistentType.setJdtType(primaryType, astRoot);
+		this.getTypes().add(javaPersistentType);
 		return javaPersistentType;
 	}
 
