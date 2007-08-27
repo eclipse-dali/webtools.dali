@@ -855,7 +855,9 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 			this.parentPersistentType = null;
 			return;
 		}
-		ITypeBinding typeBinding = javaPersistentType.getType().typeBinding(context.astRoot());
+		//TODO need to fix the performance issue that results here
+		//setting this back for now because of bug 200957 in the M1 release
+		ITypeBinding typeBinding = javaPersistentType.getType().typeBinding(javaPersistentType.getType().astRoot());
 		IPersistentType parentPersistentType = JavaPersistentType.parentPersistentType(context, typeBinding);
 		this.parentPersistentType = parentPersistentType;
 		return;
