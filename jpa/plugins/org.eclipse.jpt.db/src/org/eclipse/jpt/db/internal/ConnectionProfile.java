@@ -114,6 +114,8 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	
 	public abstract String getUserPassword();
 	
+	public abstract String getDefaultSchema();
+	
 	public abstract String getInstanceId();
 
 	public abstract String getProviderId();

@@ -128,6 +128,11 @@ public final class NullConnectionProfile extends ConnectionProfile {
 	}
 
 	@Override
+	public String getDefaultSchema() {
+		return "";
+	}
+	
+	@Override
 	public String getDriverClass() {
 		return "";
 	}
