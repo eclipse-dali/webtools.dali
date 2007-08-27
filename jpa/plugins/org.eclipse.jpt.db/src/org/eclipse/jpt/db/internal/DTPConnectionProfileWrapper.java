@@ -44,6 +44,10 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 	 */
 	public static final String DRIVER_JAR_LIST_PROP_ID = "jarList"; //$NON-NLS-1$
 
+	public static final String POSTGRESQL_VENDOR = "postgres"; //$NON-NLS-1$
+
+	public static final String PUBLIC_SCHEMA = "public"; //$NON-NLS-1$
+
 	// ********** constructors **********
 
 	DTPConnectionProfileWrapper( ConnectionProfileRepository profileRepository, org.eclipse.datatools.connectivity.IConnectionProfile dtpConnectionProfile) {
@@ -183,6 +187,14 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 	@Override
 	public String getUserPassword() {
 		return this.getProperties().getProperty( IDBDriverDefinitionConstants.PASSWORD_PROP_ID);
+	}
+
+	@Override
+	public String getDefaultSchema() {
+		if( this.getDatabase().getVendor().equalsIgnoreCase( POSTGRESQL_VENDOR)) {
+			return PUBLIC_SCHEMA;
+		}
+		return this.getUserName();
 	}
 
 	@Override
