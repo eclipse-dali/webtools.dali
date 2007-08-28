@@ -22,7 +22,7 @@ package org.eclipse.jpt.utility.internal;
  */
 
 public interface Bag<E> extends java.util.Collection<E> {
-	
+
 	/**
 	 * Compares the specified object with this bag for equality. Returns
 	 * <code>true</code> if the specified object is also a bag, the two bags
@@ -34,7 +34,7 @@ public interface Bag<E> extends java.util.Collection<E> {
 	 * bag interface.
 	 */
 	boolean equals(Object o);
-	
+
 	/**
 	 * Returns the hash code value for this bag. The hash code of a bag is
 	 * defined to be the sum of the hash codes of the elements in the bag,
@@ -45,5 +45,28 @@ public interface Bag<E> extends java.util.Collection<E> {
 	 * contract of the <code>Object.hashCode</code> method.
 	 */
 	int hashCode();
-	
+
+	/**
+	 * Return the number of times the specified object occurs in the bag.
+	 */
+	int count(Object o);
+
+	/**
+	 * Add the specified object the specified number of times to the bag.
+	 */
+	boolean add(E o, int count);
+
+	/**
+	 * Remove the specified number of occurrences of the specified object
+	 * from the bag. Return whether the bag changed.
+	 */
+	boolean remove(Object o, int count);
+
+	/**
+	 * Return an iterator that returns each item in the bag
+	 * once and only once, irrespective of how many times
+	 * the item was added to the bag.
+	 */
+	java.util.Iterator<E> uniqueIterator();
+
 }

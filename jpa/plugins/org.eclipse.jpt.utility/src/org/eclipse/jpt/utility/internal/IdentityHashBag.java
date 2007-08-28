@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,22 +12,39 @@ package org.eclipse.jpt.utility.internal;
 import java.io.Serializable;
 import java.util.AbstractCollection;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * This class implements the <code>Bag</code> interface, backed by a
- * hash table. It makes no guarantees as to the iteration order of
+ * This class implements the <code>Bag</code> interface with a
+ * hash table, using object-identity in place of object-equality when
+ * comparing elements. In other words, in an <code>IdentityHashBag</code>,
+ * two objects <code>k1</code> and <code>k2</code> are considered
+ * equal if and only if <code>(k1 == k2)</code>. (In normal <code>Bag</code>
+ * implementations (like <code>HashBag</code>) two objects <code>k1</code>
+ * and <code>k2</code> are considered equal if and only if
+ * <code>(k1 == null ? k2 == null : k1.equals(k2))</code>.)
+ * <p>
+ * <b>
+ * This class is <i>not</i> a general-purpose <code>Bag</code>
+ * implementation! While this class implements the <code>Bag</code> interface, it
+ * intentionally violates <code>Bag's</code> general contract, which mandates the
+ * use of the <code>equals</code> method when comparing objects. This class is
+ * designed for use only in the rare cases wherein object-identity
+ * semantics are required.
+ * </b>
+ * <p>
+ * This class makes no guarantees as to the iteration order of
  * the bag's elements; in particular, it does not guarantee that the order
  * will remain constant over time. This class permits the <code>null</code>
  * element.
  * <p>
  * This class offers constant time performance for the basic operations
  * (<code>add</code>, <code>remove</code>, <code>contains</code> and
- * <code>size</code>), assuming the hash function disperses the elements
- * properly among the buckets. Iterating over this bag requires time
+ * <code>size</code>), assuming the system identity hash function
+ * ({@link System#identityHashCode(Object)}) disperses elements properly
+ * among the buckets. Iterating over this bag requires time
  * proportional to the sum of the bag's size (the number of elements) plus the
  * "capacity" of the backing hash table (the number of buckets). Thus, it is
  * important not to set the initial capacity too high (or the load factor too
@@ -42,7 +59,7 @@ import java.util.NoSuchElementException;
  * best done at creation time, to prevent accidental unsynchronized access
  * to the bag:
  * <pre>
- * Collection c = Collections.synchronizedCollection(new HashBag(...));
+ * Collection c = Collections.synchronizedCollection(new IdentityHashBag(...));
  * </pre>
  * <p>
  * The iterators returned by this class's <code>iterator</code> method are
@@ -56,7 +73,7 @@ import java.util.NoSuchElementException;
  * @see	Collections#synchronizedCollection(Collection)
  */
 
-public class HashBag<E> extends AbstractCollection<E>
+public class IdentityHashBag<E> extends AbstractCollection<E>
 			implements Bag<E>, Cloneable, Serializable {
 
 	/** The hash table. */
@@ -97,7 +114,7 @@ public class HashBag<E> extends AbstractCollection<E>
 	 * Constructs a new, empty bag with the
 	 * default capacity, which is 11, and load factor, which is 0.75.
 	 */
-	public HashBag() {
+	public IdentityHashBag() {
 		this(11, 0.75f);
 	}
 
@@ -109,7 +126,7 @@ public class HashBag<E> extends AbstractCollection<E>
 	 * @throws IllegalArgumentException if the initial capacity is less
 	 *     than zero.
 	 */
-	public HashBag(int initialCapacity) {
+	public IdentityHashBag(int initialCapacity) {
 		this(initialCapacity, 0.75f);
 	}
 
@@ -122,7 +139,7 @@ public class HashBag<E> extends AbstractCollection<E>
 	 * @throws IllegalArgumentException if the initial capacity is less
 	 *     than zero, or if the load factor is nonpositive.
 	 */
-	public HashBag(int initialCapacity, float loadFactor) {
+	public IdentityHashBag(int initialCapacity, float loadFactor) {
 		if (initialCapacity < 0) {
 			throw new IllegalArgumentException("Illegal Initial Capacity: " + initialCapacity);
 		}
@@ -145,7 +162,7 @@ public class HashBag<E> extends AbstractCollection<E>
 	 *
 	 * @param c the collection whose elements are to be placed into this bag.
 	 */
-	public HashBag(Collection<? extends E> c) {
+	public IdentityHashBag(Collection<? extends E> c) {
 		this(Math.max(2*c.size(), 11));
 		this.addAll(c);
 	}
@@ -167,26 +184,18 @@ public class HashBag<E> extends AbstractCollection<E>
 	}
 
 	/**
-	 * This implementation searches for the object in the hash table by calculating
-	 * the object's hash code and examining the entries in the corresponding hash
-	 * table bucket.
+	 * This implementation searches for the object in the hash table by
+	 * calculating the object's identity hash code and examining the
+	 * entries in the corresponding hash table bucket.
 	 */
 	@Override
 	public boolean contains(Object o) {
 		Entry<E>[] tab = this.table;
-		if (o == null) {
-			for (Entry<E> e = tab[0]; e != null; e = e.next) {
-				if (e.object == null) {
-					return true;
-				}
-			}
-		} else {
-			int hash = o.hashCode();
-			int index = (hash & 0x7FFFFFFF) % tab.length;
-			for (Entry<E> e = tab[index]; e != null; e = e.next) {
-				if ((e.hash == hash) && o.equals(e.object)) {
-					return true;
-				}
+		int hash = System.identityHashCode(o);
+		int index = (hash & 0x7FFFFFFF) % tab.length;
+		for (Entry<E> e = tab[index]; e != null; e = e.next) {
+			if ((e.hash == hash) && (e.object == o)) {
+				return true;
 			}
 		}
 		return false;
@@ -194,19 +203,11 @@ public class HashBag<E> extends AbstractCollection<E>
 
 	public int count(Object o) {
 		Entry<E>[] tab = this.table;
-		if (o == null) {
-			for (Entry<E> e = tab[0]; e != null; e = e.next) {
-				if (e.object == null) {
-					return e.count;
-				}
-			}
-		} else {
-			int hash = o.hashCode();
-			int index = (hash & 0x7FFFFFFF) % tab.length;
-			for (Entry<E> e = tab[index]; e != null; e = e.next) {
-				if ((e.hash == hash) && o.equals(e.object)) {
-					return e.count;
-				}
+		int hash = System.identityHashCode(o);
+		int index = (hash & 0x7FFFFFFF) % tab.length;
+		for (Entry<E> e = tab[index]; e != null; e = e.next) {
+			if ((e.hash == hash) && (e.object == o)) {
+				return e.count;
 			}
 		}
 		return 0;
@@ -257,9 +258,9 @@ public class HashBag<E> extends AbstractCollection<E>
 	}
 
 	/**
-	 * This implementation searches for the object in the hash table by calculating
-	 * the object's hash code and examining the entries in the corresponding hash
-	 * table bucket.
+	 * This implementation searches for the object in the hash table by
+	 * calculating the object's identity hash code and examining the
+	 * entries in the corresponding hash table bucket.
 	 */
 	@Override
 	public boolean add(E o) {
@@ -269,23 +270,13 @@ public class HashBag<E> extends AbstractCollection<E>
 		int index = 0;
 
 		// if the object is already in the bag, simply bump its count
-		if (o == null) {
-			for (Entry<E> e = tab[0]; e != null; e = e.next) {
-				if (e.object == null) {
-					e.count++;
-					this.count++;
-					return true;
-				}
-			}
-		} else {
-			hash = o.hashCode();
-			index = (hash & 0x7FFFFFFF) % tab.length;
-			for (Entry<E> e = tab[index]; e != null; e = e.next) {
-				if ((e.hash == hash) && o.equals(e.object)) {
-					e.count++;
-					this.count++;
-					return true;
-				}
+		hash = System.identityHashCode(o);
+		index = (hash & 0x7FFFFFFF) % tab.length;
+		for (Entry<E> e = tab[index]; e != null; e = e.next) {
+			if ((e.hash == hash) && (e.object == o)) {
+				e.count++;
+				this.count++;
+				return true;
 			}
 		}
 
@@ -305,9 +296,9 @@ public class HashBag<E> extends AbstractCollection<E>
 	}
 
 	/**
-	 * This implementation searches for the object in the hash table by calculating
-	 * the object's hash code and examining the entries in the corresponding hash
-	 * table bucket.
+	 * This implementation searches for the object in the hash table by
+	 * calculating the object's identity hash code and examining the
+	 * entries in the corresponding hash table bucket.
 	 */
 	public boolean add(E o, int cnt) {
 		if (cnt <= 0) {
@@ -319,23 +310,13 @@ public class HashBag<E> extends AbstractCollection<E>
 		int index = 0;
 
 		// if the object is already in the bag, simply bump its count
-		if (o == null) {
-			for (Entry<E> e = tab[0]; e != null; e = e.next) {
-				if (e.object == null) {
-					e.count += cnt;
-					this.count += cnt;
-					return true;
-				}
-			}
-		} else {
-			hash = o.hashCode();
-			index = (hash & 0x7FFFFFFF) % tab.length;
-			for (Entry<E> e = tab[index]; e != null; e = e.next) {
-				if ((e.hash == hash) && o.equals(e.object)) {
-					e.count += cnt;
-					this.count += cnt;
-					return true;
-				}
+		hash = System.identityHashCode(o);
+		index = (hash & 0x7FFFFFFF) % tab.length;
+		for (Entry<E> e = tab[index]; e != null; e = e.next) {
+			if ((e.hash == hash) && (e.object == o)) {
+				e.count += cnt;
+				this.count += cnt;
+				return true;
 			}
 		}
 
@@ -355,109 +336,89 @@ public class HashBag<E> extends AbstractCollection<E>
 	}
 
 	/**
-	 * This implementation searches for the object in the hash table by calculating
-	 * the object's hash code and examining the entries in the corresponding hash
-	 * table bucket.
+	 * This implementation searches for the object in the hash table by
+	 * calculating the object's identity hash code and examining the
+	 * entries in the corresponding hash table bucket.
 	 */
 	@Override
 	public boolean remove(Object o) {
 		Entry<E>[] tab = this.table;
-		if (o == null) {
-			for (Entry<E> e = tab[0], prev = null; e != null; prev = e, e = e.next) {
-				if (e.object == null) {
-					this.modCount++;
-					e.count--;
-					// if we are removing the last one, remove the entry from the table
-					if (e.count == 0) {
-						if (prev == null) {
-							tab[0] = e.next;
-						} else {
-							prev.next = e.next;
-						}
-						this.uniqueCount--;
+		int hash = System.identityHashCode(o);
+		int index = (hash & 0x7FFFFFFF) % tab.length;
+		for (Entry<E> e = tab[index], prev = null; e != null; prev = e, e = e.next) {
+			if ((e.hash == hash) && (e.object == o)) {
+				this.modCount++;
+				e.count--;
+				// if we are removing the last one, remove the entry from the table
+				if (e.count == 0) {
+					if (prev == null) {
+						tab[index] = e.next;
+					} else {
+						prev.next = e.next;
 					}
-					this.count--;
-					return true;
+					this.uniqueCount--;
 				}
-			}
-		} else {
-			int hash = o.hashCode();
-			int index = (hash & 0x7FFFFFFF) % tab.length;
-			for (Entry<E> e = tab[index], prev = null; e != null; prev = e, e = e.next) {
-				if ((e.hash == hash) && o.equals(e.object)) {
-					this.modCount++;
-					e.count--;
-					// if we are removing the last one, remove the entry from the table
-					if (e.count == 0) {
-						if (prev == null) {
-							tab[index] = e.next;
-						} else {
-							prev.next = e.next;
-						}
-						this.uniqueCount--;
-					}
-					this.count--;
-					return true;
-				}
+				this.count--;
+				return true;
 			}
 		}
-
 		return false;
 	}
 
 	/**
-	 * This implementation searches for the object in the hash table by calculating
-	 * the object's hash code and examining the entries in the corresponding hash
-	 * table bucket.
+	 * This implementation searches for the object in the hash table by
+	 * calculating the object's identity hash code and examining the
+	 * entries in the corresponding hash table bucket.
 	 */
 	public boolean remove(Object o, int cnt) {
 		if (cnt <= 0) {
 			return false;
 		}
 		Entry<E>[] tab = this.table;
-		if (o == null) {
-			for (Entry<E> e = tab[0], prev = null; e != null; prev = e, e = e.next) {
-				if (e.object == null) {
-					this.modCount++;
-					int cnt2 = (cnt < e.count) ? cnt : e.count;
-					e.count -= cnt2;
-					// if we are removing the last element(s), remove the entry from the table
-					if (e.count == 0) {
-						if (prev == null) {
-							tab[0] = e.next;
-						} else {
-							prev.next = e.next;
-						}
-						this.uniqueCount--;
+		int hash = System.identityHashCode(o);
+		int index = (hash & 0x7FFFFFFF) % tab.length;
+		for (Entry<E> e = tab[index], prev = null; e != null; prev = e, e = e.next) {
+			if ((e.hash == hash) && (e.object == o)) {
+				this.modCount++;
+				int cnt2 = (cnt < e.count) ? cnt : e.count;
+				e.count -= cnt2;
+				// if we are removing the last element(s), remove the entry from the table
+				if (e.count == 0) {
+					if (prev == null) {
+						tab[index] = e.next;
+					} else {
+						prev.next = e.next;
 					}
-					this.count -= cnt2;
-					return true;
+					this.uniqueCount--;
 				}
-			}
-		} else {
-			int hash = o.hashCode();
-			int index = (hash & 0x7FFFFFFF) % tab.length;
-			for (Entry<E> e = tab[index], prev = null; e != null; prev = e, e = e.next) {
-				if ((e.hash == hash) && o.equals(e.object)) {
-					this.modCount++;
-					int cnt2 = (cnt < e.count) ? cnt : e.count;
-					e.count -= cnt2;
-					// if we are removing the last element(s), remove the entry from the table
-					if (e.count == 0) {
-						if (prev == null) {
-							tab[index] = e.next;
-						} else {
-							prev.next = e.next;
-						}
-						this.uniqueCount--;
-					}
-					this.count -= cnt2;
-					return true;
-				}
+				this.count -= cnt2;
+				return true;
 			}
 		}
-
 		return false;
+	}
+
+	/**
+	 * This implementation uses object-identity to determine whether
+	 * specified collection contains a particular element.
+	 */
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		return super.removeAll(this.buildIdentityHashBag(c));
+	}
+
+	/**
+	 * This implementation uses object-identity to determine whether
+	 * specified collection contains a particular element.
+	 */
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		return super.retainAll(this.buildIdentityHashBag(c));
+	}
+
+	@SuppressWarnings("unchecked")
+	private Collection<?> buildIdentityHashBag(Collection<?> c) {
+		return new IdentityHashBag(c);
 	}
 
 	/**
@@ -481,10 +442,10 @@ public class HashBag<E> extends AbstractCollection<E>
 	 * @return a shallow copy of this bag.
 	 */
 	@Override
-	public HashBag<E> clone() {
+	public IdentityHashBag<E> clone() {
 		try {
 			@SuppressWarnings("unchecked")
-			HashBag<E> clone = (HashBag<E>) super.clone();
+			IdentityHashBag<E> clone = (IdentityHashBag<E>) super.clone();
 			clone.table = this.buildTable(this.table.length);
 			for (int i = this.table.length; i-- > 0; ) {
 				clone.table[i] = (this.table[i] == null) 
@@ -542,6 +503,11 @@ public class HashBag<E> extends AbstractCollection<E>
 		return new HashIterator();
 	}
 
+	/**
+	 * Return an iterator that returns each item in the bag
+	 * once and only once, irrespective of how many times
+	 * the item was added to the bag.
+	 */
 	@SuppressWarnings("unchecked")
 	public Iterator<E> uniqueIterator() {
 		if (this.count == 0) {
@@ -577,7 +543,7 @@ public class HashBag<E> extends AbstractCollection<E>
 	}
 
 	private class HashIterator implements Iterator<E> {
-		Entry<E>[] localTable = HashBag.this.table;
+		Entry<E>[] localTable = IdentityHashBag.this.table;
 		int index = this.localTable.length;	// start at the end of the table
 		Entry<E> nextEntry = null;
 		int nextEntryCount = 0;
@@ -588,7 +554,7 @@ public class HashBag<E> extends AbstractCollection<E>
 		 * bag should have. If this expectation is violated, the iterator
 		 * has detected a concurrent modification.
 		 */
-		private int expectedModCount = HashBag.this.modCount;
+		private int expectedModCount = IdentityHashBag.this.modCount;
 
 		HashIterator() {
 			super();
@@ -608,7 +574,7 @@ public class HashBag<E> extends AbstractCollection<E>
 		}
 
 		public E next() {
-			if (HashBag.this.modCount != this.expectedModCount) {
+			if (IdentityHashBag.this.modCount != this.expectedModCount) {
 				throw new ConcurrentModificationException();
 			}
 			Entry<E> et = this.nextEntry;
@@ -636,14 +602,14 @@ public class HashBag<E> extends AbstractCollection<E>
 			if (this.lastReturnedEntry == null) {
 				throw new IllegalStateException();
 			}
-			if (HashBag.this.modCount != this.expectedModCount) {
+			if (IdentityHashBag.this.modCount != this.expectedModCount) {
 				throw new ConcurrentModificationException();
 			}
 			Entry<E>[] tab = this.localTable;
 			int slot = (this.lastReturnedEntry.hash & 0x7FFFFFFF) % tab.length;
 			for (Entry<E> e = tab[slot], prev = null; e != null; prev = e, e = e.next) {
 				if (e == this.lastReturnedEntry) {
-					HashBag.this.modCount++;
+					IdentityHashBag.this.modCount++;
 					this.expectedModCount++;
 					e.count--;
 					if (e.count == 0) {
@@ -653,24 +619,22 @@ public class HashBag<E> extends AbstractCollection<E>
 						} else {
 							prev.next = e.next;
 						}
-						HashBag.this.uniqueCount--;
+						IdentityHashBag.this.uniqueCount--;
 					} else {
 						// slide back the count to account for the just-removed element
 						this.nextEntryCount--;
 					}
-					HashBag.this.count--;
+					IdentityHashBag.this.count--;
 					this.lastReturnedEntry = null;	// it cannot be removed again
 					return;
 				}
 			}
 			throw new ConcurrentModificationException();
 		}
-
 	}
 
-
 	private class UniqueIterator implements Iterator<E> {
-		Entry<E>[] localTable = HashBag.this.table;
+		Entry<E>[] localTable = IdentityHashBag.this.table;
 		int index = this.localTable.length;	// start at the end of the table
 		Entry<E> nextEntry = null;
 		Entry<E> lastReturnedEntry = null;
@@ -680,7 +644,7 @@ public class HashBag<E> extends AbstractCollection<E>
 		 * bag should have. If this expectation is violated, the iterator
 		 * has detected a concurrent modification.
 		 */
-		private int expectedModCount = HashBag.this.modCount;
+		private int expectedModCount = IdentityHashBag.this.modCount;
 
 		UniqueIterator() {
 			super();
@@ -700,7 +664,7 @@ public class HashBag<E> extends AbstractCollection<E>
 		}
 
 		public E next() {
-			if (HashBag.this.modCount != this.expectedModCount) {
+			if (IdentityHashBag.this.modCount != this.expectedModCount) {
 				throw new ConcurrentModificationException();
 			}
 			Entry<E> et = this.nextEntry;
@@ -724,14 +688,14 @@ public class HashBag<E> extends AbstractCollection<E>
 			if (this.lastReturnedEntry == null) {
 				throw new IllegalStateException();
 			}
-			if (HashBag.this.modCount != this.expectedModCount) {
+			if (IdentityHashBag.this.modCount != this.expectedModCount) {
 				throw new ConcurrentModificationException();
 			}
 			Entry<E>[] tab = this.localTable;
 			int slot = (this.lastReturnedEntry.hash & 0x7FFFFFFF) % tab.length;
 			for (Entry<E> e = tab[slot], prev = null; e != null; prev = e, e = e.next) {
 				if (e == this.lastReturnedEntry) {
-					HashBag.this.modCount++;
+					IdentityHashBag.this.modCount++;
 					this.expectedModCount++;
 					// remove the entry from the table
 					if (prev == null) {
@@ -739,8 +703,8 @@ public class HashBag<E> extends AbstractCollection<E>
 					} else {
 						prev.next = e.next;
 					}
-					HashBag.this.uniqueCount--;
-					HashBag.this.count -= this.lastReturnedEntry.count;
+					IdentityHashBag.this.uniqueCount--;
+					IdentityHashBag.this.count -= this.lastReturnedEntry.count;
 					this.lastReturnedEntry = null;	// it cannot be removed again
 					return;
 				}
@@ -755,32 +719,37 @@ public class HashBag<E> extends AbstractCollection<E>
 	public boolean equals(Object o) {
 		if (o == this) {
 			return true;
-		}
-		if ( ! (o instanceof Bag)) {
-			return false;
-		}
-		@SuppressWarnings("unchecked")
-		Bag<E> b = (Bag<E>) o;
-		if (b.size() != this.size()) {
-			return false;
-		}
-		Bag<E> clone = this.clone();
-		for (E e : b) {
-			if ( ! clone.remove(e)) {
+		} else if (o instanceof IdentityHashBag) {
+			@SuppressWarnings("unchecked")
+			IdentityHashBag<E> b = (IdentityHashBag<E>) o;
+			if (b.size() != this.size()) {
 				return false;
 			}
+			IdentityHashBag<E> clone = this.clone();
+			for (E e : b) {
+				if ( ! clone.remove(e)) {
+					return false;
+				}
+			}
+			return clone.isEmpty();
+		} else if (o instanceof Bag) {
+			// hmmm...
+			return this.buildBag().equals(o);
+		} else {
+			return false;
 		}
-		return clone.isEmpty();
+	}
+
+	@SuppressWarnings("unchecked")
+	private Bag<E> buildBag() {
+		return new HashBag(this);
 	}
 
 	@Override
 	public int hashCode() {
 		int h = 0;
-		for (Iterator<E> stream = this.iterator(); stream.hasNext(); ) {
-			Object next = stream.next();
-			if (next != null) {
-				h += next.hashCode();
-			}
+		for (E e : this) {
+			h += System.identityHashCode(e);
 		}
 		return h;
 	}

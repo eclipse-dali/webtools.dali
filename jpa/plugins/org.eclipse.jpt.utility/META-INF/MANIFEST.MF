@@ -6,5 +6,8 @@ Bundle-SymbolicName: org.eclipse.jpt.utility
 Bundle-Version: 1.0.0.qualifier
 Bundle-Localization: plugin
 Export-Package: org.eclipse.jpt.utility.internal,
- org.eclipse.jpt.utility.internal.iterators
+ org.eclipse.jpt.utility.internal.iterators,
+ org.eclipse.jpt.utility.internal.model,
+ org.eclipse.jpt.utility.internal.model.event,
+ org.eclipse.jpt.utility.internal.model.listener
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
