@@ -192,7 +192,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 
 		};
 		if (this.project == null) {
-			throw new IllegalStateException("Project can not be null when the Resynch Job is build");
+			throw new IllegalStateException("Project can not be null when the Resynch Job is built");
 		}
 		job.setRule(this.project);
 		return job;
