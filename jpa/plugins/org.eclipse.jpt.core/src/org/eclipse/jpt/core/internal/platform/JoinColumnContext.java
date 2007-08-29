@@ -44,6 +44,7 @@ public class JoinColumnContext extends AbstractJoinColumnContext<IJoinColumn>
 		if (prefix == null) {
 			return null;
 		}
+		prefix = getPlatform().convertJavaIdentifierToDatabaseIdentifier(prefix);
 		// TODO not sure which of these is correct...
 		// (the spec implies that the referenced column is always the
 		// primary key column of the target entity)

@@ -212,6 +212,10 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		context.refreshDefaults(new NullProgressMonitor());
 		context.addToMessages(messages);
 	}
+
+	public String convertJavaIdentifierToDatabaseIdentifier(String javaIdentifier) {
+		return javaIdentifier;
+	}
 	
 //	public IGeneratorRepository generatorRepository(IPersistentType persistentType) {
 //		return ((BaseJpaProjectContext) context).generatorRepository(persistentType);

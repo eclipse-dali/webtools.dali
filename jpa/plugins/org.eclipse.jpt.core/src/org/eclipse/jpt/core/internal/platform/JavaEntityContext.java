@@ -155,11 +155,11 @@ public class JavaEntityContext extends JavaTypeContext
 					if (getEntity().rootEntity().getInheritanceStrategy().isSingleTable()) {
 						IEntity rootEntity = getEntity().rootEntity();
 						if (rootEntity == getEntity()) {
-							return rootEntity.getName();
+							return getPlatform().convertJavaIdentifierToDatabaseIdentifier(rootEntity.getName());
 						}
 						return rootEntity.getTable().getName();
 					}
-					return getEntity().getName();
+					return getPlatform().convertJavaIdentifierToDatabaseIdentifier(getEntity().getName());
 				}
 				return defaultsContext.getDefault(key);
 			}
