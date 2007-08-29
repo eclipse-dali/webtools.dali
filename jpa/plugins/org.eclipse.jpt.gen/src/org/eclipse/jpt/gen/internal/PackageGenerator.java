@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.gen.internal.EntityGenerator.OverwriteConfirmer;
@@ -28,14 +29,19 @@ public class PackageGenerator {
 	private final OverwriteConfirmer overwriteConfirmer;
 	private final IProgressMonitor monitor;
 
-
 	// ********** public API **********
 
 	public static void generateEntities(Config config, EntityGenerator.Config entityConfig, Collection<Table> tables, OverwriteConfirmer overwriteConfirmer, IProgressMonitor monitor) {
 		if ((config == null) || (entityConfig == null) || (tables == null)) {
 			throw new NullPointerException();
 		}
-		new PackageGenerator(config, entityConfig, tables, overwriteConfirmer, monitor).generateEntities();
+		try {
+			monitor.beginTask("", 1000);
+			new PackageGenerator(config, entityConfig, tables, overwriteConfirmer, monitor).generateEntities();
+		}
+		finally {
+			monitor.done();
+		}
 	}
 
 
@@ -45,7 +51,7 @@ public class PackageGenerator {
 		super();
 		this.config = config;
 		this.entityConfig = entityConfig;
-		this.scope = new GenScope(tables, entityConfig, monitor);
+		this.scope = new GenScope(tables, entityConfig, new SubProgressMonitor(monitor, 800));
 		this.overwriteConfirmer = overwriteConfirmer;
 		this.monitor = monitor;
 	}
@@ -54,11 +60,11 @@ public class PackageGenerator {
 	// ********** generation **********
 
 	private void generateEntities() {
-		int size = CollectionTools.size(this.scope.entityTables());
+		int size = this.scope.numEntityTables();
+		int ticks = 200/size;
 		for (Iterator<GenTable> stream = this.scope.entityTables(); stream.hasNext(); ) {
 			checkCanceled();
-			this.buildEntity(stream.next());
-			this.monitor.worked(50/size);
+			this.buildEntity(stream.next(), new SubProgressMonitor(this.monitor, ticks));
 		}
 	}
 
@@ -69,8 +75,8 @@ public class PackageGenerator {
 	}
 	
 
-	private void buildEntity(GenTable genTable) {
-		EntityGenerator.generateEntity(this.entityConfig, this.config.getPackageFragment(), genTable, overwriteConfirmer, this.monitor);
+	private void buildEntity(GenTable genTable, IProgressMonitor monitor) {
+		EntityGenerator.generateEntity(this.entityConfig, this.config.getPackageFragment(), genTable, overwriteConfirmer, monitor);
 	}
 
 

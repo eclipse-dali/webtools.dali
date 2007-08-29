@@ -41,14 +41,20 @@ class GenScope {
 	
 	private void initialize(Collection<Table> tables, EntityGenerator.Config entityConfig, IProgressMonitor monitor) {
 		this.progressMonitor = monitor;
-		this.buildGenTables(tables, entityConfig);
-		checkCanceled();
-		this.configureManyToManyRelations();
-		checkCanceled();
-		this.configureManyToOneRelations();
-		checkCanceled();
-		this.configureFieldNames();
-		checkCanceled();
+		try {
+			this.progressMonitor.beginTask("", 1000);
+			this.buildGenTables(tables, entityConfig);
+			checkCanceled();
+			this.configureManyToManyRelations();
+			checkCanceled();
+			this.configureManyToOneRelations();
+			checkCanceled();
+			this.configureFieldNames();
+			checkCanceled();
+		}
+		finally {
+			this.progressMonitor.done();
+		}
 	}
 
 	private void buildGenTables(Collection<Table> tables, EntityGenerator.Config entityConfig) {
@@ -57,7 +63,7 @@ class GenScope {
 		Set<String> entityNames = new HashSet<String>(size);
 		for (Table table : tables) {
 			this.buildGenTable(table, entityConfig, entityNames);
-			this.progressMonitor.worked(40/size);
+			this.progressMonitor.worked(50/size);
 		}
 	}
 
@@ -75,7 +81,7 @@ class GenScope {
 		for (Iterator<GenTable> stream = this.tables(); stream.hasNext(); ) {
 			checkCanceled();
 			stream.next().configureManyToManyRelations();
-			this.progressMonitor.worked(730/tablesSize);
+			this.progressMonitor.worked(750/tablesSize);
 		}
 		// revert any "join" table that is referenced by another table back to an "entity" table
 		Set<GenTable> referencedTables = this.buildReferencedTables();
@@ -85,7 +91,7 @@ class GenScope {
 			if (referencedTables.contains(joinGenTable)) {
 				joinGenTable.clearJoinTableRelation();
 			}
-			this.progressMonitor.worked(40/tablesSize);
+			this.progressMonitor.worked(50/tablesSize);
 		}
 	}
 
@@ -167,7 +173,7 @@ class GenScope {
 		Set<GenTable> referencedTables = new HashSet<GenTable>(this.genTables.size());
 		for (Iterator<GenTable> stream = this.tables(); stream.hasNext(); ) {
 			stream.next().addReferencedTablesTo(referencedTables);
-			this.progressMonitor.worked(20/size);
+			this.progressMonitor.worked(50/size);
 		}
 		return referencedTables;
 	}

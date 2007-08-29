@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.IJavaModelStatusConstants;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
@@ -79,10 +80,15 @@ public class EntityGenerator {
 	// ********** code gen **********
 
 	private void generateEntity() {
+		int totalWork = pkClassIsGenerated() ? 40 : 20;
 		try {
+			this.monitor.beginTask("", totalWork);
 			this.generateEntity_();
 		} catch (JavaModelException ex) {
 			throw new RuntimeException(ex);
+		}
+		finally {
+			this.monitor.done();
 		}
 	}
 
@@ -92,15 +98,16 @@ public class EntityGenerator {
 		if (this.pkClassIsGenerated()) {
 			this.generateSourceFile(this.pkClassName, this.pkName() + ".java", this.buildSource(this.buildPKBodySource()));
 		}
+		
 	}
 
 	private void generateSourceFile(String className, String fileName, String source) throws JavaModelException {
 		try {
-			this.packageFragment.createCompilationUnit(fileName, source, false, this.monitor);
+			this.packageFragment.createCompilationUnit(fileName, source, false, new SubProgressMonitor(this.monitor, 10));
 		} catch (JavaModelException ex) {
 			if (ex.getJavaModelStatus().getCode() == IJavaModelStatusConstants.NAME_COLLISION) {
 				if (this.overwriteConfirmer.overwrite(className)) {
-					this.packageFragment.createCompilationUnit(fileName, source, true, this.monitor);
+					this.packageFragment.createCompilationUnit(fileName, source, true, new SubProgressMonitor(this.monitor, 0));
 				}
 			} else {
 				throw ex;
@@ -117,6 +124,7 @@ public class EntityGenerator {
 		PrintWriter pw = new PrintWriter(sw);
 		this.printPackageAndImportsOn(pw, bodySource);
 		pw.print(bodySource.source());
+		this.monitor.worked(10);
 		return sw.toString();
 	}
 

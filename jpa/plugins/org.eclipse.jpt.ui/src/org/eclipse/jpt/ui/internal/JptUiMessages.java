@@ -144,6 +144,7 @@ public class JptUiMessages extends NLS
 
 	public static String OverwriteConfirmerDialog_text;
 
+	public static String EntitiesGenerator_jobName;
 	
 	private JptUiMessages() {
 		throw new UnsupportedOperationException();

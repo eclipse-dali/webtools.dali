@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.ui.internal.generic;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
@@ -18,10 +17,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -41,9 +38,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
-import org.eclipse.ui.progress.IProgressService;
 
 /**
  *  EntitiesGenerator
@@ -116,7 +110,7 @@ public class EntitiesGenerator
 				IJpaProject project,
 				EntityGenerator.OverwriteConfirmer overwriteConfirmer
 		) {
-			super("Generating Entities");
+			super(JptUiMessages.EntitiesGenerator_jobName);
 			this.packageConfig = packageConfig;
 			this.entityConfig = entityConfig;
 			this.selectedTables = selectedTables;
