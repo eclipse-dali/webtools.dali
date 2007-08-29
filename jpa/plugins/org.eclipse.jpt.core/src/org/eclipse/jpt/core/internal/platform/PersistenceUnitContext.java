@@ -37,6 +37,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -191,7 +192,7 @@ public class PersistenceUnitContext extends BaseContext
 	}
 	
 	protected Iterator<JavaPersistentType> listedJavaPersistentTypes() {
-		return new TransformationIterator<JavaClassRef, JavaPersistentType>(persistenceUnit.getClasses().iterator()) {
+		return new TransformationIterator<JavaClassRef, JavaPersistentType>(new CloneIterator<JavaClassRef>(persistenceUnit.getClasses())) {
 			@Override
 			protected JavaPersistentType transform(JavaClassRef next) {
 				return javaPersistentTypeFor(next);

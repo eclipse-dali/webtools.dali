@@ -50,6 +50,7 @@ public class SynchronizeClassesJob extends Job
 	
 	public SynchronizeClassesJob(IFile file) {
 		super(JptCoreMessages.SYNCHRONIZE_CLASSES_JOB);
+		setRule(file.getProject());
 		persistenceXmlFile = file;
 	}
 	
