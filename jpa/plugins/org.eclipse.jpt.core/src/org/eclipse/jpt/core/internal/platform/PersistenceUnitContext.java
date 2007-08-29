@@ -192,7 +192,7 @@ public class PersistenceUnitContext extends BaseContext
 	}
 	
 	protected Iterator<JavaPersistentType> listedJavaPersistentTypes() {
-		return new TransformationIterator<JavaClassRef, JavaPersistentType>(persistenceUnit.getClasses().iterator()) {
+		return new TransformationIterator<JavaClassRef, JavaPersistentType>(new CloneIterator<JavaClassRef>(persistenceUnit.getClasses())) {
 			@Override
 			protected JavaPersistentType transform(JavaClassRef next) {
 				return javaPersistentTypeFor(next);

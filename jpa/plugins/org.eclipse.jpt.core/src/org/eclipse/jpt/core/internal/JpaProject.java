@@ -172,11 +172,17 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 */
 	protected JpaProject() {
 		super();
-		this.resynchJob = buildResynchJob();
 		this.resynchJobListener = buildResynchJobListener();
 		Job.getJobManager().addJobChangeListener(this.resynchJobListener);
 	}
 
+	private Job getResynchJob() {
+		if (this.resynchJob == null) {
+			this.resynchJob = buildResynchJob();
+		}
+		return this.resynchJob;
+	}
+	
 	private Job buildResynchJob() {
 		Job job = new Job("Resynching JPA model ...") {
 			@Override
@@ -185,6 +191,9 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			}
 
 		};
+		if (this.project == null) {
+			throw new IllegalStateException("Project can not be null when the Resynch Job is build");
+		}
 		job.setRule(this.project);
 		return job;
 	}
@@ -215,7 +224,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			@Override
 			public void done(IJobChangeEvent event) {
 				super.done(event);
-				if (event.getJob() == JpaProject.this.resynchJob) {
+				if (event.getJob() == JpaProject.this.getResynchJob()) {
 					resynching = false;
 					if (needsToResynch) {
 						resynch();
@@ -615,7 +624,6 @@ public class JpaProject extends JpaEObject implements IJpaProject
 
 	private void dispose_() {
 		Job.getJobManager().removeJobChangeListener(resynchJobListener);
-		this.resynchJob.cancel();
 		for (IJpaFile jpaFile : new ArrayList<IJpaFile>(getFiles())) {
 			((JpaFile) jpaFile).dispose();
 		}
@@ -705,11 +713,11 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		if (!resynching) {
 			this.resynching = true;
 			this.needsToResynch = false;
-			this.resynchJob.schedule();
+			this.getResynchJob().schedule();
 		}
 		else {
 			this.needsToResynch = true;
-			this.resynchJob.cancel();
+			this.getResynchJob().cancel();
 		}
 	}
 
