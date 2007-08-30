@@ -93,7 +93,7 @@ public class JavaPersistentAttributeContext extends BaseContext
 	
 	protected Object getDefault(String key, DefaultsContext defaultsContext) {
 		if (key.equals(BaseJpaPlatform.DEFAULT_COLUMN_NAME_KEY)) {
-			return getPlatform().convertJavaIdentifierToDatabaseIdentifier(getPersistentAttribute().getName());			
+			return getPersistentAttribute().getName();			
 		}
 		return defaultsContext.getDefault(key);
 	}

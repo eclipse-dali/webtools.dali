@@ -146,17 +146,4 @@ public interface IJpaPlatform
 	 * @return
 	 */
 	//	IGeneratorRepository generatorRepository(IPersistentType persistentType);
-	
-	/**
-	 * If an SQL identifier is derived from a Java identifier by following a 
-	 * default rule, a JPA implementation may perform some conversion, e.g. 
-	 * convert the case of the identifier. This method allows to implement 
-	 * such a conversion in a platform-dependent way.
-	 * 
-	 * @param javaIdentifier the Java identifier to be converted
-	 * 
-	 * @return the converted SQL identifier
-	 */
-	String convertJavaIdentifierToDatabaseIdentifier(String javaIdentifier); 
-	
 }

@@ -76,7 +76,7 @@ public abstract class JavaAttributeContext extends BaseContext
 	
 	protected Object getDefault(String key, DefaultsContext defaultsContext) {
 		if (key.equals(BaseJpaPlatform.DEFAULT_COLUMN_NAME_KEY)) {
-			return getPlatform().convertJavaIdentifierToDatabaseIdentifier(getMapping().getPersistentAttribute().getName());			
+			return getMapping().getPersistentAttribute().getName();			
 		}
 		return defaultsContext.getDefault(key);
 	}

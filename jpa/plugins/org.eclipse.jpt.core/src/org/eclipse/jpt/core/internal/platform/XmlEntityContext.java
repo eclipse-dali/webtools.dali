@@ -349,11 +349,11 @@ public class XmlEntityContext extends XmlTypeContext
 			if (getEntity().rootEntity().getInheritanceStrategy().isSingleTable()) {
 				IEntity rootEntity = getEntity().rootEntity();
 				if (rootEntity == getEntity()) {
-					return getPlatform().convertJavaIdentifierToDatabaseIdentifier(rootEntity.getName());
+					return rootEntity.getName();
 				}
 				return rootEntity.getTable().getName();
 			}
-			return getPlatform().convertJavaIdentifierToDatabaseIdentifier(getEntity().getName());
+			return getEntity().getName();
 		}
 		return super.getDefault(key, defaultsContext);
 	}
