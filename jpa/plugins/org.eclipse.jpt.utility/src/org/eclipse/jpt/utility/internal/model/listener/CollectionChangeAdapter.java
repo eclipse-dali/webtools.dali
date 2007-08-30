@@ -31,6 +31,10 @@ public class CollectionChangeAdapter implements CollectionChangeListener {
 		// do nothing
 	}
 
+	public void collectionCleared(CollectionChangeEvent event) {
+		// do nothing
+	}
+
 	public void collectionChanged(CollectionChangeEvent event) {
 		// do nothing
 	}

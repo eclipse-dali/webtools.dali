@@ -26,28 +26,32 @@ class MultiMethodReflectiveChangeListener
 	implements CollectionChangeListener, ListChangeListener, TreeChangeListener
 {
 	/** the methods we will invoke on the target object */
-	private Method addMethod;
-	private Method removeMethod;
-	private Method replaceMethod;	// this can be null
-	private Method changeMethod;
+	private final Method addMethod;
+	private final Method removeMethod;
+	private final Method replaceMethod;	// this can be null
+	private final Method moveMethod;	// this can be null
+	private final Method clearMethod;
+	private final Method changeMethod;
 
 
 	/**
-	 * The "replace" method is optional.
+	 * The "replace" and "move" methods are optional.
 	 */
-	MultiMethodReflectiveChangeListener(Object target, Method addMethod, Method removeMethod, Method replaceMethod, Method changeMethod) {
+	MultiMethodReflectiveChangeListener(Object target, Method addMethod, Method removeMethod, Method replaceMethod, Method moveMethod, Method clearMethod, Method changeMethod) {
 		super(target);
 		this.addMethod = addMethod;
 		this.removeMethod = removeMethod;
 		this.replaceMethod = replaceMethod;
+		this.moveMethod = moveMethod;
+		this.clearMethod = clearMethod;
 		this.changeMethod = changeMethod;
 	}
 
 	/**
-	 * No "replace" method.
+	 * No "replace" or "move" methods.
 	 */
-	MultiMethodReflectiveChangeListener(Object target, Method addMethod, Method removeMethod, Method changeMethod) {
-		this(target, addMethod, removeMethod, null, changeMethod);
+	MultiMethodReflectiveChangeListener(Object target, Method addMethod, Method removeMethod, Method clearMethod, Method changeMethod) {
+		this(target, addMethod, removeMethod, null, null, clearMethod, changeMethod);
 	}
 
 
@@ -67,6 +71,10 @@ class MultiMethodReflectiveChangeListener
 
 	public void itemsRemoved(CollectionChangeEvent event) {
 		this.invoke(this.removeMethod, event);
+	}
+
+	public void collectionCleared(CollectionChangeEvent event) {
+		this.invoke(this.clearMethod, event);
 	}
 
 	public void collectionChanged(CollectionChangeEvent event) {
@@ -96,6 +104,14 @@ class MultiMethodReflectiveChangeListener
 		this.invoke(this.replaceMethod, event);
 	}
 
+	public void itemsMoved(ListChangeEvent event) {
+		this.invoke(this.moveMethod, event);
+	}
+
+	public void listCleared(ListChangeEvent event) {
+		this.invoke(this.clearMethod, event);
+	}
+
 	public void listChanged(ListChangeEvent event) {
 		this.invoke(this.changeMethod, event);
 	}
@@ -117,6 +133,10 @@ class MultiMethodReflectiveChangeListener
 
 	public void nodeRemoved(TreeChangeEvent event) {
 		this.invoke(this.removeMethod, event);
+	}
+
+	public void treeCleared(TreeChangeEvent event) {
+		this.invoke(this.clearMethod, event);
 	}
 
 	public void treeChanged(TreeChangeEvent event) {

@@ -35,6 +35,14 @@ public interface CollectionChangeListener extends ChangeListener {
 	void itemsRemoved(CollectionChangeEvent event);
 
 	/**
+	 * This method gets called when a bound collection is cleared.
+	 * 
+	 * @param event A CollectionChangeEvent describing the event source 
+	 * and the collection that changed.
+	 */
+	void collectionCleared(CollectionChangeEvent event);
+
+	/**
 	 * This method gets called when a bound collection is changed in a manner
 	 * that is not easily characterized by the other methods in this interface.
 	 * 

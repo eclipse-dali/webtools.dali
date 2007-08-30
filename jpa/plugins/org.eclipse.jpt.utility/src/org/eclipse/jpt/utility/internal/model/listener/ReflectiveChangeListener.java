@@ -148,11 +148,12 @@ public abstract class ReflectiveChangeListener {
 	 * Construct a collection change listener that will invoke the specified methods
 	 * on the specified target.
 	 */
-	public static CollectionChangeListener buildCollectionChangeListener(Object target, Method addMethod, Method removeMethod, Method changeMethod) {
+	public static CollectionChangeListener buildCollectionChangeListener(Object target, Method addMethod, Method removeMethod, Method clearMethod, Method changeMethod) {
 		checkChangeListenerMethod(addMethod, COLLECTION_CHANGE_EVENT_CLASS);
 		checkChangeListenerMethod(removeMethod, COLLECTION_CHANGE_EVENT_CLASS);
+		checkChangeListenerMethod(clearMethod, COLLECTION_CHANGE_EVENT_CLASS);
 		checkChangeListenerMethod(changeMethod, COLLECTION_CHANGE_EVENT_CLASS);
-		return new MultiMethodReflectiveChangeListener(target, addMethod, removeMethod, changeMethod);
+		return new MultiMethodReflectiveChangeListener(target, addMethod, removeMethod, clearMethod, changeMethod);
 	}
 
 	/**
@@ -160,7 +161,7 @@ public abstract class ReflectiveChangeListener {
 	 * on the specified target for any change event.
 	 */
 	public static CollectionChangeListener buildCollectionChangeListener(Object target, Method method) {
-		return buildCollectionChangeListener(target, method, method, method);
+		return buildCollectionChangeListener(target, method, method, method, method);
 	}
 
 	/**
@@ -169,11 +170,12 @@ public abstract class ReflectiveChangeListener {
 	 * with the specified name and appropriate argument is found, it will be invoked;
 	 * otherwise, a zero-argument method with the specified name will be invoked.
 	 */
-	public static CollectionChangeListener buildCollectionChangeListener(Object target, String addMethodName, String removeMethodName, String changeMethodName) {
+	public static CollectionChangeListener buildCollectionChangeListener(Object target, String addMethodName, String removeMethodName, String clearMethodName, String changeMethodName) {
 		return buildCollectionChangeListener(
 				target,
 				findChangeListenerMethod(target, addMethodName, COLLECTION_CHANGE_EVENT_CLASS_ARRAY),
 				findChangeListenerMethod(target, removeMethodName, COLLECTION_CHANGE_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, clearMethodName, COLLECTION_CHANGE_EVENT_CLASS_ARRAY),
 				findChangeListenerMethod(target, changeMethodName, COLLECTION_CHANGE_EVENT_CLASS_ARRAY)
 		);
 	}
@@ -195,12 +197,14 @@ public abstract class ReflectiveChangeListener {
 	 * Construct a list change listener that will invoke the specified methods
 	 * on the specified target.
 	 */
-	public static ListChangeListener buildListChangeListener(Object target, Method addMethod, Method removeMethod, Method replaceMethod, Method changeMethod) {
+	public static ListChangeListener buildListChangeListener(Object target, Method addMethod, Method removeMethod, Method replaceMethod, Method moveMethod, Method clearMethod, Method changeMethod) {
 		checkChangeListenerMethod(addMethod, LIST_CHANGE_EVENT_CLASS);
 		checkChangeListenerMethod(removeMethod, LIST_CHANGE_EVENT_CLASS);
 		checkChangeListenerMethod(replaceMethod, LIST_CHANGE_EVENT_CLASS);
+		checkChangeListenerMethod(moveMethod, LIST_CHANGE_EVENT_CLASS);
+		checkChangeListenerMethod(clearMethod, LIST_CHANGE_EVENT_CLASS);
 		checkChangeListenerMethod(changeMethod, LIST_CHANGE_EVENT_CLASS);
-		return new MultiMethodReflectiveChangeListener(target, addMethod, removeMethod, replaceMethod, changeMethod);
+		return new MultiMethodReflectiveChangeListener(target, addMethod, removeMethod, replaceMethod, moveMethod, clearMethod, changeMethod);
 	}
 
 	/**
@@ -208,7 +212,7 @@ public abstract class ReflectiveChangeListener {
 	 * on the specified target for any change event.
 	 */
 	public static ListChangeListener buildListChangeListener(Object target, Method method) {
-		return buildListChangeListener(target, method, method, method, method);
+		return buildListChangeListener(target, method, method, method, method, method, method);
 	}
 
 	/**
@@ -217,12 +221,14 @@ public abstract class ReflectiveChangeListener {
 	 * with the specified name and appropriate argument is found, it will be invoked;
 	 * otherwise, a zero-argument method with the specified name will be invoked.
 	 */
-	public static ListChangeListener buildListChangeListener(Object target, String addMethodName, String removeMethodName, String replaceMethodName, String changeMethodName) {
+	public static ListChangeListener buildListChangeListener(Object target, String addMethodName, String removeMethodName, String replaceMethodName, String moveMethodName, String clearMethodName, String changeMethodName) {
 		return buildListChangeListener(
 				target,
 				findChangeListenerMethod(target, addMethodName, LIST_CHANGE_EVENT_CLASS_ARRAY),
 				findChangeListenerMethod(target, removeMethodName, LIST_CHANGE_EVENT_CLASS_ARRAY),
 				findChangeListenerMethod(target, replaceMethodName, LIST_CHANGE_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, moveMethodName, LIST_CHANGE_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, clearMethodName, LIST_CHANGE_EVENT_CLASS_ARRAY),
 				findChangeListenerMethod(target, changeMethodName, LIST_CHANGE_EVENT_CLASS_ARRAY)
 		);
 	}
@@ -244,11 +250,12 @@ public abstract class ReflectiveChangeListener {
 	 * Construct a tree change listener that will invoke the specified methods
 	 * on the specified target.
 	 */
-	public static TreeChangeListener buildTreeChangeListener(Object target, Method addMethod, Method removeMethod, Method changeMethod) {
+	public static TreeChangeListener buildTreeChangeListener(Object target, Method addMethod, Method removeMethod, Method clearMethod, Method changeMethod) {
 		checkChangeListenerMethod(addMethod, TREE_CHANGE_EVENT_CLASS);
 		checkChangeListenerMethod(removeMethod, TREE_CHANGE_EVENT_CLASS);
+		checkChangeListenerMethod(clearMethod, TREE_CHANGE_EVENT_CLASS);
 		checkChangeListenerMethod(changeMethod, TREE_CHANGE_EVENT_CLASS);
-		return new MultiMethodReflectiveChangeListener(target, addMethod, removeMethod, changeMethod);
+		return new MultiMethodReflectiveChangeListener(target, addMethod, removeMethod, clearMethod, changeMethod);
 	}
 
 	/**
@@ -256,7 +263,7 @@ public abstract class ReflectiveChangeListener {
 	 * on the specified target for any change event.
 	 */
 	public static TreeChangeListener buildTreeChangeListener(Object target, Method method) {
-		return buildTreeChangeListener(target, method, method, method);
+		return buildTreeChangeListener(target, method, method, method, method);
 	}
 
 	/**
@@ -265,11 +272,12 @@ public abstract class ReflectiveChangeListener {
 	 * with the specified name and appropriate argument is found, it will be invoked;
 	 * otherwise, a zero-argument method with the specified name will be invoked.
 	 */
-	public static TreeChangeListener buildTreeChangeListener(Object target, String addMethodName, String removeMethodName, String changeMethodName) {
+	public static TreeChangeListener buildTreeChangeListener(Object target, String addMethodName, String removeMethodName, String clearMethodName, String changeMethodName) {
 		return buildTreeChangeListener(
 				target,
 				findChangeListenerMethod(target, addMethodName, TREE_CHANGE_EVENT_CLASS_ARRAY),
 				findChangeListenerMethod(target, removeMethodName, TREE_CHANGE_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, clearMethodName, TREE_CHANGE_EVENT_CLASS_ARRAY),
 				findChangeListenerMethod(target, changeMethodName, TREE_CHANGE_EVENT_CLASS_ARRAY)
 		);
 	}

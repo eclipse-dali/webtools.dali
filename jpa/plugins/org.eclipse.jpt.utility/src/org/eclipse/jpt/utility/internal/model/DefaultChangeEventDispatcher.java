@@ -68,6 +68,10 @@ public class DefaultChangeEventDispatcher
 		listener.itemsRemoved(event);
 	}
 
+	public void collectionCleared(CollectionChangeListener listener, CollectionChangeEvent event) {
+		listener.collectionCleared(event);
+	}
+
 	public void collectionChanged(CollectionChangeListener listener, CollectionChangeEvent event) {
 		listener.collectionChanged(event);
 	}
@@ -84,6 +88,14 @@ public class DefaultChangeEventDispatcher
 		listener.itemsReplaced(event);
 	}
 
+	public void itemsMoved(ListChangeListener listener, ListChangeEvent event) {
+		listener.itemsMoved(event);
+	}
+
+	public void listCleared(ListChangeListener listener, ListChangeEvent event) {
+		listener.listCleared(event);
+	}
+
 	public void listChanged(ListChangeListener listener, ListChangeEvent event) {
 		listener.listChanged(event);
 	}
@@ -94,6 +106,10 @@ public class DefaultChangeEventDispatcher
 
 	public void nodeRemoved(TreeChangeListener listener, TreeChangeEvent event) {
 		listener.nodeRemoved(event);
+	}
+
+	public void treeCleared(TreeChangeListener listener, TreeChangeEvent event) {
+		listener.treeCleared(event);
 	}
 
 	public void treeChanged(TreeChangeListener listener, TreeChangeEvent event) {

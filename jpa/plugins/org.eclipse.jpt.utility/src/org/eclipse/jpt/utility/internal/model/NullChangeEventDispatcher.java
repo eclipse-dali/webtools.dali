@@ -67,6 +67,10 @@ public class NullChangeEventDispatcher
 		// do nothing
 	}
 
+	public void collectionCleared(CollectionChangeListener listener, CollectionChangeEvent event) {
+		// do nothing
+	}
+
 	public void collectionChanged(CollectionChangeListener listener, CollectionChangeEvent event) {
 		// do nothing
 	}
@@ -83,6 +87,14 @@ public class NullChangeEventDispatcher
 		// do nothing
 	}
 
+	public void itemsMoved(ListChangeListener listener, ListChangeEvent event) {
+		// do nothing
+	}
+
+	public void listCleared(ListChangeListener listener, ListChangeEvent event) {
+		// do nothing
+	}
+
 	public void listChanged(ListChangeListener listener, ListChangeEvent event) {
 		// do nothing
 	}
@@ -92,6 +104,10 @@ public class NullChangeEventDispatcher
 	}
 
 	public void nodeRemoved(TreeChangeListener listener, TreeChangeEvent event) {
+		// do nothing
+	}
+
+	public void treeCleared(TreeChangeListener listener, TreeChangeEvent event) {
 		// do nothing
 	}
 

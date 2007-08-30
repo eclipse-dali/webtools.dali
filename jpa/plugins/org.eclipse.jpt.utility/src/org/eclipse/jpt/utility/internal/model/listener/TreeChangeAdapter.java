@@ -31,6 +31,10 @@ public class TreeChangeAdapter implements TreeChangeListener {
 		// do nothing
 	}
 
+	public void treeCleared(TreeChangeEvent event) {
+		// do nothing
+	}
+
 	public void treeChanged(TreeChangeEvent event) {
 		// do nothing
 	}

@@ -56,6 +56,12 @@ public interface ChangeEventDispatcher {
 	 * Notify the specified listener that a bound collection changed,
 	 * as described in the specified event.
 	 */
+	void collectionCleared(CollectionChangeListener listener, CollectionChangeEvent event);
+
+	/**
+	 * Notify the specified listener that a bound collection changed,
+	 * as described in the specified event.
+	 */
 	void collectionChanged(CollectionChangeListener listener, CollectionChangeEvent event);
 
 	/**
@@ -80,6 +86,18 @@ public interface ChangeEventDispatcher {
 	 * Notify the specified listener that a bound list changed,
 	 * as described in the specified event.
 	 */
+	void itemsMoved(ListChangeListener listener, ListChangeEvent event);
+
+	/**
+	 * Notify the specified listener that a bound list changed,
+	 * as described in the specified event.
+	 */
+	void listCleared(ListChangeListener listener, ListChangeEvent event);
+
+	/**
+	 * Notify the specified listener that a bound list changed,
+	 * as described in the specified event.
+	 */
 	void listChanged(ListChangeListener listener, ListChangeEvent event);
 
 	/**
@@ -93,6 +111,12 @@ public interface ChangeEventDispatcher {
 	 * as described in the specified event.
 	 */
 	void nodeRemoved(TreeChangeListener listener, TreeChangeEvent event);
+
+	/**
+	 * Notify the specified listener that a bound tree changed,
+	 * as described in the specified event.
+	 */
+	void treeCleared(TreeChangeListener listener, TreeChangeEvent event);
 
 	/**
 	 * Notify the specified listener that a bound tree changed,

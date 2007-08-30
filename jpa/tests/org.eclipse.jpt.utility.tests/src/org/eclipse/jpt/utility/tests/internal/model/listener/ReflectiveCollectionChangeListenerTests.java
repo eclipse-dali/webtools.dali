@@ -32,11 +32,11 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 	}
 
 	private CollectionChangeListener buildZeroArgumentListener(Object target) {
-		return ReflectiveChangeListener.buildCollectionChangeListener(target, "itemAddedZeroArgument", "itemRemovedZeroArgument", "collectionChangedZeroArgument");
+		return ReflectiveChangeListener.buildCollectionChangeListener(target, "itemAddedZeroArgument", "itemRemovedZeroArgument", "collectionClearedZeroArgument", "collectionChangedZeroArgument");
 	}
 
 	private CollectionChangeListener buildSingleArgumentListener(Object target) {
-		return ReflectiveChangeListener.buildCollectionChangeListener(target, "itemAddedSingleArgument", "itemRemovedSingleArgument", "collectionChangedSingleArgument");
+		return ReflectiveChangeListener.buildCollectionChangeListener(target, "itemAddedSingleArgument", "itemRemovedSingleArgument", "collectionClearedSingleArgument", "collectionChangedSingleArgument");
 	}
 
 	public void testItemAddedZeroArgument() {
@@ -49,6 +49,8 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		assertFalse(target.itemAddedSingleArgumentFlag);
 		assertFalse(target.itemRemovedZeroArgumentFlag);
 		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
 		assertFalse(target.collectionChangedZeroArgumentFlag);
 		assertFalse(target.collectionChangedSingleArgumentFlag);
 	}
@@ -63,6 +65,8 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		assertFalse(target.itemAddedSingleArgumentFlag);
 		assertFalse(target.itemRemovedZeroArgumentFlag);
 		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
 		assertFalse(target.collectionChangedZeroArgumentFlag);
 		assertFalse(target.collectionChangedSingleArgumentFlag);
 	}
@@ -77,6 +81,8 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		assertTrue(target.itemAddedSingleArgumentFlag);
 		assertFalse(target.itemRemovedZeroArgumentFlag);
 		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
 		assertFalse(target.collectionChangedZeroArgumentFlag);
 		assertFalse(target.collectionChangedSingleArgumentFlag);
 	}
@@ -91,6 +97,8 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		assertTrue(target.itemAddedSingleArgumentFlag);
 		assertFalse(target.itemRemovedZeroArgumentFlag);
 		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
 		assertFalse(target.collectionChangedZeroArgumentFlag);
 		assertFalse(target.collectionChangedSingleArgumentFlag);
 	}
@@ -106,6 +114,8 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		assertFalse(target.itemAddedSingleArgumentFlag);
 		assertTrue(target.itemRemovedZeroArgumentFlag);
 		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
 		assertFalse(target.collectionChangedZeroArgumentFlag);
 		assertFalse(target.collectionChangedSingleArgumentFlag);
 	}
@@ -121,6 +131,8 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		assertFalse(target.itemAddedSingleArgumentFlag);
 		assertTrue(target.itemRemovedZeroArgumentFlag);
 		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
 		assertFalse(target.collectionChangedZeroArgumentFlag);
 		assertFalse(target.collectionChangedSingleArgumentFlag);
 	}
@@ -136,6 +148,8 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		assertFalse(target.itemAddedSingleArgumentFlag);
 		assertFalse(target.itemRemovedZeroArgumentFlag);
 		assertTrue(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
 		assertFalse(target.collectionChangedZeroArgumentFlag);
 		assertFalse(target.collectionChangedSingleArgumentFlag);
 	}
@@ -151,6 +165,76 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		assertFalse(target.itemAddedSingleArgumentFlag);
 		assertFalse(target.itemRemovedZeroArgumentFlag);
 		assertTrue(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
+		assertFalse(target.collectionChangedZeroArgumentFlag);
+		assertFalse(target.collectionChangedSingleArgumentFlag);
+	}
+
+	public void testCollectionClearedZeroArgument() {
+		TestModel testModel = new TestModel();
+		String string = "foo";
+		testModel.addString(string);
+		Target target = new Target(testModel, TestModel.STRINGS_COLLECTION, string);
+		testModel.addCollectionChangeListener(this.buildZeroArgumentListener(target));
+		testModel.clearStrings();
+		assertFalse(target.itemAddedZeroArgumentFlag);
+		assertFalse(target.itemAddedSingleArgumentFlag);
+		assertFalse(target.itemRemovedZeroArgumentFlag);
+		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertTrue(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
+		assertFalse(target.collectionChangedZeroArgumentFlag);
+		assertFalse(target.collectionChangedSingleArgumentFlag);
+	}
+
+	public void testCollectionClearedZeroArgumentNamedCollection() {
+		TestModel testModel = new TestModel();
+		String string = "foo";
+		testModel.addString(string);
+		Target target = new Target(testModel, TestModel.STRINGS_COLLECTION, string);
+		testModel.addCollectionChangeListener(TestModel.STRINGS_COLLECTION, this.buildZeroArgumentListener(target));
+		testModel.clearStrings();
+		assertFalse(target.itemAddedZeroArgumentFlag);
+		assertFalse(target.itemAddedSingleArgumentFlag);
+		assertFalse(target.itemRemovedZeroArgumentFlag);
+		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertTrue(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
+		assertFalse(target.collectionChangedZeroArgumentFlag);
+		assertFalse(target.collectionChangedSingleArgumentFlag);
+	}
+
+	public void testCollectionClearedSingleArgument() {
+		TestModel testModel = new TestModel();
+		String string = "foo";
+		testModel.addString(string);
+		Target target = new Target(testModel, TestModel.STRINGS_COLLECTION, string);
+		testModel.addCollectionChangeListener(this.buildSingleArgumentListener(target));
+		testModel.clearStrings();
+		assertFalse(target.itemAddedZeroArgumentFlag);
+		assertFalse(target.itemAddedSingleArgumentFlag);
+		assertFalse(target.itemRemovedZeroArgumentFlag);
+		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertTrue(target.collectionClearedSingleArgumentFlag);
+		assertFalse(target.collectionChangedZeroArgumentFlag);
+		assertFalse(target.collectionChangedSingleArgumentFlag);
+	}
+
+	public void testCollectionClearedSingleArgumentNamedCollection() {
+		TestModel testModel = new TestModel();
+		String string = "foo";
+		testModel.addString(string);
+		Target target = new Target(testModel, TestModel.STRINGS_COLLECTION, string);
+		testModel.addCollectionChangeListener(TestModel.STRINGS_COLLECTION, this.buildSingleArgumentListener(target));
+		testModel.clearStrings();
+		assertFalse(target.itemAddedZeroArgumentFlag);
+		assertFalse(target.itemAddedSingleArgumentFlag);
+		assertFalse(target.itemRemovedZeroArgumentFlag);
+		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertTrue(target.collectionClearedSingleArgumentFlag);
 		assertFalse(target.collectionChangedZeroArgumentFlag);
 		assertFalse(target.collectionChangedSingleArgumentFlag);
 	}
@@ -166,6 +250,8 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		assertFalse(target.itemAddedSingleArgumentFlag);
 		assertFalse(target.itemRemovedZeroArgumentFlag);
 		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
 		assertTrue(target.collectionChangedZeroArgumentFlag);
 		assertFalse(target.collectionChangedSingleArgumentFlag);
 	}
@@ -181,6 +267,8 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		assertFalse(target.itemAddedSingleArgumentFlag);
 		assertFalse(target.itemRemovedZeroArgumentFlag);
 		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
 		assertTrue(target.collectionChangedZeroArgumentFlag);
 		assertFalse(target.collectionChangedSingleArgumentFlag);
 	}
@@ -196,6 +284,8 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		assertFalse(target.itemAddedSingleArgumentFlag);
 		assertFalse(target.itemRemovedZeroArgumentFlag);
 		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
 		assertFalse(target.collectionChangedZeroArgumentFlag);
 		assertTrue(target.collectionChangedSingleArgumentFlag);
 	}
@@ -211,6 +301,8 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		assertFalse(target.itemAddedSingleArgumentFlag);
 		assertFalse(target.itemRemovedZeroArgumentFlag);
 		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.collectionClearedZeroArgumentFlag);
+		assertFalse(target.collectionClearedSingleArgumentFlag);
 		assertFalse(target.collectionChangedZeroArgumentFlag);
 		assertTrue(target.collectionChangedSingleArgumentFlag);
 	}
@@ -288,6 +380,9 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		void removeString(String string) {
 			this.removeItemFromCollection(string, this.strings, STRINGS_COLLECTION);
 		}
+		void clearStrings() {
+			this.clearCollection(this.strings, STRINGS_COLLECTION);
+		}
 		void replaceStrings(String[] newStrings) {
 			this.strings.clear();
 			CollectionTools.addAll(this.strings, newStrings);
@@ -306,6 +401,8 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		boolean itemAddedSingleArgumentFlag = false;
 		boolean itemRemovedZeroArgumentFlag = false;
 		boolean itemRemovedSingleArgumentFlag = false;
+		boolean collectionClearedZeroArgumentFlag = false;
+		boolean collectionClearedSingleArgumentFlag = false;
 		boolean collectionChangedZeroArgumentFlag = false;
 		boolean collectionChangedSingleArgumentFlag = false;
 		Target(TestModel testModel, String collectionName, String string) {
@@ -331,6 +428,15 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.collectionName, e.collectionName());
 			assertEquals(this.string, e.items().next());
+		}
+		void collectionClearedZeroArgument() {
+			this.collectionClearedZeroArgumentFlag = true;
+		}
+		void collectionClearedSingleArgument(CollectionChangeEvent e) {
+			this.collectionClearedSingleArgumentFlag = true;
+			assertSame(this.testModel, e.getSource());
+			assertEquals(this.collectionName, e.collectionName());
+			assertFalse(e.items().hasNext());
 		}
 		void collectionChangedZeroArgument() {
 			this.collectionChangedZeroArgumentFlag = true;

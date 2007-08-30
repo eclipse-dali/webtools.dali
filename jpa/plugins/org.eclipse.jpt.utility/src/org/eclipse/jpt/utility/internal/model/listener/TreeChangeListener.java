@@ -35,6 +35,14 @@ public interface TreeChangeListener extends ChangeListener {
 	void nodeRemoved(TreeChangeEvent event);
 
 	/**
+	 * This method gets called when a bound tree is cleared.
+	 * 
+	 * @param event A TreeChangeEvent describing the event source,
+	 * the tree that changed, and an empty path.
+	 */
+	void treeCleared(TreeChangeEvent event);
+
+	/**
 	 * This method gets called when a portion of a bound tree is changed in
 	 * a manner that is not easily characterized by the other methods in this
 	 * interface.

@@ -172,6 +172,14 @@ public abstract class AbstractModel implements Model {
 		this.changeSupport().fireItemsRemoved(event);
 	}
 
+	protected final void fireCollectionCleared(String collectionName) {
+		this.changeSupport().fireCollectionCleared(collectionName);
+	}
+
+	protected final void fireCollectionCleared(CollectionChangeEvent event) {
+		this.changeSupport().fireCollectionCleared(event);
+	}
+
 	protected final void fireCollectionChanged(String collectionName) {
 		this.changeSupport().fireCollectionChanged(collectionName);
 	}
@@ -283,7 +291,7 @@ public abstract class AbstractModel implements Model {
 			return false;
 		}
 		collection.clear();
-		this.fireCollectionChanged(collectionName);
+		this.fireCollectionCleared(collectionName);
 		return true;
 	}
 
@@ -377,6 +385,26 @@ public abstract class AbstractModel implements Model {
 
 	protected final void fireItemsReplaced(ListChangeEvent event) {
 		this.changeSupport().fireItemsReplaced(event);
+	}
+
+	protected final void fireItemMoved(String listName, int targetIndex, int sourceIndex) {
+		this.changeSupport().fireItemMoved(listName, targetIndex, sourceIndex);
+	}
+
+	protected final <E> void fireItemsMoved(String listName, int targetIndex, int sourceIndex, int length) {
+		this.changeSupport().fireItemsMoved(listName, targetIndex, sourceIndex, length);
+	}
+
+	protected final void fireItemsMoved(ListChangeEvent event) {
+		this.changeSupport().fireItemsMoved(event);
+	}
+
+	protected final void fireListCleared(String listName) {
+		this.changeSupport().fireListCleared(listName);
+	}
+
+	protected final void fireListCleared(ListChangeEvent event) {
+		this.changeSupport().fireListCleared(event);
 	}
 
 	protected final void fireListChanged(String listName) {
@@ -501,6 +529,26 @@ public abstract class AbstractModel implements Model {
 
 	/**
 	 * Convenience method.
+	 * Move items in the specified list from the specified source index to the
+	 * specified target index for the specified length.
+	 */
+	protected <E> void moveItemsInList(int targetIndex, int sourceIndex, int length, List<E> list, String listName) {
+		CollectionTools.move(list, targetIndex, sourceIndex, length);
+		this.fireItemsMoved(listName, targetIndex, sourceIndex, length);
+	}
+
+	/**
+	 * Convenience method.
+	 * Move an item in the specified list from the specified source index to the
+	 * specified target index.
+	 */
+	protected <E> void moveItemInList(int targetIndex, int sourceIndex, List<E> list, String listName) {
+		CollectionTools.move(list, targetIndex, sourceIndex);
+		this.fireItemMoved(listName, targetIndex, sourceIndex);
+	}
+
+	/**
+	 * Convenience method.
 	 * Clear the entire list
 	 * and fire the appropriate event if necessary.
 	 * Return whether the list changed.
@@ -510,7 +558,7 @@ public abstract class AbstractModel implements Model {
 			return false;
 		}
 		list.clear();
-		this.fireListChanged(listName);
+		this.fireListCleared(listName);
 		return true;
 	}
 
@@ -549,15 +597,23 @@ public abstract class AbstractModel implements Model {
 		this.changeSupport().fireNodeRemoved(event);
 	}
 
-	protected final void fireTreeStructureChanged(String treeName) {
+	protected final void fireTreeCleared(String treeName) {
+		this.changeSupport().fireTreeCleared(treeName);
+	}
+
+	protected final void fireTreeCleared(TreeChangeEvent event) {
+		this.changeSupport().fireTreeCleared(event);
+	}
+
+	protected final void fireTreeChanged(String treeName) {
 		this.changeSupport().fireTreeChanged(treeName);
 	}
 
-	protected final void fireTreeStructureChanged(String treeName, Object[] path) {
+	protected final void fireTreeChanged(String treeName, Object[] path) {
 		this.changeSupport().fireTreeChanged(treeName, path);
 	}
 
-	protected final void fireTreeStructureChanged(TreeChangeEvent event) {
+	protected final void fireTreeChanged(TreeChangeEvent event) {
 		this.changeSupport().fireTreeChanged(event);
 	}
 

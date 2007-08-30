@@ -36,11 +36,11 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 	}
 
 	private TreeChangeListener buildZeroArgumentListener(Object target) {
-		return ReflectiveChangeListener.buildTreeChangeListener(target, "nodeAddedZeroArgument", "nodeRemovedZeroArgument", "treeChangedZeroArgument");
+		return ReflectiveChangeListener.buildTreeChangeListener(target, "nodeAddedZeroArgument", "nodeRemovedZeroArgument", "treeClearedZeroArgument", "treeChangedZeroArgument");
 	}
 
 	private TreeChangeListener buildSingleArgumentListener(Object target) {
-		return ReflectiveChangeListener.buildTreeChangeListener(target, "nodeAddedSingleArgument", "nodeRemovedSingleArgument", "treeChangedSingleArgument");
+		return ReflectiveChangeListener.buildTreeChangeListener(target, "nodeAddedSingleArgument", "nodeRemovedSingleArgument", "treeClearedSingleArgument", "treeChangedSingleArgument");
 	}
 
 	public void testNodeAddedZeroArgument() {
@@ -52,6 +52,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		assertFalse(target.nodeAddedSingleArgumentFlag);
 		assertFalse(target.nodeRemovedZeroArgumentFlag);
 		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
 		assertFalse(target.treeChangedZeroArgumentFlag);
 		assertFalse(target.treeChangedSingleArgumentFlag);
 	}
@@ -65,6 +67,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		assertFalse(target.nodeAddedSingleArgumentFlag);
 		assertFalse(target.nodeRemovedZeroArgumentFlag);
 		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
 		assertFalse(target.treeChangedZeroArgumentFlag);
 		assertFalse(target.treeChangedSingleArgumentFlag);
 	}
@@ -78,6 +82,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		assertTrue(target.nodeAddedSingleArgumentFlag);
 		assertFalse(target.nodeRemovedZeroArgumentFlag);
 		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
 		assertFalse(target.treeChangedZeroArgumentFlag);
 		assertFalse(target.treeChangedSingleArgumentFlag);
 	}
@@ -91,6 +97,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		assertTrue(target.nodeAddedSingleArgumentFlag);
 		assertFalse(target.nodeRemovedZeroArgumentFlag);
 		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
 		assertFalse(target.treeChangedZeroArgumentFlag);
 		assertFalse(target.treeChangedSingleArgumentFlag);
 	}
@@ -105,6 +113,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		assertFalse(target.nodeAddedSingleArgumentFlag);
 		assertTrue(target.nodeRemovedZeroArgumentFlag);
 		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
 		assertFalse(target.treeChangedZeroArgumentFlag);
 		assertFalse(target.treeChangedSingleArgumentFlag);
 	}
@@ -119,6 +129,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		assertFalse(target.nodeAddedSingleArgumentFlag);
 		assertTrue(target.nodeRemovedZeroArgumentFlag);
 		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
 		assertFalse(target.treeChangedZeroArgumentFlag);
 		assertFalse(target.treeChangedSingleArgumentFlag);
 	}
@@ -133,6 +145,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		assertFalse(target.nodeAddedSingleArgumentFlag);
 		assertFalse(target.nodeRemovedZeroArgumentFlag);
 		assertTrue(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
 		assertFalse(target.treeChangedZeroArgumentFlag);
 		assertFalse(target.treeChangedSingleArgumentFlag);
 	}
@@ -147,6 +161,76 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		assertFalse(target.nodeAddedSingleArgumentFlag);
 		assertFalse(target.nodeRemovedZeroArgumentFlag);
 		assertTrue(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
+		assertFalse(target.treeChangedZeroArgumentFlag);
+		assertFalse(target.treeChangedSingleArgumentFlag);
+	}
+
+	public void testTreeClearedZeroArgument() {
+		TestModel testModel = new TestModel("root");
+		testModel.addNode("root", "child");
+		testModel.addNode("child", "grandchild");
+		Target target = new Target(testModel, TestModel.STRINGS_TREE, new String[0]);
+		testModel.addTreeChangeListener(this.buildZeroArgumentListener(target));
+		testModel.clearTree();
+		assertFalse(target.nodeAddedZeroArgumentFlag);
+		assertFalse(target.nodeAddedSingleArgumentFlag);
+		assertFalse(target.nodeRemovedZeroArgumentFlag);
+		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertTrue(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
+		assertFalse(target.treeChangedZeroArgumentFlag);
+		assertFalse(target.treeChangedSingleArgumentFlag);
+	}
+
+	public void testTreeClearedZeroArgumentNamedTree() {
+		TestModel testModel = new TestModel("root");
+		testModel.addNode("root", "child");
+		testModel.addNode("child", "grandchild");
+		Target target = new Target(testModel, TestModel.STRINGS_TREE, new String[0]);
+		testModel.addTreeChangeListener(TestModel.STRINGS_TREE, this.buildZeroArgumentListener(target));
+		testModel.clearTree();
+		assertFalse(target.nodeAddedZeroArgumentFlag);
+		assertFalse(target.nodeAddedSingleArgumentFlag);
+		assertFalse(target.nodeRemovedZeroArgumentFlag);
+		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertTrue(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
+		assertFalse(target.treeChangedZeroArgumentFlag);
+		assertFalse(target.treeChangedSingleArgumentFlag);
+	}
+
+	public void testTreeClearedSingleArgument() {
+		TestModel testModel = new TestModel("root");
+		testModel.addNode("root", "child");
+		testModel.addNode("child", "grandchild");
+		Target target = new Target(testModel, TestModel.STRINGS_TREE, new String[0]);
+		testModel.addTreeChangeListener(this.buildSingleArgumentListener(target));
+		testModel.clearTree();
+		assertFalse(target.nodeAddedZeroArgumentFlag);
+		assertFalse(target.nodeAddedSingleArgumentFlag);
+		assertFalse(target.nodeRemovedZeroArgumentFlag);
+		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertTrue(target.treeClearedSingleArgumentFlag);
+		assertFalse(target.treeChangedZeroArgumentFlag);
+		assertFalse(target.treeChangedSingleArgumentFlag);
+	}
+
+	public void testTreeClearedSingleArgumentNamedTree() {
+		TestModel testModel = new TestModel("root");
+		testModel.addNode("root", "child");
+		testModel.addNode("child", "grandchild");
+		Target target = new Target(testModel, TestModel.STRINGS_TREE, new String[0]);
+		testModel.addTreeChangeListener(TestModel.STRINGS_TREE, this.buildSingleArgumentListener(target));
+		testModel.clearTree();
+		assertFalse(target.nodeAddedZeroArgumentFlag);
+		assertFalse(target.nodeAddedSingleArgumentFlag);
+		assertFalse(target.nodeRemovedZeroArgumentFlag);
+		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertTrue(target.treeClearedSingleArgumentFlag);
 		assertFalse(target.treeChangedZeroArgumentFlag);
 		assertFalse(target.treeChangedSingleArgumentFlag);
 	}
@@ -161,6 +245,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		assertFalse(target.nodeAddedSingleArgumentFlag);
 		assertFalse(target.nodeRemovedZeroArgumentFlag);
 		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
 		assertTrue(target.treeChangedZeroArgumentFlag);
 		assertFalse(target.treeChangedSingleArgumentFlag);
 	}
@@ -175,6 +261,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		assertFalse(target.nodeAddedSingleArgumentFlag);
 		assertFalse(target.nodeRemovedZeroArgumentFlag);
 		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
 		assertTrue(target.treeChangedZeroArgumentFlag);
 		assertFalse(target.treeChangedSingleArgumentFlag);
 	}
@@ -189,6 +277,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		assertFalse(target.nodeAddedSingleArgumentFlag);
 		assertFalse(target.nodeRemovedZeroArgumentFlag);
 		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
 		assertFalse(target.treeChangedZeroArgumentFlag);
 		assertTrue(target.treeChangedSingleArgumentFlag);
 	}
@@ -203,6 +293,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		assertFalse(target.nodeAddedSingleArgumentFlag);
 		assertFalse(target.nodeRemovedZeroArgumentFlag);
 		assertFalse(target.nodeRemovedSingleArgumentFlag);
+		assertFalse(target.treeClearedZeroArgumentFlag);
+		assertFalse(target.treeClearedSingleArgumentFlag);
 		assertFalse(target.treeChangedZeroArgumentFlag);
 		assertTrue(target.treeChangedSingleArgumentFlag);
 	}
@@ -347,7 +439,14 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 			String parent = this.parents.remove(oldNode);
 			this.parents.put(newNode, parent);
 
-			this.fireTreeStructureChanged(STRINGS_TREE, this.path(newNode));
+			this.fireTreeChanged(STRINGS_TREE, this.path(newNode));
+		}
+		void clearTree() {
+			this.childrenLists.clear();
+			this.childrenLists.put(root, new ArrayList<String>());
+			this.parents.clear();
+			this.parents.put(root, null);
+			this.fireTreeCleared(STRINGS_TREE);
 		}
 		void changeCollection() {
 			this.fireCollectionChanged("bogus collection");
@@ -362,6 +461,8 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		boolean nodeAddedSingleArgumentFlag = false;
 		boolean nodeRemovedZeroArgumentFlag = false;
 		boolean nodeRemovedSingleArgumentFlag = false;
+		boolean treeClearedZeroArgumentFlag = false;
+		boolean treeClearedSingleArgumentFlag = false;
 		boolean treeChangedZeroArgumentFlag = false;
 		boolean treeChangedSingleArgumentFlag = false;
 		Target(TestModel testModel, String treeName, String[] path) {
@@ -384,6 +485,15 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		}
 		void nodeRemovedSingleArgument(TreeChangeEvent e) {
 			this.nodeRemovedSingleArgumentFlag = true;
+			assertSame(this.testModel, e.getSource());
+			assertEquals(this.treeName, e.treeName());
+			assertTrue(Arrays.equals(this.path, e.path()));
+		}
+		void treeClearedZeroArgument() {
+			this.treeClearedZeroArgumentFlag = true;
+		}
+		void treeClearedSingleArgument(TreeChangeEvent e) {
+			this.treeClearedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.treeName, e.treeName());
 			assertTrue(Arrays.equals(this.path, e.path()));

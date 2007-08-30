@@ -130,6 +130,24 @@ public class AWTChangeEventDispatcher
 		}
 	}
 
+	public void collectionCleared(final CollectionChangeListener listener, final CollectionChangeEvent event) {
+		if (EventQueue.isDispatchThread()) {
+			listener.collectionCleared(event);
+		} else {
+			this.invoke(
+				new Runnable() {
+					public void run() {
+						listener.collectionCleared(event);
+					}
+					@Override
+					public String toString() {
+						return "collectionCleared";
+					}
+				}
+			);
+		}
+	}
+
 	public void collectionChanged(final CollectionChangeListener listener, final CollectionChangeEvent event) {
 		if (EventQueue.isDispatchThread()) {
 			listener.collectionChanged(event);
@@ -202,6 +220,42 @@ public class AWTChangeEventDispatcher
 		}
 	}
 
+	public void itemsMoved(final ListChangeListener listener, final ListChangeEvent event) {
+		if (EventQueue.isDispatchThread()) {
+			listener.itemsMoved(event);
+		} else {
+			this.invoke(
+				new Runnable() {
+					public void run() {
+						listener.itemsMoved(event);
+					}
+					@Override
+					public String toString() {
+						return "itemsMoved (List)";
+					}
+				}
+			);
+		}
+	}
+
+	public void listCleared(final ListChangeListener listener, final ListChangeEvent event) {
+		if (EventQueue.isDispatchThread()) {
+			listener.listCleared(event);
+		} else {
+			this.invoke(
+				new Runnable() {
+					public void run() {
+						listener.listCleared(event);
+					}
+					@Override
+					public String toString() {
+						return "listCleared";
+					}
+				}
+			);
+		}
+	}
+
 	public void listChanged(final ListChangeListener listener, final ListChangeEvent event) {
 		if (EventQueue.isDispatchThread()) {
 			listener.listChanged(event);
@@ -250,6 +304,24 @@ public class AWTChangeEventDispatcher
 					@Override
 					public String toString() {
 						return "nodeRemoved";
+					}
+				}
+			);
+		}
+	}
+
+	public void treeCleared(final TreeChangeListener listener, final TreeChangeEvent event) {
+		if (EventQueue.isDispatchThread()) {
+			listener.treeCleared(event);
+		} else {
+			this.invoke(
+				new Runnable() {
+					public void run() {
+						listener.treeCleared(event);
+					}
+					@Override
+					public String toString() {
+						return "treeCleared";
 					}
 				}
 			);

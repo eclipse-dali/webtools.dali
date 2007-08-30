@@ -966,6 +966,96 @@ public class ChangeSupport
 	/**
 	 * Report a bound collection update to any registered listeners.
 	 */
+	public void fireCollectionCleared(CollectionChangeEvent event) {
+		String collectionName = event.collectionName();
+
+		IdentityHashBag<CollectionChangeListener> collectionChangeListeners = null;
+		IdentityHashBag<CollectionChangeListener> targets = null;
+		ChangeSupport child = null;
+
+		synchronized (this) {
+			if (this.listeners != null) {
+				collectionChangeListeners = this.collectionChangeListeners();
+				if (collectionChangeListeners != null) {
+					targets = collectionChangeListeners.clone();
+				}
+			}
+			if ((collectionName != null) && (this.children != null)) {
+				child = this.children.get(collectionName);
+			}
+		}
+
+		if (targets != null) {
+			for (CollectionChangeListener target : targets) {
+				boolean stillListening;
+				synchronized (this) {
+					stillListening = collectionChangeListeners.contains(target);
+				}
+				if (stillListening) {
+					this.dispatcher().collectionCleared(target, event);
+				}
+			}
+		}
+		if (child != null) {
+			child.fireCollectionCleared(event);
+		}
+
+		this.sourceChanged(collectionName);
+	}
+
+	/**
+	 * Report a bound collection update to any registered listeners.
+	 */
+	public void fireCollectionCleared(String collectionName) {
+//		this.fireCollectionCleared(new CollectionChangeEvent(this.source, collectionName));
+
+		IdentityHashBag<CollectionChangeListener> collectionChangeListeners = null;
+		IdentityHashBag<CollectionChangeListener> targets = null;
+		ChangeSupport child = null;
+
+		synchronized (this) {
+			if (this.listeners != null) {
+				collectionChangeListeners = this.collectionChangeListeners();
+				if (collectionChangeListeners != null) {
+					targets = collectionChangeListeners.clone();
+				}
+			}
+			if ((collectionName != null) && (this.children != null)) {
+				child = this.children.get(collectionName);
+			}
+		}
+
+		CollectionChangeEvent event = null;
+
+		if (targets != null) {
+			for (CollectionChangeListener target : targets) {
+				boolean stillListening;
+				synchronized (this) {
+					stillListening = collectionChangeListeners.contains(target);
+				}
+				if (stillListening) {
+					if (event == null) {
+						// here's the reason for the duplicate code...
+						event = new CollectionChangeEvent(this.source, collectionName);
+					}
+					this.dispatcher().collectionCleared(target, event);
+				}
+			}
+		}
+		if (child != null) {
+			if (event == null) {
+				child.fireCollectionCleared(collectionName);
+			} else {
+				child.fireCollectionCleared(event);
+			}
+		}
+
+		this.sourceChanged(collectionName);
+	}
+
+	/**
+	 * Report a bound collection update to any registered listeners.
+	 */
 	public void fireCollectionChanged(CollectionChangeEvent event) {
 		String collectionName = event.collectionName();
 
@@ -1552,6 +1642,200 @@ public class ChangeSupport
 	/**
 	 * Report a bound list update to any registered listeners.
 	 */
+	public void fireItemsMoved(ListChangeEvent event) {
+		if (event.targetIndex() == event.sourceIndex()) {
+			return;
+		}
+
+		String listName = event.listName();
+
+		IdentityHashBag<ListChangeListener> listChangeListeners = null;
+		IdentityHashBag<ListChangeListener> targets = null;
+		ChangeSupport child = null;
+
+		synchronized (this) {
+			if (this.listeners != null) {
+				listChangeListeners = this.listChangeListeners();
+				if (listChangeListeners != null) {
+					targets = listChangeListeners.clone();
+				}
+			}
+			if ((listName != null) && (this.children != null)) {
+				child = this.children.get(listName);
+			}
+		}
+
+		if (targets != null) {
+			for (ListChangeListener target : targets) {
+				boolean stillListening;
+				synchronized (this) {
+					stillListening = listChangeListeners.contains(target);
+				}
+				if (stillListening) {
+					this.dispatcher().itemsMoved(target, event);
+				}
+			}
+		}
+		if (child != null) {
+			child.fireItemsMoved(event);
+		}
+
+		this.sourceChanged(listName);
+	}
+
+	/**
+	 * Report a bound list update to any registered listeners.
+	 */
+	public void fireItemsMoved(String listName, int targetIndex, int sourceIndex, int length) {
+//		this.fireItemsMoved(new ListChangeEvent(this.source, listName, targetIndex, sourceIndex, length));
+		if (targetIndex == sourceIndex) {
+			return;
+		}
+
+		IdentityHashBag<ListChangeListener> listChangeListeners = null;
+		IdentityHashBag<ListChangeListener> targets = null;
+		ChangeSupport child = null;
+
+		synchronized (this) {
+			if (this.listeners != null) {
+				listChangeListeners = this.listChangeListeners();
+				if (listChangeListeners != null) {
+					targets = listChangeListeners.clone();
+				}
+			}
+			if ((listName != null) && (this.children != null)) {
+				child = this.children.get(listName);
+			}
+		}
+
+		ListChangeEvent event = null;
+
+		if (targets != null) {
+			for (ListChangeListener target : targets) {
+				boolean stillListening;
+				synchronized (this) {
+					stillListening = listChangeListeners.contains(target);
+				}
+				if (stillListening) {
+					if (event == null) {
+						// here's the reason for the duplicate code...
+						event = new ListChangeEvent(this.source, listName, targetIndex, sourceIndex, length);
+					}
+					this.dispatcher().itemsMoved(target, event);
+				}
+			}
+		}
+		if (child != null) {
+			if (event == null) {
+				child.fireItemsMoved(listName, targetIndex, sourceIndex, length);
+			} else {
+				child.fireItemsMoved(event);
+			}
+		}
+
+		this.sourceChanged(listName);
+	}
+
+	/**
+	 * Report a bound list update to any registered listeners.
+	 */
+	public void fireItemMoved(String listName, int targetIndex, int sourceIndex) {
+		this.fireItemsMoved(listName, targetIndex, sourceIndex, 1);
+	}
+
+	/**
+	 * Report a bound list update to any registered listeners.
+	 */
+	public void fireListCleared(ListChangeEvent event) {
+		String listName = event.listName();
+
+		IdentityHashBag<ListChangeListener> listChangeListeners = null;
+		IdentityHashBag<ListChangeListener> targets = null;
+		ChangeSupport child = null;
+
+		synchronized (this) {
+			if (this.listeners != null) {
+				listChangeListeners = this.listChangeListeners();
+				if (listChangeListeners != null) {
+					targets = listChangeListeners.clone();
+				}
+			}
+			if ((listName != null) && (this.children != null)) {
+				child = this.children.get(listName);
+			}
+		}
+
+		if (targets != null) {
+			for (ListChangeListener target : targets) {
+				boolean stillListening;
+				synchronized (this) {
+					stillListening = listChangeListeners.contains(target);
+				}
+				if (stillListening) {
+					this.dispatcher().listCleared(target, event);
+				}
+			}
+		}
+		if (child != null) {
+			child.fireListCleared(event);
+		}
+
+		this.sourceChanged(listName);
+	}
+
+	/**
+	 * Report a bound list update to any registered listeners.
+	 */
+	public void fireListCleared(String listName) {
+//		this.fireListCleared(new ListChangeEvent(this.source, listName));
+
+		IdentityHashBag<ListChangeListener> listChangeListeners = null;
+		IdentityHashBag<ListChangeListener> targets = null;
+		ChangeSupport child = null;
+
+		synchronized (this) {
+			if (this.listeners != null) {
+				listChangeListeners = this.listChangeListeners();
+				if (listChangeListeners != null) {
+					targets = listChangeListeners.clone();
+				}
+			}
+			if ((listName != null) && (this.children != null)) {
+				child = this.children.get(listName);
+			}
+		}
+
+		ListChangeEvent event = null;
+
+		if (targets != null) {
+			for (ListChangeListener target : targets) {
+				boolean stillListening;
+				synchronized (this) {
+					stillListening = listChangeListeners.contains(target);
+				}
+				if (stillListening) {
+					if (event == null) {
+						// here's the reason for the duplicate code...
+						event = new ListChangeEvent(this.source, listName);
+					}
+					this.dispatcher().listCleared(target, event);
+				}
+			}
+		}
+		if (child != null) {
+			if (event == null) {
+				child.fireListCleared(listName);
+			} else {
+				child.fireListCleared(event);
+			}
+		}
+
+		this.sourceChanged(listName);
+	}
+
+	/**
+	 * Report a bound list update to any registered listeners.
+	 */
 	public void fireListChanged(ListChangeEvent event) {
 		String listName = event.listName();
 
@@ -1643,6 +1927,7 @@ public class ChangeSupport
 	// ********** tree change support **********
 
 	private static final Class<TreeChangeListener> TREE_CHANGE_LISTENER_CLASS = TreeChangeListener.class;
+	private static final Object[] EMPTY_TREE_PATH = new Object[0];
 
 	/**
 	 * Add a tree change listener that is registered for all trees.
@@ -1877,6 +2162,103 @@ public class ChangeSupport
 	/**
 	 * Report a bound tree update to any registered listeners.
 	 */
+	public void fireTreeCleared(TreeChangeEvent event) {
+		String treeName = event.treeName();
+
+		IdentityHashBag<TreeChangeListener> treeChangeListeners = null;
+		IdentityHashBag<TreeChangeListener> targets = null;
+		ChangeSupport child = null;
+
+		synchronized (this) {
+			if (this.listeners != null) {
+				treeChangeListeners = this.treeChangeListeners();
+				if (treeChangeListeners != null) {
+					targets = treeChangeListeners.clone();
+				}
+			}
+			if ((treeName != null) && (this.children != null)) {
+				child = this.children.get(treeName);
+			}
+		}
+
+		if (targets != null) {
+			for (TreeChangeListener target : targets) {
+				boolean stillListening;
+				synchronized (this) {
+					stillListening = treeChangeListeners.contains(target);
+				}
+				if (stillListening) {
+					this.dispatcher().treeCleared(target, event);
+				}
+			}
+		}
+		if (child != null) {
+			child.fireTreeCleared(event);
+		}
+
+		this.sourceChanged(treeName);
+	}
+
+	/**
+	 * Report a bound tree update to any registered listeners.
+	 */
+	public void fireTreeCleared(String treeName, Object[] path) {
+//		this.fireTreeCleared(new TreeChangeEvent(this.source, treeName, path));
+
+		IdentityHashBag<TreeChangeListener> treeChangeListeners = null;
+		IdentityHashBag<TreeChangeListener> targets = null;
+		ChangeSupport child = null;
+
+		synchronized (this) {
+			if (this.listeners != null) {
+				treeChangeListeners = this.treeChangeListeners();
+				if (treeChangeListeners != null) {
+					targets = treeChangeListeners.clone();
+				}
+			}
+			if ((treeName != null) && (this.children != null)) {
+				child = this.children.get(treeName);
+			}
+		}
+
+		TreeChangeEvent event = null;
+
+		if (targets != null) {
+			for (TreeChangeListener target : targets) {
+				boolean stillListening;
+				synchronized (this) {
+					stillListening = treeChangeListeners.contains(target);
+				}
+				if (stillListening) {
+					if (event == null) {
+						// here's the reason for the duplicate code...
+						event = new TreeChangeEvent(this.source, treeName, path);
+					}
+					this.dispatcher().treeCleared(target, event);
+				}
+			}
+		}
+		if (child != null) {
+			if (event == null) {
+				child.fireTreeCleared(treeName, path);
+			} else {
+				child.fireTreeCleared(event);
+			}
+		}
+
+		this.sourceChanged(treeName);
+	}
+
+	/**
+	 * Report a bound tree update to any registered listeners.
+	 */
+	public void fireTreeCleared(String treeName) {
+		this.fireTreeCleared(treeName, EMPTY_TREE_PATH);
+	}
+
+	/**
+	 * Report a bound tree update to any registered listeners.
+	 */
 	public void fireTreeChanged(TreeChangeEvent event) {
 		String treeName = event.treeName();
 
@@ -1963,8 +2345,6 @@ public class ChangeSupport
 
 		this.sourceChanged(treeName);
 	}
-
-	private static final Object[] EMPTY_TREE_PATH = new Object[0];
 
 	/**
 	 * Report a bound tree update to any registered listeners.

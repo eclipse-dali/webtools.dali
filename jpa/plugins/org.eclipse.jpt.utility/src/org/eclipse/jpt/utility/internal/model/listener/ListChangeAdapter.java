@@ -35,6 +35,14 @@ public class ListChangeAdapter implements ListChangeListener {
 		// do nothing
 	}
 
+	public void itemsMoved(ListChangeEvent event) {
+		// do nothing
+	}
+
+	public void listCleared(ListChangeEvent event) {
+		// do nothing
+	}
+
 	public void listChanged(ListChangeEvent event) {
 		// do nothing
 	}

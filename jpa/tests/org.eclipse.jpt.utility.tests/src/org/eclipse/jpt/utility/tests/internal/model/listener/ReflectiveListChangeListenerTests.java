@@ -32,11 +32,11 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 	}
 
 	private ListChangeListener buildZeroArgumentListener(Object target) {
-		return ReflectiveChangeListener.buildListChangeListener(target, "itemAddedZeroArgument", "itemRemovedZeroArgument", "itemReplacedZeroArgument", "listChangedZeroArgument");
+		return ReflectiveChangeListener.buildListChangeListener(target, "itemAddedZeroArgument", "itemRemovedZeroArgument", "itemReplacedZeroArgument", "itemMovedZeroArgument", "listClearedZeroArgument", "listChangedZeroArgument");
 	}
 
 	private ListChangeListener buildSingleArgumentListener(Object target) {
-		return ReflectiveChangeListener.buildListChangeListener(target, "itemAddedSingleArgument", "itemRemovedSingleArgument", "itemReplacedSingleArgument", "listChangedSingleArgument");
+		return ReflectiveChangeListener.buildListChangeListener(target, "itemAddedSingleArgument", "itemRemovedSingleArgument", "itemReplacedSingleArgument", "itemMovedSingleArgument", "listClearedSingleArgument", "listChangedSingleArgument");
 	}
 
 	public void testItemAddedZeroArgument() {
@@ -51,6 +51,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -67,6 +71,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -83,6 +91,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -99,6 +111,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -116,6 +132,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -133,6 +153,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -150,6 +174,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertTrue(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -167,6 +195,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertTrue(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -185,6 +217,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertTrue(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -203,6 +239,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertTrue(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -221,6 +261,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertTrue(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -239,6 +283,186 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertTrue(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
+		assertFalse(target.listChangedZeroArgumentFlag);
+		assertFalse(target.listChangedSingleArgumentFlag);
+	}
+
+	public void testItemMovedZeroArgument() {
+		TestModel testModel = new TestModel();
+		testModel.addString("zero");
+		testModel.addString("one");
+		testModel.addString("two");
+		testModel.addString("three");
+		Target target = new Target(testModel, TestModel.STRINGS_LIST, 0, 2);
+		testModel.addListChangeListener(this.buildZeroArgumentListener(target));
+		testModel.moveString(0, 2);
+		assertFalse(target.itemAddedZeroArgumentFlag);
+		assertFalse(target.itemAddedSingleArgumentFlag);
+		assertFalse(target.itemRemovedZeroArgumentFlag);
+		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.itemReplacedZeroArgumentFlag);
+		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertTrue(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
+		assertFalse(target.listChangedZeroArgumentFlag);
+		assertFalse(target.listChangedSingleArgumentFlag);
+	}
+
+	public void testItemMovedZeroArgumentNamedList() {
+		TestModel testModel = new TestModel();
+		testModel.addString("zero");
+		testModel.addString("one");
+		testModel.addString("two");
+		testModel.addString("three");
+		Target target = new Target(testModel, TestModel.STRINGS_LIST, 0, 2);
+		testModel.addListChangeListener(TestModel.STRINGS_LIST, this.buildZeroArgumentListener(target));
+		testModel.moveString(0, 2);
+		assertFalse(target.itemAddedZeroArgumentFlag);
+		assertFalse(target.itemAddedSingleArgumentFlag);
+		assertFalse(target.itemRemovedZeroArgumentFlag);
+		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.itemReplacedZeroArgumentFlag);
+		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertTrue(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
+		assertFalse(target.listChangedZeroArgumentFlag);
+		assertFalse(target.listChangedSingleArgumentFlag);
+	}
+
+	public void testItemMovedSingleArgument() {
+		TestModel testModel = new TestModel();
+		testModel.addString("zero");
+		testModel.addString("one");
+		testModel.addString("two");
+		testModel.addString("three");
+		Target target = new Target(testModel, TestModel.STRINGS_LIST, 0, 2);
+		testModel.addListChangeListener(this.buildSingleArgumentListener(target));
+		testModel.moveString(0, 2);
+		assertFalse(target.itemAddedZeroArgumentFlag);
+		assertFalse(target.itemAddedSingleArgumentFlag);
+		assertFalse(target.itemRemovedZeroArgumentFlag);
+		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.itemReplacedZeroArgumentFlag);
+		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertTrue(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
+		assertFalse(target.listChangedZeroArgumentFlag);
+		assertFalse(target.listChangedSingleArgumentFlag);
+	}
+
+	public void testItemMovedSingleArgumentNamedList() {
+		TestModel testModel = new TestModel();
+		testModel.addString("zero");
+		testModel.addString("one");
+		testModel.addString("two");
+		testModel.addString("three");
+		Target target = new Target(testModel, TestModel.STRINGS_LIST, 0, 2);
+		testModel.addListChangeListener(TestModel.STRINGS_LIST, this.buildSingleArgumentListener(target));
+		testModel.moveString(0, 2);
+		assertFalse(target.itemAddedZeroArgumentFlag);
+		assertFalse(target.itemAddedSingleArgumentFlag);
+		assertFalse(target.itemRemovedZeroArgumentFlag);
+		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.itemReplacedZeroArgumentFlag);
+		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertTrue(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
+		assertFalse(target.listChangedZeroArgumentFlag);
+		assertFalse(target.listChangedSingleArgumentFlag);
+	}
+
+	public void testListClearedZeroArgument() {
+		TestModel testModel = new TestModel();
+		String string = "foo";
+		testModel.addString(string);
+		Target target = new Target(testModel, TestModel.STRINGS_LIST, null, -1);
+		testModel.addListChangeListener(this.buildZeroArgumentListener(target));
+		testModel.clearStrings();
+		assertFalse(target.itemAddedZeroArgumentFlag);
+		assertFalse(target.itemAddedSingleArgumentFlag);
+		assertFalse(target.itemRemovedZeroArgumentFlag);
+		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.itemReplacedZeroArgumentFlag);
+		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertTrue(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
+		assertFalse(target.listChangedZeroArgumentFlag);
+		assertFalse(target.listChangedSingleArgumentFlag);
+	}
+
+	public void testListClearedZeroArgumentNamedList() {
+		TestModel testModel = new TestModel();
+		String string = "foo";
+		testModel.addString(string);
+		Target target = new Target(testModel, TestModel.STRINGS_LIST, null, -1);
+		testModel.addListChangeListener(TestModel.STRINGS_LIST, this.buildZeroArgumentListener(target));
+		testModel.clearStrings();
+		assertFalse(target.itemAddedZeroArgumentFlag);
+		assertFalse(target.itemAddedSingleArgumentFlag);
+		assertFalse(target.itemRemovedZeroArgumentFlag);
+		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.itemReplacedZeroArgumentFlag);
+		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertTrue(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
+		assertFalse(target.listChangedZeroArgumentFlag);
+		assertFalse(target.listChangedSingleArgumentFlag);
+	}
+
+	public void testListClearedSingleArgument() {
+		TestModel testModel = new TestModel();
+		String string = "foo";
+		testModel.addString(string);
+		Target target = new Target(testModel, TestModel.STRINGS_LIST, null, -1);
+		testModel.addListChangeListener(this.buildSingleArgumentListener(target));
+		testModel.clearStrings();
+		assertFalse(target.itemAddedZeroArgumentFlag);
+		assertFalse(target.itemAddedSingleArgumentFlag);
+		assertFalse(target.itemRemovedZeroArgumentFlag);
+		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.itemReplacedZeroArgumentFlag);
+		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertTrue(target.listClearedSingleArgumentFlag);
+		assertFalse(target.listChangedZeroArgumentFlag);
+		assertFalse(target.listChangedSingleArgumentFlag);
+	}
+
+	public void testListClearedSingleArgumentNamedList() {
+		TestModel testModel = new TestModel();
+		String string = "foo";
+		testModel.addString(string);
+		Target target = new Target(testModel, TestModel.STRINGS_LIST, null, -1);
+		testModel.addListChangeListener(TestModel.STRINGS_LIST, this.buildSingleArgumentListener(target));
+		testModel.clearStrings();
+		assertFalse(target.itemAddedZeroArgumentFlag);
+		assertFalse(target.itemAddedSingleArgumentFlag);
+		assertFalse(target.itemRemovedZeroArgumentFlag);
+		assertFalse(target.itemRemovedSingleArgumentFlag);
+		assertFalse(target.itemReplacedZeroArgumentFlag);
+		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertTrue(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -256,6 +480,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertTrue(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -273,6 +501,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertTrue(target.listChangedZeroArgumentFlag);
 		assertFalse(target.listChangedSingleArgumentFlag);
 	}
@@ -290,6 +522,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertTrue(target.listChangedSingleArgumentFlag);
 	}
@@ -307,6 +543,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		assertFalse(target.itemRemovedSingleArgumentFlag);
 		assertFalse(target.itemReplacedZeroArgumentFlag);
 		assertFalse(target.itemReplacedSingleArgumentFlag);
+		assertFalse(target.itemMovedZeroArgumentFlag);
+		assertFalse(target.itemMovedSingleArgumentFlag);
+		assertFalse(target.listClearedZeroArgumentFlag);
+		assertFalse(target.listClearedSingleArgumentFlag);
 		assertFalse(target.listChangedZeroArgumentFlag);
 		assertTrue(target.listChangedSingleArgumentFlag);
 	}
@@ -382,6 +622,12 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		void replaceString(String oldString, String newString) {
 			this.setItemInList(this.strings.indexOf(oldString), newString, this.strings, STRINGS_LIST);
 		}
+		void moveString(int targetIndex, int sourceIndex) {
+			this.moveItemInList(targetIndex, sourceIndex, this.strings, STRINGS_LIST);
+		}
+		void clearStrings() {
+			this.clearList(this.strings, STRINGS_LIST);
+		}
 		void replaceAllStrings(String[] newStrings) {
 			this.strings.clear();
 			CollectionTools.addAll(this.strings, newStrings);
@@ -398,12 +644,17 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		String string;
 		int index;
 		String replacedString;
+		int sourceIndex;
 		boolean itemAddedZeroArgumentFlag = false;
 		boolean itemAddedSingleArgumentFlag = false;
 		boolean itemRemovedZeroArgumentFlag = false;
 		boolean itemRemovedSingleArgumentFlag = false;
 		boolean itemReplacedZeroArgumentFlag = false;
 		boolean itemReplacedSingleArgumentFlag = false;
+		boolean itemMovedZeroArgumentFlag = false;
+		boolean itemMovedSingleArgumentFlag = false;
+		boolean listClearedZeroArgumentFlag = false;
+		boolean listClearedSingleArgumentFlag = false;
 		boolean listChangedZeroArgumentFlag = false;
 		boolean listChangedSingleArgumentFlag = false;
 		Target(TestModel testModel, String listName, String string, int index) {
@@ -416,6 +667,13 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		Target(TestModel testModel, String listName, String string, int index, String replacedString) {
 			this(testModel, listName, string, index);
 			this.replacedString = replacedString;
+		}
+		Target(TestModel testModel, String listName, int targetIndex, int sourceIndex) {
+			super();
+			this.testModel = testModel;
+			this.listName = listName;
+			this.index = targetIndex;
+			this.sourceIndex = sourceIndex;
 		}
 		void itemAddedZeroArgument() {
 			this.itemAddedZeroArgumentFlag = true;
@@ -448,8 +706,28 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 			assertEquals(this.replacedString, e.replacedItems().next());
 			assertEquals(this.index, e.index());
 		}
+		void itemMovedZeroArgument() {
+			this.itemMovedZeroArgumentFlag = true;
+		}
+		void itemMovedSingleArgument(ListChangeEvent e) {
+			this.itemMovedSingleArgumentFlag = true;
+			assertSame(this.testModel, e.getSource());
+			assertEquals(this.listName, e.listName());
+			assertEquals(this.index, e.targetIndex());
+			assertEquals(this.sourceIndex, e.sourceIndex());
+		}
 		void listChangedZeroArgument() {
 			this.listChangedZeroArgumentFlag = true;
+		}
+		void listClearedSingleArgument(ListChangeEvent e) {
+			this.listClearedSingleArgumentFlag = true;
+			assertSame(this.testModel, e.getSource());
+			assertEquals(this.listName, e.listName());
+			assertFalse(e.items().hasNext());
+			assertEquals(this.index, e.index());
+		}
+		void listClearedZeroArgument() {
+			this.listClearedZeroArgumentFlag = true;
 		}
 		void listChangedSingleArgument(ListChangeEvent e) {
 			this.listChangedSingleArgumentFlag = true;

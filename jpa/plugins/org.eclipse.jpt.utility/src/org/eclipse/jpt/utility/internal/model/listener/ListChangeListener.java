@@ -46,6 +46,23 @@ public interface ListChangeListener extends ChangeListener {
 	void itemsReplaced(ListChangeEvent event);
 
 	/**
+	 * This method gets called when items in a bound list are moved.
+	 * 
+	 * @param event A ListChangeEvent describing the event source,
+	 * the list that changed, and the indices of where items were moved
+	 * from and to.
+	 */
+	void itemsMoved(ListChangeEvent event);
+
+	/**
+	 * This method gets called when a bound list is cleared.
+	 * 
+	 * @param event A ListChangeEvent object describing the event source 
+	 * and the list that changed.
+	 */
+	void listCleared(ListChangeEvent event);
+
+	/**
 	 * This method gets called when a bound list is changed in a manner
 	 * that is not easily characterized by the other methods in this interface.
 	 * 

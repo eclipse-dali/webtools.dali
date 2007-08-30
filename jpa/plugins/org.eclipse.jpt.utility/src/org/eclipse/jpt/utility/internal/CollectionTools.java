@@ -1338,6 +1338,148 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Move an element from the specified source index to the specified target
+	 * index. Return the altered array.
+	 * java.util.Arrays#move(Object[] array, int targetIndex, int sourceIndex)
+	 */
+	public static <E> E[] move(E[] array, int targetIndex, int sourceIndex) {
+		if (targetIndex == sourceIndex) {
+			return array;
+		}
+		E temp = array[sourceIndex];
+		if (targetIndex < sourceIndex) {
+			System.arraycopy(array, targetIndex, array, targetIndex + 1, sourceIndex - targetIndex);
+		} else {
+			System.arraycopy(array, sourceIndex + 1, array, sourceIndex, targetIndex - sourceIndex);
+		}
+		array[targetIndex] = temp;
+		return array;
+	}
+
+	/**
+	 * Move elements from the specified source index to the specified target
+	 * index. Return the altered array.
+	 * java.util.Arrays#move(Object[] array, int targetIndex, int sourceIndex, int length)
+	 */
+	public static <E> E[] move(E[] array, int targetIndex, int sourceIndex, int length) {
+		if (targetIndex == sourceIndex) {
+			return array;
+		}
+		@SuppressWarnings("unchecked")
+		E[] temp = (E[]) Array.newInstance(array.getClass().getComponentType(), length);
+		System.arraycopy(array, sourceIndex, temp, 0, length);
+		if (targetIndex < sourceIndex) {
+			System.arraycopy(array, targetIndex, array, targetIndex + length, sourceIndex - targetIndex);
+		} else {
+			System.arraycopy(array, sourceIndex + length, array, sourceIndex, targetIndex - sourceIndex);
+		}
+		System.arraycopy(temp, 0, array, targetIndex, length);
+		return array;
+	}
+
+	/**
+	 * Move an element from the specified source index to the specified target
+	 * index. Return the altered array.
+	 * java.util.Arrays#move(int[] array, int targetIndex, int sourceIndex)
+	 */
+	public static int[] move(int[] array, int targetIndex, int sourceIndex) {
+		if (targetIndex == sourceIndex) {
+			return array;
+		}
+		int temp = array[sourceIndex];
+		if (targetIndex < sourceIndex) {
+			System.arraycopy(array, targetIndex, array, targetIndex + 1, sourceIndex - targetIndex);
+		} else {
+			System.arraycopy(array, sourceIndex + 1, array, sourceIndex, targetIndex - sourceIndex);
+		}
+		array[targetIndex] = temp;
+		return array;
+	}
+
+	/**
+	 * Move elements from the specified source index to the specified target
+	 * index. Return the altered array.
+	 * java.util.Arrays#move(int[] array, int targetIndex, int sourceIndex, int length)
+	 */
+	public static int[] move(int[] array, int targetIndex, int sourceIndex, int length) {
+		if (targetIndex == sourceIndex) {
+			return array;
+		}
+		int[] temp = new int[length];
+		System.arraycopy(array, sourceIndex, temp, 0, length);
+		if (targetIndex < sourceIndex) {
+			System.arraycopy(array, targetIndex, array, targetIndex + length, sourceIndex - targetIndex);
+		} else {
+			System.arraycopy(array, sourceIndex + length, array, sourceIndex, targetIndex - sourceIndex);
+		}
+		System.arraycopy(temp, 0, array, targetIndex, length);
+		return array;
+	}
+
+	/**
+	 * Move an element from the specified source index to the specified target
+	 * index. Return the altered array.
+	 * java.util.Arrays#move(char[] array, int targetIndex, int sourceIndex)
+	 */
+	public static char[] move(char[] array, int targetIndex, int sourceIndex) {
+		if (targetIndex == sourceIndex) {
+			return array;
+		}
+		char temp = array[sourceIndex];
+		if (targetIndex < sourceIndex) {
+			System.arraycopy(array, targetIndex, array, targetIndex + 1, sourceIndex - targetIndex);
+		} else {
+			System.arraycopy(array, sourceIndex + 1, array, sourceIndex, targetIndex - sourceIndex);
+		}
+		array[targetIndex] = temp;
+		return array;
+	}
+
+	/**
+	 * Move elements from the specified source index to the specified target
+	 * index. Return the altered array.
+	 * java.util.Arrays#move(char[] array, int targetIndex, int sourceIndex, int length)
+	 */
+	public static char[] move(char[] array, int targetIndex, int sourceIndex, int length) {
+		if (targetIndex == sourceIndex) {
+			return array;
+		}
+		char[] temp = new char[length];
+		System.arraycopy(array, sourceIndex, temp, 0, length);
+		if (targetIndex < sourceIndex) {
+			System.arraycopy(array, targetIndex, array, targetIndex + length, sourceIndex - targetIndex);
+		} else {
+			System.arraycopy(array, sourceIndex + length, array, sourceIndex, targetIndex - sourceIndex);
+		}
+		System.arraycopy(temp, 0, array, targetIndex, length);
+		return array;
+	}
+
+	/**
+	 * Move an element from the specified source index to the specified target
+	 * index. Return the altered list.
+	 * java.util.List#move(int targetIndex, int sourceIndex)
+	 */
+	public static <E> List<E> move(List<E> list, int targetIndex, int sourceIndex) {
+		if (targetIndex != sourceIndex) {
+			list.add(targetIndex, list.remove(sourceIndex));
+		}
+		return list;
+	}
+
+	/**
+	 * Move elements from the specified source index to the specified target
+	 * index. Return the altered list.
+	 * java.util.List#move(int targetIndex, int sourceIndex, int length)
+	 */
+	public static <E> List<E> move(List<E> list, int targetIndex, int sourceIndex, int length) {
+		if (targetIndex != sourceIndex) {
+			list.addAll(targetIndex, removeElementsAtIndex(list, sourceIndex, length));
+		}
+		return list;
+	}
+
+	/**
 	 * Replace all occurrences of the specified old value with
 	 * the specified new value.
 	 * java.util.Arrays#replaceAll(Object[] array, Object oldValue, Object newValue)
@@ -1610,12 +1752,7 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementAtIndex(Object[] array, int index)
 	 */
 	public static <E> E[] removeElementAtIndex(E[] array, int index) {
-		int len = array.length;
-		@SuppressWarnings("unchecked")
-		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), len - 1);
-		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + 1, result, index, len - index - 1);
-		return result;
+		return removeElementsAtIndex(array, index, 1);
 	}
 
 	/**
@@ -1624,11 +1761,7 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementAtIndex(char[] array, int index)
 	 */
 	public static char[] removeElementAtIndex(char[] array, int index) {
-		int len = array.length;
-		char[] result = new char[len - 1];
-		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + 1, result, index, len - index - 1);
-		return result;
+		return removeElementsAtIndex(array, index, 1);
 	}
 
 	/**
@@ -1637,10 +1770,59 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementAtIndex(int[] array, int index)
 	 */
 	public static int[] removeElementAtIndex(int[] array, int index) {
+		return removeElementsAtIndex(array, index, 1);
+	}
+
+	/**
+	 * Remove the elements at the specified index.
+	 * Return the removed elements.
+	 * java.util.List#remove(int index, int length)
+	 */
+	public static <E> List<E> removeElementsAtIndex(List<E> list, int index, int length) {
+		ArrayList<E> result = new ArrayList<E>(list.subList(index, index + length));
+		for (int i = length; i-- > 0; ) {
+			list.remove(index);
+		}
+		return result;
+	}
+
+	/**
+	 * Return a new array that contains the elements in the
+	 * specified array with the specified elements removed.
+	 * java.util.Arrays#removeElementsAtIndex(Object[] array, int index, int length)
+	 */
+	public static <E> E[] removeElementsAtIndex(E[] array, int index, int length) {
 		int len = array.length;
-		int[] result = new int[len - 1];
+		@SuppressWarnings("unchecked")
+		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), len - length);
 		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + 1, result, index, len - index - 1);
+		System.arraycopy(array, index + length, result, index, len - index - length);
+		return result;
+	}
+
+	/**
+	 * Return a new array that contains the elements in the
+	 * specified array with the specified elements removed.
+	 * java.util.Arrays#removeElementAtIndex(char[] array, int index, int length)
+	 */
+	public static char[] removeElementsAtIndex(char[] array, int index, int length) {
+		int len = array.length;
+		char[] result = new char[len - length];
+		System.arraycopy(array, 0, result, 0, index);
+		System.arraycopy(array, index + length, result, index, len - index - length);
+		return result;
+	}
+
+	/**
+	 * Return a new array that contains the elements in the
+	 * specified array with the specified elements removed.
+	 * java.util.Arrays#removeElementAtIndex(int[] array, int index, int length)
+	 */
+	public static int[] removeElementsAtIndex(int[] array, int index, int length) {
+		int len = array.length;
+		int[] result = new int[len - length];
+		System.arraycopy(array, 0, result, 0, index);
+		System.arraycopy(array, index + length, result, index, len - index - length);
 		return result;
 	}
 
@@ -2608,7 +2790,7 @@ public final class CollectionTools {
 	 * Return the array after it has been "sorted".
 	 * @see java.util.Arrays#sort(Object[], java.util.Comparator)
 	 */
-    public static <E> E[] sort(E[] array, Comparator<? super E> comparator) {
+	public static <E> E[] sort(E[] array, Comparator<? super E> comparator) {
 		Arrays.sort(array, comparator);
 		return array;
 	}

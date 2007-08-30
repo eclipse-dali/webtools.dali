@@ -38,15 +38,23 @@ import java.util.ListIterator;
  */
 public class ListChangeEvent extends ChangeEvent {
 
-	/** Name of the list that changed. */
+	/**
+	 * Name of the list that changed.
+	 */
 	private final String listName;
 
-	/** The index at which the items were added or removed. May be -1, if not known. */
+	/**
+	 * The index at which the items were added or removed.
+	 * In the case of "moved" items, this will be the "target" index.
+	 * May be -1, if not known.
+	 */
 	private final int index;
 
 	/**
-	 * The items that were added to or removed from the list. In the case of "replaced"
-	 * items, these are the new items in the list. May be empty, if not known.
+	 * The items that were added to or removed from the list. In the case of
+	 * "replaced" items, these are the new items in the list.
+	 * In the case of "moved" items, this will be empty.
+	 * May be empty, if not known.
 	 */
 	private final List<?> items;
 
@@ -56,9 +64,34 @@ public class ListChangeEvent extends ChangeEvent {
 	 */
 	private final List<?> replacedItems;
 
+	/**
+	 * In the case of "moved" items, this will be the "source" index.
+	 * May be -1, if not known.
+	 */
+	private final int sourceIndex;
+
+	/**
+	 * In the case of "moved" items, this will be the number of items moved.
+	 * May be -1, if not known.
+	 */
+	private final int moveLength;
+
 	private static final long serialVersionUID = 1L;
 
 
+	protected ListChangeEvent(Object source, String listName, int index, List<?> items, List<?> replacedItems, int sourceIndex, int moveLength) {
+		super(source);
+		if ((listName == null) || (items == null) || (replacedItems == null)) {
+			throw new NullPointerException();
+		}
+		this.listName = listName;
+		this.index = index;
+		this.items = Collections.unmodifiableList(items);
+		this.replacedItems = Collections.unmodifiableList(replacedItems);
+		this.sourceIndex = sourceIndex;
+		this.moveLength = moveLength;
+	}
+	
 	/**
 	 * Construct a new list change event for a list of replaced items.
 	 *
@@ -69,14 +102,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * @param replacedItems The items in the list that were replaced.
 	 */
 	public ListChangeEvent(Object source, String listName, int index, List<?> items, List<?> replacedItems) {
-		super(source);
-		if ((listName == null) || (items == null) || (replacedItems == null)) {
-			throw new NullPointerException();
-		}
-		this.listName = listName;
-		this.index = index;
-		this.items = Collections.unmodifiableList(items);
-		this.replacedItems = Collections.unmodifiableList(replacedItems);
+		this(source, listName, index, items, replacedItems, -1, -1);
 	}
 	
 	/**
@@ -89,7 +115,20 @@ public class ListChangeEvent extends ChangeEvent {
 	 */
 	@SuppressWarnings("unchecked")
 	public ListChangeEvent(Object source, String listName, int index, List<?> items) {
-		this(source, listName, index, items, Collections.emptyList());
+		this(source, listName, index, items, Collections.emptyList(), -1, -1);
+	}
+	
+	/**
+	 * Construct a new list change event for a list of moved items.
+	 *
+	 * @param source The object on which the event initially occurred.
+	 * @param listName The programmatic name of the list that was changed.
+	 * @param targetIndex The index to which the items were moved.
+	 * @param sourceIndex The index from which the items were moved.
+	 */
+	@SuppressWarnings("unchecked")
+	public ListChangeEvent(Object source, String listName, int targetIndex, int sourceIndex, int length) {
+		this(source, listName, targetIndex, Collections.emptyList(), Collections.emptyList(), sourceIndex, length);
 	}
 	
 	/**
@@ -100,7 +139,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 */
 	@SuppressWarnings("unchecked")
 	public ListChangeEvent(Object source, String listName) {
-		this(source, listName, -1, Collections.emptyList());
+		this(source, listName, -1, Collections.emptyList(), Collections.emptyList(), -1, -1);
 	}
 	
 	/**
@@ -112,12 +151,22 @@ public class ListChangeEvent extends ChangeEvent {
 
 	/**
 	 * Return the index at which the items were added to or removed from the list.
+	 * In the case of "moved" items, this will be the "target" index.
 	 * May be -1 if inappropriate or unknown.
 	 */
 	public int index() {
 		return this.index;
 	}
-	
+
+	/**
+	 * Return the index at which the items were added to or removed from the list.
+	 * In the case of "moved" items, this will be the "target" index.
+	 * May be -1 if inappropriate or unknown.
+	 */
+	public int targetIndex() {
+		return this.index;
+	}
+
 	/**
 	 * Return a list iterator on the items that were added to or
 	 * removed from the list. In the case of "replaced" items, these
@@ -127,7 +176,7 @@ public class ListChangeEvent extends ChangeEvent {
 	public ListIterator<?> items() {
 		return this.items.listIterator();
 	}
-	
+
 	/**
 	 * Return the number of items that were added to or
 	 * removed from the list.
@@ -143,6 +192,22 @@ public class ListChangeEvent extends ChangeEvent {
 	 */
 	public ListIterator<?> replacedItems() {
 		return this.replacedItems.listIterator();
+	}
+
+	/**
+	 * In the case of "moved" items, this will be the "source" index.
+	 * May be -1 if inappropriate or unknown.
+	 */
+	public int sourceIndex() {
+		return this.sourceIndex;
+	}
+
+	/**
+	 * In the case of "moved" items, this will be the number of items moved.
+	 * May be -1 if inappropriate or unknown.
+	 */
+	public int moveLength() {
+		return this.moveLength;
 	}
 
 	@Override

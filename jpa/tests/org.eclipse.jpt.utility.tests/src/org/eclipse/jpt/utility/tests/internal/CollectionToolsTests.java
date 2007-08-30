@@ -1351,6 +1351,183 @@ public class CollectionToolsTests extends TestCase {
 		assertEquals(0, CollectionTools.min(this.buildIntArray()));
 	}
 
+	public void testMoveObjectArrayIntInt() {
+		String[] array = new String[] { "0", "1", "2", "3", "4", "5" };
+
+		String[] result = CollectionTools.move(array, 4, 2);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "0", "1", "3", "4", "2", "5" }, result));
+
+		result = CollectionTools.move(array, 0, 5);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "1", "3", "4", "2" }, result));
+
+		result = CollectionTools.move(array, 2, 4);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result));
+	}
+
+	public void testMoveObjectArrayIntIntInt() {
+		String[] array = new String[] { "0", "1", "2", "3", "4", "5" };
+
+		String[] result = CollectionTools.move(array, 4, 2, 1);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "0", "1", "3", "4", "2", "5" }, result));
+
+		result = CollectionTools.move(array, 0, 5, 1);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "1", "3", "4", "2" }, result));
+
+		result = CollectionTools.move(array, 2, 4, 1);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result));
+
+		result = CollectionTools.move(array, 2, 4, 2);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result));
+
+		result = CollectionTools.move(array, 0, 1, 4);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "0", "3", "2", "4", "5", "1" }, result));
+
+		result = CollectionTools.move(array, 1, 0, 4);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result));
+	}
+
+	public void testMoveIntArrayIntInt() {
+		int[] array = new int[] { 0, 1, 2, 3, 4, 5 };
+
+		int[] result = CollectionTools.move(array, 4, 2);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new int[] { 0, 1, 3, 4, 2, 5 }, result));
+
+		result = CollectionTools.move(array, 0, 5);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new int[] { 5, 0, 1, 3, 4, 2 }, result));
+
+		result = CollectionTools.move(array, 2, 4);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new int[] { 5, 0, 4, 1, 3, 2 }, result));
+	}
+
+	public void testMoveInttArrayIntIntInt() {
+		int[] array = new int[] { 0, 1, 2, 3, 4, 5 };
+
+		int[] result = CollectionTools.move(array, 4, 2, 1);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new int[] { 0, 1, 3, 4, 2, 5 }, result));
+
+		result = CollectionTools.move(array, 0, 5, 1);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new int[] { 5, 0, 1, 3, 4, 2 }, result));
+
+		result = CollectionTools.move(array, 2, 4, 1);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new int[] { 5, 0, 4, 1, 3, 2 }, result));
+
+		result = CollectionTools.move(array, 2, 4, 2);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new int[] { 5, 0, 3, 2, 4, 1 }, result));
+
+		result = CollectionTools.move(array, 0, 1, 4);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new int[] { 0, 3, 2, 4, 5, 1 }, result));
+
+		result = CollectionTools.move(array, 1, 0, 4);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new int[] { 5, 0, 3, 2, 4, 1 }, result));
+	}
+
+	public void testMoveCharArrayIntInt() {
+		char[] array = new char[] { 'a', 'b', 'c', 'd', 'e', 'f' };
+
+		char[] result = CollectionTools.move(array, 4, 2);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new char[] { 'a', 'b', 'd', 'e', 'c', 'f' }, result));
+
+		result = CollectionTools.move(array, 0, 5);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new char[] { 'f', 'a', 'b', 'd', 'e', 'c' }, result));
+
+		result = CollectionTools.move(array, 2, 4);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new char[] { 'f', 'a', 'e', 'b', 'd', 'c' }, result));
+	}
+
+	public void testMoveCharArrayIntIntInt() {
+		char[] array = new char[] { 'a', 'b', 'b', 'c', 'd', 'e' };
+
+		char[] result = CollectionTools.move(array, 4, 2, 1);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new char[] { 'a', 'b', 'c', 'd', 'b', 'e' }, result));
+
+		result = CollectionTools.move(array, 0, 5, 1);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new char[] { 'e', 'a', 'b', 'c', 'd', 'b' }, result));
+
+		result = CollectionTools.move(array, 2, 4, 1);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new char[] { 'e', 'a', 'd', 'b', 'c', 'b' }, result));
+
+		result = CollectionTools.move(array, 2, 4, 2);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new char[] { 'e', 'a', 'c', 'b', 'd', 'b' }, result));
+
+		result = CollectionTools.move(array, 0, 1, 4);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new char[] { 'a', 'c', 'b', 'd', 'e', 'b' }, result));
+
+		result = CollectionTools.move(array, 1, 0, 4);
+		assertSame(array, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new char[] { 'e', 'a', 'c', 'b', 'd', 'b' }, result));
+	}
+
+	public void testMoveListIntInt() {
+		List<String> list = new ArrayList<String>();
+		CollectionTools.addAll(list, new String[] { "0", "1", "2", "3", "4", "5" });
+
+		List<String> result = CollectionTools.move(list, 4, 2);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "0", "1", "3", "4", "2", "5" }, result.toArray()));
+
+		result = CollectionTools.move(list, 0, 5);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "1", "3", "4", "2" }, result.toArray()));
+
+		result = CollectionTools.move(list, 2, 4);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result.toArray()));
+	}
+
+	public void testMoveListIntIntInt() {
+		List<String> list = new ArrayList<String>(Arrays.asList(new String[] { "0", "1", "2", "3", "4", "5" }));
+
+		List<String> result = CollectionTools.move(list, 4, 2, 1);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "0", "1", "3", "4", "2", "5" }, result.toArray()));
+
+		result = CollectionTools.move(list, 0, 5, 1);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "1", "3", "4", "2" }, result.toArray()));
+
+		result = CollectionTools.move(list, 2, 4, 1);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result.toArray()));
+
+		result = CollectionTools.move(list, 2, 4, 2);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result.toArray()));
+
+		result = CollectionTools.move(list, 0, 1, 4);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "0", "3", "2", "4", "5", "1" }, result.toArray()));
+
+		result = CollectionTools.move(list, 1, 0, 4);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result.toArray()));
+	}
+
 	public void testRemoveAllObjectArrayObjectArray() {
 		String[] a1 = new String[] { "A", "A", "B", "B", "C", "C", "D", "D", "E", "E", "F", "F" };
 		String[] a2 = new String[] { "E", "B" };
@@ -1664,6 +1841,41 @@ public class CollectionToolsTests extends TestCase {
 	}
 
 	public void testRemoveElementAtIndexIntArrayInt() {
+		int[] a = new int[] { 8, 6, 7, 33, 2, 11 };
+		a = CollectionTools.removeElementsAtIndex(a, 3, 3);
+		assertTrue(Arrays.equals(new int[] { 8, 6, 7 }, a));
+	}
+
+	public void testRemoveElementsAtIndexListIntInt() {
+		List<String> list = new ArrayList<String>(Arrays.asList(new String[] { "A", "B", "A", "C", "A", "D" }));
+		List<String> removed = CollectionTools.removeElementsAtIndex(list, 3, 2);
+		assertTrue(Arrays.equals(new String[] { "A", "B", "A", "D" }, list.toArray()));
+		assertTrue(Arrays.equals(new String[] { "C", "A" }, removed.toArray()));
+
+		list = new ArrayList<String>(Arrays.asList(new String[] { "A", "B", "C", "D", "E", "F" }));
+		removed = CollectionTools.removeElementsAtIndex(list, 3, 3);
+		assertTrue(Arrays.equals(new String[] { "A", "B", "C" }, list.toArray()));
+		assertTrue(Arrays.equals(new String[] { "D", "E", "F" }, removed.toArray()));
+
+		list = new ArrayList<String>(Arrays.asList(new String[] { "A", "B", "C", "D", "E", "F" }));
+		removed = CollectionTools.removeElementsAtIndex(list, 0, 3);
+		assertTrue(Arrays.equals(new String[] { "D", "E", "F" }, list.toArray()));
+		assertTrue(Arrays.equals(new String[] { "A", "B", "C" }, removed.toArray()));
+	}
+
+	public void testRemoveElementsAtIndexObjectArrayIntInt() {
+		String[] a = new String[] { "A", "B", "A", "C", "A", "D" };
+		a = CollectionTools.removeElementsAtIndex(a, 3, 2);
+		assertTrue(Arrays.equals(new String[] { "A", "B", "A", "D" }, a));
+	}
+
+	public void testRemoveElementsAtIndexCharArrayIntInt() {
+		char[] a = new char[] { 'A', 'B', 'A', 'C', 'A', 'D' };
+		a = CollectionTools.removeElementsAtIndex(a, 0, 5);
+		assertTrue(Arrays.equals(new char[] { 'D' }, a));
+	}
+
+	public void testRemoveElementsAtIndexIntArrayIntInt() {
 		int[] a = new int[] { 8, 6, 7, 33, 2, 11 };
 		a = CollectionTools.removeElementAtIndex(a, 3);
 		assertTrue(Arrays.equals(new int[] { 8, 6, 7, 2, 11 }, a));

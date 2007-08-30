@@ -50,15 +50,20 @@ public class AbstractModelTests
 	private boolean itemsAddedCollectionCalled = false;
 	private boolean itemsRemovedCollectionCalled = false;
 	private boolean collectionChangedCalled = false;
+	private boolean collectionClearedCalled = false;
 	private static final String COLLECTION_NAME = "collectionName";
 	static final Object ADDED_OBJECT_VALUE = new Object();
 	static final Object REMOVED_OBJECT_VALUE = new Object();
+	static final int TARGET_INDEX = 7;
+	static final int SOURCE_INDEX = 22;
 
 	private ListChangeEvent listChangeEvent;
 	private boolean itemsAddedListCalled = false;
 	private boolean itemsRemovedListCalled = false;
 	private boolean itemsReplacedListCalled = false;
+	private boolean itemsMovedListCalled = false;
 	private boolean listChangedCalled = false;
+	private boolean listClearedCalled = false;
 	private static final String LIST_NAME = "listName";
 	private static final int ADD_INDEX = 3;
 	private static final int REMOVE_INDEX = 5;
@@ -68,8 +73,10 @@ public class AbstractModelTests
 	private boolean nodeAddedCalled = false;
 	private boolean nodeRemovedCalled = false;
 	private boolean treeChangedCalled = false;
+	private boolean treeClearedCalled = false;
 	private static final String TREE_NAME = "treeName";
 	static final Object[] OBJECT_ARRAY_PATH = {new Object(), new Object(), new String()};
+	static final Object[] EMPTY_PATH = {};
 
 	public AbstractModelTests(String name) {
 		super(name);
@@ -277,6 +284,36 @@ public class AbstractModelTests
 		assertFalse(this.itemsRemovedCollectionCalled);
 	}
 
+	public void testFireCollectionCleared() {
+		this.collectionChangeEvent = null;
+		this.collectionClearedCalled = false;
+		this.testModel.addCollectionChangeListener(this);
+		this.testModel.testFireCollectionCleared();
+		this.verifyCollectionChangeEvent(null);
+		assertTrue(this.collectionClearedCalled);
+
+		this.collectionChangeEvent = null;
+		this.collectionClearedCalled = false;
+		this.testModel.removeCollectionChangeListener(this);
+		this.testModel.testFireCollectionCleared();
+		assertNull(this.collectionChangeEvent);
+		assertFalse(this.collectionClearedCalled);
+
+		this.collectionChangeEvent = null;
+		this.collectionClearedCalled = false;
+		this.testModel.addCollectionChangeListener(COLLECTION_NAME, this);
+		this.testModel.testFireCollectionCleared();
+		this.verifyCollectionChangeEvent(null);
+		assertTrue(this.collectionClearedCalled);
+
+		this.collectionChangeEvent = null;
+		this.collectionClearedCalled = false;
+		this.testModel.removeCollectionChangeListener(COLLECTION_NAME, this);
+		this.testModel.testFireCollectionCleared();
+		assertNull(this.collectionChangeEvent);
+		assertFalse(this.collectionClearedCalled);
+	}
+
 	public void testFireCollectionChanged() {
 		this.collectionChangeEvent = null;
 		this.collectionChangedCalled = false;
@@ -397,6 +434,66 @@ public class AbstractModelTests
 		assertFalse(this.itemsReplacedListCalled);
 	}
 
+	public void testFireItemMovedList() {
+		this.listChangeEvent = null;
+		this.itemsMovedListCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testFireItemMovedList();
+		this.verifyListChangeEvent(TARGET_INDEX, SOURCE_INDEX);
+		assertTrue(this.itemsMovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsMovedListCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testFireItemMovedList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsMovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsMovedListCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testFireItemMovedList();
+		this.verifyListChangeEvent(TARGET_INDEX, SOURCE_INDEX);
+		assertTrue(this.itemsMovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsMovedListCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testFireItemMovedList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsMovedListCalled);
+	}
+
+	public void testFireListCleared() {
+		this.listChangeEvent = null;
+		this.listClearedCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testFireListCleared();
+		this.verifyListChangeEvent(-1, null);
+		assertTrue(this.listClearedCalled);
+
+		this.listChangeEvent = null;
+		this.listClearedCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testFireListCleared();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.listClearedCalled);
+
+		this.listChangeEvent = null;
+		this.listClearedCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testFireListCleared();
+		this.verifyListChangeEvent(-1, null);
+		assertTrue(this.listClearedCalled);
+
+		this.listChangeEvent = null;
+		this.listClearedCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testFireListCleared();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.listClearedCalled);
+	}
+
 	public void testFireListChanged() {
 		this.listChangeEvent = null;
 		this.listChangedCalled = false;
@@ -487,32 +584,62 @@ public class AbstractModelTests
 		assertFalse(this.nodeRemovedCalled);
 	}
 
-	public void testFireTreeStructureChangedObjectArrayPath() {
+	public void testFireTreeCleared() {
+		this.treeChangeEvent = null;
+		this.treeClearedCalled = false;
+		this.testModel.addTreeChangeListener(this);
+		this.testModel.testFireTreeCleared();
+		this.verifyTreeChangeEvent(EMPTY_PATH);
+		assertTrue(this.treeClearedCalled);
+
+		this.treeChangeEvent = null;
+		this.treeClearedCalled = false;
+		this.testModel.removeTreeChangeListener(this);
+		this.testModel.testFireTreeCleared();
+		assertNull(this.treeChangeEvent);
+		assertFalse(this.treeClearedCalled);
+
+		this.treeChangeEvent = null;
+		this.treeClearedCalled = false;
+		this.testModel.addTreeChangeListener(TREE_NAME, this);
+		this.testModel.testFireTreeCleared();
+		this.verifyTreeChangeEvent(EMPTY_PATH);
+		assertTrue(this.treeClearedCalled);
+
+		this.treeChangeEvent = null;
+		this.treeClearedCalled = false;
+		this.testModel.removeTreeChangeListener(TREE_NAME, this);
+		this.testModel.testFireTreeCleared();
+		assertNull(this.treeChangeEvent);
+		assertFalse(this.treeClearedCalled);
+	}
+
+	public void testFireTreeChangedObjectArrayPath() {
 		this.treeChangeEvent = null;
 		this.treeChangedCalled = false;
 		this.testModel.addTreeChangeListener(this);
-		this.testModel.testFireTreeStructureChangedObjectArrayPath();
+		this.testModel.testFireTreeChangedObjectArrayPath();
 		this.verifyTreeChangeEvent(OBJECT_ARRAY_PATH);
 		assertTrue(this.treeChangedCalled);
 
 		this.treeChangeEvent = null;
 		this.treeChangedCalled = false;
 		this.testModel.removeTreeChangeListener(this);
-		this.testModel.testFireTreeStructureChangedObjectArrayPath();
+		this.testModel.testFireTreeChangedObjectArrayPath();
 		assertNull(this.treeChangeEvent);
 		assertFalse(this.treeChangedCalled);
 
 		this.treeChangeEvent = null;
 		this.treeChangedCalled = false;
 		this.testModel.addTreeChangeListener(TREE_NAME, this);
-		this.testModel.testFireTreeStructureChangedObjectArrayPath();
+		this.testModel.testFireTreeChangedObjectArrayPath();
 		this.verifyTreeChangeEvent(OBJECT_ARRAY_PATH);
 		assertTrue(this.treeChangedCalled);
 
 		this.treeChangeEvent = null;
 		this.treeChangedCalled = false;
 		this.testModel.removeTreeChangeListener(TREE_NAME, this);
-		this.testModel.testFireTreeStructureChangedObjectArrayPath();
+		this.testModel.testFireTreeChangedObjectArrayPath();
 		assertNull(this.treeChangeEvent);
 		assertFalse(this.treeChangedCalled);
 	}
@@ -966,6 +1093,14 @@ public class AbstractModelTests
 		this.verifyListChangeEvent(index, item, null);
 	}
 
+	private void verifyListChangeEvent(int targetIndex, int sourceIndex) {
+		assertNotNull(this.listChangeEvent);
+		assertEquals(this.testModel, this.listChangeEvent.getSource());
+		assertEquals(LIST_NAME, this.listChangeEvent.listName());
+		assertEquals(targetIndex, this.listChangeEvent.targetIndex());
+		assertEquals(sourceIndex, this.listChangeEvent.sourceIndex());
+	}
+
 	private void verifyListChangeEvent(int index, Object item, Object replacedItem) {
 		assertNotNull(this.listChangeEvent);
 		assertEquals(this.testModel, this.listChangeEvent.getSource());
@@ -1010,6 +1145,10 @@ public class AbstractModelTests
 		this.itemsRemovedCollectionCalled = true;
 		this.collectionChangeEvent = e;
 	}
+	public void collectionCleared(CollectionChangeEvent e) {
+		this.collectionClearedCalled = true;
+		this.collectionChangeEvent = e;
+	}
 	public void collectionChanged(CollectionChangeEvent e) {
 		this.collectionChangedCalled = true;
 		this.collectionChangeEvent = e;
@@ -1027,6 +1166,14 @@ public class AbstractModelTests
 		this.itemsReplacedListCalled = true;
 		this.listChangeEvent = e;
 	}
+	public void itemsMoved(ListChangeEvent e) {
+		this.itemsMovedListCalled = true;
+		this.listChangeEvent = e;
+	}
+	public void listCleared(ListChangeEvent e) {
+		this.listClearedCalled = true;
+		this.listChangeEvent = e;
+	}
 	public void listChanged(ListChangeEvent e) {
 		this.listChangedCalled = true;
 		this.listChangeEvent = e;
@@ -1038,6 +1185,10 @@ public class AbstractModelTests
 	}
 	public void nodeRemoved(TreeChangeEvent e) {
 		this.nodeRemovedCalled = true;
+		this.treeChangeEvent = e;
+	}
+	public void treeCleared(TreeChangeEvent e) {
+		this.treeClearedCalled = true;
 		this.treeChangeEvent = e;
 	}
 	public void treeChanged(TreeChangeEvent e) {
@@ -1080,6 +1231,10 @@ public class AbstractModelTests
 			this.fireItemRemoved(COLLECTION_NAME, REMOVED_OBJECT_VALUE);
 		}
 	
+		public void testFireCollectionCleared() {
+			this.fireCollectionCleared(COLLECTION_NAME);
+		}
+	
 		public void testFireCollectionChanged() {
 			this.fireCollectionChanged(COLLECTION_NAME);
 		}
@@ -1096,6 +1251,14 @@ public class AbstractModelTests
 			this.fireItemReplaced(LIST_NAME, REPLACE_INDEX, ADDED_OBJECT_VALUE, REMOVED_OBJECT_VALUE);
 		}
 	
+		public void testFireItemMovedList() {
+			this.fireItemMoved(LIST_NAME, TARGET_INDEX, SOURCE_INDEX);
+		}
+	
+		public void testFireListCleared() {
+			this.fireListCleared(LIST_NAME);
+		}
+	
 		public void testFireListChanged() {
 			this.fireListChanged(LIST_NAME);
 		}
@@ -1108,8 +1271,12 @@ public class AbstractModelTests
 			this.fireNodeRemoved(TREE_NAME, OBJECT_ARRAY_PATH);
 		}
 	
-		public void testFireTreeStructureChangedObjectArrayPath() {
-			this.fireTreeStructureChanged(TREE_NAME, OBJECT_ARRAY_PATH);
+		public void testFireTreeCleared() {
+			this.fireTreeCleared(TREE_NAME);
+		}
+	
+		public void testFireTreeChangedObjectArrayPath() {
+			this.fireTreeChanged(TREE_NAME, OBJECT_ARRAY_PATH);
 		}
 	
 		public void testAttributeValueHasChanged() {
@@ -1257,7 +1424,7 @@ public class AbstractModelTests
 			this.fireListChanged("foo");
 		}
 		void notifyTreeListeners() {
-			this.fireTreeStructureChanged("foo");
+			this.fireTreeChanged("foo");
 		}
 	}
 
@@ -1289,19 +1456,23 @@ public class AbstractModelTests
 		public void collectionChanged(CollectionChangeEvent e) {
 			this.fireCollectionChanged("bar");
 		}
+		public void collectionCleared(CollectionChangeEvent e) {/*ignore*/}
 		public void itemsAdded(CollectionChangeEvent e) {/*ignore*/}
 		public void itemsRemoved(CollectionChangeEvent e) {/*ignore*/}
 
 		public void listChanged(ListChangeEvent e) {
 			this.fireListChanged("bar");
 		}
+		public void listCleared(ListChangeEvent e) {/*ignore*/}
 		public void itemsAdded(ListChangeEvent e) {/*ignore*/}
 		public void itemsRemoved(ListChangeEvent e) {/*ignore*/}
 		public void itemsReplaced(ListChangeEvent e) {/*ignore*/}
+		public void itemsMoved(ListChangeEvent e) {/*ignore*/}
 
 		public void treeChanged(TreeChangeEvent e) {
-			this.fireTreeStructureChanged("bar");
+			this.fireTreeChanged("bar");
 		}
+		public void treeCleared(TreeChangeEvent e) {/*ignore*/}
 		public void nodeAdded(TreeChangeEvent e) {/*ignore*/}
 		public void nodeRemoved(TreeChangeEvent e) {/*ignore*/}
 
@@ -1386,6 +1557,7 @@ public class AbstractModelTests
 				throw new IllegalStateException("bogus event source: " + source);
 			}
 		}
+		public void collectionCleared(CollectionChangeEvent e) {/*ignore*/}
 		public void itemsAdded(CollectionChangeEvent e) {/*ignore*/}
 		public void itemsRemoved(CollectionChangeEvent e) {/*ignore*/}
 
@@ -1402,9 +1574,11 @@ public class AbstractModelTests
 				throw new IllegalStateException("bogus event source: " + source);
 			}
 		}
+		public void listCleared(ListChangeEvent e) {/*ignore*/}
 		public void itemsAdded(ListChangeEvent e) {/*ignore*/}
 		public void itemsRemoved(ListChangeEvent e) {/*ignore*/}
 		public void itemsReplaced(ListChangeEvent e) {/*ignore*/}
+		public void itemsMoved(ListChangeEvent e) {/*ignore*/}
 
 		public void treeChanged(TreeChangeEvent e) {
 			Object source = e.getSource();
@@ -1419,6 +1593,7 @@ public class AbstractModelTests
 				throw new IllegalStateException("bogus event source: " + source);
 			}
 		}
+		public void treeCleared(TreeChangeEvent e) {/*ignore*/}
 		public void nodeAdded(TreeChangeEvent e) {/*ignore*/}
 		public void nodeRemoved(TreeChangeEvent e) {/*ignore*/}
 
