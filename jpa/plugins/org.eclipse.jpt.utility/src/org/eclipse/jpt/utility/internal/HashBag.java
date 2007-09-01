@@ -836,9 +836,7 @@ public class HashBag<E> extends AbstractCollection<E>
 			@SuppressWarnings("unchecked")
 			E element = (E) s.readObject();
 			int elementCount = s.readInt();
-			for (int j = 0; j < elementCount; j++) {
-				this.add(element);
-			}
+			this.add(element, elementCount);
 		}
 	}
 
