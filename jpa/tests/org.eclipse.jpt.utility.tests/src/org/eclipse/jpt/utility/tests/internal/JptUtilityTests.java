@@ -12,6 +12,7 @@ package org.eclipse.jpt.utility.tests.internal;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.tests.internal.iterators.JptUtilityIteratorsTests;
 import org.eclipse.jpt.utility.tests.internal.model.JptUtilityModelTests;
+import org.eclipse.jpt.utility.tests.internal.node.JptUtilityNodeTests;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -26,6 +27,7 @@ public class JptUtilityTests {
 
 		suite.addTest(JptUtilityIteratorsTests.suite());
 		suite.addTest(JptUtilityModelTests.suite());
+		suite.addTest(JptUtilityNodeTests.suite());
 
 		suite.addTestSuite(BitToolsTests.class);
 		suite.addTestSuite(ClasspathTests.class);
@@ -39,7 +41,11 @@ public class JptUtilityTests {
 		suite.addTestSuite(JDBCTypeTests.class);
 		suite.addTestSuite(NameToolsTests.class);
 		suite.addTestSuite(ReverseComparatorTests.class);
+		suite.addTestSuite(SimpleStackTests.class);
 		suite.addTestSuite(StringToolsTests.class);
+		suite.addTestSuite(SynchronizedBooleanTests.class);
+		suite.addTestSuite(SynchronizedObjectTests.class);
+		suite.addTestSuite(SynchronizedStackTests.class);
 		suite.addTestSuite(XMLStringEncoderTests.class);
 
 		return suite;
