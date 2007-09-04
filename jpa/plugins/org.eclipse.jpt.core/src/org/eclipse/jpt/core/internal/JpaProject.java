@@ -28,10 +28,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -169,8 +166,6 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 */
 	Job resynchJob;
 
-	private IJobChangeListener resynchJobListener;
-
 	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
 
 	private ThreadLocal<CommandExecutor> threadLocalModifySharedDocumentCommandExecutor = new ThreadLocal<CommandExecutor>();
@@ -184,15 +179,21 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		this();
 		this.project = project;
 		this.resynchJob = buildResynchJob();
-		this.resynchJobListener = buildResynchJobListener();
-		Job.getJobManager().addJobChangeListener(this.resynchJobListener);
 	}
 
 	private Job buildResynchJob() {
 		Job job = new Job("Resynching JPA model ...") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				return runResynch(monitor);
+				try {
+					return runResynch(monitor);
+				}
+				finally {
+					JpaProject.this.resynching = false;
+					if (JpaProject.this.needsToResynch) {
+						resynch();
+					}
+				}
 			}
 
 		};
@@ -222,21 +223,6 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			JptCorePlugin.log(e);
 		}
 		return Status.OK_STATUS;
-	}
-	
-	private IJobChangeListener buildResynchJobListener() {
-		return new JobChangeAdapter() {
-			@Override
-			public void done(IJobChangeEvent event) {
-				super.done(event);
-				if (event.getJob() == JpaProject.this.resynchJob) {
-					resynching = false;
-					if (needsToResynch) {
-						resynch();
-					}
-				}
-			}
-		};
 	}
 
 	/**
@@ -620,7 +606,6 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	}
 	
 	private void dispose_() {
-		Job.getJobManager().removeJobChangeListener(resynchJobListener);
 		for (IJpaFile jpaFile : CollectionTools.collection(getFiles())) {
 			((JpaFile) jpaFile).dispose();
 		}
