@@ -9,13 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.IdentityHashMap;
 import java.util.List;
 
-import org.eclipse.jpt.utility.internal.IdentityHashBag;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
@@ -44,6 +47,15 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  * code would not prove onerous; but that has not proven to be
  * the case, as we have added support for "state" changes, "dirty" notification,
  * and custom "notifiers", with more to come, I'm sure....  ~bjv
+ * 
+ * NB2: This class will check to see if, during the firing of events, a listener
+ * on the original list of listeners has been removed from the mast list of
+ * listeners *before* it is notified. If the listener has been removed
+ * "concurrently" it will *not* be notified. (See the code that uses the
+ * 'stillListening' local boolean flag.)
+ * 
+ * NB3: This class is serializable, but it will only write out listeners that
+ * are also serializable while silently leaving behind listeners that are not.
  */
 public class ChangeSupport
 	implements Serializable
@@ -53,10 +65,12 @@ public class ChangeSupport
 	protected final Object source;
 
 	/** Maps a listener class to a collection of "generic" listeners for that class. */
-	transient private IdentityHashMap<Class<? extends ChangeListener>, IdentityHashBag<? extends ChangeListener>> listeners;
+	transient private GenericListenerList[] genericListeners = EMPTY_GENERIC_LISTENERS;
+		private static final GenericListenerList[] EMPTY_GENERIC_LISTENERS = new GenericListenerList[0];
 
 	/** Maps aspect names to child change support objects. */
-	private IdentityHashMap<String, ChangeSupport> children;
+	private AspectChild[] aspectChildren = EMPTY_ASPECT_CHILDREN;
+		private static final AspectChild[] EMPTY_ASPECT_CHILDREN = new AspectChild[0];
 
 	private static final long serialVersionUID = 1L;
 
@@ -88,17 +102,36 @@ public class ChangeSupport
 			throw new NullPointerException();		// better sooner than later
 		}
 		synchronized (this) {
-			if (this.listeners == null) {
-				this.listeners = new IdentityHashMap<Class<? extends ChangeListener>, IdentityHashBag<? extends ChangeListener>>();
+			GenericListenerList gll = this.genericListenerList(listenerClass);
+			if (gll == null) {
+				this.addGenericListenerList(listenerClass, listener);
+			} else {
+				gll.addListener(listener);
 			}
-			@SuppressWarnings("unchecked")
-			IdentityHashBag<T> listenerClassSpecificListeners = (IdentityHashBag<T>) this.listeners.get(listenerClass);
-			if (listenerClassSpecificListeners == null) {
-				listenerClassSpecificListeners = new IdentityHashBag<T>();
-				this.listeners.put(listenerClass, listenerClassSpecificListeners);
-			}
-			listenerClassSpecificListeners.add(listener);
 		}
+	}
+
+	/**
+	 * Return the generic listener list for the specified listener class.
+	 * Return null if the list is not present.
+	 */
+	protected GenericListenerList genericListenerList(Class<? extends ChangeListener> listenerClass) {
+		for (GenericListenerList gll : this.genericListeners) {
+			if (gll.listenerClass == listenerClass) {
+				return gll;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Add the generic listener list for the specified listener class.
+	 * Return the newly-built generic listener list.
+	 */
+	protected <T extends ChangeListener> GenericListenerList addGenericListenerList(Class<T> listenerClass, T listener) {
+		GenericListenerList gll = new GenericListenerList(listenerClass, listener);
+		this.genericListeners = CollectionTools.add(this.genericListeners, gll);
+		return gll;
 	}
 
 	/**
@@ -111,16 +144,39 @@ public class ChangeSupport
 			throw new NullPointerException();		// better sooner than later
 		}
 		synchronized (this) {
-			if (this.children == null) {
-				this.children = new IdentityHashMap<String, ChangeSupport>();
-			}
-			ChangeSupport child = this.children.get(aspectName);
+			ChangeSupport child = this.child(aspectName);
 			if (child == null) {
-				child = this.buildChildChangeSupport();
-				this.children.put(aspectName, child);
+				child = this.addChild(aspectName);
 			}
 			child.addListener(listenerClass, listener);
 		}
+	}
+
+	/**
+	 * Return the child change support for the specified aspect name.
+	 * Return null if the aspect name is null or the child is not present.
+	 */
+	protected ChangeSupport child(String aspectName) {
+		// put in a null check to simplify calling code
+		if (aspectName == null) {
+			return null;
+		}
+		for (AspectChild aspectChild : this.aspectChildren) {
+			if (aspectChild.aspectName.equals(aspectName)) {
+				return aspectChild.child;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Add the child change support for the specified aspect name.
+	 * Return the newly-built child change support.
+	 */
+	protected ChangeSupport addChild(String aspectName) {
+		ChangeSupport child = this.buildChildChangeSupport();
+		this.aspectChildren = CollectionTools.add(this.aspectChildren, new AspectChild(aspectName, child));
+		return child;
 	}
 
 	/**
@@ -134,16 +190,12 @@ public class ChangeSupport
 	 * Removes a listener that has been registered for all events appropriate to that listener.
 	 */
 	protected <T extends ChangeListener> void removeListener(Class<T> listenerClass, T listener) {
-		if (this.listeners == null) {
-			throw new IllegalArgumentException("listener not registered");
-		}
 		synchronized (this) {
-			@SuppressWarnings("unchecked")
-			IdentityHashBag<T> listenerClassSpecificListeners = (IdentityHashBag<T>) this.listeners.get(listenerClass);
-			if (listenerClassSpecificListeners == null) {
+			GenericListenerList gll = this.genericListenerList(listenerClass);
+			if (gll == null) {
 				throw new IllegalArgumentException("listener not registered");
 			}
-			if ( ! listenerClassSpecificListeners.remove(listener)) {
+			if ( ! gll.removeListener(listener)) {  // leave the GLL, even if it is empty?
 				throw new IllegalArgumentException("listener not registered");
 			}
 		}
@@ -154,15 +206,12 @@ public class ChangeSupport
 	 * events carrying the specified aspect name.
 	 */
 	protected <T extends ChangeListener> void removeListener(String aspectName, Class<T> listenerClass, T listener) {
-		if (this.children == null) {
-			throw new IllegalArgumentException("listener not registered");
-		}
 		synchronized (this) {
-			ChangeSupport child = this.children.get(aspectName);
+			ChangeSupport child = this.child(aspectName);
 			if (child == null) {
 				throw new IllegalArgumentException("listener not registered");
 			}
-			child.removeListener(listenerClass, listener);
+			child.removeListener(listenerClass, listener);  // leave the child, even if it is empty?
 		}
 	}
 
@@ -177,17 +226,21 @@ public class ChangeSupport
 	}
 
 	/**
+	 * Return the listeners for the specified listener class.
+	 * Return null if there are no listeners.
+	 */
+	protected ChangeListener[] listeners(Class<? extends ChangeListener> listenerClass) {
+		GenericListenerList gll = this.genericListenerList(listenerClass);
+		return (gll == null) ? null : gll.listeners;
+	}
+
+	/**
 	 * Return whether there are any "generic" listeners for the specified
 	 * listener class.
 	 */
 	protected synchronized <T extends ChangeListener> boolean hasAnyListeners(Class<T> listenerClass) {
-		if (this.listeners == null) {
-			return false;
-		}
-		@SuppressWarnings("unchecked")
-		IdentityHashBag<T> listenerClassSpecificListeners = (IdentityHashBag<T>) this.listeners.get(listenerClass);
-		return (listenerClassSpecificListeners != null) &&
-			! listenerClassSpecificListeners.isEmpty();
+		GenericListenerList gll = this.genericListenerList(listenerClass);
+		return (gll != null) && gll.hasListeners();
 	}
 
 	/**
@@ -198,10 +251,7 @@ public class ChangeSupport
 		if (this.hasAnyListeners(listenerClass)) {
 			return true;		// there's a "generic" listener
 		}
-		if (this.children == null) {
-			return false;
-		}
-		ChangeSupport child = this.children.get(aspectName);
+		ChangeSupport child = this.child(aspectName);
 		return (child != null) &&
 			child.hasAnyListeners(listenerClass);
 	}
@@ -245,9 +295,8 @@ public class ChangeSupport
 		return this.hasAnyListeners(STATE_CHANGE_LISTENER_CLASS);
 	}
 
-	@SuppressWarnings("unchecked")
-	private IdentityHashBag<StateChangeListener> stateChangeListeners() {
-		return (IdentityHashBag<StateChangeListener>) this.listeners.get(STATE_CHANGE_LISTENER_CLASS);
+	private StateChangeListener[] stateChangeListeners() {
+		return (StateChangeListener[]) this.listeners(STATE_CHANGE_LISTENER_CLASS);
 	}
 
 	/**
@@ -255,15 +304,13 @@ public class ChangeSupport
 	 */
 	public void fireStateChanged(StateChangeEvent event) {
 
-		IdentityHashBag<StateChangeListener> stateChangeListeners = null;
-		IdentityHashBag<StateChangeListener> targets = null;
+		StateChangeListener[] stateChangeListeners = null;
+		StateChangeListener[] targets = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				stateChangeListeners = this.stateChangeListeners();
-				if (stateChangeListeners != null) {
-					targets = stateChangeListeners.clone();
-				}
+			stateChangeListeners = this.stateChangeListeners();
+			if (stateChangeListeners != null) {
+				targets = stateChangeListeners.clone();
 			}
 		}
 
@@ -271,7 +318,7 @@ public class ChangeSupport
 			for (StateChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = stateChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.stateChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().stateChanged(target, event);
@@ -288,15 +335,13 @@ public class ChangeSupport
 	public void fireStateChanged() {
 //		this.fireStateChange(new StateChangeEvent(this.source));
 
-		IdentityHashBag<StateChangeListener> stateChangeListeners = null;
-		IdentityHashBag<StateChangeListener> targets = null;
+		StateChangeListener[] stateChangeListeners = null;
+		StateChangeListener[] targets = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				stateChangeListeners = this.stateChangeListeners();
-				if (stateChangeListeners != null) {
-					targets = stateChangeListeners.clone();
-				}
+			stateChangeListeners = this.stateChangeListeners();
+			if (stateChangeListeners != null) {
+				targets = stateChangeListeners.clone();
 			}
 		}
 
@@ -305,7 +350,7 @@ public class ChangeSupport
 			for (StateChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = stateChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.stateChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -392,9 +437,8 @@ public class ChangeSupport
 		return this.hasAnyListeners(PROPERTY_CHANGE_LISTENER_CLASS);
 	}
 
-	@SuppressWarnings("unchecked")
-	private IdentityHashBag<PropertyChangeListener> propertyChangeListeners() {
-		return (IdentityHashBag<PropertyChangeListener>) this.listeners.get(PROPERTY_CHANGE_LISTENER_CLASS);
+	private PropertyChangeListener[] propertyChangeListeners() {
+		return (PropertyChangeListener[]) this.listeners(PROPERTY_CHANGE_LISTENER_CLASS);
 	}
 
 	/**
@@ -410,27 +454,23 @@ public class ChangeSupport
 
 		String propertyName = event.propertyName();
 
-		IdentityHashBag<PropertyChangeListener> propertyChangeListeners = null;
-		IdentityHashBag<PropertyChangeListener> targets = null;
+		PropertyChangeListener[] propertyChangeListeners = null;
+		PropertyChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				propertyChangeListeners = this.propertyChangeListeners();
-				if (propertyChangeListeners != null) {
-					targets = propertyChangeListeners.clone();
-				}
+			propertyChangeListeners = this.propertyChangeListeners();
+			if (propertyChangeListeners != null) {
+				targets = propertyChangeListeners.clone();
 			}
-			if ((propertyName != null) && (this.children != null)) {
-				child = this.children.get(propertyName);
-			}
+			child = this.child(propertyName);
 		}
 
 		if (targets != null) {
 			for (PropertyChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = propertyChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.propertyChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().propertyChanged(target, event);
@@ -456,20 +496,16 @@ public class ChangeSupport
 			return;
 		}
 
-		IdentityHashBag<PropertyChangeListener> propertyChangeListeners = null;
-		IdentityHashBag<PropertyChangeListener> targets = null;
+		PropertyChangeListener[] propertyChangeListeners = null;
+		PropertyChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				propertyChangeListeners = this.propertyChangeListeners();
-				if (propertyChangeListeners != null) {
-					targets = propertyChangeListeners.clone();
-				}
+			propertyChangeListeners = this.propertyChangeListeners();
+			if (propertyChangeListeners != null) {
+				targets = propertyChangeListeners.clone();
 			}
-			if ((propertyName != null) && (this.children != null)) {
-				child = this.children.get(propertyName);
-			}
+			child = this.child(propertyName);
 		}
 
 		PropertyChangeEvent event = null;
@@ -478,7 +514,7 @@ public class ChangeSupport
 			for (PropertyChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = propertyChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.propertyChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -513,20 +549,16 @@ public class ChangeSupport
 			return;
 		}
 
-		IdentityHashBag<PropertyChangeListener> propertyChangeListeners = null;
-		IdentityHashBag<PropertyChangeListener> targets = null;
+		PropertyChangeListener[] propertyChangeListeners = null;
+		PropertyChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				propertyChangeListeners = this.propertyChangeListeners();
-				if (propertyChangeListeners != null) {
-					targets = propertyChangeListeners.clone();
-				}
+			propertyChangeListeners = this.propertyChangeListeners();
+			if (propertyChangeListeners != null) {
+				targets = propertyChangeListeners.clone();
 			}
-			if ((propertyName != null) && (this.children != null)) {
-				child = this.children.get(propertyName);
-			}
+			child = this.child(propertyName);
 		}
 
 		PropertyChangeEvent event = null;
@@ -535,7 +567,7 @@ public class ChangeSupport
 			for (PropertyChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = propertyChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.propertyChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -570,20 +602,16 @@ public class ChangeSupport
 			return;
 		}
 
-		IdentityHashBag<PropertyChangeListener> propertyChangeListeners = null;
-		IdentityHashBag<PropertyChangeListener> targets = null;
+		PropertyChangeListener[] propertyChangeListeners = null;
+		PropertyChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				propertyChangeListeners = this.propertyChangeListeners();
-				if (propertyChangeListeners != null) {
-					targets = propertyChangeListeners.clone();
-				}
+			propertyChangeListeners = this.propertyChangeListeners();
+			if (propertyChangeListeners != null) {
+				targets = propertyChangeListeners.clone();
 			}
-			if ((propertyName != null) && (this.children != null)) {
-				child = this.children.get(propertyName);
-			}
+			child = this.child(propertyName);
 		}
 
 		PropertyChangeEvent event = null;
@@ -592,7 +620,7 @@ public class ChangeSupport
 			for (PropertyChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = propertyChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.propertyChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -664,9 +692,8 @@ public class ChangeSupport
 		return this.hasAnyListeners(COLLECTION_CHANGE_LISTENER_CLASS);
 	}
 
-	@SuppressWarnings("unchecked")
-	private IdentityHashBag<CollectionChangeListener> collectionChangeListeners() {
-		return (IdentityHashBag<CollectionChangeListener>) this.listeners.get(COLLECTION_CHANGE_LISTENER_CLASS);
+	private CollectionChangeListener[] collectionChangeListeners() {
+		return (CollectionChangeListener[]) this.listeners(COLLECTION_CHANGE_LISTENER_CLASS);
 	}
 
 	/**
@@ -679,27 +706,23 @@ public class ChangeSupport
 
 		String collectionName = event.collectionName();
 
-		IdentityHashBag<CollectionChangeListener> collectionChangeListeners = null;
-		IdentityHashBag<CollectionChangeListener> targets = null;
+		CollectionChangeListener[] collectionChangeListeners = null;
+		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				collectionChangeListeners = this.collectionChangeListeners();
-				if (collectionChangeListeners != null) {
-					targets = collectionChangeListeners.clone();
-				}
+			collectionChangeListeners = this.collectionChangeListeners();
+			if (collectionChangeListeners != null) {
+				targets = collectionChangeListeners.clone();
 			}
-			if ((collectionName != null) && (this.children != null)) {
-				child = this.children.get(collectionName);
-			}
+			child = this.child(collectionName);
 		}
 
 		if (targets != null) {
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = collectionChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().itemsAdded(target, event);
@@ -722,20 +745,16 @@ public class ChangeSupport
 			return;
 		}
 
-		IdentityHashBag<CollectionChangeListener> collectionChangeListeners = null;
-		IdentityHashBag<CollectionChangeListener> targets = null;
+		CollectionChangeListener[] collectionChangeListeners = null;
+		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				collectionChangeListeners = this.collectionChangeListeners();
-				if (collectionChangeListeners != null) {
-					targets = collectionChangeListeners.clone();
-				}
+			collectionChangeListeners = this.collectionChangeListeners();
+			if (collectionChangeListeners != null) {
+				targets = collectionChangeListeners.clone();
 			}
-			if ((collectionName != null) && (this.children != null)) {
-				child = this.children.get(collectionName);
-			}
+			child = this.child(collectionName);
 		}
 
 		CollectionChangeEvent event = null;
@@ -744,7 +763,7 @@ public class ChangeSupport
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = collectionChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -772,20 +791,16 @@ public class ChangeSupport
 	public void fireItemAdded(String collectionName, Object addedItem) {
 //		this.fireItemsAdded(collectionName, Collections.singleton(addedItem));
 
-		IdentityHashBag<CollectionChangeListener> collectionChangeListeners = null;
-		IdentityHashBag<CollectionChangeListener> targets = null;
+		CollectionChangeListener[] collectionChangeListeners = null;
+		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				collectionChangeListeners = this.collectionChangeListeners();
-				if (collectionChangeListeners != null) {
-					targets = collectionChangeListeners.clone();
-				}
+			collectionChangeListeners = this.collectionChangeListeners();
+			if (collectionChangeListeners != null) {
+				targets = collectionChangeListeners.clone();
 			}
-			if ((collectionName != null) && (this.children != null)) {
-				child = this.children.get(collectionName);
-			}
+			child = this.child(collectionName);
 		}
 
 		CollectionChangeEvent event = null;
@@ -794,7 +809,7 @@ public class ChangeSupport
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = collectionChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -826,27 +841,23 @@ public class ChangeSupport
 
 		String collectionName = event.collectionName();
 
-		IdentityHashBag<CollectionChangeListener> collectionChangeListeners = null;
-		IdentityHashBag<CollectionChangeListener> targets = null;
+		CollectionChangeListener[] collectionChangeListeners = null;
+		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				collectionChangeListeners = this.collectionChangeListeners();
-				if (collectionChangeListeners != null) {
-					targets = collectionChangeListeners.clone();
-				}
+			collectionChangeListeners = this.collectionChangeListeners();
+			if (collectionChangeListeners != null) {
+				targets = collectionChangeListeners.clone();
 			}
-			if ((collectionName != null) && (this.children != null)) {
-				child = this.children.get(collectionName);
-			}
+			child = this.child(collectionName);
 		}
 
 		if (targets != null) {
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = collectionChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().itemsRemoved(target, event);
@@ -869,20 +880,16 @@ public class ChangeSupport
 			return;
 		}
 
-		IdentityHashBag<CollectionChangeListener> collectionChangeListeners = null;
-		IdentityHashBag<CollectionChangeListener> targets = null;
+		CollectionChangeListener[] collectionChangeListeners = null;
+		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				collectionChangeListeners = this.collectionChangeListeners();
-				if (collectionChangeListeners != null) {
-					targets = collectionChangeListeners.clone();
-				}
+			collectionChangeListeners = this.collectionChangeListeners();
+			if (collectionChangeListeners != null) {
+				targets = collectionChangeListeners.clone();
 			}
-			if ((collectionName != null) && (this.children != null)) {
-				child = this.children.get(collectionName);
-			}
+			child = this.child(collectionName);
 		}
 
 		CollectionChangeEvent event = null;
@@ -891,7 +898,7 @@ public class ChangeSupport
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = collectionChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -919,20 +926,16 @@ public class ChangeSupport
 	public void fireItemRemoved(String collectionName, Object removedItem) {
 //		this.fireItemsRemoved(collectionName, Collections.singleton(removedItem));
 
-		IdentityHashBag<CollectionChangeListener> collectionChangeListeners = null;
-		IdentityHashBag<CollectionChangeListener> targets = null;
+		CollectionChangeListener[] collectionChangeListeners = null;
+		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				collectionChangeListeners = this.collectionChangeListeners();
-				if (collectionChangeListeners != null) {
-					targets = collectionChangeListeners.clone();
-				}
+			collectionChangeListeners = this.collectionChangeListeners();
+			if (collectionChangeListeners != null) {
+				targets = collectionChangeListeners.clone();
 			}
-			if ((collectionName != null) && (this.children != null)) {
-				child = this.children.get(collectionName);
-			}
+			child = this.child(collectionName);
 		}
 
 		CollectionChangeEvent event = null;
@@ -941,7 +944,7 @@ public class ChangeSupport
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = collectionChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -969,27 +972,23 @@ public class ChangeSupport
 	public void fireCollectionCleared(CollectionChangeEvent event) {
 		String collectionName = event.collectionName();
 
-		IdentityHashBag<CollectionChangeListener> collectionChangeListeners = null;
-		IdentityHashBag<CollectionChangeListener> targets = null;
+		CollectionChangeListener[] collectionChangeListeners = null;
+		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				collectionChangeListeners = this.collectionChangeListeners();
-				if (collectionChangeListeners != null) {
-					targets = collectionChangeListeners.clone();
-				}
+			collectionChangeListeners = this.collectionChangeListeners();
+			if (collectionChangeListeners != null) {
+				targets = collectionChangeListeners.clone();
 			}
-			if ((collectionName != null) && (this.children != null)) {
-				child = this.children.get(collectionName);
-			}
+			child = this.child(collectionName);
 		}
 
 		if (targets != null) {
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = collectionChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().collectionCleared(target, event);
@@ -1009,20 +1008,16 @@ public class ChangeSupport
 	public void fireCollectionCleared(String collectionName) {
 //		this.fireCollectionCleared(new CollectionChangeEvent(this.source, collectionName));
 
-		IdentityHashBag<CollectionChangeListener> collectionChangeListeners = null;
-		IdentityHashBag<CollectionChangeListener> targets = null;
+		CollectionChangeListener[] collectionChangeListeners = null;
+		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				collectionChangeListeners = this.collectionChangeListeners();
-				if (collectionChangeListeners != null) {
-					targets = collectionChangeListeners.clone();
-				}
+			collectionChangeListeners = this.collectionChangeListeners();
+			if (collectionChangeListeners != null) {
+				targets = collectionChangeListeners.clone();
 			}
-			if ((collectionName != null) && (this.children != null)) {
-				child = this.children.get(collectionName);
-			}
+			child = this.child(collectionName);
 		}
 
 		CollectionChangeEvent event = null;
@@ -1031,7 +1026,7 @@ public class ChangeSupport
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = collectionChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1059,27 +1054,23 @@ public class ChangeSupport
 	public void fireCollectionChanged(CollectionChangeEvent event) {
 		String collectionName = event.collectionName();
 
-		IdentityHashBag<CollectionChangeListener> collectionChangeListeners = null;
-		IdentityHashBag<CollectionChangeListener> targets = null;
+		CollectionChangeListener[] collectionChangeListeners = null;
+		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				collectionChangeListeners = this.collectionChangeListeners();
-				if (collectionChangeListeners != null) {
-					targets = collectionChangeListeners.clone();
-				}
+			collectionChangeListeners = this.collectionChangeListeners();
+			if (collectionChangeListeners != null) {
+				targets = collectionChangeListeners.clone();
 			}
-			if ((collectionName != null) && (this.children != null)) {
-				child = this.children.get(collectionName);
-			}
+			child = this.child(collectionName);
 		}
 
 		if (targets != null) {
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = collectionChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().collectionChanged(target, event);
@@ -1099,20 +1090,16 @@ public class ChangeSupport
 	public void fireCollectionChanged(String collectionName) {
 //		this.fireCollectionChanged(new CollectionChangeEvent(this.source, collectionName));
 
-		IdentityHashBag<CollectionChangeListener> collectionChangeListeners = null;
-		IdentityHashBag<CollectionChangeListener> targets = null;
+		CollectionChangeListener[] collectionChangeListeners = null;
+		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				collectionChangeListeners = this.collectionChangeListeners();
-				if (collectionChangeListeners != null) {
-					targets = collectionChangeListeners.clone();
-				}
+			collectionChangeListeners = this.collectionChangeListeners();
+			if (collectionChangeListeners != null) {
+				targets = collectionChangeListeners.clone();
 			}
-			if ((collectionName != null) && (this.children != null)) {
-				child = this.children.get(collectionName);
-			}
+			child = this.child(collectionName);
 		}
 
 		CollectionChangeEvent event = null;
@@ -1121,7 +1108,7 @@ public class ChangeSupport
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = collectionChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1193,9 +1180,8 @@ public class ChangeSupport
 		return this.hasAnyListeners(LIST_CHANGE_LISTENER_CLASS);
 	}
 
-	@SuppressWarnings("unchecked")
-	private IdentityHashBag<ListChangeListener> listChangeListeners() {
-		return (IdentityHashBag<ListChangeListener>) this.listeners.get(LIST_CHANGE_LISTENER_CLASS);
+	private ListChangeListener[] listChangeListeners() {
+		return (ListChangeListener[]) this.listeners(LIST_CHANGE_LISTENER_CLASS);
 	}
 
 	/**
@@ -1208,27 +1194,23 @@ public class ChangeSupport
 
 		String listName = event.listName();
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		if (targets != null) {
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().itemsAdded(target, event);
@@ -1251,20 +1233,16 @@ public class ChangeSupport
 			return;
 		}
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1273,7 +1251,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1301,20 +1279,16 @@ public class ChangeSupport
 	public void fireItemAdded(String listName, int index, Object addedItem) {
 //		this.fireItemsAdded(listName, index, Collections.singletonList(addedItem));
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1323,7 +1297,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1355,27 +1329,23 @@ public class ChangeSupport
 
 		String listName = event.listName();
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		if (targets != null) {
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().itemsRemoved(target, event);
@@ -1398,20 +1368,16 @@ public class ChangeSupport
 			return;
 		}
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1420,7 +1386,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1448,20 +1414,16 @@ public class ChangeSupport
 	public void fireItemRemoved(String listName, int index, Object removedItem) {
 //		this.fireItemsRemoved(listName, index, Collections.singletonList(removedItem));
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1470,7 +1432,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1502,27 +1464,23 @@ public class ChangeSupport
 
 		String listName = event.listName();
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		if (targets != null) {
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().itemsReplaced(target, event);
@@ -1545,20 +1503,16 @@ public class ChangeSupport
 			return;
 		}
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1567,7 +1521,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1595,20 +1549,16 @@ public class ChangeSupport
 	public void fireItemReplaced(String listName, int index, Object newItem, Object replacedItem) {
 //		this.fireItemsReplaced(listName, index, Collections.singletonList(newItem), Collections.singletonList(replacedItem));
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1617,7 +1567,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1649,27 +1599,23 @@ public class ChangeSupport
 
 		String listName = event.listName();
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		if (targets != null) {
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().itemsMoved(target, event);
@@ -1692,20 +1638,16 @@ public class ChangeSupport
 			return;
 		}
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1714,7 +1656,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1749,27 +1691,23 @@ public class ChangeSupport
 	public void fireListCleared(ListChangeEvent event) {
 		String listName = event.listName();
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		if (targets != null) {
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().listCleared(target, event);
@@ -1789,20 +1727,16 @@ public class ChangeSupport
 	public void fireListCleared(String listName) {
 //		this.fireListCleared(new ListChangeEvent(this.source, listName));
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1811,7 +1745,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1839,27 +1773,23 @@ public class ChangeSupport
 	public void fireListChanged(ListChangeEvent event) {
 		String listName = event.listName();
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		if (targets != null) {
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().listChanged(target, event);
@@ -1879,20 +1809,16 @@ public class ChangeSupport
 	public void fireListChanged(String listName) {
 //		this.fireListChanged(new ListChangeEvent(this.source, listName));
 
-		IdentityHashBag<ListChangeListener> listChangeListeners = null;
-		IdentityHashBag<ListChangeListener> targets = null;
+		ListChangeListener[] listChangeListeners = null;
+		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				listChangeListeners = this.listChangeListeners();
-				if (listChangeListeners != null) {
-					targets = listChangeListeners.clone();
-				}
+			listChangeListeners = this.listChangeListeners();
+			if (listChangeListeners != null) {
+				targets = listChangeListeners.clone();
 			}
-			if ((listName != null) && (this.children != null)) {
-				child = this.children.get(listName);
-			}
+			child = this.child(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1901,7 +1827,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = listChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1974,9 +1900,8 @@ public class ChangeSupport
 		return this.hasAnyListeners(TREE_CHANGE_LISTENER_CLASS);
 	}
 
-	@SuppressWarnings("unchecked")
-	private IdentityHashBag<TreeChangeListener> treeChangeListeners() {
-		return (IdentityHashBag<TreeChangeListener>) this.listeners.get(TREE_CHANGE_LISTENER_CLASS);
+	private TreeChangeListener[] treeChangeListeners() {
+		return (TreeChangeListener[]) this.listeners(TREE_CHANGE_LISTENER_CLASS);
 	}
 
 	/**
@@ -1985,27 +1910,23 @@ public class ChangeSupport
 	public void fireNodeAdded(TreeChangeEvent event) {
 		String treeName = event.treeName();
 
-		IdentityHashBag<TreeChangeListener> treeChangeListeners = null;
-		IdentityHashBag<TreeChangeListener> targets = null;
+		TreeChangeListener[] treeChangeListeners = null;
+		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				treeChangeListeners = this.treeChangeListeners();
-				if (treeChangeListeners != null) {
-					targets = treeChangeListeners.clone();
-				}
+			treeChangeListeners = this.treeChangeListeners();
+			if (treeChangeListeners != null) {
+				targets = treeChangeListeners.clone();
 			}
-			if ((treeName != null) && (this.children != null)) {
-				child = this.children.get(treeName);
-			}
+			child = this.child(treeName);
 		}
 
 		if (targets != null) {
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = treeChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().nodeAdded(target, event);
@@ -2025,20 +1946,16 @@ public class ChangeSupport
 	public void fireNodeAdded(String treeName, Object[] path) {
 //		this.fireNodeAdded(new TreeChangeEvent(this.source, treeName, path));
 
-		IdentityHashBag<TreeChangeListener> treeChangeListeners = null;
-		IdentityHashBag<TreeChangeListener> targets = null;
+		TreeChangeListener[] treeChangeListeners = null;
+		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				treeChangeListeners = this.treeChangeListeners();
-				if (treeChangeListeners != null) {
-					targets = treeChangeListeners.clone();
-				}
+			treeChangeListeners = this.treeChangeListeners();
+			if (treeChangeListeners != null) {
+				targets = treeChangeListeners.clone();
 			}
-			if ((treeName != null) && (this.children != null)) {
-				child = this.children.get(treeName);
-			}
+			child = this.child(treeName);
 		}
 
 		TreeChangeEvent event = null;
@@ -2047,7 +1964,7 @@ public class ChangeSupport
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = treeChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -2075,27 +1992,23 @@ public class ChangeSupport
 	public void fireNodeRemoved(TreeChangeEvent event) {
 		String treeName = event.treeName();
 
-		IdentityHashBag<TreeChangeListener> treeChangeListeners = null;
-		IdentityHashBag<TreeChangeListener> targets = null;
+		TreeChangeListener[] treeChangeListeners = null;
+		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				treeChangeListeners = this.treeChangeListeners();
-				if (treeChangeListeners != null) {
-					targets = treeChangeListeners.clone();
-				}
+			treeChangeListeners = this.treeChangeListeners();
+			if (treeChangeListeners != null) {
+				targets = treeChangeListeners.clone();
 			}
-			if ((treeName != null) && (this.children != null)) {
-				child = this.children.get(treeName);
-			}
+			child = this.child(treeName);
 		}
 
 		if (targets != null) {
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = treeChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().nodeRemoved(target, event);
@@ -2115,20 +2028,16 @@ public class ChangeSupport
 	public void fireNodeRemoved(String treeName, Object[] path) {
 //		this.fireNodeRemoved(new TreeChangeEvent(this.source, treeName, path));
 
-		IdentityHashBag<TreeChangeListener> treeChangeListeners = null;
-		IdentityHashBag<TreeChangeListener> targets = null;
+		TreeChangeListener[] treeChangeListeners = null;
+		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				treeChangeListeners = this.treeChangeListeners();
-				if (treeChangeListeners != null) {
-					targets = treeChangeListeners.clone();
-				}
+			treeChangeListeners = this.treeChangeListeners();
+			if (treeChangeListeners != null) {
+				targets = treeChangeListeners.clone();
 			}
-			if ((treeName != null) && (this.children != null)) {
-				child = this.children.get(treeName);
-			}
+			child = this.child(treeName);
 		}
 
 		TreeChangeEvent event = null;
@@ -2137,7 +2046,7 @@ public class ChangeSupport
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = treeChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -2165,27 +2074,23 @@ public class ChangeSupport
 	public void fireTreeCleared(TreeChangeEvent event) {
 		String treeName = event.treeName();
 
-		IdentityHashBag<TreeChangeListener> treeChangeListeners = null;
-		IdentityHashBag<TreeChangeListener> targets = null;
+		TreeChangeListener[] treeChangeListeners = null;
+		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				treeChangeListeners = this.treeChangeListeners();
-				if (treeChangeListeners != null) {
-					targets = treeChangeListeners.clone();
-				}
+			treeChangeListeners = this.treeChangeListeners();
+			if (treeChangeListeners != null) {
+				targets = treeChangeListeners.clone();
 			}
-			if ((treeName != null) && (this.children != null)) {
-				child = this.children.get(treeName);
-			}
+			child = this.child(treeName);
 		}
 
 		if (targets != null) {
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = treeChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().treeCleared(target, event);
@@ -2205,20 +2110,16 @@ public class ChangeSupport
 	public void fireTreeCleared(String treeName, Object[] path) {
 //		this.fireTreeCleared(new TreeChangeEvent(this.source, treeName, path));
 
-		IdentityHashBag<TreeChangeListener> treeChangeListeners = null;
-		IdentityHashBag<TreeChangeListener> targets = null;
+		TreeChangeListener[] treeChangeListeners = null;
+		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				treeChangeListeners = this.treeChangeListeners();
-				if (treeChangeListeners != null) {
-					targets = treeChangeListeners.clone();
-				}
+			treeChangeListeners = this.treeChangeListeners();
+			if (treeChangeListeners != null) {
+				targets = treeChangeListeners.clone();
 			}
-			if ((treeName != null) && (this.children != null)) {
-				child = this.children.get(treeName);
-			}
+			child = this.child(treeName);
 		}
 
 		TreeChangeEvent event = null;
@@ -2227,7 +2128,7 @@ public class ChangeSupport
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = treeChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -2262,27 +2163,23 @@ public class ChangeSupport
 	public void fireTreeChanged(TreeChangeEvent event) {
 		String treeName = event.treeName();
 
-		IdentityHashBag<TreeChangeListener> treeChangeListeners = null;
-		IdentityHashBag<TreeChangeListener> targets = null;
+		TreeChangeListener[] treeChangeListeners = null;
+		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				treeChangeListeners = this.treeChangeListeners();
-				if (treeChangeListeners != null) {
-					targets = treeChangeListeners.clone();
-				}
+			treeChangeListeners = this.treeChangeListeners();
+			if (treeChangeListeners != null) {
+				targets = treeChangeListeners.clone();
 			}
-			if ((treeName != null) && (this.children != null)) {
-				child = this.children.get(treeName);
-			}
+			child = this.child(treeName);
 		}
 
 		if (targets != null) {
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = treeChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
 				}
 				if (stillListening) {
 					this.dispatcher().treeChanged(target, event);
@@ -2302,20 +2199,16 @@ public class ChangeSupport
 	public void fireTreeChanged(String treeName, Object[] path) {
 //		this.fireTreeChanged(new TreeChangeEvent(this.source, treeName, path));
 
-		IdentityHashBag<TreeChangeListener> treeChangeListeners = null;
-		IdentityHashBag<TreeChangeListener> targets = null;
+		TreeChangeListener[] treeChangeListeners = null;
+		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			if (this.listeners != null) {
-				treeChangeListeners = this.treeChangeListeners();
-				if (treeChangeListeners != null) {
-					targets = treeChangeListeners.clone();
-				}
+			treeChangeListeners = this.treeChangeListeners();
+			if (treeChangeListeners != null) {
+				targets = treeChangeListeners.clone();
 			}
-			if ((treeName != null) && (this.children != null)) {
-				child = this.children.get(treeName);
-			}
+			child = this.child(treeName);
 		}
 
 		TreeChangeEvent event = null;
@@ -2324,7 +2217,7 @@ public class ChangeSupport
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = treeChangeListeners.contains(target);
+					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -2359,6 +2252,115 @@ public class ChangeSupport
 	@Override
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.source);
+	}
+
+
+	// ********** serialization **********
+
+	private synchronized void writeObject(ObjectOutputStream s) throws IOException {
+		// write out the source, children, and any hidden stuff
+		s.defaultWriteObject();
+
+		// only write out Serializable listeners
+		int len1 = this.genericListeners.length;
+		for (int i = 0; i < len1; i++) {
+			this.writeObject(s, this.genericListeners[i]);
+		}
+		s.writeObject(null);
+    }
+
+	private void writeObject(ObjectOutputStream s, GenericListenerList gll) throws IOException {
+		boolean first = true;
+		int len = gll.listeners.length;
+		for (int i = 0; i < len; i++) {
+			ChangeListener listener = gll.listeners[i];
+			if (listener instanceof Serializable) {
+				if (first) {
+					first = false;
+					s.writeObject(gll.listenerClass);
+				}
+				s.writeObject(listener);
+			}
+		}
+		if ( ! first) {
+			s.writeObject(null);
+		}
+	}
+
+	private synchronized void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
+		// read in the source, children, and any hidden stuff
+		s.defaultReadObject();
+
+		// read in generic listener lists
+		this.genericListeners = EMPTY_GENERIC_LISTENERS;
+		Object o;
+		while (null != (o = s.readObject())) {
+			@SuppressWarnings("unchecked")
+			Class<? extends ChangeListener> listenerClass = (Class<? extends ChangeListener>) o;
+			GenericListenerList gll = null;
+			while (null != (o = s.readObject())) {
+				if (gll == null) {
+					gll = this.addGenericListenerListInternal(listenerClass, (ChangeListener) o);
+				} else {
+					gll.addListener((ChangeListener) o);
+				}
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T extends ChangeListener> GenericListenerList addGenericListenerListInternal(Class<T> listenerClass, ChangeListener listener) {
+		return this.addGenericListenerList(listenerClass, (T) listener);
+	}
+
+
+	// ********** member classes **********
+
+	/**
+	 * Pair a listener class with its generic listeners.
+	 */
+	private static class GenericListenerList {
+		final Class<? extends ChangeListener> listenerClass;
+		ChangeListener[] listeners;
+		<T extends ChangeListener> GenericListenerList(Class<T> listenerClass, T listener) {
+			super();
+			this.listenerClass = listenerClass;
+			this.listeners = (ChangeListener[]) Array.newInstance(listenerClass, 1);
+			this.listeners[0] = listener;
+		}
+		void addListener(ChangeListener listener) {
+			this.listeners = CollectionTools.add(this.listeners, listener);
+		}
+		boolean removeListener(ChangeListener listener) {
+			int len = this.listeners.length;
+			if (len == 0) {
+				return false;
+			}
+			try {
+				this.listeners = CollectionTools.remove(this.listeners, listener);
+			} catch (ArrayIndexOutOfBoundsException ex) {
+				return false;  // listener not in the list
+			}
+			return (this.listeners.length + 1) == len;
+		}
+		boolean hasListeners() {
+			return this.listeners.length > 0;
+		}
+	}
+
+	/**
+	 * Pair an aspect name with the change support holding its associated
+	 * listeners.
+	 */
+	private static class AspectChild implements Serializable {
+		final String aspectName;
+		final ChangeSupport child;
+		private static final long serialVersionUID = 1L;
+		AspectChild(String aspectName, ChangeSupport child) {
+			super();
+			this.aspectName = aspectName;
+			this.child = child;
+		}
 	}
 
 }

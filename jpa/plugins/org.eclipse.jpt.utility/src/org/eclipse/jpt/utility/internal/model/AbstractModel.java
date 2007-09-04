@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -31,7 +32,7 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
 /**
  * Convenience implementation of Model protocol.
  */
-public abstract class AbstractModel implements Model {
+public abstract class AbstractModel implements Model, Serializable {
 	/**
 	 * Delegate state/property/collection/list/tree change support to this
 	 * helper object. The change support object is "lazy-initialized".

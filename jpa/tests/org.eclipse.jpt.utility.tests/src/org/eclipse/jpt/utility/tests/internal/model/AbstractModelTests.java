@@ -9,15 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Arrays;
 
+import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.StateChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.ListChangeAdapter;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
@@ -1198,7 +1204,7 @@ public class AbstractModelTests
 
 	// ********** inner class **********
 	
-	private class TestModel extends AbstractModel implements Cloneable {
+	private static class TestModel extends AbstractModel implements Cloneable {
 		TestModel() {
 			super();
 		}
@@ -1306,6 +1312,85 @@ public class AbstractModelTests
 	}
 
 
+	// ********** serialization test **********	
+
+	public void testSerialization() throws IOException, ClassNotFoundException {
+		LocalModel model1 = new LocalModel();
+		Foo foo1 = new Foo();
+		Bar bar1 = new Bar();
+		Joo joo1 = new Joo();
+		Jar jar1 = new Jar();
+		model1.addStateChangeListener(foo1);
+		model1.addStateChangeListener(bar1);
+		model1.addListChangeListener(joo1);
+		model1.addListChangeListener(jar1);
+
+		ChangeListener[] listeners1 = this.listeners(model1, StateChangeListener.class);
+		assertEquals(2, listeners1.length);
+		// the order of these could change...
+		assertEquals(Foo.class, listeners1[0].getClass());
+		assertEquals(Bar.class, listeners1[1].getClass());
+
+		listeners1 = this.listeners(model1, ListChangeListener.class);
+		assertEquals(2, listeners1.length);
+		// the order of these could change...
+		assertEquals(Joo.class, listeners1[0].getClass());
+		assertEquals(Jar.class, listeners1[1].getClass());
+
+		LocalModel model2 = TestTools.serialize(model1);
+
+		ChangeListener[] listeners2 = this.listeners(model2, StateChangeListener.class);
+		assertEquals(1, listeners2.length);
+		assertEquals(Foo.class, listeners2[0].getClass());
+
+		listeners2 = this.listeners(model2, ListChangeListener.class);
+		assertEquals(1, listeners2.length);
+		assertEquals(Joo.class, listeners2[0].getClass());
+	}
+
+	private ChangeListener[] listeners(LocalModel model, Class<? extends ChangeListener> listenerClass) {
+		ChangeSupport changeSupport = (ChangeSupport) ClassTools.getFieldValue(model, "changeSupport");
+		return (ChangeListener[]) ClassTools.executeMethod(changeSupport, "listeners", Class.class, listenerClass);
+	}
+
+	private static class LocalModel extends AbstractModel implements Serializable {
+		LocalModel() {
+			super();
+		}
+	}
+
+	private static class Foo implements Serializable, StateChangeListener {
+		Foo() {
+			super();
+		}
+		public void stateChanged(StateChangeEvent event) {
+			// do nothing
+		}
+	}
+
+	private static class Bar implements StateChangeListener {
+		Bar() {
+			super();
+		}
+		public void stateChanged(StateChangeEvent event) {
+			// do nothing
+		}
+	}
+
+	private static class Joo extends ListChangeAdapter implements Serializable {
+//		private static final ObjectStreamField[] serialPersistentFields = {new ObjectStreamField("changeSupport", ChangeSupport.class)};
+		Joo() {
+			super();
+		}
+	}
+
+	private static class Jar extends ListChangeAdapter {
+		Jar() {
+			super();
+		}
+	}
+
+
 	// ********** bug(?) test **********	
 
 	private static final String ISE_MESSAGE = "this object is no longer listening to localA";
@@ -1407,7 +1492,7 @@ public class AbstractModelTests
 	 * This object simply fires a state change event. Both LocalB and LocalC
 	 * will be listeners.
 	 */
-	private class LocalA extends AbstractModel {
+	private static class LocalA extends AbstractModel {
 		LocalA() {
 			super();
 		}
@@ -1432,7 +1517,7 @@ public class AbstractModelTests
 	 * This object will fire state change events whenever it receives
 	 * a state change event from localA.
 	 */
-	private class LocalB
+	private static class LocalB
 		extends AbstractModel
 		implements StateChangeListener, PropertyChangeListener, CollectionChangeListener, ListChangeListener, TreeChangeListener
 	{
@@ -1486,7 +1571,7 @@ public class AbstractModelTests
 	 * listening to localA, it will complain about receiving the event and
 	 * throw an exception.
 	 */
-	private class LocalC
+	private static class LocalC
 		extends AbstractModel
 		implements StateChangeListener, PropertyChangeListener, CollectionChangeListener, ListChangeListener, TreeChangeListener
 	{
