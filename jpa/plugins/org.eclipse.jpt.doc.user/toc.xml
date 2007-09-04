@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='iso-8859-1'?>
-<?NLS  TYPE="org.eclipse.help.toc"?>
 <!-- User Guide -->
-  <toc label="Dali Java Persistence Tools User Guide"><topic label="Dali Java Persistence Tools User Guide">
+  <toc label="Dali Java Persistence Tools User Guide">
     <topic href="getting_started.htm" label="Getting started">
       <topic href="getting_started001.htm#BABEFHCD" label="Requirements and installation" />
       <topic href="getting_started002.htm#BABIGCJA" label="Dali quick start">
@@ -114,5 +113,4 @@
     <topic href="tips_and_tricks.htm" label="Tips and tricks" />
     <topic href="whats_new.htm" label=" What's new" />
     <topic href="legal.htm" label=" Legal" />
-  </topic>
 </toc>
