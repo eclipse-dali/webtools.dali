@@ -10,25 +10,26 @@ package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingInternal;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
+import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
-import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public abstract class XmlMultiRelationshipMappingContext
-	extends XmlRelationshipMappingContext
+	extends XmlRelationshipMappingContext implements XmlJoinTableContext.ParentContext
 {
-	private JoinTableContext joinTableContext;
+	private XmlJoinTableContext joinTableContext;
 	
 	protected XmlMultiRelationshipMappingContext(
 			IContext parentContext, XmlMultiRelationshipMappingInternal mapping) {
 		super(parentContext, mapping);
-		this.joinTableContext = new JoinTableContext(this, mapping.getJoinTable());
+		this.joinTableContext = new XmlJoinTableContext(this, mapping.getJoinTable());
 	}
 	
 	@Override
@@ -36,30 +37,18 @@ public abstract class XmlMultiRelationshipMappingContext
 		super.refreshDefaults(defaultsContext, monitor);
 		this.joinTableContext.refreshDefaults(defaultsContext, monitor);
 	}
-	
-	@Override
-	protected Object getDefault(String key, DefaultsContext defaultsContext) {
-		if (key.equals(BaseJpaPlatform.DEFAULT_JOIN_TABLE_NAME_KEY)) {
-			return joinTableDefaultName(defaultsContext);
-		}
-		return super.getDefault(key, defaultsContext);
-	}
-	
-	protected String joinTableDefaultName(DefaultsContext defaultsContext) {
-		String tableName = multiRelationshipMapping().typeMapping().getTableName();
-		if (tableName == null) {
-			return null;
-		}
-		IEntity targetEntity = targetEntity(defaultsContext);
-		if (targetEntity == null) {
-			return null;
-		}
-		ITable targetTable = targetEntity.getTable();
-		return (targetTable == null) ? null : tableName + "_" + targetTable.getName();
-	}
 
 	protected XmlMultiRelationshipMappingInternal multiRelationshipMapping() {
 		return (XmlMultiRelationshipMappingInternal) relationshipMapping();
+	}
+	
+	@Override
+	public IMultiRelationshipMapping javaRelationshipMapping() {
+		IAttributeMapping javaAttributeMapping = javaAttributeMapping();
+		if (javaAttributeMapping instanceof IMultiRelationshipMapping) {
+			return ((IMultiRelationshipMapping) javaAttributeMapping);
+		}
+		return null;
 	}
 	
 	@Override

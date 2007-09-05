@@ -8,10 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import org.eclipse.jpt.core.internal.IPersistentType;
-import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaRelationshipMapping;
-import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
 
 public abstract class JavaRelationshipMappingContext extends JavaAttributeContext
@@ -23,22 +20,6 @@ public abstract class JavaRelationshipMappingContext extends JavaAttributeContex
 	protected IRelationshipMapping getMapping() {
 		return (IRelationshipMapping) super.getMapping();
 	}
-	
-	protected IEntity targetEntity(DefaultsContext defaultsContext) {
-		String targetEntity = getMapping().fullyQualifiedTargetEntity(defaultsContext.astRoot());
-		if (targetEntity == null) {
-			return null;
-		}
-		IPersistentType persistentType = defaultsContext.persistentType(targetEntity);
-		if (persistentType != null) {
-			ITypeMapping typeMapping = persistentType.getMapping();
-			if (typeMapping instanceof IEntity) {
-				return (IEntity) typeMapping;
-			}
-		}
-		return null;
-	}
-	
 	
 	@Override
 	protected Object getDefault(String key, DefaultsContext defaultsContext) {

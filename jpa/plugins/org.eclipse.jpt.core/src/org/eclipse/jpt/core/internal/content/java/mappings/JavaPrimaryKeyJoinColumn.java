@@ -454,7 +454,11 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn
 	void removeAnnotation() {
 		this.annotationAdapter.removeAnnotation();
 	}
-
+	
+	public boolean isVirtual() {
+		return getOwner().isVirtual(this);
+	}
+	
 	// ********** static methods **********
 	static JavaPrimaryKeyJoinColumn createSecondaryTableJoinColumn(DeclarationAnnotationAdapter secondaryTableAdapter, IAbstractJoinColumn.Owner owner, Member member, int index) {
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaPrimaryKeyJoinColumn(owner, member, buildSecondaryTableAnnotationAdapter(secondaryTableAdapter, index));

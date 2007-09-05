@@ -167,6 +167,10 @@ public interface ISingleRelationshipMapping extends IRelationshipMapping
 		public List<IJoinColumn> joinColumns() {
 			return this.singleRelationshipMapping.getJoinColumns();
 		}
+		
+		public int indexOf(IAbstractJoinColumn joinColumn) {
+			return joinColumns().indexOf(joinColumn);
+		}
 
 		public IEntity targetEntity() {
 			return this.singleRelationshipMapping.getResolvedTargetEntity();
@@ -206,6 +210,10 @@ public interface ISingleRelationshipMapping extends IRelationshipMapping
 		public Table dbReferencedColumnTable() {
 			IEntity targetEntity = targetEntity();
 			return (targetEntity == null) ? null : targetEntity().primaryDbTable();
+		}
+		
+		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
+			return this.singleRelationshipMapping.getDefaultJoinColumns().contains(joinColumn);
 		}
 	}
 }

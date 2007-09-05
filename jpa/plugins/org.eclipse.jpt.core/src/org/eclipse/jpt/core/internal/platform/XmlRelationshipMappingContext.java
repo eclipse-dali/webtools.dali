@@ -24,22 +24,6 @@ public abstract class XmlRelationshipMappingContext extends XmlAttributeContext
 		super(parentContext, mapping);
 	}
 	
-	protected IEntity targetEntity(DefaultsContext defaultsContext) {
-		String targetEntity = relationshipMapping().fullyQualifiedTargetEntity(defaultsContext.astRoot());
-		if (targetEntity == null) {
-			return null;
-		}
-		IPersistentType persistentType = defaultsContext.persistentType(targetEntity);
-		if (persistentType == null) {
-			return null;
-		}
-		ITypeMapping typeMapping = persistentType.getMapping();
-		if (typeMapping instanceof IEntity) {
-			return (IEntity) typeMapping;
-		}
-		return null;
-	}
-	
 	protected XmlRelationshipMapping relationshipMapping() {
 		return (XmlRelationshipMapping) attributeMapping();
 	}

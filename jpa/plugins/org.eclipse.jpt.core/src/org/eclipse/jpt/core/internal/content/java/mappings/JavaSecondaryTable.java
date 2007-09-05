@@ -542,6 +542,10 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		return null;
 	}
 
+	public boolean isVirtual() {
+		return false;
+	}
+	
 	// ********** static methods **********
 	static JavaSecondaryTable createJavaSecondaryTable(Owner owner, Member member, int index) {
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaSecondaryTable(owner, member, buildDeclarationAnnotationAdapter(index));

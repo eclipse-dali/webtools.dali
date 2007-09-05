@@ -33,12 +33,16 @@ public class SecondaryTableContext extends BaseContext
 	protected Collection<PrimaryKeyJoinColumnContext> buildPkJoinColumnContexts() {
 		Collection<PrimaryKeyJoinColumnContext> contexts = new ArrayList<PrimaryKeyJoinColumnContext>();
 		for (IPrimaryKeyJoinColumn pkJoinColumn : getSecondaryTable().getPrimaryKeyJoinColumns()) {
-			contexts.add(new PrimaryKeyJoinColumnContext(this, pkJoinColumn));
+			contexts.add(buildPrimaryKeyJoinColumnContext(pkJoinColumn));
 		}
 		
 		return contexts;
 	}
 
+	protected PrimaryKeyJoinColumnContext buildPrimaryKeyJoinColumnContext(IPrimaryKeyJoinColumn pkJoinColumn) {
+		return new PrimaryKeyJoinColumnContext(this, pkJoinColumn);
+	}
+	
 	@Override
 	protected void initialize() {}
 	

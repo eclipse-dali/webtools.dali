@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: IAbstractJoinColumn.java,v 1.9 2007/05/30 20:39:02 pfullbright Exp $
+ * $Id: IAbstractJoinColumn.java,v 1.9.2.1 2007/09/05 14:57:47 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.mappings;
 
@@ -110,6 +110,7 @@ public interface IAbstractJoinColumn extends INamedColumn
 	 */
 	IAbstractJoinColumn.Owner getOwner();
 
+	boolean isVirtual();
 
 	interface Owner extends INamedColumn.Owner
 	{
@@ -122,5 +123,9 @@ public interface IAbstractJoinColumn extends INamedColumn
 		 * return the list of join columns containing the join column
 		 */
 		List<? extends IAbstractJoinColumn> joinColumns();
+		
+		int indexOf(IAbstractJoinColumn joinColumn);
+		
+		boolean isVirtual(IAbstractJoinColumn joinColumn);
 	}
 }
