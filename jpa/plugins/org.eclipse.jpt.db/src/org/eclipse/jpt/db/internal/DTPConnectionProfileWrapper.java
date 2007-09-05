@@ -243,7 +243,13 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 		
 		org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase;
 		if( this.isConnected()) {
-			dtpDatabase = ProfileUtil.getDatabase( new DatabaseIdentifier( this.getName(), this.getDatabaseName()), false);
+			//TODO see DTP bug 202306
+			//pass connect=true in to ProfileUtil.getDatabase()
+			//there is a bug mentioned in a comment: 
+            //     "during the profile connected event notification, 
+            //     IManagedConnection is connected while IConnectionProfile is not"
+			//so some hackery here for their hackery
+			dtpDatabase = ProfileUtil.getDatabase( new DatabaseIdentifier( this.getName(), this.getDatabaseName()), true);
 			return Database.createDatabase( this, dtpDatabase);
 		}
 		return NullDatabase.instance();
