@@ -9,27 +9,26 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
-import java.io.IOException;
-import java.util.Collections;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.content.orm.resource.OrmXmlResourceFactory;
+import org.eclipse.jpt.core.internal.content.orm.resource.OrmArtifactEdit;
+import org.eclipse.jpt.core.internal.emfutility.ComponentUtilities;
 
 public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 {
 	public static OrmXmlJpaFileContentProvider INSTANCE = new OrmXmlJpaFileContentProvider();
 	
 	
-	private IFile resourceFile;
+	private IFile file;
 	
 	
 	/**
@@ -40,13 +39,24 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 	}
 
 	public IJpaRootContentNode buildRootContent(IFile resourceFile) {
-		OrmXmlResourceFactory.register();
-		this.resourceFile = resourceFile;
-		URI fileURI = URI.createPlatformResourceURI(resourceFile.getFullPath().toString());
-		OrmXmlResource resource = (OrmXmlResource) getResourceSet(resourceFile).getResource(fileURI, true);
+		file = resourceFile;
+		IPath deployPath = ComponentUtilities.computeDeployPath(resourceFile);
+		OrmArtifactEdit artifactEdit = 
+				OrmArtifactEdit.getArtifactEditForWrite(
+						resourceFile.getProject(),
+						deployPath.toString());
+		OrmResource resource = artifactEdit.getOrmResource();
 		XmlRootContentNode root = OrmFactory.eINSTANCE.createXmlRootContentNode();
-		root.setEntityMappings(resource.getXmlFileContent());
-		resource.eAdapters().add(buildRootNodeListener(root));
+			
+		if (resourceFile.equals(resource.getFile())) {
+			root.setArtifactEdit(artifactEdit);
+			root.setEntityMappings(resource.getEntityMappings());
+			resource.eAdapters().add(buildRootNodeListener(root));
+		}
+		else {
+			artifactEdit.dispose();
+		}
+		
 		return root;
 	}
 	
@@ -76,25 +86,27 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 			if (featureId == Resource.RESOURCE__CONTENTS) {
 				if (notification.getEventType() == Notification.ADD
 						|| notification.getEventType() == Notification.REMOVE) {
-					OrmXmlResource resource = (OrmXmlResource) notification.getNotifier();
-					root.setEntityMappings(resource.getXmlFileContent());
+					OrmResource resource = (OrmResource) notification.getNotifier();
+					root.setEntityMappings(resource.getEntityMappings());
 				}
 			}
-			else if (featureId == Resource.RESOURCE__IS_LOADED) {
-				if (resourceFile.exists()) {
-					// dumb translator is unloading my resource, reload it
-					if (notification.getNewBooleanValue() == false) {
-						OrmXmlResource resource = (OrmXmlResource) notification.getNotifier();
-						try {
-							resource.load(Collections.EMPTY_MAP);
-						}
-						catch (IOException ioe) {
-							// hmmm, log for now
-							JptCorePlugin.log(ioe);
-						}
-					}
-				}
-			}
+			// commenting out for now - this *was* a workaround for 202190, but with ArtifactEdit
+			// usage, it no longer works
+//			else if (featureId == Resource.RESOURCE__IS_LOADED) {
+//				if (file.exists()) {
+//					// dumb translator is unloading my resource, reload it
+//					if (notification.getNewBooleanValue() == false) {
+//						OrmResource resource = (OrmResource) notification.getNotifier();
+//						try {
+//							resource.load(Collections.EMPTY_MAP);
+//						}
+//						catch (IOException ioe) {
+//							// hmmm, log for now
+//							JptCorePlugin.log(ioe);
+//						}
+//					}
+//				}
+//			}
 		}
 	}
 }

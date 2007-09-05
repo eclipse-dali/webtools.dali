@@ -9,54 +9,59 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.persistence;
 
-import java.io.IOException;
-import java.util.Collections;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceResource;
-import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceXmlResourceFactory;
+import org.eclipse.jpt.core.internal.emfutility.ComponentUtilities;
 
 public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProvider
 {
 	public static PersistenceXmlJpaFileContentProvider INSTANCE = new PersistenceXmlJpaFileContentProvider();
 	
 	
-	private IFile resourceFile;
+	private IFile file;
 	
 	
 	/**
 	 * Restrict access
 	 */
 	private PersistenceXmlJpaFileContentProvider() {
-		
+		super();
 	}
 
+	
 	public IJpaRootContentNode buildRootContent(IFile resourceFile) {
-		PersistenceXmlResourceFactory.register();
-		this.resourceFile = resourceFile;
-		URI fileURI = URI.createPlatformResourceURI(resourceFile.getFullPath().toString());
-		PersistenceResource resource = (PersistenceResource) getResourceSet(resourceFile).getResource(fileURI, true);
+		file = resourceFile;
+		IPath deployPath = ComponentUtilities.computeDeployPath(resourceFile);
+		PersistenceArtifactEdit artifactEdit = 
+				PersistenceArtifactEdit.getArtifactEditForWrite(
+						resourceFile.getProject(),
+						deployPath.toString());
+		PersistenceResource resource = artifactEdit.getPersistenceResource();
 		PersistenceXmlRootContentNode root = PersistenceFactory.eINSTANCE.createPersistenceXmlRootContentNode();
-		root.setPersistence(resource.getPersistence());
-		resource.eAdapters().add(buildRootNodeListener(root));
+			
+		if (resourceFile.equals(resource.getFile())) {
+			root.setArtifactEdit(artifactEdit);
+			root.setPersistence(resource.getPersistence());
+			resource.eAdapters().add(buildRootNodeListener(root));
+		}
+		else {
+			artifactEdit.dispose();
+		}
+		
 		return root;
 	}
 	
 	private Adapter buildRootNodeListener(PersistenceXmlRootContentNode root) {
 		return new RootAdapter(root);
-	}
-
-	protected ResourceSet getResourceSet(IFile file) {
-		return WorkbenchResourceHelperBase.getResourceSet(file.getProject());
 	}
 
 	public String contentType() {
@@ -82,21 +87,23 @@ public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProv
 					root.setPersistence(resource.getPersistence());
 				}
 			}
-			else if (featureId == Resource.RESOURCE__IS_LOADED) {
-				if (resourceFile.exists()) {
-					// dumb translator is unloading my resource, reload it
-					if (notification.getNewBooleanValue() == false) {
-						PersistenceResource resource = (PersistenceResource) notification.getNotifier();
-						try {
-							resource.load(Collections.EMPTY_MAP);
-						}
-						catch (IOException ioe) {
-							// hmmm, log for now
-							JptCorePlugin.log(ioe);
-						}
-					}
-				}
-			}
+			// commenting out for now - this *was* a workaround for 202190, but with ArtifactEdit
+			// usage, it no longer works
+//			else if (featureId == Resource.RESOURCE__IS_LOADED) {
+//				if (file.exists()) {
+//					// dumb translator is unloading my resource, reload it
+//					if (notification.getNewBooleanValue() == false) {
+//						PersistenceResource resource = (PersistenceResource) notification.getNotifier();
+//						try {
+//							resource.load(Collections.EMPTY_MAP);
+//						}
+//						catch (IOException ioe) {
+//							// hmmm, log for now
+//							JptCorePlugin.log(ioe);
+//						}
+//					}
+//				}
+//			}
 		}
 	}
 }

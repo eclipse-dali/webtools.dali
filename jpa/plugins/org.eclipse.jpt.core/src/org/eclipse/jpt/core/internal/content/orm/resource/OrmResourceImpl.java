@@ -8,25 +8,30 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm.resource;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
+import org.eclipse.jem.util.plugin.JEMUtilPlugin;
 import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
-import org.eclipse.jpt.core.internal.content.orm.OrmXmlResource;
+import org.eclipse.jpt.core.internal.content.orm.OrmResource;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
 
-public class OrmXmlResourceImpl extends TranslatorResourceImpl
-	implements OrmXmlResource
+public class OrmResourceImpl extends TranslatorResourceImpl
+	implements OrmResource
 {
-
 	private Translator rootTranslator;
 	
-	public OrmXmlResourceImpl(Renderer aRenderer) {
+	public OrmResourceImpl(Renderer aRenderer) {
 		super(aRenderer);
 	}
 
-	public OrmXmlResourceImpl(URI uri, Renderer aRenderer) {
+	public OrmResourceImpl(URI uri, Renderer aRenderer) {
 		super(uri, aRenderer);
 	}
 	
@@ -78,9 +83,37 @@ public class OrmXmlResourceImpl extends TranslatorResourceImpl
 	}
 	
 	/**
-	 * @see OrmXmlResource#getXmlFileContent()
+	 * @see OrmResource#getEntityMappings()
 	 */
-	public EntityMappingsInternal getXmlFileContent() {
+	public EntityMappingsInternal getEntityMappings() {
 		return (EntityMappingsInternal) getRootObject();
+	}
+	
+	public IFile getFile() {
+		IFile file = null;
+		file = getFile(getURI());
+		if (file == null) {
+			if (getResourceSet() != null) {
+				URIConverter converter = getResourceSet().getURIConverter();
+				URI convertedUri = converter.normalize(getURI());
+				if (! getURI().equals(convertedUri)) {
+					file = getFile(convertedUri);
+				}
+			}
+		}
+		return file;
+	}
+	
+	/**
+	 * Return the IFile for the <code>uri</code> within the Workspace. This URI is assumed to be
+	 * absolute in the following format: platform:/resource/....
+	 */
+	private IFile getFile(URI uri) {
+		if (WorkbenchResourceHelperBase.isPlatformResourceURI(uri)) {
+			String fileString = URI.decode(uri.path());
+			fileString = fileString.substring(JEMUtilPlugin.PLATFORM_RESOURCE.length() + 1);
+			return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fileString));
+		}
+		return null;
 	}
 }

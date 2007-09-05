@@ -19,10 +19,12 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.JpaFile;
 import org.eclipse.jpt.core.internal.XmlEObject;
 import org.eclipse.jpt.core.internal.content.persistence.resource.IPersistenceXmlContentNodes;
+import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceArtifactEdit;
 
 /**
  * <!-- begin-user-doc -->
@@ -52,7 +54,10 @@ public class PersistenceXmlRootContentNode extends XmlEObject
 	 * @ordered
 	 */
 	protected Persistence persistence;
-
+	
+	private PersistenceArtifactEdit artifactEdit;
+	
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -336,23 +341,34 @@ public class PersistenceXmlRootContentNode extends XmlEObject
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
-
+	
 	public void dispose() {
-	// TODO Auto-generated method stub
+		if (artifactEdit != null) {
+			artifactEdit.dispose();
+		}
 	}
-
-	public void handleJavaElementChangedEvent(ElementChangedEvent event) {
-	// TODO Auto-generated method stub
+	
+	@Override
+	public ITextRange fullTextRange() {
+		return ITextRange.Empty.instance();
 	}
-
+	
 	public IJpaContentNode getContentNode(int offset) {
 		if (getPersistence() == null || !getPersistence().getNode().contains(offset)) {
 			return this;
 		}
 		return getPersistence().getContentNode(offset);
 	}
-
+	
 	public Object getId() {
 		return IPersistenceXmlContentNodes.PERSISTENCEXML_ROOT_ID;
 	}
-} // PersistenceXmlRootContentNode
+	
+	public void handleJavaElementChangedEvent(ElementChangedEvent event) {
+	// TODO Auto-generated method stub
+	}
+	
+	public void setArtifactEdit(PersistenceArtifactEdit persistenceArtifactEdit) {
+		artifactEdit = persistenceArtifactEdit;
+	}
+}

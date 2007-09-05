@@ -15,8 +15,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.internal.content.orm.OrmInit;
-import org.eclipse.jpt.core.internal.content.persistence.PersistenceInit;
 import org.osgi.framework.BundleContext;
 
 public class JptCorePlugin extends Plugin 
@@ -121,8 +119,6 @@ public class JptCorePlugin extends Plugin
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		JpaModelManager.instance().startup();
-		OrmInit.init();
-		PersistenceInit.init();
 	}
 	
 	@Override

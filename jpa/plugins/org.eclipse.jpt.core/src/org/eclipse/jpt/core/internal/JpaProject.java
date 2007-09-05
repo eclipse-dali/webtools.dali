@@ -190,7 +190,6 @@ public class JpaProject extends JpaEObject implements IJpaProject
 					}
 				}
 			}
-
 		};
 		if (this.project == null) {
 			throw new IllegalStateException("Project can not be null when the Resynch Job is built");
@@ -211,6 +210,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			return Status.CANCEL_STATUS;
 		}
 		catch (Throwable e) {
+		//TODO should I cancel the thread if this happens?
 			//exceptions can occur when this thread is running and changes are
 			//made to the java source.  our model is not yet updated to the changed java source.
 			//log these exceptions and assume they won't happen when the resynch runs again
