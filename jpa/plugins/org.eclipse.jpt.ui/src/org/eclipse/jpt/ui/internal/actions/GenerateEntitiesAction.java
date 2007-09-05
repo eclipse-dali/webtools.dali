@@ -10,8 +10,6 @@
 package org.eclipse.jpt.ui.internal.actions;
 
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
-import org.eclipse.jpt.ui.internal.PlatformRegistry;
 
 /**
  *  GenerateEntitiesAction
@@ -22,13 +20,6 @@ public class GenerateEntitiesAction extends ProjectAction {
 	}
 
 	protected void execute(IJpaProject project) {
-        String vendorId = project.getPlatform().getId();
-		
-        this.jpaPlatformUI(vendorId).generateEntities(project, this.getCurrentSelection());
+        this.jpaPlatformUi(project).generateEntities(project, this.getCurrentSelection());
 	}
-	
-	private IJpaPlatformUi jpaPlatformUI(String vendorId) {
-        return PlatformRegistry.INSTANCE.getJpaPlatform(vendorId); 
-	}
-
 }

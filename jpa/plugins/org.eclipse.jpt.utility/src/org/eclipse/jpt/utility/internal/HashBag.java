@@ -61,7 +61,7 @@ public class HashBag<E> extends AbstractCollection<E>
 
 	/** The hash table. */
 	transient Entry<E>[] table;
-	
+
 	/** The total number of entries in the bag. */
 	transient int count = 0;
 
@@ -75,14 +75,14 @@ public class HashBag<E> extends AbstractCollection<E>
 	 * @serial
 	 */
 	private int threshold;
-	
+
 	/**
 	 * The load factor for the hash table.
 	 *
 	 * @serial
 	 */
 	private float loadFactor;
-	
+
 	/**
 	 * The number of times this bag has been structurally modified.
 	 * Structural modifications are those that change the number of entries in
@@ -100,7 +100,7 @@ public class HashBag<E> extends AbstractCollection<E>
 	public HashBag() {
 		this(11, 0.75f);
 	}
-	
+
 	/**
 	 * Constructs a new, empty bag with the specified initial capacity
 	 * and default load factor, which is 0.75.
@@ -112,7 +112,7 @@ public class HashBag<E> extends AbstractCollection<E>
 	public HashBag(int initialCapacity) {
 		this(initialCapacity, 0.75f);
 	}
-	
+
 	/**
 	 * Constructs a new, empty bag with
 	 * the specified initial capacity and the specified load factor.
@@ -122,7 +122,6 @@ public class HashBag<E> extends AbstractCollection<E>
 	 * @throws IllegalArgumentException if the initial capacity is less
 	 *     than zero, or if the load factor is nonpositive.
 	 */
-	@SuppressWarnings("unchecked")
 	public HashBag(int initialCapacity, float loadFactor) {
 		if (initialCapacity < 0) {
 			throw new IllegalArgumentException("Illegal Initial Capacity: " + initialCapacity);
@@ -134,10 +133,10 @@ public class HashBag<E> extends AbstractCollection<E>
 			initialCapacity = 1;
 		}
 		this.loadFactor = loadFactor;
-		this.table = new Entry[initialCapacity];
+		this.table = this.buildTable(initialCapacity);
 		this.threshold = (int) (initialCapacity * loadFactor);
 	}
-	
+
 	/**
 	 * Constructs a new bag containing the elements in the specified
 	 * collection. The capacity of the bag is
@@ -150,7 +149,7 @@ public class HashBag<E> extends AbstractCollection<E>
 		this(Math.max(2*c.size(), 11));
 		this.addAll(c);
 	}
-	
+
 	/**
 	 * This implementation simply returns the maintained count.
 	 */
@@ -158,7 +157,7 @@ public class HashBag<E> extends AbstractCollection<E>
 	public int size() {
 		return this.count;
 	}
-	
+
 	/**
 	 * This implementation simply compares the maintained count to zero.
 	 */
@@ -166,7 +165,7 @@ public class HashBag<E> extends AbstractCollection<E>
 	public boolean isEmpty() {
 		return this.count == 0;
 	}
-	
+
 	/**
 	 * This implementation searches for the object in the hash table by calculating
 	 * the object's hash code and examining the entries in the corresponding hash
@@ -192,10 +191,7 @@ public class HashBag<E> extends AbstractCollection<E>
 		}
 		return false;
 	}
-	
-	/**
-	 * Return the number of times the specified object occurs in the bag.
-	 */	
+
 	public int count(Object o) {
 		Entry<E>[] tab = this.table;
 		if (o == null) {
@@ -215,50 +211,63 @@ public class HashBag<E> extends AbstractCollection<E>
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * Rehashes the contents of this bag into a new hash table
 	 * with a larger capacity. This method is called when the
 	 * number of different elements in this map exceeds its
 	 * capacity and load factor.
 	 */
-	@SuppressWarnings("unchecked")
 	private void rehash() {
 		Entry<E>[] oldMap = this.table;
 		int oldCapacity = oldMap.length;
-	
+
 		int newCapacity = oldCapacity * 2 + 1;
-		Entry<E>[] newMap = new Entry[newCapacity];
-	
+		Entry<E>[] newTable = this.buildTable(newCapacity);
+
 		this.modCount++;
 		this.threshold = (int) (newCapacity * this.loadFactor);
-		this.table = newMap;
-	
+		this.table = newTable;
+
 		for (int i = oldCapacity; i-- > 0; ) {
 			for (Entry<E> old = oldMap[i]; old != null; ) {
 				Entry<E> e = old;
 				old = old.next;
-	
+
 				int index = (e.hash & 0x7FFFFFFF) % newCapacity;
-				e.next = newMap[index];
-				newMap[index] = e;
+				e.next = newTable[index];
+				newTable[index] = e;
 			}
 		}
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	private Entry<E>[] buildTable(int capacity) {
+		return new Entry[capacity];
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> Entry<E> buildEntry(int hash, Object o, Entry<T> next) {
+		return new Entry(hash, o, next);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> Entry<E> buildEntry(int hash, Object o, int cnt, Entry<T> next) {
+		return new Entry(hash, o, cnt, next);
+	}
+
 	/**
 	 * This implementation searches for the object in the hash table by calculating
 	 * the object's hash code and examining the entries in the corresponding hash
 	 * table bucket.
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	public boolean add(E o) {
 		this.modCount++;
 		Entry<E>[] tab = this.table;
 		int hash = 0;
 		int index = 0;
-	
+
 		// if the object is already in the bag, simply bump its count
 		if (o == null) {
 			for (Entry<E> e = tab[0]; e != null; e = e.next) {
@@ -279,22 +288,72 @@ public class HashBag<E> extends AbstractCollection<E>
 				}
 			}
 		}
-	
+
 		// rehash the table if the threshold is exceeded
 		if (this.uniqueCount >= this.threshold) {
 			this.rehash();
 			tab = this.table;
 			index = (hash & 0x7FFFFFFF) % tab.length;
 		}
-	
+
 		// create the new entry and put it in the table
-		Entry<E> e = new Entry(hash, o, tab[index]);
+		Entry<E> e = this.buildEntry(hash, o, tab[index]);
 		tab[index] = e;
 		this.count++;
 		this.uniqueCount++;
 		return true;
 	}
-	
+
+	/**
+	 * This implementation searches for the object in the hash table by calculating
+	 * the object's hash code and examining the entries in the corresponding hash
+	 * table bucket.
+	 */
+	public boolean add(E o, int cnt) {
+		if (cnt <= 0) {
+			return false;
+		}
+		this.modCount++;
+		Entry<E>[] tab = this.table;
+		int hash = 0;
+		int index = 0;
+
+		// if the object is already in the bag, simply bump its count
+		if (o == null) {
+			for (Entry<E> e = tab[0]; e != null; e = e.next) {
+				if (e.object == null) {
+					e.count += cnt;
+					this.count += cnt;
+					return true;
+				}
+			}
+		} else {
+			hash = o.hashCode();
+			index = (hash & 0x7FFFFFFF) % tab.length;
+			for (Entry<E> e = tab[index]; e != null; e = e.next) {
+				if ((e.hash == hash) && o.equals(e.object)) {
+					e.count += cnt;
+					this.count += cnt;
+					return true;
+				}
+			}
+		}
+
+		// rehash the table if the threshold is exceeded
+		if (this.uniqueCount >= this.threshold) {
+			this.rehash();
+			tab = this.table;
+			index = (hash & 0x7FFFFFFF) % tab.length;
+		}
+
+		// create the new entry and put it in the table
+		Entry<E> e = this.buildEntry(hash, o, cnt, tab[index]);
+		tab[index] = e;
+		this.count += cnt;
+		this.uniqueCount++;
+		return true;
+	}
+
 	/**
 	 * This implementation searches for the object in the hash table by calculating
 	 * the object's hash code and examining the entries in the corresponding hash
@@ -342,10 +401,65 @@ public class HashBag<E> extends AbstractCollection<E>
 				}
 			}
 		}
-	
+
 		return false;
 	}
-	
+
+	/**
+	 * This implementation searches for the object in the hash table by calculating
+	 * the object's hash code and examining the entries in the corresponding hash
+	 * table bucket.
+	 */
+	public boolean remove(Object o, int cnt) {
+		if (cnt <= 0) {
+			return false;
+		}
+		Entry<E>[] tab = this.table;
+		if (o == null) {
+			for (Entry<E> e = tab[0], prev = null; e != null; prev = e, e = e.next) {
+				if (e.object == null) {
+					this.modCount++;
+					int cnt2 = (cnt < e.count) ? cnt : e.count;
+					e.count -= cnt2;
+					// if we are removing the last element(s), remove the entry from the table
+					if (e.count == 0) {
+						if (prev == null) {
+							tab[0] = e.next;
+						} else {
+							prev.next = e.next;
+						}
+						this.uniqueCount--;
+					}
+					this.count -= cnt2;
+					return true;
+				}
+			}
+		} else {
+			int hash = o.hashCode();
+			int index = (hash & 0x7FFFFFFF) % tab.length;
+			for (Entry<E> e = tab[index], prev = null; e != null; prev = e, e = e.next) {
+				if ((e.hash == hash) && o.equals(e.object)) {
+					this.modCount++;
+					int cnt2 = (cnt < e.count) ? cnt : e.count;
+					e.count -= cnt2;
+					// if we are removing the last element(s), remove the entry from the table
+					if (e.count == 0) {
+						if (prev == null) {
+							tab[index] = e.next;
+						} else {
+							prev.next = e.next;
+						}
+						this.uniqueCount--;
+					}
+					this.count -= cnt2;
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	/**
 	 * This implementation simply clears out all of the hash table buckets.
 	 */
@@ -359,7 +473,7 @@ public class HashBag<E> extends AbstractCollection<E>
 		this.count = 0;
 		this.uniqueCount = 0;
 	}
-	
+
 	/**
 	 * Returns a shallow copy of this bag: the elements
 	 * themselves are not cloned.
@@ -367,14 +481,14 @@ public class HashBag<E> extends AbstractCollection<E>
 	 * @return a shallow copy of this bag.
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	public HashBag<E> clone() {
 		try {
+			@SuppressWarnings("unchecked")
 			HashBag<E> clone = (HashBag<E>) super.clone();
-			clone.table = new Entry[this.table.length];
+			clone.table = this.buildTable(this.table.length);
 			for (int i = this.table.length; i-- > 0; ) {
 				clone.table[i] = (this.table[i] == null) 
-						? null : (Entry) this.table[i].clone();
+						? null : (Entry<E>) this.table[i].clone();
 			}
 			clone.modCount = 0;
 			return clone;
@@ -382,7 +496,7 @@ public class HashBag<E> extends AbstractCollection<E>
 			throw new InternalError();
 		}
 	}
-	
+
 	/**
 	 * Hash table collision list entry.
 	 */
@@ -391,31 +505,34 @@ public class HashBag<E> extends AbstractCollection<E>
 		E object;
 		int count;
 		Entry<E> next;
-	
+
 		Entry(int hash, E object, Entry<E> next) {
 			this(hash, object, 1, next);
 		}
-	
-		private Entry(int hash, E object, int count, Entry<E> next) {
+
+		Entry(int hash, E object, int count, Entry<E> next) {
 			this.hash = hash;
 			this.object = object;
 			this.count = count;
 			this.next = next;
 		}
-	
+
+		/**
+		 * Cascade the clone to all the entries in the same bucket.
+		 */
 		@Override
 		@SuppressWarnings("unchecked")
 		protected Entry<E> clone() {
 			return new Entry(this.hash, this.object, this.count,
 					(this.next == null ? null : this.next.clone()));
 		}
-	
+
 		@Override
 		public String toString() {
 			return this.object + "=>" + this.count;
 		}
 	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterator<E> iterator() {
@@ -425,11 +542,6 @@ public class HashBag<E> extends AbstractCollection<E>
 		return new HashIterator();
 	}
 
-	/**
-	 * Return an iterator that returns each item in the bag
-	 * once and only once, irrespective of how many times
-	 * the item was added to the bag.
-	 */
 	@SuppressWarnings("unchecked")
 	public Iterator<E> uniqueIterator() {
 		if (this.count == 0) {
@@ -437,13 +549,13 @@ public class HashBag<E> extends AbstractCollection<E>
 		}
 		return new UniqueIterator();
 	}
-	
+
 	/**
 	 * Empty iterator that does just about nothing.
 	 */
 	@SuppressWarnings("unchecked")
 	private static final Iterator EMPTY_ITERATOR = new EmptyIterator();
-	
+
 	@SuppressWarnings("unchecked")
 	private static class EmptyIterator implements Iterator {
 
@@ -454,16 +566,16 @@ public class HashBag<E> extends AbstractCollection<E>
 		public boolean hasNext() {
 			return false;
 		}
-	
+
 		public Object next() {
 			throw new NoSuchElementException();
 		}
-	
+
 		public void remove() {
 			throw new IllegalStateException();
 		}
 	}
-	
+
 	private class HashIterator implements Iterator<E> {
 		Entry<E>[] localTable = HashBag.this.table;
 		int index = this.localTable.length;	// start at the end of the table
@@ -473,7 +585,7 @@ public class HashBag<E> extends AbstractCollection<E>
 
 		/**
 		 * The modCount value that the iterator believes that the backing
-		 * Bag should have. If this expectation is violated, the iterator
+		 * bag should have. If this expectation is violated, the iterator
 		 * has detected a concurrent modification.
 		 */
 		private int expectedModCount = HashBag.this.modCount;
@@ -555,8 +667,8 @@ public class HashBag<E> extends AbstractCollection<E>
 		}
 
 	}
-	
-	
+
+
 	private class UniqueIterator implements Iterator<E> {
 		Entry<E>[] localTable = HashBag.this.table;
 		int index = this.localTable.length;	// start at the end of the table
@@ -565,7 +677,7 @@ public class HashBag<E> extends AbstractCollection<E>
 
 		/**
 		 * The modCount value that the iterator believes that the backing
-		 * Bag should have. If this expectation is violated, the iterator
+		 * bag should have. If this expectation is violated, the iterator
 		 * has detected a concurrent modification.
 		 */
 		private int expectedModCount = HashBag.this.modCount;
@@ -637,10 +749,9 @@ public class HashBag<E> extends AbstractCollection<E>
 		}
 
 	}
-	
-	
+
+
 	@Override
-	@SuppressWarnings("unchecked")
 	public boolean equals(Object o) {
 		if (o == this) {
 			return true;
@@ -648,6 +759,7 @@ public class HashBag<E> extends AbstractCollection<E>
 		if ( ! (o instanceof Bag)) {
 			return false;
 		}
+		@SuppressWarnings("unchecked")
 		Bag<E> b = (Bag<E>) o;
 		if (b.size() != this.size()) {
 			return false;
@@ -660,7 +772,7 @@ public class HashBag<E> extends AbstractCollection<E>
 		}
 		return clone.isEmpty();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		int h = 0;
@@ -672,7 +784,7 @@ public class HashBag<E> extends AbstractCollection<E>
 		}
 		return h;
 	}
-	
+
 	/**
 	 * Save the state of this bag to a stream (i.e. serialize it).
 	 *
@@ -685,10 +797,10 @@ public class HashBag<E> extends AbstractCollection<E>
 				throws java.io.IOException {
 		// write out the threshold, load factor, and any hidden stuff
 		s.defaultWriteObject();
-	
+
 		// write out number of buckets
 		s.writeInt(this.table.length);
-	
+
 		// write out number of unique elements
 		s.writeInt(this.uniqueCount);
 
@@ -702,31 +814,29 @@ public class HashBag<E> extends AbstractCollection<E>
 			}
 		}
 	}
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Reconstitute the bag from a stream (i.e. deserialize it).
 	 */
-	@SuppressWarnings("unchecked")
 	private synchronized void readObject(java.io.ObjectInputStream s)
 				throws java.io.IOException, ClassNotFoundException {
 		// read in the threshold, loadfactor, and any hidden stuff
 		s.defaultReadObject();
-	
+
 		// read in number of buckets and allocate the bucket array
-		this.table = new Entry[s.readInt()];
-	
+		this.table = this.buildTable(s.readInt());
+
 		// read in number of unique elements
 		int unique = s.readInt();
-	
+
 		// read the elements and counts, and put the elements in the bag
 		for (int i = 0; i < unique; i++) {
+			@SuppressWarnings("unchecked")
 			E element = (E) s.readObject();
 			int elementCount = s.readInt();
-			for (int j = 0; j < elementCount; j++) {
-				this.add(element);
-			}
+			this.add(element, elementCount);
 		}
 	}
 

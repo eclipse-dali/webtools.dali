@@ -8,10 +8,9 @@
  ******************************************************************************/        
 package org.eclipse.jpt.ui.internal.details;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.notify.Adapter;
@@ -26,16 +25,13 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
-import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IPersistentType;
+import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddableUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.EntityUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.MappedSuperclassUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.NullTypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
@@ -53,33 +49,30 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 	
 	private CComboViewer typeMappingCombo;
 	
-	/**
-	 * A Map of mapping Composites of type IPersistenceComposite that is keyed on IConfigurationElement
-	 */
-	private Map composites;
+	private Map<String, IJpaComposite<ITypeMapping>> composites;
 	
 	protected PageBook typeMappingPageBook;
 	
-	private IJpaComposite visibleMappingComposite;
-	
-	private Collection<ITypeMappingUiProvider> typeMappingUiProviders;
+	private IJpaComposite<ITypeMapping> visibleMappingComposite;
 	
 	public PersistentTypeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, SWT.NONE, new BasicCommandStack(), widgetFactory);
 		this.persistentTypeListener = buildPersistentTypeListener();
-		this.composites = new HashMap();
-		this.typeMappingUiProviders = buildTypeMappingUiProviders();
+		this.composites = new HashMap<String, IJpaComposite<ITypeMapping>>();
 	}
 	
-	protected Collection<ITypeMappingUiProvider> buildTypeMappingUiProviders() {
-		Collection<ITypeMappingUiProvider> typeMappingUiProviders = new ArrayList<ITypeMappingUiProvider>();
-		typeMappingUiProviders.add(new NullTypeMappingUiProvider());
-		typeMappingUiProviders.add(new EntityUiProvider());
-		typeMappingUiProviders.add(new MappedSuperclassUiProvider());			
-		typeMappingUiProviders.add(new EmbeddableUiProvider());			
-		return typeMappingUiProviders;
-	}
+	protected abstract ListIterator<ITypeMappingUiProvider> typeMappingUiProviders();
 	
+	private ITypeMappingUiProvider typeMappingUiProvider(String key) {
+		for (ListIterator<ITypeMappingUiProvider> i = this.typeMappingUiProviders(); i.hasNext();) {
+			ITypeMappingUiProvider provider = i.next();
+			if (provider.mappingKey() == key) {
+				return provider;
+			}
+		}
+		throw new IllegalArgumentException("Unsupported type mapping UI provider key: " + key);
+	}
+
 	private Adapter buildPersistentTypeListener() {
 		return new AdapterImpl() {
 			public void notifyChanged(Notification notification) {
@@ -107,15 +100,15 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 	
 	protected CComboViewer buildTypeMappingCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
-		typeMappingCombo = new CComboViewer(combo);
-		typeMappingCombo.setContentProvider(buildContentProvider());
-		typeMappingCombo.setLabelProvider(buildLabelProvider());
-		typeMappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
+		this.typeMappingCombo = new CComboViewer(combo);
+		this.typeMappingCombo.setContentProvider(buildContentProvider());
+		this.typeMappingCombo.setLabelProvider(buildLabelProvider());
+		this.typeMappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				typeMappingChanged(event);
 			}
 		});
-		return typeMappingCombo;
+		return this.typeMappingCombo;
 	}
 	
 	private IContentProvider buildContentProvider() {
@@ -127,7 +120,7 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 			public Object[] getElements(Object inputElement) {
 				return (persistentType == null) ?
 						new String[] {}:
-						PersistentTypeDetailsPage.this.typeMappingUiProviders.toArray();
+						CollectionTools.array(PersistentTypeDetailsPage.this.typeMappingUiProviders());
 			}
 			
 			public void inputChanged(
@@ -146,22 +139,10 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 	}
 	
 	protected PageBook buildTypeMappingPageBook(Composite parent) {
-		typeMappingPageBook = new PageBook(parent, SWT.NONE);
-		return typeMappingPageBook;
+		this.typeMappingPageBook = new PageBook(parent, SWT.NONE);
+		return this.typeMappingPageBook;
 	}
-		
-	private IJpaProject getJpaProject() {
-		return getPersistentType().getJpaProject();
-	}
-
-	private ITypeMappingUiProvider typeMappingUiProvider(String key) {
-		for (ITypeMappingUiProvider provider : this.typeMappingUiProviders) {
-			if (provider.key() == key) {
-				return provider;
-			}
-		}
-		throw new IllegalArgumentException("unsupported type mapping UI provider key: " + key);
-	}
+	
 	
 	private void typeMappingChanged(SelectionChangedEvent event) {
 		if (isPopulating()) {
@@ -169,13 +150,13 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 		}
 		if (event.getSelection() instanceof StructuredSelection) {
 			ITypeMappingUiProvider provider = (ITypeMappingUiProvider) ((StructuredSelection) event.getSelection()).getFirstElement();
-			persistentType.setMappingKey(provider.key());
+			this.persistentType.setMappingKey(provider.mappingKey());
 		}
 	}
 	
 	@Override
 	protected void doPopulate(IJpaContentNode persistentTypeNode) {
-		persistentType = (IPersistentType) persistentTypeNode;
+		this.persistentType = (IPersistentType) persistentTypeNode;
 		populateMappingComboAndPage();
 	}
 	
@@ -185,90 +166,88 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 	}
 	
 	protected void engageListeners() {
-		if (persistentType != null) {
-			persistentType.eAdapters().add(persistentTypeListener);
+		if (this.persistentType != null) {
+			this.persistentType.eAdapters().add(this.persistentTypeListener);
 		}
 	}
 	
 	protected void disengageListeners() {
-		if (persistentType != null) {
-			persistentType.eAdapters().remove(persistentTypeListener);
+		if (this.persistentType != null) {
+			this.persistentType.eAdapters().remove(this.persistentTypeListener);
 		}
 	}
 	
 	private void populateMappingComboAndPage() {
-		if (persistentType == null) {
-			currentMappingKey = null;
-			typeMappingCombo.setInput(null);
-			typeMappingCombo.setSelection(StructuredSelection.EMPTY);
+		if (this.persistentType == null) {
+			this.currentMappingKey = null;
+			this.typeMappingCombo.setInput(null);
+			this.typeMappingCombo.setSelection(StructuredSelection.EMPTY);
 			
-			if (visibleMappingComposite != null) {
-				visibleMappingComposite.populate(null);
-				visibleMappingComposite = null;
+			if (this.visibleMappingComposite != null) {
+				this.visibleMappingComposite.populate(null);
+				this.visibleMappingComposite = null;
 			}
 			
 			return;
 		}
 		
-		String mappingKey = persistentType.getMapping().getKey();
-		setComboData(mappingKey, persistentType.candidateMappingKeys());
+		String mappingKey = this.persistentType.getMapping().getKey();
+		setComboData(mappingKey);
 		
 		populateMappingPage(mappingKey);
 	}
 	
 	private void populateMappingPage(String mappingKey) {
-		if (visibleMappingComposite != null) {
-			if (mappingKey  == currentMappingKey) {
-				if (visibleMappingComposite != null) {
-					visibleMappingComposite.populate(persistentType.getMapping());
+		if (this.visibleMappingComposite != null) {
+			if (mappingKey  == this.currentMappingKey) {
+				if (this.visibleMappingComposite != null) {
+					this.visibleMappingComposite.populate(this.persistentType.getMapping());
 					return;
 				}
 			}
 			else {
-				visibleMappingComposite.populate(null);
+				this.visibleMappingComposite.populate(null);
 				// don't return
 			}
 		}
 		
-		currentMappingKey = mappingKey;
+		this.currentMappingKey = mappingKey;
 		
 		IJpaComposite mappingComposite = mappingCompositeFor(mappingKey);
-		typeMappingPageBook.showPage(mappingComposite.getControl());
+		this.typeMappingPageBook.showPage(mappingComposite.getControl());
 		
-		visibleMappingComposite = mappingComposite;
-		visibleMappingComposite.populate(persistentType.getMapping());
+		this.visibleMappingComposite = mappingComposite;
+		this.visibleMappingComposite.populate(this.persistentType.getMapping());
 	}
 	
-	private void setComboData(String mappingKey, Iterator availableMappingKeys) {
-		if (persistentType != typeMappingCombo.getInput()) {
-			typeMappingCombo.setInput(persistentType);
+	private void setComboData(String mappingKey) {
+		if (this.persistentType != this.typeMappingCombo.getInput()) {
+			this.typeMappingCombo.setInput(this.persistentType);
 		}
 		
 		ITypeMappingUiProvider provider = typeMappingUiProvider(mappingKey);
-		if (! provider.equals(((StructuredSelection) typeMappingCombo.getSelection()).getFirstElement())) {
-			typeMappingCombo.setSelection(new StructuredSelection(provider));
+		if (! provider.equals(((StructuredSelection) this.typeMappingCombo.getSelection()).getFirstElement())) {
+			this.typeMappingCombo.setSelection(new StructuredSelection(provider));
 		}
 	}
 	
-	private IJpaComposite mappingCompositeFor(String key) {
-		IJpaComposite mappingComposite = (IJpaComposite) composites.get(key);
+	private IJpaComposite<ITypeMapping> mappingCompositeFor(String key) {
+		IJpaComposite<ITypeMapping> mappingComposite = this.composites.get(key);
 		if (mappingComposite != null) {
 			return mappingComposite;
 		}
 		
-		mappingComposite = buildMappingComposite(typeMappingPageBook, key);
+		mappingComposite = buildMappingComposite(this.typeMappingPageBook, key);
 		
 		if (mappingComposite != null) {
-			composites.put(key, mappingComposite);
+			this.composites.put(key, mappingComposite);
 		}
 		
 		return mappingComposite;
 	}
 	
-	protected IJpaComposite buildMappingComposite(PageBook pageBook, String key)  {
-		//TODO what about null composite?
+	protected IJpaComposite<ITypeMapping> buildMappingComposite(PageBook pageBook, String key)  {
 		return typeMappingUiProvider(key).buildPersistentTypeMappingComposite(pageBook, this.commandStack, getWidgetFactory());
-//		return new NullComposite(pageBook, commandStack);
 	}
 
 //TODO focus??
@@ -279,14 +258,14 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 	
 	public void dispose() {
 		disengageListeners();
-		for (Iterator i = composites.values().iterator(); i.hasNext(); ) {
-			((IJpaComposite) i.next()).dispose();
+		for (Iterator<IJpaComposite<ITypeMapping>> i = this.composites.values().iterator(); i.hasNext(); ) {
+			i.next().dispose();
 		}
 		super.dispose();
 	}
 	
 	public IPersistentType getPersistentType() {
-		return persistentType;
+		return this.persistentType;
 	}
 
 }

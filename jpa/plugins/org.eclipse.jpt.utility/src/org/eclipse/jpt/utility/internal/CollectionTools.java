@@ -35,9 +35,9 @@ public final class CollectionTools {
 	 * specified array followed by the specified object to be added.
 	 * java.util.Arrays#add(Object[] array, Object o)
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> E[] add(E[] array, E value) {
 		int len = array.length;
+		@SuppressWarnings("unchecked")
 		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), len + 1);
 		System.arraycopy(array, 0, result, 0, len);
 		result[len] = value;
@@ -49,9 +49,9 @@ public final class CollectionTools {
 	 * specified array with the specified object added at the specified index.
 	 * java.util.Arrays#add(Object[] array, int index, Object o)
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> E[] add(E[] array, int index, E value) {
 		int len = array.length;
+		@SuppressWarnings("unchecked")
 		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), len + 1);
 		if (index > 0) {
 			System.arraycopy(array, 0, result, 0, index);
@@ -118,6 +118,16 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Add all the elements returned by the specified iterable
+	 * to the specified collection.
+	 * Return whether the collection changed as a result.
+	 * java.util.Collection#addAll(java.lang.Iterable iterable)
+	 */
+	public static <E> boolean addAll(Collection<? super E> collection, Iterable<E> iterable) {
+		return addAll(collection, iterable.iterator());
+	}
+
+	/**
 	 * Add all the elements returned by the specified iterator
 	 * to the specified collection.
 	 * Return whether the collection changed as a result.
@@ -151,9 +161,9 @@ public final class CollectionTools {
 	 * in the specified collection.
 	 * java.util.Arrays#addAll(Object[] array, java.util.Collection c)
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> E[] addAll(E[] array, Collection<? extends E> collection) {
 		int len = array.length;
+		@SuppressWarnings("unchecked")
 		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), array.length + collection.size());
 		System.arraycopy(array, 0, result, 0, len);
 		int i = len;
@@ -161,6 +171,16 @@ public final class CollectionTools {
 			result[i++] = item;
 		}
 		return result;
+	}
+
+	/**
+	 * Return a new array that contains the elements in the
+	 * specified array followed by the elements
+	 * in the specified iterable.
+	 * java.util.Arrays#addAll(Object[] array, java.lang.Iterable iterable)
+	 */
+	public static <E> E[] addAll(E[] array, Iterable<? extends E> iterable) {
+		return addAll(array, iterable.iterator());
 	}
 
 	/**
@@ -179,10 +199,10 @@ public final class CollectionTools {
 	 * in the specified array 2.
 	 * java.util.Arrays#addAll(Object[] array1, Object[] array2)
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> E[] addAll(E[] array1, E[] array2) {
 		int len1 = array1.length;
 		int len2 = array2.length;
+		@SuppressWarnings("unchecked")
 		E[] result = (E[]) Array.newInstance(array1.getClass().getComponentType(), len1 + len2);
 		System.arraycopy(array1, 0, result, 0, len1);
 		System.arraycopy(array2, 0, result, len1, len2);
@@ -195,10 +215,10 @@ public final class CollectionTools {
 	 * specified array added at the specified index.
 	 * java.util.Arrays#add(Object[] array1, int index, Object[] array2)
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> E[] addAll(E[] array1, int index, E[] array2) {
 		int len1 = array1.length;
 		int len2 = array2.length;
+		@SuppressWarnings("unchecked")
 		E[] result = (E[]) Array.newInstance(array1.getClass().getComponentType(), len1 + len2);
 		System.arraycopy(array1, 0, result, 0, index);
 		System.arraycopy(array2, 0, result, index, len2);
@@ -269,6 +289,28 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return an array corresponding to the specified iterable.
+	 * @see java.util.Collection#toArray()
+	 * java.lang.Iterable#toArray()
+	 */
+	public static Object[] array(Iterable<?> iterable) {
+		return array(iterable.iterator());
+	}
+
+	/**
+	 * Return an array corresponding to the specified iterable;
+	 * the runtime type of the returned array is that of the specified array.
+	 * If the collection fits in the specified array, it is returned therein.
+	 * Otherwise, a new array is allocated with the runtime type of the
+	 * specified array and the size of this collection.
+	 * @see java.util.Collection#toArray(java.lang.Object[])
+	 * java.lang.Iterable#toArray(Object[])
+	 */
+	public static <E> E[] array(Iterable<? extends E> iterable, E[] array) {
+		return array(iterable.iterator(), array);
+	}
+
+	/**
 	 * Return an array corresponding to the specified iterator.
 	 * @see java.util.Collection#toArray()
 	 * java.util.Iterator#toArray()
@@ -303,6 +345,14 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a bag corresponding to the specified iterable.
+	 * HashBag(java.lang.Iterable iterable)
+	 */
+	public static <E> Bag<E> bag(Iterable<? extends E> iterable) {
+		return bag(iterable.iterator());
+	}
+
+	/**
 	 * Return a bag corresponding to the specified iterator.
 	 * HashBag(java.util.Iterator iterator)
 	 */
@@ -331,6 +381,13 @@ public final class CollectionTools {
 	 */
 	public static <E> Collection<E> collection(Enumeration<? extends E> enumeration) {
 		return bag(enumeration);
+	}
+
+	/**
+	 * Return a collection corresponding to the specified iterable.
+	 */
+	public static <E> Collection<E> collection(Iterable<? extends E> iterable) {
+		return collection(iterable.iterator());
 	}
 
 	/**
@@ -367,6 +424,15 @@ public final class CollectionTools {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Return whether the specified iterable contains the
+	 * specified element.
+	 * java.lang.Iterable#contains(Object o)
+	 */
+	public static boolean contains(Iterable<?> iterable, Object value) {
+		return contains(iterable.iterator(), value);
 	}
 
 	/**
@@ -443,6 +509,15 @@ public final class CollectionTools {
 
 	/**
 	 * Return whether the specified collection contains all of the
+	 * elements in the specified iterable.
+	 * java.util.Collection#containsAll(java.lang.Iterable iterable)
+	 */
+	public static boolean containsAll(Collection<?> collection, Iterable<?> iterable) {
+		return containsAll(collection, iterable.iterator());
+	}
+
+	/**
+	 * Return whether the specified collection contains all of the
 	 * elements in the specified iterator.
 	 * java.util.Collection#containsAll(java.util.Iterator iterator)
 	 */
@@ -470,12 +545,57 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return whether the specified iterable contains all of the
+	 * elements in the specified collection.
+	 * java.lang.Iterable#containsAll(java.util.Collection collection)
+	 */
+	public static boolean containsAll(Iterable<?> iterable, Collection<?> collection) {
+		return containsAll(iterable.iterator(), collection);
+	}
+
+	/**
+	 * Return whether the specified iterable 1 contains all of the
+	 * elements in the specified iterable 2.
+	 * java.lang.Iterable#containsAll(java.lang.Iterable iterable)
+	 */
+	public static boolean containsAll(Iterable<?> iterable1, Iterable<?> iterable2) {
+		return containsAll(iterable1.iterator(), iterable2.iterator());
+	}
+
+	/**
+	 * Return whether the specified iterable contains all of the
+	 * elements in the specified iterator.
+	 * java.lang.Iterable#containsAll(java.util.Iterator iterator)
+	 */
+	public static boolean containsAll(Iterable<?> iterable, Iterator<?> iterator) {
+		return containsAll(iterable.iterator(), iterator);
+	}
+
+	/**
+	 * Return whether the specified iterable contains all of the
+	 * elements in the specified array.
+	 * java.lang.Iterable#containsAll(Object[] array)
+	 */
+	public static boolean containsAll(Iterable<?> iterable, Object[] array) {
+		return containsAll(iterable.iterator(), array);
+	}
+
+	/**
 	 * Return whether the specified iterator contains all of the
 	 * elements in the specified collection.
 	 * java.util.Iterator#containsAll(java.util.Collection collection)
 	 */
 	public static boolean containsAll(Iterator<?> iterator, Collection<?> collection) {
 		return collection(iterator).containsAll(collection);
+	}
+
+	/**
+	 * Return whether the specified iterator contains all of the
+	 * elements in the specified iterable.
+	 * java.util.Iterator#containsAll(java.lang.Iterable iterable)
+	 */
+	public static boolean containsAll(Iterator<?> iterator, Iterable<?> iterable) {
+		return containsAll(collection(iterator), iterable);
 	}
 
 	/**
@@ -503,6 +623,15 @@ public final class CollectionTools {
 	 */
 	public static boolean containsAll(Object[] array, Collection<?> collection) {
 		return containsAll(array, collection.iterator());
+	}
+
+	/**
+	 * Return whether the specified array contains all of the
+	 * elements in the specified iterable.
+	 * java.util.Arrays#containsAll(Object[] array, java.lang.Iterable iterable)
+	 */
+	public static boolean containsAll(Object[] array, Iterable<?> iterable) {
+		return containsAll(array, iterable.iterator());
 	}
 
 	/**
@@ -999,6 +1128,14 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return an iterable on the elements in the specified array.
+	 * java.util.Arrays#iterable(Object[] array)
+	 */
+	public static <E> Iterable<E> iterable(E... array) {
+		return Arrays.asList(array);
+	}
+
+	/**
 	 * Return an iterator on the elements in the specified array.
 	 * java.util.Arrays#iterator(Object[] array)
 	 */
@@ -1068,6 +1205,14 @@ public final class CollectionTools {
 			}
 		}
 		return -1;
+	}
+
+	/**
+	 * Return a list corresponding to the specified iterable.
+	 * java.lang.Iterable#toList()
+	 */
+	public static <E> List<E> list(Iterable<? extends E> iterable) {
+		return list(iterable.iterator());
 	}
 
 	/**
@@ -1193,6 +1338,148 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Move an element from the specified source index to the specified target
+	 * index. Return the altered array.
+	 * java.util.Arrays#move(Object[] array, int targetIndex, int sourceIndex)
+	 */
+	public static <E> E[] move(E[] array, int targetIndex, int sourceIndex) {
+		if (targetIndex == sourceIndex) {
+			return array;
+		}
+		E temp = array[sourceIndex];
+		if (targetIndex < sourceIndex) {
+			System.arraycopy(array, targetIndex, array, targetIndex + 1, sourceIndex - targetIndex);
+		} else {
+			System.arraycopy(array, sourceIndex + 1, array, sourceIndex, targetIndex - sourceIndex);
+		}
+		array[targetIndex] = temp;
+		return array;
+	}
+
+	/**
+	 * Move elements from the specified source index to the specified target
+	 * index. Return the altered array.
+	 * java.util.Arrays#move(Object[] array, int targetIndex, int sourceIndex, int length)
+	 */
+	public static <E> E[] move(E[] array, int targetIndex, int sourceIndex, int length) {
+		if (targetIndex == sourceIndex) {
+			return array;
+		}
+		@SuppressWarnings("unchecked")
+		E[] temp = (E[]) Array.newInstance(array.getClass().getComponentType(), length);
+		System.arraycopy(array, sourceIndex, temp, 0, length);
+		if (targetIndex < sourceIndex) {
+			System.arraycopy(array, targetIndex, array, targetIndex + length, sourceIndex - targetIndex);
+		} else {
+			System.arraycopy(array, sourceIndex + length, array, sourceIndex, targetIndex - sourceIndex);
+		}
+		System.arraycopy(temp, 0, array, targetIndex, length);
+		return array;
+	}
+
+	/**
+	 * Move an element from the specified source index to the specified target
+	 * index. Return the altered array.
+	 * java.util.Arrays#move(int[] array, int targetIndex, int sourceIndex)
+	 */
+	public static int[] move(int[] array, int targetIndex, int sourceIndex) {
+		if (targetIndex == sourceIndex) {
+			return array;
+		}
+		int temp = array[sourceIndex];
+		if (targetIndex < sourceIndex) {
+			System.arraycopy(array, targetIndex, array, targetIndex + 1, sourceIndex - targetIndex);
+		} else {
+			System.arraycopy(array, sourceIndex + 1, array, sourceIndex, targetIndex - sourceIndex);
+		}
+		array[targetIndex] = temp;
+		return array;
+	}
+
+	/**
+	 * Move elements from the specified source index to the specified target
+	 * index. Return the altered array.
+	 * java.util.Arrays#move(int[] array, int targetIndex, int sourceIndex, int length)
+	 */
+	public static int[] move(int[] array, int targetIndex, int sourceIndex, int length) {
+		if (targetIndex == sourceIndex) {
+			return array;
+		}
+		int[] temp = new int[length];
+		System.arraycopy(array, sourceIndex, temp, 0, length);
+		if (targetIndex < sourceIndex) {
+			System.arraycopy(array, targetIndex, array, targetIndex + length, sourceIndex - targetIndex);
+		} else {
+			System.arraycopy(array, sourceIndex + length, array, sourceIndex, targetIndex - sourceIndex);
+		}
+		System.arraycopy(temp, 0, array, targetIndex, length);
+		return array;
+	}
+
+	/**
+	 * Move an element from the specified source index to the specified target
+	 * index. Return the altered array.
+	 * java.util.Arrays#move(char[] array, int targetIndex, int sourceIndex)
+	 */
+	public static char[] move(char[] array, int targetIndex, int sourceIndex) {
+		if (targetIndex == sourceIndex) {
+			return array;
+		}
+		char temp = array[sourceIndex];
+		if (targetIndex < sourceIndex) {
+			System.arraycopy(array, targetIndex, array, targetIndex + 1, sourceIndex - targetIndex);
+		} else {
+			System.arraycopy(array, sourceIndex + 1, array, sourceIndex, targetIndex - sourceIndex);
+		}
+		array[targetIndex] = temp;
+		return array;
+	}
+
+	/**
+	 * Move elements from the specified source index to the specified target
+	 * index. Return the altered array.
+	 * java.util.Arrays#move(char[] array, int targetIndex, int sourceIndex, int length)
+	 */
+	public static char[] move(char[] array, int targetIndex, int sourceIndex, int length) {
+		if (targetIndex == sourceIndex) {
+			return array;
+		}
+		char[] temp = new char[length];
+		System.arraycopy(array, sourceIndex, temp, 0, length);
+		if (targetIndex < sourceIndex) {
+			System.arraycopy(array, targetIndex, array, targetIndex + length, sourceIndex - targetIndex);
+		} else {
+			System.arraycopy(array, sourceIndex + length, array, sourceIndex, targetIndex - sourceIndex);
+		}
+		System.arraycopy(temp, 0, array, targetIndex, length);
+		return array;
+	}
+
+	/**
+	 * Move an element from the specified source index to the specified target
+	 * index. Return the altered list.
+	 * java.util.List#move(int targetIndex, int sourceIndex)
+	 */
+	public static <E> List<E> move(List<E> list, int targetIndex, int sourceIndex) {
+		if (targetIndex != sourceIndex) {
+			list.add(targetIndex, list.remove(sourceIndex));
+		}
+		return list;
+	}
+
+	/**
+	 * Move elements from the specified source index to the specified target
+	 * index. Return the altered list.
+	 * java.util.List#move(int targetIndex, int sourceIndex, int length)
+	 */
+	public static <E> List<E> move(List<E> list, int targetIndex, int sourceIndex, int length) {
+		if (targetIndex != sourceIndex) {
+			list.addAll(targetIndex, removeElementsAtIndex(list, sourceIndex, length));
+		}
+		return list;
+	}
+
+	/**
 	 * Replace all occurrences of the specified old value with
 	 * the specified new value.
 	 * java.util.Arrays#replaceAll(Object[] array, Object oldValue, Object newValue)
@@ -1267,6 +1554,16 @@ public final class CollectionTools {
 	 */
 	public static int[] remove(int[] array, int value) {
 		return removeElementAtIndex(array, indexOf(array, value));
+	}
+
+	/**
+	 * Remove all the elements returned by the specified iterable
+	 * from the specified collection.
+	 * Return whether the collection changed as a result.
+	 * java.util.Collection#removeAll(java.lang.Iterable iterable)
+	 */
+	public static boolean removeAll(Collection<?> collection, Iterable<?> iterable) {
+		return removeAll(collection, iterable.iterator());
 	}
 
 	/**
@@ -1454,13 +1751,8 @@ public final class CollectionTools {
 	 * specified array with the specified element removed.
 	 * java.util.Arrays#removeElementAtIndex(Object[] array, int index)
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> E[] removeElementAtIndex(E[] array, int index) {
-		int len = array.length;
-		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), len - 1);
-		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + 1, result, index, len - index - 1);
-		return result;
+		return removeElementsAtIndex(array, index, 1);
 	}
 
 	/**
@@ -1469,11 +1761,7 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementAtIndex(char[] array, int index)
 	 */
 	public static char[] removeElementAtIndex(char[] array, int index) {
-		int len = array.length;
-		char[] result = new char[len - 1];
-		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + 1, result, index, len - index - 1);
-		return result;
+		return removeElementsAtIndex(array, index, 1);
 	}
 
 	/**
@@ -1482,10 +1770,59 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementAtIndex(int[] array, int index)
 	 */
 	public static int[] removeElementAtIndex(int[] array, int index) {
+		return removeElementsAtIndex(array, index, 1);
+	}
+
+	/**
+	 * Remove the elements at the specified index.
+	 * Return the removed elements.
+	 * java.util.List#remove(int index, int length)
+	 */
+	public static <E> List<E> removeElementsAtIndex(List<E> list, int index, int length) {
+		ArrayList<E> result = new ArrayList<E>(list.subList(index, index + length));
+		for (int i = length; i-- > 0; ) {
+			list.remove(index);
+		}
+		return result;
+	}
+
+	/**
+	 * Return a new array that contains the elements in the
+	 * specified array with the specified elements removed.
+	 * java.util.Arrays#removeElementsAtIndex(Object[] array, int index, int length)
+	 */
+	public static <E> E[] removeElementsAtIndex(E[] array, int index, int length) {
 		int len = array.length;
-		int[] result = new int[len - 1];
+		@SuppressWarnings("unchecked")
+		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), len - length);
 		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + 1, result, index, len - index - 1);
+		System.arraycopy(array, index + length, result, index, len - index - length);
+		return result;
+	}
+
+	/**
+	 * Return a new array that contains the elements in the
+	 * specified array with the specified elements removed.
+	 * java.util.Arrays#removeElementAtIndex(char[] array, int index, int length)
+	 */
+	public static char[] removeElementsAtIndex(char[] array, int index, int length) {
+		int len = array.length;
+		char[] result = new char[len - length];
+		System.arraycopy(array, 0, result, 0, index);
+		System.arraycopy(array, index + length, result, index, len - index - length);
+		return result;
+	}
+
+	/**
+	 * Return a new array that contains the elements in the
+	 * specified array with the specified elements removed.
+	 * java.util.Arrays#removeElementAtIndex(int[] array, int index, int length)
+	 */
+	public static int[] removeElementsAtIndex(int[] array, int index, int length) {
+		int len = array.length;
+		int[] result = new int[len - length];
+		System.arraycopy(array, 0, result, 0, index);
+		System.arraycopy(array, index + length, result, index, len - index - length);
 		return result;
 	}
 
@@ -1493,10 +1830,11 @@ public final class CollectionTools {
 	 * Remove any duplicate elements from the specified array,
 	 * while maintaining the order.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <E> E[] removeDuplicateElements(E... array) {
 		List<E> list = removeDuplicateElements(Arrays.asList(array));
-		return list.toArray((E[]) Array.newInstance(array.getClass().getComponentType(), list.size()));
+		@SuppressWarnings("unchecked")
+		E[] resultArray = (E[]) Array.newInstance(array.getClass().getComponentType(), list.size());
+		return list.toArray(resultArray);
 	}
 
 	/**
@@ -1512,6 +1850,16 @@ public final class CollectionTools {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Retain only the elements in the specified iterable
+	 * in the specified collection.
+	 * Return whether the collection changed as a result.
+	 * java.util.Collection#retainAll(java.lang.Iterable iterable)
+	 */
+	public static boolean retainAll(Collection<?> collection, Iterable<?> iterable) {
+		return retainAll(collection, iterable.iterator());
 	}
 
 	/**
@@ -1631,6 +1979,14 @@ public final class CollectionTools {
 			swap(array, i, j);
 		}
 		return array;
+	}
+
+	/**
+	 * Return a list with entries in reverse order from those
+	 * returned by the specified iterable.
+	 */
+	public static <E> List<E> reverseList(Iterable<? extends E> iterable) {
+		return reverse(list(iterable));
 	}
 
 	/**
@@ -1765,6 +2121,14 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a set corresponding to the specified iterable.
+	 * java.util.HashSet(java.lang.Iterable iterable)
+	 */
+	public static <E> Set<E> set(Iterable<? extends E> iterable) {
+		return set(iterable.iterator());
+	}
+
+	/**
 	 * Return a set corresponding to the specified iterator.
 	 * java.util.HashSet(java.util.Iterator iterator)
 	 */
@@ -1860,6 +2224,14 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return the number of elements returned by the specified iterable.
+	 * java.lang.Iterable#size()
+	 */
+	public static int size(Iterable<?> iterable) {
+		return size(iterable.iterator());
+	}
+
+	/**
 	 * Return the number of elements returned by the specified iterator.
 	 * java.util.Iterator#size()
 	 */
@@ -1870,6 +2242,23 @@ public final class CollectionTools {
 			size++;
 		}
 		return size;
+	}
+
+	/**
+	 * Return a sorted set corresponding to the specified iterable.
+	 * java.util.TreeSet(java.lang.Iterable iterable)
+	 */
+	public static <E extends Comparable<? super E>> SortedSet<E> sortedSet(Iterable<? extends E> iterable) {
+		return sortedSet(iterable, null);
+	}
+
+	/**
+	 * Return a sorted set corresponding to the specified iterable
+	 * and comparator.
+	 * java.util.TreeSet(java.lang.Iterable iterable, java.util.Comparator c)
+	 */
+	public static <E> SortedSet<E> sortedSet(Iterable<? extends E> iterable, Comparator<? super E> comparator) {
+		return sortedSet(iterable.iterator(), comparator);
 	}
 
 	/**
@@ -1911,6 +2300,40 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a sub-array of the specified array, starting at the specified
+	 * position with the specified length.
+	 * java.util.Arrays#subArray(E[] array, int start, int length)
+	 */
+	public static <E> E[] subArray(E[] array, int start, int length) {
+		@SuppressWarnings("unchecked")
+		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), length);
+		System.arraycopy(array, start, result, 0, length);
+		return result;
+	}
+
+	/**
+	 * Return a sub-array of the specified array, starting at the specified
+	 * position with the specified length.
+	 * java.util.Arrays#subArray(int[] array, int start, int length)
+	 */
+	public static int[] subArray(int[] array, int start, int length) {
+		int[] result = new int[length];
+		System.arraycopy(array, start, result, 0, length);
+		return result;
+	}
+
+	/**
+	 * Return a sub-array of the specified array, starting at the specified
+	 * position with the specified length.
+	 * java.util.Arrays#subArray(char[] array, int start, int length)
+	 */
+	public static char[] subArray(char[] array, int start, int length) {
+		char[] result = new char[length];
+		System.arraycopy(array, start, result, 0, length);
+		return result;
+	}
+
+	/**
 	 * Return the array after the specified elements have been "swapped".
 	 * java.util.Arrays#swap(Object[] array, int i, int j)
 	 */
@@ -1941,6 +2364,15 @@ public final class CollectionTools {
 		array[i] = array[j];
 		array[j] = temp;
 		return array;
+	}
+
+	/**
+	 * Return a vector corresponding to the specified iterable.
+	 * This is useful for legacy code that requires a java.util.Vector.
+	 * java.util.Vector(java.lang.Iterable iterable)
+	 */
+	public static <E> Vector<E> vector(Iterable<? extends E> iterable) {
+		return vector(iterable.iterator());
 	}
 
 	/**
@@ -2054,6 +2486,20 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return the iterable after it has been "sorted".
+	 */
+	public static <E extends Comparable<? super E>> Iterable<E> sort(Iterable<E> iterable) {
+		return sort(iterable, null);
+	}
+
+	/**
+	 * Return the iterable after it has been "sorted".
+	 */
+	public static <E> Iterable<E> sort(Iterable<E> iterable, Comparator<? super E> comparator) {
+		return sort(list(iterable), comparator);
+	}
+
+	/**
 	 * Return the iterator after it has been "sorted".
 	 */
 	public static <E extends Comparable<? super E>> Iterator<E> sort(Iterator<E> iterator) {
@@ -2061,7 +2507,7 @@ public final class CollectionTools {
 	}
 
 	/**
-	 * Return the list after it has been "sorted".
+	 * Return the iterator after it has been "sorted".
 	 */
 	public static <E> Iterator<E> sort(Iterator<E> iterator, Comparator<? super E> comparator) {
 		return sort(list(iterator), comparator).iterator();
@@ -2344,7 +2790,7 @@ public final class CollectionTools {
 	 * Return the array after it has been "sorted".
 	 * @see java.util.Arrays#sort(Object[], java.util.Comparator)
 	 */
-    public static <E> E[] sort(E[] array, Comparator<? super E> comparator) {
+	public static <E> E[] sort(E[] array, Comparator<? super E> comparator) {
 		Arrays.sort(array, comparator);
 		return array;
 	}

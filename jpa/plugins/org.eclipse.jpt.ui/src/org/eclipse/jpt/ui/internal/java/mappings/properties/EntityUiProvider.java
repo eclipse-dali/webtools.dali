@@ -20,7 +20,24 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class EntityUiProvider implements ITypeMappingUiProvider
 {
-	public String key() {
+	// singleton
+	private static final EntityUiProvider INSTANCE = new EntityUiProvider();
+
+	/**
+	 * Return the singleton.
+	 */
+	public static ITypeMappingUiProvider instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure non-instantiability.
+	 */
+	private EntityUiProvider() {
+		super();
+	}
+
+	public String mappingKey() {
 		return IMappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 	

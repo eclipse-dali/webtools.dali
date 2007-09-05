@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
+import java.util.ListIterator;
+import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
+import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.swt.SWT;
@@ -26,6 +29,16 @@ public class JavaPersistentTypeDetailsPage extends
 		super(parent, widgetFactory);
 	}
 	
+	protected IJpaPlatformUi jpaPlatformUi() {
+		String platformId = getPersistentType().jpaPlatform().getId();
+		return PlatformRegistry.instance().jpaPlatform(platformId);
+	}
+	
+	@Override
+	protected ListIterator<ITypeMappingUiProvider> typeMappingUiProviders() {
+		return jpaPlatformUi().javaTypeMappingUiProviders();
+	}
+
 	@Override
 	protected void initializeLayout(Composite composite) {	    
 	    GridLayout gridLayout = new GridLayout();

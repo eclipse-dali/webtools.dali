@@ -731,13 +731,13 @@ public final class ClassTools {
 	
 	/**
 	 * Convenience method.
-	 * Return the specified class,.
+	 * Return the specified class (without the checked exception).
 	 */
-	public static Class<?> classForName(String javaClassName) {
+	public static Class<?> classForName(String className) {
 		try {
-			return Class.forName(javaClassName);
+			return Class.forName(className);
 		} catch (ClassNotFoundException ex) {
-			throw new RuntimeException(javaClassName, ex);
+			throw new RuntimeException(className, ex);
 		}
 	}
 	
@@ -757,8 +757,8 @@ public final class ClassTools {
 	 * using the class's default (zero-argument) constructor.
 	 * Class#newInstance()
 	 */
-	public static Object newInstance(String javaClassName) throws ClassNotFoundException {
-		return newInstance(javaClassName, ClassTools.class.getClassLoader());
+	public static Object newInstance(String className) throws ClassNotFoundException {
+		return newInstance(className, null);
 	}
 	
 	/**
@@ -767,8 +767,8 @@ public final class ClassTools {
 	 * using the class's default (zero-argument) constructor.
 	 * Class#newInstance()
 	 */
-	public static Object newInstance(String javaClassName, ClassLoader classLoader) throws ClassNotFoundException {
-		return newInstance(classLoader.loadClass(javaClassName));
+	public static Object newInstance(String className, ClassLoader classLoader) throws ClassNotFoundException {
+		return newInstance(Class.forName(className, true, classLoader));
 	}
 	
 	/**
@@ -789,8 +789,8 @@ public final class ClassTools {
 	 * given the constructor parameter types and parameters.
 	 * Class#newInstance(Class<?>[] parameterTypes, Object[] parameters)
 	 */
-	public static Object newInstance(String javaClassName, Class<?>[] parameterTypes, Object[] parameters) throws ClassNotFoundException {
-		return newInstance(javaClassName, parameterTypes, parameters, ClassTools.class.getClassLoader());
+	public static Object newInstance(String className, Class<?>[] parameterTypes, Object[] parameters) throws ClassNotFoundException {
+		return newInstance(className, parameterTypes, parameters, null);
 	}
 	
 	/**
@@ -798,8 +798,8 @@ public final class ClassTools {
 	 * given the constructor parameter types and parameters.
 	 * Class#newInstance(Class<?>[] parameterTypes, Object[] parameters)
 	 */
-	public static Object newInstance(String javaClassName, Class<?>[] parameterTypes, Object[] parameters, ClassLoader classLoader) throws ClassNotFoundException {
-		return newInstance(classLoader.loadClass(javaClassName), parameterTypes, parameters);
+	public static Object newInstance(String className, Class<?>[] parameterTypes, Object[] parameters, ClassLoader classLoader) throws ClassNotFoundException {
+		return newInstance(Class.forName(className, true, classLoader), parameterTypes, parameters);
 	}
 	
 	/**
@@ -817,8 +817,8 @@ public final class ClassTools {
 	 * given the constructor parameter type and parameter.
 	 * Class#newInstance(Class<?> parameterType, Object parameter)
 	 */
-	public static Object newInstance(String javaClassName, Class<?> parameterType, Object parameter) throws ClassNotFoundException {
-		return newInstance(javaClassName, parameterType, parameter, ClassTools.class.getClassLoader());
+	public static Object newInstance(String className, Class<?> parameterType, Object parameter) throws ClassNotFoundException {
+		return newInstance(className, parameterType, parameter, null);
 	}
 	
 	/**
@@ -826,8 +826,8 @@ public final class ClassTools {
 	 * given the constructor parameter type and parameter.
 	 * Class#newInstance(Class<?> parameterType, Object parameter)
 	 */
-	public static Object newInstance(String javaClassName, Class<?> parameterType, Object parameter, ClassLoader classLoader) throws ClassNotFoundException {
-		return newInstance(classLoader.loadClass(javaClassName), parameterType, parameter);
+	public static Object newInstance(String className, Class<?> parameterType, Object parameter, ClassLoader classLoader) throws ClassNotFoundException {
+		return newInstance(Class.forName(className, false, classLoader), parameterType, parameter);
 	}
 	
 	/**
@@ -1360,13 +1360,14 @@ public final class ClassTools {
 	 * Return the class for specified "type declaration".
 	 */
 	public static Class<?> classForTypeDeclaration(String elementTypeName, int arrayDepth) throws ClassNotFoundException {
-		return classForTypeDeclaration(elementTypeName, arrayDepth, ClassTools.class.getClassLoader());
+		return classForTypeDeclaration(elementTypeName, arrayDepth, null);
 	}
 	
 	/**
 	 * Return the class for specified "type declaration",
 	 * using the specified class loader.
 	 */
+	// see the "Evaluation" of jdk bug 6446627 for a discussion of loading classes
 	public static Class<?> classForTypeDeclaration(String elementTypeName, int arrayDepth, ClassLoader classLoader) throws ClassNotFoundException {
 		// primitives cannot be loaded via Class#forName(),
 		// so check for a primitive class name first
@@ -1383,7 +1384,7 @@ public final class ClassTools {
 
 		// non-array
 		if (arrayDepth == 0) {
-			return (pcc == null) ? classLoader.loadClass(elementTypeName) : pcc.javaClass;
+			return (pcc == null) ? Class.forName(elementTypeName, false, classLoader) : pcc.javaClass;
 		}
 
 		// array
@@ -1398,7 +1399,7 @@ public final class ClassTools {
 		} else {
 			sb.append(pcc.code);
 		}
-		return classLoader.loadClass(sb.toString());
+		return Class.forName(sb.toString(), false, classLoader);
 	}
 	
 	/**

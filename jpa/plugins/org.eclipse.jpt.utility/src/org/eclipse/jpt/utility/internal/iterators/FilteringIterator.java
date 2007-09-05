@@ -59,8 +59,7 @@ public class FilteringIterator<E>
 	 * Construct an iterator with the specified nested
 	 * iterator and filter.
 	 */
-	@SuppressWarnings("unchecked")
-	public FilteringIterator(Iterator<?> nestedIterator, Filter filter) {
+	public FilteringIterator(Iterator<?> nestedIterator, @SuppressWarnings("unchecked") Filter filter) {
 		super();
 		this.nestedIterator = nestedIterator;
 		this.filter = filter;
@@ -93,20 +92,24 @@ public class FilteringIterator<E>
 	 * Load next with the next valid entry from the nested
 	 * iterator. If there are none, next is set to <code>END</code>.
 	 */
-	@SuppressWarnings("unchecked")
 	private void loadNext() {
 		this.done = true;
 		while (this.nestedIterator.hasNext() && (this.done)) {
 			Object o = this.nestedIterator.next();
 			if (this.accept(o)) {
 				// assume that if the object was accepted it is of type E
-				this.next = (E) o;
+				this.next = this.downcast(o);
 				this.done = false;
 			} else {
 				this.next = null;
 				this.done = true;
 			}
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private E downcast(Object o) {
+		return (E) o;
 	}
 
 	/**

@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.java.details;
 
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
+import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -22,7 +23,7 @@ public interface IAttributeMappingUiProvider
 	 * A unique string that corresponds to the key of a MappingProvider in the core
 	 * (IJavaAttributeMappingProvider and/or IXmlAttributeMappingProvider)
 	 */
-	String key();
+	String attributeMappingKey();
 
 	/**
 	 * A label to be displayed to the label as an option in the mapping type combo box 
@@ -34,13 +35,14 @@ public interface IAttributeMappingUiProvider
 	 * The IJpaComposite that correponds to this mapping type.  This will be displayed
 	 * by the PersistentAttributeDetailsPage when the mapping key matches the key given
 	 * by this provider.  The composites will be stored in a Map with the mapping key as the key.
-	 * 
+	 * @param factory
 	 * @param parent
 	 * @param commandStack
 	 * @param widgetFactory
+	 * 
 	 * @return
 	 */
 	IJpaComposite<IAttributeMapping> buildAttributeMappingComposite(
-			Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory);
+			IJpaUiFactory factory, Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory);
 	
 }

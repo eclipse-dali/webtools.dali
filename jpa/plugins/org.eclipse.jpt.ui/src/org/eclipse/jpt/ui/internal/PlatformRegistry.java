@@ -23,8 +23,16 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 public class PlatformRegistry 
 {
-	public static final PlatformRegistry INSTANCE = new PlatformRegistry();
-	
+	// singleton
+	private static final PlatformRegistry INSTANCE = new PlatformRegistry();
+
+	/**
+	 * Return the singleton.
+	 */
+	public static PlatformRegistry instance() {
+		return INSTANCE;
+	}
+
 	private static final String EXTENSION_ID = 
 		"jpaPlatform"; //$NON-NLS-1$
 	
@@ -52,8 +60,8 @@ public class PlatformRegistry
 	private void buildJpaPlatforms() {
 		this.jpaPlatforms = new HashMap<String, IConfigurationElement>();
 		
-		for (Iterator stream = allConfigElements(); stream.hasNext(); ) {
-			buildJpaPlatform((IConfigurationElement) stream.next());
+		for (Iterator<IConfigurationElement> stream = allConfigElements(); stream.hasNext(); ) {
+			buildJpaPlatform(stream.next());
 		}
 	}
 	
@@ -75,16 +83,16 @@ public class PlatformRegistry
 			return;
 		}
 		
-		if (jpaPlatforms.containsKey(platformId)) {
-			IConfigurationElement otherConfigElement = jpaPlatforms.get(platformId);
+		if (this.jpaPlatforms.containsKey(platformId)) {
+			IConfigurationElement otherConfigElement = this.jpaPlatforms.get(platformId);
 			reportDuplicatePlatform(configElement, otherConfigElement);
 		}
 		
-		jpaPlatforms.put(platformId, configElement);
+		this.jpaPlatforms.put(platformId, configElement);
 	}
 	
-	public IJpaPlatformUi getJpaPlatform(String vendorId) {
-		IConfigurationElement registeredConfigElement = this.jpaPlatforms.get(vendorId);
+	public IJpaPlatformUi jpaPlatform(String platformId) {
+		IConfigurationElement registeredConfigElement = this.jpaPlatforms.get(platformId);
 		
 		if (registeredConfigElement == null) {
 			return null;
@@ -99,17 +107,17 @@ public class PlatformRegistry
 		}
 	}
 	
-	private Iterator allConfigElements() {
+	private Iterator<IConfigurationElement> allConfigElements() {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = 
 			registry.getExtensionPoint(JptUiPlugin.PLUGIN_ID, EXTENSION_ID);
 		IExtension[] extensions = extensionPoint.getExtensions();
 		
-		return new CompositeIterator(
-				new TransformationIterator(CollectionTools.iterator(extensions)) {
+		return new CompositeIterator<IConfigurationElement>(
+				new TransformationIterator<IExtension, Iterator<IConfigurationElement>>(CollectionTools.iterator(extensions)) {
 					@Override
-					protected Object transform(Object next) {
-						return CollectionTools.iterator(((IExtension) next).getConfigurationElements());
+					protected Iterator<IConfigurationElement> transform(IExtension extension) {
+						return CollectionTools.iterator(extension.getConfigurationElements());
 					}
 				}
 			);

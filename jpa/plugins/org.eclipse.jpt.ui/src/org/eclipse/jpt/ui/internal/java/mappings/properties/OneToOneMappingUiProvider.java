@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.java.mappings.properties;
 
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -39,7 +40,7 @@ public class OneToOneMappingUiProvider
 		super();
 	}
 
-	public String key() {
+	public String attributeMappingKey() {
 		return IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 	
@@ -47,7 +48,7 @@ public class OneToOneMappingUiProvider
 		return JptUiMappingsMessages.PersistentAttributePage_OneToOneLabel;
 	}
 	
-	public IJpaComposite buildAttributeMappingComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new OneToOneComposite(parent, commandStack, widgetFactory);
+	public IJpaComposite buildAttributeMappingComposite(IJpaUiFactory factory, Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
+		return factory.createOneToOneMappingComposite(parent, commandStack, widgetFactory);
 	}
 }

@@ -201,14 +201,9 @@ public class JpaStructureView extends AbstractJpaView
 				(IJpaStructureProvider) structureProviders.get(contentId);
 			
 			if (provider == null) {
-				String vendorId = contentNode.getJpaProject().getPlatform().getId();
-				IJpaPlatformUi jpaPlatformUI = PlatformRegistry.INSTANCE.getJpaPlatform(vendorId);
-				for (IJpaStructureProvider p : jpaPlatformUI.structureProviders()) {
-					if (p.fileContentType().equals(contentId)) {
-						provider = p;
-						break;
-					}
-				}
+				String platformId = contentNode.jpaPlatform().getId();
+				IJpaPlatformUi jpaPlatformUI = PlatformRegistry.instance().jpaPlatform(platformId);
+				provider = jpaPlatformUI.structureProvider(contentId);
 				
 				//TODO this view and the detailsProviders Map is not created on a per project basis.
 				//the detailsProviders and their fileContentTypes could overlap across project, this would cause problems with storing this map.				

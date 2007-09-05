@@ -17,6 +17,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
+import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
@@ -82,6 +84,11 @@ public abstract class ProjectAction implements IObjectActionDelegate {
 		return null;
 	}
 
+	protected IJpaPlatformUi jpaPlatformUi(IJpaProject project) {
+		String coreJpaPlatformId = project.getPlatform().getId();
+        return PlatformRegistry.instance().jpaPlatform(coreJpaPlatformId); 
+	}
+	
 	protected void execute(IProject project) {
 		IJpaProject jpaProject = JptCorePlugin.getJpaProject(project);
 		if (jpaProject == null) {

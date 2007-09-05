@@ -17,7 +17,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.db.internal.Connection;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
@@ -45,7 +44,7 @@ import org.eclipse.ui.PlatformUI;
 public class DatabaseReconnectWizardPage extends WizardPage {
 	private IJpaProject jpaProject;
 
-	private Connection connection;
+	private ConnectionProfile profile;
 	private ConnectionListener connectionListener;
 	private DatabaseGroup databaseGroup;
 
@@ -131,8 +130,8 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 
 	private void removeConnectionListener() {
 		if ( this.connectionListener != null) {
-			if ( this.connection != null) {
-				this.connection.removeConnectionListener( this.connectionListener);
+			if ( this.profile != null) {
+				this.profile.removeConnectionListener( this.connectionListener);
 			}
 			this.connectionListener = null;
 		}
@@ -230,23 +229,21 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		private String getProjectConnectionProfileName() {
 			return jpaProject.getDataSource().getConnectionProfileName();
 		}
-
+		
 		Schema getDefaultSchema() {
 			ConnectionProfile profile = getProjectConnectionProfile();
 			return profile.getDatabase().schemaNamed( profile.getDefaultSchema());
 		}
 
 		private void openConnectionProfileNamed( String connectionProfileName) {
-			if( DatabaseReconnectWizardPage.this.connection != null) {
-				DatabaseReconnectWizardPage.this.removeConnectionListener();
-			}
-			ConnectionProfile profile = JptDbPlugin.getDefault().getConnectionProfileRepository().profileNamed( connectionProfileName);
-			profile.connect();
-			DatabaseReconnectWizardPage.this.connection = profile.getConnection();
-			if( DatabaseReconnectWizardPage.this.connection != null) {
+			DatabaseReconnectWizardPage.this.removeConnectionListener();
+
+			DatabaseReconnectWizardPage.this.profile = JptDbPlugin.getDefault().getConnectionProfileRepository().profileNamed( connectionProfileName);
+			DatabaseReconnectWizardPage.this.profile.connect();
+			if( DatabaseReconnectWizardPage.this.profile.isConnected()) {
 				this.populateSchemaCombo();
 				DatabaseReconnectWizardPage.this.connectionListener = this.buildConnectionListener();
-				DatabaseReconnectWizardPage.this.connection.addConnectionListener( DatabaseReconnectWizardPage.this.connectionListener);
+				DatabaseReconnectWizardPage.this.profile.addConnectionListener( DatabaseReconnectWizardPage.this.connectionListener);
 			}
 			return;
 		}
@@ -310,6 +307,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 			ConnectionProfile addedProfile = ConnectionProfileRepository.instance().profileNamed( addedProfileName);
 		
 			if( !addedProfile.isNull()) {
+				addedProfile.connect();
 				this.populateConnectionCombo();
 				this.connectionCombo.select( connectionCombo.indexOf( addedProfile.getName()));
 				this.handleConnectionChange();
@@ -319,40 +317,40 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		private ConnectionListener buildConnectionListener() {
 			return new ConnectionListener() {
 
-				public void modified( Connection connection) {
+				public void modified( ConnectionProfile profile) {
 				// not interested to this event.
 				}
 
-				public boolean okToClose( Connection connection) {
+				public boolean okToClose( ConnectionProfile profile) {
 				// not interested to this event.
 					return true;
 				}
 
-				public void opened( Connection connection) {
-					if( DatabaseReconnectWizardPage.this.connection.equals( connection)) {
+				public void opened( ConnectionProfile profile) {
+					if( DatabaseReconnectWizardPage.this.profile.equals( profile)) {
 						DatabaseGroup.this.populateSchemaCombo();
 					}
 				}
 
-				public void aboutToClose( Connection connection) {
-					if( DatabaseReconnectWizardPage.this.connection.equals( connection)) {
+				public void aboutToClose( ConnectionProfile profile) {
+					if( DatabaseReconnectWizardPage.this.profile.equals( profile)) {
 						DatabaseReconnectWizardPage.this.removeConnectionListener();
 					}
 				}
 
-				public void closed( Connection connection) {
+				public void closed( ConnectionProfile profile) {
 				// not interested to this event.
 				}
 
-				public void databaseChanged(Connection connection, final Database database) {
+				public void databaseChanged(ConnectionProfile profile, final Database database) {
 				// not interested to this event.
 				}
 
-				public void schemaChanged(Connection connection, final Schema schema) {
+				public void schemaChanged(ConnectionProfile profile, final Schema schema) {
 				// not interested to this event.
 				}
 
-				public void tableChanged(Connection connection, final Table table) {
+				public void tableChanged(ConnectionProfile profile, final Table table) {
 				// not interested to this event.
 				}
 			};

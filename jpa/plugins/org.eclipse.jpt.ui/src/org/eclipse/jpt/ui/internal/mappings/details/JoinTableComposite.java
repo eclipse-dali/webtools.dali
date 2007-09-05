@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.List;
+
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -21,7 +22,6 @@ import org.eclipse.jpt.core.internal.JpaEObject;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.jpt.db.internal.Connection;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
@@ -31,7 +31,6 @@ import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.Owner;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -77,11 +76,11 @@ public class JoinTableComposite extends BaseJpaComposite
 	private ConnectionListener buildConnectionListener() {
 		return new ConnectionListener() {
 
-			public void aboutToClose(Connection connection) {
+			public void aboutToClose(ConnectionProfile profile) {
 				// not interested to this event.
 			}
 
-			public void closed(Connection connection) {
+			public void closed(ConnectionProfile profile) {
 				getControl().getDisplay().asyncExec( new Runnable() {
 					public void run() {
 						JoinTableComposite.this.tableCombo.populate();
@@ -89,7 +88,7 @@ public class JoinTableComposite extends BaseJpaComposite
 				});
 			}
 
-			public void modified(Connection connection) {
+			public void modified(ConnectionProfile profile) {
 				getControl().getDisplay().asyncExec( new Runnable() {
 					public void run() {
 						JoinTableComposite.this.tableCombo.populate();
@@ -97,12 +96,12 @@ public class JoinTableComposite extends BaseJpaComposite
 				});
 			}
 
-			public boolean okToClose(Connection connection) {
+			public boolean okToClose(ConnectionProfile profile) {
 				// not interested to this event.
 				return true;
 			}
 
-			public void opened(Connection connection) {
+			public void opened(ConnectionProfile profile) {
 				getControl().getDisplay().asyncExec( new Runnable() {
 					public void run() {
 						JoinTableComposite.this.tableCombo.populate();
@@ -110,7 +109,7 @@ public class JoinTableComposite extends BaseJpaComposite
 				});
 			}
 
-			public void databaseChanged(Connection connection, final Database database) {
+			public void databaseChanged(ConnectionProfile profile, final Database database) {
 				getControl().getDisplay().asyncExec( new Runnable() {
 					public void run() {
 						if(database == JoinTableComposite.this.tableCombo.getDatabase()) {
@@ -122,7 +121,7 @@ public class JoinTableComposite extends BaseJpaComposite
 				});
 			}
 			
-			public void schemaChanged(Connection connection, final Schema schema) {
+			public void schemaChanged(ConnectionProfile profile, final Schema schema) {
 				getControl().getDisplay().asyncExec( new Runnable() {
 					public void run() {
 						if(schema == JoinTableComposite.this.tableCombo.getTableSchema()) {
@@ -134,7 +133,7 @@ public class JoinTableComposite extends BaseJpaComposite
 				});
 			}
 
-			public void tableChanged(Connection connection, final Table table) {
+			public void tableChanged(ConnectionProfile profile, final Table table) {
 				// not interested to this event.
 			}
 		};
