@@ -98,9 +98,6 @@ public class JoinTableContext extends BaseContext
 	protected DefaultsContext wrapDefaultsContextForJoinColumn(DefaultsContext defaultsContext) {
 		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
-				if (key.equals(BaseJpaPlatform.DEFAULT_JOIN_TABLE_NAME_KEY)) {
-					return joinTableDefaultName(this);
-				}
 				/**
 				 * by default, the join column is, obviously, in the join table;
 				 * not sure whether it can be anywhere else...
