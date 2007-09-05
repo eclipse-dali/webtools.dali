@@ -12,9 +12,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.core.internal.IPersistentType;
+import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlRelationshipMapping;
+import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
+import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
+import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -40,19 +45,26 @@ public class JoinTableContext extends BaseContext
 	protected Collection<JoinColumnContext> buildJoinColumnContexts() {
 		Collection<JoinColumnContext> contexts = new ArrayList<JoinColumnContext>();
 		for (IJoinColumn joinColumn : this.table.getJoinColumns() ) {
-			contexts.add(new JoinColumnContext(this, joinColumn));
+			contexts.add(buildJoinColumnContext(joinColumn));
 		}
 		return contexts;
+	}
+	
+	protected JoinColumnContext buildJoinColumnContext(IJoinColumn joinColumn) {
+		return new JoinColumnContext(this, joinColumn);
 	}
 	
 	protected Collection<JoinColumnContext> buildInverseJoinColumnContexts() {
 		Collection<JoinColumnContext> contexts = new ArrayList<JoinColumnContext>();
 		for (IJoinColumn joinColumn : this.table.getInverseJoinColumns() ) {
-			contexts.add(new JoinColumnContext(this, joinColumn));
+			contexts.add(buildInverseJoinColumnContext(joinColumn));
 		}
 		return contexts;
 	}
 	
+	protected JoinColumnContext buildInverseJoinColumnContext(IJoinColumn joinColumn) {
+		return new JoinColumnContext(this, joinColumn);
+	}	
 	
 	public IJoinTable getTable() {
 		return this.table;
@@ -61,7 +73,7 @@ public class JoinTableContext extends BaseContext
 	@Override
 	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		super.refreshDefaults(defaultsContext, monitor);
-		this.table.refreshDefaults(defaultsContext);
+		this.table.refreshDefaults(wrapDefaultsContext(defaultsContext));
 		DefaultsContext joinColumnsDefaultsContext = wrapDefaultsContextForJoinColumn(defaultsContext);
 		for (JoinColumnContext context : this.joinColumnContexts) {
 			context.refreshDefaults(joinColumnsDefaultsContext, monitor);
@@ -72,6 +84,17 @@ public class JoinTableContext extends BaseContext
 		}
 	}
 	
+	protected DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
+			public Object getDefault(String key) {
+				if (key.equals(BaseJpaPlatform.DEFAULT_JOIN_TABLE_NAME_KEY)) {
+					return joinTableDefaultName(this);
+				}
+				return super.getDefault(key);
+			}
+		};		
+	}
+
 	protected DefaultsContext wrapDefaultsContextForJoinColumn(DefaultsContext defaultsContext) {
 		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
@@ -96,6 +119,39 @@ public class JoinTableContext extends BaseContext
 				return super.getDefault(key);
 			}
 		};
+	}
+
+	protected String joinTableDefaultName(DefaultsContext defaultsContext) {
+		String tableName = relationshipMapping().typeMapping().getTableName();
+		if (tableName == null) {
+			return null;
+		}
+		IEntity targetEntity = targetEntity(defaultsContext);
+		if (targetEntity == null) {
+			return null;
+		}
+		ITable targetTable = targetEntity.getTable();
+		return (targetTable == null) ? null : tableName + "_" + targetTable.getName();
+	}
+	
+	protected IEntity targetEntity(DefaultsContext defaultsContext) {
+		String targetEntity = relationshipMapping().fullyQualifiedTargetEntity(defaultsContext.astRoot());
+		if (targetEntity == null) {
+			return null;
+		}
+		IPersistentType persistentType = defaultsContext.persistentType(targetEntity);
+		if (persistentType == null) {
+			return null;
+		}
+		ITypeMapping typeMapping = persistentType.getMapping();
+		if (typeMapping instanceof IEntity) {
+			return (IEntity) typeMapping;
+		}
+		return null;
+	}
+
+	protected IRelationshipMapping relationshipMapping() {
+		return this.table.relationshipMapping();
 	}
 	
 	/** used internally as a mechanism to short circuit continued message adding */

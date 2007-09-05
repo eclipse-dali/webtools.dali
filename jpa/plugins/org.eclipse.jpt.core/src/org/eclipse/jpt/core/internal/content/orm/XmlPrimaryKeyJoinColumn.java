@@ -427,4 +427,8 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 		setDefaultReferencedColumnName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_REFERENCED_COLUMN_NAME_KEY));
 		setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_NAME_KEY));
 	}
+	
+	public boolean isVirtual() {
+		return getOwner().isVirtual(this);
+	}
 }

@@ -283,4 +283,8 @@ public class XmlSecondaryTable extends AbstractXmlTable
 	public IPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(int index) {
 		return OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn(new ISecondaryTable.PrimaryKeyJoinColumnOwner(this));
 	}
+	
+	public boolean isVirtual() {
+		return entity().getVirtualSecondaryTables().contains(this);
+	}
 } // XmlSecondaryTable

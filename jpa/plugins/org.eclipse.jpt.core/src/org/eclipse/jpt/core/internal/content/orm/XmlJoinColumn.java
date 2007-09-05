@@ -424,6 +424,10 @@ public class XmlJoinColumn extends AbstractXmlColumn implements IJoinColumn
 		setSpecifiedTableForXml(newSpecifiedTable);
 	}
 
+	public boolean isVirtual() {
+		return getOwner().isVirtual(this);
+	}
+	
 	public IJoinColumn.Owner getOwner() {
 		return (IJoinColumn.Owner) this.owner;
 	}

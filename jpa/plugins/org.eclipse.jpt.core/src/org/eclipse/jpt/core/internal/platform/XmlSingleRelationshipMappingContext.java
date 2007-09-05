@@ -14,9 +14,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.core.internal.IAttributeMapping;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlSingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
+import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -35,15 +38,52 @@ public abstract class XmlSingleRelationshipMappingContext
 	protected Collection<JoinColumnContext> buildJoinColumnContexts() {
 		Collection<JoinColumnContext> contexts = new ArrayList<JoinColumnContext>();
 		for (Iterator<IJoinColumn> i = singleRelationshipMapping().getJoinColumns().iterator(); i.hasNext(); ) {
-			contexts.add(new JoinColumnContext(this, i.next()));
+			contexts.add(new XmlJoinColumnContext(buildJoinColumnParentContext(), i.next()));
 		}
 		return contexts;
+	}
+
+	protected XmlJoinColumnContext.ParentContext buildJoinColumnParentContext() {
+		return new XmlJoinColumnContext.ParentContext() {
+			public void refreshDefaults(DefaultsContext defaults, IProgressMonitor monitor) {
+				XmlSingleRelationshipMappingContext.this.refreshDefaults(defaults, monitor);
+			}
+		
+			public IJpaPlatform getPlatform() {
+				return XmlSingleRelationshipMappingContext.this.getPlatform();
+			}
+		
+			public IContext getParentContext() {
+				return XmlSingleRelationshipMappingContext.this.getParentContext();
+			}
+		
+			public void addToMessages(List<IMessage> messages) {
+				XmlSingleRelationshipMappingContext.this.addToMessages(messages);
+			}
+		
+			public IJoinColumn javaJoinColumn(int index) {
+				//if the mapping is specified in the xml, then nothing specified in java should be used
+				if (relationshipMapping().isVirtual()) {
+					return javaRelationshipMapping().getJoinColumns().get(index);
+				}
+				return null;
+			}
+		};
 	}
 
 	protected XmlSingleRelationshipMapping singleRelationshipMapping() {
 		return (XmlSingleRelationshipMapping) relationshipMapping();
 	}
 
+
+	public ISingleRelationshipMapping javaRelationshipMapping() {
+		IAttributeMapping javaAttributeMapping = javaAttributeMapping();
+		if (javaAttributeMapping instanceof ISingleRelationshipMapping) {
+			return ((ISingleRelationshipMapping) javaAttributeMapping);
+		}
+		return null;
+	}
+	
 	@Override
 	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		super.refreshDefaults(defaultsContext, monitor);

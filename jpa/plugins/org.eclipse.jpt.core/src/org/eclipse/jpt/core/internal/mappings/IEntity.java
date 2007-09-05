@@ -682,5 +682,13 @@ public interface IEntity extends ITypeMapping
 		public List<IPrimaryKeyJoinColumn> joinColumns() {
 			return this.entity.getPrimaryKeyJoinColumns();
 		}
+		
+		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
+			return this.entity.getDefaultPrimaryKeyJoinColumns().contains(joinColumn);
+		}
+		
+		public int indexOf(IAbstractJoinColumn joinColumn) {
+			return joinColumns().indexOf(joinColumn);
+		}
 	}
 }
