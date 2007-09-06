@@ -351,6 +351,7 @@ public class IdentityHashBagTests extends TestCase {
 			}
 		}
 		float loadFactor = ((float) filledBucketCount)/((float) bucketCount);
+		// System.out.println("load factor: " + loadFactor + " (" + filledBucketCount + "/" + bucketCount + ")");
 		assertTrue("WARNING - poor load factor: " + loadFactor, loadFactor > 0.20);
 		assertTrue("WARNING - poor load factor: " + loadFactor, loadFactor < 0.75);
 	}
