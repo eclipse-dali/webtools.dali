@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.utility
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Localization: plugin
 Export-Package: org.eclipse.jpt.utility.internal,
  org.eclipse.jpt.utility.internal.iterators,

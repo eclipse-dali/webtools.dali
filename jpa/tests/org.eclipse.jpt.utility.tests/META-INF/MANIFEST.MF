@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.utility.tests
-Bundle-Version: 1.0.0
+Bundle-Version: 1.1.0
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.jpt.utility,
  org.junit;bundle-version="[3.0.0,4.0.0)"
