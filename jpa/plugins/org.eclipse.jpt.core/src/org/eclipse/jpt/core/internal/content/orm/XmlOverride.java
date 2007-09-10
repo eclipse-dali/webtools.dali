@@ -221,9 +221,7 @@ public abstract class XmlOverride extends XmlEObject implements IOverride
 		if (node == null) {
 			return getOwner().validationTextRange();
 		}
-		else {
-			return super.validationTextRange();
-		}
+		return super.validationTextRange();
 	}
 
 	public Owner getOwner() {

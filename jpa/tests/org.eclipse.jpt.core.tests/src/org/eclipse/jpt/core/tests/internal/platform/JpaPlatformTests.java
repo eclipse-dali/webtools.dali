@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform;
 import org.eclipse.jpt.core.tests.extension.resource.TestTypeMappingProvider;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.jpt.core.tests.internal.projects.TestPlatformProject;
 
 public class JpaPlatformTests extends TestCase
 {
@@ -54,7 +55,7 @@ public class JpaPlatformTests extends TestCase
 		super.setUp();
 		JpaPlatformExtensionTests.verifyExtensionTestProjectExists();
 		ProjectUtility.deleteAllProjects();
-		testProject = this.buildJpaProject(TestJpaProject.uniqueProjectName(PROJECT_NAME), false);  // false = no auto-build
+		testProject = this.buildJpaProject(TestPlatformProject.uniqueProjectName(PROJECT_NAME), false);  // false = no auto-build
 	}
 
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild) throws Exception {

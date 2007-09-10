@@ -624,9 +624,7 @@ public abstract class XmlTypeMapping extends XmlEObject implements ITypeMapping
 		if (classNode != null) {
 			return buildTextRange(classNode);
 		}
-		else {
-			return validationTextRange();
-		}
+		return validationTextRange();
 	}
 
 	public ITextRange attributesTextRange() {
@@ -634,9 +632,7 @@ public abstract class XmlTypeMapping extends XmlEObject implements ITypeMapping
 		if (attributesNode != null) {
 			return buildTextRange(attributesNode);
 		}
-		else {
-			return validationTextRange();
-		}
+		return validationTextRange();
 	}
 
 	/**

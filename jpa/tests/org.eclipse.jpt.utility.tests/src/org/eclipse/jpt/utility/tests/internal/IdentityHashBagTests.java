@@ -432,8 +432,7 @@ public class IdentityHashBagTests extends TestCase {
 	}
 	
 	public void testSerialization() throws Exception {
-		@SuppressWarnings("cast")
-		IdentityHashBag<String> bag2 = (IdentityHashBag<String>) TestTools.serialize(this.bag);
+		IdentityHashBag<String> bag2 = TestTools.serialize(this.bag);
 	
 		assertTrue("same object?", this.bag != bag2);
 		assertEquals(11, bag2.size());

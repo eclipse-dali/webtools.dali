@@ -338,7 +338,7 @@ public class BaseJpaProjectContext extends BaseContext
 	
 	protected void addInvalidPersistenceXmlContentMessage(List<IMessage> messages) {
 		if (validPersistenceXmlFiles.size() == 1) {
-			IJpaFile persistenceXmlFile = (IJpaFile) validPersistenceXmlFiles.get(0);
+			IJpaFile persistenceXmlFile = validPersistenceXmlFiles.get(0);
 			if (getPersistence(persistenceXmlFile) == null) {
 				PersistenceXmlRootContentNode root = 
 					(PersistenceXmlRootContentNode) persistenceXmlFile.getContent();

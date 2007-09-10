@@ -132,8 +132,6 @@ public class AttributeMappingsTranslator extends MultiObjectDependencyTranslator
 		if (delegate != null) {
 			return delegate.basicGetDependencyObject(parent);
 		}
-		else {
-			return super.basicGetDependencyObject(parent);
-		}
+		return super.basicGetDependencyObject(parent);
 	}
 }

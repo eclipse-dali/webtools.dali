@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.synch;
 import java.io.IOException;
 import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -51,25 +50,23 @@ public class SynchronizeClassesJob extends Job
 	public SynchronizeClassesJob(IFile file) {
 		super(JptCoreMessages.SYNCHRONIZE_CLASSES_JOB);
 		setRule(file.getProject());
-		persistenceXmlFile = file;
+		this.persistenceXmlFile = file;
 	}
 	
 	protected IStatus run(IProgressMonitor monitor) {
-		IProject project = persistenceXmlFile.getProject();
-		
 		monitor.beginTask(JptCoreMessages.SYNCHRONIZING_CLASSES_TASK, 150);
 		
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
 		}
 		
-		IJpaFile jpaFile = JptCorePlugin.getJpaFile(persistenceXmlFile);
+		IJpaFile jpaFile = JptCorePlugin.getJpaFile(this.persistenceXmlFile);
 		PersistenceXmlRootContentNode root;
 		try {
 			root = (PersistenceXmlRootContentNode) jpaFile.getContent();
 		}
 		catch (ClassCastException cce) {
-			return new Status(Status.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.INVALID_PERSISTENCE_XML_CONTENT);
+			return new Status(IStatus.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.INVALID_PERSISTENCE_XML_CONTENT);
 		}
 		
 		Persistence persistence = root.getPersistence();
@@ -86,7 +83,7 @@ public class SynchronizeClassesJob extends Job
 		}
 		else {
 			persistenceUnit = PersistenceFactory.eINSTANCE.createPersistenceUnit();
-			persistenceUnit.setName(persistenceXmlFile.getProject().getName());
+			persistenceUnit.setName(this.persistenceXmlFile.getProject().getName());
 			persistence.getPersistenceUnits().add(persistenceUnit);
 		}
 		
@@ -105,7 +102,7 @@ public class SynchronizeClassesJob extends Job
 			resource.save(null);
 		}
 		catch (IOException ioe) {
-			return new Status(Status.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.ERROR_WRITING_FILE, ioe);
+			return new Status(IStatus.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.ERROR_WRITING_FILE, ioe);
 		}
 		
 		return Status.OK_STATUS;

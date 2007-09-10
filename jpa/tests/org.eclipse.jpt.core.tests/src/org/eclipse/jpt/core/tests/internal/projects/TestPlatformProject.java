@@ -79,13 +79,13 @@ public class TestPlatformProject
 
 	public void addProjectNature(String natureID) throws CoreException {
 		IProjectDescription description = this.project.getDescription();
-		description.setNatureIds((String[]) CollectionTools.add(description.getNatureIds(), natureID));
+		description.setNatureIds(CollectionTools.add(description.getNatureIds(), natureID));
 		this.project.setDescription(description, null);
 	}
 
 	public void removeProjectNature(String natureID) throws CoreException {
 		IProjectDescription description = this.project.getDescription();
-		description.setNatureIds((String[]) CollectionTools.removeAllOccurrences(description.getNatureIds(), natureID));
+		description.setNatureIds(CollectionTools.removeAllOccurrences(description.getNatureIds(), natureID));
 		this.project.setDescription(description, null);
 	}
 

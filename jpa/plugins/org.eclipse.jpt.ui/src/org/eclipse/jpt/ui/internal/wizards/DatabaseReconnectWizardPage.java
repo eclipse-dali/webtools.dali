@@ -247,7 +247,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 			// clear out connection entries from previous login.
 			this.connectionCombo.removeAll();
 			for ( Iterator<String> i = CollectionTools.sort( this.dtpConnectionProfileNames()); i.hasNext();) {
-				this.connectionCombo.add( ( String) i.next());
+				this.connectionCombo.add(i.next());
 			}
 
 			String connectionName = getProjectConnectionProfileName();
@@ -274,7 +274,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 			this.schemaCombo.removeAll();
 			ConnectionProfile connectionProfile = this.getConnectionProfileNamed( getConnectionProfileName());
 			for ( Iterator<String> stream = CollectionTools.sort( connectionProfile.getDatabase().schemaNames()); stream.hasNext();) {
-				this.schemaCombo.add( ( String) stream.next());
+				this.schemaCombo.add(stream.next());
 			}
 			// set login user name as default schema
 			Schema schema = this.getDefaultSchema();

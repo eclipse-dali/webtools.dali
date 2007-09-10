@@ -46,7 +46,7 @@ public class JpaValidator implements IValidatorJob
 				JpaModelManager.instance().fillJpaProject(jpaProject.getProject());
 			}
 			catch (CoreException ce) {
-				return new Status(Status.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.ERROR_SYNCHRONIZING_CLASSES_COULD_NOT_VALIDATE, ce);
+				return new Status(IStatus.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.ERROR_SYNCHRONIZING_CLASSES_COULD_NOT_VALIDATE, ce);
 			}
 			
 			JpaHelper newJpaHelper = new JpaHelper();
