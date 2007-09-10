@@ -42,6 +42,7 @@ public abstract class JavaAttributeMapping extends JavaEObject
 	private final Attribute attribute;
 
 	// TODO remove?
+	@SuppressWarnings("unused")
 	private final AnnotationAdapter annotationAdapter;
 
 	protected JavaAttributeMapping() {
@@ -97,7 +98,7 @@ public abstract class JavaAttributeMapping extends JavaEObject
 	}
 
 	public ITextRange validationTextRange() {
-		ITextRange textRange = attribute.annotationTextRange(this.declarationAnnotationAdapter());
+		ITextRange textRange = this.attribute.annotationTextRange(this.declarationAnnotationAdapter());
 		return (textRange == null) ? this.getPersistentAttribute().validationTextRange() : textRange;
 	}
 

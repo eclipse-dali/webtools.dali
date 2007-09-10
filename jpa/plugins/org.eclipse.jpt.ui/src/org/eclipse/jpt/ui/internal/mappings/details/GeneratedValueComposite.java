@@ -23,7 +23,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.core.internal.mappings.GenerationType;
 import org.eclipse.jpt.core.internal.mappings.IGeneratedValue;
 import org.eclipse.jpt.core.internal.mappings.IId;
-import org.eclipse.jpt.core.internal.mappings.InheritanceType;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.IGeneratorRepository;
 import org.eclipse.jpt.core.internal.platform.NullGeneratorRepository;

@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.jpt.core.internal.mappings.DefaultEagerFetchType;
 import org.eclipse.jpt.core.internal.mappings.DefaultLazyFetchType;
 import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
-import org.eclipse.jpt.core.internal.mappings.EnumType;
 import org.eclipse.jpt.core.internal.mappings.IAbstractColumn;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;

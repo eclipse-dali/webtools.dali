@@ -146,10 +146,6 @@ public class GenerateEntitiesWizard extends Wizard {
         }
         return canFinish;
     }
-    
-	private boolean jpaProjectIsConnected() {
-		return this.getProjectConnectionProfile().isConnected();
-	}
 
 	private boolean projectDefaultSchemaExists() {
 		return ( this.getDefaultSchema() != null);

@@ -54,6 +54,7 @@ public class XmlSecondaryTable extends AbstractXmlTable
 	 */
 	protected EList<IPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns;
 
+	@SuppressWarnings("unused")
 	private XmlSecondaryTable() {
 		super();
 	}

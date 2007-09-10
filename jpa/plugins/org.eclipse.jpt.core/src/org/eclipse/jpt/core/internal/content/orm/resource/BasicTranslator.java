@@ -9,7 +9,6 @@
 package org.eclipse.jpt.core.internal.content.orm.resource;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.mappings.IBasic;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
@@ -54,10 +53,6 @@ public class BasicTranslator extends AttributeMappingTranslator
 			createEnumeratedTranslator(),
 		};
 	}
-
-	private Translator createPlaceHolderTranslator(String domNameAndPath) {
-		return new Translator(domNameAndPath, (EStructuralFeature) null);
-	}	
 
 	private Translator createFetchTypeTranslator() {
 		return new EnumeratorTranslator(FETCH, JpaCoreMappingsPackage.eINSTANCE.getIBasic_Fetch(), DOM_ATTRIBUTE);

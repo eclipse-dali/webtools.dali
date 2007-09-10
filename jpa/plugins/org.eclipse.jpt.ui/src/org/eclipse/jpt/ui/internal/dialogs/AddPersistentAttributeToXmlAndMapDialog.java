@@ -10,7 +10,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
@@ -38,12 +37,8 @@ import org.eclipse.swt.widgets.Text;
 public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 {
 	private XmlPersistentAttribute unmappedPersistentAttribute;
-	
-	private Label attributeLabel;
-		
+			
 	private Text attributeText;
-	
-	private Label mappingLabel;
 	
 	private ComboViewer mappingCombo;
 		
@@ -61,7 +56,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		composite.setLayout(new GridLayout());
 		
-		attributeLabel = createLabel(composite, 1, JptUiMessages.AddPersistentAttributeDialog_attributeLabel);
+		createLabel(composite, 1, JptUiMessages.AddPersistentAttributeDialog_attributeLabel);
 			
 		attributeText = createText(composite, 1);
 //		attributeText.addModifyListener(
@@ -74,7 +69,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		attributeText.setText(unmappedPersistentAttribute.getName());
 		attributeText.setEditable(false);
 		
-		mappingLabel = createLabel(composite, 1, JptUiMessages.AddPersistentClassDialog_mappingLabel);
+		createLabel(composite, 1, JptUiMessages.AddPersistentClassDialog_mappingLabel);
 		
 		mappingCombo = new ComboViewer(createCombo(composite, 1));
 		mappingCombo.setContentProvider(
@@ -148,10 +143,6 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		gd.horizontalSpan = span;
 		combo.setLayoutData(gd);
 		return combo;
-	}
-	
-	private IJpaProject getJpaProject() {
-		return unmappedPersistentAttribute.getJpaProject();
 	}
 	
 	public String getAttributeName() {

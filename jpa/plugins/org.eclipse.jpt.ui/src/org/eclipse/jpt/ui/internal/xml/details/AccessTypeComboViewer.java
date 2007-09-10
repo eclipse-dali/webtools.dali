@@ -21,11 +21,9 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.core.internal.AccessType;
-import org.eclipse.jpt.core.internal.mappings.InheritanceType;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -90,7 +88,7 @@ public class AccessTypeComboViewer extends BaseJpaController
 	}
 
 	private void accessHolderChanged(Notification notification) {
-		if (notification.getFeatureID(accessHolder.featureClass()) == 
+		if (notification.getFeatureID(this.accessHolder.featureClass()) == 
 				this.accessHolder.featureId()) {
 			Display.getDefault().asyncExec(
 				new Runnable() {

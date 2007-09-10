@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.wizards;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.wizard.WizardPage;
@@ -46,7 +45,6 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 
 	private ConnectionProfile profile;
 	private ConnectionListener connectionListener;
-	private DatabaseGroup databaseGroup;
 
 	public DatabaseReconnectWizardPage( IJpaProject jpaProject) {
 		super( "Database Settings"); //$NON-NLS-1$
@@ -65,7 +63,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		Composite composite = new Composite( parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
 		composite.setLayout( layout);
-		this.databaseGroup = new DatabaseGroup( composite);
+		new DatabaseGroup( composite);
 		Dialog.applyDialogFont( parent);
 		// TODO Add Help - testing
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, IJpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
@@ -152,11 +150,8 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 
 	private final class DatabaseGroup {
 		private final Group group;
-		private final Label connectionLabel;
 		private final Combo connectionCombo;
-		private final Label schemaLabel;
 		private final Combo schemaCombo;
-		private final Label schemaInfoLabel;
 		
 		private Link addConnectionLink;
 		private Link reconnectLink;
@@ -170,7 +165,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 			this.group.setText( JptUiMessages.DatabaseReconnectWizardPage_database);
 			//TODO Add Help
 //			PlatformUI.getWorkbench().getHelpSystem().setHelp( this.group, IDaliHelpContextIds.XXX);
-			this.connectionLabel = createLabel( this.group, 1, JptUiMessages.DatabaseReconnectWizardPage_connection);
+			createLabel( this.group, 1, JptUiMessages.DatabaseReconnectWizardPage_connection);
 			this.connectionCombo = createCombo( this.group, true);
 			this.connectionCombo.addSelectionListener( new SelectionAdapter() {
 				public void widgetDefaultSelected( SelectionEvent e) {
@@ -181,7 +176,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 					handleConnectionChange();
 				}
 			});
-			this.schemaLabel = createLabel( this.group, 1, JptUiMessages.DatabaseReconnectWizardPage_schema);
+			createLabel( this.group, 1, JptUiMessages.DatabaseReconnectWizardPage_schema);
 			this.schemaCombo = createCombo( this.group, true);
 			this.schemaCombo.addSelectionListener( new SelectionAdapter() {
 				public void widgetDefaultSelected( SelectionEvent e) {
@@ -192,7 +187,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 					handleSchemaChange();
 				}
 			});
-			schemaInfoLabel = createLabel( this.group, 2, JptUiMessages.DatabaseReconnectWizardPage_schemaInfo);
+			createLabel( this.group, 2, JptUiMessages.DatabaseReconnectWizardPage_schemaInfo);
 			this.addConnectionLink = new Link( this.group, SWT.NONE);
 			GridData data = new GridData( GridData.END, GridData.CENTER, false, false);
 			data.horizontalSpan = 2;

@@ -9,10 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
@@ -29,8 +28,6 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class AbstractModelTests
 	extends TestCase

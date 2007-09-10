@@ -11,11 +11,8 @@ package org.eclipse.jpt.core.internal.platform;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
-import org.eclipse.jpt.core.internal.IPersistentType;
-import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
 
 public abstract class XmlRelationshipMappingContext extends XmlAttributeContext

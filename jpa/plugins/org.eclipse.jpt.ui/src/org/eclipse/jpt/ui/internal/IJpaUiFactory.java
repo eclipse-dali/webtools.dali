@@ -10,21 +10,6 @@
 package org.eclipse.jpt.ui.internal;
 
 import org.eclipse.emf.common.command.CommandStack;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddedId;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaId;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToMany;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToOne;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaMappedSuperclass;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToMany;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToOne;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion;
-import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;

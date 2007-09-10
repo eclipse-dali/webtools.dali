@@ -46,7 +46,6 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaJoinTable;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToOne;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaMultiRelationshipMapping;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOne;

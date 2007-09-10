@@ -26,7 +26,7 @@ public class PersistenceTranslator extends RootTranslator
 	
 	
 	public PersistenceTranslator() {
-		super(PERSISTENCE, PERSISTENCE_PKG.eINSTANCE.getPersistence());
+		super(PERSISTENCE, PersistencePackage.eINSTANCE.getPersistence());
 	}
 	
 	public Translator[] getChildren(Object target, int versionID) {

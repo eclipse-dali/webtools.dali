@@ -45,7 +45,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
@@ -60,17 +59,7 @@ import org.eclipse.wst.web.ui.internal.wizards.DataModelFacetInstallPage;
 public class JpaFacetWizardPage 
 	extends DataModelFacetInstallPage
 	implements IJpaFacetDataModelProperties
-{
-	private PlatformGroup platformGroup;
-	
-	private ConnectionGroup connectionGroup;
-	
-	private ClasspathConfigGroup classpathConfigGroup;
-	
-	private PersistentClassManagementGroup persistentClassManagementGroup;
-	
-	private OrmXmlGroup ormXmlGroup;
-	
+{	
 	
 	public JpaFacetWizardPage() {
 		super("jpt.jpa.facet.install.page"); //$NON-NLS-1$
@@ -86,11 +75,11 @@ public class JpaFacetWizardPage
 		GridLayout layout = new GridLayout();
 		composite.setLayout(layout);
 		
-		platformGroup = new PlatformGroup(composite);
-		connectionGroup = new ConnectionGroup(composite);
-		classpathConfigGroup = new ClasspathConfigGroup(composite);
-		persistentClassManagementGroup = new PersistentClassManagementGroup(composite);
-		ormXmlGroup = new OrmXmlGroup(composite);
+		new PlatformGroup(composite);
+		new ConnectionGroup(composite);
+		new ClasspathConfigGroup(composite);
+		new PersistentClassManagementGroup(composite);
+		new OrmXmlGroup(composite);
 		
 		setUpRuntimeListener();
 		
@@ -128,18 +117,7 @@ public class JpaFacetWizardPage
 			null :
 			facetPage.panel.getDataModel().getTargetedRuntimesDataModel();
 	}
-	
-	
-	
-	private Label createLabel(Composite container, int span, String text) {
-		Label label = new Label(container, SWT.NONE);
-		label.setText(text);
-		GridData gd = new GridData();
-		gd.horizontalSpan = span;
-		label.setLayoutData(gd);
-		return label;
-	}
-	
+		
 	private Button createButton(Composite container, int span, String text, int style) {
 		Button button = new Button(container, SWT.NONE | style);
 		button.setText(text);
@@ -311,10 +289,6 @@ public class JpaFacetWizardPage
 			for (Iterator stream = ConnectionProfileRepository.instance().profileNames(); stream.hasNext(); ) {
 				connectionCombo.add((String) stream.next());
 			}
-		}
-		
-		private String getConnectionName() {
-			return connectionCombo.getText();
 		}
 		
 		private void openNewConnectionWizard() {

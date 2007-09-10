@@ -45,10 +45,10 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 		super.addToMessages(messages);
 		JavaMultiRelationshipMapping mapping = getMapping();
 		
-		if (getMapping().isJoinTableSpecified()) {
+		if (mapping.isJoinTableSpecified()) {
 			addJoinTableMessages(messages);
 		}
-		if (getMapping().getMappedBy() != null) {
+		if (mapping.getMappedBy() != null) {
 			addMappedByMessages(messages);
 		}
 	}

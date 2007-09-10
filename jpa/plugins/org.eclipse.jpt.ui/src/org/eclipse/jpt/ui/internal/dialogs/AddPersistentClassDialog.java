@@ -59,13 +59,9 @@ public class AddPersistentClassDialog extends StatusDialog
 {
 	private EntityMappingsInternal entityMappings;
 	
-	private Label classLabel;
-		
 	private Text classText;
 	
 	private Button classBrowseButton;
-	
-	private Label mappingLabel;
 	
 	private ComboViewer mappingCombo;
 		
@@ -83,7 +79,7 @@ public class AddPersistentClassDialog extends StatusDialog
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		composite.setLayout(new GridLayout(2, false));
 		
-		classLabel = createLabel(composite, 2, JptUiMessages.AddPersistentClassDialog_classLabel);
+		createLabel(composite, 2, JptUiMessages.AddPersistentClassDialog_classLabel);
 			
 		classText = createText(composite, 1);
 		classText.addModifyListener(
@@ -107,7 +103,7 @@ public class AddPersistentClassDialog extends StatusDialog
 			}
 		});
 		
-		mappingLabel = createLabel(composite, 2, JptUiMessages.AddPersistentClassDialog_mappingLabel);
+		createLabel(composite, 2, JptUiMessages.AddPersistentClassDialog_mappingLabel);
 		
 		mappingCombo = new ComboViewer(createCombo(composite, 2));
 		mappingCombo.setContentProvider(

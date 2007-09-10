@@ -49,7 +49,6 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaMappedSuperclass;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaMappedSuperclassProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMapping;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToManyProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOne;

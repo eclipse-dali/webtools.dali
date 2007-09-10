@@ -18,7 +18,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
-import org.eclipse.jpt.core.internal.mappings.InheritanceType;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
