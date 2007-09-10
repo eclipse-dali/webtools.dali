@@ -353,6 +353,14 @@ public class PersistenceXmlRootContentNode extends XmlEObject
 		return ITextRange.Empty.instance();
 	}
 	
+	@Override
+	//need to return null here for TextEditorSelectionParticipant.selectionChanged().
+	//It will not do a select in the tree if the textRange is null.
+	//we should probably instead have a ITextRange.isEmpty() call
+	public ITextRange selectionTextRange() {
+		return null;
+	}
+
 	public IJpaContentNode getContentNode(int offset) {
 		if (getPersistence() == null || !getPersistence().getNode().contains(offset)) {
 			return this;

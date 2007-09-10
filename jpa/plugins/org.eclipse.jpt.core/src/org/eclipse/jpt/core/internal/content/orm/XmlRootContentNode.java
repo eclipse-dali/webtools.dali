@@ -337,6 +337,14 @@ public class XmlRootContentNode extends XmlEObject
 		return ITextRange.Empty.instance();
 	}
 	
+	@Override
+	//need to return null here for TextEditorSelectionParticipant.selectionChanged().
+	//It will not do a select in the tree if the textRange is null.
+	//we should probably instead have a ITextRange.isEmpty() call
+	public ITextRange selectionTextRange() {
+		return null;
+	}
+	
 	/* (non-Javadoc)
 	 * 
 	 * @see IJpaRootContentNode#getContentNode(int)
