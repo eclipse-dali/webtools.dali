@@ -779,7 +779,15 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	public boolean includes(int offset) {
-		return this.fullTextRange().includes(offset);
+		ITextRange fullTextRange = this.fullTextRange();
+		if (fullTextRange == null) {
+			//This happens if the type no longer exists in the java (rename in editor).
+			//The text selection event is fired before the update from java so our
+			//model has not yet had a chance to update appropriately.  For now, avoid the NPE, 
+			//not sure of the ultimate solution to these 2 threads accessing our model
+			return false;
+		}
+		return fullTextRange.includes(offset);
 	}
 
 	public ITextRange fullTextRange() {
