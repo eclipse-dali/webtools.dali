@@ -121,11 +121,13 @@ public class JavaEntityContext extends JavaTypeContext
 	@Override
 	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		defaultsContext = wrapDefaultsContext(defaultsContext);
-		super.refreshDefaults(defaultsContext, monitor);
 		
 		if (this.tableContext != null) {
 			this.tableContext.refreshDefaults(defaultsContext, monitor);
 		}
+		//refresh table defaults before attribute mapping defaults, since column mapping
+		//defaults depend on table defaults
+		super.refreshDefaults(defaultsContext, monitor);
 		refreshDefaultAttributeOverrides();
 		refreshDefaultAssociationOverrides();
 		for (SecondaryTableContext context : this.secondaryTableContexts) {

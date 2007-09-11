@@ -725,7 +725,9 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		}
 		else {
 			this.needsToResynch = true;
-			this.resynchJob.cancel();
+			if (this.resynchJob.getState() == Job.RUNNING) {
+				this.resynchJob.cancel();
+			}
 		}
 	}
 
