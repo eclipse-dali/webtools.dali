@@ -84,13 +84,18 @@ public class JpaFacetPostInstallDelegate
 		PersistenceArtifactEdit pae = 
 				PersistenceArtifactEdit.getArtifactEditForWrite(project, deployPath);
 		PersistenceResource resource = pae.getPersistenceResource();
-		Persistence persistence = PersistenceFactory.eINSTANCE.createPersistence();
-		persistence.setVersion("1.0");
-		PersistenceUnit pUnit = PersistenceFactory.eINSTANCE.createPersistenceUnit();
-		pUnit.setName(project.getName());
-		persistence.getPersistenceUnits().add(pUnit);
-		resource.getContents().add(persistence);
-		pae.save(null);
+		
+		// fix for bug 202811 - only add content if it does not already have content
+		if (resource.getPersistence() == null) {
+			Persistence persistence = PersistenceFactory.eINSTANCE.createPersistence();
+			persistence.setVersion("1.0");
+			PersistenceUnit pUnit = PersistenceFactory.eINSTANCE.createPersistenceUnit();
+			pUnit.setName(project.getName());
+			persistence.getPersistenceUnits().add(pUnit);
+			resource.getContents().add(persistence);
+			pae.save(null);
+		}
+		
 		pae.dispose();
 	}
 	
@@ -109,10 +114,15 @@ public class JpaFacetPostInstallDelegate
 		OrmArtifactEdit oae =
 				OrmArtifactEdit.getArtifactEditForWrite(project, deployPath);
 		OrmResource resource = oae.getOrmResource();
-		EntityMappingsInternal entityMappings = OrmFactory.eINSTANCE.createEntityMappingsInternal();
-		entityMappings.setVersion("1.0");
-		resource.getContents().add(entityMappings);
-		oae.save(null);
+		
+		// fix for bug 202811 - only add content if it does not already have content
+		if (resource.getEntityMappings() == null) {
+			EntityMappingsInternal entityMappings = OrmFactory.eINSTANCE.createEntityMappingsInternal();
+			entityMappings.setVersion("1.0");
+			resource.getContents().add(entityMappings);
+			oae.save(null);
+		}
+		
 		oae.dispose();
 	}
 }
