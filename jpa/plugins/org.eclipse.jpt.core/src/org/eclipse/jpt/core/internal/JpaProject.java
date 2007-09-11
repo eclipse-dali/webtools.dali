@@ -49,6 +49,7 @@ import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * <!-- begin-user-doc -->
@@ -702,7 +703,9 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		}
 		else {
 			this.needsToResynch = true;
-			this.getResynchJob().cancel();
+			if (getResynchJob().getState() == Job.RUNNING) {
+				this.getResynchJob().cancel();
+			}
 		}
 	}
 
