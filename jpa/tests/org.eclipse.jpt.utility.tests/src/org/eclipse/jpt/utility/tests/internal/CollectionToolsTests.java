@@ -29,6 +29,7 @@ import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.Range;
 import org.eclipse.jpt.utility.internal.ReverseComparator;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public class CollectionToolsTests extends TestCase {
 
@@ -1148,6 +1149,23 @@ public class CollectionToolsTests extends TestCase {
 
 		a = new String[] { "D", "C", "B", "B", "A", "A" };
 		assertEquals(6, CollectionTools.insertionIndexOf(a, "A", c));
+	}
+	
+	public void testIterable() {
+		Iterator<Object> emptyIterator = EmptyIterator.instance();
+		Iterable<Object> emptyIterable = CollectionTools.iterable(emptyIterator);
+		
+		assertEquals(emptyIterator, emptyIterable.iterator());
+		
+		boolean exceptionThrown = false;
+		try {
+			emptyIterable.iterator();
+		}
+		catch (IllegalStateException ise) {
+			exceptionThrown = true;
+		}
+		assertTrue("IllegalStateException not thrown.", exceptionThrown);
+		
 	}
 
 	public void testIteratorObjectArray() {

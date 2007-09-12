@@ -997,6 +997,26 @@ public final class CollectionTools {
 		}
 		return len;
 	}
+	
+	/**
+	 * Return a one-use Iterable for the Iterator given.
+	 * Throws an IllegalStateException if iterable() is called more than once.
+	 * As such, this utility should only be used in one-use situations, such as
+	 * a "for" loop.
+	 */
+	public static <E> Iterable<E> iterable(final Iterator<E> iterator) {
+		return new Iterable<E>() {
+			private boolean used = false;
+			
+			public Iterator<E> iterator() {
+				if (used) {
+					throw new IllegalStateException("This method has already been called");
+				}
+				used = true;
+				return iterator;
+			}
+		};
+	}
 
 	/**
 	 * Return an iterator on the elements in the specified array.

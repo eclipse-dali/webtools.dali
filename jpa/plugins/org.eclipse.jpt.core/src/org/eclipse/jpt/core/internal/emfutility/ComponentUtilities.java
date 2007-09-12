@@ -1,22 +1,67 @@
 package org.eclipse.jpt.core.internal.emfutility;
 
-import java.util.Arrays;
-import java.util.List;
-import org.eclipse.core.resources.IContainer;
+import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.TreeIterator;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
+import org.eclipse.wst.common.componentcore.resources.IVirtualResource;
 
 public class ComponentUtilities
 {
+	/**
+	 * Return the deployment path for the given source file.  If there is no
+	 * corresponding deployment file, null will be returned.
+	 */
 	public static IPath computeDeployPath(IFile sourceFile) {
-		IVirtualComponent component = ComponentCore.createComponent(sourceFile.getProject());
-		List<IContainer> folderList = Arrays.asList(component.getRootFolder().getUnderlyingFolders());
-				// All the folders that contribute to the root deployment path
-		IPath path = WorkbenchResourceHelperBase.getPathFromContainers(folderList, sourceFile.getFullPath()); 
-				// Will find the first match(folder) that contains your IFile
-		return path;
+		// Unfortunately, the only current way to do this is to exhaustively 
+		// search all deployment files and attempt to match to this file.
+		// Bug 202943 has been logged to track this issue.
+		for (IVirtualFile virtualFile : CollectionTools.iterable(allVirtualFiles(sourceFile.getProject()))) {
+			for (IFile underlyingFile : virtualFile.getUnderlyingFiles()) {
+				if (sourceFile.equals(underlyingFile)) {
+					return virtualFile.getRuntimePath();
+				}
+			}
+		}
+		return null;
+	}
+	
+	private static Iterator<IVirtualFile> allVirtualFiles(IProject project) {
+		return new FilteringIterator<IVirtualFile>(allVirtualResources(project)) {
+			@Override
+			protected boolean accept(Object o) {
+				return ((IVirtualResource) o).getType() == IVirtualResource.FILE;
+			}
+		};
+	}
+	
+	private static Iterator<IVirtualResource> allVirtualResources(IProject project) {
+		IVirtualComponent virtualComponent = ComponentCore.createComponent(project);
+		
+		if (virtualComponent == null) {
+			return EmptyIterator.instance();
+		}
+		
+		return new TreeIterator<IVirtualResource>(virtualComponent.getRootFolder()) {
+			@Override
+			protected Iterator<? extends IVirtualResource> children(IVirtualResource next) {
+				if (next.getType() == IVirtualResource.FOLDER) {
+					try {
+						return CollectionTools.iterator(((IVirtualFolder) next).members());
+					}
+					catch (CoreException ce) { /* fall through, return default case */ }
+				}
+				return EmptyIterator.instance();
+			}
+		};
 	}
 }
