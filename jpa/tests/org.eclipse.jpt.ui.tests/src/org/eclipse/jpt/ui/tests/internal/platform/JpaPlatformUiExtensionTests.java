@@ -35,7 +35,7 @@ public class JpaPlatformUiExtensionTests extends TestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		testProject = this.buildJpaProject(PROJECT_NAME, false);  // false = no auto-build
+		this.testProject = this.buildJpaProject(PROJECT_NAME, false);  // false = no auto-build
 	}
 
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild) throws Exception {
@@ -46,7 +46,7 @@ public class JpaPlatformUiExtensionTests extends TestCase
 	protected void tearDown() throws Exception {
 		//testProject.dispose();
 		ProjectUtility.deleteAllProjects();
-		testProject = null;
+		this.testProject = null;
 		super.tearDown();
 	}
 	
