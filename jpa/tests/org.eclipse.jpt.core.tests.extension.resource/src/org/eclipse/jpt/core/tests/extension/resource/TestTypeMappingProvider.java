@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.extension.resource;
 
 import org.eclipse.jpt.core.internal.IJpaFactory;
-import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMappingProvider;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;

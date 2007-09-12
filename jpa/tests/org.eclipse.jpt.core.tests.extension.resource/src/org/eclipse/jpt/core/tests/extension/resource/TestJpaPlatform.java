@@ -5,7 +5,6 @@ import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMappingProvider;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
-import org.eclipse.jpt.core.internal.platform.generic.GenericJpaFactory;
 
 public class TestJpaPlatform extends BaseJpaPlatform
 {
