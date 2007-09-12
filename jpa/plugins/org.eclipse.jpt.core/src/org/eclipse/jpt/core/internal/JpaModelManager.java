@@ -161,6 +161,33 @@ public class JpaModelManager
 	}
 	
 	/**
+	 * Determine whether project should be created, then create it if necessary
+	 */
+	private synchronized void processProject(IProject project) {
+		JpaProject jpaProject = (JpaProject) model.getJpaProject(project);
+		boolean jpaFacetExists = false;
+		try {
+			jpaFacetExists = FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID);
+		}
+		catch (CoreException ce) {
+			// nothing to do, assume facet doesn't exist
+			JptCorePlugin.log(ce);
+		}
+				
+		if (jpaProject == null && jpaFacetExists) {
+			try {
+				JpaModelManager.instance().createFilledJpaProject(project);
+			}
+			catch (CoreException ce) {
+				JptCorePlugin.log(ce);
+			}
+		}
+		else if (jpaProject != null && ! jpaFacetExists) {
+			jpaProject.dispose();
+		}
+	}
+	
+	/**
 	 * INTERNAL ONLY
 	 * 
 	 * Fills the IJpaProject associated with the IProject, if it exists
@@ -383,8 +410,6 @@ public class JpaModelManager
 					//     - if the project is closed, it has already lost its jpa facet
 					IProject project = (IProject) resource;
 					
-					// could be problems here ...
-					JpaProject jpaProject = (JpaProject) model.getJpaProject(project);
 					switch (delta.getKind()) {
 						case IResourceDelta.REMOVED :
 							// we should have already handled this in the PRE_DELETE event
@@ -397,16 +422,7 @@ public class JpaModelManager
 						case IResourceDelta.CHANGED : 
 							if ((delta.getFlags() & IResourceDelta.OPEN) != 0) {
 								if (project.isOpen()) {
-									// project has been opened, but don't create it if it's already there 
-									// (which can happen on project creation)
-									if (jpaProject == null) {
-										try {
-											JpaModelManager.instance().createFilledJpaProject(project);
-										}
-										catch (CoreException ce) {
-											JptCorePlugin.log(ce);
-										}
-									}
+									JpaModelManager.instance().processProject(project);
 								}
 							}		
 							break;
@@ -509,29 +525,7 @@ public class JpaModelManager
 		}
 		
 		protected void handleEvent(IFacetedProjectEvent event) {
-			IProject project = event.getProject().getProject();
-			JpaProject jpaProject = (JpaProject) model.getJpaProject(project);
-			boolean jpaFacetExists = false;
-			try {
-				jpaFacetExists = FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID);
-			}
-			catch (CoreException ce) {
-				// nothing to do, assume facet doesn't exist
-				JptCorePlugin.log(ce);
-			}
-			
-			if (jpaFacetExists && jpaProject == null) {
-				try {
-					JpaModelManager.instance().createFilledJpaProject(project);
-				}
-				catch (CoreException ce) {
-				// nothing to do, nothing we *can* do
-				JptCorePlugin.log(ce);
-				}
-			}
-			else if (jpaProject != null && ! jpaFacetExists) {
-				jpaProject.dispose();
-			}
+			JpaModelManager.instance().processProject(event.getProject().getProject());
 		}
 	}
 	

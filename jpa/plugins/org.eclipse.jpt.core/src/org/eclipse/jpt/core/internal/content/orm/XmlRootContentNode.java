@@ -18,9 +18,11 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.JpaFile;
 import org.eclipse.jpt.core.internal.XmlEObject;
+import org.eclipse.jpt.core.internal.content.orm.resource.OrmArtifactEdit;
 
 /**
  * <!-- begin-user-doc -->
@@ -50,7 +52,10 @@ public class XmlRootContentNode extends XmlEObject
 	 * @ordered
 	 */
 	protected EntityMappingsInternal entityMappings;
-
+	
+	private OrmArtifactEdit artifactEdit;
+	
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -321,6 +326,17 @@ public class XmlRootContentNode extends XmlEObject
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
+	public void dispose() {
+		if (artifactEdit != null) {
+			artifactEdit.dispose();
+		}
+	}
+	
+	@Override
+	public ITextRange fullTextRange() {
+		return ITextRange.Empty.instance();
+	}
+	
 	/* (non-Javadoc)
 	 * 
 	 * @see IJpaRootContentNode#getContentNode(int)
@@ -337,14 +353,12 @@ public class XmlRootContentNode extends XmlEObject
 	 * @see IJpaRootContentNode#handleJavaElementChangedEvent(ElementChangedEvent)
 	 */
 	public void handleJavaElementChangedEvent(ElementChangedEvent event) {
-		getEntityMappings().handleJavaElementChangedEvent(event);
+		if (getEntityMappings() != null) {
+			getEntityMappings().handleJavaElementChangedEvent(event);
+		}
 	}
-
-	/* (non-Javadoc)
-	 * 
-	 * @see IJpaRootContentNode#dispose()
-	 */
-	public void dispose() {
-	// TODO 
+	
+	public void setArtifactEdit(OrmArtifactEdit ormArtifactEdit) {
+		artifactEdit = ormArtifactEdit;
 	}
 }

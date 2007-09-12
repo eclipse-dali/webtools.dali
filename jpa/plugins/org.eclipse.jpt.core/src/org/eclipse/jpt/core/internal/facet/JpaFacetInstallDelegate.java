@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.classpathdep.ClasspathDependencyUtil;
 import org.eclipse.jst.j2ee.classpathdep.IClasspathDependencyConstants;
@@ -61,15 +62,17 @@ public class JpaFacetInstallDelegate
 					)
 				};
 			}
+			
 			IClasspathEntry jpaLibraryEntry = 
 				JavaCore.newContainerEntry(
 					new Path(JavaCore.USER_LIBRARY_CONTAINER_ID + "/" + jpaLibrary),
 					null, attributes, true);
-			IClasspathEntry[] newClasspath = new IClasspathEntry[newLength];
-			System.arraycopy(classpath, 0, newClasspath, 0, newLength - 1);
-			newClasspath[newLength - 1] = jpaLibraryEntry;
-			
-			javaProject.setRawClasspath(newClasspath, monitor);
+			if (! CollectionTools.contains(classpath, jpaLibraryEntry)) {
+				IClasspathEntry[] newClasspath = new IClasspathEntry[newLength];
+				System.arraycopy(classpath, 0, newClasspath, 0, newLength - 1);
+				newClasspath[newLength - 1] = jpaLibraryEntry;
+				javaProject.setRawClasspath(newClasspath, monitor);
+			}
 		}
 			
 		if (monitor != null) {

@@ -9,27 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
-import java.io.IOException;
-import java.util.Collections;
-
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.content.orm.resource.OrmXmlResourceFactory;
+import org.eclipse.jpt.core.internal.content.orm.resource.OrmArtifactEdit;
+import org.eclipse.jpt.core.internal.emfutility.ComponentUtilities;
 
 public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 {
 	//singleton
 	private static final OrmXmlJpaFileContentProvider INSTANCE = new OrmXmlJpaFileContentProvider();
+	
 	
 	/**
 	 * Return the singleton.
@@ -48,22 +45,29 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 
 	public IJpaRootContentNode buildRootContent(IJpaFile jpaFile) {
 		IFile resourceFile = jpaFile.getFile();
-		OrmXmlResourceFactory.register();
-		URI fileURI = URI.createPlatformResourceURI(resourceFile.getFullPath().toString(), true);
-		OrmXmlResource resource = (OrmXmlResource) getResourceSet(resourceFile).getResource(fileURI, true);
+		IPath deployPath = ComponentUtilities.computeDeployPath(resourceFile);
+		OrmArtifactEdit artifactEdit = 
+				OrmArtifactEdit.getArtifactEditForWrite(
+						resourceFile.getProject(),
+						deployPath.toString());
+		OrmResource resource = artifactEdit.getOrmResource();
 		XmlRootContentNode root = OrmFactory.eINSTANCE.createXmlRootContentNode();
+			
+		if (resourceFile.equals(resource.getFile())) {
+			root.setArtifactEdit(artifactEdit);
+			root.setEntityMappings(resource.getEntityMappings());
+			resource.eAdapters().add(buildRootNodeListener(resourceFile, root));
+		}
+		else {
+			artifactEdit.dispose();
+		}
+		
 		jpaFile.setContent(root);
-		root.setEntityMappings(resource.getXmlFileContent());
-		resource.eAdapters().add(buildRootNodeListener(resourceFile, root));
 		return root;
 	}
 	
 	private Adapter buildRootNodeListener(IFile resourceFile, XmlRootContentNode root) {
 		return new RootAdapter(resourceFile, root);
-	}
-
-	protected ResourceSet getResourceSet(IFile file) {
-		return WorkbenchResourceHelperBase.getResourceSet(file.getProject());
 	}
 
 	public String contentType() {
@@ -87,25 +91,27 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 			if (featureId == Resource.RESOURCE__CONTENTS) {
 				if (notification.getEventType() == Notification.ADD
 						|| notification.getEventType() == Notification.REMOVE) {
-					OrmXmlResource resource = (OrmXmlResource) notification.getNotifier();
-					this.rootContentNode.setEntityMappings(resource.getXmlFileContent());
+					OrmResource resource = (OrmResource) notification.getNotifier();
+					this.rootContentNode.setEntityMappings(resource.getEntityMappings());
 				}
 			}
-			else if (featureId == Resource.RESOURCE__IS_LOADED) {
-				if (this.resourceFile.exists()) {
-					// dumb translator is unloading my resource, reload it
-					if (notification.getNewBooleanValue() == false) {
-						OrmXmlResource resource = (OrmXmlResource) notification.getNotifier();
-						try {
-							resource.load(Collections.EMPTY_MAP);
-						}
-						catch (IOException ioe) {
-							// hmmm, log for now
-							JptCorePlugin.log(ioe);
-						}
-					}
-				}
-			}
+			// commenting out for now - this *was* a workaround for 202190, but with ArtifactEdit
+			// usage, it no longer works
+//			else if (featureId == Resource.RESOURCE__IS_LOADED) {
+//				if (file.exists()) {
+//					// dumb translator is unloading my resource, reload it
+//					if (notification.getNewBooleanValue() == false) {
+//						OrmResource resource = (OrmResource) notification.getNotifier();
+//						try {
+//							resource.load(Collections.EMPTY_MAP);
+//						}
+//						catch (IOException ioe) {
+//							// hmmm, log for now
+//							JptCorePlugin.log(ioe);
+//						}
+//					}
+//				}
+//			}
 		}
 	}
 }

@@ -8,13 +8,19 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
 
 
-public interface OrmXmlResource extends TranslatorResource
+public interface OrmResource extends TranslatorResource
 {
 	/**
 	 * Return the root object
 	 */
-	EntityMappingsInternal getXmlFileContent();
+	EntityMappingsInternal getEntityMappings();
+	
+	/**
+	 * Return the platform file associated with this resource
+	 */
+	IFile getFile();
 }
