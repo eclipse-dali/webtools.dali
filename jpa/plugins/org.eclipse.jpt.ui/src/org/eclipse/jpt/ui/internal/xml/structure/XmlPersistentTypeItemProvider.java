@@ -20,11 +20,10 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
-import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
-import org.eclipse.jpt.core.internal.content.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.mappings.IEmbeddable;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IMappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsImages;
 
 public class XmlPersistentTypeItemProvider extends ItemProviderAdapter

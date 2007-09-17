@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.actions;
 
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
 import org.eclipse.ui.IActionFilter;
 
 public class XmlPersistentAttributeActionFilter 
