@@ -1,0 +1,90 @@
+/*******************************************************************************
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the terms of
+ * the Eclipse Public License v1.0, which accompanies this distribution and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.jpt.core.internal.resource.orm.translators;
+
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.jpt.core.internal.resource.common.translators.BooleanTranslator;
+import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
+
+public class ColumnTranslator extends Translator
+	implements OrmXmlMapper
+{		
+	private Translator[] children;	
+	
+	
+	public ColumnTranslator(String domNameAndPath, EStructuralFeature aFeature) {
+		super(domNameAndPath, aFeature, END_TAG_NO_INDENT);
+	}
+	
+	
+	public Translator[] getChildren(Object target, int versionID) {
+		if (children == null) {
+			children = createChildren();
+		}
+		return children;
+	}
+		
+	protected Translator[] createChildren() {
+		return new Translator[] {
+			IDTranslator.INSTANCE,
+			createNameTranslator(),
+			createUniqueTranslator(),
+			createNullableTranslator(),
+			createInsertableTranslator(),
+			createUpdatableTranslator(),
+			createColumnDefinitionTranslator(),
+			createTableTranslator(),
+			createLengthTranslator(),
+			createPrecisionTranslator(),
+			createScaleTranslator(),
+		};
+	}
+	
+	private Translator createNameTranslator() {
+		return new Translator(NAME, ORM_PKG.getColumn_Name(), DOM_ATTRIBUTE);
+	}
+	
+	private Translator createUniqueTranslator() {
+		return new BooleanTranslator(UNIQUE, ORM_PKG.getColumn_Unique(), DOM_ATTRIBUTE);
+	}
+	
+	private Translator createNullableTranslator() {
+		return new BooleanTranslator(NULLABLE, ORM_PKG.getColumn_Nullable(), DOM_ATTRIBUTE);
+	}
+	
+	private Translator createInsertableTranslator() {
+		return new BooleanTranslator(INSERTABLE, ORM_PKG.getColumn_Insertable(), DOM_ATTRIBUTE);
+	}
+	
+	private Translator createUpdatableTranslator() {
+		return new BooleanTranslator(UPDATABLE, ORM_PKG.getColumn_Updatable(), DOM_ATTRIBUTE);
+	}
+	
+	private Translator createColumnDefinitionTranslator() {
+		return new Translator(COLUMN_DEFINITION, ORM_PKG.getColumn_ColumnDefinition(), DOM_ATTRIBUTE);
+	}
+	
+	private Translator createTableTranslator() {
+		return new Translator(TABLE, ORM_PKG.getColumn_Table(), DOM_ATTRIBUTE);
+	}
+	
+	private Translator createLengthTranslator() {
+		return new Translator(LENGTH, ORM_PKG.getColumn_Length(), DOM_ATTRIBUTE);
+	}
+	
+	private Translator createPrecisionTranslator() {
+		return new Translator(PRECISION, ORM_PKG.getColumn_Precision(), DOM_ATTRIBUTE);
+	}
+	
+	private Translator createScaleTranslator() {
+		return new Translator(SCALE, ORM_PKG.getColumn_Scale(), DOM_ATTRIBUTE);
+	}
+}

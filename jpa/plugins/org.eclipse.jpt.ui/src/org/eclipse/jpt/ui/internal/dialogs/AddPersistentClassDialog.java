@@ -29,7 +29,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;

@@ -1,0 +1,44 @@
+/**
+ * <copyright>
+ * </copyright>
+ *
+ * $Id: PostLoad.java,v 1.1.2.1 2007/09/17 20:49:51 pfullbright Exp $
+ */
+package org.eclipse.jpt.core.internal.resource.orm;
+
+import org.eclipse.emf.ecore.EClass;
+
+/**
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Post Load</b></em>'.
+ * <!-- end-user-doc -->
+ *
+ *
+ * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getPostLoad()
+ * @model kind="class"
+ * @generated
+ */
+public class PostLoad extends EventMethod
+{
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected PostLoad()
+	{
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return OrmPackage.Literals.POST_LOAD;
+	}
+
+} // PostLoad

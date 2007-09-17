@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="java"
-    nsURI="http://org.eclipse.jpt.core/old_java.ecore" nsPrefix="org.eclipse.jpt.core.content.java">
+    nsURI="jpt.java.xmi" nsPrefix="org.eclipse.jpt.core.content.java">
   <eClassifiers xsi:type="ecore:EClass" name="JavaEObject" abstract="true" eSuperTypes="old_core.ecore#//JpaEObject old_core.ecore#//IJpaSourceObject">
     <eOperations name="getJpaFile" eType="ecore:EClass old_core.ecore#//IJpaFile"/>
     <eOperations name="getRoot" eType="ecore:EClass old_core.ecore#//IJpaRootContentNode"/>
@@ -26,13 +26,9 @@
         eType="#//IJavaAttributeMapping" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IJavaTypeMapping" abstract="true" interface="true"
-      eSuperTypes="old_core.ecore#//ITypeMapping">
-    <eOperations name="initialize"/>
-  </eClassifiers>
+      eSuperTypes="old_core.ecore#//ITypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="IJavaAttributeMapping" abstract="true"
-      interface="true" eSuperTypes="old_core.ecore#//IAttributeMapping">
-    <eOperations name="initialize"/>
-  </eClassifiers>
+      interface="true" eSuperTypes="old_core.ecore#//IAttributeMapping"/>
   <eSubpackages name="mappings" nsURI="jpt.core.java.mappings.xmi" nsPrefix="jpt.core.java.mappings">
     <eClassifiers xsi:type="ecore:EClass" name="IJavaEntity" abstract="true" interface="true"
         eSuperTypes="#//IJavaTypeMapping old_core.ecore#//mappings/IEntity"/>

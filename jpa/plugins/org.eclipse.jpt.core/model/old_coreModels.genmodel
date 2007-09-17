@@ -9,8 +9,6 @@
     usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
   <foreignModel>old_core.ecore</foreignModel>
   <foreignModel>old_java.ecore</foreignModel>
-  <foreignModel>old_orm.ecore</foreignModel>
-  <foreignModel>old_persistence.ecore</foreignModel>
   <genPackages prefix="JpaCore" basePackage="org.eclipse.jpt.core" disposableProviderFactory="true"
       ecorePackage="old_core.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="old_core.ecore#//AccessType">
@@ -226,8 +224,14 @@
       </genClasses>
       <genClasses ecoreClass="old_core.ecore#//mappings/IColumn">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/IColumn/length"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/IColumn/specifiedLength"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/IColumn/precision"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/IColumn/specifiedPrecision"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/IColumn/scale"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/IColumn/specifiedScale"/>
+        <genOperations ecoreOperation="old_core.ecore#//mappings/IColumn/getDefaultLength"/>
+        <genOperations ecoreOperation="old_core.ecore#//mappings/IColumn/getDefaultPrecision"/>
+        <genOperations ecoreOperation="old_core.ecore#//mappings/IColumn/getDefaultScale"/>
       </genClasses>
       <genClasses ecoreClass="old_core.ecore#//mappings/IColumnMapping">
         <genOperations ecoreOperation="old_core.ecore#//mappings/IColumnMapping/getColumn"/>
@@ -413,12 +417,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_java.ecore#//JavaPersistentAttribute/defaultMapping"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_java.ecore#//JavaPersistentAttribute/specifiedMapping"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="old_java.ecore#//IJavaTypeMapping">
-      <genOperations ecoreOperation="old_java.ecore#//IJavaTypeMapping/initialize"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="old_java.ecore#//IJavaAttributeMapping">
-      <genOperations ecoreOperation="old_java.ecore#//IJavaAttributeMapping/initialize"/>
-    </genClasses>
+    <genClasses image="false" ecoreClass="old_java.ecore#//IJavaTypeMapping"/>
+    <genClasses image="false" ecoreClass="old_java.ecore#//IJavaAttributeMapping"/>
     <nestedGenPackages prefix="JpaJavaMappings" basePackage="org.eclipse.jpt.core.internal.content.java"
         disposableProviderFactory="true" ecorePackage="old_java.ecore#//mappings">
       <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaEntity"/>
@@ -478,231 +478,5 @@
       <genClasses ecoreClass="old_java.ecore#//mappings/JavaUniqueConstraint"/>
       <genClasses ecoreClass="old_java.ecore#//mappings/JavaCascade"/>
     </nestedGenPackages>
-  </genPackages>
-  <genPackages prefix="Orm" basePackage="org.eclipse.jpt.core.internal.content" disposableProviderFactory="true"
-      ecorePackage="old_orm.ecore#/">
-    <genClasses ecoreClass="old_orm.ecore#//XmlRootContentNode">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlRootContentNode/entityMappings"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//EntityMappingsInternal">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//EntityMappingsInternal/root"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappingsInternal/version"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappingsInternal/description"/>
-      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference old_orm.ecore#//EntityMappingsInternal/persistenceUnitMetadataInternal"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappingsInternal/packageInternal"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappingsInternal/defaultSchema"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappingsInternal/specifiedSchema"/>
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappingsInternal/schema"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappingsInternal/defaultCatalog"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappingsInternal/specifiedCatalog"/>
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappingsInternal/catalog"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappingsInternal/defaultAccess"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappingsInternal/specifiedAccess"/>
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappingsInternal/access"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_orm.ecore#//EntityMappingsInternal/typeMappings"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//EntityMappingsInternal/persistentTypes"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//EntityMappingsInternal/sequenceGenerators"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//EntityMappingsInternal/tableGenerators"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_orm.ecore#//EntityMappingsInternal/namedQueries"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_orm.ecore#//EntityMappingsInternal/namedNativeQueries"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//EntityMappings">
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference old_orm.ecore#//EntityMappings/persistenceUnitMetadata"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappings/package"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//EntityMappingsForXml">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//EntityMappingsForXml/persistenceUnitMetadataForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//EntityMappingsForXml/packageForXml"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="old_orm.ecore#//XmlTypeMapping">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlTypeMapping/defaultAccess"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlTypeMapping/specifiedAccess"/>
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlTypeMapping/access"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlTypeMapping/metadataComplete"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlTypeMapping/persistentType"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlPersistentType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlPersistentType/class"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlPersistentType/attributeMappings"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlPersistentType/specifiedAttributeMappings"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlPersistentType/virtualAttributeMappings"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlPersistentType/persistentAttributes"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlPersistentType/specifiedPersistentAttributes"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlPersistentType/virtualPersistentAttributes"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlMappedSuperclass">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlMappedSuperclass/idClassForXml"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlEntityInternal"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlEntityForXml">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlEntityForXml/tableForXml"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlEntityForXml/discriminatorColumnForXml"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlEntityForXml/idClassForXml"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlEntityForXml/inheritanceForXml"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlEntity">
-      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference old_orm.ecore#//XmlEntity/secondaryTables"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlEntity/virtualSecondaryTables"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlEmbeddable"/>
-    <genClasses image="false" ecoreClass="old_orm.ecore#//XmlAttributeMapping">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlAttributeMapping/persistentAttribute"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlNullAttributeMapping"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlBasic"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlId"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlTransient"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlEmbedded"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlEmbeddedId"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlVersion"/>
-    <genClasses image="false" ecoreClass="old_orm.ecore#//XmlMultiRelationshipMappingInternal"/>
-    <genClasses image="false" ecoreClass="old_orm.ecore#//XmlMultiRelationshipMappingForXml">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlMultiRelationshipMappingForXml/joinTableForXml"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//XmlMultiRelationshipMappingForXml/mapKeyForXml"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="old_orm.ecore#//XmlMultiRelationshipMapping"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlOneToMany"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlManyToMany"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlPersistentAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlPersistentAttribute/name"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//PersistenceUnitMetadataInternal">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitMetadataInternal/xmlMappingMetadataCompleteInternal"/>
-      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference old_orm.ecore#//PersistenceUnitMetadataInternal/persistenceUnitDefaultsInternal"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//PersistenceUnitMetadata">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitMetadata/xmlMappingMetadataComplete"/>
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference old_orm.ecore#//PersistenceUnitMetadata/persistenceUnitDefaults"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//PersistenceUnitMetadataForXml">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitMetadataForXml/xmlMappingMetadataCompleteForXml"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//PersistenceUnitMetadataForXml/persistenceUnitDefaultsForXml"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//PersistenceUnitDefaultsInternal">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitDefaultsInternal/schemaInternal"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitDefaultsInternal/catalogInternal"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitDefaultsInternal/accessInternal"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitDefaultsInternal/cascadePersistInternal"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//PersistenceUnitDefaults">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitDefaults/schema"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitDefaults/catalog"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitDefaults/access"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitDefaults/cascadePersist"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//PersistenceUnitDefaultsForXml">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitDefaultsForXml/schemaForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitDefaultsForXml/catalogForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitDefaultsForXml/accessForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//PersistenceUnitDefaultsForXml/cascadePersistForXml"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlTable"/>
-    <genClasses image="false" ecoreClass="old_orm.ecore#//AbstractXmlNamedColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//AbstractXmlNamedColumn/specifiedNameForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//AbstractXmlNamedColumn/columnDefinitionForXml"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//AbstractXmlColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//AbstractXmlColumn/uniqueForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//AbstractXmlColumn/nullableForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//AbstractXmlColumn/insertableForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//AbstractXmlColumn/updatableForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//AbstractXmlColumn/specifiedTableForXml"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlColumn/lengthForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlColumn/precisionForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlColumn/scaleForXml"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlJoinColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlJoinColumn/specifiedReferencedColumnNameForXml"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//IXmlColumnMapping">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_orm.ecore#//IXmlColumnMapping/columnForXml"/>
-      <genOperations ecoreOperation="old_orm.ecore#//IXmlColumnMapping/makeColumnForXmlNonNull"/>
-      <genOperations ecoreOperation="old_orm.ecore#//IXmlColumnMapping/makeColumnForXmlNull"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlManyToOne"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlOneToOne"/>
-    <genClasses image="false" ecoreClass="old_orm.ecore#//XmlSingleRelationshipMapping"/>
-    <genClasses image="false" ecoreClass="old_orm.ecore#//XmlRelationshipMapping"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlJoinTable"/>
-    <genClasses ecoreClass="old_orm.ecore#//AbstractXmlTable">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//AbstractXmlTable/specifiedNameForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//AbstractXmlTable/specifiedCatalogForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//AbstractXmlTable/specifiedSchemaForXml"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="old_orm.ecore#//XmlOverride"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlAttributeOverride"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlAssociationOverride"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlDiscriminatorColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlDiscriminatorColumn/discriminatorTypeForXml"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlDiscriminatorColumn/specifiedLengthForXml"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlSecondaryTable"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlPrimaryKeyJoinColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlPrimaryKeyJoinColumn/specifiedReferencedColumnNameForXml"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlGeneratedValue"/>
-    <genClasses image="false" ecoreClass="old_orm.ecore#//XmlGenerator"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlSequenceGenerator"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlTableGenerator"/>
-    <genClasses image="false" ecoreClass="old_orm.ecore#//AbstractXmlQuery"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlNamedQuery"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlNamedNativeQuery"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlQueryHint"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlUniqueConstraint"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlCascade"/>
-    <genClasses ecoreClass="old_orm.ecore#//XmlIdClass">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlIdClass/value"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlInheritance">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlInheritance/strategy"/>
-    </genClasses>
-    <genClasses ecoreClass="old_orm.ecore#//XmlMapKey">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_orm.ecore#//XmlMapKey/name"/>
-    </genClasses>
-  </genPackages>
-  <genPackages prefix="Persistence" basePackage="org.eclipse.jpt.core.internal.content"
-      disposableProviderFactory="true" ecorePackage="old_persistence.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="old_persistence.ecore#//PersistenceUnitTransactionType">
-      <genEnumLiterals ecoreEnumLiteral="old_persistence.ecore#//PersistenceUnitTransactionType/JTA"/>
-      <genEnumLiterals ecoreEnumLiteral="old_persistence.ecore#//PersistenceUnitTransactionType/RESOURCE_LOCAL"/>
-    </genEnums>
-    <genDataTypes ecoreDataType="old_persistence.ecore#//PersistenceUnitTransactionTypeObject"/>
-    <genDataTypes ecoreDataType="old_persistence.ecore#//Version"/>
-    <genClasses ecoreClass="old_persistence.ecore#//PersistenceXmlRootContentNode">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_persistence.ecore#//PersistenceXmlRootContentNode/persistence"/>
-    </genClasses>
-    <genClasses ecoreClass="old_persistence.ecore#//Persistence">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_persistence.ecore#//Persistence/persistenceUnits"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_persistence.ecore#//Persistence/version"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_persistence.ecore#//Persistence/root"/>
-    </genClasses>
-    <genClasses ecoreClass="old_persistence.ecore#//PersistenceUnit">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_persistence.ecore#//PersistenceUnit/description"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_persistence.ecore#//PersistenceUnit/provider"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_persistence.ecore#//PersistenceUnit/jtaDataSource"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_persistence.ecore#//PersistenceUnit/nonJtaDataSource"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EReference old_persistence.ecore#//PersistenceUnit/mappingFiles"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_persistence.ecore#//PersistenceUnit/jarFiles"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EReference old_persistence.ecore#//PersistenceUnit/classes"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_persistence.ecore#//PersistenceUnit/excludeUnlistedClasses"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_persistence.ecore#//PersistenceUnit/properties"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_persistence.ecore#//PersistenceUnit/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_persistence.ecore#//PersistenceUnit/transactionType"/>
-    </genClasses>
-    <genClasses ecoreClass="old_persistence.ecore#//MappingFileRef">
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute old_persistence.ecore#//MappingFileRef/fileName"/>
-    </genClasses>
-    <genClasses ecoreClass="old_persistence.ecore#//JavaClassRef">
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute old_persistence.ecore#//JavaClassRef/javaClass"/>
-    </genClasses>
-    <genClasses ecoreClass="old_persistence.ecore#//Properties">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_persistence.ecore#//Properties/properties"/>
-    </genClasses>
-    <genClasses ecoreClass="old_persistence.ecore#//Property">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_persistence.ecore#//Property/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_persistence.ecore#//Property/value"/>
-    </genClasses>
   </genPackages>
 </genmodel:GenModel>
