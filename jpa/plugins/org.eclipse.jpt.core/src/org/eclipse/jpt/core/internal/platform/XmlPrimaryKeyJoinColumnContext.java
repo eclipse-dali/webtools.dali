@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.internal.mappings.IPrimaryKeyJoinColumn;
 
 public class XmlPrimaryKeyJoinColumnContext extends PrimaryKeyJoinColumnContext

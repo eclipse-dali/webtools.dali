@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import org.eclipse.jpt.core.internal.content.orm.XmlNullAttributeMapping;
 
 public class XmlNullAttributeMappingContext extends XmlAttributeContext
 {
