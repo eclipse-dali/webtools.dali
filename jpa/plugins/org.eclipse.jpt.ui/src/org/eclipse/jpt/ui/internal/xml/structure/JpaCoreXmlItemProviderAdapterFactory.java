@@ -22,7 +22,7 @@ import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.eclipse.jpt.core.internal.resource.orm.util.OrmAdapterFactory;
+import org.eclipse.jpt.core.internal.content.orm.util.OrmAdapterFactory;
 import org.eclipse.ui.services.IDisposable;
 
 /**

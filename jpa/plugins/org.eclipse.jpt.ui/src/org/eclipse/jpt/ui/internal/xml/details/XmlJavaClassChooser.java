@@ -27,7 +27,9 @@ import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionP
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
+import org.eclipse.jpt.core.internal.content.orm.XmlPersistentType;
+import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;

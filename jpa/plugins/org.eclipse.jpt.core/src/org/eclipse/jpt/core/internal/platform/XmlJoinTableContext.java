@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.platform;
 import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.content.orm.XmlMultiRelationshipMappingInternal;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
 import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;

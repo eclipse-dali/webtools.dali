@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
 import org.eclipse.ui.actions.ActionDelegate;
 
 public class AddPersistentAttributeToXmlAction extends ActionDelegate

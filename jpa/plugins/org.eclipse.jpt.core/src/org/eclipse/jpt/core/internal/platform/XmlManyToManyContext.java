@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import org.eclipse.jpt.core.internal.content.orm.XmlManyToMany;
 
 public class XmlManyToManyContext extends XmlMultiRelationshipMappingContext
 {
