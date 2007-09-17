@@ -79,15 +79,15 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 				public Object[] getElements(Object inputElement) {
 					return new Object[] {
 						BasicMappingUiProvider.instance(),
-						IdMappingUiProvider.instance(),
-						VersionMappingUiProvider.instance(),
-						OneToOneMappingUiProvider.instance(),
-						OneToManyMappingUiProvider.instance(),
-						ManyToOneMappingUiProvider.instance(),
-						ManyToManyMappingUiProvider.instance(),
 						EmbeddedMappingUiProvider.instance(),
 						EmbeddedIdMappingUiProvider.instance(),
-						TransientMappingUiProvider.instance()
+						IdMappingUiProvider.instance(),
+						ManyToManyMappingUiProvider.instance(),
+						ManyToOneMappingUiProvider.instance(),
+						OneToManyMappingUiProvider.instance(),
+						OneToOneMappingUiProvider.instance(),
+						TransientMappingUiProvider.instance(),
+						VersionMappingUiProvider.instance()
 					};
 				}
 				
