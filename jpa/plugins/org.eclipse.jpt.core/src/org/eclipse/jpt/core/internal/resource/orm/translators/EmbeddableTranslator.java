@@ -58,6 +58,6 @@ public class EmbeddableTranslator extends Translator
 	}
 	
 	private Translator createAttributesTranslator() {
-		return new EmbeddableAttributesTranslator(ATTRIBUTES, ORM_PKG.getEmbeddable_Attributes());
+		return new AttributesForEmbeddableTranslator(ATTRIBUTES, ORM_PKG.getEmbeddable_Attributes());
 	}
 }
