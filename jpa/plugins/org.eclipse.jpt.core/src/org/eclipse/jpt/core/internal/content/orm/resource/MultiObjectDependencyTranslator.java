@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.wst.common.internal.emf.resource.DependencyTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
+import org.w3c.dom.Node;
 
 public abstract class MultiObjectDependencyTranslator extends DependencyTranslator
 {
@@ -64,4 +65,17 @@ public abstract class MultiObjectDependencyTranslator extends DependencyTranslat
 	public boolean isManagedByParent() {
 		return false;
 	}
+	
+	@Override
+	public boolean shouldIndentEndTag(Node node) {
+		if (node.getNodeName().equals(getDOMPath())) {
+			return super.shouldIndentEndTag(node);
+		}
+		Translator delegate = getDelegateFor(node.getNodeName(), null);
+		if (delegate != null) {
+			return delegate.shouldIndentEndTag(node);
+		}
+		return super.shouldIndentEndTag(node);
+	}
+
 }
