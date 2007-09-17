@@ -17,13 +17,10 @@ import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbedded;
-import org.eclipse.jpt.core.internal.content.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.content.orm.XmlAttributeOverride;
-import org.eclipse.jpt.core.internal.content.orm.XmlEmbedded;
-import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IEmbedded;
 import org.eclipse.jpt.core.internal.platform.XmlAttributeOverrideContext.ParentContext;
+import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 

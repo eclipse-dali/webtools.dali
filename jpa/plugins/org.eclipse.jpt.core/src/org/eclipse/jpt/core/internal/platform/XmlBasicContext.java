@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaBasic;
-import org.eclipse.jpt.core.internal.content.orm.XmlBasic;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;

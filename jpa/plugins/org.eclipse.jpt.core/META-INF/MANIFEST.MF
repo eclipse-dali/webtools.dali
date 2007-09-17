@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.core;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: org.eclipse.jpt.core.internal.JptCorePlugin
 Bundle-ClassPath: .
 Bundle-Localization: plugin
@@ -23,6 +23,7 @@ Require-Bundle: org.eclipse.core.commands,
  org.eclipse.jpt.utility,
  org.eclipse.jst.j2ee,
  org.eclipse.jst.j2ee.core,
+ org.eclipse.jst.jee.ejb,
  org.eclipse.text,
  org.eclipse.wst.common.emf,
  org.eclipse.wst.common.frameworks,
@@ -32,26 +33,27 @@ Require-Bundle: org.eclipse.core.commands,
  org.eclipse.wst.validation,
  org.eclipse.wst.xml.core,
  org.eclipse.xsd
-Export-Package: org.eclipse.jpt.core.internal; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.content.java; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.content.java.mappings; x-friends:="org.eclipse.jpt.ui, org.eclipse.jpt.gen",
- org.eclipse.jpt.core.internal.content.java.mappings.util; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.content.java.util; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.content.orm; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.content.orm.resource; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.content.orm.util; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.content.persistence; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.content.persistence.resource; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.content.persistence.util; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.emfutility; x-internal:=true,
- org.eclipse.jpt.core.internal.facet; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.jdtutility; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.mappings; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.mappings.util; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.platform; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.platform.generic; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.prefs; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.synch; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.util; x-friends:="org.eclipse.jpt.ui",
- org.eclipse.jpt.core.internal.validation; x-friends:="org.eclipse.jpt.ui"
+Export-Package: org.eclipse.jpt.core.internal;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.content.java;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.content.java.mappings;x-friends:="org.eclipse.jpt.ui,org.eclipse.jpt.gen",
+ org.eclipse.jpt.core.internal.content.java.mappings.util;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.content.java.util;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.emfutility;x-internal:=true,
+ org.eclipse.jpt.core.internal.facet;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.jdtutility;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.mappings;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.mappings.util;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.platform;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.platform.generic;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.prefs;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.resource.common.translators,
+ org.eclipse.jpt.core.internal.resource.orm;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.resource.orm.translators;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.resource.orm.util;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.resource.persistence;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.resource.persistence.translators;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.resource.persistence.util;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.synch;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.util;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.validation;x-friends:="org.eclipse.jpt.ui"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

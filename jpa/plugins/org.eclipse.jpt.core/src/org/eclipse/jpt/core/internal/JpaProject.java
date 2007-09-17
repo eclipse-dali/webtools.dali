@@ -24,13 +24,11 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -148,7 +146,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * This is set to false when that job is completed 
 	 */
 	boolean resynching = false;
-	
+
 	/**
 	 * Flag to indicate that the disposing job has been scheduled or is running
 	 * (or has been run, in some cases)
@@ -168,12 +166,9 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 */
 	Job resynchJob;
 
-	private IJobChangeListener resynchJobListener;
-
 	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
 
 	private ThreadLocal<CommandExecutor> threadLocalModifySharedDocumentCommandExecutor = new ThreadLocal<CommandExecutor>();
-
 
 	JpaProject() {
 		super();
@@ -183,39 +178,49 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		this();
 		this.project = project;
 		this.resynchJob = buildResynchJob();
-		this.resynchJobListener = buildResynchJobListener();
-		Job.getJobManager().addJobChangeListener(this.resynchJobListener);
 	}
 
 	private Job buildResynchJob() {
 		Job job = new Job("Resynching JPA model ...") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				IContext contextHierarchy = getPlatform().buildProjectContext();
-				getPlatform().resynch(contextHierarchy);
-				return Status.OK_STATUS;
-			}
-		};
-		job.setRule(project);
-		return job;
-	}
-
-	private IJobChangeListener buildResynchJobListener() {
-		return new JobChangeAdapter() {
-			@Override
-			public void done(IJobChangeEvent event) {
-				super.done(event);
-				if (event.getJob() == JpaProject.this.resynchJob) {
-					resynching = false;
-					if (event.getResult().matches(IStatus.CANCEL)) {
-						needsToResynch = false;
-					}
-					else if (needsToResynch) {
+				try {
+					return runResynch(monitor);
+				}
+				finally {
+					JpaProject.this.resynching = false;
+					if (JpaProject.this.needsToResynch) {
 						resynch();
 					}
 				}
 			}
 		};
+		if (this.project == null) {
+			throw new IllegalStateException("Project can not be null when the Resynch Job is built");
+		}
+		job.setRule(this.project);
+		return job;
+	}
+
+	private IStatus runResynch(IProgressMonitor monitor) {
+		IContext contextHierarchy = getPlatform().buildProjectContext();
+		if (monitor.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		}
+		try {
+			getPlatform().resynch(contextHierarchy, monitor);
+		}
+		catch (OperationCanceledException e) {
+			return Status.CANCEL_STATUS;
+		}
+		catch (Throwable e) {
+			//exceptions can occur when this thread is running and changes are
+			//made to the java source.  our model is not yet updated to the changed java source.
+			//log these exceptions and assume they won't happen when the resynch runs again
+			//as a result of the java source changes.
+			JptCorePlugin.log(e);
+		}
+		return Status.OK_STATUS;
 	}
 
 	/**
@@ -519,8 +524,12 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			}
 		};
 		getProject().accept(visitor, IResource.NONE);
-		resynch();
 		filled = true;
+		resynch();
+	}
+
+	public boolean isFilled() {
+		return filled;
 	}
 
 	/**
@@ -579,10 +588,9 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * Dispose and remove project
 	 */
 	void dispose() {
-		if (disposing) return;
-		
+		if (disposing)
+			return;
 		disposing = true;
-				
 		Job job = new Job("Disposing JPA project ...") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -593,9 +601,8 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		job.setRule(project);
 		job.schedule();
 	}
-	
+
 	private void dispose_() {
-		Job.getJobManager().removeJobChangeListener(resynchJobListener);
 		for (IJpaFile jpaFile : CollectionTools.collection(getFiles())) {
 			((JpaFile) jpaFile).dispose();
 		}
@@ -643,24 +650,21 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		};
 	}
 
-		// PWFTODO 
-		// Return a NullPersistenceFile if no content found?
+	// PWFTODO 
+	// Return a NullPersistenceFile if no content found?
 	synchronized IJpaFile createJpaFile(IFile file) {
 		if (!JavaCore.create(this.project).isOnClasspath(file)) {
 			return null;
 		}
-
 		IContentType contentType = this.contentType(file);
 		if (contentType == null) {
 			return null;
 		}
-
 		String contentTypeId = contentType.getId();
 		IJpaFileContentProvider provider = this.getPlatform().fileContentProvider(contentTypeId);
 		if (provider == null) {
 			return null;
 		}
-
 		JpaFile jpaFile = JpaCoreFactory.eINSTANCE.createJpaFile();
 		this.getFiles().add(jpaFile);
 		jpaFile.setFile(file);
@@ -675,9 +679,11 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	private IContentType contentType(IFile file) {
 		try {
 			return Platform.getContentTypeManager().findContentTypeFor(file.getContents(), file.getName());
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			JptCorePlugin.log(ex);
-		} catch (CoreException ex) {
+		}
+		catch (CoreException ex) {
 			JptCorePlugin.log(ex);
 		}
 		return null;
@@ -706,15 +712,18 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	//passing it on to the JpaModel.  We don't currently support
 	//multiple projects having cross-references
 	public void resynch() {
-		if (disposing) return;
-		
-		if (! this.resynching) {
+		if (disposing || !filled)
+			return;
+		if (!this.resynching) {
 			this.resynching = true;
 			this.needsToResynch = false;
 			this.resynchJob.schedule();
 		}
 		else {
 			this.needsToResynch = true;
+			if (this.resynchJob.getState() == Job.RUNNING) {
+				this.resynchJob.cancel();
+			}
 		}
 	}
 
@@ -853,11 +862,15 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		return this.modifySharedDocumentCommandExecutorProvider;
 	}
 
+
 	// ********** member class **********
-	private class ModifySharedDocumentCommandExecutorProvider implements CommandExecutorProvider {
+	private class ModifySharedDocumentCommandExecutorProvider
+		implements CommandExecutorProvider
+	{
 		ModifySharedDocumentCommandExecutorProvider() {
 			super();
 		}
+
 		public CommandExecutor commandExecutor() {
 			return JpaProject.this.getThreadLocalModifySharedDocumentCommandExecutor();
 		}

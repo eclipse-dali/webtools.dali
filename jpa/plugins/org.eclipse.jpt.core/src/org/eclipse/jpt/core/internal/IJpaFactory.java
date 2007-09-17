@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient;
 import org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.internal.platform.BaseJpaFactory;
 
 /**
  * Use IJpaFactory to create any IJavaTypeMapping or IJavaAttributeMappings.  This is necessary

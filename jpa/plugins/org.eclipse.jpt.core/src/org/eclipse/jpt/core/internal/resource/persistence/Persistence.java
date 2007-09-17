@@ -1,27 +1,27 @@
-/**
- * <copyright>
- * </copyright>
- *
- * $Id: Persistence.java,v 1.1 2007/07/30 20:13:46 pfullbright Exp $
- */
+/*******************************************************************************
+ *  Copyright (c) 2006, 2007  Oracle. 
+ *  All rights reserved.  This program and the accompanying materials are 
+ *  made available under the terms of the Eclipse Public License v1.0 which 
+ *  accompanies this distribution, and is available at 
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors: 
+ *  	Oracle - initial API and implementation
+ *******************************************************************************/
+
 package org.eclipse.jpt.core.internal.resource.persistence;
 
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -40,7 +40,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @model kind="class"
  * @generated
  */
-public class Persistence extends EObjectImpl implements EObject
+public class Persistence extends JpaEObject implements EObject
 {
 	/**
 	 * The cached value of the '{@link #getPersistenceUnits() <em>Persistence Units</em>}' containment reference list.

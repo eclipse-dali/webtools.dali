@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>IJpa Data Source</b></em>'.
@@ -33,6 +32,6 @@ public interface IJpaDataSource extends IJpaEObject
 	void setConnectionProfileName(String newConnectionProfileName);
 
 	boolean isConnected();
-	
+
 	boolean hasAConnection();
 }

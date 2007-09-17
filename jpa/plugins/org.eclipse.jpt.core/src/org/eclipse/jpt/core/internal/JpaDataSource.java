@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.db.internal.Connection;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
@@ -101,27 +100,27 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 
 	private ConnectionListener buildConnectionListener() {
 		return new ConnectionListener() {
-			public void opened(Connection connection) {
+			public void opened(ConnectionProfile profile) {
 				getProject().resynch();
 			}
 
-			public void aboutToClose(Connection connection) {}
+			public void aboutToClose(ConnectionProfile profile) {}
 
-			public boolean okToClose(Connection connection) {
+			public boolean okToClose(ConnectionProfile profile) {
 				return true;
 			}
 
-			public void closed(Connection connection) {
+			public void closed(ConnectionProfile profile) {
 				getProject().resynch();
 			}
 
-			public void modified(Connection connection) {}
+			public void modified(ConnectionProfile profile) {}
 
-			public void databaseChanged(Connection connection, Database database) {}
+			public void databaseChanged(ConnectionProfile profile, Database database) {}
 
-			public void schemaChanged(Connection connection, Schema schema) {}
+			public void schemaChanged(ConnectionProfile profile, Schema schema) {}
 
-			public void tableChanged(Connection connection, Table table) {}
+			public void tableChanged(ConnectionProfile profile, Table table) {}
 		};
 	}
 

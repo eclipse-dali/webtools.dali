@@ -12,13 +12,14 @@ package org.eclipse.jpt.core.internal;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.content.java.IDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMappingProvider;
-import org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.IContext;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -97,7 +98,7 @@ public interface IJpaPlatform
 	Iterator<IJavaTypeMappingProvider> javaTypeMappingProviders();
 
 	IJavaTypeMappingProvider javaTypeMappingProvider(String typeMappingKey);
-	
+
 	/**
 	 * Return an Iterator of IJavaAttributeMappingProviders.  These define which
 	 * IJavaAttributeMappings are supported and which annotation applies. 
@@ -105,7 +106,7 @@ public interface IJpaPlatform
 	Iterator<IJavaAttributeMappingProvider> javaAttributeMappingProviders();
 
 	IJavaAttributeMappingProvider javaAttributeMappingProvider(String attributeMappingKey);
-	
+
 	/**
 	 * Return a ListIterator of IDefaultJavaAttributeMappingProvider.  This is a List
 	 * because the defaults are checked in order.
@@ -158,7 +159,7 @@ public interface IJpaPlatform
 	 * will be started upon completion.
 	 * @param contextHierarchy
 	 */
-	void resynch(IContext contextHierarchy);
+	void resynch(IContext contextHierarchy, IProgressMonitor monitor);
 
 	/**
 	 * Adds validation messages to the growing list of messages

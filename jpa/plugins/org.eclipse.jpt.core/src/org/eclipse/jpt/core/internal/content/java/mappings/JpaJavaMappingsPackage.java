@@ -15,8 +15,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.content.java.JpaJavaPackage;
-import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
-import org.eclipse.jpt.core.internal.content.persistence.PersistencePackage;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 
 /**
@@ -5013,22 +5011,16 @@ public class JpaJavaMappingsPackage extends EPackageImpl
 		JpaCorePackage theJpaCorePackage = (JpaCorePackage) (EPackage.Registry.INSTANCE.getEPackage(JpaCorePackage.eNS_URI) instanceof JpaCorePackage ? EPackage.Registry.INSTANCE.getEPackage(JpaCorePackage.eNS_URI) : JpaCorePackage.eINSTANCE);
 		JpaCoreMappingsPackage theJpaCoreMappingsPackage = (JpaCoreMappingsPackage) (EPackage.Registry.INSTANCE.getEPackage(JpaCoreMappingsPackage.eNS_URI) instanceof JpaCoreMappingsPackage ? EPackage.Registry.INSTANCE.getEPackage(JpaCoreMappingsPackage.eNS_URI) : JpaCoreMappingsPackage.eINSTANCE);
 		JpaJavaPackage theJpaJavaPackage = (JpaJavaPackage) (EPackage.Registry.INSTANCE.getEPackage(JpaJavaPackage.eNS_URI) instanceof JpaJavaPackage ? EPackage.Registry.INSTANCE.getEPackage(JpaJavaPackage.eNS_URI) : JpaJavaPackage.eINSTANCE);
-		OrmPackage theOrmPackage = (OrmPackage) (EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) instanceof OrmPackage ? EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) : OrmPackage.eINSTANCE);
-		PersistencePackage thePersistencePackage = (PersistencePackage) (EPackage.Registry.INSTANCE.getEPackage(PersistencePackage.eNS_URI) instanceof PersistencePackage ? EPackage.Registry.INSTANCE.getEPackage(PersistencePackage.eNS_URI) : PersistencePackage.eINSTANCE);
 		// Create package meta-data objects
 		theJpaJavaMappingsPackage.createPackageContents();
 		theJpaCorePackage.createPackageContents();
 		theJpaCoreMappingsPackage.createPackageContents();
 		theJpaJavaPackage.createPackageContents();
-		theOrmPackage.createPackageContents();
-		thePersistencePackage.createPackageContents();
 		// Initialize created meta-data
 		theJpaJavaMappingsPackage.initializePackageContents();
 		theJpaCorePackage.initializePackageContents();
 		theJpaCoreMappingsPackage.initializePackageContents();
 		theJpaJavaPackage.initializePackageContents();
-		theOrmPackage.initializePackageContents();
-		thePersistencePackage.initializePackageContents();
 		// Mark meta-data to indicate it can't be changed
 		theJpaJavaMappingsPackage.freeze();
 		return theJpaJavaMappingsPackage;

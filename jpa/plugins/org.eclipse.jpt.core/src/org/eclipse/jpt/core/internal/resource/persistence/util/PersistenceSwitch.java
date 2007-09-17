@@ -1,17 +1,26 @@
-/**
- * <copyright>
- * </copyright>
- *
- * $Id: PersistenceSwitch.java,v 1.1 2007/07/30 20:13:47 pfullbright Exp $
- */
+/*******************************************************************************
+ *  Copyright (c) 2006, 2007  Oracle. 
+ *  All rights reserved.  This program and the accompanying materials are 
+ *  made available under the terms of the Eclipse Public License v1.0 which 
+ *  accompanies this distribution, and is available at 
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors: 
+ *  	Oracle - initial API and implementation
+ *******************************************************************************/
+
 package org.eclipse.jpt.core.internal.resource.persistence.util;
 
 import java.util.List;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-
-import org.eclipse.jpt.core.internal.resource.persistence.*;
+import org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef;
+import org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef;
+import org.eclipse.jpt.core.internal.resource.persistence.Persistence;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.internal.resource.persistence.Properties;
+import org.eclipse.jpt.core.internal.resource.persistence.Property;
 
 /**
  * <!-- begin-user-doc -->

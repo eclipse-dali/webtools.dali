@@ -17,8 +17,6 @@ import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.content.orm.XmlAttributeMapping;
-import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.StringTools;
