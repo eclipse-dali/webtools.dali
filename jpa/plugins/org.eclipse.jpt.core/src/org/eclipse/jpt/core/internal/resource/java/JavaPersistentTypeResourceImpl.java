@@ -293,10 +293,11 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaResource<Type> i
 	
 	private void updateJavaTypeAnnotations(CompilationUnit astRoot) {
 		astRoot.accept(getJavaTypeAnnotationAstVisitor());
-		ITypeBinding typeBinding = ASTTools.typeBinding(getMember().getFullyQualifiedName(), astRoot);
+//		ITypeBinding typeBinding = ASTTools.typeBinding(getMember().getFullyQualifiedName(), astRoot);
 		for (Iterator<JavaTypeAnnotation> i = javaTypeAnnotations(); i.hasNext(); ) {
 			JavaTypeAnnotation javaTypeAnnotation = i.next();
-			if (ASTTools.containsAnnotation(javaTypeAnnotation.getAnnotationName(), typeBinding)) {
+			if (!getMember().containsAnnotation(javaTypeAnnotation.getDeclarationAnnotationAdapter(), astRoot)) {
+//			if (!ASTTools.containsAnnotation(javaTypeAnnotation.getAnnotationName(), typeBinding)) {
 				removeJavaTypeAnnotation(javaTypeAnnotation);
 			}
 		}		

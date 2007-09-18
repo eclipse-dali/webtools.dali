@@ -25,8 +25,7 @@ public class JavaSecondaryTableProvider implements JavaTypeAnnotationProvider
 
 
 	public JavaSecondaryTableResource buildJavaTypeAnnotation(Type type, JpaPlatform jpaPlatform) {
-		return null;
-		//TODO //return JavaSecondaryTableResourceImpl.createJavaSecondaryTable(jpaPlatform, type);
+		return JavaSecondaryTableResourceImpl.createJavaSecondaryTable(jpaPlatform, type);
 	}
 
 	public String getAnnotationName() {
