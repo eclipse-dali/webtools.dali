@@ -10,11 +10,12 @@
 package org.eclipse.jpt.db.internal;
 
 import java.util.Properties;
+
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.IManagedConnection;
 import org.eclipse.datatools.connectivity.db.generic.IDBDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.drivers.DriverManager;
+import org.eclipse.datatools.connectivity.sqm.core.connection.ConnectionInfo;
 import org.eclipse.datatools.sqltools.core.DatabaseIdentifier;
 import org.eclipse.datatools.sqltools.core.profile.ProfileUtil;
 
@@ -25,7 +26,11 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 	
 	final private org.eclipse.datatools.connectivity.IConnectionProfile dtpConnectionProfile;
 	
-    public static final String CONNECTION_TYPE = "java.sql.Connection";  //$NON-NLS-1$
+	private Connection connection; // Lazy initialized
+
+    public static final String LIVE_CONNECTION_TYPE = "java.sql.Connection";  //$NON-NLS-1$
+    public static final String OFFLINE_CONNECTION_TYPE = "org.eclipse.datatools.connectivity.sqm.core.connection.ConnectionInfo";  //$NON-NLS-1$
+
     public static final String CONNECTION_PROFILE_TYPE = "org.eclipse.datatools.connectivity.db.generic.connectionProfile";  //$NON-NLS-1$
     public static final String DATABASE_PRODUCT_PROPERTY = "org.eclipse.datatools.connectivity.server.version";  //$NON-NLS-1$
 	/**
@@ -44,6 +49,10 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 	 * This property is used in DriverDefinition creation.
 	 */
 	public static final String DRIVER_JAR_LIST_PROP_ID = "jarList"; //$NON-NLS-1$
+
+	public static final String POSTGRESQL_VENDOR = "postgres"; //$NON-NLS-1$
+
+	public static final String PUBLIC_SCHEMA = "public"; //$NON-NLS-1$
 
 	// ********** constructors **********
 
@@ -79,19 +88,24 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 	}
 	
 	// ********** behavior **********
-	
-	private IManagedConnection buildDtpManagedConnection( org.eclipse.datatools.connectivity.IConnectionProfile dtpProfile) {
-		return dtpProfile.getManagedConnection( CONNECTION_TYPE);
+
+	IManagedConnection getDTPConnection() {
+		return this.dtpConnectionProfile.getManagedConnection( LIVE_CONNECTION_TYPE);
 	}
+
+	IManagedConnection getDTPOfflineConnection() {
+		return this.dtpConnectionProfile.getManagedConnection( OFFLINE_CONNECTION_TYPE);
+	}
+
 	/**
 	 * Connect using this profile.
 	 */
 	@Override
 	public void connect() {
-		if( !this.dtpConnectionProfile.isConnected()) {
+		if( ! this.connectionIsOnline()) {
 			
 			IStatus status = this.dtpConnectionProfile.connect();
-			if( !status.isOK()) {
+			if( ! status.isOK()) {
 				if( status.isMultiStatus()) {
 					IStatus[] statusChildren = status.getChildren();
 					throw new RuntimeException( statusChildren[ 0].getMessage(), statusChildren[ 0].getException());
@@ -111,6 +125,19 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 				throw new RuntimeException( statusChildren[ 0].getMessage(), statusChildren[ 0].getException());
 			}
 			throw new RuntimeException( status.getMessage(), status.getException());
+		}
+	}
+    
+	@Override
+	protected void dispose() {
+		super.dispose();
+		
+		this.disposeConnection();
+	}
+	
+	private void disposeConnection() {
+		if( this.getConnection() != null) {
+			this.getConnection().dispose();
 		}
 	}
 	
@@ -137,12 +164,66 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 		this.getConnection().tableChanged( table, schema, database, eventType);
 	}
 		
+	protected Connection buildConnection() {
+
+		Connection connection = Connection.createConnection( this);  //$NON-NLS-1$
+		return connection;
+	}
+
+	@Override
+	protected Database buildDatabase() {
+		org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase;
+		if( this.isConnected()) {
+			if( this.isWorkingOffline()) {
+				ConnectionInfo connectionInfo = ( ConnectionInfo) this.getDTPOfflineConnection().getConnection().getRawConnection();
+				dtpDatabase = connectionInfo.getSharedDatabase(); 
+			}
+			else {
+				//TODO see DTP bug 202306
+				//pass connect=true in to ProfileUtil.getDatabase()
+				//there is a bug mentioned in a comment: 
+	            //     "during the profile connected event notification, 
+	            //     IManagedConnection is connected while IConnectionProfile is not"
+				//so some hackery here for their hackery
+				dtpDatabase = ProfileUtil.getDatabase( new DatabaseIdentifier( this.getName(), this.getDatabaseName()), true);
+			}
+			return Database.createDatabase( this, dtpDatabase);
+		}
+		return NullDatabase.instance();
+	}
+	
+	public IStatus saveWorkOfflineData() {
+		return this.dtpConnectionProfile.saveWorkOfflineData();
+	}
+	
+	public IStatus workOffline() {
+		return this.dtpConnectionProfile.workOffline();
+	}
+	
+	@Override
+	boolean wraps( org.eclipse.datatools.connectivity.IConnectionProfile dtpProfile) {
+		return this.dtpConnectionProfile == dtpProfile;
+	}
+
+		
 	// ********** queries **********
 
 	@Override
 	public boolean isConnected() {
+		return this.getDTPConnection().isConnected() || this.isWorkingOffline();
+	}
 
-		return this.dtpConnectionProfile.getConnectionState() != IConnectionProfile.DISCONNECTED_STATE;
+	@Override
+	public boolean isWorkingOffline() {
+		return this.getDTPOfflineConnection().isWorkingOffline();
+	}
+	
+	public boolean supportsWorkOfflineMode() {
+		return this.dtpConnectionProfile.supportsWorkOfflineMode();
+	}
+	
+	public boolean canWorkOffline() {
+		return this.dtpConnectionProfile.canWorkOffline();
 	}
 	
 	@Override
@@ -187,6 +268,14 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 	}
 
 	@Override
+	public String getDefaultSchema() {
+		if( this.getDatabase().getVendor().equalsIgnoreCase( POSTGRESQL_VENDOR)) {
+			return PUBLIC_SCHEMA;
+		}
+		return this.getUserName();
+	}
+
+	@Override
 	public String getDriverClass() {
 		return this.getProperties().getProperty( IDBDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
 	}
@@ -220,27 +309,12 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 		return this.dtpConnectionProfile.getBaseProperties();
 	}
 	
-	@Override
-	protected Connection buildConnection() {
-
-		Connection connection = Connection.createConnection( this.buildDtpManagedConnection( this.dtpConnectionProfile));  //$NON-NLS-1$
-		return connection;
-	}
-
-	@Override
-	protected Database buildDatabase() {
+	private Connection getConnection() {
 		
-		org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase;
-		if( this.isConnected()) {
-			dtpDatabase = ProfileUtil.getDatabase( new DatabaseIdentifier( this.getName(), this.getDatabaseName()), false);
-			return Database.createDatabase( this, dtpDatabase);
+		if( this.connection == null) {
+			this.connection = this.buildConnection();
+			this.engageConnectionListener();
 		}
-		return NullDatabase.instance();
+		return this.connection;
 	}
-	
-	@Override
-	boolean wraps( org.eclipse.datatools.connectivity.IConnectionProfile dtpProfile) {
-		return this.dtpConnectionProfile == dtpProfile;
-	}
-
 }

@@ -9,7 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import org.eclipse.datatools.connectivity.drivers.DriverManager;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.utility.internal.ClassTools;
 
 /**
@@ -34,11 +35,6 @@ public final class NullConnectionProfile extends ConnectionProfile {
 	}
 
 	// ********** behavior **********
-
-	@Override
-	protected Connection buildConnection() {
-		return NullConnection.instance();
-	}
 
 	@Override
 	protected Database buildDatabase() {
@@ -74,14 +70,23 @@ public final class NullConnectionProfile extends ConnectionProfile {
 	 void tableChanged( Table table, Schema schema, Database database, int eventType) {
 		// do nothing
 	}
-
-	// ********** queries **********
+	
+	public IStatus saveWorkOfflineData() {
+		return Status.CANCEL_STATUS;
+	}
+	
+	public IStatus workOffline() {
+		return Status.CANCEL_STATUS;
+	}
 	
 	@Override
-	public Connection getConnection() {
-		return NullConnection.instance();
+	boolean wraps( org.eclipse.datatools.connectivity.IConnectionProfile dtpProfile) {
+		return false;
 	}
-
+	
+	
+	// ********** queries **********
+		
 	@Override
 	public Database getDatabase() {
 		return NullDatabase.instance();
@@ -123,6 +128,11 @@ public final class NullConnectionProfile extends ConnectionProfile {
 	}
 
 	@Override
+	public String getDefaultSchema() {
+		return "";
+	}
+	
+	@Override
 	public String getDriverClass() {
 		return "";
 	}
@@ -156,9 +166,17 @@ public final class NullConnectionProfile extends ConnectionProfile {
 	public boolean isConnected() {
 		return false;
 	}
-	
+
 	@Override
-	boolean wraps( org.eclipse.datatools.connectivity.IConnectionProfile dtpProfile) {
+	public boolean isWorkingOffline() {
+		return false;
+	}
+	
+	public boolean supportsWorkOfflineMode() {
+		return false;
+	}
+	
+	public boolean canWorkOffline() {
 		return false;
 	}
 	

@@ -41,16 +41,15 @@ public final class DTPDatabaseWrapper extends Database {
 	// ********** behavior **********
 
 	private void initialize() {
-		
 		if( this.connectionIsOnline()) {
 			this.databaseListener = this.buildDatabaseListener();
 			this.addCatalogObjectListener(( ICatalogObject) this.dtpDatabase, this.databaseListener);
 		}
 	}
-	
+
 	@Override
 	protected boolean connectionIsOnline() {
-		return this.profile.isConnected();
+		return this.profile.connectionIsOnline();
 	}
 	
 	private ICatalogObjectListener buildDatabaseListener() {
@@ -114,6 +113,7 @@ public final class DTPDatabaseWrapper extends Database {
 			}
 		}
 	}
+	
 	
 	// ********** queries **********
 

@@ -14,7 +14,7 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 /**
  *  NullConnection
  */
-public final class NullConnection extends Connection {
+final class NullConnection extends Connection {
 
 	private static NullConnection INSTANCE;
 
@@ -58,24 +58,24 @@ public final class NullConnection extends Connection {
 	 void tableChanged( Table table, Schema schema, Database database, int eventType) {
 		// do nothing
 	}
-	
+
 	@Override
-	public boolean isConnected() {
+	protected boolean connectionIsOnline() {
 		return false;
 	}
 
 	@Override
-	public String getFactoryId() {
+	String getFactoryId() {
 		return "";
 	}
 
 	@Override
-	public void addConnectionListener( ConnectionListener listener) {
+	void addConnectionListener( ConnectionListener listener) {
 		// do nothing
 	}
 
 	@Override
-	public void removeConnectionListener( ConnectionListener listener) {
+	void removeConnectionListener( ConnectionListener listener) {
 		// do nothing
 	}
 }

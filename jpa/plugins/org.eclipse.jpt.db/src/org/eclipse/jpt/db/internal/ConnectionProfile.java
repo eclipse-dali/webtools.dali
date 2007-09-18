@@ -12,6 +12,7 @@ package org.eclipse.jpt.db.internal;
 import java.text.Collator;
 import java.util.NoSuchElementException;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 
 /**
@@ -19,7 +20,6 @@ import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
  */
 public abstract class ConnectionProfile extends DTPWrapper implements Comparable<ConnectionProfile> {
 	
-	private Connection connection; // Lazy initialized
 	private Database database; // Lazy initialized
 	private String catalogName;  // Catalog used for this profile
 	
@@ -36,6 +36,7 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	ConnectionProfile( ConnectionProfileRepository profileRepository) {
 		super();
 		this.profileRepository = profileRepository;
+
 		this.connectionListener = buildConnectionListener();
 		this.catalogName = "";
 	}
@@ -45,8 +46,6 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	public abstract void connect();
 	
 	public abstract void disconnect();
-	
-	protected abstract Connection buildConnection();
 	
 	protected abstract Database buildDatabase();
 	
@@ -60,46 +59,36 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 
 	protected void refreshDatabase() {
 		this.disposeDatabase();
-		this.database = null;
     }
     
 	@Override
 	protected void dispose() {
 		this.disengageConnectionListener();
 		
-		this.disposeConnection();
 		this.disposeDatabase();
-	}
-	
-	private void disposeConnection() {
-		if( this.connection != null) {
-			this.getConnection().dispose();
-		}
 	}
 	
 	private void disposeDatabase() {
 		if( this.database != null) {
 			this.getDatabase().dispose();
+			this.database = null;
 		}
 	}
-
-	public boolean contains( Connection connection) {
-		return this.getConnection().equals( connection);
-	}
-
+	
+	/**
+	 * Saves the state of the connection profile for working in an offline mode.
+	 * If the connection profile does not support working in an offline mode, no
+	 * exception is thrown and the method will return immediately.
+	 */
+	public abstract IStatus saveWorkOfflineData();
+	
+	public abstract IStatus workOffline();
+	
+	abstract boolean wraps( org.eclipse.datatools.connectivity.IConnectionProfile dtpProfile);
+	
 
 	// ********** queries **********
 	
-	Connection getConnection() {
-		
-		if( this.connection == null) {
-			this.connection = this.buildConnection();
-			this.engageConnectionListener();
-
-		}
-		return this.connection;
-	}
-
 	public Database getDatabase() {
 		
 		if( this.database == null) {
@@ -125,6 +114,8 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	
 	public abstract String getUserPassword();
 	
+	public abstract String getDefaultSchema();
+	
 	public abstract String getInstanceId();
 
 	public abstract String getProviderId();
@@ -134,13 +125,26 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	public abstract String getDriverJarList();
 	
 	public abstract boolean isConnected();
+	
+	public abstract boolean isWorkingOffline();
+	
+	/**
+	 * @return true if connection factories associated with this
+	 *				connection profile's provider support working offline.
+	 */
+	public abstract boolean supportsWorkOfflineMode();
+	
+	/**
+	 * @return true if this connection profile supports working offline and data
+	 *				has been saved for working offline.
+	 */
+	public abstract boolean canWorkOffline();
 
 	@Override
 	protected boolean connectionIsOnline() {
-		return this.isConnected();
+
+		return this.isConnected() && ( ! this.isWorkingOffline());
 	}
-	
-	abstract boolean wraps( org.eclipse.datatools.connectivity.IConnectionProfile dtpProfile);
 	
 	public boolean isNull() {
 		return true;
@@ -198,39 +202,39 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
     private ConnectionListener buildConnectionListener() {
 		return new ConnectionListener() {
 
-			public void aboutToClose(Connection c) {
+			public void aboutToClose(ConnectionProfile profile) {
 				// not interested to this event.
 			}
 
-			public void closed(Connection c) {
+			public void closed(ConnectionProfile profile) {
 				ConnectionProfile.this.refreshDatabase();
 			}
 
-			public void modified(Connection c) {
+			public void modified(ConnectionProfile profile) {
 				// not interested to this event.
 				return;
 			}
 
-			public boolean okToClose(Connection c) {
+			public boolean okToClose(ConnectionProfile profile) {
 				// not interested to this event.
 				return true;
 			}
 
-			public void opened(Connection c) {
+			public void opened(ConnectionProfile profile) {
 				ConnectionProfile.this.refreshDatabase();
 			}
 
-			public void databaseChanged(Connection c, final Database db) {
+			public void databaseChanged(ConnectionProfile profile, final Database db) {
 				// not interested to this event.
 				return;
 			}
 			
-			public void schemaChanged(Connection c, final Schema schema) {
+			public void schemaChanged(ConnectionProfile profile, final Schema schema) {
 				// not interested to this event.
 				return;
 			}
 
-			public void tableChanged(Connection c, final Table table) {
+			public void tableChanged(ConnectionProfile profile, final Table table) {
 				// not interested to this event.
 				return;
 			}
