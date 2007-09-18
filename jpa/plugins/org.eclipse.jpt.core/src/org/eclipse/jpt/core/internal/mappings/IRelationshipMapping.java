@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 
 /**
@@ -151,7 +152,7 @@ public interface IRelationshipMapping extends IAttributeMapping
 	 * as fully qualified then just return that.
 	 * @return
 	 */
-	String fullyQualifiedTargetEntity();
+	String fullyQualifiedTargetEntity(CompilationUnit astRoot);
 
 	/**
 	 * Return the Entity that owns this relationship mapping

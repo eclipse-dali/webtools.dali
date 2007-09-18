@@ -11,7 +11,6 @@ import org.eclipse.jpt.core.internal.jdtutility.IndexedDeclarationAnnotationAdap
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.NonIndexedMemberIndexedAnnotationAdapter;
 
 public class JavaSecondaryTableResourceImpl extends AbstractTableResource implements JavaSecondaryTableResource
 {	

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
@@ -30,11 +31,11 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class XmlEntityContext extends XmlTypeContext
+public class XmlEntityContext extends XmlTypeContext implements XmlSecondaryTableContext.ParentContext
 {
 	private TableContext tableContext;
 	
-	private Collection<SecondaryTableContext> secondaryTableContexts;
+	private Collection<XmlSecondaryTableContext> secondaryTableContexts;
 	
 	private JavaTable javaTable;
 	
@@ -60,8 +61,8 @@ public class XmlEntityContext extends XmlTypeContext
 	
 	private ParentContext buildParentContext() {
 		return new XmlAttributeOverrideContext.ParentContext() {
-			public void refreshDefaults(DefaultsContext defaults) {
-				XmlEntityContext.this.refreshDefaults(defaults);
+			public void refreshDefaults(DefaultsContext defaults, IProgressMonitor monitor) {
+				XmlEntityContext.this.refreshDefaults(defaults, monitor);
 			}
 			public IJpaPlatform getPlatform() {
 				return XmlEntityContext.this.getPlatform();
@@ -93,13 +94,18 @@ public class XmlEntityContext extends XmlTypeContext
 		return contexts;
 	}
 
-	protected Collection<SecondaryTableContext> buildSecondaryTableContexts() {
-		Collection<SecondaryTableContext> contexts = new ArrayList<SecondaryTableContext>();
+	protected Collection<XmlSecondaryTableContext> buildSecondaryTableContexts() {
+		Collection<XmlSecondaryTableContext> contexts = new ArrayList<XmlSecondaryTableContext>();
 		for (ISecondaryTable secondaryTable : getEntity().getSecondaryTables()) {
-			contexts.add(new SecondaryTableContext(this, secondaryTable));
+			contexts.add(new XmlSecondaryTableContext(this, secondaryTable));
 		}
 		
 		return contexts;
+	}
+	
+	public ISecondaryTable javaSecondaryTable(int index) {
+		JavaEntity javaEntity = getJavaEntity();
+		return javaEntity == null ? null : javaEntity.getSpecifiedSecondaryTables().get(index);
 	}
 
 	protected XmlEntity getEntity() {
@@ -145,25 +151,25 @@ public class XmlEntityContext extends XmlTypeContext
 	}
 
 	@Override
-	public void refreshDefaults(DefaultsContext parentDefaults) {
-		super.refreshDefaults(parentDefaults);
+	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
+		super.refreshDefaults(parentDefaults, monitor);
 		DefaultsContext defaultsContext = wrapDefaultsContext(parentDefaults);
 		refreshDefaultAttributeOverrides();
 		refreshDefaultAssociationOverrides();
 		refreshDefaultSecondaryTables();
-		for (SecondaryTableContext context : this.secondaryTableContexts) {
-			context.refreshDefaults(defaultsContext);
+		for (XmlSecondaryTableContext context : this.secondaryTableContexts) {
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 		for (XmlAttributeOverrideContext context : this.attributeOverrideContexts) {
-			context.refreshDefaults(defaultsContext);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 		for (AssociationOverrideContext context : this.associationOverrideContexts) {
-			context.refreshDefaults(defaultsContext);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 	}
 	
-	protected void refreshTableContext(DefaultsContext defaultsContext) {
-		this.tableContext.refreshDefaults(defaultsContext);
+	protected void refreshTableContext(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		this.tableContext.refreshDefaults(defaultsContext, monitor);
 	}
 	
 	protected void refreshDefaultAttributeOverrides() {

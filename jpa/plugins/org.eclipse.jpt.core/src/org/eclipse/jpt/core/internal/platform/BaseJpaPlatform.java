@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
@@ -47,7 +49,6 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaMappedSuperclass;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaMappedSuperclassProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMapping;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToManyProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOne;
@@ -206,7 +207,6 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 * Entity, MappedSuperclass, and Embeddable
 	 */
 	protected void addJavaTypeMappingProvidersTo(Collection<IJavaTypeMappingProvider> providers) {
-		providers.add(JavaNullTypeMappingProvider.instance());
 		providers.add(JavaEntityProvider.instance());
 		providers.add(JavaMappedSuperclassProvider.instance());
 		providers.add(JavaEmbeddableProvider.instance());
@@ -219,7 +219,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 				return provider;
 			}
 		}
-		throw new IllegalArgumentException("Unsupported java type mapping key: " + typeMappingKey);
+		return null;
 	}
 	
 	public Iterator<IJavaAttributeMappingProvider> javaAttributeMappingProviders() {
@@ -347,13 +347,17 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		}
 	}
 	
-	public void resynch(IContext contextHierarchy) {
-		((BaseJpaProjectContext) contextHierarchy).refreshDefaults();
+	public void resynch(IContext contextHierarchy, IProgressMonitor monitor) {
+		((BaseJpaProjectContext) contextHierarchy).refreshDefaults(monitor);
 	}
 	
 	public void addToMessages(List<IMessage> messages) {
+		//I believe we need to be calling JpaProject.resynch() here.
+		//How can we handle this, we need to resynch and then wait until it is done
+		//resynching before calling this.  what happens if something changes out from
+		//under us while we are resynching??
 		BaseJpaProjectContext context = (BaseJpaProjectContext) buildProjectContext();
-		context.refreshDefaults();
+		context.refreshDefaults(new NullProgressMonitor());
 		context.addToMessages(messages);
 	}
 	

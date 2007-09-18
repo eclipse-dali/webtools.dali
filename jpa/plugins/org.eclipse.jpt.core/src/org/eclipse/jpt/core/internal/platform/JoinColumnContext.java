@@ -9,8 +9,6 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
-import org.eclipse.jpt.core.internal.content.orm.XmlRelationshipMapping;
-import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
@@ -84,11 +82,11 @@ public class JoinColumnContext extends AbstractJoinColumnContext<IJoinColumn>
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
 	
-		String table = column.getTable();
+		//String table = column.getTable();
 		XmlRelationshipMapping mapping = 
 			(XmlRelationshipMapping) column.getOwner().getRelationshipMapping();
-		XmlTypeMapping typeMapping = 
-			(XmlTypeMapping) column.getOwner().getTypeMapping();
+		//XmlTypeMapping typeMapping = 
+		//	(XmlTypeMapping) column.getOwner().getTypeMapping();
 		doContinue = column.isConnected();
 		
 //		if (doContinue && typeMapping.tableNameIsInvalid(table)) {

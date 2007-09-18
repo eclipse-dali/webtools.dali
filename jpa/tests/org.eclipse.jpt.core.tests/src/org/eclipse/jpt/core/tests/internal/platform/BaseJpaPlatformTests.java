@@ -62,7 +62,6 @@ public class BaseJpaPlatformTests extends TestCase
 		xmlEntity.setSpecifiedName("XmlEntity");
 		entityMappings.getTypeMappings().add(xmlEntity);
 		entityMappings.eResource().save(null);
-		
 		assertEquals(1, CollectionTools.size(jpaProject.getJpaProject().getPlatform().persistentTypes(PROJECT_NAME)));
 		
 		// add java persistent type

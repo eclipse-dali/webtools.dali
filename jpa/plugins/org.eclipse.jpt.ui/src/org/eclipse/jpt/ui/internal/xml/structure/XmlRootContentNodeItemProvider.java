@@ -17,8 +17,8 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.jpt.core.internal.content.orm.EntityMappings;
-import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
+import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 
 public class XmlRootContentNodeItemProvider extends ItemProviderAdapter
 	implements IEditingDomainItemProvider, 

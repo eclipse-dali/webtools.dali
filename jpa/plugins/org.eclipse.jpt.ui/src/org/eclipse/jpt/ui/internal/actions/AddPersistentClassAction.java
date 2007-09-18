@@ -13,7 +13,6 @@ package org.eclipse.jpt.ui.internal.actions;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
 import org.eclipse.jpt.ui.internal.dialogs.AddPersistentClassDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;

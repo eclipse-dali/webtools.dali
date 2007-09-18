@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.content.java.mappings;
 
 import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
@@ -52,15 +51,7 @@ public class JavaEmbeddedProvider
 	}
 	
 	private IEmbeddable embeddableFor(Attribute attribute, DefaultsContext defaultsContext) {
-		String resolvedTypeName = attribute.resolvedTypeName();
-		if (resolvedTypeName == null) {
-			return null;
-		}
-		IPersistentType persistentType = defaultsContext.persistentType(resolvedTypeName);
-		if (persistentType != null && persistentType.getMappingKey() == IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
-			return (IEmbeddable) persistentType.getMapping();
-		}
-		return null;
+		return JavaEmbedded.embeddableFor(attribute, defaultsContext);
 	}
 
 	public IJavaAttributeMapping buildMapping(Attribute attribute, IJpaFactory factory) {

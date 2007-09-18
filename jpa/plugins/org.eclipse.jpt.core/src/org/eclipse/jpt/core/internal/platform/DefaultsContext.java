@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IPersistentType;
 
 public interface DefaultsContext
@@ -27,4 +28,12 @@ public interface DefaultsContext
 	 * @return
 	 */
 	IPersistentType persistentType(String fullyQualifiedTypeName);
+	
+	/**
+	 * Return null in instances where the scope is not within a PersistentType.
+	 * Otherwise return the CompilationUnit for the persistentType so that we
+	 * don't have to build this everything.  It is costly to build and resolve bindings.
+	 * @return
+	 */
+	CompilationUnit astRoot();
 }

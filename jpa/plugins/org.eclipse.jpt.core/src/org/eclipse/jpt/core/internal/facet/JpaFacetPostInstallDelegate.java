@@ -69,7 +69,7 @@ public class JpaFacetPostInstallDelegate
 		}
 	}
 	
-	private void createPersistenceXml(IProject project, IDataModel dataModel) {	
+	private void createPersistenceXml(IProject project, IDataModel dataModel) {
 		String deployPath = PERSISTENCE_XML_FILE_PATH;
 		try {
 			if (FacetedProjectFramework.hasProjectFacet(project, IModuleConstants.JST_WEB_MODULE)) {

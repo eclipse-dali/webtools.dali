@@ -17,8 +17,7 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
-import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
+import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsImages;
 
 public class EntityMappingsItemProvider extends ItemProviderAdapter

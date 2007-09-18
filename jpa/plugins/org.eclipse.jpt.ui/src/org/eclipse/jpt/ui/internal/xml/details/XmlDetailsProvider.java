@@ -9,7 +9,6 @@
 package org.eclipse.jpt.ui.internal.xml.details;
 
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.content.orm.IXmlContentNodes;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
 import org.eclipse.swt.widgets.Composite;

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.Name;
 
 /**
@@ -18,14 +19,14 @@ import org.eclipse.jdt.core.dom.Name;
  * (e.g. "com.xxx.Foo.VALUE1" or "value").
  */
 public final class NameStringExpressionConverter
-	extends AbstractExpressionConverter<String, Name>
+	extends AbstractExpressionConverter<String>
 {
-	private static ExpressionConverter<String, Name> INSTANCE;
+	private static ExpressionConverter<String> INSTANCE;
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<String, Name> instance() {
+	public static ExpressionConverter<String> instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new NameStringExpressionConverter();
 		}
@@ -40,16 +41,16 @@ public final class NameStringExpressionConverter
 	}
 
 	@Override
-	protected Name convert_(String string, AST ast) {
+	protected Name convertObject(String string, AST ast) {
 		return ast.newName(string);
 	}
 
 	@Override
-	protected String convert_(Name name) {
-		switch (name.getNodeType()) {
+	protected String convertExpression(Expression expression) {
+		switch (expression.getNodeType()) {
 			case ASTNode.QUALIFIED_NAME:
 			case ASTNode.SIMPLE_NAME:
-				return name.getFullyQualifiedName();
+				return ((Name) expression).getFullyQualifiedName();
 			default:
 				return null;
 		}

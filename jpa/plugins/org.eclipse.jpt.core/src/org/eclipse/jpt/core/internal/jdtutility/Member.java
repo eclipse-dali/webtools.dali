@@ -96,7 +96,14 @@ public abstract class Member {
 	 * note: this creates a *new* AST
 	 */
 	public CompilationUnit astRoot() {
-		return JDTTools.createASTRoot(this.jdtMember);
+		return JDTTools.buildASTRoot(this.jdtMember);
+	}
+
+	/**
+	 * note: this creates a *new* AST
+	 */
+	private CompilationUnit lightweightASTRoot() {
+		return JDTTools.buildLightweightASTRoot(this.jdtMember);
 	}
 
 	public ModifiedDeclaration modifiedDeclaration() {
@@ -107,12 +114,8 @@ public abstract class Member {
 		return new ModifiedDeclaration(this.bodyDeclaration(astRoot));
 	}
 
-	public BodyDeclaration bodyDeclaration() {
-		return this.bodyDeclaration(this.astRoot());
-	}
-
 	public ITextRange textRange() {
-		return this.textRange(this.astRoot());
+		return this.textRange(this.lightweightASTRoot());
 	}
 
 	public ITextRange textRange(CompilationUnit astRoot) {
@@ -124,23 +127,23 @@ public abstract class Member {
 	}
 
 	public ITextRange nameTextRange() {
-		return this.nameTextRange(this.astRoot());
+		return this.nameTextRange(this.lightweightASTRoot());
 	}
 	
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
 		ISourceRange sourceRange = this.nameSourceRange();
-		return 
+		return
 			new SimpleTextRange(
 				sourceRange.getOffset(), 
 				sourceRange.getLength(),
-				astRoot.getLineNumber(sourceRange.getOffset()));
+				astRoot.getLineNumber(sourceRange.getOffset())
+			);
 	}
 	
 	private ISourceRange nameSourceRange() {
 		try {
-			return getJdtMember().getNameRange();
-		}
-		catch (JavaModelException ex) {
+			return this.jdtMember.getNameRange();
+		} catch (JavaModelException ex) {
 			throw new RuntimeException(ex);
 		}
 	}

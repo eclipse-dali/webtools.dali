@@ -646,9 +646,7 @@ public class JpaJavaPackage extends EPackageImpl
 		initEReference(getJavaPersistentAttribute_DefaultMapping(), this.getIJavaAttributeMapping(), null, "defaultMapping", null, 1, 1, JavaPersistentAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getJavaPersistentAttribute_SpecifiedMapping(), this.getIJavaAttributeMapping(), null, "specifiedMapping", null, 1, 1, JavaPersistentAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iJavaTypeMappingEClass, IJavaTypeMapping.class, "IJavaTypeMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		addEOperation(iJavaTypeMappingEClass, null, "initialize", 0, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(iJavaAttributeMappingEClass, IJavaAttributeMapping.class, "IJavaAttributeMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		addEOperation(iJavaAttributeMappingEClass, null, "initialize", 0, 1, IS_UNIQUE, IS_ORDERED);
 		// Create resource
 		createResource(eNS_URI);
 	}

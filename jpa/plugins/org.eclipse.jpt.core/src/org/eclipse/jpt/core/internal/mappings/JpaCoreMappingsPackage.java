@@ -825,13 +825,31 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	public static final int ICOLUMN__LENGTH = IABSTRACT_COLUMN_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Specified Length</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ICOLUMN__SPECIFIED_LENGTH = IABSTRACT_COLUMN_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Precision</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ICOLUMN__PRECISION = IABSTRACT_COLUMN_FEATURE_COUNT + 1;
+	public static final int ICOLUMN__PRECISION = IABSTRACT_COLUMN_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Specified Precision</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ICOLUMN__SPECIFIED_PRECISION = IABSTRACT_COLUMN_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Scale</b></em>' attribute.
@@ -840,7 +858,16 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ICOLUMN__SCALE = IABSTRACT_COLUMN_FEATURE_COUNT + 2;
+	public static final int ICOLUMN__SCALE = IABSTRACT_COLUMN_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Specified Scale</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ICOLUMN__SPECIFIED_SCALE = IABSTRACT_COLUMN_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>IColumn</em>' class.
@@ -849,7 +876,7 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ICOLUMN_FEATURE_COUNT = IABSTRACT_COLUMN_FEATURE_COUNT + 3;
+	public static final int ICOLUMN_FEATURE_COUNT = IABSTRACT_COLUMN_FEATURE_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.mappings.IColumnMapping <em>IColumn Mapping</em>}' class.
@@ -4725,6 +4752,19 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IColumn#getSpecifiedLength <em>Specified Length</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Specified Length</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.IColumn#getSpecifiedLength()
+	 * @see #getIColumn()
+	 * @generated
+	 */
+	public EAttribute getIColumn_SpecifiedLength() {
+		return (EAttribute) iColumnEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IColumn#getPrecision <em>Precision</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4734,7 +4774,20 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getIColumn_Precision() {
-		return (EAttribute) iColumnEClass.getEStructuralFeatures().get(1);
+		return (EAttribute) iColumnEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IColumn#getSpecifiedPrecision <em>Specified Precision</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Specified Precision</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.IColumn#getSpecifiedPrecision()
+	 * @see #getIColumn()
+	 * @generated
+	 */
+	public EAttribute getIColumn_SpecifiedPrecision() {
+		return (EAttribute) iColumnEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -4747,7 +4800,20 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 	 * @generated
 	 */
 	public EAttribute getIColumn_Scale() {
-		return (EAttribute) iColumnEClass.getEStructuralFeatures().get(2);
+		return (EAttribute) iColumnEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.mappings.IColumn#getSpecifiedScale <em>Specified Scale</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Specified Scale</em>'.
+	 * @see org.eclipse.jpt.core.internal.mappings.IColumn#getSpecifiedScale()
+	 * @see #getIColumn()
+	 * @generated
+	 */
+	public EAttribute getIColumn_SpecifiedScale() {
+		return (EAttribute) iColumnEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -6586,8 +6652,11 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		createEAttribute(iAbstractColumnEClass, IABSTRACT_COLUMN__DEFAULT_TABLE);
 		iColumnEClass = createEClass(ICOLUMN);
 		createEAttribute(iColumnEClass, ICOLUMN__LENGTH);
+		createEAttribute(iColumnEClass, ICOLUMN__SPECIFIED_LENGTH);
 		createEAttribute(iColumnEClass, ICOLUMN__PRECISION);
+		createEAttribute(iColumnEClass, ICOLUMN__SPECIFIED_PRECISION);
 		createEAttribute(iColumnEClass, ICOLUMN__SCALE);
+		createEAttribute(iColumnEClass, ICOLUMN__SPECIFIED_SCALE);
 		iColumnMappingEClass = createEClass(ICOLUMN_MAPPING);
 		iBasicEClass = createEClass(IBASIC);
 		createEAttribute(iBasicEClass, IBASIC__FETCH);
@@ -6864,9 +6933,15 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		initEAttribute(getIAbstractColumn_SpecifiedTable(), ecorePackage.getEString(), "specifiedTable", null, 0, 1, IAbstractColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getIAbstractColumn_DefaultTable(), ecorePackage.getEString(), "defaultTable", null, 0, 1, IAbstractColumn.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iColumnEClass, IColumn.class, "IColumn", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getIColumn_Length(), ecorePackage.getEInt(), "length", "255", 0, 1, IColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getIColumn_Precision(), ecorePackage.getEInt(), "precision", null, 0, 1, IColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getIColumn_Scale(), ecorePackage.getEInt(), "scale", null, 0, 1, IColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getIColumn_Length(), ecorePackage.getEInt(), "length", null, 0, 1, IColumn.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getIColumn_SpecifiedLength(), theEcorePackage.getEInt(), "specifiedLength", "-1", 0, 1, IColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getIColumn_Precision(), ecorePackage.getEInt(), "precision", null, 0, 1, IColumn.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getIColumn_SpecifiedPrecision(), theEcorePackage.getEInt(), "specifiedPrecision", "-1", 0, 1, IColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getIColumn_Scale(), ecorePackage.getEInt(), "scale", null, 0, 1, IColumn.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getIColumn_SpecifiedScale(), theEcorePackage.getEInt(), "specifiedScale", "-1", 0, 1, IColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		addEOperation(iColumnEClass, theEcorePackage.getEInt(), "getDefaultLength", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(iColumnEClass, theEcorePackage.getEInt(), "getDefaultPrecision", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(iColumnEClass, theEcorePackage.getEInt(), "getDefaultScale", 0, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(iColumnMappingEClass, IColumnMapping.class, "IColumnMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		addEOperation(iColumnMappingEClass, this.getIColumn(), "getColumn", 0, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(iBasicEClass, IBasic.class, "IBasic", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -7525,6 +7600,14 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		public static final EAttribute ICOLUMN__LENGTH = eINSTANCE.getIColumn_Length();
 
 		/**
+		 * The meta object literal for the '<em><b>Specified Length</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute ICOLUMN__SPECIFIED_LENGTH = eINSTANCE.getIColumn_SpecifiedLength();
+
+		/**
 		 * The meta object literal for the '<em><b>Precision</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -7533,12 +7616,28 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		public static final EAttribute ICOLUMN__PRECISION = eINSTANCE.getIColumn_Precision();
 
 		/**
+		 * The meta object literal for the '<em><b>Specified Precision</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute ICOLUMN__SPECIFIED_PRECISION = eINSTANCE.getIColumn_SpecifiedPrecision();
+
+		/**
 		 * The meta object literal for the '<em><b>Scale</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		public static final EAttribute ICOLUMN__SCALE = eINSTANCE.getIColumn_Scale();
+
+		/**
+		 * The meta object literal for the '<em><b>Specified Scale</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute ICOLUMN__SPECIFIED_SCALE = eINSTANCE.getIColumn_SpecifiedScale();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.mappings.IColumnMapping <em>IColumn Mapping</em>}' class.

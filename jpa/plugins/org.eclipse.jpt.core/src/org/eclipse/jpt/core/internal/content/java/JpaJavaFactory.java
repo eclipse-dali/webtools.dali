@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 /**
  * <!-- begin-user-doc -->
@@ -92,13 +93,13 @@ public class JpaJavaFactory extends EFactoryImpl
 		return jpaCompilationUnit;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	
 	public JavaPersistentType createJavaPersistentType() {
-		JavaPersistentType javaPersistentType = new JavaPersistentType();
+		throw new UnsupportedOperationException();
+	}
+	
+	public JavaPersistentType createJavaPersistentType(Type type) {
+		JavaPersistentType javaPersistentType = new JavaPersistentType(type);
 		return javaPersistentType;
 	}
 

@@ -10,13 +10,13 @@ package org.eclipse.jpt.core.internal.platform;
 
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
-import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -25,7 +25,6 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 {
 	private JoinTableContext joinTableContext;
 	
-		
 	protected JavaMultiRelationshipMappingContext(
 			IContext parentContext, JavaMultiRelationshipMapping mapping) {
 		super(parentContext, mapping);
@@ -33,36 +32,10 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 	}
 	
 	@Override
-	public void refreshDefaultsInternal(DefaultsContext defaultsContext) {
-		super.refreshDefaultsInternal(defaultsContext);
-		this.joinTableContext.refreshDefaults(defaultsContext);
+	protected void refreshDefaultsInternal(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaultsInternal(defaultsContext, monitor);
+		this.joinTableContext.refreshDefaults(defaultsContext, monitor);
 	}
-	
-	@Override
-	protected Object getDefault(String key, DefaultsContext defaultsContext) {
-		if (key.equals(BaseJpaPlatform.DEFAULT_JOIN_TABLE_NAME_KEY)) {
-			return joinTableDefaultName(defaultsContext);
-		}
-		return super.getDefault(key, defaultsContext);
-	}
-	
-	protected String joinTableDefaultName(DefaultsContext defaultsContext) {
-		IEntity entity = getMapping().getEntity();
-		if (entity == null) {
-			return null;
-		}
-		ITable owningTable = entity.getTable();
-		if (owningTable == null) {
-			return null;
-		}
-		IEntity targetEntity = targetEntity(defaultsContext);
-		if (targetEntity == null) {
-			return null;
-		}
-		ITable targetTable = targetEntity.getTable();
-		return (targetTable == null) ? null : owningTable.getName() + "_" + targetTable.getName();
-	}
-
 	
 	protected JavaMultiRelationshipMapping getMapping() {
 		return (JavaMultiRelationshipMapping) super.getMapping();
@@ -72,10 +45,10 @@ public abstract class JavaMultiRelationshipMappingContext extends JavaRelationsh
 		super.addToMessages(messages);
 		JavaMultiRelationshipMapping mapping = getMapping();
 		
-		if (getMapping().isJoinTableSpecified()) {
+		if (mapping.isJoinTableSpecified()) {
 			addJoinTableMessages(messages);
 		}
-		if (getMapping().getMappedBy() != null) {
+		if (mapping.getMappedBy() != null) {
 			addMappedByMessages(messages);
 		}
 	}

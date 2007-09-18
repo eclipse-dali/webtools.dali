@@ -399,6 +399,10 @@ public class JavaJoinColumn extends AbstractJavaColumn implements IJoinColumn
 		return (IJoinColumn.Owner) super.getOwner();
 	}
 
+	public boolean isVirtual() {
+		return getOwner().isVirtual(this);
+	}
+
 	public Table dbReferencedColumnTable() {
 		return getOwner().dbReferencedColumnTable();
 	}

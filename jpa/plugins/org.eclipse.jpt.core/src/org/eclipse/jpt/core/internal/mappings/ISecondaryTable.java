@@ -98,6 +98,7 @@ public interface ISecondaryTable extends ITable
 
 	boolean containsSpecifiedPrimaryKeyJoinColumns();
 
+	boolean isVirtual();
 
 	class PrimaryKeyJoinColumnOwner implements IAbstractJoinColumn.Owner
 	{
@@ -125,6 +126,14 @@ public interface ISecondaryTable extends ITable
 
 		public List<IPrimaryKeyJoinColumn> joinColumns() {
 			return this.secondaryTable.getPrimaryKeyJoinColumns();
+		}
+		
+		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
+			return this.secondaryTable.getDefaultPrimaryKeyJoinColumns().contains(joinColumn);
+		}
+		
+		public int indexOf(IAbstractJoinColumn joinColumn) {
+			return joinColumns().indexOf(joinColumn);
 		}
 	}
 }

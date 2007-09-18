@@ -13,28 +13,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.content.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.content.orm.XmlAttributeMapping;
-import org.eclipse.jpt.core.internal.content.orm.XmlBasic;
-import org.eclipse.jpt.core.internal.content.orm.XmlEmbedded;
-import org.eclipse.jpt.core.internal.content.orm.XmlEmbeddedId;
-import org.eclipse.jpt.core.internal.content.orm.XmlId;
-import org.eclipse.jpt.core.internal.content.orm.XmlManyToMany;
-import org.eclipse.jpt.core.internal.content.orm.XmlManyToOne;
-import org.eclipse.jpt.core.internal.content.orm.XmlNullAttributeMapping;
-import org.eclipse.jpt.core.internal.content.orm.XmlOneToMany;
-import org.eclipse.jpt.core.internal.content.orm.XmlOneToOne;
-import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
-import org.eclipse.jpt.core.internal.content.orm.XmlPersistentType;
-import org.eclipse.jpt.core.internal.content.orm.XmlTransient;
-import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
-import org.eclipse.jpt.core.internal.content.orm.XmlVersion;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -174,14 +159,15 @@ public abstract class XmlTypeContext extends BaseContext
 		this.javaTypeContext = null;
 	}
 	
-	public DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	public DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
-				return XmlTypeContext.this.getDefault(key, defaultsContext);
+				return XmlTypeContext.this.getDefault(key, getWrappedDefaultsContext());
 			}
-			
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+			@Override
+			public CompilationUnit astRoot() {
+				//TODO need to somehow not build this astRoot every time.  can we store the JavaPersistentType we are finding?
+				return javaPersistentType().getType().astRoot();
 			}
 		};
 	}
@@ -199,33 +185,42 @@ public abstract class XmlTypeContext extends BaseContext
 		return this.refreshed;
 	}
 
-	public void refreshDefaults(DefaultsContext parentDefaults) {
-		super.refreshDefaults(parentDefaults);
+	private void checkCanceled(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}		
+	}
+
+	@Override
+	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
+		super.refreshDefaults(parentDefaults, monitor);
 		this.refreshed = true;
 		if (this.javaTypeContext != null) {
-			this.javaTypeContext.refreshDefaults(parentDefaults);
+			this.javaTypeContext.refreshDefaults(parentDefaults, monitor);
 		}
-		refreshPersistentType(parentDefaults);
+		refreshPersistentType(parentDefaults, monitor);
 		DefaultsContext wrappedDefaultsContext = wrapDefaultsContext(parentDefaults);
-		refreshTableContext(wrappedDefaultsContext);
+		refreshTableContext(wrappedDefaultsContext, monitor);
 		this.xmlTypeMapping.refreshDefaults(wrappedDefaultsContext);
 		
-		refreshAttributeMappingContextDefaults(wrappedDefaultsContext);
+		refreshAttributeMappingContextDefaults(wrappedDefaultsContext, monitor);
 	}
 	
-	protected void refreshTableContext(DefaultsContext defaultsContext) {
+	protected void refreshTableContext(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 	}
 	
-	public void refreshAttributeMappingContextDefaults(DefaultsContext defaultsContext) {
+	public void refreshAttributeMappingContextDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		for (XmlAttributeContext context : this.attributeMappingContexts) {
-			context.refreshDefaults(context.wrapDefaultsContext(defaultsContext));
+			checkCanceled(monitor);
+			context.refreshDefaults(context.wrapDefaultsContext(defaultsContext), monitor);
 		}
 		for (XmlAttributeContext context : this.virtualAttributeMappingContexts) {
-			context.refreshDefaults(context.wrapDefaultsContext(defaultsContext));
+			checkCanceled(monitor);
+			context.refreshDefaults(context.wrapDefaultsContext(defaultsContext), monitor);
 		}
 	}
 	
-	protected void refreshPersistentType(DefaultsContext defaultsContext) {
+	protected void refreshPersistentType(DefaultsContext defaultsContext, IProgressMonitor monitor) {
 		XmlPersistentType xmlPersistentType = this.getXmlTypeMapping().getPersistentType();
 		xmlPersistentType.refreshDefaults(defaultsContext);
 		//get the java attribute names
@@ -236,6 +231,7 @@ public abstract class XmlTypeContext extends BaseContext
 		Collection<IPersistentAttribute> javaAttributes = javaAttributes();
 		Collection<String> javaAttributeNames = new ArrayList<String>();
 		for (IPersistentAttribute javaAttribute : javaAttributes) {
+			checkCanceled(monitor);
 			String javaAttributeName = javaAttribute.getName();
 			javaAttributeNames.add(javaAttributeName);
 			XmlPersistentAttribute xmlAttribute = xmlPersistentType.attributeNamed(javaAttributeName);
@@ -256,6 +252,7 @@ public abstract class XmlTypeContext extends BaseContext
 		
 		Collection<String> specifiedXmlAttributeNames = new ArrayList<String>();
 		for (XmlPersistentAttribute specifiedAttribute : xmlPersistentType.getSpecifiedPersistentAttributes()) {
+			checkCanceled(monitor);
 			String attributeName = specifiedAttribute.getName();
 			if (! StringTools.stringIsEmpty(attributeName)) {
 				specifiedXmlAttributeNames.add(attributeName);
@@ -266,6 +263,7 @@ public abstract class XmlTypeContext extends BaseContext
 		// *or* if it is mapped specifically
 		Collection<XmlAttributeMapping> mappingsToRemove = new ArrayList<XmlAttributeMapping>();
 		for (XmlAttributeMapping mapping : xmlPersistentType.getVirtualAttributeMappings()) {
+			checkCanceled(monitor);
 			String attributeName = mapping.getPersistentAttribute().getName();
 			if (! javaAttributeNames.contains(attributeName)
 					|| specifiedXmlAttributeNames.contains(attributeName)) {

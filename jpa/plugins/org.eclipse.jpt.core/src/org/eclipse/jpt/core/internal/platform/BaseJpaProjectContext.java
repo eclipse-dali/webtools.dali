@@ -14,7 +14,10 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
@@ -30,6 +33,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -134,16 +138,24 @@ public class BaseJpaProjectContext extends BaseContext
 		return validPersistenceXmlFiles.iterator();
 	}
 	
-	public void refreshDefaults() {
-		refreshDefaults(null);
+	public void refreshDefaults(IProgressMonitor monitor) {
+		refreshDefaults(null, monitor);
 	}
 	
-	public void refreshDefaults(DefaultsContext parentDefaults) {
-		super.refreshDefaults(parentDefaults);
+	@Override
+	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
+		super.refreshDefaults(parentDefaults, monitor);
 		DefaultsContext defaultsContext = buildDefaultsContext();
 		for (PersistenceUnitContext context : this.persistenceUnitContexts) {
-			context.refreshDefaults(defaultsContext);
+			checkCanceled(monitor);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
+	}
+	
+	private void checkCanceled(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}		
 	}
 	
 	private DefaultsContext buildDefaultsContext() {
@@ -151,7 +163,7 @@ public class BaseJpaProjectContext extends BaseContext
 			public Object getDefault(String key) {
 				if (key.equals(BaseJpaPlatform.DEFAULT_TABLE_SCHEMA_KEY) 
 					|| key.equals(BaseJpaPlatform.DEFAULT_TABLE_GENERATOR_SCHEMA_KEY)) {
-					return getProjectUserSchema();
+					return getDefaultSchema();
 				}
 				else if (key.equals(BaseJpaPlatform.DEFAULT_TABLE_CATALOG_KEY)) {
 					return getProjectUserCatalog();
@@ -161,6 +173,9 @@ public class BaseJpaProjectContext extends BaseContext
 			public IPersistentType persistentType(String fullyQualifiedTypeName) {
 				return null;
 			}
+			public CompilationUnit astRoot() {
+				return null;
+			}
 		};
 	}
 	
@@ -168,10 +183,9 @@ public class BaseJpaProjectContext extends BaseContext
 		return this.jpaProject.connectionProfile();
 	}
 	
-	//TODO is the userName what we want to use, or do we need a preference for the user?
-	private String getProjectUserSchema() {
+	private String getDefaultSchema() {
 		ConnectionProfile profile = this.getProjectConnectionProfile();
-		return  profile.getUserName();
+		return  profile.getDefaultSchema();
 	}
 
 	private String getProjectUserCatalog() {
@@ -322,7 +336,7 @@ public class BaseJpaProjectContext extends BaseContext
 	
 	protected void addInvalidPersistenceXmlContentMessage(List<IMessage> messages) {
 		if (validPersistenceXmlFiles.size() == 1) {
-			IJpaFile persistenceXmlFile = (IJpaFile) validPersistenceXmlFiles.get(0);
+			IJpaFile persistenceXmlFile = validPersistenceXmlFiles.get(0);
 			if (getPersistence(persistenceXmlFile) == null) {
 				PersistenceXmlRootContentNode root = 
 					(PersistenceXmlRootContentNode) persistenceXmlFile.getContent();

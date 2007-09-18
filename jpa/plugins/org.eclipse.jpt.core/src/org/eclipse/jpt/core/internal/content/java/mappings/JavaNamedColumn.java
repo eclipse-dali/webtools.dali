@@ -13,9 +13,7 @@ import java.util.Iterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.content.java.JavaEObject;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -152,11 +150,11 @@ public abstract class JavaNamedColumn extends JavaEObject
 	}
 
 	protected DeclarationAnnotationElementAdapter<String> buildBooleanElementAdapter(String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<String, BooleanLiteral>(this.daa, elementName, BooleanStringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(this.daa, elementName, BooleanStringExpressionConverter.instance());
 	}
 
 	protected DeclarationAnnotationElementAdapter<String> buildIntElementAdapter(String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<String, NumberLiteral>(this.daa, elementName, NumberStringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(this.daa, elementName, NumberStringExpressionConverter.instance());
 	}
 
 	protected AnnotationElementAdapter<String> buildShortCircuitElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {

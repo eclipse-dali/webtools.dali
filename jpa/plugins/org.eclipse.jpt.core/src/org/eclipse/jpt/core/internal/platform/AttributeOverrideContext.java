@@ -9,7 +9,7 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
-import org.eclipse.jpt.core.internal.IPersistentType;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
@@ -37,12 +37,8 @@ public class AttributeOverrideContext extends BaseContext
 		return new ColumnContext(this, this.attributeOverride.getColumn());
 	}
 	
-	public DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
-			}
-		
+	public DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {	
 			public Object getDefault(String key) {
 				if (key.equals(BaseJpaPlatform.DEFAULT_COLUMN_NAME_KEY)) {
 					return buildDefaultColumnName();
@@ -54,7 +50,7 @@ public class AttributeOverrideContext extends BaseContext
 					}
 				
 				}
-				return defaultsContext.getDefault(key);
+				return super.getDefault(key);
 			}
 		};
 	}
@@ -82,8 +78,10 @@ public class AttributeOverrideContext extends BaseContext
 		return columnMapping.getColumn().getSpecifiedTable();
 	}
 	
-	public void refreshDefaults(DefaultsContext defaultsContext) {
-		this.columnContext.refreshDefaults(wrapDefaultsContext(defaultsContext));
+	@Override
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
+		this.columnContext.refreshDefaults(wrapDefaultsContext(defaultsContext), monitor);
 	}
 
 	@Override

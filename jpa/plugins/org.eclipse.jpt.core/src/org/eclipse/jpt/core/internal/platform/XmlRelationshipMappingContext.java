@@ -8,13 +8,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
-import org.eclipse.jpt.core.internal.IPersistentType;
-import org.eclipse.jpt.core.internal.ITypeMapping;
-import org.eclipse.jpt.core.internal.content.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
 
 public abstract class XmlRelationshipMappingContext extends XmlAttributeContext
@@ -23,29 +20,13 @@ public abstract class XmlRelationshipMappingContext extends XmlAttributeContext
 		super(parentContext, mapping);
 	}
 	
-	protected IEntity targetEntity(DefaultsContext defaultsContext) {
-		String targetEntity = relationshipMapping().fullyQualifiedTargetEntity();
-		if (targetEntity == null) {
-			return null;
-		}
-		IPersistentType persistentType = defaultsContext.persistentType(targetEntity);
-		if (persistentType == null) {
-			return null;
-		}
-		ITypeMapping typeMapping = persistentType.getMapping();
-		if (typeMapping instanceof IEntity) {
-			return (IEntity) typeMapping;
-		}
-		return null;
-	}
-	
 	protected XmlRelationshipMapping relationshipMapping() {
 		return (XmlRelationshipMapping) attributeMapping();
 	}
 
 	@Override
-	public void refreshDefaults(DefaultsContext defaultsContext) {
-		super.refreshDefaults(defaultsContext);
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
 		relationshipMapping().refreshDefaults(defaultsContext);
 	}
 	
@@ -70,7 +51,7 @@ public abstract class XmlRelationshipMappingContext extends XmlAttributeContext
 			if (attribute != null) {
 				IType iType = relationshipMapping().getPersistentType().findJdtType();
 				if (iType != null) {
-					return relationshipMapping().javaDefaultTargetEntity();
+					return relationshipMapping().javaDefaultTargetEntity(defaultsContext.astRoot());
 				}
 			}
 		}

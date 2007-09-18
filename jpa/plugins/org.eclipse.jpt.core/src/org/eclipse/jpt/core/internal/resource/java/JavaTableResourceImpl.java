@@ -1,7 +1,6 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
-import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;

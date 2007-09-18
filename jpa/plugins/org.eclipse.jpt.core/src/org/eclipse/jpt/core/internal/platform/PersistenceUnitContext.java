@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.IJpaFile;
@@ -24,24 +24,20 @@ import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
-import org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaults;
-import org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.core.internal.content.orm.XmlRootContentNode;
-import org.eclipse.jpt.core.internal.content.persistence.JavaClassRef;
-import org.eclipse.jpt.core.internal.content.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults;
+import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef;
+import org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
-import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class PersistenceUnitContext extends BaseContext
@@ -189,7 +185,7 @@ public class PersistenceUnitContext extends BaseContext
 	}
 	
 	protected Iterator<JavaPersistentType> listedJavaPersistentTypes() {
-		return new TransformationIterator<JavaClassRef, JavaPersistentType>(persistenceUnit.getClasses().iterator()) {
+		return new TransformationIterator<JavaClassRef, JavaPersistentType>(new CloneIterator<JavaClassRef>(persistenceUnit.getClasses())) {
 			@Override
 			protected JavaPersistentType transform(JavaClassRef next) {
 				return javaPersistentTypeFor(next);
@@ -280,31 +276,38 @@ public class PersistenceUnitContext extends BaseContext
 				);
 	}
 	
-	public void refreshDefaults(DefaultsContext parentDefaults) {
-		super.refreshDefaults(parentDefaults);
+	@Override
+	public void refreshDefaults(DefaultsContext parentDefaults, IProgressMonitor monitor) {
+		super.refreshDefaults(parentDefaults, monitor);
 		for (JavaTypeContext context : this.duplicateJavaPersistentTypes) {
+			checkCanceled(monitor);
 			// context for duplicates not be based on the persistenceUnit defaults,
 			// so we're going to use the one passed here without wrapping it
-			context.refreshDefaults(parentDefaults);
+			context.refreshDefaults(parentDefaults, monitor);
 		}
-		DefaultsContext defaults = wrapDefaultsContext(parentDefaults);
+		DefaultsContext defaults = wrapDefaultsContext(parentDefaults, monitor);
 		for (MappingFileContext context : this.mappingFileContexts) {
-			context.refreshDefaults(defaults);
+			checkCanceled(monitor);
+			context.refreshDefaults(defaults, monitor);
 		}
 		for (JavaTypeContext context : this.javaPersistentTypeContexts) {
-			context.refreshDefaults(defaults);
+			checkCanceled(monitor);
+			context.refreshDefaults(defaults, monitor);
 		}
 		
 		//TODO somehow need to clear out defaults for the duplicateJpaFiles, 
 		//do i have to build JavaTypeContext for those as well?
 	}
 	
-	protected DefaultsContext wrapDefaultsContext(DefaultsContext defaults) {
-		final DefaultsContext puDefaults = buildPersistenceUnitDefaults(defaults);
-		return new DefaultsContext(){
-			public Object getDefault(String key) {
-				return puDefaults.getDefault(key);
-			}
+	private void checkCanceled(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}		
+	}
+
+	protected DefaultsContext wrapDefaultsContext(DefaultsContext defaults, final IProgressMonitor monitor) {
+		DefaultsContext puDefaults = buildPersistenceUnitDefaults(defaults);
+		return new DefaultsContextWrapper(puDefaults){
 			public IPersistentType persistentType(String fullyQualifiedTypeName) {
 				for (Iterator<TypeContext> i = typeContexts(); i.hasNext(); ) {
 					TypeContext typeContext = i.next();
@@ -313,7 +316,7 @@ public class PersistenceUnitContext extends BaseContext
 					if (jdtType != null 
 							&& fullyQualifiedTypeName.equals(jdtType.getFullyQualifiedName())) {
 						if (! typeContext.isRefreshed()) {
-							typeContext.refreshDefaults(this);
+							typeContext.refreshDefaults(this, monitor);
 						}
 						return persistentType;
 					}
@@ -323,14 +326,14 @@ public class PersistenceUnitContext extends BaseContext
 		};
 	}
 	
-	protected DefaultsContext buildPersistenceUnitDefaults(final DefaultsContext defaults) {
+	protected DefaultsContext buildPersistenceUnitDefaults(DefaultsContext defaults) {
 		if (persistenceUnitMetadatas.size() == 1) {
 			final PersistenceUnitDefaults puDefaults = persistenceUnitMetadatas.get(0).getPersistenceUnitDefaults();
 			if (puDefaults.isAllFeaturesUnset()) {
 				return defaults;
 			}
 			
-			return new DefaultsContext() {
+			return new DefaultsContextWrapper(defaults) {
 				public Object getDefault(String key) {
 					if (key.equals(BaseJpaPlatform.DEFAULT_TABLE_SCHEMA_KEY)
 						|| key.equals(BaseJpaPlatform.DEFAULT_TABLE_GENERATOR_SCHEMA_KEY)) {
@@ -351,10 +354,7 @@ public class PersistenceUnitContext extends BaseContext
 							return access;
 						}
 					}
-					return defaults.getDefault(key);
-				}
-				public IPersistentType persistentType(String fullyQualifiedTypeName) {
-					return defaults.persistentType(fullyQualifiedTypeName);
+					return super.getDefault(key);
 				}
 			};
 		}

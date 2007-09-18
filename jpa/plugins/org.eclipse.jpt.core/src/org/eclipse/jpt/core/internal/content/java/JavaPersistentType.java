@@ -25,8 +25,8 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
@@ -46,6 +46,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaJoinTable;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToOne;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaMultiRelationshipMapping;
+import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToMany;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOne;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaPrimaryKeyJoinColumn;
@@ -57,7 +58,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.AttributeAnnotationTools;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
@@ -171,8 +171,14 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	private IPersistentType parentPersistentType;
 
 	protected JavaPersistentType() {
+		throw new UnsupportedOperationException();
+	}
+
+	protected JavaPersistentType(Type type) {
 		super();
+		this.type = type;
 		this.attributeMappingAnnotationAdapters = this.buildAttributeMappingAnnotationAdapters();
+		this.setMappingGen(this.nullTypeMappingProvider().buildMapping(this.type, null));
 	}
 
 	private DeclarationAnnotationAdapter[] buildAttributeMappingAnnotationAdapters() {
@@ -352,7 +358,19 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	private IJavaTypeMappingProvider typeMappingProvider(String typeMappingKey) {
-		return jpaPlatform().javaTypeMappingProvider(typeMappingKey);
+		IJavaTypeMappingProvider javaTypeMappingProvider = jpaPlatform().javaTypeMappingProvider(typeMappingKey);
+		if (javaTypeMappingProvider == null) {
+			javaTypeMappingProvider = nullTypeMappingProvider();
+		}
+		return javaTypeMappingProvider;
+	}
+	
+	/**
+	 * the "null" type mapping is used when the types is not modified
+	 * by a mapping annotation
+	 */
+	protected IJavaTypeMappingProvider nullTypeMappingProvider() {
+		return JavaNullTypeMappingProvider.instance();
 	}
 
 	/**
@@ -580,12 +598,6 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		return this.getJpaProject().modifySharedDocumentCommandExecutorProvider();
 	}
 
-	public void setJdtType(IType iType, CompilationUnit astRoot) {
-		this.type = new Type(iType, this.modifySharedDocumentCommandExecutorProvider());
-		this.setAccess(this.javaAccessType(astRoot));
-		this.createAndSetPersistentTypeMappingFromJava(this.javaTypeMappingKey(astRoot));
-	}
-
 	public JavaPersistentAttribute addJavaPersistentAttribute(IMember jdtMember) {
 		JavaPersistentAttribute persistentAttribute = createJavaPersistentAttribute(jdtMember);
 		getAttributes().add(persistentAttribute);
@@ -662,28 +674,23 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	private void updatePersistentFields(CompilationUnit astRoot, List<JavaPersistentAttribute> persistentAttributesToRemove) {
-		for (IField field : this.jdtPersistableFields()) {
-			JavaPersistentAttribute persistentAttribute = persistentAttributeFor(field);
+		updatePersistentAttributes(astRoot, persistentAttributesToRemove, this.jdtPersistableFields());
+	}
+
+	private void updatePersistentProperties(CompilationUnit astRoot, List<JavaPersistentAttribute> persistentAttributesToRemove) {
+		updatePersistentAttributes(astRoot, persistentAttributesToRemove, this.jdtPersistableProperties());
+	}
+
+	private void updatePersistentAttributes(CompilationUnit astRoot, List<JavaPersistentAttribute> persistentAttributesToRemove, IMember[] members) {
+		for (IMember member : members) {
+			JavaPersistentAttribute persistentAttribute = persistentAttributeFor(member);
 			if (persistentAttribute == null) {
-				persistentAttribute = addJavaPersistentAttribute(field);
+				persistentAttribute = addJavaPersistentAttribute(member);
 			}
 			else {
 				persistentAttributesToRemove.remove(persistentAttribute);
 			}
 			persistentAttribute.updateFromJava(astRoot);
-		}
-	}
-
-	private void updatePersistentProperties(CompilationUnit astRoot, List<JavaPersistentAttribute> persistentAttributesToRemove) {
-		for (IMethod method : this.jdtPersistableProperties()) {
-			JavaPersistentAttribute persistentAttribute = persistentAttributeFor(method);
-			if (persistentAttribute == null) {
-				addJavaPersistentAttribute(method);
-			}
-			else {
-				persistentAttributesToRemove.remove(persistentAttribute);
-				persistentAttribute.updateFromJava(astRoot);
-			}
 		}
 	}
 
@@ -696,7 +703,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	private String javaTypeMappingKey(CompilationUnit astRoot) {
-		for (Iterator<IJavaTypeMappingProvider> i = this.typeMappingProviders(); i.hasNext(); ) {
+		for (Iterator<IJavaTypeMappingProvider> i = this.typeMappingProviders(); i.hasNext();) {
 			IJavaTypeMappingProvider provider = i.next();
 			if (this.type.containsAnnotation(provider.declarationAnnotationAdapter(), astRoot)) {
 				return provider.key();
@@ -758,7 +765,15 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	public boolean includes(int offset) {
-		return this.fullTextRange().includes(offset);
+		ITextRange fullTextRange = this.fullTextRange();
+		if (fullTextRange == null) {
+			//This happens if the type no longer exists in the java (rename in editor).
+			//The text selection event is fired before the update from java so our
+			//model has not yet had a chance to update appropriately.  For now, avoid the NPE, 
+			//not sure of the ultimate solution to these 2 threads accessing our model
+			return false;
+		}
+		return fullTextRange.includes(offset);
 	}
 
 	public ITextRange fullTextRange() {
@@ -832,15 +847,6 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		return this.parentPersistentType;
 	}
 
-	private String superclassTypeSignature() {
-		try {
-			return this.jdtType().getSuperclassTypeSignature();
-		}
-		catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
-		}
-	}
-
 	/**
 	 * Return the AccessType currently implied by the Java source code:
 	 *     - if only Fields are annotated => FIELD
@@ -857,7 +863,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		boolean hasPersistableProperties = false;
 		for (IField field : AttributeAnnotationTools.persistableFields(jdtType)) {
 			hasPersistableFields = true;
-			FieldAttribute fa = new FieldAttribute(field, null);  // a bit hacky...
+			FieldAttribute fa = new FieldAttribute(field, null); // a bit hacky...
 			if (fa.containsAnyAnnotation(this.attributeMappingAnnotationAdapters, astRoot)) {
 				// any field is annotated => FIELD
 				return AccessType.FIELD;
@@ -865,7 +871,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		}
 		for (IMethod method : AttributeAnnotationTools.persistablePropertyGetters(jdtType)) {
 			hasPersistableProperties = true;
-			MethodAttribute ma = new MethodAttribute(method, null);  // a bit hacky...
+			MethodAttribute ma = new MethodAttribute(method, null); // a bit hacky...
 			if (ma.containsAnyAnnotation(this.attributeMappingAnnotationAdapters, astRoot)) {
 				// none of the fields are annotated and a getter is annotated => PROPERTY
 				return AccessType.PROPERTY;
@@ -883,27 +889,27 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	private void refreshParentPersistentType(DefaultsContext context) {
-		String superclassTypeSignature = this.superclassTypeSignature();
-		if (superclassTypeSignature == null) {
-			this.parentPersistentType = null;
-			return;
+		ITypeBinding typeBinding = getType().typeBinding(context.astRoot());
+		this.parentPersistentType = parentPersistentType(context, typeBinding);
+	}
+
+	public static IPersistentType parentPersistentType(DefaultsContext context, ITypeBinding typeBinding) {
+		if (typeBinding == null) {
+			return null;
 		}
-		String fullyQualifiedTypeName = JDTTools.resolveSignature(superclassTypeSignature, this.jdtType());
-		if (fullyQualifiedTypeName == null) {
-			this.parentPersistentType = null;
-			return;
+		ITypeBinding superClassTypeBinding = typeBinding.getSuperclass();
+		if (superClassTypeBinding == null) {
+			return null;
 		}
+		String fullyQualifiedTypeName = superClassTypeBinding.getQualifiedName();
 		IPersistentType possibleParent = context.persistentType(fullyQualifiedTypeName);
 		if (possibleParent == null) {
 			//TODO look to superclass
-			this.parentPersistentType = null;
-			return;
+			return null;
 		}
 		if (possibleParent.getMappingKey() != null) {
-			this.parentPersistentType = possibleParent;
+			return possibleParent;
 		}
-		else {
-			this.parentPersistentType = possibleParent.parentPersistentType();
-		}
+		return possibleParent.parentPersistentType();
 	}
 }

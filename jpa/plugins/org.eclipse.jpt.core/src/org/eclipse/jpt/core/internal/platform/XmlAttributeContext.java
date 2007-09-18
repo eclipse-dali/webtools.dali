@@ -9,11 +9,11 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
@@ -42,7 +42,9 @@ public abstract class XmlAttributeContext extends BaseContext
 		return xmlAttributeMapping.getPersistentAttribute();
 	}
 
-	public void refreshDefaults(DefaultsContext defaultsContext) {
+	@Override
+	public void refreshDefaults(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaults(defaultsContext, monitor);
 		JavaPersistentType javaPersistentType = this.xmlAttributeMapping.getPersistentType().findJavaPersistentType();
 		String name = this.xmlAttributeMapping.getPersistentAttribute().getName();
 		if (name != null && javaPersistentType != null) {
@@ -74,14 +76,10 @@ public abstract class XmlAttributeContext extends BaseContext
 		return attributeMapping().typeMapping().getKey() == IMappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 	
-	public final DefaultsContext wrapDefaultsContext(final DefaultsContext defaultsContext) {
-		return new DefaultsContext() {
+	public final DefaultsContext wrapDefaultsContext(DefaultsContext defaultsContext) {
+		return new DefaultsContextWrapper(defaultsContext) {
 			public Object getDefault(String key) {
-				return XmlAttributeContext.this.getDefault(key, defaultsContext);
-			}
-		
-			public IPersistentType persistentType(String fullyQualifiedTypeName) {
-				return defaultsContext.persistentType(fullyQualifiedTypeName);
+				return XmlAttributeContext.this.getDefault(key, getWrappedDefaultsContext());
 			}
 		};
 	}

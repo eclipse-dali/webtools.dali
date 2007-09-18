@@ -9,19 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java.mappings;
 
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.ITypeHierarchy;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.Signature;
-import org.eclipse.jdt.core.WorkingCopyOwner;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.content.java.IDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
@@ -54,7 +50,8 @@ public class JavaBasicProvider
 	}
 
 	public boolean defaultApplies(Attribute attribute, DefaultsContext defaultsContext) {
-		return signatureIsBasic(attribute.typeSignature(), attribute.getDeclaringType().getJdtMember());
+		CompilationUnit astRoot = defaultsContext.astRoot();
+		return typeIsBasic(attribute.typeBinding(astRoot), astRoot.getAST());
 	}
 
 	public IJavaAttributeMapping buildMapping(Attribute attribute, IJpaFactory factory) {
@@ -88,47 +85,37 @@ public class JavaBasicProvider
 	 *     enums
 	 *     any other type that implements java.io.Serializable
 	 */
-	public static boolean signatureIsBasic(String signature, IType scope) {
-		if (JDTTools.signatureIsPrimitive(signature)) {
+	public static boolean typeIsBasic(ITypeBinding typeBinding, AST ast) {
+		if (typeBinding == null) {
+			return false; // type not found
+		}
+		if (typeBinding.isPrimitive()) {
 			return true;
 		}
-		int arrayCount = Signature.getArrayCount(signature);
-		if (arrayCount > 1) {
-			return false;  // multi-dimensional arrays are not supported
+		if (typeBinding.isArray()) {
+			if (typeBinding.getDimensions() > 1) {
+				return false; // multi-dimensional arrays are not supported
+			}
+			ITypeBinding elementTypeBinding = typeBinding.getElementType();
+			if (elementTypeBinding == null) {
+				return false;// unable to resolve the type
+			}
+			return elementTypeIsValid(elementTypeBinding.getQualifiedName());
 		}
-		signature = Signature.getElementType(signature);
-		String typeName = JDTTools.resolveSignature(signature, scope);
-		if (typeName == null) {
-			return false;  // unable to resolve the type
-		}
-		if (arrayCount == 1) {
-			return elementTypeIsValid(typeName);
-		}
+		String typeName = typeBinding.getQualifiedName();
 		if (typeIsPrimitiveWrapper(typeName)) {
 			return true;
 		}
 		if (typeIsOtherSupportedType(typeName)) {
 			return true;
 		}
-		IType type = findType(scope.getCompilationUnit().getJavaProject(), typeName);
-		if (type == null) {
-			return false;  // type not found
-		}
-		if (typeIsEnum(type)) {
+		if (typeBinding.isEnum()) {
 			return true;
 		}
-		if (typeImplementsSerializable(type)) {
+		if (typeImplementsSerializable(typeBinding, ast)) {
 			return true;
 		}
 		return false;
-	}
-
-	private static IType findType(IJavaProject javaProject, String typeName) {
-		try {
-			return javaProject.findType(typeName);
-		} catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
-		}
 	}
 
 	/**
@@ -186,44 +173,14 @@ public class JavaBasicProvider
 		java.sql.Time.class.getName(),
 		java.sql.Timestamp.class.getName(),
 	};
-
-	/**
-	 * Return whether the specified type is an enum.
-	 */
-	private static boolean typeIsEnum(IType type) {
-		try {
-			return type.isEnum();
-		} catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
-		}
-	}
 	
 	/**
 	 * Return whether the specified type implements java.io.Serializable.
 	 */
-	// TODO should we be using IType.getSuperInterfaceTypeSignatures() instead?
-	// would this be less of a performance hog??
-	private static boolean typeImplementsSerializable(IType type) {
-		ITypeHierarchy hierarchy = typeHierarchy(type);
-		IType[] interfaces = hierarchy.getAllSuperInterfaces(type);
-		for (int i = interfaces.length; i-- > 0; ) {
-			if (interfaces[i].getFullyQualifiedName().equals(SERIALIZABLE_TYPE_NAME)) {
-				return true;
-			}
-		}
-		return false;
+	private static boolean typeImplementsSerializable(ITypeBinding typeBinding, AST ast) {
+		ITypeBinding serializableTypeBinding = ast.resolveWellKnownType(SERIALIZABLE_TYPE_NAME);
+		return typeBinding.isAssignmentCompatible(serializableTypeBinding);
 	}
 
 	private static final String SERIALIZABLE_TYPE_NAME = java.io.Serializable.class.getName();
-
-	private static ITypeHierarchy typeHierarchy(IType type) {
-		// TODO hmm... what to do about the working copy, probably shouldn't pass in null;
-		// also, this looks like a performance hog, other ways to do this?
-		try {
-			return type.newSupertypeHierarchy((WorkingCopyOwner) null, null);
-		} catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
-		}
-	}
-
 }

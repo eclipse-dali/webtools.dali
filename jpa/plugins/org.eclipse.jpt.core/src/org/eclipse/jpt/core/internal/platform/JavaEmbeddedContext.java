@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaAttributeOverride;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbedded;
 import org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsFactory;
@@ -43,11 +44,11 @@ public class JavaEmbeddedContext extends JavaAttributeContext
 		return (IEmbedded) getMapping();
 	}
 	
-	public void refreshDefaultsInternal(DefaultsContext defaultsContext) {
-		super.refreshDefaultsInternal(defaultsContext);
+	protected void refreshDefaultsInternal(DefaultsContext defaultsContext, IProgressMonitor monitor) {
+		super.refreshDefaultsInternal(defaultsContext, monitor);
 		refreshDefaultAttributeOverrides();
 		for (AttributeOverrideContext context : this.attributeOverrideContexts) {
-			context.refreshDefaults(defaultsContext);
+			context.refreshDefaults(defaultsContext, monitor);
 		}
 	}
 	

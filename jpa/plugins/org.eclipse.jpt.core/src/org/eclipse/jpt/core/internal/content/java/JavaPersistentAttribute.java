@@ -92,7 +92,6 @@ public class JavaPersistentAttribute extends JavaEObject
 		return jpaPlatform().javaAttributeMappingProviders();
 	}
 
-
 	private ListIterator<IDefaultJavaAttributeMappingProvider> defaultAttributeMappingProviders() {
 		return jpaPlatform().defaultJavaAttributeMappingProviders();
 	}
@@ -441,7 +440,7 @@ public class JavaPersistentAttribute extends JavaEObject
 				this.attribute.removeAnnotation(this.declarationAnnotationAdapterForAttributeMappingKey(oldKey));
 			}
 			this.attribute.newMarkerAnnotation(this.declarationAnnotationAdapterForAttributeMappingKey(newKey));
-			this.specifiedMapping.initialize();
+			this.specifiedMapping.updateFromJava(getAttribute().astRoot());
 		}
 		if (this.eNotificationRequired()) {
 			this.eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING, old, this.getMapping()));
@@ -511,7 +510,6 @@ public class JavaPersistentAttribute extends JavaEObject
 			else {
 				// the mapping has changed
 				this.setSpecifiedMapping(javaProvider.buildMapping(this.attribute, jpaFactory()));
-				this.specifiedMapping.initialize();
 			}
 			if (this.eNotificationRequired()) {
 				this.eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING, old, this.getMapping()));
@@ -526,7 +524,7 @@ public class JavaPersistentAttribute extends JavaEObject
 	 * return null if we can't find a mapping annotation on the attribute
 	 */
 	private IJavaAttributeMappingProvider javaAttributeMappingProvider(CompilationUnit astRoot) {
-		for (Iterator<IJavaAttributeMappingProvider> i = this.attributeMappingProviders(); i.hasNext(); ) {
+		for (Iterator<IJavaAttributeMappingProvider> i = this.attributeMappingProviders(); i.hasNext();) {
 			IJavaAttributeMappingProvider provider = i.next();
 			if (this.attribute.containsAnnotation(provider.declarationAnnotationAdapter(), astRoot)) {
 				return provider;
@@ -567,7 +565,7 @@ public class JavaPersistentAttribute extends JavaEObject
 		// the "default" mapping has changed
 		IJavaAttributeMapping old = this.getMapping();
 		this.setDefaultMapping(defaultProvider.buildMapping(this.attribute, jpaFactory()));
-		this.defaultMapping.updateFromJava(this.attribute.astRoot());
+		this.defaultMapping.updateFromJava(defaultsContext.astRoot());
 		if (this.eNotificationRequired()) {
 			this.eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING, old, this.getMapping()));
 		}
@@ -578,7 +576,7 @@ public class JavaPersistentAttribute extends JavaEObject
 	 * return the null provider if we can't find a provider
 	 */
 	private IJavaAttributeMappingProvider defaultAttributeMappingProvider(DefaultsContext defaultsContext) {
-		for (Iterator<IDefaultJavaAttributeMappingProvider> i = this.defaultAttributeMappingProviders(); i.hasNext(); ) {
+		for (Iterator<IDefaultJavaAttributeMappingProvider> i = this.defaultAttributeMappingProviders(); i.hasNext();) {
 			IDefaultJavaAttributeMappingProvider provider = i.next();
 			if (provider.defaultApplies(this.attribute, defaultsContext)) {
 				return provider;

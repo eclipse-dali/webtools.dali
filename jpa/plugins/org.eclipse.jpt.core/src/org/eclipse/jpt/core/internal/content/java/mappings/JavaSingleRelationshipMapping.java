@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -20,8 +20,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter;
@@ -646,8 +646,8 @@ public abstract class JavaSingleRelationshipMapping
 	 * extend to eliminate any "container" types
 	 */
 	@Override
-	protected String javaDefaultTargetEntity() {
-		String typeName = super.javaDefaultTargetEntity();
+	protected String javaDefaultTargetEntity(ITypeBinding typeBinding) {
+		String typeName = super.javaDefaultTargetEntity(typeBinding);
 		// if the attribute is a container, don't use it
 		return typeNamedIsContainer(typeName) ? null : typeName;
 	}
@@ -681,6 +681,6 @@ public abstract class JavaSingleRelationshipMapping
 
 	// ********** static methods **********
 	protected static DeclarationAnnotationElementAdapter<String> buildOptionalAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<String, BooleanLiteral>(annotationAdapter, elementName, false, BooleanStringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, false, BooleanStringExpressionConverter.instance());
 	}
 } // JavaSingleRelationshipMapping
