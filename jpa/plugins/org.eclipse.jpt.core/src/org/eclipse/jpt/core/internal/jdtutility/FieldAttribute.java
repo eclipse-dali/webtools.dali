@@ -27,6 +27,10 @@ public class FieldAttribute extends Attribute {
 	public FieldAttribute(IField field, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
 		super(field, modifySharedDocumentCommandExecutorProvider);
 	}
+	
+	public FieldAttribute(IField field, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider, AnnotationEditFormatter annotationEditFormatter) {
+		super(field, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+	}
 
 	@Override
 	public IField getJdtMember() {

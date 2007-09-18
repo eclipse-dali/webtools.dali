@@ -52,6 +52,7 @@ Export-Package: org.eclipse.jpt.core.internal;x-friends:="org.eclipse.jpt.ui,org
  org.eclipse.jpt.core.internal.platform;x-friends:="org.eclipse.jpt.ui,org.eclipse.jpt.core.tests.extension.resource",
  org.eclipse.jpt.core.internal.platform.generic;x-friends:="org.eclipse.jpt.ui",
  org.eclipse.jpt.core.internal.prefs;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.resource.java,
  org.eclipse.jpt.core.internal.synch;x-friends:="org.eclipse.jpt.ui",
  org.eclipse.jpt.core.internal.util;x-friends:="org.eclipse.jpt.ui",
  org.eclipse.jpt.core.internal.validation;x-friends:="org.eclipse.jpt.ui"

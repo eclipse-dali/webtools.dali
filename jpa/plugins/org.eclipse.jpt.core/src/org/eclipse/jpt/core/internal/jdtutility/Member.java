@@ -47,15 +47,21 @@ public abstract class Member {
 
 	private final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
 
+	private final AnnotationEditFormatter annotationEditFormatter;
 
 	// ********** constructor **********
-
+	
 	Member(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+		this(jdtMember, modifySharedDocumentCommandExecutorProvider, DefaultAnnotationEditFormatter.instance());
+	}
+	
+	Member(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider, AnnotationEditFormatter annotationEditFormatter) {
 		super();
 		this.jdtMember = jdtMember;
 		IType jdtDeclaringType = jdtMember.getDeclaringType();
 		this.declaringType = (jdtDeclaringType == null) ? null : new Type(jdtDeclaringType, modifySharedDocumentCommandExecutorProvider);
 		this.modifySharedDocumentCommandExecutorProvider = modifySharedDocumentCommandExecutorProvider;
+		this.annotationEditFormatter = annotationEditFormatter;
 	}
 
 
@@ -421,7 +427,7 @@ public abstract class Member {
 	}
 
 	private AnnotationEditFormatter annotationEditFormatter() {
-		return DefaultAnnotationEditFormatter.instance();
+		return this.annotationEditFormatter;
 	}
 
 	private CommandExecutor modifySharedDocumentCommandExecutor() {

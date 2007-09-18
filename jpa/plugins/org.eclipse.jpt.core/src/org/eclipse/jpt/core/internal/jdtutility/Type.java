@@ -26,6 +26,10 @@ public class Type extends Member {
 		super(type, modifySharedDocumentCommandExecutorProvider);
 	}
 
+	public Type(IType type, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider, AnnotationEditFormatter annotationEditFormatter) {
+		super(type, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+	}
+
 	@Override
 	public IType getJdtMember() {
 		return (IType) super.getJdtMember();

@@ -35,6 +35,10 @@ public class MethodAttribute extends Attribute {
 	public MethodAttribute(IMethod getMethod, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
 		super(getMethod, modifySharedDocumentCommandExecutorProvider);
 	}
+	
+	public MethodAttribute(IMethod getMethod, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider, AnnotationEditFormatter annotationEditFormatter) {
+		super(getMethod, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+	}
 
 	@Override
 	public IMethod getJdtMember() {

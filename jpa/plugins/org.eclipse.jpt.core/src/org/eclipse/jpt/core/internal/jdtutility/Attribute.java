@@ -22,6 +22,10 @@ public abstract class Attribute extends Member {
 	Attribute(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
 		super(jdtMember, modifySharedDocumentCommandExecutorProvider);
 	}
+	
+	Attribute(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider, AnnotationEditFormatter annotationEditFormatter) {
+		super(jdtMember, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+	}
 
 	public boolean isField() {
 		return false;

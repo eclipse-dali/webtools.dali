@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.tests.internal.content.java.mappings.JptCoreContentJ
 import org.eclipse.jpt.core.tests.internal.jdtutility.JptCoreJdtUtilityTests;
 import org.eclipse.jpt.core.tests.internal.model.JptCoreModelTests;
 import org.eclipse.jpt.core.tests.internal.platform.JptCorePlatformTests;
+import org.eclipse.jpt.core.tests.internal.resource.java.JptJavaResourceTests;
 
 /**
  * Runs all JPT Core Tests.  Currently we do not have a jpa.jar checked in to cvs. 
@@ -35,6 +36,7 @@ public class JptAllCoreTests {
 		suite.addTest(JptCoreModelTests.suite(all));
 		suite.addTest(JptCoreJdtUtilityTests.suite(all));
 		suite.addTest(JptCorePlatformTests.suite(all));
+		suite.addTest(JptJavaResourceTests.suite(all));
 		return suite;
 	}
 	
