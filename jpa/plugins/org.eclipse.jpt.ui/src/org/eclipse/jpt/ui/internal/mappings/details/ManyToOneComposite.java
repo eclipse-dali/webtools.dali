@@ -11,13 +11,9 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
 import org.eclipse.jpt.core.internal.mappings.IManyToOne;
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -36,8 +32,6 @@ public class ManyToOneComposite extends BaseJpaComposite
 	private EnumComboViewer fetchTypeComboViewer;
 	
 	private EnumComboViewer optionalComboViewer;
-
-	private OrderingComposite orderByComposite;
 
 	private CascadeComposite cascadeComposite;
 

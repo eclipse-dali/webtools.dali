@@ -9,10 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal;
 
-import org.eclipse.emf.common.command.CommandStack;
-import org.eclipse.jpt.ui.internal.details.IJpaComposite;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class GenericJpaUiFactory extends BaseJpaUiFactory
 {

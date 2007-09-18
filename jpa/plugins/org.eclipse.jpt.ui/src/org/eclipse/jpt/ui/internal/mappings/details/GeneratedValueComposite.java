@@ -23,7 +23,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.core.internal.mappings.GenerationType;
 import org.eclipse.jpt.core.internal.mappings.IGeneratedValue;
 import org.eclipse.jpt.core.internal.mappings.IId;
-import org.eclipse.jpt.core.internal.mappings.InheritanceType;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.core.internal.platform.IGeneratorRepository;
 import org.eclipse.jpt.core.internal.platform.NullGeneratorRepository;
@@ -163,8 +162,8 @@ public class GeneratedValueComposite extends BaseJpaComposite
 	}
 
 	private void createGeneratedValue() {
-		IGeneratedValue generatedValue = this.id.createGeneratedValue();
-		this.id.setGeneratedValue(generatedValue);
+		this.generatedValue = this.id.createGeneratedValue();
+		this.id.setGeneratedValue(this.generatedValue);
 	}
 	
 
@@ -203,7 +202,7 @@ public class GeneratedValueComposite extends BaseJpaComposite
 			this.generatedValue = this.id.getGeneratedValue();
 		}
 		if (this.generatedValue == null) {
-			this.strategyComboViewer.getCombo().deselectAll();
+			this.strategyComboViewer.getCombo().setText("");
 			this.generatorNameCombo.setText("");
 			this.populating = false;
 			return;

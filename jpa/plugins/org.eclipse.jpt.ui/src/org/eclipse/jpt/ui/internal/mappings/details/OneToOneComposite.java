@@ -11,13 +11,8 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
 import org.eclipse.jpt.core.internal.mappings.IOneToOne;
-import org.eclipse.jpt.core.internal.mappings.ISingleRelationshipMapping;
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -43,10 +38,6 @@ public class OneToOneComposite extends BaseJpaComposite
 		
 	public OneToOneComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, SWT.NULL, commandStack, widgetFactory);
-	}
-	
-	private IOneToOne getOneToOne() {
-		return this.oneToOne;
 	}
 	
 	@Override

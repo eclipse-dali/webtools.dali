@@ -10,13 +10,13 @@
 package org.eclipse.jpt.ui.internal.generic;
 
 import java.util.Collection;
-
-import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -75,7 +75,7 @@ public class EntitiesGenerator
 		dialog.create();
 		int returnCode = dialog.open();
 		if (returnCode == Window.OK) {
-			IWorkspaceRunnable runnable = new GenerateEntitiesRunnable(
+			WorkspaceJob runnable = new GenerateEntitiesRunnable(
 					wizard.getPackageGeneratorConfig(),
 					wizard.getEntityGeneratorConfig(),
 					wizard.getSelectedTables(),
@@ -83,12 +83,8 @@ public class EntitiesGenerator
 					project,
 					new OverwriteConfirmer(this.getCurrentShell())
 			);
-			try {
-				// TODO pass in real ProgressMonitor
-				ResourcesPlugin.getWorkspace().run(runnable, new NullProgressMonitor());
-			} catch (CoreException ex) {
-				throw new RuntimeException(ex);
-			}
+			
+			runnable.schedule();
 		}
 	}
 	
@@ -98,7 +94,7 @@ public class EntitiesGenerator
 	  
 	// ********** runnable **********
 
-	static class GenerateEntitiesRunnable implements IWorkspaceRunnable {
+	static class GenerateEntitiesRunnable extends WorkspaceJob {
 		private final PackageGenerator.Config packageConfig;
 		private final EntityGenerator.Config entityConfig;
 		private final Collection selectedTables;
@@ -114,31 +110,31 @@ public class EntitiesGenerator
 				IJpaProject project,
 				EntityGenerator.OverwriteConfirmer overwriteConfirmer
 		) {
-			super();
+			super("Generating Entities");
 			this.packageConfig = packageConfig;
 			this.entityConfig = entityConfig;
 			this.selectedTables = selectedTables;
 			this.synchronizePersistenceXml = synchronizePersistenceXml;
 			this.overwriteConfirmer = overwriteConfirmer;
 			this.project = project;
+			setRule(project.getProject());
 		}
 
-		public void run(IProgressMonitor monitor) throws CoreException {
-			monitor.beginTask("", 1000);
-			try {
-				PackageGenerator.generateEntities(this.packageConfig, this.entityConfig, this.selectedTables, this.overwriteConfirmer, monitor);
-				if (synchronizePersistenceXml) {
-					// we currently only support *one* persistence.xml file per project
-					IJpaFile resource = project.getPlatform().validPersistenceXmlFiles().next();
-					if (resource != null) {
-						SynchronizeClassesJob job = new SynchronizeClassesJob(resource.getFile());
-						job.schedule();
-					}
+		@Override
+		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+			PackageGenerator.generateEntities(this.packageConfig, this.entityConfig, this.selectedTables, this.overwriteConfirmer, monitor);
+			//force resourceChangeEvents to be posted before synchronizing persistence.xml
+			ResourcesPlugin.getWorkspace().checkpoint(false);
+			if (synchronizePersistenceXml) {
+				// we currently only support *one* persistence.xml file per project
+				IJpaFile resource = project.getPlatform().validPersistenceXmlFiles().next();
+				if (resource != null) {
+					SynchronizeClassesJob job = new SynchronizeClassesJob(resource.getFile());
+					job.schedule();
 				}
-			} catch (OperationCanceledException ex) {
-				// fall through and tell monitor we are done
 			}
-			monitor.done();
+			
+			return Status.OK_STATUS;
 		}
 
 	}
@@ -155,7 +151,7 @@ public class EntitiesGenerator
 			this.shell = shell;
 		}
 
-		public boolean overwrite(String className) {
+		public boolean overwrite(final String className) {
 			if (this.overwriteAll) {
 				return true;
 			}
@@ -166,8 +162,15 @@ public class EntitiesGenerator
 		}
 
 		private boolean promptUser(String className) {
-			OverwriteConfirmerDialog dialog = new OverwriteConfirmerDialog(this.shell, className);
-			if (dialog.open() == Window.CANCEL) {
+			
+			final OverwriteConfirmerDialog dialog = new OverwriteConfirmerDialog(this.shell, className);
+			//get on the UI thread synchronously, need feedback before continuing
+			shell.getDisplay().syncExec(new Runnable() {
+				public void run() {
+					dialog.open();
+				}
+			});
+			if (dialog.getReturnCode() == Window.CANCEL) {
 				throw new OperationCanceledException();
 			}
 			if (dialog.yes()) {

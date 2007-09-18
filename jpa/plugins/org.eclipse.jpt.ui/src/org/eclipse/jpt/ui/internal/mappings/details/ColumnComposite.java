@@ -9,19 +9,18 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
+
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
 import org.eclipse.jpt.core.internal.mappings.IAbstractColumn;
 import org.eclipse.jpt.core.internal.mappings.IColumn;
 import org.eclipse.jpt.core.internal.mappings.INamedColumn;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.jpt.db.internal.Connection;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
@@ -79,11 +78,11 @@ public class ColumnComposite extends BaseJpaComposite
     private ConnectionListener buildConnectionListener() {
 		return new ConnectionListener() {
 
-			public void aboutToClose(Connection connection) {
+			public void aboutToClose(ConnectionProfile profile) {
 				// not interested to this event.
 			}
 
-			public void closed(Connection connection) {
+			public void closed(ConnectionProfile profile) {
 				getControl().getDisplay().asyncExec( new Runnable() {
 					public void run() {
 						if (getControl().isDisposed()) {
@@ -94,7 +93,7 @@ public class ColumnComposite extends BaseJpaComposite
 				});
 			}
 
-			public void modified(Connection connection) {
+			public void modified(ConnectionProfile profile) {
 				getControl().getDisplay().asyncExec( new Runnable() {
 					public void run() {
 						if (getControl().isDisposed()) {
@@ -105,12 +104,12 @@ public class ColumnComposite extends BaseJpaComposite
 				});
 			}
 
-			public boolean okToClose(Connection connection) {
+			public boolean okToClose(ConnectionProfile profile) {
 				// not interested to this event.
 				return true;
 			}
 
-			public void opened(Connection connection) {
+			public void opened(ConnectionProfile profile) {
 				getControl().getDisplay().asyncExec( new Runnable() {
 					public void run() {
 						if (getControl().isDisposed()) {
@@ -121,15 +120,15 @@ public class ColumnComposite extends BaseJpaComposite
 				});
 			}
 
-			public void databaseChanged(Connection connection, final Database database) {
+			public void databaseChanged(ConnectionProfile profile, final Database database) {
 				return;
 			}
 
-			public void schemaChanged(Connection connection, final Schema schema) {
+			public void schemaChanged(ConnectionProfile profile, final Schema schema) {
 				return;
 			}
 
-			public void tableChanged(Connection connection, final Table table) {
+			public void tableChanged(ConnectionProfile profile, final Table table) {
 				getControl().getDisplay().asyncExec( new Runnable() {
 					public void run() {
 						if(table == getDbTable()) {

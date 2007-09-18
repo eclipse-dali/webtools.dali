@@ -14,7 +14,6 @@ import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -61,7 +60,7 @@ public abstract class AbstractJpaView extends ViewPart
 	private Composite buildDefaultComposite() {
 		Composite composite = getWidgetFactory().createComposite(pageBook, SWT.NONE);
 		composite.setLayout(new FillLayout(SWT.VERTICAL));
-		Label label = getWidgetFactory().createLabel(composite, defaultLabel);
+		getWidgetFactory().createLabel(composite, defaultLabel);
 		return composite;
 	}
 	

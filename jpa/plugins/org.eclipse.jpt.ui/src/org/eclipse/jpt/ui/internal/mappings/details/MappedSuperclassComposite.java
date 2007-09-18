@@ -9,11 +9,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.emf.common.command.CommandStack;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.mappings.IMappedSuperclass;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -22,25 +18,22 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class MappedSuperclassComposite extends BaseJpaComposite 
 {
-	private IMappedSuperclass mappedSuperclass;
-	private Adapter mappedSuperclassListener;
-	
-	private CommandStack commandStack;
-	
+//	private IMappedSuperclass mappedSuperclass;
+//	private Adapter mappedSuperclassListener;	
 	
 	public MappedSuperclassComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, SWT.NULL, commandStack, widgetFactory);
-		this.mappedSuperclassListener = buildMappedSuperclassListener();
+//		this.mappedSuperclassListener = buildMappedSuperclassListener();
 	}
-	
-	private Adapter buildMappedSuperclassListener() {
-		return new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				mappedSuperclassChanged(notification);
-			}
-		};
-	}
+//	
+//	private Adapter buildMappedSuperclassListener() {
+//		return new AdapterImpl() {
+//			@Override
+//			public void notifyChanged(Notification notification) {
+//				mappedSuperclassChanged(notification);
+//			}
+//		};
+//	}
 	
 	@Override
 	protected void initializeLayout(Composite composite) {
@@ -78,7 +71,7 @@ public class MappedSuperclassComposite extends BaseJpaComposite
 	
 	@Override
 	protected void doPopulate(EObject model) {
-		this.mappedSuperclass = (IMappedSuperclass) model;
+//		this.mappedSuperclass = (IMappedSuperclass) model;
 	}
 	
 	@Override
@@ -97,10 +90,6 @@ public class MappedSuperclassComposite extends BaseJpaComposite
 //			this.persistentType.eAdapters().remove(this.persistentTypeItemProvider);
 //			this.persistentTypeItemProvider.removeListener(getPersistentTypeListener());
 //		}
-	}
-	
-	private void mappedSuperclassChanged(Notification notification) {
-		
 	}
 	
 //	private INotifyChangedListener getPersistentTypeListener() {

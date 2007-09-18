@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
+
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
@@ -17,7 +18,6 @@ import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.mappings.IId;
 import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.jpt.db.internal.Connection;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
@@ -485,23 +485,23 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	
 	private ConnectionListener buildConnectionListener() {
 		return new ConnectionListener() {
-			public void closed(Connection connection) {
+			public void closed(ConnectionProfile profile) {
 				populate();
 			}
 			
-			public void modified(Connection connection) {
+			public void modified(ConnectionProfile profile) {
 				populate();
 			}
 
-			public void opened(Connection connection) {
+			public void opened(ConnectionProfile profile) {
 				populate();
 			}
 
-			public void databaseChanged(Connection connection, final Database database) {
+			public void databaseChanged(ConnectionProfile profile, final Database database) {
 				populate();
 			}
 			
-			public void schemaChanged(Connection connection, final Schema schema) {
+			public void schemaChanged(ConnectionProfile profile, final Schema schema) {
 				populate();
 			}
 
@@ -518,16 +518,16 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 				});
 			}
 			
-			public void aboutToClose(Connection connection) {
+			public void aboutToClose(ConnectionProfile profile) {
 				// not interested to this event.
 			}
 			
-			public boolean okToClose(Connection connection) {
+			public boolean okToClose(ConnectionProfile profile) {
 				// not interested to this event.
 				return true;
 			}
 			
-			public void tableChanged(Connection connection, final Table table) {
+			public void tableChanged(ConnectionProfile profile, final Table table) {
 				// not interested to this event.
 			}
 		};

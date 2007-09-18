@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.mappings.IEmbedded;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -20,9 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class EmbeddedComposite extends BaseJpaComposite 
-{
-	private IEmbedded embedded;
-	
+{	
 	private EmbeddedAttributeOverridesComposite attributeOverridesComposite;
 
 	public EmbeddedComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -49,7 +46,6 @@ public class EmbeddedComposite extends BaseJpaComposite
 	
 	
 	public void doPopulate(EObject obj) {
-		this.embedded = (IEmbedded) obj;
 		this.attributeOverridesComposite.populate(obj);
 	}
 	

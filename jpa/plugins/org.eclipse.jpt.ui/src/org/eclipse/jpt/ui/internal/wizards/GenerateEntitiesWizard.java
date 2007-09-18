@@ -55,10 +55,8 @@ public class GenerateEntitiesWizard extends Wizard {
 	
 	public void addPages() {
 		super.addPages();
-		if ( ! this.jpaProjectIsConnected() ||  ! this.projectUserSchemaExists()) {
-			this.dbSettingsPage = new DatabaseReconnectWizardPage( this.jpaProject);
-			this.addPage(this.dbSettingsPage);
-		}
+		this.dbSettingsPage = new DatabaseReconnectWizardPage( this.jpaProject);
+		this.addPage(this.dbSettingsPage);
 		this.generateEntitiesPage = new GenerateEntitiesWizardPage();
 		this.addPage( this.generateEntitiesPage);
 		this.generateEntitiesPage.init( this.selection);
@@ -109,7 +107,7 @@ public class GenerateEntitiesWizard extends Wizard {
 		if ( this.dbSettingsPage != null) {
 			return this.dbSettingsPage.getTables();
 		}
-		return ( this.projectUserSchemaExists()) ? CollectionTools.collection( this.getProjectUserSchema().tables()) : Collections.<Table>emptyList();
+		return ( this.projectDefaultSchemaExists()) ? CollectionTools.collection( this.getDefaultSchema().tables()) : Collections.<Table>emptyList();
 	}
 	
 	ConnectionProfile getProjectConnectionProfile() {
@@ -119,10 +117,10 @@ public class GenerateEntitiesWizard extends Wizard {
 	IJpaProject getJpaProject(){
 		return this.jpaProject;
 	}
-	
-	Schema getProjectUserSchema() {
-		ConnectionProfile profile = this.getProjectConnectionProfile();
-		return profile.getDatabase().schemaNamed( profile.getUserName());
+
+	Schema getDefaultSchema() {
+		ConnectionProfile profile = getProjectConnectionProfile();
+		return profile.getDatabase().schemaNamed( profile.getDefaultSchema());
 	}
 	
 	public PackageGenerator.Config getPackageGeneratorConfig() {
@@ -148,13 +146,9 @@ public class GenerateEntitiesWizard extends Wizard {
         }
         return canFinish;
     }
-    
-	private boolean jpaProjectIsConnected() {
-		return this.getProjectConnectionProfile().isConnected();
-	}
 
-	private boolean projectUserSchemaExists() {
-		return ( this.getProjectUserSchema() != null);
+	private boolean projectDefaultSchemaExists() {
+		return ( this.getDefaultSchema() != null);
 	}
 	
 	/**

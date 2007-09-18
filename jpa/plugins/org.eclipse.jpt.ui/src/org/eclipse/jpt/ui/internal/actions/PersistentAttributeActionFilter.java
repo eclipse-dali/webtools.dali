@@ -49,9 +49,8 @@ public class PersistentAttributeActionFilter
 		public Object getAdapter(final Object adaptable, final Class adapterType ) {
 			if( adapterType == IActionFilter.class ) {
 				return new PersistentAttributeActionFilter();
-			} else {
-				return null;
 			}
+			return null;
 		}
 	    
 		public Class[] getAdapterList() {

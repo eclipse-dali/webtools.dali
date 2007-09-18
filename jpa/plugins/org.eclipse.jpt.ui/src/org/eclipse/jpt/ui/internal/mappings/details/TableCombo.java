@@ -9,6 +9,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
+
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -16,7 +17,6 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.jpt.db.internal.Connection;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
@@ -68,11 +68,11 @@ public class TableCombo extends BaseJpaController
 
 	private ConnectionListener buildConnectionListener() {
 		return new ConnectionListener() {
-			public void aboutToClose(Connection connection) {
+			public void aboutToClose(ConnectionProfile profile) {
 			// not interested to this event.
 			}
 
-			public void closed(Connection connection) {
+			public void closed(ConnectionProfile profile) {
 				getCombo().getDisplay().asyncExec(new Runnable() {
 					public void run() {
 						if (getControl().isDisposed()) {
@@ -83,7 +83,7 @@ public class TableCombo extends BaseJpaController
 				});
 			}
 
-			public void modified(Connection connection) {
+			public void modified(ConnectionProfile profile) {
 				getCombo().getDisplay().asyncExec(new Runnable() {
 					public void run() {
 						if (getControl().isDisposed()) {
@@ -94,12 +94,12 @@ public class TableCombo extends BaseJpaController
 				});
 			}
 
-			public boolean okToClose(Connection connection) {
+			public boolean okToClose(ConnectionProfile profile) {
 				// not interested to this event.
 				return true;
 			}
 
-			public void opened(Connection connection) {
+			public void opened(ConnectionProfile profile) {
 				getCombo().getDisplay().asyncExec(new Runnable() {
 					public void run() {
 						if (getControl().isDisposed()) {
@@ -110,7 +110,7 @@ public class TableCombo extends BaseJpaController
 				});
 			}
 
-			public void databaseChanged(Connection connection, final Database database) {
+			public void databaseChanged(ConnectionProfile profile, final Database database) {
 				getControl().getDisplay().asyncExec(new Runnable() {
 					public void run() {
 						if (database == TableCombo.this.getDatabase()) {
@@ -122,7 +122,7 @@ public class TableCombo extends BaseJpaController
 				});
 			}
 
-			public void schemaChanged(Connection connection, final Schema schema) {
+			public void schemaChanged(ConnectionProfile profile, final Schema schema) {
 				getControl().getDisplay().asyncExec(new Runnable() {
 					public void run() {
 						if (schema == TableCombo.this.getTableSchema()) {
@@ -134,7 +134,7 @@ public class TableCombo extends BaseJpaController
 				});
 			}
 
-			public void tableChanged(Connection connection, final Table table) {
+			public void tableChanged(ConnectionProfile profile, final Table table) {
 			// not interested to this event.
 			}
 		};

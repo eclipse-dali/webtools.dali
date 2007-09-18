@@ -336,7 +336,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 	}
 
 	String entityName(Table table) {
-		String overrideEntityName = (String) this.overrideEntityNames.get(table);
+		String overrideEntityName = this.overrideEntityNames.get(table);
 		return (overrideEntityName != null) ? overrideEntityName : this.defaultEntityName(table);
 	}
 
@@ -359,72 +359,41 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 	boolean convertToCamelCase() {
 		return this.convertToCamelCase;
 	}
-	private void setConvertToCamelCase(boolean convertToCamelCase) {
-		// TODO re-calculate the default entity names if this changes
-		this.convertToCamelCase = convertToCamelCase;
-	}
 
 	boolean fieldAccessType() {
 		return this.fieldAccessType;
-	}
-	private void setFieldAccessType(boolean fieldAccessType) {
-		this.fieldAccessType = fieldAccessType;
 	}
 
 	String getCollectionTypeName() {
 		return this.collectionTypeName;
 	}
-	private void setCollectionTypeName(String collectionTypeName) {
-		this.collectionTypeName = collectionTypeName;
-	}
 
 	int getFieldVisibility() {
 		return this.fieldVisibility;
-	}
-	private void setFieldVisibility(int fieldVisibility) {
-		this.fieldVisibility = fieldVisibility;
 	}
 
 	int getMethodVisibility() {
 		return this.methodVisibility;
 	}
-	private void setMethodVisibility(int methodVisibility) {
-		this.methodVisibility = methodVisibility;
-	}
 
 	boolean generateGettersAndSetters() {
 		return this.generateGettersAndSetters;
-	}
-	private void setGenerateGettersAndSetters(boolean generateGettersAndSetters) {
-		this.generateGettersAndSetters = generateGettersAndSetters;
 	}
 
 	boolean generateDefaultConstructor() {
 		return this.generateDefaultConstructor;
 	}
-	private void setGenerateDefaultConstructor(boolean generateDefaultConstructor) {
-		this.generateDefaultConstructor = generateDefaultConstructor;
-	}
 
 	boolean serializable() {
 		return this.serializable;
-	}
-	private void setSerializable(boolean serializable) {
-		this.serializable = serializable;
 	}
 
 	boolean generateSerialVersionUID() {
 		return this.generateSerialVersionUID;
 	}
-	private void setGenerateSerialVersionUID(boolean generateSerialVersionUID) {
-		this.generateSerialVersionUID = generateSerialVersionUID;
-	}
 
 	boolean generateEmbeddedIdForCompoundPK() {
 		return this.generateEmbeddedIdForCompoundPK;
-	}
-	private void setGenerateEmbeddedIdForCompoundPK(boolean generateEmbeddedIdForCompoundPK) {
-		this.generateEmbeddedIdForCompoundPK = generateEmbeddedIdForCompoundPK;
 	}
 
 	boolean synchronizePersistenceXml() {

@@ -10,17 +10,10 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
-import org.eclipse.jpt.core.internal.mappings.INamedQuery;
-import org.eclipse.jpt.core.internal.mappings.IQueryHint;
-import org.eclipse.jpt.core.internal.mappings.ITable;
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -94,7 +87,7 @@ public class EntityComposite extends BaseJpaComposite
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.entityNameCombo.getCombo().setLayoutData(gridData);
-		helpSystem.setHelp(entityNameCombo.getCombo(), IJpaHelpContextIds.ENTITY_NAME);
+		helpSystem.setHelp(this.entityNameCombo.getCombo(), IJpaHelpContextIds.ENTITY_NAME);
 		
 		
 		this.tableComposite = new TableComposite(generalComposite, this.commandStack, getWidgetFactory());
@@ -215,125 +208,6 @@ public class EntityComposite extends BaseJpaComposite
 	
 	protected IEntity getEntity() {
 		return this.entity;
-	}
-	
-	
-	private abstract class TableHolder extends EObjectImpl implements StringHolder {
-		private ITable table;
-		
-		TableHolder(ITable table) {
-			super();
-			this.table = table;
-		}
-		
-		public Class featureClass() {
-			return ITable.class;
-		}
-		
-		public boolean supportsDefault() {
-			return true;
-		}
-		
-		public EObject wrappedObject() {
-			return this.table;
-		}
-		
-		public ITable getTable() {
-			return this.table;
-		}
-	}
-	
-	private class TableNameHolder extends TableHolder implements StringHolder {
-		
-		TableNameHolder(ITable table) {
-			super(table);
-		}
-			
-		public int featureId() {
-			return JpaCoreMappingsPackage.ITABLE__SPECIFIED_NAME;
-		}
-		
-		public int defaultFeatureId() {
-			return JpaCoreMappingsPackage.ITABLE__DEFAULT_NAME;
-		}
-		
-		public String defaultItem() {
-			String defaultName = getTable().getDefaultName();
-			if (defaultName != null) {
-				return NLS.bind(JptUiMappingsMessages.EntityComposite_tableDefault, defaultName);
-			}
-			return JptUiMappingsMessages.EntityComposite_tableNoDefaultSpecified;
-		}
-		
-		public String getString() {
-			return getTable().getSpecifiedName();
-		}
-		
-		public void setString(String newName) {
-			getTable().setSpecifiedName(newName);
-		}
-	}
-	
-	private class TableCatalogHolder extends TableHolder implements StringHolder {
-		
-		TableCatalogHolder(ITable table) {
-			super(table);
-		}
-			
-		public int featureId() {
-			return JpaCoreMappingsPackage.ITABLE__SPECIFIED_CATALOG;
-		}
-		
-		public int defaultFeatureId() {
-			return JpaCoreMappingsPackage.ITABLE__DEFAULT_CATALOG;
-		}
-		
-		public String defaultItem() {
-			String defaultCatalog = getTable().getDefaultCatalog();
-			if (defaultCatalog != null) {
-				return NLS.bind(JptUiMappingsMessages.EntityComposite_tableDefault, defaultCatalog);
-			}
-			return JptUiMappingsMessages.EntityComposite_tableNoDefaultSpecified;
-		}
-		
-		public String getString() {
-			return getTable().getSpecifiedCatalog();
-		}
-		
-		public void setString(String newName) {
-			getTable().setSpecifiedCatalog(newName);
-		}
-	}
-	
-	private class TableSchemaHolder extends TableHolder implements StringHolder {
-		
-		TableSchemaHolder(ITable table) {
-			super(table);
-		}
-			
-		public int featureId() {
-			return JpaCoreMappingsPackage.ITABLE__SPECIFIED_SCHEMA;
-		}
-		
-		public int defaultFeatureId() {
-			return JpaCoreMappingsPackage.ITABLE__DEFAULT_SCHEMA;
-		}
-		
-		public String defaultItem() {
-			String defaultSchema = getTable().getDefaultSchema();
-			if (defaultSchema != null) {
-				return NLS.bind(JptUiMappingsMessages.EntityComposite_tableDefault, defaultSchema);
-			}
-			return JptUiMappingsMessages.EntityComposite_tableNoDefaultSpecified;
-		}
-		
-		public String getString() {
-			return getTable().getSpecifiedSchema();
-		}
-		
-		public void setString(String newName) {
-			getTable().setSpecifiedSchema(newName);
-		}
 	}
 
 }
