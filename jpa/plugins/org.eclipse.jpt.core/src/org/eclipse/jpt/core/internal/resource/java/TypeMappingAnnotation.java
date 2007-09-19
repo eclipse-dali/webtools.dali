@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import java.util.Iterator;
 
-public interface JavaResource
+
+public interface TypeMappingAnnotation extends TypeAnnotation
 {
-	JpaPlatform jpaPlatform();
-	
-	void updateFromJava(CompilationUnit astRoot);
 
+	Iterator<TypeAnnotationProvider> javaTypeAnnotationProviders();
 }

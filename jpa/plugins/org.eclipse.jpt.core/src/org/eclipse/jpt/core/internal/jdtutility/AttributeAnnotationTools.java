@@ -210,6 +210,11 @@ public class AttributeAnnotationTools {
 		if (Flags.isFinal(flags)) {
 			return false;
 		}
+		if (type.isMember()) {
+			if (!Flags.isStatic(flags)) {
+				return false;
+			}
+		}
 		return true;
 	}
 

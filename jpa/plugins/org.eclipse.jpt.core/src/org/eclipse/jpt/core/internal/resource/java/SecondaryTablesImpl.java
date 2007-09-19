@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ArrayList;
@@ -8,13 +17,13 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class JavaSecondaryTablesResourceImpl extends AbstractJavaAnnotationResource<Member> implements JavaSecondaryTablesResource
+public class SecondaryTablesImpl extends AbstractJavaAnnotationResource<Member> implements SecondaryTables
 {
-	private List<JavaSecondaryTableResource> secondaryTableResources;
+	private List<SecondaryTable> secondaryTableResources;
 	
-	protected JavaSecondaryTablesResourceImpl(Member member, JpaPlatform jpaPlatform) {
+	protected SecondaryTablesImpl(Member member, JpaPlatform jpaPlatform) {
 		super(member, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
-		this.secondaryTableResources = new ArrayList<JavaSecondaryTableResource>();
+		this.secondaryTableResources = new ArrayList<SecondaryTable>();
 	}
 
 	public String getAnnotationName() {
@@ -25,21 +34,21 @@ public class JavaSecondaryTablesResourceImpl extends AbstractJavaAnnotationResou
 		return JPA.SECONDARY_TABLE;
 	}
 		
-	public ListIterator<JavaSecondaryTableResource> javaTypeAnnotations() {
-		return new CloneListIterator<JavaSecondaryTableResource>(this.secondaryTableResources);
+	public ListIterator<SecondaryTable> javaTypeAnnotations() {
+		return new CloneListIterator<SecondaryTable>(this.secondaryTableResources);
 	}
 	
 	public int javaTypeAnnotationsSize() {
 		return this.secondaryTableResources.size();
 	}
 	
-	public JavaSecondaryTableResource add(int index) {
-		JavaSecondaryTableResource javaSecondaryTableResource = createJavaSecondaryTable(index);
+	public SecondaryTable add(int index) {
+		SecondaryTable javaSecondaryTableResource = createJavaSecondaryTable(index);
 		this.secondaryTableResources.add(index, javaSecondaryTableResource);
 		return javaSecondaryTableResource;
 	}
 	
-	public void remove(JavaSecondaryTableResource javaTypeAnnotation) {
+	public void remove(SecondaryTable javaTypeAnnotation) {
 		this.secondaryTableResources.remove(javaTypeAnnotation);
 	}
 	
@@ -47,11 +56,11 @@ public class JavaSecondaryTablesResourceImpl extends AbstractJavaAnnotationResou
 		this.secondaryTableResources.remove(index);
 	}
 	
-	public int indexOf(JavaSecondaryTableResource secondaryTableResource) {
+	public int indexOf(SecondaryTable secondaryTableResource) {
 		return this.secondaryTableResources.indexOf(secondaryTableResource);
 	}
 	
-	public JavaSecondaryTableResource singularAnnotationAt(int index) {
+	public SecondaryTable singularAnnotationAt(int index) {
 		return this.secondaryTableResources.get(index);
 	}
 	
@@ -61,12 +70,12 @@ public class JavaSecondaryTablesResourceImpl extends AbstractJavaAnnotationResou
 	
 	//TODO this is going to be copied in all JavaPluralTypeAnnotation implementations, how to solve that??
 	public void updateFromJava(CompilationUnit astRoot) {
-		List<JavaSecondaryTableResource> sTables = this.secondaryTableResources;
+		List<SecondaryTable> sTables = this.secondaryTableResources;
 		int persSize = sTables.size();
 		int javaSize = 0;
 		boolean allJavaAnnotationsFound = false;
 		for (int i = 0; i < persSize; i++) {
-			JavaSecondaryTableResource secondaryTable = sTables.get(i);
+			SecondaryTable secondaryTable = sTables.get(i);
 			if (secondaryTable.annotation(astRoot) == null) {
 				allJavaAnnotationsFound = true;
 				break; // no need to go any further
@@ -84,7 +93,7 @@ public class JavaSecondaryTablesResourceImpl extends AbstractJavaAnnotationResou
 		else {
 			// add new model join columns until they match the Java annotations
 			while (!allJavaAnnotationsFound) {
-				JavaSecondaryTableResource secondaryTable = this.createJavaSecondaryTable(javaSize);
+				SecondaryTable secondaryTable = this.createJavaSecondaryTable(javaSize);
 				if (secondaryTable.annotation(astRoot) == null) {
 					allJavaAnnotationsFound = true;
 				}
@@ -97,8 +106,8 @@ public class JavaSecondaryTablesResourceImpl extends AbstractJavaAnnotationResou
 		}
 	}
 	
-	private JavaSecondaryTableResource createJavaSecondaryTable(int index) {
-		return JavaSecondaryTableResourceImpl.createNestedJavaSecondaryTable(jpaPlatform(), getMember(), index, getDeclarationAnnotationAdapter());
+	private SecondaryTable createJavaSecondaryTable(int index) {
+		return SecondaryTableImpl.createNestedJavaSecondaryTable(jpaPlatform(), getMember(), index, getDeclarationAnnotationAdapter());
 	}
 
 }

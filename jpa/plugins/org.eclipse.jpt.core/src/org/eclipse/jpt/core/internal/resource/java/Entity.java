@@ -9,12 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
-public interface JavaResource
+public interface Entity extends TypeMappingAnnotation
 {
-	JpaPlatform jpaPlatform();
+	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ENTITY);
+
+	String getName();
 	
-	void updateFromJava(CompilationUnit astRoot);
+	void setName(String name);
 
 }

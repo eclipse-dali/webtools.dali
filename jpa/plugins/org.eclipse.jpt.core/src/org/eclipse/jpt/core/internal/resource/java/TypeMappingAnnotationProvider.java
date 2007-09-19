@@ -9,12 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import java.util.Iterator;
+import org.eclipse.jpt.core.internal.jdtutility.Type;
 
-public interface JavaResource
+public interface TypeMappingAnnotationProvider extends TypeAnnotationProvider
 {
-	JpaPlatform jpaPlatform();
+	/**
+	 * Return the fully qualified names of the annotations that can exist
+	 * with the mapping annotation.  These will be used to create JavaTypeAnnotations
+	 */
+	Iterator<String> correspondingAnnotationNames();
 	
-	void updateFromJava(CompilationUnit astRoot);
-
+	TypeMappingAnnotation buildJavaTypeAnnotation(Type type, JpaPlatform jpaPlatform);
 }

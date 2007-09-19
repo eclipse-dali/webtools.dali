@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
@@ -6,7 +15,7 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaMappedSuperclassProvider implements JavaTypeMappingAnnotationProvider
+public class JavaMappedSuperclassProvider implements TypeMappingAnnotationProvider
 {
 	// singleton
 	private static final JavaMappedSuperclassProvider INSTANCE = new JavaMappedSuperclassProvider();
@@ -14,7 +23,7 @@ public class JavaMappedSuperclassProvider implements JavaTypeMappingAnnotationPr
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaTypeMappingAnnotationProvider instance() {
+	public static TypeMappingAnnotationProvider instance() {
 		return INSTANCE;
 	}
 
@@ -26,8 +35,8 @@ public class JavaMappedSuperclassProvider implements JavaTypeMappingAnnotationPr
 	}
 
 
-	public JavaMappedSuperclassResource buildJavaTypeAnnotation(Type type, JpaPlatform jpaPlatform) {
-		return new JavaMappedSuperclassResourceImpl(type, jpaPlatform);
+	public MappedSuperclass buildJavaTypeAnnotation(Type type, JpaPlatform jpaPlatform) {
+		return new MappedSuperclassImpl(type, jpaPlatform);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {
@@ -46,7 +55,7 @@ public class JavaMappedSuperclassProvider implements JavaTypeMappingAnnotationPr
 	}
 
 	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return JavaMappedSuperclassResource.DECLARATION_ANNOTATION_ADAPTER;
+		return MappedSuperclass.DECLARATION_ANNOTATION_ADAPTER;
 	}
 
 	public String getAnnotationName() {

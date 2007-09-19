@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
@@ -8,7 +17,7 @@ import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
-public class JavaTableResourceImpl extends AbstractTableResource
+public class TableImpl extends AbstractTableResource
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.TABLE);
 
@@ -18,7 +27,7 @@ public class JavaTableResourceImpl extends AbstractTableResource
 
 	private static final DeclarationAnnotationElementAdapter<String> CATALOG_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__CATALOG);
 	
-	protected JavaTableResourceImpl(JpaPlatform jpaPlatform, Member member) {
+	protected TableImpl(JpaPlatform jpaPlatform, Member member) {
 		super(jpaPlatform, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 	}
 

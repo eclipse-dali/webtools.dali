@@ -9,12 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Type;
 
-public interface JavaResource
+public interface TypeAnnotationProvider
 {
-	JpaPlatform jpaPlatform();
+	/**
+	 * Return the fully qualified annotation name
+	 */
+	String getAnnotationName();
+		
+	DeclarationAnnotationAdapter getDeclarationAnnotationAdapter();
 	
-	void updateFromJava(CompilationUnit astRoot);
-
+	TypeAnnotation buildJavaTypeAnnotation(Type type, JpaPlatform jpaPlatform);
 }

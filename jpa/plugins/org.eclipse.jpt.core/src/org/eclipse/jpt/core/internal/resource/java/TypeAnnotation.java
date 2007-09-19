@@ -9,12 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 
-public interface JavaResource
-{
-	JpaPlatform jpaPlatform();
+public interface TypeAnnotation extends JavaResource
+{	
+	String getAnnotationName();
 	
-	void updateFromJava(CompilationUnit astRoot);
+	DeclarationAnnotationAdapter getDeclarationAnnotationAdapter();
+	
+	void removeAnnotation();
 
+	void newAnnotation();
 }

@@ -9,12 +9,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import java.util.ListIterator;
 
-public interface JavaResource
+public interface PluralTypeAnnotation<E extends SingularTypeAnnotation> extends TypeAnnotation
 {
-	JpaPlatform jpaPlatform();
+	String getSingularAnnotationName();
 	
-	void updateFromJava(CompilationUnit astRoot);
+	ListIterator<E> javaTypeAnnotations();
+	
+	int javaTypeAnnotationsSize();
 
+	E singularAnnotationAt(int index);
+	
+	int indexOf(E singularTypeAnnotation);
+	
+	E add(int index);
+	
+	void remove(E javaTypeAnnotation);
+	
+	void remove(int index);
+	
+	void move(int oldIndex, int newIndex);
 }

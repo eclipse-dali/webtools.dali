@@ -1,7 +1,17 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import org.eclipse.jdt.core.IType;
 
 public interface JavaPersistentTypeResource extends JavaResource
 {
@@ -12,7 +22,7 @@ public interface JavaPersistentTypeResource extends JavaResource
 	 * Entity, MappedSuperclass, Embeddable.
 	 * <p>Does not return duplicate annotations as this error is handled by the java compiler.
 	 */
-	Iterator<JavaTypeMappingAnnotation> javaTypeMappingAnnotations();
+	Iterator<TypeMappingAnnotation> javaTypeMappingAnnotations();
 	
 	/**
 	 * Return the <code>JavaTypeMappingAnnotation</code> specified on this JavaPersistentType
@@ -20,20 +30,27 @@ public interface JavaPersistentTypeResource extends JavaResource
 	 * {@link JpaPlatform#javaTypeMappingAnnotationProviders()}
 	 * @return
 	 */
-	JavaTypeMappingAnnotation javaTypeMappingAnnotation();
+	TypeMappingAnnotation javaTypeMappingAnnotation();
 
 	/**
-	 * TODO not sure we need this API, first 2 seem sufficient
-	 * 
 	 * Returns the <code>JavaTypeMappingAnnotation</code> with this fully qualifed annotation name. 
 	 * In JPA the valid annotations are "javax.persistence.Embedddable", "javax.persistence.Entity", 
 	 * and "javax.persistence.MappedSuperclass"
-	 * Return the first if there are duplicates in the source code.
-	 * @param annotationName
+	 * Return the first if there are duplicates in the source code
+	 * @param annotationName - fully qualified annotation name
 	 * @return
 	 */
-	JavaTypeMappingAnnotation javaTypeMappingAnnotation(String annotationName);
+	//TODO not sure we need this API, first 2 seem sufficient
+	TypeMappingAnnotation javaTypeMappingAnnotation(String annotationName);
 
+	/**
+	 * Use this to change the type mapping annotation.  This will
+	 * remove all annotations that applied to the previous type mapping annotation
+	 * but do not apply to the new mapping annotation.  Will also remove
+	 * all other type mapping annotations in case there were multiple before.
+	 * @see TypeMappingAnnotationProvider#correspondingAnnotationNames()
+	 * @param annotationName - fully qualified annotation name
+	 */
 	void setJavaTypeMappingAnnotation(String annotationName);
 
 	/**
@@ -42,7 +59,7 @@ public interface JavaPersistentTypeResource extends JavaResource
 	 * No <code>JavaTypeMappingAnnotation</code>s should be included.
 	 * @see #javaTypeMappingAnnotations()
 	 */
-	Iterator<JavaTypeAnnotation> javaTypeAnnotations();
+	Iterator<TypeAnnotation> javaTypeAnnotations();
 	
 	//TODO tie the singular and plural annotations together somehow in the resource model so we can give
 	//a validation error for the case of both being specified
@@ -54,7 +71,7 @@ public interface JavaPersistentTypeResource extends JavaResource
 	 * @param pluralAnnotation
 	 * @return
 	 */
-	ListIterator<JavaTypeAnnotation> javaTypeAnnotations(String singularAnnotation, String pluralAnnotation);
+	ListIterator<TypeAnnotation> javaTypeAnnotations(String singularAnnotation, String pluralAnnotation);
 	
 	
 	/**
@@ -63,9 +80,12 @@ public interface JavaPersistentTypeResource extends JavaResource
 	 * @param annotationName
 	 * @return
 	 */
-	JavaTypeAnnotation javaTypeAnnotation(String annotationName);
+	TypeAnnotation javaTypeAnnotation(String annotationName);
 	
-	JavaTypeAnnotation addJavaTypeAnnotation(String annotationName);
+	/**
+	 * Add an annotation for the given fully qualified annotation name
+	 */
+	TypeAnnotation addJavaTypeAnnotation(String annotationName);
 	
 	/**
 	 * Add a new Annotation named singularAnnotationName.  Create a new plural annotation
@@ -75,15 +95,35 @@ public interface JavaPersistentTypeResource extends JavaResource
 	 * also adding the new one.  If neither exists, create a new singular annotation.
 	 * @return the new Annotation with the name singularAnnotationName
 	 */
-	JavaTypeAnnotation addJavaTypeAnnotation(int index, String singularAnnotationName, String pluralAnnotationName);
+	TypeAnnotation addJavaTypeAnnotation(int index, String singularAnnotationName, String pluralAnnotationName);
 	
 	void move(int oldIndex, int newIndex, String pluralAnnotationName);
 	
-	void move(int newIndex, JavaSingularTypeAnnotation singularAnnotation, String pluralAnnotationName);
+	void move(int newIndex, SingularTypeAnnotation singularAnnotation, String pluralAnnotationName);
 	
 	void removeJavaTypeAnnotation(String annotationName);
 	
-	void removeJavaTypeAnnotation(JavaSingularTypeAnnotation singularAnnotation, String pluralAnnotationName);
+	void removeJavaTypeAnnotation(SingularTypeAnnotation singularAnnotation, String pluralAnnotationName);
 	
 	void removeJavaTypeAnnotation(int index, String pluralAnnotationName);
+	
+	/**
+	 * Return true if this JavaPersistentTypeResource represents the underlying JDT IType
+	 * @param iType
+	 * @return
+	 */
+	boolean isFor(IType iType);
+	
+	/**
+	 * Return whether the underlying IType is persistable according to the JPA spec
+	 * @return
+	 */
+	boolean isPersistable();
+	
+	/**
+	 * Return only the persistable nestedTypes
+	 */
+	Iterator<JavaPersistentTypeResource> nestedTypes();
+
+
 }

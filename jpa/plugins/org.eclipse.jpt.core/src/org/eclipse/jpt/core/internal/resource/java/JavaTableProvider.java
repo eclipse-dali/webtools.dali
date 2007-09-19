@@ -1,10 +1,19 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 
-public class JavaTableProvider implements JavaTypeAnnotationProvider
+public class JavaTableProvider implements TypeAnnotationProvider
 {
 	// singleton
 	private static final JavaTableProvider INSTANCE = new JavaTableProvider();
@@ -12,7 +21,7 @@ public class JavaTableProvider implements JavaTypeAnnotationProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaTypeAnnotationProvider instance() {
+	public static TypeAnnotationProvider instance() {
 		return INSTANCE;
 	}
 
@@ -24,8 +33,8 @@ public class JavaTableProvider implements JavaTypeAnnotationProvider
 	}
 
 
-	public JavaTableResource buildJavaTypeAnnotation(Type type, JpaPlatform jpaPlatform) {
-		return new JavaTableResourceImpl(jpaPlatform, type);
+	public Table buildJavaTypeAnnotation(Type type, JpaPlatform jpaPlatform) {
+		return new TableImpl(jpaPlatform, type);
 	}
 
 	public String getAnnotationName() {
@@ -33,6 +42,6 @@ public class JavaTableProvider implements JavaTypeAnnotationProvider
 	}
 
 	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return JavaTableResourceImpl.DECLARATION_ANNOTATION_ADAPTER;
+		return TableImpl.DECLARATION_ANNOTATION_ADAPTER;
 	}
 }

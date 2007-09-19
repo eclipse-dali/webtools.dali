@@ -186,6 +186,8 @@ public abstract class AnnotationTestCase extends TestCase {
 		sb.append("        this.testField = testField;").append(CR);
 		sb.append("    }").append(CR);
 		sb.append(CR);
+		annotationWriter.appendMemberTypeTo(sb);
+		sb.append(CR);		
 		sb.append("}").append(CR);
 	}
 
@@ -415,6 +417,7 @@ public abstract class AnnotationTestCase extends TestCase {
 		void appendSetIdMethodAnnotationTo(StringBuffer sb);
 		void appendGetNameMethodAnnotationTo(StringBuffer sb);
 		void appendSetNameMethodAnnotationTo(StringBuffer sb);
+		void appendMemberTypeTo(StringBuffer sb);
 	}
 
 	public static class DefaultAnnotationWriter implements AnnotationWriter {
@@ -426,6 +429,7 @@ public abstract class AnnotationTestCase extends TestCase {
 		public void appendSetIdMethodAnnotationTo(StringBuffer sb) {/* do nothing */}
 		public void appendGetNameMethodAnnotationTo(StringBuffer sb) {/* do nothing */}
 		public void appendSetNameMethodAnnotationTo(StringBuffer sb) {/* do nothing */}
+		public void appendMemberTypeTo(StringBuffer sb) {/* do nothing */}
 	}
 
 	public static class AnnotationWriterWrapper implements AnnotationWriter {
@@ -442,6 +446,7 @@ public abstract class AnnotationTestCase extends TestCase {
 		public void appendSetIdMethodAnnotationTo(StringBuffer sb) {aw.appendSetIdMethodAnnotationTo(sb);}
 		public void appendGetNameMethodAnnotationTo(StringBuffer sb) {aw.appendGetNameMethodAnnotationTo(sb);}
 		public void appendSetNameMethodAnnotationTo(StringBuffer sb) {aw.appendSetNameMethodAnnotationTo(sb);}
+		public void appendMemberTypeTo(StringBuffer sb) {aw.appendMemberTypeTo(sb);}
 	}
 
 	public class AnnotatedSourceWriter implements SourceWriter {

@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -152,13 +153,6 @@ public abstract class Member {
 		} catch (JavaModelException ex) {
 			throw new RuntimeException(ex);
 		}
-	}
-
-	/**
-	 * this will throw a NPE for a top-level type
-	 */
-	TypeDeclaration declaringTypeDeclaration(CompilationUnit astRoot) {
-		return this.declaringType.bodyDeclaration(astRoot);
 	}
 
 	@Override

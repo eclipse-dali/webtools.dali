@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.Annotation;
@@ -13,9 +22,9 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NonIndexedMemberIndexedAnnotationAdapter;
 
-public class JavaSecondaryTableResourceImpl extends AbstractTableResource implements JavaSecondaryTableResource
+public class SecondaryTableImpl extends AbstractTableResource implements SecondaryTable
 {	
-	protected JavaSecondaryTableResourceImpl(JpaPlatform jpaPlatform, Member member, DeclarationAnnotationAdapter daa, IndexedAnnotationAdapter annotationAdapter) {
+	protected SecondaryTableImpl(JpaPlatform jpaPlatform, Member member, DeclarationAnnotationAdapter daa, IndexedAnnotationAdapter annotationAdapter) {
 		super(jpaPlatform, member, daa, annotationAdapter);
 	}
 
@@ -51,21 +60,21 @@ public class JavaSecondaryTableResourceImpl extends AbstractTableResource implem
 		getAnnotationAdapter().moveAnnotation(newIndex);
 	}
 	
-	public void initializeFrom(JavaSingularTypeAnnotation oldAnnotation) {
-		setName(((JavaSecondaryTableResource) oldAnnotation).getName());
-		setCatalog(((JavaSecondaryTableResource) oldAnnotation).getCatalog());
-		setSchema(((JavaSecondaryTableResource) oldAnnotation).getSchema());
+	public void initializeFrom(SingularTypeAnnotation oldAnnotation) {
+		setName(((SecondaryTable) oldAnnotation).getName());
+		setCatalog(((SecondaryTable) oldAnnotation).getCatalog());
+		setSchema(((SecondaryTable) oldAnnotation).getSchema());
 	}
 	
 	// ********** static methods **********
-	static JavaSecondaryTableResource createJavaSecondaryTable(JpaPlatform jpaPlatform, Member member) {
-		return new JavaSecondaryTableResourceImpl(jpaPlatform, member, DECLARATION_ANNOTATION_ADAPTER, new NonIndexedMemberIndexedAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
+	static SecondaryTable createJavaSecondaryTable(JpaPlatform jpaPlatform, Member member) {
+		return new SecondaryTableImpl(jpaPlatform, member, DECLARATION_ANNOTATION_ADAPTER, new NonIndexedMemberIndexedAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	static JavaSecondaryTableResource createNestedJavaSecondaryTable(JpaPlatform jpaPlatform, Member member, int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {
+	static SecondaryTable createNestedJavaSecondaryTable(JpaPlatform jpaPlatform, Member member, int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, secondaryTablesAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
-		return new JavaSecondaryTableResourceImpl(jpaPlatform, member, idaa, annotationAdapter);
+		return new SecondaryTableImpl(jpaPlatform, member, idaa, annotationAdapter);
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {

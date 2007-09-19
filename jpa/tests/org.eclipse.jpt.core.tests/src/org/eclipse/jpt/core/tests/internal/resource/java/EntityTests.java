@@ -15,18 +15,18 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
-import org.eclipse.jpt.core.internal.resource.java.JavaEntityResource;
+import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JpaPlatform;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class EntityResourceTests extends AnnotationTestCase {
+public class EntityTests extends AnnotationTestCase {
 
 	private static final String ENTITY_NAME = "Foo";
 	
-	public EntityResourceTests(String name) {
+	public EntityTests(String name) {
 		super(name);
 	}
 
@@ -74,9 +74,9 @@ public class EntityResourceTests extends AnnotationTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		JavaEntityResource entityResource = (JavaEntityResource) typeResource.javaTypeMappingAnnotation(JPA.ENTITY);
-		assertTrue(entityResource != null);
-		assertEquals(ENTITY_NAME, entityResource.getName());
+		Entity entity = (Entity) typeResource.javaTypeMappingAnnotation(JPA.ENTITY);
+		assertTrue(entity != null);
+		assertEquals(ENTITY_NAME, entity.getName());
 	}
 
 	public void testGetNameNull() throws Exception {
@@ -84,9 +84,9 @@ public class EntityResourceTests extends AnnotationTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		JavaEntityResource entityResource = (JavaEntityResource) typeResource.javaTypeMappingAnnotation(JPA.ENTITY);
-		assertTrue(entityResource != null);
-		assertNull(entityResource.getName());
+		Entity entity = (Entity) typeResource.javaTypeMappingAnnotation(JPA.ENTITY);
+		assertTrue(entity != null);
+		assertNull(entity.getName());
 	}
 
 }

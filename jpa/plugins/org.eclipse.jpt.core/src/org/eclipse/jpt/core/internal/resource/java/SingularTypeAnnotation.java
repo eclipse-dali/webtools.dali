@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 
-public interface JavaResource
+public interface SingularTypeAnnotation extends TypeAnnotation
 {
-	JpaPlatform jpaPlatform();
+	void initializeFrom(SingularTypeAnnotation oldAnnotation);
 	
-	void updateFromJava(CompilationUnit astRoot);
-
+	void moveAnnotation(int newIndex);
+	
+	void removeAnnotation();
 }
