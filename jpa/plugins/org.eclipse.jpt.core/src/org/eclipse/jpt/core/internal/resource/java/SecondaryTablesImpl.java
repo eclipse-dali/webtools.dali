@@ -17,13 +17,13 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class SecondaryTablesImpl extends AbstractJavaAnnotationResource<Member> implements SecondaryTables
+public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> implements SecondaryTables
 {
-	private List<SecondaryTable> secondaryTableResources;
+	private List<SecondaryTable> secondaryTables;
 	
 	protected SecondaryTablesImpl(Member member, JpaPlatform jpaPlatform) {
 		super(member, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
-		this.secondaryTableResources = new ArrayList<SecondaryTable>();
+		this.secondaryTables = new ArrayList<SecondaryTable>();
 	}
 
 	public String getAnnotationName() {
@@ -34,43 +34,43 @@ public class SecondaryTablesImpl extends AbstractJavaAnnotationResource<Member> 
 		return JPA.SECONDARY_TABLE;
 	}
 		
-	public ListIterator<SecondaryTable> javaTypeAnnotations() {
-		return new CloneListIterator<SecondaryTable>(this.secondaryTableResources);
+	public ListIterator<SecondaryTable> singularAnnotations() {
+		return new CloneListIterator<SecondaryTable>(this.secondaryTables);
 	}
 	
-	public int javaTypeAnnotationsSize() {
-		return this.secondaryTableResources.size();
+	public int singularAnnotationsSize() {
+		return this.secondaryTables.size();
 	}
 	
 	public SecondaryTable add(int index) {
 		SecondaryTable javaSecondaryTableResource = createJavaSecondaryTable(index);
-		this.secondaryTableResources.add(index, javaSecondaryTableResource);
+		this.secondaryTables.add(index, javaSecondaryTableResource);
 		return javaSecondaryTableResource;
 	}
 	
-	public void remove(SecondaryTable javaTypeAnnotation) {
-		this.secondaryTableResources.remove(javaTypeAnnotation);
+	public void remove(SecondaryTable secondaryTable) {
+		this.secondaryTables.remove(secondaryTable);
 	}
 	
 	public void remove(int index) {
-		this.secondaryTableResources.remove(index);
+		this.secondaryTables.remove(index);
 	}
 	
-	public int indexOf(SecondaryTable secondaryTableResource) {
-		return this.secondaryTableResources.indexOf(secondaryTableResource);
+	public int indexOf(SecondaryTable secondaryTable) {
+		return this.secondaryTables.indexOf(secondaryTable);
 	}
 	
 	public SecondaryTable singularAnnotationAt(int index) {
-		return this.secondaryTableResources.get(index);
+		return this.secondaryTables.get(index);
 	}
 	
 	public void move(int oldIndex, int newIndex) {
-		this.secondaryTableResources.add(newIndex, this.secondaryTableResources.remove(oldIndex));
+		this.secondaryTables.add(newIndex, this.secondaryTables.remove(oldIndex));
 	}
 	
 	//TODO this is going to be copied in all JavaPluralTypeAnnotation implementations, how to solve that??
 	public void updateFromJava(CompilationUnit astRoot) {
-		List<SecondaryTable> sTables = this.secondaryTableResources;
+		List<SecondaryTable> sTables = this.secondaryTables;
 		int persSize = sTables.size();
 		int javaSize = 0;
 		boolean allJavaAnnotationsFound = false;
@@ -98,7 +98,7 @@ public class SecondaryTablesImpl extends AbstractJavaAnnotationResource<Member> 
 					allJavaAnnotationsFound = true;
 				}
 				else {
-					this.secondaryTableResources.add(secondaryTable);
+					this.secondaryTables.add(secondaryTable);
 					secondaryTable.updateFromJava(astRoot);
 					javaSize++;
 				}

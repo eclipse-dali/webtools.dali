@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 
-public class JavaSecondaryTableProvider implements TypeAnnotationProvider
+public class JavaSecondaryTableProvider implements AnnotationProvider
 {
 	// singleton
 	private static final JavaSecondaryTableProvider INSTANCE = new JavaSecondaryTableProvider();
@@ -21,7 +21,7 @@ public class JavaSecondaryTableProvider implements TypeAnnotationProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static TypeAnnotationProvider instance() {
+	public static AnnotationProvider instance() {
 		return INSTANCE;
 	}
 
@@ -33,7 +33,7 @@ public class JavaSecondaryTableProvider implements TypeAnnotationProvider
 	}
 
 
-	public SecondaryTable buildJavaTypeAnnotation(Type type, JpaPlatform jpaPlatform) {
+	public SecondaryTable buildAnnotation(Type type, JpaPlatform jpaPlatform) {
 		return SecondaryTableImpl.createJavaSecondaryTable(jpaPlatform, type);
 	}
 

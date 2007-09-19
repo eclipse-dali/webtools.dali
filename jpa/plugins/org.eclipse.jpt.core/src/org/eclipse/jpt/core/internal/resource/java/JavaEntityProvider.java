@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaEntityProvider implements TypeMappingAnnotationProvider
+public class JavaEntityProvider implements MappingAnnotationProvider
 {
 	// singleton
 	private static final JavaEntityProvider INSTANCE = new JavaEntityProvider();
@@ -23,7 +23,7 @@ public class JavaEntityProvider implements TypeMappingAnnotationProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static TypeMappingAnnotationProvider instance() {
+	public static MappingAnnotationProvider instance() {
 		return INSTANCE;
 	}
 
@@ -34,7 +34,7 @@ public class JavaEntityProvider implements TypeMappingAnnotationProvider
 		super();
 	}
 
-	public Entity buildJavaTypeAnnotation(Type type, JpaPlatform jpaPlatform) {
+	public Entity buildAnnotation(Type type, JpaPlatform jpaPlatform) {
 		return new EntityImpl(type, jpaPlatform);
 	}
 

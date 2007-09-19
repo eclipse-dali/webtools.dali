@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAda
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 
-public class EntityImpl extends AbstractJavaAnnotationResource<Type> implements Entity
+public class EntityImpl extends AbstractAnnotationResource<Type> implements Entity
 {
 	private final AnnotationElementAdapter<String> nameAdapter;
 
@@ -34,7 +34,7 @@ public class EntityImpl extends AbstractJavaAnnotationResource<Type> implements 
 		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), NAME_ADAPTER);
 	}
 	
-	public Iterator<TypeAnnotationProvider> javaTypeAnnotationProviders() {
+	public Iterator<AnnotationProvider> javaTypeAnnotationProviders() {
 		return jpaPlatform().entityAnnotationProviders();
 	}
 	

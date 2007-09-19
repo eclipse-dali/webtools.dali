@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdap
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 
-public abstract class AbstractTableResource extends AbstractJavaAnnotationResource<Member> implements Table
+public abstract class AbstractTableResource extends AbstractAnnotationResource<Member> implements Table
 {
 	// hold this so we can get the 'name' text range
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;

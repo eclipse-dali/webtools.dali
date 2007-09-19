@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
-public class JavaEmbeddableProvider implements TypeMappingAnnotationProvider
+public class JavaEmbeddableProvider implements MappingAnnotationProvider
 {
 	// singleton
 	private static final JavaEmbeddableProvider INSTANCE = new JavaEmbeddableProvider();
@@ -34,7 +34,7 @@ public class JavaEmbeddableProvider implements TypeMappingAnnotationProvider
 		super();
 	}
 
-	public Embeddable buildJavaTypeAnnotation(Type type, JpaPlatform jpaPlatform) {
+	public Embeddable buildAnnotation(Type type, JpaPlatform jpaPlatform) {
 		return new EmbeddableImpl(type, jpaPlatform);
 	}
 

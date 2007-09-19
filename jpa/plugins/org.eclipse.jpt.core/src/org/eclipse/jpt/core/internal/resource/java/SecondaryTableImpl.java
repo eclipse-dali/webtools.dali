@@ -60,7 +60,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Seconda
 		getAnnotationAdapter().moveAnnotation(newIndex);
 	}
 	
-	public void initializeFrom(SingularTypeAnnotation oldAnnotation) {
+	public void initializeFrom(SingularAnnotation oldAnnotation) {
 		setName(((SecondaryTable) oldAnnotation).getName());
 		setCatalog(((SecondaryTable) oldAnnotation).getCatalog());
 		setSchema(((SecondaryTable) oldAnnotation).getSchema());

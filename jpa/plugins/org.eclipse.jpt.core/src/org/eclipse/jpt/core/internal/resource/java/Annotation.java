@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 
-public interface TypeAnnotation extends JavaResource
+public interface Annotation extends JavaResource
 {	
 	String getAnnotationName();
 	

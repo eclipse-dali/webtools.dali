@@ -9,17 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
 
-public interface TypeAnnotationProvider
+public interface SingularAnnotation extends Annotation
 {
-	/**
-	 * Return the fully qualified annotation name
-	 */
-	String getAnnotationName();
-		
-	DeclarationAnnotationAdapter getDeclarationAnnotationAdapter();
+	void initializeFrom(SingularAnnotation oldAnnotation);
 	
-	TypeAnnotation buildJavaTypeAnnotation(Type type, JpaPlatform jpaPlatform);
+	void moveAnnotation(int newIndex);
+	
+	void removeAnnotation();
 }

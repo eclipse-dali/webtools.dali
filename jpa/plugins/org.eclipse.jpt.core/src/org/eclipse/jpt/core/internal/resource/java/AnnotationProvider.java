@@ -9,25 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.ListIterator;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Type;
 
-public interface PluralTypeAnnotation<E extends SingularTypeAnnotation> extends TypeAnnotation
+public interface AnnotationProvider
 {
-	String getSingularAnnotationName();
+	/**
+	 * Return the fully qualified annotation name
+	 */
+	String getAnnotationName();
+		
+	DeclarationAnnotationAdapter getDeclarationAnnotationAdapter();
 	
-	ListIterator<E> javaTypeAnnotations();
-	
-	int javaTypeAnnotationsSize();
-
-	E singularAnnotationAt(int index);
-	
-	int indexOf(E singularTypeAnnotation);
-	
-	E add(int index);
-	
-	void remove(E javaTypeAnnotation);
-	
-	void remove(int index);
-	
-	void move(int oldIndex, int newIndex);
+	//TODO refactor to support Attribute level annotations.  pass in Member or make this generic
+	Annotation buildAnnotation(Type type, JpaPlatform jpaPlatform);
 }

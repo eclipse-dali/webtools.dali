@@ -14,19 +14,19 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 
-public abstract class AbstractJavaAnnotationResource<E extends Member> extends AbstractJavaResource<E> implements TypeAnnotation
+public abstract class AbstractAnnotationResource<E extends Member> extends AbstractResource<E> implements Annotation
 {
 	private DeclarationAnnotationAdapter daa;
 
 	private AnnotationAdapter annotationAdapter;
 		
-	protected AbstractJavaAnnotationResource(E member, JpaPlatform jpaPlatform, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected AbstractAnnotationResource(E member, JpaPlatform jpaPlatform, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(member, jpaPlatform);
 		this.daa = daa;
 		this.annotationAdapter = annotationAdapter;
 	}
 	
-	protected AbstractJavaAnnotationResource(E member, JpaPlatform jpaPlatform, DeclarationAnnotationAdapter daa) {
+	protected AbstractAnnotationResource(E member, JpaPlatform jpaPlatform, DeclarationAnnotationAdapter daa) {
 		this(member, jpaPlatform, daa, new MemberAnnotationAdapter(member, daa));
 	}
 

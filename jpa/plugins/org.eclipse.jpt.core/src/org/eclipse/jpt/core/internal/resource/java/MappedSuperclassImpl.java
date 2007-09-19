@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 
-public class MappedSuperclassImpl extends AbstractJavaAnnotationResource<Type> implements MappedSuperclass
+public class MappedSuperclassImpl extends AbstractAnnotationResource<Type> implements MappedSuperclass
 {
 	protected MappedSuperclassImpl(Type type, JpaPlatform jpaPlatform) {
 		super(type, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
@@ -25,7 +25,7 @@ public class MappedSuperclassImpl extends AbstractJavaAnnotationResource<Type> i
 		return JPA.MAPPED_SUPERCLASS;
 	}
 		
-	public Iterator<TypeAnnotationProvider> javaTypeAnnotationProviders() {
+	public Iterator<AnnotationProvider> javaTypeAnnotationProviders() {
 		return jpaPlatform().mappedSuperclassAnnotationProviders();
 	}
 

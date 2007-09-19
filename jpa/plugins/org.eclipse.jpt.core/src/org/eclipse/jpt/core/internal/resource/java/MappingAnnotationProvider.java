@@ -10,10 +10,16 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
+import org.eclipse.jpt.core.internal.jdtutility.Type;
 
-
-public interface TypeMappingAnnotation extends TypeAnnotation
+public interface MappingAnnotationProvider extends AnnotationProvider
 {
-
-	Iterator<TypeAnnotationProvider> javaTypeAnnotationProviders();
+	/**
+	 * Return the fully qualified names of the annotations that can exist
+	 * with the mapping annotation.  These will be used to create JavaTypeAnnotations
+	 */
+	Iterator<String> correspondingAnnotationNames();
+	
+	//TODO refactor to support Attribute level annotations.  pass in Member or make this generic
+	MappingAnnotation buildAnnotation(Type type, JpaPlatform jpaPlatform);
 }

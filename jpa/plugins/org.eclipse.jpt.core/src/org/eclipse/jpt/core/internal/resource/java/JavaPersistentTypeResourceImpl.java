@@ -24,17 +24,17 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
-public class JavaPersistentTypeResourceImpl extends AbstractJavaResource<Type> implements JavaPersistentTypeResource
+public class JavaPersistentTypeResourceImpl extends AbstractResource<Type> implements JavaPersistentTypeResource
 {	
 	/**
 	 * stores all type annotations except duplicates, java compiler has an error for duplicates
 	 */
-	private Collection<TypeAnnotation> javaTypeAnnotations;
+	private Collection<Annotation> annotations;
 	
 	/**
 	 * stores all type mapping annotations except duplicates, java compiler has an error for duplicates
 	 */
-	private Collection<TypeMappingAnnotation> javaTypeMappingAnnotations;
+	private Collection<MappingAnnotation> mappingAnnotations;
 
 	/**
 	 * store all member types including those that aren't persistable so we can include validation errors.
@@ -43,80 +43,80 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaResource<Type> i
 	
 	public JavaPersistentTypeResourceImpl(Type type, JpaPlatform jpaPlatform){
 		super(type, jpaPlatform);
-		this.javaTypeAnnotations = new ArrayList<TypeAnnotation>();
-		this.javaTypeMappingAnnotations = new ArrayList<TypeMappingAnnotation>();
+		this.annotations = new ArrayList<Annotation>();
+		this.mappingAnnotations = new ArrayList<MappingAnnotation>();
 		this.nestedTypes = new ArrayList<JavaPersistentTypeResource>(); 
 	}
 
-	protected ListIterator<TypeMappingAnnotationProvider> javaTypeMappingAnnotationProviders() {
+	protected ListIterator<MappingAnnotationProvider> javaTypeMappingAnnotationProviders() {
 		return jpaPlatform().javaTypeMappingAnnotationProviders();
 	}
 
 
-	public TypeAnnotation javaTypeAnnotation(String annotationName) {
-		for (Iterator<TypeAnnotation> i = javaTypeAnnotations(); i.hasNext(); ) {
-			TypeAnnotation javaTypeAnnotation = i.next();
-			if (javaTypeAnnotation.getAnnotationName().equals(annotationName)) {
-				return javaTypeAnnotation;
+	public Annotation annotation(String annotationName) {
+		for (Iterator<Annotation> i = annotations(); i.hasNext(); ) {
+			Annotation annotation = i.next();
+			if (annotation.getAnnotationName().equals(annotationName)) {
+				return annotation;
 			}
 		}
 		return null;
 	}
 	
-	public TypeMappingAnnotation javaTypeMappingAnnotation(String annotationName) {
-		for (Iterator<TypeMappingAnnotation> i = javaTypeMappingAnnotations(); i.hasNext(); ) {
-			TypeMappingAnnotation javaTypeMappingAnnotation = i.next();
-			if (javaTypeMappingAnnotation.getAnnotationName().equals(annotationName)) {
-				return javaTypeMappingAnnotation;
+	public MappingAnnotation mappingAnnotation(String annotationName) {
+		for (Iterator<MappingAnnotation> i = mappingAnnotations(); i.hasNext(); ) {
+			MappingAnnotation mappingAnnotation = i.next();
+			if (mappingAnnotation.getAnnotationName().equals(annotationName)) {
+				return mappingAnnotation;
 			}
 		}
 		return null;
 	}
 
 
-	public Iterator<TypeAnnotation> javaTypeAnnotations() {
-		return new CloneIterator<TypeAnnotation>(this.javaTypeAnnotations);
+	public Iterator<Annotation> annotations() {
+		return new CloneIterator<Annotation>(this.annotations);
 	}
 
-	public TypeAnnotation addJavaTypeAnnotation(String annotationName) {
-		TypeAnnotationProvider provider = jpaPlatform().javaTypeAnnotationProvider(annotationName);
-		TypeAnnotation javaTypeAnnotation = provider.buildJavaTypeAnnotation(getMember(), jpaPlatform());
-		addJavaTypeAnnotation(javaTypeAnnotation);		
-		javaTypeAnnotation.newAnnotation();
+	public Annotation addAnnotation(String annotationName) {
+		AnnotationProvider provider = jpaPlatform().javaTypeAnnotationProvider(annotationName);
+		Annotation annotation = provider.buildAnnotation(getMember(), jpaPlatform());
+		addAnnotation(annotation);		
+		annotation.newAnnotation();
 		
-		return javaTypeAnnotation;
+		return annotation;
 	}
 
-	public TypeAnnotation addJavaTypeAnnotation(int index, String singularAnnotationName, String pluralAnnotationName) {
-		SingularTypeAnnotation singularAnnotation = (SingularTypeAnnotation) javaTypeAnnotation(singularAnnotationName);
-		PluralTypeAnnotation pluralAnnotation = (PluralTypeAnnotation) javaTypeAnnotation(pluralAnnotationName);
+	public Annotation addAnnotation(int index, String singularAnnotationName, String pluralAnnotationName) {
+		SingularAnnotation singularAnnotation = (SingularAnnotation) annotation(singularAnnotationName);
+		PluralAnnotation pluralAnnotation = (PluralAnnotation) annotation(pluralAnnotationName);
 		
 		if (pluralAnnotation != null) {
 			//ignore any singularAnnotation and just add to the plural one
-			SingularTypeAnnotation singularTypeAnnotation = pluralAnnotation.add(index);
+			SingularAnnotation newSingularAnnotation = pluralAnnotation.add(index);
 			synchAnnotationsAfterAdd(index + 1, pluralAnnotation);
-			singularTypeAnnotation.newAnnotation();
-			return singularTypeAnnotation;
+			newSingularAnnotation.newAnnotation();
+			return newSingularAnnotation;
 		}
 		if (singularAnnotation == null) {
 			//add the singular since neither singular or plural exists
-			return addJavaTypeAnnotation(singularAnnotationName);
+			return addAnnotation(singularAnnotationName);
 		}
 		//move the singular to a new plural annotation and add to it
-		removeJavaTypeAnnotation(singularAnnotation);
-		PluralTypeAnnotation pluralTypeAnnotation = (PluralTypeAnnotation) addJavaTypeAnnotation(pluralAnnotationName);
-		SingularTypeAnnotation newSingularAnnotation = pluralTypeAnnotation.add(0);
+		removeAnnotation(singularAnnotation);
+		PluralAnnotation newPluralAnnotation = (PluralAnnotation) addAnnotation(pluralAnnotationName);
+		SingularAnnotation newSingularAnnotation = newPluralAnnotation.add(0);
 		newSingularAnnotation.newAnnotation();
 		newSingularAnnotation.initializeFrom(singularAnnotation);
-		return pluralTypeAnnotation.add(pluralTypeAnnotation.javaTypeAnnotationsSize());
+		return newPluralAnnotation.add(newPluralAnnotation.singularAnnotationsSize());
 	}
 	
 	/**
 	 * synchronize the annotations with the model singularTypeAnnotations,
 	 * starting at the end of the list to prevent overlap
 	 */
-	private void synchAnnotationsAfterAdd(int index, PluralTypeAnnotation<SingularTypeAnnotation> pluralAnnotation) {
-		List<SingularTypeAnnotation> singularAnnotations = CollectionTools.list(pluralAnnotation.javaTypeAnnotations());
+	private void synchAnnotationsAfterAdd(int index, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
+		List<SingularAnnotation> singularAnnotations = CollectionTools.list(pluralAnnotation.singularAnnotations());
 		for (int i = singularAnnotations.size(); i-- > index;) {
 			this.synch(singularAnnotations.get(i), i);
 		}
@@ -126,29 +126,29 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaResource<Type> i
 	 * synchronize the annotations with the model singularTypeAnnotations,
 	 * starting at the specified index to prevent overlap
 	 */
-	private void synchAnnotationsAfterRemove(int index, PluralTypeAnnotation<SingularTypeAnnotation> pluralAnnotation) {
-		List<SingularTypeAnnotation> singularAnnotations = CollectionTools.list(pluralAnnotation.javaTypeAnnotations());
+	private void synchAnnotationsAfterRemove(int index, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
+		List<SingularAnnotation> singularAnnotations = CollectionTools.list(pluralAnnotation.singularAnnotations());
 		for (int i = index; i < singularAnnotations.size(); i++) {
 			this.synch(singularAnnotations.get(i), i);
 		}
 	}
 
-	private void synch(SingularTypeAnnotation singularTypeAnnotation, int index) {
-		singularTypeAnnotation.moveAnnotation(index);
+	private void synch(SingularAnnotation singularAnnotation, int index) {
+		singularAnnotation.moveAnnotation(index);
 	}
 
-	public void move(int newIndex, SingularTypeAnnotation singularAnnotation, String pluralAnnotationName) {
-		PluralTypeAnnotation<SingularTypeAnnotation> pluralTypeAnnotation = (PluralTypeAnnotation<SingularTypeAnnotation>) javaTypeAnnotation(pluralAnnotationName);
-		int oldIndex = pluralTypeAnnotation.indexOf(singularAnnotation);
-		move(oldIndex, newIndex, pluralTypeAnnotation);
+	public void move(int newIndex, SingularAnnotation singularAnnotation, String pluralAnnotationName) {
+		PluralAnnotation<SingularAnnotation> pluralAnnotation = (PluralAnnotation<SingularAnnotation>) annotation(pluralAnnotationName);
+		int oldIndex = pluralAnnotation.indexOf(singularAnnotation);
+		move(oldIndex, newIndex, pluralAnnotation);
 	}
 	
 	public void move(int oldIndex, int newIndex, String pluralAnnotationName) {
-		PluralTypeAnnotation<SingularTypeAnnotation> pluralTypeAnnotation = (PluralTypeAnnotation<SingularTypeAnnotation>) javaTypeAnnotation(pluralAnnotationName);
-		move(oldIndex, newIndex, pluralTypeAnnotation);
+		PluralAnnotation<SingularAnnotation> pluralAnnotation = (PluralAnnotation<SingularAnnotation>) annotation(pluralAnnotationName);
+		move(oldIndex, newIndex, pluralAnnotation);
 	}
 	
-	private void move(int sourceIndex, int targetIndex, PluralTypeAnnotation<SingularTypeAnnotation> pluralAnnotation) {
+	private void move(int sourceIndex, int targetIndex, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
 		pluralAnnotation.move(sourceIndex, targetIndex);
 		synchAnnotationsAfterMove(sourceIndex, targetIndex, pluralAnnotation);
 	}
@@ -156,12 +156,12 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaResource<Type> i
 	/**
 	 * synchronize the annotations with the model singularTypeAnnotations
 	 */
-	private void synchAnnotationsAfterMove(int sourceIndex, int targetIndex, PluralTypeAnnotation<SingularTypeAnnotation> pluralAnnotation) {
-		SingularTypeAnnotation singularTypeAnnotation = pluralAnnotation.singularAnnotationAt(targetIndex);
+	private void synchAnnotationsAfterMove(int sourceIndex, int targetIndex, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
+		SingularAnnotation singularAnnotation = pluralAnnotation.singularAnnotationAt(targetIndex);
 		
-		this.synch(singularTypeAnnotation, pluralAnnotation.javaTypeAnnotationsSize());
+		this.synch(singularAnnotation, pluralAnnotation.singularAnnotationsSize());
 		
-		List<SingularTypeAnnotation> singularAnnotations = CollectionTools.list(pluralAnnotation.javaTypeAnnotations());
+		List<SingularAnnotation> singularAnnotations = CollectionTools.list(pluralAnnotation.singularAnnotations());
 		if (sourceIndex < targetIndex) {
 			for (int i = sourceIndex; i < targetIndex; i++) {
 				synch(singularAnnotations.get(i), i);
@@ -172,122 +172,123 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaResource<Type> i
 				synch(singularAnnotations.get(i), i);			
 			}
 		}
-		this.synch(singularTypeAnnotation, targetIndex);
+		this.synch(singularAnnotation, targetIndex);
 	}
 	
-	private void addJavaTypeAnnotation(TypeAnnotation javaTypeAnnotation) {
-		this.javaTypeAnnotations.add(javaTypeAnnotation);
+	private void addAnnotation(Annotation annotation) {
+		this.annotations.add(annotation);
 		//TODO event notification
 	}
 	
-	private void removeJavaTypeAnnotation(TypeAnnotation javaTypeAnnotation) {
-		this.javaTypeAnnotations.remove(javaTypeAnnotation);
+	private void removeAnnotation(Annotation annotation) {
+		this.annotations.remove(annotation);
 		//TODO looks odd that we remove the annotation here, but in addJavaTypeannotation(JavaTypeAnnotation) we don't do the same
-		javaTypeAnnotation.removeAnnotation();
-		//TODO event notification
-	}
-	
-	private void addJavaTypeMappingAnnotation(String annotation) {
-		if (javaTypeMappingAnnotation(annotation) != null) {
-			return;
-		}
-		TypeMappingAnnotationProvider provider = jpaPlatform().javaTypeMappingAnnotationProvider(annotation);
-		TypeMappingAnnotation javaTypeMappingAnnotation = provider.buildJavaTypeAnnotation(getMember(), jpaPlatform());
-		addJavaTypeMappingAnnotation(javaTypeMappingAnnotation);
-		//TODO should this be done here or should creating the JavaTypeAnnotation do this??
-		javaTypeMappingAnnotation.newAnnotation();
-	}
-
-	private void addJavaTypeMappingAnnotation(TypeMappingAnnotation annotation) {
-		this.javaTypeMappingAnnotations.add(annotation);
-		//TODO event notification
-	}
-	
-	private void removeJavaTypeMappingAnnotation(TypeMappingAnnotation annotation) {
-		this.javaTypeMappingAnnotations.remove(annotation);
 		annotation.removeAnnotation();
 		//TODO event notification
 	}
 	
-	public Iterator<TypeMappingAnnotation> javaTypeMappingAnnotations() {
-		return new CloneIterator<TypeMappingAnnotation>(this.javaTypeMappingAnnotations);
+	private void addMappingAnnotation(String annotation) {
+		if (mappingAnnotation(annotation) != null) {
+			return;
+		}
+		MappingAnnotationProvider provider = jpaPlatform().javaTypeMappingAnnotationProvider(annotation);
+		MappingAnnotation mappingAnnotation = provider.buildAnnotation(getMember(), jpaPlatform());
+		addMappingAnnotation(mappingAnnotation);
+		//TODO should this be done here or should creating the JavaTypeAnnotation do this??
+		mappingAnnotation.newAnnotation();
 	}
 
-	public void removeJavaTypeAnnotation(String typeAnnotationName) {
-		TypeAnnotation javaTypeAnnotation = javaTypeAnnotation(typeAnnotationName);
+	private void addMappingAnnotation(MappingAnnotation annotation) {
+		this.mappingAnnotations.add(annotation);
+		//TODO event notification
+	}
+	
+	private void removeMappingAnnotation(MappingAnnotation annotation) {
+		this.mappingAnnotations.remove(annotation);
+		annotation.removeAnnotation();
+		//TODO event notification
+	}
+	
+	public Iterator<MappingAnnotation> mappingAnnotations() {
+		return new CloneIterator<MappingAnnotation>(this.mappingAnnotations);
+	}
+
+	public void removeAnnotation(String typeAnnotationName) {
+		Annotation javaTypeAnnotation = annotation(typeAnnotationName);
 		if (javaTypeAnnotation != null) {
-			removeJavaTypeAnnotation(javaTypeAnnotation);
+			removeAnnotation(javaTypeAnnotation);
 		}
 	}
 
-	public void removeJavaTypeAnnotation(SingularTypeAnnotation singularAnnotation, String pluralAnnotationName) {
-		if (singularAnnotation == javaTypeAnnotation(singularAnnotation.getAnnotationName())) {
-			removeJavaTypeAnnotation(singularAnnotation);
+	public void removeAnnotation(SingularAnnotation singularAnnotation, String pluralAnnotationName) {
+		if (singularAnnotation == annotation(singularAnnotation.getAnnotationName())) {
+			removeAnnotation(singularAnnotation);
 		}
 		else {
-			PluralTypeAnnotation<SingularTypeAnnotation> pluralAnnotation = (PluralTypeAnnotation) javaTypeAnnotation(pluralAnnotationName);
-			removeJavaTypeAnnotation(pluralAnnotation.indexOf(singularAnnotation), pluralAnnotation);
+			PluralAnnotation<SingularAnnotation> pluralAnnotation = (PluralAnnotation) annotation(pluralAnnotationName);
+			removeAnnotation(pluralAnnotation.indexOf(singularAnnotation), pluralAnnotation);
 		}
 	}
 	
-	public void removeJavaTypeAnnotation(int index, String pluralAnnotationName) {
-		PluralTypeAnnotation<SingularTypeAnnotation> pluralAnnotation = (PluralTypeAnnotation) javaTypeAnnotation(pluralAnnotationName);
-		removeJavaTypeAnnotation(index, pluralAnnotation);
+	public void removeAnnotation(int index, String pluralAnnotationName) {
+		PluralAnnotation<SingularAnnotation> pluralAnnotation = (PluralAnnotation) annotation(pluralAnnotationName);
+		removeAnnotation(index, pluralAnnotation);
 	}
 	
-	public void removeJavaTypeAnnotation(int index, PluralTypeAnnotation<SingularTypeAnnotation> javaPluralTypeAnnotation) {
-		SingularTypeAnnotation singularTypeAnnotation = javaPluralTypeAnnotation.singularAnnotationAt(index);
-		javaPluralTypeAnnotation.remove(index);
-		singularTypeAnnotation.removeAnnotation();
-		synchAnnotationsAfterRemove(index, javaPluralTypeAnnotation);
+	public void removeAnnotation(int index, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
+		SingularAnnotation singularAnnotation = pluralAnnotation.singularAnnotationAt(index);
+		pluralAnnotation.remove(index);
+		singularAnnotation.removeAnnotation();
+		synchAnnotationsAfterRemove(index, pluralAnnotation);
 		
-		if (javaPluralTypeAnnotation.javaTypeAnnotationsSize() == 0) {
-			removeJavaTypeAnnotation(javaPluralTypeAnnotation);
+		if (pluralAnnotation.singularAnnotationsSize() == 0) {
+			removeAnnotation(pluralAnnotation);
 		}
-		else if (javaPluralTypeAnnotation.javaTypeAnnotationsSize() == 1) {
-			SingularTypeAnnotation nestedJavaTypeAnnotation = javaPluralTypeAnnotation.singularAnnotationAt(0);
-			removeJavaTypeAnnotation(javaPluralTypeAnnotation);
-			SingularTypeAnnotation newJavaTypeAnnotation = (SingularTypeAnnotation) addJavaTypeAnnotation(javaPluralTypeAnnotation.getSingularAnnotationName());
-			newJavaTypeAnnotation.initializeFrom(nestedJavaTypeAnnotation);
+		else if (pluralAnnotation.singularAnnotationsSize() == 1) {
+			SingularAnnotation nestedAnnotation = pluralAnnotation.singularAnnotationAt(0);
+			removeAnnotation(pluralAnnotation);
+			SingularAnnotation newAnnotation = (SingularAnnotation) addAnnotation(pluralAnnotation.getSingularAnnotationName());
+			newAnnotation.initializeFrom(nestedAnnotation);
 		}
 	}
 	
-	public void removeJavaTypeMappingAnnotation(String annotationName) {
-		TypeMappingAnnotation javaTypeMappingAnnotation = javaTypeMappingAnnotation(annotationName);
-		removeJavaTypeMappingAnnotation(javaTypeMappingAnnotation);
+	public void removeMappingAnnotation(String annotationName) {
+		MappingAnnotation mappingAnnotation = mappingAnnotation(annotationName);
+		removeMappingAnnotation(mappingAnnotation);
 	}
 	
-	//TODO how to handle calling setJavaTypeMappingAnnotation with the same annotation as already exists?  is this an error?
+	//TODO how to handle calling setMappingAnnotation with the same annotation as already exists?  is this an error?
 	//or should we remove it and add it back as an empty annotation??
-	public void setJavaTypeMappingAnnotation(String annotationName) {
-		TypeMappingAnnotation oldMapping = javaTypeMappingAnnotation();
+	public void setMappingAnnotation(String annotationName) {
+		MappingAnnotation oldMapping = mappingAnnotation();
 		if (oldMapping != null) {
 			removeUnnecessaryAnnotations(oldMapping.getAnnotationName(), annotationName);
 		}
-		addJavaTypeMappingAnnotation(annotationName);
+		addMappingAnnotation(annotationName);
 	}
+	
 	/**
 	 * removes annotations that applied to the old mapping annotation, but not to the new mapping annotation.
 	 * also remove all mapping annotations that already exist
 	 */
 	private void removeUnnecessaryAnnotations(String oldMappingAnnotation, String newMappingAnnotation) {
-		TypeMappingAnnotationProvider oldProvider = jpaPlatform().javaTypeMappingAnnotationProvider(oldMappingAnnotation);
-		TypeMappingAnnotationProvider newProvider = jpaPlatform().javaTypeMappingAnnotationProvider(newMappingAnnotation);
+		MappingAnnotationProvider oldProvider = jpaPlatform().javaTypeMappingAnnotationProvider(oldMappingAnnotation);
+		MappingAnnotationProvider newProvider = jpaPlatform().javaTypeMappingAnnotationProvider(newMappingAnnotation);
 		
 		Collection<String> annotationsToRemove = CollectionTools.collection(oldProvider.correspondingAnnotationNames());
 		CollectionTools.removeAll(annotationsToRemove, newProvider.correspondingAnnotationNames());
 		
 		for (String annotationName : annotationsToRemove) {
-			removeJavaTypeAnnotation(annotationName);
+			removeAnnotation(annotationName);
 		}
 		
-		for (ListIterator<TypeMappingAnnotationProvider> i = javaTypeMappingAnnotationProviders(); i.hasNext(); ) {
-			TypeMappingAnnotationProvider provider = i.next();
+		for (ListIterator<MappingAnnotationProvider> i = javaTypeMappingAnnotationProviders(); i.hasNext(); ) {
+			MappingAnnotationProvider provider = i.next();
 			String mappingAnnotationName = provider.getAnnotationName();
 			if (mappingAnnotationName != newMappingAnnotation) {
-				TypeMappingAnnotation javaTypeMappingAnnotation = javaTypeMappingAnnotation(mappingAnnotationName);
-				if (javaTypeMappingAnnotation != null) {
-					removeJavaTypeMappingAnnotation(javaTypeMappingAnnotation);
+				MappingAnnotation mappingAnnotation = mappingAnnotation(mappingAnnotationName);
+				if (mappingAnnotation != null) {
+					removeMappingAnnotation(mappingAnnotation);
 				}
 			}
 		}
@@ -296,25 +297,25 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaResource<Type> i
 	//TODO need property change notification on this javaTypeMappingAnnotation changing
 	//from the context model we don't really care if their are multiple mapping annotations,
 	//just which one we need to use
-	public TypeMappingAnnotation javaTypeMappingAnnotation() {
-		for (ListIterator<TypeMappingAnnotationProvider> i = javaTypeMappingAnnotationProviders(); i.hasNext(); ) {
-			TypeMappingAnnotationProvider provider = i.next();
-			for (Iterator<TypeMappingAnnotation> j = javaTypeMappingAnnotations(); j.hasNext(); ) {
-				TypeMappingAnnotation javaTypeMappingAnnotation = j.next();
-				if (provider.getAnnotationName() == javaTypeMappingAnnotation.getAnnotationName()) {
-					return javaTypeMappingAnnotation;
+	public MappingAnnotation mappingAnnotation() {
+		for (ListIterator<MappingAnnotationProvider> i = javaTypeMappingAnnotationProviders(); i.hasNext(); ) {
+			MappingAnnotationProvider provider = i.next();
+			for (Iterator<MappingAnnotation> j = mappingAnnotations(); j.hasNext(); ) {
+				MappingAnnotation mappingAnnotation = j.next();
+				if (provider.getAnnotationName() == mappingAnnotation.getAnnotationName()) {
+					return mappingAnnotation;
 				}
 			}
 		}
 		return null;
 	}
 	
-	public ListIterator<TypeAnnotation> javaTypeAnnotations(String singularAnnotation, String pluralAnnotation) {
-		TypeAnnotation javaPluralTypeAnnotation = javaTypeAnnotation(pluralAnnotation);
-		if (javaPluralTypeAnnotation != null) {
-			return ((PluralTypeAnnotation) javaPluralTypeAnnotation).javaTypeAnnotations();
+	public ListIterator<Annotation> annotations(String singularAnnotation, String pluralAnnotationName) {
+		Annotation pluralAnnotation = annotation(pluralAnnotationName);
+		if (pluralAnnotation != null) {
+			return ((PluralAnnotation) pluralAnnotation).singularAnnotations();
 		}
-		return new SingleElementListIterator<TypeAnnotation>(javaTypeAnnotation(singularAnnotation));
+		return new SingleElementListIterator<Annotation>(annotation(singularAnnotation));
 	}
 	
 	public Iterator<JavaPersistentTypeResource> nestedTypes() {
@@ -362,8 +363,8 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaResource<Type> i
 	
 	public void updateFromJava(CompilationUnit astRoot) {
 		updateNestedTypes(astRoot);
-		updateJavaTypeAnnotations(astRoot);
-		updateJavaTypeMappingAnnotations(astRoot);
+		updateAnnotations(astRoot);
+		updateMappingAnnotations(astRoot);
 	}
 	
 	private void updateNestedTypes(CompilationUnit astRoot) {
@@ -397,23 +398,23 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaResource<Type> i
 	//for each one found.  If we want to include duplicates we would need to instead look at 
 	//all the annotations on a Type.  Duplicates are handled by the compiler so there
 	//doesn't seem to be a reason to include them in our model
-	private void updateJavaTypeAnnotations(CompilationUnit astRoot) {
-		for (Iterator<TypeAnnotationProvider> i = jpaPlatform().javaTypeAnnotationProviders(); i.hasNext(); ) {
-			TypeAnnotationProvider provider = i.next();
+	private void updateAnnotations(CompilationUnit astRoot) {
+		for (Iterator<AnnotationProvider> i = jpaPlatform().javaTypeAnnotationProviders(); i.hasNext(); ) {
+			AnnotationProvider provider = i.next();
 			if (getMember().containsAnnotation(provider.getDeclarationAnnotationAdapter(), astRoot)) {
-				TypeAnnotation javaTypeAnnotation = javaTypeAnnotation(provider.getAnnotationName());
-				if (javaTypeAnnotation == null) {
-					javaTypeAnnotation = provider.buildJavaTypeAnnotation(getMember(), jpaPlatform());
-					addJavaTypeAnnotation(javaTypeAnnotation);
+				Annotation annotation = annotation(provider.getAnnotationName());
+				if (annotation == null) {
+					annotation = provider.buildAnnotation(getMember(), jpaPlatform());
+					addAnnotation(annotation);
 				}
-				javaTypeAnnotation.updateFromJava(astRoot);
+				annotation.updateFromJava(astRoot);
 			}
 		}
 		
-		for (Iterator<TypeAnnotation> i = javaTypeAnnotations(); i.hasNext(); ) {
-			TypeAnnotation javaTypeAnnotation = i.next();
-			if (!getMember().containsAnnotation(javaTypeAnnotation.getDeclarationAnnotationAdapter(), astRoot)) {
-				removeJavaTypeAnnotation(javaTypeAnnotation);
+		for (Iterator<Annotation> i = annotations(); i.hasNext(); ) {
+			Annotation annotation = i.next();
+			if (!getMember().containsAnnotation(annotation.getDeclarationAnnotationAdapter(), astRoot)) {
+				removeAnnotation(annotation);
 			}
 		}		
 	}	
@@ -422,23 +423,23 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaResource<Type> i
 	//for each one found.  If we want to include duplicates we would need to instead look at 
 	//all the annotations on a Type.  Duplicates are handled by the compiler so there
 	//doesn't seem to be a reason to include them in our model
-	private void updateJavaTypeMappingAnnotations(CompilationUnit astRoot) {
-		for (Iterator<TypeMappingAnnotationProvider> i = jpaPlatform().javaTypeMappingAnnotationProviders(); i.hasNext(); ) {
-			TypeMappingAnnotationProvider provider = i.next();
+	private void updateMappingAnnotations(CompilationUnit astRoot) {
+		for (Iterator<MappingAnnotationProvider> i = jpaPlatform().javaTypeMappingAnnotationProviders(); i.hasNext(); ) {
+			MappingAnnotationProvider provider = i.next();
 			if (getMember().containsAnnotation(provider.getDeclarationAnnotationAdapter(), astRoot)) {
-				TypeMappingAnnotation javaTypeMappingAnnotation = javaTypeMappingAnnotation(provider.getAnnotationName());
-				if (javaTypeMappingAnnotation == null) {
-					javaTypeMappingAnnotation = provider.buildJavaTypeAnnotation(getMember(), jpaPlatform());
-					addJavaTypeMappingAnnotation(javaTypeMappingAnnotation);
+				MappingAnnotation mappingAnnotation = mappingAnnotation(provider.getAnnotationName());
+				if (mappingAnnotation == null) {
+					mappingAnnotation = provider.buildAnnotation(getMember(), jpaPlatform());
+					addMappingAnnotation(mappingAnnotation);
 				}
-				javaTypeMappingAnnotation.updateFromJava(astRoot);
+				mappingAnnotation.updateFromJava(astRoot);
 			}
 		}
 		
-		for (Iterator<TypeMappingAnnotation> i = javaTypeMappingAnnotations(); i.hasNext(); ) {
-			TypeMappingAnnotation javaTypeMappingAnnotation = i.next();
-			if (!getMember().containsAnnotation(javaTypeMappingAnnotation.getDeclarationAnnotationAdapter(), astRoot)) {
-				removeJavaTypeMappingAnnotation(javaTypeMappingAnnotation);
+		for (Iterator<MappingAnnotation> i = mappingAnnotations(); i.hasNext(); ) {
+			MappingAnnotation mappingAnnotation = i.next();
+			if (!getMember().containsAnnotation(mappingAnnotation.getDeclarationAnnotationAdapter(), astRoot)) {
+				removeMappingAnnotation(mappingAnnotation);
 			}
 		}
 	}

@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 
-public class EmbeddableImpl extends AbstractJavaAnnotationResource<Type> implements Embeddable
+public class EmbeddableImpl extends AbstractAnnotationResource<Type> implements Embeddable
 {
 
 	protected EmbeddableImpl(Type type, JpaPlatform jpaPlatform) {
@@ -26,7 +26,7 @@ public class EmbeddableImpl extends AbstractJavaAnnotationResource<Type> impleme
 		return JPA.EMBEDDABLE;
 	}
 
-	public Iterator<TypeAnnotationProvider> javaTypeAnnotationProviders() {
+	public Iterator<AnnotationProvider> javaTypeAnnotationProviders() {
 		return jpaPlatform().embeddableAnnotationProviders();
 	}	
 

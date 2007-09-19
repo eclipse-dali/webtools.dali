@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
-public interface Table extends TypeAnnotation
+public interface Table extends Annotation
 {
 	String getName();
 	
