@@ -43,18 +43,13 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 
 	public IJpaRootContentNode buildRootContent(IJpaFile jpaFile) {
 		IFile resourceFile = jpaFile.getFile();
-		
 		OrmResource resource = 
 				(OrmResource) WorkbenchResourceHelper.getResource(resourceFile, true);
 		XmlRootContentNode root = OrmFactory.eINSTANCE.createXmlRootContentNode();
-			
-		if (resourceFile.equals(resource.getFile())) {
-			resource.accessForWrite();
-			root.setResource(resource);
-			root.setEntityMappings(resource.getEntityMappings());
-			resource.eAdapters().add(buildRootNodeListener(resourceFile, root));
-		}
-		
+		resource.accessForWrite();
+		root.setResource(resource);
+		root.setEntityMappings(resource.getEntityMappings());
+		resource.eAdapters().add(buildRootNodeListener(resourceFile, root));
 		jpaFile.setContent(root);
 		return root;
 	}

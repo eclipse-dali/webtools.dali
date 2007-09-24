@@ -44,18 +44,13 @@ public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProv
 
 	public IJpaRootContentNode buildRootContent(IJpaFile jpaFile) {
 		IFile resourceFile = jpaFile.getFile();
-		
 		PersistenceResource resource = 
 				(PersistenceResource) WorkbenchResourceHelper.getResource(resourceFile, true);
-		PersistenceXmlRootContentNode root = PersistenceFactory.eINSTANCE.createPersistenceXmlRootContentNode();
-		
-		if (resourceFile.equals(resource.getFile())) {
-			resource.accessForWrite();
-			root.setResource(resource);
-			root.setPersistence(resource.getPersistence());
-			resource.eAdapters().add(buildRootNodeListener(resourceFile, root));
-		}
-		
+		PersistenceXmlRootContentNode root = PersistenceFactory.eINSTANCE.createPersistenceXmlRootContentNode();		
+		resource.accessForWrite();
+		root.setResource(resource);
+		root.setPersistence(resource.getPersistence());
+		resource.eAdapters().add(buildRootNodeListener(resourceFile, root));
 		jpaFile.setContent(root);
 		return root;
 	}
