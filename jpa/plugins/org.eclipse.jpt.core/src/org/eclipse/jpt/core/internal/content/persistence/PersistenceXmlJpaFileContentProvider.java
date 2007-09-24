@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.content.persistence;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -19,9 +18,8 @@ import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceResource;
-import org.eclipse.jpt.core.internal.emfutility.ComponentUtilities;
+import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProvider
 {
@@ -46,21 +44,16 @@ public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProv
 
 	public IJpaRootContentNode buildRootContent(IJpaFile jpaFile) {
 		IFile resourceFile = jpaFile.getFile();
-		IPath deployPath = ComponentUtilities.computeDeployPath(resourceFile);
-		PersistenceArtifactEdit artifactEdit = 
-				PersistenceArtifactEdit.getArtifactEditForWrite(
-						resourceFile.getProject(),
-						deployPath.toString());
-		PersistenceResource resource = artifactEdit.getPersistenceResource();
+		
+		PersistenceResource resource = 
+				(PersistenceResource) WorkbenchResourceHelper.getResource(resourceFile, true);
 		PersistenceXmlRootContentNode root = PersistenceFactory.eINSTANCE.createPersistenceXmlRootContentNode();
-			
+		
 		if (resourceFile.equals(resource.getFile())) {
-			root.setArtifactEdit(artifactEdit);
+			resource.accessForWrite();
+			root.setResource(resource);
 			root.setPersistence(resource.getPersistence());
 			resource.eAdapters().add(buildRootNodeListener(resourceFile, root));
-		}
-		else {
-			artifactEdit.dispose();
 		}
 		
 		jpaFile.setContent(root);

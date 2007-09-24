@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.JpaFile;
 import org.eclipse.jpt.core.internal.XmlEObject;
 import org.eclipse.jpt.core.internal.content.persistence.resource.IPersistenceXmlContentNodes;
-import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceArtifactEdit;
+import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceResource;
 
 /**
  * <!-- begin-user-doc -->
@@ -55,7 +55,7 @@ public class PersistenceXmlRootContentNode extends XmlEObject
 	 */
 	protected Persistence persistence;
 	
-	private PersistenceArtifactEdit artifactEdit;
+	private PersistenceResource resource;
 	
 	
 	/**
@@ -343,8 +343,8 @@ public class PersistenceXmlRootContentNode extends XmlEObject
 	}
 	
 	public void dispose() {
-		if (artifactEdit != null) {
-			artifactEdit.dispose();
+		if (resource != null) {
+			resource.releaseFromWrite();
 		}
 	}
 	
@@ -368,7 +368,7 @@ public class PersistenceXmlRootContentNode extends XmlEObject
 	// TODO Auto-generated method stub
 	}
 	
-	public void setArtifactEdit(PersistenceArtifactEdit persistenceArtifactEdit) {
-		artifactEdit = persistenceArtifactEdit;
+	public void setResource(PersistenceResource persistenceResource) {
+		resource = persistenceResource;
 	}
 }

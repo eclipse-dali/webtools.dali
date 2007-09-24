@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.content.orm;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -19,8 +18,7 @@ import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.content.orm.resource.OrmArtifactEdit;
-import org.eclipse.jpt.core.internal.emfutility.ComponentUtilities;
+import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 {
@@ -45,21 +43,16 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 
 	public IJpaRootContentNode buildRootContent(IJpaFile jpaFile) {
 		IFile resourceFile = jpaFile.getFile();
-		IPath deployPath = ComponentUtilities.computeDeployPath(resourceFile);
-		OrmArtifactEdit artifactEdit = 
-				OrmArtifactEdit.getArtifactEditForWrite(
-						resourceFile.getProject(),
-						deployPath.toString());
-		OrmResource resource = artifactEdit.getOrmResource();
+		
+		OrmResource resource = 
+				(OrmResource) WorkbenchResourceHelper.getResource(resourceFile, true);
 		XmlRootContentNode root = OrmFactory.eINSTANCE.createXmlRootContentNode();
 			
 		if (resourceFile.equals(resource.getFile())) {
-			root.setArtifactEdit(artifactEdit);
+			resource.accessForWrite();
+			root.setResource(resource);
 			root.setEntityMappings(resource.getEntityMappings());
 			resource.eAdapters().add(buildRootNodeListener(resourceFile, root));
-		}
-		else {
-			artifactEdit.dispose();
 		}
 		
 		jpaFile.setContent(root);
