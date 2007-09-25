@@ -73,7 +73,7 @@ public class ManyToManyComposite extends BaseJpaComposite
 		layout.marginWidth = 0;
 		generalComposite.setLayout(layout);	
 
-		this.targetEntityChooser = CommonWidgets.buildTargetEntityChooser(generalComposite, commandStack, getWidgetFactory());
+		this.targetEntityChooser = CommonWidgets.buildTargetEntityChooser(generalComposite, this.commandStack, getWidgetFactory());
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -83,7 +83,7 @@ public class ManyToManyComposite extends BaseJpaComposite
 
 		
 		CommonWidgets.buildFetchLabel(generalComposite, getWidgetFactory());
-		this.fetchTypeComboViewer = CommonWidgets.buildFetchTypeComboViewer(generalComposite, this.commandStack, getWidgetFactory());
+		this.fetchTypeComboViewer = CommonWidgets.buildEnumComboViewer(generalComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
