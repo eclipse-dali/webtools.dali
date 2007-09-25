@@ -141,8 +141,10 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaCompo
 		this.pkJoinColumnsListViewer.getList().setLayoutData(gridData);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.pkJoinColumnsListViewer.getList(), IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS);
 		
-		this.pkJoinColumnsAddButton = new Button(this.pkJoinColumnsGroup, SWT.NONE);
-		this.pkJoinColumnsAddButton.setText(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_add);
+		this.pkJoinColumnsAddButton = getWidgetFactory().createButton(
+			this.pkJoinColumnsGroup, 
+			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_add, 
+			SWT.NONE);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.pkJoinColumnsAddButton.setLayoutData(gridData);
@@ -156,8 +158,10 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaCompo
 			}
 		});
 		
-		this.pkJoinColumnsEditButton = new Button(this.pkJoinColumnsGroup, SWT.NONE);
-		this.pkJoinColumnsEditButton.setText(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_edit);
+		this.pkJoinColumnsEditButton = getWidgetFactory().createButton(
+			this.pkJoinColumnsGroup, 
+			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_edit, 
+			SWT.NONE);
 		this.pkJoinColumnsEditButton.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// do nothing
@@ -171,8 +175,10 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaCompo
 		gridData.horizontalAlignment = GridData.FILL;
 		this.pkJoinColumnsEditButton.setLayoutData(gridData);
 
-		this.pkJoinColumnsRemoveButton = new Button(this.pkJoinColumnsGroup, SWT.NONE);
-		this.pkJoinColumnsRemoveButton.setText(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_remove);
+		this.pkJoinColumnsRemoveButton = getWidgetFactory().createButton(
+			this.pkJoinColumnsGroup, 
+			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_remove, 
+			SWT.NONE);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.BEGINNING;

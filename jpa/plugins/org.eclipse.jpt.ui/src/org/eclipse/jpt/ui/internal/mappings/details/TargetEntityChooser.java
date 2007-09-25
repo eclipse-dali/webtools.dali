@@ -183,8 +183,11 @@ public class TargetEntityChooser extends BaseJpaController
 	//see  org.eclipse.pde.internal.ui.editor.plugin.rows.ClassAttributeRow
 	//for example of the hyperlink opening a resource
 	protected Button buildTargetEntitySelectionButton(Composite parent) {
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText(JptUiMappingsMessages.TargetEntityChooser_browse);
+		Button button = getWidgetFactory().createButton(
+			parent, 
+			JptUiMappingsMessages.TargetEntityChooser_browse, 
+			SWT.PUSH);
+
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				browse();
