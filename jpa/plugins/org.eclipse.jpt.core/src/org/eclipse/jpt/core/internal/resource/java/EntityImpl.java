@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -34,10 +33,6 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), NAME_ADAPTER);
 	}
 	
-	public Iterator<AnnotationProvider> javaTypeAnnotationProviders() {
-		return jpaPlatform().entityAnnotationProviders();
-	}
-	
 	public String getAnnotationName() {
 		return JPA.ENTITY;
 	}
@@ -48,6 +43,7 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 
 	public void setName(String name) {
 		this.name = name;
+		this.nameAdapter.setValue(name);
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {

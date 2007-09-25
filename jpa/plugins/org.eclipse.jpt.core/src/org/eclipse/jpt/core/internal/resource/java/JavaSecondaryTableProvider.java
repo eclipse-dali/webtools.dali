@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 
 public class JavaSecondaryTableProvider implements AnnotationProvider
 {
@@ -33,8 +33,8 @@ public class JavaSecondaryTableProvider implements AnnotationProvider
 	}
 
 
-	public SecondaryTable buildAnnotation(Type type, JpaPlatform jpaPlatform) {
-		return SecondaryTableImpl.createJavaSecondaryTable(jpaPlatform, type);
+	public SecondaryTable buildAnnotation(Member member, JpaPlatform jpaPlatform) {
+		return SecondaryTableImpl.createJavaSecondaryTable(jpaPlatform, member);
 	}
 
 	public String getAnnotationName() {

@@ -11,10 +11,7 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -23,7 +20,6 @@ import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.Name;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
 
 public class JDTTools {
 
@@ -78,15 +74,6 @@ public class JDTTools {
 		parser.setSource(compilationUnit);
 		parser.setResolveBindings(resolveBindings);
 		return (CompilationUnit) parser.createAST(null);
-	}
-	
-	public static IType findType(String packageName, String qualifiedTypeName, IJavaProject javaProject) {
-		try {
-			return javaProject.findType(packageName, qualifiedTypeName.replace('$', '.'));
-		} catch (JavaModelException ex) {
-			JptCorePlugin.log(ex);
-			return null;
-		}
 	}
 
 	public static String resolveEnum(Expression expression) {

@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
@@ -55,7 +56,22 @@ public class FieldAttribute extends Attribute {
 		return null;		
 	}
 
-
+	private VariableDeclarationFragment fragment(CompilationUnit astRoot) {
+		FieldDeclaration fieldDeclaration = bodyDeclaration(astRoot);
+		for (VariableDeclarationFragment fragment : this.fragments(fieldDeclaration)) {
+			if (fragment.getName().getFullyQualifiedName().equals(getName())) {
+				return fragment;
+			}
+		}
+		//TODO could this ever happen, should I throw an exception instead?
+		return null;
+	}
+	
+	@Override
+	public IVariableBinding binding(CompilationUnit astRoot) {
+		return fragment(astRoot).resolveBinding();
+	}
+	
 	// ********** Attribute implementation **********
 
 	@Override

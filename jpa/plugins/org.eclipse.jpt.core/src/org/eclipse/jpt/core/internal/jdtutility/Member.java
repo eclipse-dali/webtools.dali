@@ -23,6 +23,7 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
@@ -84,7 +85,8 @@ public abstract class Member {
 		return this.declaringType;
 	}
 
-
+	public abstract IBinding binding(CompilationUnit astRoot);
+	
 	// ********** miscellaneous **********
 
 	public ICompilationUnit compilationUnit() {

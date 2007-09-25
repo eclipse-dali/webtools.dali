@@ -14,312 +14,56 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.jdtutility.AttributeAnnotationTools;
+import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jpt.core.internal.AccessType;
+import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
+import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
+import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
-public class JavaPersistentTypeResourceImpl extends AbstractResource<Type> implements JavaPersistentTypeResource
+public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResource<Type> implements JavaPersistentTypeResource
 {	
-	/**
-	 * stores all type annotations except duplicates, java compiler has an error for duplicates
-	 */
-	private Collection<Annotation> annotations;
-	
-	/**
-	 * stores all type mapping annotations except duplicates, java compiler has an error for duplicates
-	 */
-	private Collection<MappingAnnotation> mappingAnnotations;
-
 	/**
 	 * store all member types including those that aren't persistable so we can include validation errors.
 	 */
-	private List<JavaPersistentTypeResource> nestedTypes;
+	private Collection<JavaPersistentTypeResource> nestedTypes;
+	
+	private Collection<JavaPersistentAttributeResource> attributes;
+	
+	private AccessType accessType;
+	
+	private String superClassQualifiedName;
 	
 	public JavaPersistentTypeResourceImpl(Type type, JpaPlatform jpaPlatform){
 		super(type, jpaPlatform);
-		this.annotations = new ArrayList<Annotation>();
-		this.mappingAnnotations = new ArrayList<MappingAnnotation>();
 		this.nestedTypes = new ArrayList<JavaPersistentTypeResource>(); 
+		this.attributes = new ArrayList<JavaPersistentAttributeResource>();
 	}
 
-	protected ListIterator<MappingAnnotationProvider> javaTypeMappingAnnotationProviders() {
+	@Override
+	protected ListIterator<MappingAnnotationProvider> mappingAnnotationProviders() {
 		return jpaPlatform().javaTypeMappingAnnotationProviders();
 	}
-
-
-	public Annotation annotation(String annotationName) {
-		for (Iterator<Annotation> i = annotations(); i.hasNext(); ) {
-			Annotation annotation = i.next();
-			if (annotation.getAnnotationName().equals(annotationName)) {
-				return annotation;
-			}
-		}
-		return null;
-	}
 	
-	public MappingAnnotation mappingAnnotation(String annotationName) {
-		for (Iterator<MappingAnnotation> i = mappingAnnotations(); i.hasNext(); ) {
-			MappingAnnotation mappingAnnotation = i.next();
-			if (mappingAnnotation.getAnnotationName().equals(annotationName)) {
-				return mappingAnnotation;
-			}
-		}
-		return null;
-	}
-
-
-	public Iterator<Annotation> annotations() {
-		return new CloneIterator<Annotation>(this.annotations);
-	}
-
-	public Annotation addAnnotation(String annotationName) {
-		AnnotationProvider provider = jpaPlatform().javaTypeAnnotationProvider(annotationName);
-		Annotation annotation = provider.buildAnnotation(getMember(), jpaPlatform());
-		addAnnotation(annotation);		
-		annotation.newAnnotation();
-		
-		return annotation;
-	}
-
-	public Annotation addAnnotation(int index, String singularAnnotationName, String pluralAnnotationName) {
-		SingularAnnotation singularAnnotation = (SingularAnnotation) annotation(singularAnnotationName);
-		PluralAnnotation pluralAnnotation = (PluralAnnotation) annotation(pluralAnnotationName);
-		
-		if (pluralAnnotation != null) {
-			//ignore any singularAnnotation and just add to the plural one
-			SingularAnnotation newSingularAnnotation = pluralAnnotation.add(index);
-			synchAnnotationsAfterAdd(index + 1, pluralAnnotation);
-			newSingularAnnotation.newAnnotation();
-			return newSingularAnnotation;
-		}
-		if (singularAnnotation == null) {
-			//add the singular since neither singular or plural exists
-			return addAnnotation(singularAnnotationName);
-		}
-		//move the singular to a new plural annotation and add to it
-		removeAnnotation(singularAnnotation);
-		PluralAnnotation newPluralAnnotation = (PluralAnnotation) addAnnotation(pluralAnnotationName);
-		SingularAnnotation newSingularAnnotation = newPluralAnnotation.add(0);
-		newSingularAnnotation.newAnnotation();
-		newSingularAnnotation.initializeFrom(singularAnnotation);
-		return newPluralAnnotation.add(newPluralAnnotation.singularAnnotationsSize());
-	}
-	
-	/**
-	 * synchronize the annotations with the model singularTypeAnnotations,
-	 * starting at the end of the list to prevent overlap
-	 */
-	private void synchAnnotationsAfterAdd(int index, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
-		List<SingularAnnotation> singularAnnotations = CollectionTools.list(pluralAnnotation.singularAnnotations());
-		for (int i = singularAnnotations.size(); i-- > index;) {
-			this.synch(singularAnnotations.get(i), i);
-		}
-	}
-
-	/**
-	 * synchronize the annotations with the model singularTypeAnnotations,
-	 * starting at the specified index to prevent overlap
-	 */
-	private void synchAnnotationsAfterRemove(int index, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
-		List<SingularAnnotation> singularAnnotations = CollectionTools.list(pluralAnnotation.singularAnnotations());
-		for (int i = index; i < singularAnnotations.size(); i++) {
-			this.synch(singularAnnotations.get(i), i);
-		}
-	}
-
-	private void synch(SingularAnnotation singularAnnotation, int index) {
-		singularAnnotation.moveAnnotation(index);
-	}
-
-	public void move(int newIndex, SingularAnnotation singularAnnotation, String pluralAnnotationName) {
-		PluralAnnotation<SingularAnnotation> pluralAnnotation = (PluralAnnotation<SingularAnnotation>) annotation(pluralAnnotationName);
-		int oldIndex = pluralAnnotation.indexOf(singularAnnotation);
-		move(oldIndex, newIndex, pluralAnnotation);
-	}
-	
-	public void move(int oldIndex, int newIndex, String pluralAnnotationName) {
-		PluralAnnotation<SingularAnnotation> pluralAnnotation = (PluralAnnotation<SingularAnnotation>) annotation(pluralAnnotationName);
-		move(oldIndex, newIndex, pluralAnnotation);
-	}
-	
-	private void move(int sourceIndex, int targetIndex, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
-		pluralAnnotation.move(sourceIndex, targetIndex);
-		synchAnnotationsAfterMove(sourceIndex, targetIndex, pluralAnnotation);
-	}
-	
-	/**
-	 * synchronize the annotations with the model singularTypeAnnotations
-	 */
-	private void synchAnnotationsAfterMove(int sourceIndex, int targetIndex, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
-		SingularAnnotation singularAnnotation = pluralAnnotation.singularAnnotationAt(targetIndex);
-		
-		this.synch(singularAnnotation, pluralAnnotation.singularAnnotationsSize());
-		
-		List<SingularAnnotation> singularAnnotations = CollectionTools.list(pluralAnnotation.singularAnnotations());
-		if (sourceIndex < targetIndex) {
-			for (int i = sourceIndex; i < targetIndex; i++) {
-				synch(singularAnnotations.get(i), i);
-			}
-		}
-		else {
-			for (int i = sourceIndex; i > targetIndex; i-- ) {
-				synch(singularAnnotations.get(i), i);			
-			}
-		}
-		this.synch(singularAnnotation, targetIndex);
-	}
-	
-	private void addAnnotation(Annotation annotation) {
-		this.annotations.add(annotation);
-		//TODO event notification
-	}
-	
-	private void removeAnnotation(Annotation annotation) {
-		this.annotations.remove(annotation);
-		//TODO looks odd that we remove the annotation here, but in addJavaTypeannotation(JavaTypeAnnotation) we don't do the same
-		annotation.removeAnnotation();
-		//TODO event notification
-	}
-	
-	private void addMappingAnnotation(String annotation) {
-		if (mappingAnnotation(annotation) != null) {
-			return;
-		}
-		MappingAnnotationProvider provider = jpaPlatform().javaTypeMappingAnnotationProvider(annotation);
-		MappingAnnotation mappingAnnotation = provider.buildAnnotation(getMember(), jpaPlatform());
-		addMappingAnnotation(mappingAnnotation);
-		//TODO should this be done here or should creating the JavaTypeAnnotation do this??
-		mappingAnnotation.newAnnotation();
-	}
-
-	private void addMappingAnnotation(MappingAnnotation annotation) {
-		this.mappingAnnotations.add(annotation);
-		//TODO event notification
-	}
-	
-	private void removeMappingAnnotation(MappingAnnotation annotation) {
-		this.mappingAnnotations.remove(annotation);
-		annotation.removeAnnotation();
-		//TODO event notification
-	}
-	
-	public Iterator<MappingAnnotation> mappingAnnotations() {
-		return new CloneIterator<MappingAnnotation>(this.mappingAnnotations);
-	}
-
-	public void removeAnnotation(String typeAnnotationName) {
-		Annotation javaTypeAnnotation = annotation(typeAnnotationName);
-		if (javaTypeAnnotation != null) {
-			removeAnnotation(javaTypeAnnotation);
-		}
-	}
-
-	public void removeAnnotation(SingularAnnotation singularAnnotation, String pluralAnnotationName) {
-		if (singularAnnotation == annotation(singularAnnotation.getAnnotationName())) {
-			removeAnnotation(singularAnnotation);
-		}
-		else {
-			PluralAnnotation<SingularAnnotation> pluralAnnotation = (PluralAnnotation) annotation(pluralAnnotationName);
-			removeAnnotation(pluralAnnotation.indexOf(singularAnnotation), pluralAnnotation);
-		}
-	}
-	
-	public void removeAnnotation(int index, String pluralAnnotationName) {
-		PluralAnnotation<SingularAnnotation> pluralAnnotation = (PluralAnnotation) annotation(pluralAnnotationName);
-		removeAnnotation(index, pluralAnnotation);
-	}
-	
-	public void removeAnnotation(int index, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
-		SingularAnnotation singularAnnotation = pluralAnnotation.singularAnnotationAt(index);
-		pluralAnnotation.remove(index);
-		singularAnnotation.removeAnnotation();
-		synchAnnotationsAfterRemove(index, pluralAnnotation);
-		
-		if (pluralAnnotation.singularAnnotationsSize() == 0) {
-			removeAnnotation(pluralAnnotation);
-		}
-		else if (pluralAnnotation.singularAnnotationsSize() == 1) {
-			SingularAnnotation nestedAnnotation = pluralAnnotation.singularAnnotationAt(0);
-			removeAnnotation(pluralAnnotation);
-			SingularAnnotation newAnnotation = (SingularAnnotation) addAnnotation(pluralAnnotation.getSingularAnnotationName());
-			newAnnotation.initializeFrom(nestedAnnotation);
-		}
-	}
-	
-	public void removeMappingAnnotation(String annotationName) {
-		MappingAnnotation mappingAnnotation = mappingAnnotation(annotationName);
-		removeMappingAnnotation(mappingAnnotation);
-	}
-	
-	//TODO how to handle calling setMappingAnnotation with the same annotation as already exists?  is this an error?
-	//or should we remove it and add it back as an empty annotation??
-	public void setMappingAnnotation(String annotationName) {
-		MappingAnnotation oldMapping = mappingAnnotation();
-		if (oldMapping != null) {
-			removeUnnecessaryAnnotations(oldMapping.getAnnotationName(), annotationName);
-		}
-		addMappingAnnotation(annotationName);
-	}
-	
-	/**
-	 * removes annotations that applied to the old mapping annotation, but not to the new mapping annotation.
-	 * also remove all mapping annotations that already exist
-	 */
-	private void removeUnnecessaryAnnotations(String oldMappingAnnotation, String newMappingAnnotation) {
-		MappingAnnotationProvider oldProvider = jpaPlatform().javaTypeMappingAnnotationProvider(oldMappingAnnotation);
-		MappingAnnotationProvider newProvider = jpaPlatform().javaTypeMappingAnnotationProvider(newMappingAnnotation);
-		
-		Collection<String> annotationsToRemove = CollectionTools.collection(oldProvider.correspondingAnnotationNames());
-		CollectionTools.removeAll(annotationsToRemove, newProvider.correspondingAnnotationNames());
-		
-		for (String annotationName : annotationsToRemove) {
-			removeAnnotation(annotationName);
-		}
-		
-		for (ListIterator<MappingAnnotationProvider> i = javaTypeMappingAnnotationProviders(); i.hasNext(); ) {
-			MappingAnnotationProvider provider = i.next();
-			String mappingAnnotationName = provider.getAnnotationName();
-			if (mappingAnnotationName != newMappingAnnotation) {
-				MappingAnnotation mappingAnnotation = mappingAnnotation(mappingAnnotationName);
-				if (mappingAnnotation != null) {
-					removeMappingAnnotation(mappingAnnotation);
-				}
-			}
-		}
-	}
-	
-	//TODO need property change notification on this javaTypeMappingAnnotation changing
-	//from the context model we don't really care if their are multiple mapping annotations,
-	//just which one we need to use
-	public MappingAnnotation mappingAnnotation() {
-		for (ListIterator<MappingAnnotationProvider> i = javaTypeMappingAnnotationProviders(); i.hasNext(); ) {
-			MappingAnnotationProvider provider = i.next();
-			for (Iterator<MappingAnnotation> j = mappingAnnotations(); j.hasNext(); ) {
-				MappingAnnotation mappingAnnotation = j.next();
-				if (provider.getAnnotationName() == mappingAnnotation.getAnnotationName()) {
-					return mappingAnnotation;
-				}
-			}
-		}
-		return null;
-	}
-	
-	public ListIterator<Annotation> annotations(String singularAnnotation, String pluralAnnotationName) {
-		Annotation pluralAnnotation = annotation(pluralAnnotationName);
-		if (pluralAnnotation != null) {
-			return ((PluralAnnotation) pluralAnnotation).singularAnnotations();
-		}
-		return new SingleElementListIterator<Annotation>(annotation(singularAnnotation));
+	@Override
+	protected Iterator<AnnotationProvider> annotationProviders() {
+		return jpaPlatform().javaTypeAnnotationProviders();
 	}
 	
 	public Iterator<JavaPersistentTypeResource> nestedTypes() {
-		return new FilteringIterator<JavaPersistentTypeResource>(this.nestedTypes.listIterator()) {
+		//TODO since we are filtering how do we handle the case where a type becomes persistable?
+		//what kind of change notificiation for that case?
+		return new FilteringIterator<JavaPersistentTypeResource>(new CloneIterator<JavaPersistentTypeResource>(this.nestedTypes)) {
 			@Override
 			protected boolean accept(Object o) {
 				return ((JavaPersistentTypeResource) o).isPersistable();
@@ -327,7 +71,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractResource<Type> imple
 		};
 	}
 	
-	private JavaPersistentTypeResource nestedType(IType type) {
+	private JavaPersistentTypeResource nestedTypeFor(IType type) {
 		for (JavaPersistentTypeResource nestedType : this.nestedTypes) {
 			if (nestedType.isFor(type)) {
 				return nestedType;
@@ -335,6 +79,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractResource<Type> imple
 		}
 		return null;
 	}
+	
 	//I think this should be private since adding/removing of nestedTypes
 	//only depends on the underlying java IType, not on anything our context model can do.
 	private JavaPersistentTypeResource addNestedType(IType nestedType) {
@@ -360,11 +105,105 @@ public class JavaPersistentTypeResourceImpl extends AbstractResource<Type> imple
 		return new JavaPersistentTypeResourceImpl(type, jpaPlatform());
 	}
 
+	public Iterator<JavaPersistentAttributeResource> attributes() {
+		//TODO since we are filtering how do we handle the case where an attribute becomes persistable?
+		//what kind of change notificiation for that case?
+		return new FilteringIterator<JavaPersistentAttributeResource>(new CloneIterator<JavaPersistentAttributeResource>(this.attributes)) {
+			@Override
+			protected boolean accept(Object o) {
+				return ((JavaPersistentAttributeResource) o).isPersistable();
+			}
+		};
+	}
 	
+	public Iterator<JavaPersistentAttributeResource> fields() {
+		return new FilteringIterator<JavaPersistentAttributeResource>(attributes()) {
+			@Override
+			protected boolean accept(Object o) {
+				return ((JavaPersistentAttributeResource) o).isForField();
+			}
+		};
+	}
+	
+	public Iterator<JavaPersistentAttributeResource> properties() {
+		return new FilteringIterator<JavaPersistentAttributeResource>(attributes()) {
+			@Override
+			protected boolean accept(Object o) {
+				return ((JavaPersistentAttributeResource) o).isForProperty();
+			}
+		};
+	}
+
+	private JavaPersistentAttributeResource addAttribute(IMember jdtMember) {
+		JavaPersistentAttributeResource persistentAttribute = createJavaPersistentAttribute(jdtMember);
+		addAttribute(persistentAttribute);
+		return persistentAttribute;
+	}
+	
+	private void addAttribute(JavaPersistentAttributeResource attribute) {
+		this.attributes.add(attribute);
+		//TODO fire change notification
+	}
+
+	private JavaPersistentAttributeResource createJavaPersistentAttribute(IMember member) {
+		Attribute attribute = null;
+		if (member instanceof IField) {
+			attribute = new FieldAttribute((IField) member, this.modifySharedDocumentCommandExecutorProvider());
+		}
+		else if (member instanceof IMethod) {
+			attribute = new MethodAttribute((IMethod) member, this.modifySharedDocumentCommandExecutorProvider());
+		}
+		else {
+			throw new IllegalArgumentException();
+		}
+		return new JavaPersistentAttributeResourceImpl(attribute, jpaPlatform());
+	}
+	
+	private void removeAttribute(JavaPersistentAttributeResource attribute) {
+		this.attributes.remove(attribute);
+		//TODO fire change notification	
+	}
+	
+	private JavaPersistentAttributeResource attributeFor(IMember member) {
+		for (JavaPersistentAttributeResource persistentAttribute : this.attributes) {
+			if (persistentAttribute.isFor(member)) {
+				return persistentAttribute;
+			}
+		}
+		return null;
+	}
+	
+	public AccessType getAccess() {
+		return this.accessType;
+	}
+	
+	//seems we could have a public changeAccess() api which would
+	//move all annotations from fields to their corresponding methods or vice versa
+	//though of course it's more complicated than that since what if the
+	//corresponding field/method does not exist?
+	//making this internal since it should only be set based on changes in the source, the
+	//context model should not need to set this
+	private void setAccess(AccessType access) {
+		this.accessType = access;
+		//fire property change notification
+	}
+
+	public String getSuperClassQualifiedName() {
+		return this.superClassQualifiedName;
+	}
+	
+	private void setSuperClassQualifiedName(String qualifiedName) {
+		this.superClassQualifiedName = qualifiedName;
+		//TODO change notification
+	}
+
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
+		super.updateFromJava(astRoot);
 		updateNestedTypes(astRoot);
-		updateAnnotations(astRoot);
-		updateMappingAnnotations(astRoot);
+		updatePersistentAttributes(astRoot);
+		setAccess(accessType());
+		setSuperClassQualifiedName(superClassQualifiedName(astRoot));
 	}
 	
 	private void updateNestedTypes(CompilationUnit astRoot) {
@@ -372,7 +211,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractResource<Type> imple
 		
 		List<JavaPersistentTypeResource> nestedTypesToRemove = new ArrayList<JavaPersistentTypeResource>(this.nestedTypes);
 		for (IType declaredType : declaredTypes) {
-			JavaPersistentTypeResource nestedType = nestedType(declaredType);
+			JavaPersistentTypeResource nestedType = nestedTypeFor(declaredType);
 			if (nestedType == null) {
 				nestedType = addNestedType(declaredType);
 			}
@@ -386,7 +225,6 @@ public class JavaPersistentTypeResourceImpl extends AbstractResource<Type> imple
 		}
 	}
 	
-	
 	/**
 	 * delegate to the type's project (there is one provider per project)
 	 */
@@ -394,61 +232,91 @@ public class JavaPersistentTypeResourceImpl extends AbstractResource<Type> imple
 		return this.jpaPlatform().modifySharedDocumentCommandExecutorProvider();
 	}
 	
-	//searches through possible type annotations and adds a JavaTypeAnnotation to the model
-	//for each one found.  If we want to include duplicates we would need to instead look at 
-	//all the annotations on a Type.  Duplicates are handled by the compiler so there
-	//doesn't seem to be a reason to include them in our model
-	private void updateAnnotations(CompilationUnit astRoot) {
-		for (Iterator<AnnotationProvider> i = jpaPlatform().javaTypeAnnotationProviders(); i.hasNext(); ) {
-			AnnotationProvider provider = i.next();
-			if (getMember().containsAnnotation(provider.getDeclarationAnnotationAdapter(), astRoot)) {
-				Annotation annotation = annotation(provider.getAnnotationName());
-				if (annotation == null) {
-					annotation = provider.buildAnnotation(getMember(), jpaPlatform());
-					addAnnotation(annotation);
-				}
-				annotation.updateFromJava(astRoot);
-			}
+	private void updatePersistentAttributes(CompilationUnit astRoot) {
+		List<JavaPersistentAttributeResource> persistentAttributesToRemove = new ArrayList<JavaPersistentAttributeResource>(this.attributes);
+		updatePersistentFields(astRoot, persistentAttributesToRemove);
+		updatePersistentProperties(astRoot, persistentAttributesToRemove);
+		for (JavaPersistentAttributeResource persistentAttribute : persistentAttributesToRemove) {
+			removeAttribute(persistentAttribute);
 		}
-		
-		for (Iterator<Annotation> i = annotations(); i.hasNext(); ) {
-			Annotation annotation = i.next();
-			if (!getMember().containsAnnotation(annotation.getDeclarationAnnotationAdapter(), astRoot)) {
-				removeAnnotation(annotation);
-			}
-		}		
-	}	
+	}
 	
-	//searches through possible type mapping annotations and adds a JavaTypeMappingAnnotation to the model
-	//for each one found.  If we want to include duplicates we would need to instead look at 
-	//all the annotations on a Type.  Duplicates are handled by the compiler so there
-	//doesn't seem to be a reason to include them in our model
-	private void updateMappingAnnotations(CompilationUnit astRoot) {
-		for (Iterator<MappingAnnotationProvider> i = jpaPlatform().javaTypeMappingAnnotationProviders(); i.hasNext(); ) {
-			MappingAnnotationProvider provider = i.next();
-			if (getMember().containsAnnotation(provider.getDeclarationAnnotationAdapter(), astRoot)) {
-				MappingAnnotation mappingAnnotation = mappingAnnotation(provider.getAnnotationName());
-				if (mappingAnnotation == null) {
-					mappingAnnotation = provider.buildAnnotation(getMember(), jpaPlatform());
-					addMappingAnnotation(mappingAnnotation);
-				}
-				mappingAnnotation.updateFromJava(astRoot);
-			}
-		}
-		
-		for (Iterator<MappingAnnotation> i = mappingAnnotations(); i.hasNext(); ) {
-			MappingAnnotation mappingAnnotation = i.next();
-			if (!getMember().containsAnnotation(mappingAnnotation.getDeclarationAnnotationAdapter(), astRoot)) {
-				removeMappingAnnotation(mappingAnnotation);
-			}
-		}
+	private void updatePersistentFields(CompilationUnit astRoot, List<JavaPersistentAttributeResource> persistentAttributesToRemove) {
+		updatePersistentAttributes(astRoot, persistentAttributesToRemove, getMember().fields());
 	}
 
-	public boolean isFor(IType type) {
-		return getMember().wraps(type);
+	private void updatePersistentProperties(CompilationUnit astRoot, List<JavaPersistentAttributeResource> persistentAttributesToRemove) {
+		updatePersistentAttributes(astRoot, persistentAttributesToRemove, getMember().methods());
+	}
+
+	private void updatePersistentAttributes(CompilationUnit astRoot, List<JavaPersistentAttributeResource> persistentAttributesToRemove, IMember[] members) {
+		for (IMember member : members) {
+			JavaPersistentAttributeResource persistentAttribute = attributeFor(member);
+			if (persistentAttribute == null) {
+				persistentAttribute = addAttribute(member);
+			}
+			else {
+				persistentAttributesToRemove.remove(persistentAttribute);
+			}
+			persistentAttribute.updateFromJava(astRoot);
+		}
 	}
 	
-	public boolean isPersistable() {
-		return AttributeAnnotationTools.typeIsPersistable(getMember().getJdtMember());
+	/**
+	 * Return the AccessType currently implied by the Java source code:
+	 *     - if only Fields are annotated => FIELD
+	 *     - if only Properties are annotated => PROPERTY
+	 *     - if both Fields and Properties are annotated => FIELD
+	 *     - if nothing is annotated
+	 *     		- and fields exist => FIELD
+	 *     		- and properties exist, but no fields exist => PROPERTY
+	 *     		- and neither fields nor properties exist => FIELD
+	 */
+	//TODO where do we handle getting accessType from your parent Embeddable or from the inheritance parent?
+	//I think that will be done in the ContextModel since that is dependent on other files in the system.
+	//the accessType of this particular file can be determined on it's own and thus is part of the "resource" model
+	private AccessType accessType() {
+		boolean hasPersistableFields = false;
+		boolean hasPersistableProperties = false;
+		for (JavaPersistentAttributeResource field : CollectionTools.iterable(fields())) {
+			hasPersistableFields = true;
+			if (field.hasAnyAnnotation()) {
+				// any field is annotated => FIELD
+				return AccessType.FIELD;
+			}
+		}
+		for (JavaPersistentAttributeResource property : CollectionTools.iterable(properties())) {
+			hasPersistableProperties = true;
+			if (property.hasAnyAnnotation()) {
+				// none of the fields are annotated and a getter is annotated => PROPERTY
+				return AccessType.PROPERTY;
+			}
+		}
+
+		// no annotations exist - default to fields, unless it's *obvious* to use properties
+		if (hasPersistableProperties && !hasPersistableFields) {
+			return AccessType.PROPERTY;
+		}
+		return AccessType.FIELD;
 	}
+	
+	//TODO do we need to build resource model objects for every parent in the hierarchy?  how
+	//do we handle inheritance where some of the classes in the hierarchy are not persistent?
+	private String superClassQualifiedName(CompilationUnit astRoot) {
+		ITypeBinding typeBinding = getMember().binding(astRoot);
+		if (typeBinding == null) {
+			return null;
+		}
+		ITypeBinding superClassTypeBinding = typeBinding.getSuperclass();
+		if (superClassTypeBinding == null) {
+			return null;
+		}
+		return superClassTypeBinding.getQualifiedName();
+	}
+	
+	@Override
+	protected boolean calculatePersistability(CompilationUnit astRoot) {
+		return JPTTools.typeIsPersistable(getMember().binding(astRoot));
+	}
+
 }

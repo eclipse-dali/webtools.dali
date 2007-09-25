@@ -16,19 +16,13 @@ import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 public interface JpaPlatform
 {
 	ListIterator<MappingAnnotationProvider> javaTypeMappingAnnotationProviders();
-	
-	MappingAnnotationProvider javaTypeMappingAnnotationProvider(String annotationName);
 
 	Iterator<AnnotationProvider> javaTypeAnnotationProviders();
-	
-	AnnotationProvider javaTypeAnnotationProvider(String annotationName);
-	
-	Iterator<AnnotationProvider> entityAnnotationProviders();
-	
-	Iterator<AnnotationProvider> embeddableAnnotationProviders();
-	
-	Iterator<AnnotationProvider> mappedSuperclassAnnotationProviders();
 
+	ListIterator<MappingAnnotationProvider> javaAttributeMappingAnnotationProviders();
+
+	Iterator<AnnotationProvider> javaAttributeAnnotationProviders();
+		
 	//TODO get this from IJpaProject
 	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();
 

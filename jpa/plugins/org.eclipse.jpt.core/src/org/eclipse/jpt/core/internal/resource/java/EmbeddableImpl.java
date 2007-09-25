@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
@@ -25,10 +24,6 @@ public class EmbeddableImpl extends AbstractAnnotationResource<Type> implements 
 	public String getAnnotationName() {
 		return JPA.EMBEDDABLE;
 	}
-
-	public Iterator<AnnotationProvider> javaTypeAnnotationProviders() {
-		return jpaPlatform().embeddableAnnotationProviders();
-	}	
 
 	public void updateFromJava(CompilationUnit astRoot) {
 	}

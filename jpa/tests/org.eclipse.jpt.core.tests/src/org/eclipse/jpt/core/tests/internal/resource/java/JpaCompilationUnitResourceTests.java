@@ -63,7 +63,7 @@ public class JpaCompilationUnitResourceTests extends AnnotationTestCase {
 		return compilationUnit;
 	}
 	
-	public void testPersistentTypes() throws Exception {
+	public void testGetPersistentType() throws Exception {
 		ICompilationUnit compilationUnit = this.createTestCompilationUnit();
 		JpaCompilationUnitResource jpaCompilationUnit = buildJpaCompilationUnit(compilationUnit);
 		

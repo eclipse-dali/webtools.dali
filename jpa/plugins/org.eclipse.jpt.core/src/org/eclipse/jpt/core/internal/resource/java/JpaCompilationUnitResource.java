@@ -41,8 +41,15 @@ public class JpaCompilationUnitResource
 	 * The persistentType resource for the compilation unit's primary type.
 	 * Will be null if the primary type is null.
 	 */
-	public JavaPersistentTypeResource getPersistentType() {
+	public JavaPersistentTypeResource getPersistentType() {	
 		return this.persistentType;
+		//TODO should i only be returning this if it returns true to isPersistable?
+		//that's how we handle nestedTypes on JavaPersistentTypeResource
+
+//		if (this.persistentType.isPersistable()) {
+//		return this.persistentType;
+//	}
+//	return null;
 	}
 	
 	private JavaPersistentTypeResource createJavaPersistentType(IType iType) {

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -39,10 +38,6 @@ public abstract class Attribute extends Member {
 
 	public abstract String attributeName();
 
-	public boolean typeIs(String fullyQualifiedTypeName, CompilationUnit astRoot) {
-		return fullyQualifiedTypeName.equals(this.resolvedTypeName(astRoot));
-	}
-
 	/**
 	 * Resolve the attribute.
 	 * Return the fully-qualified type name or return null if it cannot be
@@ -64,5 +59,10 @@ public abstract class Attribute extends Member {
 		return (TypeDeclaration) this.getDeclaringType().bodyDeclaration(astRoot);
 	}
 
+	/**
+	 * Return the ITypeBinding for the attribute's type, not it's declaring type
+	 * @param astRoot
+	 * @return
+	 */
 	public abstract ITypeBinding typeBinding(CompilationUnit astRoot);
 }

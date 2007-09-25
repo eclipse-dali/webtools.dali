@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 
 public interface AnnotationProvider
 {
@@ -21,6 +21,5 @@ public interface AnnotationProvider
 		
 	DeclarationAnnotationAdapter getDeclarationAnnotationAdapter();
 	
-	//TODO refactor to support Attribute level annotations.  pass in Member or make this generic
-	Annotation buildAnnotation(Type type, JpaPlatform jpaPlatform);
+	Annotation buildAnnotation(Member member, JpaPlatform jpaPlatform);
 }

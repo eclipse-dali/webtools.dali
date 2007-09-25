@@ -13,22 +13,23 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
+import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.Embeddable;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
-import org.eclipse.jpt.core.internal.resource.java.MappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
+import org.eclipse.jpt.core.internal.resource.java.JpaPlatform;
+import org.eclipse.jpt.core.internal.resource.java.MappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.SingularAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.Table;
-import org.eclipse.jpt.core.internal.resource.java.Annotation;
-import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.JpaPlatform;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -91,7 +92,142 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 			}
 		});
 	}
-		
+	
+	private IType createTestEntityAnnotatedField() throws Exception {
+		this.createAnnotationAndMembers("Entity", "String name();");
+		this.createAnnotationAndMembers("Id", "");
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@Id");
+			}
+		});
+	}
+
+	private IType createTestEntityAnnotatedMethod() throws Exception {
+		this.createAnnotationAndMembers("Entity", "String name();");
+		this.createAnnotationAndMembers("Id", "");
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+				sb.append("@Id");
+			}
+		});
+	}
+	private IType createTestEntityAnnotatedFieldAndMethod() throws Exception {
+		this.createAnnotationAndMembers("Entity", "String name();");
+		this.createAnnotationAndMembers("Id", "");
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+				sb.append("@Id");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@Id");
+			}
+		});
+	}
+	
+	private IType createTestEntityAnnotatedNonPersistableMethod() throws Exception {
+		this.createAnnotationAndMembers("Entity", "String name();");
+		this.createAnnotationAndMembers("Id", "");
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity");
+			}
+			@Override
+			public void appendGetNameMethodAnnotationTo(StringBuffer sb) {
+				sb.append("@Id");
+			}
+		});
+	}
+	
+	private IType createTestEntityAnnotatedPersistableMethodNonPersistableField() throws Exception {
+		this.createAnnotationAndMembers("Entity", "String name();");
+		this.createAnnotationAndMembers("Id", "");
+		this.createAnnotationAndMembers("Column", "");
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.COLUMN);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@Column");
+				sb.append("    private transient int notPersistable;").append(CR);
+				sb.append(CR);
+
+			}
+			@Override
+			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+				sb.append("@Column");
+			}
+		});
+	}
+	private IType createTestEntityNoPersistableFields() throws Exception {
+		this.createAnnotationAndMembers("Entity", "String name();");
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity");
+			}
+			@Override
+			public void appendMemberTypeTo(StringBuffer sb) {
+				sb.delete(sb.indexOf("private int id;"), sb.indexOf("private int id;") + "private int id;".length());
+				sb.delete(sb.indexOf("private String name;"), sb.indexOf("private String name;") + "private String name;".length());
+			}
+		});
+	}
+
 //	private IType createTestEntityLarge(final int i) throws Exception {
 //		return this.createTestType(new DefaultAnnotationWriter() {
 //			@Override
@@ -375,7 +511,6 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		assertEquals(1, CollectionTools.size(typeResource.mappingAnnotations()));
 		javaTypeMappingAnnotation = typeResource.mappingAnnotation();
 		assertTrue(javaTypeMappingAnnotation instanceof MappedSuperclass);
-		//not positive on this being the correct behavior, but wanted to test it so we are conscious of saving it
 		assertSourceDoesNotContain("@Entity");
 		assertSourceContains("@MappedSuperclass");
 		assertSourceDoesNotContain("@Embeddable");
@@ -449,7 +584,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		this.createAnnotationAndMembers("Embeddable", "String name();");
 		jdtType.getCompilationUnit().createImport("javax.persistence.Embeddable", null, new NullProgressMonitor());
 		
-		testType().newMarkerAnnotation(typeResource.jpaPlatform().javaTypeMappingAnnotationProvider(JPA.EMBEDDABLE).getDeclarationAnnotationAdapter());
+		testType().newMarkerAnnotation(((JavaPersistentTypeResourceImpl) typeResource).mappingAnnotationProvider(JPA.EMBEDDABLE).getDeclarationAnnotationAdapter());
 		
 		typeResource.updateFromJava(JDTTools.buildASTRoot(jdtType));
 		
@@ -687,4 +822,95 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		assertEquals("FirstEntity", javaTypeMappingAnnotation.getName());
 		
 	}
+	
+	
+	public void testAttributes() throws Exception {
+		
+	}
+	
+	public void testFields() throws Exception {
+		
+	}
+	
+	public void testProperties() throws Exception {
+		
+	}
+	
+	public void testGetAccessNoAttributesAnnotated() throws Exception {
+		IType jdtType = createTestEntity();
+		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
+		
+		AccessType accessType = persistentType.getAccess();
+		assertEquals(AccessType.FIELD, accessType);
+	}
+	
+	public void testGetAccessFieldsAnnotated() throws Exception {
+		IType jdtType = createTestEntityAnnotatedField();
+		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
+		
+		AccessType accessType = persistentType.getAccess();
+		assertEquals(AccessType.FIELD, accessType);
+	}
+	
+	public void testGetAccessMethodsAnnotated() throws Exception {
+		IType jdtType = createTestEntityAnnotatedMethod();
+		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
+		
+		AccessType accessType = persistentType.getAccess();
+		assertEquals(AccessType.PROPERTY, accessType);
+	}
+	
+	public void testGetAccessFieldsAndMethodsAnnotated() throws Exception {
+		IType jdtType = createTestEntityAnnotatedFieldAndMethod();
+		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
+		
+		AccessType accessType = persistentType.getAccess();
+		assertEquals(AccessType.FIELD, accessType);
+	}
+	
+	public void testGetAccessNonPersistableMethodAnnotated() throws Exception {
+		IType jdtType = createTestEntityAnnotatedNonPersistableMethod();
+		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
+		
+		AccessType accessType = persistentType.getAccess();
+		assertEquals(AccessType.FIELD, accessType);
+	}
+	
+	public void testGetAccessPersistableMethodAndNonPersistableFieldAnnotated() throws Exception {
+		IType jdtType = createTestEntityAnnotatedPersistableMethodNonPersistableField();
+		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
+		
+		AccessType accessType = persistentType.getAccess();
+		assertEquals(AccessType.PROPERTY, accessType);
+	}
+	
+	public void testGetAccessNoPersistableFieldsAnnotated() throws Exception {
+		IType jdtType = createTestEntityNoPersistableFields();
+		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
+		
+		AccessType accessType = persistentType.getAccess();
+		assertEquals(AccessType.PROPERTY, accessType);
+	}
+	
+	//TODO more tests here with superclasses other than Object.
+	//1. Test where the superclass does not resolve
+	//2. Test a superclass that does resolve
+	//3. What about a superclass that is a class file in a jar??
+	//4.
+	public void testGetSuperclassQualifiedName() throws Exception {
+		IType jdtType = createTestEntity();
+		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
+		
+		assertEquals("java.lang.Object", persistentType.getSuperClassQualifiedName());
+		
+	}
+	
+	public void testIsPersistable() throws Exception {
+		IType jdtType = createTestEntity();
+		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
+		
+		assertTrue(persistentType.isPersistable());
+	}
+
+
 }

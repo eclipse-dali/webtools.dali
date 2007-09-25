@@ -9,11 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 
-
+//TODO is there a reason for this interface if it adds no api to Annotation??
 public interface MappingAnnotation extends Annotation
 {
-
-	Iterator<AnnotationProvider> javaTypeAnnotationProviders();
 }

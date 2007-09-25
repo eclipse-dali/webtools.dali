@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 
 public interface MappingAnnotationProvider extends AnnotationProvider
 {
@@ -20,6 +20,5 @@ public interface MappingAnnotationProvider extends AnnotationProvider
 	 */
 	Iterator<String> correspondingAnnotationNames();
 	
-	//TODO refactor to support Attribute level annotations.  pass in Member or make this generic
-	MappingAnnotation buildAnnotation(Type type, JpaPlatform jpaPlatform);
+	MappingAnnotation buildAnnotation(Member member, JpaPlatform jpaPlatform);
 }

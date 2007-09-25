@@ -22,6 +22,7 @@ public class JptJavaResourceTests {
 		TestSuite suite = new TestSuite(JptJavaResourceTests.class.getName());
 		suite.addTestSuite(JpaCompilationUnitResourceTests.class);
 		suite.addTestSuite(JavaPersistentTypeResourceTests.class);
+		suite.addTestSuite(JavaPersistentAttributeResourceTests.class);
 		suite.addTestSuite(EntityTests.class);
 
 		return suite;

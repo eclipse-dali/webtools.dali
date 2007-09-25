@@ -11,7 +11,9 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import java.beans.Introspector;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
@@ -44,22 +46,23 @@ public class MethodAttribute extends Attribute {
 	public IMethod getJdtMember() {
 		return (IMethod) super.getJdtMember();
 	}
-
+	
 
 	// ********** Member implementation **********
 
 	@Override
 	public MethodDeclaration bodyDeclaration(CompilationUnit astRoot) {
-		String methodName = this.getName();
-		for (MethodDeclaration methodDeclaration : this.declaringTypeDeclaration(astRoot).getMethods()) {
-			if (methodDeclaration.getName().getFullyQualifiedName().equals(methodName)
-					&& (methodDeclaration.parameters().size() == 0)) {
-				return methodDeclaration;
-			}
+		try {
+			return ASTNodeSearchUtil.getMethodDeclarationNode(getJdtMember(), astRoot);
+		} catch(JavaModelException e) {
+			throw new RuntimeException(e);
 		}
-		return null;
 	}
-
+	
+	@Override
+	public IMethodBinding binding(CompilationUnit astRoot) {
+		return bodyDeclaration(astRoot).resolveBinding();
+	}
 
 	// ********** Attribute implementation **********
 

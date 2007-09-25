@@ -55,7 +55,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaTableGenerator;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaTransient;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaVersion;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.AttributeAnnotationTools;
+import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
@@ -695,11 +695,11 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 	}
 
 	private IField[] jdtPersistableFields() {
-		return AttributeAnnotationTools.persistableFields(jdtType());
+		return JPTTools.persistableFields(jdtType());
 	}
 
 	private IMethod[] jdtPersistableProperties() {
-		return AttributeAnnotationTools.persistablePropertyGetters(jdtType());
+		return JPTTools.persistablePropertyGetters(jdtType());
 	}
 
 	private String javaTypeMappingKey(CompilationUnit astRoot) {
@@ -861,7 +861,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 		IType jdtType = this.jdtType();
 		boolean hasPersistableFields = false;
 		boolean hasPersistableProperties = false;
-		for (IField field : AttributeAnnotationTools.persistableFields(jdtType)) {
+		for (IField field : JPTTools.persistableFields(jdtType)) {
 			hasPersistableFields = true;
 			FieldAttribute fa = new FieldAttribute(field, null); // a bit hacky...
 			if (fa.containsAnyAnnotation(this.attributeMappingAnnotationAdapters, astRoot)) {
@@ -869,7 +869,7 @@ public class JavaPersistentType extends JavaEObject implements IPersistentType
 				return AccessType.FIELD;
 			}
 		}
-		for (IMethod method : AttributeAnnotationTools.persistablePropertyGetters(jdtType)) {
+		for (IMethod method : JPTTools.persistablePropertyGetters(jdtType)) {
 			hasPersistableProperties = true;
 			MethodAttribute ma = new MethodAttribute(method, null); // a bit hacky...
 			if (ma.containsAnyAnnotation(this.attributeMappingAnnotationAdapters, astRoot)) {

@@ -19,15 +19,21 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public abstract class BaseJpaPlatform implements JpaPlatform
 {
+	/**
+	 * Ordered list of possible type mapping annotations.  Ordered because this
+	 * is used to determine the mapping in the case where 2 mapping annotations exist
+	 */
 	private List<MappingAnnotationProvider> javaTypeMappingAnnotationProviders;
 	
 	private Collection<AnnotationProvider> javaTypeAnnotationProviders;
 	
-	private Collection<AnnotationProvider> entityAnnotationProviders;
+	/**
+	 * Ordered list of possible attribute mapping annotations.  Ordered because this
+	 * is used to determine the mapping in the case where 2 mapping annotations exist
+	 */
+	private List<MappingAnnotationProvider> javaAttributeMappingAnnotationProviders;
 	
-	private Collection<AnnotationProvider> embeddableAnnotationProviders;
-	
-	private Collection<AnnotationProvider> mappedSuperclassAnnotationProviders;
+	private Collection<AnnotationProvider> javaAttributeAnnotationProviders;
 
 	protected BaseJpaPlatform() {
 		super();
@@ -42,26 +48,15 @@ public abstract class BaseJpaPlatform implements JpaPlatform
 	}
 	
 	/**
-	 * Override this to specify more or different attribute mapping providers.
-	 * The default includes the JPA spec-defined attribute mappings of 
-	 * Basic, Id, Transient OneToOne, OneToMany, ManyToOne, ManyToMany, Embeddable, EmbeddedId, Version.
+	 * Override this to specify more or different type mapping providers.
+	 * The default includes the JPA spec-defined type mappings of 
+	 * Embeddable, Entity, MappedSuperclass
 	 */
-	protected void addJavaTypeMappingAnnotationProvidersTo(Collection<MappingAnnotationProvider> providers) {
+	protected void addJavaTypeMappingAnnotationProvidersTo(List<MappingAnnotationProvider> providers) {
 		providers.add(JavaEmbeddableProvider.instance());
 		providers.add(JavaEntityProvider.instance());
 		providers.add(JavaMappedSuperclassProvider.instance());
 	}
-	
-	public MappingAnnotationProvider javaTypeMappingAnnotationProvider(String annotationName) {
-		for (Iterator<MappingAnnotationProvider> i = this.javaTypeMappingAnnotationProviders(); i.hasNext(); ) {
-			MappingAnnotationProvider provider = i.next();
-			if (provider.getAnnotationName().equals(annotationName)) {
-				return provider;
-			}
-		}
-		return null;
-	}
-
 	
 	public Iterator<AnnotationProvider> javaTypeAnnotationProviders() {
 		if (this.javaTypeAnnotationProviders == null) {
@@ -72,9 +67,8 @@ public abstract class BaseJpaPlatform implements JpaPlatform
 	}
 	
 	/**
-	 * Override this to specify more or different attribute mapping providers.
-	 * The default includes the JPA spec-defined attribute mappings of 
-	 * Basic, Id, Transient OneToOne, OneToMany, ManyToOne, ManyToMany, Embeddable, EmbeddedId, Version.
+	 * Override this to specify more or different type annotation providers.
+	 * The default includes the JPA spec-defined annotations.
 	 */
 	protected void addJavaTypeAnnotationProvidersTo(Collection<AnnotationProvider> providers) {
 		providers.add(JavaTableProvider.instance());
@@ -82,48 +76,46 @@ public abstract class BaseJpaPlatform implements JpaPlatform
 		providers.add(JavaSecondaryTablesProvider.instance());
 	}
 	
-	public AnnotationProvider javaTypeAnnotationProvider(String annotationName) {
-		for (Iterator<AnnotationProvider> i = this.javaTypeAnnotationProviders(); i.hasNext(); ) {
-			AnnotationProvider provider = i.next();
-			if (provider.getAnnotationName().equals(annotationName)) {
-				return provider;
-			}
+	public ListIterator<MappingAnnotationProvider> javaAttributeMappingAnnotationProviders() {
+		if (this.javaAttributeMappingAnnotationProviders == null) {
+			this.javaAttributeMappingAnnotationProviders = new ArrayList<MappingAnnotationProvider>();
+			this.addJavaAttributeMappingAnnotationProvidersTo(this.javaAttributeMappingAnnotationProviders);
 		}
-		return null;
+		return new CloneListIterator<MappingAnnotationProvider>(this.javaAttributeMappingAnnotationProviders);
 	}
-
-	public Iterator<AnnotationProvider> entityAnnotationProviders() {
-		if (this.entityAnnotationProviders == null) {
-			this.entityAnnotationProviders = new ArrayList<AnnotationProvider>();
-			this.addEntityAnnotationProvidersTo(this.entityAnnotationProviders);
+	
+	/**
+	 * Override this to specify more or different attribute mapping providers.
+	 * The default includes the JPA spec-defined attribute mappings of 
+	 * Basic, Id, Transient OneToOne, OneToMany, ManyToOne, ManyToMany, Embedded, EmbeddedId, Version.
+	 */
+	protected void addJavaAttributeMappingAnnotationProvidersTo(List<MappingAnnotationProvider> providers) {
+		providers.add(JavaBasicProvider.instance());
+		providers.add(JavaEmbeddedProvider.instance());
+		providers.add(JavaEmbeddedIdProvider.instance());
+		providers.add(JavaIdProvider.instance());
+		providers.add(JavaManyToManyProvider.instance());
+		providers.add(JavaManyToOneProvider.instance());
+		providers.add(JavaOneToManyProvider.instance());
+		providers.add(JavaOneToOneProvider.instance());
+		providers.add(JavaTransientProvider.instance());
+		providers.add(JavaVersionProvider.instance());
+	}
+	
+	public Iterator<AnnotationProvider> javaAttributeAnnotationProviders() {
+		if (this.javaAttributeAnnotationProviders == null) {
+			this.javaAttributeAnnotationProviders = new ArrayList<AnnotationProvider>();
+			this.addJavaAttributeAnnotationProvidersTo(this.javaAttributeAnnotationProviders);
 		}
-		return new CloneIterator<AnnotationProvider>(this.entityAnnotationProviders);
+		return new CloneIterator<AnnotationProvider>(this.javaAttributeAnnotationProviders);
 	}
 	
-	protected void addEntityAnnotationProvidersTo(Collection<AnnotationProvider> providers) {
-		providers.add(JavaTableProvider.instance());
+	/**
+	 * Override this to specify more or different attribute annotation providers.
+	 * The default includes the JPA spec-defined annotations.
+	 */
+	protected void addJavaAttributeAnnotationProvidersTo(Collection<AnnotationProvider> providers) {
+		providers.add(JavaColumnProvider.instance());
+		providers.add(JavaGeneratedValueProvider.instance());
 	}
-	
-	public Iterator<AnnotationProvider> embeddableAnnotationProviders() {
-		if (this.embeddableAnnotationProviders == null) {
-			this.embeddableAnnotationProviders = new ArrayList<AnnotationProvider>();
-			this.addEmbeddableAnnotationProvidersTo(this.embeddableAnnotationProviders);
-		}
-		return new CloneIterator<AnnotationProvider>(this.embeddableAnnotationProviders);
-	}
-	
-	protected void addEmbeddableAnnotationProvidersTo(Collection<AnnotationProvider> providers) {
-	}
-	
-	public Iterator<AnnotationProvider> mappedSuperclassAnnotationProviders() {
-		if (this.mappedSuperclassAnnotationProviders == null) {
-			this.mappedSuperclassAnnotationProviders = new ArrayList<AnnotationProvider>();
-			this.addMappedSuperclassAnnotationProvidersTo(this.mappedSuperclassAnnotationProviders);
-		}
-		return new CloneIterator<AnnotationProvider>(this.mappedSuperclassAnnotationProviders);
-	}
-	
-	protected void addMappedSuperclassAnnotationProvidersTo(Collection<AnnotationProvider> providers) {
-	}
-
 }

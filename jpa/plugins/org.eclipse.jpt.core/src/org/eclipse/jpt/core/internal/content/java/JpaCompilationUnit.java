@@ -34,7 +34,7 @@ import org.eclipse.jpt.core.internal.IJpaRootContentNode;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.JpaFile;
-import org.eclipse.jpt.core.internal.jdtutility.AttributeAnnotationTools;
+import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.BitTools;
@@ -399,13 +399,13 @@ public class JpaCompilationUnit extends JavaEObject
 		for (IType iType : iTypes) {
 			JavaPersistentType persistentType = this.persistentTypeFor(iType);
 			if (persistentType == null) {
-				if (AttributeAnnotationTools.typeIsPersistable(iType)) {
+				if (JPTTools.typeIsPersistable(iType)) {
 					persistentType = this.addJavaPersistentType(iType);
 				}
 			}
 			if (persistentType != null) {
 				persistentTypesToRemove.remove(persistentType);
-				if (AttributeAnnotationTools.typeIsPersistable(iType)) {
+				if (JPTTools.typeIsPersistable(iType)) {
 					persistentType.updateFromJava(astRoot);
 				}
 				else {

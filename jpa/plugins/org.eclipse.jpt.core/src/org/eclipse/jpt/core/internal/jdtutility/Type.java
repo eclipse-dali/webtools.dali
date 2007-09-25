@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.internal.jdtutility;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jdt.core.Flags;
+import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -36,6 +38,7 @@ public class Type extends Member {
 		return (IType) super.getJdtMember();
 	}
 
+	//TODO I believe this should move to the resource model and should be stored when updating from java
 	public boolean isAbstract() {
 		try {
 			return Flags.isAbstract(this.getJdtMember().getFlags());
@@ -49,18 +52,27 @@ public class Type extends Member {
 		return (this.getDeclaringType() == null) ? this : super.topLevelDeclaringType();
 	}
 
-	public String getFullyQualifiedName() {
-		return this.getJdtMember().getFullyQualifiedName();
-	}
-
-
-	public ITypeBinding typeBinding(CompilationUnit astRoot) {
-		return bodyDeclaration(astRoot).resolveBinding();
-	}
-
 	public IType[] declaredTypes() {
 		try {
 			return getJdtMember().getTypes();
+		}
+		catch(JavaModelException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public IField[] fields() {
+		try {
+			return getJdtMember().getFields();
+		}
+		catch(JavaModelException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public IMethod[] methods() {
+		try {
+			return getJdtMember().getMethods();
 		}
 		catch(JavaModelException e) {
 			throw new RuntimeException(e);
@@ -90,6 +102,11 @@ public class Type extends Member {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public ITypeBinding binding(CompilationUnit astRoot) {
+		return bodyDeclaration(astRoot).resolveBinding();
 	}
 
 	// ********** miscellaneous **********
