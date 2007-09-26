@@ -57,6 +57,34 @@ public class JavaPersistentAttributeResourceTests extends AnnotationTestCase {
 		});
 	}
 	
+	private IType createTestEntityMultipleVariableDeclarationsPerLine() throws Exception {
+		this.createAnnotationAndMembers("Entity", "String name();");
+		this.createAnnotationAndMembers("Column", "String name();");
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.COLUMN);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append(CR);
+				sb.append("    ");
+				sb.append("@Id");
+				sb.append(CR);
+				sb.append("    ");
+				sb.append("@Column(name=\"baz\")");
+				sb.append("    private String foo, bar;").append(CR);
+				sb.append(CR);
+			}
+		});
+	}
+
 	private IType createTestEntityDuplicates() throws Exception {
 		this.createAnnotationAndMembers("Entity", "String name();");
 
@@ -718,15 +746,41 @@ public class JavaPersistentAttributeResourceTests extends AnnotationTestCase {
 //	}
 	
 
-
+	//more detailed tests in JPTToolsTests
 	public void testIsPersistableField() throws Exception {
+		IType jdtType = createTestEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
+		assertTrue(attributeResource.isPersistable());
 	}
 	
+	//more detailed tests in JPTToolsTests
 	public void testIsPersistableMethod() throws Exception {
+		IType jdtType = createTestEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.properties().next();
 		
+		assertTrue(attributeResource.isPersistable());		
 	}
 	
-	//TODO add some tests for : private int foo, bar;
+	//this tests that we handle mutliple variable declarations in one line.
+	//The annotations should apply to all fields defined.  This is not really a useful
+	//thing to do with JPA beyond the most basic things that use default column names
+	public void testMultipleVariableDeclarationsPerLine() throws Exception {
+		IType jdtType = createTestEntityMultipleVariableDeclarationsPerLine();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		
+		assertEquals(4, CollectionTools.size(typeResource.fields()));
+		Iterator<JavaPersistentAttributeResource> fields = typeResource.fields();
+		JavaPersistentAttributeResource attributeResource = fields.next();
+		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
+		assertEquals("baz", column.getName());
+
+		attributeResource = fields.next();
+		column = (Column) attributeResource.annotation(JPA.COLUMN);
+		assertEquals("baz", column.getName());
+	
+	}
 	//TODO add tests for JPTTools static methods
 }

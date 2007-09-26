@@ -223,6 +223,10 @@ public abstract class AnnotationTestCase extends TestCase {
 	protected MethodAttribute idGetMethod() throws JavaModelException {
 		return this.methodNamed("getId");
 	}
+	
+	protected MethodAttribute idSetMethod() throws JavaModelException {
+		return this.method("setId", new String[] {"I"});
+	}
 
 	protected MethodAttribute nameGetMethod() throws JavaModelException {
 		return this.methodNamed("getName");

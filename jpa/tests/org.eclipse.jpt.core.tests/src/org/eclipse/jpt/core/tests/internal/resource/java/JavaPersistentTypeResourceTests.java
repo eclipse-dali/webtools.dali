@@ -905,12 +905,12 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		
 	}
 	
+	//more detailed tests in JPTToolsTests
 	public void testIsPersistable() throws Exception {
 		IType jdtType = createTestEntity();
 		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
 		
 		assertTrue(persistentType.isPersistable());
 	}
-
 
 }

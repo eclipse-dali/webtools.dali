@@ -23,6 +23,7 @@ public class JptJavaResourceTests {
 		suite.addTestSuite(JpaCompilationUnitResourceTests.class);
 		suite.addTestSuite(JavaPersistentTypeResourceTests.class);
 		suite.addTestSuite(JavaPersistentAttributeResourceTests.class);
+		suite.addTestSuite(JPTToolsTests.class);
 		suite.addTestSuite(EntityTests.class);
 
 		return suite;
