@@ -136,7 +136,7 @@ public class CatalogCombo extends BaseJpaController
 
 	@Override
 	protected void buildWidget(Composite parent) {
-		this.combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
+		this.combo = getWidgetFactory().createCCombo(parent, SWT.READ_ONLY);
 		this.combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		this.combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
