@@ -33,7 +33,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 	public String getSingularAnnotationName() {
 		return JPA.SECONDARY_TABLE;
 	}
-		
+	
 	public ListIterator<SecondaryTable> singularAnnotations() {
 		return new CloneListIterator<SecondaryTable>(this.secondaryTables);
 	}
@@ -48,7 +48,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		return javaSecondaryTableResource;
 	}
 	
-	public void remove(SecondaryTable secondaryTable) {
+	public void remove(Object secondaryTable) {
 		this.secondaryTables.remove(secondaryTable);
 	}
 	
@@ -56,7 +56,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		this.secondaryTables.remove(index);
 	}
 	
-	public int indexOf(SecondaryTable secondaryTable) {
+	public int indexOf(Object secondaryTable) {
 		return this.secondaryTables.indexOf(secondaryTable);
 	}
 	

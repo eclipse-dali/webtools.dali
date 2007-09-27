@@ -11,21 +11,21 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
 
-public interface PluralAnnotation<E extends SingularAnnotation> extends Annotation
+public interface PluralAnnotation<T extends SingularAnnotation> extends Annotation
 {
 	String getSingularAnnotationName();
 	
-	ListIterator<E> singularAnnotations();
+	ListIterator<T> singularAnnotations();
 	
 	int singularAnnotationsSize();
 
-	E singularAnnotationAt(int index);
+	T singularAnnotationAt(int index);
 	
-	int indexOf(E singularAnnotation);
+	int indexOf(Object singularAnnotation);
 	
-	E add(int index);
+	T add(int index);
 	
-	void remove(E singularAnnotation);
+	void remove(Object singularAnnotation);
 	
 	void remove(int index);
 	
