@@ -118,7 +118,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		}
 		//move the singular to a new plural annotation and add to it
 		removeAnnotation(singularAnnotation);
-		PluralAnnotation newPluralAnnotation = (PluralAnnotation) addAnnotation(pluralAnnotationName);
+		PluralAnnotation<SingularAnnotation> newPluralAnnotation = (PluralAnnotation<SingularAnnotation>) addAnnotation(pluralAnnotationName);
 		SingularAnnotation newSingularAnnotation = newPluralAnnotation.add(0);
 		newSingularAnnotation.newAnnotation();
 		newSingularAnnotation.initializeFrom(singularAnnotation);
