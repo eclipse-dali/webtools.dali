@@ -17,8 +17,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
-import org.eclipse.jpt.core.internal.content.java.JpaJavaPackage;
-import org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -4027,18 +4025,12 @@ public class JpaCoreMappingsPackage extends EPackageImpl
 		EcorePackage.eINSTANCE.eClass();
 		// Obtain or create and register interdependencies
 		JpaCorePackage theJpaCorePackage = (JpaCorePackage) (EPackage.Registry.INSTANCE.getEPackage(JpaCorePackage.eNS_URI) instanceof JpaCorePackage ? EPackage.Registry.INSTANCE.getEPackage(JpaCorePackage.eNS_URI) : JpaCorePackage.eINSTANCE);
-		JpaJavaPackage theJpaJavaPackage = (JpaJavaPackage) (EPackage.Registry.INSTANCE.getEPackage(JpaJavaPackage.eNS_URI) instanceof JpaJavaPackage ? EPackage.Registry.INSTANCE.getEPackage(JpaJavaPackage.eNS_URI) : JpaJavaPackage.eINSTANCE);
-		JpaJavaMappingsPackage theJpaJavaMappingsPackage = (JpaJavaMappingsPackage) (EPackage.Registry.INSTANCE.getEPackage(JpaJavaMappingsPackage.eNS_URI) instanceof JpaJavaMappingsPackage ? EPackage.Registry.INSTANCE.getEPackage(JpaJavaMappingsPackage.eNS_URI) : JpaJavaMappingsPackage.eINSTANCE);
 		// Create package meta-data objects
 		theJpaCoreMappingsPackage.createPackageContents();
 		theJpaCorePackage.createPackageContents();
-		theJpaJavaPackage.createPackageContents();
-		theJpaJavaMappingsPackage.createPackageContents();
 		// Initialize created meta-data
 		theJpaCoreMappingsPackage.initializePackageContents();
 		theJpaCorePackage.initializePackageContents();
-		theJpaJavaPackage.initializePackageContents();
-		theJpaJavaMappingsPackage.initializePackageContents();
 		// Mark meta-data to indicate it can't be changed
 		theJpaCoreMappingsPackage.freeze();
 		return theJpaCoreMappingsPackage;

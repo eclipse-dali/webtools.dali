@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
 
 public abstract class JavaRelationshipMappingContext extends JavaAttributeContext

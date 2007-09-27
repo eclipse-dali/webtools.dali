@@ -11,8 +11,6 @@ package org.eclipse.jpt.core.internal.platform;
 import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
-import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class JavaPersistentAttributeContext extends BaseContext

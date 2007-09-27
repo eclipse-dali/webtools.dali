@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -24,10 +22,7 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -39,12 +34,8 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.internal.facet.JpaFacetUtils;
-import org.eclipse.jpt.core.internal.platform.IContext;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -54,7 +45,6 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * <!-- begin-user-doc -->
@@ -146,7 +136,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * This is set to false when that job is completed 
 	 */
 	boolean resynching = false;
-	
+
 	/**
 	 * Flag to indicate that the disposing job has been scheduled or is running
 	 * (or has been run, in some cases)
@@ -177,51 +167,51 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	protected JpaProject(IProject project) {
 		this();
 		this.project = project;
-		this.resynchJob = buildResynchJob();
+//		this.resynchJob = buildResynchJob();
 	}
 
-	private Job buildResynchJob() {
-		Job job = new Job("Resynching JPA model ...") {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				try {
-					return runResynch(monitor);
-				}
-				finally {
-					JpaProject.this.resynching = false;
-					if (JpaProject.this.needsToResynch) {
-						resynch();
-					}
-				}
-			}
-		};
-		if (this.project == null) {
-			throw new IllegalStateException("Project can not be null when the Resynch Job is built");
-		}
-		job.setRule(this.project);
-		return job;
-	}
-
-	private IStatus runResynch(IProgressMonitor monitor) {
-		IContext contextHierarchy = getPlatform().buildProjectContext();
-		if (monitor.isCanceled()) {
-			return Status.CANCEL_STATUS;
-		}
-		try {
-			getPlatform().resynch(contextHierarchy, monitor);
-		}
-		catch (OperationCanceledException e) {
-			return Status.CANCEL_STATUS;
-		}
-		catch (Throwable e) {
-			//exceptions can occur when this thread is running and changes are
-			//made to the java source.  our model is not yet updated to the changed java source.
-			//log these exceptions and assume they won't happen when the resynch runs again
-			//as a result of the java source changes.
-			JptCorePlugin.log(e);
-		}
-		return Status.OK_STATUS;
-	}
+//	private Job buildResynchJob() {
+//		Job job = new Job("Resynching JPA model ...") {
+//			@Override
+//			protected IStatus run(IProgressMonitor monitor) {
+//				try {
+//					return runResynch(monitor);
+//				}
+//				finally {
+//					JpaProject.this.resynching = false;
+//					if (JpaProject.this.needsToResynch) {
+//						resynch();
+//					}
+//				}
+//			}
+//		};
+//		if (this.project == null) {
+//			throw new IllegalStateException("Project can not be null when the Resynch Job is built");
+//		}
+//		job.setRule(this.project);
+//		return job;
+//	}
+//	
+//	private IStatus runResynch(IProgressMonitor monitor) {
+//		IContext contextHierarchy = getPlatform().buildProjectContext();
+//		if (monitor.isCanceled()) {
+//			return Status.CANCEL_STATUS;
+//		}
+//		try {
+//			getPlatform().resynch(contextHierarchy, monitor);
+//		}
+//		catch (OperationCanceledException e) {
+//			return Status.CANCEL_STATUS;
+//		}
+//		catch (Throwable e) {
+//			//exceptions can occur when this thread is running and changes are
+//			//made to the java source.  our model is not yet updated to the changed java source.
+//			//log these exceptions and assume they won't happen when the resynch runs again
+//			//as a result of the java source changes.
+//			JptCorePlugin.log(e);
+//		}
+//		return Status.OK_STATUS;
+//	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -567,31 +557,29 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		return jpaFiles;
 	}
 
-	public JavaPersistentType findJavaPersistentType(IType type) {
-		if (type == null) {
-			return null;
-		}
-		Collection<IJpaFile> persistenceFiles = jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE);
-		for (IJpaFile jpaFile : persistenceFiles) {
-			JpaCompilationUnit compilationUnit = (JpaCompilationUnit) jpaFile.getContent();
-			for (JavaPersistentType persistentType : compilationUnit.getTypes()) {
-				if (type.equals(persistentType.getType().getJdtMember())) {
-					return persistentType;
-				}
-			}
-		}
-		return null;
-	}
-
+	//	public JavaPersistentType findJavaPersistentType(IType type) {
+	//		if (type == null) {
+	//			return null;
+	//		}
+	//		Collection<IJpaFile> persistenceFiles = jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE);
+	//		for (IJpaFile jpaFile : persistenceFiles) {
+	//			JpaCompilationUnit compilationUnit = (JpaCompilationUnit) jpaFile.getContent();
+	//			for (JavaPersistentType persistentType : compilationUnit.getTypes()) {
+	//				if (type.equals(persistentType.getType().getJdtMember())) {
+	//					return persistentType;
+	//				}
+	//			}
+	//		}
+	//		return null;
+	//	}
 	/**
 	 * INTERNAL ONLY
 	 * Dispose and remove project
 	 */
 	void dispose() {
-		if (disposing) return;
-		
+		if (disposing)
+			return;
 		disposing = true;
-				
 		Job job = new Job("Disposing JPA project ...") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -602,7 +590,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		job.setRule(project);
 		job.schedule();
 	}
-	
+
 	private void dispose_() {
 		for (IJpaFile jpaFile : CollectionTools.collection(getFiles())) {
 			((JpaFile) jpaFile).dispose();
@@ -654,40 +642,15 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	// PWFTODO 
 	// Return a NullPersistenceFile if no content found?
 	synchronized IJpaFile createJpaFile(IFile file) {
-		if (!JavaCore.create(this.project).isOnClasspath(file)) {
-			return null;
-		}
-		IContentType contentType = this.contentType(file);
-		if (contentType == null) {
-			return null;
-		}
-		String contentTypeId = contentType.getId();
-		IJpaFileContentProvider provider = this.getPlatform().fileContentProvider(contentTypeId);
-		if (provider == null) {
-			return null;
-		}
 		JpaFile jpaFile = JpaCoreFactory.eINSTANCE.createJpaFile();
-		this.getFiles().add(jpaFile);
 		jpaFile.setFile(file);
-		jpaFile.setContentId(contentTypeId);
-		provider.buildRootContent(jpaFile);
+		IResourceModel resourceModel = getPlatform().buildResourceModel(jpaFile);
+		if (resourceModel == null) {
+			return null;
+		}
+		jpaFile.setResourceModel(resourceModel);
+		getFiles().add(jpaFile);
 		return jpaFile;
-	}
-
-	//attempting to get the contentType based on the file contents.
-	//have to check the file contents instead of just the file name
-	//because for xml we base it on the rootElement name
-	private IContentType contentType(IFile file) {
-		try {
-			return Platform.getContentTypeManager().findContentTypeFor(file.getContents(), file.getName());
-		}
-		catch (IOException ex) {
-			JptCorePlugin.log(ex);
-		}
-		catch (CoreException ex) {
-			JptCorePlugin.log(ex);
-		}
-		return null;
 	}
 
 	/**
@@ -703,11 +666,11 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		}
 	}
 
-	public Iterator<IMessage> validationMessages() {
-		List<IMessage> messages = new ArrayList<IMessage>();
-		getPlatform().addToMessages(messages);
-		return messages.iterator();
-	}
+//	public Iterator<IMessage> validationMessages() {
+//		List<IMessage> messages = new ArrayList<IMessage>();
+//		getPlatform().addToMessages(messages);
+//		return messages.iterator();
+//	}
 
 	//leaving this at the JpaProject level for now instead of
 	//passing it on to the JpaModel.  We don't currently support
@@ -865,7 +828,6 @@ public class JpaProject extends JpaEObject implements IJpaProject
 
 
 	// ********** member class **********
-	
 	private class ModifySharedDocumentCommandExecutorProvider
 		implements CommandExecutorProvider
 	{

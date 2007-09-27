@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.IType;
 
 public interface JavaPersistentResource extends JavaResource
 {

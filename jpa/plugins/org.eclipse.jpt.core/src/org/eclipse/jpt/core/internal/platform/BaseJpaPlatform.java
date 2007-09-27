@@ -9,59 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jpt.core.internal.IJpaFactory;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.IPersistentType;
-import org.eclipse.jpt.core.internal.content.java.IDefaultJavaAttributeMappingProvider;
-import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
-import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
-import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
-import org.eclipse.jpt.core.internal.content.java.IJavaTypeMappingProvider;
-import org.eclipse.jpt.core.internal.content.java.JavaJpaFileContentProvider;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaBasic;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaBasicProvider;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbeddable;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbeddableProvider;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbedded;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbeddedId;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbeddedIdProvider;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaEmbeddedProvider;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaEntity;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaEntityProvider;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaId;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaIdProvider;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToMany;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToManyProvider;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToOne;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToOneProvider;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaMappedSuperclass;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaMappedSuperclassProvider;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullAttributeMapping;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMapping;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToMany;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToManyProvider;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOne;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOneProvider;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaTransient;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaTransientProvider;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaVersion;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaVersionProvider;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.jpt.core.internal.IResourceModel;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 public abstract class BaseJpaPlatform implements IJpaPlatform
 {
@@ -85,22 +49,22 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	
 	private Collection<IJpaFileContentProvider> contentProviders;
 	
-	private Collection<IJavaAttributeMappingProvider> javaAttributeMappingProviders;
-	
-	private List<IDefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders;
-		
-	private Collection<IJavaTypeMappingProvider> javaTypeMappingProviders;
-	
-	private IJpaFactory jpaFactory;
-	
-	private IContext context;
+//	private Collection<IJavaAttributeMappingProvider> javaAttributeMappingProviders;
+//	
+//	private List<IDefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders;
+//		
+//	private Collection<IJavaTypeMappingProvider> javaTypeMappingProviders;
+//	
+//	private IJpaFactory jpaFactory;
+//	
+//	private IContext context;
 	
 	protected BaseJpaPlatform() {
 		super();
-		this.jpaFactory = createJpaFactory();
+//		this.jpaFactory = createJpaFactory();
 	}
 	
-	protected abstract IJpaFactory createJpaFactory();
+//	protected abstract IJpaFactory createJpaFactory();
 	
 	public String getId() {
 		return this.id;
@@ -125,242 +89,306 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		this.project = jpaProject;
 	}
 
-	public IJpaFactory getJpaFactory() {
-		return this.jpaFactory;
-	}
+//	public IJpaFactory getJpaFactory() {
+//		return this.jpaFactory;
+//	}
 	
 	// ********** Persistence Unit ********************************************
 
-	public boolean containsPersistenceUnitNamed(String name) {
-		return ((BaseJpaProjectContext)this.context).containsPersistenceUnitNamed(name);
-	}
-	
-	public PersistenceUnit persistenceUnitNamed(String name) {
-		return ((BaseJpaProjectContext)this.context).persistenceUnitNamed(name);
-	}
-	
-	public Iterator<PersistenceUnit> persistenceUnits() {
-		return ((BaseJpaProjectContext)this.context).persistenceUnits();
-	}
-	
-	public int persistenceUnitSize() {
-		return ((BaseJpaProjectContext)this.context).persistenceUnitContextsSize();
-	}
+//	public boolean containsPersistenceUnitNamed(String name) {
+//		return ((BaseJpaProjectContext)this.context).containsPersistenceUnitNamed(name);
+//	}
+//	
+//	public PersistenceUnit persistenceUnitNamed(String name) {
+//		return ((BaseJpaProjectContext)this.context).persistenceUnitNamed(name);
+//	}
+//	
+//	public Iterator<PersistenceUnit> persistenceUnits() {
+//		return ((BaseJpaProjectContext)this.context).persistenceUnits();
+//	}
+//	
+//	public int persistenceUnitSize() {
+//		return ((BaseJpaProjectContext)this.context).persistenceUnitContextsSize();
+//	}
 
 	
 	// ********** Persistent Types ********************************************
 
-	public Iterator<IPersistentType> persistentTypes(String persistenceUnitName) {
-		PersistenceUnitContext puContext = 
-			((BaseJpaProjectContext) this.context).persistenceUnitContext(persistenceUnitName);
-		if (puContext == null) {
-			return EmptyIterator.instance();
+//	public Iterator<IPersistentType> persistentTypes(String persistenceUnitName) {
+//		PersistenceUnitContext puContext = 
+//			((BaseJpaProjectContext) this.context).persistenceUnitContext(persistenceUnitName);
+//		if (puContext == null) {
+//			return EmptyIterator.instance();
+//		}
+//		return puContext.persistentTypes();
+//		//hmm, compiler error with ternary operator
+////		return (puContext == null) ? EmptyIterator.instance() : puContext.persistentTypes();
+//	}
+	
+	
+	// **************** Resource models ***************************************
+	
+	public IResourceModel buildResourceModel(IJpaFile jpaFile) {
+		IFile file = jpaFile.getFile();
+		if (! JavaCore.create(project.getProject()).isOnClasspath(file)) {
+			return null;
 		}
-		return puContext.persistentTypes();
-		//hmm, compiler error with ternary operator
-//		return (puContext == null) ? EmptyIterator.instance() : puContext.persistentTypes();
+		IContentType contentType = this.contentType(file);
+		if (contentType == null) {
+			return null;
+		}
+		String contentTypeId = contentType.getId();
+		return buildResourceModel(jpaFile, contentTypeId);
+	}
+	
+	protected IResourceModel buildResourceModel(IJpaFile jpaFile, String contentTypeId) {
+		if (JptCorePlugin.JAVA_CONTENT_TYPE.equals(contentTypeId)) {
+			return buildJavaResourceModel(jpaFile);
+		}
+		else if (JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE.equals(contentTypeId)) {
+			return buildPersistenceResourceModel(jpaFile);
+		}
+		else if (JptCorePlugin.ORM_XML_CONTENT_TYPE.equals(contentTypeId)) {
+			return buildOrmResourceModel(jpaFile);
+		}
+		
+		return null;
+	}
+	
+	protected IResourceModel buildJavaResourceModel(IJpaFile jpaFile) {
+		return new JavaResourceModel();
+	}
+	
+	protected IResourceModel buildPersistenceResourceModel(IJpaFile jpaFile) {
+		IFile resourceFile = jpaFile.getFile();
+		PersistenceResourceModel resource = 
+				(PersistenceResourceModel) WorkbenchResourceHelper.getResource(resourceFile, true);
+		resource.accessForWrite();
+		return resource;
+	}
+	
+	protected IResourceModel buildOrmResourceModel(IJpaFile jpaFile) {
+		IFile resourceFile = jpaFile.getFile();
+		OrmResourceModel resource = 
+				(OrmResourceModel) WorkbenchResourceHelper.getResource(resourceFile, true);
+		resource.accessForWrite();
+		return resource;
 	}
 	
 	
 	// ************************************************************************
 	
-	public Iterator<IJpaFileContentProvider> jpaFileContentProviders() {
-		if (this.contentProviders == null) {
-			this.contentProviders = new ArrayList<IJpaFileContentProvider>();
-			addJpaFileContentProvidersTo(this.contentProviders);
+	//attempting to get the contentType based on the file contents.
+	//have to check the file contents instead of just the file name
+	//because for xml we base it on the rootElement name
+	private IContentType contentType(IFile file) {
+		try {
+			return Platform.getContentTypeManager().findContentTypeFor(file.getContents(), file.getName());
 		}
-		return new CloneIterator<IJpaFileContentProvider>(this.contentProviders);
-	}
-	
-	public IJpaFileContentProvider fileContentProvider(String contentTypeId) {
-		for (Iterator<IJpaFileContentProvider> i = this.jpaFileContentProviders(); i.hasNext(); ) {
-			IJpaFileContentProvider provider = i.next();
-			if (provider.contentType().equals(contentTypeId)) {
-				return provider;
-			}
+		catch (IOException ex) {
+			JptCorePlugin.log(ex);
 		}
-		return null;
-	}
-
-	/**
-	 * Override this to specify more or different JPA file content providers.
-	 * The default includes the JPA spec-defined content providers of
-	 * persistence.xml, orm.xml, and java files.
-	 */
-	protected void addJpaFileContentProvidersTo(Collection<IJpaFileContentProvider> providers) {
-		providers.add(PersistenceXmlJpaFileContentProvider.instance());
-		providers.add(JavaJpaFileContentProvider.instance());
-		providers.add(OrmXmlJpaFileContentProvider.instance());
-	}
-	
-	public Iterator<IJavaTypeMappingProvider> javaTypeMappingProviders() {
-		if (this.javaTypeMappingProviders == null) {
-			this.javaTypeMappingProviders = new ArrayList<IJavaTypeMappingProvider>();
-			this.addJavaTypeMappingProvidersTo(this.javaTypeMappingProviders);
-		}
-		return new CloneIterator<IJavaTypeMappingProvider>(this.javaTypeMappingProviders);
-	}
-
-	/**
-	 * Override this to specify more or different type mapping providers.
-	 * The default includes the JPA spec-defined type mappings of 
-	 * Entity, MappedSuperclass, and Embeddable
-	 */
-	protected void addJavaTypeMappingProvidersTo(Collection<IJavaTypeMappingProvider> providers) {
-		providers.add(JavaEntityProvider.instance());
-		providers.add(JavaMappedSuperclassProvider.instance());
-		providers.add(JavaEmbeddableProvider.instance());
-	}
-
-	public IJavaTypeMappingProvider javaTypeMappingProvider(String typeMappingKey) {
-		for (Iterator<IJavaTypeMappingProvider> i = this.javaTypeMappingProviders(); i.hasNext(); ) {
-			IJavaTypeMappingProvider provider = i.next();
-			if (provider.key() == typeMappingKey) {
-				return provider;
-			}
+		catch (CoreException ex) {
+			JptCorePlugin.log(ex);
 		}
 		return null;
 	}
 	
-	public Iterator<IJavaAttributeMappingProvider> javaAttributeMappingProviders() {
-		if (this.javaAttributeMappingProviders == null) {
-			this.javaAttributeMappingProviders = new ArrayList<IJavaAttributeMappingProvider>();
-			this.addJavaAttributeMappingProvidersTo(this.javaAttributeMappingProviders);
-		}
-		return new CloneIterator<IJavaAttributeMappingProvider>(this.javaAttributeMappingProviders);
-	}
-	
-	/**
-	 * Override this to specify more or different attribute mapping providers.
-	 * The default includes the JPA spec-defined attribute mappings of 
-	 * Basic, Id, Transient OneToOne, OneToMany, ManyToOne, ManyToMany, Embeddable, EmbeddedId, Version.
-	 */
-	protected void addJavaAttributeMappingProvidersTo(Collection<IJavaAttributeMappingProvider> providers) {
-		providers.add(JavaBasicProvider.instance());
-		providers.add(JavaIdProvider.instance());
-		providers.add(JavaTransientProvider.instance());
-		providers.add(JavaOneToManyProvider.instance());
-		providers.add(JavaManyToOneProvider.instance());
-		providers.add(JavaManyToManyProvider.instance());
-		providers.add(JavaOneToOneProvider.instance());
-		providers.add(JavaEmbeddedProvider.instance());
-		providers.add(JavaEmbeddedIdProvider.instance());
-		providers.add(JavaVersionProvider.instance());
-	}
-	
-	/**
-	 * throw an exception if the provider is not found
-	 */
-	public IJavaAttributeMappingProvider javaAttributeMappingProvider(String attributeMappingKey) {
-		for (Iterator<IJavaAttributeMappingProvider> i = this.javaAttributeMappingProviders(); i.hasNext(); ) {
-			IJavaAttributeMappingProvider provider = i.next();
-			if (provider.key() == attributeMappingKey) {
-				return provider;
-			}
-		}
-		throw new IllegalArgumentException("Unsupported java attribute mapping key: " + attributeMappingKey);
-	}
-	
-	public ListIterator<IDefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders() {
-		if (this.defaultJavaAttributeMappingProviders == null) {
-			this.defaultJavaAttributeMappingProviders = new ArrayList<IDefaultJavaAttributeMappingProvider>();
-			this.addDefaultAttributeMappingProvidersTo(this.defaultJavaAttributeMappingProviders);
-		}
-		return new CloneListIterator<IDefaultJavaAttributeMappingProvider>(this.defaultJavaAttributeMappingProviders);
-	}
-	
-	/**
-	 * Override this to specify more or different default attribute mapping providers.
-	 * The default includes the JPA spec-defined attribute mappings of 
-	 * Embedded and Basic.
-	 */
-	protected void addDefaultAttributeMappingProvidersTo(List<IDefaultJavaAttributeMappingProvider> providers) {
-		providers.add(JavaEmbeddedProvider.instance()); //bug 190344 need to test default embedded before basic
-		providers.add(JavaBasicProvider.instance());
-	}
-
-	public IContext buildProjectContext() {
-		this.context = new BaseJpaProjectContext(getProject());
-		return this.context;
-	}
-	
-	public Iterator<IJpaFile> validPersistenceXmlFiles(){
-		return ((BaseJpaProjectContext)this.context).validPersistenceXmlFiles();
-	}
-	
-	public IContext buildJavaTypeContext(IContext parentContext, IJavaTypeMapping typeMapping) {
-		String key = typeMapping.getKey();
-		if (key == IMappingKeys.ENTITY_TYPE_MAPPING_KEY) {
-			return new JavaEntityContext(parentContext, (JavaEntity) typeMapping);
-		}
-		else if (key == IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
-			return new JavaEmbeddableContext(parentContext, (JavaEmbeddable) typeMapping);
-		}
-		else if (key == IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY) {
-			return new JavaMappedSuperclassContext(parentContext, (JavaMappedSuperclass) typeMapping);
-		}
-		else if (key == null) {
-			return new JavaNullTypeMappingContext(parentContext, (JavaNullTypeMapping) typeMapping);
-		}
-		else {
-			throw new IllegalArgumentException(typeMapping.toString());
-		}
-	}
-	
-	public IContext buildJavaAttributeContext(IContext parentContext, IJavaAttributeMapping attributeMapping) {
-		String key = attributeMapping.getKey();
-		if (key == IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
-			return new JavaBasicContext(parentContext, (JavaBasic) attributeMapping);
-		}
-		else if (key == IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
-			return new JavaIdContext(parentContext, (JavaId) attributeMapping);
-		}
-		else if (key == IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
-			return new JavaVersionContext(parentContext, (JavaVersion) attributeMapping);
-		}
-		else if (key == IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
-			return new JavaEmbeddedContext(parentContext, (JavaEmbedded) attributeMapping);
-		}
-		else if (key == IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
-			return new JavaEmbeddedIdContext(parentContext, (JavaEmbeddedId) attributeMapping);
-		}
-		else if (key == IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			return new JavaOneToOneContext(parentContext, (JavaOneToOne) attributeMapping);
-		}
-		else if (key == IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			return new JavaOneToManyContext(parentContext, (JavaOneToMany) attributeMapping);
-		}
-		else if (key == IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			return new JavaManyToOneContext(parentContext, (JavaManyToOne) attributeMapping);
-		}
-		else if (key == IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			return new JavaManyToManyContext(parentContext, (JavaManyToMany) attributeMapping);
-		}
-		else if (key == IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
-			return new JavaTransientContext(parentContext, (JavaTransient) attributeMapping);
-		}
-		else if (key == null) {
-			return new JavaNullAttributeMappingContext(parentContext, (JavaNullAttributeMapping) attributeMapping);
-		}
-		else {
-			throw new IllegalArgumentException(attributeMapping.toString());
-		}
-	}
-	
-	public void resynch(IContext contextHierarchy, IProgressMonitor monitor) {
-		((BaseJpaProjectContext) contextHierarchy).refreshDefaults(monitor);
-	}
-	
-	public void addToMessages(List<IMessage> messages) {
-		//I believe we need to be calling JpaProject.resynch() here.
-		//How can we handle this, we need to resynch and then wait until it is done
-		//resynching before calling this.  what happens if something changes out from
-		//under us while we are resynching??
-		BaseJpaProjectContext context = (BaseJpaProjectContext) buildProjectContext();
-		context.refreshDefaults(new NullProgressMonitor());
-		context.addToMessages(messages);
-	}
-	
+//	public Iterator<IJpaFileContentProvider> jpaFileContentProviders() {
+//		if (this.contentProviders == null) {
+//			this.contentProviders = new ArrayList<IJpaFileContentProvider>();
+//			addJpaFileContentProvidersTo(this.contentProviders);
+//		}
+//		return new CloneIterator<IJpaFileContentProvider>(this.contentProviders);
+//	}
+//	
+//	public IJpaFileContentProvider fileContentProvider(String contentTypeId) {
+//		for (Iterator<IJpaFileContentProvider> i = this.jpaFileContentProviders(); i.hasNext(); ) {
+//			IJpaFileContentProvider provider = i.next();
+//			if (provider.contentType().equals(contentTypeId)) {
+//				return provider;
+//			}
+//		}
+//		return null;
+//	}
+// 
+//	/**
+//	 * Override this to specify more or different JPA file content providers.
+//	 * The default includes the JPA spec-defined content providers of
+//	 * persistence.xml, orm.xml, and java files.
+//	 */
+//	protected void addJpaFileContentProvidersTo(Collection<IJpaFileContentProvider> providers) {
+//		providers.add(JavaJpaFileContentProvider.instance());
+//	}
+//	
+//	public Iterator<IJavaTypeMappingProvider> javaTypeMappingProviders() {
+//		if (this.javaTypeMappingProviders == null) {
+//			this.javaTypeMappingProviders = new ArrayList<IJavaTypeMappingProvider>();
+//			this.addJavaTypeMappingProvidersTo(this.javaTypeMappingProviders);
+//		}
+//		return new CloneIterator<IJavaTypeMappingProvider>(this.javaTypeMappingProviders);
+//	}
+//
+//	/**
+//	 * Override this to specify more or different type mapping providers.
+//	 * The default includes the JPA spec-defined type mappings of 
+//	 * Entity, MappedSuperclass, and Embeddable
+//	 */
+//	protected void addJavaTypeMappingProvidersTo(Collection<IJavaTypeMappingProvider> providers) {
+//		providers.add(JavaEntityProvider.instance());
+//		providers.add(JavaMappedSuperclassProvider.instance());
+//		providers.add(JavaEmbeddableProvider.instance());
+//	}
+//
+//	public IJavaTypeMappingProvider javaTypeMappingProvider(String typeMappingKey) {
+//		for (Iterator<IJavaTypeMappingProvider> i = this.javaTypeMappingProviders(); i.hasNext(); ) {
+//			IJavaTypeMappingProvider provider = i.next();
+//			if (provider.key() == typeMappingKey) {
+//				return provider;
+//			}
+//		}
+//		return null;
+//	}
+//	
+//	public Iterator<IJavaAttributeMappingProvider> javaAttributeMappingProviders() {
+//		if (this.javaAttributeMappingProviders == null) {
+//			this.javaAttributeMappingProviders = new ArrayList<IJavaAttributeMappingProvider>();
+//			this.addJavaAttributeMappingProvidersTo(this.javaAttributeMappingProviders);
+//		}
+//		return new CloneIterator<IJavaAttributeMappingProvider>(this.javaAttributeMappingProviders);
+//	}
+//	
+//	/**
+//	 * Override this to specify more or different attribute mapping providers.
+//	 * The default includes the JPA spec-defined attribute mappings of 
+//	 * Basic, Id, Transient OneToOne, OneToMany, ManyToOne, ManyToMany, Embeddable, EmbeddedId, Version.
+//	 */
+//	protected void addJavaAttributeMappingProvidersTo(Collection<IJavaAttributeMappingProvider> providers) {
+//		providers.add(JavaBasicProvider.instance());
+//		providers.add(JavaIdProvider.instance());
+//		providers.add(JavaTransientProvider.instance());
+//		providers.add(JavaOneToManyProvider.instance());
+//		providers.add(JavaManyToOneProvider.instance());
+//		providers.add(JavaManyToManyProvider.instance());
+//		providers.add(JavaOneToOneProvider.instance());
+//		providers.add(JavaEmbeddedProvider.instance());
+//		providers.add(JavaEmbeddedIdProvider.instance());
+//		providers.add(JavaVersionProvider.instance());
+//	}
+//	
+//	/**
+//	 * throw an exception if the provider is not found
+//	 */
+//	public IJavaAttributeMappingProvider javaAttributeMappingProvider(String attributeMappingKey) {
+//		for (Iterator<IJavaAttributeMappingProvider> i = this.javaAttributeMappingProviders(); i.hasNext(); ) {
+//			IJavaAttributeMappingProvider provider = i.next();
+//			if (provider.key() == attributeMappingKey) {
+//				return provider;
+//			}
+//		}
+//		throw new IllegalArgumentException("Unsupported java attribute mapping key: " + attributeMappingKey);
+//	}
+//	
+//	public ListIterator<IDefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders() {
+//		if (this.defaultJavaAttributeMappingProviders == null) {
+//			this.defaultJavaAttributeMappingProviders = new ArrayList<IDefaultJavaAttributeMappingProvider>();
+//			this.addDefaultAttributeMappingProvidersTo(this.defaultJavaAttributeMappingProviders);
+//		}
+//		return new CloneListIterator<IDefaultJavaAttributeMappingProvider>(this.defaultJavaAttributeMappingProviders);
+//	}
+//	
+//	/**
+//	 * Override this to specify more or different default attribute mapping providers.
+//	 * The default includes the JPA spec-defined attribute mappings of 
+//	 * Embedded and Basic.
+//	 */
+//	protected void addDefaultAttributeMappingProvidersTo(List<IDefaultJavaAttributeMappingProvider> providers) {
+//		providers.add(JavaEmbeddedProvider.instance()); //bug 190344 need to test default embedded before basic
+//		providers.add(JavaBasicProvider.instance());
+//	}
+//
+//	public IContext buildProjectContext() {
+//		this.context = new BaseJpaProjectContext(getProject());
+//		return this.context;
+//	}
+//	
+//	public Iterator<IJpaFile> validPersistenceXmlFiles(){
+//		return ((BaseJpaProjectContext)this.context).validPersistenceXmlFiles();
+//	}
+//	
+//	public IContext buildJavaTypeContext(IContext parentContext, IJavaTypeMapping typeMapping) {
+//		String key = typeMapping.getKey();
+//		if (key == IMappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+//			return new JavaEntityContext(parentContext, (JavaEntity) typeMapping);
+//		}
+//		else if (key == IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
+//			return new JavaEmbeddableContext(parentContext, (JavaEmbeddable) typeMapping);
+//		}
+//		else if (key == IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY) {
+//			return new JavaMappedSuperclassContext(parentContext, (JavaMappedSuperclass) typeMapping);
+//		}
+//		else if (key == null) {
+//			return new JavaNullTypeMappingContext(parentContext, (JavaNullTypeMapping) typeMapping);
+//		}
+//		else {
+//			throw new IllegalArgumentException(typeMapping.toString());
+//		}
+//	}
+//	
+//	public IContext buildJavaAttributeContext(IContext parentContext, IJavaAttributeMapping attributeMapping) {
+//		String key = attributeMapping.getKey();
+//		if (key == IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
+//			return new JavaBasicContext(parentContext, (JavaBasic) attributeMapping);
+//		}
+//		else if (key == IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
+//			return new JavaIdContext(parentContext, (JavaId) attributeMapping);
+//		}
+//		else if (key == IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
+//			return new JavaVersionContext(parentContext, (JavaVersion) attributeMapping);
+//		}
+//		else if (key == IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
+//			return new JavaEmbeddedContext(parentContext, (JavaEmbedded) attributeMapping);
+//		}
+//		else if (key == IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
+//			return new JavaEmbeddedIdContext(parentContext, (JavaEmbeddedId) attributeMapping);
+//		}
+//		else if (key == IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+//			return new JavaOneToOneContext(parentContext, (JavaOneToOne) attributeMapping);
+//		}
+//		else if (key == IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+//			return new JavaOneToManyContext(parentContext, (JavaOneToMany) attributeMapping);
+//		}
+//		else if (key == IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+//			return new JavaManyToOneContext(parentContext, (JavaManyToOne) attributeMapping);
+//		}
+//		else if (key == IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+//			return new JavaManyToManyContext(parentContext, (JavaManyToMany) attributeMapping);
+//		}
+//		else if (key == IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+//			return new JavaTransientContext(parentContext, (JavaTransient) attributeMapping);
+//		}
+//		else if (key == null) {
+//			return new JavaNullAttributeMappingContext(parentContext, (JavaNullAttributeMapping) attributeMapping);
+//		}
+//		else {
+//			throw new IllegalArgumentException(attributeMapping.toString());
+//		}
+//	}
+//	
+//	public void resynch(IContext contextHierarchy, IProgressMonitor monitor) {
+//		((BaseJpaProjectContext) contextHierarchy).refreshDefaults(monitor);
+//	}
+//	
+//	public void addToMessages(List<IMessage> messages) {
+//		//I believe we need to be calling JpaProject.resynch() here.
+//		//How can we handle this, we need to resynch and then wait until it is done
+//		//resynching before calling this.  what happens if something changes out from
+//		//under us while we are resynching??
+//		BaseJpaProjectContext context = (BaseJpaProjectContext) buildProjectContext();
+//		context.refreshDefaults(new NullProgressMonitor());
+//		context.addToMessages(messages);
+//	}
+//	
 //	public IGeneratorRepository generatorRepository(IPersistentType persistentType) {
 //		return ((BaseJpaProjectContext) context).generatorRepository(persistentType);
 //	}

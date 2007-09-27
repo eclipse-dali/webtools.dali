@@ -16,9 +16,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IPersistentType;
-import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
-import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public abstract class JavaTypeContext extends BaseContext

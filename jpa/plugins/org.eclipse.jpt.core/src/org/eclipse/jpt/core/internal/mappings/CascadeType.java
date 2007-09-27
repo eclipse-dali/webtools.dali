@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
-import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 
 /**
  * <!-- begin-user-doc -->

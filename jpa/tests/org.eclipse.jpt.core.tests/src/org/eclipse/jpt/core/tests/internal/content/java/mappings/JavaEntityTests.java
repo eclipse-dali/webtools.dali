@@ -11,9 +11,7 @@ package org.eclipse.jpt.core.tests.internal.content.java.mappings;
 
 import java.util.Iterator;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
-import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaEntityTests extends JpaJavaTestCase {
@@ -88,16 +86,16 @@ public class JavaEntityTests extends JpaJavaTestCase {
 //		this.assertSourceContains("@Id");
 //	}
 //
-	public void testGetName() throws Exception {
-		this.createTestEntity1();
-		IJavaTypeMapping typeMapping = this.javaPersistentTypeNamed(FULLY_QUALIFIED_TYPE_NAME).getMapping();
-		assertEquals(TYPE_NAME, typeMapping.getName());
-	}
-
-	public void testGetKey() throws Exception {
-		this.createTestEntity1();
-		IJavaTypeMapping typeMapping = this.javaPersistentTypeNamed(FULLY_QUALIFIED_TYPE_NAME).getMapping();
-		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, typeMapping.getKey());
-	}
+//	public void testGetName() throws Exception {
+//		this.createTestEntity1();
+//		IJavaTypeMapping typeMapping = this.javaPersistentTypeNamed(FULLY_QUALIFIED_TYPE_NAME).getMapping();
+//		assertEquals(TYPE_NAME, typeMapping.getName());
+//	}
+//
+//	public void testGetKey() throws Exception {
+//		this.createTestEntity1();
+//		IJavaTypeMapping typeMapping = this.javaPersistentTypeNamed(FULLY_QUALIFIED_TYPE_NAME).getMapping();
+//		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, typeMapping.getKey());
+//	}
 
 }

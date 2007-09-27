@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaManyToMany;
 
 public class JavaManyToManyContext extends JavaMultiRelationshipMappingContext
 {

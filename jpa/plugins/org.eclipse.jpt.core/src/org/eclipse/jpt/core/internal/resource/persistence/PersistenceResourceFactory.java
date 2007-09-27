@@ -36,6 +36,6 @@ public class PersistenceResourceFactory extends TranslatorResourceFactory
 	 * @see TranslatorResourceFactory#createResource(URI, Renderer)
 	 */
 	protected TranslatorResource createResource(URI uri, Renderer renderer) {
-		return new PersistenceResource(uri, renderer);
+		return new PersistenceResourceModel(uri, renderer);
 	}
 }

@@ -25,20 +25,6 @@ public interface IJpaFile extends IJpaEObject
 {
 	/**
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Content</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @model kind="operation"
-	 * @generated
-	 */
-	IJpaRootContentNode getContent();
-
-	void setContent(IJpaRootContentNode content);
-
-	/**
-	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model kind="operation" required="true"
 	 * @generated
@@ -49,6 +35,11 @@ public interface IJpaFile extends IJpaEObject
 	 * Return the IFile associated with this JPA file
 	 */
 	IFile getFile();
+
+	/**
+	 * Return the resource model represented by this JPA file
+	 */
+	IResourceModel getResourceModel();
 
 	/**
 	 * Return the content node corresponding to the given offset in the source.

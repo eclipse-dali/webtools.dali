@@ -10,20 +10,6 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import org.eclipse.jpt.core.internal.IJpaFactory;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddedId;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaId;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToMany;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToOne;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaMappedSuperclass;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToMany;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToOne;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion;
-import org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsFactory;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 

@@ -9,7 +9,6 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullAttributeMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class JavaNullAttributeMappingContext extends JavaAttributeContext

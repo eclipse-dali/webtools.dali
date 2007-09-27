@@ -17,8 +17,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-import org.eclipse.jpt.core.internal.content.java.JpaJavaPackage;
-import org.eclipse.jpt.core.internal.content.java.mappings.JpaJavaMappingsPackage;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
 
 /**
@@ -334,22 +332,13 @@ public class JpaCorePackage extends EPackageImpl
 	public static final int JPA_FILE__CONTENT_ID = JPA_EOBJECT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Content</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JPA_FILE__CONTENT = JPA_EOBJECT_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Jpa File</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JPA_FILE_FEATURE_COUNT = JPA_EOBJECT_FEATURE_COUNT + 2;
+	public static final int JPA_FILE_FEATURE_COUNT = JPA_EOBJECT_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.IJpaSourceObject <em>IJpa Source Object</em>}' class.
@@ -438,7 +427,7 @@ public class JpaCorePackage extends EPackageImpl
 	public static final int IJPA_ROOT_CONTENT_NODE = 15;
 
 	/**
-	 * The feature id for the '<em><b>Jpa File</b></em>' container reference.
+	 * The feature id for the '<em><b>Jpa File</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -826,18 +815,12 @@ public class JpaCorePackage extends EPackageImpl
 		EcorePackage.eINSTANCE.eClass();
 		// Obtain or create and register interdependencies
 		JpaCoreMappingsPackage theJpaCoreMappingsPackage = (JpaCoreMappingsPackage) (EPackage.Registry.INSTANCE.getEPackage(JpaCoreMappingsPackage.eNS_URI) instanceof JpaCoreMappingsPackage ? EPackage.Registry.INSTANCE.getEPackage(JpaCoreMappingsPackage.eNS_URI) : JpaCoreMappingsPackage.eINSTANCE);
-		JpaJavaPackage theJpaJavaPackage = (JpaJavaPackage) (EPackage.Registry.INSTANCE.getEPackage(JpaJavaPackage.eNS_URI) instanceof JpaJavaPackage ? EPackage.Registry.INSTANCE.getEPackage(JpaJavaPackage.eNS_URI) : JpaJavaPackage.eINSTANCE);
-		JpaJavaMappingsPackage theJpaJavaMappingsPackage = (JpaJavaMappingsPackage) (EPackage.Registry.INSTANCE.getEPackage(JpaJavaMappingsPackage.eNS_URI) instanceof JpaJavaMappingsPackage ? EPackage.Registry.INSTANCE.getEPackage(JpaJavaMappingsPackage.eNS_URI) : JpaJavaMappingsPackage.eINSTANCE);
 		// Create package meta-data objects
 		theJpaCorePackage.createPackageContents();
 		theJpaCoreMappingsPackage.createPackageContents();
-		theJpaJavaPackage.createPackageContents();
-		theJpaJavaMappingsPackage.createPackageContents();
 		// Initialize created meta-data
 		theJpaCorePackage.initializePackageContents();
 		theJpaCoreMappingsPackage.initializePackageContents();
-		theJpaJavaPackage.initializePackageContents();
-		theJpaJavaMappingsPackage.initializePackageContents();
 		// Mark meta-data to indicate it can't be changed
 		theJpaCorePackage.freeze();
 		return theJpaCorePackage;
@@ -1067,19 +1050,6 @@ public class JpaCorePackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.JpaFile#getContent <em>Content</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Content</em>'.
-	 * @see org.eclipse.jpt.core.internal.JpaFile#getContent()
-	 * @see #getJpaFile()
-	 * @generated
-	 */
-	public EReference getJpaFile_Content() {
-		return (EReference) jpaFileEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.IJpaSourceObject <em>IJpa Source Object</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1140,10 +1110,10 @@ public class JpaCorePackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the container reference '{@link org.eclipse.jpt.core.internal.IJpaRootContentNode#getJpaFile <em>Jpa File</em>}'.
+	 * Returns the meta object for the reference '{@link org.eclipse.jpt.core.internal.IJpaRootContentNode#getJpaFile <em>Jpa File</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the container reference '<em>Jpa File</em>'.
+	 * @return the meta object for the reference '<em>Jpa File</em>'.
 	 * @see org.eclipse.jpt.core.internal.IJpaRootContentNode#getJpaFile()
 	 * @see #getIJpaRootContentNode()
 	 * @generated
@@ -1324,7 +1294,6 @@ public class JpaCorePackage extends EPackageImpl
 		iJpaFileEClass = createEClass(IJPA_FILE);
 		jpaFileEClass = createEClass(JPA_FILE);
 		createEAttribute(jpaFileEClass, JPA_FILE__CONTENT_ID);
-		createEReference(jpaFileEClass, JPA_FILE__CONTENT);
 		iJpaSourceObjectEClass = createEClass(IJPA_SOURCE_OBJECT);
 		iXmlEObjectEClass = createEClass(IXML_EOBJECT);
 		xmlEObjectEClass = createEClass(XML_EOBJECT);
@@ -1430,10 +1399,8 @@ public class JpaCorePackage extends EPackageImpl
 		initEAttribute(getJpaDataSource_ConnectionProfileName(), ecorePackage.getEString(), "connectionProfileName", null, 1, 1, JpaDataSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEClass(iJpaFileEClass, IJpaFile.class, "IJpaFile", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		addEOperation(iJpaFileEClass, ecorePackage.getEString(), "getContentId", 1, 1, IS_UNIQUE, IS_ORDERED);
-		addEOperation(iJpaFileEClass, this.getIJpaRootContentNode(), "getContent", 0, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(jpaFileEClass, JpaFile.class, "JpaFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getJpaFile_ContentId(), ecorePackage.getEString(), "contentId", null, 1, 1, JpaFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getJpaFile_Content(), this.getIJpaRootContentNode(), this.getIJpaRootContentNode_JpaFile(), "content", null, 0, 1, JpaFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iJpaSourceObjectEClass, IJpaSourceObject.class, "IJpaSourceObject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		addEOperation(iJpaSourceObjectEClass, this.getIJpaFile(), "getJpaFile", 0, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(iXmlEObjectEClass, IXmlEObject.class, "IXmlEObject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1441,7 +1408,7 @@ public class JpaCorePackage extends EPackageImpl
 		initEClass(iJpaContentNodeEClass, IJpaContentNode.class, "IJpaContentNode", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		addEOperation(iJpaContentNodeEClass, this.getIJpaFile(), "getJpaFile", 1, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(iJpaRootContentNodeEClass, IJpaRootContentNode.class, "IJpaRootContentNode", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getIJpaRootContentNode_JpaFile(), this.getIJpaFile(), this.getJpaFile_Content(), "jpaFile", null, 0, 1, IJpaRootContentNode.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getIJpaRootContentNode_JpaFile(), this.getIJpaFile(), null, "jpaFile", null, 0, 1, IJpaRootContentNode.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iPersistentTypeEClass, IPersistentType.class, "IPersistentType", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIPersistentType_MappingKey(), ecorePackage.getEString(), "mappingKey", null, 1, 1, IPersistentType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		addEOperation(iPersistentTypeEClass, this.getITypeMapping(), "getMapping", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -1651,14 +1618,6 @@ public class JpaCorePackage extends EPackageImpl
 		public static final EAttribute JPA_FILE__CONTENT_ID = eINSTANCE.getJpaFile_ContentId();
 
 		/**
-		 * The meta object literal for the '<em><b>Content</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference JPA_FILE__CONTENT = eINSTANCE.getJpaFile_Content();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.IJpaSourceObject <em>IJpa Source Object</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1709,7 +1668,7 @@ public class JpaCorePackage extends EPackageImpl
 		public static final EClass IJPA_ROOT_CONTENT_NODE = eINSTANCE.getIJpaRootContentNode();
 
 		/**
-		 * The meta object literal for the '<em><b>Jpa File</b></em>' container reference feature.
+		 * The meta object literal for the '<em><b>Jpa File</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

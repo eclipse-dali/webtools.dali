@@ -10,7 +10,6 @@ package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaOneToOne;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.INonOwningMapping;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;

@@ -47,7 +47,7 @@
 			file-names="orm.xml">
 			<describer
 				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
-				<parameter name="element" value="entityMappings"/>
+				<parameter name="element" value="entity-mappings"/>
 			</describer>
 		</content-type>
   		

@@ -16,11 +16,11 @@ import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.resource.orm.OrmArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
 import org.eclipse.jpt.core.internal.resource.persistence.Persistence;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -83,7 +83,7 @@ public class JpaFacetPostInstallDelegate
 		
 		PersistenceArtifactEdit pae = 
 				PersistenceArtifactEdit.getArtifactEditForWrite(project, deployPath);
-		PersistenceResource resource = pae.getPersistenceResource();
+		PersistenceResourceModel resource = pae.getPersistenceResource();
 		
 		// fix for bug 202811 - only add content if it does not already have content
 		if (resource.getPersistence() == null) {
@@ -113,7 +113,7 @@ public class JpaFacetPostInstallDelegate
 		
 		OrmArtifactEdit oae =
 				OrmArtifactEdit.getArtifactEditForWrite(project, deployPath);
-		OrmResource resource = oae.getOrmResource();
+		OrmResourceModel resource = oae.getOrmResource();
 		
 		// fix for bug 202811 - only add content if it does not already have content
 		if (resource.getEntityMappings() == null) {

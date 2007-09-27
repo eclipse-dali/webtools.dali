@@ -113,7 +113,7 @@ public interface IAssociationOverride extends IOverride
 		public int indexOf(IAbstractJoinColumn joinColumn) {
 			return joinColumns().indexOf(joinColumn);
 		}
-		
+
 		public IEntity targetEntity() {
 			return getRelationshipMapping().getResolvedTargetEntity();
 		}
@@ -154,10 +154,9 @@ public interface IAssociationOverride extends IOverride
 			IEntity targetEntity = targetEntity();
 			return (targetEntity == null) ? null : targetEntity().primaryDbTable();
 		}
-		
+
 		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
 			return this.associationOverride.getDefaultJoinColumns().contains(joinColumn);
 		}
-
 	}
 }

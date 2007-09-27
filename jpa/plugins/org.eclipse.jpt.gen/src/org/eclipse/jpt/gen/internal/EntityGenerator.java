@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaModelStatusConstants;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.ForeignKey;
 import org.eclipse.jpt.db.internal.Table;

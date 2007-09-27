@@ -56,13 +56,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="IJpaFile" abstract="true" interface="true"
       eSuperTypes="#//IJpaEObject">
     <eOperations name="getContentId" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eOperations name="getContent" eType="#//IJpaRootContentNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JpaFile" eSuperTypes="#//JpaEObject #//IJpaFile">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="contentId" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//IJpaRootContentNode"
-        containment="true" eOpposite="#//IJpaRootContentNode/jpaFile"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IJpaSourceObject" abstract="true" interface="true"
       eSuperTypes="#//IJpaEObject">
@@ -78,7 +75,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="IJpaRootContentNode" abstract="true"
       interface="true" eSuperTypes="#//IJpaContentNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="jpaFile" eType="#//IJpaFile"
-        changeable="false" eOpposite="#//JpaFile/content"/>
+        changeable="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IPersistentType" abstract="true" interface="true"
       eSuperTypes="#//IJpaContentNode">

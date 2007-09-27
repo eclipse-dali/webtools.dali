@@ -63,9 +63,9 @@ public class PersistenceArtifactEdit extends ArtifactEdit
 		fileURI = URI.createURI(aFileURI);
 	}
 	
-	public PersistenceResource getPersistenceResource() {
+	public PersistenceResourceModel getPersistenceResource() {
 		try {
-			return (PersistenceResource) getArtifactEditModel().getResource(fileURI);
+			return (PersistenceResourceModel) getArtifactEditModel().getResource(fileURI);
 		}
 		catch (ClassCastException cce) {
 			return null;

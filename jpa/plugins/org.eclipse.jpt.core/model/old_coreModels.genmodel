@@ -8,7 +8,6 @@
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
     usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
   <foreignModel>old_core.ecore</foreignModel>
-  <foreignModel>old_java.ecore</foreignModel>
   <genPackages prefix="JpaCore" basePackage="org.eclipse.jpt.core" disposableProviderFactory="true"
       ecorePackage="old_core.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="old_core.ecore#//AccessType">
@@ -54,11 +53,9 @@
     </genClasses>
     <genClasses ecoreClass="old_core.ecore#//IJpaFile">
       <genOperations ecoreOperation="old_core.ecore#//IJpaFile/getContentId"/>
-      <genOperations ecoreOperation="old_core.ecore#//IJpaFile/getContent"/>
     </genClasses>
     <genClasses ecoreClass="old_core.ecore#//JpaFile">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//JpaFile/contentId"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_core.ecore#//JpaFile/content"/>
     </genClasses>
     <genClasses ecoreClass="old_core.ecore#//IJpaSourceObject">
       <genOperations ecoreOperation="old_core.ecore#//IJpaSourceObject/getJpaFile"/>
@@ -397,86 +394,6 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/ICascade/remove"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//mappings/ICascade/refresh"/>
       </genClasses>
-    </nestedGenPackages>
-  </genPackages>
-  <genPackages prefix="JpaJava" basePackage="org.eclipse.jpt.core.internal.content"
-      disposableProviderFactory="true" ecorePackage="old_java.ecore#/">
-    <genClasses image="false" ecoreClass="old_java.ecore#//JavaEObject">
-      <genOperations ecoreOperation="old_java.ecore#//JavaEObject/getJpaFile"/>
-      <genOperations ecoreOperation="old_java.ecore#//JavaEObject/getRoot"/>
-    </genClasses>
-    <genClasses ecoreClass="old_java.ecore#//JpaCompilationUnit">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_java.ecore#//JpaCompilationUnit/types"/>
-    </genClasses>
-    <genClasses ecoreClass="old_java.ecore#//JavaPersistentType">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_java.ecore#//JavaPersistentType/mapping"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_java.ecore#//JavaPersistentType/attributes"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_java.ecore#//JavaPersistentType/access"/>
-    </genClasses>
-    <genClasses ecoreClass="old_java.ecore#//JavaPersistentAttribute">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_java.ecore#//JavaPersistentAttribute/defaultMapping"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_java.ecore#//JavaPersistentAttribute/specifiedMapping"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="old_java.ecore#//IJavaTypeMapping"/>
-    <genClasses image="false" ecoreClass="old_java.ecore#//IJavaAttributeMapping"/>
-    <nestedGenPackages prefix="JpaJavaMappings" basePackage="org.eclipse.jpt.core.internal.content.java"
-        disposableProviderFactory="true" ecorePackage="old_java.ecore#//mappings">
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaEntity"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaEmbeddable"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaMappedSuperclass"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaBasic"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaEmbedded"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaEmbeddedId"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaId"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaManyToMany"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaManyToOne"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaOneToMany"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaOneToOne"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaTransient"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/IJavaVersion"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/JavaTypeMapping"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaEntity"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaMappedSuperclass"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaEmbeddable"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaNullTypeMapping"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/JavaAttributeMapping"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaBasic"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaId"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaTransient"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaVersion"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaEmbeddedId"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaEmbedded"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/JavaRelationshipMapping"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/JavaSingleRelationshipMapping"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaManyToOne"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaOneToOne"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/JavaMultiRelationshipMapping"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaOneToMany"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaManyToMany"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaNullAttributeMapping"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/AbstractJavaTable"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaTable"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaSecondaryTable"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaJoinTable"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/JavaNamedColumn"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/AbstractJavaColumn"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaColumn"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaJoinColumn"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaOverride"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaAttributeOverride"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaAssociationOverride"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaDiscriminatorColumn"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaPrimaryKeyJoinColumn"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaGeneratedValue"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaGenerator"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaTableGenerator"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaSequenceGenerator"/>
-      <genClasses image="false" ecoreClass="old_java.ecore#//mappings/JavaAbstractQuery"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaNamedQuery"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaNamedNativeQuery"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaQueryHint"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaUniqueConstraint"/>
-      <genClasses ecoreClass="old_java.ecore#//mappings/JavaCascade"/>
     </nestedGenPackages>
   </genPackages>
 </genmodel:GenModel>

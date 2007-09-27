@@ -101,7 +101,7 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 	private ConnectionListener buildConnectionListener() {
 		return new ConnectionListener() {
 			public void opened(ConnectionProfile profile) {
-				getProject().resynch();
+//				getProject().resynch();
 			}
 
 			public void aboutToClose(ConnectionProfile profile) {}
@@ -111,7 +111,7 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 			}
 
 			public void closed(ConnectionProfile profile) {
-				getProject().resynch();
+//				getProject().resynch();
 			}
 
 			public void modified(ConnectionProfile profile) {}
@@ -192,7 +192,7 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 		if (connectionProfile != null) {
 			connectionProfile.addConnectionListener(connectionListener);
 		}
-		getProject().resynch();
+//		getProject().resynch();
 	}
 
 	public boolean isConnected() {

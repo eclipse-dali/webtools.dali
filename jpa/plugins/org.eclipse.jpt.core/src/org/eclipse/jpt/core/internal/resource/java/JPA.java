@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.content.java.mappings;
+package org.eclipse.jpt.core.internal.resource.java;
 
 
 /**

@@ -213,7 +213,7 @@ public interface IJoinTable extends ITable
 		public List<IJoinColumn> joinColumns() {
 			return getJoinTable().getInverseJoinColumns();
 		}
-		
+
 		public int indexOf(IAbstractJoinColumn joinColumn) {
 			return joinColumns().indexOf(joinColumn);
 		}
@@ -240,7 +240,7 @@ public interface IJoinTable extends ITable
 			IEntity targetEntity = targetEntity();
 			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
-		
+
 		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
 			return getJoinTable().getDefaultInverseJoinColumns().contains(joinColumn);
 		}
@@ -260,7 +260,7 @@ public interface IJoinTable extends ITable
 		public List<IJoinColumn> joinColumns() {
 			return getJoinTable().getJoinColumns();
 		}
-		
+
 		public int indexOf(IAbstractJoinColumn joinColumn) {
 			return joinColumns().indexOf(joinColumn);
 		}
@@ -300,7 +300,7 @@ public interface IJoinTable extends ITable
 		public Table dbReferencedColumnTable() {
 			return getTypeMapping().primaryDbTable();
 		}
-		
+
 		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
 			return getJoinTable().getDefaultJoinColumns().contains(joinColumn);
 		}

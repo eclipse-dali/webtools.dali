@@ -15,12 +15,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * <!-- begin-user-doc -->
@@ -120,20 +117,20 @@ public interface IJpaProject extends IJpaEObject
 	 */
 	Iterator<IJpaFile> jpaFiles();
 
-	/**
-	 * Return a JavaPersistentType for the IType, if it exists, null otherwise.
-	 */
-	JavaPersistentType findJavaPersistentType(IType type);
-
-	/**
-	 * Reconnect the model together, recalculating default values as needed
-	 */
-	void resynch();
-
-	/**
-	 * Returns all the validation messages for this project
-	 */
-	Iterator<IMessage> validationMessages();
+//	/**
+//	 * Return a JavaPersistentType for the IType, if it exists, null otherwise.
+//	 */
+//	JavaPersistentType findJavaPersistentType(IType type);
+//	
+//	/**
+//	 * Reconnect the model together, recalculating default values as needed
+//	 */
+//	void resynch();
+//	
+//	/**
+//	 * Returns all the validation messages for this project
+//	 */
+//	Iterator<IMessage> validationMessages();
 
 	ConnectionProfile connectionProfile();
 

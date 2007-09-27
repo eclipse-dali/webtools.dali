@@ -12,9 +12,7 @@ package org.eclipse.jpt.core.internal;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.ElementChangedEvent;
 
@@ -27,7 +25,6 @@ import org.eclipse.jdt.core.ElementChangedEvent;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.JpaFile#getContentId <em>Content Id</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.JpaFile#getContent <em>Content</em>}</li>
  * </ul>
  * </p>
  *
@@ -58,19 +55,14 @@ public class JpaFile extends JpaEObject implements IJpaFile
 	protected String contentId = CONTENT_ID_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getContent() <em>Content</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getContent()
-	 * @generated
-	 * @ordered
-	 */
-	protected IJpaRootContentNode content;
-
-	/**
 	 * The IFile associated with this JPA file
 	 */
 	protected IFile file;
+
+	/**
+	 * The resource model represented by this JPA file
+	 */
+	protected IResourceModel resourceModel;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -125,67 +117,6 @@ public class JpaFile extends JpaEObject implements IJpaFile
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Content</b></em>' containment reference.
-	 * It is bidirectional and its opposite is '{@link org.eclipse.jpt.core.internal.IJpaRootContentNode#getJpaFile <em>Jpa File</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Content</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Content</em>' containment reference.
-	 * @see #setContent(IJpaRootContentNode)
-	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaFile_Content()
-	 * @see org.eclipse.jpt.core.internal.IJpaRootContentNode#getJpaFile
-	 * @model opposite="jpaFile" containment="true"
-	 * @generated
-	 */
-	public IJpaRootContentNode getContent() {
-		return content;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetContent(IJpaRootContentNode newContent, NotificationChain msgs) {
-		IJpaRootContentNode oldContent = content;
-		content = newContent;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JpaCorePackage.JPA_FILE__CONTENT, oldContent, newContent);
-			if (msgs == null)
-				msgs = notification;
-			else
-				msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.JpaFile#getContent <em>Content</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Content</em>' containment reference.
-	 * @see #getContent()
-	 * @generated
-	 */
-	public void setContent(IJpaRootContentNode newContent) {
-		if (newContent != content) {
-			NotificationChain msgs = null;
-			if (content != null)
-				msgs = ((InternalEObject) content).eInverseRemove(this, JpaCorePackage.IJPA_ROOT_CONTENT_NODE__JPA_FILE, IJpaRootContentNode.class, msgs);
-			if (newContent != null)
-				msgs = ((InternalEObject) newContent).eInverseAdd(this, JpaCorePackage.IJPA_ROOT_CONTENT_NODE__JPA_FILE, IJpaRootContentNode.class, msgs);
-			msgs = basicSetContent(newContent, msgs);
-			if (msgs != null)
-				msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JpaCorePackage.JPA_FILE__CONTENT, newContent, newContent));
-	}
-
-	/**
 	 * @see IJpaFile#getFile()
 	 */
 	public IFile getFile() {
@@ -197,11 +128,22 @@ public class JpaFile extends JpaEObject implements IJpaFile
 	}
 
 	/**
+	 * @see IJpaFile#getResourceModel()
+	 */
+	public IResourceModel getResourceModel() {
+		return resourceModel;
+	}
+
+	void setResourceModel(IResourceModel theResourceModel) {
+		resourceModel = theResourceModel;
+	}
+
+	/**
 	 * INTERNAL ONLY
 	 * Dispose of file before it is removed
 	 */
 	void dispose() {
-		getContent().dispose();
+		getResourceModel().dispose();
 		((JpaProject) getJpaProject()).getFiles().remove(this);
 	}
 
@@ -210,37 +152,7 @@ public class JpaFile extends JpaEObject implements IJpaFile
 	 * Handle java element change event.
 	 */
 	void handleEvent(ElementChangedEvent event) {
-		getContent().handleJavaElementChangedEvent(event);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case JpaCorePackage.JPA_FILE__CONTENT :
-				if (content != null)
-					msgs = ((InternalEObject) content).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JpaCorePackage.JPA_FILE__CONTENT, null, msgs);
-				return basicSetContent((IJpaRootContentNode) otherEnd, msgs);
-		}
-		return super.eInverseAdd(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case JpaCorePackage.JPA_FILE__CONTENT :
-				return basicSetContent(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
+		getResourceModel().handleJavaElementChangedEvent(event);
 	}
 
 	/**
@@ -253,8 +165,6 @@ public class JpaFile extends JpaEObject implements IJpaFile
 		switch (featureID) {
 			case JpaCorePackage.JPA_FILE__CONTENT_ID :
 				return getContentId();
-			case JpaCorePackage.JPA_FILE__CONTENT :
-				return getContent();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -269,9 +179,6 @@ public class JpaFile extends JpaEObject implements IJpaFile
 		switch (featureID) {
 			case JpaCorePackage.JPA_FILE__CONTENT_ID :
 				setContentId((String) newValue);
-				return;
-			case JpaCorePackage.JPA_FILE__CONTENT :
-				setContent((IJpaRootContentNode) newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -288,9 +195,6 @@ public class JpaFile extends JpaEObject implements IJpaFile
 			case JpaCorePackage.JPA_FILE__CONTENT_ID :
 				setContentId(CONTENT_ID_EDEFAULT);
 				return;
-			case JpaCorePackage.JPA_FILE__CONTENT :
-				setContent((IJpaRootContentNode) null);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -305,8 +209,6 @@ public class JpaFile extends JpaEObject implements IJpaFile
 		switch (featureID) {
 			case JpaCorePackage.JPA_FILE__CONTENT_ID :
 				return CONTENT_ID_EDEFAULT == null ? contentId != null : !CONTENT_ID_EDEFAULT.equals(contentId);
-			case JpaCorePackage.JPA_FILE__CONTENT :
-				return content != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -328,7 +230,7 @@ public class JpaFile extends JpaEObject implements IJpaFile
 	}
 
 	public IJpaContentNode getContentNode(int offset) {
-		return getContent().getContentNode(offset);
+		return getResourceModel().getContentNode(offset);
 	}
 
 	@Override

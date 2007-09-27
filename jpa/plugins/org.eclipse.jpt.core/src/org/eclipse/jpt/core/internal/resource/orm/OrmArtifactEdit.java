@@ -53,9 +53,9 @@ public class OrmArtifactEdit extends ArtifactEdit
 		fileURI = URI.createURI(aFileURI);
 	}
 	
-	public OrmResource getOrmResource() {
+	public OrmResourceModel getOrmResource() {
 		try {
-			return (OrmResource) getArtifactEditModel().getResource(fileURI);
+			return (OrmResourceModel) getArtifactEditModel().getResource(fileURI);
 		}
 		catch (ClassCastException cce) {
 			return null;

@@ -59,9 +59,9 @@ public class JpaValidator implements IValidatorJob
 		
 		reporter.removeAllMessages(this);
 		
-		for (Iterator stream = jpaProject.validationMessages(); stream.hasNext(); ) {
-			reporter.addMessage(this, (Message) stream.next());
-		}
+//		for (Iterator stream = jpaProject.validationMessages(); stream.hasNext(); ) {
+//			reporter.addMessage(this, (Message) stream.next());
+//		}
 		
 		return OK_STATUS;
 	}

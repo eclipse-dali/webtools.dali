@@ -25,6 +25,6 @@ public class OrmResourceFactory extends TranslatorResourceFactory
 	 * @see TranslatorResourceFactory#createResource(URI, Renderer)
 	 */
 	protected TranslatorResource createResource(URI uri, Renderer renderer) {
-		return new OrmResource(uri, renderer);
+		return new OrmResourceModel(uri, renderer);
 	}
 }

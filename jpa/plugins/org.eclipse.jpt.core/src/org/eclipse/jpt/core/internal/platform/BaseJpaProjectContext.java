@@ -24,8 +24,6 @@ import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.internal.resource.persistence.Persistence;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
