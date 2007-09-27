@@ -18,7 +18,9 @@ public interface AnnotationProvider
 	 * Return the fully qualified annotation name
 	 */
 	String getAnnotationName();
-		
+	
+	//TODO I don't really like that this is api.  If we used a visitor for discovering annotations, we could remove this
+	//     see AbstractJavaPersistentResource.updateAnnotations
 	DeclarationAnnotationAdapter getDeclarationAnnotationAdapter();
 	
 	Annotation buildAnnotation(Member member, JpaPlatform jpaPlatform);

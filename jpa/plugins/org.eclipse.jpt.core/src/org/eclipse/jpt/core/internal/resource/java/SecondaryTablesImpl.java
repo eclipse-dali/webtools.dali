@@ -29,15 +29,15 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		return JPA.SECONDARY_TABLES;
 	}
 
-	public String getSingularAnnotationName() {
+	public String getNestableAnnotationName() {
 		return JPA.SECONDARY_TABLE;
 	}
 	
-	public ListIterator<SecondaryTable> singularAnnotations() {
+	public ListIterator<SecondaryTable> nestedAnnotations() {
 		return new CloneListIterator<SecondaryTable>(this.secondaryTables);
 	}
 	
-	public int singularAnnotationsSize() {
+	public int nestedAnnotationsSize() {
 		return this.secondaryTables.size();
 	}
 	
@@ -59,7 +59,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		return this.secondaryTables.indexOf(secondaryTable);
 	}
 	
-	public SecondaryTable singularAnnotationAt(int index) {
+	public SecondaryTable nestedAnnotationAt(int index) {
 		return this.secondaryTables.get(index);
 	}
 	

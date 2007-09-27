@@ -11,21 +11,21 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
 
-public interface PluralAnnotation<T extends SingularAnnotation> extends Annotation
+public interface ContainerAnnotation<T extends NestableAnnotation> extends Annotation
 {
-	String getSingularAnnotationName();
-	
-	ListIterator<T> singularAnnotations();
-	
-	int singularAnnotationsSize();
+	String getNestableAnnotationName();
 
-	T singularAnnotationAt(int index);
+	ListIterator<T> nestedAnnotations();
 	
-	int indexOf(Object singularAnnotation);
+	int nestedAnnotationsSize();
+
+	T nestedAnnotationAt(int index);
+	
+	int indexOf(Object nestedAnnotation);
 	
 	T add(int index);
 	
-	void remove(Object singularAnnotation);
+	void remove(Object nestedAnnotation);
 	
 	void remove(int index);
 	

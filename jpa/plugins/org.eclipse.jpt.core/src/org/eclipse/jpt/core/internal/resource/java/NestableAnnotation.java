@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 
-public interface SingularAnnotation extends Annotation
+public interface NestableAnnotation extends Annotation
 {
-	void initializeFrom(SingularAnnotation oldAnnotation);
+	void initializeFrom(NestableAnnotation oldAnnotation);
 	
 	void moveAnnotation(int newIndex);
 	

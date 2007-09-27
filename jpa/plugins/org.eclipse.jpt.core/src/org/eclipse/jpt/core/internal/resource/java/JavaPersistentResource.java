@@ -64,14 +64,14 @@ public interface JavaPersistentResource extends JavaResource
 	//TODO tie the singular and plural annotations together somehow in the resource model so we can give
 	//a validation error for the case of both being specified
 	/**
-	 * Given a singular and plural annotation name return the specified <code>Annotation</code>s.
-	 * If both the singular and plural annotations are specified on the Type, then only
-	 * return the Annotations specified within the plural annotation.
-	 * @param singularAnnotation
-	 * @param pluralAnnotation
+	 * Given a nestable and container annotation name return the specified <code>NestableAnnotation</code>s.
+	 * If both the nestable and container annotations are specified on the Type, then only
+	 * return the NestableAnnotations specified within the container annotation.
+	 * @param nestableAnnotation
+	 * @param containerAnnotation
 	 * @return
 	 */
-	ListIterator<Annotation> annotations(String singularAnnotation, String pluralAnnotation);
+	ListIterator<NestableAnnotation> annotations(String nestableAnnotation, String containerAnnotation);
 	
 	
 	/**
@@ -88,24 +88,24 @@ public interface JavaPersistentResource extends JavaResource
 	Annotation addAnnotation(String annotationName);
 	
 	/**
-	 * Add a new Annotation named singularAnnotationName.  Create a new plural annotation
-	 * if necessary and add the singular annotation to it.  If both singular and plural already
-	 * exist then add to the plural annotation leaving the existing singular annotaion alone.
-	 * If only singular exists, then create the new plural annotation and move the singular to it
-	 * also adding the new one.  If neither exists, create a new singular annotation.
-	 * @return the new Annotation with the name singularAnnotationName
+	 * Add a new NestableAnnotation named nestableAnnotationName.  Create a new container annotation
+	 * if necessary and add the nestable annotation to it.  If both nestable and container already
+	 * exist then add to the container annotation leaving the existing nestable annotaion alone.
+	 * If only nestable exists, then create the new container annotation and move the nestable to it
+	 * also adding the new one.  If neither exists, create a new nestable annotation.
+	 * @return the new NestableAnnotation with the name nestableAnnotationName
 	 */
-	Annotation addAnnotation(int index, String singularAnnotationName, String pluralAnnotationName);
+	NestableAnnotation addAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
 	
-	void move(int oldIndex, int newIndex, String pluralAnnotationName);
+	void move(int oldIndex, int newIndex, String containerAnnotationName);
 	
-	void move(int newIndex, SingularAnnotation singularAnnotation, String pluralAnnotationName);
+	void move(int newIndex, NestableAnnotation nestedAnnotation, String containerAnnotationName);
 	
 	void removeAnnotation(String annotationName);
 	
-	void removeAnnotation(SingularAnnotation singularAnnotation, String pluralAnnotationName);
+	void removeAnnotation(NestableAnnotation nestableAnnotation, String containerAnnotationName);
 	
-	void removeAnnotation(int index, String pluralAnnotationName);
+	void removeAnnotation(int index, String containerAnnotationName);
 		
 	/**
 	 * Return whether the underlying JDT member is persistable according to the JPA spec

@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.Embeddable;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
@@ -28,7 +27,7 @@ import org.eclipse.jpt.core.internal.resource.java.JpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclass;
 import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
-import org.eclipse.jpt.core.internal.resource.java.SingularAnnotation;
+import org.eclipse.jpt.core.internal.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.Table;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.ClassTools;
@@ -699,7 +698,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
 		assertEquals(3, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
 
-		Iterator<Annotation> secondaryTableAnnotations = typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+		Iterator<NestableAnnotation> secondaryTableAnnotations = typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		secondaryTableResource = (SecondaryTable) secondaryTableAnnotations.next();	
 		assertEquals("BAR", secondaryTableResource.getName());
 		secondaryTableResource = (SecondaryTable) secondaryTableAnnotations.next();	
@@ -716,7 +715,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		IType jdtType = createTestEntityWithSecondaryTable();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 	
-		SingularAnnotation secondaryTableAnnotation = (SingularAnnotation) typeResource.annotation(JPA.SECONDARY_TABLE);
+		NestableAnnotation secondaryTableAnnotation = (NestableAnnotation) typeResource.annotation(JPA.SECONDARY_TABLE);
 		typeResource.removeAnnotation(secondaryTableAnnotation, JPA.SECONDARY_TABLES);
 		
 		assertSourceDoesNotContain("@SecondaryTable");
@@ -729,7 +728,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		IType jdtType = createTestEntityWithSecondaryTables();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 	
-		SingularAnnotation secondaryTableAnnotation = (SingularAnnotation) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
+		NestableAnnotation secondaryTableAnnotation = (NestableAnnotation) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
 		typeResource.removeAnnotation(secondaryTableAnnotation, JPA.SECONDARY_TABLES);
 		
 		assertSourceDoesNotContain("@SecondaryTable");
@@ -742,7 +741,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		IType jdtType = createTestEntityWith2SecondaryTables();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 	
-		SingularAnnotation secondaryTableAnnotation = (SingularAnnotation) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
+		NestableAnnotation secondaryTableAnnotation = (NestableAnnotation) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
 		typeResource.removeAnnotation(secondaryTableAnnotation, JPA.SECONDARY_TABLES);
 		
 		assertSourceDoesNotContain("@SecondaryTable(name=\"FOO\"");

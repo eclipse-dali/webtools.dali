@@ -24,7 +24,7 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 public abstract class AbstractJavaPersistentResource<E extends Member> extends AbstractResource<E> implements JavaPersistentResource
 {	
 	/**
-	 * stores all annotations except duplicates, java compiler has an error for duplicates
+	 * stores all annotations(non-mapping) except duplicates, java compiler has an error for duplicates
 	 */
 	private Collection<Annotation> annotations;
 	
@@ -46,7 +46,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	protected abstract Iterator<AnnotationProvider> annotationProviders();
 
 	public MappingAnnotationProvider mappingAnnotationProvider(String annotationName) {
-		for (Iterator<MappingAnnotationProvider> i = mappingAnnotationProviders(); i.hasNext(); ) {
+		for (ListIterator<MappingAnnotationProvider> i = mappingAnnotationProviders(); i.hasNext(); ) {
 			MappingAnnotationProvider provider = i.next();
 			if (provider.getAnnotationName().equals(annotationName)) {
 				return provider;
@@ -99,94 +99,111 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return annotation;
 	}
 
+	@SuppressWarnings("unchecked")
+	private ContainerAnnotation<NestableAnnotation> addContainerAnnotation(String containerAnnotationName) {
+		return (ContainerAnnotation<NestableAnnotation>) addAnnotation(containerAnnotationName);
+	}
 	
-	public Annotation addAnnotation(int index, String singularAnnotationName, String pluralAnnotationName) {
-		SingularAnnotation singularAnnotation = (SingularAnnotation) annotation(singularAnnotationName);
+	@SuppressWarnings("unchecked")
+	private ContainerAnnotation<NestableAnnotation> containerAnnotation(String containerAnnotationName) {
+		return (ContainerAnnotation<NestableAnnotation>) annotation(containerAnnotationName);
+	}
+	
+	private NestableAnnotation nestableAnnotation(String nestableAnnotationName) {
+		return (NestableAnnotation) annotation(nestableAnnotationName);
+	}
+	
+	private NestableAnnotation addNestableAnnotation(String nestableAnnotationName) {
+		return (NestableAnnotation) addAnnotation(nestableAnnotationName);
+	}
+	
+	public NestableAnnotation addAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
+		NestableAnnotation nestableAnnotation = (NestableAnnotation) annotation(nestableAnnotationName);
 		
-		PluralAnnotation<SingularAnnotation> pluralAnnotation = (PluralAnnotation<SingularAnnotation>) annotation(pluralAnnotationName);
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
 		
-		if (pluralAnnotation != null) {
-			//ignore any singularAnnotation and just add to the plural one
-			SingularAnnotation newSingularAnnotation = pluralAnnotation.add(index);
-			synchAnnotationsAfterAdd(index + 1, pluralAnnotation);
-			newSingularAnnotation.newAnnotation();
-			return newSingularAnnotation;
+		if (containerAnnotation != null) {
+			//ignore any nestableAnnotation and just add to the plural one
+			NestableAnnotation newNestableAnnotation = containerAnnotation.add(index);
+			synchAnnotationsAfterAdd(index + 1, containerAnnotation);
+			newNestableAnnotation.newAnnotation();
+			return newNestableAnnotation;
 		}
-		if (singularAnnotation == null) {
-			//add the singular since neither singular or plural exists
-			return addAnnotation(singularAnnotationName);
+		if (nestableAnnotation == null) {
+			//add the nestable since neither nestable or container exists
+			return addNestableAnnotation(nestableAnnotationName);
 		}
-		//move the singular to a new plural annotation and add to it
-		removeAnnotation(singularAnnotation);
-		PluralAnnotation<SingularAnnotation> newPluralAnnotation = (PluralAnnotation<SingularAnnotation>) addAnnotation(pluralAnnotationName);
-		SingularAnnotation newSingularAnnotation = newPluralAnnotation.add(0);
+		//move the nestable to a new container annotation and add to it
+		removeAnnotation(nestableAnnotation);
+		ContainerAnnotation<NestableAnnotation> newContainerAnnotation = addContainerAnnotation(containerAnnotationName);
+		NestableAnnotation newSingularAnnotation = newContainerAnnotation.add(0);
 		newSingularAnnotation.newAnnotation();
-		newSingularAnnotation.initializeFrom(singularAnnotation);
-		return newPluralAnnotation.add(newPluralAnnotation.singularAnnotationsSize());
+		newSingularAnnotation.initializeFrom(nestableAnnotation);
+		return newContainerAnnotation.add(newContainerAnnotation.nestedAnnotationsSize());
 	}
 	
 	/**
-	 * synchronize the annotations with the model singularTypeAnnotations,
+	 * synchronize the source annotations with the model nestableAnnotations,
 	 * starting at the end of the list to prevent overlap
 	 */
-	private void synchAnnotationsAfterAdd(int index, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
-		List<SingularAnnotation> singularAnnotations = CollectionTools.list(pluralAnnotation.singularAnnotations());
-		for (int i = singularAnnotations.size(); i-- > index;) {
-			this.synch(singularAnnotations.get(i), i);
+	private void synchAnnotationsAfterAdd(int index, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
+		List<NestableAnnotation> nestableAnnotations = CollectionTools.list(containerAnnotation.nestedAnnotations());
+		for (int i = nestableAnnotations.size(); i-- > index;) {
+			this.synch(nestableAnnotations.get(i), i);
 		}
 	}
 
 	/**
-	 * synchronize the annotations with the model singularTypeAnnotations,
+	 * synchronize the source annotations with the model nestableAnnotations,
 	 * starting at the specified index to prevent overlap
 	 */
-	private void synchAnnotationsAfterRemove(int index, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
-		List<SingularAnnotation> singularAnnotations = CollectionTools.list(pluralAnnotation.singularAnnotations());
-		for (int i = index; i < singularAnnotations.size(); i++) {
-			this.synch(singularAnnotations.get(i), i);
+	private void synchAnnotationsAfterRemove(int index, ContainerAnnotation<NestableAnnotation> pluralAnnotation) {
+		List<NestableAnnotation> nestableAnnotations = CollectionTools.list(pluralAnnotation.nestedAnnotations());
+		for (int i = index; i < nestableAnnotations.size(); i++) {
+			this.synch(nestableAnnotations.get(i), i);
 		}
 	}
 
-	private void synch(SingularAnnotation singularAnnotation, int index) {
-		singularAnnotation.moveAnnotation(index);
+	private void synch(NestableAnnotation nestableAnnotation, int index) {
+		nestableAnnotation.moveAnnotation(index);
 	}
 
-	public void move(int newIndex, SingularAnnotation singularAnnotation, String pluralAnnotationName) {
-		PluralAnnotation<SingularAnnotation> pluralAnnotation = (PluralAnnotation<SingularAnnotation>) annotation(pluralAnnotationName);
-		int oldIndex = pluralAnnotation.indexOf(singularAnnotation);
-		move(oldIndex, newIndex, pluralAnnotation);
+	public void move(int newIndex, NestableAnnotation nestedAnnotation, String containerAnnotationName) {
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
+		int oldIndex = containerAnnotation.indexOf(nestedAnnotation);
+		move(oldIndex, newIndex, containerAnnotation);
 	}
 	
-	public void move(int oldIndex, int newIndex, String pluralAnnotationName) {
-		PluralAnnotation<SingularAnnotation> pluralAnnotation = (PluralAnnotation<SingularAnnotation>) annotation(pluralAnnotationName);
-		move(oldIndex, newIndex, pluralAnnotation);
+	public void move(int oldIndex, int newIndex, String containerAnnotationName) {
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
+		move(oldIndex, newIndex, containerAnnotation);
 	}
 	
-	private void move(int sourceIndex, int targetIndex, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
-		pluralAnnotation.move(sourceIndex, targetIndex);
-		synchAnnotationsAfterMove(sourceIndex, targetIndex, pluralAnnotation);
+	private void move(int sourceIndex, int targetIndex, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
+		containerAnnotation.move(sourceIndex, targetIndex);
+		synchAnnotationsAfterMove(sourceIndex, targetIndex, containerAnnotation);
 	}
 	
 	/**
-	 * synchronize the annotations with the model singularTypeAnnotations
+	 * synchronize the annotations with the model nestableAnnotations
 	 */
-	private void synchAnnotationsAfterMove(int sourceIndex, int targetIndex, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
-		SingularAnnotation singularAnnotation = pluralAnnotation.singularAnnotationAt(targetIndex);
+	private void synchAnnotationsAfterMove(int sourceIndex, int targetIndex, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
+		NestableAnnotation nestableAnnotation = containerAnnotation.nestedAnnotationAt(targetIndex);
 		
-		this.synch(singularAnnotation, pluralAnnotation.singularAnnotationsSize());
+		this.synch(nestableAnnotation, containerAnnotation.nestedAnnotationsSize());
 		
-		List<SingularAnnotation> singularAnnotations = CollectionTools.list(pluralAnnotation.singularAnnotations());
+		List<NestableAnnotation> nestableAnnotations = CollectionTools.list(containerAnnotation.nestedAnnotations());
 		if (sourceIndex < targetIndex) {
 			for (int i = sourceIndex; i < targetIndex; i++) {
-				synch(singularAnnotations.get(i), i);
+				synch(nestableAnnotations.get(i), i);
 			}
 		}
 		else {
 			for (int i = sourceIndex; i > targetIndex; i-- ) {
-				synch(singularAnnotations.get(i), i);			
+				synch(nestableAnnotations.get(i), i);			
 			}
 		}
-		this.synch(singularAnnotation, targetIndex);
+		this.synch(nestableAnnotation, targetIndex);
 	}
 	
 	private void addAnnotation(Annotation annotation) {
@@ -196,19 +213,20 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	
 	private void removeAnnotation(Annotation annotation) {
 		this.annotations.remove(annotation);
-		//TODO looks odd that we remove the annotation here, but in addJavaTypeannotation(JavaTypeAnnotation) we don't do the same
+		//TODO looks odd that we remove the annotation here, but in addAnnotation(Annotation) we don't do the same
 		annotation.removeAnnotation();
 		//TODO event notification
 	}
 	
-	private void addMappingAnnotation(String annotation) {
-		if (mappingAnnotation(annotation) != null) {
+	private void addMappingAnnotation(String annotationName) {
+		if (mappingAnnotation(annotationName) != null) {
 			return;
 		}
-		MappingAnnotationProvider provider = mappingAnnotationProvider(annotation);
+		MappingAnnotationProvider provider = mappingAnnotationProvider(annotationName);
+		//jpaPlatform().buildMappingAnnotation(annotationName);
 		MappingAnnotation mappingAnnotation = provider.buildAnnotation(getMember(), jpaPlatform());
 		addMappingAnnotation(mappingAnnotation);
-		//TODO should this be done here or should creating the JavaTypeAnnotation do this??
+		//TODO should this be done here or should creating the Annotation do this??
 		mappingAnnotation.newAnnotation();
 	}
 	
@@ -228,41 +246,41 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return new CloneIterator<MappingAnnotation>(this.mappingAnnotations);
 	}
 
-	public void removeAnnotation(String typeAnnotationName) {
-		Annotation javaTypeAnnotation = annotation(typeAnnotationName);
-		if (javaTypeAnnotation != null) {
-			removeAnnotation(javaTypeAnnotation);
+	public void removeAnnotation(String annotationName) {
+		Annotation annotation = annotation(annotationName);
+		if (annotation != null) {
+			removeAnnotation(annotation);
 		}
 	}
 
-	public void removeAnnotation(SingularAnnotation singularAnnotation, String pluralAnnotationName) {
-		if (singularAnnotation == annotation(singularAnnotation.getAnnotationName())) {
-			removeAnnotation(singularAnnotation);
+	public void removeAnnotation(NestableAnnotation nestableAnnotation, String containerAnnotationName) {
+		if (nestableAnnotation == annotation(nestableAnnotation.getAnnotationName())) {
+			removeAnnotation(nestableAnnotation);
 		}
 		else {
-			PluralAnnotation<SingularAnnotation> pluralAnnotation = (PluralAnnotation) annotation(pluralAnnotationName);
-			removeAnnotation(pluralAnnotation.indexOf(singularAnnotation), pluralAnnotation);
+			ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
+			removeAnnotation(containerAnnotation.indexOf(nestableAnnotation), containerAnnotation);
 		}
 	}
 	
-	public void removeAnnotation(int index, String pluralAnnotationName) {
-		PluralAnnotation<SingularAnnotation> pluralAnnotation = (PluralAnnotation) annotation(pluralAnnotationName);
-		removeAnnotation(index, pluralAnnotation);
+	public void removeAnnotation(int index, String containerAnnotationName) {
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
+		removeAnnotation(index, containerAnnotation);
 	}
 	
-	public void removeAnnotation(int index, PluralAnnotation<SingularAnnotation> pluralAnnotation) {
-		SingularAnnotation singularAnnotation = pluralAnnotation.singularAnnotationAt(index);
-		pluralAnnotation.remove(index);
-		singularAnnotation.removeAnnotation();
-		synchAnnotationsAfterRemove(index, pluralAnnotation);
+	public void removeAnnotation(int index, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
+		NestableAnnotation nestableAnnotation = containerAnnotation.nestedAnnotationAt(index);
+		containerAnnotation.remove(index);
+		nestableAnnotation.removeAnnotation();
+		synchAnnotationsAfterRemove(index, containerAnnotation);
 		
-		if (pluralAnnotation.singularAnnotationsSize() == 0) {
-			removeAnnotation(pluralAnnotation);
+		if (containerAnnotation.nestedAnnotationsSize() == 0) {
+			removeAnnotation(containerAnnotation);
 		}
-		else if (pluralAnnotation.singularAnnotationsSize() == 1) {
-			SingularAnnotation nestedAnnotation = pluralAnnotation.singularAnnotationAt(0);
-			removeAnnotation(pluralAnnotation);
-			SingularAnnotation newAnnotation = (SingularAnnotation) addAnnotation(pluralAnnotation.getSingularAnnotationName());
+		else if (containerAnnotation.nestedAnnotationsSize() == 1) {
+			NestableAnnotation nestedAnnotation = containerAnnotation.nestedAnnotationAt(0);
+			removeAnnotation(containerAnnotation);
+			NestableAnnotation newAnnotation = (NestableAnnotation) addAnnotation(containerAnnotation.getNestableAnnotationName());
 			newAnnotation.initializeFrom(nestedAnnotation);
 		}
 	}
@@ -290,6 +308,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		MappingAnnotationProvider oldProvider = mappingAnnotationProvider(oldMappingAnnotation);
 		MappingAnnotationProvider newProvider = mappingAnnotationProvider(newMappingAnnotation);
 		
+		//TODO what about corresponding annotations for all other mapping types, those will stay??
 		Collection<String> annotationsToRemove = CollectionTools.collection(oldProvider.correspondingAnnotationNames());
 		CollectionTools.removeAll(annotationsToRemove, newProvider.correspondingAnnotationNames());
 		
@@ -325,12 +344,12 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return null;
 	}
 	
-	public ListIterator<Annotation> annotations(String singularAnnotation, String pluralAnnotationName) {
-		Annotation pluralAnnotation = annotation(pluralAnnotationName);
-		if (pluralAnnotation != null) {
-			return ((PluralAnnotation) pluralAnnotation).singularAnnotations();
+	public ListIterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
+		if (containerAnnotation != null) {
+			return containerAnnotation.nestedAnnotations();
 		}
-		return new SingleElementListIterator<Annotation>(annotation(singularAnnotation));
+		return new SingleElementListIterator<NestableAnnotation>(nestableAnnotation(nestableAnnotationName));
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
@@ -364,9 +383,9 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		}		
 	}	
 	
-	//searches through possible type mapping annotations and adds a JavaTypeMappingAnnotation to the model
+	//searches through possible mapping annotations and adds a MappingAnnotation to the model
 	//for each one found.  If we want to include duplicates we would need to instead look at 
-	//all the annotations on a Type.  Duplicates are handled by the compiler so there
+	//all the annotations on the Member (using a visitor).  Duplicates are handled by the compiler so there
 	//doesn't seem to be a reason to include them in our model
 	private void updateMappingAnnotations(CompilationUnit astRoot) {
 		for (Iterator<MappingAnnotationProvider> i = mappingAnnotationProviders(); i.hasNext(); ) {
@@ -405,5 +424,80 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 	
 	protected abstract boolean calculatePersistability(CompilationUnit astRoot);
+	
+	
+	
+	
+	
+//TODO should we use a visitor for finding all the annotations, or do it the way we currently do???	
+	
+//	private void updateJavaTypeAnnotations(CompilationUnit astRoot) {
+//		astRoot.accept(getJavaTypeAnnotationAstVisitor());
+//	}
+//
+//	private ASTVisitor typeVisitor;
+//
+//	private ASTVisitor getJavaTypeAnnotationAstVisitor() {
+//		if (this.typeVisitor == null) {
+//			this.typeVisitor =  new ASTVisitor() {
+////				@Override
+////				public boolean visit(TypeDeclaration node) {
+////					if (getMember().b.equals(node.)
+////					return super.visit(node);
+////				}
+//				@Override
+//				public boolean visit(SingleMemberAnnotation node) {
+//					return visit((org.eclipse.jdt.core.dom.Annotation) node);
+//				}
+//			
+//				@Override
+//				public boolean visit(NormalAnnotation node) {
+//					return visit((org.eclipse.jdt.core.dom.Annotation) node);
+//				}
+//			
+//				@Override
+//				public boolean visit(MarkerAnnotation node) {
+//					return visit((org.eclipse.jdt.core.dom.Annotation) node);
+//				}
+//				
+//				private boolean visit(org.eclipse.jdt.core.dom.Annotation node) {
+//					if (node.getParent().getNodeType() != ASTNode.TYPE_DECLARATION) {
+//						return false;
+//					}
+//					String qualifiedAnnotationName = qualifiedAnnotationName(node);
+//					if (qualifiedAnnotationName == null) {
+//						return false;
+//					}
+//					AnnotationProvider provider = annotationProvider(qualifiedAnnotationName);
+//					if (provider != null) {
+//						Annotation annotation = annotation(qualifiedAnnotationName);
+//						if (annotation == null) {
+//							annotation = provider.buildAnnotation(getMember(), jpaPlatform());
+//							addAnnotation(annotation);				
+//						}
+//						//TODO is it a bad idea to cast here??
+//						annotation.updateFromJava((CompilationUnit) node.getRoot());
+//					}
+//					return false;
+//				}
+//			};
+//		}
+//		return this.typeVisitor;
+//	}
+//
+//	
+//	private static String qualifiedAnnotationName(org.eclipse.jdt.core.dom.Annotation node) {
+//		IAnnotationBinding annotationBinding = node.resolveAnnotationBinding();
+//		if (annotationBinding == null) {
+//			return null;
+//		}
+//		ITypeBinding annotationTypeBinding = annotationBinding.getAnnotationType();
+//		if (annotationTypeBinding == null) {
+//			return null;
+//		}
+//		return annotationTypeBinding.getQualifiedName();
+//	}
+	
+	
 	
 }
