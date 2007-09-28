@@ -12,47 +12,40 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaOneToOneProvider implements MappingAnnotationProvider
+public class ManyToManyAnnotationDefinition implements MappingAnnotationDefinition
 {
 	// singleton
-	private static final JavaOneToOneProvider INSTANCE = new JavaOneToOneProvider();
+	private static final ManyToManyAnnotationDefinition INSTANCE = new ManyToManyAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaOneToOneProvider instance() {
+	public static ManyToManyAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaOneToOneProvider() {
+	private ManyToManyAnnotationDefinition() {
 		super();
 	}
 
-	public OneToOne buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new OneToOneImpl((Attribute) member, jpaPlatform);
+	public ManyToMany buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
+		return new ManyToManyImpl((Attribute) member, jpaPlatform);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {
 		return new ArrayIterator<String>(
-			JPA.PRIMARY_KEY_JOIN_COLUMN,
-			JPA.PRIMARY_KEY_JOIN_COLUMNS,
-			JPA.JOIN_COLUMN,
-			JPA.JOIN_COLUMNS,
+			JPA.ORDER_BY,
+			JPA.MAP_KEY,
 			JPA.JOIN_TABLE);
 	}
 
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return OneToOne.DECLARATION_ANNOTATION_ADAPTER;
-	}
-
 	public String getAnnotationName() {
-		return JPA.ONE_TO_ONE;
+		return JPA.MANY_TO_MANY;
 	}
 }

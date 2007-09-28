@@ -10,19 +10,26 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
-public interface AnnotationProvider
+/**
+ * Used for building new Annotations. 
+ * These should be used to define non-mapping annotations.  If you
+ * want to provide new AnnotationDefinitions you will need
+ * to create a new JpaPlatform by extending BaseJpaPlatform.
+ * 
+ * @see MappingAnnotation
+ * @see BaseJpaPlatform
+ */
+public interface AnnotationDefinition
 {
 	/**
 	 * Return the fully qualified annotation name
 	 */
 	String getAnnotationName();
 	
-	//TODO I don't really like that this is api.  If we used a visitor for discovering annotations, we could remove this
-	//     see AbstractJavaPersistentResource.updateAnnotations
-	DeclarationAnnotationAdapter getDeclarationAnnotationAdapter();
-	
+	/**
+	 * Build and return an Annotation given the Member
+	 */
 	Annotation buildAnnotation(Member member, IJpaPlatform jpaPlatform);
 }

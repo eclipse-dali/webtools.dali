@@ -10,25 +10,24 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
-public class JavaTableProvider implements AnnotationProvider
+public class TableAnnotationDefinition implements AnnotationDefinition
 {
 	// singleton
-	private static final JavaTableProvider INSTANCE = new JavaTableProvider();
+	private static final TableAnnotationDefinition INSTANCE = new TableAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static AnnotationProvider instance() {
+	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaTableProvider() {
+	private TableAnnotationDefinition() {
 		super();
 	}
 
@@ -39,9 +38,5 @@ public class JavaTableProvider implements AnnotationProvider
 
 	public String getAnnotationName() {
 		return JPA.TABLE;
-	}
-
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return TableImpl.DECLARATION_ANNOTATION_ADAPTER;
 	}
 }

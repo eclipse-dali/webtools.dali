@@ -11,27 +11,26 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
-public class JavaEmbeddableProvider implements MappingAnnotationProvider
+public class EmbeddableAnnotationDefinition implements MappingAnnotationDefinition
 {
 	// singleton
-	private static final JavaEmbeddableProvider INSTANCE = new JavaEmbeddableProvider();
+	private static final EmbeddableAnnotationDefinition INSTANCE = new EmbeddableAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaEmbeddableProvider instance() {
+	public static EmbeddableAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaEmbeddableProvider() {
+	private EmbeddableAnnotationDefinition() {
 		super();
 	}
 
@@ -42,11 +41,6 @@ public class JavaEmbeddableProvider implements MappingAnnotationProvider
 	public Iterator<String> correspondingAnnotationNames() {
 		return EmptyIterator.instance();
 	}
-
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return Embeddable.DECLARATION_ANNOTATION_ADAPTER;
-	}
-
 	public String getAnnotationName() {
 		return JPA.EMBEDDABLE;
 	}

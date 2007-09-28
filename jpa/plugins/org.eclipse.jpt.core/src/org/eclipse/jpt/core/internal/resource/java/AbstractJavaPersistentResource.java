@@ -15,7 +15,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.IAnnotationBinding;
+import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.MarkerAnnotation;
+import org.eclipse.jdt.core.dom.NormalAnnotation;
+import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -35,36 +41,26 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	private Collection<MappingAnnotation> mappingAnnotations;
 	
 	private boolean persistable;
-	
+
 	public AbstractJavaPersistentResource(E member, IJpaPlatform jpaPlatform){
 		super(member, jpaPlatform);
 		this.annotations = new ArrayList<Annotation>();
 		this.mappingAnnotations = new ArrayList<MappingAnnotation>();
 	}
 
-	protected abstract ListIterator<MappingAnnotationProvider> mappingAnnotationProviders();
+	protected abstract Annotation buildAnnotation(String annotationName);
 	
-	protected abstract Iterator<AnnotationProvider> annotationProviders();
+	protected abstract MappingAnnotation buildMappingAnnotation(String mappingAnnotationName);
+	
+	protected abstract Iterator<String> correspondingAnnotationNames(String mappingAnnotationName);
+	
+	protected abstract ListIterator<String> possibleMappingAnnotationNames();
 
-	public MappingAnnotationProvider mappingAnnotationProvider(String annotationName) {
-		for (ListIterator<MappingAnnotationProvider> i = mappingAnnotationProviders(); i.hasNext(); ) {
-			MappingAnnotationProvider provider = i.next();
-			if (provider.getAnnotationName().equals(annotationName)) {
-				return provider;
-			}
-		}
-		throw new IllegalArgumentException(annotationName + " is an unsupported mapping annotation");
-	}
-
-	public AnnotationProvider annotationProvider(String annotationName) {
-		for (Iterator<AnnotationProvider> i = annotationProviders(); i.hasNext(); ) {
-			AnnotationProvider provider = i.next();
-			if (provider.getAnnotationName().equals(annotationName)) {
-				return provider;
-			}
-		}
-		return null;
-	}
+	protected abstract boolean isPossibleAnnotation(String annotationName);
+	
+	protected abstract boolean isPossibleMappingAnnotation(String annotationName);
+	
+	protected abstract boolean calculatePersistability(CompilationUnit astRoot);
 
 	public Annotation annotation(String annotationName) {
 		for (Iterator<Annotation> i = annotations(); i.hasNext(); ) {
@@ -92,8 +88,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 
 	public Annotation addAnnotation(String annotationName) {
-		AnnotationProvider provider = annotationProvider(annotationName);
-		Annotation annotation = provider.buildAnnotation(getMember(), jpaPlatform());
+		Annotation annotation = buildAnnotation(annotationName);
 		addAnnotation(annotation);		
 		annotation.newAnnotation();
 		
@@ -219,13 +214,11 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		//TODO event notification
 	}
 	
-	private void addMappingAnnotation(String annotationName) {
-		if (mappingAnnotation(annotationName) != null) {
+	private void addMappingAnnotation(String mappingAnnotationName) {
+		if (mappingAnnotation(mappingAnnotationName) != null) {
 			return;
 		}
-		MappingAnnotationProvider provider = mappingAnnotationProvider(annotationName);
-		//jpaPlatform().buildMappingAnnotation(annotationName);
-		MappingAnnotation mappingAnnotation = provider.buildAnnotation(getMember(), jpaPlatform());
+		MappingAnnotation mappingAnnotation = buildMappingAnnotation(mappingAnnotationName);
 		addMappingAnnotation(mappingAnnotation);
 		//TODO should this be done here or should creating the Annotation do this??
 		mappingAnnotation.newAnnotation();
@@ -305,22 +298,18 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	 * removes annotations that applied to the old mapping annotation, but not to the new mapping annotation.
 	 * also remove all mapping annotations that already exist
 	 */
-	private void removeUnnecessaryAnnotations(String oldMappingAnnotation, String newMappingAnnotation) {
-		MappingAnnotationProvider oldProvider = mappingAnnotationProvider(oldMappingAnnotation);
-		MappingAnnotationProvider newProvider = mappingAnnotationProvider(newMappingAnnotation);
-		
+	private void removeUnnecessaryAnnotations(String oldMappingAnnotationName, String newMappingAnnotationName) {		
 		//TODO what about corresponding annotations for all other mapping types, those will stay??
-		Collection<String> annotationsToRemove = CollectionTools.collection(oldProvider.correspondingAnnotationNames());
-		CollectionTools.removeAll(annotationsToRemove, newProvider.correspondingAnnotationNames());
+		Collection<String> annotationsToRemove = CollectionTools.collection(correspondingAnnotationNames(oldMappingAnnotationName));
+		CollectionTools.removeAll(annotationsToRemove, correspondingAnnotationNames(newMappingAnnotationName));
 		
 		for (String annotationName : annotationsToRemove) {
 			removeAnnotation(annotationName);
 		}
 		
-		for (ListIterator<MappingAnnotationProvider> i = mappingAnnotationProviders(); i.hasNext(); ) {
-			MappingAnnotationProvider provider = i.next();
-			String mappingAnnotationName = provider.getAnnotationName();
-			if (mappingAnnotationName != newMappingAnnotation) {
+		for (ListIterator<String> i = possibleMappingAnnotationNames(); i.hasNext(); ) {
+			String mappingAnnotationName = i.next();
+			if (mappingAnnotationName != newMappingAnnotationName) {
 				MappingAnnotation mappingAnnotation = mappingAnnotation(mappingAnnotationName);
 				if (mappingAnnotation != null) {
 					removeMappingAnnotation(mappingAnnotation);
@@ -333,11 +322,11 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	//from the context model we don't really care if their are multiple mapping annotations,
 	//just which one we need to use
 	public MappingAnnotation mappingAnnotation() {
-		for (ListIterator<MappingAnnotationProvider> i = mappingAnnotationProviders(); i.hasNext(); ) {
-			MappingAnnotationProvider provider = i.next();
+		for (ListIterator<String> i = possibleMappingAnnotationNames(); i.hasNext(); ) {
+			String mappingAnnotationName = i.next();
 			for (Iterator<MappingAnnotation> j = mappingAnnotations(); j.hasNext(); ) {
 				MappingAnnotation mappingAnnotation = j.next();
-				if (provider.getAnnotationName() == mappingAnnotation.getAnnotationName()) {
+				if (mappingAnnotationName == mappingAnnotation.getAnnotationName()) {
 					return mappingAnnotation;
 				}
 			}
@@ -355,58 +344,95 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	
 	public void updateFromJava(CompilationUnit astRoot) {
 		updateAnnotations(astRoot);
-		updateMappingAnnotations(astRoot);
 		setPersistable(calculatePersistability(astRoot));
 	}
-		
-	//searches through possible type annotations and adds a JavaTypeAnnotation to the model
-	//for each one found.  If we want to include duplicates we would need to instead look at 
-	//all the annotations on a Type.  Duplicates are handled by the compiler so there
-	//doesn't seem to be a reason to include them in our model
+	
 	private void updateAnnotations(CompilationUnit astRoot) {
-		for (Iterator<AnnotationProvider> i = annotationProviders(); i.hasNext(); ) {
-			AnnotationProvider provider = i.next();
-			if (getMember().containsAnnotation(provider.getDeclarationAnnotationAdapter(), astRoot)) {
-				Annotation annotation = annotation(provider.getAnnotationName());
-				if (annotation == null) {
-					annotation = provider.buildAnnotation(getMember(), jpaPlatform());
-					addAnnotation(annotation);
-				}
-				annotation.updateFromJava(astRoot);
-			}
-		}
-		
-		for (Iterator<Annotation> i = annotations(); i.hasNext(); ) {
-			Annotation annotation = i.next();
+		getMember().bodyDeclaration(astRoot).accept(javaMemberAnnotationAstVisitor(astRoot));
+		removeAnnotationsNotInSource(astRoot);
+		removeMappingAnnotationsNotInSource(astRoot);
+	}
+	
+	private void removeAnnotationsNotInSource(CompilationUnit astRoot) {
+		for (Annotation annotation : CollectionTools.iterable(annotations())) {
 			if (!getMember().containsAnnotation(annotation.getDeclarationAnnotationAdapter(), astRoot)) {
 				removeAnnotation(annotation);
 			}
 		}		
-	}	
+	}
 	
-	//searches through possible mapping annotations and adds a MappingAnnotation to the model
-	//for each one found.  If we want to include duplicates we would need to instead look at 
-	//all the annotations on the Member (using a visitor).  Duplicates are handled by the compiler so there
-	//doesn't seem to be a reason to include them in our model
-	private void updateMappingAnnotations(CompilationUnit astRoot) {
-		for (Iterator<MappingAnnotationProvider> i = mappingAnnotationProviders(); i.hasNext(); ) {
-			MappingAnnotationProvider provider = i.next();
-			if (getMember().containsAnnotation(provider.getDeclarationAnnotationAdapter(), astRoot)) {
-				MappingAnnotation mappingAnnotation = mappingAnnotation(provider.getAnnotationName());
-				if (mappingAnnotation == null) {
-					mappingAnnotation = provider.buildAnnotation(getMember(), jpaPlatform());
-					addMappingAnnotation(mappingAnnotation);
-				}
-				mappingAnnotation.updateFromJava(astRoot);
-			}
-		}
-		
-		for (Iterator<MappingAnnotation> i = mappingAnnotations(); i.hasNext(); ) {
-			MappingAnnotation mappingAnnotation = i.next();
+	private void removeMappingAnnotationsNotInSource(CompilationUnit astRoot) {
+		for (MappingAnnotation mappingAnnotation : CollectionTools.iterable(mappingAnnotations())) {
 			if (!getMember().containsAnnotation(mappingAnnotation.getDeclarationAnnotationAdapter(), astRoot)) {
 				removeMappingAnnotation(mappingAnnotation);
 			}
+		}	
+	}
+	
+	private ASTVisitor javaMemberAnnotationAstVisitor(final CompilationUnit astRoot) {
+		return new ASTVisitor() {
+			@Override
+			public boolean visit(SingleMemberAnnotation node) {
+				return visit((org.eclipse.jdt.core.dom.Annotation) node);
+			}
+		
+			@Override
+			public boolean visit(NormalAnnotation node) {
+				return visit((org.eclipse.jdt.core.dom.Annotation) node);
+			}
+		
+			@Override
+			public boolean visit(MarkerAnnotation node) {
+				return visit((org.eclipse.jdt.core.dom.Annotation) node);
+			}
+			
+			private boolean visit(org.eclipse.jdt.core.dom.Annotation node) {
+				if (node.getParent() != getMember().bodyDeclaration(astRoot)) {
+					//we don't want to look at annotations for child members, only this member
+					return false;
+				}
+				addAnnotation(node);
+				return false;
+			}
+		};
+	}
+	
+	protected void addAnnotation(org.eclipse.jdt.core.dom.Annotation node) {
+		String qualifiedAnnotationName = qualifiedAnnotationName(node);
+		if (qualifiedAnnotationName == null) {
+			return;
 		}
+		Annotation annotation = null;
+		if (isPossibleAnnotation(qualifiedAnnotationName)) {
+			annotation = annotation(qualifiedAnnotationName);
+			if (annotation == null) {
+				annotation = buildAnnotation(qualifiedAnnotationName);
+				addAnnotation(annotation);				
+			}
+		}
+		else if (isPossibleMappingAnnotation(qualifiedAnnotationName)) {
+			annotation = mappingAnnotation(qualifiedAnnotationName);
+			if (annotation == null) {
+				annotation = buildMappingAnnotation(qualifiedAnnotationName);
+				addMappingAnnotation((MappingAnnotation) annotation);				
+			}
+		}
+		if (annotation != null) {
+			//would be null in the case of a non JPA annotation
+			annotation.updateFromJava((CompilationUnit) node.getRoot());
+		}
+	}
+	
+	private static String qualifiedAnnotationName(org.eclipse.jdt.core.dom.Annotation node) {
+		IAnnotationBinding annotationBinding = node.resolveAnnotationBinding();
+		if (annotationBinding == null) {
+			return null;
+		}
+		ITypeBinding annotationTypeBinding = annotationBinding.getAnnotationType();
+		if (annotationTypeBinding == null) {
+			return null;
+		}
+		return annotationTypeBinding.getQualifiedName();
 	}
 	
 	public boolean isFor(IMember member) {
@@ -423,82 +449,4 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		//that the list of persistable fields has been updated
 		//
 	}
-	
-	protected abstract boolean calculatePersistability(CompilationUnit astRoot);
-	
-	
-	
-	
-	
-//TODO should we use a visitor for finding all the annotations, or do it the way we currently do???	
-	
-//	private void updateJavaTypeAnnotations(CompilationUnit astRoot) {
-//		astRoot.accept(getJavaTypeAnnotationAstVisitor());
-//	}
-//
-//	private ASTVisitor typeVisitor;
-//
-//	private ASTVisitor getJavaTypeAnnotationAstVisitor() {
-//		if (this.typeVisitor == null) {
-//			this.typeVisitor =  new ASTVisitor() {
-////				@Override
-////				public boolean visit(TypeDeclaration node) {
-////					if (getMember().b.equals(node.)
-////					return super.visit(node);
-////				}
-//				@Override
-//				public boolean visit(SingleMemberAnnotation node) {
-//					return visit((org.eclipse.jdt.core.dom.Annotation) node);
-//				}
-//			
-//				@Override
-//				public boolean visit(NormalAnnotation node) {
-//					return visit((org.eclipse.jdt.core.dom.Annotation) node);
-//				}
-//			
-//				@Override
-//				public boolean visit(MarkerAnnotation node) {
-//					return visit((org.eclipse.jdt.core.dom.Annotation) node);
-//				}
-//				
-//				private boolean visit(org.eclipse.jdt.core.dom.Annotation node) {
-//					if (node.getParent().getNodeType() != ASTNode.TYPE_DECLARATION) {
-//						return false;
-//					}
-//					String qualifiedAnnotationName = qualifiedAnnotationName(node);
-//					if (qualifiedAnnotationName == null) {
-//						return false;
-//					}
-//					AnnotationProvider provider = annotationProvider(qualifiedAnnotationName);
-//					if (provider != null) {
-//						Annotation annotation = annotation(qualifiedAnnotationName);
-//						if (annotation == null) {
-//							annotation = provider.buildAnnotation(getMember(), jpaPlatform());
-//							addAnnotation(annotation);				
-//						}
-//						//TODO is it a bad idea to cast here??
-//						annotation.updateFromJava((CompilationUnit) node.getRoot());
-//					}
-//					return false;
-//				}
-//			};
-//		}
-//		return this.typeVisitor;
-//	}
-//
-//	
-//	private static String qualifiedAnnotationName(org.eclipse.jdt.core.dom.Annotation node) {
-//		IAnnotationBinding annotationBinding = node.resolveAnnotationBinding();
-//		if (annotationBinding == null) {
-//			return null;
-//		}
-//		ITypeBinding annotationTypeBinding = annotationBinding.getAnnotationType();
-//		if (annotationTypeBinding == null) {
-//			return null;
-//		}
-//		return annotationTypeBinding.getQualifiedName();
-//	}
-	
-	
-	
 }

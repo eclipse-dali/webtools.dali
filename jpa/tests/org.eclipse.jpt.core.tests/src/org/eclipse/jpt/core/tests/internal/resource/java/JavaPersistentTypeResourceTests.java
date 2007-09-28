@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.internal.resource.java.Embeddable;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclass;
@@ -59,6 +60,50 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		});
 	}
 	
+	private IType createTestInvalidAnnotations() throws Exception {
+		this.createAnnotationAndMembers("Foo", "String name();");
+
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>("javax.persistence.Foo");
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Foo");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@Foo");
+			}
+		});
+	}
+
+	private IType createTestEntityWithMemberEmbeddable() throws Exception {
+		this.createAnnotationAndMembers("Entity", "String name();");
+		this.createAnnotationAndMembers("Embeddable", "String name();");
+
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.EMBEDDABLE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendMemberTypeTo(StringBuffer sb) {
+				sb.append("     @Embeddable");
+				sb.append(CR);
+				sb.append("     public static class Foo { }").append(CR);
+
+			}
+		});
+	}
+
 	private IType createTestEntityDuplicates() throws Exception {
 		this.createAnnotationAndMembers("Entity", "String name();");
 
@@ -583,7 +628,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		this.createAnnotationAndMembers("Embeddable", "String name();");
 		jdtType.getCompilationUnit().createImport("javax.persistence.Embeddable", null, new NullProgressMonitor());
 		
-		testType().newMarkerAnnotation(((JavaPersistentTypeResourceImpl) typeResource).mappingAnnotationProvider(JPA.EMBEDDABLE).getDeclarationAnnotationAdapter());
+		testType().newMarkerAnnotation(Embeddable.DECLARATION_ANNOTATION_ADAPTER);
 		
 		typeResource.updateFromJava(JDTTools.buildASTRoot(jdtType));
 		
@@ -910,6 +955,28 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
 		
 		assertTrue(persistentType.isPersistable());
+	}
+	
+	public void testAnnotatedMemberType() throws Exception {
+		IType testType = this.createTestEntityWithMemberEmbeddable();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		assertNotNull(typeResource.mappingAnnotation(JPA.ENTITY));
+		assertNull(typeResource.mappingAnnotation(JPA.EMBEDDABLE));
+		
+		JavaPersistentTypeResource nestedType = typeResource.nestedTypes().next();
+		assertNull(nestedType.mappingAnnotation(JPA.ENTITY));
+		assertNotNull(nestedType.mappingAnnotation(JPA.EMBEDDABLE));	
+	}
+	
+	public void testInvalidAnnotations() throws Exception {
+		IType testType = this.createTestInvalidAnnotations();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		assertEquals(0, CollectionTools.size(typeResource.mappingAnnotations()));
+		assertEquals(0, CollectionTools.size(typeResource.annotations()));
+		
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		assertEquals(0, CollectionTools.size(attributeResource.mappingAnnotations()));
+		assertEquals(0, CollectionTools.size(attributeResource.annotations()));
 	}
 
 }

@@ -12,44 +12,42 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaEmbeddedProvider implements MappingAnnotationProvider
+public class OneToOneAnnotationDefinition implements MappingAnnotationDefinition
 {
 	// singleton
-	private static final JavaEmbeddedProvider INSTANCE = new JavaEmbeddedProvider();
+	private static final OneToOneAnnotationDefinition INSTANCE = new OneToOneAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaEmbeddedProvider instance() {
+	public static OneToOneAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaEmbeddedProvider() {
+	private OneToOneAnnotationDefinition() {
 		super();
 	}
 
-	public Embedded buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new EmbeddedImpl((Attribute) member, jpaPlatform);
+	public OneToOne buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
+		return new OneToOneImpl((Attribute) member, jpaPlatform);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {
 		return new ArrayIterator<String>(
-			JPA.ATTRIBUTE_OVERRIDE,
-			JPA.ATTRIBUTE_OVERRIDES);
-	}
-
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return Embedded.DECLARATION_ANNOTATION_ADAPTER;
+			JPA.PRIMARY_KEY_JOIN_COLUMN,
+			JPA.PRIMARY_KEY_JOIN_COLUMNS,
+			JPA.JOIN_COLUMN,
+			JPA.JOIN_COLUMNS,
+			JPA.JOIN_TABLE);
 	}
 
 	public String getAnnotationName() {
-		return JPA.EMBEDDED;
+		return JPA.ONE_TO_ONE;
 	}
 }

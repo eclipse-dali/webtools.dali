@@ -22,11 +22,11 @@ import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.Id;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.OneToMany;
+import org.eclipse.jpt.core.internal.resource.java.OneToOne;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -127,6 +127,7 @@ public class JavaPersistentAttributeResourceTests extends AnnotationTestCase {
 	private IType createTestEntityAnnotatedField() throws Exception {
 		this.createAnnotationAndMembers("Entity", "String name();");
 		this.createAnnotationAndMembers("Column", "String name();");
+		this.createAnnotationAndMembers("Id", "String name();");
 	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -494,7 +495,7 @@ public class JavaPersistentAttributeResourceTests extends AnnotationTestCase {
 	
 	
 	//update source code to change from @Id to @OneToOne and make sure @Column is not removed
-	public void testChangeTypeMappingInSource() throws Exception {
+	public void testChangeAttributeMappingInSource() throws Exception {
 		IType jdtType = createTestEntityAnnotatedField();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
@@ -504,7 +505,7 @@ public class JavaPersistentAttributeResourceTests extends AnnotationTestCase {
 		this.createAnnotationAndMembers("OneToOne", "");
 		jdtType.getCompilationUnit().createImport("javax.persistence.OneToOne", null, new NullProgressMonitor());
 		
-		idField().newMarkerAnnotation(((JavaPersistentAttributeResourceImpl) attributeResource).mappingAnnotationProvider(JPA.ONE_TO_ONE).getDeclarationAnnotationAdapter());
+		idField().newMarkerAnnotation(OneToOne.DECLARATION_ANNOTATION_ADAPTER);
 		
 		typeResource.updateFromJava(JDTTools.buildASTRoot(jdtType));
 		

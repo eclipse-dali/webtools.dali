@@ -12,46 +12,39 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaBasicProvider implements MappingAnnotationProvider
+public class VersionAnnotationDefinition implements MappingAnnotationDefinition
 {
 	// singleton
-	private static final JavaBasicProvider INSTANCE = new JavaBasicProvider();
+	private static final VersionAnnotationDefinition INSTANCE = new VersionAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaBasicProvider instance() {
+	public static VersionAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaBasicProvider() {
+	private VersionAnnotationDefinition() {
 		super();
 	}
 
-	public Basic buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new BasicImpl((Attribute) member, jpaPlatform);
+	public Version buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
+		return new VersionImpl((Attribute) member, jpaPlatform);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {
 		return new ArrayIterator<String>(
 			JPA.COLUMN,
-			JPA.LOB,
-			JPA.TEMPORAL,
-			JPA.ENUMERATED);
-	}
-
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return Basic.DECLARATION_ANNOTATION_ADAPTER;
+			JPA.TEMPORAL);
 	}
 
 	public String getAnnotationName() {
-		return JPA.BASIC;
+		return JPA.VERSION;
 	}
 }

@@ -51,15 +51,44 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		this.attributes = new ArrayList<JavaPersistentAttributeResource>();
 	}
 
+	// ******** AbstractJavaPersistentResource implementation ********
+
 	@Override
-	protected ListIterator<MappingAnnotationProvider> mappingAnnotationProviders() {
-		return jpaPlatform().javaTypeMappingAnnotationProviders();
+	protected MappingAnnotation buildMappingAnnotation(String mappingAnnotationName) {
+		return jpaPlatform().buildTypeMappingAnnotation(getMember(), mappingAnnotationName);
+	}
+
+	@Override
+	protected Annotation buildAnnotation(String annotationName) {
+		return jpaPlatform().buildTypeAnnotation(getMember(), annotationName);
+	}
+		
+	@Override
+	protected Iterator<String> correspondingAnnotationNames(String mappingAnnotationName) {
+		return jpaPlatform().correspondingTypeAnnotationNames(mappingAnnotationName);
 	}
 	
 	@Override
-	protected Iterator<AnnotationProvider> annotationProviders() {
-		return jpaPlatform().javaTypeAnnotationProviders();
+	protected ListIterator<String> possibleMappingAnnotationNames() {
+		return jpaPlatform().typeMappingAnnotationNames();
 	}
+	
+	@Override
+	protected boolean isPossibleAnnotation(String annotationName) {
+		return CollectionTools.contains(jpaPlatform().typeAnnotationNames(), annotationName);
+	}
+	
+	@Override
+	protected boolean isPossibleMappingAnnotation(String annotationName) {
+		return CollectionTools.contains(jpaPlatform().typeMappingAnnotationNames(), annotationName);
+	}
+	
+	@Override
+	protected boolean calculatePersistability(CompilationUnit astRoot) {
+		return JPTTools.typeIsPersistable(getMember().binding(astRoot));
+	}
+
+	// ******** JavaPersistentTypeResource implementation ********
 	
 	public Iterator<JavaPersistentTypeResource> nestedTypes() {
 		//TODO since we are filtering how do we handle the case where a type becomes persistable?
@@ -315,9 +344,5 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		return superClassTypeBinding.getQualifiedName();
 	}
 	
-	@Override
-	protected boolean calculatePersistability(CompilationUnit astRoot) {
-		return JPTTools.typeIsPersistable(getMember().binding(astRoot));
-	}
 
 }

@@ -11,46 +11,49 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaManyToOneProvider implements MappingAnnotationProvider
+public class MappedSuperclassAnnotationDefinition implements MappingAnnotationDefinition
 {
 	// singleton
-	private static final JavaManyToOneProvider INSTANCE = new JavaManyToOneProvider();
+	private static final MappedSuperclassAnnotationDefinition INSTANCE = new MappedSuperclassAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaManyToOneProvider instance() {
+	public static MappingAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaManyToOneProvider() {
+	private MappedSuperclassAnnotationDefinition() {
 		super();
 	}
 
-	public ManyToOne buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new ManyToOneImpl((Attribute) member, jpaPlatform);
+	public MappedSuperclass buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
+		return new MappedSuperclassImpl((Type) member, jpaPlatform);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {
 		return new ArrayIterator<String>(
-			JPA.JOIN_COLUMN,
-			JPA.JOIN_COLUMNS,
-			JPA.JOIN_TABLE);
-	}
-
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return ManyToOne.DECLARATION_ANNOTATION_ADAPTER;
+			JPA.ID_CLASS,
+			JPA.EXCLUDE_DEFAULT_LISTENERS,
+			JPA.EXCLUDE_SUPERCLASS_LISTENERS,
+			JPA.ENTITY_LISTENERS,
+			JPA.PRE_PERSIST,
+			JPA.POST_PERSIST,
+			JPA.PRE_REMOVE,
+			JPA.POST_REMOVE,
+			JPA.PRE_UPDATE,
+			JPA.POST_UPDATE,
+			JPA.POST_LOAD);
 	}
 
 	public String getAnnotationName() {
-		return JPA.MANY_TO_ONE;
+		return JPA.MAPPED_SUPERCLASS;
 	}
 }

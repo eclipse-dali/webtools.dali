@@ -9,40 +9,40 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
-public class JavaColumnProvider implements AnnotationProvider
+public class TransientAnnotationDefinition implements MappingAnnotationDefinition
 {
 	// singleton
-	private static final JavaColumnProvider INSTANCE = new JavaColumnProvider();
+	private static final TransientAnnotationDefinition INSTANCE = new TransientAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static AnnotationProvider instance() {
+	public static TransientAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaColumnProvider() {
+	private TransientAnnotationDefinition() {
 		super();
 	}
 
+	public Transient buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
+		return new TransientImpl((Attribute) member, jpaPlatform);
+	}
 
-	public Column buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new ColumnImpl((Attribute) member, jpaPlatform);
+	public Iterator<String> correspondingAnnotationNames() {
+		return EmptyIterator.instance();
 	}
 
 	public String getAnnotationName() {
-		return JPA.COLUMN;
-	}
-
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return Column.DECLARATION_ANNOTATION_ADAPTER;
+		return JPA.TRANSIENT;
 	}
 }

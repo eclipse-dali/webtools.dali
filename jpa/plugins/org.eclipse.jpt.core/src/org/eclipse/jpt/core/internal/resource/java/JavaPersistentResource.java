@@ -25,9 +25,10 @@ public interface JavaPersistentResource extends JavaResource
 	Iterator<MappingAnnotation> mappingAnnotations();
 	
 	/**
-	 * Return the <code>MappingAnnotation</code> specified on this JavaPersistentTypeResource
-	 * In the case of multiples the first one will be returned as defined by the order of 
-	 * {@link JpaPlatform#javaTypeMappingAnnotationProviders()}
+	 * Return the <code>MappingAnnotation</code> specified on this JavaPersistentResource
+	 * In the case of multiples the first one will be returned as defined by the order of
+	 * {@link BaseJpaPlatform#typeMappingAnnotationDefinitions()} or 
+	 * {@link BaseJpaPlatform#attributeMappingAnnotationDefinitions()}
 	 * @return
 	 */
 	MappingAnnotation mappingAnnotation();
@@ -48,7 +49,7 @@ public interface JavaPersistentResource extends JavaResource
 	 * remove all annotations that applied to the previous type mapping annotation
 	 * but do not apply to the new mapping annotation.  Will also remove
 	 * all other type mapping annotations in case there were multiple before.
-	 * @see MappingAnnotationProvider#correspondingAnnotationNames()
+	 * @see MappingAnnotationDefinition#correspondingAnnotationNames()
 	 * @param annotationName - fully qualified annotation name
 	 */
 	void setMappingAnnotation(String annotationName);

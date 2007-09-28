@@ -24,11 +24,11 @@ public class JavaPersistentAttributeResourceImpl
 	implements JavaPersistentAttributeResource
 {
 
-	private String typeName;
-	
-	private String typeNameInContainer;
-	
-	private boolean typeIsArray;
+//	private String typeName;
+//	
+//	private String typeNameInContainer;
+//	
+//	private boolean typeIsArray;
 	
 	public JavaPersistentAttributeResourceImpl(Attribute attribute, IJpaPlatform jpaPlatform){
 		super(attribute, jpaPlatform);
@@ -37,18 +37,35 @@ public class JavaPersistentAttributeResourceImpl
 	// ******** AbstractJavaPersistentResource implementation ********
 	
 	@Override
-	protected ListIterator<MappingAnnotationProvider> mappingAnnotationProviders() {
-		return jpaPlatform().javaAttributeMappingAnnotationProviders();
+	protected MappingAnnotation buildMappingAnnotation(String mappingAnnotationName) {
+		return jpaPlatform().buildAttributeMappingAnnotation(getMember(), mappingAnnotationName);
+	}
+
+	@Override
+	protected Annotation buildAnnotation(String annotationName) {
+		return jpaPlatform().buildAttributeAnnotation(getMember(), annotationName);
+	}
+		
+	@Override
+	protected Iterator<String> correspondingAnnotationNames(String mappingAnnotationName) {
+		return jpaPlatform().correspondingAttributeAnnotationNames(mappingAnnotationName);
 	}
 	
 	@Override
-	protected Iterator<AnnotationProvider> annotationProviders() {
-		return jpaPlatform().javaAttributeAnnotationProviders();
+	protected ListIterator<String> possibleMappingAnnotationNames() {
+		return jpaPlatform().attributeMappingAnnotationNames();
 	}
 		
+	@Override
+	protected boolean isPossibleAnnotation(String annotationName) {
+		return CollectionTools.contains(jpaPlatform().attributeAnnotationNames(), annotationName);
+	}
 	
-	// ******** JavaPersistentAttributeResource implementation ********
-	
+	@Override
+	protected boolean isPossibleMappingAnnotation(String annotationName) {
+		return CollectionTools.contains(jpaPlatform().attributeMappingAnnotationNames(), annotationName);
+	}
+
 	@Override
 	protected boolean calculatePersistability(CompilationUnit astRoot) {
 		if (isForField()) {
@@ -56,7 +73,9 @@ public class JavaPersistentAttributeResourceImpl
 		}
 		return JPTTools.methodIsPersistablePropertyGetter((IMethodBinding) getMember().binding(astRoot));
 	}
-	
+
+	// ******** JavaPersistentAttributeResource implementation ********
+		
 	public boolean isForField() {
 		return getMember().isField();
 	}
@@ -76,20 +95,20 @@ public class JavaPersistentAttributeResourceImpl
 	}
 	
 	
-	private void setTypeName(String typeName) {
-		this.typeName = typeName;
-		//TODO change notification
-	}
-	
-	private void setTypeNameInContainer(String typeNameInContainer) {
-		this.typeNameInContainer = typeNameInContainer;
-		//TODO change notification
-	}
-	
-	private void setTypeIsArray(boolean typeIsArray) {
-		this.typeIsArray = typeIsArray;
-		//TODO change notification
-	}
+//	private void setTypeName(String typeName) {
+//		this.typeName = typeName;
+//		//TODO change notification
+//	}
+//	
+//	private void setTypeNameInContainer(String typeNameInContainer) {
+//		this.typeNameInContainer = typeNameInContainer;
+//		//TODO change notification
+//	}
+//	
+//	private void setTypeIsArray(boolean typeIsArray) {
+//		this.typeIsArray = typeIsArray;
+//		//TODO change notification
+//	}
 
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {

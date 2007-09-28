@@ -25,10 +25,14 @@ import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IResourceModel;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 public abstract class BaseJpaPlatform implements IJpaPlatform
@@ -41,17 +45,17 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 * Ordered list of possible type mapping annotations.  Ordered because this
 	 * is used to determine the mapping in the case where 2 mapping annotations exist
 	 */
-	private List<MappingAnnotationProvider> javaTypeMappingAnnotationProviders;
+	private List<MappingAnnotationDefinition> typeMappingAnnotationDefinitions;
 	
-	private Collection<AnnotationProvider> javaTypeAnnotationProviders;
+	private Collection<AnnotationDefinition> typeAnnotationDefinitions;
 	
 	/**
 	 * Ordered list of possible attribute mapping annotations.  Ordered because this
 	 * is used to determine the mapping in the case where 2 mapping annotations exist
 	 */
-	private List<MappingAnnotationProvider> javaAttributeMappingAnnotationProviders;
+	private List<MappingAnnotationDefinition> attributeMappingAnnotationDefinitions;
 	
-	private Collection<AnnotationProvider> javaAttributeAnnotationProviders;
+	private Collection<AnnotationDefinition> attributeAnnotationDefinitions;
 	
 	
 	protected BaseJpaPlatform() {
@@ -87,7 +91,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	
 	public IResourceModel buildResourceModel(IJpaFile jpaFile) {
 		IFile file = jpaFile.getFile();
-		if (! JavaCore.create(project.getProject()).isOnClasspath(file)) {
+		if (! JavaCore.create(this.project.getProject()).isOnClasspath(file)) {
 			return null;
 		}
 		IContentType contentType = this.contentType(file);
@@ -150,84 +154,190 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	
 	
 	// ************************************************************************
-	
-	public ListIterator<MappingAnnotationProvider> javaTypeMappingAnnotationProviders() {
-		if (this.javaTypeMappingAnnotationProviders == null) {
-			this.javaTypeMappingAnnotationProviders = new ArrayList<MappingAnnotationProvider>();
-			this.addJavaTypeMappingAnnotationProvidersTo(this.javaTypeMappingAnnotationProviders);
+
+	protected ListIterator<MappingAnnotationDefinition> typeMappingAnnotationDefinitions() {
+		if (this.typeMappingAnnotationDefinitions == null) {
+			this.typeMappingAnnotationDefinitions = new ArrayList<MappingAnnotationDefinition>();
+			this.addTypeMappingAnnotationDefinitionsTo(this.typeMappingAnnotationDefinitions);
 		}
-		return new CloneListIterator<MappingAnnotationProvider>(this.javaTypeMappingAnnotationProviders);
+		return new CloneListIterator<MappingAnnotationDefinition>(this.typeMappingAnnotationDefinitions);
 	}
 	
 	/**
-	 * Override this to specify more or different type mapping providers.
+	 * Override this to specify more or different type mapping definitions.
 	 * The default includes the JPA spec-defined type mappings of 
 	 * Embeddable, Entity, MappedSuperclass
 	 */
-	protected void addJavaTypeMappingAnnotationProvidersTo(List<MappingAnnotationProvider> providers) {
-		providers.add(JavaEmbeddableProvider.instance());
-		providers.add(JavaEntityProvider.instance());
-		providers.add(JavaMappedSuperclassProvider.instance());
+	protected void addTypeMappingAnnotationDefinitionsTo(List<MappingAnnotationDefinition> definitions) {
+		definitions.add(EmbeddableAnnotationDefinition.instance());
+		definitions.add(EntityAnnotationDefinition.instance());
+		definitions.add(MappedSuperclassAnnotationDefinition.instance());
 	}
 	
-	public Iterator<AnnotationProvider> javaTypeAnnotationProviders() {
-		if (this.javaTypeAnnotationProviders == null) {
-			this.javaTypeAnnotationProviders = new ArrayList<AnnotationProvider>();
-			this.addJavaTypeAnnotationProvidersTo(this.javaTypeAnnotationProviders);
+	protected Iterator<AnnotationDefinition> typeAnnotationDefinitions() {
+		if (this.typeAnnotationDefinitions == null) {
+			this.typeAnnotationDefinitions = new ArrayList<AnnotationDefinition>();
+			this.addTypeAnnotationDefinitionsTo(this.typeAnnotationDefinitions);
 		}
-		return new CloneIterator<AnnotationProvider>(this.javaTypeAnnotationProviders);
+		return new CloneIterator<AnnotationDefinition>(this.typeAnnotationDefinitions);
 	}
 	
 	/**
-	 * Override this to specify more or different type annotation providers.
+	 * Override this to specify more or different type annotation definitions.
 	 * The default includes the JPA spec-defined annotations.
 	 */
-	protected void addJavaTypeAnnotationProvidersTo(Collection<AnnotationProvider> providers) {
-		providers.add(JavaTableProvider.instance());
-		providers.add(JavaSecondaryTableProvider.instance());
-		providers.add(JavaSecondaryTablesProvider.instance());
+	protected void addTypeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
+		definitions.add(TableAnnotationDefinition.instance());
+		definitions.add(SecondaryTableAnnotationDefinition.instance());
+		definitions.add(SecondaryTablesAnnotationDefinition.instance());
 	}
 	
-	public ListIterator<MappingAnnotationProvider> javaAttributeMappingAnnotationProviders() {
-		if (this.javaAttributeMappingAnnotationProviders == null) {
-			this.javaAttributeMappingAnnotationProviders = new ArrayList<MappingAnnotationProvider>();
-			this.addJavaAttributeMappingAnnotationProvidersTo(this.javaAttributeMappingAnnotationProviders);
+	protected ListIterator<MappingAnnotationDefinition> attributeMappingAnnotationDefinitions() {
+		if (this.attributeMappingAnnotationDefinitions == null) {
+			this.attributeMappingAnnotationDefinitions = new ArrayList<MappingAnnotationDefinition>();
+			this.addAttributeMappingAnnotationDefinitionsTo(this.attributeMappingAnnotationDefinitions);
 		}
-		return new CloneListIterator<MappingAnnotationProvider>(this.javaAttributeMappingAnnotationProviders);
+		return new CloneListIterator<MappingAnnotationDefinition>(this.attributeMappingAnnotationDefinitions);
 	}
 	
 	/**
-	 * Override this to specify more or different attribute mapping providers.
+	 * Override this to specify more or different attribute mapping definitions.
 	 * The default includes the JPA spec-defined attribute mappings of 
 	 * Basic, Id, Transient OneToOne, OneToMany, ManyToOne, ManyToMany, Embedded, EmbeddedId, Version.
 	 */
-	protected void addJavaAttributeMappingAnnotationProvidersTo(List<MappingAnnotationProvider> providers) {
-		providers.add(JavaBasicProvider.instance());
-		providers.add(JavaEmbeddedProvider.instance());
-		providers.add(JavaEmbeddedIdProvider.instance());
-		providers.add(JavaIdProvider.instance());
-		providers.add(JavaManyToManyProvider.instance());
-		providers.add(JavaManyToOneProvider.instance());
-		providers.add(JavaOneToManyProvider.instance());
-		providers.add(JavaOneToOneProvider.instance());
-		providers.add(JavaTransientProvider.instance());
-		providers.add(JavaVersionProvider.instance());
+	protected void addAttributeMappingAnnotationDefinitionsTo(List<MappingAnnotationDefinition> definitions) {
+		definitions.add(BasicAnnotationDefinition.instance());
+		definitions.add(EmbeddedAnnotationDefinition.instance());
+		definitions.add(EmbeddedIdAnnotationDefinition.instance());
+		definitions.add(IdAnnotationDefinition.instance());
+		definitions.add(ManyToManyAnnotationDefinition.instance());
+		definitions.add(ManyToOneAnnotationDefinition.instance());
+		definitions.add(OneToManyAnnotationDefinition.instance());
+		definitions.add(OneToOneAnnotationDefinition.instance());
+		definitions.add(TransientAnnotationDefinition.instance());
+		definitions.add(VersionAnnotationDefinition.instance());
 	}
 	
-	public Iterator<AnnotationProvider> javaAttributeAnnotationProviders() {
-		if (this.javaAttributeAnnotationProviders == null) {
-			this.javaAttributeAnnotationProviders = new ArrayList<AnnotationProvider>();
-			this.addJavaAttributeAnnotationProvidersTo(this.javaAttributeAnnotationProviders);
+	protected Iterator<AnnotationDefinition> attributeAnnotationDefinitions() {
+		if (this.attributeAnnotationDefinitions == null) {
+			this.attributeAnnotationDefinitions = new ArrayList<AnnotationDefinition>();
+			this.addAttributeAnnotationDefinitionsTo(this.attributeAnnotationDefinitions);
 		}
-		return new CloneIterator<AnnotationProvider>(this.javaAttributeAnnotationProviders);
+		return new CloneIterator<AnnotationDefinition>(this.attributeAnnotationDefinitions);
 	}
 	
 	/**
-	 * Override this to specify more or different attribute annotation providers.
+	 * Override this to specify more or different attribute annotation definitions.
 	 * The default includes the JPA spec-defined annotations.
 	 */
-	protected void addJavaAttributeAnnotationProvidersTo(Collection<AnnotationProvider> providers) {
-		providers.add(JavaColumnProvider.instance());
-		providers.add(JavaGeneratedValueProvider.instance());
+	protected void addAttributeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
+		definitions.add(ColumnAnnotationDefinition.instance());
+		definitions.add(GeneratedValueAnnotationDefinition.instance());
+	}
+	
+	//********************* IJpaPlatform implementation *************************
+
+	public MappingAnnotation buildTypeMappingAnnotation(Type type, String mappingAnnotationName) {
+		MappingAnnotationDefinition annotationDefinition = typeMappingAnnotationDefinition(mappingAnnotationName);
+		return annotationDefinition.buildAnnotation(type, this);
+	}
+	
+	public Annotation buildTypeAnnotation(Type type, String annotationName) {
+		AnnotationDefinition annotationDefinition = typeAnnotationDefinition(annotationName);
+		return annotationDefinition.buildAnnotation(type, this);
+	}
+
+	public Iterator<String> correspondingTypeAnnotationNames(String mappingAnnotationName) {
+		return typeMappingAnnotationDefinition(mappingAnnotationName).correspondingAnnotationNames();
+	}
+	
+	public ListIterator<String> typeMappingAnnotationNames() {
+		return new TransformationListIterator<MappingAnnotationDefinition, String>(typeMappingAnnotationDefinitions()) {
+			@Override
+			protected String transform(MappingAnnotationDefinition next) {
+				return next.getAnnotationName();
+			}
+		};
+	}
+	
+	public Iterator<String> typeAnnotationNames() {
+		return new TransformationIterator<AnnotationDefinition, String>(typeAnnotationDefinitions()) {
+			@Override
+			protected String transform(AnnotationDefinition next) {
+				return next.getAnnotationName();
+			}
+		};
+	}
+	
+	public MappingAnnotation buildAttributeMappingAnnotation(Attribute attribute, String mappingAnnotationName) {
+		MappingAnnotationDefinition annotationDefinition = attributeMappingAnnotationDefinition(mappingAnnotationName);
+		return annotationDefinition.buildAnnotation(attribute, this);
+	}
+	
+	public Annotation buildAttributeAnnotation(Attribute attribute, String annotationName) {
+		AnnotationDefinition annotationDefinition = attributeAnnotationDefinition(annotationName);
+		return annotationDefinition.buildAnnotation(attribute, this);
+	}
+	
+	public Iterator<String> correspondingAttributeAnnotationNames(String mappingAnnotationName) {
+		return attributeMappingAnnotationDefinition(mappingAnnotationName).correspondingAnnotationNames();
+	}
+	
+	public ListIterator<String> attributeMappingAnnotationNames() {
+		return new TransformationListIterator<MappingAnnotationDefinition, String>(attributeMappingAnnotationDefinitions()) {
+			@Override
+			protected String transform(MappingAnnotationDefinition next) {
+				return next.getAnnotationName();
+			}
+		};
+	}
+	
+	public Iterator<String> attributeAnnotationNames() {
+		return new TransformationIterator<AnnotationDefinition, String>(attributeAnnotationDefinitions()) {
+			@Override
+			protected String transform(AnnotationDefinition next) {
+				return next.getAnnotationName();
+			}
+		};
+	}
+	
+	private MappingAnnotationDefinition typeMappingAnnotationDefinition(String mappingAnnotationName) {
+		for (ListIterator<MappingAnnotationDefinition> i = typeMappingAnnotationDefinitions(); i.hasNext(); ) {
+			MappingAnnotationDefinition definition = i.next();
+			if (definition.getAnnotationName().equals(mappingAnnotationName)) {
+				return definition;
+			}
+		}
+		throw new IllegalArgumentException(mappingAnnotationName + " is an unsupported type mapping annotation");
+	}
+	
+	private AnnotationDefinition typeAnnotationDefinition(String annotationName) {
+		for (Iterator<AnnotationDefinition> i = typeAnnotationDefinitions(); i.hasNext(); ) {
+			AnnotationDefinition definition = i.next();
+			if (definition.getAnnotationName().equals(annotationName)) {
+				return definition;
+			}
+		}
+		throw new IllegalArgumentException(annotationName + " is an unsupported type annotation");
+	}
+
+	private MappingAnnotationDefinition attributeMappingAnnotationDefinition(String mappingAnnotationName) {
+		for (ListIterator<MappingAnnotationDefinition> i = attributeMappingAnnotationDefinitions(); i.hasNext(); ) {
+			MappingAnnotationDefinition definition = i.next();
+			if (definition.getAnnotationName().equals(mappingAnnotationName)) {
+				return definition;
+			}
+		}
+		throw new IllegalArgumentException(mappingAnnotationName + " is an unsupported attribute mapping annotation");	
+	}
+	
+	private AnnotationDefinition attributeAnnotationDefinition(String annotationName) {
+		for (Iterator<AnnotationDefinition> i = attributeAnnotationDefinitions(); i.hasNext(); ) {
+			AnnotationDefinition definition = i.next();
+			if (definition.getAnnotationName().equals(annotationName)) {
+				return definition;
+			}
+		}
+		throw new IllegalArgumentException(annotationName + " is an unsupported attribute annotation");
 	}
 }

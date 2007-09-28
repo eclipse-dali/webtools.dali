@@ -12,47 +12,39 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaOneToManyProvider implements MappingAnnotationProvider
+public class EmbeddedIdAnnotationDefinition implements MappingAnnotationDefinition
 {
 	// singleton
-	private static final JavaOneToManyProvider INSTANCE = new JavaOneToManyProvider();
+	private static final EmbeddedIdAnnotationDefinition INSTANCE = new EmbeddedIdAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaOneToManyProvider instance() {
+	public static EmbeddedIdAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaOneToManyProvider() {
+	private EmbeddedIdAnnotationDefinition() {
 		super();
 	}
 
-	public OneToMany buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new OneToManyImpl((Attribute) member, jpaPlatform);
+	public EmbeddedId buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
+		return new EmbeddedIdImpl((Attribute) member, jpaPlatform);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {
 		return new ArrayIterator<String>(
-			JPA.ORDER_BY,
-			JPA.MAP_KEY,
-			JPA.JOIN_TABLE,
-			JPA.JOIN_COLUMN,
-			JPA.JOIN_COLUMNS);
+			JPA.ATTRIBUTE_OVERRIDE,
+			JPA.ATTRIBUTE_OVERRIDES);
 	}
-
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return OneToMany.DECLARATION_ANNOTATION_ADAPTER;
-	}
-
+	
 	public String getAnnotationName() {
-		return JPA.ONE_TO_MANY;
+		return JPA.EMBEDDED_ID;
 	}
 }

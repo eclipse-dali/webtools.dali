@@ -10,38 +10,33 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
-public class JavaSecondaryTablesProvider implements AnnotationProvider
+public class SecondaryTableAnnotationDefinition implements AnnotationDefinition
 {
 	// singleton
-	private static final JavaSecondaryTablesProvider INSTANCE = new JavaSecondaryTablesProvider();
+	private static final SecondaryTableAnnotationDefinition INSTANCE = new SecondaryTableAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static AnnotationProvider instance() {
+	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaSecondaryTablesProvider() {
+	private SecondaryTableAnnotationDefinition() {
 		super();
 	}
 
 
-	public SecondaryTables buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new SecondaryTablesImpl(member, jpaPlatform);
+	public SecondaryTable buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
+		return SecondaryTableImpl.createJavaSecondaryTable(jpaPlatform, member);
 	}
 
 	public String getAnnotationName() {
-		return JPA.SECONDARY_TABLES;
-	}
-
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return SecondaryTables.DECLARATION_ANNOTATION_ADAPTER;
+		return JPA.SECONDARY_TABLE;
 	}
 }

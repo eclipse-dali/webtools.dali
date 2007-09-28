@@ -18,7 +18,7 @@ public abstract class AbstractResource<E extends Member> implements JavaResource
 	//way to go up the containment hierarchy to the project and its platform
 	private IJpaPlatform jpaPlatform;
 	
-	private E member;
+	private final E member;
 	
 	protected AbstractResource(E member, IJpaPlatform jpaPlatform) {
 		super();

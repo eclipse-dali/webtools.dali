@@ -11,8 +11,10 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.resource.java.AnnotationProvider;
-import org.eclipse.jpt.core.internal.resource.java.MappingAnnotationProvider;
+import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.internal.resource.java.Annotation;
+import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
 
@@ -79,16 +81,79 @@ public interface IJpaPlatform
 	 */
 	IResourceModel buildResourceModel(IJpaFile jpaFile);
 	
-	ListIterator<MappingAnnotationProvider> javaTypeMappingAnnotationProviders();
+	/**
+	 * Build a MappingAnnotation with the given fully qualififed annotation name.
+	 * @param type
+	 * @param mappingAnnotationName
+	 * @return
+	 */
+	MappingAnnotation buildTypeMappingAnnotation(Type type, String mappingAnnotationName);
+
+	/**
+	 * Build an Annotation with the given fully qualififed annotation name.
+	 * @param type
+	 * @param annotationName
+	 * @return
+	 */
+	Annotation buildTypeAnnotation(Type type, String annotationName);
 	
-	Iterator<AnnotationProvider> javaTypeAnnotationProviders();
+	/**
+	 * Return the fully qualified names of the annotations that can exist
+	 * with the given mapping annotation on a Type.  This will be all the JPA 
+	 * annotations that can apply in the same context as the given mapping annotation. 
+	 * @param mappingAnnotationName
+	 * @return
+	 */
+	Iterator<String> correspondingTypeAnnotationNames(String mappingAnnotationName);
 	
-	ListIterator<MappingAnnotationProvider> javaAttributeMappingAnnotationProviders();
+	/**
+	 * Ordered iterator of fully qualified annotation names that can apply to a Type
+	 */
+	ListIterator<String> typeMappingAnnotationNames();
 	
-	Iterator<AnnotationProvider> javaAttributeAnnotationProviders();
-		
+	/**
+	 * Iterator of fully qualified annotation(non-mapping) names that can apply to a Type
+	 */
+	Iterator<String> typeAnnotationNames();
+	
+	/**
+	 * Build a MappingAnnotation with the given fully qualififed annotation name.
+	 * @param attribute
+	 * @param mappingAnnotationName
+	 * @return
+	 */
+	MappingAnnotation buildAttributeMappingAnnotation(Attribute attribute, String mappingAnnotationName);
+	
+	/**
+	 * Build an Annotation with the given fully qualififed annotation name.
+	 * @param attribute
+	 * @param annotationName
+	 * @return
+	 */
+	Annotation buildAttributeAnnotation(Attribute attribute, String annotationName);
+	
+	/**
+	 * Return the fully qualified names of the annotations that can exist
+	 * with the given mapping annotation on an attribute.  This will be all the JPA 
+	 * annotations that can apply in the same context as the given mapping annotation. 
+	 * @param mappingAnnotationName
+	 * @return
+	 */
+	Iterator<String> correspondingAttributeAnnotationNames(String mappingAnnotationName);
+	
+	/**
+	 * Ordered iterator of fully qualified annotation names that can apply to an Attribute
+	 */
+	ListIterator<String> attributeMappingAnnotationNames();
+	
+	/**
+	 * Iterator of fully qualified annotation(non-mapping) names that can apply to an Attribute
+	 */
+	Iterator<String>  attributeAnnotationNames();
+	
 	//TODO get this from IJpaProject
-	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();
+	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();	
+	
 	
 	//	/**
 	//	 * Return an Iterator of IJavaTypeMappingProviders.  These define which

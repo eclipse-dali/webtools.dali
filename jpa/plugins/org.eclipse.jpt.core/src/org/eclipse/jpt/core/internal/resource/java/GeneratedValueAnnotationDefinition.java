@@ -10,25 +10,24 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
-public class JavaGeneratedValueProvider implements AnnotationProvider
+public class GeneratedValueAnnotationDefinition implements AnnotationDefinition
 {
 	// singleton
-	private static final JavaGeneratedValueProvider INSTANCE = new JavaGeneratedValueProvider();
+	private static final GeneratedValueAnnotationDefinition INSTANCE = new GeneratedValueAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static AnnotationProvider instance() {
+	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaGeneratedValueProvider() {
+	private GeneratedValueAnnotationDefinition() {
 		super();
 	}
 
@@ -39,9 +38,5 @@ public class JavaGeneratedValueProvider implements AnnotationProvider
 
 	public String getAnnotationName() {
 		return JPA.GENERATED_VALUE;
-	}
-
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return  GeneratedValue.DECLARATION_ANNOTATION_ADAPTER;
 	}
 }

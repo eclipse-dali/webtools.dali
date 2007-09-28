@@ -12,44 +12,41 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaEmbeddedIdProvider implements MappingAnnotationProvider
+public class BasicAnnotationDefinition implements MappingAnnotationDefinition
 {
 	// singleton
-	private static final JavaEmbeddedIdProvider INSTANCE = new JavaEmbeddedIdProvider();
+	private static final BasicAnnotationDefinition INSTANCE = new BasicAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaEmbeddedIdProvider instance() {
+	public static BasicAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaEmbeddedIdProvider() {
+	private BasicAnnotationDefinition() {
 		super();
 	}
 
-	public EmbeddedId buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new EmbeddedIdImpl((Attribute) member, jpaPlatform);
+	public Basic buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
+		return new BasicImpl((Attribute) member, jpaPlatform);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {
 		return new ArrayIterator<String>(
-			JPA.ATTRIBUTE_OVERRIDE,
-			JPA.ATTRIBUTE_OVERRIDES);
-	}
-
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return EmbeddedId.DECLARATION_ANNOTATION_ADAPTER;
+			JPA.COLUMN,
+			JPA.LOB,
+			JPA.TEMPORAL,
+			JPA.ENUMERATED);
 	}
 
 	public String getAnnotationName() {
-		return JPA.EMBEDDED_ID;
+		return JPA.BASIC;
 	}
 }

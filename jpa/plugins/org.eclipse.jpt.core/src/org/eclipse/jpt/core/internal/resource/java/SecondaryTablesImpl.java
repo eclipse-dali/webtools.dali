@@ -19,7 +19,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> implements SecondaryTables
 {
-	private List<SecondaryTable> secondaryTables;
+	private final List<SecondaryTable> secondaryTables;
 	
 	protected SecondaryTablesImpl(Member member, IJpaPlatform jpaPlatform) {
 		super(member, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);

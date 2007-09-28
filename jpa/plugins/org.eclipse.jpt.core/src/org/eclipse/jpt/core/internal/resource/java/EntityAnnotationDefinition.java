@@ -11,27 +11,26 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaEntityProvider implements MappingAnnotationProvider
+public class EntityAnnotationDefinition implements MappingAnnotationDefinition
 {
 	// singleton
-	private static final JavaEntityProvider INSTANCE = new JavaEntityProvider();
+	private static final EntityAnnotationDefinition INSTANCE = new EntityAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static MappingAnnotationProvider instance() {
+	public static MappingAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaEntityProvider() {
+	private EntityAnnotationDefinition() {
 		super();
 	}
 
@@ -71,10 +70,6 @@ public class JavaEntityProvider implements MappingAnnotationProvider
 			JPA.ATTRIBUTE_OVERRIDES,
 			JPA.ASSOCIATION_OVERRIDE,
 			JPA.ASSOCIATION_OVERRIDES);
-	}
-
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return Entity.DECLARATION_ANNOTATION_ADAPTER;
 	}
 
 	public String getAnnotationName() {

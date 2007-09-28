@@ -9,17 +9,35 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
-public interface MappingAnnotationProvider extends AnnotationProvider
+public class ColumnAnnotationDefinition implements AnnotationDefinition
 {
+	// singleton
+	private static final ColumnAnnotationDefinition INSTANCE = new ColumnAnnotationDefinition();
+
 	/**
-	 * Return the fully qualified names of the annotations that can exist
-	 * with the mapping annotation.  These will be used to create JavaTypeAnnotations
+	 * Return the singleton.
 	 */
-	Iterator<String> correspondingAnnotationNames();
-	
-	MappingAnnotation buildAnnotation(Member member, IJpaPlatform jpaPlatform);
+	public static AnnotationDefinition instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure non-instantiability.
+	 */
+	private ColumnAnnotationDefinition() {
+		super();
+	}
+
+
+	public Column buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
+		return new ColumnImpl((Attribute) member, jpaPlatform);
+	}
+
+	public String getAnnotationName() {
+		return JPA.COLUMN;
+	}
 }

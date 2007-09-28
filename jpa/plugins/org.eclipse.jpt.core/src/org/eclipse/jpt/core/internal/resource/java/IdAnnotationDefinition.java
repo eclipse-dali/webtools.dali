@@ -12,44 +12,42 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaVersionProvider implements MappingAnnotationProvider
+public class IdAnnotationDefinition implements MappingAnnotationDefinition
 {
 	// singleton
-	private static final JavaVersionProvider INSTANCE = new JavaVersionProvider();
+	private static final IdAnnotationDefinition INSTANCE = new IdAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaVersionProvider instance() {
+	public static IdAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaVersionProvider() {
+	private IdAnnotationDefinition() {
 		super();
 	}
 
-	public Version buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new VersionImpl((Attribute) member, jpaPlatform);
+	public Id buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
+		return new IdImpl((Attribute) member, jpaPlatform);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {
 		return new ArrayIterator<String>(
 			JPA.COLUMN,
-			JPA.TEMPORAL);
-	}
-
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return Version.DECLARATION_ANNOTATION_ADAPTER;
+			JPA.GENERATED_VALUE,
+			JPA.TEMPORAL,
+			JPA.TABLE_GENERATOR,
+			JPA.SEQUENCE_GENERATOR);
 	}
 
 	public String getAnnotationName() {
-		return JPA.VERSION;
+		return JPA.ID;
 	}
 }

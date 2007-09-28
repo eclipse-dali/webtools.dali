@@ -12,47 +12,40 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaIdProvider implements MappingAnnotationProvider
+public class ManyToOneAnnotationDefinition implements MappingAnnotationDefinition
 {
 	// singleton
-	private static final JavaIdProvider INSTANCE = new JavaIdProvider();
+	private static final ManyToOneAnnotationDefinition INSTANCE = new ManyToOneAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaIdProvider instance() {
+	public static ManyToOneAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private JavaIdProvider() {
+	private ManyToOneAnnotationDefinition() {
 		super();
 	}
 
-	public Id buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new IdImpl((Attribute) member, jpaPlatform);
+	public ManyToOne buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
+		return new ManyToOneImpl((Attribute) member, jpaPlatform);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {
 		return new ArrayIterator<String>(
-			JPA.COLUMN,
-			JPA.GENERATED_VALUE,
-			JPA.TEMPORAL,
-			JPA.TABLE_GENERATOR,
-			JPA.SEQUENCE_GENERATOR);
-	}
-
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return Id.DECLARATION_ANNOTATION_ADAPTER;
+			JPA.JOIN_COLUMN,
+			JPA.JOIN_COLUMNS,
+			JPA.JOIN_TABLE);
 	}
 
 	public String getAnnotationName() {
-		return JPA.ID;
+		return JPA.MANY_TO_ONE;
 	}
 }
