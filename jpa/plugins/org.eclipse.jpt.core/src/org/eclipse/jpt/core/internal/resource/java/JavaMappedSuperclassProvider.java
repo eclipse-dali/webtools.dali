@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
@@ -34,7 +35,7 @@ public class JavaMappedSuperclassProvider implements MappingAnnotationProvider
 		super();
 	}
 
-	public MappedSuperclass buildAnnotation(Member member, JpaPlatform jpaPlatform) {
+	public MappedSuperclass buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
 		return new MappedSuperclassImpl((Type) member, jpaPlatform);
 	}
 

@@ -24,12 +24,10 @@ import org.eclipse.core.resources.IFile;
 public interface IJpaFile extends IJpaEObject
 {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation" required="true"
-	 * @generated
+	 * Return the type of resource represented by this JPA file
+	 * @see IResourceModel#getResourceType()
 	 */
-	String getContentId();
+	String getResourceType();
 
 	/**
 	 * Return the IFile associated with this JPA file

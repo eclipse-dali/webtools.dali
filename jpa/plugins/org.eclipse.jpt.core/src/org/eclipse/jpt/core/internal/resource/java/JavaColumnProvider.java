@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
@@ -33,7 +34,7 @@ public class JavaColumnProvider implements AnnotationProvider
 	}
 
 
-	public Column buildAnnotation(Member member, JpaPlatform jpaPlatform) {
+	public Column buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
 		return new ColumnImpl((Attribute) member, jpaPlatform);
 	}
 

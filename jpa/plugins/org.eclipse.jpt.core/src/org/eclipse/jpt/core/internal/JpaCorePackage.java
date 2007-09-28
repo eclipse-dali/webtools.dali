@@ -323,22 +323,13 @@ public class JpaCorePackage extends EPackageImpl
 	public static final int JPA_FILE = 10;
 
 	/**
-	 * The feature id for the '<em><b>Content Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JPA_FILE__CONTENT_ID = JPA_EOBJECT_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Jpa File</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JPA_FILE_FEATURE_COUNT = JPA_EOBJECT_FEATURE_COUNT + 1;
+	public static final int JPA_FILE_FEATURE_COUNT = JPA_EOBJECT_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.IJpaSourceObject <em>IJpa Source Object</em>}' class.
@@ -1037,19 +1028,6 @@ public class JpaCorePackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.JpaFile#getContentId <em>Content Id</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Content Id</em>'.
-	 * @see org.eclipse.jpt.core.internal.JpaFile#getContentId()
-	 * @see #getJpaFile()
-	 * @generated
-	 */
-	public EAttribute getJpaFile_ContentId() {
-		return (EAttribute) jpaFileEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.IJpaSourceObject <em>IJpa Source Object</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1293,7 +1271,6 @@ public class JpaCorePackage extends EPackageImpl
 		createEAttribute(jpaDataSourceEClass, JPA_DATA_SOURCE__CONNECTION_PROFILE_NAME);
 		iJpaFileEClass = createEClass(IJPA_FILE);
 		jpaFileEClass = createEClass(JPA_FILE);
-		createEAttribute(jpaFileEClass, JPA_FILE__CONTENT_ID);
 		iJpaSourceObjectEClass = createEClass(IJPA_SOURCE_OBJECT);
 		iXmlEObjectEClass = createEClass(IXML_EOBJECT);
 		xmlEObjectEClass = createEClass(XML_EOBJECT);
@@ -1400,7 +1377,6 @@ public class JpaCorePackage extends EPackageImpl
 		initEClass(iJpaFileEClass, IJpaFile.class, "IJpaFile", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		addEOperation(iJpaFileEClass, ecorePackage.getEString(), "getContentId", 1, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(jpaFileEClass, JpaFile.class, "JpaFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getJpaFile_ContentId(), ecorePackage.getEString(), "contentId", null, 1, 1, JpaFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iJpaSourceObjectEClass, IJpaSourceObject.class, "IJpaSourceObject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		addEOperation(iJpaSourceObjectEClass, this.getIJpaFile(), "getJpaFile", 0, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(iXmlEObjectEClass, IXmlEObject.class, "IXmlEObject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1608,14 +1584,6 @@ public class JpaCorePackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass JPA_FILE = eINSTANCE.getJpaFile();
-
-		/**
-		 * The meta object literal for the '<em><b>Content Id</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute JPA_FILE__CONTENT_ID = eINSTANCE.getJpaFile_ContentId();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.IJpaSourceObject <em>IJpa Source Object</em>}' class.

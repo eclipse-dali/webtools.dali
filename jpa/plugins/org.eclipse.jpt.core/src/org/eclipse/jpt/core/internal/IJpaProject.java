@@ -117,21 +117,20 @@ public interface IJpaProject extends IJpaEObject
 	 */
 	Iterator<IJpaFile> jpaFiles();
 
-//	/**
-//	 * Return a JavaPersistentType for the IType, if it exists, null otherwise.
-//	 */
-//	JavaPersistentType findJavaPersistentType(IType type);
-//	
-//	/**
-//	 * Reconnect the model together, recalculating default values as needed
-//	 */
-//	void resynch();
-//	
-//	/**
-//	 * Returns all the validation messages for this project
-//	 */
-//	Iterator<IMessage> validationMessages();
-
+	//	/**
+	//	 * Return a JavaPersistentType for the IType, if it exists, null otherwise.
+	//	 */
+	//	JavaPersistentType findJavaPersistentType(IType type);
+	//	
+	//	/**
+	//	 * Reconnect the model together, recalculating default values as needed
+	//	 */
+	//	void resynch();
+	//	
+	//	/**
+	//	 * Returns all the validation messages for this project
+	//	 */
+	//	Iterator<IMessage> validationMessages();
 	ConnectionProfile connectionProfile();
 
 	/**

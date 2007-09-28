@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -27,7 +28,7 @@ public class ColumnImpl extends AbstractAnnotationResource<Attribute> implements
 	private String name;
 	private String table;
 
-	public ColumnImpl(Attribute attribute, JpaPlatform jpaPlatform) {
+	public ColumnImpl(Attribute attribute, IJpaPlatform jpaPlatform) {
 		super(attribute, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
 		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), NAME_ADAPTER);
 		this.tableAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), TABLE_ADAPTER);

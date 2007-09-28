@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;
 import org.eclipse.jpt.core.internal.mappings.IAttributeOverride;

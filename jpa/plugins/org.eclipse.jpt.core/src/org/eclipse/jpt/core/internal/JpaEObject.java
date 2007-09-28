@@ -69,10 +69,9 @@ public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 		return getJpaProject().getPlatform();
 	}
 
-//	public IJpaFactory jpaFactory() {
-//		return jpaPlatform().getJpaFactory();
-//	}
-
+	//	public IJpaFactory jpaFactory() {
+	//		return jpaPlatform().getJpaFactory();
+	//	}
 	public ConnectionProfile connectionProfile() {
 		return this.getJpaProject().connectionProfile();
 	}
@@ -99,13 +98,13 @@ public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 	}
 
 	protected void featureChanged(int featureId) {
-//		if (this.featureIsSignificant(featureId)) {
-//			IJpaProject project = this.getJpaProject();
-//			// check that the model is fully initialized
-//			if (project != null) {
-//				project.resynch();
-//			}
-//		}
+	//		if (this.featureIsSignificant(featureId)) {
+	//			IJpaProject project = this.getJpaProject();
+	//			// check that the model is fully initialized
+	//			if (project != null) {
+	//				project.resynch();
+	//			}
+	//		}
 	}
 
 	protected boolean featureIsSignificant(int featureId) {

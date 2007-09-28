@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -20,7 +21,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 {
 	private List<SecondaryTable> secondaryTables;
 	
-	protected SecondaryTablesImpl(Member member, JpaPlatform jpaPlatform) {
+	protected SecondaryTablesImpl(Member member, IJpaPlatform jpaPlatform) {
 		super(member, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
 		this.secondaryTables = new ArrayList<SecondaryTable>();
 	}

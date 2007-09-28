@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
@@ -32,7 +33,7 @@ public class JavaSecondaryTablesProvider implements AnnotationProvider
 	}
 
 
-	public SecondaryTables buildAnnotation(Member member, JpaPlatform jpaPlatform) {
+	public SecondaryTables buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
 		return new SecondaryTablesImpl(member, jpaPlatform);
 	}
 

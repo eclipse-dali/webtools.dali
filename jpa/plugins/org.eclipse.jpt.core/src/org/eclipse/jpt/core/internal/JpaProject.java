@@ -167,52 +167,51 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	protected JpaProject(IProject project) {
 		this();
 		this.project = project;
-//		this.resynchJob = buildResynchJob();
+		//		this.resynchJob = buildResynchJob();
 	}
 
-//	private Job buildResynchJob() {
-//		Job job = new Job("Resynching JPA model ...") {
-//			@Override
-//			protected IStatus run(IProgressMonitor monitor) {
-//				try {
-//					return runResynch(monitor);
-//				}
-//				finally {
-//					JpaProject.this.resynching = false;
-//					if (JpaProject.this.needsToResynch) {
-//						resynch();
-//					}
-//				}
-//			}
-//		};
-//		if (this.project == null) {
-//			throw new IllegalStateException("Project can not be null when the Resynch Job is built");
-//		}
-//		job.setRule(this.project);
-//		return job;
-//	}
-//	
-//	private IStatus runResynch(IProgressMonitor monitor) {
-//		IContext contextHierarchy = getPlatform().buildProjectContext();
-//		if (monitor.isCanceled()) {
-//			return Status.CANCEL_STATUS;
-//		}
-//		try {
-//			getPlatform().resynch(contextHierarchy, monitor);
-//		}
-//		catch (OperationCanceledException e) {
-//			return Status.CANCEL_STATUS;
-//		}
-//		catch (Throwable e) {
-//			//exceptions can occur when this thread is running and changes are
-//			//made to the java source.  our model is not yet updated to the changed java source.
-//			//log these exceptions and assume they won't happen when the resynch runs again
-//			//as a result of the java source changes.
-//			JptCorePlugin.log(e);
-//		}
-//		return Status.OK_STATUS;
-//	}
-
+	//	private Job buildResynchJob() {
+	//		Job job = new Job("Resynching JPA model ...") {
+	//			@Override
+	//			protected IStatus run(IProgressMonitor monitor) {
+	//				try {
+	//					return runResynch(monitor);
+	//				}
+	//				finally {
+	//					JpaProject.this.resynching = false;
+	//					if (JpaProject.this.needsToResynch) {
+	//						resynch();
+	//					}
+	//				}
+	//			}
+	//		};
+	//		if (this.project == null) {
+	//			throw new IllegalStateException("Project can not be null when the Resynch Job is built");
+	//		}
+	//		job.setRule(this.project);
+	//		return job;
+	//	}
+	//	
+	//	private IStatus runResynch(IProgressMonitor monitor) {
+	//		IContext contextHierarchy = getPlatform().buildProjectContext();
+	//		if (monitor.isCanceled()) {
+	//			return Status.CANCEL_STATUS;
+	//		}
+	//		try {
+	//			getPlatform().resynch(contextHierarchy, monitor);
+	//		}
+	//		catch (OperationCanceledException e) {
+	//			return Status.CANCEL_STATUS;
+	//		}
+	//		catch (Throwable e) {
+	//			//exceptions can occur when this thread is running and changes are
+	//			//made to the java source.  our model is not yet updated to the changed java source.
+	//			//log these exceptions and assume they won't happen when the resynch runs again
+	//			//as a result of the java source changes.
+	//			JptCorePlugin.log(e);
+	//		}
+	//		return Status.OK_STATUS;
+	//	}
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -550,7 +549,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		Collection<IJpaFile> jpaFiles = new ArrayList<IJpaFile>();
 		for (Iterator<IJpaFile> stream = jpaFiles(); stream.hasNext();) {
 			IJpaFile next = stream.next();
-			if (next.getContentId().equals(contentType)) {
+			if (next.getResourceType().equals(contentType)) {
 				jpaFiles.add(next);
 			}
 		}
@@ -666,12 +665,11 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		}
 	}
 
-//	public Iterator<IMessage> validationMessages() {
-//		List<IMessage> messages = new ArrayList<IMessage>();
-//		getPlatform().addToMessages(messages);
-//		return messages.iterator();
-//	}
-
+	//	public Iterator<IMessage> validationMessages() {
+	//		List<IMessage> messages = new ArrayList<IMessage>();
+	//		getPlatform().addToMessages(messages);
+	//		return messages.iterator();
+	//	}
 	//leaving this at the JpaProject level for now instead of
 	//passing it on to the JpaModel.  We don't currently support
 	//multiple projects having cross-references

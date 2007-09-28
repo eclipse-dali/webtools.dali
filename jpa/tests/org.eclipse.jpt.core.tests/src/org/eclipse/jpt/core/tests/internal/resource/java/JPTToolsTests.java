@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
@@ -24,7 +25,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
-import org.eclipse.jpt.core.internal.resource.java.JpaPlatform;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -34,7 +34,7 @@ public class JPTToolsTests extends AnnotationTestCase {
 		super(name);
 	}
 
-	protected JpaPlatform buildJpaPlatform() {
+	protected IJpaPlatform buildJpaPlatform() {
 		return new GenericJpaPlatform();
 	}
 	

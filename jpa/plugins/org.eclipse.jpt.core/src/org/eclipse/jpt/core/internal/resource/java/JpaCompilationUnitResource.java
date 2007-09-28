@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
@@ -29,9 +30,9 @@ public class JpaCompilationUnitResource
 	
 	//TODO move this to a superclass, JpaProject or the parent of JpaCompilationUnit should
 	//be in the constructor instead
-	private JpaPlatform jpaPlatform;
+	private IJpaPlatform jpaPlatform;
 	
-	public JpaCompilationUnitResource(ICompilationUnit compilationUnit, JpaPlatform jpaPlatform){
+	public JpaCompilationUnitResource(ICompilationUnit compilationUnit, IJpaPlatform jpaPlatform){
 		super();
 		this.compilationUnit = compilationUnit;
 		this.jpaPlatform = jpaPlatform;

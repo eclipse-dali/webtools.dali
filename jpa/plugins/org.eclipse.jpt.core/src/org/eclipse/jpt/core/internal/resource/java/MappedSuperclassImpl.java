@@ -10,12 +10,13 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 
 public class MappedSuperclassImpl extends AbstractAnnotationResource<Type> implements MappedSuperclass
 {
-	protected MappedSuperclassImpl(Type type, JpaPlatform jpaPlatform) {
+	protected MappedSuperclassImpl(Type type, IJpaPlatform jpaPlatform) {
 		super(type, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	

@@ -21,9 +21,10 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.AccessType;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
 import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
+import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
 import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -44,7 +45,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	
 	private String superClassQualifiedName;
 	
-	public JavaPersistentTypeResourceImpl(Type type, JpaPlatform jpaPlatform){
+	public JavaPersistentTypeResourceImpl(Type type, IJpaPlatform jpaPlatform){
 		super(type, jpaPlatform);
 		this.nestedTypes = new ArrayList<JavaPersistentTypeResource>(); 
 		this.attributes = new ArrayList<JavaPersistentAttributeResource>();

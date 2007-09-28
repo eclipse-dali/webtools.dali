@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -35,7 +36,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	
 	private boolean persistable;
 	
-	public AbstractJavaPersistentResource(E member, JpaPlatform jpaPlatform){
+	public AbstractJavaPersistentResource(E member, IJpaPlatform jpaPlatform){
 		super(member, jpaPlatform);
 		this.annotations = new ArrayList<Annotation>();
 		this.mappingAnnotations = new ArrayList<MappingAnnotation>();

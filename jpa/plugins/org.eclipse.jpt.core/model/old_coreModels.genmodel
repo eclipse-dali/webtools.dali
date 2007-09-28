@@ -54,9 +54,7 @@
     <genClasses ecoreClass="old_core.ecore#//IJpaFile">
       <genOperations ecoreOperation="old_core.ecore#//IJpaFile/getContentId"/>
     </genClasses>
-    <genClasses ecoreClass="old_core.ecore#//JpaFile">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//JpaFile/contentId"/>
-    </genClasses>
+    <genClasses ecoreClass="old_core.ecore#//JpaFile"/>
     <genClasses ecoreClass="old_core.ecore#//IJpaSourceObject">
       <genOperations ecoreOperation="old_core.ecore#//IJpaSourceObject/getJpaFile"/>
     </genClasses>

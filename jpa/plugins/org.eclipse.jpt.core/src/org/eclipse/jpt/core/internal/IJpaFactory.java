@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.platform.BaseJpaFactory;
 
 /**

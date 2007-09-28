@@ -10,13 +10,14 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 
 public class EmbeddableImpl extends AbstractAnnotationResource<Type> implements Embeddable
 {
 
-	protected EmbeddableImpl(Type type, JpaPlatform jpaPlatform) {
+	protected EmbeddableImpl(Type type, IJpaPlatform jpaPlatform) {
 		super(type, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	

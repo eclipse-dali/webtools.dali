@@ -10,12 +10,13 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 
 
 public class ManyToOneImpl extends AbstractAnnotationResource<Attribute> implements ManyToOne
 {	
-	public ManyToOneImpl(Attribute attribute, JpaPlatform jpaPlatform) {
+	public ManyToOneImpl(Attribute attribute, IJpaPlatform jpaPlatform) {
 		super(attribute, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	

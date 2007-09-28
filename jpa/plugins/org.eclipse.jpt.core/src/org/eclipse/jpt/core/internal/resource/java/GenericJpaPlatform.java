@@ -15,17 +15,21 @@ import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
 public class GenericJpaPlatform extends BaseJpaPlatform
 {
-	//TODO this is just for tests.  need to get this from the IJpaProjct instead
-	public CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
-		return MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER;
-	}
-
 	protected static final CommandExecutorProvider MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER =
 		new CommandExecutorProvider() {
 			public CommandExecutor commandExecutor() {
 				return CommandExecutor.Default.instance();
 			}
 		};
-		
-
+	
+	
+	public GenericJpaPlatform() {
+		super();
+	}
+	
+	
+	//TODO this is just for tests.  need to get this from the IJpaProjct instead
+	public CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
+		return MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER;
+	}
 }

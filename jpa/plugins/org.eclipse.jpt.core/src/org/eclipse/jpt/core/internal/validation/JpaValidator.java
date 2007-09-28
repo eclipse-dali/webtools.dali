@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.validation;
 
-import java.util.Iterator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -19,7 +18,6 @@ import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.JpaProject;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.core.ValidationException;
 import org.eclipse.wst.validation.internal.core.ValidatorLauncher;
 import org.eclipse.wst.validation.internal.operations.IWorkbenchContext;

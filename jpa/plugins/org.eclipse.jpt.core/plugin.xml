@@ -80,7 +80,7 @@
 		<jpaPlatform
 			id="generic"
 			label="%GENERIC_PLATFORM_LABEL"
-			class="org.eclipse.jpt.core.internal.platform.generic.GenericPlatform"/>
+			class="org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform"/>
 		
 	</extension>
 	

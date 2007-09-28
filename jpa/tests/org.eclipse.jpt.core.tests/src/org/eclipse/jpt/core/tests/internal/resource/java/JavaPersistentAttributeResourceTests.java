@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
@@ -24,7 +25,6 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResour
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
-import org.eclipse.jpt.core.internal.resource.java.JpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.OneToMany;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
@@ -335,7 +335,7 @@ public class JavaPersistentAttributeResourceTests extends AnnotationTestCase {
 		});
 	}
 
-	protected JpaPlatform buildJpaPlatform() {
+	protected IJpaPlatform buildJpaPlatform() {
 		return new GenericJpaPlatform();
 	}
 	

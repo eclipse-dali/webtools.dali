@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 
 
@@ -23,7 +24,7 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 //	private String name;
 
 	
-	public BasicImpl(Attribute attribute, JpaPlatform jpaPlatform) {
+	public BasicImpl(Attribute attribute, IJpaPlatform jpaPlatform) {
 		super(attribute, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
 //		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), NAME_ADAPTER);
 	}

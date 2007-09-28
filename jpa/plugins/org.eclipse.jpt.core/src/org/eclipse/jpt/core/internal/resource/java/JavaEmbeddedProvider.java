@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
@@ -34,7 +35,7 @@ public class JavaEmbeddedProvider implements MappingAnnotationProvider
 		super();
 	}
 
-	public Embedded buildAnnotation(Member member, JpaPlatform jpaPlatform) {
+	public Embedded buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
 		return new EmbeddedImpl((Attribute) member, jpaPlatform);
 	}
 

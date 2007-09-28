@@ -10,10 +10,11 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 
 public interface JavaResource
 {
-	JpaPlatform jpaPlatform();
+	IJpaPlatform jpaPlatform();
 	
 	void updateFromJava(CompilationUnit astRoot);
 

@@ -57,10 +57,7 @@
       eSuperTypes="#//IJpaEObject">
     <eOperations name="getContentId" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="JpaFile" eSuperTypes="#//JpaEObject #//IJpaFile">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="contentId" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JpaFile" eSuperTypes="#//JpaEObject #//IJpaFile"/>
   <eClassifiers xsi:type="ecore:EClass" name="IJpaSourceObject" abstract="true" interface="true"
       eSuperTypes="#//IJpaEObject">
     <eOperations name="getJpaFile" eType="#//IJpaFile"/>

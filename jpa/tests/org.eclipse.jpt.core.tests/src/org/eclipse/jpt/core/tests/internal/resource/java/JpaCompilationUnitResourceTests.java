@@ -12,12 +12,12 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
-import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
+import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
-import org.eclipse.jpt.core.internal.resource.java.JpaPlatform;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -52,7 +52,7 @@ public class JpaCompilationUnitResourceTests extends AnnotationTestCase {
 	}
 	
 
-	protected JpaPlatform buildJpaPlatform() {
+	protected IJpaPlatform buildJpaPlatform() {
 		return new GenericJpaPlatform();
 	}
 	

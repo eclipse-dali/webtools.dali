@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
@@ -27,7 +28,7 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 	private String name;
 
 	
-	public EntityImpl(Type type, JpaPlatform jpaPlatform) {
+	public EntityImpl(Type type, IJpaPlatform jpaPlatform) {
 		super(type, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
 		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), NAME_ADAPTER);
 	}
