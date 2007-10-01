@@ -11,19 +11,30 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.NonIndexedMemberIndexedAnnotationAdapter;
 
 public class SecondaryTableImpl extends AbstractTableResource implements SecondaryTable
 {	
+	/**
+	 * Use this constructor for a SecondaryTable that is nested in a SecondaryTables annotations
+	 */
 	protected SecondaryTableImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, IndexedAnnotationAdapter annotationAdapter) {
+		super(parent, member, daa, annotationAdapter);
+	}
+	
+	/**
+	 * Use this constructor for a non-nested SecondaryTable
+	 */
+	protected SecondaryTableImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 	}
 
@@ -42,8 +53,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Seconda
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, JPA.SECONDARY_TABLE__SCHEMA);
 	}
 
-	@Override
-	public IndexedAnnotationAdapter getAnnotationAdapter() {
+	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
 		return (IndexedAnnotationAdapter) super.getAnnotationAdapter();
 	}
 	
@@ -56,7 +66,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Seconda
 	}
 	
 	public void moveAnnotation(int newIndex) {
-		getAnnotationAdapter().moveAnnotation(newIndex);
+		getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
 	
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
@@ -67,7 +77,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Seconda
 	
 	// ********** static methods **********
 	static SecondaryTable createJavaSecondaryTable(JavaResource parent, Member member) {
-		return new SecondaryTableImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER, new NonIndexedMemberIndexedAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
+		return new SecondaryTableImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
 	static SecondaryTable createNestedJavaSecondaryTable(JavaResource parent, Member member, int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {

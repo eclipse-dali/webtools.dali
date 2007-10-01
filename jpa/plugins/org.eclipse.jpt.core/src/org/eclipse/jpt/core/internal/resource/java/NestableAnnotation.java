@@ -12,8 +12,15 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public interface NestableAnnotation extends Annotation
 {
+	//currently using this when the NestableAnnotation is moved from
+	//standalone to nested or from nested to standalone.
+	//not the greatest since you have to make sure to call all setter methods
 	void initializeFrom(NestableAnnotation oldAnnotation);
 	
+	/**
+	 * Should only be called when the NestableAnnotation is actually nested
+	 * @param newIndex
+	 */
 	void moveAnnotation(int newIndex);
 	
 	void removeAnnotation();
