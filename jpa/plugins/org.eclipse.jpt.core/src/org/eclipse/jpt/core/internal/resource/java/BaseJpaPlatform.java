@@ -117,7 +117,10 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	}
 	
 	protected IResourceModel buildJavaResourceModel(IJpaFile jpaFile) {
-		return new JavaResourceModel();
+		//TODO passing IJpaPlatform in because IJpaFile has no parent yet.
+		//I believe this should change once brian's changes to remove emf from the top-level
+		//model have been checked in.
+		return new JavaResourceModel(jpaFile, this);
 	}
 	
 	protected IResourceModel buildPersistenceResourceModel(IJpaFile jpaFile) {

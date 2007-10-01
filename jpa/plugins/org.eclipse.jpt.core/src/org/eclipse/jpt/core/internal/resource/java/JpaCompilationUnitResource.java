@@ -10,9 +10,14 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
@@ -28,16 +33,30 @@ public class JpaCompilationUnitResource
 
 	private final ICompilationUnit compilationUnit;
 	
-	//TODO move this to a superclass, JpaProject or the parent of JpaCompilationUnit should
-	//be in the constructor instead
+	//TODO move this to a superclass
 	private IJpaPlatform jpaPlatform;
 	
-	public JpaCompilationUnitResource(ICompilationUnit compilationUnit, IJpaPlatform jpaPlatform){
+	//TODO passing IJpaPlatform in because IJpaFile has no parent yet.
+	//I believe this should change once brian's changes to remove emf from the top-level
+	//model have been checked in.
+	public JpaCompilationUnitResource(IJpaFile jpaFile, IJpaPlatform jpaPlatform){
 		super();
-		this.compilationUnit = compilationUnit;
 		this.jpaPlatform = jpaPlatform;
+		this.compilationUnit = compilationUnitFrom(jpaFile);
+		updateFromJava(astRoot());
 	}
 	
+	private ICompilationUnit compilationUnitFrom(IJpaFile jpaFile) {
+		ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(jpaFile.getFile());
+		try {
+			compilationUnit.open(null);
+		}
+		catch (JavaModelException jme) {
+			// do nothing - we just won't have a primary type in this case
+		}
+		return compilationUnit;
+	}
+
 	/**
 	 * The persistentType resource for the compilation unit's primary type.
 	 * Will be null if the primary type is null.
@@ -62,8 +81,18 @@ public class JpaCompilationUnitResource
 		this.persistentType = persistentType;
 		//TODO property change notification, or other notification to the context model
 	}
-		
-	public void updateFromJava(CompilationUnit astRoot) {
+	
+	public void synchWithJavaDelta(IJavaElementDelta delta) {
+		if (delta.getElement().equals(this.compilationUnit)) {
+			updateFromJava(astRoot());
+		}
+	}
+	
+	private CompilationUnit astRoot() {
+		return JDTTools.buildASTRoot(this.compilationUnit);
+	}
+	
+	private void updateFromJava(CompilationUnit astRoot) {
 		IType iType = this.compilationUnit.findPrimaryType();
 		if (iType == null) {
 			setPersistentType(null);
