@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -21,8 +20,8 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 {
 	private final List<SecondaryTable> secondaryTables;
 	
-	protected SecondaryTablesImpl(Member member, IJpaPlatform jpaPlatform) {
-		super(member, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
+	protected SecondaryTablesImpl( JavaPersistentTypeResource parent, Member member) {
+		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.secondaryTables = new ArrayList<SecondaryTable>();
 	}
 
@@ -107,7 +106,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 	}
 	
 	private SecondaryTable createJavaSecondaryTable(int index) {
-		return SecondaryTableImpl.createNestedJavaSecondaryTable(jpaPlatform(), getMember(), index, getDeclarationAnnotationAdapter());
+		return SecondaryTableImpl.createNestedJavaSecondaryTable(this, getMember(), index, getDeclarationAnnotationAdapter());
 	}
 
 }

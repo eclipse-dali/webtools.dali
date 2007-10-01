@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
 public class GeneratedValueAnnotationDefinition implements AnnotationDefinition
@@ -31,9 +30,8 @@ public class GeneratedValueAnnotationDefinition implements AnnotationDefinition
 		super();
 	}
 
-
-	public GeneratedValue buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new GeneratedValueImpl(member, jpaPlatform);
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
+		return new GeneratedValueImpl(parent, member);
 	}
 
 	public String getAnnotationName() {

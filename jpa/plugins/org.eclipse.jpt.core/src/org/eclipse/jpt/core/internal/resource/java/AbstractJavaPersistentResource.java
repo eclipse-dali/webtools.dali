@@ -22,7 +22,6 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -33,17 +32,17 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	/**
 	 * stores all annotations(non-mapping) except duplicates, java compiler has an error for duplicates
 	 */
-	private Collection<Annotation> annotations;
+	private final Collection<Annotation> annotations;
 	
 	/**
 	 * stores all mapping annotations except duplicates, java compiler has an error for duplicates
 	 */
-	private Collection<MappingAnnotation> mappingAnnotations;
+	private final Collection<MappingAnnotation> mappingAnnotations;
 	
 	private boolean persistable;
 
-	public AbstractJavaPersistentResource(E member, IJpaPlatform jpaPlatform){
-		super(member, jpaPlatform);
+	public AbstractJavaPersistentResource(JavaResource parent, E member){
+		super(parent, member);
 		this.annotations = new ArrayList<Annotation>();
 		this.mappingAnnotations = new ArrayList<MappingAnnotation>();
 	}

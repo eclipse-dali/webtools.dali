@@ -21,7 +21,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.AccessType;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
@@ -37,16 +36,16 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	/**
 	 * store all member types including those that aren't persistable so we can include validation errors.
 	 */
-	private Collection<JavaPersistentTypeResource> nestedTypes;
+	private final Collection<JavaPersistentTypeResource> nestedTypes;
 	
-	private Collection<JavaPersistentAttributeResource> attributes;
+	private final Collection<JavaPersistentAttributeResource> attributes;
 	
 	private AccessType accessType;
 	
 	private String superClassQualifiedName;
 	
-	public JavaPersistentTypeResourceImpl(Type type, IJpaPlatform jpaPlatform){
-		super(type, jpaPlatform);
+	public JavaPersistentTypeResourceImpl(JavaResource parent, Type type){
+		super(parent, type);
 		this.nestedTypes = new ArrayList<JavaPersistentTypeResource>(); 
 		this.attributes = new ArrayList<JavaPersistentAttributeResource>();
 	}
@@ -55,12 +54,12 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 
 	@Override
 	protected MappingAnnotation buildMappingAnnotation(String mappingAnnotationName) {
-		return jpaPlatform().buildTypeMappingAnnotation(getMember(), mappingAnnotationName);
+		return jpaPlatform().buildTypeMappingAnnotation(this, getMember(), mappingAnnotationName);
 	}
 
 	@Override
 	protected Annotation buildAnnotation(String annotationName) {
-		return jpaPlatform().buildTypeAnnotation(getMember(), annotationName);
+		return jpaPlatform().buildTypeAnnotation(this, getMember(), annotationName);
 	}
 		
 	@Override
@@ -132,7 +131,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	
 	private JavaPersistentTypeResource createJavaPersistentType(IType nestedType) {
 		Type type = new Type(nestedType, this.modifySharedDocumentCommandExecutorProvider());
-		return new JavaPersistentTypeResourceImpl(type, jpaPlatform());
+		return new JavaPersistentTypeResourceImpl(this, type);
 	}
 
 	public Iterator<JavaPersistentAttributeResource> attributes() {
@@ -186,7 +185,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		else {
 			throw new IllegalArgumentException();
 		}
-		return new JavaPersistentAttributeResourceImpl(attribute, jpaPlatform());
+		return new JavaPersistentAttributeResourceImpl(this, attribute);
 	}
 	
 	private void removeAttribute(JavaPersistentAttributeResource attribute) {

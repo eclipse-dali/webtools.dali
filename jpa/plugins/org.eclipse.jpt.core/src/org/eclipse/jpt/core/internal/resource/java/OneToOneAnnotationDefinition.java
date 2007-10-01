@@ -34,8 +34,8 @@ public class OneToOneAnnotationDefinition implements MappingAnnotationDefinition
 		super();
 	}
 
-	public OneToOne buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new OneToOneImpl((Attribute) member, jpaPlatform);
+	public OneToOne buildAnnotation(JavaResource parent, Member member) {
+		return new OneToOneImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {

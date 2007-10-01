@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
 /**
@@ -31,5 +30,5 @@ public interface AnnotationDefinition
 	/**
 	 * Build and return an Annotation given the Member
 	 */
-	Annotation buildAnnotation(Member member, IJpaPlatform jpaPlatform);
+	Annotation buildAnnotation(JavaResource parent, Member member);
 }

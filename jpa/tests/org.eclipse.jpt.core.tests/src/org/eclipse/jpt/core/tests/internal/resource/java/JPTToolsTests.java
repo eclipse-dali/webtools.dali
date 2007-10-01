@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
+import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -34,6 +35,16 @@ public class JPTToolsTests extends AnnotationTestCase {
 		super(name);
 	}
 
+	protected JavaResource buildParentResource(final IJpaPlatform jpaPlatform) {
+		return new JavaResource() {
+			public void updateFromJava(CompilationUnit astRoot) {
+			}
+			public IJpaPlatform jpaPlatform() {
+				return jpaPlatform;
+			}
+		};
+	}
+	
 	protected IJpaPlatform buildJpaPlatform() {
 		return new GenericJpaPlatform();
 	}
@@ -45,10 +56,10 @@ public class JPTToolsTests extends AnnotationTestCase {
 	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType, CompilationUnit astRoot) {
 		JavaPersistentTypeResource typeResource = 
 			new JavaPersistentTypeResourceImpl(
+				buildParentResource(buildJpaPlatform()), 
 				new Type(testType, 
 					MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER, 
-					NullAnnotationEditFormatter.instance()), 
-				buildJpaPlatform());
+					NullAnnotationEditFormatter.instance()));
 		typeResource.updateFromJava(astRoot);
 		return typeResource;
 	}

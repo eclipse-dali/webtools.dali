@@ -33,9 +33,9 @@ public class VersionAnnotationDefinition implements MappingAnnotationDefinition
 	private VersionAnnotationDefinition() {
 		super();
 	}
-
-	public Version buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new VersionImpl((Attribute) member, jpaPlatform);
+	
+	public Version buildAnnotation(JavaResource parent, Member member) {
+		return new VersionImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {

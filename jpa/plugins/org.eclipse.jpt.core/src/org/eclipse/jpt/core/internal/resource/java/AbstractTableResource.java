@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -36,8 +35,8 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	private final AnnotationElementAdapter<String> catalogAdapter;
 
 	
-	protected AbstractTableResource(IJpaPlatform jpaPlatform, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
-		super(member, jpaPlatform, daa, annotationAdapter);
+	protected AbstractTableResource(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.nameAdapter(daa);
 		this.schemaDeclarationAdapter = this.schemaAdapter(daa);
 		this.catalogDeclarationAdapter = this.catalogAdapter(daa);

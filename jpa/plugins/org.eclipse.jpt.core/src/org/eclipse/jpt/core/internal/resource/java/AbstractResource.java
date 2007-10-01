@@ -13,17 +13,15 @@ import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
 public abstract class AbstractResource<E extends Member> implements JavaResource
-{
-	//TODO eventually this should be a jpaProject or a reference to the parent with a 
-	//way to go up the containment hierarchy to the project and its platform
-	private IJpaPlatform jpaPlatform;
+{	
+	private final JavaResource parent;
 	
 	private final E member;
 	
-	protected AbstractResource(E member, IJpaPlatform jpaPlatform) {
+	protected AbstractResource(JavaResource parent, E member) {
 		super();
+		this.parent = parent;
 		this.member = member;
-		this.jpaPlatform = jpaPlatform;
 	}
 	
 	public E getMember() {
@@ -31,6 +29,6 @@ public abstract class AbstractResource<E extends Member> implements JavaResource
 	}
 	
 	public IJpaPlatform jpaPlatform() {
-		return this.jpaPlatform;
+		return this.parent.jpaPlatform();
 	}
 }

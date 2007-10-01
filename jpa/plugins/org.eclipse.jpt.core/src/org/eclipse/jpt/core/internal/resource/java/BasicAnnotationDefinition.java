@@ -34,8 +34,8 @@ public class BasicAnnotationDefinition implements MappingAnnotationDefinition
 		super();
 	}
 
-	public Basic buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new BasicImpl((Attribute) member, jpaPlatform);
+	public MappingAnnotation buildAnnotation(JavaResource parent, Member member) {
+		return new BasicImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {

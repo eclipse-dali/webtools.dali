@@ -28,8 +28,8 @@ public class ColumnImpl extends AbstractAnnotationResource<Attribute> implements
 	private String name;
 	private String table;
 
-	public ColumnImpl(Attribute attribute, IJpaPlatform jpaPlatform) {
-		super(attribute, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
+	public ColumnImpl(JavaResource parent, Attribute attribute) {
+		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), NAME_ADAPTER);
 		this.tableAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), TABLE_ADAPTER);
 	}

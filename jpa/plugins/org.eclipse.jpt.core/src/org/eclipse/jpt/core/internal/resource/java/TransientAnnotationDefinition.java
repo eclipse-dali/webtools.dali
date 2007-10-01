@@ -34,8 +34,8 @@ public class TransientAnnotationDefinition implements MappingAnnotationDefinitio
 		super();
 	}
 
-	public Transient buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new TransientImpl((Attribute) member, jpaPlatform);
+	public Transient buildAnnotation(JavaResource parent, Member member) {
+		return new TransientImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {

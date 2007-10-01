@@ -34,8 +34,8 @@ public class IdAnnotationDefinition implements MappingAnnotationDefinition
 		super();
 	}
 
-	public Id buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new IdImpl((Attribute) member, jpaPlatform);
+	public Id buildAnnotation(JavaResource parent, Member member) {
+		return new IdImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {

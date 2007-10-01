@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
@@ -21,14 +20,14 @@ public abstract class AbstractAnnotationResource<E extends Member> extends Abstr
 
 	private final AnnotationAdapter annotationAdapter;
 		
-	protected AbstractAnnotationResource(E member, IJpaPlatform jpaPlatform, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
-		super(member, jpaPlatform);
+	protected AbstractAnnotationResource(JavaResource parent, E member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, member);
 		this.daa = daa;
 		this.annotationAdapter = annotationAdapter;
 	}
 	
-	protected AbstractAnnotationResource(E member, IJpaPlatform jpaPlatform, DeclarationAnnotationAdapter daa) {
-		this(member, jpaPlatform, daa, new MemberAnnotationAdapter(member, daa));
+	protected AbstractAnnotationResource(JavaResource parent, E member, DeclarationAnnotationAdapter daa) {
+		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
 	}
 
 	

@@ -10,14 +10,13 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
 public class GeneratedValueImpl extends AbstractAnnotationResource<Member> implements GeneratedValue
 {
 
-	public GeneratedValueImpl(Member member, IJpaPlatform jpaPlatform) {
-		super(member, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
+	public GeneratedValueImpl(JavaResource parent, Member member) {
+		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
 	public String getAnnotationName() {

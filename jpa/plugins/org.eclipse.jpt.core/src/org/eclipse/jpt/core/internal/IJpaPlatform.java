@@ -14,6 +14,8 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
@@ -87,7 +89,7 @@ public interface IJpaPlatform
 	 * @param mappingAnnotationName
 	 * @return
 	 */
-	MappingAnnotation buildTypeMappingAnnotation(Type type, String mappingAnnotationName);
+	MappingAnnotation buildTypeMappingAnnotation(JavaPersistentTypeResource parent, Type type, String mappingAnnotationName);
 
 	/**
 	 * Build an Annotation with the given fully qualififed annotation name.
@@ -95,7 +97,7 @@ public interface IJpaPlatform
 	 * @param annotationName
 	 * @return
 	 */
-	Annotation buildTypeAnnotation(Type type, String annotationName);
+	Annotation buildTypeAnnotation(JavaPersistentTypeResource parent, Type type, String annotationName);
 	
 	/**
 	 * Return the fully qualified names of the annotations that can exist
@@ -122,7 +124,7 @@ public interface IJpaPlatform
 	 * @param mappingAnnotationName
 	 * @return
 	 */
-	MappingAnnotation buildAttributeMappingAnnotation(Attribute attribute, String mappingAnnotationName);
+	MappingAnnotation buildAttributeMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String mappingAnnotationName);
 	
 	/**
 	 * Build an Annotation with the given fully qualififed annotation name.
@@ -130,7 +132,7 @@ public interface IJpaPlatform
 	 * @param annotationName
 	 * @return
 	 */
-	Annotation buildAttributeAnnotation(Attribute attribute, String annotationName);
+	Annotation buildAttributeAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String annotationName);
 	
 	/**
 	 * Return the fully qualified names of the annotations that can exist

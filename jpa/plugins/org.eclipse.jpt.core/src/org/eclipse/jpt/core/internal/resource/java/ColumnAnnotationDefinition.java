@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
@@ -32,9 +31,8 @@ public class ColumnAnnotationDefinition implements AnnotationDefinition
 		super();
 	}
 
-
-	public Column buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new ColumnImpl((Attribute) member, jpaPlatform);
+	public Column buildAnnotation(JavaResource parent, Member member) {
+		return new ColumnImpl(parent, (Attribute) member);
 	}
 
 	public String getAnnotationName() {

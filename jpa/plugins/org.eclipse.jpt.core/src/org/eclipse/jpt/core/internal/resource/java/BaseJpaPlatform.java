@@ -240,14 +240,14 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	
 	//********************* IJpaPlatform implementation *************************
 
-	public MappingAnnotation buildTypeMappingAnnotation(Type type, String mappingAnnotationName) {
+	public MappingAnnotation buildTypeMappingAnnotation(JavaPersistentTypeResource parent, Type type, String mappingAnnotationName) {
 		MappingAnnotationDefinition annotationDefinition = typeMappingAnnotationDefinition(mappingAnnotationName);
-		return annotationDefinition.buildAnnotation(type, this);
+		return annotationDefinition.buildAnnotation(parent, type);
 	}
 	
-	public Annotation buildTypeAnnotation(Type type, String annotationName) {
+	public Annotation buildTypeAnnotation(JavaPersistentTypeResource parent, Type type, String annotationName) {
 		AnnotationDefinition annotationDefinition = typeAnnotationDefinition(annotationName);
-		return annotationDefinition.buildAnnotation(type, this);
+		return annotationDefinition.buildAnnotation(parent, type);
 	}
 
 	public Iterator<String> correspondingTypeAnnotationNames(String mappingAnnotationName) {
@@ -272,14 +272,14 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		};
 	}
 	
-	public MappingAnnotation buildAttributeMappingAnnotation(Attribute attribute, String mappingAnnotationName) {
+	public MappingAnnotation buildAttributeMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String mappingAnnotationName) {
 		MappingAnnotationDefinition annotationDefinition = attributeMappingAnnotationDefinition(mappingAnnotationName);
-		return annotationDefinition.buildAnnotation(attribute, this);
+		return annotationDefinition.buildAnnotation(parent, attribute);
 	}
 	
-	public Annotation buildAttributeAnnotation(Attribute attribute, String annotationName) {
+	public Annotation buildAttributeAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String annotationName) {
 		AnnotationDefinition annotationDefinition = attributeAnnotationDefinition(annotationName);
-		return annotationDefinition.buildAnnotation(attribute, this);
+		return annotationDefinition.buildAnnotation(parent, attribute);
 	}
 	
 	public Iterator<String> correspondingAttributeAnnotationNames(String mappingAnnotationName) {

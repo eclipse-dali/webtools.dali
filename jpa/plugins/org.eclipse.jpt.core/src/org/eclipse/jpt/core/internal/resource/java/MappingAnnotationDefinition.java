@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
 /**
@@ -32,5 +31,5 @@ public interface MappingAnnotationDefinition extends AnnotationDefinition
 	 */
 	Iterator<String> correspondingAnnotationNames();
 	
-	MappingAnnotation buildAnnotation(Member member, IJpaPlatform jpaPlatform);
+	MappingAnnotation buildAnnotation(JavaResource parent, Member member);
 }

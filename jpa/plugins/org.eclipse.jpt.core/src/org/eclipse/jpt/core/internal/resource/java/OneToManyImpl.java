@@ -10,13 +10,12 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 
 public class OneToManyImpl extends AbstractAnnotationResource<Attribute> implements OneToMany
 {	
-	public OneToManyImpl(Attribute attribute, IJpaPlatform jpaPlatform) {
-		super(attribute, jpaPlatform, DECLARATION_ANNOTATION_ADAPTER);
+	public OneToManyImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
+		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
 	public String getAnnotationName() {

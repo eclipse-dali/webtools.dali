@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -21,7 +20,7 @@ import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
-public class JpaCompilationUnitResource
+public class JpaCompilationUnitResource implements JavaResource
 {
 	/**
 	 * The primary type of the CompilationUnit. Not going to handle
@@ -57,6 +56,10 @@ public class JpaCompilationUnitResource
 		return compilationUnit;
 	}
 
+	public ICompilationUnit getCompilationUnit() {
+		return this.compilationUnit;
+	}
+	
 	/**
 	 * The persistentType resource for the compilation unit's primary type.
 	 * Will be null if the primary type is null.
@@ -74,7 +77,7 @@ public class JpaCompilationUnitResource
 	
 	private JavaPersistentTypeResource createJavaPersistentType(IType iType) {
 		Type type = new Type(iType, this.modifySharedDocumentCommandExecutorProvider());
-		return new JavaPersistentTypeResourceImpl(type, this.jpaPlatform);
+		return new JavaPersistentTypeResourceImpl(this, type);
 	}
 	
 	private void setPersistentType(JavaPersistentTypeResource persistentType) {
@@ -82,17 +85,11 @@ public class JpaCompilationUnitResource
 		//TODO property change notification, or other notification to the context model
 	}
 	
-	public void synchWithJavaDelta(IJavaElementDelta delta) {
-		if (delta.getElement().equals(this.compilationUnit)) {
-			updateFromJava(astRoot());
-		}
-	}
-	
 	private CompilationUnit astRoot() {
 		return JDTTools.buildASTRoot(this.compilationUnit);
 	}
 	
-	private void updateFromJava(CompilationUnit astRoot) {
+	public void updateFromJava(CompilationUnit astRoot) {
 		IType iType = this.compilationUnit.findPrimaryType();
 		if (iType == null) {
 			setPersistentType(null);
@@ -110,5 +107,9 @@ public class JpaCompilationUnitResource
 	//TODO using platform instead of project that i should be getting from a super class
 	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
 		return this.jpaPlatform.modifySharedDocumentCommandExecutorProvider();
+	}
+	
+	public IJpaPlatform jpaPlatform() {
+		return this.jpaPlatform;
 	}
 }

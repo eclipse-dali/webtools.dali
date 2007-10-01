@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
 public class SecondaryTablesAnnotationDefinition implements AnnotationDefinition
@@ -31,9 +30,8 @@ public class SecondaryTablesAnnotationDefinition implements AnnotationDefinition
 		super();
 	}
 
-
-	public SecondaryTables buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new SecondaryTablesImpl(member, jpaPlatform);
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
+		return new SecondaryTablesImpl((JavaPersistentTypeResource) parent, member);
 	}
 
 	public String getAnnotationName() {

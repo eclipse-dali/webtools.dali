@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IResourceModel;
+import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.utility.internal.BitTools;
 
 public class JavaResourceModel implements IResourceModel
@@ -81,7 +82,10 @@ public class JavaResourceModel implements IResourceModel
 		if (BitTools.onlyFlagIsSet(delta.getFlags(), IJavaElementDelta.F_PRIMARY_WORKING_COPY)) {
 			return;
 		}
-		this.compilationUnitResource.synchWithJavaDelta(delta);
+		
+		if (delta.getElement().equals(this.compilationUnitResource.getCompilationUnit())) {
+			this.compilationUnitResource.updateFromJava(JDTTools.buildASTRoot(this.compilationUnitResource.getCompilationUnit()));
+		}
 	}
 
 }

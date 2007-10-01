@@ -14,7 +14,6 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -30,20 +29,20 @@ public class JavaPersistentAttributeResourceImpl
 //	
 //	private boolean typeIsArray;
 	
-	public JavaPersistentAttributeResourceImpl(Attribute attribute, IJpaPlatform jpaPlatform){
-		super(attribute, jpaPlatform);
+	public JavaPersistentAttributeResourceImpl(JavaPersistentTypeResource parent, Attribute attribute){
+		super(parent, attribute);
 	}
 
 	// ******** AbstractJavaPersistentResource implementation ********
 	
 	@Override
 	protected MappingAnnotation buildMappingAnnotation(String mappingAnnotationName) {
-		return jpaPlatform().buildAttributeMappingAnnotation(getMember(), mappingAnnotationName);
+		return jpaPlatform().buildAttributeMappingAnnotation(this, getMember(), mappingAnnotationName);
 	}
 
 	@Override
 	protected Annotation buildAnnotation(String annotationName) {
-		return jpaPlatform().buildAttributeAnnotation(getMember(), annotationName);
+		return jpaPlatform().buildAttributeAnnotation(this, getMember(), annotationName);
 	}
 		
 	@Override

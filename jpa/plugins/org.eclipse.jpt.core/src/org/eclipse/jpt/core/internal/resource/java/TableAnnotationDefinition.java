@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
 public class TableAnnotationDefinition implements AnnotationDefinition
@@ -31,9 +30,8 @@ public class TableAnnotationDefinition implements AnnotationDefinition
 		super();
 	}
 
-
-	public Table buildAnnotation(Member member, IJpaPlatform jpaPlatform) {
-		return new TableImpl(jpaPlatform, member);
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
+		return new TableImpl(parent, member);
 	}
 
 	public String getAnnotationName() {
