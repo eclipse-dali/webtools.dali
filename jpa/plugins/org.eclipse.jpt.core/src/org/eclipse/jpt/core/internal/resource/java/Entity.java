@@ -16,8 +16,16 @@ public interface Entity extends MappingAnnotation
 {
 	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ENTITY);
 
+	/**
+	 * Corresponds to the name element of the Entity annotation.
+	 * Returns null if the name element does not exist in java.
+	 */
 	String getName();
 	
+	/**
+	 * Corresponds to the name element of the Entity annotation.
+	 * Set to null to remove the name element.
+	 */
 	void setName(String name);
 
 }
