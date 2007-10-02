@@ -23,7 +23,6 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
 
-
 	private String name;
 
 	

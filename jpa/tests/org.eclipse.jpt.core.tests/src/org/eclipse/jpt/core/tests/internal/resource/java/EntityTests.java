@@ -102,4 +102,30 @@ public class EntityTests extends AnnotationTestCase {
 		assertNull(entity.getName());
 	}
 
+	public void testSetName() throws Exception {
+		IType testType = this.createTestEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
+		
+		Entity entity = (Entity) typeResource.mappingAnnotation(JPA.ENTITY);
+		assertNull(entity.getName());
+		entity.setName("Foo");
+		assertEquals("Foo", entity.getName());
+		
+		assertSourceContains("@Entity(name=\"Foo\")");
+	}
+	
+	public void testSetNameNull() throws Exception {
+		IType testType = this.createTestEntityWithName();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
+		
+		Entity entity = (Entity) typeResource.mappingAnnotation(JPA.ENTITY);
+		assertEquals(ENTITY_NAME, entity.getName());
+		
+		entity.setName(null);
+		assertNull(entity.getName());
+		
+		assertSourceContains("@Entity");
+	}
 }
