@@ -12,19 +12,19 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
-public interface OneToMany extends MappingAnnotation
+public interface OneToMany extends RelationshipMappingAnnotation
 {
 	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ONE_TO_MANY);
 	
 	/**
-	 * Corresponds to the fetch element of the ManyToOne annotation.
-	 * Returns null if the fetch element does not exist in java.
+	 * Corresponds to the mappedBy element of the OneToMany annotation. 
+	 * Returns null if the mappedBy element does not exist in java.
 	 */
-	FetchType getFetch();
+	String getMappedBy();
 	
 	/**
-	 * Corresponds to the fetch element of the ManyToOne annotation.
-	 * Set to null to remove the fetch element.
+	 * Corresponds to the mappedBy element of the OneToMany annotation. 
+	 * Set to null to remove the mappedBy element.
 	 */
-	void setFetch(FetchType fetch);
+	void setMappedBy(String mappedBy);
 }

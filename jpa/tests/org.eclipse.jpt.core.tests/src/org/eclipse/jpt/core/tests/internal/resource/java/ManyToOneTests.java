@@ -68,6 +68,35 @@ public class ManyToOneTests extends AnnotationTestCase {
 		});
 	}
 
+	private IType createTestManyToOneWithTargetEntity() throws Exception {
+		this.createAnnotationAndMembers("ManyToOne", "Class targetEntity() default void.class;");
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.MANY_TO_ONE);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@ManyToOne(targetEntity=AnnotationTestType.class)");
+			}
+		});
+	}
+
+	private IType createTestManyToOneWithOptional() throws Exception {
+		this.createAnnotationAndMembers("ManyToOne", "boolean optional() default true;");
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.MANY_TO_ONE);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@ManyToOne(optional=true)");
+			}
+		});
+	}
+	
+
 	protected JavaResource buildParentResource(final IJpaPlatform jpaPlatform) {
 		return new JavaResource() {
 			public void updateFromJava(CompilationUnit astRoot) {
@@ -134,4 +163,99 @@ public class ManyToOneTests extends AnnotationTestCase {
 		assertSourceContains("@ManyToOne");
 		assertSourceDoesNotContain("fetch");
 	}
+	
+	
+	public void testGetTargetEntity() throws Exception {
+		IType testType = this.createTestManyToOneWithTargetEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		ManyToOne manyToOne = (ManyToOne) attributeResource.mappingAnnotation(JPA.MANY_TO_ONE);
+		assertEquals(TYPE_NAME, manyToOne.getTargetEntity());
+	}
+	
+	public void testSetTargetEntity() throws Exception {
+		IType testType = this.createTestManyToOneWithTargetEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		ManyToOne manyToOne = (ManyToOne) attributeResource.mappingAnnotation(JPA.MANY_TO_ONE);
+		assertEquals(TYPE_NAME, manyToOne.getTargetEntity());
+		
+		manyToOne.setTargetEntity("Foo");
+		
+		assertSourceContains("@ManyToOne(targetEntity=Foo.class)");
+	}
+	
+	public void testSetTargetEntityNull() throws Exception {
+		IType testType = this.createTestManyToOneWithTargetEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		ManyToOne manyToOne = (ManyToOne) attributeResource.mappingAnnotation(JPA.MANY_TO_ONE);
+		assertEquals(TYPE_NAME, manyToOne.getTargetEntity());
+		
+		manyToOne.setTargetEntity(null);
+		
+		assertSourceContains("@ManyToOne");
+		assertSourceDoesNotContain("targetEntity");
+	}
+	
+	
+	public void testGetFullyQualifiedTargetEntity() throws Exception {
+		IType testType = this.createTestManyToOneWithTargetEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		ManyToOne manyToOne = (ManyToOne) attributeResource.mappingAnnotation(JPA.MANY_TO_ONE);
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, manyToOne.getFullyQualfiedTargetEntity());
+		
+		manyToOne.setTargetEntity("Foo");
+		
+		assertSourceContains("@ManyToOne(targetEntity=Foo.class)");
+		
+		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
+		assertEquals("Foo", manyToOne.getTargetEntity());
+		
+		assertNull(manyToOne.getFullyQualfiedTargetEntity());
+	}
+	
+	public void testGetOptional() throws Exception {
+		IType testType = this.createTestManyToOneWithOptional();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		ManyToOne manyToOne = (ManyToOne) attributeResource.mappingAnnotation(JPA.MANY_TO_ONE);
+		assertTrue(manyToOne.getOptional());
+	}
+
+	public void testSetOptional() throws Exception {
+		IType testType = this.createTestManyToOneWithOptional();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		ManyToOne manyToOne = (ManyToOne) attributeResource.mappingAnnotation(JPA.MANY_TO_ONE);
+		assertTrue(manyToOne.getOptional());
+		
+		manyToOne.setOptional(false);
+		assertFalse(manyToOne.getOptional());
+		
+		assertSourceContains("@ManyToOne(optional=false)");
+	}
+	
+	public void testSetOptionalNull() throws Exception {
+		IType testType = this.createTestManyToOneWithOptional();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		ManyToOne manyToOne = (ManyToOne) attributeResource.mappingAnnotation(JPA.MANY_TO_ONE);
+		assertTrue(manyToOne.getOptional());
+		
+		manyToOne.setOptional(null);
+		assertNull(manyToOne.getOptional());
+		
+		assertSourceContains("@ManyToOne");
+		assertSourceDoesNotContain("optional");
+	}
+
 }

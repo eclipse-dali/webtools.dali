@@ -143,6 +143,7 @@ public class EntityTests extends AnnotationTestCase {
 		assertNull(entity.getName());
 		
 		assertSourceContains("@Entity");
+		assertSourceDoesNotContain("@Entity(name=\"Foo\")");
 	}
 	
 	public void testMappedSuperclassAndEntity() throws Exception {

@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.resource.java.Basic;
 import org.eclipse.jpt.core.internal.resource.java.FetchType;
 import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
@@ -26,6 +25,7 @@ import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.ManyToMany;
 import org.eclipse.jpt.core.internal.resource.java.OneToOne;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
+import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase.DefaultAnnotationWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class OneToOneTests extends AnnotationTestCase {
@@ -66,6 +66,48 @@ public class OneToOneTests extends AnnotationTestCase {
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuffer sb) {
 				sb.append("@OneToOne(fetch=FetchType.EAGER)");
+			}
+		});
+	}
+
+	private IType createTestOneToOneWithTargetEntity() throws Exception {
+		this.createAnnotationAndMembers("OneToOne", "Class targetEntity() default void.class;");
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ONE_TO_ONE);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@OneToOne(targetEntity=AnnotationTestType.class)");
+			}
+		});
+	}
+
+	private IType createTestOneToOneWithOptional() throws Exception {
+		this.createAnnotationAndMembers("OneToOne", "boolean optional() default true;");
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ONE_TO_ONE);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@OneToOne(optional=true)");
+			}
+		});
+	}
+	
+	private IType createTestOneToOneWithMappedBy() throws Exception {
+		this.createAnnotationAndMembers("OneToOne", "String mappedBy() default\"\";");
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ONE_TO_ONE);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@OneToOne(mappedBy=\"foo\")");
 			}
 		});
 	}
@@ -136,4 +178,145 @@ public class OneToOneTests extends AnnotationTestCase {
 		assertSourceContains("@OneToOne");
 		assertSourceDoesNotContain("fetch");
 	}
+	
+	
+	public void testGetTargetEntity() throws Exception {
+		IType testType = this.createTestOneToOneWithTargetEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertEquals(TYPE_NAME, oneToOne.getTargetEntity());
+	}
+	
+	public void testSetTargetEntity() throws Exception {
+		IType testType = this.createTestOneToOneWithTargetEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertEquals(TYPE_NAME, oneToOne.getTargetEntity());
+		
+		oneToOne.setTargetEntity("Foo");
+		
+		assertSourceContains("@OneToOne(targetEntity=Foo.class)");
+	}
+	
+	public void testSetTargetEntityNull() throws Exception {
+		IType testType = this.createTestOneToOneWithTargetEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertEquals(TYPE_NAME, oneToOne.getTargetEntity());
+		
+		oneToOne.setTargetEntity(null);
+		
+		assertSourceContains("@OneToOne");
+		assertSourceDoesNotContain("targetEntity");
+	}
+	
+	
+	public void testGetFullyQualifiedTargetEntity() throws Exception {
+		IType testType = this.createTestOneToOneWithTargetEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, oneToOne.getFullyQualfiedTargetEntity());
+		
+		oneToOne.setTargetEntity("Foo");
+		
+		assertSourceContains("@OneToOne(targetEntity=Foo.class)");
+		
+		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
+		assertEquals("Foo", oneToOne.getTargetEntity());
+		
+		assertNull(oneToOne.getFullyQualfiedTargetEntity());
+	}
+	
+	public void testGetOptional() throws Exception {
+		IType testType = this.createTestOneToOneWithOptional();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertTrue(oneToOne.getOptional());
+	}
+
+	public void testSetOptional() throws Exception {
+		IType testType = this.createTestOneToOneWithOptional();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertTrue(oneToOne.getOptional());
+		
+		oneToOne.setOptional(false);
+		assertFalse(oneToOne.getOptional());
+		
+		assertSourceContains("@OneToOne(optional=false)");
+	}
+	
+	public void testSetOptionalNull() throws Exception {
+		IType testType = this.createTestOneToOneWithOptional();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertTrue(oneToOne.getOptional());
+		
+		oneToOne.setOptional(null);
+		assertNull(oneToOne.getOptional());
+		
+		assertSourceContains("@OneToOne");
+		assertSourceDoesNotContain("optional");
+	}
+	
+	public void testGetMappedBy() throws Exception {
+		IType testType = this.createTestOneToOneWithMappedBy();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertEquals("foo", oneToOne.getMappedBy());
+	}
+
+	public void testGetMappedByNull() throws Exception {
+		IType testType = this.createTestOneToOne();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertEquals(null, oneToOne.getMappedBy());
+	}
+
+	public void testSetMappedBy() throws Exception {
+		IType testType = this.createTestOneToOne();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertNull(oneToOne.getMappedBy());
+		oneToOne.setMappedBy("bar");
+		assertEquals("bar", oneToOne.getMappedBy());
+		
+		assertSourceContains("@OneToOne(mappedBy=\"bar\")");
+	}
+	
+	public void testSetMappedByNull() throws Exception {
+		IType testType = this.createTestOneToOneWithMappedBy();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertEquals("foo", oneToOne.getMappedBy());
+		
+		oneToOne.setMappedBy(null);
+		assertNull(oneToOne.getMappedBy());
+		
+		assertSourceContains("@OneToOne");
+		assertSourceDoesNotContain("mappedBy");
+	}
+
 }

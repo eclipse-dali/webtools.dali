@@ -12,44 +12,72 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 
-public class OneToManyImpl extends AbstractAnnotationResource<Attribute> implements OneToMany
+public class OneToManyImpl extends AbstractRelationshipMappingAnnotation implements OneToMany
 {	
-	private final AnnotationElementAdapter<String> fetchAdapter;
+	private static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter();	
 
 	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildFetchAdapter();
 
-	private FetchType fetch;
+	private static final DeclarationAnnotationElementAdapter<String> MAPPED_BY_ADAPTER = buildMappedByAdapter();	
+
+	private final AnnotationElementAdapter<String> mappedByAdapter;
+
+	private String mappedBy;
 
 	public OneToManyImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.fetchAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
+		this.mappedByAdapter = buildAnnotationElementAdapter(MAPPED_BY_ADAPTER);
 	}
 	
+	//**************** AbstractRelationshipMappingAnnotation implementation **************
+
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> targetEntityAdapter() {
+		return TARGET_ENTITY_ADAPTER;
+	}
+	
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> fetchAdapter() {
+		return FETCH_ADAPTER;
+	}
+	
+	//**************** Annotation implementation **************
+
 	public String getAnnotationName() {
 		return JPA.ONE_TO_MANY;
 	}
 
-	public FetchType getFetch() {
-		return this.fetch;
+	
+	public String getMappedBy() {
+		return this.mappedBy;
 	}
 	
-	public void setFetch(FetchType fetch) {
-		this.fetch = fetch;
-		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
+	public void setMappedBy(String mappedBy) {
+		this.mappedBy = mappedBy;
+		this.mappedByAdapter.setValue(mappedBy);
 	}
 	
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
-		this.setFetch(FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot)));
+		super.updateFromJava(astRoot);
+		this.setMappedBy(this.mappedByAdapter.getValue(astRoot));
 	}
-	
+
 	// ********** static methods **********
 
+	private static DeclarationAnnotationElementAdapter<String> buildTargetEntityAdapter() {
+		return buildTargetEntityAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_MANY__TARGET_ENTITY);
+	}
+
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_MANY__FETCH, false);
+		return buildFetchAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_MANY__FETCH);
+	}
+	
+	private static DeclarationAnnotationElementAdapter<String> buildMappedByAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_MANY__MAPPED_BY, false); // false = do not remove annotation when empty
 	}
 
 }

@@ -12,46 +12,79 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter;
+import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 
 
-public class ManyToOneImpl extends AbstractAnnotationResource<Attribute> implements ManyToOne
+public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation implements ManyToOne
 {	
-	private final AnnotationElementAdapter<String> fetchAdapter;
+	private static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter();	
 
 	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildFetchAdapter();
-
-	private FetchType fetch;
 	
+	private static final DeclarationAnnotationElementAdapter<String> OPTIONAL_ADAPTER = buildOptionalAdapter();
+	
+	private final AnnotationElementAdapter<String> optionalAdapter;
+
+	private Boolean optional;
 
 	public ManyToOneImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.fetchAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
+		this.optionalAdapter = this.buildAnnotationElementAdapter(OPTIONAL_ADAPTER);
 	}
+	
+	//**************** AbstractRelationshipMappingAnnotation implementation **************
+	
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> targetEntityAdapter() {
+		return TARGET_ENTITY_ADAPTER;
+	}
+	
+	@Override
+	protected DeclarationAnnotationElementAdapter<String> fetchAdapter() {
+		return FETCH_ADAPTER;
+	}
+	
+	//**************** Annotation implementation **************
 	
 	public String getAnnotationName() {
 		return JPA.MANY_TO_ONE;
 	}
 
-	public FetchType getFetch() {
-		return this.fetch;
+	
+	public Boolean getOptional() {
+		return this.optional;
 	}
 	
-	public void setFetch(FetchType fetch) {
-		this.fetch = fetch;
-		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
+	public void setOptional(Boolean optional) {
+		this.optional = optional;
+		this.optionalAdapter.setValue(BooleanUtility.toJavaAnnotationValue(optional));
 	}
-	
+
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
-		this.setFetch(FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot)));
+		super.updateFromJava(astRoot);
+		this.setOptional(BooleanUtility.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot)));
 	}
-	
+
 	// ********** static methods **********
+	
+	private static DeclarationAnnotationElementAdapter<String> buildTargetEntityAdapter() {
+		return buildTargetEntityAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_ONE__TARGET_ENTITY);
+	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_ONE__FETCH, false);
+		return buildFetchAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_ONE__FETCH);
+	}
+	
+	private static DeclarationAnnotationElementAdapter<String> buildOptionalAdapter() {
+		return buildOptionalAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_ONE__OPTIONAL);
+	}
+	
+	private static DeclarationAnnotationElementAdapter<String> buildOptionalAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, false, BooleanStringExpressionConverter.instance());
 	}
 
 }

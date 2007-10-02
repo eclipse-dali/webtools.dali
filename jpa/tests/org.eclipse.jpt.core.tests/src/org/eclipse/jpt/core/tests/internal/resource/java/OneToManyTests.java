@@ -67,6 +67,34 @@ public class OneToManyTests extends AnnotationTestCase {
 			}
 		});
 	}
+	
+	private IType createTestOneToManyWithTargetEntity() throws Exception {
+		this.createAnnotationAndMembers("OneToMany", "Class targetEntity() default void.class;");
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ONE_TO_MANY);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@OneToMany(targetEntity=AnnotationTestType.class)");
+			}
+		});
+	}
+	
+	private IType createTestOneToManyWithMappedBy() throws Exception {
+		this.createAnnotationAndMembers("OneToMany", "String mappedBy() default\"\";");
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ONE_TO_MANY);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@OneToMany(mappedBy=\"foo\")");
+			}
+		});
+	}
 
 	protected JavaResource buildParentResource(final IJpaPlatform jpaPlatform) {
 		return new JavaResource() {
@@ -134,4 +162,108 @@ public class OneToManyTests extends AnnotationTestCase {
 		assertSourceContains("@OneToMany");
 		assertSourceDoesNotContain("fetch");
 	}
+	
+	
+	public void testGetTargetEntity() throws Exception {
+		IType testType = this.createTestOneToManyWithTargetEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToMany oneToMany = (OneToMany) attributeResource.mappingAnnotation(JPA.ONE_TO_MANY);
+		assertEquals(TYPE_NAME, oneToMany.getTargetEntity());
+	}
+	
+	public void testSetTargetEntity() throws Exception {
+		IType testType = this.createTestOneToManyWithTargetEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToMany oneToMany = (OneToMany) attributeResource.mappingAnnotation(JPA.ONE_TO_MANY);
+		assertEquals(TYPE_NAME, oneToMany.getTargetEntity());
+		
+		oneToMany.setTargetEntity("Foo");
+		
+		assertSourceContains("@OneToMany(targetEntity=Foo.class)");
+	}
+	
+	public void testSetTargetEntityNull() throws Exception {
+		IType testType = this.createTestOneToManyWithTargetEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToMany oneToMany = (OneToMany) attributeResource.mappingAnnotation(JPA.ONE_TO_MANY);
+		assertEquals(TYPE_NAME, oneToMany.getTargetEntity());
+		
+		oneToMany.setTargetEntity(null);
+		
+		assertSourceContains("@OneToMany");
+		assertSourceDoesNotContain("targetEntity");
+	}
+	
+	
+	public void testGetFullyQualifiedTargetEntity() throws Exception {
+		IType testType = this.createTestOneToManyWithTargetEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToMany oneToMany = (OneToMany) attributeResource.mappingAnnotation(JPA.ONE_TO_MANY);
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, oneToMany.getFullyQualfiedTargetEntity());
+		
+		oneToMany.setTargetEntity("Foo");
+		
+		assertSourceContains("@OneToMany(targetEntity=Foo.class)");
+		
+		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
+		assertEquals("Foo", oneToMany.getTargetEntity());
+		
+		assertNull(oneToMany.getFullyQualfiedTargetEntity());
+	}
+	
+	public void testGetMappedBy() throws Exception {
+		IType testType = this.createTestOneToManyWithMappedBy();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToMany oneToMany = (OneToMany) attributeResource.mappingAnnotation(JPA.ONE_TO_MANY);
+		assertEquals("foo", oneToMany.getMappedBy());
+	}
+
+
+	public void testGetMappedByNull() throws Exception {
+		IType testType = this.createTestOneToMany();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToMany oneToMany = (OneToMany) attributeResource.mappingAnnotation(JPA.ONE_TO_MANY);
+		assertEquals(null, oneToMany.getMappedBy());
+	}
+
+	public void testSetMappedBy() throws Exception {
+		IType testType = this.createTestOneToMany();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToMany oneToMany = (OneToMany) attributeResource.mappingAnnotation(JPA.ONE_TO_MANY);
+		assertNull(oneToMany.getMappedBy());
+		oneToMany.setMappedBy("bar");
+		assertEquals("bar", oneToMany.getMappedBy());
+		
+		assertSourceContains("@OneToMany(mappedBy=\"bar\")");
+	}
+	
+	public void testSetMappedByNull() throws Exception {
+		IType testType = this.createTestOneToManyWithMappedBy();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToMany oneToMany = (OneToMany) attributeResource.mappingAnnotation(JPA.ONE_TO_MANY);
+		assertEquals("foo", oneToMany.getMappedBy());
+		
+		oneToMany.setMappedBy(null);
+		assertNull(oneToMany.getMappedBy());
+		
+		assertSourceContains("@OneToMany");
+		assertSourceDoesNotContain("mappedBy");
+	}
+
 }
