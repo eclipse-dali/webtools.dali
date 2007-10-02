@@ -12,9 +12,8 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
-public interface SecondaryTable extends Table, NestableAnnotation
+public interface AttributeOverrides extends ContainerAnnotation<AttributeOverride>
 {
-	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.SECONDARY_TABLE);
-
+	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ATTRIBUTE_OVERRIDES);
 
 }

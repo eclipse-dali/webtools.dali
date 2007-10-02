@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+
 
 public interface NestableAnnotation extends Annotation
 {
@@ -16,6 +18,8 @@ public interface NestableAnnotation extends Annotation
 	//standalone to nested or from nested to standalone.
 	//not the greatest since you have to make sure to call all setter methods
 	void initializeFrom(NestableAnnotation oldAnnotation);
+	
+	org.eclipse.jdt.core.dom.Annotation annotation(CompilationUnit astRoot);
 	
 	/**
 	 * Should only be called when the NestableAnnotation is actually nested

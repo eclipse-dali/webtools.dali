@@ -42,7 +42,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 	}
 	
 	public SecondaryTable add(int index) {
-		SecondaryTable javaSecondaryTableResource = createJavaSecondaryTable(index);
+		SecondaryTable javaSecondaryTableResource = createSecondaryTable(index);
 		this.secondaryTables.add(index, javaSecondaryTableResource);
 		return javaSecondaryTableResource;
 	}
@@ -67,7 +67,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		this.secondaryTables.add(newIndex, this.secondaryTables.remove(oldIndex));
 	}
 	
-	//TODO this is going to be copied in all JavaPluralTypeAnnotation implementations, how to solve that??
+	//TODO this is going to be copied in all ContainerAnnotation implementations, how to solve that??
 	public void updateFromJava(CompilationUnit astRoot) {
 		List<SecondaryTable> sTables = this.secondaryTables;
 		int persSize = sTables.size();
@@ -90,9 +90,9 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 			}
 		}
 		else {
-			// add new model join columns until they match the Java annotations
+			// add new model secondary tables until they match the Java annotations
 			while (!allJavaAnnotationsFound) {
-				SecondaryTable secondaryTable = this.createJavaSecondaryTable(javaSize);
+				SecondaryTable secondaryTable = this.createSecondaryTable(javaSize);
 				if (secondaryTable.annotation(astRoot) == null) {
 					allJavaAnnotationsFound = true;
 				}
@@ -105,8 +105,8 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		}
 	}
 	
-	private SecondaryTable createJavaSecondaryTable(int index) {
-		return SecondaryTableImpl.createNestedJavaSecondaryTable(this, getMember(), index, getDeclarationAnnotationAdapter());
+	private SecondaryTable createSecondaryTable(int index) {
+		return SecondaryTableImpl.createNestedSecondaryTable(this, getMember(), index, getDeclarationAnnotationAdapter());
 	}
 
 }

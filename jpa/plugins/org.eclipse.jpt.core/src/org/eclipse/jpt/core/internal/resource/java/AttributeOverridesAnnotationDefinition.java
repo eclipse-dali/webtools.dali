@@ -11,10 +11,10 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
-public class SecondaryTableAnnotationDefinition implements AnnotationDefinition
+public class AttributeOverridesAnnotationDefinition implements AnnotationDefinition
 {
 	// singleton
-	private static final SecondaryTableAnnotationDefinition INSTANCE = new SecondaryTableAnnotationDefinition();
+	private static final AttributeOverridesAnnotationDefinition INSTANCE = new AttributeOverridesAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
@@ -26,15 +26,15 @@ public class SecondaryTableAnnotationDefinition implements AnnotationDefinition
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private SecondaryTableAnnotationDefinition() {
+	private AttributeOverridesAnnotationDefinition() {
 		super();
 	}
 
-	public Annotation buildAnnotation(JavaResource parent, Member member) {
-		return SecondaryTableImpl.createSecondaryTable(parent, member);
+	public AttributeOverrides buildAnnotation(JavaResource parent, Member member) {
+		return new AttributeOverridesImpl(parent, member);
 	}
-	
+
 	public String getAnnotationName() {
-		return JPA.SECONDARY_TABLE;
+		return JPA.ATTRIBUTE_OVERRIDES;
 	}
 }

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
@@ -21,26 +22,23 @@ import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 
-public class SecondaryTableImpl extends AbstractTableResource implements SecondaryTable
+public class AttributeOverrideImpl 
+	extends AbstractAnnotationResource<Member>  
+	implements AttributeOverride
 {	
-	protected SecondaryTableImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	// hold this so we can get the 'name' text range
+	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
+
+	private final AnnotationElementAdapter<String> nameAdapter;
+
+	private String name;
+	
+	protected AttributeOverrideImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-	}
-
-	@Override
-	protected DeclarationAnnotationElementAdapter<String> catalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, JPA.SECONDARY_TABLE__CATALOG);
-	}
-
-	@Override
-	protected DeclarationAnnotationElementAdapter<String> nameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, JPA.SECONDARY_TABLE__NAME);
-	}
-
-	@Override
-	protected DeclarationAnnotationElementAdapter<String> schemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, JPA.SECONDARY_TABLE__SCHEMA);
+		this.nameDeclarationAdapter = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.ATTRIBUTE_OVERRIDE__NAME, false); // false = do not remove annotation when empty
+		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(),this.nameDeclarationAdapter);
 	}
 
 	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
@@ -48,7 +46,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Seconda
 	}
 	
 	public String getAnnotationName() {
-		return JPA.SECONDARY_TABLE;
+		return JPA.ATTRIBUTE_OVERRIDE;
 	}
 		
 	public Annotation annotation(CompilationUnit astRoot) {
@@ -60,23 +58,35 @@ public class SecondaryTableImpl extends AbstractTableResource implements Seconda
 	}
 	
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		setName(((SecondaryTable) oldAnnotation).getName());
-		setCatalog(((SecondaryTable) oldAnnotation).getCatalog());
-		setSchema(((SecondaryTable) oldAnnotation).getSchema());
+		setName(((AttributeOverride) oldAnnotation).getName());
 	}
 	
-	// ********** static methods **********
-	static SecondaryTable createSecondaryTable(JavaResource parent, Member member) {
-		return new SecondaryTableImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
+	public String getName() {
+		return this.name;
 	}
 
-	static SecondaryTable createNestedSecondaryTable(JavaResource parent, Member member, int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {
+	public void setName(String name) {
+		this.name = name;
+		this.nameAdapter.setValue(name);
+	}
+
+	public void updateFromJava(CompilationUnit astRoot) {
+		setName(this.nameAdapter.getValue(astRoot));
+	}
+	
+
+	// ********** static methods **********
+	static AttributeOverride createAttributeOverride(JavaResource parent, Member member) {
+		return new AttributeOverrideImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
+	}
+
+	static AttributeOverride createNestedAttributeOverride(JavaResource parent, Member member, int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, secondaryTablesAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
-		return new SecondaryTableImpl(parent, member, idaa, annotationAdapter);
+		return new AttributeOverrideImpl(parent, member, idaa, annotationAdapter);
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(secondaryTablesAdapter, index, JPA.SECONDARY_TABLE);
+		return new NestedIndexedDeclarationAnnotationAdapter(secondaryTablesAdapter, index, JPA.ATTRIBUTE_OVERRIDE);
 	}
 }

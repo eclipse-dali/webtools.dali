@@ -651,7 +651,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		assertSourceContains("@Table");
 	}
 	
-	public void testJavaTypeAnnotationsSingular() throws Exception {
+	public void testJavaTypeAnnotationsNestable() throws Exception {
 		IType jdtType = createTestEntityWithSecondaryTable();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 		
@@ -662,7 +662,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		assertEquals("FOO", secondaryTableResource.getName());
 	}
 	
-	public void testJavaTypeAnnotationsSingularAndPlural() throws Exception {
+	public void testJavaTypeAnnotationsNestableAndContainer() throws Exception {
 		IType jdtType = createTestEntityWithSecondaryTableAndSecondaryTables();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 		
@@ -676,7 +676,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	
 	//  @Entity     -->>    @Entity
 	//						@SecondaryTable(name="FOO")
-	public void testAddJavaTypeAnnotationSingularPlural() throws Exception {
+	public void testAddJavaTypeAnnotationNestableContainer() throws Exception {
 		IType jdtType = createTestEntity();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 		SecondaryTable secondaryTableResource = (SecondaryTable) typeResource.addAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
@@ -686,7 +686,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	
 	//  @Entity     				-->>    @Entity
 	//	@SecondaryTable(name="FOO")			@SecondaryTables({@SecondaryTable(name="FOO"), @SecondaryTable(name="BAR")})	
-	public void testAddJavaTypeAnnotationSingularPlural2() throws Exception {
+	public void testAddJavaTypeAnnotationNestableContainer2() throws Exception {
 		IType jdtType = createTestEntityWithSecondaryTable();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 		
@@ -705,7 +705,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	//           \/
 	//  @Entity     				
 	//	@SecondaryTables({@SecondaryTable(name="FOO"), @SecondaryTable(name="BAR")})
-	public void testAddJavaTypeAnnotationSingularPlural3() throws Exception {
+	public void testAddJavaTypeAnnotationNestableContainer3() throws Exception {
 		IType jdtType = createTestEntityWithSecondaryTables();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 		
@@ -718,7 +718,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
 	}
 	
-	public void testAddJavaTypeAnnotationSingularPlural5() throws Exception {
+	public void testAddJavaTypeAnnotationNestableContainer5() throws Exception {
 		IType jdtType = createTestEntityWithSecondaryTables();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 		
@@ -739,7 +739,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	//  @Entity     				
 	//	@SecondaryTable(name=\"FOO\")
 	//  @SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\"), @SecondaryTable(name=\"BOO\")})
-	public void testAddJavaTypeAnnotationSingularPlural4() throws Exception {
+	public void testAddJavaTypeAnnotationNestableContainer4() throws Exception {
 		IType jdtType = createTestEntityWithSecondaryTableAndSecondaryTables();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 		
@@ -768,7 +768,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 
 	//@Entity
 	//@SecondaryTable(name="FOO")
-	public void testRemoveJavaTypeAnnotationSingularPlural() throws Exception {
+	public void testRemoveJavaTypeAnnotationNestableContainer() throws Exception {
 		IType jdtType = createTestEntityWithSecondaryTable();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 	
@@ -781,11 +781,11 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 
 	//@Entity
 	//@SecondaryTables(@SecondaryTable(name="FOO"))
-	public void testRemoveJavaTypeAnnotationSingularPlural2() throws Exception {
+	public void testRemoveJavaTypeAnnotationNestableContainer2() throws Exception {
 		IType jdtType = createTestEntityWithSecondaryTables();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 	
-		NestableAnnotation secondaryTableAnnotation = (NestableAnnotation) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
+		NestableAnnotation secondaryTableAnnotation = typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
 		typeResource.removeAnnotation(secondaryTableAnnotation, JPA.SECONDARY_TABLES);
 		
 		assertSourceDoesNotContain("@SecondaryTable");
@@ -794,11 +794,11 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	
 	//@Entity
 	//@SecondaryTables(@SecondaryTable(name="FOO"), @SecondaryTable(name="BAR"))
-	public void testRemoveJavaTypeAnnotationSingularPlural3() throws Exception {
+	public void testRemoveJavaTypeAnnotationNestableContainer3() throws Exception {
 		IType jdtType = createTestEntityWith2SecondaryTables();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 	
-		NestableAnnotation secondaryTableAnnotation = (NestableAnnotation) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
+		NestableAnnotation secondaryTableAnnotation = typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
 		typeResource.removeAnnotation(secondaryTableAnnotation, JPA.SECONDARY_TABLES);
 		
 		assertSourceDoesNotContain("@SecondaryTable(name=\"FOO\"");

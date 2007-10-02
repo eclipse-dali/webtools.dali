@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.internal.resource.java.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
 import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
@@ -27,6 +28,7 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
+import org.eclipse.jpt.core.internal.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.OneToMany;
 import org.eclipse.jpt.core.internal.resource.java.OneToOne;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
@@ -87,22 +89,6 @@ public class JavaPersistentAttributeResourceTests extends AnnotationTestCase {
 		});
 	}
 
-	private IType createTestEntityDuplicates() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Entity(name=\"FirstEntity\")").append(CR);
-				sb.append("@Entity(name=\"SecondEntity\")");
-			}
-		});
-	}
-
 	private IType createTestEntityWithIdAndBasic() throws Exception {
 		this.createAnnotationAndMembers("Entity", "String name();");
 		this.createAnnotationAndMembers("Id", "");
@@ -149,29 +135,7 @@ public class JavaPersistentAttributeResourceTests extends AnnotationTestCase {
 				sb.append("@Column");
 			}
 		});
-	}
-
-	private IType createTestEntityAnnotatedMethod() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-		this.createAnnotationAndMembers("Id", "");
-	
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Entity");
-			}
-			
-			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
-				sb.append("@Id");
-			}
-		});
-	}
-	
+	}	
 	
 	private IType createTestEntityWithColumn() throws Exception {
 		this.createAnnotationAndMembers("Entity", "String name();");
@@ -241,99 +205,74 @@ public class JavaPersistentAttributeResourceTests extends AnnotationTestCase {
 		});
 	}
 
-	private IType createTestEntityWithSecondaryTable() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-		this.createAnnotationAndMembers("SecondaryTable", "String name();");
+	private IType createTestEmbeddedWithAttributeOverride() throws Exception {
+		this.createAnnotationAndMembers("Embedded", "String name();");
+		this.createAnnotationAndMembers("AttributeOverride", "String name();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE);
+				return new ArrayIterator<String>(JPA.EMBEDDED, JPA.ATTRIBUTE_OVERRIDE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Entity");
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@Embedded");
 				sb.append(CR);
-				sb.append("@SecondaryTable(name=\"FOO\")");
+				sb.append("@AttributeOverride(name=\"FOO\")");
 			}
 		});
 	}
-	private IType createTestEntityWithSecondaryTables() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-		this.createAnnotationAndMembers("SecondaryTable", "String name();");
-		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value();");
+	private IType createTestEmbeddedWithAttributeOverrides() throws Exception {
+		this.createAnnotationAndMembers("Embedded", "String name();");
+		this.createAnnotationAndMembers("AttributeOverride", "String name();");
+		this.createAnnotationAndMembers("AttributeOverrides", "AttributeOverride[] value();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+				return new ArrayIterator<String>(JPA.EMBEDDED, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Entity");
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@Embedded");
 				sb.append(CR);
-				sb.append("@SecondaryTables(@SecondaryTable(name=\"FOO\"))");
-			}
-		});
-	}
-	
-	private IType createTestEntityWith2SecondaryTables() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-		this.createAnnotationAndMembers("SecondaryTable", "String name();");
-		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value();");
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Entity");
-				sb.append(CR);
-				sb.append("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\")})");
+				sb.append("@AttributeOverrides(@AttributeOverride(name=\"FOO\"))");
 			}
 		});
 	}
 	
-	private IType createTestEntityWithSecondaryTableAndSecondaryTables() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-		this.createAnnotationAndMembers("SecondaryTable", "String name();");
-		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value();");
+	private IType createTestEmbeddedWith2AttributeOverrides() throws Exception {
+		this.createAnnotationAndMembers("Embedded", "String name();");
+		this.createAnnotationAndMembers("AttributeOverride", "String name();");
+		this.createAnnotationAndMembers("AttributeOverrides", "AttributeOverride[] value();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+				return new ArrayIterator<String>(JPA.EMBEDDED, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Entity");
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@Embedded");
 				sb.append(CR);
-				sb.append("@SecondaryTable(name=\"FOO\")");
-				sb.append(CR);
-				sb.append("@SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\")})");
+				sb.append("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAR\")})");
 			}
 		});
 	}
-
-	private IType createTestEntityWithMemberTypes() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-
+	
+	private IType createTestEmbeddedWithAttributeOverrideAndAttributeOverrides() throws Exception {
+		this.createAnnotationAndMembers("Embedded", "String name();");
+		this.createAnnotationAndMembers("AttributeOverride", "String name();");
+		this.createAnnotationAndMembers("AttributeOverrides", "AttributeOverride[] value();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY);
+				return new ArrayIterator<String>(JPA.EMBEDDED, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Entity");
-			}
-			@Override
-			public void appendMemberTypeTo(StringBuffer sb) {
-				sb.append("     static class FooStatic {}").append(CR);
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@Embedded");
 				sb.append(CR);
-				sb.append("     class FooNotStatic {}").append(CR);
+				sb.append("@AttributeOverride(name=\"FOO\")");
 				sb.append(CR);
-				sb.append("     @interface MyAnnotation {}").append(CR);
-				sb.append(CR);
-				sb.append("     enum MyEnum {}").append(CR);
+				sb.append("@AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"BAZ\")})");
 			}
 		});
 	}
@@ -528,236 +467,227 @@ public class JavaPersistentAttributeResourceTests extends AnnotationTestCase {
 		assertSourceContains("@Column");
 	}
 
+	public void testJavaAttributeAnnotationsNestable() throws Exception {
+		IType jdtType = createTestEmbeddedWithAttributeOverride();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		assertEquals(1, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
+		
+		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES).next();
+		
+		assertEquals("FOO", attributeOverride.getName());
+	}
 	
-//TODO persistent attribute tests 
-//	public void testJavaTypeAnnotationsSingular() throws Exception {
-//		IType jdtType = createTestEntityWithSecondaryTable();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//		
-//		assertEquals(1, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
-//		
-//		SecondaryTable secondaryTableResource = (SecondaryTable) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
-//		
-//		assertEquals("FOO", secondaryTableResource.getName());
-//	}
-//	
-//	public void testJavaTypeAnnotationsSingularAndPlural() throws Exception {
-//		IType jdtType = createTestEntityWithSecondaryTableAndSecondaryTables();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//		
-//		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLE));
-//		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
-//		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
-//
-//		SecondaryTable secondaryTableResource = (SecondaryTable) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();	
-//		assertEquals("BAR", secondaryTableResource.getName());
-//	}
-//	
-//	//  @Entity     -->>    @Entity
-//	//						@SecondaryTable(name="FOO")
-//	public void testAddJavaTypeAnnotationSingularPlural() throws Exception {
-//		IType jdtType = createTestEntity();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//		SecondaryTable secondaryTableResource = (SecondaryTable) typeResource.addAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
-//		secondaryTableResource.setName("FOO");
-//		assertSourceContains("@SecondaryTable(name=\"FOO\")");
-//	}
-//	
-//	//  @Entity     				-->>    @Entity
-//	//	@SecondaryTable(name="FOO")			@SecondaryTables({@SecondaryTable(name="FOO"), @SecondaryTable(name="BAR")})	
-//	public void testAddJavaTypeAnnotationSingularPlural2() throws Exception {
-//		IType jdtType = createTestEntityWithSecondaryTable();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//		
-//		SecondaryTable secondaryTableResource = (SecondaryTable) typeResource.addAnnotation(2, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
-//		secondaryTableResource.setName("BAR");
-//		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"),@SecondaryTable(name=\"BAR\")})");
-//		
-//		assertNull(typeResource.annotation(JPA.SECONDARY_TABLE));
-//		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
-//		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
-//	}
-//	
-//	//  @Entity     				
-//	//	@SecondaryTables(@SecondaryTable(name="FOO"))
-//	//           ||
-//	//           \/
-//	//  @Entity     				
-//	//	@SecondaryTables({@SecondaryTable(name="FOO"), @SecondaryTable(name="BAR")})
-//	public void testAddJavaTypeAnnotationSingularPlural3() throws Exception {
-//		IType jdtType = createTestEntityWithSecondaryTables();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//		
-//		SecondaryTable secondaryTableResource = (SecondaryTable) typeResource.addAnnotation(1, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
-//		secondaryTableResource.setName("BAR");
-//		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"),@SecondaryTable(name=\"BAR\")})");
-//		
-//		assertNull(typeResource.annotation(JPA.SECONDARY_TABLE));
-//		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
-//		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
-//	}
-//	
-//	public void testAddJavaTypeAnnotationSingularPlural5() throws Exception {
-//		IType jdtType = createTestEntityWithSecondaryTables();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//		
-//		SecondaryTable secondaryTableResource = (SecondaryTable) typeResource.addAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
-//		secondaryTableResource.setName("BAR");
-//		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"),@SecondaryTable(name=\"FOO\")})");
-//		
-//		assertNull(typeResource.annotation(JPA.SECONDARY_TABLE));
-//		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
-//		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
-//	}
-//	
-//	//  @Entity     				
-//	//	@SecondaryTable(name=\"FOO\")
-//	//  @SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\")})
-//	//			 ||
-//	//           \/
-//	//  @Entity     				
-//	//	@SecondaryTable(name=\"FOO\")
-//	//  @SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\"), @SecondaryTable(name=\"BOO\")})
-//	public void testAddJavaTypeAnnotationSingularPlural4() throws Exception {
-//		IType jdtType = createTestEntityWithSecondaryTableAndSecondaryTables();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//		
-//		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLE));
-//		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
-//		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
-//
-//		SecondaryTable secondaryTableResource = (SecondaryTable) typeResource.addAnnotation(2, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
-//		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\"), @SecondaryTable})");
-//		secondaryTableResource.setName("BOO");
-//		
-//		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLE));
-//		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
-//		assertEquals(3, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
-//
-//		Iterator<Annotation> secondaryTableAnnotations = typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
-//		secondaryTableResource = (SecondaryTable) secondaryTableAnnotations.next();	
-//		assertEquals("BAR", secondaryTableResource.getName());
-//		secondaryTableResource = (SecondaryTable) secondaryTableAnnotations.next();	
-//		assertEquals("BAZ", secondaryTableResource.getName());
-//		secondaryTableResource = (SecondaryTable) secondaryTableAnnotations.next();	
-//		assertEquals("BOO", secondaryTableResource.getName());
-//		
-//		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\"), @SecondaryTable(name=\"BOO\")})");
-//	}
-//
-//	//@Entity
-//	//@SecondaryTable(name="FOO")
-//	public void testRemoveJavaTypeAnnotationSingularPlural() throws Exception {
-//		IType jdtType = createTestEntityWithSecondaryTable();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//	
-//		SingularAnnotation secondaryTableAnnotation = (SingularAnnotation) typeResource.annotation(JPA.SECONDARY_TABLE);
-//		typeResource.removeAnnotation(secondaryTableAnnotation, JPA.SECONDARY_TABLES);
-//		
-//		assertSourceDoesNotContain("@SecondaryTable");
-//	}
-//	
-//
-//	//@Entity
-//	//@SecondaryTables(@SecondaryTable(name="FOO"))
-//	public void testRemoveJavaTypeAnnotationSingularPlural2() throws Exception {
-//		IType jdtType = createTestEntityWithSecondaryTables();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//	
-//		SingularAnnotation secondaryTableAnnotation = (SingularAnnotation) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
-//		typeResource.removeAnnotation(secondaryTableAnnotation, JPA.SECONDARY_TABLES);
-//		
-//		assertSourceDoesNotContain("@SecondaryTable");
-//		assertSourceDoesNotContain("@SecondaryTables");
-//	}
-//	
-//	//@Entity
-//	//@SecondaryTables(@SecondaryTable(name="FOO"), @SecondaryTable(name="BAR"))
-//	public void testRemoveJavaTypeAnnotationSingularPlural3() throws Exception {
-//		IType jdtType = createTestEntityWith2SecondaryTables();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//	
-//		SingularAnnotation secondaryTableAnnotation = (SingularAnnotation) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
-//		typeResource.removeAnnotation(secondaryTableAnnotation, JPA.SECONDARY_TABLES);
-//		
-//		assertSourceDoesNotContain("@SecondaryTable(name=\"FOO\"");
-//		assertSourceContains("@SecondaryTable(name=\"BAR\"");
-//		assertSourceDoesNotContain("@SecondaryTables");
-//	}
-//	
-//	public void testRemoveJavaTypeAnnotationIndex() throws Exception {
-//		IType jdtType = createTestEntityWith2SecondaryTables();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//	
-//		typeResource.removeAnnotation(0, JPA.SECONDARY_TABLES);
-//		
-//		assertSourceDoesNotContain("@SecondaryTable(name=\"FOO\"");
-//		assertSourceContains("@SecondaryTable(name=\"BAR\"");
-//		assertSourceDoesNotContain("@SecondaryTables");
-//	}
-//	
-//	public void testRemoveJavaTypeAnnotationIndex2() throws Exception {
-//		IType jdtType = createTestEntityWith2SecondaryTables();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//	
-//		SecondaryTable newAnnotation = (SecondaryTable)typeResource.addAnnotation(2, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
-//		newAnnotation.setName("BAZ");
-//		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\")})");
-//		
-//		typeResource.removeAnnotation(1, JPA.SECONDARY_TABLES);
-//		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAZ\")})");
-//	}
-//	
-//	public void testMoveJavaTypeAnnotation() throws Exception {
-//		IType jdtType = createTestEntityWith2SecondaryTables();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//	
-//		SecondaryTable newAnnotation = (SecondaryTable)typeResource.addAnnotation(2, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
-//		newAnnotation.setName("BAZ");
-//		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\")})");
-//		
-//		typeResource.move(2, 0, JPA.SECONDARY_TABLES);
-//		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAZ\"), @SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\")})");
-//	}
-//	
-//	public void testMoveJavaTypeAnnotation2() throws Exception {
-//		IType jdtType = createTestEntityWith2SecondaryTables();
-//		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-//	
-//		SecondaryTable newAnnotation = (SecondaryTable)typeResource.addAnnotation(2, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
-//		newAnnotation.setName("BAZ");
-//		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\")})");
-//		
-//		typeResource.move(0, 1, JPA.SECONDARY_TABLES);
-//		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAZ\")})");
-//	}
-//	
-//	public void testNestedTypes() throws Exception {
-//		IType jdtType = createTestEntityWithMemberTypes();
-//		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
-//		
-//		assertEquals("only persistable types should be returned by nestedTypes()", 1, CollectionTools.size(persistentType.nestedTypes()));
-//		
-//		List<JavaPersistentTypeResource> nestedTypes = (List<JavaPersistentTypeResource>) ClassTools.getFieldValue(persistentType, "nestedTypes");
-//		
-//		assertEquals(4, CollectionTools.size(nestedTypes));
-//		
-//	}
-//	
-//	public void testDuplicateEntityAnnotations() throws Exception {
-//		IType jdtType = createTestEntityDuplicates();
-//		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
-//		
-//		Entity javaTypeMappingAnnotation = (Entity) persistentType.mappingAnnotation(JPA.ENTITY);
-//		assertEquals("FirstEntity", javaTypeMappingAnnotation.getName());
-//		
-//		assertEquals(1, CollectionTools.size(persistentType.mappingAnnotations()));
-//		
-//		javaTypeMappingAnnotation = (Entity) persistentType.mappingAnnotation();
-//		assertEquals("FirstEntity", javaTypeMappingAnnotation.getName());
-//		
-//	}
+	public void testJavaAttributeAnnotationsNestableAndContainer() throws Exception {
+		IType jdtType = createTestEmbeddedWithAttributeOverrideAndAttributeOverrides();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE));
+		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDES));
+		assertEquals(2, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
+
+		AttributeOverride attributeOverrideResource = (AttributeOverride) attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES).next();	
+		assertEquals("BAR", attributeOverrideResource.getName());
+	}
+			        
+	//			-->>	@AttributeOverride(name="FOO")
+	public void testAddJavaAttributeAnnotationNestableContainer() throws Exception {
+		IType jdtType = createTestEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("FOO");
+		assertSourceContains("@AttributeOverride(name=\"FOO\")");
+	}
 	
+	//  @Embedded     				-->>    @Embedded
+	//	@AttributeOverride(name="FOO")		@AttributeOverrides({@AttributeOverride(name="FOO"), @AttributeOverride(name="BAR")})	
+	public void testAddJavaAttributeAnnotationNestableContainer2() throws Exception {
+		IType jdtType = createTestEmbeddedWithAttributeOverride();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("BAR");
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"),@AttributeOverride(name=\"BAR\")})");
+		
+		assertNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE));
+		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDES));
+		assertEquals(2, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
+	}
+	
+	//  @Embedded     				
+	//	@AttributeOverrides(@AttributeOverride(name="FOO"))
+	//           ||
+	//           \/
+	//  @Embedded     				
+	//	@AttributeOverrides({@AttributeOverride(name="FOO"), @AttributeOverride(name="BAR")})
+	public void testAddJavaAttributeAnnotationNestableContainer3() throws Exception {
+		IType jdtType = createTestEmbeddedWithAttributeOverrides();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+	
+		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("BAR");
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"),@AttributeOverride(name=\"BAR\")})");
+		
+		assertNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE));
+		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDES));
+		assertEquals(2, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
+	}
+	
+	public void testAddJavaAttributeAnnotationNestableContainer5() throws Exception {
+		IType jdtType = createTestEmbeddedWithAttributeOverrides();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("BAR");
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAR\"),@AttributeOverride(name=\"FOO\")})");
+		
+		assertNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE));
+		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDES));
+		assertEquals(2, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
+	}
+	
+	//  @Embedded     				
+	//	@SecondaryTable(name=\"FOO\")
+	//  @AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"BAZ\")})
+	//			 ||
+	//           \/
+	//  @Embedded     				
+	//	@AttributeOverride(name=\"FOO\")
+	//  @AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"BAZ\"), @AttributeOverride(name=\"BOO\")})
+	public void testAddJavaAttributeAnnotationNestableContainer4() throws Exception {
+		IType jdtType = createTestEmbeddedWithAttributeOverrideAndAttributeOverrides();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE));
+		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDES));
+		assertEquals(2, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
+
+		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"BAZ\"),");
+		assertSourceContains("@AttributeOverride})");
+		attributeOverride.setName("BOO");
+		
+		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE));
+		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDES));
+		assertEquals(3, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
+
+		Iterator<NestableAnnotation> attributeOverrideAnnotations = attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverride) attributeOverrideAnnotations.next();	
+		assertEquals("BAR", attributeOverride.getName());
+		attributeOverride = (AttributeOverride) attributeOverrideAnnotations.next();	
+		assertEquals("BAZ", attributeOverride.getName());
+		attributeOverride = (AttributeOverride) attributeOverrideAnnotations.next();	
+		assertEquals("BOO", attributeOverride.getName());
+		
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"BAZ\"),");
+		assertSourceContains("@AttributeOverride(name=\"BOO\")})");
+	}
+
+	//@Entity
+	//@AttributeOverride(name="FOO")
+	public void testRemoveJavaAttributeAnnotationNestableContainer() throws Exception {
+		IType jdtType = createTestEmbeddedWithAttributeOverride();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+	
+		NestableAnnotation attributeOverrideAnnotation = (NestableAnnotation) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
+		attributeResource.removeAnnotation(attributeOverrideAnnotation, JPA.ATTRIBUTE_OVERRIDES);
+		
+		assertSourceDoesNotContain("@AttributeOverride");
+	}
+	
+
+	//@Entity
+	//@SecondaryTables(@SecondaryTable(name="FOO"))
+	public void testRemoveJavaAttributeAnnotationNestableContainer2() throws Exception {
+		IType jdtType = createTestEmbeddedWithAttributeOverrides();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+	
+		NestableAnnotation attributeOverrideAnnotation = attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES).next();
+		attributeResource.removeAnnotation(attributeOverrideAnnotation, JPA.ATTRIBUTE_OVERRIDES);
+		
+		assertSourceDoesNotContain("@AttributeOverride");
+		assertSourceDoesNotContain("@AttributeOverrides");
+	}
+	
+	//@Entity
+	//@SecondaryTables(@SecondaryTable(name="FOO"), @SecondaryTable(name="BAR"))
+	public void testRemoveJavaAttributeAnnotationNestableContainer3() throws Exception {
+		IType jdtType = createTestEmbeddedWith2AttributeOverrides();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+	
+		NestableAnnotation attributeOverrideAnnotation = attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES).next();
+		attributeResource.removeAnnotation(attributeOverrideAnnotation, JPA.ATTRIBUTE_OVERRIDES);
+		
+		assertSourceDoesNotContain("@AttributeOverride(name=\"FOO\"");
+		assertSourceContains("@AttributeOverride(name=\"BAR\"");
+		assertSourceDoesNotContain("@AttributeOverrides");
+	}
+	
+	public void testRemoveJavaAttributeAnnotationIndex() throws Exception {
+		IType jdtType = createTestEmbeddedWith2AttributeOverrides();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+	
+		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDES);
+		
+		assertSourceDoesNotContain("@AttributeOverride(name=\"FOO\"");
+		assertSourceContains("@AttributeOverride(name=\"BAR\"");
+		assertSourceDoesNotContain("@AttributeOverrides");
+	}
+	
+	public void testRemoveJavaAttributeAnnotationIndex2() throws Exception {
+		IType jdtType = createTestEmbeddedWith2AttributeOverrides();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+
+		AttributeOverride newAnnotation = (AttributeOverride)attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		newAnnotation.setName("BAZ");
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAR\"),");
+		assertSourceContains("@AttributeOverride(name=\"BAZ\")})");
+		
+		attributeResource.removeAnnotation(1, JPA.ATTRIBUTE_OVERRIDES);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAZ\")})");
+	}
+	
+	public void testMoveJavaTypeAnnotation() throws Exception {
+		IType jdtType = createTestEmbeddedWith2AttributeOverrides();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+	
+		AttributeOverride newAnnotation = (AttributeOverride)attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		newAnnotation.setName("BAZ");
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAR\"),");
+		assertSourceContains("@AttributeOverride(name=\"BAZ\")})");
+		
+		
+		attributeResource.move(2, 0, JPA.ATTRIBUTE_OVERRIDES);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAZ\"), @AttributeOverride(name=\"FOO\"),");
+		assertSourceContains("@AttributeOverride(name=\"BAR\")})");
+	}
+	
+	public void testMoveJavaTypeAnnotation2() throws Exception {
+		IType jdtType = createTestEmbeddedWith2AttributeOverrides();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+	
+		AttributeOverride newAnnotation = (AttributeOverride) attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		newAnnotation.setName("BAZ");
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAR\"),");
+		assertSourceContains("@AttributeOverride(name=\"BAZ\")})");
+		
+		attributeResource.move(0, 1, JPA.ATTRIBUTE_OVERRIDES);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"FOO\"),");
+		assertSourceContains("@AttributeOverride(name=\"BAZ\")})");
+	}	
 
 	//more detailed tests in JPTToolsTests
 	public void testIsPersistableField() throws Exception {
