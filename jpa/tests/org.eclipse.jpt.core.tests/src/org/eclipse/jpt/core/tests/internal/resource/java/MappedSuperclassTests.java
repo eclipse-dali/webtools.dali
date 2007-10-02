@@ -26,11 +26,9 @@ import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class EntityTests extends AnnotationTestCase {
+public class MappedSuperclassTests extends AnnotationTestCase {
 
-	private static final String ENTITY_NAME = "Foo";
-	
-	public EntityTests(String name) {
+	public MappedSuperclassTests(String name) {
 		super(name);
 	}
 
@@ -38,37 +36,23 @@ public class EntityTests extends AnnotationTestCase {
 		this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 
-	private IType createTestEntity() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+	private IType createTestMappedSuperclass() throws Exception {
+		this.createAnnotationAndMembers("MappedSuperclass", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY);
+				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Entity");
-			}
-		});
-	}
-	
-	private IType createTestEntityWithName() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Entity(name=\"" + ENTITY_NAME + "\")");
+				sb.append("@MappedSuperclass");
 			}
 		});
 	}
 	
 	private IType createTestMappedSuperclassAndEntity() throws Exception {
 		this.createAnnotationAndMembers("MappedSuperclass", "");
-		this.createAnnotationAndMembers("Entity", "String name();");
+		this.createAnnotationAndMembers("Entity", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -81,7 +65,7 @@ public class EntityTests extends AnnotationTestCase {
 			}
 		});
 	}
-
+	
 	protected JavaResource buildParentResource(final IJpaPlatform jpaPlatform) {
 		return new JavaResource() {
 			public void updateFromJava(CompilationUnit astRoot) {
@@ -100,51 +84,13 @@ public class EntityTests extends AnnotationTestCase {
 		return new JavaPersistentTypeResourceImpl(buildParentResource(buildJpaPlatform()), new Type(testType, MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER));
 	}
 
-	public void testGetName() throws Exception {
-		IType testType = this.createTestEntityWithName();
+	public void testMappedSuperclass() throws Exception {
+		IType testType = this.createTestMappedSuperclass();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		Entity entity = (Entity) typeResource.mappingAnnotation(JPA.ENTITY);
-		assertTrue(entity != null);
-		assertEquals(ENTITY_NAME, entity.getName());
-	}
-
-	public void testGetNameNull() throws Exception {
-		IType testType = this.createTestEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
-		
-		Entity entity = (Entity) typeResource.mappingAnnotation(JPA.ENTITY);
-		assertTrue(entity != null);
-		assertNull(entity.getName());
-	}
-
-	public void testSetName() throws Exception {
-		IType testType = this.createTestEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
-		
-		Entity entity = (Entity) typeResource.mappingAnnotation(JPA.ENTITY);
-		assertNull(entity.getName());
-		entity.setName("Foo");
-		assertEquals("Foo", entity.getName());
-		
-		assertSourceContains("@Entity(name=\"Foo\")");
-	}
-	
-	public void testSetNameNull() throws Exception {
-		IType testType = this.createTestEntityWithName();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
-		
-		Entity entity = (Entity) typeResource.mappingAnnotation(JPA.ENTITY);
-		assertEquals(ENTITY_NAME, entity.getName());
-		
-		entity.setName(null);
-		assertNull(entity.getName());
-		
-		assertSourceContains("@Entity");
+		MappingAnnotation mappingAnnotation = typeResource.mappingAnnotation();
+		assertTrue(mappingAnnotation instanceof MappedSuperclass);
 	}
 	
 	public void testMappedSuperclassAndEntity() throws Exception {

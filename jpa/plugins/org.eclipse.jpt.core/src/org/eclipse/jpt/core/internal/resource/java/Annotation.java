@@ -13,11 +13,21 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 
 public interface Annotation extends JavaResource
 {	
+	/**
+	 * Return the fully qualified annotation name.
+	 * @see JPA
+	 */
 	String getAnnotationName();
 	
 	DeclarationAnnotationAdapter getDeclarationAnnotationAdapter();
 	
+	/**
+	 * Removing the underyling Java annotation
+	 */
 	void removeAnnotation();
 
+	/**
+	 * Create and add Java annotation
+	 */
 	void newAnnotation();
 }

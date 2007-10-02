@@ -23,7 +23,8 @@ public class MappedSuperclassImpl extends AbstractAnnotationResource<Type> imple
 		return JPA.MAPPED_SUPERCLASS;
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
+		//no annotation members
 	}
 
 }

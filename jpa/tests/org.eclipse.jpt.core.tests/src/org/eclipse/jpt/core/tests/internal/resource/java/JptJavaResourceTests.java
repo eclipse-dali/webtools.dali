@@ -24,7 +24,9 @@ public class JptJavaResourceTests {
 		suite.addTestSuite(JavaPersistentTypeResourceTests.class);
 		suite.addTestSuite(JavaPersistentAttributeResourceTests.class);
 		suite.addTestSuite(JPTToolsTests.class);
+		suite.addTestSuite(EmbeddableTests.class);
 		suite.addTestSuite(EntityTests.class);
+		suite.addTestSuite(MappedSuperclassTests.class);
 
 		return suite;
 	}

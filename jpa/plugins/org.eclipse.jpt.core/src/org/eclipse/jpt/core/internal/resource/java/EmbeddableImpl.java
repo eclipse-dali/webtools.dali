@@ -24,7 +24,8 @@ public class EmbeddableImpl extends AbstractAnnotationResource<Type> implements 
 		return JPA.EMBEDDABLE;
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
+		//no annotation members
 	}
 
 }
