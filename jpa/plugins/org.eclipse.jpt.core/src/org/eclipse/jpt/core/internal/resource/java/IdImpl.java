@@ -24,7 +24,8 @@ public class IdImpl extends AbstractAnnotationResource<Attribute> implements Id
 		return JPA.ID;
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
+		//no annotation members
 	}
 
 }

@@ -16,4 +16,27 @@ public interface Basic extends MappingAnnotation
 {
 	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.BASIC);
 
+	/**
+	 * Corresponds to the optional element of the Basic annotation.
+	 * Returns null if the optional element does not exist in java.
+	 */
+	Boolean getOptional();
+	
+	/**
+	 * Corresponds to the optional element of the Basic annotation.
+	 * Set to null to remove the optional element.
+	 */
+	void setOptional(Boolean optional);
+	
+	/**
+	 * Corresponds to the fetch element of the Basic annotation.
+	 * Returns null if the fetch element does not exist in java.
+	 */
+	FetchType getFetch();
+	
+	/**
+	 * Corresponds to the fetch element of the Basic annotation.
+	 * Set to null to remove the fetch element.
+	 */
+	void setFetch(FetchType fetch);
 }

@@ -81,13 +81,14 @@ public class MappedSuperclassTests extends AnnotationTestCase {
 	}
 
 	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) {
-		return new JavaPersistentTypeResourceImpl(buildParentResource(buildJpaPlatform()), new Type(testType, MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER));
+		JavaPersistentTypeResource typeResource = new JavaPersistentTypeResourceImpl(buildParentResource(buildJpaPlatform()), new Type(testType, MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER));
+		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
+		return typeResource;
 	}
 
 	public void testMappedSuperclass() throws Exception {
 		IType testType = this.createTestMappedSuperclass();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		MappingAnnotation mappingAnnotation = typeResource.mappingAnnotation();
 		assertTrue(mappingAnnotation instanceof MappedSuperclass);
@@ -96,7 +97,6 @@ public class MappedSuperclassTests extends AnnotationTestCase {
 	public void testMappedSuperclassAndEntity() throws Exception {
 		IType testType = this.createTestMappedSuperclassAndEntity();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		MappingAnnotation mappingAnnotation = typeResource.mappingAnnotation();
 		assertTrue(mappingAnnotation instanceof Entity);

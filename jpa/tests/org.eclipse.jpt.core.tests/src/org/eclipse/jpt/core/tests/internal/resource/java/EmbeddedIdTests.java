@@ -15,10 +15,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.resource.java.Embeddable;
-import org.eclipse.jpt.core.internal.resource.java.Entity;
+import org.eclipse.jpt.core.internal.resource.java.EmbeddedId;
 import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
@@ -26,9 +26,9 @@ import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class EmbeddableTests extends AnnotationTestCase {
+public class EmbeddedIdTests extends AnnotationTestCase {
 
-	public EmbeddableTests(String name) {
+	public EmbeddedIdTests(String name) {
 		super(name);
 	}
 
@@ -36,32 +36,16 @@ public class EmbeddableTests extends AnnotationTestCase {
 		this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 
-	private IType createTestEmbeddable() throws Exception {
-		this.createAnnotationAndMembers("Embeddable", "");
+	private IType createTestEmbeddedId() throws Exception {
+		this.createAnnotationAndMembers("EmbeddedId", "");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.EMBEDDABLE);
+				return new ArrayIterator<String>(JPA.EMBEDDED_ID);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Embeddable");
-			}
-		});
-	}
-	
-	private IType createTestEmbeddableAndEntity() throws Exception {
-		this.createAnnotationAndMembers("Embeddable", "");
-		this.createAnnotationAndMembers("Entity", "");
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.EMBEDDABLE, JPA.ENTITY);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Entity");
-				sb.append("@Embeddable");
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@EmbeddedId");
 			}
 		});
 	}
@@ -86,23 +70,13 @@ public class EmbeddableTests extends AnnotationTestCase {
 		return typeResource;
 	}
 
-	public void testEmbeddable() throws Exception {
-		IType testType = this.createTestEmbeddable();
+	public void testEmbeddedId() throws Exception {
+		IType testType = this.createTestEmbeddedId();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
-		MappingAnnotation mappingAnnotation = typeResource.mappingAnnotation();
-		assertTrue(mappingAnnotation instanceof Embeddable);
-	}
-	
-	public void testEmbeddableAndEntity() throws Exception {
-		IType testType = this.createTestEmbeddableAndEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		
-		MappingAnnotation mappingAnnotation = typeResource.mappingAnnotation();
-		assertTrue(mappingAnnotation instanceof Embeddable);
-		
-		Entity entity = (Entity) typeResource.mappingAnnotation(JPA.ENTITY);
-		assertNotNull(entity);
+		MappingAnnotation mappingAnnotation = attributeResource.mappingAnnotation();
+		assertTrue(mappingAnnotation instanceof EmbeddedId);
 	}
 
 }

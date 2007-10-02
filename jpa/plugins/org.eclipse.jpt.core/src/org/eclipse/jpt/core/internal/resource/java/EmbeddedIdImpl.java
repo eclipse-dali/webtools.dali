@@ -23,6 +23,8 @@ public class EmbeddedIdImpl extends AbstractAnnotationResource<Attribute> implem
 		return JPA.EMBEDDED_ID;
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
+		//no annotation members
 	}
+
 }

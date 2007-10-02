@@ -27,7 +27,16 @@ public class JptJavaResourceTests {
 		suite.addTestSuite(EmbeddableTests.class);
 		suite.addTestSuite(EntityTests.class);
 		suite.addTestSuite(MappedSuperclassTests.class);
-
+		suite.addTestSuite(BasicTests.class);
+		suite.addTestSuite(IdTests.class);
+		suite.addTestSuite(EmbeddedTests.class);
+		suite.addTestSuite(EmbeddedIdTests.class);
+		suite.addTestSuite(ManyToManyTests.class);
+		suite.addTestSuite(ManyToOneTests.class);
+		suite.addTestSuite(OneToManyTests.class);
+		suite.addTestSuite(OneToOneTests.class);
+		suite.addTestSuite(TransientTests.class);
+		suite.addTestSuite(VersionTests.class);
 		return suite;
 	}
 

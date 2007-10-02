@@ -97,13 +97,14 @@ public class EntityTests extends AnnotationTestCase {
 	}
 
 	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) {
-		return new JavaPersistentTypeResourceImpl(buildParentResource(buildJpaPlatform()), new Type(testType, MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER));
+		JavaPersistentTypeResource typeResource = new JavaPersistentTypeResourceImpl(buildParentResource(buildJpaPlatform()), new Type(testType, MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER));
+		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
+		return typeResource;
 	}
 
 	public void testGetName() throws Exception {
 		IType testType = this.createTestEntityWithName();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		Entity entity = (Entity) typeResource.mappingAnnotation(JPA.ENTITY);
 		assertTrue(entity != null);
@@ -113,7 +114,6 @@ public class EntityTests extends AnnotationTestCase {
 	public void testGetNameNull() throws Exception {
 		IType testType = this.createTestEntity();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		Entity entity = (Entity) typeResource.mappingAnnotation(JPA.ENTITY);
 		assertTrue(entity != null);
@@ -123,7 +123,6 @@ public class EntityTests extends AnnotationTestCase {
 	public void testSetName() throws Exception {
 		IType testType = this.createTestEntity();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		Entity entity = (Entity) typeResource.mappingAnnotation(JPA.ENTITY);
 		assertNull(entity.getName());
@@ -136,7 +135,6 @@ public class EntityTests extends AnnotationTestCase {
 	public void testSetNameNull() throws Exception {
 		IType testType = this.createTestEntityWithName();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		Entity entity = (Entity) typeResource.mappingAnnotation(JPA.ENTITY);
 		assertEquals(ENTITY_NAME, entity.getName());
@@ -150,7 +148,6 @@ public class EntityTests extends AnnotationTestCase {
 	public void testMappedSuperclassAndEntity() throws Exception {
 		IType testType = this.createTestMappedSuperclassAndEntity();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		MappingAnnotation mappingAnnotation = typeResource.mappingAnnotation();
 		assertTrue(mappingAnnotation instanceof Entity);

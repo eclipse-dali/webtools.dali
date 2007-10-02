@@ -9,20 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-
-public class TransientImpl extends AbstractAnnotationResource<Attribute> implements Transient
+public class BooleanUtility
 {
-	public TransientImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
-		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
+	public static Boolean fromJavaAnnotationValue(String javaAnnotationValue) {
+		if (javaAnnotationValue == null) {
+			return null;
+		}
+		return Boolean.parseBoolean(javaAnnotationValue);
 	}
 
-	public String getAnnotationName() {
-		return JPA.TRANSIENT;
-	}
-
-	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
-		//no annotation members
+	public static String toJavaAnnotationValue(Boolean value) {
+		if (value == null) {
+			return null;
+		}
+		return Boolean.toString(value);
 	}
 }

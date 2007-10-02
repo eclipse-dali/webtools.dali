@@ -15,5 +15,16 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 public interface OneToOne extends MappingAnnotation
 {
 	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ONE_TO_ONE);
-
+	
+	/**
+	 * Corresponds to the fetch element of the OneToOne annotation.
+	 * Returns null if the fetch element does not exist in java.
+	 */
+	FetchType getFetch();
+	
+	/**
+	 * Corresponds to the fetch element of the OneToOne annotation.
+	 * Set to null to remove the fetch element.
+	 */
+	void setFetch(FetchType fetch);
 }

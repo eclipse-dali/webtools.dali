@@ -24,6 +24,7 @@ public class EmbeddedImpl extends AbstractAnnotationResource<Attribute> implemen
 		return JPA.EMBEDDED_ID;
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
+	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
+		//no annotation members
 	}
 }

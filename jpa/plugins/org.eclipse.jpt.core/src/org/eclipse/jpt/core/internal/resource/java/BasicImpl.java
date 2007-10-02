@@ -10,42 +10,69 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter;
+import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 
 
 public class BasicImpl extends AbstractAnnotationResource<Attribute> implements Basic
 {
-//	private final AnnotationElementAdapter<String> nameAdapter;
-//
-//	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
-//
-//
-//	private String name;
+	private final AnnotationElementAdapter<String> optionalAdapter;
 
+	private final AnnotationElementAdapter<String> fetchAdapter;
+
+	private static final DeclarationAnnotationElementAdapter<String> OPTIONAL_ADAPTER = buildOptionalAdapter();
+
+	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildFetchAdapter();
+	
+	private Boolean optional;
+	
+	private FetchType fetch;
 	
 	public BasicImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-//		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), NAME_ADAPTER);
+		this.optionalAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, OPTIONAL_ADAPTER);
+		this.fetchAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
 	}
 	
 	public String getAnnotationName() {
 		return JPA.BASIC;
 	}
-			
-//	public String getName() {
-//		return this.name;
-//	}
-//
-//	public void setName(String name) {
-//		this.name = name;
-//	}
-
-	public void updateFromJava(CompilationUnit astRoot) {
-//		setName(this.nameAdapter.getValue(astRoot));
+	
+	public Boolean getOptional() {
+		return this.optional;
 	}
 	
-//	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
-//		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ENTITY__NAME, false); // false = do not remove annotation when empty
-//	}
+	public void setOptional(Boolean optional) {
+		this.optional = optional;
+		this.optionalAdapter.setValue(BooleanUtility.toJavaAnnotationValue(optional));
+	}
+
+	public FetchType getFetch() {
+		return this.fetch;
+	}
+	
+	public void setFetch(FetchType fetch) {
+		this.fetch = fetch;
+		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
+	}
+	
+	public void updateFromJava(CompilationUnit astRoot) {
+		this.setOptional(BooleanUtility.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot)));
+		this.setFetch(FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot)));
+	}
+	
+	// ********** static methods **********
+	private static DeclarationAnnotationElementAdapter<String> buildOptionalAdapter() {
+		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__OPTIONAL, false, BooleanStringExpressionConverter.instance());
+	}
+
+	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__FETCH, false);
+	}
 
 }

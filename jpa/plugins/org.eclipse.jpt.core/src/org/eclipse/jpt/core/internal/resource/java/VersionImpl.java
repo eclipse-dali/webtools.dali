@@ -23,7 +23,7 @@ public class VersionImpl extends AbstractAnnotationResource<Attribute> implement
 		return JPA.VERSION;
 	}
 
-	public void updateFromJava(CompilationUnit astRoot) {
-		
+	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
+		//no annotation members
 	}
 }
