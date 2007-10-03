@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.List;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
@@ -19,10 +20,13 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.EnumArrayDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitArrayAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 
 public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnnotationResource<Attribute> implements RelationshipMappingAnnotation
@@ -31,17 +35,21 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 
 	private final AnnotationElementAdapter<String> fetchAdapter;
 
+	private final AnnotationElementAdapter<String[]> cascadeAdapter;
+
 	private String targetEntity;
 
 	private String fullyQualfiedTargetEntity;
 
 	private FetchType fetch;
 	
+	private CascadeType[] cascadeTypes;
 	
 	public AbstractRelationshipMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
 		super(parent, attribute, daa);
 		this.targetEntityAdapter = buildAnnotationElementAdapter(targetEntityAdapter());
 		this.fetchAdapter = buildAnnotationElementAdapter(fetchAdapter());
+		this.cascadeAdapter = new ShortCircuitArrayAnnotationElementAdapter<String>(attribute, cascadeAdapter());
 	}
 	
 	protected AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
@@ -56,7 +64,7 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 	/**
 	 * return the Java adapter's 'cascade' element adapter config
 	 */
-//	protected abstract DeclarationAnnotationElementAdapter<String[]> cascadeAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String[]> cascadeAdapter();
 
 	/**
 	 * return the Java adapter's 'fetch' element adapter config
@@ -89,11 +97,89 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 		this.fetch = fetch;
 		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
 	}
+		
+	public boolean isCascadeAll() {
+		return CollectionTools.contains(this.cascadeTypes, CascadeType.ALL);
+	}
+	
+	public void setCascadeAll(boolean all) {
+		setCascade(all, CascadeType.ALL);
+	}
+	
+	public boolean isCascadePersist() {
+		return CollectionTools.contains(this.cascadeTypes, CascadeType.PERSIST);
+	}
+	
+	public void setCascadePersist(boolean persist) {
+		setCascade(persist, CascadeType.PERSIST);
+	}
+	
+	public boolean isCascadeMerge() {
+		return CollectionTools.contains(this.cascadeTypes, CascadeType.MERGE);
+	}
+	
+	public void setCascadeMerge(boolean merge) {
+		setCascade(merge, CascadeType.MERGE);
+	}
+	
+	public boolean isCascadeRemove() {
+		return CollectionTools.contains(this.cascadeTypes, CascadeType.REMOVE);
+	}
+	
+	public void setCascadeRemove(boolean remove) {
+		setCascade(remove, CascadeType.REMOVE);
+	}
+	
+	public boolean isCascadeRefresh() {
+		return CollectionTools.contains(this.cascadeTypes, CascadeType.REFRESH);
+	}
+	
+	public void setCascadeRefresh(boolean refresh) {
+		setCascade(refresh, CascadeType.REFRESH);
+	}
+		
+	private void addCascadeType(CascadeType cascadeType) {
+		List<CascadeType> cascadeCollection = CollectionTools.list(this.cascadeTypes);
+		cascadeCollection.add(cascadeType);
+		setCascadeTypes(cascadeCollection.toArray(new CascadeType[cascadeCollection.size()]));
+	}
+	
+	private void removeCascadeType(CascadeType cascadeType) {
+		List<CascadeType> cascadeCollection = CollectionTools.list(this.cascadeTypes);
+		cascadeCollection.remove(cascadeType);
+		setCascadeTypes(cascadeCollection.toArray(new CascadeType[cascadeCollection.size()]));
+	}
+	
+	private void setCascadeTypes(CascadeType[] cascadeTypes) {
+		this.cascadeTypes = cascadeTypes;
+		String[] newJavaValue = CascadeType.toJavaAnnotationValue(cascadeTypes);
+		this.cascadeAdapter.setValue(newJavaValue);
+	}
+	
+	private void setCascade(boolean isSet, CascadeType cascadeType) {
+		List<CascadeType> cascadeCollection = CollectionTools.list(this.cascadeTypes);
+		if (cascadeCollection.contains(cascadeType)) {
+			if (!isSet) {
+				removeCascadeType(cascadeType);
+			}
+		}
+		else {
+			if (isSet) {
+				addCascadeType(cascadeType);
+			}
+		}
+	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
 		this.setFetch(FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot)));
 		this.setTargetEntity(this.targetEntityAdapter.getValue(astRoot));
 		this.setFullyQualifiedTargetEntity(fullyQualifiedTargetEntity(astRoot));
+		updateCascadeFromJava(astRoot);
+	}
+	
+	private void updateCascadeFromJava(CompilationUnit astRoot) {
+		String[] javaValue = this.cascadeAdapter.getValue(astRoot);
+		setCascadeTypes(CascadeType.fromJavaAnnotationValue(javaValue));
 	}
 	
 	private String fullyQualifiedTargetEntity(CompilationUnit astRoot) {
@@ -123,6 +209,10 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 	
 	protected static DeclarationAnnotationElementAdapter<String> buildFetchAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return new EnumDeclarationAnnotationElementAdapter(annotationAdapter, elementName, false);
+	}
+	
+	protected static DeclarationAnnotationElementAdapter<String[]> buildEnumArrayAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+		return new EnumArrayDeclarationAnnotationElementAdapter(annotationAdapter, elementName, false);
 	}
 
 }

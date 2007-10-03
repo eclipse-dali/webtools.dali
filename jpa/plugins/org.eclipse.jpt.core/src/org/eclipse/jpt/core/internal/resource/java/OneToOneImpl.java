@@ -22,6 +22,8 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 
 	private static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter();	
 
+	private static final DeclarationAnnotationElementAdapter<String[]> CASCADE_ADAPTER = buildCascadeAdapter();
+
 	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildFetchAdapter();
 
 	private static final DeclarationAnnotationElementAdapter<String> OPTIONAL_ADAPTER = buildOptionalAdapter();
@@ -50,6 +52,11 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 		return TARGET_ENTITY_ADAPTER;
 	}
 	
+	@Override
+	protected DeclarationAnnotationElementAdapter<String[]> cascadeAdapter() {
+		return CASCADE_ADAPTER;
+	}
+
 	@Override
 	protected DeclarationAnnotationElementAdapter<String> fetchAdapter() {
 		return FETCH_ADAPTER;
@@ -92,6 +99,10 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 
 	private static DeclarationAnnotationElementAdapter<String> buildTargetEntityAdapter() {
 		return buildTargetEntityAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__TARGET_ENTITY);
+	}
+
+	private static DeclarationAnnotationElementAdapter<String[]> buildCascadeAdapter() {
+		return buildEnumArrayAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__CASCADE);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {

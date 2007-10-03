@@ -18,9 +18,11 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdap
 
 public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implements ManyToMany
 {
-	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildFetchAdapter();
-	
 	private static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter();	
+
+	private static final DeclarationAnnotationElementAdapter<String[]> CASCADE_ADAPTER = buildCascadeAdapter();
+
+	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildFetchAdapter();
 	
 	private static final DeclarationAnnotationElementAdapter<String> MAPPED_BY_ADAPTER = buildMappedByAdapter();	
 
@@ -41,9 +43,15 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 	}
 	
 	@Override
+	protected DeclarationAnnotationElementAdapter<String[]> cascadeAdapter() {
+		return CASCADE_ADAPTER;
+	}
+
+	@Override
 	protected DeclarationAnnotationElementAdapter<String> fetchAdapter() {
 		return FETCH_ADAPTER;
 	}
+	
 	
 	//**************** Annotation implementation **************
 	
@@ -69,13 +77,18 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 	
 	// ********** static methods **********
 
-	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
-		return buildFetchAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_MANY__FETCH);
-	}
-	
 	private static DeclarationAnnotationElementAdapter<String> buildTargetEntityAdapter() {
 		return buildTargetEntityAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_MANY__TARGET_ENTITY);
 	}
+
+	private static DeclarationAnnotationElementAdapter<String[]> buildCascadeAdapter() {
+		return buildEnumArrayAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_MANY__CASCADE);
+	}
+	
+	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
+		return buildFetchAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_MANY__FETCH);
+	}
+
 	
 	private static DeclarationAnnotationElementAdapter<String> buildMappedByAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_MANY__MAPPED_BY, false); // false = do not remove annotation when empty

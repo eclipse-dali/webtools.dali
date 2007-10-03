@@ -22,10 +22,8 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResour
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
-import org.eclipse.jpt.core.internal.resource.java.ManyToMany;
 import org.eclipse.jpt.core.internal.resource.java.OneToOne;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
-import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase.DefaultAnnotationWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class OneToOneTests extends AnnotationTestCase {
@@ -42,7 +40,8 @@ public class OneToOneTests extends AnnotationTestCase {
 	}
 
 	private IType createTestOneToOne() throws Exception {
-		this.createAnnotationAndMembers("OneToOne", "FetchType fetch() default FetchType.LAZY;");
+		this.createAnnotationAndMembers("OneToOne", "FetchType fetch() default FetchType.LAZY; CascadeType[] cascade() default = {};");
+		this.createEnum("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -108,6 +107,51 @@ public class OneToOneTests extends AnnotationTestCase {
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuffer sb) {
 				sb.append("@OneToOne(mappedBy=\"foo\")");
+			}
+		});
+	}
+	
+	private IType createTestOneToOneWithCascade() throws Exception {
+		this.createAnnotationAndMembers("OneToOne", "CascadeType[] cascade() default = {};");
+		this.createEnum("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ONE_TO_ONE, JPA.CASCADE_TYPE);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@OneToOne(cascade=CascadeType.ALL)");
+			}
+		});
+	}
+	
+	private IType createTestOneToOneWithMultipleCascade() throws Exception {
+		this.createAnnotationAndMembers("OneToOne", "CascadeType[] cascade() default = {};");
+		this.createEnum("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ONE_TO_ONE, JPA.CASCADE_TYPE);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@OneToOne(cascade={CascadeType.MERGE, CascadeType.REMOVE})");
+			}
+		});
+	}
+	
+	private IType createTestOneToOneWithDuplicateCascade() throws Exception {
+		this.createAnnotationAndMembers("OneToOne", "CascadeType[] cascade() default = {};");
+		this.createEnum("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ONE_TO_ONE, JPA.CASCADE_TYPE);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@OneToOne(cascade={CascadeType.MERGE, CascadeType.MERGE})");
 			}
 		});
 	}
@@ -319,4 +363,138 @@ public class OneToOneTests extends AnnotationTestCase {
 		assertSourceDoesNotContain("mappedBy");
 	}
 
+	public void testSetCascadeAll() throws Exception {
+		IType testType = this.createTestOneToOne();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertFalse(oneToOne.isCascadeAll());
+	
+		oneToOne.setCascadeAll(true);
+		assertSourceContains("@OneToOne(cascade=ALL)");
+		
+		oneToOne.updateFromJava(JDTTools.buildASTRoot(testType));
+		assertTrue(oneToOne.isCascadeAll());
+	}
+	
+	public void testSetCascadeMerge() throws Exception {
+		IType testType = this.createTestOneToOne();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertFalse(oneToOne.isCascadeMerge());
+	
+		oneToOne.setCascadeMerge(true);
+		assertSourceContains("@OneToOne(cascade=MERGE)");
+		
+		oneToOne.updateFromJava(JDTTools.buildASTRoot(testType));
+		assertTrue(oneToOne.isCascadeMerge());
+	}
+	
+	public void testSetCascadePersist() throws Exception {
+		IType testType = this.createTestOneToOne();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertFalse(oneToOne.isCascadePersist());
+	
+		oneToOne.setCascadePersist(true);
+		assertSourceContains("@OneToOne(cascade=PERSIST)");
+		
+		oneToOne.updateFromJava(JDTTools.buildASTRoot(testType));
+		assertTrue(oneToOne.isCascadePersist());
+	}
+	
+	public void testSetCascadeRemove() throws Exception {
+		IType testType = this.createTestOneToOne();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertFalse(oneToOne.isCascadeRemove());
+	
+		oneToOne.setCascadeRemove(true);
+		assertSourceContains("@OneToOne(cascade=REMOVE)");
+		
+		oneToOne.updateFromJava(JDTTools.buildASTRoot(testType));
+		assertTrue(oneToOne.isCascadeRemove());
+	}
+
+	public void testSetCascadeRefresh() throws Exception {
+		IType testType = this.createTestOneToOne();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertFalse(oneToOne.isCascadeRefresh());
+	
+		oneToOne.setCascadeRefresh(true);
+		assertSourceContains("@OneToOne(cascade=REFRESH)");
+		
+		oneToOne.updateFromJava(JDTTools.buildASTRoot(testType));
+		assertTrue(oneToOne.isCascadeRefresh());
+	}
+
+	public void testCascadeMoreThanOnce() throws Exception {
+		IType testType = this.createTestOneToOneWithCascade();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertTrue(oneToOne.isCascadeAll());
+		
+		oneToOne.setCascadeAll(true);
+		assertTrue(oneToOne.isCascadeAll());
+		//a second CascadeType.All should not have been added
+		assertSourceContains("@OneToOne(cascade=CascadeType.ALL)");
+		
+		oneToOne.setCascadeAll(false);
+		assertFalse(oneToOne.isCascadeAll());
+		
+		assertSourceDoesNotContain("cascade");
+		
+		//test setting cascadeAll to false again, should just do nothing
+		oneToOne.setCascadeAll(false);
+		assertFalse(oneToOne.isCascadeAll());
+		
+		assertSourceDoesNotContain("cascade");
+	}
+	
+	public void testDuplicateCascade() throws Exception {
+		IType testType = this.createTestOneToOneWithDuplicateCascade();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertTrue(oneToOne.isCascadeMerge());
+		
+		oneToOne.setCascadeMerge(false);//TODO should the resource model handle this and remove both MERGE 
+										//settings instead of having to set it false twice?
+		assertTrue(oneToOne.isCascadeMerge());
+		
+		oneToOne.setCascadeMerge(false);
+		assertFalse(oneToOne.isCascadeMerge());
+		
+		assertSourceDoesNotContain("cascade");
+	}
+	
+	public void testMultipleCascade() throws Exception {
+		IType testType = this.createTestOneToOneWithMultipleCascade();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
+		assertTrue(oneToOne.isCascadeMerge());
+		assertTrue(oneToOne.isCascadeRemove());
+		
+		oneToOne.setCascadeMerge(false);
+		assertSourceContains("@OneToOne(cascade=REMOVE)");
+		
+		oneToOne.setCascadeRemove(false);		
+		assertSourceDoesNotContain("cascade");
+	}
+	
 }

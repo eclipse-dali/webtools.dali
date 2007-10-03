@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 
+
 public interface RelationshipMappingAnnotation extends MappingAnnotation
 {
 	/**
@@ -54,4 +55,25 @@ public interface RelationshipMappingAnnotation extends MappingAnnotation
 	 * Set to null to remove the fetch element.
 	 */
 	void setFetch(FetchType fetch);
+	
+	boolean isCascadeAll();
+	
+	void setCascadeAll(boolean all);
+	
+	boolean isCascadeMerge();
+	
+	void setCascadeMerge(boolean merge);
+
+	boolean isCascadePersist();
+	
+	void setCascadePersist(boolean persist);
+
+	boolean isCascadeRefresh();
+	
+	void setCascadeRefresh(boolean refresh);
+
+	boolean isCascadeRemove();
+	
+	void setCascadeRemove(boolean remove);
+
 }
