@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
@@ -33,7 +34,6 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
-import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 public abstract class BaseJpaPlatform implements IJpaPlatform
 {
@@ -126,7 +126,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	protected IResourceModel buildPersistenceResourceModel(IJpaFile jpaFile) {
 		IFile resourceFile = jpaFile.getFile();
 		PersistenceResourceModel resource = 
-				(PersistenceResourceModel) WorkbenchResourceHelper.getResource(resourceFile, true);
+				(PersistenceResourceModel) WorkbenchResourceHelperBase.getResource(resourceFile, true);
 		resource.accessForWrite();
 		return resource;
 	}
@@ -134,7 +134,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	protected IResourceModel buildOrmResourceModel(IJpaFile jpaFile) {
 		IFile resourceFile = jpaFile.getFile();
 		OrmResourceModel resource = 
-				(OrmResourceModel) WorkbenchResourceHelper.getResource(resourceFile, true);
+				(OrmResourceModel) WorkbenchResourceHelperBase.getResource(resourceFile, true);
 		resource.accessForWrite();
 		return resource;
 	}
@@ -238,6 +238,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		definitions.add(AttributeOverridesAnnotationDefinition.instance());
 		definitions.add(ColumnAnnotationDefinition.instance());
 		definitions.add(GeneratedValueAnnotationDefinition.instance());
+		definitions.add(JoinTableAnnotationDefinition.instance());
 	}
 	
 	//********************* IJpaPlatform implementation *************************

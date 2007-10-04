@@ -11,18 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 
 
-public interface Table extends Annotation
+public interface JoinTable extends Table
 {
-	String getName();
-	
-	void setName(String name);
-	
-	String getCatalog();
-	
-	void setCatalog(String catalog);
-
-	String getSchema();
-	
-	void setSchema(String schema);
 
 }

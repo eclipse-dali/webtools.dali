@@ -34,17 +34,26 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 
 	private final AnnotationElementAdapter<String> catalogAdapter;
 
+	private String name;
+	
+	private String catalog;
+	
+	private String schema;
 	
 	protected AbstractTableResource(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.nameAdapter(daa);
 		this.schemaDeclarationAdapter = this.schemaAdapter(daa);
 		this.catalogDeclarationAdapter = this.catalogAdapter(daa);
-		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), this.nameDeclarationAdapter);
-		this.schemaAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), this.schemaDeclarationAdapter);
-		this.catalogAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), this.catalogDeclarationAdapter);
+		this.nameAdapter = buildAnnotationElementAdapter(this.nameDeclarationAdapter);
+		this.schemaAdapter = buildAnnotationElementAdapter(this.schemaDeclarationAdapter);
+		this.catalogAdapter = buildAnnotationElementAdapter(this.catalogDeclarationAdapter);
 	}
 	
+	protected AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
+		return new ShortCircuitAnnotationElementAdapter<String>(this.getMember(), daea);
+	}
+
 	/**
 	 * Build and return a declaration element adapter for the table's 'name' element
 	 */
@@ -60,11 +69,6 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	 */
 	protected abstract DeclarationAnnotationElementAdapter<String> catalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
 
-	private String name;
-	
-	private String catalog;
-	
-	private String schema;
 	
 	public String getName() {
 		return this.name;
@@ -99,5 +103,4 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		this.setCatalog(this.catalogAdapter.getValue(astRoot));
 		//this.updateUniqueConstraintsFromJava(astRoot);
 	}
-
 }
