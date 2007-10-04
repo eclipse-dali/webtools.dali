@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
