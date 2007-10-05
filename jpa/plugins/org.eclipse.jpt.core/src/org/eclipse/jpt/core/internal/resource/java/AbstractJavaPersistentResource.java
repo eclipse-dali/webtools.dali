@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -120,7 +119,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		if (containerAnnotation != null) {
 			//ignore any nestableAnnotation and just add to the plural one
 			NestableAnnotation newNestableAnnotation = containerAnnotation.add(index);
-			synchAnnotationsAfterAdd(index + 1, containerAnnotation);
+			ContainerAnnotationTools.synchAnnotationsAfterAdd(index + 1, containerAnnotation);
 			newNestableAnnotation.newAnnotation();
 			return newNestableAnnotation;
 		}
@@ -136,70 +135,18 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		newSingularAnnotation.initializeFrom(nestableAnnotation);
 		return newContainerAnnotation.add(newContainerAnnotation.nestedAnnotationsSize());
 	}
-	
-	/**
-	 * synchronize the source annotations with the model nestableAnnotations,
-	 * starting at the end of the list to prevent overlap
-	 */
-	private void synchAnnotationsAfterAdd(int index, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
-		List<NestableAnnotation> nestableAnnotations = CollectionTools.list(containerAnnotation.nestedAnnotations());
-		for (int i = nestableAnnotations.size(); i-- > index;) {
-			this.synch(nestableAnnotations.get(i), i);
-		}
-	}
-
-	/**
-	 * synchronize the source annotations with the model nestableAnnotations,
-	 * starting at the specified index to prevent overlap
-	 */
-	private void synchAnnotationsAfterRemove(int index, ContainerAnnotation<NestableAnnotation> pluralAnnotation) {
-		List<NestableAnnotation> nestableAnnotations = CollectionTools.list(pluralAnnotation.nestedAnnotations());
-		for (int i = index; i < nestableAnnotations.size(); i++) {
-			this.synch(nestableAnnotations.get(i), i);
-		}
-	}
-
-	private void synch(NestableAnnotation nestableAnnotation, int index) {
-		nestableAnnotation.moveAnnotation(index);
-	}
 
 	public void move(int newIndex, NestableAnnotation nestedAnnotation, String containerAnnotationName) {
 		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
 		int oldIndex = containerAnnotation.indexOf(nestedAnnotation);
-		move(oldIndex, newIndex, containerAnnotation);
+		ContainerAnnotationTools.move(oldIndex, newIndex, containerAnnotation);
 	}
 	
 	public void move(int oldIndex, int newIndex, String containerAnnotationName) {
 		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
-		move(oldIndex, newIndex, containerAnnotation);
+		ContainerAnnotationTools.move(oldIndex, newIndex, containerAnnotation);
 	}
 	
-	private void move(int sourceIndex, int targetIndex, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
-		containerAnnotation.move(sourceIndex, targetIndex);
-		synchAnnotationsAfterMove(sourceIndex, targetIndex, containerAnnotation);
-	}
-	
-	/**
-	 * synchronize the annotations with the model nestableAnnotations
-	 */
-	private void synchAnnotationsAfterMove(int sourceIndex, int targetIndex, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
-		NestableAnnotation nestableAnnotation = containerAnnotation.nestedAnnotationAt(targetIndex);
-		
-		this.synch(nestableAnnotation, containerAnnotation.nestedAnnotationsSize());
-		
-		List<NestableAnnotation> nestableAnnotations = CollectionTools.list(containerAnnotation.nestedAnnotations());
-		if (sourceIndex < targetIndex) {
-			for (int i = sourceIndex; i < targetIndex; i++) {
-				synch(nestableAnnotations.get(i), i);
-			}
-		}
-		else {
-			for (int i = sourceIndex; i > targetIndex; i-- ) {
-				synch(nestableAnnotations.get(i), i);			
-			}
-		}
-		this.synch(nestableAnnotation, targetIndex);
-	}
 	
 	private void addAnnotation(Annotation annotation) {
 		this.annotations.add(annotation);
@@ -265,7 +212,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		NestableAnnotation nestableAnnotation = containerAnnotation.nestedAnnotationAt(index);
 		containerAnnotation.remove(index);
 		nestableAnnotation.removeAnnotation();
-		synchAnnotationsAfterRemove(index, containerAnnotation);
+		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, containerAnnotation);
 		
 		if (containerAnnotation.nestedAnnotationsSize() == 0) {
 			removeAnnotation(containerAnnotation);

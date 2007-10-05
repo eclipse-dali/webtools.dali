@@ -22,18 +22,19 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
+import org.eclipse.jpt.core.internal.resource.java.SecondaryTables;
 import org.eclipse.jpt.core.internal.resource.java.UniqueConstraint;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class SecondaryTableTests extends AnnotationTestCase {
+public class SecondaryTablesTests extends AnnotationTestCase {
 	
 	private static final String TABLE_NAME = "MY_TABLE";
 	private static final String SCHEMA_NAME = "MY_SCHEMA";
 	private static final String CATALOG_NAME = "MY_CATALOG";
 	
-	public SecondaryTableTests(String name) {
+	public SecondaryTablesTests(String name) {
 		super(name);
 	}
 
@@ -43,55 +44,59 @@ public class SecondaryTableTests extends AnnotationTestCase {
 
 	private IType createTestSecondaryTable() throws Exception {
 		this.createAnnotationAndMembers("SecondaryTable", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";");
+		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value()");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.SECONDARY_TABLE);
+				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@SecondaryTable");
+				sb.append("@SecondaryTables(@SecondaryTable)");
 			}
 		});
 	}
 	
 	private IType createTestSecondaryTableWithName() throws Exception {
 		this.createAnnotationAndMembers("SecondaryTable", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";");
+		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value()");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.SECONDARY_TABLE);
+				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@SecondaryTable(name=\"" + TABLE_NAME + "\")");
+				sb.append("@SecondaryTables(@SecondaryTable(name=\"" + TABLE_NAME + "\"))");
 			}
 		});
 	}
 	
 	private IType createTestSecondaryTableWithSchema() throws Exception {
 		this.createAnnotationAndMembers("SecondaryTable", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";");
+		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value()");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.SECONDARY_TABLE);
+				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@SecondaryTable(schema=\"" + SCHEMA_NAME + "\")");
+				sb.append("@SecondaryTables(@SecondaryTable(schema=\"" + SCHEMA_NAME + "\"))");
 			}
 		});
 	}
 	private IType createTestSecondaryTableWithCatalog() throws Exception {
 		this.createAnnotationAndMembers("SecondaryTable", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";");
+		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value()");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.SECONDARY_TABLE);
+				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@SecondaryTable(catalog=\"" + CATALOG_NAME + "\")");
+				sb.append("@SecondaryTables(@SecondaryTable(catalog=\"" + CATALOG_NAME + "\"))");
 			}
 		});
 	}
@@ -99,15 +104,16 @@ public class SecondaryTableTests extends AnnotationTestCase {
 	
 	private IType createTestSecondaryTableWithUniqueConstraints() throws Exception {
 		this.createAnnotationAndMembers("SecondaryTable", "UniqueConstraint[] uniqueConstraints() default{}");
+		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value()");
 		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.UNIQUE_CONSTRAINT);
+				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES, JPA.UNIQUE_CONSTRAINT);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint})");
+				sb.append("@SecondaryTables(@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint}))");
 			}
 		});
 	}
@@ -136,44 +142,50 @@ public class SecondaryTableTests extends AnnotationTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
 		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
-		assertNotNull(table);
-		assertEquals(TABLE_NAME, table.getName());
+		assertNull(table);
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		assertNotNull(secondaryTables);
+		
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
+		assertEquals(TABLE_NAME, secondaryTable.getName());
 	}
 
 	public void testGetNull() throws Exception {
 		IType testType = this.createTestSecondaryTable();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
-		assertNotNull(table);
-		assertNull(table.getName());
-		assertNull(table.getCatalog());
-		assertNull(table.getSchema());
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
+		assertNull(secondaryTable.getName());
+		assertNull(secondaryTable.getCatalog());
+		assertNull(secondaryTable.getSchema());
 	}
 
 	public void testSetName() throws Exception {
 		IType testType = this.createTestSecondaryTable();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
-		assertNotNull(table);
-		assertNull(table.getName());
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
+	
+		assertNull(secondaryTable.getName());
 
-		table.setName("Foo");
-		assertEquals("Foo", table.getName());
+		secondaryTable.setName("Foo");
+		assertEquals("Foo", secondaryTable.getName());
 		
-		assertSourceContains("@SecondaryTable(name=\"Foo\")");
+		assertSourceContains("@SecondaryTables(@SecondaryTable(name=\"Foo\"))");
 	}
 	
 	public void testSetNameNull() throws Exception {
 		IType testType = this.createTestSecondaryTableWithName();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
-		assertEquals(TABLE_NAME, table.getName());
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
+		assertEquals(TABLE_NAME, secondaryTable.getName());
 		
-		table.setName(null);
-		assertNull(table.getName());
+		secondaryTable.setName(null);
+		assertNull(secondaryTable.getName());
 		
 		assertSourceDoesNotContain("@SecondaryTable");
 	}
@@ -182,34 +194,35 @@ public class SecondaryTableTests extends AnnotationTestCase {
 		IType testType = this.createTestSecondaryTableWithCatalog();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
-		assertNotNull(table);
-		assertEquals(CATALOG_NAME, table.getCatalog());
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
+		assertEquals(CATALOG_NAME, secondaryTable.getCatalog());
 	}
 
 	public void testSetCatalog() throws Exception {
 		IType testType = this.createTestSecondaryTable();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
-		assertNotNull(table);
-		assertNull(table.getCatalog());
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
+		assertNull(secondaryTable.getCatalog());
 
-		table.setCatalog("Foo");
-		assertEquals("Foo", table.getCatalog());
+		secondaryTable.setCatalog("Foo");
+		assertEquals("Foo", secondaryTable.getCatalog());
 		
-		assertSourceContains("@SecondaryTable(catalog=\"Foo\")");
+		assertSourceContains("@SecondaryTables(@SecondaryTable(catalog=\"Foo\"))");
 	}
 	
 	public void testSetCatalogNull() throws Exception {
 		IType testType = this.createTestSecondaryTableWithCatalog();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
-		assertEquals(CATALOG_NAME, table.getCatalog());
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
+		assertEquals(CATALOG_NAME, secondaryTable.getCatalog());
 		
-		table.setCatalog(null);
-		assertNull(table.getCatalog());
+		secondaryTable.setCatalog(null);
+		assertNull(secondaryTable.getCatalog());
 		
 		assertSourceDoesNotContain("@SecondaryTable");
 	}
@@ -218,34 +231,36 @@ public class SecondaryTableTests extends AnnotationTestCase {
 		IType testType = this.createTestSecondaryTableWithSchema();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
-		assertNotNull(table);
-		assertEquals(SCHEMA_NAME, table.getSchema());
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
+		assertNotNull(secondaryTable);
+		assertEquals(SCHEMA_NAME, secondaryTable.getSchema());
 	}
 
 	public void testSetSchema() throws Exception {
 		IType testType = this.createTestSecondaryTable();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
-		assertNotNull(table);
-		assertNull(table.getSchema());
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
+		assertNull(secondaryTable.getSchema());
 
-		table.setSchema("Foo");
-		assertEquals("Foo", table.getSchema());
+		secondaryTable.setSchema("Foo");
+		assertEquals("Foo", secondaryTable.getSchema());
 		
-		assertSourceContains("@SecondaryTable(schema=\"Foo\")");
+		assertSourceContains("@SecondaryTables(@SecondaryTable(schema=\"Foo\"))");
 	}
 	
 	public void testSetSchemaNull() throws Exception {
 		IType testType = this.createTestSecondaryTableWithSchema();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
-		assertEquals(SCHEMA_NAME, table.getSchema());
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
+		assertEquals(SCHEMA_NAME, secondaryTable.getSchema());
 		
-		table.setSchema(null);
-		assertNull(table.getSchema());
+		secondaryTable.setSchema(null);
+		assertNull(secondaryTable.getSchema());
 		
 		assertSourceDoesNotContain("@SecondaryTable");
 	}
@@ -254,9 +269,10 @@ public class SecondaryTableTests extends AnnotationTestCase {
 	public void testUniqueConstraints() throws Exception {
 		IType testType = this.createTestSecondaryTable();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
 		
-		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
+		ListIterator<UniqueConstraint> iterator = secondaryTable.uniqueConstraints();
 		
 		assertEquals(0, CollectionTools.size(iterator));
 	}
@@ -265,13 +281,14 @@ public class SecondaryTableTests extends AnnotationTestCase {
 		IType testType = this.createTestSecondaryTable();
 		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
 		
-		table.addUniqueConstraint(0);
-		table.addUniqueConstraint(1);
-		table.updateFromJava(JDTTools.buildASTRoot(testType));
+		secondaryTable.addUniqueConstraint(0);
+		secondaryTable.addUniqueConstraint(1);
+		secondaryTable.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
+		ListIterator<UniqueConstraint> iterator = secondaryTable.uniqueConstraints();
 		
 		assertEquals(2, CollectionTools.size(iterator));
 	}
@@ -279,9 +296,10 @@ public class SecondaryTableTests extends AnnotationTestCase {
 	public void testUniqueConstraints3() throws Exception {
 		IType testType = this.createTestSecondaryTableWithUniqueConstraints();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
 				
-		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
+		ListIterator<UniqueConstraint> iterator = secondaryTable.uniqueConstraints();
 		
 		assertEquals(2, CollectionTools.size(iterator));
 	}
@@ -290,41 +308,45 @@ public class SecondaryTableTests extends AnnotationTestCase {
 		IType testType = this.createTestSecondaryTable();
 		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
 		
-		table.addUniqueConstraint(0).addColumnName("FOO");
-		table.addUniqueConstraint(1);
+		secondaryTable.addUniqueConstraint(0).addColumnName("FOO");
+		secondaryTable.addUniqueConstraint(1);
 
-		assertSourceContains("@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames=\"FOO\"),@UniqueConstraint})");
+		assertSourceContains("@SecondaryTables(@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames=\"FOO\"),@UniqueConstraint}))");
 	}
 	
 	public void testRemoveUniqueConstraint() throws Exception {
 		IType testType = this.createTestSecondaryTableWithUniqueConstraints();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
 		
-		table.removeUniqueConstraint(1);
-		assertSourceContains("@SecondaryTable(uniqueConstraints=@UniqueConstraint(columnNames={\"BAR\"}))");	
+		secondaryTable.removeUniqueConstraint(1);
+		assertSourceContains("@SecondaryTables(@SecondaryTable(uniqueConstraints=@UniqueConstraint(columnNames={\"BAR\"}))");	
 		
-		table.removeUniqueConstraint(0);
+		secondaryTable.removeUniqueConstraint(0);
 		assertSourceDoesNotContain("@SecondaryTable");
 	}
 	
 	public void testMoveUniqueConstraint() throws Exception {
 		IType testType = this.createTestSecondaryTableWithUniqueConstraints();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
 		
-		table.moveUniqueConstraint(0, 1);
-		assertSourceContains("@SecondaryTable(uniqueConstraints={@UniqueConstraint, @UniqueConstraint(columnNames={\"BAR\"})})");
+		secondaryTable.moveUniqueConstraint(0, 1);
+		assertSourceContains("@SecondaryTables(@SecondaryTable(uniqueConstraints={@UniqueConstraint, @UniqueConstraint(columnNames={\"BAR\"})}))");
 	}
 	
 	public void testMoveUniqueConstraint2() throws Exception {
 		IType testType = this.createTestSecondaryTableWithUniqueConstraints();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
+		SecondaryTables secondaryTables = (SecondaryTables) typeResource.annotation(JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTable = secondaryTables.nestedAnnotationAt(0);
 		
-		table.moveUniqueConstraint(1, 0);
-		assertSourceContains("@SecondaryTable(uniqueConstraints={@UniqueConstraint, @UniqueConstraint(columnNames={\"BAR\"})})");
+		secondaryTable.moveUniqueConstraint(1, 0);
+		assertSourceContains("@SecondaryTables(@SecondaryTable(uniqueConstraints={@UniqueConstraint, @UniqueConstraint(columnNames={\"BAR\"})}))");
 	}
 }

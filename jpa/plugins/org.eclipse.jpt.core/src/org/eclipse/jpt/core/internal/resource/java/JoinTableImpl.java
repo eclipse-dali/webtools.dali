@@ -51,4 +51,9 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 		// ignore the daa passed in, @JoinTable is never nested
 		return CATALOG_ADAPTER;
 	}
+	
+	@Override
+	protected UniqueConstraint createUniqueConstraint(int index) {
+		return UniqueConstraintImpl.createJoinTableUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
+	}
 }

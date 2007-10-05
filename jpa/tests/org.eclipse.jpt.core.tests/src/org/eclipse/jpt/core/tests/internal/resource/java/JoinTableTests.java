@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
@@ -22,8 +23,9 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.JoinTable;
-import org.eclipse.jpt.core.internal.resource.java.Table;
+import org.eclipse.jpt.core.internal.resource.java.UniqueConstraint;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JoinTableTests extends AnnotationTestCase {
@@ -93,6 +95,21 @@ public class JoinTableTests extends AnnotationTestCase {
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuffer sb) {
 				sb.append("@JoinTable(catalog=\"" + CATALOG_NAME + "\")");
+			}
+		});
+	}
+	
+	private IType createTestJoinTableWithUniqueConstraints() throws Exception {
+		this.createAnnotationAndMembers("JoinTable", "UniqueConstraint[] uniqueConstraints() default{}");
+		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.JOIN_TABLE, JPA.UNIQUE_CONSTRAINT);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint})");
 			}
 		});
 	}
@@ -244,5 +261,97 @@ public class JoinTableTests extends AnnotationTestCase {
 		assertNull(table.getSchema());
 		
 		assertSourceDoesNotContain("@JoinTable");
+	}
+	
+	public void testUniqueConstraints() throws Exception {
+		IType testType = this.createTestJoinTable();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
+		
+		assertEquals(0, CollectionTools.size(iterator));
+	}
+	
+	public void testUniqueConstraints2() throws Exception {
+		IType testType = this.createTestJoinTable();
+		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+
+		
+		table.addUniqueConstraint(0);
+		table.addUniqueConstraint(1);
+		table.updateFromJava(JDTTools.buildASTRoot(testType));
+		
+		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
+		
+		assertEquals(2, CollectionTools.size(iterator));
+	}
+	
+	public void testUniqueConstraints3() throws Exception {
+		IType testType = this.createTestJoinTableWithUniqueConstraints();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+				
+		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
+		
+		assertEquals(2, CollectionTools.size(iterator));
+	}
+	
+	public void testAddUniqueConstraint() throws Exception {
+		IType testType = this.createTestJoinTable();
+		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		table.addUniqueConstraint(0).addColumnName("FOO");
+		table.addUniqueConstraint(1);
+
+		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames=\"FOO\"),@UniqueConstraint})");
+	}
+	
+	public void testRemoveUniqueConstraint() throws Exception {
+		IType testType = this.createTestJoinTableWithUniqueConstraints();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		table.removeUniqueConstraint(1);
+		assertSourceContains("@JoinTable(uniqueConstraints=@UniqueConstraint(columnNames={\"BAR\"}))");	
+
+		table.removeUniqueConstraint(0);
+		assertSourceDoesNotContain("@JoinTable");
+	}
+	
+	public void testMoveUniqueConstraint() throws Exception {
+		IType testType = this.createTestJoinTableWithUniqueConstraints();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		table.moveUniqueConstraint(0, 1);
+		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint, @UniqueConstraint(columnNames={\"BAR\"})})");
+	}
+	
+	public void testMoveUniqueConstraint2() throws Exception {
+		IType testType = this.createTestJoinTableWithUniqueConstraints();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		table.moveUniqueConstraint(1, 0);
+		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint, @UniqueConstraint(columnNames={\"BAR\"})})");
 	}
 }

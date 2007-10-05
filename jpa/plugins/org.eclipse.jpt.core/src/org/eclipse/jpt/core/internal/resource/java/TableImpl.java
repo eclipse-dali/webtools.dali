@@ -51,4 +51,9 @@ public class TableImpl extends AbstractTableResource
 		// ignore the daa passed in, @Table is never nested
 		return CATALOG_ADAPTER;
 	}
+	
+	@Override
+	protected UniqueConstraint createUniqueConstraint(int index) {
+		return UniqueConstraintImpl.createTableUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
+	}
 }

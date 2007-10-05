@@ -39,6 +39,7 @@ public class JptJavaResourceTests {
 		suite.addTestSuite(VersionTests.class);
 		suite.addTestSuite(TableTests.class);
 		suite.addTestSuite(SecondaryTableTests.class);
+		suite.addTestSuite(SecondaryTablesTests.class);
 		suite.addTestSuite(JoinTableTests.class);
 		return suite;
 	}

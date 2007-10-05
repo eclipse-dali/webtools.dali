@@ -30,4 +30,6 @@ public interface ContainerAnnotation<T extends NestableAnnotation> extends Annot
 	void remove(int index);
 	
 	void move(int oldIndex, int newIndex);
+	
+	T createNestedAnnotation(int index);
 }

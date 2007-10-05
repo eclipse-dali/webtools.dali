@@ -104,6 +104,10 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 		}
 	}
 	
+	public AttributeOverride createNestedAnnotation(int index) {
+		return createAttributeOverride(index);
+	}
+	
 	private AttributeOverride createAttributeOverride(int index) {
 		return AttributeOverrideImpl.createNestedAttributeOverride(this, getMember(), index, getDeclarationAnnotationAdapter());
 	}

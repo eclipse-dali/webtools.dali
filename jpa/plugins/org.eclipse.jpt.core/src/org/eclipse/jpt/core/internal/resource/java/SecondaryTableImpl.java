@@ -65,6 +65,11 @@ public class SecondaryTableImpl extends AbstractTableResource implements Seconda
 		setSchema(((SecondaryTable) oldAnnotation).getSchema());
 	}
 	
+	@Override
+	protected UniqueConstraint createUniqueConstraint(int index) {
+		return UniqueConstraintImpl.createSecondaryTableUniqueConstraint(new UniqueConstraintOwner(this), this.getDeclarationAnnotationAdapter(), this.getMember(), index);
+	}
+	
 	// ********** static methods **********
 	static SecondaryTable createSecondaryTable(JavaResource parent, Member member) {
 		return new SecondaryTableImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));

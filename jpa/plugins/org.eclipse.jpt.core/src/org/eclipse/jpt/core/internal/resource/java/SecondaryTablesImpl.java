@@ -14,13 +14,14 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> implements SecondaryTables
 {
 	private final List<SecondaryTable> secondaryTables;
 	
-	protected SecondaryTablesImpl( JavaPersistentTypeResource parent, Member member) {
+	protected SecondaryTablesImpl(JavaPersistentTypeResource parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.secondaryTables = new ArrayList<SecondaryTable>();
 	}
@@ -43,8 +44,13 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 	
 	public SecondaryTable add(int index) {
 		SecondaryTable javaSecondaryTableResource = createSecondaryTable(index);
-		this.secondaryTables.add(index, javaSecondaryTableResource);
+		this.add(index, javaSecondaryTableResource);
 		return javaSecondaryTableResource;
+	}
+	
+	private void add(int index, SecondaryTable secondaryTable) {
+		this.secondaryTables.add(index, secondaryTable);
+		//TODO event notification
 	}
 	
 	public void remove(Object secondaryTable) {
@@ -69,12 +75,12 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 	
 	//TODO this is going to be copied in all ContainerAnnotation implementations, how to solve that??
 	public void updateFromJava(CompilationUnit astRoot) {
-		List<SecondaryTable> sTables = this.secondaryTables;
-		int persSize = sTables.size();
+		List<SecondaryTable> nestedAnnotations = CollectionTools.list(nestedAnnotations());
+		int persSize = nestedAnnotations.size();
 		int javaSize = 0;
 		boolean allJavaAnnotationsFound = false;
 		for (int i = 0; i < persSize; i++) {
-			SecondaryTable secondaryTable = sTables.get(i);
+			SecondaryTable secondaryTable = nestedAnnotations.get(i);
 			if (secondaryTable.annotation(astRoot) == null) {
 				allJavaAnnotationsFound = true;
 				break; // no need to go any further
@@ -86,7 +92,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 			// remove any model secondary tables beyond those that correspond to the Java annotations
 			while (persSize > javaSize) {
 				persSize--;
-				sTables.remove(persSize);
+				nestedAnnotations.remove(persSize);
 			}
 		}
 		else {
@@ -97,12 +103,16 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 					allJavaAnnotationsFound = true;
 				}
 				else {
-					this.secondaryTables.add(secondaryTable);
+					add(nestedAnnotationsSize(), secondaryTable);
 					secondaryTable.updateFromJava(astRoot);
 					javaSize++;
 				}
 			}
 		}
+	}
+	
+	public SecondaryTable createNestedAnnotation(int index) {
+		return createSecondaryTable(index);
 	}
 	
 	private SecondaryTable createSecondaryTable(int index) {

@@ -9,6 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.Iterator;
+import java.util.ListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+
 
 
 public interface Table extends Annotation
@@ -24,5 +28,35 @@ public interface Table extends Annotation
 	String getSchema();
 	
 	void setSchema(String schema);
+	
+	ListIterator<UniqueConstraint> uniqueConstraints();
+	
+	UniqueConstraint uniqueConstraintAt(int index);
+	
+	int uniqueConstraintsSize();
 
+	UniqueConstraint addUniqueConstraint(int index);
+	
+	void removeUniqueConstraint(int index);
+	
+	void moveUniqueConstraint(int oldIndex, int newIndex);
+
+	class UniqueConstraintOwner implements UniqueConstraint.Owner
+	{
+		private final Table table;
+
+		public UniqueConstraintOwner(Table table) {
+			super();
+			this.table = table;
+		}
+
+		public Iterator<String> candidateUniqueConstraintColumnNames() {
+			return EmptyIterator.instance();
+			//TODO this.table.dbTable().columnNames();
+		}
+		
+		public JavaResource javaResource() {
+			return this.table;
+		}
+	}
 }
