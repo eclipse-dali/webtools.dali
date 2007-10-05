@@ -10,7 +10,12 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.List;
+import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.MarkerAnnotation;
+import org.eclipse.jdt.core.dom.NormalAnnotation;
+import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
+import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class ContainerAnnotationTools
@@ -67,43 +72,53 @@ public class ContainerAnnotationTools
 		synch(nestableAnnotation, targetIndex);
 	}
 	
-	//TODO
-//	public static void updateNestedAnnotationsFromJava(CompilationUnit astRoot, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
-//		List<NestableAnnotation> nestedAnnotations = CollectionTools.list(containerAnnotation.nestedAnnotations());
-//		int persSize = nestedAnnotations.size();
-//		int javaSize = 0;
-//		boolean allJavaAnnotationsFound = false;
-//		for (int i = 0; i < persSize; i++) {
-//			NestableAnnotation nestedAnnotation = nestedAnnotations.get(i);
-//			if (nestedAnnotation.annotation(astRoot) == null) {
-//				allJavaAnnotationsFound = true;
-//				break; // no need to go any further
-//			}
-//			nestedAnnotation.updateFromJava(astRoot);
-//			javaSize++;
-//		}
-//		if (allJavaAnnotationsFound) {
-//			// remove any model secondary tables beyond those that correspond to the Java annotations
-//			while (persSize > javaSize) {
-//				persSize--;
-//				nestedAnnotations.remove(persSize);
-//			}
-//		}
-//		else {
-//			// add new model secondary tables until they match the Java annotations
-//			while (!allJavaAnnotationsFound) {
-//				NestableAnnotation nestedAnnotation = containerAnnotation.createNestedAnnotation(javaSize);
-//				if (nestedAnnotation.annotation(astRoot) == null) {
-//					allJavaAnnotationsFound = true;
-//				}
-//				else {
-//					containerAnnotation.add(containerAnnotation.nestedAnnotationsSize(), nestedAnnotation);
-//					nestedAnnotation.updateFromJava(astRoot);
-//					javaSize++;
-//				}
-//			}
-//		}
-//	}
+	public static void updateNestedAnnotationsFromJava(CompilationUnit astRoot, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
+		addOrUpdateAnnotationInSource(astRoot, containerAnnotation);
+		removeAnnotationsNotInSource(astRoot, containerAnnotation);
+	}
 
-
+	private static void addOrUpdateAnnotationInSource(CompilationUnit astRoot, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
+		containerAnnotation.jdtAnnotation(astRoot).accept(javaMemberAnnotationAstVisitor(astRoot, containerAnnotation));
+	}
+	
+	private static void removeAnnotationsNotInSource(CompilationUnit astRoot, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
+		for (NestableAnnotation annotation : CollectionTools.iterable(containerAnnotation.nestedAnnotations())) {
+			if (annotation.jdtAnnotation(astRoot) == null) {
+				containerAnnotation.remove(annotation);
+			}
+		}		
+	}
+	
+	private static ASTVisitor javaMemberAnnotationAstVisitor(final CompilationUnit astRoot, final ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
+		return new ASTVisitor() {
+			@Override
+			public boolean visit(SingleMemberAnnotation node) {
+				return visit((org.eclipse.jdt.core.dom.Annotation) node);
+			}
+		
+			@Override
+			public boolean visit(NormalAnnotation node) {
+				return visit((org.eclipse.jdt.core.dom.Annotation) node);
+			}
+		
+			@Override
+			public boolean visit(MarkerAnnotation node) {
+				return visit((org.eclipse.jdt.core.dom.Annotation) node);
+			}
+			
+			private boolean visit(org.eclipse.jdt.core.dom.Annotation node) {
+				if (containerAnnotation.getAnnotationName().equals(JDTTools.resolveAnnotation(node))) {
+					return true;
+				}
+				if (containerAnnotation.getNestableAnnotationName().equals(JDTTools.resolveAnnotation(node))) {
+					NestableAnnotation nestedAnnotation = containerAnnotation.nestedAnnotationFor(node);
+					if (nestedAnnotation == null) {
+						nestedAnnotation = containerAnnotation.add(containerAnnotation.nestedAnnotationsSize());
+					}
+					nestedAnnotation.updateFromJava(astRoot);
+				}
+				return false;
+			}
+		};
+	}
 }

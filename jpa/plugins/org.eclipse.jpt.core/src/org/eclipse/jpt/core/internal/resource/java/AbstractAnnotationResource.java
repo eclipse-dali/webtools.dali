@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
@@ -33,6 +34,10 @@ public abstract class AbstractAnnotationResource<E extends Member> extends Abstr
 	
 	public AnnotationAdapter getAnnotationAdapter() {
 		return this.annotationAdapter;
+	}
+	
+	public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
+		return getAnnotationAdapter().getAnnotation(astRoot);
 	}
 	
 	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {

@@ -15,9 +15,12 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.IAnnotationBinding;
 import org.eclipse.jdt.core.dom.IBinding;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.Name;
 
@@ -99,6 +102,18 @@ public class JDTTools {
 		}
 		IVariableBinding variableBinding = (IVariableBinding) binding;
 		return variableBinding.getType().getQualifiedName() + "." + variableBinding.getName();
+	}
+	
+	public static String resolveAnnotation(Annotation node) {
+		IAnnotationBinding annotationBinding = node.resolveAnnotationBinding();
+		if (annotationBinding == null) {
+			return null;
+		}
+		ITypeBinding annotationTypeBinding = annotationBinding.getAnnotationType();
+		if (annotationTypeBinding == null) {
+			return null;
+		}
+		return annotationTypeBinding.getQualifiedName();
 	}
 
 }

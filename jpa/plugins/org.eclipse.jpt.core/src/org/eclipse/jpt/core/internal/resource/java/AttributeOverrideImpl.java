@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -48,11 +47,7 @@ public class AttributeOverrideImpl
 	public String getAnnotationName() {
 		return JPA.ATTRIBUTE_OVERRIDE;
 	}
-		
-	public Annotation annotation(CompilationUnit astRoot) {
-		return getAnnotationAdapter().getAnnotation(astRoot);
-	}
-	
+			
 	public void moveAnnotation(int newIndex) {
 		getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}

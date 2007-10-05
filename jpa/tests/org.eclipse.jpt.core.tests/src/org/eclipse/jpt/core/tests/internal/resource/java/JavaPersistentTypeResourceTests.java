@@ -46,9 +46,13 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	private void createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
 		this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
+	
+	private void createEntityAnnotation() throws Exception{
+		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
+	}
 		
 	private IType createTestEntity() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -83,7 +87,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	}
 
 	private IType createTestEntityWithMemberEmbeddable() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("Embeddable", "String name();");
 
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -107,7 +111,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	}
 
 	private IType createTestEntityDuplicates() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -123,7 +127,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	}
 
 	private IType createTestEntityWithEmbeddable() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("Embeddable", "String name();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -140,7 +144,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	}
 	
 	private IType createTestEntityAnnotatedField() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("Id", "");
 	
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -161,7 +165,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	}
 
 	private IType createTestEntityAnnotatedMethod() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("Id", "");
 	
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -181,7 +185,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		});
 	}
 	private IType createTestEntityAnnotatedFieldAndMethod() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("Id", "");
 	
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -207,7 +211,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	}
 	
 	private IType createTestEntityAnnotatedNonPersistableMethod() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("Id", "");
 	
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -227,7 +231,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	}
 	
 	private IType createTestEntityAnnotatedPersistableMethodNonPersistableField() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("Id", "");
 		this.createAnnotationAndMembers("Column", "");
 	
@@ -255,7 +259,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		});
 	}
 	private IType createTestEntityNoPersistableFields() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -321,7 +325,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	
 	
 	private IType createTestEntityWithTable() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("Table", "String name(); String schema();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -338,7 +342,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	}
 	
 	private IType createTestEntityWithTableAndIdClass() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("Table", "String name(); String schema();");
 		this.createAnnotationAndMembers("IdClass", "Class value();");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -359,7 +363,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 
 	
 	private IType createTestEntityMultipleTables() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("Table", "String name(); String schema();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -378,7 +382,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	}
 
 	private IType createTestEntityWithSecondaryTable() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("SecondaryTable", "String name();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -394,7 +398,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 		});
 	}
 	private IType createTestEntityWithSecondaryTables() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("SecondaryTable", "String name();");
 		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value();");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -412,7 +416,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	}
 	
 	private IType createTestEntityWith2SecondaryTables() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("SecondaryTable", "String name();");
 		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value();");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -430,7 +434,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	}
 	
 	private IType createTestEntityWithSecondaryTableAndSecondaryTables() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 		this.createAnnotationAndMembers("SecondaryTable", "String name();");
 		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value();");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -450,7 +454,7 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 	}
 
 	private IType createTestEntityWithMemberTypes() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name();");
+		createEntityAnnotation();
 
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override

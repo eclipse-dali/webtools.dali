@@ -16,11 +16,10 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.IAnnotationBinding;
-import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
+import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -143,8 +142,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 	
 	public void move(int oldIndex, int newIndex, String containerAnnotationName) {
-		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
-		ContainerAnnotationTools.move(oldIndex, newIndex, containerAnnotation);
+		ContainerAnnotationTools.move(oldIndex, newIndex, containerAnnotation(containerAnnotationName));
 	}
 	
 	
@@ -301,7 +299,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	
 	private void removeAnnotationsNotInSource(CompilationUnit astRoot) {
 		for (Annotation annotation : CollectionTools.iterable(annotations())) {
-			if (!getMember().containsAnnotation(annotation.getDeclarationAnnotationAdapter(), astRoot)) {
+			if (annotation.jdtAnnotation(astRoot) == null) {
 				removeAnnotation(annotation);
 			}
 		}		
@@ -309,7 +307,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	
 	private void removeMappingAnnotationsNotInSource(CompilationUnit astRoot) {
 		for (MappingAnnotation mappingAnnotation : CollectionTools.iterable(mappingAnnotations())) {
-			if (!getMember().containsAnnotation(mappingAnnotation.getDeclarationAnnotationAdapter(), astRoot)) {
+			if (mappingAnnotation.jdtAnnotation(astRoot) == null) {
 				removeMappingAnnotation(mappingAnnotation);
 			}
 		}	
@@ -344,7 +342,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 	
 	protected void addAnnotation(org.eclipse.jdt.core.dom.Annotation node) {
-		String qualifiedAnnotationName = qualifiedAnnotationName(node);
+		String qualifiedAnnotationName = JDTTools.resolveAnnotation(node);
 		if (qualifiedAnnotationName == null) {
 			return;
 		}
@@ -367,18 +365,6 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 			//would be null in the case of a non JPA annotation
 			annotation.updateFromJava((CompilationUnit) node.getRoot());
 		}
-	}
-	
-	private static String qualifiedAnnotationName(org.eclipse.jdt.core.dom.Annotation node) {
-		IAnnotationBinding annotationBinding = node.resolveAnnotationBinding();
-		if (annotationBinding == null) {
-			return null;
-		}
-		ITypeBinding annotationTypeBinding = annotationBinding.getAnnotationType();
-		if (annotationTypeBinding == null) {
-			return null;
-		}
-		return annotationTypeBinding.getQualifiedName();
 	}
 	
 	public boolean isFor(IMember member) {

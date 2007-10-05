@@ -12,8 +12,10 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> implements AttributeOverrides
@@ -62,46 +64,21 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 		return this.attributesOverrides.get(index);
 	}
 	
+	public AttributeOverride nestedAnnotationFor(Annotation jdtAnnotation) {
+		for (AttributeOverride attributeOverride : CollectionTools.iterable(nestedAnnotations())) {
+			if (jdtAnnotation == attributeOverride.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
+				return attributeOverride;
+			}
+		}
+		return null;
+	}
+	
 	public void move(int oldIndex, int newIndex) {
 		this.attributesOverrides.add(newIndex, this.attributesOverrides.remove(oldIndex));
 	}
 	
-	//TODO this is going to be copied in all ContainerAnnotation implementations, how to solve that??
 	public void updateFromJava(CompilationUnit astRoot) {
-		List<AttributeOverride> overrides = this.attributesOverrides;
-		int persSize = overrides.size();
-		int javaSize = 0;
-		boolean allJavaAnnotationsFound = false;
-		for (int i = 0; i < persSize; i++) {
-			AttributeOverride attributeOverride = overrides.get(i);
-			if (attributeOverride.annotation(astRoot) == null) {
-				allJavaAnnotationsFound = true;
-				break; // no need to go any further
-			}
-			attributeOverride.updateFromJava(astRoot);
-			javaSize++;
-		}
-		if (allJavaAnnotationsFound) {
-			// remove any model attribute overrides beyond those that correspond to the Java annotations
-			while (persSize > javaSize) {
-				persSize--;
-				overrides.remove(persSize);
-			}
-		}
-		else {
-			// add new model attribute overrides until they match the Java annotations
-			while (!allJavaAnnotationsFound) {
-				AttributeOverride attributeOverride = this.createAttributeOverride(javaSize);
-				if (attributeOverride.annotation(astRoot) == null) {
-					allJavaAnnotationsFound = true;
-				}
-				else {
-					this.attributesOverrides.add(attributeOverride);
-					attributeOverride.updateFromJava(astRoot);
-					javaSize++;
-				}
-			}
-		}
+		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}
 	
 	public AttributeOverride createNestedAnnotation(int index) {

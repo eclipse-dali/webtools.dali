@@ -130,7 +130,7 @@ public class UniqueConstraintImpl extends AbstractResource<Member> implements Un
 	/**
 	 * allow owners to verify the annotation
 	 */
-	public org.eclipse.jdt.core.dom.Annotation annotation(CompilationUnit astRoot) {
+	public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
 		return this.annotationAdapter.getAnnotation(astRoot);
 	}
 

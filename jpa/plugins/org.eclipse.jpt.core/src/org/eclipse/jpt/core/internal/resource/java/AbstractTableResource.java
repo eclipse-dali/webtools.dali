@@ -124,7 +124,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		boolean allJavaAnnotationsFound = false;
 		for (int i = 0; i < persSize; i++) {
 			UniqueConstraintImpl uniqueConstraint = (UniqueConstraintImpl) constraints.get(i);
-			if (uniqueConstraint.annotation(astRoot) == null) {
+			if (uniqueConstraint.jdtAnnotation(astRoot) == null) {
 				allJavaAnnotationsFound = true;
 				break; // no need to go any further
 			}
@@ -143,7 +143,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 			// add new model join columns until they match the Java annotations
 			while (!allJavaAnnotationsFound) {
 				UniqueConstraint uniqueConstraint = this.createUniqueConstraint(javaSize);
-				if (uniqueConstraint.annotation(astRoot) == null) {
+				if (uniqueConstraint.jdtAnnotation(astRoot) == null) {
 					allJavaAnnotationsFound = true;
 				}
 				else {
