@@ -67,14 +67,7 @@ public class IntAnnotationElementAdapter {
 	}
 
 	protected String convertIntToValue(int intValue) {
-		return this.convertStringToValue(this.convertIntToString(intValue));
-	}
-
-	/**
-	 * assume the wrapped adapter expects a string
-	 */
-	protected String convertStringToValue(String stringValue) {
-		return stringValue;
+		return this.convertIntToString(intValue);
 	}
 
 	protected String convertIntToString(int intValue) {
