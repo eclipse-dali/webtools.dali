@@ -43,22 +43,11 @@ public class IntAnnotationElementAdapter {
 	}
 
 	public int getValue() {
-		return this.convertValueToInt(this.adapter.getValue());
+		return this.convertStringToInt(this.adapter.getValue());
 	}
 
 	public int getValue(CompilationUnit astRoot) {
-		return this.convertValueToInt(this.adapter.getValue(astRoot));
-	}
-
-	protected int convertValueToInt(Object value) {
-		return this.convertStringToInt(this.convertValueToString(value));
-	}
-
-	/**
-	 * assume the wrapped adapter returns a string
-	 */
-	protected String convertValueToString(Object value) {
-		return (String) value;
+		return this.convertStringToInt(this.adapter.getValue(astRoot));
 	}
 
 	protected int convertStringToInt(String stringValue) {
