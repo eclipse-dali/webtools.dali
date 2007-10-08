@@ -33,6 +33,8 @@ public interface Table extends Annotation
 	
 	UniqueConstraint uniqueConstraintAt(int index);
 	
+	int indexOfUniqueConstraint(UniqueConstraint uniqueConstraint);
+	
 	int uniqueConstraintsSize();
 
 	UniqueConstraint addUniqueConstraint(int index);

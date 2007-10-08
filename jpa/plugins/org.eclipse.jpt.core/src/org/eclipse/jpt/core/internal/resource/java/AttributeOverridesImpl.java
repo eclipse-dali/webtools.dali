@@ -15,7 +15,6 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> implements AttributeOverrides
@@ -41,13 +40,19 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 	
 	public int nestedAnnotationsSize() {
 		return this.attributesOverrides.size();
-	}
-	
+	}	
+
 	public AttributeOverride add(int index) {
 		AttributeOverride attributeOverride = createAttributeOverride(index);
-		this.attributesOverrides.add(index, attributeOverride);
+		add(index, attributeOverride);
 		return attributeOverride;
 	}
+	
+	private void add(int index, AttributeOverride attributeOverride) {
+		this.attributesOverrides.add(index, attributeOverride);
+		//TODO event notification
+	}
+
 	public void remove(Object attributeOverride) {
 		this.attributesOverrides.remove(attributeOverride);		
 	}
@@ -65,7 +70,7 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 	}
 	
 	public AttributeOverride nestedAnnotationFor(Annotation jdtAnnotation) {
-		for (AttributeOverride attributeOverride : CollectionTools.iterable(nestedAnnotations())) {
+		for (AttributeOverride attributeOverride : this.attributesOverrides) {
 			if (jdtAnnotation == attributeOverride.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 				return attributeOverride;
 			}

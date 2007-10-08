@@ -15,7 +15,6 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> implements SecondaryTables
@@ -71,7 +70,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 	}
 	
 	public SecondaryTable nestedAnnotationFor(Annotation jdtAnnotation) {
-		for (SecondaryTable secondaryTable : CollectionTools.iterable(nestedAnnotations())) {
+		for (SecondaryTable secondaryTable : this.secondaryTables) {
 			if (jdtAnnotation == secondaryTable.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 				return secondaryTable;
 			}

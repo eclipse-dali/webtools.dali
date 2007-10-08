@@ -24,7 +24,7 @@ public class ContainerAnnotationTools
 	 * synchronize the source annotations with the model nestableAnnotations,
 	 * starting at the end of the list to prevent overlap
 	 */
-	public static void synchAnnotationsAfterAdd(int index, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
+	public static void synchAnnotationsAfterAdd(int index, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
 		List<NestableAnnotation> nestableAnnotations = CollectionTools.list(containerAnnotation.nestedAnnotations());
 		for (int i = nestableAnnotations.size(); i-- > index;) {
 			synch(nestableAnnotations.get(i), i);
@@ -35,7 +35,7 @@ public class ContainerAnnotationTools
 	 * synchronize the source annotations with the model nestableAnnotations,
 	 * starting at the specified index to prevent overlap
 	 */
-	public static void synchAnnotationsAfterRemove(int index, ContainerAnnotation<NestableAnnotation> pluralAnnotation) {
+	public static void synchAnnotationsAfterRemove(int index, ContainerAnnotation<? extends NestableAnnotation> pluralAnnotation) {
 		List<NestableAnnotation> nestableAnnotations = CollectionTools.list(pluralAnnotation.nestedAnnotations());
 		for (int i = index; i < nestableAnnotations.size(); i++) {
 			synch(nestableAnnotations.get(i), i);
@@ -46,14 +46,10 @@ public class ContainerAnnotationTools
 		nestableAnnotation.moveAnnotation(index);
 	}
 	
-	public static void move(int sourceIndex, int targetIndex, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
-		containerAnnotation.move(sourceIndex, targetIndex);
-		synchAnnotationsAfterMove(sourceIndex, targetIndex, containerAnnotation);
-	}
 	/**
 	 * synchronize the annotations with the model nestableAnnotations
 	 */
-	public static void synchAnnotationsAfterMove(int sourceIndex, int targetIndex, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
+	public static void synchAnnotationsAfterMove(int sourceIndex, int targetIndex, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
 		NestableAnnotation nestableAnnotation = containerAnnotation.nestedAnnotationAt(targetIndex);
 		
 		synch(nestableAnnotation, containerAnnotation.nestedAnnotationsSize());

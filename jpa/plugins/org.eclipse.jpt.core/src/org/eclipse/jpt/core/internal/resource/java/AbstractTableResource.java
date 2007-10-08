@@ -12,7 +12,9 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -47,6 +49,8 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	
 	private final List<UniqueConstraint> uniqueConstraints;
 	
+	private final UniqueConstraintsContainerAnnotation uniqueConstraintsContainerAnnotation;
+	
 	protected AbstractTableResource(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.nameAdapter(daa);
@@ -56,6 +60,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		this.schemaAdapter = buildAnnotationElementAdapter(this.schemaDeclarationAdapter);
 		this.catalogAdapter = buildAnnotationElementAdapter(this.catalogDeclarationAdapter);
 		this.uniqueConstraints = new ArrayList<UniqueConstraint>();
+		this.uniqueConstraintsContainerAnnotation = new UniqueConstraintsContainerAnnotation();
 	}
 	
 	protected AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
@@ -117,54 +122,23 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	 * then we delegate to the unique constraints to synch themselves up
 	 */
 	private void updateUniqueConstraintsFromJava(CompilationUnit astRoot) {
-		// synchronize the model join columns with the Java source
-		List<UniqueConstraint> constraints = this.uniqueConstraints;
-		int persSize = constraints.size();
-		int javaSize = 0;
-		boolean allJavaAnnotationsFound = false;
-		for (int i = 0; i < persSize; i++) {
-			UniqueConstraintImpl uniqueConstraint = (UniqueConstraintImpl) constraints.get(i);
-			if (uniqueConstraint.jdtAnnotation(astRoot) == null) {
-				allJavaAnnotationsFound = true;
-				break; // no need to go any further
-			}
-			uniqueConstraint.updateFromJava(astRoot);
-			javaSize++;
-		}
-		if (allJavaAnnotationsFound) {
-			// remove any model join columns beyond those that correspond to the Java annotations
-			while (persSize > javaSize) {
-				persSize--;
-				removeUniqueConstraint(persSize);
-				constraints.remove(persSize);
-			}
-		}
-		else {
-			// add new model join columns until they match the Java annotations
-			while (!allJavaAnnotationsFound) {
-				UniqueConstraint uniqueConstraint = this.createUniqueConstraint(javaSize);
-				if (uniqueConstraint.jdtAnnotation(astRoot) == null) {
-					allJavaAnnotationsFound = true;
-				}
-				else {
-					addUniqueConstraint(uniqueConstraint);
-					uniqueConstraint.updateFromJava(astRoot);
-					javaSize++;
-				}
-			}
-		}
+		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this.uniqueConstraintsContainerAnnotation);
 	}
 	
 	public ListIterator<UniqueConstraint> uniqueConstraints() {
 		return new CloneListIterator<UniqueConstraint>(this.uniqueConstraints);
 	}
-
+	
 	public int uniqueConstraintsSize() {
 		return this.uniqueConstraints.size();
 	}
 	
 	public UniqueConstraint uniqueConstraintAt(int index) {
 		return this.uniqueConstraints.get(index);
+	}
+	
+	public int indexOfUniqueConstraint(UniqueConstraint uniqueConstraint) {
+		return this.uniqueConstraints.indexOf(uniqueConstraint);
 	}
 	
 	public UniqueConstraint addUniqueConstraint(int index) {
@@ -177,6 +151,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	
 	private void addUniqueConstraint(UniqueConstraint uniqueConstraint) {
 		this.uniqueConstraints.add(uniqueConstraint);
+		//property change notification
 	}
 	
 	public void removeUniqueConstraint(int index) {
@@ -192,21 +167,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	}
 
 	private void uniqueConstraintMoved(int sourceIndex, int targetIndex) {		
-		UniqueConstraint uniqueConstraint = uniqueConstraintAt(targetIndex);
-		synch(uniqueConstraint, uniqueConstraintsSize());
-		
-		List<UniqueConstraint> nestableAnnotations = CollectionTools.list(uniqueConstraints());
-		if (sourceIndex < targetIndex) {
-			for (int i = sourceIndex; i < targetIndex; i++) {
-				synch(nestableAnnotations.get(i), i);
-			}
-		}
-		else {
-			for (int i = sourceIndex; i > targetIndex; i-- ) {
-				synch(nestableAnnotations.get(i), i);			
-			}
-		}
-		synch(uniqueConstraint, targetIndex);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(sourceIndex, targetIndex, this.uniqueConstraintsContainerAnnotation);
 	}
 
 	/**
@@ -214,10 +175,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	 * starting at the end of the list to prevent overlap
 	 */
 	private void synchUniqueConstraintAnnotationsAfterAdd(int index) {
-		List<UniqueConstraint> constraints = this.uniqueConstraints;
-		for (int i = constraints.size(); i-- > index;) {
-			this.synch(constraints.get(i), i);
-		}
+		ContainerAnnotationTools.synchAnnotationsAfterAdd(index, this.uniqueConstraintsContainerAnnotation);
 	}
 
 	/**
@@ -225,16 +183,92 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	 * starting at the specified index to prevent overlap
 	 */
 	private void synchUniqueConstraintAnnotationsAfterRemove(int index) {
-		List<UniqueConstraint> constraints = this.uniqueConstraints;
-		for (int i = index; i < constraints.size(); i++) {
-			this.synch(constraints.get(i), i);
-		}
-	}
-
-	private void synch(UniqueConstraint uniqueConstraint, int index) {
-		((UniqueConstraintImpl) uniqueConstraint).moveAnnotation(index);
+		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, this.uniqueConstraintsContainerAnnotation);
 	}
 	
 	protected abstract UniqueConstraint createUniqueConstraint(int index);
 
+	
+	private class UniqueConstraintsContainerAnnotation implements ContainerAnnotation<UniqueConstraint> {
+
+		public UniqueConstraint add(int index) {
+			UniqueConstraint uniqueConstraint = createNestedAnnotation(index);
+			AbstractTableResource.this.addUniqueConstraint(uniqueConstraint);
+			return uniqueConstraint;
+		}
+
+		public UniqueConstraint createNestedAnnotation(int index) {
+			return AbstractTableResource.this.createUniqueConstraint(index);
+		}
+
+		public String getAnnotationName() {
+			return AbstractTableResource.this.getAnnotationName();
+		}
+
+		public String getNestableAnnotationName() {
+			return JPA.UNIQUE_CONSTRAINT;
+		}
+
+		public int indexOf(Object uniqueConstraint) {
+			return AbstractTableResource.this.indexOfUniqueConstraint((UniqueConstraint) uniqueConstraint);
+		}
+
+		public void move(int oldIndex, int newIndex) {
+			AbstractTableResource.this.uniqueConstraints.add(newIndex, AbstractTableResource.this.uniqueConstraints.remove(oldIndex));
+		}
+
+		public UniqueConstraint nestedAnnotationAt(int index) {
+			return AbstractTableResource.this.uniqueConstraintAt(index);
+		}
+
+		public UniqueConstraint nestedAnnotationFor(Annotation jdtAnnotation) {
+			for (UniqueConstraint uniqueConstraint : CollectionTools.iterable(nestedAnnotations())) {
+				if (jdtAnnotation == uniqueConstraint.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
+					return uniqueConstraint;
+				}
+			}
+			return null;
+		}
+
+		public ListIterator<UniqueConstraint> nestedAnnotations() {
+			return new CloneListIterator<UniqueConstraint>(AbstractTableResource.this.uniqueConstraints);
+		}
+
+		public int nestedAnnotationsSize() {
+			return AbstractTableResource.this.uniqueConstraints.size();
+		}
+
+		public void remove(Object uniqueConstraint) {
+			this.remove(indexOf(uniqueConstraint));
+		}
+
+		public void remove(int index) {
+			AbstractTableResource.this.removeUniqueConstraint(index);	
+		}
+
+		public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
+			return AbstractTableResource.this.getDeclarationAnnotationAdapter();
+		}
+
+		public Annotation jdtAnnotation(CompilationUnit astRoot) {
+			return AbstractTableResource.this.jdtAnnotation(astRoot);
+		}
+
+		public void newAnnotation() {
+			AbstractTableResource.this.newAnnotation();
+		}
+
+		public void removeAnnotation() {
+			AbstractTableResource.this.removeAnnotation();
+		}
+
+		public IJpaPlatform jpaPlatform() {
+			return AbstractTableResource.this.jpaPlatform();
+		}
+
+		public void updateFromJava(CompilationUnit astRoot) {
+			AbstractTableResource.this.updateFromJava(astRoot);
+		}
+		
+	}
 }
