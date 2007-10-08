@@ -23,11 +23,11 @@ public interface ContainerAnnotation<T extends NestableAnnotation> extends Annot
 	
 	T nestedAnnotationFor(org.eclipse.jdt.core.dom.Annotation jdtAnnotation);
 	
-	int indexOf(Object nestedAnnotation);
+	int indexOf(T nestedAnnotation);
 	
 	T add(int index);
 	
-	void remove(Object nestedAnnotation);
+	void remove(T nestedAnnotation);
 	
 	void remove(int index);
 	

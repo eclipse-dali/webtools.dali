@@ -209,8 +209,8 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 			return JPA.UNIQUE_CONSTRAINT;
 		}
 
-		public int indexOf(Object uniqueConstraint) {
-			return AbstractTableResource.this.indexOfUniqueConstraint((UniqueConstraint) uniqueConstraint);
+		public int indexOf(UniqueConstraint uniqueConstraint) {
+			return AbstractTableResource.this.indexOfUniqueConstraint(uniqueConstraint);
 		}
 
 		public void move(int oldIndex, int newIndex) {
@@ -238,7 +238,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 			return AbstractTableResource.this.uniqueConstraints.size();
 		}
 
-		public void remove(Object uniqueConstraint) {
+		public void remove(UniqueConstraint uniqueConstraint) {
 			this.remove(indexOf(uniqueConstraint));
 		}
 

@@ -53,7 +53,7 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 		//TODO event notification
 	}
 
-	public void remove(Object attributeOverride) {
+	public void remove(AttributeOverride attributeOverride) {
 		this.attributesOverrides.remove(attributeOverride);		
 	}
 	
@@ -61,7 +61,7 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 		this.attributesOverrides.remove(index);
 	}
 	
-	public int indexOf(Object attributeOverride) {
+	public int indexOf(AttributeOverride attributeOverride) {
 		return this.attributesOverrides.indexOf(attributeOverride);
 	}
 	

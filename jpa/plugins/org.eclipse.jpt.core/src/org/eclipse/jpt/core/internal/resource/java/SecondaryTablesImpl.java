@@ -53,7 +53,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		//TODO event notification
 	}
 	
-	public void remove(Object secondaryTable) {
+	public void remove(SecondaryTable secondaryTable) {
 		this.secondaryTables.remove(secondaryTable);
 	}
 	
@@ -61,7 +61,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		this.secondaryTables.remove(index);
 	}
 	
-	public int indexOf(Object secondaryTable) {
+	public int indexOf(SecondaryTable secondaryTable) {
 		return this.secondaryTables.indexOf(secondaryTable);
 	}
 	

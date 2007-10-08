@@ -68,16 +68,17 @@ public class ContainerAnnotationTools
 		synch(nestableAnnotation, targetIndex);
 	}
 	
-	public static void updateNestedAnnotationsFromJava(CompilationUnit astRoot, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
+	public static void updateNestedAnnotationsFromJava(CompilationUnit astRoot, ContainerAnnotation<?> containerAnnotation) {
 		addOrUpdateAnnotationInSource(astRoot, containerAnnotation);
-		removeAnnotationsNotInSource(astRoot, containerAnnotation);
+		//TODO not sure how to handle generics here and get rid of this warning
+		removeAnnotationsNotInSource(astRoot, (ContainerAnnotation<NestableAnnotation>) containerAnnotation);
 	}
 
 	private static void addOrUpdateAnnotationInSource(CompilationUnit astRoot, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
 		containerAnnotation.jdtAnnotation(astRoot).accept(javaMemberAnnotationAstVisitor(astRoot, containerAnnotation));
 	}
 	
-	private static void removeAnnotationsNotInSource(CompilationUnit astRoot, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
+	private static void removeAnnotationsNotInSource(CompilationUnit astRoot, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
 		for (NestableAnnotation annotation : CollectionTools.iterable(containerAnnotation.nestedAnnotations())) {
 			if (annotation.jdtAnnotation(astRoot) == null) {
 				containerAnnotation.remove(annotation);
