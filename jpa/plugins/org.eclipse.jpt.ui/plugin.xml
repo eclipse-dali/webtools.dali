@@ -45,6 +45,70 @@
 	
 	
 	<extension
+		point="org.eclipse.ui.navigator.viewer">
+		
+		<viewerContentBinding
+			viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+			<includes>
+				<contentExtension pattern="org.eclipse.jpt.ui.*"/>
+			</includes>
+		</viewerContentBinding>
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.ui.navigator.navigatorContent">
+		
+		<navigatorContent
+			id="org.eclipse.jpt.ui.jpaNavigatorContent"
+			name="%jpaNavigatorContent" 
+			priority="higher"
+			icon="icons/full/obj16/jpa_content.gif"
+			activeByDefault="true"
+			contentProvider="org.eclipse.jpt.ui.internal.navigator.JpaContentProvider"
+			labelProvider="org.eclipse.jpt.ui.internal.navigator.JpaLabelProvider">
+			
+			<triggerPoints>
+				<and>
+					<adapt type="org.eclipse.core.resources.IProject"> 
+						<test forcePluginActivation="true"
+							property="org.eclipse.wst.common.project.facet.core.projectFacet"
+							value="jpt.jpa" />
+					</adapt>
+				</and>
+			</triggerPoints>
+			
+			<!--
+			
+			<possibleChildren>
+				<or>
+					<and>
+						<instanceof value="org.eclipse.emf.ecore.EObject" />
+						<or>
+							<test forcePluginActivation="true"
+								property="org.eclipse.wst.common.emfworkbench.integration.emfPackage"
+								value="ejb.xmi" />
+						</or>
+					</and>
+					<instanceof value="org.eclipse.jst.j2ee.internal.ejb.provider.J2EEJavaClassProviderHelper"/>
+					<instanceof value="org.eclipse.jst.j2ee.internal.ejb.provider.GroupedEJBItemProvider"/>
+				</or>
+				<instanceof value="org.eclipse.jst.j2ee.navigator.internal.LoadingDDNode"/>
+			</possibleChildren>
+			
+			<commonSorter
+				id="org.eclipse.jst.j2ee.navigator.internal.J2EEViewerSorter"
+				class="org.eclipse.jst.j2ee.navigator.internal.J2EEViewerSorter" />
+			
+			-->
+			
+		</navigatorContent>
+		
+	</extension>
+	
+	
+	<extension
 		point="org.eclipse.ui.newWizards">
 		
 		<category

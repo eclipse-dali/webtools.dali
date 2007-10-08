@@ -2,13 +2,12 @@
  * <copyright>
  * </copyright>
  *
- * $Id: IAbstractJoinColumn.java,v 1.9.4.2 2007/09/27 19:16:54 pfullbright Exp $
+ * $Id: IAbstractJoinColumn.java,v 1.9.4.3 2007/10/08 20:54:24 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.mappings;
 
 import java.util.List;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
 
@@ -87,8 +86,6 @@ public interface IAbstractJoinColumn extends INamedColumn
 	 * @generated
 	 */
 	String getDefaultReferencedColumnName();
-
-	void refreshDefaults(DefaultsContext defaultsContext);
 
 	/**
 	 * Return the wrapper for the datasource referenced column

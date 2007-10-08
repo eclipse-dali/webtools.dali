@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.mappings;
 
-import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 
 /**
  * <!-- begin-user-doc -->
@@ -189,8 +188,6 @@ public interface IColumn extends IAbstractColumn
 	 * @generated
 	 */
 	int getDefaultScale();
-
-	void refreshDefaults(DefaultsContext defaultsContext);
 
 	/**
 	 * Return whether the column is found on the datasource

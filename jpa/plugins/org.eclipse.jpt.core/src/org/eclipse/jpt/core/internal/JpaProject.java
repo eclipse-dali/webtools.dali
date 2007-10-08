@@ -22,6 +22,7 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
@@ -125,6 +126,11 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	 * @ordered
 	 */
 	protected EList<IJpaFile> files;
+	
+	/**
+	 * The model representing the collated resources associated with this JPA project.
+	 */
+	protected IContextModel contextModel;
 
 	/**
 	 * Flag to indicate whether this project has been filled with files
@@ -132,29 +138,30 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	private boolean filled = false;
 
 	/**
-	 * Flag to indicate that the resynchJob has been scheduled or is running.
+	 * The job responsible for updating the context model
+	 * @see IJpaProject#updateContextModel()
+	 */
+	private Job updateJob;
+
+	/**
+	 * Flag to indicate that the updateContextModelJob needs to be run.  This is
+	 * set to true if updatingContextModel = true so that the next time the job 
+	 * completes it will be run again. 
+	 */
+	boolean needsToUpdate = false;
+
+	/**
+	 * Flag to indicate that the updateContextModelJob has been scheduled or is 
+	 * running.
 	 * This is set to false when that job is completed 
 	 */
-	boolean resynching = false;
+	protected boolean updating = false;
 
 	/**
 	 * Flag to indicate that the disposing job has been scheduled or is running
 	 * (or has been run, in some cases)
 	 */
 	boolean disposing = false;
-
-	/**
-	 * Flag to indicate that the resynchJob needs to be run.  This is
-	 * set to true if resynching = true so that the next time the job completes
-	 * it will be run again. 
-	 */
-	boolean needsToResynch = false;
-
-	/**
-	 * Job used to reconnect the model parts throughout the project containment hierarchy
-	 * @see IJpaProject#resynch()
-	 */
-	Job resynchJob;
 
 	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
 
@@ -167,51 +174,74 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	protected JpaProject(IProject project) {
 		this();
 		this.project = project;
-		//		this.resynchJob = buildResynchJob();
+		this.updateJob = buildUpdateJob();
 	}
 
-	//	private Job buildResynchJob() {
-	//		Job job = new Job("Resynching JPA model ...") {
-	//			@Override
-	//			protected IStatus run(IProgressMonitor monitor) {
-	//				try {
-	//					return runResynch(monitor);
-	//				}
-	//				finally {
-	//					JpaProject.this.resynching = false;
-	//					if (JpaProject.this.needsToResynch) {
-	//						resynch();
-	//					}
-	//				}
-	//			}
-	//		};
-	//		if (this.project == null) {
-	//			throw new IllegalStateException("Project can not be null when the Resynch Job is built");
-	//		}
-	//		job.setRule(this.project);
-	//		return job;
-	//	}
-	//	
-	//	private IStatus runResynch(IProgressMonitor monitor) {
-	//		IContext contextHierarchy = getPlatform().buildProjectContext();
-	//		if (monitor.isCanceled()) {
-	//			return Status.CANCEL_STATUS;
-	//		}
-	//		try {
-	//			getPlatform().resynch(contextHierarchy, monitor);
-	//		}
-	//		catch (OperationCanceledException e) {
-	//			return Status.CANCEL_STATUS;
-	//		}
-	//		catch (Throwable e) {
-	//			//exceptions can occur when this thread is running and changes are
-	//			//made to the java source.  our model is not yet updated to the changed java source.
-	//			//log these exceptions and assume they won't happen when the resynch runs again
-	//			//as a result of the java source changes.
-	//			JptCorePlugin.log(e);
-	//		}
-	//		return Status.OK_STATUS;
-	//	}
+	private Job buildUpdateJob() {
+		Job job = new Job("Updating JPA model ...") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					return runUpdate(monitor);
+				}
+				finally {
+					JpaProject.this.updating = false;
+					if (JpaProject.this.needsToUpdate) {
+						updateContextModel();
+					}
+				}
+			}
+		};
+		if (this.project == null) {
+			throw new IllegalStateException("Project can not be null when the Update job is built");
+		}
+		job.setRule(this.project);
+		return job;
+	}
+		
+	private IStatus runUpdate(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		}
+		try {
+			if (contextModel == null) {
+				setContextModel(getPlatform().contextModelFactory().buildContextModel(this));
+			}
+			
+			getPlatform().update(this, contextModel, monitor);
+		}
+		catch (OperationCanceledException e) {
+			return Status.CANCEL_STATUS;
+		}
+		catch (Throwable e) {
+			//exceptions can occur when this thread is running and changes are
+			//made to the java source.  our model is not yet updated to the changed java source.
+			//log these exceptions and assume they won't happen when the resynch runs again
+			//as a result of the java source changes.
+			JptCorePlugin.log(e);
+		}
+		return Status.OK_STATUS;
+	}
+	
+	//leaving this at the JpaProject level for now instead of
+	//passing it on to the JpaModel.  We don't currently support
+	//multiple projects having cross-references
+	public void updateContextModel() {
+		if (disposing || ! filled)
+			return;
+		if (! this.updating) {
+			this.updating = true;
+			this.needsToUpdate = false;
+			this.updateJob.schedule();
+		}
+		else {
+			this.needsToUpdate = true;
+			if (this.updateJob.getState() == Job.RUNNING) {
+				this.updateJob.cancel();
+			}
+		}
+	}
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -514,7 +544,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 		};
 		getProject().accept(visitor, IResource.NONE);
 		filled = true;
-		resynch();
+		updateContextModel();
 	}
 
 	public boolean isFilled() {
@@ -554,6 +584,17 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			}
 		}
 		return jpaFiles;
+	}
+	
+	/**
+	 * @see IJpaProject#getContextModel()
+	 */
+	public IContextModel getContextModel() {
+		return contextModel;
+	}
+	
+	void setContextModel(IContextModel contextModel) {
+		this.contextModel = contextModel;
 	}
 
 	//	public JavaPersistentType findJavaPersistentType(IType type) {
@@ -619,14 +660,14 @@ public class JpaProject extends JpaEObject implements IJpaProject
 						case IResourceDelta.ADDED :
 							if (getJpaFile(file) == null) {
 								createJpaFile(file);
-								JpaProject.this.resynch();//TODO different api for this?
+								JpaProject.this.updateContextModel();//TODO different api for this?
 							}
 							break;
 						case IResourceDelta.REMOVED :
 							JpaFile jpaFile = (JpaFile) getJpaFile(file);
 							if (jpaFile != null) {
 								jpaFile.dispose();
-								JpaProject.this.resynch();//TODO different api for this?
+								JpaProject.this.updateContextModel();//TODO different api for this?
 							}
 							break;
 						case IResourceDelta.CHANGED :
@@ -641,9 +682,9 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	// PWFTODO 
 	// Return a NullPersistenceFile if no content found?
 	synchronized IJpaFile createJpaFile(IFile file) {
-		JpaFile jpaFile = JpaCoreFactory.eINSTANCE.createJpaFile();
+		JpaFile jpaFile = JpaCoreFactory.eINSTANCE.createJpaFile(this);
 		jpaFile.setFile(file);
-		IResourceModel resourceModel = getPlatform().buildResourceModel(jpaFile);
+		IResourceModel resourceModel = getPlatform().resourceModelFactory().buildResourceModel(jpaFile);
 		if (resourceModel == null) {
 			return null;
 		}
@@ -661,7 +702,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 			for (Iterator<IJpaFile> stream = jpaFiles(); stream.hasNext();) {
 				((JpaFile) stream.next()).handleEvent(event);
 			}
-			resynch();
+			updateContextModel();
 		}
 	}
 
@@ -670,25 +711,7 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	//		getPlatform().addToMessages(messages);
 	//		return messages.iterator();
 	//	}
-	//leaving this at the JpaProject level for now instead of
-	//passing it on to the JpaModel.  We don't currently support
-	//multiple projects having cross-references
-	public void resynch() {
-		if (disposing || !filled)
-			return;
-		if (!this.resynching) {
-			this.resynching = true;
-			this.needsToResynch = false;
-			this.resynchJob.schedule();
-		}
-		else {
-			this.needsToResynch = true;
-			if (this.resynchJob.getState() == Job.RUNNING) {
-				this.resynchJob.cancel();
-			}
-		}
-	}
-
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

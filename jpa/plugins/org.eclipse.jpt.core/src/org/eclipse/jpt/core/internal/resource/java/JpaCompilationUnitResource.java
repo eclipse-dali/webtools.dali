@@ -38,9 +38,9 @@ public class JpaCompilationUnitResource implements JavaResource
 	//TODO passing IJpaPlatform in because IJpaFile has no parent yet.
 	//I believe this should change once brian's changes to remove emf from the top-level
 	//model have been checked in.
-	public JpaCompilationUnitResource(IJpaFile jpaFile, IJpaPlatform jpaPlatform){
+	public JpaCompilationUnitResource(IJpaFile jpaFile) {
 		super();
-		this.jpaPlatform = jpaPlatform;
+		this.jpaPlatform = jpaFile.jpaPlatform();
 		this.compilationUnit = compilationUnitFrom(jpaFile);
 		updateFromJava(astRoot());
 	}

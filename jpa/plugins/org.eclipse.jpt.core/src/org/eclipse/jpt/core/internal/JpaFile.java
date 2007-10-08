@@ -27,6 +27,12 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 public class JpaFile extends JpaEObject implements IJpaFile
 {
 	/**
+	 * The owning project
+	 * TODO - remove this once we have "parents" throughout the model
+	 */
+	protected IJpaProject project;
+	
+	/**
 	 * The IFile associated with this JPA file
 	 */
 	protected IFile file;
@@ -41,8 +47,9 @@ public class JpaFile extends JpaEObject implements IJpaFile
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected JpaFile() {
+	protected JpaFile(IJpaProject project) {
 		super();
+		this.project = project;
 	}
 
 	/**
@@ -55,35 +62,40 @@ public class JpaFile extends JpaEObject implements IJpaFile
 		return JpaCorePackage.Literals.JPA_FILE;
 	}
 	
-	/**
-	 * @see IJpaFile#getResourceType()
-	 */
-	public String getResourceType() {
-		return resourceModel.getResourceType();
+	@Override
+	public IJpaProject getJpaProject() {
+		return project;
 	}
-
+	
 	/**
 	 * @see IJpaFile#getFile()
 	 */
 	public IFile getFile() {
 		return file;
 	}
-
+	
 	void setFile(IFile theFile) {
 		file = theFile;
 	}
-
+	
 	/**
 	 * @see IJpaFile#getResourceModel()
 	 */
 	public IResourceModel getResourceModel() {
 		return resourceModel;
 	}
-
+	
 	void setResourceModel(IResourceModel theResourceModel) {
 		resourceModel = theResourceModel;
 	}
-
+	
+	/**
+	 * @see IJpaFile#getResourceType()
+	 */
+	public String getResourceType() {
+		return resourceModel.getResourceType();
+	}
+	
 	/**
 	 * INTERNAL ONLY
 	 * Dispose of file before it is removed

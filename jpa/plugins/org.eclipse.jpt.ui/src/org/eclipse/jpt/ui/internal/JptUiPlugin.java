@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class JptUiPlugin extends AbstractUIPlugin
@@ -59,5 +60,13 @@ public class JptUiPlugin extends AbstractUIPlugin
 			key = key + ".gif";
 		}
 		return imageDescriptorFromPlugin(PLUGIN_ID, key);
+	}
+	
+	/**
+	 * This returns an image for a .gif from the icons folder
+	 */
+	public Image getImage(String key) {
+		ImageDescriptor desc = getImageDescriptor(key);
+		return (desc == null) ? null : desc.createImage();
 	}
 }

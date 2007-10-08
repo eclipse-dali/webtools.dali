@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.mappings;
 
 import java.util.Iterator;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 
@@ -402,8 +401,6 @@ public interface ITableGenerator extends IGenerator
 	 * @generated
 	 */
 	EList<IUniqueConstraint> getUniqueConstraints();
-
-	void refreshDefaults(DefaultsContext defaultsContext);
 
 	IUniqueConstraint createUniqueConstraint(int index);
 

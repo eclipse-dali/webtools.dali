@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 
 /**
  * Used for building new MappingAnnotations. If you want to provide new 

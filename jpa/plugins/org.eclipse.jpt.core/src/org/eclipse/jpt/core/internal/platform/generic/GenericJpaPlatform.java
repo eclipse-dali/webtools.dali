@@ -7,14 +7,18 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.java;
+package org.eclipse.jpt.core.internal.platform.generic;
 
+import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
 
 public class GenericJpaPlatform extends BaseJpaPlatform
 {
+	public static String ID = "generic";
+	
+	
 	protected static final CommandExecutorProvider MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER =
 		new CommandExecutorProvider() {
 			public CommandExecutor commandExecutor() {

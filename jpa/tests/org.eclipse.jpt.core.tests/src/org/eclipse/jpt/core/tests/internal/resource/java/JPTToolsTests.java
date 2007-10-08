@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
 import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.resource.java.GenericJpaPlatform;
+import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;

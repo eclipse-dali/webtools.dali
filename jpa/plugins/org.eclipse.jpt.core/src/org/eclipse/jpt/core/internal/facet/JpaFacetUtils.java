@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.internal.IJpaCoreConstants;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.platform.generic.GenericPlatform;
+import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
 import org.osgi.service.prefs.BackingStoreException;
 
 public class JpaFacetUtils
@@ -42,12 +42,12 @@ public class JpaFacetUtils
 		
 		if (platformId == null) {
 			try {
-				setPlatform(project, GenericPlatform.ID);
+				setPlatform(project, GenericJpaPlatform.ID);
 			}
 			catch (CoreException ce) {
 				// do nothing.  not sure what can be done here.
 			}
-			return GenericPlatform.ID;
+			return GenericJpaPlatform.ID;
 		}
 		
 		return platformId;

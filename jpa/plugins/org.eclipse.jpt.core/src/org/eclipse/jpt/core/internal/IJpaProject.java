@@ -75,6 +75,8 @@ public interface IJpaProject extends IJpaEObject
 	 */
 	void setDataSource(String connectionProfileName);
 
+	ConnectionProfile connectionProfile();
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -116,23 +118,28 @@ public interface IJpaProject extends IJpaEObject
 	 * Returns a (non-modifiable) Iterator on all the IJpaFiles in the project.
 	 */
 	Iterator<IJpaFile> jpaFiles();
-
+	
+	/**
+	 * Return the context model associated with the project
+	 */
+	IContextModel getContextModel();
+	
+	/**
+	 * Update the context model, which is the representation of all the included
+	 * resource models with context and defaults applied
+	 */
+	void updateContextModel();
+	
 	//	/**
 	//	 * Return a JavaPersistentType for the IType, if it exists, null otherwise.
 	//	 */
 	//	JavaPersistentType findJavaPersistentType(IType type);
 	//	
 	//	/**
-	//	 * Reconnect the model together, recalculating default values as needed
-	//	 */
-	//	void resynch();
-	//	
-	//	/**
 	//	 * Returns all the validation messages for this project
 	//	 */
 	//	Iterator<IMessage> validationMessages();
-	ConnectionProfile connectionProfile();
-
+	
 	/**
 	 * Return a thread-specific implementation of the CommandExecutor
 	 * interface that will be used to execute a command to modify a shared

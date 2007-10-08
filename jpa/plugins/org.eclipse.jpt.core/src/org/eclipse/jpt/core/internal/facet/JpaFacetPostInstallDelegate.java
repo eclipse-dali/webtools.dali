@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.facet;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
@@ -22,21 +23,16 @@ import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdi
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit;
-import org.eclipse.jst.j2ee.internal.J2EEConstants;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 public class JpaFacetPostInstallDelegate 
 	implements IDelegate, IJpaFacetDataModelProperties
 {
-	private final static String WEB_PROJECT_DEPLOY_PREFIX = J2EEConstants.WEB_INF_CLASSES;
+	private final static String PERSISTENCE_XML_FILE_PATH = "/META-INF/persistence.xml";
 	
-	private final static String PERSISTENCE_XML_FILE_PATH = "META-INF/persistence.xml";
-	
-	private final static String ORM_XML_FILE_PATH = "META-INF/orm.xml";
+	private final static String ORM_XML_FILE_PATH = "/META-INF/orm.xml";
 	
 	
 	public void execute(IProject project, IProjectFacetVersion fv, 
@@ -70,17 +66,13 @@ public class JpaFacetPostInstallDelegate
 	}
 	
 	private void createPersistenceXml(IProject project, IDataModel dataModel) {
-		String deployPath = PERSISTENCE_XML_FILE_PATH;
-		try {
-			if (FacetedProjectFramework.hasProjectFacet(project, IModuleConstants.JST_WEB_MODULE)) {
-				deployPath = WEB_PROJECT_DEPLOY_PREFIX + "/" + deployPath;
-			}
-		}
-		catch (CoreException ce) {
-			// could not determine project facets.  assume it doesn't have the facet.
-			JptCorePlugin.log(ce);
+		IJpaProject jpaProject = JptCorePlugin.getJpaProject(project);
+		
+		if (jpaProject == null) {
+			return;
 		}
 		
+		String deployPath = jpaProject.rootDeployLocation() + PERSISTENCE_XML_FILE_PATH;
 		PersistenceArtifactEdit pae = 
 				PersistenceArtifactEdit.getArtifactEditForWrite(project, deployPath);
 		PersistenceResourceModel resource = pae.getPersistenceResource();
@@ -100,17 +92,13 @@ public class JpaFacetPostInstallDelegate
 	}
 	
 	private void createOrmXml(IProject project, IDataModel dataModel) {
-		String deployPath = ORM_XML_FILE_PATH;
-		try {
-			if (FacetedProjectFramework.hasProjectFacet(project, IModuleConstants.JST_WEB_MODULE)) {
-				deployPath = WEB_PROJECT_DEPLOY_PREFIX + "/" + deployPath;
-			}
-		}
-		catch (CoreException ce) {
-			// could not determine project facets.  assume it doesn't have the facet.
-			JptCorePlugin.log(ce);
+		IJpaProject jpaProject = JptCorePlugin.getJpaProject(project);
+		
+		if (jpaProject == null) {
+			return;
 		}
 		
+		String deployPath = jpaProject.rootDeployLocation() + ORM_XML_FILE_PATH;
 		OrmArtifactEdit oae =
 				OrmArtifactEdit.getArtifactEditForWrite(project, deployPath);
 		OrmResourceModel resource = oae.getOrmResource();

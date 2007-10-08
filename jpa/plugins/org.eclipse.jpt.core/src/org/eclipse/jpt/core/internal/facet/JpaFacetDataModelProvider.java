@@ -11,13 +11,12 @@ package org.eclipse.jpt.core.internal.facet;
 
 import java.util.Arrays;
 import java.util.Set;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.platform.generic.GenericPlatform;
+import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -59,7 +58,7 @@ public class JpaFacetDataModelProvider
 			return JptCorePlugin.FACET_ID;
 		}
 		else if (PLATFORM_ID.equals(propertyName)) {
-			return GenericPlatform.ID;
+			return GenericJpaPlatform.ID;
 		}
 		else if (CONNECTION.equals(propertyName)) {
 			return "";

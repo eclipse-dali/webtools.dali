@@ -14,7 +14,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.internal.IJpaSourceObject;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.ITypeMapping;
-import org.eclipse.jpt.core.internal.platform.DefaultsContext;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 
@@ -228,8 +227,6 @@ public interface ITable extends IJpaSourceObject
 	 * @generated
 	 */
 	void setSpecifiedName(String value);
-
-	void refreshDefaults(DefaultsContext defaultsContext);
 
 	Table dbTable();
 

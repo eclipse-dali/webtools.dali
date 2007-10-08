@@ -151,15 +151,18 @@ public class JpaCoreFactory extends EFactoryImpl
 		JpaDataSource jpaDataSource = new JpaDataSource();
 		return jpaDataSource;
 	}
-
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated not
 	 */
 	public JpaFile createJpaFile() {
-		JpaFile jpaFile = new JpaFile();
-		return jpaFile;
+		throw new UnsupportedOperationException();
+	}
+	
+	public JpaFile createJpaFile(IJpaProject jpaProject) {
+		return new JpaFile(jpaProject);
 	}
 
 	/**
