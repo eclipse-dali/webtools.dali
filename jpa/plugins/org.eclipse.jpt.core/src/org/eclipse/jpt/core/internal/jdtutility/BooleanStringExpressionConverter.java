@@ -41,7 +41,7 @@ public final class BooleanStringExpressionConverter
 
 	@Override
 	protected BooleanLiteral convertObject(String string, AST ast) {
-		return ast.newBooleanLiteral(Boolean.valueOf(string).booleanValue());
+		return ast.newBooleanLiteral(Boolean.parseBoolean(string));
 	}
 
 	@Override
