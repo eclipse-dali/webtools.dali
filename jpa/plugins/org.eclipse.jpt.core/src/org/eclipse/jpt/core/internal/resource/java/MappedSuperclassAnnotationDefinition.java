@@ -33,7 +33,7 @@ public class MappedSuperclassAnnotationDefinition implements MappingAnnotationDe
 		super();
 	}
 
-	public MappedSuperclass buildAnnotation(JavaResource parent, Member member) {
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
 		return new MappedSuperclassImpl((JavaPersistentTypeResource) parent, (Type) member);
 	}
 

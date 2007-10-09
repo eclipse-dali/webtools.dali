@@ -10,10 +10,12 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 
 public abstract class AbstractColumnImpl extends AbstractNamedColumn implements AbstractColumn
 {
@@ -38,15 +40,19 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 	
 
 	public AbstractColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
-		super(parent, member, daa);
+		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
+	}
+	
+	public AbstractColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, member, daa, annotationAdapter);
 		this.tableDeclarationAdapter = this.buildStringElementAdapter(this.tableElementName());
 		this.tableAdapter = this.buildShortCircuitElementAdapter(this.tableDeclarationAdapter);
 		this.uniqueAdapter = this.buildShortCircuitBooleanElementAdapter(this.uniqueElementName());
 		this.nullableAdapter = this.buildShortCircuitBooleanElementAdapter(this.nullableElementName());
 		this.insertableAdapter = this.buildShortCircuitBooleanElementAdapter(this.insertableElementName());
 		this.updatableAdapter = this.buildShortCircuitBooleanElementAdapter(this.updatableElementName());
+
 	}
-	
 	protected abstract String tableElementName();
 
 	protected abstract String uniqueElementName();

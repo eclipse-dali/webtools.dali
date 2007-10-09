@@ -9,14 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
-public interface GeneratedValue extends Annotation
+public interface GeneratedValue extends JavaResource
 {
-	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.GENERATED_VALUE);
-	
-	void updateFromJava(CompilationUnit astRoot);
 
 }

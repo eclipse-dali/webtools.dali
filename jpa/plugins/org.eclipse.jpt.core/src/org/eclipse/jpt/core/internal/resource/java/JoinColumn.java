@@ -9,12 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 public interface JoinColumn extends AbstractColumn
 {
-	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.JOIN_COLUMN);
 
 	String getReferencedColumnName();
 	

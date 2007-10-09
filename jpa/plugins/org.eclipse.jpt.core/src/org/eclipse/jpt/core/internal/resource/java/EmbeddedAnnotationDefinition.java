@@ -33,7 +33,7 @@ public class EmbeddedAnnotationDefinition implements MappingAnnotationDefinition
 		super();
 	}
 
-	public Embedded buildAnnotation(JavaResource parent, Member member) {
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
 		return new EmbeddedImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 	}
 

@@ -33,7 +33,7 @@ public class EmbeddableAnnotationDefinition implements MappingAnnotationDefiniti
 		super();
 	}
 
-	public Embeddable buildAnnotation(JavaResource parent, Member member) {
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
 		return new EmbeddableImpl((JavaPersistentTypeResource) parent, (Type) member);
 	}
 

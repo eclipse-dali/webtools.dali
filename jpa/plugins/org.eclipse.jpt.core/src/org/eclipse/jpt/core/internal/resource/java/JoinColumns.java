@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
-//TODO is there a reason for this interface if it adds no api to Annotation??
-public interface MappingAnnotation extends Annotation
+public interface JoinColumns extends ContainerAnnotation<NestableJoinColumn>
 {
+	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.JOIN_COLUMNS);
+
 }

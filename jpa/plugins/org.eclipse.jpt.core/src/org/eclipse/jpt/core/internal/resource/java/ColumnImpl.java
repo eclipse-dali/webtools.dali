@@ -13,9 +13,13 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.NestedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 public class ColumnImpl extends AbstractColumnImpl implements Column
 {
+	// this adapter is only used by a Column annotation associated with a mapping annotation (e.g. Basic)
+	public static final DeclarationAnnotationAdapter MAPPING_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.COLUMN);
+
 	private final IntAnnotationElementAdapter lengthAdapter;
 
 	private final IntAnnotationElementAdapter precisionAdapter;
@@ -110,7 +114,7 @@ public class ColumnImpl extends AbstractColumnImpl implements Column
 
 	// ********** static methods **********
 
-	static Column createAttributeOverrideColumn(JavaResource parent, Member member, DeclarationAnnotationAdapter attributeOverrideAnnotationAdapter) {
+	static ColumnImpl createAttributeOverrideColumn(JavaResource parent, Member member, DeclarationAnnotationAdapter attributeOverrideAnnotationAdapter) {
 		return new ColumnImpl(parent, member, buildAttributeOverrideAnnotationAdapter(attributeOverrideAnnotationAdapter));
 	}
 

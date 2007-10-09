@@ -14,13 +14,17 @@ import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 
 public class BasicImpl extends AbstractAnnotationResource<Attribute> implements Basic
 {
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.BASIC);
+
 	private final AnnotationElementAdapter<String> optionalAdapter;
 
 	private final AnnotationElementAdapter<String> fetchAdapter;

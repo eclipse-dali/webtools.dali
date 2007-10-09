@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 
-public interface NamedColumn extends Annotation
+public interface NamedColumn extends JavaResource
 {
 	String getName();
 	
@@ -20,7 +19,5 @@ public interface NamedColumn extends Annotation
 	String getColumnDefinition();
 	
 	void setColumnDefinition(String columnDefinition);
-	
-	void updateFromJava(CompilationUnit astRoot);
 
 }

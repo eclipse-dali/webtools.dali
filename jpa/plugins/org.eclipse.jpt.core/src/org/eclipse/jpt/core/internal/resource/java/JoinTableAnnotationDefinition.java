@@ -30,7 +30,7 @@ public class JoinTableAnnotationDefinition implements AnnotationDefinition
 		super();
 	}
 
-	public JoinTable buildAnnotation(JavaResource parent, Member member) {
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
 		return new JoinTableImpl(parent, member);
 	}
 

@@ -10,10 +10,13 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 public class GeneratedValueImpl extends AbstractAnnotationResource<Member> implements GeneratedValue
 {
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.GENERATED_VALUE);
 
 	public GeneratedValueImpl(JavaResource parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);

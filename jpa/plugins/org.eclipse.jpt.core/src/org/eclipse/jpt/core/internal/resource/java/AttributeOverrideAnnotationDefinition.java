@@ -30,7 +30,7 @@ public class AttributeOverrideAnnotationDefinition implements AnnotationDefiniti
 		super();
 	}
 
-	public AttributeOverride buildAnnotation(JavaResource parent, Member member) {
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
 		return AttributeOverrideImpl.createAttributeOverride(parent, member);
 	}
 

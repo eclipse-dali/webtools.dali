@@ -9,41 +9,33 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
-import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class EmbeddedIdAnnotationDefinition implements MappingAnnotationDefinition
+public class JoinColumnsAnnotationDefinition implements AnnotationDefinition
 {
 	// singleton
-	private static final EmbeddedIdAnnotationDefinition INSTANCE = new EmbeddedIdAnnotationDefinition();
+	private static final JoinColumnsAnnotationDefinition INSTANCE = new JoinColumnsAnnotationDefinition();
+
 
 	/**
 	 * Return the singleton.
 	 */
-	public static EmbeddedIdAnnotationDefinition instance() {
+	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private EmbeddedIdAnnotationDefinition() {
+	private JoinColumnsAnnotationDefinition() {
 		super();
 	}
 
-	public Annotation buildAnnotation(JavaResource parent, Member member) {
-		return new EmbeddedIdImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
+	public JoinColumns buildAnnotation(JavaResource parent, Member member) {
+		return new JoinColumnsImpl(parent, member);
 	}
 
-	public Iterator<String> correspondingAnnotationNames() {
-		return new ArrayIterator<String>(
-			JPA.ATTRIBUTE_OVERRIDE,
-			JPA.ATTRIBUTE_OVERRIDES);
-	}
-	
 	public String getAnnotationName() {
-		return JPA.EMBEDDED_ID;
+		return JPA.JOIN_COLUMNS;
 	}
 }

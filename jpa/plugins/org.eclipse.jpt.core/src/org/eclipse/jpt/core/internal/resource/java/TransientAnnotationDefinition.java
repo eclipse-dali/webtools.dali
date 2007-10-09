@@ -33,7 +33,7 @@ public class TransientAnnotationDefinition implements MappingAnnotationDefinitio
 		super();
 	}
 
-	public Transient buildAnnotation(JavaResource parent, Member member) {
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
 		return new TransientImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 	}
 

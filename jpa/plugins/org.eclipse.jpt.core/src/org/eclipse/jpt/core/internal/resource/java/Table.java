@@ -13,9 +13,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
-
-
-public interface Table extends Annotation
+public interface Table extends JavaResource
 {
 	String getName();
 	

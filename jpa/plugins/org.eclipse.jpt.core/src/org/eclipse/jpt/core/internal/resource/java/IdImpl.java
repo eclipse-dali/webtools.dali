@@ -11,11 +11,14 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 
 public class IdImpl extends AbstractAnnotationResource<Attribute> implements Id
 {
-	
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ID);
+
 	public IdImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 	}

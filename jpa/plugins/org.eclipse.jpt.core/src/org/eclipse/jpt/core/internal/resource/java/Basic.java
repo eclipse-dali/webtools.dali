@@ -9,13 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
-public interface Basic extends MappingAnnotation
+public interface Basic extends JavaResource
 {
-	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.BASIC);
-
 	/**
 	 * Corresponds to the optional element of the Basic annotation.
 	 * Returns null if the optional element does not exist in java.

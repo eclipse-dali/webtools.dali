@@ -33,7 +33,7 @@ public class IdAnnotationDefinition implements MappingAnnotationDefinition
 		super();
 	}
 
-	public Id buildAnnotation(JavaResource parent, Member member) {
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
 		return new IdImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 	}
 

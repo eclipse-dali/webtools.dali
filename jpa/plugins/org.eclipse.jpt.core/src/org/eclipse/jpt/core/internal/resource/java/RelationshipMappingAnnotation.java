@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 
 
-public interface RelationshipMappingAnnotation extends MappingAnnotation
+public interface RelationshipMappingAnnotation extends JavaResource
 {
 	/**
 	 * Corresponds to the targetEntity element of the relationship 

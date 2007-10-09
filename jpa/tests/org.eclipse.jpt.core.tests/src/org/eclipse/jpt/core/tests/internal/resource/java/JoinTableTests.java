@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResour
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
+import org.eclipse.jpt.core.internal.resource.java.JoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.JoinTable;
 import org.eclipse.jpt.core.internal.resource.java.UniqueConstraint;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
@@ -42,6 +43,10 @@ public class JoinTableTests extends AnnotationTestCase {
 		this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 
+	private void createJoinColumnAnnotation() throws Exception {
+		this.createAnnotationAndMembers("JoinColumn", "String name() default \"\";");
+	}
+	
 	private IType createTestJoinTable() throws Exception {
 		this.createAnnotationAndMembers("JoinTable", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";");
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -100,7 +105,7 @@ public class JoinTableTests extends AnnotationTestCase {
 	}
 	
 	private IType createTestJoinTableWithUniqueConstraints() throws Exception {
-		this.createAnnotationAndMembers("JoinTable", "UniqueConstraint[] uniqueConstraints() default{}");
+		this.createAnnotationAndMembers("JoinTable", "UniqueConstraint[] uniqueConstraints() default {}");
 		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -110,6 +115,21 @@ public class JoinTableTests extends AnnotationTestCase {
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuffer sb) {
 				sb.append("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint})");
+			}
+		});
+	}
+	
+	private IType createTestJoinTableWithJoinColumns() throws Exception {
+		this.createAnnotationAndMembers("JoinTable", "JoinColumn[] joinColumns() default {}");
+		this.createJoinColumnAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.JOIN_TABLE, JPA.JOIN_COLUMN);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@JoinTable(joinColumns={@JoinColumn(name=\"BAR\"), @JoinColumn})");
 			}
 		});
 	}
@@ -353,5 +373,96 @@ public class JoinTableTests extends AnnotationTestCase {
 		
 		table.moveUniqueConstraint(1, 0);
 		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint, @UniqueConstraint(columnNames={\"BAR\"})})");
+	}
+	
+	public void testJoinColumns() throws Exception {
+		IType testType = this.createTestJoinTable();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		ListIterator<JoinColumn> iterator = table.joinColumns();
+		
+		assertEquals(0, CollectionTools.size(iterator));
+	}
+	
+	public void testJoinColumns2() throws Exception {
+		IType testType = this.createTestJoinTable();
+		this.createJoinColumnAnnotation();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+
+		
+		table.addJoinColumn(0);
+		table.addJoinColumn(1);
+		table.updateFromJava(JDTTools.buildASTRoot(testType));
+		
+		ListIterator<JoinColumn> iterator = table.joinColumns();
+		
+		assertEquals(2, CollectionTools.size(iterator));
+	}
+	
+	public void testJoinColumns3() throws Exception {
+		IType testType = this.createTestJoinTableWithJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+				
+		ListIterator<JoinColumn> iterator = table.joinColumns();
+		
+		assertEquals(2, CollectionTools.size(iterator));
+	}
+	
+	public void testAddJoinColumn() throws Exception {
+		IType testType = this.createTestJoinTable();
+		this.createJoinColumnAnnotation();		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		table.addJoinColumn(0).setName("FOO");
+		table.addJoinColumn(1);
+
+		assertSourceContains("@JoinTable(joinColumns={@JoinColumn(name=\"FOO\"),@JoinColumn})");
+	}
+	
+	public void testRemoveJoinColumn() throws Exception {
+		IType testType = this.createTestJoinTableWithJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		table.removeJoinColumn(1);
+		assertSourceContains("@JoinTable(joinColumns=@JoinColumn(name=\"BAR\"))");	
+
+		table.removeJoinColumn(0);
+		assertSourceDoesNotContain("@JoinTable");
+	}
+	
+	public void testMoveJoinColumn() throws Exception {
+		IType testType = this.createTestJoinTableWithJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		table.moveJoinColumn(0, 1);
+		assertSourceContains("@JoinTable(joinColumns={@JoinColumn, @JoinColumn(name=\"BAR\")})");
+	}
+	
+	public void testMoveJoinColumn2() throws Exception {
+		IType testType = this.createTestJoinTableWithJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		table.moveJoinColumn(1, 0);
+		assertSourceContains("@JoinTable(joinColumns={@JoinColumn, @JoinColumn(name=\"BAR\")})");
 	}
 }

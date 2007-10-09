@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
 
@@ -83,12 +82,12 @@ public interface IJpaPlatform
 	// **************** Java annotation support *******************************
 	
 	/**
-	 * Build a MappingAnnotation with the given fully qualififed annotation name.
+	 * Build an Annotation with the given fully qualififed annotation name.
 	 * @param type
 	 * @param mappingAnnotationName
 	 * @return
 	 */
-	MappingAnnotation buildTypeMappingAnnotation(JavaPersistentTypeResource parent, Type type, String mappingAnnotationName);
+	Annotation buildTypeMappingAnnotation(JavaPersistentTypeResource parent, Type type, String mappingAnnotationName);
 
 	/**
 	 * Build an Annotation with the given fully qualififed annotation name.
@@ -118,12 +117,12 @@ public interface IJpaPlatform
 	Iterator<String> typeAnnotationNames();
 	
 	/**
-	 * Build a MappingAnnotation with the given fully qualififed annotation name.
+	 * Build a Annotation with the given fully qualififed annotation name.
 	 * @param attribute
 	 * @param mappingAnnotationName
 	 * @return
 	 */
-	MappingAnnotation buildAttributeMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String mappingAnnotationName);
+	Annotation buildAttributeMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String mappingAnnotationName);
 	
 	/**
 	 * Build an Annotation with the given fully qualififed annotation name.

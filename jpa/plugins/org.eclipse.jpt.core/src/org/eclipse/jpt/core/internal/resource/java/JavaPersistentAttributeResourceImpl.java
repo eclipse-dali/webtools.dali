@@ -36,7 +36,7 @@ public class JavaPersistentAttributeResourceImpl
 	// ******** AbstractJavaPersistentResource implementation ********
 	
 	@Override
-	protected MappingAnnotation buildMappingAnnotation(String mappingAnnotationName) {
+	protected Annotation buildMappingAnnotation(String mappingAnnotationName) {
 		return jpaPlatform().buildAttributeMappingAnnotation(this, getMember(), mappingAnnotationName);
 	}
 

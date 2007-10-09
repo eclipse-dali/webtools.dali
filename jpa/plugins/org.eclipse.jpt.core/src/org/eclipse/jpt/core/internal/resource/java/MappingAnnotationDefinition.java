@@ -10,11 +10,10 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 
 /**
- * Used for building new MappingAnnotations. If you want to provide new 
+ * Used for building new mapping Annotations. If you want to provide new 
  * MappingAnnotationDefinitions you will need to create a new JpaPlatform 
  * by extending BaseJpaPlatform.
  * <p>
@@ -31,6 +30,4 @@ public interface MappingAnnotationDefinition extends AnnotationDefinition
 	 * with the mapping annotation.  These will be used to create Annotations.
 	 */
 	Iterator<String> correspondingAnnotationNames();
-	
-	MappingAnnotation buildAnnotation(JavaResource parent, Member member);
 }

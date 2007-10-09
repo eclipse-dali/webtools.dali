@@ -33,7 +33,7 @@ public class VersionAnnotationDefinition implements MappingAnnotationDefinition
 		super();
 	}
 	
-	public Version buildAnnotation(JavaResource parent, Member member) {
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
 		return new VersionImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 	}
 

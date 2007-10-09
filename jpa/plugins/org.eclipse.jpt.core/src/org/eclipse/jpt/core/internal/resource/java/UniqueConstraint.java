@@ -3,7 +3,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-public interface UniqueConstraint extends NestableAnnotation
+public interface UniqueConstraint extends JavaResource
 {
 	ListIterator<String> columnNames();
 

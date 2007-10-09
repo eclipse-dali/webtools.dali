@@ -53,7 +53,7 @@ public class TableImpl extends AbstractTableResource
 	}
 	
 	@Override
-	protected UniqueConstraint createUniqueConstraint(int index) {
+	protected NestableUniqueConstraint createUniqueConstraint(int index) {
 		return UniqueConstraintImpl.createTableUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
 	}
 }

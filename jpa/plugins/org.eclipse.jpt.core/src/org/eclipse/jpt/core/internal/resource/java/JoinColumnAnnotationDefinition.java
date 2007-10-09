@@ -31,8 +31,8 @@ public class JoinColumnAnnotationDefinition implements AnnotationDefinition
 		super();
 	}
 
-	public JoinColumn buildAnnotation(JavaResource parent, Member member) {
-		return new JoinColumnImpl(parent, member, JoinColumn.DECLARATION_ANNOTATION_ADAPTER);
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
+		return JoinColumnImpl.createJoinColumn(parent, member);
 	}
 
 	public String getAnnotationName() {

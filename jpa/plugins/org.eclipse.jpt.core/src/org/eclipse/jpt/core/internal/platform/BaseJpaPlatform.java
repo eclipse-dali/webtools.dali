@@ -37,11 +37,11 @@ import org.eclipse.jpt.core.internal.resource.java.IdAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumnAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.JoinColumnsAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JoinTableAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.ManyToManyAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.ManyToOneAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclassAnnotationDefinition;
-import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.MappingAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.OneToManyAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.OneToOneAnnotationDefinition;
@@ -204,13 +204,14 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		definitions.add(AttributeOverridesAnnotationDefinition.instance());
 		definitions.add(ColumnAnnotationDefinition.instance());
 		definitions.add(JoinColumnAnnotationDefinition.instance());
+		definitions.add(JoinColumnsAnnotationDefinition.instance());
 		definitions.add(GeneratedValueAnnotationDefinition.instance());
 		definitions.add(JoinTableAnnotationDefinition.instance());
 	}
 	
 	//********************* IJpaPlatform implementation *************************
 
-	public MappingAnnotation buildTypeMappingAnnotation(JavaPersistentTypeResource parent, Type type, String mappingAnnotationName) {
+	public Annotation buildTypeMappingAnnotation(JavaPersistentTypeResource parent, Type type, String mappingAnnotationName) {
 		MappingAnnotationDefinition annotationDefinition = typeMappingAnnotationDefinition(mappingAnnotationName);
 		return annotationDefinition.buildAnnotation(parent, type);
 	}
@@ -242,7 +243,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		};
 	}
 	
-	public MappingAnnotation buildAttributeMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String mappingAnnotationName) {
+	public Annotation buildAttributeMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String mappingAnnotationName) {
 		MappingAnnotationDefinition annotationDefinition = attributeMappingAnnotationDefinition(mappingAnnotationName);
 		return annotationDefinition.buildAnnotation(parent, attribute);
 	}

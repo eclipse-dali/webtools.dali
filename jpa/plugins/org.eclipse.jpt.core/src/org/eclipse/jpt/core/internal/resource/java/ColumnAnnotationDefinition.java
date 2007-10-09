@@ -32,8 +32,8 @@ public class ColumnAnnotationDefinition implements AnnotationDefinition
 		super();
 	}
 
-	public Column buildAnnotation(JavaResource parent, Member member) {
-		return new ColumnImpl(parent, member, Column.MAPPING_DECLARATION_ANNOTATION_ADAPTER);
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
+		return new ColumnImpl(parent, member, ColumnImpl.MAPPING_DECLARATION_ANNOTATION_ADAPTER);
 	}
 
 	public String getAnnotationName() {

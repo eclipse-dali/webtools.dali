@@ -12,13 +12,17 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 
 public class EntityImpl extends AbstractAnnotationResource<Type> implements Entity
 {
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ENTITY);
+
 	private final AnnotationElementAdapter<String> nameAdapter;
 
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();

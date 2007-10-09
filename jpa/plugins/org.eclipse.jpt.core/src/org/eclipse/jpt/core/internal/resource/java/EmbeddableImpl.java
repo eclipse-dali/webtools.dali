@@ -10,11 +10,14 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 
 public class EmbeddableImpl extends AbstractAnnotationResource<Type> implements Embeddable
 {
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.EMBEDDABLE);
 
 	protected EmbeddableImpl(JavaPersistentTypeResource parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);

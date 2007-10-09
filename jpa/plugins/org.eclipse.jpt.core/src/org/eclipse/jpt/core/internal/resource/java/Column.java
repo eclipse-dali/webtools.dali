@@ -9,13 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 public interface Column extends AbstractColumn
 {
-	// this adapter is only used by a Column annotation associated with a mapping annotation (e.g. Basic)
-	public static final DeclarationAnnotationAdapter MAPPING_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.COLUMN);
 
 	int getLength();
 	

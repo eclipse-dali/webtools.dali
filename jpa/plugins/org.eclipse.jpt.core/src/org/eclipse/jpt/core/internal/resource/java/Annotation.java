@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 
 public interface Annotation extends JavaResource
 {	
@@ -21,8 +20,6 @@ public interface Annotation extends JavaResource
 	String getAnnotationName();
 	
 	org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot);
-
-	DeclarationAnnotationAdapter getDeclarationAnnotationAdapter();
 	
 	/**
 	 * Removing the underyling Java annotation

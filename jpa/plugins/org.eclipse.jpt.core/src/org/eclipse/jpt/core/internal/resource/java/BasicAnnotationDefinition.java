@@ -33,7 +33,7 @@ public class BasicAnnotationDefinition implements MappingAnnotationDefinition
 		super();
 	}
 
-	public MappingAnnotation buildAnnotation(JavaResource parent, Member member) {
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
 		return new BasicImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 	}
 

@@ -11,9 +11,13 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 public class TransientImpl extends AbstractAnnotationResource<Attribute> implements Transient
 {
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.TRANSIENT);
+	
 	public TransientImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 	}

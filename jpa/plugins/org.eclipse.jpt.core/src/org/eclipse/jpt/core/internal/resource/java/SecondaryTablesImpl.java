@@ -19,11 +19,11 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> implements SecondaryTables
 {
-	private final List<SecondaryTable> secondaryTables;
+	private final List<NestableSecondaryTable> secondaryTables;
 	
 	protected SecondaryTablesImpl(JavaPersistentTypeResource parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
-		this.secondaryTables = new ArrayList<SecondaryTable>();
+		this.secondaryTables = new ArrayList<NestableSecondaryTable>();
 	}
 
 	public String getAnnotationName() {
@@ -34,26 +34,26 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		return JPA.SECONDARY_TABLE;
 	}
 	
-	public ListIterator<SecondaryTable> nestedAnnotations() {
-		return new CloneListIterator<SecondaryTable>(this.secondaryTables);
+	public ListIterator<NestableSecondaryTable> nestedAnnotations() {
+		return new CloneListIterator<NestableSecondaryTable>(this.secondaryTables);
 	}
 	
 	public int nestedAnnotationsSize() {
 		return this.secondaryTables.size();
 	}
 	
-	public SecondaryTable add(int index) {
-		SecondaryTable javaSecondaryTableResource = createSecondaryTable(index);
+	public NestableSecondaryTable add(int index) {
+		NestableSecondaryTable javaSecondaryTableResource = createSecondaryTable(index);
 		this.add(index, javaSecondaryTableResource);
 		return javaSecondaryTableResource;
 	}
 	
-	private void add(int index, SecondaryTable secondaryTable) {
+	private void add(int index, NestableSecondaryTable secondaryTable) {
 		this.secondaryTables.add(index, secondaryTable);
 		//TODO event notification
 	}
 	
-	public void remove(SecondaryTable secondaryTable) {
+	public void remove(NestableSecondaryTable secondaryTable) {
 		this.secondaryTables.remove(secondaryTable);
 	}
 	
@@ -61,16 +61,16 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		this.secondaryTables.remove(index);
 	}
 	
-	public int indexOf(SecondaryTable secondaryTable) {
+	public int indexOf(NestableSecondaryTable secondaryTable) {
 		return this.secondaryTables.indexOf(secondaryTable);
 	}
 	
-	public SecondaryTable nestedAnnotationAt(int index) {
+	public NestableSecondaryTable nestedAnnotationAt(int index) {
 		return this.secondaryTables.get(index);
 	}
 	
-	public SecondaryTable nestedAnnotationFor(Annotation jdtAnnotation) {
-		for (SecondaryTable secondaryTable : this.secondaryTables) {
+	public NestableSecondaryTable nestedAnnotationFor(Annotation jdtAnnotation) {
+		for (NestableSecondaryTable secondaryTable : this.secondaryTables) {
 			if (jdtAnnotation == secondaryTable.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 				return secondaryTable;
 			}
@@ -86,11 +86,11 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}
 		
-	public SecondaryTable createNestedAnnotation(int index) {
+	public NestableSecondaryTable createNestedAnnotation(int index) {
 		return createSecondaryTable(index);
 	}
 	
-	private SecondaryTable createSecondaryTable(int index) {
+	private SecondaryTableImpl createSecondaryTable(int index) {
 		return SecondaryTableImpl.createNestedSecondaryTable(this, getMember(), index, getDeclarationAnnotationAdapter());
 	}
 

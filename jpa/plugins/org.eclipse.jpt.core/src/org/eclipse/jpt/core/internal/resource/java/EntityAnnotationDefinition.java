@@ -33,7 +33,7 @@ public class EntityAnnotationDefinition implements MappingAnnotationDefinition
 		super();
 	}
 
-	public Entity buildAnnotation(JavaResource parent, Member member) {
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
 		return new EntityImpl((JavaPersistentTypeResource) parent, (Type) member);
 	}
 

@@ -11,9 +11,12 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 public class VersionImpl extends AbstractAnnotationResource<Attribute> implements Version
 {
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.VERSION);
 
 	public VersionImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);

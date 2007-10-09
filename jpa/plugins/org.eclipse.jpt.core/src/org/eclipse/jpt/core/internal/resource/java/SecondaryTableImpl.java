@@ -19,9 +19,12 @@ import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
-public class SecondaryTableImpl extends AbstractTableResource implements SecondaryTable
+public class SecondaryTableImpl extends AbstractTableResource implements NestableSecondaryTable
 {	
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.SECONDARY_TABLE);
+	
 	protected SecondaryTableImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 	}
@@ -60,16 +63,16 @@ public class SecondaryTableImpl extends AbstractTableResource implements Seconda
 	}
 	
 	@Override
-	protected UniqueConstraint createUniqueConstraint(int index) {
+	protected NestableUniqueConstraint createUniqueConstraint(int index) {
 		return UniqueConstraintImpl.createSecondaryTableUniqueConstraint(new UniqueConstraintOwner(this), this.getDeclarationAnnotationAdapter(), this.getMember(), index);
 	}
 	
 	// ********** static methods **********
-	static SecondaryTable createSecondaryTable(JavaResource parent, Member member) {
+	static SecondaryTableImpl createSecondaryTable(JavaResource parent, Member member) {
 		return new SecondaryTableImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	static SecondaryTable createNestedSecondaryTable(JavaResource parent, Member member, int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {
+	static SecondaryTableImpl createNestedSecondaryTable(JavaResource parent, Member member, int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, secondaryTablesAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
 		return new SecondaryTableImpl(parent, member, idaa, annotationAdapter);

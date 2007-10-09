@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class UniqueConstraintImpl extends AbstractResource<Member> implements UniqueConstraint
+public class UniqueConstraintImpl extends AbstractResource<Member> implements NestableUniqueConstraint
 {
 
 	private final UniqueConstraint.Owner owner;
@@ -163,7 +163,7 @@ public class UniqueConstraintImpl extends AbstractResource<Member> implements Un
 	}
 
 	// ********** static methods **********
-	static UniqueConstraint createSecondaryTableUniqueConstraint(UniqueConstraint.Owner owner, DeclarationAnnotationAdapter declarationAnnotationAdapter, Member member, int index) {
+	static NestableUniqueConstraint createSecondaryTableUniqueConstraint(UniqueConstraint.Owner owner, DeclarationAnnotationAdapter declarationAnnotationAdapter, Member member, int index) {
 		return new UniqueConstraintImpl(owner, member, buildSecondaryTableUniqueConstraintAnnotationAdapter(declarationAnnotationAdapter, index));
 	}
 
@@ -171,7 +171,7 @@ public class UniqueConstraintImpl extends AbstractResource<Member> implements Un
 		return new NestedIndexedDeclarationAnnotationAdapter(declarationAnnotationAdapter, JPA.SECONDARY_TABLE__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
 	}
 
-	static UniqueConstraint createJoinTableUniqueConstraint(UniqueConstraint.Owner owner, Member member, int index) {
+	static NestableUniqueConstraint createJoinTableUniqueConstraint(UniqueConstraint.Owner owner, Member member, int index) {
 		return new UniqueConstraintImpl(owner, member, buildJoinTableUniqueConstraintAnnotationAdapter(index));
 	}
 
@@ -179,7 +179,7 @@ public class UniqueConstraintImpl extends AbstractResource<Member> implements Un
 		return new NestedIndexedDeclarationAnnotationAdapter(JoinTableImpl.DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
 	}
 
-	static UniqueConstraint createTableUniqueConstraint(UniqueConstraint.Owner owner, Member member, int index) {
+	static NestableUniqueConstraint createTableUniqueConstraint(UniqueConstraint.Owner owner, Member member, int index) {
 		return new UniqueConstraintImpl(owner, member, buildTableUniqueConstraintAnnotationAdapter(index));
 	}
 

@@ -33,7 +33,7 @@ public class OneToManyAnnotationDefinition implements MappingAnnotationDefinitio
 		super();
 	}
 
-	public OneToMany buildAnnotation(JavaResource parent, Member member) {
+	public Annotation buildAnnotation(JavaResource parent, Member member) {
 		return new OneToManyImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 	}
 

@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclass;
-import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -90,7 +89,7 @@ public class MappedSuperclassTests extends AnnotationTestCase {
 		IType testType = this.createTestMappedSuperclass();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
-		MappingAnnotation mappingAnnotation = typeResource.mappingAnnotation();
+		JavaResource mappingAnnotation = typeResource.mappingAnnotation();
 		assertTrue(mappingAnnotation instanceof MappedSuperclass);
 	}
 	
@@ -98,7 +97,7 @@ public class MappedSuperclassTests extends AnnotationTestCase {
 		IType testType = this.createTestMappedSuperclassAndEntity();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
-		MappingAnnotation mappingAnnotation = typeResource.mappingAnnotation();
+		JavaResource mappingAnnotation = typeResource.mappingAnnotation();
 		assertTrue(mappingAnnotation instanceof Entity);
 		
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) typeResource.mappingAnnotation(JPA.MAPPED_SUPERCLASS);

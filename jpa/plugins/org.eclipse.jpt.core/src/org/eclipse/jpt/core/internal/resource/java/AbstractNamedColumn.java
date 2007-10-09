@@ -10,12 +10,14 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NumberStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 
@@ -30,9 +32,9 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 
 	private String name;
 	private String columnDefinition;
-
-	public AbstractNamedColumn(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
-		super(parent, member, daa);
+	
+	public AbstractNamedColumn(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildStringElementAdapter(this.nameElementName());
 		this.nameAdapter = this.buildShortCircuitElementAdapter(this.nameDeclarationAdapter);
 		this.columnDefinitionAdapter = this.buildShortCircuitStringElementAdapter(this.columnDefinitionElementName());

@@ -9,9 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-
+import java.util.ListIterator;
 
 public interface JoinTable extends Table
 {
+	ListIterator<JoinColumn> joinColumns();
+	
+	JoinColumn joinColumnAt(int index);
+	
+	int indexOfJoinColumn(JoinColumn joinColumn);
+	
+	int joinColumnsSize();
+
+	JoinColumn addJoinColumn(int index);
+	
+	void removeJoinColumn(int index);
+	
+	void moveJoinColumn(int oldIndex, int newIndex);
 
 }

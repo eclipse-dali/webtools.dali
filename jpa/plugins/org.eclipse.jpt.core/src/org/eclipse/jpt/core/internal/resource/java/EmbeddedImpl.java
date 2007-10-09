@@ -11,10 +11,13 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 
 public class EmbeddedImpl extends AbstractAnnotationResource<Attribute> implements Embedded
 {
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.EMBEDDED);
 
 	public EmbeddedImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);

@@ -35,19 +35,19 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	/**
 	 * stores all mapping annotations except duplicates, java compiler has an error for duplicates
 	 */
-	private final Collection<MappingAnnotation> mappingAnnotations;
+	private final Collection<Annotation> mappingAnnotations;
 	
 	private boolean persistable;
 
 	public AbstractJavaPersistentResource(JavaResource parent, E member){
 		super(parent, member);
 		this.annotations = new ArrayList<Annotation>();
-		this.mappingAnnotations = new ArrayList<MappingAnnotation>();
+		this.mappingAnnotations = new ArrayList<Annotation>();
 	}
 
 	protected abstract Annotation buildAnnotation(String annotationName);
 	
-	protected abstract MappingAnnotation buildMappingAnnotation(String mappingAnnotationName);
+	protected abstract Annotation buildMappingAnnotation(String mappingAnnotationName);
 	
 	protected abstract Iterator<String> correspondingAnnotationNames(String mappingAnnotationName);
 	
@@ -60,7 +60,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	protected abstract boolean calculatePersistability(CompilationUnit astRoot);
 
 	public Annotation annotation(String annotationName) {
-		for (Iterator<Annotation> i = annotations(); i.hasNext(); ) {
+		for (Iterator<Annotation> i = _annotations(); i.hasNext(); ) {
 			Annotation annotation = i.next();
 			if (annotation.getAnnotationName().equals(annotationName)) {
 				return annotation;
@@ -69,9 +69,9 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return null;
 	}
 	
-	public MappingAnnotation mappingAnnotation(String annotationName) {
-		for (Iterator<MappingAnnotation> i = mappingAnnotations(); i.hasNext(); ) {
-			MappingAnnotation mappingAnnotation = i.next();
+	public Annotation mappingAnnotation(String annotationName) {
+		for (Iterator<Annotation> i = _mappingAnnotations(); i.hasNext(); ) {
+			Annotation mappingAnnotation = i.next();
 			if (mappingAnnotation.getAnnotationName().equals(annotationName)) {
 				return mappingAnnotation;
 			}
@@ -80,7 +80,11 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 
 
-	public Iterator<Annotation> annotations() {
+	public Iterator<JavaResource> annotations() {
+		return new CloneIterator<JavaResource>(this.annotations);
+	}
+	
+	private Iterator<Annotation> _annotations() {
 		return new CloneIterator<Annotation>(this.annotations);
 	}
 
@@ -134,12 +138,6 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		newSingularAnnotation.initializeFrom(nestableAnnotation);
 		return newContainerAnnotation.add(newContainerAnnotation.nestedAnnotationsSize());
 	}
-
-	public void move(int newIndex, NestableAnnotation nestedAnnotation, String containerAnnotationName) {
-		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
-		int oldIndex = containerAnnotation.indexOf(nestedAnnotation);
-		move(oldIndex, newIndex, containerAnnotation);
-	}
 	
 	public void move(int oldIndex, int newIndex, String containerAnnotationName) {
 		move(oldIndex, newIndex, containerAnnotation(containerAnnotationName));
@@ -166,26 +164,30 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		if (mappingAnnotation(mappingAnnotationName) != null) {
 			return;
 		}
-		MappingAnnotation mappingAnnotation = buildMappingAnnotation(mappingAnnotationName);
+		Annotation mappingAnnotation = buildMappingAnnotation(mappingAnnotationName);
 		addMappingAnnotation(mappingAnnotation);
 		//TODO should this be done here or should creating the Annotation do this??
 		mappingAnnotation.newAnnotation();
 	}
 	
 
-	private void addMappingAnnotation(MappingAnnotation annotation) {
+	private void addMappingAnnotation(Annotation annotation) {
 		this.mappingAnnotations.add(annotation);
 		//TODO event notification
 	}
 	
-	private void removeMappingAnnotation(MappingAnnotation annotation) {
+	private void removeMappingAnnotation(Annotation annotation) {
 		this.mappingAnnotations.remove(annotation);
 		annotation.removeAnnotation();
 		//TODO event notification
 	}
 	
-	public Iterator<MappingAnnotation> mappingAnnotations() {
-		return new CloneIterator<MappingAnnotation>(this.mappingAnnotations);
+	public Iterator<JavaResource> mappingAnnotations() {
+		return new CloneIterator<JavaResource>(this.mappingAnnotations);
+	}
+	
+	private Iterator<Annotation> _mappingAnnotations() {
+		return new CloneIterator<Annotation>(this.mappingAnnotations);
 	}
 
 	public void removeAnnotation(String annotationName) {
@@ -194,23 +196,19 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 			removeAnnotation(annotation);
 		}
 	}
-
-	public void removeAnnotation(NestableAnnotation nestableAnnotation, String containerAnnotationName) {
-		if (nestableAnnotation == annotation(nestableAnnotation.getAnnotationName())) {
-			removeAnnotation(nestableAnnotation);
+	
+	public void removeAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
+		if (containerAnnotation == null) {
+			Annotation annotation = annotation(nestableAnnotationName);
+			removeAnnotation(annotation);
 		}
 		else {
-			ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
-			removeAnnotation(containerAnnotation.indexOf(nestableAnnotation), containerAnnotation);
+			removeAnnotation(index, containerAnnotation);
 		}
 	}
 	
-	public void removeAnnotation(int index, String containerAnnotationName) {
-		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
-		removeAnnotation(index, containerAnnotation);
-	}
-	
-	public void removeAnnotation(int index, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
+	private void removeAnnotation(int index, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
 		NestableAnnotation nestableAnnotation = containerAnnotation.nestedAnnotationAt(index);
 		containerAnnotation.remove(index);
 		//TODO move these 2 lines to the ContainerAnnotation implementation, i think
@@ -227,16 +225,11 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 			newAnnotation.initializeFrom(nestedAnnotation);
 		}
 	}
-	
-	public void removeMappingAnnotation(String annotationName) {
-		MappingAnnotation mappingAnnotation = mappingAnnotation(annotationName);
-		removeMappingAnnotation(mappingAnnotation);
-	}
-	
+		
 	//TODO how to handle calling setMappingAnnotation with the same annotation as already exists?  is this an error?
 	//or should we remove it and add it back as an empty annotation??
 	public void setMappingAnnotation(String annotationName) {
-		MappingAnnotation oldMapping = mappingAnnotation();
+		Annotation oldMapping = mappingAnnotation();
 		if (oldMapping != null) {
 			removeUnnecessaryAnnotations(oldMapping.getAnnotationName(), annotationName);
 		}
@@ -259,7 +252,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		for (ListIterator<String> i = possibleMappingAnnotationNames(); i.hasNext(); ) {
 			String mappingAnnotationName = i.next();
 			if (mappingAnnotationName != newMappingAnnotationName) {
-				MappingAnnotation mappingAnnotation = mappingAnnotation(mappingAnnotationName);
+				Annotation mappingAnnotation = mappingAnnotation(mappingAnnotationName);
 				if (mappingAnnotation != null) {
 					removeMappingAnnotation(mappingAnnotation);
 				}
@@ -270,11 +263,11 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	//TODO need property change notification on this mappingAnnotation changing
 	//from the context model we don't really care if their are multiple mapping annotations,
 	//just which one we need to use
-	public MappingAnnotation mappingAnnotation() {
+	public Annotation mappingAnnotation() {
 		for (ListIterator<String> i = possibleMappingAnnotationNames(); i.hasNext(); ) {
 			String mappingAnnotationName = i.next();
-			for (Iterator<MappingAnnotation> j = mappingAnnotations(); j.hasNext(); ) {
-				MappingAnnotation mappingAnnotation = j.next();
+			for (Iterator<Annotation> j = _mappingAnnotations(); j.hasNext(); ) {
+				Annotation mappingAnnotation = j.next();
 				if (mappingAnnotationName == mappingAnnotation.getAnnotationName()) {
 					return mappingAnnotation;
 				}
@@ -283,6 +276,8 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return null;
 	}
 	
+	//TODO handle this compiler warning.  Also look at _annotations() and _mappingAnnotations, my workarounds
+	//for those compiler warnings
 	public ListIterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
 		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
 		if (containerAnnotation != null) {
@@ -303,7 +298,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 	
 	private void removeAnnotationsNotInSource(CompilationUnit astRoot) {
-		for (Annotation annotation : CollectionTools.iterable(annotations())) {
+		for (Annotation annotation : CollectionTools.iterable(_annotations())) {
 			if (annotation.jdtAnnotation(astRoot) == null) {
 				removeAnnotation(annotation);
 			}
@@ -311,7 +306,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 	
 	private void removeMappingAnnotationsNotInSource(CompilationUnit astRoot) {
-		for (MappingAnnotation mappingAnnotation : CollectionTools.iterable(mappingAnnotations())) {
+		for (Annotation mappingAnnotation : CollectionTools.iterable(_mappingAnnotations())) {
 			if (mappingAnnotation.jdtAnnotation(astRoot) == null) {
 				removeMappingAnnotation(mappingAnnotation);
 			}
@@ -363,7 +358,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 			annotation = mappingAnnotation(qualifiedAnnotationName);
 			if (annotation == null) {
 				annotation = buildMappingAnnotation(qualifiedAnnotationName);
-				addMappingAnnotation((MappingAnnotation) annotation);				
+				addMappingAnnotation(annotation);				
 			}
 		}
 		if (annotation != null) {

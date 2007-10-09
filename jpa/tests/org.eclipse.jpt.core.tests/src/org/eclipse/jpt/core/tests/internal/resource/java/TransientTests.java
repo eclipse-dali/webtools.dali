@@ -21,7 +21,6 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResour
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
-import org.eclipse.jpt.core.internal.resource.java.MappingAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.Transient;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -75,7 +74,7 @@ public class TransientTests extends AnnotationTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
-		MappingAnnotation mappingAnnotation = attributeResource.mappingAnnotation();
+		JavaResource mappingAnnotation = attributeResource.mappingAnnotation();
 		assertTrue(mappingAnnotation instanceof Transient);
 	}
 

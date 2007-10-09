@@ -10,13 +10,21 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.IndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
-public class JoinColumnImpl extends AbstractColumnImpl implements JoinColumn
+public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinColumn
 {
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.JOIN_COLUMN);
 
 	// hold this so we can get the 'referenced column name' text range
 	private final DeclarationAnnotationElementAdapter<String> referencedColumnNameDeclarationAdapter;
@@ -25,11 +33,18 @@ public class JoinColumnImpl extends AbstractColumnImpl implements JoinColumn
 
 	private String referencedColumnName;
 	
-	public JoinColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
-		super(parent, member, daa);
-		//this.annotationAdapter = new MemberIndexedAnnotationAdapter(member, daa);
+	public JoinColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, member, daa, annotationAdapter);
 		this.referencedColumnNameDeclarationAdapter = this.buildStringElementAdapter(JPA.JOIN_COLUMN__REFERENCED_COLUMN_NAME);
 		this.referencedColumnNameAdapter = this.buildShortCircuitElementAdapter(this.referencedColumnNameDeclarationAdapter);
+	}
+	
+	public JoinColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
+		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
+	}
+	
+	public JoinColumnImpl(JavaResource parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
+		this(parent, member, idaa, new MemberIndexedAnnotationAdapter(member, idaa));
 	}
 	
 	@Override
@@ -70,7 +85,20 @@ public class JoinColumnImpl extends AbstractColumnImpl implements JoinColumn
 	public String getAnnotationName() {
 		return JPA.JOIN_COLUMN;
 	}
+	
+	private IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
+		return (IndexedAnnotationAdapter) super.getAnnotationAdapter();
+	}
 
+	public void moveAnnotation(int newIndex) {
+		getIndexedAnnotationAdapter().moveAnnotation(newIndex);
+	}
+	
+	public void initializeFrom(NestableAnnotation oldAnnotation) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public String getReferencedColumnName() {
 		return this.referencedColumnName;
 	}
@@ -84,5 +112,34 @@ public class JoinColumnImpl extends AbstractColumnImpl implements JoinColumn
 		super.updateFromJava(astRoot);
 		this.setReferencedColumnName(this.referencedColumnNameAdapter.getValue(astRoot));
 	}
+	// ********** static methods **********
 
+	static JoinColumnImpl createJoinColumn(JavaResource parent, Member member) {
+		return new JoinColumnImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER);
+	}
+	
+	static JoinColumnImpl createNestedJoinColumn(JavaResource parent, Member member, int index, DeclarationAnnotationAdapter joinColumnsAdapter) {
+		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, joinColumnsAdapter);
+		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
+		return new JoinColumnImpl(parent, member, idaa, annotationAdapter);
+	}
+
+	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter joinColumnsAdapter) {
+		return new NestedIndexedDeclarationAnnotationAdapter(joinColumnsAdapter, index, JPA.JOIN_COLUMN);
+	}
+	static NestableJoinColumn createJoinTableJoinColumn(JavaResource parent, Member member, int index) {
+		return new JoinColumnImpl(parent, member, buildJoinTableAnnotationAdapter(index));
+	}
+
+	private static IndexedDeclarationAnnotationAdapter buildJoinTableAnnotationAdapter(int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(JoinTableImpl.DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
+	}
+
+	static NestableJoinColumn createJoinTableInverseJoinColumn(JavaResource parent,  Member member, int index) {
+		return new JoinColumnImpl(parent, member, buildJoinTableInverseAnnotationAdapter(index));
+	}
+
+	private static IndexedDeclarationAnnotationAdapter buildJoinTableInverseAnnotationAdapter(int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(JoinTableImpl.DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__INVERSE_JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
+	}
 }
