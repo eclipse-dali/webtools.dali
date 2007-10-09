@@ -41,6 +41,11 @@ public class JptJavaResourceTests {
 		suite.addTestSuite(SecondaryTableTests.class);
 		suite.addTestSuite(SecondaryTablesTests.class);
 		suite.addTestSuite(JoinTableTests.class);
+		suite.addTestSuite(ColumnTests.class);
+		suite.addTestSuite(JoinColumnTests.class);
+		//suite.addTestSuite(JoinColumnsTests.class);
+		suite.addTestSuite(AttributeOverrideTests.class);
+		suite.addTestSuite(AttributeOverridesTests.class);
 		return suite;
 	}
 

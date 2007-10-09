@@ -10,62 +10,111 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.internal.jdtutility.NestedDeclarationAnnotationAdapter;
 
-public class ColumnImpl extends AbstractAnnotationResource<Attribute> implements Column
+public class ColumnImpl extends AbstractColumnImpl implements Column
 {
-	private final AnnotationElementAdapter<String> nameAdapter;
-	private final AnnotationElementAdapter<String> tableAdapter;
+	private final IntAnnotationElementAdapter lengthAdapter;
 
-	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
-	private static final DeclarationAnnotationElementAdapter<String> TABLE_ADAPTER = buildTableAdapter();
+	private final IntAnnotationElementAdapter precisionAdapter;
 
-	private String name;
-	private String table;
+	private final IntAnnotationElementAdapter scaleAdapter;
 
-	public ColumnImpl(JavaResource parent, Attribute attribute) {
-		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), NAME_ADAPTER);
-		this.tableAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), TABLE_ADAPTER);
+	private int length = -1;
+	
+	private int precision = -1;
+	
+	private int scale = -1;
+	
+	public ColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
+		super(parent, member, daa);
+		this.lengthAdapter = this.buildShortCircuitIntElementAdapter(JPA.COLUMN__LENGTH);
+		this.precisionAdapter = this.buildShortCircuitIntElementAdapter(JPA.COLUMN__PRECISION);
+		this.scaleAdapter = this.buildShortCircuitIntElementAdapter(JPA.COLUMN__SCALE);
 	}
 	
+	@Override
+	protected String nameElementName() {
+		return JPA.COLUMN__NAME;
+	}
+	
+	@Override
+	protected String columnDefinitionElementName() {
+		return JPA.COLUMN__COLUMN_DEFINITION;
+	}
+	
+	@Override
+	protected String tableElementName() {
+		return JPA.COLUMN__TABLE;
+	}
+
+	@Override
+	protected String uniqueElementName() {
+		return JPA.COLUMN__UNIQUE;
+	}
+
+	@Override
+	protected String nullableElementName() {
+		return JPA.COLUMN__NULLABLE;
+	}
+
+	@Override
+	protected String insertableElementName() {
+		return JPA.COLUMN__INSERTABLE;
+	}
+
+	@Override
+	protected String updatableElementName() {
+		return JPA.COLUMN__UPDATABLE;
+	}
+
 	public String getAnnotationName() {
 		return JPA.COLUMN;
 	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-		this.nameAdapter.setValue(name);
-	}
 	
-	public String getTable() {
-		return this.table;
+	public int getLength() {
+		return this.length;
 	}
-	
-	public void setTable(String table) {
-		this.table = table;
-		this.tableAdapter.setValue(table);
+
+	public void setLength(int length) {
+		this.length = length;
+		this.lengthAdapter.setValue(length);
+	}
+
+	public int getPrecision() {
+		return this.precision;
+	}
+
+	public void setPrecision(int precision) {
+		this.precision = precision;
+		this.precisionAdapter.setValue(precision);
+	}
+
+	public int getScale() {
+		return this.scale;
+	}
+
+	public void setScale(int scale) {
+		this.scale = scale;
+		this.scaleAdapter.setValue(scale);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
-		setName(this.nameAdapter.getValue(astRoot));
-		setTable(this.tableAdapter.getValue(astRoot));
-	}
-	
-	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.COLUMN__NAME);
-	}
-	
-	private static DeclarationAnnotationElementAdapter<String> buildTableAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.COLUMN__TABLE);
+		super.updateFromJava(astRoot);
+		this.setLength(this.lengthAdapter.getValue(astRoot));
+		this.setPrecision(this.precisionAdapter.getValue(astRoot));
+		this.setScale(this.scaleAdapter.getValue(astRoot));
 	}
 
+	// ********** static methods **********
+
+	static Column createAttributeOverrideColumn(JavaResource parent, Member member, DeclarationAnnotationAdapter attributeOverrideAnnotationAdapter) {
+		return new ColumnImpl(parent, member, buildAttributeOverrideAnnotationAdapter(attributeOverrideAnnotationAdapter));
+	}
+
+	static DeclarationAnnotationAdapter buildAttributeOverrideAnnotationAdapter(DeclarationAnnotationAdapter attributeOverrideAnnotationAdapter) {
+		return new NestedDeclarationAnnotationAdapter(attributeOverrideAnnotationAdapter, JPA.ATTRIBUTE_OVERRIDE__COLUMN, JPA.COLUMN);
+	}
 }

@@ -32,12 +32,18 @@ public class AttributeOverrideImpl
 
 	private final AnnotationElementAdapter<String> nameAdapter;
 
+	private final MemberAnnotationAdapter columnAdapter;
+	
 	private String name;
+	
+	private Column column;
+	
 	
 	protected AttributeOverrideImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JPA.ATTRIBUTE_OVERRIDE__NAME, false); // false = do not remove annotation when empty
 		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(),this.nameDeclarationAdapter);
+		this.columnAdapter = new MemberAnnotationAdapter(getMember(), ColumnImpl.buildAttributeOverrideAnnotationAdapter(getDeclarationAnnotationAdapter()));
 	}
 
 	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
@@ -65,8 +71,36 @@ public class AttributeOverrideImpl
 		this.nameAdapter.setValue(name);
 	}
 
+	public Column getColumn() {
+		return this.column;
+	}
+	
+	public Column addColumn() {
+		Column column = ColumnImpl.createAttributeOverrideColumn(this, getMember(), getDeclarationAnnotationAdapter());
+		column.newAnnotation();
+		setColumn(column);
+		return column;
+	}
+	
+	public void removeColumn() {
+		this.column.removeAnnotation();
+		setColumn(null);
+	}
+	
+	private void setColumn(Column column) {
+		this.column = column;
+		//change notification
+	}
 	public void updateFromJava(CompilationUnit astRoot) {
 		setName(this.nameAdapter.getValue(astRoot));
+		if (this.columnAdapter.getAnnotation(astRoot) == null) {
+			setColumn(null);
+		}
+		else {
+			Column column = ColumnImpl.createAttributeOverrideColumn(this, getMember(), getDeclarationAnnotationAdapter());
+			setColumn(column);
+			column.updateFromJava(astRoot);
+		}
 	}
 	
 

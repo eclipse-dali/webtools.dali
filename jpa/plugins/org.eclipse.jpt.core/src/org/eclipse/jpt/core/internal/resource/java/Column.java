@@ -9,22 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
-public interface Column extends Annotation
+public interface Column extends AbstractColumn
 {
-	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.COLUMN);
+	// this adapter is only used by a Column annotation associated with a mapping annotation (e.g. Basic)
+	public static final DeclarationAnnotationAdapter MAPPING_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.COLUMN);
 
-	String getName();
+	int getLength();
 	
-	void setName(String name);
+	void setLength(int length);
 	
-	String getTable();
+	int getPrecision();
 	
-	void setTable(String table);
+	void setPrecision(int precision);
 	
-	void updateFromJava(CompilationUnit astRoot);
+	int getScale();
+	
+	void setScale(int scale);
 
 }

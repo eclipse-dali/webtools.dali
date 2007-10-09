@@ -12,18 +12,12 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
-public interface AttributeOverride extends NestableAnnotation
+public interface JoinColumn extends AbstractColumn
 {
-	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ATTRIBUTE_OVERRIDE);
+	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.JOIN_COLUMN);
 
-	String getName();
+	String getReferencedColumnName();
 	
-	void setName(String name);
-	
-	Column getColumn();
-	
-	Column addColumn();
-	
-	void removeColumn();
+	void setReferencedColumnName(String referencedColumnName);
 
 }

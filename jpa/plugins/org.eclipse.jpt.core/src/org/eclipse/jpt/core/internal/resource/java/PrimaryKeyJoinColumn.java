@@ -12,18 +12,12 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
-public interface AttributeOverride extends NestableAnnotation
+public interface PrimaryKeyJoinColumn extends NamedColumn
 {
-	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ATTRIBUTE_OVERRIDE);
+	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.PRIMARY_KEY_JOIN_COLUMN);
 
-	String getName();
+	String getReferenceColumnName();
 	
-	void setName(String name);
-	
-	Column getColumn();
-	
-	Column addColumn();
-	
-	void removeColumn();
+	void setReferenceColumnName(String referenceColumnName);
 
 }

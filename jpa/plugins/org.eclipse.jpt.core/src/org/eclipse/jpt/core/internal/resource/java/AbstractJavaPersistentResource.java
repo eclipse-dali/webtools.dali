@@ -213,6 +213,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	public void removeAnnotation(int index, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
 		NestableAnnotation nestableAnnotation = containerAnnotation.nestedAnnotationAt(index);
 		containerAnnotation.remove(index);
+		//TODO move these 2 lines to the ContainerAnnotation implementation, i think
 		nestableAnnotation.removeAnnotation();
 		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, containerAnnotation);
 		

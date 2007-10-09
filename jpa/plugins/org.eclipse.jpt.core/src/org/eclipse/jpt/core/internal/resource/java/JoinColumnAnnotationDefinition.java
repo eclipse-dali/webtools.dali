@@ -9,13 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
-public class ColumnAnnotationDefinition implements AnnotationDefinition
+public class JoinColumnAnnotationDefinition implements AnnotationDefinition
 {
 	// singleton
-	private static final ColumnAnnotationDefinition INSTANCE = new ColumnAnnotationDefinition();
+	private static final JoinColumnAnnotationDefinition INSTANCE = new JoinColumnAnnotationDefinition();
 
 
 	/**
@@ -28,15 +27,15 @@ public class ColumnAnnotationDefinition implements AnnotationDefinition
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private ColumnAnnotationDefinition() {
+	private JoinColumnAnnotationDefinition() {
 		super();
 	}
 
-	public Column buildAnnotation(JavaResource parent, Member member) {
-		return new ColumnImpl(parent, member, Column.MAPPING_DECLARATION_ANNOTATION_ADAPTER);
+	public JoinColumn buildAnnotation(JavaResource parent, Member member) {
+		return new JoinColumnImpl(parent, member, JoinColumn.DECLARATION_ANNOTATION_ADAPTER);
 	}
 
 	public String getAnnotationName() {
-		return JPA.COLUMN;
+		return JPA.JOIN_COLUMN;
 	}
 }

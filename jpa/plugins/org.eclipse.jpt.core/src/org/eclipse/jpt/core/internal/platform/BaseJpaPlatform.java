@@ -36,6 +36,7 @@ import org.eclipse.jpt.core.internal.resource.java.GeneratedValueAnnotationDefin
 import org.eclipse.jpt.core.internal.resource.java.IdAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.JoinColumnAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JoinTableAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.ManyToManyAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.ManyToOneAnnotationDefinition;
@@ -202,6 +203,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
 		definitions.add(AttributeOverridesAnnotationDefinition.instance());
 		definitions.add(ColumnAnnotationDefinition.instance());
+		definitions.add(JoinColumnAnnotationDefinition.instance());
 		definitions.add(GeneratedValueAnnotationDefinition.instance());
 		definitions.add(JoinTableAnnotationDefinition.instance());
 	}
