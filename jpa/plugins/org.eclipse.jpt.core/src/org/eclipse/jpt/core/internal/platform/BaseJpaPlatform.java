@@ -34,6 +34,7 @@ import org.eclipse.jpt.core.internal.resource.java.EmbeddedIdAnnotationDefinitio
 import org.eclipse.jpt.core.internal.resource.java.EntityAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.GeneratedValueAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.IdAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.IdClassAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumnAnnotationDefinition;
@@ -159,6 +160,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		definitions.add(TableAnnotationDefinition.instance());
 		definitions.add(SecondaryTableAnnotationDefinition.instance());
 		definitions.add(SecondaryTablesAnnotationDefinition.instance());
+		definitions.add(IdClassAnnotationDefinition.instance());
 	}
 	
 	protected ListIterator<MappingAnnotationDefinition> attributeMappingAnnotationDefinitions() {
