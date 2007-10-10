@@ -254,7 +254,7 @@ public class ManyToOneTests extends AnnotationTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
 		ManyToOne manyToOne = (ManyToOne) attributeResource.mappingAnnotation(JPA.MANY_TO_ONE);
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, manyToOne.getFullyQualfiedTargetEntity());
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, manyToOne.getFullyQualifiedTargetEntity());
 		
 		manyToOne.setTargetEntity("Foo");
 		
@@ -263,7 +263,7 @@ public class ManyToOneTests extends AnnotationTestCase {
 		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertEquals("Foo", manyToOne.getTargetEntity());
 		
-		assertNull(manyToOne.getFullyQualfiedTargetEntity());
+		assertNull(manyToOne.getFullyQualifiedTargetEntity());
 	}
 	
 	public void testGetOptional() throws Exception {

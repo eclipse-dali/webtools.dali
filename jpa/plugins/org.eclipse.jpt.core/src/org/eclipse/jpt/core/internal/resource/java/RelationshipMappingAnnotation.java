@@ -40,7 +40,7 @@ public interface RelationshipMappingAnnotation extends JavaResource
 	 * will return "model.Employee" if there is an import for model.Employee
 	 * @return
 	 */
-	String getFullyQualfiedTargetEntity();
+	String getFullyQualifiedTargetEntity();
 	
 	/**
 	 * Corresponds to the fetch element of the relationship 

@@ -39,7 +39,7 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 
 	private String targetEntity;
 
-	private String fullyQualfiedTargetEntity;
+	private String fullyQualifiedTargetEntity;
 
 	private FetchType fetch;
 	
@@ -80,12 +80,12 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 		this.targetEntityAdapter.setValue(targetEntity);
 	}
 	
-	public String getFullyQualfiedTargetEntity() {
-		return this.fullyQualfiedTargetEntity;
+	public String getFullyQualifiedTargetEntity() {
+		return this.fullyQualifiedTargetEntity;
 	}
 	
 	private void setFullyQualifiedTargetEntity(String targetEntity) {
-		this.fullyQualfiedTargetEntity = targetEntity;
+		this.fullyQualifiedTargetEntity = targetEntity;
 		//change notification
 	}
 	
