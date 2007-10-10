@@ -44,11 +44,6 @@ public class AttributeOverrideTests extends AnnotationTestCase {
 			"String name(); " +
 			"Column column(); ");
 	}
-	
-	private void createAttributeOverridesAnnotation() throws Exception {
-		this.createAnnotationAndMembers("AttributeOverrides", 
-			"AttributeOverride[] value();");
-	}
 
 	private void createColumnAnnotation() throws Exception {
 		this.createAnnotationAndMembers("Column", 
