@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.content.java.mappings;
 
+import java.util.Iterator;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;
@@ -40,12 +42,10 @@ public abstract class JpaJavaTestCase extends AnnotationTestCase {
 	}
 
 	protected JavaPersistentType javaPersistentTypeNamed(String typeName) {
-		for (IJpaFile jpaFile : this.jpaProject().getJpaProject().jpaFiles(JavaCore.JAVA_SOURCE_CONTENT_TYPE)) {
-			JpaCompilationUnit cu = (JpaCompilationUnit) jpaFile.getContent();
-			for (JavaPersistentType pt : cu.getTypes()) {
-				if (pt.fullyQualifiedTypeName().equals(typeName)) {
-					return pt;
-				}
+		for (Iterator<JavaPersistentType> stream = this.jpaProject().getJpaProject().javaPersistentTypes(); stream.hasNext(); ) {
+			JavaPersistentType jpt = stream.next();
+			if (jpt.fullyQualifiedTypeName().equals(typeName)) {
+				return jpt;
 			}
 		}
 		throw new IllegalArgumentException("missing type: " + typeName);

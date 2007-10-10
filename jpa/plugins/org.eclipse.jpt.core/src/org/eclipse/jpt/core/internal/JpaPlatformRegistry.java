@@ -9,25 +9,30 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
-public class JpaPlatformRegistry 
-{
+/**
+ * Singleton registry for storing all the registered JPA platform configuration
+ * elements and instantiating JPA platforms from them.
+ */
+public class JpaPlatformRegistry {
+
+	private final HashMap<String, IConfigurationElement> jpaPlatformConfigurationElements;
+
+
 	// singleton
 	private static final JpaPlatformRegistry INSTANCE = new JpaPlatformRegistry();
-	
+
 	/**
 	 * Return the singleton.
 	 */
@@ -35,130 +40,139 @@ public class JpaPlatformRegistry
 		return INSTANCE;
 	}
 
-	private static final String EXTENSION_ID = 
-		"jpaPlatform"; //$NON-NLS-1$
-	
-	private static final String EL_PLATFORM =
-		"jpaPlatform"; //$NON-NLS-1$	
-	
-	private static final String AT_ID =
-		"id"; //$NON-NLS-1$	
-	
-	private static final String AT_LABEL =
-		"label"; //$NON-NLS-1$	
-	
-	private static final String AT_CLASS =
-		"class"; //$NON-NLS-1$	
-		
-	// key: String jpaPlatform id  value: IConfigurationElement class descriptor
-	private Map<String, IConfigurationElement> jpaPlatforms;
-	
-	
-	/* (non Java doc)
-	 * restrict access
+	private static final String EXTENSION_ID = "jpaPlatform"; //$NON-NLS-1$
+	private static final String EL_PLATFORM = "jpaPlatform"; //$NON-NLS-1$	
+	private static final String AT_ID = "id"; //$NON-NLS-1$	
+	private static final String AT_LABEL = "label"; //$NON-NLS-1$	
+	private static final String AT_CLASS = "class"; //$NON-NLS-1$	
+
+
+	// ********** constructor/initialization **********
+
+	/**
+	 * ensure single instance
 	 */
 	private JpaPlatformRegistry() {
-		buildJpaPlatforms();
+		super();
+		this.jpaPlatformConfigurationElements = this.buildJpaPlatformConfigurationElements();
 	}
 	
 	
-	private void buildJpaPlatforms() {
-		this.jpaPlatforms = new HashMap<String, IConfigurationElement>();
-		
-		for (Iterator<IConfigurationElement> stream = allConfigElements(); stream.hasNext(); ) {
-			buildJpaPlatform(stream.next());
+	private HashMap<String, IConfigurationElement> buildJpaPlatformConfigurationElements() {
+		HashMap<String, IConfigurationElement> configElements = new HashMap<String, IConfigurationElement>();
+		for (Iterator<IConfigurationElement> stream = this.configElements(); stream.hasNext(); ) {
+			this.addConfigElementTo(stream.next(), configElements);
 		}
+		return configElements;
 	}
-	
-	private void buildJpaPlatform(IConfigurationElement configElement) {
-		if (! configElement.getName().equals(EL_PLATFORM)) {
-			return;
-		}
-		
-		String platformId = configElement.getAttribute(AT_ID);
-		String platformLabel = configElement.getAttribute(AT_LABEL);
-		String platformClass = configElement.getAttribute(AT_CLASS);
-		
-		if ((platformId == null) || (platformLabel == null) || (platformClass == null)) {
-			if (platformId == null) {
-				reportMissingAttribute(configElement, AT_ID);
-			}
-			if (platformLabel == null) {
-				reportMissingAttribute(configElement, AT_LABEL);
-			}
-			if (platformClass == null) {
-				reportMissingAttribute(configElement, AT_CLASS);
-			}
-			return;
-		}
-		
-		if (this.jpaPlatforms.containsKey(platformId)) {
-			IConfigurationElement otherConfigElement = this.jpaPlatforms.get(platformId);
-			reportDuplicatePlatform(configElement, otherConfigElement);
-		}
-		
-		this.jpaPlatforms.put(platformId, configElement);
-	}
-	
+
 	/**
-	 * Return a new IJpaPlatform for the given id.
-	 * NB: This should only be done when instantiating a platform for a given
-	 *     IJpaProject, either when creating the project, or when changing the 
-	 *     platform.
+	 * Return the configuration elements from the Eclipse platform extension
+	 * registry.
 	 */
-	public IJpaPlatform jpaPlatform(String id) {
-		IConfigurationElement registeredConfigElement = this.jpaPlatforms.get(id);
-		
-		if (registeredConfigElement == null) {
-			return null;
-		}
-		
-		try {
-			IJpaPlatform platform = 
-				(IJpaPlatform) registeredConfigElement.createExecutableExtension(AT_CLASS);
-			platform.setId(id);
-			return platform;
-		}
-		catch (CoreException ce) {
-			reportFailedInstantiation(registeredConfigElement);
-			return null;
-		}
-	}
-	
-	/**
-	 * Return an iterator of String ids for all registered JPA platforms.
-	 * This does not load any of the platforms' plugin classes.
-	 */
-	public Iterator allJpaPlatformIds() {
-		return Collections.unmodifiableMap(jpaPlatforms).keySet().iterator();
-	}
-	
-	/**
-	 * Return the label for the platform with the given id.
-	 * This does not load the platform's plugin classes.
-	 */
-	public String jpaPlatformLabel(String id) {
-		return jpaPlatforms.get(id).getAttribute(AT_LABEL);
-	}
-	
-	private Iterator<IConfigurationElement> allConfigElements() {
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint extensionPoint = 
-			registry.getExtensionPoint(JptCorePlugin.PLUGIN_ID, EXTENSION_ID);
-		IExtension[] extensions = extensionPoint.getExtensions();
-		
+	private Iterator<IConfigurationElement> configElements() {
 		return new CompositeIterator<IConfigurationElement>(
-				new TransformationIterator<IExtension, Iterator<IConfigurationElement>>(CollectionTools.iterator(extensions)) {
+				new TransformationIterator<IExtension, Iterator<IConfigurationElement>>(this.extensions()) {
 					@Override
-					protected Iterator<IConfigurationElement> transform(IExtension next) {
-						return CollectionTools.iterator(next.getConfigurationElements());
+					protected Iterator<IConfigurationElement> transform(IExtension extension) {
+						return CollectionTools.iterator(extension.getConfigurationElements());
 					}
 				}
-			);
+		);
 	}
-	
+
+	private Iterator<IExtension> extensions() {
+		return CollectionTools.iterator(this.extensionPoint().getExtensions());
+	}
+
+	private IExtensionPoint extensionPoint() {
+		return Platform.getExtensionRegistry().getExtensionPoint(JptCorePlugin.PLUGIN_ID, EXTENSION_ID);
+	}
+
+	private void addConfigElementTo(IConfigurationElement configElement, HashMap<String, IConfigurationElement> configElements) {
+		if ( ! configElement.getName().equals(EL_PLATFORM)) {
+			return;
+		}
+		if ( ! this.configElementIsValid(configElement)) {
+			return;
+		}
+
+		String id = configElement.getAttribute(AT_ID);
+		IConfigurationElement prev = configElements.get(id);
+		if (prev == null) {
+			configElements.put(id, configElement);
+		} else {
+			this.logDuplicatePlatform(prev, configElement);
+		}
+	}
+
+	/**
+	 * check *all* attributes before returning
+	 */
+	private boolean configElementIsValid(IConfigurationElement configElement) {
+		boolean valid = true;
+		if (configElement.getAttribute(AT_ID) == null) {
+			this.logMissingAttribute(configElement, AT_ID);
+			valid = false;
+		}
+		if (configElement.getAttribute(AT_LABEL) == null) {
+			logMissingAttribute(configElement, AT_LABEL);
+			valid = false;
+		}
+		if (configElement.getAttribute(AT_CLASS) == null) {
+			logMissingAttribute(configElement, AT_CLASS);
+			valid = false;
+		}
+		return valid;
+	}
+
+
+	// ********** public methods **********
+
+	/**
+	 * Return the IDs for the registered JPA platforms.
+	 * This does not activate any of the JPA platforms' plug-ins.
+	 */
+	public Iterator<String> jpaPlatformIds() {
+		return new ReadOnlyIterator<String>(this.jpaPlatformConfigurationElements.keySet());
+	}
+
+	/**
+	 * Return the label for the JPA platform with the specified ID.
+	 * This does not activate the JPA platform's plug-in.
+	 */
+	public String jpaPlatformLabel(String id) {
+		return this.jpaPlatformConfigurationElements.get(id).getAttribute(AT_LABEL);
+	}
+
+	/**
+	 * Return a new JPA platform for the specified ID.
+	 * NB: This should only be called when instantiating a JPA platform
+	 * when building a new JPA project.
+	 * Unlike other registry methods, invoking this method may activate 
+	 * the plug-in.
+	 */
+	public IJpaPlatform jpaPlatform(String id) {
+		IConfigurationElement configElement = this.jpaPlatformConfigurationElements.get(id);
+		if (configElement == null) {
+			throw new IllegalArgumentException(id);
+		}
+		IJpaPlatform platform;
+		try {
+			platform = (IJpaPlatform) configElement.createExecutableExtension(AT_CLASS);
+		} catch (CoreException ex) {
+			this.logFailedInstantiation(configElement, ex);
+			throw new IllegalArgumentException(id);
+		}
+		platform.setId(id);
+		return platform;
+	}
+
+
+	// ********** errors **********
+
 	// TODO externalize strings
-	private void reportMissingAttribute(IConfigurationElement configElement, String attributeName) {
+	private void logMissingAttribute(IConfigurationElement configElement, String attributeName) {
 		String message = 
 			"An extension element \""
 			+ configElement.getName()
@@ -169,22 +183,21 @@ public class JpaPlatformRegistry
 			+ "\".";
 		JptCorePlugin.log(message);
 	}
-	
+
 	// TODO externalize strings
-	private void reportDuplicatePlatform(
-			IConfigurationElement oneConfigElement, IConfigurationElement otherConfigElement) {
+	private void logDuplicatePlatform(IConfigurationElement prevConfigElement, IConfigurationElement newConfigElement) {
 		String message =
 			"The plugins \""
-			+ oneConfigElement.getContributor().getName()
+			+ prevConfigElement.getContributor().getName()
 			+ "\" and \""
-			+ otherConfigElement.getContributor().getName()
+			+ newConfigElement.getContributor().getName()
 			+ "\" have registered a duplicate attribute \"id\" "
 			+ "for the extension element \"jpaPlatform\".";
 		JptCorePlugin.log(message);
 	}
-		
+
 	// TODO externalize strings
-	private void reportFailedInstantiation(IConfigurationElement configElement) {
+	private void logFailedInstantiation(IConfigurationElement configElement, CoreException ex) {
 		String message =
 			"Could not instantiate the class \""
 			+ configElement.getAttribute(AT_CLASS)
@@ -194,5 +207,7 @@ public class JpaPlatformRegistry
 			+ configElement.getContributor().getName()
 			+ "\".";
 		JptCorePlugin.log(message);
+		JptCorePlugin.log(ex);
 	}
+
 }

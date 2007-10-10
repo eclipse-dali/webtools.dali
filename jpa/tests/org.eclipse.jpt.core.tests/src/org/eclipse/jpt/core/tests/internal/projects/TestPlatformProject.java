@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.tests.internal.projects;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -21,23 +22,20 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
- * This builds and holds a "general" project.
+ * This builds and holds a "general" Eclipse project.
  * Support for adding natures, folders, and files.
  */
-public class TestPlatformProject 
-{
+public class TestPlatformProject {
+	private final IProject project;
+
 	/** carriage return */
 	public static final String CR = System.getProperty("line.separator");
+
 	
-	
-	private final IProject project;
-	
-	
-	// ********** builders *****************************
+	// ********** builders **********
 	
 	public static TestPlatformProject buildPlatformProject(String baseProjectName, boolean autoBuild)
 			throws CoreException {
@@ -54,7 +52,7 @@ public class TestPlatformProject
 	public TestPlatformProject(String projectName, boolean autoBuild) throws CoreException {
 		super();
 		this.setAutoBuild(autoBuild);  // workspace-wide setting
-		this.project = this.createPlatformProject(projectName);
+		this.project = this.buildPlatformProject(projectName);
 	}
 
 	private void setAutoBuild(boolean autoBuild) throws CoreException {
@@ -63,7 +61,7 @@ public class TestPlatformProject
 		ResourcesPlugin.getWorkspace().setDescription(description);
 	}
 
-	private IProject createPlatformProject(String projectName) throws CoreException {
+	private IProject buildPlatformProject(String projectName) throws CoreException {
 		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		p.create(null);
 		p.open(null);
@@ -127,7 +125,7 @@ public class TestPlatformProject
 	public IFile createFile(IContainer container, String fileName, String content) throws CoreException {
 		return createFile(container, new Path(fileName), content);
 	}
-	
+
 	/**
 	 * Create a file in the project with the specified [relative] path
 	 * and content.
@@ -147,8 +145,8 @@ public class TestPlatformProject
 	 * Create a file in the specified container with the specified path and contents.
 	 */
 	public IFile createFile(IContainer container, IPath filePath, InputStream content) throws CoreException {
-		int len = filePath.segmentCount() - 1;
-		for (int i = 0; i < len; i++) {
+		int pathCount = filePath.segmentCount() - 1;
+		for (int i = 0; i < pathCount; i++) {
 			container = container.getFolder(new Path(filePath.segment(i)));
 			if ( ! container.exists()) {
 				((IFolder) container).create(true, true, null);		// true = "force"; true = "local"
@@ -163,38 +161,4 @@ public class TestPlatformProject
 		return file;
 	}
 
-	public void open() throws CoreException {
-		this.project.open(null);
-		waitForJobs();
-	}
-
-	public void close() throws CoreException {
-		this.project.close(null);
-		waitForJobs();
-	}
-
-	public void dispose() throws CoreException {
-		this.project.delete(true, true, null);		// true = "delete content"; true = "force"
-		for (int i = 1; this.project.exists(); i++) {
-			waitForJobs();
-			System.out.println("Project still exists: " + i);
-		}
-	}
-
-
-	// ********** static methods **********
-
-	/**
-	 * Wait until all background tasks are complete.
-	 */
-	public static void waitForJobs() {
-		while (Job.getJobManager().currentJob() != null) {
-			try {
-				Thread.sleep(100);	// let other threads get something done
-			} catch (InterruptedException ex) {
-				throw new RuntimeException(ex);
-			}
-		}
-	}
-	
 }

@@ -60,7 +60,7 @@ public class SynchronizeClassesJob extends Job
 			return Status.CANCEL_STATUS;
 		}
 		
-		IJpaFile jpaFile = JptCorePlugin.getJpaFile(this.persistenceXmlFile);
+		IJpaFile jpaFile = JptCorePlugin.jpaFile(this.persistenceXmlFile);
 		PersistenceXmlRootContentNode root;
 		try {
 			root = (PersistenceXmlRootContentNode) jpaFile.getContent();
@@ -122,17 +122,7 @@ public class SynchronizeClassesJob extends Job
 	}
 	
 	private Iterator<IPersistentType> mappedTypes(PersistenceUnit persistenceUnit) {
-		return new FilteringIterator<IPersistentType>(allJavaTypes(persistenceUnit.getJpaProject()), filter(persistenceUnit));
-	}
-	
-	private Iterator<IPersistentType> allJavaTypes(IJpaProject jpaProject) {
-		return new TransformationIterator<IJpaFile, IPersistentType>(jpaProject.jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE).iterator()) {
-			@Override
-			protected IPersistentType transform(IJpaFile next) {
-				JpaCompilationUnit jcu = (JpaCompilationUnit) next.getContent();
-				return (jcu.getTypes().isEmpty()) ? null : jcu.getTypes().get(0);
-			}
-		};
+		return new FilteringIterator<IPersistentType>(persistenceUnit.getJpaProject().javaPersistentTypes(), filter(persistenceUnit));
 	}
 	
 	private Filter<IPersistentType> filter(final PersistenceUnit persistenceUnit) {

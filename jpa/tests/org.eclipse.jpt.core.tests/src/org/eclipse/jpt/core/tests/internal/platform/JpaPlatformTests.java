@@ -1,16 +1,14 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.platform;
 
-import junit.framework.TestCase;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IMappingKeys;
@@ -18,8 +16,8 @@ import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaBasicProvider;
 import org.eclipse.jpt.core.internal.content.java.mappings.JavaEntityProvider;
-import org.eclipse.jpt.core.internal.platform.generic.GenericJpaFactory;
-import org.eclipse.jpt.core.internal.platform.generic.GenericPlatform;
+import org.eclipse.jpt.core.internal.facet.IJpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
 import org.eclipse.jpt.core.tests.extension.resource.TestAttributeMappingProvider;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaFactory;
@@ -28,6 +26,10 @@ import org.eclipse.jpt.core.tests.extension.resource.TestTypeMappingProvider;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestPlatformProject;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
+
+import junit.framework.TestCase;
 
 public class JpaPlatformTests extends TestCase
 {
@@ -39,8 +41,7 @@ public class JpaPlatformTests extends TestCase
 	public static final String TEST_PLUGIN_CLASS = ExtensionTestPlugin.class.getName();
 	public static final String TEST_PLUGIN_ID = "org.eclipse.jpt.core.tests.extension.resource";
 
-	public static final String TEST_PLATFORM_ID = TestJpaPlatform.PLATFORM_ID;
-	public static final String TEST_PLATFORM_CLASS = TestJpaPlatform.class.getName();
+	public static final String TEST_PLATFORM_CLASS_NAME = TestJpaPlatform.class.getName();
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
 	public static final String TEST_JPA_FACTORY = TestJpaFactory.class.getName();
 	public static final String TEST_TYPE_MAPPING_PROVIDER_CLASS = TestTypeMappingProvider.class.getName();
@@ -55,18 +56,25 @@ public class JpaPlatformTests extends TestCase
 		super.setUp();
 		JpaPlatformExtensionTests.verifyExtensionTestProjectExists();
 		ProjectUtility.deleteAllProjects();
-		testProject = this.buildJpaProject(TestPlatformProject.uniqueProjectName(PROJECT_NAME), false);  // false = no auto-build
+		this.testProject = this.buildJpaProject(TestPlatformProject.uniqueProjectName(PROJECT_NAME), false);  // false = no auto-build
 	}
 
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild) throws Exception {
-		return new TestJpaProject(projectName, autoBuild);  // false = no auto-build
+		return new TestJpaProject(projectName, autoBuild, this.buildConfig());
+	}
+
+	protected IDataModel buildConfig() throws Exception {
+		IActionConfigFactory configFactory = new JpaFacetDataModelProvider();
+		IDataModel config = (IDataModel) configFactory.create();
+		config.setProperty(IJpaFacetDataModelProperties.PLATFORM_ID, TestJpaPlatform.ID);
+		return config;
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		testProject = null;
+		this.testProject = null;
 		ProjectUtility.deleteAllProjects();
-//		testProject.dispose();
+//		this.testProject.dispose();
 		super.tearDown();
 	}
 	
@@ -74,59 +82,28 @@ public class JpaPlatformTests extends TestCase
 		return this.testProject.getJpaProject();
 	}
 	
-	public void testSetPlatform() {
-		assertTrue(jpaPlatform() instanceof GenericPlatform);
-		
-		jpaProject().setPlatform(TEST_PLATFORM_ID);
-
-		assertTrue(jpaPlatform().getClass().getName().equals(TEST_PLATFORM_CLASS));
+	protected IJpaPlatform jpaPlatform() {
+		return this.jpaProject().jpaPlatform();
 	}
-	
-	public void testGetJpaFactory() {
-		assertTrue(jpaPlatform().getJpaFactory() instanceof GenericJpaFactory);
-		jpaProject().setPlatform(TEST_PLATFORM_ID);
-		
+
+	public void testJpaFactory() {
 		assertTrue(jpaPlatform().getJpaFactory().getClass().getName().equals(TEST_JPA_FACTORY));
 	}
 	
 	public void testJavaTypeMappingProvider() {
-		IJavaTypeMappingProvider provider = jpaProject().getPlatform().javaTypeMappingProvider(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
-		assertTrue(provider instanceof JavaEntityProvider);
-		
-		provider = jpaProject().getPlatform().javaTypeMappingProvider("test");
-		assertNull(provider);
-		
-		jpaProject().setPlatform(TEST_PLATFORM_ID);
-		
-		provider = jpaProject().getPlatform().javaTypeMappingProvider(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		IJavaTypeMappingProvider provider = jpaProject().jpaPlatform().javaTypeMappingProvider(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		assertTrue(provider instanceof JavaEntityProvider);
 
-		provider = jpaProject().getPlatform().javaTypeMappingProvider("test");
+		provider = jpaProject().jpaPlatform().javaTypeMappingProvider("test");
 		assertTrue(provider.getClass().getName().equals(TEST_TYPE_MAPPING_PROVIDER_CLASS));
 	}
 	
 	public void testJavaAttributeMappingProvider() {
-		IJavaAttributeMappingProvider provider = jpaProject().getPlatform().javaAttributeMappingProvider(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(provider instanceof JavaBasicProvider);
-		boolean exceptionCaught = false;
-		try {
-			provider = jpaProject().getPlatform().javaAttributeMappingProvider("test");
-		}
-		catch (IllegalArgumentException e) {
-			exceptionCaught = true;
-		}
-		assertTrue(exceptionCaught);
-		
-		jpaProject().setPlatform(TEST_PLATFORM_ID);
-		
-		provider = jpaProject().getPlatform().javaAttributeMappingProvider(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		IJavaAttributeMappingProvider provider = jpaProject().jpaPlatform().javaAttributeMappingProvider(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(provider instanceof JavaBasicProvider);
 
-		provider = jpaProject().getPlatform().javaAttributeMappingProvider("test");
+		provider = jpaProject().jpaPlatform().javaAttributeMappingProvider("test");
 		assertTrue(provider.getClass().getName().equals(TEST_ATTRIBUTE_MAPPING_PROVIDER_CLASS));
 	}
 	
-	private IJpaPlatform jpaPlatform() {
-		return jpaProject().jpaPlatform();
-	}
 }

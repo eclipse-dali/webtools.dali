@@ -10,13 +10,17 @@
 package org.eclipse.jpt.core.tests.internal.projects;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
-public class TestFacetedProject extends TestPlatformProject 
-{
-	private IFacetedProject facetedProject;
+/**
+ * This builds and holds a "faceted" project.
+ * Support for installing facets.
+ */
+public class TestFacetedProject extends TestPlatformProject {
+	private final IFacetedProject facetedProject;
 
 
 	// ********** builders *****************************
@@ -50,8 +54,16 @@ public class TestFacetedProject extends TestPlatformProject
 	}
 
 	public void installFacet(String facetName, String versionName) throws CoreException {
+		this.installFacet(facetName, versionName, null);
+	}
+
+	/**
+	 * if 'config' is null, the JPA project will be built with the defaults
+	 * defined in JpaFacetDataModelProvider#getDefaultProperty(String)
+	 */
+	public void installFacet(String facetName, String versionName, IDataModel config) throws CoreException {
 		IProjectFacetVersion facetVersion = ProjectFacetsManager.getProjectFacet(facetName).getVersion(versionName);
-		this.facetedProject.installProjectFacet(facetVersion, null, null);
+		this.facetedProject.installProjectFacet(facetVersion, config, null);
 	}
 
 }

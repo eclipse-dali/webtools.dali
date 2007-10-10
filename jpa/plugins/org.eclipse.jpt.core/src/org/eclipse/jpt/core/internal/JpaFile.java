@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -37,6 +37,9 @@ import org.eclipse.jdt.core.ElementChangedEvent;
  */
 public class JpaFile extends JpaEObject implements IJpaFile
 {
+	// temporary bridge until we remove EMF stuff
+	private IJpaProject jpaProject;
+
 	/**
 	 * The default value of the '{@link #getContentId() <em>Content Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -79,6 +82,20 @@ public class JpaFile extends JpaEObject implements IJpaFile
 	 */
 	protected JpaFile() {
 		super();
+	}
+
+	public JpaFile(IJpaProject jpaProject, IFile file, IJpaFileContentProvider provider) {
+		this();
+		this.jpaProject = jpaProject;
+		this.setFile(file);
+		this.setContentId(provider.contentType());
+		provider.buildRootContent(this);
+	}
+
+	// temporary bridge until we get rid of EMF stuff
+	@Override
+	public IJpaProject getJpaProject() {
+		return this.jpaProject;
 	}
 
 	/**
@@ -185,9 +202,6 @@ public class JpaFile extends JpaEObject implements IJpaFile
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaCorePackage.JPA_FILE__CONTENT, newContent, newContent));
 	}
 
-	/**
-	 * @see IJpaFile#getFile()
-	 */
 	public IFile getFile() {
 		return file;
 	}
@@ -196,21 +210,12 @@ public class JpaFile extends JpaEObject implements IJpaFile
 		file = theFile;
 	}
 
-	/**
-	 * INTERNAL ONLY
-	 * Dispose of file before it is removed
-	 */
-	void dispose() {
-		getContent().dispose();
-		((JpaProject) getJpaProject()).getFiles().remove(this);
+	public void dispose() {
+		this.content.dispose();
 	}
 
-	/**
-	 * INTERNAL ONLY
-	 * Handle java element change event.
-	 */
-	void handleEvent(ElementChangedEvent event) {
-		getContent().handleJavaElementChangedEvent(event);
+	public void javaElementChanged(ElementChangedEvent event) {
+		this.content.javaElementChanged(event);
 	}
 
 	/**

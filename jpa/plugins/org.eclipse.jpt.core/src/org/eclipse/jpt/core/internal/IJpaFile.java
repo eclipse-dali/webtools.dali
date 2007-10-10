@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.core.ElementChangedEvent;
 
 /**
  * <!-- begin-user-doc -->
@@ -55,4 +56,15 @@ public interface IJpaFile extends IJpaEObject
 	 * This may (and often will) be <code>null</code>.
 	 */
 	IJpaContentNode getContentNode(int offset);
+
+	/**
+	 * Forward the Java element changed event to the JPA file's content.
+	 */
+	void javaElementChanged(ElementChangedEvent event);
+
+	/**
+	 * The JPA file has been removed from the JPA project. Clean up any
+	 * hooks to external resources etc.
+	 */
+	void dispose();
 }

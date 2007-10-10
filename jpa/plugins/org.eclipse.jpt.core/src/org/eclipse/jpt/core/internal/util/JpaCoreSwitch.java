@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.util;
 import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.internal.*;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaDataSource;
@@ -107,26 +108,6 @@ public class JpaCoreSwitch<T>
 	 */
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-			case JpaCorePackage.IJPA_MODEL : {
-				IJpaModel iJpaModel = (IJpaModel) theEObject;
-				T result = caseIJpaModel(iJpaModel);
-				if (result == null)
-					result = defaultCase(theEObject);
-				return result;
-			}
-			case JpaCorePackage.JPA_MODEL : {
-				JpaModel jpaModel = (JpaModel) theEObject;
-				T result = caseJpaModel(jpaModel);
-				if (result == null)
-					result = caseJpaEObject(jpaModel);
-				if (result == null)
-					result = caseIJpaModel(jpaModel);
-				if (result == null)
-					result = caseIJpaEObject(jpaModel);
-				if (result == null)
-					result = defaultCase(theEObject);
-				return result;
-			}
 			case JpaCorePackage.IJPA_EOBJECT : {
 				IJpaEObject iJpaEObject = (IJpaEObject) theEObject;
 				T result = caseIJpaEObject(iJpaEObject);
@@ -139,35 +120,6 @@ public class JpaCoreSwitch<T>
 				T result = caseJpaEObject(jpaEObject);
 				if (result == null)
 					result = caseIJpaEObject(jpaEObject);
-				if (result == null)
-					result = defaultCase(theEObject);
-				return result;
-			}
-			case JpaCorePackage.IJPA_PROJECT : {
-				IJpaProject iJpaProject = (IJpaProject) theEObject;
-				T result = caseIJpaProject(iJpaProject);
-				if (result == null)
-					result = caseIJpaEObject(iJpaProject);
-				if (result == null)
-					result = defaultCase(theEObject);
-				return result;
-			}
-			case JpaCorePackage.JPA_PROJECT : {
-				JpaProject jpaProject = (JpaProject) theEObject;
-				T result = caseJpaProject(jpaProject);
-				if (result == null)
-					result = caseJpaEObject(jpaProject);
-				if (result == null)
-					result = caseIJpaProject(jpaProject);
-				if (result == null)
-					result = caseIJpaEObject(jpaProject);
-				if (result == null)
-					result = defaultCase(theEObject);
-				return result;
-			}
-			case JpaCorePackage.IJPA_PLATFORM : {
-				IJpaPlatform iJpaPlatform = (IJpaPlatform) theEObject;
-				T result = caseIJpaPlatform(iJpaPlatform);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -344,36 +296,6 @@ public class JpaCoreSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IJpa Model</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IJpa Model</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIJpaModel(IJpaModel object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Jpa Model</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Jpa Model</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseJpaModel(JpaModel object) {
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpreting the object as an instance of '<em>IJpa EObject</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -400,36 +322,6 @@ public class JpaCoreSwitch<T>
 	 * @generated
 	 */
 	public T caseJpaEObject(JpaEObject object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IJpa Project</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IJpa Project</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIJpaProject(IJpaProject object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Jpa Project</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Jpa Project</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseJpaProject(JpaProject object) {
 		return null;
 	}
 
@@ -640,21 +532,6 @@ public class JpaCoreSwitch<T>
 	 * @generated
 	 */
 	public T caseJpaDataSource(JpaDataSource object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IJpa Platform</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IJpa Platform</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIJpaPlatform(IJpaPlatform object) {
 		return null;
 	}
 

@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyright (c) 2006 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -85,12 +85,12 @@ public abstract class ProjectAction implements IObjectActionDelegate {
 	}
 
 	protected IJpaPlatformUi jpaPlatformUi(IJpaProject project) {
-		String coreJpaPlatformId = project.getPlatform().getId();
+		String coreJpaPlatformId = project.jpaPlatform().getId();
         return PlatformRegistry.instance().jpaPlatform(coreJpaPlatformId); 
 	}
 	
 	protected void execute(IProject project) {
-		IJpaProject jpaProject = JptCorePlugin.getJpaProject(project);
+		IJpaProject jpaProject = JptCorePlugin.jpaProject(project);
 		if (jpaProject == null) {
 			return;
 		}

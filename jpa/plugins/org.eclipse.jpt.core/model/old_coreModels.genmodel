@@ -18,36 +18,8 @@
       <genEnumLiterals ecoreEnumLiteral="old_core.ecore#//AccessType/PROPERTY"/>
       <genEnumLiterals ecoreEnumLiteral="old_core.ecore#//AccessType/FIELD"/>
     </genEnums>
-    <genClasses ecoreClass="old_core.ecore#//IJpaModel"/>
-    <genClasses ecoreClass="old_core.ecore#//JpaModel">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_core.ecore#//JpaModel/projects"/>
-    </genClasses>
-    <genClasses ecoreClass="old_core.ecore#//IJpaEObject">
-      <genOperations ecoreOperation="old_core.ecore#//IJpaEObject/getJpaProject"/>
-    </genClasses>
+    <genClasses ecoreClass="old_core.ecore#//IJpaEObject"/>
     <genClasses image="false" ecoreClass="old_core.ecore#//JpaEObject"/>
-    <genClasses ecoreClass="old_core.ecore#//IJpaProject">
-      <genOperations ecoreOperation="old_core.ecore#//IJpaProject/getModel"/>
-      <genOperations ecoreOperation="old_core.ecore#//IJpaProject/getPlatform"/>
-      <genOperations ecoreOperation="old_core.ecore#//IJpaProject/setPlatform">
-        <genParameters ecoreParameter="old_core.ecore#//IJpaProject/setPlatform/platformId"/>
-      </genOperations>
-      <genOperations ecoreOperation="old_core.ecore#//IJpaProject/getDataSource"/>
-      <genOperations ecoreOperation="old_core.ecore#//IJpaProject/setDataSource">
-        <genParameters ecoreParameter="old_core.ecore#//IJpaProject/setDataSource/connectionProfileName"/>
-      </genOperations>
-      <genOperations ecoreOperation="old_core.ecore#//IJpaProject/isDiscoverAnnotatedClasses"/>
-      <genOperations ecoreOperation="old_core.ecore#//IJpaProject/setDiscoverAnnotatedClasses">
-        <genParameters ecoreParameter="old_core.ecore#//IJpaProject/setDiscoverAnnotatedClasses/discoverAnnotatedClasses"/>
-      </genOperations>
-    </genClasses>
-    <genClasses ecoreClass="old_core.ecore#//JpaProject">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference old_core.ecore#//JpaProject/platform"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_core.ecore#//JpaProject/dataSource"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute old_core.ecore#//JpaProject/discoverAnnotatedClasses"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference old_core.ecore#//JpaProject/files"/>
-    </genClasses>
-    <genClasses ecoreClass="old_core.ecore#//IJpaPlatform"/>
     <genClasses ecoreClass="old_core.ecore#//IJpaDataSource">
       <genOperations ecoreOperation="old_core.ecore#//IJpaDataSource/getConnectionProfileName"/>
     </genClasses>

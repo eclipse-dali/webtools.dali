@@ -1,17 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.properties;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
+
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -26,11 +27,11 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
-import org.eclipse.jpt.core.internal.JpaProject;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.facet.IJpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
-import org.eclipse.jpt.core.internal.facet.JpaFacetUtils;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
@@ -97,7 +98,7 @@ public class JpaProjectPropertiesPage
 	private void setRuntime() {
 		IFacetedProject facetedProject = null;
 		try {
-			facetedProject = ProjectFacetsManager.create(getJpaProject().getProject());
+			facetedProject = ProjectFacetsManager.create(getJpaProject().project());
 		}
 		catch (CoreException ce) {
 			JptUiPlugin.log(ce);
@@ -116,11 +117,11 @@ public class JpaProjectPropertiesPage
 		};
 	}
 	
-	protected JpaProject getJpaProject() {
-		return (JpaProject) getElement().getAdapter(IJpaProject.class);
+	protected IJpaProject getJpaProject() {
+		return (IJpaProject) this.getElement().getAdapter(IJpaProject.class);
 	}
 	
-	private Combo createCombo(Composite container, boolean fillHorizontal) {
+	Combo createCombo(Composite container, boolean fillHorizontal) {
 		Combo combo = new Combo(container, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
 		if (fillHorizontal) {
 			combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -131,7 +132,7 @@ public class JpaProjectPropertiesPage
 		return combo;
 	}
 	
-	private Button createButton(Composite container, int span, String text, int style) {
+	Button createButton(Composite container, int span, String text, int style) {
 		Button button = new Button(container, SWT.NONE | style);
 		button.setText(text);
 		GridData gd = new GridData();
@@ -140,39 +141,60 @@ public class JpaProjectPropertiesPage
 		return button;
 	}
 	
+	@Override
 	protected void performDefaults() {
 		platformGroup.performDefaults();
 		connectionGroup.performDefaults();
 		persistentClassManagementGroup.performDefaults();
 	}
 	
+	@Override
 	public boolean performOk() {
-		JpaProject jpaProject = getJpaProject();
-		
-		// the facet has been uninstalled during our trip to the properties ...
+		IJpaProject jpaProject = this.getJpaProject();
 		if (jpaProject == null) {
-			return true;
+			return true;  // the facet has been uninstalled during our trip to the properties
 		}
-		
-		try {
-			JpaFacetUtils.setPlatform(jpaProject.getProject(), model.getStringProperty(IJpaFacetDataModelProperties.PLATFORM_ID));
-			JpaFacetUtils.setConnectionName(jpaProject.getProject(), model.getStringProperty(IJpaFacetDataModelProperties.CONNECTION));
-			JpaFacetUtils.setDiscoverAnnotatedClasses(jpaProject.getProject(), model.getBooleanProperty(IJpaFacetDataModelProperties.DISCOVER_ANNOTATED_CLASSES));
+
+		boolean change = false;
+		boolean platformChange = false;
+
+		IProject project = jpaProject.project();
+
+		String platform = this.model.getStringProperty(IJpaFacetDataModelProperties.PLATFORM_ID);
+		if ( ! platform.equals(jpaProject.jpaPlatform().getId())) {
+			change = true;
+			platformChange = true;
+			JptCorePlugin.setJpaPlatformId(project, platform);
 		}
-		catch (CoreException ce) {
-			return false;
+
+		String connection = this.model.getStringProperty(IJpaFacetDataModelProperties.CONNECTION);
+		if ( ! connection.equals(jpaProject.dataSource().getConnectionProfileName())) {
+			change = true;
+			jpaProject.dataSource().setConnectionProfileName(connection);
+			JptCorePlugin.setConnectionProfileName(project, connection);
 		}
-		
-		buildProject();
-		
+
+		boolean discover = this.model.getBooleanProperty(IJpaFacetDataModelProperties.DISCOVER_ANNOTATED_CLASSES);
+		if (discover != jpaProject.discoversAnnotatedClasses()) {
+			change = true;
+			jpaProject.setDiscoversAnnotatedClasses(discover);
+			JptCorePlugin.setDiscoverAnnotatedClasses(project, discover);
+		}
+
+		if (platformChange) {
+			JpaModelManager.instance().rebuildJpaProject(project);
+		}
+		if (change) {
+			buildProject(project);
+		}
 		return true;
 	}
 	
-	private void buildProject() {
+	private static void buildProject(final IProject project) {
 		IRunnableWithProgress r= new IRunnableWithProgress() {
 			public void run(IProgressMonitor pm) throws InvocationTargetException {
 				try {
-					getJpaProject().getProject().build(IncrementalProjectBuilder.FULL_BUILD, pm);
+					project.build(IncrementalProjectBuilder.FULL_BUILD, pm);
 				} 
 				catch (CoreException ce) {
 					JptUiPlugin.log(ce);
@@ -189,7 +211,7 @@ public class JpaProjectPropertiesPage
 	
 	private final class PlatformGroup
 	{
-		private final ComboViewer platformCombo;
+		final ComboViewer platformCombo;
 		
 		
 		public PlatformGroup(Composite composite) {
@@ -204,12 +226,16 @@ public class JpaProjectPropertiesPage
 			platformCombo.setContentProvider(
 					new IStructuredContentProvider() {
 						public Object[] getElements(Object inputElement) {
-							return CollectionTools.array(JpaPlatformRegistry.instance().allJpaPlatformIds());
+							return CollectionTools.array(JpaPlatformRegistry.instance().jpaPlatformIds());
 						}
 						
-						public void dispose() {}
+						public void dispose() {
+							// do nothing
+						}
 						
-						public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
+						public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+							// do nothing
+						}
 					}
 				);
 			platformCombo.setLabelProvider(
@@ -222,11 +248,17 @@ public class JpaProjectPropertiesPage
 							return JpaPlatformRegistry.instance().jpaPlatformLabel((String) element);
 						}
 						
-						public void addListener(ILabelProviderListener listener) {}
+						public void addListener(ILabelProviderListener listener) {
+							// do nothing
+						}
 						
-						public void removeListener(ILabelProviderListener listener) {}
+						public void removeListener(ILabelProviderListener listener) {
+							// do nothing
+						}
 						
-						public void dispose() {}
+						public void dispose() {
+							// do nothing
+						}
 						
 						public boolean isLabelProperty(Object element, String property) {
 							return true;
@@ -245,8 +277,8 @@ public class JpaProjectPropertiesPage
 			performDefaults();
 		}
 		
-		private void performDefaults() {
-			String platformId = getJpaProject().getPlatform().getId();
+		void performDefaults() {
+			String platformId = getJpaProject().jpaPlatform().getId();
 			model.setProperty(PLATFORM_ID, platformId);
 			platformCombo.setSelection(new StructuredSelection(platformId));
 		}
@@ -255,7 +287,7 @@ public class JpaProjectPropertiesPage
 	
 	private final class ConnectionGroup
 	{
-		private final Combo connectionCombo;
+		final Combo connectionCombo;
 		
 		private Link connectionLink;
 		
@@ -288,6 +320,7 @@ public class JpaProjectPropertiesPage
 			connectionLink.setText(JptUiMessages.JpaFacetWizardPage_connectionLink);
 			connectionLink.addSelectionListener(
 				new SelectionAdapter() {
+					@Override
 					public void widgetSelected(SelectionEvent e) {
 						openNewConnectionWizard();				
 					}
@@ -305,8 +338,8 @@ public class JpaProjectPropertiesPage
 			}
 		}
 		
-		private void performDefaults() {
-			String connectionName = getJpaProject().getDataSource().getConnectionProfileName();
+		void performDefaults() {
+			String connectionName = getJpaProject().dataSource().getConnectionProfileName();
 			model.setProperty(CONNECTION, connectionName);
 			if (connectionName == null) {
 				connectionCombo.clearSelection();
@@ -316,7 +349,7 @@ public class JpaProjectPropertiesPage
 			}
 		}
 		
-		private void openNewConnectionWizard() {
+		void openNewConnectionWizard() {
 			String connectionName = DTPUiTools.createNewProfile();
 			if (connectionName != null) {
 				fillConnections();
@@ -329,9 +362,9 @@ public class JpaProjectPropertiesPage
 	
 	private final class PersistentClassManagementGroup
 	{
-		private final Button discoverClassesButton;
+		final Button discoverClassesButton;
 		
-		private final Button listClassesButton;
+		final Button listClassesButton;
 		
 		
 		public PersistentClassManagementGroup(Composite composite) {
@@ -382,8 +415,8 @@ public class JpaProjectPropertiesPage
 			performDefaults();
 		}
 		
-		private void performDefaults() {
-			boolean discoverClasses = getJpaProject().isDiscoverAnnotatedClasses();
+		void performDefaults() {
+			boolean discoverClasses = getJpaProject().discoversAnnotatedClasses();
 			model.setProperty(DISCOVER_ANNOTATED_CLASSES, discoverClasses);
 			discoverClassesButton.setSelection(discoverClasses);
 			listClassesButton.setSelection(! discoverClasses);

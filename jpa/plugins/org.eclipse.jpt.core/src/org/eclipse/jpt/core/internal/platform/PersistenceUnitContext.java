@@ -1,11 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
- * Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.ArrayList;
@@ -135,13 +136,13 @@ public class PersistenceUnitContext extends BaseContext
 	
 	protected XmlRootContentNode impliedMappingFileContent() {
 		// check flexible project structure
-		IVirtualComponent component = ComponentCore.createComponent(persistenceUnit.getJpaProject().getProject());
+		IVirtualComponent component = ComponentCore.createComponent(persistenceUnit.getJpaProject().project());
 		IVirtualFolder virtualRootFolder = component.getRootFolder();
 		IVirtualFile virtualMappingFile = virtualRootFolder.getFile(new Path(IMPLIED_MAPPING_FILE_LOCATION));
 		// keep track of whether one has been found so that we may know if multiple exist
 		IJpaFile mappingFile = null;
 		for (IFile underlyingFile : virtualMappingFile.getUnderlyingFiles()) {
-			IJpaFile jpaFile = JptCorePlugin.getJpaFile(underlyingFile);
+			IJpaFile jpaFile = JptCorePlugin.jpaFile(underlyingFile);
 			if (jpaFile != null) {
 				if (mappingFile != null) {
 					return null; // multiple do exist
@@ -201,19 +202,10 @@ public class PersistenceUnitContext extends BaseContext
 	}
 	
 	protected Iterator<JavaPersistentType> discoveredJavaPersistentTypes() {
-		if (! persistenceUnit.getJpaProject().isDiscoverAnnotatedClasses()) {
+		if (! persistenceUnit.getJpaProject().discoversAnnotatedClasses()) {
 			return EmptyIterator.instance();
 		}
-		Collection<IJpaFile> javaJpaFiles = persistenceUnit.getJpaProject().jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE);
-		return new CompositeIterator<JavaPersistentType>(
-				new TransformationIterator<IJpaFile, Iterator<JavaPersistentType>>(javaJpaFiles.iterator()) {
-					@Override
-					protected Iterator<JavaPersistentType> transform(IJpaFile next) {
-						JpaCompilationUnit jcu = (JpaCompilationUnit) next.getContent();
-						return jcu.getTypes().iterator();
-					}
-				}
-			);
+		return persistenceUnit.getJpaProject().javaPersistentTypes();
 	}
 	
 	/**
@@ -237,7 +229,7 @@ public class PersistenceUnitContext extends BaseContext
 	
 	private JavaPersistentType javaPersistentTypeFor(JavaClassRef javaClassRef) {
 		IType type = javaClassRef.findJdtType();
-		return jpaProject().findJavaPersistentType(type);
+		return jpaProject().javaPersistentType(type);
 	}
 
 	/**

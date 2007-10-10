@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -13,6 +13,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.internal.*;
 import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaDataSource;
@@ -93,16 +94,6 @@ public class JpaCoreAdapterFactory extends AdapterFactoryImpl
 	 */
 	protected JpaCoreSwitch<Adapter> modelSwitch = new JpaCoreSwitch<Adapter>() {
 		@Override
-		public Adapter caseIJpaModel(IJpaModel object) {
-			return createIJpaModelAdapter();
-		}
-
-		@Override
-		public Adapter caseJpaModel(JpaModel object) {
-			return createJpaModelAdapter();
-		}
-
-		@Override
 		public Adapter caseIJpaEObject(IJpaEObject object) {
 			return createIJpaEObjectAdapter();
 		}
@@ -110,21 +101,6 @@ public class JpaCoreAdapterFactory extends AdapterFactoryImpl
 		@Override
 		public Adapter caseJpaEObject(JpaEObject object) {
 			return createJpaEObjectAdapter();
-		}
-
-		@Override
-		public Adapter caseIJpaProject(IJpaProject object) {
-			return createIJpaProjectAdapter();
-		}
-
-		@Override
-		public Adapter caseJpaProject(JpaProject object) {
-			return createJpaProjectAdapter();
-		}
-
-		@Override
-		public Adapter caseIJpaPlatform(IJpaPlatform object) {
-			return createIJpaPlatformAdapter();
 		}
 
 		@Override
@@ -217,34 +193,6 @@ public class JpaCoreAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.IJpaModel <em>IJpa Model</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.IJpaModel
-	 * @generated
-	 */
-	public Adapter createIJpaModelAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.JpaModel <em>Jpa Model</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.JpaModel
-	 * @generated
-	 */
-	public Adapter createJpaModelAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.IJpaEObject <em>IJpa EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -269,34 +217,6 @@ public class JpaCoreAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createJpaEObjectAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.IJpaProject <em>IJpa Project</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.IJpaProject
-	 * @generated
-	 */
-	public Adapter createIJpaProjectAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.JpaProject <em>Jpa Project</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.JpaProject
-	 * @generated
-	 */
-	public Adapter createJpaProjectAdapter() {
 		return null;
 	}
 
@@ -493,20 +413,6 @@ public class JpaCoreAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createJpaDataSourceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.IJpaPlatform <em>IJpa Platform</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.IJpaPlatform
-	 * @generated
-	 */
-	public Adapter createIJpaPlatformAdapter() {
 		return null;
 	}
 

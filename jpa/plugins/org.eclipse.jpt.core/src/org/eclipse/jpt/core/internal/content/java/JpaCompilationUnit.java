@@ -332,7 +332,7 @@ public class JpaCompilationUnit extends JavaEObject
 		Type type = new Type(primaryType, this.modifySharedDocumentCommandExecutorProvider());
 		return JpaJavaFactory.eINSTANCE.createJavaPersistentType(type);
 	}
-	
+
 	/**
 	 * delegate to the type's project (there is one provider per project)
 	 */
@@ -353,8 +353,8 @@ public class JpaCompilationUnit extends JavaEObject
 		return this;
 	}
 
-	public void handleJavaElementChangedEvent(ElementChangedEvent event) {
-		synchWithJavaDelta(event.getDelta());
+	public void javaElementChanged(ElementChangedEvent event) {
+		this.synchWithJavaDelta(event.getDelta());
 	}
 
 	private void synchWithJavaDelta(IJavaElementDelta delta) {
@@ -363,7 +363,7 @@ public class JpaCompilationUnit extends JavaEObject
 			case IJavaElement.JAVA_PROJECT :
 			case IJavaElement.PACKAGE_FRAGMENT_ROOT :
 			case IJavaElement.PACKAGE_FRAGMENT :
-				this.synchChildrenWithJavaDelta(delta);
+				this.synchWithJavaDelta(delta.getAffectedChildren()); // recurse
 				break;
 			case IJavaElement.COMPILATION_UNIT :
 				this.synchCompilationUnitWithJavaDelta(delta);
@@ -373,9 +373,9 @@ public class JpaCompilationUnit extends JavaEObject
 		}
 	}
 
-	private void synchChildrenWithJavaDelta(IJavaElementDelta delta) {
-		for (IJavaElementDelta child : delta.getAffectedChildren()) {
-			this.synchWithJavaDelta(child); // recurse
+	private void synchWithJavaDelta(IJavaElementDelta[] deltas) {
+		for (IJavaElementDelta delta : deltas) {
+			this.synchWithJavaDelta(delta); // recurse
 		}
 	}
 
@@ -388,7 +388,7 @@ public class JpaCompilationUnit extends JavaEObject
 		}
 		// synchronize if the change is for this compilation unit
 		if (delta.getElement().equals(this.compilationUnit)) {
-			this.synchronizePersistentTypes();
+			this.synchronizePersistentTypes(); // ignore the delta
 		}
 	}
 

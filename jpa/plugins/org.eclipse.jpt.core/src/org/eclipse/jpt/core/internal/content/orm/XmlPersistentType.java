@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.IPersistentType;
+import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
@@ -726,7 +727,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 		};
 		while (name[0].length() != 0) {
 			name = moveDot(name);
-			IType type = JDTTools.findType(name[0], name[1], getJpaProject().getJavaProject());
+			IType type = JDTTools.findType(name[0], name[1], getJpaProject().javaProject());
 			if (type != null)
 				return type;
 		}
@@ -766,17 +767,7 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	}
 
 	public JavaPersistentType findJavaPersistentType() {
-		IType iType = findJdtType();
-		if (iType != null) {
-			for (IJpaFile jpaFile : getJpaProject().jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE)) {
-				for (JavaPersistentType javaPersistentType : ((JpaCompilationUnit) jpaFile.getContent()).getTypes()) {
-					if (javaPersistentType.jdtType().equals(iType)) {
-						return javaPersistentType;
-					}
-				}
-			}
-		}
-		return null;
+		return this.getJpaProject().javaPersistentType(this.findJdtType());
 	}
 
 	public Type findType() {
@@ -901,8 +892,6 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 	public ITextRange attributesTextRange() {
 		return getMapping().attributesTextRange();
 	}
-
-
 	private abstract class AttributeMappingsList<E>
 		extends EObjectContainmentEList<XmlAttributeMapping>
 	{
@@ -946,8 +935,6 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 			persistentAttributes().set(index, newObject.getPersistentAttribute());
 		}
 	}
-
-
 	private class SpecifiedAttributeMappingsList<E>
 		extends AttributeMappingsList<XmlAttributeMapping>
 	{
@@ -960,8 +947,6 @@ public class XmlPersistentType extends XmlEObject implements IPersistentType
 			return getSpecifiedPersistentAttributes();
 		}
 	}
-
-
 	private class VirtualAttributeMappingsList<E>
 		extends AttributeMappingsList<XmlAttributeMapping>
 	{

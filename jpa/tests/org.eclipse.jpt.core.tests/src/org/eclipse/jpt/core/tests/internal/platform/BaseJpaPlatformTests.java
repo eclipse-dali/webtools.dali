@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.platform;
 
 import java.io.IOException;
@@ -52,12 +61,12 @@ public class BaseJpaPlatformTests extends TestCase
 	
 	public void testPersistentTypes() throws CoreException, IOException {
 		IFile persistenceXmlIFile = jpaProject.getProject().getFile(PERSISTENCE_XML_LOCATION);
-		IJpaFile persistenceXmlJpaFile = jpaProject.getJpaProject().getJpaFile(persistenceXmlIFile);
+		IJpaFile persistenceXmlJpaFile = jpaProject.getJpaProject().jpaFile(persistenceXmlIFile);
 		PersistenceXmlRootContentNode persistenceRoot = (PersistenceXmlRootContentNode) persistenceXmlJpaFile.getContent();
 		Persistence persistence = persistenceRoot.getPersistence();
 		
 		IFile ormXmlIFile = jpaProject.getProject().getFile(ORM_XML_LOCATION);
-		IJpaFile ormXmlJpaFile = jpaProject.getJpaProject().getJpaFile(ormXmlIFile);
+		IJpaFile ormXmlJpaFile = jpaProject.getJpaProject().jpaFile(ormXmlIFile);
 		XmlRootContentNode ormRoot = (XmlRootContentNode) ormXmlJpaFile.getContent();
 		EntityMappingsInternal entityMappings = ormRoot.getEntityMappings();
 		
@@ -66,7 +75,7 @@ public class BaseJpaPlatformTests extends TestCase
 		xmlEntity.setSpecifiedName("XmlEntity");
 		entityMappings.getTypeMappings().add(xmlEntity);
 		entityMappings.eResource().save(null);
-		assertEquals(1, CollectionTools.size(jpaProject.getJpaProject().getPlatform().persistentTypes(PROJECT_NAME)));
+		assertEquals(1, CollectionTools.size(jpaProject.getJpaProject().jpaPlatform().persistentTypes(PROJECT_NAME)));
 		
 		// add java persistent type
 		jpaProject.createType(PACKAGE_NAME, "JavaEntity.java", 
@@ -77,6 +86,6 @@ public class BaseJpaPlatformTests extends TestCase
 		persistence.getPersistenceUnits().get(0).getClasses().add(javaClassRef);
 		persistence.eResource().save(null);
 		
-		assertEquals(2, CollectionTools.size(jpaProject.getJpaProject().getPlatform().persistentTypes(PROJECT_NAME)));
+		assertEquals(2, CollectionTools.size(jpaProject.getJpaProject().jpaPlatform().persistentTypes(PROJECT_NAME)));
 	}
 }

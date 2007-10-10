@@ -8,13 +8,15 @@ import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
 
 public class TestJpaPlatform extends BaseJpaPlatform
 {
-	public static final String PLATFORM_ID = "core.testJpaPlatform";
+	public static final String ID = "core.testJpaPlatform";
 
+	@Override
 	public String getId() {
-		return PLATFORM_ID;
+		return ID;
 	}
 
-	protected IJpaFactory createJpaFactory() {
+	@Override
+	protected IJpaFactory buildJpaFactory() {
 		return new TestJpaFactory();
 	}
 	

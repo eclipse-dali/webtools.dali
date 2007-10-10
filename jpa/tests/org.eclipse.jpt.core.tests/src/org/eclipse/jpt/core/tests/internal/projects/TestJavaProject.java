@@ -13,27 +13,24 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.search.IJavaSearchConstants;
-import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.core.search.SearchPattern;
-import org.eclipse.jdt.core.search.TypeNameRequestor;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * This builds and holds a "Java" project.
  * Support for adding packages and types.
+ * 
+ * "Java" projects aren't required to be "faceted" projects, but for JPA
+ * testing they are.
  */
-public class TestJavaProject extends TestFacetedProject 
-{
-	private IJavaProject javaProject;
-	private IPackageFragmentRoot sourceFolder;
+public class TestJavaProject extends TestFacetedProject {
+	private final IJavaProject javaProject;
+	private final IPackageFragmentRoot sourceFolder;
 
 
 	// ********** builders *****************************
@@ -104,31 +101,6 @@ public class TestJavaProject extends TestFacetedProject
 
 	public IType findType(String fullyQualifiedName) throws JavaModelException {
 		return this.javaProject.findType(fullyQualifiedName);
-	}
-
-	@Override
-	public void dispose() throws CoreException {
-		this.waitForIndexer();
-		this.sourceFolder = null;
-		this.javaProject = null;
-		super.dispose();
-	}
-
-
-	// ********** internal methods **********
-
-	private void waitForIndexer() throws JavaModelException {
-		new SearchEngine().searchAllTypeNames(
-			null,
-			SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE,
-			null,
-			SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE,
-			IJavaSearchConstants.CLASS,
-			SearchEngine.createJavaSearchScope(new IJavaElement[0]),
-			new TypeNameRequestor() {/* do nothing */},
-			IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
-			null
-		);
 	}
 
 

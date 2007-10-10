@@ -1,21 +1,27 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
@@ -23,6 +29,7 @@ import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.IPersistentType;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.content.java.IDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
@@ -63,7 +70,6 @@ import org.eclipse.jpt.core.internal.content.persistence.PersistenceXmlJpaFileCo
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public abstract class BaseJpaPlatform implements IJpaPlatform
 {
@@ -83,7 +89,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	
 	private String id;
 	
-	protected IJpaProject project;
+	protected IJpaProject project;  // TODO this must go  ~bjv
 	
 	private Collection<IJpaFileContentProvider> contentProviders;
 	
@@ -95,14 +101,14 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	
 	private IJpaFactory jpaFactory;
 	
-	private IContext context;
+	private IContext context;  // TODO this must go  ~bjv
 	
 	protected BaseJpaPlatform() {
 		super();
-		this.jpaFactory = createJpaFactory();
+		this.jpaFactory = buildJpaFactory();
 	}
 	
-	protected abstract IJpaFactory createJpaFactory();
+	protected abstract IJpaFactory buildJpaFactory();
 	
 	public String getId() {
 		return this.id;
@@ -130,7 +136,41 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	public IJpaFactory getJpaFactory() {
 		return this.jpaFactory;
 	}
-	
+
+	public IJpaFile createJpaFile(IJpaProject jpaProject, IFile file) {
+		if ( ! jpaProject.javaProject().isOnClasspath(file)) {
+			return null;  // skip the file if it is not on the Java project's classpath
+		}
+
+		IContentType contentType = this.contentType(file);
+		if (contentType == null) {
+			return null;  // skip the file if its content type is unknown
+		}
+
+		IJpaFileContentProvider provider = this.fileContentProvider(contentType.getId());
+		if (provider == null) {
+			return null;  // no JPA file if we don't have a JPA file content provider for its content
+		}
+		return this.jpaFactory.createJpaFile(jpaProject, file, provider);
+	}
+
+	/**
+	 * Return the content type of the specified file.
+	 * This cannot be based solely on the file's name (i.e. the file's extension)
+	 * because in the case of XML the content type is based on the root
+	 * element name (which is inside the file).
+	 */
+	protected IContentType contentType(IFile file) {
+		try {
+			return Platform.getContentTypeManager().findContentTypeFor(file.getContents(), file.getName());
+		} catch (IOException ex) {
+			JptCorePlugin.log(ex);
+		} catch (CoreException ex) {
+			JptCorePlugin.log(ex);
+		}
+		return null;  // return null if any exceptions occur
+	}
+
 	// ********** Persistence Unit ********************************************
 
 	public boolean containsPersistenceUnitNamed(String name) {
@@ -155,12 +195,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	public Iterator<IPersistentType> persistentTypes(String persistenceUnitName) {
 		PersistenceUnitContext puContext = 
 			((BaseJpaProjectContext) this.context).persistenceUnitContext(persistenceUnitName);
-		if (puContext == null) {
-			return EmptyIterator.instance();
-		}
-		return puContext.persistentTypes();
-		//hmm, compiler error with ternary operator
-//		return (puContext == null) ? EmptyIterator.instance() : puContext.persistentTypes();
+		return (puContext == null) ? EmptyIterator.<IPersistentType>instance() : puContext.persistentTypes();
 	}
 	
 	
@@ -353,14 +388,15 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		((BaseJpaProjectContext) contextHierarchy).refreshDefaults(monitor);
 	}
 	
-	public void addToMessages(List<IMessage> messages) {
-		//I believe we need to be calling JpaProject.resynch() here.
+	@SuppressWarnings("restriction")
+	public void addToMessages(List<org.eclipse.wst.validation.internal.provisional.core.IMessage> messages) {
+		//I believe we need to be calling JpaProject.update() here.
 		//How can we handle this, we need to resynch and then wait until it is done
 		//resynching before calling this.  what happens if something changes out from
 		//under us while we are resynching??
-		BaseJpaProjectContext context = (BaseJpaProjectContext) buildProjectContext();
-		context.refreshDefaults(new NullProgressMonitor());
-		context.addToMessages(messages);
+		BaseJpaProjectContext ctx = (BaseJpaProjectContext) buildProjectContext();
+		ctx.refreshDefaults(new NullProgressMonitor());
+		ctx.addToMessages(messages);
 	}
 	
 //	public IGeneratorRepository generatorRepository(IPersistentType persistentType) {

@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -38,6 +38,9 @@ import org.eclipse.jpt.db.internal.Table;
  */
 public class JpaDataSource extends JpaEObject implements IJpaDataSource
 {
+	// temporary bridge until we remove EMF stuff
+	private IJpaProject jpaProject;
+
 	/**
 	 * The default value of the '{@link #getConnectionProfileName() <em>Connection Profile Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -57,73 +60,40 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 	 * @ordered
 	 */
 	protected String connectionProfileName = CONNECTION_PROFILE_NAME_EDEFAULT;
+	// cache the connection profile name so we can detect when it changes and fire events
 
-	private transient ConnectionProfile connectionProfile;
+	// this should never be null
+	protected transient ConnectionProfile connectionProfile;
 
-	private ProfileListener profileListener;
+	protected final ProfileListener profileListener;
 
-	private ConnectionListener connectionListener;
+	protected final ConnectionListener connectionListener;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
+	// ********** constructor/initialization **********
 	protected JpaDataSource() {
 		super();
-		profileListener = buildProfileListener();
-		ConnectionProfileRepository.instance().addProfileListener(profileListener);
-		connectionListener = buildConnectionListener();
+		this.profileListener = this.buildProfileListener();
+		ConnectionProfileRepository.instance().addProfileListener(this.profileListener);
+		this.connectionListener = this.buildConnectionListener();
 	}
 
-	private ProfileListener buildProfileListener() {
-		return new ProfileListener() {
-			public void profileAdded(ConnectionProfile profile) {
-				if (profile.getName().equals(connectionProfileName)) {
-					setConnectionProfile(profile);
-				}
-			}
-
-			public void profileChanged(ConnectionProfile profile) {
-				if (profile == connectionProfile && !profile.getName().equals(connectionProfileName)) {
-					setConnectionProfileName(profile.getName());
-				}
-			}
-
-			public void profileDeleted(String profileName) {
-				if (profileName.equals(connectionProfileName)) {
-					setConnectionProfile(null);
-				}
-			}
-		};
+	protected JpaDataSource(IJpaProject jpaProject, String connectionProfileName) {
+		this();
+		this.jpaProject = jpaProject;
+		this.connectionProfileName = connectionProfileName;
+		this.connectionProfile = this.profileNamed(connectionProfileName);
+		this.connectionProfile.addConnectionListener(this.connectionListener);
 	}
 
-	private ConnectionListener buildConnectionListener() {
-		return new ConnectionListener() {
-			public void opened(ConnectionProfile profile) {
-				getProject().resynch();
-			}
-
-			public void aboutToClose(ConnectionProfile profile) {}
-
-			public boolean okToClose(ConnectionProfile profile) {
-				return true;
-			}
-
-			public void closed(ConnectionProfile profile) {
-				getProject().resynch();
-			}
-
-			public void modified(ConnectionProfile profile) {}
-
-			public void databaseChanged(ConnectionProfile profile, Database database) {}
-
-			public void schemaChanged(ConnectionProfile profile, Schema schema) {}
-
-			public void tableChanged(ConnectionProfile profile, Table table) {}
-		};
+	protected ProfileListener buildProfileListener() {
+		return new LocalProfileListener();
 	}
 
+	protected ConnectionListener buildConnectionListener() {
+		return new LocalConnectionListener();
+	}
+
+	// ********** EMF stuff **********
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -132,10 +102,6 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 	@Override
 	protected EClass eStaticClass() {
 		return JpaCorePackage.Literals.JPA_DATA_SOURCE;
-	}
-
-	public IJpaProject getProject() {
-		return (IJpaProject) eContainer();
 	}
 
 	/**
@@ -171,38 +137,14 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 			eNotify(new ENotificationImpl(this, Notification.SET, JpaCorePackage.JPA_DATA_SOURCE__CONNECTION_PROFILE_NAME, oldConnectionProfileName, connectionProfileName));
 	}
 
-	public void setConnectionProfileName(String newConnectionProfileName) {
-		ConnectionProfile oldConnectionProfile = connectionProfile;
-		setConnectionProfileNameGen(newConnectionProfileName);
-		ConnectionProfile newConnectionProfile = ConnectionProfileRepository.instance().profileNamed(newConnectionProfileName);
-		if (oldConnectionProfile != newConnectionProfile) {
-			setConnectionProfile(newConnectionProfile);
+	/**
+	 * set the connection profile when the name changes
+	 */
+	public void setConnectionProfileName(String connectionProfileName) {
+		if (!connectionProfileName.equals(this.connectionProfileName)) {
+			this.setConnectionProfileNameGen(connectionProfileName);
+			this.setConnectionProfile(this.profileNamed(connectionProfileName));
 		}
-	}
-
-	public ConnectionProfile getConnectionProfile() {
-		return connectionProfile;
-	}
-
-	private void setConnectionProfile(ConnectionProfile profile) {
-		if (connectionProfile != null) {
-			connectionProfile.removeConnectionListener(connectionListener);
-		}
-		connectionProfile = profile;
-		if (connectionProfile != null) {
-			connectionProfile.addConnectionListener(connectionListener);
-		}
-		getProject().resynch();
-	}
-
-	public boolean isConnected() {
-		ConnectionProfile profile = ConnectionProfileRepository.instance().profileNamed(getConnectionProfileName());
-		return profile.isConnected();
-	}
-
-	public boolean hasAConnection() {
-		ConnectionProfile profile = ConnectionProfileRepository.instance().profileNamed(getConnectionProfileName());
-		return !profile.isNull();
 	}
 
 	/**
@@ -278,4 +220,110 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 		result.append(')');
 		return result.toString();
 	}
+
+	// ********** non-EMF stuff **********
+	public IJpaProject getProject() {
+		return this.jpaProject;
+	}
+
+	public ConnectionProfile getConnectionProfile() {
+		return this.connectionProfile;
+	}
+
+	private ConnectionProfile profileNamed(String name) {
+		return ConnectionProfileRepository.instance().profileNamed(name);
+	}
+
+	void setConnectionProfile(ConnectionProfile profile) {
+		if (this.connectionProfile != profile) {
+			this.connectionProfile.removeConnectionListener(this.connectionListener);
+			this.connectionProfile = profile;
+			this.connectionProfile.addConnectionListener(this.connectionListener);
+			this.getProject().update();
+		}
+	}
+
+	@Override
+	public boolean isConnected() {
+		return this.connectionProfile.isConnected();
+	}
+
+	public boolean hasAConnection() {
+		return this.connectionProfile.isNull();
+	}
+
+	public void dispose() {
+		this.connectionProfile.removeConnectionListener(this.connectionListener);
+		ConnectionProfileRepository.instance().removeProfileListener(this.profileListener);
+	}
+
+	// ********** member class **********
+
+	/**
+	 * Listen for a connection profile with our name being added or removed.
+	 * Also listen for our connection's name begin changed.
+	 */
+	protected class LocalProfileListener implements ProfileListener {
+
+		protected LocalProfileListener() {
+			super();
+		}
+
+		public void profileChanged(ConnectionProfile profile) {
+			if (profile == JpaDataSource.this.connectionProfile) {
+				JpaDataSource.this.setConnectionProfileName(profile.getName());
+			}
+		}
+
+		public void profileReplaced(ConnectionProfile oldProfile, ConnectionProfile newProfile) {
+			if (oldProfile == JpaDataSource.this.connectionProfile) {
+				JpaDataSource.this.setConnectionProfile(newProfile);
+			}
+		}
+
+	}
+
+	/**
+	 * Whenever the connection is opened or closed trigger a project update.
+	 */
+	protected class LocalConnectionListener implements ConnectionListener {
+
+		protected LocalConnectionListener() {
+			super();
+		}
+
+		public void opened(ConnectionProfile profile) {
+			JpaDataSource.this.getProject().update();
+		}
+
+		public void aboutToClose(ConnectionProfile profile) {
+			// do nothing
+		}
+
+		public boolean okToClose(ConnectionProfile profile) {
+			return true;
+		}
+
+		public void closed(ConnectionProfile profile) {
+			JpaDataSource.this.getProject().update();
+		}
+
+		public void modified(ConnectionProfile profile) {
+			// do nothing
+		}
+
+		public void databaseChanged(ConnectionProfile profile, Database database) {
+			// do nothing
+		}
+
+		public void schemaChanged(ConnectionProfile profile, Schema schema) {
+			// do nothing
+		}
+
+		public void tableChanged(ConnectionProfile profile, Table table) {
+			// do nothing
+		}
+
+	}
+
 }

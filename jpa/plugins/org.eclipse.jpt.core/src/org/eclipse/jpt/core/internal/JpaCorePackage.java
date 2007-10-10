@@ -73,25 +73,6 @@ public class JpaCorePackage extends EPackageImpl
 	public static final JpaCorePackage eINSTANCE = org.eclipse.jpt.core.internal.JpaCorePackage.init();
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.IJpaModel <em>IJpa Model</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.IJpaModel
-	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaModel()
-	 * @generated
-	 */
-	public static final int IJPA_MODEL = 0;
-
-	/**
-	 * The number of structural features of the '<em>IJpa Model</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int IJPA_MODEL_FEATURE_COUNT = 0;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.IJpaEObject <em>IJpa EObject</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -99,7 +80,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaEObject()
 	 * @generated
 	 */
-	public static final int IJPA_EOBJECT = 2;
+	public static final int IJPA_EOBJECT = 0;
 
 	/**
 	 * The number of structural features of the '<em>IJpa EObject</em>' class.
@@ -118,7 +99,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaEObject()
 	 * @generated
 	 */
-	public static final int JPA_EOBJECT = 3;
+	public static final int JPA_EOBJECT = 1;
 
 	/**
 	 * The number of structural features of the '<em>Jpa EObject</em>' class.
@@ -130,127 +111,6 @@ public class JpaCorePackage extends EPackageImpl
 	public static final int JPA_EOBJECT_FEATURE_COUNT = IJPA_EOBJECT_FEATURE_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.JpaModel <em>Jpa Model</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.JpaModel
-	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaModel()
-	 * @generated
-	 */
-	public static final int JPA_MODEL = 1;
-
-	/**
-	 * The feature id for the '<em><b>Projects</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JPA_MODEL__PROJECTS = JPA_EOBJECT_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Jpa Model</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JPA_MODEL_FEATURE_COUNT = JPA_EOBJECT_FEATURE_COUNT + 1;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.IJpaProject <em>IJpa Project</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.IJpaProject
-	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaProject()
-	 * @generated
-	 */
-	public static final int IJPA_PROJECT = 4;
-
-	/**
-	 * The number of structural features of the '<em>IJpa Project</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int IJPA_PROJECT_FEATURE_COUNT = IJPA_EOBJECT_FEATURE_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.JpaProject <em>Jpa Project</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.JpaProject
-	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaProject()
-	 * @generated
-	 */
-	public static final int JPA_PROJECT = 5;
-
-	/**
-	 * The feature id for the '<em><b>Platform</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JPA_PROJECT__PLATFORM = JPA_EOBJECT_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Data Source</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JPA_PROJECT__DATA_SOURCE = JPA_EOBJECT_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Discover Annotated Classes</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES = JPA_EOBJECT_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Files</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JPA_PROJECT__FILES = JPA_EOBJECT_FEATURE_COUNT + 3;
-
-	/**
-	 * The number of structural features of the '<em>Jpa Project</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JPA_PROJECT_FEATURE_COUNT = JPA_EOBJECT_FEATURE_COUNT + 4;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.IJpaPlatform <em>IJpa Platform</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.IJpaPlatform
-	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaPlatform()
-	 * @generated
-	 */
-	public static final int IJPA_PLATFORM = 6;
-
-	/**
-	 * The number of structural features of the '<em>IJpa Platform</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int IJPA_PLATFORM_FEATURE_COUNT = 0;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.IJpaDataSource <em>IJpa Data Source</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -258,7 +118,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaDataSource()
 	 * @generated
 	 */
-	public static final int IJPA_DATA_SOURCE = 7;
+	public static final int IJPA_DATA_SOURCE = 2;
 
 	/**
 	 * The number of structural features of the '<em>IJpa Data Source</em>' class.
@@ -277,7 +137,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaDataSource()
 	 * @generated
 	 */
-	public static final int JPA_DATA_SOURCE = 8;
+	public static final int JPA_DATA_SOURCE = 3;
 
 	/**
 	 * The feature id for the '<em><b>Connection Profile Name</b></em>' attribute.
@@ -305,7 +165,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaFile()
 	 * @generated
 	 */
-	public static final int IJPA_FILE = 9;
+	public static final int IJPA_FILE = 4;
 
 	/**
 	 * The number of structural features of the '<em>IJpa File</em>' class.
@@ -324,7 +184,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaFile()
 	 * @generated
 	 */
-	public static final int JPA_FILE = 10;
+	public static final int JPA_FILE = 5;
 
 	/**
 	 * The feature id for the '<em><b>Content Id</b></em>' attribute.
@@ -361,7 +221,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaSourceObject()
 	 * @generated
 	 */
-	public static final int IJPA_SOURCE_OBJECT = 11;
+	public static final int IJPA_SOURCE_OBJECT = 6;
 
 	/**
 	 * The number of structural features of the '<em>IJpa Source Object</em>' class.
@@ -380,7 +240,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIXmlEObject()
 	 * @generated
 	 */
-	public static final int IXML_EOBJECT = 12;
+	public static final int IXML_EOBJECT = 7;
 
 	/**
 	 * The number of structural features of the '<em>IXml EObject</em>' class.
@@ -399,7 +259,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getXmlEObject()
 	 * @generated
 	 */
-	public static final int XML_EOBJECT = 13;
+	public static final int XML_EOBJECT = 8;
 
 	/**
 	 * The number of structural features of the '<em>Xml EObject</em>' class.
@@ -418,7 +278,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaContentNode()
 	 * @generated
 	 */
-	public static final int IJPA_CONTENT_NODE = 14;
+	public static final int IJPA_CONTENT_NODE = 9;
 
 	/**
 	 * The number of structural features of the '<em>IJpa Content Node</em>' class.
@@ -437,7 +297,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaRootContentNode()
 	 * @generated
 	 */
-	public static final int IJPA_ROOT_CONTENT_NODE = 15;
+	public static final int IJPA_ROOT_CONTENT_NODE = 10;
 
 	/**
 	 * The feature id for the '<em><b>Jpa File</b></em>' container reference.
@@ -465,7 +325,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIPersistentType()
 	 * @generated
 	 */
-	public static final int IPERSISTENT_TYPE = 16;
+	public static final int IPERSISTENT_TYPE = 11;
 
 	/**
 	 * The feature id for the '<em><b>Mapping Key</b></em>' attribute.
@@ -493,7 +353,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getITypeMapping()
 	 * @generated
 	 */
-	public static final int ITYPE_MAPPING = 17;
+	public static final int ITYPE_MAPPING = 12;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -530,7 +390,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getNullTypeMapping()
 	 * @generated
 	 */
-	public static final int NULL_TYPE_MAPPING = 18;
+	public static final int NULL_TYPE_MAPPING = 13;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -567,7 +427,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIPersistentAttribute()
 	 * @generated
 	 */
-	public static final int IPERSISTENT_ATTRIBUTE = 19;
+	public static final int IPERSISTENT_ATTRIBUTE = 14;
 
 	/**
 	 * The feature id for the '<em><b>Mapping</b></em>' reference.
@@ -595,7 +455,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIAttributeMapping()
 	 * @generated
 	 */
-	public static final int IATTRIBUTE_MAPPING = 20;
+	public static final int IATTRIBUTE_MAPPING = 15;
 
 	/**
 	 * The number of structural features of the '<em>IAttribute Mapping</em>' class.
@@ -614,21 +474,7 @@ public class JpaCorePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getAccessType()
 	 * @generated
 	 */
-	public static final int ACCESS_TYPE = 21;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass iJpaModelEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass jpaModelEClass = null;
+	public static final int ACCESS_TYPE = 16;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -643,27 +489,6 @@ public class JpaCorePackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass jpaEObjectEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass iJpaProjectEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass jpaProjectEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass iJpaPlatformEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -852,43 +677,6 @@ public class JpaCorePackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.IJpaModel <em>IJpa Model</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>IJpa Model</em>'.
-	 * @see org.eclipse.jpt.core.internal.IJpaModel
-	 * @generated
-	 */
-	public EClass getIJpaModel() {
-		return iJpaModelEClass;
-	}
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.JpaModel <em>Jpa Model</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Jpa Model</em>'.
-	 * @see org.eclipse.jpt.core.internal.JpaModel
-	 * @generated
-	 */
-	public EClass getJpaModel() {
-		return jpaModelEClass;
-	}
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.JpaModel#getProjects <em>Projects</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Projects</em>'.
-	 * @see org.eclipse.jpt.core.internal.JpaModel#getProjects()
-	 * @see #getJpaModel()
-	 * @generated
-	 */
-	public EReference getJpaModel_Projects() {
-		return (EReference) jpaModelEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.IJpaEObject <em>IJpa EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -910,94 +698,6 @@ public class JpaCorePackage extends EPackageImpl
 	 */
 	public EClass getJpaEObject() {
 		return jpaEObjectEClass;
-	}
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.IJpaProject <em>IJpa Project</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>IJpa Project</em>'.
-	 * @see org.eclipse.jpt.core.internal.IJpaProject
-	 * @generated
-	 */
-	public EClass getIJpaProject() {
-		return iJpaProjectEClass;
-	}
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.JpaProject <em>Jpa Project</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Jpa Project</em>'.
-	 * @see org.eclipse.jpt.core.internal.JpaProject
-	 * @generated
-	 */
-	public EClass getJpaProject() {
-		return jpaProjectEClass;
-	}
-
-	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.jpt.core.internal.JpaProject#getPlatform <em>Platform</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Platform</em>'.
-	 * @see org.eclipse.jpt.core.internal.JpaProject#getPlatform()
-	 * @see #getJpaProject()
-	 * @generated
-	 */
-	public EReference getJpaProject_Platform() {
-		return (EReference) jpaProjectEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.JpaProject#getDataSource <em>Data Source</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Data Source</em>'.
-	 * @see org.eclipse.jpt.core.internal.JpaProject#getDataSource()
-	 * @see #getJpaProject()
-	 * @generated
-	 */
-	public EReference getJpaProject_DataSource() {
-		return (EReference) jpaProjectEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.JpaProject#isDiscoverAnnotatedClasses <em>Discover Annotated Classes</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Discover Annotated Classes</em>'.
-	 * @see org.eclipse.jpt.core.internal.JpaProject#isDiscoverAnnotatedClasses()
-	 * @see #getJpaProject()
-	 * @generated
-	 */
-	public EAttribute getJpaProject_DiscoverAnnotatedClasses() {
-		return (EAttribute) jpaProjectEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.JpaProject#getFiles <em>Files</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Files</em>'.
-	 * @see org.eclipse.jpt.core.internal.JpaProject#getFiles()
-	 * @see #getJpaProject()
-	 * @generated
-	 */
-	public EReference getJpaProject_Files() {
-		return (EReference) jpaProjectEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.IJpaPlatform <em>IJpa Platform</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>IJpa Platform</em>'.
-	 * @see org.eclipse.jpt.core.internal.IJpaPlatform
-	 * @generated
-	 */
-	public EClass getIJpaPlatform() {
-		return iJpaPlatformEClass;
 	}
 
 	/**
@@ -1314,18 +1014,8 @@ public class JpaCorePackage extends EPackageImpl
 			return;
 		isCreated = true;
 		// Create classes and their features
-		iJpaModelEClass = createEClass(IJPA_MODEL);
-		jpaModelEClass = createEClass(JPA_MODEL);
-		createEReference(jpaModelEClass, JPA_MODEL__PROJECTS);
 		iJpaEObjectEClass = createEClass(IJPA_EOBJECT);
 		jpaEObjectEClass = createEClass(JPA_EOBJECT);
-		iJpaProjectEClass = createEClass(IJPA_PROJECT);
-		jpaProjectEClass = createEClass(JPA_PROJECT);
-		createEReference(jpaProjectEClass, JPA_PROJECT__PLATFORM);
-		createEReference(jpaProjectEClass, JPA_PROJECT__DATA_SOURCE);
-		createEAttribute(jpaProjectEClass, JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES);
-		createEReference(jpaProjectEClass, JPA_PROJECT__FILES);
-		iJpaPlatformEClass = createEClass(IJPA_PLATFORM);
 		iJpaDataSourceEClass = createEClass(IJPA_DATA_SOURCE);
 		jpaDataSourceEClass = createEClass(JPA_DATA_SOURCE);
 		createEAttribute(jpaDataSourceEClass, JPA_DATA_SOURCE__CONNECTION_PROFILE_NAME);
@@ -1382,12 +1072,7 @@ public class JpaCorePackage extends EPackageImpl
 		// Create type parameters
 		// Set bounds for type parameters
 		// Add supertypes to classes
-		jpaModelEClass.getESuperTypes().add(this.getJpaEObject());
-		jpaModelEClass.getESuperTypes().add(this.getIJpaModel());
 		jpaEObjectEClass.getESuperTypes().add(this.getIJpaEObject());
-		iJpaProjectEClass.getESuperTypes().add(this.getIJpaEObject());
-		jpaProjectEClass.getESuperTypes().add(this.getJpaEObject());
-		jpaProjectEClass.getESuperTypes().add(this.getIJpaProject());
 		iJpaDataSourceEClass.getESuperTypes().add(this.getIJpaEObject());
 		jpaDataSourceEClass.getESuperTypes().add(this.getJpaEObject());
 		jpaDataSourceEClass.getESuperTypes().add(this.getIJpaDataSource());
@@ -1409,29 +1094,8 @@ public class JpaCorePackage extends EPackageImpl
 		iPersistentAttributeEClass.getESuperTypes().add(this.getIJpaContentNode());
 		iAttributeMappingEClass.getESuperTypes().add(this.getIJpaSourceObject());
 		// Initialize classes and features; add operations and parameters
-		initEClass(iJpaModelEClass, IJpaModel.class, "IJpaModel", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEClass(jpaModelEClass, JpaModel.class, "JpaModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getJpaModel_Projects(), this.getIJpaProject(), null, "projects", null, 0, -1, JpaModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEClass(iJpaEObjectEClass, IJpaEObject.class, "IJpaEObject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		addEOperation(iJpaEObjectEClass, this.getIJpaProject(), "getJpaProject", 0, 1, IS_UNIQUE, IS_ORDERED);
 		initEClass(jpaEObjectEClass, JpaEObject.class, "JpaEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEClass(iJpaProjectEClass, IJpaProject.class, "IJpaProject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		addEOperation(iJpaProjectEClass, this.getIJpaModel(), "getModel", 1, 1, IS_UNIQUE, IS_ORDERED);
-		addEOperation(iJpaProjectEClass, this.getIJpaPlatform(), "getPlatform", 1, 1, !IS_UNIQUE, !IS_ORDERED);
-		EOperation op = addEOperation(iJpaProjectEClass, null, "setPlatform", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, theEcorePackage.getEString(), "platformId", 1, 1, IS_UNIQUE, !IS_ORDERED);
-		addEOperation(iJpaProjectEClass, this.getIJpaDataSource(), "getDataSource", 1, 1, IS_UNIQUE, IS_ORDERED);
-		op = addEOperation(iJpaProjectEClass, null, "setDataSource", 1, 1, !IS_UNIQUE, !IS_ORDERED);
-		addEParameter(op, theEcorePackage.getEString(), "connectionProfileName", 1, 1, !IS_UNIQUE, !IS_ORDERED);
-		addEOperation(iJpaProjectEClass, theEcorePackage.getEBoolean(), "isDiscoverAnnotatedClasses", 1, 1, IS_UNIQUE, IS_ORDERED);
-		op = addEOperation(iJpaProjectEClass, null, "setDiscoverAnnotatedClasses", 1, 1, !IS_UNIQUE, !IS_ORDERED);
-		addEParameter(op, theEcorePackage.getEBoolean(), "discoverAnnotatedClasses", 1, 1, !IS_UNIQUE, !IS_ORDERED);
-		initEClass(jpaProjectEClass, JpaProject.class, "JpaProject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getJpaProject_Platform(), this.getIJpaPlatform(), null, "platform", null, 1, 1, JpaProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEReference(getJpaProject_DataSource(), this.getIJpaDataSource(), null, "dataSource", null, 0, 1, JpaProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getJpaProject_DiscoverAnnotatedClasses(), theEcorePackage.getEBoolean(), "discoverAnnotatedClasses", "false", 1, 1, JpaProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEReference(getJpaProject_Files(), this.getIJpaFile(), null, "files", null, 0, -1, JpaProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEClass(iJpaPlatformEClass, IJpaPlatform.class, "IJpaPlatform", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEClass(iJpaDataSourceEClass, IJpaDataSource.class, "IJpaDataSource", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		addEOperation(iJpaDataSourceEClass, theEcorePackage.getEString(), "getConnectionProfileName", 1, 1, !IS_UNIQUE, !IS_ORDERED);
 		initEClass(jpaDataSourceEClass, JpaDataSource.class, "JpaDataSource", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1476,8 +1140,6 @@ public class JpaCorePackage extends EPackageImpl
 		// Create resource
 		createResource(eNS_URI);
 	}
-
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * Defines literals for the meta objects that represent
@@ -1492,34 +1154,6 @@ public class JpaCorePackage extends EPackageImpl
 	 */
 	public interface Literals
 	{
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.IJpaModel <em>IJpa Model</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.IJpaModel
-		 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaModel()
-		 * @generated
-		 */
-		public static final EClass IJPA_MODEL = eINSTANCE.getIJpaModel();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.JpaModel <em>Jpa Model</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.JpaModel
-		 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaModel()
-		 * @generated
-		 */
-		public static final EClass JPA_MODEL = eINSTANCE.getJpaModel();
-
-		/**
-		 * The meta object literal for the '<em><b>Projects</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference JPA_MODEL__PROJECTS = eINSTANCE.getJpaModel_Projects();
-
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.IJpaEObject <em>IJpa EObject</em>}' class.
 		 * <!-- begin-user-doc -->
@@ -1539,68 +1173,6 @@ public class JpaCorePackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass JPA_EOBJECT = eINSTANCE.getJpaEObject();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.IJpaProject <em>IJpa Project</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.IJpaProject
-		 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaProject()
-		 * @generated
-		 */
-		public static final EClass IJPA_PROJECT = eINSTANCE.getIJpaProject();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.JpaProject <em>Jpa Project</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.JpaProject
-		 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaProject()
-		 * @generated
-		 */
-		public static final EClass JPA_PROJECT = eINSTANCE.getJpaProject();
-
-		/**
-		 * The meta object literal for the '<em><b>Platform</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference JPA_PROJECT__PLATFORM = eINSTANCE.getJpaProject_Platform();
-
-		/**
-		 * The meta object literal for the '<em><b>Data Source</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference JPA_PROJECT__DATA_SOURCE = eINSTANCE.getJpaProject_DataSource();
-
-		/**
-		 * The meta object literal for the '<em><b>Discover Annotated Classes</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES = eINSTANCE.getJpaProject_DiscoverAnnotatedClasses();
-
-		/**
-		 * The meta object literal for the '<em><b>Files</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference JPA_PROJECT__FILES = eINSTANCE.getJpaProject_Files();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.IJpaPlatform <em>IJpa Platform</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.IJpaPlatform
-		 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaPlatform()
-		 * @generated
-		 */
-		public static final EClass IJPA_PLATFORM = eINSTANCE.getIJpaPlatform();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.IJpaDataSource <em>IJpa Data Source</em>}' class.

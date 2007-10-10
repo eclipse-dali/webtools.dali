@@ -62,11 +62,11 @@ public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 	}
 
 	public IResource getResource() {
-		return this.getJpaProject().getProject();
+		return this.getJpaProject().project();
 	}
 
 	public IJpaPlatform jpaPlatform() {
-		return getJpaProject().getPlatform();
+		return getJpaProject().jpaPlatform();
 	}
 
 	public IJpaFactory jpaFactory() {
@@ -103,7 +103,7 @@ public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 			IJpaProject project = this.getJpaProject();
 			// check that the model is fully initialized
 			if (project != null) {
-				project.resynch();
+				project.update();
 			}
 		}
 	}

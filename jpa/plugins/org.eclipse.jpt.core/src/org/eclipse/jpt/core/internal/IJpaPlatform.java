@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This program and the 
- * accompanying materials are made available under the terms of the Eclipse 
- * Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.internal;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.content.java.IDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
@@ -20,7 +22,6 @@ import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMappingProvider;
 import org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.IContext;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to 
@@ -60,6 +61,13 @@ public interface IJpaPlatform
 	void setProject(IJpaProject jpaProject);
 
 	IJpaFactory getJpaFactory();
+
+	/**
+	 * Construct a JPA file for the specified file, to be
+	 * added to the specified JPA project. Return null if unable to create
+	 * the JPA file (e.g. the content type is unrecognized).
+	 */
+	IJpaFile createJpaFile(IJpaProject jpaProject, IFile file);
 
 	// ********** Persistence Unit ********************************************
 	boolean containsPersistenceUnitNamed(String name);
@@ -164,7 +172,9 @@ public interface IJpaPlatform
 	/**
 	 * Adds validation messages to the growing list of messages
 	 */
-	void addToMessages(List<IMessage> messages);
+	@SuppressWarnings("restriction")
+	void addToMessages(List<org.eclipse.wst.validation.internal.provisional.core.IMessage> messages);
+
 	/**
 	 * Returns the IGeneratorRepository for the persistence unit of the
 	 * given IPersistentType.  A NullGeneratorRepository should be returned

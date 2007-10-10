@@ -117,7 +117,7 @@ public class EntitiesGenerator
 			this.synchronizePersistenceXml = synchronizePersistenceXml;
 			this.overwriteConfirmer = overwriteConfirmer;
 			this.project = project;
-			setRule(project.getProject());
+			setRule(project.project());
 		}
 
 		@Override
@@ -127,7 +127,7 @@ public class EntitiesGenerator
 			ResourcesPlugin.getWorkspace().checkpoint(false);
 			if (synchronizePersistenceXml) {
 				// we currently only support *one* persistence.xml file per project
-				IJpaFile resource = project.getPlatform().validPersistenceXmlFiles().next();
+				IJpaFile resource = project.jpaPlatform().validPersistenceXmlFiles().next();
 				if (resource != null) {
 					SynchronizeClassesJob job = new SynchronizeClassesJob(resource.getFile());
 					job.schedule();

@@ -1,15 +1,23 @@
 /*******************************************************************************
  * Copyright (c) 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jpt.core.internal.IJpaDataSource;
 import org.eclipse.jpt.core.internal.IJpaFactory;
+import org.eclipse.jpt.core.internal.IJpaFile;
+import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
+import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.JpaCoreFactory;
+import org.eclipse.jpt.core.internal.JpaProject;
 import org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic;
 import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable;
 import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded;
@@ -29,6 +37,18 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 public abstract class BaseJpaFactory implements IJpaFactory
 {
+	public IJpaProject createJpaProject(IJpaProject.Config config) throws CoreException {
+		return new JpaProject(config);
+	}
+
+	public IJpaDataSource createDataSource(IJpaProject jpaProject, String connectionProfileName) {
+		return JpaCoreFactory.eINSTANCE.createJpaDataSource(jpaProject, connectionProfileName);
+	}
+
+	public IJpaFile createJpaFile(IJpaProject jpaProject, IFile file, IJpaFileContentProvider provider) {
+		return JpaCoreFactory.eINSTANCE.createJpaFile(jpaProject, file, provider);
+	}
+
 	public IJavaEntity createJavaEntity(Type type) {
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaEntity(type);
 	}
@@ -80,4 +100,5 @@ public abstract class BaseJpaFactory implements IJpaFactory
 	public IJavaVersion createJavaVersion(Attribute attribute) {
 		return JpaJavaMappingsFactory.eINSTANCE.createJavaVersion(attribute);
 	}
+
 }

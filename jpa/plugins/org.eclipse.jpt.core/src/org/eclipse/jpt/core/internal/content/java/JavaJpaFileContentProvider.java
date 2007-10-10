@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.java;
 
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
 
 public class JavaJpaFileContentProvider implements IJpaFileContentProvider
 {
@@ -41,6 +41,6 @@ public class JavaJpaFileContentProvider implements IJpaFileContentProvider
 	}
 	
 	public String contentType() {
-		return JptCorePlugin.JAVA_CONTENT_TYPE;
+		return JavaCore.JAVA_SOURCE_CONTENT_TYPE;
 	}
 }

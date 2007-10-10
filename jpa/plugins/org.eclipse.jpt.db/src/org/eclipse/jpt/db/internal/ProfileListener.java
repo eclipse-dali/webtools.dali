@@ -16,15 +16,12 @@ package org.eclipse.jpt.db.internal;
  * @see org.eclipse.datatools.connectivity.IProfileListener
  */
 public interface ProfileListener {
-	/**
-	 * The specified profile has been added.
-	 */
-	public void profileAdded( ConnectionProfile profile);
 
 	/**
-	 * The specified profile has been deleted.
+	 * The specified old profile has been replaced with the specified
+	 * new profile.
 	 */
-	public void profileDeleted( String profileName);
+	public void profileReplaced( ConnectionProfile oldProfile, ConnectionProfile newProfile);
 
 	/**
 	 * The specified profile has been modified.  Modification includes

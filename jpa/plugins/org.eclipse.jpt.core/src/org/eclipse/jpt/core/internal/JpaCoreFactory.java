@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -72,10 +72,6 @@ public class JpaCoreFactory extends EFactoryImpl
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case JpaCorePackage.JPA_MODEL :
-				return createJpaModel();
-			case JpaCorePackage.JPA_PROJECT :
-				return createJpaProject();
 			case JpaCorePackage.JPA_DATA_SOURCE :
 				return createJpaDataSource();
 			case JpaCorePackage.JPA_FILE :
@@ -122,34 +118,13 @@ public class JpaCoreFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public JpaModel createJpaModel() {
-		JpaModel jpaModel = new JpaModel();
-		return jpaModel;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public JpaProject createJpaProject() {
-		JpaProject jpaProject = new JpaProject();
-		return jpaProject;
-	}
-
-	public JpaProject createJpaProject(IProject project) {
-		JpaProject jpaProject = new JpaProject(project);
-		return jpaProject;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public JpaDataSource createJpaDataSource() {
 		JpaDataSource jpaDataSource = new JpaDataSource();
 		return jpaDataSource;
+	}
+
+	public JpaDataSource createJpaDataSource(IJpaProject jpaProject, String connectionProfileName) {
+		return new JpaDataSource(jpaProject, connectionProfileName);
 	}
 
 	/**
@@ -160,6 +135,10 @@ public class JpaCoreFactory extends EFactoryImpl
 	public JpaFile createJpaFile() {
 		JpaFile jpaFile = new JpaFile();
 		return jpaFile;
+	}
+
+	public IJpaFile createJpaFile(IJpaProject jpaProject, IFile file, IJpaFileContentProvider provider) {
+		return new JpaFile(jpaProject, file, provider);
 	}
 
 	/**

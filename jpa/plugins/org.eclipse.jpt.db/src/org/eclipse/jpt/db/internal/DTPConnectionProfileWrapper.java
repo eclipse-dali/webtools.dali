@@ -166,8 +166,7 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 		
 	protected Connection buildConnection() {
 
-		Connection connection = Connection.createConnection( this);  //$NON-NLS-1$
-		return connection;
+		return Connection.createConnection( this);
 	}
 
 	@Override
@@ -192,10 +191,12 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 		return NullDatabase.instance();
 	}
 	
+	@Override
 	public IStatus saveWorkOfflineData() {
 		return this.dtpConnectionProfile.saveWorkOfflineData();
 	}
 	
+	@Override
 	public IStatus workOffline() {
 		return this.dtpConnectionProfile.workOffline();
 	}
@@ -218,10 +219,12 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 		return this.getDTPOfflineConnection().isWorkingOffline();
 	}
 	
+	@Override
 	public boolean supportsWorkOfflineMode() {
 		return this.dtpConnectionProfile.supportsWorkOfflineMode();
 	}
 	
+	@Override
 	public boolean canWorkOffline() {
 		return this.dtpConnectionProfile.canWorkOffline();
 	}

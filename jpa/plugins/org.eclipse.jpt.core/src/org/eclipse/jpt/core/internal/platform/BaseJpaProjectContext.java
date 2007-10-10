@@ -1,11 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
- * Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.ArrayList;
@@ -78,7 +79,8 @@ public class BaseJpaProjectContext extends BaseContext
 	}
 	
 	private void sortPersistenceXmlFiles() {
-		for (IJpaFile jpaFile : persistenceXmlFiles()) {
+		for (Iterator<IJpaFile> stream = this.persistenceXmlFiles(); stream.hasNext(); ) {
+			IJpaFile jpaFile = stream.next();
 			if (isValidPersistenceXmlLocation(jpaFile)) {
 				validPersistenceXmlFiles.add(jpaFile);
 			}
@@ -88,13 +90,13 @@ public class BaseJpaProjectContext extends BaseContext
 		}
 	}
 	
-	private Collection<IJpaFile> persistenceXmlFiles() {
+	private Iterator<IJpaFile> persistenceXmlFiles() {
 		return this.jpaProject.jpaFiles(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);
 	}
 	
 	private boolean isValidPersistenceXmlLocation(IJpaFile jpaFile) {
 		IFile file = jpaFile.getFile();
-		IProject project = jpaProject.getProject();
+		IProject project = jpaProject.project();
 		
 		// check flexible jpaProject structure
 		IVirtualComponent component = ComponentCore.createComponent(project);
@@ -133,7 +135,7 @@ public class BaseJpaProjectContext extends BaseContext
 	
 	@Override
 	public IJpaPlatform getPlatform() {
-		return this.jpaProject.getPlatform();
+		return this.jpaProject.jpaPlatform();
 	}
 	
 	protected Iterator<IJpaFile> validPersistenceXmlFiles(){
@@ -288,7 +290,7 @@ public class BaseJpaProjectContext extends BaseContext
 	protected boolean okToProceedForConnectionValidation = true;
 	
 	protected void addNoConnectionMessage(List<IMessage> messages) {
-		if (! jpaProject.getDataSource().hasAConnection()) {
+		if (! jpaProject.dataSource().hasAConnection()) {
 			messages.add(
 					JpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
@@ -300,12 +302,12 @@ public class BaseJpaProjectContext extends BaseContext
 	}
 	
 	protected void addInactiveConnectionMessage(List<IMessage> messages) {
-		if (okToProceedForConnectionValidation && ! jpaProject.getDataSource().isConnected()) {
+		if (okToProceedForConnectionValidation && ! jpaProject.dataSource().isConnected()) {
 			messages.add(
 					JpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
 						IJpaValidationMessages.PROJECT_INACTIVE_CONNECTION,
-						new String[] {jpaProject.getDataSource().getConnectionProfileName()},
+						new String[] {jpaProject.dataSource().getConnectionProfileName()},
 						jpaProject)
 				);
 		}
@@ -382,21 +384,20 @@ public class BaseJpaProjectContext extends BaseContext
 	}
 	
 	protected void addOrphanedJavaClassMessages(List<IMessage> messages) {
-		for (IJpaFile jpaFile : jpaProject.jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE)) {
-			for (JavaPersistentType jpType : ((JpaCompilationUnit) jpaFile.getContent()).getTypes()) {
-				if (jpType.getMappingKey() != IMappingKeys.NULL_TYPE_MAPPING_KEY && ! contains(jpType)) {
-					messages.add(
-							JpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								IJpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
-								jpType.getMapping(), jpType.getMapping().validationTextRange())
-						);
-				}
+		for (Iterator<JavaPersistentType> stream = jpaProject.javaPersistentTypes(); stream.hasNext(); ) {
+			JavaPersistentType jpType = stream.next();
+			if (jpType.getMappingKey() != IMappingKeys.NULL_TYPE_MAPPING_KEY && ! contains(jpType)) {
+				messages.add(
+						JpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							IJpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
+							jpType.getMapping(), jpType.getMapping().validationTextRange())
+					);
 			}
 		}
 	}
 	
 	public String toString() {
-		return StringTools.buildToStringFor( this, this.jpaProject.getJavaProject().getProject().getName());
+		return StringTools.buildToStringFor( this, this.jpaProject.javaProject().getProject().getName());
 	}	
 }

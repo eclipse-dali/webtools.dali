@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -25,834 +25,445 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
-import org.eclipse.jpt.core.internal.facet.JpaFacetUtils;
 import org.eclipse.jpt.core.internal.platform.IContext;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
-import org.eclipse.jpt.db.internal.JptDbPlugin;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jst.j2ee.internal.J2EEConstants;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
-import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.internal.model.ChangeEventDispatcher;
+import org.eclipse.jpt.utility.internal.model.DefaultChangeEventDispatcher;
+import org.eclipse.jpt.utility.internal.node.Node;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Jpa Project</b></em>'.
- * <!-- end-user-doc -->
- *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.JpaProject#getPlatform <em>Platform</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.JpaProject#getDataSource <em>Data Source</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.JpaProject#isDiscoverAnnotatedClasses <em>Discover Annotated Classes</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.JpaProject#getFiles <em>Files</em>}</li>
- * </ul>
- * </p>
- *
- * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaProject()
- * @model kind="class"
- * @generated
+ * 
  */
-public class JpaProject extends JpaEObject implements IJpaProject
-{
-	/**
-	 * The IProject associated with this JPA project
-	 */
-	protected IProject project;
+public class JpaProject extends JpaNodeModel implements IJpaProject {
 
 	/**
-	 * The IJpaPlatform associated with this JPA project
+	 * The Eclipse project corresponding to the JPA project.
 	 */
-	protected IJpaPlatform platform;
+	protected final IProject project;
 
 	/**
-	 * The cached value of the '{@link #getDataSource() <em>Data Source</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDataSource()
-	 * @generated
-	 * @ordered
+	 * The vendor-specific JPA platform that builds the JPA project
+	 * and all its contents.
 	 */
-	protected IJpaDataSource dataSource;
+	protected final IJpaPlatform jpaPlatform;
 
 	/**
-	 * The default value of the '{@link #isDiscoverAnnotatedClasses() <em>Discover Annotated Classes</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isDiscoverAnnotatedClasses()
-	 * @generated
-	 * @ordered
+	 * The data source that wraps the DTP model.
 	 */
-	protected static final boolean DISCOVER_ANNOTATED_CLASSES_EDEFAULT = false;
+	protected final IJpaDataSource dataSource;
 
 	/**
-	 * The cached value of the '{@link #isDiscoverAnnotatedClasses() <em>Discover Annotated Classes</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isDiscoverAnnotatedClasses()
-	 * @generated
-	 * @ordered
+	 * The JPA files associated with the JPA project.
 	 */
-	protected boolean discoverAnnotatedClasses = DISCOVER_ANNOTATED_CLASSES_EDEFAULT;
+	protected final Vector<IJpaFile> jpaFiles;
 
 	/**
-	 * This is true if the Discover Annotated Classes attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
+	 * Flag indicating whether the project should "discover" annotated
+	 * classes automatically, as opposed to requiring the classes to be
+	 * listed in persistence.xml.
 	 */
-	protected boolean discoverAnnotatedClassesESet;
+	protected boolean discoversAnnotatedClasses;
+		public static final String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses";
 
 	/**
-	 * The cached value of the '{@link #getFiles() <em>Files</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFiles()
-	 * @generated
-	 * @ordered
+	 * The visitor passed to resource deltas.
 	 */
-	protected EList<IJpaFile> files;
+	protected final IResourceDeltaVisitor resourceDeltaVisitor;
 
 	/**
-	 * Flag to indicate whether this project has been filled with files
+	 * The dispatcher can be changed so it is UI-aware.
 	 */
-	private boolean filled = false;
+	protected volatile ChangeEventDispatcher changeEventDispatcher;
 
 	/**
-	 * Flag to indicate that the resynchJob has been scheduled or is running.
-	 * This is set to false when that job is completed 
+	 * Support for modifying documents shared with the UI.
 	 */
-	boolean resynching = false;
-	
-	/**
-	 * Flag to indicate that the disposing job has been scheduled or is running
-	 * (or has been run, in some cases)
-	 */
-	boolean disposing = false;
+	protected final ThreadLocal<CommandExecutor> threadLocalModifySharedDocumentCommandExecutor;
+	protected final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
 
 	/**
-	 * Flag to indicate that the resynchJob needs to be run.  This is
-	 * set to true if resynching = true so that the next time the job completes
-	 * it will be run again. 
+	 * Scheduler that uses a job to update the JPA project when changes occur.
+	 * @see #update()
 	 */
-	boolean needsToResynch = false;
+	protected final UpdateJpaProjectJobScheduler updateJpaProjectJobScheduler;
+
+
+	// ********** constructor/initialization **********
 
 	/**
-	 * Job used to reconnect the model parts throughout the project containment hierarchy
-	 * @see IJpaProject#resynch()
+	 * The project and JPA platform are required.
 	 */
-	Job resynchJob;
-
-	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
-
-	private ThreadLocal<CommandExecutor> threadLocalModifySharedDocumentCommandExecutor = new ThreadLocal<CommandExecutor>();
-
-
-	JpaProject() {
-		super();
-	}
-
-	protected JpaProject(IProject project) {
-		this();
-		this.project = project;
-		this.resynchJob = buildResynchJob();
-	}
-
-	private Job buildResynchJob() {
-		Job job = new Job("Resynching JPA model ...") {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				try {
-					return runResynch(monitor);
-				}
-				finally {
-					JpaProject.this.resynching = false;
-					if (JpaProject.this.needsToResynch) {
-						resynch();
-					}
-				}
-			}
-
-		};
-		if (this.project == null) {
-			throw new IllegalStateException("Project can not be null when the Resynch Job is built");
+	public JpaProject(IJpaProject.Config config) throws CoreException {
+		super(null);  // JPA project is the root of the containment tree
+		if ((config.project() == null) || (config.jpaPlatform() == null)) {
+			throw new NullPointerException();
 		}
-		job.setRule(this.project);
-		return job;
-	}
+		this.project = config.project();
+		this.jpaPlatform = config.jpaPlatform();
+		this.jpaPlatform.setProject(this);  // TODO this must go
+		this.dataSource = this.jpaFactory().createDataSource(this, config.connectionProfileName());
+		this.discoversAnnotatedClasses = config.discoverAnnotatedClasses();
+		this.jpaFiles = this.buildJpaFiles();
 
-	private IStatus runResynch(IProgressMonitor monitor) {
-		IContext contextHierarchy = getPlatform().buildProjectContext();
-		if (monitor.isCanceled()) {
-			return Status.CANCEL_STATUS;
-		}
-		try {
-			getPlatform().resynch(contextHierarchy, monitor);
-		}
-		catch (OperationCanceledException e) {
-			return Status.CANCEL_STATUS;
-		}
-		catch (Throwable e) {
-			//exceptions can occur when this thread is running and changes are
-			//made to the java source.  our model is not yet updated to the changed java source.
-			//log these exceptions and assume they won't happen when the resynch runs again
-			//as a result of the java source changes.
-			JptCorePlugin.log(e);
-		}
-		return Status.OK_STATUS;
-	}
+		this.resourceDeltaVisitor = this.buildResourceDeltaVisitor();
+		this.changeEventDispatcher = this.buildChangeEventDispatcher();
+		this.threadLocalModifySharedDocumentCommandExecutor = this.buildThreadLocalModifySharedDocumentCommandExecutor();
+		this.modifySharedDocumentCommandExecutorProvider = this.buildModifySharedDocumentCommandExecutorProvider();
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass() {
-		return JpaCorePackage.Literals.JPA_PROJECT;
-	}
+		this.updateJpaProjectJobScheduler = this.buildUpdateJpaProjectJobScheduler();
+		// build the JPA files corresponding to the Eclipse project's files
+		this.project.accept(this.buildInitialResourceProxyVisitor(), IResource.NONE);
 
-	/**
-	 * @see IJpaProject#getProject()
-	 */
-	public IProject getProject() {
-		return project;
-	}
-
-	public IJavaProject getJavaProject() {
-		return JavaCore.create(getProject());
-	}
-
-	/**
-	 * @see IJpaProject#getModel()
-	 */
-	public IJpaModel getModel() {
-		return (IJpaModel) eContainer();
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Platform</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Platform</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Platform</em>' reference.
-	 * @see #setPlatform(IJpaPlatform)
-	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaProject_Platform()
-	 * @model resolveProxies="false" required="true" ordered="false"
-	 * @generated
-	 */
-	public IJpaPlatform getPlatformGen() {
-		return platform;
-	}
-
-	public IJpaPlatform getPlatform() {
-		if (platform == null) {
-			setPlatform(JpaFacetUtils.getPlatform(project));
-		}
-		return getPlatformGen();
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.JpaProject#getPlatform <em>Platform</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Platform</em>' reference.
-	 * @see #getPlatform()
-	 * @generated
-	 */
-	public void setPlatformGen(IJpaPlatform newPlatform) {
-		IJpaPlatform oldPlatform = platform;
-		platform = newPlatform;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JpaCorePackage.JPA_PROJECT__PLATFORM, oldPlatform, platform));
-	}
-
-	public void setPlatform(IJpaPlatform jpaPlatform) {
-		jpaPlatform.setProject(this);
-		setPlatformGen(jpaPlatform);
-	}
-
-	/**
-	 * @see IJpaProject#setPlatform(String)
-	 */
-	public void setPlatform(String platformId) {
-		setPlatform(JpaPlatformRegistry.instance().jpaPlatform(platformId));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Data Source</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Data Source</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Data Source</em>' containment reference.
-	 * @see #setDataSource(IJpaDataSource)
-	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaProject_DataSource()
-	 * @model containment="true" ordered="false"
-	 * @generated
-	 */
-	public IJpaDataSource getDataSourceGen() {
-		return dataSource;
-	}
-
-	public synchronized IJpaDataSource getDataSource() {
-		if (dataSource == null) {
-			setDataSource(JpaFacetUtils.getConnectionName(project));
-		}
-		return getDataSourceGen();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetDataSource(IJpaDataSource newDataSource, NotificationChain msgs) {
-		IJpaDataSource oldDataSource = dataSource;
-		dataSource = newDataSource;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JpaCorePackage.JPA_PROJECT__DATA_SOURCE, oldDataSource, newDataSource);
-			if (msgs == null)
-				msgs = notification;
-			else
-				msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.JpaProject#getDataSource <em>Data Source</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Data Source</em>' containment reference.
-	 * @see #getDataSource()
-	 * @generated
-	 */
-	public void setDataSource(IJpaDataSource newDataSource) {
-		if (newDataSource != dataSource) {
-			NotificationChain msgs = null;
-			if (dataSource != null)
-				msgs = ((InternalEObject) dataSource).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JpaCorePackage.JPA_PROJECT__DATA_SOURCE, null, msgs);
-			if (newDataSource != null)
-				msgs = ((InternalEObject) newDataSource).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaCorePackage.JPA_PROJECT__DATA_SOURCE, null, msgs);
-			msgs = basicSetDataSource(newDataSource, msgs);
-			if (msgs != null)
-				msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JpaCorePackage.JPA_PROJECT__DATA_SOURCE, newDataSource, newDataSource));
-	}
-
-	/**
-	 * @see IJpaProject#setDataSource(String)
-	 */
-	public void setDataSource(String connectionProfileName) {
-		if (dataSource == null) {
-			JpaDataSource ds = JpaCoreFactory.eINSTANCE.createJpaDataSource();
-			setDataSource(ds);
-		}
-		dataSource.setConnectionProfileName(connectionProfileName);
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Discover Annotated Classes</b></em>' attribute.
-	 * The default value is <code>"false"</code>.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Discover Annotated Classes</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Discover Annotated Classes</em>' attribute.
-	 * @see #isSetDiscoverAnnotatedClasses()
-	 * @see #unsetDiscoverAnnotatedClasses()
-	 * @see #setDiscoverAnnotatedClasses(boolean)
-	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaProject_DiscoverAnnotatedClasses()
-	 * @model default="false" unique="false" unsettable="true" required="true" ordered="false"
-	 * @generated
-	 */
-	public boolean isDiscoverAnnotatedClassesGen() {
-		return discoverAnnotatedClasses;
-	}
-
-	public boolean isDiscoverAnnotatedClasses() {
-		if (!isSetDiscoverAnnotatedClasses()) {
-			setDiscoverAnnotatedClasses(JpaFacetUtils.getDiscoverAnnotatedClasses(project));
-		}
-		return isDiscoverAnnotatedClassesGen();
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.JpaProject#isDiscoverAnnotatedClasses <em>Discover Annotated Classes</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Discover Annotated Classes</em>' attribute.
-	 * @see #isSetDiscoverAnnotatedClasses()
-	 * @see #unsetDiscoverAnnotatedClasses()
-	 * @see #isDiscoverAnnotatedClasses()
-	 * @generated
-	 */
-	public void setDiscoverAnnotatedClasses(boolean newDiscoverAnnotatedClasses) {
-		boolean oldDiscoverAnnotatedClasses = discoverAnnotatedClasses;
-		discoverAnnotatedClasses = newDiscoverAnnotatedClasses;
-		boolean oldDiscoverAnnotatedClassesESet = discoverAnnotatedClassesESet;
-		discoverAnnotatedClassesESet = true;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JpaCorePackage.JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES, oldDiscoverAnnotatedClasses, discoverAnnotatedClasses, !oldDiscoverAnnotatedClassesESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.JpaProject#isDiscoverAnnotatedClasses <em>Discover Annotated Classes</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetDiscoverAnnotatedClasses()
-	 * @see #isDiscoverAnnotatedClasses()
-	 * @see #setDiscoverAnnotatedClasses(boolean)
-	 * @generated
-	 */
-	public void unsetDiscoverAnnotatedClasses() {
-		boolean oldDiscoverAnnotatedClasses = discoverAnnotatedClasses;
-		boolean oldDiscoverAnnotatedClassesESet = discoverAnnotatedClassesESet;
-		discoverAnnotatedClasses = DISCOVER_ANNOTATED_CLASSES_EDEFAULT;
-		discoverAnnotatedClassesESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, JpaCorePackage.JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES, oldDiscoverAnnotatedClasses, DISCOVER_ANNOTATED_CLASSES_EDEFAULT, oldDiscoverAnnotatedClassesESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.JpaProject#isDiscoverAnnotatedClasses <em>Discover Annotated Classes</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Discover Annotated Classes</em>' attribute is set.
-	 * @see #unsetDiscoverAnnotatedClasses()
-	 * @see #isDiscoverAnnotatedClasses()
-	 * @see #setDiscoverAnnotatedClasses(boolean)
-	 * @generated
-	 */
-	public boolean isSetDiscoverAnnotatedClasses() {
-		return discoverAnnotatedClassesESet;
-	}
-
-	public String rootDeployLocation() {
-		String metaInfLocation = "";
-		try {
-			if (FacetedProjectFramework.hasProjectFacet(project, IModuleConstants.JST_WEB_MODULE)) {
-				metaInfLocation = J2EEConstants.WEB_INF_CLASSES;
-			}
-		}
-		catch (CoreException ce) {
-			// if exception occurs, we'll take the default location
-			JptCorePlugin.log(ce);
-		}
-		return metaInfLocation;
+		this.update();
 	}
 
 	@Override
-	public IJpaProject getJpaProject() {
+	protected void checkParent(Node parentNode) {
+		if (parentNode != null) {
+			throw new IllegalArgumentException("The parent node must be null");
+		}
+	}
+
+	protected Vector<IJpaFile> buildJpaFiles() {
+		return new Vector<IJpaFile>();
+	}
+
+	protected IResourceDeltaVisitor buildResourceDeltaVisitor() {
+		return new ResourceDeltaVisitor();
+	}
+
+	protected ChangeEventDispatcher buildChangeEventDispatcher() {
+		return DefaultChangeEventDispatcher.instance();
+	}
+
+	protected ThreadLocal<CommandExecutor> buildThreadLocalModifySharedDocumentCommandExecutor() {
+		return new ThreadLocal<CommandExecutor>();
+	}
+
+	protected CommandExecutorProvider buildModifySharedDocumentCommandExecutorProvider() {
+		return new ModifySharedDocumentCommandExecutorProvider();
+	}
+
+	protected IResourceProxyVisitor buildInitialResourceProxyVisitor() {
+		return new InitialResourceProxyVisitor();
+	}
+
+	protected UpdateJpaProjectJobScheduler buildUpdateJpaProjectJobScheduler() {
+		return new UpdateJpaProjectJobScheduler(this, this.project);
+	}
+
+	// ***** inner class
+	protected class InitialResourceProxyVisitor implements IResourceProxyVisitor {
+		protected InitialResourceProxyVisitor() {
+			super();
+		}
+		// add a JPA file for every [appropriate] file encountered by the visitor
+		public boolean visit(IResourceProxy resource) throws CoreException {
+			switch (resource.getType()) {
+				case IResource.ROOT :  // shouldn't happen
+				case IResource.PROJECT :
+				case IResource.FOLDER :
+					return true;  // visit children
+				case IResource.FILE :
+					JpaProject.this.addJpaFile((IFile) resource.requestResource());
+					return false;  // no children
+				default :
+					return false;  // no children
+			}
+		}
+	}
+
+
+	// ********** general queries **********
+
+	@Override
+	public IJpaProject root() {
 		return this;
 	}
 
-	/**
-	 * Returns the value of the '<em><b>Files</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.internal.IJpaFile}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Files</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Files</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaProject_Files()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EList<IJpaFile> getFiles() {
-		if (files == null) {
-			files = new EObjectContainmentEList<IJpaFile>(IJpaFile.class, this, JpaCorePackage.JPA_PROJECT__FILES);
-		}
-		return files;
+	public IProject project() {
+		return this.project;
 	}
 
-	/**
-	 * INTERNAL ONLY
-	 * Fill project with file resources
-	 */
-	void fill() throws CoreException {
-		if (filled) {
-			return;
-		}
-		IResourceProxyVisitor visitor = new IResourceProxyVisitor() {
-			public boolean visit(IResourceProxy resource) throws CoreException {
-				switch (resource.getType()) {
-					case IResource.PROJECT :
-					case IResource.FOLDER :
-						return true;
-					case IResource.FILE :
-						IFile file = (IFile) resource.requestResource();
-						if (getJpaFileInternal(file) == null) {
-							createJpaFile(file);
-						}
-					default :
-						return false;
-				}
-			}
-		};
-		getProject().accept(visitor, IResource.NONE);
-		filled = true;
-		resynch();
+	public String name() {
+		return this.project.getName();
 	}
 
-	public boolean isFilled() {
-		return filled;
-	}
-
-	/**
-	 * @see IJpaProject#getJpaFile(IFile)
-	 */
-	public synchronized IJpaFile getJpaFile(IFile file) {
-		IJpaFile jpaFile = this.getJpaFileInternal(file);
-		if (this.filled) {
-			return jpaFile;
-		}
-		return (jpaFile != null) ? jpaFile : this.createJpaFile(file);
-	}
-
-	synchronized IJpaFile getJpaFileInternal(IFile file) {
-		for (IJpaFile next : this.getFiles()) {
-			if (next.getFile().equals(file)) {
-				return next;
-			}
-		}
-		return null;
-	}
-
-	public Iterator<IJpaFile> jpaFiles() {
-		return new CloneIterator<IJpaFile>(getFiles());
-	}
-
-	public Collection<IJpaFile> jpaFiles(String contentType) {
-		Collection<IJpaFile> jpaFiles = new ArrayList<IJpaFile>();
-		for (Iterator<IJpaFile> stream = jpaFiles(); stream.hasNext();) {
-			IJpaFile next = stream.next();
-			if (next.getContentId().equals(contentType)) {
-				jpaFiles.add(next);
-			}
-		}
-		return jpaFiles;
-	}
-
-	public JavaPersistentType findJavaPersistentType(IType type) {
-		if (type == null) {
-			return null;
-		}
-		Collection<IJpaFile> persistenceFiles = jpaFiles(JptCorePlugin.JAVA_CONTENT_TYPE);
-		for (IJpaFile jpaFile : persistenceFiles) {
-			JpaCompilationUnit compilationUnit = (JpaCompilationUnit) jpaFile.getContent();
-			for (JavaPersistentType persistentType : compilationUnit.getTypes()) {
-				if (type.equals(persistentType.getType().getJdtMember())) {
-					return persistentType;
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * INTERNAL ONLY
-	 * Dispose and remove project
-	 */
-	void dispose() {
-		if (disposing) return;
-		
-		disposing = true;
-				
-		Job job = new Job("Disposing JPA project ...") {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				dispose_();
-				return Status.OK_STATUS;
-			}
-		};
-		job.setRule(project);
-		job.schedule();
-	}
-	
-	private void dispose_() {
-		for (IJpaFile jpaFile : CollectionTools.collection(getFiles())) {
-			((JpaFile) jpaFile).dispose();
-		}
-		((JpaModel) getModel()).getProjects().remove(this);
-	}
-
-	/**
-	 * INTERNAL ONLY
-	 * Synch internal JPA resources.
-	 */
-	void synchInternalResources(IResourceDelta delta) throws CoreException {
-		delta.accept(this.buildResourceDeltaVisitor());
-	}
-
-	private IResourceDeltaVisitor buildResourceDeltaVisitor() {
-		return new IResourceDeltaVisitor() {
-			private IResource currentResource = getProject();
-
-			public boolean visit(IResourceDelta delta) throws CoreException {
-				IResource res = delta.getResource();
-				if (res.equals(currentResource))
-					return true;
-				if (res.getType() == IResource.FILE) {
-					IFile file = (IFile) res;
-					switch (delta.getKind()) {
-						case IResourceDelta.ADDED :
-							if (getJpaFile(file) == null) {
-								createJpaFile(file);
-								JpaProject.this.resynch();//TODO different api for this?
-							}
-							break;
-						case IResourceDelta.REMOVED :
-							JpaFile jpaFile = (JpaFile) getJpaFile(file);
-							if (jpaFile != null) {
-								jpaFile.dispose();
-								JpaProject.this.resynch();//TODO different api for this?
-							}
-							break;
-						case IResourceDelta.CHANGED :
-							// shouldn't have to worry, since all changes we're looking for have to do with file name
-					}
-				}
-				return true;
-			}
-		};
-	}
-
-		// PWFTODO 
-		// Return a NullPersistenceFile if no content found?
-	synchronized IJpaFile createJpaFile(IFile file) {
-		if (!JavaCore.create(this.project).isOnClasspath(file)) {
-			return null;
-		}
-
-		IContentType contentType = this.contentType(file);
-		if (contentType == null) {
-			return null;
-		}
-
-		String contentTypeId = contentType.getId();
-		IJpaFileContentProvider provider = this.getPlatform().fileContentProvider(contentTypeId);
-		if (provider == null) {
-			return null;
-		}
-
-		JpaFile jpaFile = JpaCoreFactory.eINSTANCE.createJpaFile();
-		this.getFiles().add(jpaFile);
-		jpaFile.setFile(file);
-		jpaFile.setContentId(contentTypeId);
-		provider.buildRootContent(jpaFile);
-		return jpaFile;
-	}
-
-	//attempting to get the contentType based on the file contents.
-	//have to check the file contents instead of just the file name
-	//because for xml we base it on the rootElement name
-	private IContentType contentType(IFile file) {
-		try {
-			return Platform.getContentTypeManager().findContentTypeFor(file.getContents(), file.getName());
-		} catch (IOException ex) {
-			JptCorePlugin.log(ex);
-		} catch (CoreException ex) {
-			JptCorePlugin.log(ex);
-		}
-		return null;
-	}
-
-	/**
-	 * INTERNAL ONLY
-	 * Handle java element change event.
-	 */
-	void handleEvent(ElementChangedEvent event) {
-		if (filled) {
-			for (Iterator<IJpaFile> stream = jpaFiles(); stream.hasNext();) {
-				((JpaFile) stream.next()).handleEvent(event);
-			}
-			resynch();
-		}
-	}
-
-	public Iterator<IMessage> validationMessages() {
-		List<IMessage> messages = new ArrayList<IMessage>();
-		getPlatform().addToMessages(messages);
-		return messages.iterator();
-	}
-
-	//leaving this at the JpaProject level for now instead of
-	//passing it on to the JpaModel.  We don't currently support
-	//multiple projects having cross-references
-	public void resynch() {
-		if (disposing || ! filled) return;
-		
-		if (! this.resynching) {
-			this.resynching = true;
-			this.needsToResynch = false;
-			this.resynchJob.schedule();
-		}
-		else {
-			this.needsToResynch = true;
-			if (this.resynchJob.getState() == Job.RUNNING) {
-				this.resynchJob.cancel();
-			}
-		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case JpaCorePackage.JPA_PROJECT__DATA_SOURCE :
-				return basicSetDataSource(null, msgs);
-			case JpaCorePackage.JPA_PROJECT__FILES :
-				return ((InternalEList<?>) getFiles()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case JpaCorePackage.JPA_PROJECT__PLATFORM :
-				return getPlatform();
-			case JpaCorePackage.JPA_PROJECT__DATA_SOURCE :
-				return getDataSource();
-			case JpaCorePackage.JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES :
-				return isDiscoverAnnotatedClasses() ? Boolean.TRUE : Boolean.FALSE;
-			case JpaCorePackage.JPA_PROJECT__FILES :
-				return getFiles();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case JpaCorePackage.JPA_PROJECT__PLATFORM :
-				setPlatform((IJpaPlatform) newValue);
-				return;
-			case JpaCorePackage.JPA_PROJECT__DATA_SOURCE :
-				setDataSource((IJpaDataSource) newValue);
-				return;
-			case JpaCorePackage.JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES :
-				setDiscoverAnnotatedClasses(((Boolean) newValue).booleanValue());
-				return;
-			case JpaCorePackage.JPA_PROJECT__FILES :
-				getFiles().clear();
-				getFiles().addAll((Collection<? extends IJpaFile>) newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eUnset(int featureID) {
-		switch (featureID) {
-			case JpaCorePackage.JPA_PROJECT__PLATFORM :
-				setPlatform((IJpaPlatform) null);
-				return;
-			case JpaCorePackage.JPA_PROJECT__DATA_SOURCE :
-				setDataSource((IJpaDataSource) null);
-				return;
-			case JpaCorePackage.JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES :
-				unsetDiscoverAnnotatedClasses();
-				return;
-			case JpaCorePackage.JPA_PROJECT__FILES :
-				getFiles().clear();
-				return;
-		}
-		super.eUnset(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case JpaCorePackage.JPA_PROJECT__PLATFORM :
-				return platform != null;
-			case JpaCorePackage.JPA_PROJECT__DATA_SOURCE :
-				return dataSource != null;
-			case JpaCorePackage.JPA_PROJECT__DISCOVER_ANNOTATED_CLASSES :
-				return isSetDiscoverAnnotatedClasses();
-			case JpaCorePackage.JPA_PROJECT__FILES :
-				return files != null && !files.isEmpty();
-		}
-		return super.eIsSet(featureID);
+	public IJavaProject javaProject() {
+		return JavaCore.create(this.project);
 	}
 
 	@Override
-	public String toString() {
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (" + getProject().toString() + ")");
-		return result.toString();
+	public IJpaPlatform jpaPlatform() {
+		return this.jpaPlatform;
+	}
+
+	public IJpaDataSource dataSource() {
+		return this.dataSource;
 	}
 
 	@Override
 	public ConnectionProfile connectionProfile() {
-		String profileName = getDataSource().getConnectionProfileName();
-		return JptDbPlugin.getDefault().getConnectionProfileRepository().profileNamed(profileName);
+		return this.dataSource.getConnectionProfile();
 	}
 
-	public CommandExecutor getThreadLocalModifySharedDocumentCommandExecutor() {
-		CommandExecutor commandExecutor = this.threadLocalModifySharedDocumentCommandExecutor.get();
-		return (commandExecutor != null) ? commandExecutor : CommandExecutor.Default.instance();
+	@Override
+	public Validator validator() {
+		return NULL_VALIDATOR;
+	}
+
+	@Override
+	public void toString(StringBuffer sb) {
+		sb.append(this.name());
+	}
+
+
+	// ********** JPA files **********
+
+	public Iterator<IJpaFile> jpaFiles() {
+		return new CloneIterator<IJpaFile>(this.jpaFiles);  // read-only
+	}
+
+	public IJpaFile jpaFile(IFile file) {
+		synchronized (this.jpaFiles) {
+			for (IJpaFile jpaFile : this.jpaFiles) {
+				if (jpaFile.getFile().equals(file)) {
+					return jpaFile;
+				}
+			}
+		}
+		return null;
+	}
+
+	public Iterator<IJpaFile> jpaFiles(final String contentTypeId) {
+		return new FilteringIterator<IJpaFile>(this.jpaFiles()) {
+			@Override
+			protected boolean accept(Object o) {
+				return ((IJpaFile) o).getContentId().equals(contentTypeId);
+			}
+		};
+	}
+
+	public Iterator<IJpaFile> javaJpaFiles() {
+		return this.jpaFiles(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
+	}
+
+	/**
+	 * Add a JPA file for the specified file, if appropriate.
+	 */
+	protected void addJpaFile(IFile file) {
+		IJpaFile jpaFile = this.jpaPlatform.createJpaFile(this, file);
+		if (jpaFile != null) {
+			this.addItemToCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION);
+		}
+	}
+
+	/**
+	 * Remove the specified JPA file and dispose it.
+	 */
+	protected void removeJpaFile(IJpaFile jpaFile) {
+		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
+			throw new IllegalArgumentException("JPA file: " + jpaFile.getFile().getName());
+		}
+		jpaFile.dispose();
+	}
+
+	protected boolean containsJpaFile(IFile file) {
+		return (this.jpaFile(file) != null);
+	}
+
+
+	// ********** change event dispatcher **********
+
+	@Override
+	public ChangeEventDispatcher changeEventDispatcher() {
+		return this.changeEventDispatcher;
+	}
+
+	@Override
+	public void setChangeEventDispatcher(ChangeEventDispatcher changeEventDispatcher) {
+		this.changeEventDispatcher = changeEventDispatcher;
+	}
+
+
+	// ********** more queries **********
+
+	protected Iterator<JpaCompilationUnit> jpaCompilationUnits() {
+		return new TransformationIterator<IJpaFile, JpaCompilationUnit>(this.javaJpaFiles()) {
+			@Override
+			protected JpaCompilationUnit transform(IJpaFile jpaFile) {
+				return (JpaCompilationUnit) jpaFile.getContent();
+			}
+		};
+	}
+
+	/**
+	 * Return an iterator of iterators on Java persistent types
+	 */
+	protected Iterator<Iterator<JavaPersistentType>> javaPersistentTypeIterators() {
+		return new TransformationIterator<JpaCompilationUnit, Iterator<JavaPersistentType>>(this.jpaCompilationUnits()) {
+			@Override
+			protected Iterator<JavaPersistentType> transform(JpaCompilationUnit jcu) {
+				return jcu.getTypes().iterator();
+			}
+		};
+	}
+
+	public Iterator<JavaPersistentType> javaPersistentTypes() {
+		return new CompositeIterator<JavaPersistentType>(this.javaPersistentTypeIterators());
+	}
+
+	public JavaPersistentType javaPersistentType(IType type) {
+		for (Iterator<JavaPersistentType> stream = this.javaPersistentTypes(); stream.hasNext(); ) {
+			JavaPersistentType jpt = stream.next();
+			if (jpt.getType().getJdtMember().equals(type)) {
+				return jpt;
+			}
+		}
+		return null;
+	}
+
+
+	// ********** Java change **********
+
+	public void javaElementChanged(ElementChangedEvent event) {
+		for (Iterator<IJpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
+			stream.next().javaElementChanged(event);
+		}
+	}
+
+
+	// ********** validation **********
+
+	@SuppressWarnings("restriction")
+	public Iterator<org.eclipse.wst.validation.internal.provisional.core.IMessage> validationMessages() {
+		List<org.eclipse.wst.validation.internal.provisional.core.IMessage> messages = new ArrayList<org.eclipse.wst.validation.internal.provisional.core.IMessage>();
+		this.jpaPlatform.addToMessages(messages);
+		return messages.iterator();
+	}
+
+
+	// ********** root deploy location **********
+
+	@SuppressWarnings("restriction")
+	protected static final String WEB_PROJECT_ROOT_DEPLOY_LOCATION = org.eclipse.jst.j2ee.internal.J2EEConstants.WEB_INF_CLASSES;
+
+	public String rootDeployLocation() {
+		return this.isWebProject() ? WEB_PROJECT_ROOT_DEPLOY_LOCATION : "";
+	}
+
+	@SuppressWarnings("restriction")
+	protected static final String JST_WEB_MODULE = org.eclipse.wst.common.componentcore.internal.util.IModuleConstants.JST_WEB_MODULE;
+
+	protected boolean isWebProject() {
+		return JptCorePlugin.projectHasWebFacet(this.project);
+	}
+
+
+	// ********** auto-discovery **********
+
+	public boolean discoversAnnotatedClasses() {
+		return this.discoversAnnotatedClasses;
+	}
+
+	public void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses) {
+		boolean old = this.discoversAnnotatedClasses;
+		this.discoversAnnotatedClasses = discoversAnnotatedClasses;
+		this.firePropertyChanged(DISCOVERS_ANNOTATED_CLASSES_PROPERTY, old, discoversAnnotatedClasses);
+	}
+
+
+	// ********** dispose **********
+
+	public void dispose() {
+		this.updateJpaProjectJobScheduler.dispose();
+		// use clone iterator while deleting JPA files
+		for (Iterator<IJpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
+			this.removeJpaFile(stream.next());
+		}
+		this.dataSource.dispose();
+	}
+
+
+	// ********** handling resource deltas **********
+
+	public void checkForAddedOrRemovedJpaFiles(IResourceDelta delta) throws CoreException {
+		delta.accept(this.resourceDeltaVisitor);
+	}
+
+	/**
+	 * resource delta visitor callback
+	 */
+	protected void synchronizeJpaFiles(IFile file, int deltaKind) {
+		switch (deltaKind) {
+			case IResourceDelta.ADDED :
+				if ( ! this.containsJpaFile(file)) {
+					this.addJpaFile(file);
+				}
+				break;
+			case IResourceDelta.REMOVED :
+				IJpaFile jpaFile = this.jpaFile(file);
+				if (jpaFile != null) {
+					this.removeJpaFile(jpaFile);
+				}
+				break;
+			case IResourceDelta.CHANGED :
+			case IResourceDelta.ADDED_PHANTOM :
+			case IResourceDelta.REMOVED_PHANTOM :
+			default :
+				break;  // only worried about added and removed files
+		}
+	}
+
+	// ***** inner class
+	/**
+	 * add a JPA file for every [appropriate] file encountered by the visitor
+	 */
+	protected class ResourceDeltaVisitor implements IResourceDeltaVisitor {
+		protected ResourceDeltaVisitor() {
+			super();
+		}
+		public boolean visit(IResourceDelta delta) throws CoreException {
+			IResource res = delta.getResource();
+			switch (res.getType()) {
+				case IResource.ROOT :
+				case IResource.PROJECT :
+				case IResource.FOLDER :
+					return true;  // visit children
+				case IResource.FILE :
+					JpaProject.this.synchronizeJpaFiles((IFile) res, delta.getKind());
+					return false;  // no children
+				default :
+					return false;  // no children
+			}
+		}
+	}
+
+
+	// ********** support for modifying documents shared with the UI **********
+
+	/**
+	 * If there is no thread-specific command executor, use the default
+	 * implementation, which simply executes the command directly.
+	 */
+	protected CommandExecutor threadLocalModifySharedDocumentCommandExecutor() {
+		CommandExecutor ce = this.threadLocalModifySharedDocumentCommandExecutor.get();
+		return (ce != null) ? ce : CommandExecutor.Default.instance();
 	}
 
 	public void setThreadLocalModifySharedDocumentCommandExecutor(CommandExecutor commandExecutor) {
@@ -860,24 +471,126 @@ public class JpaProject extends JpaEObject implements IJpaProject
 	}
 
 	public CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
-		if (this.modifySharedDocumentCommandExecutorProvider == null) {
-			this.modifySharedDocumentCommandExecutorProvider = new ModifySharedDocumentCommandExecutorProvider();
-		}
 		return this.modifySharedDocumentCommandExecutorProvider;
 	}
-	
-	
-	// ********** member class **********
-	
-	private class ModifySharedDocumentCommandExecutorProvider 
-			implements CommandExecutorProvider 
-	{
-		ModifySharedDocumentCommandExecutorProvider() {
+
+	// ***** inner class
+	protected class ModifySharedDocumentCommandExecutorProvider implements CommandExecutorProvider {
+		protected ModifySharedDocumentCommandExecutorProvider() {
 			super();
 		}
-		
 		public CommandExecutor commandExecutor() {
-			return JpaProject.this.getThreadLocalModifySharedDocumentCommandExecutor();
+			return JpaProject.this.threadLocalModifySharedDocumentCommandExecutor();
 		}
+	}
+
+
+
+	// ********** update project **********
+
+	public IStatus update(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		}
+
+		try {
+			IContext contextHierarchy = this.jpaPlatform.buildProjectContext();
+			this.jpaPlatform.resynch(contextHierarchy, monitor);
+		} catch (OperationCanceledException ex) {
+			return Status.CANCEL_STATUS;
+		} catch (Throwable ex) {
+			//exceptions can occur when this thread is running and changes are
+			//made to the java source.  our model is not yet updated to the changed java source.
+			//log these exceptions and assume they won't happen when the resynch runs again
+			//as a result of the java source changes.
+			JptCorePlugin.log(ex);
+		}
+		return Status.OK_STATUS;
+	}
+
+	public void update() {
+		this.updateJpaProjectJobScheduler.schedule();
+	}
+
+	protected static class UpdateJpaProjectJobScheduler {
+		/**
+		 * The job is built during construction and cleared out during dispose.
+		 * All the "public" methods check to make sure the job is not null,
+		 * doing nothing if it is (preventing anything from happening after
+		 * dispose).
+		 */
+		protected Job job;
+
+		protected UpdateJpaProjectJobScheduler(IJpaProject jpaProject, ISchedulingRule rule) {
+			super();
+			this.job = this.buildJob(jpaProject, rule);
+		}
+
+		protected Job buildJob(IJpaProject jpaProject, ISchedulingRule rule) {
+			Job j = new UpdateJpaProjectJob(jpaProject);
+			j.setRule(rule);
+			return j;
+		}
+
+		/**
+		 * Stop the job if it is currently running, reschedule it to
+		 * run again, and return without waiting.
+		 */
+		protected synchronized void schedule() {
+			if (this.job != null) {
+				this.job.cancel();
+				this.job.schedule();
+			}
+		}
+
+		/**
+		 * Stop the job if it is currently running, reschedule it to
+		 * run again, and wait until it is finished.
+		 */
+		protected synchronized void scheduleAndWait() {
+			if (this.job != null) {
+				this.job.cancel();
+				this.join();
+				this.job.schedule();
+				this.join();
+			}
+		}
+
+		/**
+		 * Stop the job if it is currently running, wait until
+		 * it is finished, then clear the job out so it cannot
+		 * be scheduled again.
+		 */
+		protected synchronized void dispose() {
+			if (this.job != null) {
+				this.job.cancel();
+				this.join();
+				this.job = null;
+			}
+		}
+
+		protected synchronized void join() {
+			try {
+				this.job.join();
+			} catch (InterruptedException ex) {
+				// the thread was interrupted while waiting, job must be finished
+			}
+		}
+
+		protected static class UpdateJpaProjectJob extends Job {
+			protected final IJpaProject jpaProject;
+
+			protected UpdateJpaProjectJob(IJpaProject jpaProject) {
+				super("Update JPA project");  // TODO i18n
+				this.jpaProject = jpaProject;
+			}
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				return this.jpaProject.update(monitor);
+			}
+
+		}
+
 	}
 }

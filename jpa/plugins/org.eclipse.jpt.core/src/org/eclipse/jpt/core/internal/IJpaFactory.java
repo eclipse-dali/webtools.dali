@@ -1,14 +1,16 @@
 /*******************************************************************************
  * Copyright (c) 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic;
 import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable;
 import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded;
@@ -34,8 +36,14 @@ import org.eclipse.jpt.core.internal.platform.BaseJpaFactory;
  * for creating new mappings types.
  * @see BaseJpaFactory
  */
-public interface IJpaFactory
-{
+public interface IJpaFactory {
+
+	IJpaProject createJpaProject(IJpaProject.Config config) throws CoreException;
+
+	IJpaDataSource createDataSource(IJpaProject jpaProject, String connectionProfileName);
+
+	IJpaFile createJpaFile(IJpaProject jpaProject, IFile file, IJpaFileContentProvider provider);
+
 	IJavaEntity createJavaEntity(Type type);
 	
 	IJavaEmbeddable createJavaEmbeddable(Type type);
@@ -61,4 +69,5 @@ public interface IJpaFactory
 	IJavaTransient createJavaTransient(Attribute attribute);
 	
 	IJavaVersion createJavaVersion(Attribute attribute);
+
 }
