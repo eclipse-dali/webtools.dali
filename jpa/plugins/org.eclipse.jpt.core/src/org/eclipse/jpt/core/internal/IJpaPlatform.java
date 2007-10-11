@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.internal;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.core.internal.context.IContextModel;
+import org.eclipse.jpt.core.internal.context.IContextModelFactory;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;

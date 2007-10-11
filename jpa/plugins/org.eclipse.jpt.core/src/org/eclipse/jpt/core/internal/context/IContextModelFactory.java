@@ -8,7 +8,9 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal;
+package org.eclipse.jpt.core.internal.context;
+
+import org.eclipse.jpt.core.internal.IJpaProject;
 
 
 public interface IContextModelFactory

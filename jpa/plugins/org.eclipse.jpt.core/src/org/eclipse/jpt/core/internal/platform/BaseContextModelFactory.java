@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import org.eclipse.jpt.core.internal.IContextModel;
-import org.eclipse.jpt.core.internal.IContextModelFactory;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.BaseContextModel;
+import org.eclipse.jpt.core.internal.context.IContextModel;
+import org.eclipse.jpt.core.internal.context.IContextModelFactory;
 
 public class BaseContextModelFactory implements IContextModelFactory
 {

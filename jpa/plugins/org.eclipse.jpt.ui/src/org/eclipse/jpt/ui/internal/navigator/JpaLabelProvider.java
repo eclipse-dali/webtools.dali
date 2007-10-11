@@ -13,7 +13,7 @@ package org.eclipse.jpt.ui.internal.navigator;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jpt.core.internal.IContextModel;
+import org.eclipse.jpt.core.internal.context.IContextModel;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IMemento;
