@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ArrayList;
@@ -187,13 +196,13 @@ public class UniqueConstraintImpl extends AbstractResource<Member> implements Ne
 		return new NestedIndexedDeclarationAnnotationAdapter(TableImpl.DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
 	}
 
-//	static UniqueConstraint createTableGeneratorUniqueConstraint(UniqueConstraint.Owner owner, Member member, int index) {
-//		return new UniqueConstraintImpl(owner, member, buildTableGeneratorUniqueConstraintAnnotationAdapter(index));
-//	}
-//
-//	private static IndexedDeclarationAnnotationAdapter buildTableGeneratorUniqueConstraintAnnotationAdapter(int index) {
-//		return new NestedIndexedDeclarationAnnotationAdapter(TableGenerator.DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE_GENERATOR__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
-//	}	
+	static NestableUniqueConstraint createTableGeneratorUniqueConstraint(UniqueConstraint.Owner owner, Member member, int index) {
+		return new UniqueConstraintImpl(owner, member, buildTableGeneratorUniqueConstraintAnnotationAdapter(index));
+	}
+
+	private static IndexedDeclarationAnnotationAdapter buildTableGeneratorUniqueConstraintAnnotationAdapter(int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(TableGeneratorImpl.DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE_GENERATOR__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
+	}	
 
 
 }

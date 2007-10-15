@@ -48,7 +48,9 @@ import org.eclipse.jpt.core.internal.resource.java.OneToManyAnnotationDefinition
 import org.eclipse.jpt.core.internal.resource.java.OneToOneAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTableAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTablesAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.SequenceGeneratorAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TableAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.TableGeneratorAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TransientAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.VersionAnnotationDefinition;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -161,6 +163,8 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		definitions.add(SecondaryTableAnnotationDefinition.instance());
 		definitions.add(SecondaryTablesAnnotationDefinition.instance());
 		definitions.add(IdClassAnnotationDefinition.instance());
+		definitions.add(TableGeneratorAnnotationDefinition.instance());
+		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
 	}
 	
 	protected ListIterator<MappingAnnotationDefinition> attributeMappingAnnotationDefinitions() {
@@ -208,6 +212,8 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		definitions.add(JoinColumnAnnotationDefinition.instance());
 		definitions.add(JoinColumnsAnnotationDefinition.instance());
 		definitions.add(GeneratedValueAnnotationDefinition.instance());
+		definitions.add(TableGeneratorAnnotationDefinition.instance());
+		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
 		definitions.add(JoinTableAnnotationDefinition.instance());
 	}
 	

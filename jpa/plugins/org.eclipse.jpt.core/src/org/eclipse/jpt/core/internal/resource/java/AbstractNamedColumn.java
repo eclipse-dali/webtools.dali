@@ -48,7 +48,7 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 		return new ConversionDeclarationAnnotationElementAdapter<String>(getDeclarationAnnotationAdapter(), elementName, BooleanStringExpressionConverter.instance());
 	}
 
-	protected DeclarationAnnotationElementAdapter<String> buildIntElementAdapter(String elementName) {
+	protected DeclarationAnnotationElementAdapter<String> buildNumberElementAdapter(String elementName) {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(getDeclarationAnnotationAdapter(), elementName, NumberStringExpressionConverter.instance());
 	}
 
@@ -65,7 +65,7 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 	}
 
 	protected IntAnnotationElementAdapter buildShortCircuitIntElementAdapter(String elementName) {
-		return new IntAnnotationElementAdapter(this.buildShortCircuitElementAdapter(this.buildIntElementAdapter(elementName)));
+		return new IntAnnotationElementAdapter(this.buildShortCircuitElementAdapter(this.buildNumberElementAdapter(elementName)));
 	}
 
 	protected abstract String nameElementName();
