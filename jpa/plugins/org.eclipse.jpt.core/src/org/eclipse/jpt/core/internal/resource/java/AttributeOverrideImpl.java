@@ -58,6 +58,7 @@ public class AttributeOverrideImpl
 		getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
 	
+	//TODO any tests that hit this??
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		setName(((AttributeOverride) oldAnnotation).getName());
 	}

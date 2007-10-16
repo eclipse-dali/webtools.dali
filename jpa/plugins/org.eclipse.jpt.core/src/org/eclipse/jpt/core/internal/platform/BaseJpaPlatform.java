@@ -45,6 +45,10 @@ import org.eclipse.jpt.core.internal.resource.java.ManyToManyAnnotationDefinitio
 import org.eclipse.jpt.core.internal.resource.java.ManyToOneAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclassAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.MappingAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueriesAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueryAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.NamedQueriesAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.NamedQueryAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.OneToManyAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.OneToOneAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTableAnnotationDefinition;
@@ -169,6 +173,10 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		definitions.add(IdClassAnnotationDefinition.instance());
 		definitions.add(TableGeneratorAnnotationDefinition.instance());
 		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
+		definitions.add(NamedQueryAnnotationDefinition.instance());
+		definitions.add(NamedQueriesAnnotationDefinition.instance());
+		definitions.add(NamedNativeQueryAnnotationDefinition.instance());
+		definitions.add(NamedNativeQueriesAnnotationDefinition.instance());
 	}
 	
 	protected ListIterator<MappingAnnotationDefinition> attributeMappingAnnotationDefinitions() {

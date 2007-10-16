@@ -1,14 +1,11 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.TypeLiteral;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConverter;
@@ -58,19 +55,11 @@ public class IdClassImpl extends AbstractAnnotationResource<Type> implements IdC
 		this.setFullyQualifiedClass(fullyQualifiedClass(astRoot));
 	}
 
-	//TODO copied from AbstractRelationshipMappingAnnotation
 	private String fullyQualifiedClass(CompilationUnit astRoot) {
 		if (getValue() == null) {
 			return null;
 		}
-		Expression expression = this.valueAdapter.expression(astRoot);
-		if (expression.getNodeType() == ASTNode.TYPE_LITERAL) {
-			ITypeBinding resolvedTypeBinding = ((TypeLiteral) expression).getType().resolveBinding();
-			if (resolvedTypeBinding != null) {
-				return resolvedTypeBinding.getQualifiedName();
-			}
-		}
-		return null;
+		return JDTTools.resolveFullyQualifiedName(this.valueAdapter.expression(astRoot));
 	}
 	
 	// ********** static methods **********

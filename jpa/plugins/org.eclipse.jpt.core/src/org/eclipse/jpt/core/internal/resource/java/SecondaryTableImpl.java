@@ -56,6 +56,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 		getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
 	
+	//TODO any tests that hit this??
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		setName(((SecondaryTable) oldAnnotation).getName());
 		setCatalog(((SecondaryTable) oldAnnotation).getCatalog());

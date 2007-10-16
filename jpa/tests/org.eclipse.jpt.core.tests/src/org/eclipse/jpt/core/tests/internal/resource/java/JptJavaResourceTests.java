@@ -50,6 +50,12 @@ public class JptJavaResourceTests {
 		suite.addTestSuite(SequenceGeneratorTests.class);
 		suite.addTestSuite(TableGeneratorTests.class);
 		suite.addTestSuite(IdClassTests.class);
+		suite.addTestSuite(NamedQueryTests.class);
+		suite.addTestSuite(NamedQueriesTests.class);
+		suite.addTestSuite(NamedNativeQueryTests.class);
+		suite.addTestSuite(NamedNativeQueriesTests.class);
+		suite.addTestSuite(QueryHintTests.class);
+		
 		return suite;
 	}
 

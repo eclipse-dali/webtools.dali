@@ -41,12 +41,14 @@ public class AttributeOverridesTests extends AnnotationTestCase {
 	}
 	
 	private void createAttributeOverrideAnnotation() throws Exception {
+		createColumnAnnotation();
 		this.createAnnotationAndMembers("AttributeOverride", 
 			"String name(); " +
 			"Column column(); ");
 	}
 	
 	private void createAttributeOverridesAnnotation() throws Exception {
+		createAttributeOverrideAnnotation();
 		this.createAnnotationAndMembers("AttributeOverrides", 
 			"AttributeOverride[] value();");
 	}
@@ -67,8 +69,6 @@ public class AttributeOverridesTests extends AnnotationTestCase {
 
 	private IType createTestAttributeOverrideOnField() throws Exception {
 		createAttributeOverridesAnnotation();
-		createAttributeOverrideAnnotation();
-		createColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -82,9 +82,7 @@ public class AttributeOverridesTests extends AnnotationTestCase {
 	}
 	
 	private IType createTestAttributeOverrideWithColumnOnField() throws Exception {
-		createAttributeOverrideAnnotation();
 		createAttributeOverridesAnnotation();
-		createColumnAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

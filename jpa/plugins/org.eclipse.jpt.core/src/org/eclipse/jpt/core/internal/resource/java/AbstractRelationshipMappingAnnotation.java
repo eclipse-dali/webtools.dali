@@ -10,11 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.TypeLiteral;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -23,6 +19,7 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdap
 import org.eclipse.jpt.core.internal.jdtutility.EnumArrayDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ExpressionConverter;
+import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitArrayAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConverter;
@@ -186,14 +183,7 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 		if (getTargetEntity() == null) {
 			return null;
 		}
-		Expression expression = this.targetEntityAdapter.expression(astRoot);
-		if (expression.getNodeType() == ASTNode.TYPE_LITERAL) {
-			ITypeBinding resolvedTypeBinding = ((TypeLiteral) expression).getType().resolveBinding();
-			if (resolvedTypeBinding != null) {
-				return resolvedTypeBinding.getQualifiedName();
-			}
-		}
-		return null;
+		return JDTTools.resolveFullyQualifiedName(this.targetEntityAdapter.expression(astRoot));
 	}
 
 	// ********** static methods **********

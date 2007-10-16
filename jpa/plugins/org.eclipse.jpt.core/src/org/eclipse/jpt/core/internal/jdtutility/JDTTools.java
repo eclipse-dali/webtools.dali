@@ -23,6 +23,7 @@ import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.Name;
+import org.eclipse.jdt.core.dom.TypeLiteral;
 
 public class JDTTools {
 
@@ -114,6 +115,16 @@ public class JDTTools {
 			return null;
 		}
 		return annotationTypeBinding.getQualifiedName();
+	}
+	
+	public static String resolveFullyQualifiedName(Expression expression) {
+		if (expression.getNodeType() == ASTNode.TYPE_LITERAL) {
+			ITypeBinding resolvedTypeBinding = ((TypeLiteral) expression).getType().resolveBinding();
+			if (resolvedTypeBinding != null) {
+				return resolvedTypeBinding.getQualifiedName();
+			}
+		}
+		return null;
 	}
 
 }

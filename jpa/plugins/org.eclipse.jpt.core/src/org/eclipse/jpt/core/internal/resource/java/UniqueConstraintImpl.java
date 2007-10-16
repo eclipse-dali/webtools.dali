@@ -29,16 +29,12 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class UniqueConstraintImpl extends AbstractResource<Member> implements NestableUniqueConstraint
+public class UniqueConstraintImpl extends AbstractAnnotationResource<Member> implements NestableUniqueConstraint
 {
 
 	private final UniqueConstraint.Owner owner;
 	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.UNIQUE_CONSTRAINT);
-
-	private final IndexedDeclarationAnnotationAdapter idaa;
-
-	private final IndexedAnnotationAdapter annotationAdapter;
 
 	private final DeclarationAnnotationElementAdapter<String[]> columnNamesDeclarationAdapter;
 
@@ -48,10 +44,8 @@ public class UniqueConstraintImpl extends AbstractResource<Member> implements Ne
 
 
 	public UniqueConstraintImpl(UniqueConstraint.Owner owner, Member member, IndexedDeclarationAnnotationAdapter idaa) {
-		super(owner.javaResource(), member);
+		super(owner.javaResource(), member, idaa, new MemberIndexedAnnotationAdapter(member, idaa));
 		this.owner = owner;
-		this.idaa = idaa;
-		this.annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
 		this.columnNamesDeclarationAdapter = buildArrayAnnotationElementAdapter(idaa, JPA.UNIQUE_CONSTRAINT__COLUMN_NAMES);
 		this.columnNamesAdapter = this.buildAnnotationElementAdapter(this.columnNamesDeclarationAdapter);
 		this.columnNames = new ArrayList<String>();
@@ -70,12 +64,12 @@ public class UniqueConstraintImpl extends AbstractResource<Member> implements Ne
 	}
 
 	public String getAnnotationName() {
-		// TODO Auto-generated method stub
 		return JPA.UNIQUE_CONSTRAINT;
 	}
 	
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
-		return this.idaa;
+	@Override
+	public IndexedAnnotationAdapter getAnnotationAdapter() {
+		return (IndexedAnnotationAdapter) super.getAnnotationAdapter();
 	}
 	
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
@@ -140,7 +134,7 @@ public class UniqueConstraintImpl extends AbstractResource<Member> implements Ne
 	 * allow owners to verify the annotation
 	 */
 	public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
-		return this.annotationAdapter.getAnnotation(astRoot);
+		return getAnnotationAdapter().getAnnotation(astRoot);
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
@@ -160,15 +154,15 @@ public class UniqueConstraintImpl extends AbstractResource<Member> implements Ne
 
 	// ********** persistence model -> java annotations **********
 	public void moveAnnotation(int newIndex) {
-		this.annotationAdapter.moveAnnotation(newIndex);
+		getAnnotationAdapter().moveAnnotation(newIndex);
 	}
 
 	public void newAnnotation() {
-		this.annotationAdapter.newMarkerAnnotation();
+		getAnnotationAdapter().newMarkerAnnotation();
 	}
 
 	public void removeAnnotation() {
-		this.annotationAdapter.removeAnnotation();
+		getAnnotationAdapter().removeAnnotation();
 	}
 
 	// ********** static methods **********

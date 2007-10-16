@@ -465,4 +465,25 @@ public class JoinTableTests extends AnnotationTestCase {
 		table.moveJoinColumn(1, 0);
 		assertSourceContains("@JoinTable(joinColumns={@JoinColumn, @JoinColumn(name=\"BAR\")})");
 	}
+	
+	public void testSetJoinColumnName() throws Exception {
+		IType testType = this.createTestJoinTableWithJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+				
+		ListIterator<JoinColumn> iterator = table.joinColumns();
+		assertEquals(2, CollectionTools.size(iterator));
+		
+		JoinColumn joinColumn = table.joinColumns().next();
+		
+		assertEquals("BAR", joinColumn.getName());
+		
+		joinColumn.setName("foo");
+		assertEquals("foo", joinColumn.getName());
+		
+		assertSourceContains("@JoinTable(joinColumns={@JoinColumn(name=\"foo\"), @JoinColumn})");
+	}
+
 }

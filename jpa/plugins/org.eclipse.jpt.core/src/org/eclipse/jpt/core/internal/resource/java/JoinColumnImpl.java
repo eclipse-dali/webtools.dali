@@ -95,7 +95,7 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 	}
 	
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		// TODO Auto-generated method stub
+		// TODO add tests and support this
 		
 	}
 	

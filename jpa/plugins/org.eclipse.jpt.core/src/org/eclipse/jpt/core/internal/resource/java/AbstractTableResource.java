@@ -214,7 +214,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		}
 
 		public void move(int oldIndex, int newIndex) {
-			AbstractTableResource.this.uniqueConstraints.add(newIndex, AbstractTableResource.this.uniqueConstraints.remove(oldIndex));
+			AbstractTableResource.this.moveUniqueConstraint(oldIndex, newIndex);
 		}
 
 		public NestableUniqueConstraint nestedAnnotationAt(int index) {
@@ -235,7 +235,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		}
 
 		public int nestedAnnotationsSize() {
-			return AbstractTableResource.this.uniqueConstraints.size();
+			return AbstractTableResource.this.uniqueConstraintsSize();
 		}
 
 		public void remove(NestableUniqueConstraint uniqueConstraint) {
