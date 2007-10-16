@@ -2,18 +2,15 @@
  * <copyright>
  * </copyright>
  *
- * $Id: SequenceGenerator.java,v 1.1.2.1 2007/09/17 20:49:50 pfullbright Exp $
+ * $Id: SequenceGenerator.java,v 1.1.2.2 2007/10/16 17:01:40 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.jpt.core.internal.JpaEObject;
+import org.eclipse.jpt.core.internal.resource.common.IJptEObject;
+import org.eclipse.jpt.core.internal.resource.common.JptEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,9 +29,10 @@ import org.eclipse.jpt.core.internal.JpaEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSequenceGenerator()
  * @model kind="class"
+ * @extends IJptEObject
  * @generated
  */
-public class SequenceGenerator extends JpaEObject implements EObject
+public class SequenceGenerator extends JptEObject implements IJptEObject
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.

@@ -48,6 +48,7 @@ public class JptUtilityIteratorsTests {
 
 	private JptUtilityIteratorsTests() {
 		super();
+		throw new UnsupportedOperationException();
 	}
 
 }

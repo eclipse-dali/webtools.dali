@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
-import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IResourceModel;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.utility.internal.BitTools;
@@ -23,16 +23,16 @@ public class JavaResourceModel implements IResourceModel
 {
 	private final JpaCompilationUnitResource compilationUnitResource;
 	
-	public JavaResourceModel(IJpaFile jpaFile) {
+	public JavaResourceModel(IFile file) {
 		super();
 		//TODO passing IJpaPlatform in because IJpaFile has no parent yet.
 		//I believe this should change once brian's changes to remove emf from the top-level
 		//model have been checked in.
-		this.compilationUnitResource = buildJpaCompilationUnit(jpaFile);
+		this.compilationUnitResource = buildJpaCompilationUnit(file);
 	}
 	
-	protected JpaCompilationUnitResource buildJpaCompilationUnit(IJpaFile jpaFile) {
-		return new JpaCompilationUnitResource(jpaFile);
+	protected JpaCompilationUnitResource buildJpaCompilationUnit(IFile file) {
+		return new JpaCompilationUnitResource(file);
 	}
 	
 	public String getResourceType() {

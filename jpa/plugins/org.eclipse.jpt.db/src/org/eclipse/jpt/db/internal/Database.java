@@ -12,7 +12,6 @@ package org.eclipse.jpt.db.internal;
 import java.text.Collator;
 import java.util.Iterator;
 import java.util.Set;
-
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 

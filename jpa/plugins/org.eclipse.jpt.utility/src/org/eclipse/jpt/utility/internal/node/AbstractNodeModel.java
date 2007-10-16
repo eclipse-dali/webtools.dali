@@ -19,7 +19,6 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -149,49 +148,9 @@ public abstract class AbstractNodeModel
 	//	super.initialize(parentNode);
 	}
 
-	/**
-	 * Build a change support object that will notify the node
-	 * when one of the node's aspects has changed.
-	 * @see #aspectChanged(String)
-	 */
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new ChangeSupport(this) {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected ChangeEventDispatcher dispatcher() {
-				return AbstractNodeModel.this.changeEventDispatcher();
-			}
-			@Override
-			protected ChangeSupport buildChildChangeSupport() {
-				return AbstractNodeModel.this.buildChildChangeSupport();
-			}
-			@Override
-			protected void sourceChanged(String aspectName) {
-				super.sourceChanged(aspectName);
-				AbstractNodeModel.this.aspectChanged(aspectName);
-			}
-		};
-	}
-
-	/**
-	 * The aspect-specific change support objects do not need to
-	 * notify the node of changes (the parent will take care of that);
-	 * nor do they need to build "grandchildren" change support objects.
-	 */
-	protected ChangeSupport buildChildChangeSupport() {
-		return new ChangeSupport(this) {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected ChangeEventDispatcher dispatcher() {
-				return AbstractNodeModel.this.changeEventDispatcher();
-			}
-			@Override
-			protected ChangeSupport buildChildChangeSupport() {
-				// there are no grandchildren
-				throw new UnsupportedOperationException();
-			}
-		};
+		return new LocalChangeSupport(this);
 	}
 
 
@@ -224,8 +183,9 @@ public abstract class AbstractNodeModel
 	 * INTRA-TREE API?
 	 * Return the node's parent in the containment hierarchy.
 	 * Most nodes must have a parent.
+	 * @see #children()
 	 */
-	public final Node parent() {
+	public Node parent() {
 		return this.parent;
 	}
 
@@ -246,9 +206,10 @@ public abstract class AbstractNodeModel
 	 * Return the node's children, which are also nodes.
 	 * Do NOT override this method.
 	 * Override #addChildrenTo(List).
+	 * @see #parent()
 	 * @see #addChildrenTo(java.util.List)
 	 */
-	public final Iterator<Node> children() {
+	public Iterator<? extends Node> children() {
 		List<Node> children = new ArrayList<Node>();
 		this.addChildrenTo(children);
 		return children.iterator();
@@ -266,10 +227,21 @@ public abstract class AbstractNodeModel
 	}
 
 	/**
+	 * INTRA-TREE API?
+	 * Return the containment hierarchy's root node.
+	 * Most nodes must have a root.
+	 * @see #parent()
+	 */
+	public Node root() {
+		Node p = this.parent;
+		return (p == null) ? this : p.parent();
+	}
+
+	/**
 	 * Return whether the node is a descendant of the specified node.
 	 * By definition, a node is a descendant of itself.
 	 */
-	public final boolean isDescendantOf(Node node) {
+	public boolean isDescendantOf(Node node) {
 		return (this == node) || this.parentIsDescendantOf(node);
 	}
 
@@ -283,7 +255,7 @@ public abstract class AbstractNodeModel
 	 * objects that are "referenced" by another object, as opposed
 	 * to "owned" by another object.
 	 */
-	public final Iterator<Node> branchReferences() {
+	public Iterator<Node> branchReferences() {
 		Collection<Node> branchReferences = new ArrayList<Node>(1000);		// start big
 		this.addBranchReferencesTo(branchReferences);
 		return branchReferences.iterator();
@@ -300,8 +272,8 @@ public abstract class AbstractNodeModel
 	 * @see Reference
 	 * @see #children()
 	 */
-	public final void addBranchReferencesTo(Collection<Node> branchReferences) {
-		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
+	public void addBranchReferencesTo(Collection<Node> branchReferences) {
+		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.addBranchReferencesTo(branchReferences);
 		}
@@ -313,7 +285,7 @@ public abstract class AbstractNodeModel
 	 * in "depth-first" order.
 	 * Only really used for testing and debugging.
 	 */
-	public final Iterator<Node> allNodes() {
+	public Iterator<Node> allNodes() {
 		Collection<Node> nodes = new ArrayList<Node>(1000);		// start big
 		this.addAllNodesTo(nodes);
 		return nodes.iterator();
@@ -325,9 +297,9 @@ public abstract class AbstractNodeModel
 	 * including the node itself, to the specified collection.
 	 * Only really used for testing and debugging.
 	 */
-	public final void addAllNodesTo(Collection<Node> nodes) {
+	public void addAllNodesTo(Collection<Node> nodes) {
 		nodes.add(this);
-		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.addAllNodesTo(nodes);
 		}
@@ -346,7 +318,7 @@ public abstract class AbstractNodeModel
 	 * @see #isDescendantOf(Node)
 	 */
 	public void nodeRemoved(Node node) {
-		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.nodeRemoved(node);
 		}
@@ -373,7 +345,7 @@ public abstract class AbstractNodeModel
 	 * @see #isDescendantOf(Node)
 	 */
 	public void nodeRenamed(Node node) {
-		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.nodeRenamed(node);
 		}
@@ -440,8 +412,12 @@ public abstract class AbstractNodeModel
 		}
 		if (this.aspectChangeRequiresValidation(aspectName)) {
 			// System.out.println(Thread.currentThread() + " validation change: " + this + ": " + aspectName);
-			this.validator().validate();
+			this.validate();
 		}
+	}
+
+	protected void validate() {
+		this.validator().validate();
 	}
 
 	/**
@@ -560,7 +536,7 @@ public abstract class AbstractNodeModel
 	 */
 	public final void markEntireBranchDirty() {
 		this.markDirty();
-		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.markEntireBranchDirty();
 		}
@@ -594,7 +570,7 @@ public abstract class AbstractNodeModel
 	 * Not the best of method names.... :-(
 	 */
 	public final void cascadeMarkEntireBranchClean() {
-		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.cascadeMarkEntireBranchClean();
 		}
@@ -618,7 +594,7 @@ public abstract class AbstractNodeModel
 			return;
 		}
 
-		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			if (child.isDirtyBranch()) {
 				return;
@@ -794,7 +770,7 @@ public abstract class AbstractNodeModel
 	 */
 	public boolean validateBranchInternal() {
 		// rebuild "branch" problems in children first
-		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			// ignore the return value because we are going to rebuild our "branch"
 			// problems no matter what, to see if they have changed
@@ -839,7 +815,7 @@ public abstract class AbstractNodeModel
 
 		this.branchProblems.clear();
 		this.branchProblems.addAll(this.problems);
-		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.addBranchProblemsTo(this.branchProblems);
 		}
@@ -909,7 +885,7 @@ public abstract class AbstractNodeModel
 		if (this.branchProblems.isEmpty()) {
 			return false;
 		}
-		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			// ignore the return value because we are going to clear our "branch"
 			// problems no matter what
@@ -993,6 +969,65 @@ public abstract class AbstractNodeModel
 	@Override
 	public final String toString() {
 		return super.toString();
+	}
+
+
+	// ********** member classes **********
+
+	/**
+	 * This change support class will:
+	 *   - notify the source node when one of the node's aspects has changed
+	 *   - allow the source node to supply the change event dispatcher
+	 *   - build a custom "child" change support
+	 * @see AbstractNodeModel#aspectChanged(String)
+	 * @see AbstractNodeModel#changeEventDispatcher()
+	 * @see AbstractNodeModel.LocalChildChangeSupport
+	 */
+	protected static class LocalChangeSupport extends ChangeSupport {
+		private static final long serialVersionUID = 1L;
+		public LocalChangeSupport(AbstractNodeModel source) {
+			super(source);
+		}
+		protected AbstractNodeModel sourceNode() {
+			return (AbstractNodeModel) this.source;
+		}
+		@Override
+		protected ChangeEventDispatcher dispatcher() {
+			return this.sourceNode().changeEventDispatcher();
+		}
+		@Override
+		protected ChangeSupport buildChildChangeSupport() {
+			return new LocalChildChangeSupport(this.sourceNode());
+		}
+		@Override
+		protected void sourceChanged(String aspectName) {
+			super.sourceChanged(aspectName);
+			this.sourceNode().aspectChanged(aspectName);
+		}
+	}
+
+	/**
+	 * The aspect-specific change support class does not need to
+	 * notify the source node of changes (the parent will take care of that);
+	 * nor does it need to build "grandchildren" change support objects.
+	 */
+	protected static class LocalChildChangeSupport extends ChangeSupport {
+		private static final long serialVersionUID = 1L;
+		public LocalChildChangeSupport(AbstractNodeModel source) {
+			super(source);
+		}
+		protected AbstractNodeModel sourceNode() {
+			return (AbstractNodeModel) this.source;
+		}
+		@Override
+		protected ChangeEventDispatcher dispatcher() {
+			return this.sourceNode().changeEventDispatcher();
+		}
+		@Override
+		protected ChangeSupport buildChildChangeSupport() {
+			// there are no grandchildren
+			throw new UnsupportedOperationException();
+		}
 	}
 
 }

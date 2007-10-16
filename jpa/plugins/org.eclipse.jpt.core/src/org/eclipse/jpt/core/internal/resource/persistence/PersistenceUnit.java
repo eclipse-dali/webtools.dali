@@ -16,13 +16,13 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.JpaEObject;
+import org.eclipse.jpt.core.internal.resource.common.IJptEObject;
+import org.eclipse.jpt.core.internal.resource.common.JptEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -48,9 +48,10 @@ import org.eclipse.jpt.core.internal.JpaEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit()
  * @model kind="class"
+ * @extends IJptEObject
  * @generated
  */
-public class PersistenceUnit extends JpaEObject implements EObject
+public class PersistenceUnit extends JptEObject implements IJptEObject
 {
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.

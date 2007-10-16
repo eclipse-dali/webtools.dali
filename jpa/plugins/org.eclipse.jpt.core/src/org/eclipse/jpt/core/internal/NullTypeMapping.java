@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.Iterator;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.internal.mappings.ITable;
 import org.eclipse.jpt.db.internal.Schema;
@@ -28,7 +27,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
  * @model kind="class"
  * @generated
  */
-public class NullTypeMapping extends JpaEObject
+public class NullTypeMapping
 	implements ITypeMapping, IJpaSourceObject
 {
 	/**
@@ -58,16 +57,6 @@ public class NullTypeMapping extends JpaEObject
 	 */
 	protected NullTypeMapping() {
 		super();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass() {
-		return JpaCorePackage.Literals.NULL_TYPE_MAPPING;
 	}
 
 	/**
@@ -122,90 +111,6 @@ public class NullTypeMapping extends JpaEObject
 
 	public ITextRange validationTextRange() {
 		throw new UnsupportedOperationException("validationTextRange()");
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case JpaCorePackage.NULL_TYPE_MAPPING__NAME :
-				return getName();
-			case JpaCorePackage.NULL_TYPE_MAPPING__TABLE_NAME :
-				return getTableName();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case JpaCorePackage.NULL_TYPE_MAPPING__NAME :
-				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
-			case JpaCorePackage.NULL_TYPE_MAPPING__TABLE_NAME :
-				return TABLE_NAME_EDEFAULT == null ? getTableName() != null : !TABLE_NAME_EDEFAULT.equals(getTableName());
-		}
-		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == IJpaSourceObject.class) {
-			switch (derivedFeatureID) {
-				default :
-					return -1;
-			}
-		}
-		if (baseClass == ITypeMapping.class) {
-			switch (derivedFeatureID) {
-				case JpaCorePackage.NULL_TYPE_MAPPING__NAME :
-					return JpaCorePackage.ITYPE_MAPPING__NAME;
-				case JpaCorePackage.NULL_TYPE_MAPPING__TABLE_NAME :
-					return JpaCorePackage.ITYPE_MAPPING__TABLE_NAME;
-				default :
-					return -1;
-			}
-		}
-		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == IJpaSourceObject.class) {
-			switch (baseFeatureID) {
-				default :
-					return -1;
-			}
-		}
-		if (baseClass == ITypeMapping.class) {
-			switch (baseFeatureID) {
-				case JpaCorePackage.ITYPE_MAPPING__NAME :
-					return JpaCorePackage.NULL_TYPE_MAPPING__NAME;
-				case JpaCorePackage.ITYPE_MAPPING__TABLE_NAME :
-					return JpaCorePackage.NULL_TYPE_MAPPING__TABLE_NAME;
-				default :
-					return -1;
-			}
-		}
-		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	public String getKey() {

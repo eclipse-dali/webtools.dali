@@ -2,14 +2,13 @@
  * <copyright>
  * </copyright>
  *
- * $Id: TemporalType.java,v 1.1.2.1 2007/09/17 20:49:51 pfullbright Exp $
+ * $Id: TemporalType.java,v 1.1.2.2 2007/10/16 17:01:41 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import org.eclipse.emf.common.util.Enumerator;
 
 /**

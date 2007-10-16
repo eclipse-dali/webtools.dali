@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
 public class ColumnAnnotationDefinition implements AnnotationDefinition

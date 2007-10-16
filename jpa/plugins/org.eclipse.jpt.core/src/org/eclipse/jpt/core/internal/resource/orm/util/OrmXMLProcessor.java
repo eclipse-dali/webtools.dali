@@ -2,18 +2,14 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmXMLProcessor.java,v 1.1.2.1 2007/09/17 20:58:27 pfullbright Exp $
+ * $Id: OrmXMLProcessor.java,v 1.1.2.2 2007/10/16 17:01:41 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
 import java.util.Map;
-
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.resource.Resource;
-
 import org.eclipse.emf.ecore.xmi.util.XMLProcessor;
-
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 
 /**

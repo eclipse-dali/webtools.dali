@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.List;
-
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -18,10 +17,10 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JpaEObject;
 import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IJoinTable;
 import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;

@@ -154,9 +154,10 @@ public interface IAssociationOverride extends IOverride
 			IEntity targetEntity = targetEntity();
 			return (targetEntity == null) ? null : targetEntity().primaryDbTable();
 		}
-
+		
 		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
 			return this.associationOverride.getDefaultJoinColumns().contains(joinColumn);
 		}
+
 	}
 }

@@ -10,18 +10,12 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.core.ElementChangedEvent;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>IPersistence File</b></em>'.
- * <!-- end-user-doc -->
- *
- *
- * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaFile()
- * @model kind="class" interface="true" abstract="true"
- * @generated
+ * 
  */
-public interface IJpaFile extends IJpaEObject
+public interface IJpaFile extends IJpaNodeModel
 {
 	/**
 	 * Return the type of resource represented by this JPA file
@@ -44,4 +38,15 @@ public interface IJpaFile extends IJpaEObject
 	 * This may (and often will) be <code>null</code>.
 	 */
 	IJpaContentNode getContentNode(int offset);
+
+	/**
+	 * Forward the Java element changed event to the JPA file's content.
+	 */
+	void javaElementChanged(ElementChangedEvent event);
+
+	/**
+	 * The JPA file has been removed from the JPA project. Clean up any
+	 * hooks to external resources etc.
+	 */
+	void dispose();
 }

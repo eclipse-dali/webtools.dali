@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationE
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
-import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NumberStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 

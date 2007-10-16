@@ -71,10 +71,12 @@ public final class NullConnectionProfile extends ConnectionProfile {
 		// do nothing
 	}
 	
+	@Override
 	public IStatus saveWorkOfflineData() {
 		return Status.CANCEL_STATUS;
 	}
 	
+	@Override
 	public IStatus workOffline() {
 		return Status.CANCEL_STATUS;
 	}
@@ -172,10 +174,12 @@ public final class NullConnectionProfile extends ConnectionProfile {
 		return false;
 	}
 	
+	@Override
 	public boolean supportsWorkOfflineMode() {
 		return false;
 	}
 	
+	@Override
 	public boolean canWorkOffline() {
 		return false;
 	}

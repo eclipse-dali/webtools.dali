@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.internal.iterators;
 import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 

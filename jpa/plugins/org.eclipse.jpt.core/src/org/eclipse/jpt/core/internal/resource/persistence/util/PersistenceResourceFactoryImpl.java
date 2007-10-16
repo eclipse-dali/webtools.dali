@@ -2,14 +2,12 @@
  * <copyright>
  * </copyright>
  *
- * $Id: PersistenceResourceFactoryImpl.java,v 1.1.2.1 2007/09/17 20:58:28 pfullbright Exp $
+ * $Id: PersistenceResourceFactoryImpl.java,v 1.1.2.2 2007/10/16 17:01:41 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.persistence.util;
 
 import org.eclipse.emf.common.util.URI;
-
 import org.eclipse.emf.ecore.resource.Resource;
-
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 
 /**

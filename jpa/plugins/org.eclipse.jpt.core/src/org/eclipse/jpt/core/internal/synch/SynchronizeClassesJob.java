@@ -48,7 +48,7 @@ public class SynchronizeClassesJob extends Job
 			return Status.CANCEL_STATUS;
 		}
 		
-		IJpaFile jpaFile = JptCorePlugin.getJpaFile(this.persistenceXmlFile);
+		IJpaFile jpaFile = JptCorePlugin.jpaFile(this.persistenceXmlFile);
 		PersistenceResourceModel resource;
 		try {
 			resource = (PersistenceResourceModel) jpaFile.getResourceModel();

@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.internal.node;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 
 /**
@@ -25,7 +24,7 @@ import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
  * 	- Thread.interrupt()
  * 	- set the "continue" flag to false
  * For now, these two are equivalent; but in the future we might
- * pass the "continue" flag to the Node.validate(Node.ProblemSynchronizer)
+ * pass the "continue" flag to the Node.validateBranch()
  * method so we can short-circuit the validation instead of waiting
  * until the entire branch is validated.
  */

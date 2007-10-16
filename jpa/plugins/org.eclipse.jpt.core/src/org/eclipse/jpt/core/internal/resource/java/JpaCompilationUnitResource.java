@@ -9,13 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
@@ -38,15 +39,15 @@ public class JpaCompilationUnitResource implements JavaResource
 	//TODO passing IJpaPlatform in because IJpaFile has no parent yet.
 	//I believe this should change once brian's changes to remove emf from the top-level
 	//model have been checked in.
-	public JpaCompilationUnitResource(IJpaFile jpaFile) {
+	public JpaCompilationUnitResource(IFile file) {
 		super();
-		this.jpaPlatform = jpaFile.jpaPlatform();
-		this.compilationUnit = compilationUnitFrom(jpaFile);
+		this.jpaPlatform = JptCorePlugin.jpaPlatform(file.getProject());
+		this.compilationUnit = compilationUnitFrom(file);
 		updateFromJava(astRoot());
 	}
 	
-	private ICompilationUnit compilationUnitFrom(IJpaFile jpaFile) {
-		ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(jpaFile.getFile());
+	private ICompilationUnit compilationUnitFrom(IFile file) {
+		ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(file);
 		try {
 			compilationUnit.open(null);
 		}

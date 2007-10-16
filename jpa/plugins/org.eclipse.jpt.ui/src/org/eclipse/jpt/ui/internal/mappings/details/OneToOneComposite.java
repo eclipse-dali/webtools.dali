@@ -40,6 +40,10 @@ public class OneToOneComposite extends BaseJpaComposite
 		super(parent, SWT.NULL, commandStack, widgetFactory);
 	}
 	
+	protected IOneToOne getOneToOne() {
+		return this.oneToOne;
+	}
+	
 	@Override
 	protected void initializeLayout(Composite composite) {
 		GridLayout layout = new GridLayout();
@@ -55,7 +59,7 @@ public class OneToOneComposite extends BaseJpaComposite
 
 	}
 	
-	private Control buildGeneralComposite(Composite composite) {
+	protected Control buildGeneralComposite(Composite composite) {
 //		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 		
 		Composite generalComposite = getWidgetFactory().createComposite(composite);
@@ -63,66 +67,133 @@ public class OneToOneComposite extends BaseJpaComposite
 		layout.marginWidth = 0;
 		generalComposite.setLayout(layout);	
 		
-		this.targetEntityChooser = CommonWidgets.buildTargetEntityChooser(generalComposite, this.commandStack, getWidgetFactory());
+		TargetEntityChooser targetEntityChooser = getTargetEntityChooser(generalComposite);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalSpan = 2;
-		this.targetEntityChooser.getControl().setLayoutData(gridData);
+		targetEntityChooser.getControl().setLayoutData(gridData);
 		
 
 		CommonWidgets.buildFetchLabel(generalComposite, getWidgetFactory());
-		this.fetchTypeComboViewer = CommonWidgets.buildFetchTypeComboViewer(generalComposite, this.commandStack, getWidgetFactory());
+		EnumComboViewer fetchTypeComboViewer = getFetchTypeComboViewer(generalComposite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
-		this.fetchTypeComboViewer.getControl().setLayoutData(gridData);
+		fetchTypeComboViewer.getControl().setLayoutData(gridData);
 
 		CommonWidgets.buildMappedByLabel(generalComposite, getWidgetFactory());
-		this.mappedByCombo = new MappedByCombo(generalComposite, this.commandStack, getWidgetFactory());
+		MappedByCombo mappedByCombo = getMappedByCombo(generalComposite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
-		this.mappedByCombo.getControl().setLayoutData(gridData);
+		mappedByCombo.getControl().setLayoutData(gridData);
 		
 		CommonWidgets.buildOptionalLabel(generalComposite, getWidgetFactory());
-		this.optionalComboViewer = CommonWidgets.buildEnumComboViewer(generalComposite, this.commandStack, getWidgetFactory());
+		EnumComboViewer optionalComboViewer = getOptionalComboViewer(generalComposite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
-		this.optionalComboViewer.getControl().setLayoutData(gridData);
+		optionalComboViewer.getControl().setLayoutData(gridData);
 
-		this.cascadeComposite = new CascadeComposite(generalComposite, this.commandStack, getWidgetFactory());
+		CascadeComposite cascadeComposite = getCascadeComposite(generalComposite);
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		this.cascadeComposite.getControl().setLayoutData(gridData);
+		cascadeComposite.getControl().setLayoutData(gridData);
 
-		this.joinColumnComposite = new JoinColumnComposite(generalComposite, this.commandStack, getWidgetFactory());
+		JoinColumnComposite joinColumnComposite = getJoinColumnComposite(generalComposite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalSpan = 2;
-		this.joinColumnComposite.getControl().setLayoutData(gridData);	
+		joinColumnComposite.getControl().setLayoutData(gridData);	
 
 		return generalComposite;
 	}
 
+	protected TargetEntityChooser getTargetEntityChooser(Composite parentComposite) {
+		if (this.targetEntityChooser == null) {
+			this.targetEntityChooser = createTargetEntityChooser(parentComposite);
+		}
+		return this.targetEntityChooser;
+	}
+	
+	protected TargetEntityChooser createTargetEntityChooser(Composite parentComposite) {
+		return CommonWidgets.buildTargetEntityChooser(parentComposite, this.commandStack, getWidgetFactory());
+	}
+	
+	protected EnumComboViewer getFetchTypeComboViewer(Composite parentComposite) {
+		if (this.fetchTypeComboViewer == null) {
+			this.fetchTypeComboViewer = createFetchTypeComboViewer(parentComposite);
+		}
+		return this.fetchTypeComboViewer;
+	}
+	
+	protected EnumComboViewer createFetchTypeComboViewer(Composite parentComposite) {
+		return CommonWidgets.buildEnumComboViewer(parentComposite, this.commandStack, getWidgetFactory());
+	}
+
+	protected MappedByCombo getMappedByCombo(Composite parentComposite) {
+		if (this.mappedByCombo == null) {
+			this.mappedByCombo = createMappedByCombo(parentComposite);
+		}
+		return this.mappedByCombo;
+	}
+	
+	protected MappedByCombo createMappedByCombo(Composite parentComposite) {
+		return new MappedByCombo(parentComposite, this.commandStack, getWidgetFactory());
+	}
+	
+	protected EnumComboViewer getOptionalComboViewer(Composite parentComposite) {
+		if (this.optionalComboViewer == null) {
+			this.optionalComboViewer = createOptionalComboViewer(parentComposite);
+		}
+		return this.optionalComboViewer;
+	}
+	
+	protected EnumComboViewer createOptionalComboViewer(Composite parentComposite) {
+		return CommonWidgets.buildEnumComboViewer(parentComposite, this.commandStack, getWidgetFactory());
+	}
+	
+	protected CascadeComposite getCascadeComposite(Composite parentComposite) {
+		if (this.cascadeComposite == null) {
+			this.cascadeComposite = createCascadeComposite(parentComposite);
+		}
+		return this.cascadeComposite;
+	}
+	
+	protected CascadeComposite createCascadeComposite(Composite parentComposite) {
+		return new CascadeComposite(parentComposite, this.commandStack, getWidgetFactory());
+	}
+	
+	protected JoinColumnComposite getJoinColumnComposite(Composite parentComposite) {
+		if (this.joinColumnComposite == null) {
+			this.joinColumnComposite = createJoinColumnComposite(parentComposite);
+		}
+		return this.joinColumnComposite;
+	}
+	
+	protected JoinColumnComposite createJoinColumnComposite(Composite parentComposite) {
+		return new JoinColumnComposite(parentComposite, this.commandStack, getWidgetFactory());
+	}
+
+	
 	public void doPopulate(EObject obj) {
 		this.oneToOne = (IOneToOne) obj;
-		this.targetEntityChooser.populate(this.oneToOne);
-		this.fetchTypeComboViewer.populate(CommonWidgets.buildSingleRelationshipMappingFetchEnumHolder(this.oneToOne));
-		this.mappedByCombo.populate(this.oneToOne);
-		this.optionalComboViewer.populate(CommonWidgets.buildOptionalHolder(this.oneToOne));
-		this.cascadeComposite.populate(this.oneToOne);
-		this.joinColumnComposite.populate(this.oneToOne);
+		this.targetEntityChooser.populate(getOneToOne());
+		this.fetchTypeComboViewer.populate(CommonWidgets.buildSingleRelationshipMappingFetchEnumHolder(getOneToOne()));
+		this.mappedByCombo.populate(getOneToOne());
+		this.optionalComboViewer.populate(CommonWidgets.buildOptionalHolder(getOneToOne()));
+		this.cascadeComposite.populate(getOneToOne());
+		this.joinColumnComposite.populate(getOneToOne());
 	}
 	
 	public void doPopulate() {

@@ -82,11 +82,6 @@ public class CommonWidgets
 		return widgetFactory.createLabel(parent, JptUiMappingsMessages.NonOwningMapping_mappedByLabel);
 	}
 	
-	public static EnumComboViewer buildFetchTypeComboViewer(
-			Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new EnumComboViewer(parent, commandStack, widgetFactory);
-	}
-
 	public static EnumComboViewer buildEnumComboViewer(
 			Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
 		return new EnumComboViewer(parent, commandStack, widgetFactory);

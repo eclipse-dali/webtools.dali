@@ -45,20 +45,20 @@ public class PluggableValidator implements Node.Validator {
 		this.delegate = delegate;
 	}
 
-	public void validate() {
+	public synchronized void validate() {
 		if ( ! this.pause) {
 			this.delegate.validate();
 		}
 	}
 
-	public void pause() {
+	public synchronized void pause() {
 		if (this.pause) {
 			throw new IllegalStateException("already paused");
 		}
 		this.pause = true;
 	}
 
-	public void resume() {
+	public synchronized void resume() {
 		if ( ! this.pause) {
 			throw new IllegalStateException("not paused");
 		}
@@ -89,16 +89,25 @@ public class PluggableValidator implements Node.Validator {
 		/**
 		 * This delegate does nothing.
 		 */
-		Delegate NULL_DELEGATE =
-			new PluggableValidator.Delegate() {
-				public void validate() {
-					// do nothing
-				}
-				@Override
-				public String toString() {
-					return "NULL_DELEGATE";
-				}
-			};
+		final class Null implements Delegate {
+			@SuppressWarnings("unchecked")
+			public static final Delegate INSTANCE = new Null();
+			@SuppressWarnings("unchecked")
+			public static Delegate instance() {
+				return INSTANCE;
+			}
+			// ensure single instance
+			private Null() {
+				super();
+			}
+			public void validate() {
+				// do nothing
+			}
+			@Override
+			public String toString() {
+				return "Delegate.Null";
+			}
+		}
 
 	}
 

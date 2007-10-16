@@ -14,7 +14,6 @@ package org.eclipse.jpt.core.internal.resource.persistence;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import org.eclipse.emf.common.util.Enumerator;
 
 /**

@@ -7,9 +7,9 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal;
 
-import java.util.Collection;
+package org.eclipse.jpt.core.internal.resource.common;
+
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
@@ -18,9 +18,11 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipse.jpt.core.internal.IJpaFile;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.internal.emf.resource.EMF2DOMAdapter;
@@ -34,11 +36,11 @@ import org.w3c.dom.Node;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.internal.JpaCorePackage#getXmlEObject()
+ * @see org.eclipse.jpt.core.internal.resource.common.CommonPackage#getXmlEObject()
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class XmlEObject extends JpaEObject implements IXmlEObject
+public abstract class JptEObject extends EObjectImpl implements IJptEObject
 {
 	protected IDOMNode node;
 
@@ -46,38 +48,41 @@ public abstract class XmlEObject extends JpaEObject implements IXmlEObject
 	 * Sets of "insignificant" feature ids, keyed by class.
 	 * This is built up lazily, as the objects are modified.
 	 */
-	private static final Map<Class, Set<Integer>> insignificantXmlFeatureIdSets = new Hashtable<Class, Set<Integer>>();
+	private static final Map<Class, Set<Integer>> insignificantFeatureIdSets = new Hashtable<Class, Set<Integer>>();
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected XmlEObject() {
+	protected JptEObject() {
 		super();
 	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass() {
-		return JpaCorePackage.Literals.XML_EOBJECT;
+	
+	public IJpaProject jpaProject() {
+		return jpaFile().jpaProject();
 	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation"
-	 * @generated NOT
-	 */
-	public IJpaFile getJpaFile() {
-		IJpaRootContentNode root = getRoot();
-		return (root == null) ? null : root.getJpaFile();
+	
+	public IJpaPlatform jpaPlatform() {
+		return jpaProject().jpaPlatform();
 	}
-
+	
+	public IResource platformResource() {
+		return jpaFile().getFile();
+	}
+	
+	public IJpaFile jpaFile() {
+		return root().jpaFile();
+	}
+	
+	/*
+	 * Must be overridden by actual root object to return itself
+	 */
+	public IJptEObject root() {
+		return ((IJptEObject) eContainer()).root();
+		
+	}
+	
 	@Override
 	public EList<Adapter> eAdapters() {
 		if (this.eAdapters == null) {
@@ -111,59 +116,24 @@ public abstract class XmlEObject extends JpaEObject implements IXmlEObject
 		@Override
 		protected void didRemove(int index, Object oldObject) {
 			super.didRemove(index, oldObject);
-			if ((oldObject instanceof EMF2DOMAdapter) && (((EMF2DOMAdapter) oldObject).getNode() == XmlEObject.this.node)) {
-				XmlEObject.this.node = null;
+			if ((oldObject instanceof EMF2DOMAdapter) && (((EMF2DOMAdapter) oldObject).getNode() == JptEObject.this.node)) {
+				JptEObject.this.node = null;
 			}
 		}
 	}
-
-	public boolean isAllFeaturesUnset() {
-		for (EStructuralFeature feature : eClass().getEAllStructuralFeatures()) {
-			if (xmlFeatureIsInsignificant(feature.getFeatureID())) {
-				continue;
-			}
-			if (feature instanceof EReference) {
-				Object object = eGet(feature);
-				if (object instanceof Collection) {
-					if (eIsSet(feature)) {
-						return false;
-					}
-				}
-				else {
-					XmlEObject eObject = (XmlEObject) eGet(feature);
-					if (eObject != null) {
-						return eObject.isAllFeaturesUnset();
-					}
-				}
-			}
-			else if (eIsSet(feature)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public IJpaRootContentNode getRoot() {
-		XmlEObject container = (XmlEObject) eContainer();
-		return (container == null) ? null : container.getRoot();
-	}
-
-	public IResource getResource() {
-		return getJpaFile().getResource();
-	}
-
+	
 	public ITextRange validationTextRange() {
 		return fullTextRange();
 	}
-
+	
 	public ITextRange selectionTextRange() {
 		return fullTextRange();
 	}
-
+	
 	public ITextRange fullTextRange() {
 		return buildTextRange(this.node);
 	}
-
+	
 	protected ITextRange buildTextRange(IDOMNode domNode) {
 		if (domNode == null) {
 			return null;
@@ -171,16 +141,16 @@ public abstract class XmlEObject extends JpaEObject implements IXmlEObject
 		return new DOMNodeTextRange(domNode);
 	}
 
-	protected boolean xmlFeatureIsSignificant(int featureId) {
-		return !this.xmlFeatureIsInsignificant(featureId);
+	protected boolean featureIsSignificant(int featureId) {
+		return ! this.featureIsInsignificant(featureId);
 	}
 
-	protected boolean xmlFeatureIsInsignificant(int featureId) {
-		return this.insignificantXmlFeatureIds().contains(featureId);
+	protected boolean featureIsInsignificant(int featureId) {
+		return this.insignificantFeatureIds().contains(featureId);
 	}
 
 	/**
-	 * Return a set of the xml object's "insignificant" feature ids.
+	 * Return a set of the object's "insignificant" feature ids.
 	 * These are the EMF features that will not be used to determine if all
 	 * the features are unset.  We use this to determine when to remove 
 	 * an element from the xml.
@@ -191,13 +161,13 @@ public abstract class XmlEObject extends JpaEObject implements IXmlEObject
 	 * 
 	 * @see isAllFeaturesUnset()
 	 */
-	protected Set<Integer> insignificantXmlFeatureIds() {
-		synchronized (insignificantXmlFeatureIdSets) {
-			Set<Integer> insignificantXmlFeatureIds = insignificantXmlFeatureIdSets.get(this.getClass());
+	protected Set<Integer> insignificantFeatureIds() {
+		synchronized (insignificantFeatureIdSets) {
+			Set<Integer> insignificantXmlFeatureIds = insignificantFeatureIdSets.get(this.getClass());
 			if (insignificantXmlFeatureIds == null) {
 				insignificantXmlFeatureIds = new HashSet<Integer>();
 				this.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
-				insignificantXmlFeatureIdSets.put(this.getClass(), insignificantXmlFeatureIds);
+				insignificantFeatureIdSets.put(this.getClass(), insignificantXmlFeatureIds);
 			}
 			return insignificantXmlFeatureIds;
 		}

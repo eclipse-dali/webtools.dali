@@ -86,10 +86,10 @@ public class JpaContentProvider
 			IProject project = (IProject) ((IAdaptable) parentElement).getAdapter(IProject.class);
 			
 			if (project != null) {
-				IJpaProject jpaProject = JptCorePlugin.getJpaProject(project);
+				IJpaProject jpaProject = JptCorePlugin.jpaProject(project);
 				
 				if (jpaProject != null) {
-					return new Object[] {jpaProject.getContextModel()};
+					return new Object[] {jpaProject.contextModel()};
 				}
 			}
 		}

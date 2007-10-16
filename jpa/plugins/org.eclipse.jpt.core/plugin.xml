@@ -132,13 +132,6 @@
 			</constraint>
 		</project-facet-version>
 		
-		<preset id="jpt.jpa.preset">
-			<label>%JPA_PRESET_LABEL</label>
-			<facet id="jst.java" version="5.0"/>
-			<facet id="jst.utility" version="1.0"/>
-			<facet id="jpt.jpa" version="1.0"/>
-		</preset>
-		
 		<template id="jpt.jpa.template">
 			<label>%JPA_TEMPLATE_LABEL</label>
 			<fixed facet="jst.java"/>
@@ -152,13 +145,18 @@
 			<delegate class="org.eclipse.jpt.core.internal.facet.JpaFacetInstallDelegate"/>
 		</action>
 		
-		<action facet="jpt.jpa" type="UNINSTALL" id="jpt.jpa.uninstall">
-			<delegate class="org.eclipse.jpt.core.internal.facet.JpaFacetUninstallDelegate"/>
-		</action>
+	</extension>
+	
+
+	<extension
+		point="org.eclipse.wst.common.project.facet.core.presets">
 		
-		<event-handler facet="jpt.jpa" type="POST_INSTALL">
-			<delegate class="org.eclipse.jpt.core.internal.facet.JpaFacetPostInstallDelegate"/>
-		</event-handler>
+		<static-preset id="jpt.jpa.preset">
+			<label>%JPA_PRESET_LABEL</label>
+			<facet id="jst.java" version="5.0"/>
+			<facet id="jst.utility" version="1.0"/>
+			<facet id="jpt.jpa" version="1.0"/>
+		</static-preset>
 		
 	</extension>
 	

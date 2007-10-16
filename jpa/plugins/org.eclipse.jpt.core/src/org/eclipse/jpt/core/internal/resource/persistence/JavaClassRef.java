@@ -13,9 +13,9 @@ package org.eclipse.jpt.core.internal.resource.persistence;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.JpaEObject;
+import org.eclipse.jpt.core.internal.resource.common.IJptEObject;
+import org.eclipse.jpt.core.internal.resource.common.JptEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,9 +31,10 @@ import org.eclipse.jpt.core.internal.JpaEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getJavaClassRef()
  * @model kind="class"
+ * @extends IJptEObject
  * @generated
  */
-public class JavaClassRef extends JpaEObject implements EObject
+public class JavaClassRef extends JptEObject implements IJptEObject
 {
 	/**
 	 * The default value of the '{@link #getJavaClass() <em>Java Class</em>}' attribute.

@@ -25,7 +25,6 @@ import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.eclipse.jpt.core.internal.content.java.util.JpaJavaAdapterFactory;
 
 /**
  * This is the factory that is used to provide the interfaces needed to support Viewers.

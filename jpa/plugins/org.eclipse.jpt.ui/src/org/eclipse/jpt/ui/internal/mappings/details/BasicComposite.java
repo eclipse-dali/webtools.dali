@@ -78,7 +78,7 @@ public class BasicComposite extends BaseJpaComposite
 		this.columnComposite.getControl().setLayoutData(gridData);		
 		
 		CommonWidgets.buildFetchLabel(generalComposite, getWidgetFactory());
-		this.fetchTypeComboViewer = CommonWidgets.buildFetchTypeComboViewer(generalComposite, this.commandStack, getWidgetFactory());
+		this.fetchTypeComboViewer = CommonWidgets.buildEnumComboViewer(generalComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;

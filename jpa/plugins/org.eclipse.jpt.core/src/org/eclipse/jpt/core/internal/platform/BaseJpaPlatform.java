@@ -14,12 +14,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.IResourceModelFactory;
+import org.eclipse.jpt.core.internal.IResourceModel;
 import org.eclipse.jpt.core.internal.context.IContextModel;
-import org.eclipse.jpt.core.internal.context.IContextModelFactory;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
@@ -57,6 +58,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public abstract class BaseJpaPlatform implements IJpaPlatform
 {
@@ -112,12 +114,14 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	
 	// **************** Model construction / updating *************************
 	
-	public IResourceModelFactory resourceModelFactory() {
-		return BaseResourceModelFactory.instance();
-	}
-	
-	public IContextModelFactory contextModelFactory() {
-		return BaseContextModelFactory.instance();
+	public IJpaFile buildJpaFile(IJpaProject jpaProject, IFile file) {
+		IResourceModel resourceModel = jpaFactory().buildResourceModel(file);
+		
+		if (resourceModel != null) {
+			return jpaFactory().createJpaFile(jpaProject, file, resourceModel);
+		}
+		
+		return null;
 	}
 	
 	public void update(IJpaProject jpaProject, IContextModel contextModel, IProgressMonitor monitor) {
@@ -321,5 +325,13 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 			}
 		}
 		throw new IllegalArgumentException(annotationName + " is an unsupported attribute annotation");
+	}
+	
+	
+	// **************** Validation ********************************************
+	
+	public void addToMessages(List<IMessage> messages) {
+		// TODO Auto-generated method stub
+		
 	}
 }

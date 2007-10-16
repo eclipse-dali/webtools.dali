@@ -17,7 +17,7 @@ package org.eclipse.jpt.core.internal;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface IJpaSourceObject extends IJpaEObject
+public interface IJpaSourceObject
 {
 	/**
 	 * Return the JPA file containing this object.

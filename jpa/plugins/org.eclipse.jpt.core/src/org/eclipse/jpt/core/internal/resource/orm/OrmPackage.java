@@ -2,12 +2,11 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmPackage.java,v 1.1.2.1 2007/09/17 20:49:50 pfullbright Exp $
+ * $Id: OrmPackage.java,v 1.1.2.2 2007/10/16 17:01:40 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
 import org.eclipse.emf.common.util.Enumerator;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -15,11 +14,8 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
-
 import org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage;
 
 /**

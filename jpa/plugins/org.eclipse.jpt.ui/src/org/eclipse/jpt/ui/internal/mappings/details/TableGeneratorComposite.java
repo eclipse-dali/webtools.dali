@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
-
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;

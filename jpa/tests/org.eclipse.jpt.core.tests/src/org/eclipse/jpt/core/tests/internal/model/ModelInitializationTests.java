@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.model;
 
-import junit.framework.TestCase;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jpt.core.internal.IJpaModel;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
@@ -20,11 +18,10 @@ import org.eclipse.jpt.core.tests.internal.projects.TestFacetedProject;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
+import junit.framework.TestCase;
+
 public class ModelInitializationTests extends TestCase 
 {
-	private IJpaModel jpaModel;
-	
-	
 	public ModelInitializationTests(String name) {
 		super(name);
 	}
@@ -33,13 +30,11 @@ public class ModelInitializationTests extends TestCase
 	protected void setUp() throws Exception {
 		super.setUp();
 		ProjectUtility.deleteAllProjects();
-		this.jpaModel = JptCorePlugin.getJpaModel();
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
 		ProjectUtility.deleteAllProjects();
-		this.jpaModel = null;
 		super.tearDown();
 	}
 
@@ -61,31 +56,31 @@ public class ModelInitializationTests extends TestCase
 	}	
 		
 	public void testBasic() {
-		assertNotNull(this.jpaModel);
+		assertNotNull(JptCorePlugin.jpaModel());
 	}
 	
 	public void testFacetInstallation() throws CoreException {
 		TestFacetedProject testProject = buildTestProject();
-		assertNull(this.jpaModel.getJpaProject(testProject.getProject()));
+		assertNull(JptCorePlugin.jpaProject(testProject.getProject()));
 		testProject.installFacet("jpt.jpa", "1.0");
-		assertEquals(1, CollectionTools.size(this.jpaModel.jpaProjects()));
-		IJpaProject jpaProject = this.jpaModel.getJpaProject(testProject.getProject());
+		assertEquals(1, JptCorePlugin.jpaModel().jpaProjectsSize());
+		IJpaProject jpaProject = JptCorePlugin.jpaProject(testProject.getProject());
 		assertNotNull(jpaProject);
 		assertEquals(4, CollectionTools.size(jpaProject.jpaFiles()));
-		assertNotNull(jpaProject.getJpaFile(testProject.getProject().getFile(new Path("src/test.pkg/TestEntity.java"))));
-		assertNotNull(jpaProject.getJpaFile(testProject.getProject().getFile(new Path("src/test.pkg/TestEntity2.java"))));
+		assertNotNull(jpaProject.jpaFile(testProject.getProject().getFile(new Path("src/test.pkg/TestEntity.java"))));
+		assertNotNull(jpaProject.jpaFile(testProject.getProject().getFile(new Path("src/test.pkg/TestEntity2.java"))));
 	}
 	
 	public void testProjectOpening() throws CoreException {
-		TestFacetedProject testProject = buildTestProject();
-		testProject.installFacet("jpt.jpa", "1.0");
-		testProject.close();
-		assertTrue(! testProject.getProject().isOpen());
-		testProject.open();
-		IJpaProject jpaProject = this.jpaModel.getJpaProject(testProject.getProject());
+		TestFacetedProject helper = buildTestProject();
+		helper.installFacet("jpt.jpa", "1.0");
+		helper.getProject().close(null);
+		assertFalse(helper.getProject().isOpen());
+		helper.getProject().open(null);
+		IJpaProject jpaProject = JptCorePlugin.jpaProject(helper.getProject());
 		assertNotNull(jpaProject);
-		assertNotNull(jpaProject.getJpaFile(testProject.getProject().getFile(new Path("src/test.pkg/TestEntity.java"))));
-		assertNotNull(jpaProject.getJpaFile(testProject.getProject().getFile(new Path("src/test.pkg/TestEntity2.java"))));
+		assertNotNull(jpaProject.jpaFile(helper.getProject().getFile(new Path("src/test.pkg/TestEntity.java"))));
+		assertNotNull(jpaProject.jpaFile(helper.getProject().getFile(new Path("src/test.pkg/TestEntity2.java"))));
 	}
 	
 }

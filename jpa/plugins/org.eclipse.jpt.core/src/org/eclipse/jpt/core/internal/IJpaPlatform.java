@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This program and the 
- * accompanying materials are made available under the terms of the Eclipse 
- * Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -10,25 +10,26 @@
 package org.eclipse.jpt.core.internal;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.context.IContextModel;
-import org.eclipse.jpt.core.internal.context.IContextModelFactory;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
-
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to 
- * the core JPA model.  The core JPA model will provide functinality for JPA
- * spec annotations in java and the orm.xml mapping file.  
+ * the core JPA model.  The core JPA model will provide functionality for JPA
+ * spec annotations in java, persistence.xml and (orm.xml) mapping files.
  * The org.eclipse.jpt.core.genericPlatform extension supplies 
- * IJpaFileContentProvider for those file types.  As another vendor option you 
- * will have to supply those IJpaFileContentProviders as well or different ones 
+ * resource models for those file types.  As another vendor option you 
+ * will have to supply those resource models as well or different ones 
  * as necessary.
  * 
  * See the org.eclipse.jpt.core.jpaPlatform extension point
@@ -63,14 +64,19 @@ public interface IJpaPlatform
 	// **************** Model construction / updating *************************
 	
 	/**
-	 * Return a factory for creating resource models
+	 * Construct a JPA file for the specified file, to be added to the specified 
+	 * JPA project. (Defer to the factory for actual object creation.)  
+	 * Return null if unable to create the JPA file (e.g. the content type is 
+	 * unrecognized).
 	 */
-	IResourceModelFactory resourceModelFactory();
+	IJpaFile buildJpaFile(IJpaProject jpaProject, IFile file);
 	
 	/**
-	 * Return a factory for creating context model objects
+	 * Return a factory responsible for creating core (e.g. IJpaProject), resource
+	 * (e.g. PersistenceResourceModel), and context (e.g. IPersistenceUnit) model
+	 * objects
 	 */
-	IContextModelFactory contextModelFactory();
+	IJpaFactory jpaFactory();
 	
 	/**
 	 * Update the existing context model.
@@ -154,11 +160,15 @@ public interface IJpaPlatform
 	Iterator<String>  attributeAnnotationNames();
 	
 	//TODO get this from IJpaProject
-	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();	
+	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();
 	
 	
-	
-	//	IJpaFactory getJpaFactory();
+	/**
+	 * Adds validation messages to the growing list of messages
+	 */
+	void addToMessages(List<IMessage> messages);
+		
+		
 	// ********** Persistence Unit ********************************************
 	//	boolean containsPersistenceUnitNamed(String name);
 	//	
@@ -199,11 +209,6 @@ public interface IJpaPlatform
 	//	 * because the defaults are checked in order.
 	//	 */
 	//	ListIterator<IDefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders();
-	//	
-	//	/**
-	//	 * Adds validation messages to the growing list of messages
-	//	 */
-	//	void addToMessages(List<IMessage> messages);
 	//	
 	//	/**
 	//	 * Returns the IGeneratorRepository for the persistence unit of the

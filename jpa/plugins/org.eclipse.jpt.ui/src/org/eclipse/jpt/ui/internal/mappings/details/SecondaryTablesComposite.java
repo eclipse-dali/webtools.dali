@@ -116,8 +116,10 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 		gridData.horizontalAlignment = SWT.END;
 		buttonsComposite.setLayoutData(gridData);
 		
-		this.addButton = new Button(buttonsComposite, SWT.NONE);
-		this.addButton.setText(JptUiMappingsMessages.SecondaryTablesComposite_add);
+		this.addButton = getWidgetFactory().createButton(
+			buttonsComposite, 
+			JptUiMappingsMessages.SecondaryTablesComposite_add, 
+			SWT.NONE);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.addButton.setLayoutData(gridData);
@@ -131,8 +133,10 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 			}
 		});
 		
-		this.editButton = new Button(buttonsComposite, SWT.NONE);
-		this.editButton.setText(JptUiMappingsMessages.SecondaryTablesComposite_edit);
+		this.editButton = getWidgetFactory().createButton(
+			buttonsComposite, 
+			JptUiMappingsMessages.SecondaryTablesComposite_edit, 
+			SWT.NONE);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.editButton.setLayoutData(gridData);
@@ -146,8 +150,10 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 			}
 		});
 
-		this.removeButton = new Button(buttonsComposite, SWT.NONE);
-		this.removeButton.setText(JptUiMappingsMessages.SecondaryTablesComposite_remove);
+		this.removeButton = getWidgetFactory().createButton(
+			buttonsComposite, 
+			JptUiMappingsMessages.SecondaryTablesComposite_remove, 
+			SWT.NONE);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.BEGINNING;

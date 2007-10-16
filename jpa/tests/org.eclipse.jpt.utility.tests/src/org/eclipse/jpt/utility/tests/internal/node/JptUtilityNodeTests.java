@@ -7,14 +7,24 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.orm.translators;
+package org.eclipse.jpt.utility.tests.internal.node;
 
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.wst.common.internal.emf.resource.Translator;
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import org.eclipse.jpt.utility.internal.ClassTools;
 
-public class OrderByTranslator extends Translator implements OrmXmlMapper
-{
-	public OrderByTranslator() {
-		super(ORDER_BY, JpaCoreMappingsPackage.eINSTANCE.getIMultiRelationshipMapping_OrderBy(), END_TAG_NO_INDENT);
+public class JptUtilityNodeTests {
+	
+	public static Test suite() {
+		TestSuite suite = new TestSuite(ClassTools.packageNameFor(JptUtilityNodeTests.class));
+	
+		suite.addTestSuite(AbstractNodeModelTests.class);
+	
+		return suite;
 	}
+	
+	private JptUtilityNodeTests() {
+		super();
+	}
+	
 }

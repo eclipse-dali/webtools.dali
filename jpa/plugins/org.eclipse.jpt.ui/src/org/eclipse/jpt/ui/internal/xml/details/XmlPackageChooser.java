@@ -1,11 +1,12 @@
- /*******************************************************************************
- *  Copyright (c) 2006, 2007 Oracle. All rights reserved. This
- *  program and the accompanying materials are made available under the terms of
- *  the Eclipse Public License v1.0 which accompanies this distribution, and is
- *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
 import org.eclipse.core.resources.IProject;
@@ -25,7 +26,7 @@ import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.internal.XmlEObject;
+import org.eclipse.jpt.core.internal.resource.common.JptEObject;
 import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
@@ -185,7 +186,7 @@ public class XmlPackageChooser extends BaseJpaController
 	}
 	
 	private IPackageFragmentRoot getPackageFragmentRoot() {
-		IProject project = ((XmlEObject) this.entityMappings).getJpaProject().getProject();
+		IProject project = ((JptEObject) this.entityMappings).getJpaProject().project();
 		IJavaProject root = JavaCore.create(project);
 		try {
 			return root.getAllPackageFragmentRoots()[0];

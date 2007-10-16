@@ -12,7 +12,7 @@ import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
-import org.eclipse.jpt.core.internal.XmlEObject;
+import org.eclipse.jpt.core.internal.resource.common.JptEObject;
 import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
@@ -154,7 +154,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage
 	}
 
 	
-	private class MyAccessHolder extends XmlEObject implements AccessHolder{
+	private class MyAccessHolder extends JptEObject implements AccessHolder{
 		
 		private EntityMappingsInternal entityMappings;
 		MyAccessHolder(EntityMappings entityMappings) {
@@ -183,7 +183,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage
 		
 	}
 	
-	private class SchemaHolder extends XmlEObject implements StringHolder {
+	private class SchemaHolder extends JptEObject implements StringHolder {
 		private EntityMappingsInternal entityMappings;
 		SchemaHolder(EntityMappings entityMappings) {
 			super();
@@ -227,7 +227,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage
 		}
 	}
 	
-	private class CatalogHolder extends XmlEObject implements StringHolder {
+	private class CatalogHolder extends JptEObject implements StringHolder {
 		private EntityMappingsInternal entityMappings;
 		CatalogHolder(EntityMappings entityMappings) {
 			super();

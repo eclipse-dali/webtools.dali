@@ -12,16 +12,24 @@ package org.eclipse.jpt.core.tests.internal.projects;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
+/**
+ * This builds and holds a "JPA" project.
+ * Support for adding packages and types.
+ * 
+ * The JPA project's settings (platform, database connection, etc.) can be
+ * controlled by building a data model and passing it into the constructor.
+ */
 public class TestJpaProject extends TestJavaProject 
 {
-	private IJpaProject jpaProject;
+	private final IJpaProject jpaProject;
 
 	public static final String JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
-	
-	
-	// ********** builders *****************************
-	
+
+
+	// ********** builders **********
+
 	public static TestJpaProject buildJpaProject(String baseProjectName, boolean autoBuild)
 			throws CoreException {
 		return new TestJpaProject(uniqueProjectName(baseProjectName), autoBuild);
@@ -33,13 +41,17 @@ public class TestJpaProject extends TestJavaProject
 	public TestJpaProject(String projectName) throws CoreException {
 		this(projectName, false);
 	}
-	
+
 	public TestJpaProject(String projectName, boolean autoBuild) throws CoreException {
+		this(projectName, autoBuild, null);
+	}
+
+	public TestJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) throws CoreException {
 		super(projectName, autoBuild);
 		this.installFacet("jst.utility", "1.0");
-		this.installFacet("jpt.jpa", "1.0");
+		this.installFacet("jpt.jpa", "1.0", jpaConfig);
 		this.addJar(this.jarName());
-		this.jpaProject = JptCorePlugin.getJpaProject(this.getProject());
+		this.jpaProject = JptCorePlugin.jpaProject(this.getProject());
 	}
 
 	protected String jarName() {
@@ -55,12 +67,6 @@ public class TestJpaProject extends TestJavaProject
 
 	public IJpaProject getJpaProject() {
 		return this.jpaProject;
-	}
-
-	@Override
-	public void dispose() throws CoreException {
-		this.jpaProject = null;
-		super.dispose();
 	}
 
 }

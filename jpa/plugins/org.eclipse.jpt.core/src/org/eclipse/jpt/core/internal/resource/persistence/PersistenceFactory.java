@@ -81,12 +81,12 @@ public class PersistenceFactory extends EFactoryImpl
 	{
 		switch (eClass.getClassifierID())
 		{
-			case PersistencePackage.PERSISTENCE: return createPersistence();
-			case PersistencePackage.PERSISTENCE_UNIT: return createPersistenceUnit();
-			case PersistencePackage.MAPPING_FILE_REF: return createMappingFileRef();
-			case PersistencePackage.JAVA_CLASS_REF: return createJavaClassRef();
-			case PersistencePackage.PROPERTIES: return createProperties();
-			case PersistencePackage.PROPERTY: return createProperty();
+			case PersistencePackage.PERSISTENCE: return (EObject)createPersistence();
+			case PersistencePackage.PERSISTENCE_UNIT: return (EObject)createPersistenceUnit();
+			case PersistencePackage.MAPPING_FILE_REF: return (EObject)createMappingFileRef();
+			case PersistencePackage.JAVA_CLASS_REF: return (EObject)createJavaClassRef();
+			case PersistencePackage.PROPERTIES: return (EObject)createProperties();
+			case PersistencePackage.PROPERTY: return (EObject)createProperty();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}

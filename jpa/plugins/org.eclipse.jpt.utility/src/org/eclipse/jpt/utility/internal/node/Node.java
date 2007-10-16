@@ -15,7 +15,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.ChangeEventDispatcher;
 
@@ -35,16 +34,26 @@ public interface Node extends Comparable<Node> {
 
 	/**
 	 * INTRA-TREE API?
-	 * Return the node's children, which are also nodes.
+	 * Return the node's parent in the containment hierarchy.
+	 * Most nodes must have a parent.
+	 * @see #children()
 	 */
-	Iterator<Node> children();
+	Node parent();
 
 	/**
 	 * INTRA-TREE API?
-	 * Return the node's parent in the containment hierarchy.
-	 * Most nodes must have a parent.
+	 * Return the node's children, which are also nodes.
+	 * @see #parent()
 	 */
-	Node parent();
+	Iterator<? extends Node> children();
+
+	/**
+	 * INTRA-TREE API?
+	 * Return the containment hierarchy's root node.
+	 * Most nodes must have a root.
+	 * @see #parent()
+	 */
+	Node root();
 
 	/**
 	 * Return whether the node is a descendant of the specified node.
@@ -404,7 +413,7 @@ public interface Node extends Comparable<Node> {
 	 * This validator does nothing to validate the node.
 	 */
 	Validator NULL_VALIDATOR =
-		new PluggableValidator(PluggableValidator.Delegate.NULL_DELEGATE) {
+		new PluggableValidator(PluggableValidator.Delegate.Null.instance()) {
 			@Override
 			public String toString() {
 				return "Node.NULL_VALIDATOR";

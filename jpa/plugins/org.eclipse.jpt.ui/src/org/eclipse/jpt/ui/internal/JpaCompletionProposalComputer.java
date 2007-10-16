@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.CompletionContext;
@@ -26,7 +25,6 @@ import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 
@@ -62,7 +60,7 @@ public class JpaCompletionProposalComputer implements IJavaCompletionProposalCom
 			return Collections.emptyList();
 		}
 
-		IJpaFile jpaFile = JptCorePlugin.getJpaFile((IFile) cu.getCorrespondingResource());
+		IJpaFile jpaFile = JptCorePlugin.jpaFile((IFile) cu.getCorrespondingResource());
 		if (jpaFile == null) {
 			return Collections.emptyList();
 		}

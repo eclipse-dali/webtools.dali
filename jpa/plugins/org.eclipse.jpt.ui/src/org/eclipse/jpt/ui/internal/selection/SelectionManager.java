@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPageListener;

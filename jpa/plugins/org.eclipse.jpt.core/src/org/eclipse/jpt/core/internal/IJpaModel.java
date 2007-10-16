@@ -1,8 +1,8 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -10,31 +10,38 @@
 package org.eclipse.jpt.core.internal;
 
 import java.util.Iterator;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.utility.internal.model.Model;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>IJpa Model</b></em>'.
- * <!-- end-user-doc -->
- *
- *
- * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaModel()
- * @model kind="class" interface="true" abstract="true"
- * @generated
+ * The JPA model holds all the JPA projects.
  */
-public interface IJpaModel extends EObject
-{
-	/**
-	 * Returns the IJpaProject corresponding to the given IProject.
-	 * Returns <code>null</code> if unable to associate the given IProject
-	 * with an IJpaProject.
-	 */
-	IJpaProject getJpaProject(IProject project) throws CoreException;
+public interface IJpaModel extends Model {
 
 	/**
-	 * Returns a (non-modifiable) Iterator on all the IJpaProjects in the model.
+	 * Return the JPA project corresponding to the specified Eclipse project.
+	 * Return null if unable to associate the specified Eclipse project
+	 * with a JPA project.
 	 */
-	Iterator<IJpaProject> jpaProjects();
+	IJpaProject jpaProject(IProject project) throws CoreException;
+
+	/**
+	 * Return whether the JPA model contains a JPA project corresponding
+	 * to the specified Eclipse project.
+	 */
+	boolean containsJpaProject(IProject project);
+
+	/**
+	 * Return the JPA model's JPA projects.
+	 */
+	Iterator<IJpaProject> jpaProjects() throws CoreException;
+		public static final String JPA_PROJECTS_COLLECTION = "jpaProjects";
+
+	/**
+	 * Return the size of the JPA model's list of JPA projects.
+	 */
+	int jpaProjectsSize();
+
 }

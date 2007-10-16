@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.internal.model;
 
 import java.awt.EventQueue;
 import java.io.Serializable;
-
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;

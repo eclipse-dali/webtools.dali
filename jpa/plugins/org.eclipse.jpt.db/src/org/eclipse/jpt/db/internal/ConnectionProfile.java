@@ -11,7 +11,6 @@ package org.eclipse.jpt.db.internal;
 
 import java.text.Collator;
 import java.util.NoSuchElementException;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 

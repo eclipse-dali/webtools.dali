@@ -70,7 +70,7 @@ public class JpaCompilationUnitResourceTests extends AnnotationTestCase {
 	
 	protected JpaCompilationUnitResource getJpaCompilationUnitResource(ICompilationUnit testCompilationUnit) throws CoreException {
 		IJpaProject jpaProject = ((TestJpaProject) this.javaProject).getJpaProject();
-		IJpaFile jpaFile = jpaProject.getJpaFile((IFile) testCompilationUnit.getResource());
+		IJpaFile jpaFile = jpaProject.jpaFile((IFile) testCompilationUnit.getResource());
 		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
 		return (JpaCompilationUnitResource) ClassTools.getFieldValue(javaResourceModel, "compilationUnitResource");
 	}

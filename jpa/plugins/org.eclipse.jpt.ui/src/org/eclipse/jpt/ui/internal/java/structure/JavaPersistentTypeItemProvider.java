@@ -23,8 +23,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
-import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.content.java.JpaJavaPackage;
 import org.eclipse.jpt.core.internal.mappings.IEmbeddable;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IMappedSuperclass;

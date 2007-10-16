@@ -12,7 +12,6 @@ package org.eclipse.jpt.db.internal;
 import java.text.Collator;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 import org.eclipse.emf.common.util.EList;

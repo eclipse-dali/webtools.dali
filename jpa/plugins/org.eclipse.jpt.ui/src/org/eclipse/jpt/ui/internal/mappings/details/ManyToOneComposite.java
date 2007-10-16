@@ -75,7 +75,7 @@ public class ManyToOneComposite extends BaseJpaComposite
 		helpSystem.setHelp(targetEntityChooser.getControl(), IJpaHelpContextIds.MAPPING_TARGET_ENTITY);
 		
 		CommonWidgets.buildFetchLabel(generalComposite, getWidgetFactory());
-		this.fetchTypeComboViewer = CommonWidgets.buildFetchTypeComboViewer(generalComposite, this.commandStack, getWidgetFactory());
+		this.fetchTypeComboViewer = CommonWidgets.buildEnumComboViewer(generalComposite, this.commandStack, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;

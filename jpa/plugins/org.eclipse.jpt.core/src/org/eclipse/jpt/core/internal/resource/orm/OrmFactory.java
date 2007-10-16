@@ -2,19 +2,16 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmFactory.java,v 1.1.2.1 2007/09/17 20:49:52 pfullbright Exp $
+ * $Id: OrmFactory.java,v 1.1.2.2 2007/10/16 17:01:40 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
 import org.eclipse.emf.common.util.Enumerator;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
@@ -79,60 +76,60 @@ public class OrmFactory extends EFactoryImpl
 	{
 		switch (eClass.getClassifierID())
 		{
-			case OrmPackage.ENTITY_MAPPINGS: return createEntityMappings();
-			case OrmPackage.PERSISTENCE_UNIT_METADATA: return createPersistenceUnitMetadata();
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS: return createPersistenceUnitDefaults();
-			case OrmPackage.MAPPED_SUPERCLASS: return createMappedSuperclass();
-			case OrmPackage.ENTITY: return createEntity();
-			case OrmPackage.EMBEDDABLE: return createEmbeddable();
-			case OrmPackage.ATTRIBUTES: return createAttributes();
-			case OrmPackage.EMBEDDABLE_ATTRIBUTES: return createEmbeddableAttributes();
-			case OrmPackage.ID: return createId();
-			case OrmPackage.EMBEDDED_ID: return createEmbeddedId();
-			case OrmPackage.BASIC: return createBasic();
-			case OrmPackage.VERSION: return createVersion();
-			case OrmPackage.MANY_TO_ONE: return createManyToOne();
-			case OrmPackage.ONE_TO_MANY: return createOneToMany();
-			case OrmPackage.ONE_TO_ONE: return createOneToOne();
-			case OrmPackage.MANY_TO_MANY: return createManyToMany();
-			case OrmPackage.EMBEDDED: return createEmbedded();
-			case OrmPackage.TRANSIENT: return createTransient();
-			case OrmPackage.ASSOCIATION_OVERRIDE: return createAssociationOverride();
-			case OrmPackage.ATTRIBUTE_OVERRIDE: return createAttributeOverride();
-			case OrmPackage.CASCADE_TYPE: return createCascadeType();
-			case OrmPackage.COLUMN: return createColumn();
-			case OrmPackage.COLUMN_RESULT: return createColumnResult();
-			case OrmPackage.DISCRIMINATOR_COLUMN: return createDiscriminatorColumn();
-			case OrmPackage.ENTITY_LISTENERS: return createEntityListeners();
-			case OrmPackage.ENTITY_LISTENER: return createEntityListener();
-			case OrmPackage.ENTITY_RESULT: return createEntityResult();
-			case OrmPackage.EVENT_METHOD: return createEventMethod();
-			case OrmPackage.FIELD_RESULT: return createFieldResult();
-			case OrmPackage.GENERATED_VALUE: return createGeneratedValue();
-			case OrmPackage.ID_CLASS: return createIdClass();
-			case OrmPackage.INHERITANCE: return createInheritance();
-			case OrmPackage.JOIN_COLUMN: return createJoinColumn();
-			case OrmPackage.JOIN_TABLE: return createJoinTable();
-			case OrmPackage.LOB: return createLob();
-			case OrmPackage.MAP_KEY: return createMapKey();
-			case OrmPackage.NAMED_NATIVE_QUERY: return createNamedNativeQuery();
-			case OrmPackage.NAMED_QUERY: return createNamedQuery();
-			case OrmPackage.POST_LOAD: return createPostLoad();
-			case OrmPackage.POST_PERSIST: return createPostPersist();
-			case OrmPackage.POST_REMOVE: return createPostRemove();
-			case OrmPackage.POST_UPDATE: return createPostUpdate();
-			case OrmPackage.PRE_PERSIST: return createPrePersist();
-			case OrmPackage.PRE_REMOVE: return createPreRemove();
-			case OrmPackage.PRE_UPDATE: return createPreUpdate();
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN: return createPrimaryKeyJoinColumn();
-			case OrmPackage.QUERY_HINT: return createQueryHint();
-			case OrmPackage.SECONDARY_TABLE: return createSecondaryTable();
-			case OrmPackage.SEQUENCE_GENERATOR: return createSequenceGenerator();
-			case OrmPackage.SQL_RESULT_SET_MAPPING: return createSqlResultSetMapping();
-			case OrmPackage.TABLE: return createTable();
-			case OrmPackage.TABLE_GENERATOR: return createTableGenerator();
-			case OrmPackage.UNIQUE_CONSTRAINT: return createUniqueConstraint();
-			case OrmPackage.EMPTY_TYPE: return createEmptyType();
+			case OrmPackage.ENTITY_MAPPINGS: return (EObject)createEntityMappings();
+			case OrmPackage.PERSISTENCE_UNIT_METADATA: return (EObject)createPersistenceUnitMetadata();
+			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS: return (EObject)createPersistenceUnitDefaults();
+			case OrmPackage.MAPPED_SUPERCLASS: return (EObject)createMappedSuperclass();
+			case OrmPackage.ENTITY: return (EObject)createEntity();
+			case OrmPackage.EMBEDDABLE: return (EObject)createEmbeddable();
+			case OrmPackage.ATTRIBUTES: return (EObject)createAttributes();
+			case OrmPackage.EMBEDDABLE_ATTRIBUTES: return (EObject)createEmbeddableAttributes();
+			case OrmPackage.ID: return (EObject)createId();
+			case OrmPackage.EMBEDDED_ID: return (EObject)createEmbeddedId();
+			case OrmPackage.BASIC: return (EObject)createBasic();
+			case OrmPackage.VERSION: return (EObject)createVersion();
+			case OrmPackage.MANY_TO_ONE: return (EObject)createManyToOne();
+			case OrmPackage.ONE_TO_MANY: return (EObject)createOneToMany();
+			case OrmPackage.ONE_TO_ONE: return (EObject)createOneToOne();
+			case OrmPackage.MANY_TO_MANY: return (EObject)createManyToMany();
+			case OrmPackage.EMBEDDED: return (EObject)createEmbedded();
+			case OrmPackage.TRANSIENT: return (EObject)createTransient();
+			case OrmPackage.ASSOCIATION_OVERRIDE: return (EObject)createAssociationOverride();
+			case OrmPackage.ATTRIBUTE_OVERRIDE: return (EObject)createAttributeOverride();
+			case OrmPackage.CASCADE_TYPE: return (EObject)createCascadeType();
+			case OrmPackage.COLUMN: return (EObject)createColumn();
+			case OrmPackage.COLUMN_RESULT: return (EObject)createColumnResult();
+			case OrmPackage.DISCRIMINATOR_COLUMN: return (EObject)createDiscriminatorColumn();
+			case OrmPackage.ENTITY_LISTENERS: return (EObject)createEntityListeners();
+			case OrmPackage.ENTITY_LISTENER: return (EObject)createEntityListener();
+			case OrmPackage.ENTITY_RESULT: return (EObject)createEntityResult();
+			case OrmPackage.EVENT_METHOD: return (EObject)createEventMethod();
+			case OrmPackage.FIELD_RESULT: return (EObject)createFieldResult();
+			case OrmPackage.GENERATED_VALUE: return (EObject)createGeneratedValue();
+			case OrmPackage.ID_CLASS: return (EObject)createIdClass();
+			case OrmPackage.INHERITANCE: return (EObject)createInheritance();
+			case OrmPackage.JOIN_COLUMN: return (EObject)createJoinColumn();
+			case OrmPackage.JOIN_TABLE: return (EObject)createJoinTable();
+			case OrmPackage.LOB: return (EObject)createLob();
+			case OrmPackage.MAP_KEY: return (EObject)createMapKey();
+			case OrmPackage.NAMED_NATIVE_QUERY: return (EObject)createNamedNativeQuery();
+			case OrmPackage.NAMED_QUERY: return (EObject)createNamedQuery();
+			case OrmPackage.POST_LOAD: return (EObject)createPostLoad();
+			case OrmPackage.POST_PERSIST: return (EObject)createPostPersist();
+			case OrmPackage.POST_REMOVE: return (EObject)createPostRemove();
+			case OrmPackage.POST_UPDATE: return (EObject)createPostUpdate();
+			case OrmPackage.PRE_PERSIST: return (EObject)createPrePersist();
+			case OrmPackage.PRE_REMOVE: return (EObject)createPreRemove();
+			case OrmPackage.PRE_UPDATE: return (EObject)createPreUpdate();
+			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN: return (EObject)createPrimaryKeyJoinColumn();
+			case OrmPackage.QUERY_HINT: return (EObject)createQueryHint();
+			case OrmPackage.SECONDARY_TABLE: return (EObject)createSecondaryTable();
+			case OrmPackage.SEQUENCE_GENERATOR: return (EObject)createSequenceGenerator();
+			case OrmPackage.SQL_RESULT_SET_MAPPING: return (EObject)createSqlResultSetMapping();
+			case OrmPackage.TABLE: return (EObject)createTable();
+			case OrmPackage.TABLE_GENERATOR: return (EObject)createTableGenerator();
+			case OrmPackage.UNIQUE_CONSTRAINT: return (EObject)createUniqueConstraint();
+			case OrmPackage.EMPTY_TYPE: return (EObject)createEmptyType();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}

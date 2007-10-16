@@ -12,15 +12,15 @@ package org.eclipse.jpt.utility.internal;
 import java.io.Serializable;
 
 /**
- * This class provides synchronized access to an object of type E.
+ * This class provides synchronized access to an object of type T.
  * It also provides protocol for suspending a thread until the
  * value is set to null or a non-null value, with optional time-outs.
  */
-public class SynchronizedObject<E>
+public class SynchronizedObject<T>
 	implements Cloneable, Serializable
 {
 	/** Backing value. */
-	private E value;
+	private T value;
 
 	/** Object to synchronize on. */
 	private final Object mutex;
@@ -34,7 +34,7 @@ public class SynchronizedObject<E>
 	 * Create a synchronized object with the specified initial value
 	 * and mutex.
 	 */
-	public SynchronizedObject(E value, Object mutex) {
+	public SynchronizedObject(T value, Object mutex) {
 		super();
 		this.value = value;
 		this.mutex = mutex;
@@ -43,7 +43,7 @@ public class SynchronizedObject<E>
 	/**
 	 * Create a synchronized object with the specified initial value.
 	 */
-	public SynchronizedObject(E value) {
+	public SynchronizedObject(T value) {
 		super();
 		this.value = value;
 		this.mutex = this;
@@ -62,7 +62,7 @@ public class SynchronizedObject<E>
 	/**
 	 * Return the current value.
 	 */
-	public E value() {
+	public T value() {
 		synchronized (this.mutex) {
 			return this.value;
 		}
@@ -90,7 +90,7 @@ public class SynchronizedObject<E>
 	 * Set the value. If the value changes, all waiting
 	 * threads are notified.
 	 */
-	public void setValue(E value) {
+	public void setValue(T value) {
 		synchronized (this.mutex) {
 			if (this.value != value) {
 				this.value = value;
@@ -124,7 +124,7 @@ public class SynchronizedObject<E>
 	 * Suspend the current thread until the value changes
 	 * to the specified value.
 	 */
-	public void waitUntilValueIs(E x) throws InterruptedException {
+	public void waitUntilValueIs(T x) throws InterruptedException {
 		synchronized (this.mutex) {
 			while (this.value != x) {
 				this.mutex.wait();
@@ -136,7 +136,7 @@ public class SynchronizedObject<E>
 	 * Suspend the current thread until the value changes
 	 * to something other than the specified value.
 	 */
-	public void waitUntilValueIsNot(E x) throws InterruptedException {
+	public void waitUntilValueIsNot(T x) throws InterruptedException {
 		synchronized (this.mutex) {
 			while (this.value == x) {
 				this.mutex.wait();
@@ -168,7 +168,7 @@ public class SynchronizedObject<E>
 	 * something other than the specified value, then change
 	 * it back to the specified value and continue executing.
 	 */
-	public void waitToSetValue(E x) throws InterruptedException {
+	public void waitToSetValue(T x) throws InterruptedException {
 		synchronized (this.mutex) {
 			this.waitUntilValueIsNot(x);
 			this.setValue(x);
@@ -195,7 +195,7 @@ public class SynchronizedObject<E>
 	 * The time-out is specified in milliseconds. Return true if the specified
 	 * value was achieved; return false if a time-out occurred.
 	 */
-	public boolean waitUntilValueIs(E x, long timeout) throws InterruptedException {
+	public boolean waitUntilValueIs(T x, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
 			if (timeout == 0L) {
 				this.waitUntilValueIs(x);	// wait indefinitely until notified
@@ -218,7 +218,7 @@ public class SynchronizedObject<E>
 	 * The time-out is specified in milliseconds. Return true if the specified
 	 * value was removed; return false if a time-out occurred.
 	 */
-	public boolean waitUntilValueIsNot(E x, long timeout) throws InterruptedException {
+	public boolean waitUntilValueIsNot(T x, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
 			if (timeout == 0L) {
 				this.waitUntilValueIsNot(x);	// wait indefinitely until notified
@@ -269,7 +269,7 @@ public class SynchronizedObject<E>
 	 * The time-out is specified in milliseconds. Return true if the value was
 	 * set to true; return false if a time-out occurred.
 	 */
-	public boolean waitToSetValue(E x, long timeout) throws InterruptedException {
+	public boolean waitToSetValue(T x, long timeout) throws InterruptedException {
 		synchronized (this.mutex) {
 			boolean success = this.waitUntilValueIsNot(x, timeout);
 			if (success) {
@@ -318,11 +318,11 @@ public class SynchronizedObject<E>
 	// ********** standard methods **********
 
 	@Override
-	public SynchronizedObject<E> clone() {
+	public SynchronizedObject<T> clone() {
 		try {
 			synchronized (this.mutex) {
 				@SuppressWarnings("unchecked")
-				SynchronizedObject<E> clone = (SynchronizedObject<E>) super.clone();
+				SynchronizedObject<T> clone = (SynchronizedObject<T>) super.clone();
 				return clone;
 			}
 		} catch (CloneNotSupportedException ex) {

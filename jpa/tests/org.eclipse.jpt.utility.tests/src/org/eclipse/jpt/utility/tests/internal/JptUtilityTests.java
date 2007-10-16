@@ -13,6 +13,8 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.tests.internal.iterators.JptUtilityIteratorsTests;
+import org.eclipse.jpt.utility.tests.internal.model.JptUtilityModelTests;
+import org.eclipse.jpt.utility.tests.internal.node.JptUtilityNodeTests;
 
 /**
  * decentralize test creation code
@@ -23,6 +25,8 @@ public class JptUtilityTests {
 		TestSuite suite = new TestSuite(ClassTools.packageNameFor(JptUtilityTests.class));
 
 		suite.addTest(JptUtilityIteratorsTests.suite());
+		suite.addTest(JptUtilityModelTests.suite());
+		suite.addTest(JptUtilityNodeTests.suite());
 
 		suite.addTestSuite(BitToolsTests.class);
 		suite.addTestSuite(ClasspathTests.class);
@@ -30,12 +34,17 @@ public class JptUtilityTests {
 		suite.addTestSuite(CollectionToolsTests.class);
 		suite.addTestSuite(FileToolsTests.class);
 		suite.addTestSuite(HashBagTests.class);
+		suite.addTestSuite(IdentityHashBagTests.class);
 		suite.addTestSuite(IndentingPrintWriterTests.class);
 		suite.addTestSuite(JavaTypeTests.class);
 		suite.addTestSuite(JDBCTypeTests.class);
 		suite.addTestSuite(NameToolsTests.class);
 		suite.addTestSuite(ReverseComparatorTests.class);
+		suite.addTestSuite(SimpleStackTests.class);
 		suite.addTestSuite(StringToolsTests.class);
+		suite.addTestSuite(SynchronizedBooleanTests.class);
+		suite.addTestSuite(SynchronizedObjectTests.class);
+		suite.addTestSuite(SynchronizedStackTests.class);
 		suite.addTestSuite(XMLStringEncoderTests.class);
 
 		return suite;

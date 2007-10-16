@@ -49,7 +49,8 @@ public class TextEditorSelectionParticipant
 		this.textEditor.addPropertyListener(this.editorInputListener);
 		this.editorSelectionListener = new EditorSelectionListener();
 		this.postSelectionProvider().addPostSelectionChangedListener(this.editorSelectionListener);
-		this.currentSelection = this.calculateSelection();
+//		this.currentSelection = this.calculateSelection();
+		this.currentSelection = Selection.NULL_SELECTION;
 	}
 
 	// ********** ISelectionParticipant implementation **********
@@ -92,12 +93,12 @@ public class TextEditorSelectionParticipant
 			return Selection.NULL_SELECTION;
 		}
 
-		IJpaFile persistenceFile = this.persistenceFile();
-		if (persistenceFile == null) {
+		IJpaFile jpaFile = this.jpaFile();
+		if (jpaFile == null) {
 			return Selection.NULL_SELECTION;
 		}
 
-		IJpaContentNode selectedNode = persistenceFile.getContentNode(((ITextSelection) selection).getOffset());
+		IJpaContentNode selectedNode = jpaFile.getContentNode(((ITextSelection) selection).getOffset());
 		if (selectedNode == null) {
 			return Selection.NULL_SELECTION;
 		}
@@ -105,12 +106,12 @@ public class TextEditorSelectionParticipant
 		return new Selection(selectedNode);
 	}
 	
-	private IJpaFile persistenceFile() {
+	private IJpaFile jpaFile() {
 		IEditorInput input = this.textEditor.getEditorInput();
 		if ( ! (input instanceof IFileEditorInput)) {
 			return null;
 		}
-		return JptCorePlugin.getJpaFile(((IFileEditorInput) input).getFile());
+		return JptCorePlugin.jpaFile(((IFileEditorInput) input).getFile());
 	}
 		
 	private IPostSelectionProvider postSelectionProvider() {

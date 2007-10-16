@@ -55,25 +55,6 @@ public final class TestTools {
 	}
 
 	/**
-	 * some tests require access to the Web (e.g. any tests that parse an XML
-	 * document that specifies a DTD or Schema that is loaded from the Web); use
-	 * this method to configure the JDK proxy settings
-	 */
-	public static void setUpOracleProxy() {
-		System.setProperty("http.proxyHost", "www-proxy.us.oracle.com");
-		System.setProperty("http.proxyPort", "80");
-	}
-
-	/**
-	 * some tests require access to the Web (e.g. any tests that parse an XML
-	 * document that specifies a DTD or Schema that is loaded from the Web); use
-	 * this method to configure the JDK proxy settings via the command-line
-	 */
-	public static String[] buildOracleProxyCommandLineOptions() {
-		return new String[] { "-Dhttp.proxyHost=www-proxy.us.oracle.com", "-Dhttp.proxyPort=80" };
-	}
-
-	/**
 	 * redirect std out and std err to the specified stream
 	 */
 	public static void redirectSystemStreamsTo(OutputStream outputStream) {

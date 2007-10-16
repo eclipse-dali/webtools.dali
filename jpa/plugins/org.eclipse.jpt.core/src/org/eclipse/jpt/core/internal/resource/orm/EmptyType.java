@@ -2,14 +2,13 @@
  * <copyright>
  * </copyright>
  *
- * $Id: EmptyType.java,v 1.1.2.1 2007/09/17 20:49:52 pfullbright Exp $
+ * $Id: EmptyType.java,v 1.1.2.2 2007/10/16 17:01:40 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-
-import org.eclipse.jpt.core.internal.JpaEObject;
+import org.eclipse.jpt.core.internal.resource.common.IJptEObject;
+import org.eclipse.jpt.core.internal.resource.common.JptEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -19,9 +18,10 @@ import org.eclipse.jpt.core.internal.JpaEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEmptyType()
  * @model kind="class"
+ * @extends IJptEObject
  * @generated
  */
-public class EmptyType extends JpaEObject implements EObject
+public class EmptyType extends JptEObject implements IJptEObject
 {
 	/**
 	 * <!-- begin-user-doc -->

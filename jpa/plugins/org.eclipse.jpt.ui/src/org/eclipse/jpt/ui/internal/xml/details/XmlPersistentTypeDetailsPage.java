@@ -15,7 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
-import org.eclipse.jpt.core.internal.XmlEObject;
+import org.eclipse.jpt.core.internal.resource.common.JptEObject;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
@@ -151,7 +151,7 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage
 	}
 	
 		
-	private class MyAccessHolder extends XmlEObject implements AccessHolder{
+	private class MyAccessHolder extends JptEObject implements AccessHolder{
 		
 		private XmlTypeMapping xmlTypeMapping;
 		MyAccessHolder(XmlTypeMapping xmlTypeMapping) {
