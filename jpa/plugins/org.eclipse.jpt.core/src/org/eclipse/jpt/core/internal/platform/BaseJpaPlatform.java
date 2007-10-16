@@ -41,6 +41,7 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumnAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumnsAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JoinTableAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.LobAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.ManyToManyAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.ManyToOneAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclassAnnotationDefinition;
@@ -227,6 +228,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		definitions.add(TableGeneratorAnnotationDefinition.instance());
 		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
 		definitions.add(JoinTableAnnotationDefinition.instance());
+		definitions.add(LobAnnotationDefinition.instance());
 	}
 	
 	//********************* IJpaPlatform implementation *************************
