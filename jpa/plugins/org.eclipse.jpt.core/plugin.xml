@@ -137,9 +137,13 @@
 			<preset id="jpt.jpa.preset"/>
 		</template>
 		
-		<action facet="jpt.jpa" type="INSTALL" id="jpt.jpa.install">
+		<action facet="jpt.jpa" type="install" id="jpt.jpa.install">
 			<config-factory class="org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider"/>
 			<delegate class="org.eclipse.jpt.core.internal.facet.JpaFacetInstallDelegate"/>
+		</action>
+		
+		<action facet="jpt.jpa" type="uninstall" id="jpt.jpa.uninstall">
+			<delegate class="org.eclipse.jpt.core.internal.facet.JpaFacetUninstallDelegate"/>
 		</action>
 		
 	</extension>
