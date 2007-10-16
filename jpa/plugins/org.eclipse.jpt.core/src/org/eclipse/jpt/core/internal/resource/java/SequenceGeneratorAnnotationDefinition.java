@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.jdtutility.Member;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 public class SequenceGeneratorAnnotationDefinition implements AnnotationDefinition
 {
