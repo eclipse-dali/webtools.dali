@@ -1,0 +1,89 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.jpt.core.internal.resource.java;
+
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Attribute;
+import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+
+public class OrderByImpl extends AbstractAnnotationResource<Attribute> implements OrderBy
+{
+	private static final String ANNOTATION_NAME = JPA.ORDER_BY;
+
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
+
+	
+	private final AnnotationElementAdapter<String> valueAdapter;
+
+	private String value;
+	
+	protected OrderByImpl(JavaResource parent, Attribute attribute) {
+		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
+		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, VALUE_ADAPTER);
+	}
+
+	public String getAnnotationName() {
+		return ANNOTATION_NAME;
+	}
+
+	public String getValue() {
+		return this.value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+		this.valueAdapter.setValue(value);
+	}
+	
+	public void updateFromJava(CompilationUnit astRoot) {
+		setValue(valueAdapter.getValue(astRoot));
+	}
+	
+	// ********** static methods **********
+	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ORDER_BY__VALUE, false);
+	}
+
+
+	public static class OrderByAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final OrderByAnnotationDefinition INSTANCE = new OrderByAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private OrderByAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new OrderByImpl(parent, (Attribute) member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
+}

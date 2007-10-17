@@ -54,6 +54,7 @@ import org.eclipse.jpt.core.internal.resource.java.NamedQueriesImpl.NamedQueries
 import org.eclipse.jpt.core.internal.resource.java.NamedQueryImpl.NamedQueryAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.OneToManyImpl.OneToManyAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.OneToOneImpl.OneToOneAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.OrderByImpl.OrderByAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTableImpl.SecondaryTableAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTablesImpl.SecondaryTablesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.SequenceGeneratorImpl.SequenceGeneratorAnnotationDefinition;
@@ -234,6 +235,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		definitions.add(JoinTableAnnotationDefinition.instance());
 		definitions.add(LobAnnotationDefinition.instance());
 		definitions.add(MapKeyAnnotationDefinition.instance());
+		definitions.add(OrderByAnnotationDefinition.instance());
 		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
 		definitions.add(TableGeneratorAnnotationDefinition.instance());
 		definitions.add(TemporalAnnotationDefinition.instance());
