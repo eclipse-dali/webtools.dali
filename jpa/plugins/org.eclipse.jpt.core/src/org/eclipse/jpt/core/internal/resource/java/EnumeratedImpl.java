@@ -15,12 +15,15 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 public class EnumeratedImpl extends AbstractAnnotationResource<Attribute> implements Enumerated
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ENUMERATED);
+	private static final String ANNOTATION_NAME = JPA.ENUMERATED;
+
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 
 	private final AnnotationElementAdapter<String> valueAdapter;
@@ -33,7 +36,7 @@ public class EnumeratedImpl extends AbstractAnnotationResource<Attribute> implem
 	}
 
 	public String getAnnotationName() {
-		return JPA.ENUMERATED;
+		return ANNOTATION_NAME;
 	}
 	
 	public EnumType getValue() {
@@ -52,6 +55,34 @@ public class EnumeratedImpl extends AbstractAnnotationResource<Attribute> implem
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ENUMERATED__VALUE);
+	}
+	
+	public static class EnumeratedAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final EnumeratedAnnotationDefinition INSTANCE = new EnumeratedAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private EnumeratedAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new EnumeratedImpl(parent, (Attribute) member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
 	}
 
 }

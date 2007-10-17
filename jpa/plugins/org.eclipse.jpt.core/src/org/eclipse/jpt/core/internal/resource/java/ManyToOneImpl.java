@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
@@ -16,12 +17,16 @@ import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation implements ManyToOne
 {	
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.MANY_TO_ONE);
+	private static final String ANNOTATION_NAME = JPA.MANY_TO_ONE;
+
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	
 	private static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter();	
 
@@ -35,7 +40,7 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 
 	private Boolean optional;
 
-	public ManyToOneImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
+	protected ManyToOneImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.optionalAdapter = this.buildAnnotationElementAdapter(OPTIONAL_ADAPTER);
 	}
@@ -60,7 +65,7 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 	//**************** Annotation implementation **************
 	
 	public String getAnnotationName() {
-		return JPA.MANY_TO_ONE;
+		return ANNOTATION_NAME;
 	}
 
 	
@@ -99,6 +104,42 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 	
 	private static DeclarationAnnotationElementAdapter<String> buildOptionalAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, false, BooleanStringExpressionConverter.instance());
+	}
+
+	
+	public static class ManyToOneAnnotationDefinition implements MappingAnnotationDefinition
+	{
+		// singleton
+		private static final ManyToOneAnnotationDefinition INSTANCE = new ManyToOneAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static ManyToOneAnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private ManyToOneAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new ManyToOneImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
+		}
+
+		public Iterator<String> correspondingAnnotationNames() {
+			return new ArrayIterator<String>(
+				JPA.JOIN_COLUMN,
+				JPA.JOIN_COLUMNS,
+				JPA.JOIN_TABLE);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
 	}
 
 }

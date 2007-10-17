@@ -9,25 +9,64 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class EmbeddedImpl extends AbstractAnnotationResource<Attribute> implements Embedded
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.EMBEDDED);
+	private static final String ANNOTATION_NAME = JPA.EMBEDDED;
 
-	public EmbeddedImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+
+	protected EmbeddedImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
 	public String getAnnotationName() {
-		return JPA.EMBEDDED_ID;
+		return ANNOTATION_NAME;
 	}
 
 	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
 		//no annotation members
+	}
+	
+	public static class EmbeddedAnnotationDefinition implements MappingAnnotationDefinition
+	{
+		// singleton
+		private static final EmbeddedAnnotationDefinition INSTANCE = new EmbeddedAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static EmbeddedAnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private EmbeddedAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new EmbeddedImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
+		}
+
+		public Iterator<String> correspondingAnnotationNames() {
+			return new ArrayIterator<String>(
+				JPA.ATTRIBUTE_OVERRIDE,
+				JPA.ATTRIBUTE_OVERRIDES);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
 	}
 }

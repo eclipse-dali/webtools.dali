@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -25,6 +24,8 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 {
+	private static final String ANNOTATION_NAME = JPA.TABLE_GENERATOR;
+
 	private final AnnotationElementAdapter<String> tableAdapter;
 
 	private final AnnotationElementAdapter<String> catalogAdapter;
@@ -37,7 +38,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 
 	private final AnnotationElementAdapter<String> pkColumnValueAdapter;
 
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.TABLE_GENERATOR);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__NAME);
 
@@ -74,7 +75,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 	private final UniqueConstraintsContainerAnnotation uniqueConstraintsContainerAnnotation;
 	
 
-	public TableGeneratorImpl(JavaResource parent, Member member) {
+	protected TableGeneratorImpl(JavaResource parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.tableAdapter = this.buildAdapter(TABLE_ADAPTER);
 		this.catalogAdapter = this.buildAdapter(CATALOG_ADAPTER);
@@ -87,7 +88,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 	}
 	
 	public String getAnnotationName() {
-		return JPA.TABLE_GENERATOR;
+		return ANNOTATION_NAME;
 	}
 
 	
@@ -298,7 +299,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 			return TableGeneratorImpl.this.uniqueConstraintAt(index);
 		}
 
-		public NestableUniqueConstraint nestedAnnotationFor(Annotation jdtAnnotation) {
+		public NestableUniqueConstraint nestedAnnotationFor(org.eclipse.jdt.core.dom.Annotation jdtAnnotation) {
 			for (NestableUniqueConstraint uniqueConstraint : CollectionTools.iterable(nestedAnnotations())) {
 				if (jdtAnnotation == uniqueConstraint.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 					return uniqueConstraint;
@@ -323,7 +324,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 			TableGeneratorImpl.this.removeUniqueConstraint(index);	
 		}
 
-		public Annotation jdtAnnotation(CompilationUnit astRoot) {
+		public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
 			return TableGeneratorImpl.this.jdtAnnotation(astRoot);
 		}
 
@@ -344,4 +345,33 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 		}
 		
 	}
+	
+	public static class TableGeneratorAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final TableGeneratorAnnotationDefinition INSTANCE = new TableGeneratorAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private TableGeneratorAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new TableGeneratorImpl(parent, member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
+
 }

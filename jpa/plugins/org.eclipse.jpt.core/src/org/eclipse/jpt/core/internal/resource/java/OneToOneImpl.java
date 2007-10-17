@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
@@ -16,12 +17,15 @@ import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implements OneToOne
 {
+	private static final String ANNOTATION_NAME = JPA.ONE_TO_ONE;
 
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ONE_TO_ONE);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter();	
 
@@ -68,7 +72,7 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 	//**************** Annotation implementation **************
 
 	public String getAnnotationName() {
-		return JPA.ONE_TO_ONE;
+		return ANNOTATION_NAME;
 	}
 	
 	
@@ -123,5 +127,44 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 	private static DeclarationAnnotationElementAdapter<String> buildMappedByAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__MAPPED_BY, false); // false = do not remove annotation when empty
 	}
+	
+	public static class OneToOneAnnotationDefinition implements MappingAnnotationDefinition
+	{
+
+		// singleton
+		private static final OneToOneAnnotationDefinition INSTANCE = new OneToOneAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static OneToOneAnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private OneToOneAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new OneToOneImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
+		}
+
+		public Iterator<String> correspondingAnnotationNames() {
+			return new ArrayIterator<String>(
+				JPA.PRIMARY_KEY_JOIN_COLUMN,
+				JPA.PRIMARY_KEY_JOIN_COLUMNS,
+				JPA.JOIN_COLUMN,
+				JPA.JOIN_COLUMNS,
+				JPA.JOIN_TABLE);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
+
 
 }

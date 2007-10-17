@@ -15,12 +15,16 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 public class TemporalImpl extends AbstractAnnotationResource<Attribute> implements Temporal
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.TEMPORAL);
+	private static final String ANNOTATION_NAME = JPA.TEMPORAL;
+
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 
 	private final AnnotationElementAdapter<String> valueAdapter;
@@ -33,7 +37,7 @@ public class TemporalImpl extends AbstractAnnotationResource<Attribute> implemen
 	}
 
 	public String getAnnotationName() {
-		return JPA.TEMPORAL;
+		return ANNOTATION_NAME;
 	}
 	
 	public TemporalType getValue() {
@@ -53,5 +57,34 @@ public class TemporalImpl extends AbstractAnnotationResource<Attribute> implemen
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.TEMPORAL__VALUE);
 	}
+	
+	public static class TemporalAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final TemporalAnnotationDefinition INSTANCE = new TemporalAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private TemporalAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new TemporalImpl(parent, (Attribute) member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
+
 
 }

@@ -9,17 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class OneToManyImpl extends AbstractRelationshipMappingAnnotation implements OneToMany
 {	
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ONE_TO_MANY);
+	private static final String ANNOTATION_NAME = JPA.ONE_TO_MANY;
+
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter();	
 
@@ -33,7 +38,7 @@ public class OneToManyImpl extends AbstractRelationshipMappingAnnotation impleme
 
 	private String mappedBy;
 
-	public OneToManyImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
+	protected OneToManyImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.mappedByAdapter = buildAnnotationElementAdapter(MAPPED_BY_ADAPTER);
 	}
@@ -58,7 +63,7 @@ public class OneToManyImpl extends AbstractRelationshipMappingAnnotation impleme
 	//**************** Annotation implementation **************
 
 	public String getAnnotationName() {
-		return JPA.ONE_TO_MANY;
+		return ANNOTATION_NAME;
 	}
 
 	
@@ -93,6 +98,43 @@ public class OneToManyImpl extends AbstractRelationshipMappingAnnotation impleme
 	
 	private static DeclarationAnnotationElementAdapter<String> buildMappedByAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_MANY__MAPPED_BY, false); // false = do not remove annotation when empty
+	}
+
+	public static class OneToManyAnnotationDefinition implements MappingAnnotationDefinition
+	{
+		// singleton
+		private static final OneToManyAnnotationDefinition INSTANCE = new OneToManyAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static OneToManyAnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private OneToManyAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new OneToManyImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
+		}
+
+		public Iterator<String> correspondingAnnotationNames() {
+			return new ArrayIterator<String>(
+				JPA.ORDER_BY,
+				JPA.MAP_KEY,
+				JPA.JOIN_TABLE,
+				JPA.JOIN_COLUMN,
+				JPA.JOIN_COLUMNS);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
 	}
 
 }

@@ -18,7 +18,9 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class TableImpl extends AbstractTableResource
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.TABLE);
+	private static final String ANNOTATION_NAME = JPA.TABLE;
+
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__NAME);
 
@@ -31,7 +33,7 @@ public class TableImpl extends AbstractTableResource
 	}
 
 	public String getAnnotationName() {
-		return JPA.TABLE;
+		return ANNOTATION_NAME;
 	}
 	
 	@Override
@@ -56,4 +58,33 @@ public class TableImpl extends AbstractTableResource
 	protected NestableUniqueConstraint createUniqueConstraint(int index) {
 		return UniqueConstraintImpl.createTableUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
 	}
+	
+	public static class TableAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final TableAnnotationDefinition INSTANCE = new TableAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private TableAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new TableImpl(parent, member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
+
 }

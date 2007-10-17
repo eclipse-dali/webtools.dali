@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
@@ -17,13 +18,17 @@ import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationE
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class BasicImpl extends AbstractAnnotationResource<Attribute> implements Basic
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.BASIC);
+	private static final String ANNOTATION_NAME = JPA.BASIC;
+
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private final AnnotationElementAdapter<String> optionalAdapter;
 
@@ -37,14 +42,14 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 	
 	private FetchType fetch;
 	
-	public BasicImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
+	protected BasicImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.optionalAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, OPTIONAL_ADAPTER);
 		this.fetchAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
 	}
 	
 	public String getAnnotationName() {
-		return JPA.BASIC;
+		return ANNOTATION_NAME;
 	}
 	
 	public Boolean getOptional() {
@@ -77,6 +82,42 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__FETCH, false);
+	}
+	
+	public static class BasicAnnotationDefinition implements MappingAnnotationDefinition
+	{
+		// singleton
+		private static final BasicAnnotationDefinition INSTANCE = new BasicAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static BasicAnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private BasicAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new BasicImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
+		}
+
+		public Iterator<String> correspondingAnnotationNames() {
+			return new ArrayIterator<String>(
+				JPA.COLUMN,
+				JPA.LOB,
+				JPA.TEMPORAL,
+				JPA.ENUMERATED);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
 	}
 
 }

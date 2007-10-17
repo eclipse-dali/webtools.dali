@@ -9,19 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class EntityImpl extends AbstractAnnotationResource<Type> implements Entity
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ENTITY);
+	private static final String ANNOTATION_NAME = JPA.ENTITY;
+
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private final AnnotationElementAdapter<String> nameAdapter;
 
@@ -30,13 +35,13 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 	private String name;
 
 	
-	public EntityImpl(JavaPersistentTypeResource parent, Type type) {
+	protected EntityImpl(JavaPersistentTypeResource parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), NAME_ADAPTER);
 	}
 	
 	public String getAnnotationName() {
-		return JPA.ENTITY;
+		return ANNOTATION_NAME;
 	}
 			
 	public String getName() {
@@ -56,4 +61,66 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ENTITY__NAME, false); // false = do not remove annotation when empty
 	}
 
+	
+	public static class EntityAnnotationDefinition implements MappingAnnotationDefinition
+	{
+		// singleton
+		private static final EntityAnnotationDefinition INSTANCE = new EntityAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static MappingAnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private EntityAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new EntityImpl((JavaPersistentTypeResource) parent, (Type) member);
+		}
+
+		public Iterator<String> correspondingAnnotationNames() {
+			return new ArrayIterator<String>(
+				JPA.TABLE,
+				JPA.SECONDARY_TABLE,
+				JPA.SECONDARY_TABLES,
+				JPA.PRIMARY_KEY_JOIN_COLUMN,
+				JPA.PRIMARY_KEY_JOIN_COLUMNS,
+				JPA.ID_CLASS,
+				JPA.INHERITANCE,
+				JPA.DISCRIMINATOR_VALUE,
+				JPA.DISCRIMINATOR_COLUMN,
+				JPA.SEQUENCE_GENERATOR,
+				JPA.TABLE_GENERATOR,
+				JPA.NAMED_QUERY,
+				JPA.NAMED_QUERIES,
+				JPA.NAMED_NATIVE_QUERY,
+				JPA.NAMED_NATIVE_QUERIES,
+				JPA.SQL_RESULT_SET_MAPPING,
+				JPA.EXCLUDE_DEFAULT_LISTENERS,
+				JPA.EXCLUDE_SUPERCLASS_LISTENERS,
+				JPA.ENTITY_LISTENERS,
+				JPA.PRE_PERSIST,
+				JPA.POST_PERSIST,
+				JPA.PRE_REMOVE,
+				JPA.POST_REMOVE,
+				JPA.PRE_UPDATE,
+				JPA.POST_UPDATE,
+				JPA.POST_LOAD,
+				JPA.ATTRIBUTE_OVERRIDE,
+				JPA.ATTRIBUTE_OVERRIDES,
+				JPA.ASSOCIATION_OVERRIDE,
+				JPA.ASSOCIATION_OVERRIDES);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
 }

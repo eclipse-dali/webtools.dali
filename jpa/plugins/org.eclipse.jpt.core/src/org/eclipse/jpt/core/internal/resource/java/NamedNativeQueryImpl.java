@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdap
 import org.eclipse.jpt.core.internal.jdtutility.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
@@ -28,8 +29,9 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 public class NamedNativeQueryImpl extends AbstractNamedQuery
 	implements NestableNamedNativeQuery
 {
+	private static final String ANNOTATION_NAME = JPA.NAMED_NATIVE_QUERY;
 
-	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.NAMED_NATIVE_QUERY);
+	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private final AnnotationElementAdapter<String> resultClassAdapter;
 
@@ -57,7 +59,7 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	}
 	
 	public String getAnnotationName() {
-		return JPA.NAMED_NATIVE_QUERY;
+		return ANNOTATION_NAME;
 	}
 	
 	//************* AbstractNamedQuery implementation *************
@@ -141,4 +143,33 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter namedQueriesAdapter) {
 		return new NestedIndexedDeclarationAnnotationAdapter(namedQueriesAdapter, index, JPA.NAMED_NATIVE_QUERY);
 	}
+	
+	public static class NamedNativeQueryAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final NamedNativeQueryAnnotationDefinition INSTANCE = new NamedNativeQueryAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private NamedNativeQueryAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return NamedNativeQueryImpl.createNamedNativeQuery(parent, (Type) member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
+
 }

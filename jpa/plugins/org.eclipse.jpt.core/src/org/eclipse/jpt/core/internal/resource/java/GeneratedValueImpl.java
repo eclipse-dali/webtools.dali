@@ -21,11 +21,13 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class GeneratedValueImpl extends AbstractAnnotationResource<Member> implements GeneratedValue
 {
+	private static final String ANNOTATION_NAME = JPA.GENERATED_VALUE;
+
 	private final AnnotationElementAdapter<String> strategyAdapter;
 
 	private final AnnotationElementAdapter<String> generatorAdapter;
 
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.GENERATED_VALUE);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> STRATEGY_ADAPTER = buildStrategyAdapter();
 
@@ -36,14 +38,14 @@ public class GeneratedValueImpl extends AbstractAnnotationResource<Member> imple
 	private String generator;
 	
 		
-	public GeneratedValueImpl(JavaResource parent, Member member) {
+	protected GeneratedValueImpl(JavaResource parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.strategyAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, STRATEGY_ADAPTER);
 		this.generatorAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, GENERATOR_ADAPTER);
 	}
 	
 	public String getAnnotationName() {
-		return JPA.GENERATED_VALUE;
+		return ANNOTATION_NAME;
 	}
 
 	public GenerationType getStrategy() {
@@ -77,5 +79,33 @@ public class GeneratedValueImpl extends AbstractAnnotationResource<Member> imple
 
 	private static DeclarationAnnotationElementAdapter<String> buildGeneratorAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.GENERATED_VALUE__GENERATOR, false);
+	}
+	
+	public static class GeneratedValueAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final GeneratedValueAnnotationDefinition INSTANCE = new GeneratedValueAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private GeneratedValueAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new GeneratedValueImpl(parent, member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
 	}
 }

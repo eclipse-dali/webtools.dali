@@ -9,26 +9,62 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
 public class EmbeddableImpl extends AbstractAnnotationResource<Type> implements Embeddable
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.EMBEDDABLE);
+	private static final String ANNOTATION_NAME = JPA.EMBEDDABLE;
+
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	protected EmbeddableImpl(JavaPersistentTypeResource parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
 	public String getAnnotationName() {
-		return JPA.EMBEDDABLE;
+		return ANNOTATION_NAME;
 	}
 
 	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
 		//no annotation members
 	}
 
+	
+	public static class EmbeddableAnnotationDefinition implements MappingAnnotationDefinition
+	{
+		// singleton
+		private static final EmbeddableAnnotationDefinition INSTANCE = new EmbeddableAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static EmbeddableAnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private EmbeddableAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new EmbeddableImpl((JavaPersistentTypeResource) parent, (Type) member);
+		}
+
+		public Iterator<String> correspondingAnnotationNames() {
+			return EmptyIterator.instance();
+		}
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
 }

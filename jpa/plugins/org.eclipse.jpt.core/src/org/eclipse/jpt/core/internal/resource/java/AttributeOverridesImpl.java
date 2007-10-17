@@ -14,11 +14,17 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> implements AttributeOverrides
 {
+	private static final String ANNOTATION_NAME = JPA.ATTRIBUTE_OVERRIDES;
+	
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+
 	private List<NestableAttributeOverride> attributesOverrides;
 	
 	protected AttributeOverridesImpl(JavaResource parent, Member member) {
@@ -27,7 +33,7 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 	}
 
 	public String getAnnotationName() {
-		return JPA.ATTRIBUTE_OVERRIDES;
+		return ANNOTATION_NAME;
 	}
 
 	public String getNestableAnnotationName() {
@@ -94,4 +100,32 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 		return AttributeOverrideImpl.createNestedAttributeOverride(this, getMember(), index, getDeclarationAnnotationAdapter());
 	}
 
+	
+	public static class AttributeOverridesAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final AttributeOverridesAnnotationDefinition INSTANCE = new AttributeOverridesAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private AttributeOverridesAnnotationDefinition() {
+			super();
+		}
+
+		public AttributeOverrides buildAnnotation(JavaResource parent, Member member) {
+			return new AttributeOverridesImpl(parent, member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
 }

@@ -9,25 +9,64 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class EmbeddedIdImpl extends AbstractAnnotationResource<Attribute> implements EmbeddedId
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.EMBEDDED_ID);
+	private static final String ANNOTATION_NAME = JPA.EMBEDDED_ID;
 
-	public EmbeddedIdImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+
+	protected EmbeddedIdImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
 	public String getAnnotationName() {
-		return JPA.EMBEDDED_ID;
+		return ANNOTATION_NAME;
 	}
 
 	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
 		//no annotation members
 	}
 
+	
+	public static class EmbeddedIdAnnotationDefinition implements MappingAnnotationDefinition
+	{
+		// singleton
+		private static final EmbeddedIdAnnotationDefinition INSTANCE = new EmbeddedIdAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static EmbeddedIdAnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private EmbeddedIdAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new EmbeddedIdImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
+		}
+
+		public Iterator<String> correspondingAnnotationNames() {
+			return new ArrayIterator<String>(
+				JPA.ATTRIBUTE_OVERRIDE,
+				JPA.ATTRIBUTE_OVERRIDES);
+		}
+		
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
 }

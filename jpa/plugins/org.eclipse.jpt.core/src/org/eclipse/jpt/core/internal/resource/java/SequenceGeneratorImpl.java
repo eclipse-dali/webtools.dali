@@ -18,9 +18,11 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGenerator
 {
+	private static final String ANNOTATION_NAME = JPA.SEQUENCE_GENERATOR;
+
 	private final AnnotationElementAdapter<String> sequenceNameAdapter;
 
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.SEQUENCE_GENERATOR);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildAdapter(JPA.SEQUENCE_GENERATOR__NAME);
 
@@ -32,13 +34,13 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 	
 	private String sequenceName;
 
-	public SequenceGeneratorImpl(JavaResource parent, Member member) {
+	protected SequenceGeneratorImpl(JavaResource parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.sequenceNameAdapter = this.buildAdapter(SEQUENCE_NAME_ADAPTER);
 	}
 	
 	public String getAnnotationName() {
-		return JPA.SEQUENCE_GENERATOR;
+		return ANNOTATION_NAME;
 	}
 
 	//************ GeneratorImpl implementation **************
@@ -88,4 +90,33 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 	private static DeclarationAnnotationElementAdapter<String> buildNumberAdapter(String elementName) {
 		return buildNumberAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
 	}
+	
+	public static class SequenceGeneratorAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final SequenceGeneratorAnnotationDefinition INSTANCE = new SequenceGeneratorAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private SequenceGeneratorAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new SequenceGeneratorImpl(parent, member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
+
 }

@@ -6,6 +6,7 @@ import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationE
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConverter;
@@ -13,9 +14,11 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 public class IdClassImpl extends AbstractAnnotationResource<Type> implements IdClass
 {
+	private static final String ANNOTATION_NAME = JPA.ID_CLASS;
+
 	private final AnnotationElementAdapter<String> valueAdapter;
 
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.ID_CLASS);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 
@@ -29,7 +32,7 @@ public class IdClassImpl extends AbstractAnnotationResource<Type> implements IdC
 	}
 
 	public String getAnnotationName() {
-		return JPA.ID_CLASS;
+		return ANNOTATION_NAME;
 	}
 
 	public String getValue() {
@@ -65,6 +68,35 @@ public class IdClassImpl extends AbstractAnnotationResource<Type> implements IdC
 	// ********** static methods **********
 	protected static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, JPA.ID_CLASS__VALUE, SimpleTypeStringExpressionConverter.instance());
+	}
+
+	
+	public static class IdClassAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final IdClassAnnotationDefinition INSTANCE = new IdClassAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private IdClassAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new IdClassImpl(parent, (Type) member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
 	}
 
 }

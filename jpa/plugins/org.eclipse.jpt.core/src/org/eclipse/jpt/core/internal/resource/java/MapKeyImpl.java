@@ -15,14 +15,18 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements MapKey
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.MAP_KEY);
+	private static final String ANNOTATION_NAME = JPA.MAP_KEY;
+
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
 
+	
 	private final AnnotationElementAdapter<String> nameAdapter;
 
 	private String name;
@@ -33,7 +37,7 @@ public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements
 	}
 
 	public String getAnnotationName() {
-		return JPA.MAP_KEY;
+		return ANNOTATION_NAME;
 	}
 
 	public String getName() {
@@ -54,4 +58,32 @@ public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.MAP_KEY__NAME, false);
 	}
 
+
+	public static class MapKeyAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final MapKeyAnnotationDefinition INSTANCE = new MapKeyAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private MapKeyAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new MapKeyImpl(parent, (Attribute) member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
 }

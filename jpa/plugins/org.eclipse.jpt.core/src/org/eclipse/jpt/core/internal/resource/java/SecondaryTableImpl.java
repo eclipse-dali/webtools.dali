@@ -24,7 +24,9 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class SecondaryTableImpl extends AbstractTableResource implements NestableSecondaryTable
 {	
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.SECONDARY_TABLE);
+	private static final String ANNOTATION_NAME = JPA.SECONDARY_TABLE;
+
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	
 	protected SecondaryTableImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
@@ -50,7 +52,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	}
 	
 	public String getAnnotationName() {
-		return JPA.SECONDARY_TABLE;
+		return ANNOTATION_NAME;
 	}
 	
 	public void moveAnnotation(int newIndex) {
@@ -87,4 +89,33 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {
 		return new NestedIndexedDeclarationAnnotationAdapter(secondaryTablesAdapter, index, JPA.SECONDARY_TABLE);
 	}
+	
+	public static class SecondaryTableAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final SecondaryTableAnnotationDefinition INSTANCE = new SecondaryTableAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private SecondaryTableAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return SecondaryTableImpl.createSecondaryTable(parent, member);
+		}
+		
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
+
 }

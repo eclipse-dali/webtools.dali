@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -26,8 +25,9 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class JoinTableImpl extends AbstractTableResource implements JoinTable
 {
+	private static final String ANNOTATION_NAME = JPA.JOIN_TABLE;
 
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.JOIN_TABLE);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__NAME);
 
@@ -46,7 +46,7 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 	}
 
 	public String getAnnotationName() {
-		return JPA.JOIN_TABLE;
+		return ANNOTATION_NAME;
 	}
 	
 	@Override
@@ -183,7 +183,7 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 			return JoinTableImpl.this.joinColumnAt(index);
 		}
 
-		public NestableJoinColumn nestedAnnotationFor(Annotation jdtAnnotation) {
+		public NestableJoinColumn nestedAnnotationFor(org.eclipse.jdt.core.dom.Annotation jdtAnnotation) {
 			for (NestableJoinColumn joinColumn : CollectionTools.iterable(nestedAnnotations())) {
 				if (jdtAnnotation == joinColumn.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 					return joinColumn;
@@ -208,7 +208,7 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 			JoinTableImpl.this.removeJoinColumn(index);	
 		}
 
-		public Annotation jdtAnnotation(CompilationUnit astRoot) {
+		public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
 			return JoinTableImpl.this.jdtAnnotation(astRoot);
 		}
 
@@ -229,4 +229,33 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 		}
 		
 	}
+	
+	public static class JoinTableAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final JoinTableAnnotationDefinition INSTANCE = new JoinTableAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private JoinTableAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new JoinTableImpl(parent, member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
+
 }

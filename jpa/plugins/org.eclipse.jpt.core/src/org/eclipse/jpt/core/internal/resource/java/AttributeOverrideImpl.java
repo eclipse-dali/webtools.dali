@@ -22,11 +22,16 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 public class AttributeOverrideImpl 
 	extends AbstractAnnotationResource<Member>  
 	implements NestableAttributeOverride
 {	
+	private static final String ANNOTATION_NAME = JPA.ATTRIBUTE_OVERRIDE;
+	
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+
 	// hold this so we can get the 'name' text range
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 
@@ -51,7 +56,7 @@ public class AttributeOverrideImpl
 	}
 	
 	public String getAnnotationName() {
-		return JPA.ATTRIBUTE_OVERRIDE;
+		return ANNOTATION_NAME;
 	}
 			
 	public void moveAnnotation(int newIndex) {
@@ -122,5 +127,33 @@ public class AttributeOverrideImpl
 
 	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		return new NestedIndexedDeclarationAnnotationAdapter(attributeOverridesAdapter, index, JPA.ATTRIBUTE_OVERRIDE);
+	}
+	
+	public static class AttributeOverrideAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final AttributeOverrideAnnotationDefinition INSTANCE = new AttributeOverrideAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private AttributeOverrideAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return AttributeOverrideImpl.createAttributeOverride(parent, member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
 	}
 }

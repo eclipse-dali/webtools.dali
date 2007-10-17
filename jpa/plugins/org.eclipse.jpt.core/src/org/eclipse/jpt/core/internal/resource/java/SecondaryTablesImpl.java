@@ -12,13 +12,17 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> implements SecondaryTables
 {
+	private static final String ANNOTATION_NAME = JPA.SECONDARY_TABLES;
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+
 	private final List<NestableSecondaryTable> secondaryTables;
 	
 	protected SecondaryTablesImpl(JavaPersistentTypeResource parent, Member member) {
@@ -27,7 +31,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 	}
 
 	public String getAnnotationName() {
-		return JPA.SECONDARY_TABLES;
+		return ANNOTATION_NAME;
 	}
 
 	public String getNestableAnnotationName() {
@@ -69,7 +73,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		return this.secondaryTables.get(index);
 	}
 	
-	public NestableSecondaryTable nestedAnnotationFor(Annotation jdtAnnotation) {
+	public NestableSecondaryTable nestedAnnotationFor(org.eclipse.jdt.core.dom.Annotation jdtAnnotation) {
 		for (NestableSecondaryTable secondaryTable : this.secondaryTables) {
 			if (jdtAnnotation == secondaryTable.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
 				return secondaryTable;
@@ -93,5 +97,34 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 	private SecondaryTableImpl createSecondaryTable(int index) {
 		return SecondaryTableImpl.createNestedSecondaryTable(this, getMember(), index, getDeclarationAnnotationAdapter());
 	}
+	
+	public static class SecondaryTablesAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final SecondaryTablesAnnotationDefinition INSTANCE = new SecondaryTablesAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private SecondaryTablesAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new SecondaryTablesImpl((JavaPersistentTypeResource) parent, member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
+	}
+
 
 }

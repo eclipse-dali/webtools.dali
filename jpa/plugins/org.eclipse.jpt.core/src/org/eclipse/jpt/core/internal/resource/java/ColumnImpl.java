@@ -17,8 +17,10 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAnnotation
 {
+	private static final String ANNOTATION_NAME = JPA.COLUMN;
+
 	// this adapter is only used by a Column annotation associated with a mapping annotation (e.g. Basic)
-	public static final DeclarationAnnotationAdapter MAPPING_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.COLUMN);
+	public static final DeclarationAnnotationAdapter MAPPING_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private final IntAnnotationElementAdapter lengthAdapter;
 
@@ -32,7 +34,7 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 	
 	private int scale = -1;
 	
-	public ColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
+	protected ColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
 		this.lengthAdapter = this.buildShortCircuitIntElementAdapter(JPA.COLUMN__LENGTH);
 		this.precisionAdapter = this.buildShortCircuitIntElementAdapter(JPA.COLUMN__PRECISION);
@@ -75,7 +77,7 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 	}
 
 	public String getAnnotationName() {
-		return JPA.COLUMN;
+		return ANNOTATION_NAME;
 	}
 	
 	public void moveAnnotation(int newIndex) {
@@ -133,5 +135,34 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 
 	static DeclarationAnnotationAdapter buildAttributeOverrideAnnotationAdapter(DeclarationAnnotationAdapter attributeOverrideAnnotationAdapter) {
 		return new NestedDeclarationAnnotationAdapter(attributeOverrideAnnotationAdapter, JPA.ATTRIBUTE_OVERRIDE__COLUMN, JPA.COLUMN);
+	}
+	
+	public static class ColumnAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final ColumnAnnotationDefinition INSTANCE = new ColumnAnnotationDefinition();
+
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private ColumnAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return new ColumnImpl(parent, member, ColumnImpl.MAPPING_DECLARATION_ANNOTATION_ADAPTER);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
 	}
 }

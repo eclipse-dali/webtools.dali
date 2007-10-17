@@ -24,7 +24,9 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinColumn
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.JOIN_COLUMN);
+	private static final String ANNOTATION_NAME = JPA.JOIN_COLUMN;
+
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	// hold this so we can get the 'referenced column name' text range
 	private final DeclarationAnnotationElementAdapter<String> referencedColumnNameDeclarationAdapter;
@@ -83,7 +85,7 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 	}
 
 	public String getAnnotationName() {
-		return JPA.JOIN_COLUMN;
+		return ANNOTATION_NAME;
 	}
 	
 	private IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
@@ -141,5 +143,34 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 
 	private static IndexedDeclarationAnnotationAdapter buildJoinTableInverseAnnotationAdapter(int index) {
 		return new NestedIndexedDeclarationAnnotationAdapter(JoinTableImpl.DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__INVERSE_JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
+	}
+	
+	public static class JoinColumnAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final JoinColumnAnnotationDefinition INSTANCE = new JoinColumnAnnotationDefinition();
+
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private JoinColumnAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResource parent, Member member) {
+			return JoinColumnImpl.createJoinColumn(parent, member);
+		}
+
+		public String getAnnotationName() {
+			return ANNOTATION_NAME;
+		}
 	}
 }
