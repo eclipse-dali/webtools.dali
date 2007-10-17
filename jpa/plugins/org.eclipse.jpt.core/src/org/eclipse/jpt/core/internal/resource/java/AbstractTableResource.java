@@ -141,7 +141,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		return this.uniqueConstraints.indexOf(uniqueConstraint);
 	}
 	
-	public UniqueConstraint addUniqueConstraint(int index) {
+	public NestableUniqueConstraint addUniqueConstraint(int index) {
 		NestableUniqueConstraint uniqueConstraint = createUniqueConstraint(index);
 		addUniqueConstraint(uniqueConstraint);
 		uniqueConstraint.newAnnotation();

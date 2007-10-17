@@ -71,6 +71,12 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 
 	protected abstract String columnDefinitionElementName();
 
+	public void initializeFrom(NestableAnnotation oldAnnotation) {
+		NamedColumn oldColumn = (NamedColumn) oldAnnotation;
+		setName(oldColumn.getName());
+		setColumnDefinition(oldColumn.getColumnDefinition());
+	}
+
 	public String getName() {
 		return this.name;
 	}

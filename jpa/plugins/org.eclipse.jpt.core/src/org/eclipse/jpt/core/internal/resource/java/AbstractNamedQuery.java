@@ -107,7 +107,7 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 		return this.hints.indexOf(queryHint);
 	}
 	
-	public QueryHint addHint(int index) {
+	public NestableQueryHint addHint(int index) {
 		NestableQueryHint queryHint = createQueryHint(index);
 		addHint(queryHint);
 		queryHint.newAnnotation();
@@ -154,8 +154,13 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 	}
 
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		//TODO add tests that fail and then support this
-
+		AbstractNamedQuery oldNamedQuery = (AbstractNamedQuery) oldAnnotation;
+		setName(oldNamedQuery.getName());
+		setQuery(oldNamedQuery.getQuery());
+		for (QueryHint queryHint : CollectionTools.iterable(oldNamedQuery.hints())) {
+			NestableQueryHint newQueryHint = addHint(oldNamedQuery.indexOfHint(queryHint));
+			newQueryHint.initializeFrom((NestableQueryHint) queryHint);
+		}
 	}
 
 	

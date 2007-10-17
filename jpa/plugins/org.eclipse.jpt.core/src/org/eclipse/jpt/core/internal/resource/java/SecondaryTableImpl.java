@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class SecondaryTableImpl extends AbstractTableResource implements NestableSecondaryTable
 {	
@@ -56,11 +57,15 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 		getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
 	
-	//TODO any tests that hit this??
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		setName(((SecondaryTable) oldAnnotation).getName());
-		setCatalog(((SecondaryTable) oldAnnotation).getCatalog());
-		setSchema(((SecondaryTable) oldAnnotation).getSchema());
+		SecondaryTable oldSecondaryTable = (SecondaryTable) oldAnnotation;
+		setName(oldSecondaryTable.getName());
+		setCatalog(oldSecondaryTable.getCatalog());
+		setSchema(oldSecondaryTable.getSchema());
+		for (UniqueConstraint uniqueConstraint : CollectionTools.iterable(oldSecondaryTable.uniqueConstraints())) {
+			NestableUniqueConstraint newUniqueConstraint = addUniqueConstraint(oldSecondaryTable.indexOfUniqueConstraint(uniqueConstraint));
+			newUniqueConstraint.initializeFrom((NestableAnnotation) uniqueConstraint);
+		}
 	}
 	
 	@Override

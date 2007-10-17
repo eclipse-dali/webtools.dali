@@ -72,6 +72,14 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 		return JPA.NAMED_NATIVE_QUERY__QUERY;
 	}
 	
+	@Override
+	public void initializeFrom(NestableAnnotation oldAnnotation) {
+		super.initializeFrom(oldAnnotation);
+		NamedNativeQuery oldNamedQuery = (NamedNativeQuery) oldAnnotation;
+		setResultClass(oldNamedQuery.getResultClass());
+		setResultSetMapping(oldNamedQuery.getResultSetMapping());
+	}
+	
 	public String getResultClass() {
 		return this.resultClass;
 	}

@@ -73,7 +73,10 @@ public class UniqueConstraintImpl extends AbstractAnnotationResource<Member> imp
 	}
 	
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		//don't need to implement this, uniqueConstraints can't move from nested to unnested or vice versa
+		UniqueConstraint oldUniqueConstraint = (UniqueConstraint) oldAnnotation;
+		for (String columnName : CollectionTools.iterable(oldUniqueConstraint.columnNames())) {
+			addColumnName(columnName);
+		}
 	}
 	
 	public ListIterator<String> columnNames() {

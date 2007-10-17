@@ -90,8 +90,9 @@ public class QueryHintImpl extends AbstractAnnotationResource<Type>
 	}
 
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		// TODO Auto-generated method stub
-		
+		QueryHint oldQueryHint = (QueryHint) oldAnnotation;
+		setName(oldQueryHint.getName());
+		setValue(oldQueryHint.getValue());
 	}
 	
 	// ********** static methods **********

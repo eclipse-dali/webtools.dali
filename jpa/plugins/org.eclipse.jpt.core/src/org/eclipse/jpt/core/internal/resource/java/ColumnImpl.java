@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
-public class ColumnImpl extends AbstractColumnImpl implements Column
+public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAnnotation
 {
 	// this adapter is only used by a Column annotation associated with a mapping annotation (e.g. Basic)
 	public static final DeclarationAnnotationAdapter MAPPING_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.COLUMN);
@@ -76,6 +76,19 @@ public class ColumnImpl extends AbstractColumnImpl implements Column
 
 	public String getAnnotationName() {
 		return JPA.COLUMN;
+	}
+	
+	public void moveAnnotation(int newIndex) {
+		//TODO move makes no sense for Column.  maybe NestableAnnotation
+		//needs to be split up and we could have IndexableAnnotation
+	}
+	
+	public void initializeFrom(NestableAnnotation oldAnnotation) {
+		super.initializeFrom(oldAnnotation);
+		Column oldColumn = (Column) oldAnnotation;
+		setLength(oldColumn.getLength());
+		setPrecision(oldColumn.getPrecision());
+		setScale(oldColumn.getScale());
 	}
 	
 	public int getLength() {

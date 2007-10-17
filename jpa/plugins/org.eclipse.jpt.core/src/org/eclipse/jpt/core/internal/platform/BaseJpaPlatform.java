@@ -168,6 +168,8 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 * The default includes the JPA spec-defined annotations.
 	 */
 	protected void addTypeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
+		definitions.add(AttributeOverrideAnnotationDefinition.instance());
+		definitions.add(AttributeOverridesAnnotationDefinition.instance());
 		definitions.add(TableAnnotationDefinition.instance());
 		definitions.add(SecondaryTableAnnotationDefinition.instance());
 		definitions.add(SecondaryTablesAnnotationDefinition.instance());

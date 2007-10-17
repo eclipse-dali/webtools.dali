@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class AttributeOverridesTests extends AnnotationTestCase {
@@ -95,6 +96,22 @@ public class AttributeOverridesTests extends AnnotationTestCase {
 		});
 	}
 	
+	private IType createTestAttributeOverride() throws Exception {
+		createAttributeOverrideAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ATTRIBUTE_OVERRIDE, JPA.COLUMN);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("@AttributeOverride(name=\"FOO\", column=@Column(name=\"FOO\", columnDefinition=\"BAR\", table=\"BAZ\", unique=false, nullable=false, insertable=false, updatable=false, length=1, precision=1, scale=1))");
+			}
+		});
+	}
+
 	protected JavaResource buildParentResource(final IJpaPlatform jpaPlatform) {
 		return new JavaResource() {
 			public void updateFromJava(CompilationUnit astRoot) {
@@ -198,6 +215,31 @@ public class AttributeOverridesTests extends AnnotationTestCase {
 		attributeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertNull(attributeOverride.getColumn());
 		assertSourceContains("@AttributeOverride(name=\"" + ATTRIBUTE_OVERRIDE_NAME + "\")");
+	}
+	
+	public void testAddAttributeOverrideCopyExisting() throws Exception {
+		IType jdtType = createTestAttributeOverride();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		
+		AttributeOverride attributeOverride = (AttributeOverride) typeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("BAR");
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\", column = @Column(name=\"FOO\", columnDefinition = \"BAR\", table = \"BAZ\", unique = false, nullable = false, insertable = false, updatable = false, length = 1, precision = 1, scale = 1)),@AttributeOverride(name=\"BAR\")})");
+		
+		assertNull(typeResource.annotation(JPA.ATTRIBUTE_OVERRIDE));
+		assertNotNull(typeResource.annotation(JPA.ATTRIBUTE_OVERRIDES));
+		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
+	}
+
+	public void testRemoveAttributeOverrideCopyExisting() throws Exception {
+		IType jdtType = createTestAttributeOverride();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		
+		AttributeOverride attributeOverride = (AttributeOverride) typeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("BAR");
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\", column = @Column(name=\"FOO\", columnDefinition = \"BAR\", table = \"BAZ\", unique = false, nullable = false, insertable = false, updatable = false, length = 1, precision = 1, scale = 1)),@AttributeOverride(name=\"BAR\")})");
+		
+		typeResource.removeAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		assertSourceContains("@AttributeOverride(name=\"FOO\", column = @Column(name=\"FOO\", columnDefinition = \"BAR\", table = \"BAZ\", unique = false, nullable = false, insertable = false, updatable = false, length = 1, precision = 1, scale = 1))");
 	}
 	//not sure i want to test this api, how can we keep ContainerAnnotation.add, move, remove from being public?
 	//users should go throught AbstractJavapersistenceResource. this gets confusing because you would handle it differently

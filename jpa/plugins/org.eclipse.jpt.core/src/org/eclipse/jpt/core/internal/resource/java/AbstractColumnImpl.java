@@ -63,6 +63,16 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 
 	protected abstract String updatableElementName();
 
+	public void initializeFrom(NestableAnnotation oldAnnotation) {
+		super.initializeFrom(oldAnnotation);
+		AbstractColumn oldColumn = (AbstractColumn) oldAnnotation;
+		setTable(oldColumn.getTable());
+		setUnique(oldColumn.isUnique());
+		setNullable(oldColumn.isNullable());
+		setInsertable(oldColumn.isInsertable());
+		setUpdatable(oldColumn.isUpdatable());
+	}
+
 	public String getTable() {
 		return this.table;
 	}
