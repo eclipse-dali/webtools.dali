@@ -45,6 +45,7 @@ import org.eclipse.jpt.core.internal.resource.java.JoinTableAnnotationDefinition
 import org.eclipse.jpt.core.internal.resource.java.LobAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.ManyToManyAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.ManyToOneAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.MapKeyAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclassAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.MappingAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueriesAnnotationDefinition;
@@ -232,6 +233,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		definitions.add(JoinColumnsAnnotationDefinition.instance());
 		definitions.add(JoinTableAnnotationDefinition.instance());
 		definitions.add(LobAnnotationDefinition.instance());
+		definitions.add(MapKeyAnnotationDefinition.instance());
 		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
 		definitions.add(TableGeneratorAnnotationDefinition.instance());
 		definitions.add(TemporalAnnotationDefinition.instance());

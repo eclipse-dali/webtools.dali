@@ -58,6 +58,7 @@ public class JptJavaResourceTests {
 		suite.addTestSuite(LobTests.class);
 		suite.addTestSuite(TemporalTests.class);
 		suite.addTestSuite(EnumeratedTests.class);
+		suite.addTestSuite(MapKeyTests.class);
 		
 		return suite;
 	}
