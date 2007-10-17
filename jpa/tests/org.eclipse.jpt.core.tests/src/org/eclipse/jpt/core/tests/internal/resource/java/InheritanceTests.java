@@ -16,19 +16,18 @@ import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
-import org.eclipse.jpt.core.internal.resource.java.EnumType;
-import org.eclipse.jpt.core.internal.resource.java.Enumerated;
+import org.eclipse.jpt.core.internal.resource.java.Inheritance;
+import org.eclipse.jpt.core.internal.resource.java.InheritanceType;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class EnumeratedTests extends AnnotationTestCase {
+public class InheritanceTests extends AnnotationTestCase {
 
-	public EnumeratedTests(String name) {
+	public InheritanceTests(String name) {
 		super(name);
 	}
 
@@ -39,32 +38,32 @@ public class EnumeratedTests extends AnnotationTestCase {
 		this.javaProject.createType("javax.persistence", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
 	}
 
-	private IType createTestEnumerated() throws Exception {
-		this.createAnnotationAndMembers("Enumerated", "EnumType value();");
-		this.createEnum("EnumType", "ORDINAL, STRING");
+	private IType createTestInheritance() throws Exception {
+		this.createAnnotationAndMembers("Inheritance", "InheritanceType strategy() default SINGLE_TABLE;");
+		this.createEnum("InheritanceType", "SINGLE_TABLE, JOINED, TABLE_PER_CLASS");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENUMERATED);
+				return new ArrayIterator<String>(JPA.INHERITANCE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
-				sb.append("@Enumerated");
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Inheritance");
 			}
 		});
 	}
 	
-	private IType createTestEnumeratedWithValue() throws Exception {
-		this.createAnnotationAndMembers("Enumerated", "EnumType value();");
-		this.createEnum("EnumType", "ORDINAL, STRING");
+	private IType createTestInheritanceWithStrategy() throws Exception {
+		this.createAnnotationAndMembers("Inheritance", "InheritanceType strategy() default SINGLE_TABLE;");
+		this.createEnum("InheritanceType", "SINGLE_TABLE, JOINED, TABLE_PER_CLASS");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENUMERATED, JPA.ENUM_TYPE);
+				return new ArrayIterator<String>(JPA.INHERITANCE, JPA.INHERITANCE_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
-				sb.append("@Enumerated(EnumType.ORDINAL)");
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Inheritance(strategy=InheritanceType.JOINED)");
 			}
 		});
 	}
@@ -89,38 +88,34 @@ public class EnumeratedTests extends AnnotationTestCase {
 		return typeResource;
 	}
 
-	public void testEnumerated() throws Exception {
-		IType testType = this.createTestEnumerated();
+	public void testInheritance() throws Exception {
+		IType testType = this.createTestInheritance();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
-		Enumerated enumerated = (Enumerated) attributeResource.annotation(JPA.ENUMERATED);
-		assertNotNull(enumerated);
+		Inheritance inheritance = (Inheritance) typeResource.annotation(JPA.INHERITANCE);
+		assertNotNull(inheritance);
 	}
 	
-	public void testGetValue() throws Exception {
-		IType testType = this.createTestEnumeratedWithValue();
+	public void testGetStrategy() throws Exception {
+		IType testType = this.createTestInheritanceWithStrategy();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
-		Enumerated enumerated = (Enumerated) attributeResource.annotation(JPA.ENUMERATED);
-		assertEquals(EnumType.ORDINAL, enumerated.getValue());
+		Inheritance inheritance = (Inheritance) typeResource.annotation(JPA.INHERITANCE);
+		assertEquals(InheritanceType.JOINED, inheritance.getStrategy());
 	}
 	
-	public void testSetValue() throws Exception {
-		IType testType = this.createTestEnumerated();
+	public void testSetStrategy() throws Exception {
+		IType testType = this.createTestInheritance();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 
-		Enumerated enumerated = (Enumerated) attributeResource.annotation(JPA.ENUMERATED);
-
-		enumerated.setValue(EnumType.STRING);
+		Inheritance inheritance = (Inheritance) typeResource.annotation(JPA.INHERITANCE);
+		inheritance.setStrategy(InheritanceType.TABLE_PER_CLASS);
 		
-		assertSourceContains("@Enumerated(STRING)");
+		assertSourceContains("@Inheritance(strategy=TABLE_PER_CLASS)");
 		
-		enumerated.setValue(null);
+		inheritance.setStrategy(null);
 		
-		assertSourceDoesNotContain("@Enumerated");
+		assertSourceDoesNotContain("@Inheritance");
 	}
 
 }

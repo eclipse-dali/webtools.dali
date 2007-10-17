@@ -60,6 +60,7 @@ public class JptJavaResourceTests {
 		suite.addTestSuite(EnumeratedTests.class);
 		suite.addTestSuite(MapKeyTests.class);
 		suite.addTestSuite(OrderByTests.class);
+		suite.addTestSuite(InheritanceTests.class);
 		
 		return suite;
 	}

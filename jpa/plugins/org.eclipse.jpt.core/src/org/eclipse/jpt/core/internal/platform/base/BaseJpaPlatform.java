@@ -40,6 +40,7 @@ import org.eclipse.jpt.core.internal.resource.java.EnumeratedImpl.EnumeratedAnno
 import org.eclipse.jpt.core.internal.resource.java.GeneratedValueImpl.GeneratedValueAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.IdClassImpl.IdClassAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.IdImpl.IdAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.InheritanceImpl.InheritanceAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumnImpl.JoinColumnAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumnsImpl.JoinColumnsAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JoinTableImpl.JoinTableAnnotationDefinition;
@@ -175,6 +176,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
 		definitions.add(AttributeOverridesAnnotationDefinition.instance());
 		definitions.add(IdClassAnnotationDefinition.instance());
+		definitions.add(InheritanceAnnotationDefinition.instance());
 		definitions.add(NamedQueryAnnotationDefinition.instance());
 		definitions.add(NamedQueriesAnnotationDefinition.instance());
 		definitions.add(NamedNativeQueryAnnotationDefinition.instance());
