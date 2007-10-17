@@ -234,7 +234,7 @@ public abstract class AbstractNodeModel
 	 */
 	public Node root() {
 		Node p = this.parent;
-		return (p == null) ? this : p.parent();
+		return (p == null) ? this : p.root();
 	}
 
 	/**

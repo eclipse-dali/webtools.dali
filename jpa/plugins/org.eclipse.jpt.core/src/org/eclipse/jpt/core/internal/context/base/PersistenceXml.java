@@ -8,25 +8,17 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.context;
+package org.eclipse.jpt.core.internal.context.base;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 
-public class BaseContextModel implements IContextModel
+public class PersistenceXml extends JpaContextNodeModel
 {
-	protected IJpaProject jpaProject;
-	
-	protected BaseJpaContent jpaContent;
-	
-	
-	public BaseContextModel(IJpaProject jpaProject) {
-		this.jpaProject = jpaProject;
-		jpaContent = new BaseJpaContent();
+	public PersistenceXml(BaseJpaContent baseJpaContent) {
+		super(baseJpaContent);
 	}
 	
-	
-	public void update(IJpaProject jpaProject, IProgressMonitor monitor) {
-		
+	public void update(PersistenceResourceModel persistenceResource) {
+		// TODO
 	}
 }

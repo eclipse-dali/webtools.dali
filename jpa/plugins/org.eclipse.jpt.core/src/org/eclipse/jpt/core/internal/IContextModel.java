@@ -1,7 +1,6 @@
-package org.eclipse.jpt.core.internal.context;
+package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.core.internal.IJpaProject;
 
 public interface IContextModel
 {

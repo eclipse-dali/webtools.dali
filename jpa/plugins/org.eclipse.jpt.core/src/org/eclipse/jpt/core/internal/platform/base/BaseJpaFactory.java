@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.platform;
+package org.eclipse.jpt.core.internal.platform.base;
 
 import java.io.IOException;
 import org.eclipse.core.resources.IFile;
@@ -15,8 +15,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.core.internal.IContextModel;
 import org.eclipse.jpt.core.internal.IJpaDataSource;
-import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IResourceModel;
@@ -24,14 +24,14 @@ import org.eclipse.jpt.core.internal.JpaDataSource;
 import org.eclipse.jpt.core.internal.JpaFile;
 import org.eclipse.jpt.core.internal.JpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.BaseContextModel;
-import org.eclipse.jpt.core.internal.context.IContextModel;
+import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
+import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
-public abstract class BaseJpaFactory implements IJpaFactory
+public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 {
 	protected BaseJpaFactory() {
 		super();
@@ -119,6 +119,10 @@ public abstract class BaseJpaFactory implements IJpaFactory
 	// **************** Context objects ***************************************
 	
 	public IContextModel buildContextModel(IJpaProject jpaProject) {
-		return new BaseContextModel(jpaProject);
+		return new BaseJpaContent(jpaProject);
+	}
+	
+	public PersistenceXml createPersistenceXml(BaseJpaContent baseJpaContent) {
+		return new PersistenceXml(baseJpaContent);
 	}
 }

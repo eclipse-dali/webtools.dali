@@ -13,7 +13,9 @@ package org.eclipse.jpt.ui.internal.navigator;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jpt.core.internal.context.IContextModel;
+import org.eclipse.jpt.core.internal.IContextModel;
+import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
+import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IMemento;
@@ -66,7 +68,11 @@ public class JpaLabelProvider
 	 */
 	public Image getImage(Object element) {
 		if (element instanceof IContextModel) {
-			return JptUiPlugin.getPlugin().getImage("full/obj16/jpa_content");
+			return JptUiPlugin.getPlugin().getImage(JptUiIcons.JPA_CONTENT);
+		}
+		
+		if (element instanceof PersistenceXml) {
+			return JptUiPlugin.getPlugin().getImage(JptUiIcons.JPA_FILE);
 		}
 		
 		return null;
@@ -78,6 +84,10 @@ public class JpaLabelProvider
 	public String getText(Object element) {
 		if (element instanceof IContextModel) {
 			return "JPA Content";
+		}
+		
+		if (element instanceof PersistenceXml) {
+			return "persistence.xml";
 		}
 		
 		return null;

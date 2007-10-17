@@ -11,8 +11,7 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jpt.core.internal.context.IContextModel;
-import org.eclipse.jpt.core.internal.platform.BaseJpaFactory;
+import org.eclipse.jpt.core.internal.platform.base.BaseJpaFactory;
 
 /**
  * Use IJpaFactory to create any core (e.g. IJpaProject), resource 

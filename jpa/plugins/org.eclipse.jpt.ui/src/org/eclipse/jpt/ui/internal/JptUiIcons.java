@@ -13,4 +13,8 @@ package org.eclipse.jpt.ui.internal;
 public class JptUiIcons
 {
 	public static final String JPA_WIZ_BANNER = "full/wizban/jpa_facet_wizban"; //$NON-NLS-1$
+	
+	public static final String JPA_CONTENT = "full/obj16/jpa-content";  //$NON-NLS-1$
+	
+	public static final String JPA_FILE = "full/obj16/jpa-file";  //$NON-NLS-1$
 }

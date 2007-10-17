@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.platform;
+package org.eclipse.jpt.core.internal.platform.base;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,29 +16,30 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.core.internal.IContextModel;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IResourceModel;
-import org.eclipse.jpt.core.internal.context.IContextModel;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.MappingAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrideImpl.AttributeOverrideAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverridesImpl.AttributeOverridesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.BasicImpl.BasicAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.ColumnImpl.ColumnAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.EmbeddableImpl.EmbeddableAnnotationDefinition;
-import org.eclipse.jpt.core.internal.resource.java.EmbeddedImpl.EmbeddedAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.EmbeddedIdImpl.EmbeddedIdAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.EmbeddedImpl.EmbeddedAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.EntityImpl.EntityAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.EnumeratedImpl.EnumeratedAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.GeneratedValueImpl.GeneratedValueAnnotationDefinition;
-import org.eclipse.jpt.core.internal.resource.java.IdImpl.IdAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.IdClassImpl.IdClassAnnotationDefinition;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.IdImpl.IdAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumnImpl.JoinColumnAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumnsImpl.JoinColumnsAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JoinTableImpl.JoinTableAnnotationDefinition;
@@ -47,7 +48,6 @@ import org.eclipse.jpt.core.internal.resource.java.ManyToManyImpl.ManyToManyAnno
 import org.eclipse.jpt.core.internal.resource.java.ManyToOneImpl.ManyToOneAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.MapKeyImpl.MapKeyAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclassImpl.MappedSuperclassAnnotationDefinition;
-import org.eclipse.jpt.core.internal.resource.java.MappingAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueriesImpl.NamedNativeQueriesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueryImpl.NamedNativeQueryAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.NamedQueriesImpl.NamedQueriesAnnotationDefinition;
@@ -58,8 +58,8 @@ import org.eclipse.jpt.core.internal.resource.java.OrderByImpl.OrderByAnnotation
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTableImpl.SecondaryTableAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTablesImpl.SecondaryTablesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.SequenceGeneratorImpl.SequenceGeneratorAnnotationDefinition;
-import org.eclipse.jpt.core.internal.resource.java.TableImpl.TableAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TableGeneratorImpl.TableGeneratorAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.TableImpl.TableAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TemporalImpl.TemporalAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TransientImpl.TransientAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.VersionImpl.VersionAnnotationDefinition;

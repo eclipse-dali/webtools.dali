@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.jdtutility.Member;
-import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
+import org.eclipse.jpt.core.internal.platform.base.BaseJpaPlatform;
 
 /**
  * Used for building new Annotations. 

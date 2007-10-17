@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform.generic;
 
-import org.eclipse.jpt.core.internal.platform.BaseJpaFactory;
+import org.eclipse.jpt.core.internal.platform.base.BaseJpaFactory;
 
 public class GenericJpaFactory extends BaseJpaFactory 
 {

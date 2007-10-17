@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.platform.generic;
 
 import org.eclipse.jpt.core.internal.IJpaFactory;
-import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
+import org.eclipse.jpt.core.internal.platform.base.BaseJpaPlatform;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
