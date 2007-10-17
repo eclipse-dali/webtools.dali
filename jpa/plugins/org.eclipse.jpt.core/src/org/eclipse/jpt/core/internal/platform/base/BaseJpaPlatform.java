@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.internal.resource.java.AttributeOverrideImpl.Attribu
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverridesImpl.AttributeOverridesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.BasicImpl.BasicAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.ColumnImpl.ColumnAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.DiscriminatorColumnImpl.DiscriminatorColumnAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorValueImpl.DiscriminatorValueAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.EmbeddableImpl.EmbeddableAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.EmbeddedIdImpl.EmbeddedIdAnnotationDefinition;
@@ -176,6 +177,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	protected void addTypeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
 		definitions.add(AttributeOverridesAnnotationDefinition.instance());
+		definitions.add(DiscriminatorColumnAnnotationDefinition.instance());
 		definitions.add(DiscriminatorValueAnnotationDefinition.instance());
 		definitions.add(IdClassAnnotationDefinition.instance());
 		definitions.add(InheritanceAnnotationDefinition.instance());
