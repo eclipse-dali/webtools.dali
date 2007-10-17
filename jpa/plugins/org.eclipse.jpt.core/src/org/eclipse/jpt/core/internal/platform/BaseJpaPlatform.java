@@ -33,6 +33,7 @@ import org.eclipse.jpt.core.internal.resource.java.EmbeddableAnnotationDefinitio
 import org.eclipse.jpt.core.internal.resource.java.EmbeddedAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.EmbeddedIdAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.EntityAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.EnumeratedAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.GeneratedValueAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.IdAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.IdClassAnnotationDefinition;
@@ -57,6 +58,7 @@ import org.eclipse.jpt.core.internal.resource.java.SecondaryTablesAnnotationDefi
 import org.eclipse.jpt.core.internal.resource.java.SequenceGeneratorAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TableAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TableGeneratorAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.TemporalAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TransientAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.VersionAnnotationDefinition;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -170,16 +172,16 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	protected void addTypeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
 		definitions.add(AttributeOverridesAnnotationDefinition.instance());
-		definitions.add(TableAnnotationDefinition.instance());
-		definitions.add(SecondaryTableAnnotationDefinition.instance());
-		definitions.add(SecondaryTablesAnnotationDefinition.instance());
 		definitions.add(IdClassAnnotationDefinition.instance());
-		definitions.add(TableGeneratorAnnotationDefinition.instance());
-		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
 		definitions.add(NamedQueryAnnotationDefinition.instance());
 		definitions.add(NamedQueriesAnnotationDefinition.instance());
 		definitions.add(NamedNativeQueryAnnotationDefinition.instance());
 		definitions.add(NamedNativeQueriesAnnotationDefinition.instance());
+		definitions.add(SecondaryTableAnnotationDefinition.instance());
+		definitions.add(SecondaryTablesAnnotationDefinition.instance());
+		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
+		definitions.add(TableAnnotationDefinition.instance());
+		definitions.add(TableGeneratorAnnotationDefinition.instance());
 	}
 	
 	protected ListIterator<MappingAnnotationDefinition> attributeMappingAnnotationDefinitions() {
@@ -224,13 +226,15 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
 		definitions.add(AttributeOverridesAnnotationDefinition.instance());
 		definitions.add(ColumnAnnotationDefinition.instance());
+		definitions.add(EnumeratedAnnotationDefinition.instance());
+		definitions.add(GeneratedValueAnnotationDefinition.instance());
 		definitions.add(JoinColumnAnnotationDefinition.instance());
 		definitions.add(JoinColumnsAnnotationDefinition.instance());
-		definitions.add(GeneratedValueAnnotationDefinition.instance());
-		definitions.add(TableGeneratorAnnotationDefinition.instance());
-		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
 		definitions.add(JoinTableAnnotationDefinition.instance());
 		definitions.add(LobAnnotationDefinition.instance());
+		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
+		definitions.add(TableGeneratorAnnotationDefinition.instance());
+		definitions.add(TemporalAnnotationDefinition.instance());
 	}
 	
 	//********************* IJpaPlatform implementation *************************

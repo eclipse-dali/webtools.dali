@@ -56,6 +56,8 @@ public class JptJavaResourceTests {
 		suite.addTestSuite(NamedNativeQueriesTests.class);
 		suite.addTestSuite(QueryHintTests.class);
 		suite.addTestSuite(LobTests.class);
+		suite.addTestSuite(TemporalTests.class);
+		suite.addTestSuite(EnumeratedTests.class);
 		
 		return suite;
 	}
