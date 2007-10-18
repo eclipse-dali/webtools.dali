@@ -9,12 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import java.util.Iterator;
-
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jpt.utility.internal.node.NodeModel;
+import org.eclipse.jpt.utility.internal.node.Node;
 
-public interface IJpaNodeModel extends NodeModel {
+/**
+ * Tweak the node interface with JPA-specific protocol.
+ */
+public interface IJpaNode extends Node {
+
+	/**
+	 * Return the JPA project the object belongs to.
+	 */
+	IJpaProject jpaProject();
 
 	/**
 	 * Return the resource that most directly contains the object.
@@ -22,17 +28,10 @@ public interface IJpaNodeModel extends NodeModel {
 	 */
 	IResource resource();
 
-	/**
-	 * Return the JPA project the object belongs to.
-	 */
-	IJpaProject jpaProject();
-
 
 	// ********** covariant overrides **********
 
-	IJpaNodeModel parent();
-
-	Iterator<? extends IJpaNodeModel> children();
+	IJpaNode parent();
 
 	IJpaProject root();
 

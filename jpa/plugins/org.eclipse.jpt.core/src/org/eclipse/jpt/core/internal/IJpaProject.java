@@ -28,7 +28,7 @@ import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 /**
  * 
  */
-public interface IJpaProject extends IJpaNodeModel {
+public interface IJpaProject extends IJpaNode {
 
 	/**
 	 * Return the Eclipse project associated with the JPA project.
@@ -65,7 +65,7 @@ public interface IJpaProject extends IJpaNodeModel {
 	 * Return the JPA project's JPA files.
 	 */
 	Iterator<IJpaFile> jpaFiles();
-		public static final String JPA_FILES_COLLECTION = "jpaFiles";
+		String JPA_FILES_COLLECTION = "jpaFiles";
 
 	/**
 	 * Return the JPA file corresponding to the specified file.
@@ -101,7 +101,7 @@ public interface IJpaProject extends IJpaNodeModel {
 	 * Synchronize the JPA project's JPA files with the specified resource
 	 * delta, watching for added and removed files.
 	 */
-	void checkForAddedOrRemovedJpaFiles(IResourceDelta delta) throws CoreException;
+	void synchronizeJpaFiles(IResourceDelta delta) throws CoreException;
 
 	/**
 	 * Forward the Java element change event to the JPA project's JPA files.
@@ -114,6 +114,7 @@ public interface IJpaProject extends IJpaNodeModel {
 	 * listed in persistence.xml.
 	 */
 	boolean discoversAnnotatedClasses();
+		String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses";
 
 	/**
 	 * Set whether the JPA project will "discover" annotated classes

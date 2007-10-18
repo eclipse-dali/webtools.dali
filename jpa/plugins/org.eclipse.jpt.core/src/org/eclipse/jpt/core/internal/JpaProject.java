@@ -43,13 +43,13 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.ChangeEventDispatcher;
-import org.eclipse.jpt.utility.internal.model.DefaultChangeEventDispatcher;
+import org.eclipse.jpt.utility.internal.model.SimpleChangeEventDispatcher;
 import org.eclipse.jpt.utility.internal.node.Node;
 
 /**
  * 
  */
-public class JpaProject extends JpaNodeModel implements IJpaProject {
+public class JpaProject extends JpaNode implements IJpaProject {
 
 	/**
 	 * The Eclipse project corresponding to the JPA project.
@@ -78,7 +78,6 @@ public class JpaProject extends JpaNodeModel implements IJpaProject {
 	 * listed in persistence.xml.
 	 */
 	protected boolean discoversAnnotatedClasses;
-		public static final String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses";
 
 	/**
 	 * The visitor passed to resource deltas.
@@ -148,7 +147,7 @@ public class JpaProject extends JpaNodeModel implements IJpaProject {
 	}
 
 	protected ChangeEventDispatcher buildChangeEventDispatcher() {
-		return DefaultChangeEventDispatcher.instance();
+		return SimpleChangeEventDispatcher.instance();
 	}
 
 	protected ThreadLocal<CommandExecutor> buildThreadLocalModifySharedDocumentCommandExecutor() {
@@ -228,7 +227,7 @@ public class JpaProject extends JpaNodeModel implements IJpaProject {
 	}
 
 	@Override
-	public void toString(StringBuffer sb) {
+	public void toString(StringBuilder sb) {
 		sb.append(this.name());
 	}
 
@@ -402,14 +401,14 @@ public class JpaProject extends JpaNodeModel implements IJpaProject {
 
 	// ********** handling resource deltas **********
 
-	public void checkForAddedOrRemovedJpaFiles(IResourceDelta delta) throws CoreException {
+	public void synchronizeJpaFiles(IResourceDelta delta) throws CoreException {
 		delta.accept(this.resourceDeltaVisitor);
 	}
 
 	/**
 	 * resource delta visitor callback
 	 */
-	protected void synchronizeJpaFiles(IFile file, int deltaKind) {
+	protected void synchronizeJpaFile(IFile file, int deltaKind) {
 		switch (deltaKind) {
 			case IResourceDelta.ADDED :
 				if ( ! this.containsJpaFile(file)) {
@@ -446,7 +445,7 @@ public class JpaProject extends JpaNodeModel implements IJpaProject {
 				case IResource.FOLDER :
 					return true;  // visit children
 				case IResource.FILE :
-					JpaProject.this.synchronizeJpaFiles((IFile) res, delta.getKind());
+					JpaProject.this.synchronizeJpaFile((IFile) res, delta.getKind());
 					return false;  // no children
 				default :
 					return false;  // no children

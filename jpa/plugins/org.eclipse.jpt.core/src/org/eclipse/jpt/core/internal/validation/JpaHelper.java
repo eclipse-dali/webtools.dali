@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.validation;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.internal.IJpaEObject;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JpaNodeModel;
+import org.eclipse.jpt.core.internal.JpaNode;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 
 public class JpaHelper extends org.eclipse.wst.validation.internal.operations.WorkbenchContext
@@ -27,7 +27,7 @@ public class JpaHelper extends org.eclipse.wst.validation.internal.operations.Wo
 		return (obj instanceof IJpaEObject) ?
 			((IJpaEObject) obj).getResource()
 		:
-			((JpaNodeModel) obj).resource();
+			((JpaNode) obj).resource();
 	}
 	
 	/*

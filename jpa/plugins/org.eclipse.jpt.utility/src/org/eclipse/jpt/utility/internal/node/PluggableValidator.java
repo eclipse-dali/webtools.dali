@@ -105,7 +105,7 @@ public class PluggableValidator implements Node.Validator {
 			}
 			@Override
 			public String toString() {
-				return "Delegate.Null";
+				return "PluggableValidator.Delegate.Null";
 			}
 		}
 

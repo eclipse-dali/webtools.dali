@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.internal.IJpaProject.Config;
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
 /**
@@ -133,7 +134,7 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 	}
 
 	@Override
-	public void toString(StringBuffer sb) {
+	public void toString(StringBuilder sb) {
 		sb.append("JPA projects size: " + this.jpaProjectsSize());
 	}
 
@@ -144,8 +145,8 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 	 * Forward the specified resource delta to the JPA project corresponding
 	 * to the specified Eclipse project.
 	 */
-	synchronized void checkForAddedOrRemovedJpaFiles(IProject project, IResourceDelta delta) throws CoreException {
-		this.jpaProjectHolder(project).checkForAddedOrRemovedJpaFiles(delta);
+	synchronized void synchronizeJpaFiles(IProject project, IResourceDelta delta) throws CoreException {
+		this.jpaProjectHolder(project).synchronizeJpaFiles(delta);
 	}
 
 	/**
@@ -193,7 +194,7 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 
 		IJpaProject jpaProject() throws CoreException;
 
-		void checkForAddedOrRemovedJpaFiles(IResourceDelta delta) throws CoreException;
+		void synchronizeJpaFiles(IResourceDelta delta) throws CoreException;
 
 		void javaElementChanged(ElementChangedEvent event);
 
@@ -223,7 +224,7 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 			return null;
 		}
 
-		public void checkForAddedOrRemovedJpaFiles(IResourceDelta delta) throws CoreException {
+		public void synchronizeJpaFiles(IResourceDelta delta) throws CoreException {
 			// do nothing
 		}
 
@@ -276,9 +277,9 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 			return this.config.jpaPlatform().getJpaFactory().createJpaProject(this.config);
 		}
 
-		public void checkForAddedOrRemovedJpaFiles(IResourceDelta delta) throws CoreException {
+		public void synchronizeJpaFiles(IResourceDelta delta) throws CoreException {
 			if (this.jpaProject != null) {
-				this.jpaProject.checkForAddedOrRemovedJpaFiles(delta);
+				this.jpaProject.synchronizeJpaFiles(delta);
 			}
 		}
 
@@ -299,6 +300,11 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 				this.jpaProject.dispose();
 			}
 			return true;
+		}
+
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, this.config.project().getName());
 		}
 
 	}

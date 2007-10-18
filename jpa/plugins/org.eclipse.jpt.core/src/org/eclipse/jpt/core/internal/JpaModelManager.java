@@ -17,7 +17,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.IWorkspace;
@@ -43,7 +42,6 @@ import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceArt
 import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceResource;
 import org.eclipse.jpt.core.internal.facet.IJpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
-import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
@@ -59,6 +57,15 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
  * All the methods that handle the events from the listeners are 'synchronized',
  * effectively single-threading them and forcing the events to be queued up
  * and handled one at a time.
+ * 
+ * Various things that cause us to add or remove a JPA project:
+ * - Project created via the "New Project" wizard - facet POST_INSTALL
+ * - Project created programmatically - facet POST_INSTALL
+ * - Project closed - resource PRE_CLOSE
+ * - Project deleted - resource PRE_DELETE
+ * - Project opened - facet PROJECT_MODIFIED
+ * - Pre-existing project imported - facet PROJECT_MODIFIED
+ * - Project facet uninstalled via "Properties" dialog - facet PRE_UNINSTALL
  */
 public class JpaModelManager {
 
@@ -68,7 +75,7 @@ public class JpaModelManager {
 	private JpaModel jpaModel;
 
 	/**
-	 * Listen for changes to projects or files.
+	 * Listen for changes to projects and files.
 	 */
 	private final IResourceChangeListener resourceChangeListener;
 
@@ -171,14 +178,14 @@ public class JpaModelManager {
 	 * JPA project.
 	 */
 	public IJpaProject jpaProject(IProject project) throws CoreException {
-		return this.jpaModel().jpaProject(project);
+		return this.jpaModel.jpaProject(project);
 	}
 
 	/**
 	 * Return the JPA file corresponding to the specified Eclipse file,
 	 * or null if unable to associate the specified file with a JPA file.
 	 */
-	public IJpaFile jpaFile(IFile file) throws CoreException {
+	public synchronized IJpaFile jpaFile(IFile file) throws CoreException {
 		IJpaProject jpaProject = this.jpaProject(file.getProject());
 		return (jpaProject == null) ? null : jpaProject.jpaFile(file);
 	}
@@ -188,7 +195,7 @@ public class JpaModelManager {
 	 * have changed in such a way as to require the associated
 	 * JPA project to be completely rebuilt.
 	 */
-	public void rebuildJpaProject(IProject project) {
+	public synchronized void rebuildJpaProject(IProject project) {
 		this.removeJpaProject(project);
 		this.addJpaProject(project);
 	}
@@ -225,7 +232,7 @@ public class JpaModelManager {
 		};
 	}
 
-	Iterable<IJpaProject.Config> buildJpaProjectConfigs(Iterable<IProject> jpaFacetedProjects) {
+	/* private */ Iterable<IJpaProject.Config> buildJpaProjectConfigs(Iterable<IProject> jpaFacetedProjects) {
 		ArrayList<IJpaProject.Config> configs = new ArrayList<IJpaProject.Config>();
 		for (IProject project : jpaFacetedProjects) {
 			configs.add(buildJpaProjectConfig(project));
@@ -246,8 +253,8 @@ public class JpaModelManager {
 	// ********** resource proxy visitor **********
 
 	/**
-	 * Visit the workspace resource tree, looking for open Eclipse projects
-	 * with a JPA facet.
+	 * Visit the workspace resource tree, collecting open Eclipse projects
+	 * that have a JPA facet.
 	 */
 	private static class ResourceProxyVisitor implements IResourceProxyVisitor {
 		private final JpaProjectConfigBuilder builder;
@@ -283,6 +290,12 @@ public class JpaModelManager {
 			return this.builder.buildJpaProjectConfigs(this.jpaFacetedProjects);
 		}
 
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this);
+		}
+
+		// ********** member interface **********
 		interface JpaProjectConfigBuilder {
 			Iterable<IJpaProject.Config> buildJpaProjectConfigs(Iterable<IProject> jpaFacetedProjects);
 		}
@@ -300,16 +313,17 @@ public class JpaModelManager {
 	 * Remove the JPA project corresponding to the specified Eclipse project.
 	 * Do nothing if there is no corresponding JPA project.
 	 */
-	private synchronized void removeJpaProject(IProject project) {
+	private void removeJpaProject(IProject project) {
 		if (this.jpaModel.removeJpaProject(project)) {
-			try {
-				// TODO remove classpath items?
-				// TODO remove persistence.xml?
-				// TODO copy to dispose()? where were the markers added in the first place???
-				ResourcesPlugin.getWorkspace().deleteMarkers(project.findMarkers(JptCorePlugin.VALIDATION_MARKER_ID, true, IResource.DEPTH_INFINITE));
-			} catch (CoreException ex) {
-				this.log(ex);  // not much we can do
-			}
+//			try {
+//				// TODO remove classpath items?
+//				// TODO remove persistence.xml?
+//				// TODO remove orm.xml?
+//				// TODO copy to dispose()? where were the markers added in the first place???
+//				ResourcesPlugin.getWorkspace().deleteMarkers(project.findMarkers(JptCorePlugin.VALIDATION_MARKER_ID, true, IResource.DEPTH_INFINITE));
+//			} catch (CoreException ex) {
+//				this.log(ex);  // not much we can do
+//			}
 		}
 	}
 
@@ -317,20 +331,24 @@ public class JpaModelManager {
 	// ********** resource changed **********
 
 	/**
-	 * Check for project deletion/closing and file changes.
+	 * Check for:
+	 *   - project close/delete
+	 *   - file add/remove
 	 */
-	synchronized void resourceChanged(IResourceChangeEvent event) {
+	/* private */ synchronized void resourceChanged(IResourceChangeEvent event) {
 		if (! (event.getSource() instanceof IWorkspace)) {
 			return;  // this probably shouldn't happen...
 		}
 		switch (event.getType()){
-			case IResourceChangeEvent.PRE_DELETE :
-			case IResourceChangeEvent.PRE_CLOSE :
+			case IResourceChangeEvent.PRE_DELETE :  // project-only event
+			case IResourceChangeEvent.PRE_CLOSE :  // project-only event
 				this.projectPreDeleteOrClose(event);
 				break;
 			case IResourceChangeEvent.POST_CHANGE :
 				this.resourcePostChange(event);
 				break;
+			case IResourceChangeEvent.PRE_BUILD :
+			case IResourceChangeEvent.POST_BUILD :
 			default :
 				break;
 		}
@@ -353,96 +371,22 @@ public class JpaModelManager {
 
 	/**
 	 * A resource has changed somehow.
-	 */
-	private void resourcePostChange(IResourceChangeEvent event) {
-		IResourceDelta delta = event.getDelta();
-		// TODO 3 passes through the delta might be a bit much... but it keeps our code simpler...
-		if (this.deltaIsRelevant(delta)) { // ignore SYNC and MARKER deltas
-			this.checkForAddedOrOpenedProjects(delta);
-			this.checkForAddedOrRemovedFiles(delta);
-		}
-	}
-
-	/**
-	 * Return whether the specified change delta contains anything relevant to
-	 * the JPA model.
-	 */
-	private boolean deltaIsRelevant(IResourceDelta rootDelta) {
-		if (rootDelta == null) {
-			return false;
-		}
-		try {
-			rootDelta.accept(RESOURCE_DELTA_VISITOR);
-		} catch (RelevantDeltaFoundException ex) {
-			return true;  // the visitor found a relevant delta and threw an exception
-		} catch (CoreException ex) {
-			this.log(ex);  // ignore delta if problems traversing - fall through and return false
-		}
-		return false;
-	}
-
-	/**
-	 * Process the given delta and look for projects being added, opened, or closed.
-	 * Note that projects being deleted are checked in deletingProject(IProject).
-	 */
-	private void checkForAddedOrOpenedProjects(IResourceDelta delta) {
-		IResource resource = delta.getResource();
-		switch (resource.getType()) {
-			case IResource.ROOT :
-				this.checkForAddedOrOpenedProjects(delta.getAffectedChildren());  // recurse
-				break;
-			case IResource.PROJECT :
-				this.checkForAddedOrOpenedProject((IProject) resource, delta);
-				break;
-			case IResource.FILE :
-			case IResource.FOLDER :
-			default :
-				break;
-		}
-	}
-
-	private void checkForAddedOrOpenedProjects(IResourceDelta[] deltas) {
-		for (int i = 0; i < deltas.length; i++) {
-			this.checkForAddedOrOpenedProjects(deltas[i]);  // recurse
-		}
-	}
-
-	private void checkForAddedOrOpenedProject(IProject project, IResourceDelta delta) {
-		if (JptCorePlugin.projectHasJpaFacet(project)) {
-			this.checkForAddedOrOpenedJpaFacetedProject(project, delta);
-		}
-	}
-
-	private void checkForAddedOrOpenedJpaFacetedProject(IProject project, IResourceDelta delta) {
-		switch (delta.getKind()) {
-			case IResourceDelta.REMOVED :
-				break;  // already handled with the PRE_DELETE event
-			case IResourceDelta.ADDED :  // adding and opening a project are treated alike
-			case IResourceDelta.CHANGED : 
-				if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.OPEN) && project.isOpen()) {
-					this.addJpaProject(project);
-				}
-				break;
-			case IResourceDelta.ADDED_PHANTOM :
-			case IResourceDelta.REMOVED_PHANTOM :
-			default :
-				break;
-		}
-	}
-
-	/**
 	 * Check for files being added or removed.
 	 * (The JPA project only handles added and removed files here, ignoring
 	 * changed files.)
 	 */
-	private void checkForAddedOrRemovedFiles(IResourceDelta delta) {
+	private void resourcePostChange(IResourceChangeEvent event) {
+		this.synchronizeFiles(event.getDelta());
+	}
+
+	private void synchronizeFiles(IResourceDelta delta) {
 		IResource resource = delta.getResource();
 		switch (resource.getType()) {
 			case IResource.ROOT :
-				this.checkForAddedOrRemovedFiles(delta.getAffectedChildren());  // recurse
+				this.synchronizeFiles(delta.getAffectedChildren());  // recurse
 				break;
 			case IResource.PROJECT :
-				this.checkForAddedOrRemovedFiles((IProject) resource, delta);
+				this.synchronizeFiles((IProject) resource, delta);
 				break;
 			case IResource.FILE :
 			case IResource.FOLDER :
@@ -451,119 +395,61 @@ public class JpaModelManager {
 		}
 	}
 
-	private void checkForAddedOrRemovedFiles(IResourceDelta[] deltas) {
+	private void synchronizeFiles(IResourceDelta[] deltas) {
 		for (int i = 0; i < deltas.length; i++) {
-			this.checkForAddedOrRemovedFiles(deltas[i]);  // recurse
+			this.synchronizeFiles(deltas[i]);  // recurse
 		}
 	}
 
-	private void checkForAddedOrRemovedFiles(IProject project, IResourceDelta delta) {
+	private void synchronizeFiles(IProject project, IResourceDelta delta) {
 		if (JptCorePlugin.projectHasJpaFacet(project)) {
-			this.checkForAddedOrRemovedJpaFiles(project, delta);
+			this.synchronizeJpaFiles(project, delta);
 		}
 	}
 
 	/**
 	 * Checked exceptions bite.
 	 */
-	private void checkForAddedOrRemovedJpaFiles(IProject project, IResourceDelta delta) {
+	private void synchronizeJpaFiles(IProject project, IResourceDelta delta) {
 		try {
-			this.jpaModel.checkForAddedOrRemovedJpaFiles(project, delta);
+			this.jpaModel.synchronizeJpaFiles(project, delta);
 		} catch (CoreException ex) {
 			this.log(ex);  // problem traversing the project's resources - not much we can do
 		}
 	}
 
 
-	// ********** resource delta visitor **********
-
-	/**
-	 * The visitor is stateless, so we only need one.
-	 */
-	private static final IResourceDeltaVisitor RESOURCE_DELTA_VISITOR = new ResourceDeltaVisitor();
-
-	/**
-	 * Traverse the resource delta tree and throw a special exception if any
-	 * relevant nodes are encountered.
-	 */
-	private static class ResourceDeltaVisitor implements IResourceDeltaVisitor {
-		// the exception is only used to short-circuit the traversal, so we only need one
-		private static final RelevantDeltaFoundException EX = new RelevantDeltaFoundException();
-
-		ResourceDeltaVisitor() {
-			super();
-		}
-
-		public boolean visit(IResourceDelta delta) {
-			switch (delta.getKind()) {
-				case IResourceDelta.ADDED :
-				case IResourceDelta.REMOVED :
-					throw EX;
-				case IResourceDelta.CHANGED :
-					if (this.changedDeltaIsRelevant(delta)) {
-						throw EX;
-					}
-					break;
-				case IResourceDelta.ADDED_PHANTOM :
-				case IResourceDelta.REMOVED_PHANTOM :
-				default :
-					break;
-			}
-			return true;  // continue visit to any children
-		}
-
-		/**
-		 * The specified "changed" delta is relevant if it is a leaf node
-		 * (i.e. it has no children) and any flag, other than the SYNC or
-		 * MARKERS flags, is set.
-		 */
-		private boolean changedDeltaIsRelevant(IResourceDelta delta) {
-			return (delta.getAffectedChildren().length == 0)
-					&& BitTools.anyFlagsAreSet(delta.getFlags(), RELEVANT_FLAGS);
-		}
-
-		private static final int IRRELEVANT_FLAGS = IResourceDelta.SYNC | IResourceDelta.MARKERS;
-		private static final int RELEVANT_FLAGS = ~IRRELEVANT_FLAGS;
-
-		@Override
-		public String toString() {
-			return StringTools.buildToStringFor(this);
-		}
-	}
-
-	/**
-	 * Internal exception to quickly escape from a delta traversal.
-	 */
-	private static class RelevantDeltaFoundException extends RuntimeException {
-		RelevantDeltaFoundException() {
-			super();
-		}
-		@Override
-		public String toString() {
-			return StringTools.buildToStringFor(this);
-		}
-	}
-
-
 	// ********** faceted project changed **********
 
-	synchronized void facetedProjectChanged(IFacetedProjectEvent event) {
-		if (event.getType() == IFacetedProjectEvent.Type.POST_INSTALL) {
-			this.postInstall((IProjectFacetActionEvent) event);
-		} else if (event.getType() == IFacetedProjectEvent.Type.PRE_UNINSTALL) {
-			this.preUninstall((IProjectFacetActionEvent) event);
-		} else {
-			this.checkJpaFacet(event.getProject().getProject());
+	/**
+	 * Check for:
+	 *   - install of JPA facet
+	 *   - un-install of JPA facet
+	 *   - sudden appearance or disappearance of JPA facet
+	 */
+	/* private */ synchronized void facetedProjectChanged(IFacetedProjectEvent event) {
+		switch (event.getType()) {
+			case POST_INSTALL :
+				this.facetedProjectPostInstall((IProjectFacetActionEvent) event);
+				break;
+			case PRE_UNINSTALL :
+				this.facetedProjectPreUninstall((IProjectFacetActionEvent) event);
+				break;
+			case PROJECT_MODIFIED :
+				this.facetedProjectModified(event.getProject().getProject());
+				break;
+			default :
+				break;
 		}
 	}
 
-	private void postInstall(IProjectFacetActionEvent event) {
+	private void facetedProjectPostInstall(IProjectFacetActionEvent event) {
 		if (JptCorePlugin.projectHasJpaFacet(event.getProject().getProject())) {
-			this.postInstallJpaFacetedProject(event);
+			this.jpaFacetedProjectPostInstall(event);
 		}
 	}
 
-	private void postInstallJpaFacetedProject(IProjectFacetActionEvent event) {
+	private void jpaFacetedProjectPostInstall(IProjectFacetActionEvent event) {
 		IProject project = event.getProject().getProject();
 		IDataModel dataModel = (IDataModel) event.getActionConfig();
 
@@ -574,16 +460,6 @@ public class JpaModelManager {
 		}
 
 		this.addJpaProject(project);
-	}
-
-	private void preUninstall(IProjectFacetActionEvent event) {
-		if (JptCorePlugin.projectHasJpaFacet(event.getProject().getProject())) {
-			this.preUninstallJpaFacetedProject(event);
-		}
-	}
-
-	private void preUninstallJpaFacetedProject(IProjectFacetActionEvent event) {
-		this.removeJpaProject(event.getProject().getProject());
 	}
 
 	private void createPersistenceXml(IProject project) {
@@ -621,22 +497,37 @@ public class JpaModelManager {
 		oae.dispose();
 	}
 
+	private void facetedProjectPreUninstall(IProjectFacetActionEvent event) {
+		if (JptCorePlugin.projectHasJpaFacet(event.getProject().getProject())) {
+			this.jpaFacetedProjectPreUninstall(event);
+		}
+	}
+
+	private void jpaFacetedProjectPreUninstall(IProjectFacetActionEvent event) {
+		this.removeJpaProject(event.getProject().getProject());
+	}
+
 	/**
+	 * This event is triggered when various, unknown, things happen to a
+	 * faceted project, e.g.
+	 *   - a closed project is opened
+	 *   - a pre-existing project is imported
+	 *   - one of a project's metadata files is modified directly
 	 * Add a JPA project if the Eclipse project has a JPA facet but the JPA
 	 * model does not have a corresponding JPA project. Remove the JPA
 	 * project if the Eclipse project does not have a JPA facet but the JPA
 	 * model does have a corresponding JPA project.
 	 */
-	private void checkJpaFacet(IProject project) {
+	private void facetedProjectModified(IProject project) {
 		boolean jpaFacet = JptCorePlugin.projectHasJpaFacet(project);
 		boolean jpaProject = this.jpaModel.containsJpaProject(project);
 
 		if (jpaFacet) {
-			if ( ! jpaProject) {  // facet added?
+			if ( ! jpaProject) {  // facet added
 				this.addJpaProject(project);
 			}
-		} else {  // facet removed?
-			if (jpaProject) {
+		} else {
+			if (jpaProject) {  // facet removed
 				this.removeJpaProject(project);
 			}
 		}
@@ -648,7 +539,7 @@ public class JpaModelManager {
 	/**
 	 * Forward the event to the JPA model.
 	 */
-	synchronized void javaElementChanged(ElementChangedEvent event) {
+	/* private */ synchronized void javaElementChanged(ElementChangedEvent event) {
 		this.jpaModel.javaElementChanged(event);
 	}
 
@@ -657,10 +548,9 @@ public class JpaModelManager {
 
 	/**
 	 * When the "Default JPA Lib" preference changes,
-	 * update the appropriate classpath variable.
-	 * This method can probably get by without being synchronized.
+	 * update the appropriate JDT Core classpath variable.
 	 */
-	void preferenceChanged(PropertyChangeEvent event) {
+	/* private */ synchronized void preferenceChanged(PropertyChangeEvent event) {
 		if (event.getProperty() == JpaPreferenceConstants.PREF_DEFAULT_JPA_LIB) {
 			try {
 				JavaCore.setClasspathVariable("DEFAULT_JPA_LIB", new Path((String) event.getNewValue()), null);

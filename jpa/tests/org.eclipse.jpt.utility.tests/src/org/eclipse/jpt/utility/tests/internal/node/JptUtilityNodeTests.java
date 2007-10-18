@@ -19,7 +19,7 @@ public class JptUtilityNodeTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(ClassTools.packageNameFor(JptUtilityNodeTests.class));
 	
-		suite.addTestSuite(AbstractNodeModelTests.class);
+		suite.addTestSuite(AbstractNodeTests.class);
 	
 		return suite;
 	}

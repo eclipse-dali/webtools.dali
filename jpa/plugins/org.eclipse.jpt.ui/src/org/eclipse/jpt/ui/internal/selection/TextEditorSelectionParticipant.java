@@ -49,8 +49,7 @@ public class TextEditorSelectionParticipant
 		this.textEditor.addPropertyListener(this.editorInputListener);
 		this.editorSelectionListener = new EditorSelectionListener();
 		this.postSelectionProvider().addPostSelectionChangedListener(this.editorSelectionListener);
-//		this.currentSelection = this.calculateSelection();
-		this.currentSelection = Selection.NULL_SELECTION;
+		this.currentSelection = this.calculateSelection();
 	}
 
 	// ********** ISelectionParticipant implementation **********

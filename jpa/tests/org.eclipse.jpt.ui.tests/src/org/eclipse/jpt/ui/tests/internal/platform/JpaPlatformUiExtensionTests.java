@@ -1,15 +1,14 @@
 package org.eclipse.jpt.ui.tests.internal.platform;
 
-import junit.framework.TestCase;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformUi;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
-import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.PlatformRegistry;
-import org.eclipse.jpt.ui.internal.generic.GenericPlatformUi;
+
+import junit.framework.TestCase;
 
 public class JpaPlatformUiExtensionTests extends TestCase
 {
@@ -21,7 +20,7 @@ public class JpaPlatformUiExtensionTests extends TestCase
 	public static final String TEST_PLUGIN_CLASS = ExtensionTestPlugin.class.getName();
 	public static final String TEST_PLUGIN_ID = ExtensionTestPlugin.PLUGIN_ID;
 
-	public static final String TEST_PLATFORM_ID = TestJpaPlatform.PLATFORM_ID;
+	public static final String TEST_PLATFORM_ID = TestJpaPlatform.ID;
 	public static final String TEST_PLATFORM_CLASS = TestJpaPlatform.class.getName();
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
 
@@ -55,17 +54,7 @@ public class JpaPlatformUiExtensionTests extends TestCase
 	}
 	
 	public void testJpaPlatform() {
-		assertNotNull(PlatformRegistry.instance().jpaPlatform(jpaProject().getPlatform().getId()));
+		assertNotNull(PlatformRegistry.instance().jpaPlatform(jpaProject().jpaPlatform().getId()));
 	}
 	
-	public void testSetPlatform() {
-		IJpaPlatformUi platformUi = PlatformRegistry.instance().jpaPlatform(jpaProject().getPlatform().getId());
-		assertTrue(platformUi instanceof GenericPlatformUi);
-		
-		jpaProject().setPlatform(TEST_PLATFORM_ID);
-		
-		platformUi = PlatformRegistry.instance().jpaPlatform(jpaProject().getPlatform().getId());
-
-		assertTrue(platformUi.getClass().getName().equals(TEST_UI_PLATFORM_CLASS));
-	}
 }

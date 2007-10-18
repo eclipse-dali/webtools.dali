@@ -10,34 +10,23 @@
 package org.eclipse.jpt.core.tests.internal;
 
 import junit.framework.Test;
-import junit.framework.TestSuite;
-import org.eclipse.jpt.core.tests.internal.content.java.mappings.JptCoreContentJavaMappingsTests;
-import org.eclipse.jpt.core.tests.internal.jdtutility.JptCoreJdtUtilityTests;
-import org.eclipse.jpt.core.tests.internal.model.JptCoreModelTests;
-import org.eclipse.jpt.core.tests.internal.platform.JptCorePlatformTests;
 
 /**
- * Runs all JPT Core Tests.  Currently we do not have a jpa.jar checked in to cvs. 
- * As a result we cannot run any tests that depend on that jar during the build.  In
- * our dev environments we should run JptAllCoreTests until we have jpa.jar checked in.
- * In the build we should continue to run JptCoreTests.
+ * This test suite is temporary, until jpa.jar can be checked into the CVS
+ * repository and used during the nightly builds.
+ * 
+ * Runs ALL JPT Core Tests. Currently we do not have a jpa.jar checked in to CVS.
+ * As a result we cannot run any tests that depend on that jar during the build.
+ * In our local development environments we should run this suite (JptAllCoreTests)
+ * until jpa.jar is checked into CVS.
+ * In the nightly build we should continue to run JptCoreTests.
  */
 public class JptAllCoreTests {
 
 	public static Test suite() {
-		return suite(true);
+		return JptCoreTests.suite(true);
 	}
-	
-	public static Test suite(boolean all) {
-		String quantity = all ? "All" : "Most";
-		TestSuite suite = new TestSuite(quantity + " JPT Core Tests");
-		suite.addTest(JptCoreContentJavaMappingsTests.suite(all));
-		suite.addTest(JptCoreModelTests.suite(all));
-		suite.addTest(JptCoreJdtUtilityTests.suite(all));
-		suite.addTest(JptCorePlatformTests.suite(all));
-		return suite;
-	}
-	
+
 	private JptAllCoreTests() {
 		super();
 		throw new UnsupportedOperationException();

@@ -18,6 +18,7 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.ChangeEventDispatcher;
+import org.eclipse.jpt.utility.internal.model.Model;
 
 /**
  * This interface defines the methods that must be implemented
@@ -28,7 +29,7 @@ import org.eclipse.jpt.utility.internal.model.ChangeEventDispatcher;
  * the nodes themselves, as opposed to clients of the nodes. These
  * methods are called by a node on either its parent or its children.
  */
-public interface Node extends Comparable<Node> {
+public interface Node extends Model, Comparable<Node> {
 
 
 	// ********** containment hierarchy (parent/children) **********
@@ -36,7 +37,7 @@ public interface Node extends Comparable<Node> {
 	/**
 	 * INTRA-TREE API?
 	 * Return the node's parent in the containment hierarchy.
-	 * Most nodes must have a parent.
+	 * Most nodes must have a parent. The parent is immutable.
 	 * @see #children()
 	 */
 	Node parent();
@@ -46,7 +47,7 @@ public interface Node extends Comparable<Node> {
 	 * Return the node's children, which are also nodes.
 	 * @see #parent()
 	 */
-	Iterator<? extends Node> children();
+	Iterator<Node> children();
 
 	/**
 	 * INTRA-TREE API?
@@ -73,7 +74,7 @@ public interface Node extends Comparable<Node> {
 	 * @see Reference
 	 * @see #children()
 	 */
-	void addBranchReferencesTo(Collection<Node> branchReferences);
+	void addBranchReferencesTo(Collection<Node.Reference> branchReferences);
 
 	/**
 	 * INTRA-TREE API?
@@ -273,6 +274,20 @@ public interface Node extends Comparable<Node> {
 	 * client use.
 	 */
 	boolean clearAllBranchProblemsInternal();
+
+
+	// ********** comment **********
+
+	/**
+	 * Return the user comment concerning the node.
+	 */
+	String comment();
+		String COMMENT_PROPERTY = "comment";
+
+	/**
+	 * Set the user comment concerning the node.
+	 */
+	void setComment(String comment);
 
 
 	// ********** displaying/sorting **********
