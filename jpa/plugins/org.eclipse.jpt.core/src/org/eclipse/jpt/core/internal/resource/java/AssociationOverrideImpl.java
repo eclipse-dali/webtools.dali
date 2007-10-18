@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -160,8 +161,12 @@ public class AssociationOverrideImpl
 		return new NestedIndexedDeclarationAnnotationAdapter(attributeOverridesAdapter, index, JPA.ASSOCIATION_OVERRIDE);
 	}
 	
-	private class JoinColumnsContainerAnnotation implements ContainerAnnotation<NestableJoinColumn> {
+	private class JoinColumnsContainerAnnotation extends JpaNodeModel implements ContainerAnnotation<NestableJoinColumn> {
 
+		public JoinColumnsContainerAnnotation() {
+			super(AssociationOverrideImpl.this);
+		}
+		
 		public NestableJoinColumn add(int index) {
 			NestableJoinColumn joinColumn = createNestedAnnotation(index);
 			AssociationOverrideImpl.this.addJoinColumn(joinColumn);

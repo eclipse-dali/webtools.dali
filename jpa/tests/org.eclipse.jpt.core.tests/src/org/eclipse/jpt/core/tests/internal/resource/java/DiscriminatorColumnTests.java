@@ -11,21 +11,13 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorColumn;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorType;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
-import org.eclipse.jpt.core.internal.resource.java.JavaResource;
-import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class DiscriminatorColumnTests extends AnnotationTestCase {
+public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 	
 	private static final String COLUMN_NAME = "MY_COLUMN";
 	private static final String COLUMN_COLUMN_DEFINITION = "COLUMN_DEFINITION";
@@ -33,17 +25,9 @@ public class DiscriminatorColumnTests extends AnnotationTestCase {
 	public DiscriminatorColumnTests(String name) {
 		super(name);
 	}
-
-	private void createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
-	}
-	
-	private void createEnum(String enumName, String enumBody) throws Exception {
-		this.javaProject.createType("javax.persistence", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
-	}
 		
 	private void createDiscriminatorColumnAnnotation() throws Exception {
-		this.createEnum("DiscriminatorType", "STRING, CHAR, INTEGER");
+		this.createEnumAndMembers("DiscriminatorType", "STRING, CHAR, INTEGER");
 		this.createAnnotationAndMembers("DiscriminatorColumn", 
 			"String name() default \"DTYPE\"; " +
 			"DiscriminatorType discriminatorType() default STRING; " +
@@ -119,26 +103,6 @@ public class DiscriminatorColumnTests extends AnnotationTestCase {
 				sb.append("@DiscriminatorColumn(" + intElement + "=5)");
 			}
 		});
-	}
-	
-	protected JavaResource buildParentResource(final IJpaPlatform jpaPlatform) {
-		return new JavaResource() {
-			public void updateFromJava(CompilationUnit astRoot) {
-			}
-			public IJpaPlatform jpaPlatform() {
-				return jpaPlatform;
-			}
-		};
-	}
-	
-	protected IJpaPlatform buildJpaPlatform() {
-		return new GenericJpaPlatform();
-	}
-
-	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) {
-		JavaPersistentTypeResource typeResource = new JavaPersistentTypeResourceImpl(buildParentResource(buildJpaPlatform()), new Type(testType, MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER));
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
-		return typeResource;
 	}
 
 	public void testGetName() throws Exception {

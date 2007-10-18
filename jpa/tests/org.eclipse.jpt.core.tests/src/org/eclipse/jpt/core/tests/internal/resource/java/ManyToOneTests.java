@@ -11,37 +11,23 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.FetchType;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
-import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.ManyToOne;
-import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class ManyToOneTests extends AnnotationTestCase {
+public class ManyToOneTests extends JavaResourceModelTestCase {
 	
 	public ManyToOneTests(String name) {
 		super(name);
 	}
 
-	private void createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
-	}
-	private void createEnum(String enumName, String enumBody) throws Exception {
-		this.javaProject.createType("javax.persistence", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
-	}
-
 	private IType createTestManyToOne() throws Exception {
 		this.createAnnotationAndMembers("ManyToOne", "FetchType fetch() default FetchType.LAZY; CascadeType[] cascade() default = {};");
-		this.createEnum("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
+		this.createEnumAndMembers("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -56,7 +42,7 @@ public class ManyToOneTests extends AnnotationTestCase {
 	
 	private IType createTestManyToOneWithFetch() throws Exception {
 		this.createAnnotationAndMembers("ManyToOne", "FetchType fetch() default FetchType.LAZY;");
-		this.createEnum("FetchType", "EAGER, LAZY");
+		this.createEnumAndMembers("FetchType", "EAGER, LAZY");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -99,7 +85,7 @@ public class ManyToOneTests extends AnnotationTestCase {
 	
 	private IType createTestManyToOneWithCascade() throws Exception {
 		this.createAnnotationAndMembers("ManyToOne", "CascadeType[] cascade() default = {};");
-		this.createEnum("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
+		this.createEnumAndMembers("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -114,7 +100,7 @@ public class ManyToOneTests extends AnnotationTestCase {
 	
 	private IType createTestManyToOneWithMultipleCascade() throws Exception {
 		this.createAnnotationAndMembers("ManyToOne", "CascadeType[] cascade() default = {};");
-		this.createEnum("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
+		this.createEnumAndMembers("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -129,7 +115,7 @@ public class ManyToOneTests extends AnnotationTestCase {
 	
 	private IType createTestManyToOneWithDuplicateCascade() throws Exception {
 		this.createAnnotationAndMembers("ManyToOne", "CascadeType[] cascade() default = {};");
-		this.createEnum("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
+		this.createEnumAndMembers("CascadeType", "ALL, PERSIST, MERGE, REMOVE, REFRESH");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -140,27 +126,6 @@ public class ManyToOneTests extends AnnotationTestCase {
 				sb.append("@ManyToOne(cascade={CascadeType.MERGE, CascadeType.MERGE})");
 			}
 		});
-	}
-
-
-	protected JavaResource buildParentResource(final IJpaPlatform jpaPlatform) {
-		return new JavaResource() {
-			public void updateFromJava(CompilationUnit astRoot) {
-			}
-			public IJpaPlatform jpaPlatform() {
-				return jpaPlatform;
-			}
-		};
-	}
-	
-	protected IJpaPlatform buildJpaPlatform() {
-		return new GenericJpaPlatform();
-	}
-
-	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) {
-		JavaPersistentTypeResource typeResource = new JavaPersistentTypeResourceImpl(buildParentResource(buildJpaPlatform()), new Type(testType, MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER));
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
-		return typeResource;
 	}
 
 	public void testManyToOne() throws Exception {

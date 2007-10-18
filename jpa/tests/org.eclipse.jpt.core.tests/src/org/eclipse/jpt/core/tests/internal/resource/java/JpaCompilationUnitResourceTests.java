@@ -15,9 +15,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
@@ -61,11 +59,6 @@ public class JpaCompilationUnitResourceTests extends AnnotationTestCase {
 				sb.append("@Entity");
 			}
 		});
-	}
-	
-
-	protected IJpaPlatform buildJpaPlatform() {
-		return new GenericJpaPlatform();
 	}
 	
 	protected JpaCompilationUnitResource getJpaCompilationUnitResource(ICompilationUnit testCompilationUnit) throws CoreException {

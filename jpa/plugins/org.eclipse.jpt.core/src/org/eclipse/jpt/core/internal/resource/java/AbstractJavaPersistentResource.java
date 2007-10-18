@@ -19,6 +19,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
+import org.eclipse.jpt.core.internal.IJpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -39,7 +40,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	
 	private boolean persistable;
 
-	public AbstractJavaPersistentResource(JavaResource parent, E member){
+	public AbstractJavaPersistentResource(IJpaNodeModel parent, E member){
 		super(parent, member);
 		this.annotations = new ArrayList<Annotation>();
 		this.mappingAnnotations = new ArrayList<Annotation>();

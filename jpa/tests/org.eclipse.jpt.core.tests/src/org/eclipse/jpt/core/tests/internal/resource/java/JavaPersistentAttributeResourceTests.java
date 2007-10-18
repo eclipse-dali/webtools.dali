@@ -12,12 +12,7 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
-import org.eclipse.jpt.core.internal.jdtutility.NullAnnotationEditFormatter;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
 import org.eclipse.jpt.core.internal.resource.java.Column;
@@ -26,23 +21,17 @@ import org.eclipse.jpt.core.internal.resource.java.IdImpl;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.OneToMany;
 import org.eclipse.jpt.core.internal.resource.java.OneToOneImpl;
-import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
-public class JavaPersistentAttributeResourceTests extends AnnotationTestCase {
+public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestCase {
 	
 	public JavaPersistentAttributeResourceTests(String name) {
 		super(name);
-	}
-
-	private void createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 		
 	private IType createTestEntity() throws Exception {
@@ -274,31 +263,6 @@ public class JavaPersistentAttributeResourceTests extends AnnotationTestCase {
 				sb.append("@AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"BAZ\")})");
 			}
 		});
-	}
-
-	protected IJpaPlatform buildJpaPlatform() {
-		return new GenericJpaPlatform();
-	}
-	
-	protected JavaResource buildParentResource(final IJpaPlatform jpaPlatform) {
-		return new JavaResource() {
-			public void updateFromJava(CompilationUnit astRoot) {
-			}
-			public IJpaPlatform jpaPlatform() {
-				return jpaPlatform;
-			}
-		};
-	}
-	
-	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) {
-		JavaPersistentTypeResource typeResource = 
-			new JavaPersistentTypeResourceImpl(
-				buildParentResource(buildJpaPlatform()),
-				new Type(testType, 
-					MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER, 
-					NullAnnotationEditFormatter.instance()));
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
-		return typeResource;
 	}
 	
 	public void testJavaAttributeAnnotations() throws Exception {

@@ -13,13 +13,8 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.AccessType;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
-import org.eclipse.jpt.core.internal.jdtutility.NullAnnotationEditFormatter;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.Embeddable;
 import org.eclipse.jpt.core.internal.resource.java.EmbeddableImpl;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
@@ -27,24 +22,18 @@ import org.eclipse.jpt.core.internal.resource.java.EntityImpl;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclass;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.Table;
-import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
+public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 	
 	public JavaPersistentTypeResourceTests(String name) {
 		super(name);
-	}
-
-	private void createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 	
 	private void createEntityAnnotation() throws Exception{
@@ -476,31 +465,6 @@ public class JavaPersistentTypeResourceTests extends AnnotationTestCase {
 				sb.append("     enum MyEnum {}").append(CR);
 			}
 		});
-	}
-
-	protected IJpaPlatform buildJpaPlatform() {
-		return new GenericJpaPlatform();
-	}
-	
-	protected JavaResource buildParentResource(final IJpaPlatform jpaPlatform) {
-		return new JavaResource() {
-			public void updateFromJava(CompilationUnit astRoot) {
-			}
-			public IJpaPlatform jpaPlatform() {
-				return jpaPlatform;
-			}
-		};
-	}
-
-	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) {
-		JavaPersistentTypeResource typeResource = 
-			new JavaPersistentTypeResourceImpl(
-				buildParentResource(buildJpaPlatform()),
-				new Type(testType, 
-					MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER, 
-					NullAnnotationEditFormatter.instance()));
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
-		return typeResource;
 	}
 	
 	public void testJavaTypeAnnotations() throws Exception {

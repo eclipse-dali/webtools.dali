@@ -9,26 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.IJpaNodeModel;
+import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
-public abstract class AbstractResource<E extends Member> implements JavaResource
+public abstract class AbstractResource<E extends Member> extends JpaNodeModel implements JavaResource
 {	
-	private final JavaResource parent;
-	
 	private final E member;
 	
-	protected AbstractResource(JavaResource parent, E member) {
-		super();
-		this.parent = parent;
+	protected AbstractResource(IJpaNodeModel parent, E member) {
+		super(parent);
 		this.member = member;
 	}
 	
 	public E getMember() {
 		return this.member;
-	}
-	
-	public IJpaPlatform jpaPlatform() {
-		return this.parent.jpaPlatform();
 	}
 }

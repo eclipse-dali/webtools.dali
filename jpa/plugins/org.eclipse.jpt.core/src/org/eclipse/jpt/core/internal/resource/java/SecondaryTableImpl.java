@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -162,8 +163,12 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	}
 	
 	
-	private class PkJoinColumnsContainerAnnotation implements ContainerAnnotation<NestablePrimaryKeyJoinColumn> {
+	private class PkJoinColumnsContainerAnnotation extends JpaNodeModel implements ContainerAnnotation<NestablePrimaryKeyJoinColumn> {
 
+		public PkJoinColumnsContainerAnnotation() {
+			super(SecondaryTableImpl.this);
+		}
+		
 		public NestablePrimaryKeyJoinColumn add(int index) {
 			NestablePrimaryKeyJoinColumn pKJoinColumn = createNestedAnnotation(index);
 			SecondaryTableImpl.this.addPkJoinColumn(pKJoinColumn);

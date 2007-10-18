@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -189,8 +190,12 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	protected abstract NestableUniqueConstraint createUniqueConstraint(int index);
 
 	
-	private class UniqueConstraintsContainerAnnotation implements ContainerAnnotation<NestableUniqueConstraint> {
+	private class UniqueConstraintsContainerAnnotation extends JpaNodeModel implements ContainerAnnotation<NestableUniqueConstraint> {
 
+		public UniqueConstraintsContainerAnnotation() {
+			super(AbstractTableResource.this);
+		}
+		
 		public NestableUniqueConstraint add(int index) {
 			NestableUniqueConstraint uniqueConstraint = createNestedAnnotation(index);
 			AbstractTableResource.this.addUniqueConstraint(uniqueConstraint);

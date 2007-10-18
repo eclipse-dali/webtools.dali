@@ -9,59 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
 import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
-import org.eclipse.jpt.core.internal.jdtutility.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
-import org.eclipse.jpt.core.internal.resource.java.JavaResource;
-import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JPTToolsTests extends AnnotationTestCase {
+public class JPTToolsTests extends JavaResourceModelTestCase {
 
 	public JPTToolsTests(String name) {
 		super(name);
-	}
-
-	protected JavaResource buildParentResource(final IJpaPlatform jpaPlatform) {
-		return new JavaResource() {
-			public void updateFromJava(CompilationUnit astRoot) {
-			}
-			public IJpaPlatform jpaPlatform() {
-				return jpaPlatform;
-			}
-		};
-	}
-	
-	protected IJpaPlatform buildJpaPlatform() {
-		return new GenericJpaPlatform();
-	}
-	
-	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) {
-		return buildJavaTypeResource(testType, JDTTools.buildASTRoot(testType));
-	}
-
-	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType, CompilationUnit astRoot) {
-		JavaPersistentTypeResource typeResource = 
-			new JavaPersistentTypeResourceImpl(
-				buildParentResource(buildJpaPlatform()), 
-				new Type(testType, 
-					MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER, 
-					NullAnnotationEditFormatter.instance()));
-		typeResource.updateFromJava(astRoot);
-		return typeResource;
 	}
 
 	private IType createTestTypeFieldWithModifier(final String modifier) throws Exception {
@@ -149,27 +111,27 @@ public class JPTToolsTests extends AnnotationTestCase {
 		});
 	}
 	
-	private IType createTestTypeInvalidMethodReturnType() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>("com.foo.Foo");
-			}
-			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
-				sb.append(CR);
-				sb.append("    public Foo getFoo() {").append(CR);
-				sb.append("        return null;").append(CR);
-				sb.append("    }").append(CR);
-				sb.append(CR);
-				sb.append("    public void setFoo(Foo id) {").append(CR);
-				sb.append("        this.id = id;").append(CR);
-				sb.append("    }").append(CR);
-				sb.append(CR);
-			}
-		});
-	}
+//	private IType createTestTypeInvalidMethodReturnType() throws Exception {
+//		return this.createTestType(new DefaultAnnotationWriter() {
+//			
+//			@Override
+//			public Iterator<String> imports() {
+//				return new ArrayIterator<String>("com.foo.Foo");
+//			}
+//			@Override
+//			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+//				sb.append(CR);
+//				sb.append("    public Foo getFoo() {").append(CR);
+//				sb.append("        return null;").append(CR);
+//				sb.append("    }").append(CR);
+//				sb.append(CR);
+//				sb.append("    public void setFoo(Foo id) {").append(CR);
+//				sb.append("        this.id = id;").append(CR);
+//				sb.append("    }").append(CR);
+//				sb.append(CR);
+//			}
+//		});
+//	}
 
 	private IType createTestTypeIsMethod() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -260,14 +222,6 @@ public class JPTToolsTests extends AnnotationTestCase {
 				sb.append("     public enum MyEnum {}").append(CR);
 			}
 		});
-	}
-
-	private IType createEnumAndMembers(String enumName, String enumBody) throws Exception {
-		return this.javaProject.createType("enums", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
-	}
-
-	private IType createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		return this.javaProject.createType("annot", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 
 	protected MethodAttribute fooMethod() throws JavaModelException {
@@ -461,6 +415,7 @@ public class JPTToolsTests extends AnnotationTestCase {
 		assertFalse(JPTTools.methodIsPersistablePropertyGetter(fooMethod.binding(astRoot)));
 	}
 	
+	//TODO
 	//**getFooMethod.binding(CompliationUnit) is returning null, not sure why and don't know how to test
 	//**this if it is returning null there instead of returning null for IMethodBinding.getReturnType()
 //	//public Foo getFoo() {} - not persistable - Foo does not resolve

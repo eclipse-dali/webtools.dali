@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
@@ -267,8 +268,12 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 	}
 
 	
-	private class UniqueConstraintsContainerAnnotation implements ContainerAnnotation<NestableUniqueConstraint> {
+	private class UniqueConstraintsContainerAnnotation extends JpaNodeModel implements ContainerAnnotation<NestableUniqueConstraint> {
 
+		public UniqueConstraintsContainerAnnotation() {
+			super(TableGeneratorImpl.this);
+		}
+		
 		public NestableUniqueConstraint add(int index) {
 			NestableUniqueConstraint uniqueConstraint = createNestedAnnotation(index);
 			TableGeneratorImpl.this.addUniqueConstraint(uniqueConstraint);

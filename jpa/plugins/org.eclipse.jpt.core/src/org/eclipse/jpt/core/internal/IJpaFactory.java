@@ -33,7 +33,7 @@ public interface IJpaFactory
 	 * Build a resource model to be associated with the given JPA file.
 	 * Return null if no resource model is to be associated.
 	 */
-	IResourceModel buildResourceModel(IFile file);
+	IResourceModel buildResourceModel(IJpaProject jpaProject, IFile file);
 	
 	/**
 	 * Construct a JPA file for the specified file, to be

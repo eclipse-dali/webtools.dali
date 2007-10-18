@@ -15,13 +15,12 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
-public class JpaCompilationUnitResource implements JavaResource
+public class JpaCompilationUnitResource extends JpaNodeModel implements JavaResource
 {
 	/**
 	 * The primary type of the CompilationUnit. Not going to handle
@@ -33,15 +32,8 @@ public class JpaCompilationUnitResource implements JavaResource
 
 	private final ICompilationUnit compilationUnit;
 	
-	//TODO move this to a superclass
-	private IJpaPlatform jpaPlatform;
-	
-	//TODO passing IJpaPlatform in because IJpaFile has no parent yet.
-	//I believe this should change once brian's changes to remove emf from the top-level
-	//model have been checked in.
-	public JpaCompilationUnitResource(IFile file) {
-		super();
-		this.jpaPlatform = JptCorePlugin.jpaPlatform(file.getProject());
+	public JpaCompilationUnitResource(JavaResourceModel parent, IFile file) {
+		super(parent);
 		this.compilationUnit = compilationUnitFrom(file);
 		updateFromJava(astRoot());
 	}
@@ -105,12 +97,7 @@ public class JpaCompilationUnitResource implements JavaResource
 	/**
 	 * delegate to the type's project (there is one provider per project)
 	 */
-	//TODO using platform instead of project that i should be getting from a super class
 	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
-		return this.jpaPlatform.modifySharedDocumentCommandExecutorProvider();
-	}
-	
-	public IJpaPlatform jpaPlatform() {
-		return this.jpaPlatform;
+		return jpaProject().modifySharedDocumentCommandExecutorProvider();
 	}
 }

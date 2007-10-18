@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -164,8 +165,12 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 	}
 
 	
-	private class HintsContainerAnnotation implements ContainerAnnotation<NestableQueryHint> {
+	private class HintsContainerAnnotation extends JpaNodeModel implements ContainerAnnotation<NestableQueryHint> {
 
+		public HintsContainerAnnotation() {
+			super(AbstractNamedQuery.this);
+		}
+		
 		public NestableQueryHint add(int index) {
 			NestableQueryHint queryHint = createNestedAnnotation(index);
 			AbstractNamedQuery.this.addHint(queryHint);

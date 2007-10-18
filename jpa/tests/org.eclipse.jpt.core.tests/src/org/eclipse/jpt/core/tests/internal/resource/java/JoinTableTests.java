@@ -12,24 +12,17 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
-import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.JoinTable;
 import org.eclipse.jpt.core.internal.resource.java.UniqueConstraint;
-import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JoinTableTests extends AnnotationTestCase {
+public class JoinTableTests extends JavaResourceModelTestCase {
 	
 	private static final String TABLE_NAME = "MY_TABLE";
 	private static final String SCHEMA_NAME = "MY_SCHEMA";
@@ -37,10 +30,6 @@ public class JoinTableTests extends AnnotationTestCase {
 	
 	public JoinTableTests(String name) {
 		super(name);
-	}
-
-	private void createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 
 	private void createJoinColumnAnnotation() throws Exception {
@@ -162,26 +151,6 @@ public class JoinTableTests extends AnnotationTestCase {
 				sb.append("@JoinTable(inverseJoinColumns={@JoinColumn(name=\"BAR\"), @JoinColumn})");
 			}
 		});
-	}
-
-	protected JavaResource buildParentResource(final IJpaPlatform jpaPlatform) {
-		return new JavaResource() {
-			public void updateFromJava(CompilationUnit astRoot) {
-			}
-			public IJpaPlatform jpaPlatform() {
-				return jpaPlatform;
-			}
-		};
-	}
-	
-	protected IJpaPlatform buildJpaPlatform() {
-		return new GenericJpaPlatform();
-	}
-
-	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) {
-		JavaPersistentTypeResource typeResource = new JavaPersistentTypeResourceImpl(buildParentResource(buildJpaPlatform()), new Type(testType, MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER));
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
-		return typeResource;
 	}
 
 	public void testGetName() throws Exception {

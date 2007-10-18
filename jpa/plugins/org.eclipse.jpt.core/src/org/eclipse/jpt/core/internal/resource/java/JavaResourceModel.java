@@ -15,24 +15,27 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
+import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IResourceModel;
+import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.utility.internal.BitTools;
 
-public class JavaResourceModel implements IResourceModel
+public class JavaResourceModel extends JpaNodeModel implements IResourceModel
 {
 	private final JpaCompilationUnitResource compilationUnitResource;
 	
-	public JavaResourceModel(IFile file) {
-		super();
-		//TODO passing IJpaPlatform in because IJpaFile has no parent yet.
-		//I believe this should change once brian's changes to remove emf from the top-level
-		//model have been checked in.
+	public JavaResourceModel(IJpaProject jpaProject, IFile file) {
+		super(jpaProject);
 		this.compilationUnitResource = buildJpaCompilationUnit(file);
 	}
 	
 	protected JpaCompilationUnitResource buildJpaCompilationUnit(IFile file) {
-		return new JpaCompilationUnitResource(file);
+		return new JpaCompilationUnitResource(this, file);
+	}
+	
+	public JpaCompilationUnitResource getCompilationUnitResource() {
+		return this.compilationUnitResource;
 	}
 	
 	public String getResourceType() {
@@ -81,8 +84,8 @@ public class JavaResourceModel implements IResourceModel
 		if (BitTools.onlyFlagIsSet(delta.getFlags(), IJavaElementDelta.F_PRIMARY_WORKING_COPY)) {
 			return;
 		}
-		
 		if (delta.getElement().equals(this.compilationUnitResource.getCompilationUnit())) {
+			//TODO possibly hop on the UI thread here so that we know only 1 thread is changing our model
 			this.compilationUnitResource.updateFromJava(JDTTools.buildASTRoot(this.compilationUnitResource.getCompilationUnit()));
 		}
 	}

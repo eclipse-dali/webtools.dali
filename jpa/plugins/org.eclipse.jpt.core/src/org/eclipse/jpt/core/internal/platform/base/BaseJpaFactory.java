@@ -55,7 +55,7 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	// **************** Resource objects **************************************
 	
-	public IResourceModel buildResourceModel(IFile file) {
+	public IResourceModel buildResourceModel(IJpaProject jpaProject, IFile file) {
 		if (! JavaCore.create(file.getProject()).isOnClasspath(file)) {
 			return null;
 		}
@@ -64,12 +64,12 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 			return null;
 		}
 		String contentTypeId = contentType.getId();
-		return buildResourceModel(file, contentTypeId);
+		return buildResourceModel(jpaProject, file, contentTypeId);
 	}
 	
-	protected IResourceModel buildResourceModel(IFile file, String contentTypeId) {
+	protected IResourceModel buildResourceModel(IJpaProject jpaProject, IFile file, String contentTypeId) {
 		if (JavaCore.JAVA_SOURCE_CONTENT_TYPE.equals(contentTypeId)) {
-			return buildJavaResourceModel(file);
+			return buildJavaResourceModel(jpaProject, file);
 		}
 		else if (JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE.equals(contentTypeId)) {
 			return buildPersistenceResourceModel(file);
@@ -81,8 +81,8 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return null;
 	}
 	
-	protected IResourceModel buildJavaResourceModel(IFile file) {
-		return new JavaResourceModel(file);
+	protected IResourceModel buildJavaResourceModel(IJpaProject jpaProject, IFile file) {
+		return new JavaResourceModel(jpaProject, file);
 	}
 	
 	protected IResourceModel buildPersistenceResourceModel(IFile file) {

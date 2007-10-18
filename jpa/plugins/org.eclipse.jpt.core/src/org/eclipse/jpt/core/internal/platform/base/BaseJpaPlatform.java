@@ -131,7 +131,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	// **************** Model construction / updating *************************
 	
 	public IJpaFile buildJpaFile(IJpaProject jpaProject, IFile file) {
-		IResourceModel resourceModel = jpaFactory().buildResourceModel(file);
+		IResourceModel resourceModel = jpaFactory().buildResourceModel(jpaProject, file);
 		
 		if (resourceModel != null) {
 			return jpaFactory().createJpaFile(jpaProject, file, resourceModel);
