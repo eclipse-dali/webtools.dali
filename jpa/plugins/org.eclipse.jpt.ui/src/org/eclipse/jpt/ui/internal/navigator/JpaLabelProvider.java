@@ -27,6 +27,7 @@ import org.eclipse.ui.navigator.IMementoAware;
 public class JpaLabelProvider
 	implements ICommonLabelProvider
 {
+	// TODO - create delegate label provider that depends on platform UI
 	public JpaLabelProvider() {
 		super();
 	}

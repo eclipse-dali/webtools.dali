@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.java.details;
 import java.util.ListIterator;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
-import org.eclipse.jpt.ui.internal.platform.PlatformRegistry;
+import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -31,7 +31,7 @@ public class JavaPersistentTypeDetailsPage extends
 	
 	protected IJpaPlatformUi jpaPlatformUi() {
 		String platformId = getPersistentType().jpaPlatform().getId();
-		return PlatformRegistry.instance().jpaPlatformUi(platformId);
+		return JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
 	}
 	
 	@Override

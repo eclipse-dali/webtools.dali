@@ -38,6 +38,7 @@ public class JpaContentProvider
 	private StructuredViewer viewer;
 	
 	
+	// TODO - create delegate content provider that depends on platform UI
 	public JpaContentProvider() {
 		super();
 		facetListener = new FacetListener();

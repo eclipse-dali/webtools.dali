@@ -23,15 +23,15 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
-public class PlatformRegistry 
+public class JpaPlatformUiRegistry 
 {
 	// singleton
-	private static final PlatformRegistry INSTANCE = new PlatformRegistry();
+	private static final JpaPlatformUiRegistry INSTANCE = new JpaPlatformUiRegistry();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static PlatformRegistry instance() {
+	public static JpaPlatformUiRegistry instance() {
 		return INSTANCE;
 	}
 
@@ -54,7 +54,7 @@ public class PlatformRegistry
 	/* (non Java doc)
 	 * restrict access
 	 */
-	private PlatformRegistry() {
+	private JpaPlatformUiRegistry() {
 		buildJpaPlatforms();
 	}
 	
@@ -93,7 +93,7 @@ public class PlatformRegistry
 		this.jpaPlatforms.put(platformId, configElement);
 	}
 	
-	public IJpaPlatformUi jpaPlatformUi(String platformId) {
+	public IJpaPlatformUi jpaPlatform(String platformId) {
 		IConfigurationElement registeredConfigElement = this.jpaPlatforms.get(platformId);
 		
 		if (registeredConfigElement == null) {

@@ -12,7 +12,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.ui.internal.platform.PlatformRegistry;
+import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -54,8 +54,8 @@ public class JptUiPlugin extends AbstractUIPlugin
 	/**
 	 * Return the JPA platform UI corresponding to the given JPA platform
 	 */
-	public IJpaPlatformUi platformUi(IJpaPlatform jpaPlatform) {
-		return PlatformRegistry.instance().jpaPlatformUi(jpaPlatform.getId());
+	public IJpaPlatformUi jpaPlatformUi(IJpaPlatform jpaPlatform) {
+		return JpaPlatformUiRegistry.instance().jpaPlatform(jpaPlatform.getId());
 	}
 	
 	/**

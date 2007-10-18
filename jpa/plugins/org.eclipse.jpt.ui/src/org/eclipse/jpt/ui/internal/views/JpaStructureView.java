@@ -24,7 +24,7 @@ import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.jface.NullLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.NullTreeContentProvider;
-import org.eclipse.jpt.ui.internal.platform.PlatformRegistry;
+import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.selection.Selection;
 import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
 import org.eclipse.swt.SWT;
@@ -202,7 +202,7 @@ public class JpaStructureView extends AbstractJpaView
 			
 			if (provider == null) {
 				String platformId = contentNode.jpaPlatform().getId();
-				IJpaPlatformUi jpaPlatformUI = PlatformRegistry.instance().jpaPlatformUi(platformId);
+				IJpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
 				provider = jpaPlatformUI.structureProvider(contentId);
 				
 				//TODO this view and the detailsProviders Map is not created on a per project basis.
