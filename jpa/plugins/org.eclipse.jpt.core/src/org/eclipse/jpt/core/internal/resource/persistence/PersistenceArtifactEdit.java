@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.resource.persistence;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.wst.common.componentcore.ArtifactEdit;
@@ -68,7 +69,8 @@ public class PersistenceArtifactEdit extends ArtifactEdit
 			return (PersistenceResourceModel) getArtifactEditModel().getResource(fileURI);
 		}
 		catch (ClassCastException cce) {
-			return null;
+			// URI is registered for different resource 
 		}
+		return null;
 	}
 }

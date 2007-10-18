@@ -8,28 +8,25 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.tests.internal.resource;
+package org.eclipse.jpt.core.tests.internal.context;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.core.tests.internal.resource.java.JptJavaResourceTests;
 
-public class JptCoreResourceModelTests extends TestCase
+public class JptCoreContextModelTests extends TestCase
 {
 	public static Test suite() {
 		return suite(true);
 	}
 	
 	public static Test suite(boolean all) {
-		TestSuite suite = new TestSuite(JptCoreResourceModelTests.class.getName());
-		suite.addTest(JptJavaResourceTests.suite(all));
-		suite.addTestSuite(OrmModelTests.class);
-		suite.addTestSuite(PersistenceModelTests.class);
+		TestSuite suite = new TestSuite(JptCoreContextModelTests.class.getName());
+		suite.addTestSuite(BaseJpaContentTests.class);
 		return suite;
 	}
 
-	private JptCoreResourceModelTests() {
+	private JptCoreContextModelTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}

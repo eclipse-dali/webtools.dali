@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 public class BaseJpaContent extends JpaContextNodeModel implements IContextModel
 {
@@ -35,7 +36,7 @@ public class BaseJpaContent extends JpaContextNodeModel implements IContextModel
 						JptCorePlugin.persistenceXmlDeploymentURI(jpaProject.project()));
 		PersistenceResourceModel persistenceResource = pae.getPersistenceResource();
 		
-		if (persistenceResource != null) {
+		if (WorkbenchResourceHelper.getFile(persistenceResource).exists()) {
 			if (persistenceXml == null) {
 				PersistenceXml persistenceXml = jpaFactory().createPersistenceXml(this);
 				setPersistenceXml(persistenceXml);
