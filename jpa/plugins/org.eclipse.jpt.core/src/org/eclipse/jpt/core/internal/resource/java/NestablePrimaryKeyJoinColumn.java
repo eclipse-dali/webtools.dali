@@ -9,23 +9,5 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.ListIterator;
-
-
-public interface SecondaryTable extends Table
-{
-	ListIterator<PrimaryKeyJoinColumn> pkJoinColumns();
-	
-	PrimaryKeyJoinColumn pkJoinColumnAt(int index);
-	
-	int indexOfPkJoinColumn(PrimaryKeyJoinColumn pkJoinColumn);
-	
-	int pkJoinColumnsSize();
-
-	PrimaryKeyJoinColumn addPkJoinColumn(int index);
-	
-	void removePkJoinColumn(int index);
-	
-	void movePkJoinColumn(int oldIndex, int newIndex);
-
-}
+interface NestablePrimaryKeyJoinColumn extends PrimaryKeyJoinColumn, NestableAnnotation
+{}

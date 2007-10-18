@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
+import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTables;
 import org.eclipse.jpt.core.internal.resource.java.UniqueConstraint;
@@ -44,13 +45,19 @@ public class SecondaryTablesTests extends AnnotationTestCase {
 
 	private void createUniqueConstraintAnnotation() throws Exception {
 		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
-		
 	}
+	
+	private void createPrimaryKeyJoinColumnAnnotation()  throws Exception {
+		this.createAnnotationAndMembers("PrimaryKeyJoinColumn", "String name() default \"\"; String referencedColumnName() default \"\";String columnDefinition() default \"\";");
+	}
+
 	private void createSecondaryTableAnnotation() throws Exception {
+		createPrimaryKeyJoinColumnAnnotation();
 		createUniqueConstraintAnnotation();
 		this.createAnnotationAndMembers("SecondaryTable", "String name() default \"\"; " +
 				"String catalog() default \"\"; " +
 				"String schema() default \"\";" +
+				"PrimaryKeyJoinColumn[] pkJoinColumns() default {};" +
 				"UniqueConstraint[] uniqueConstraints() default {};");
 		
 	}
@@ -141,6 +148,20 @@ public class SecondaryTablesTests extends AnnotationTestCase {
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("@SecondaryTable(name=\"FOO\", catalog=\"BAR\", schema=\"BAZ\", uniqueConstraints=@UniqueConstraint(columnNames={\"BAR\"}))");
+			}
+		});
+	}
+
+	private IType createTestSecondaryTablesWithPkJoinColumns() throws Exception {
+		createSecondaryTablesAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.SECONDARY_TABLES, JPA.SECONDARY_TABLE, JPA.PRIMARY_KEY_JOIN_COLUMN);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@SecondaryTables(@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"BAR\"), @PrimaryKeyJoinColumn}))");
 			}
 		});
 	}
@@ -402,6 +423,106 @@ public class SecondaryTablesTests extends AnnotationTestCase {
 		
 		typeResource.removeAnnotation(1, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		assertSourceContains("@SecondaryTable(name=\"FOO\", catalog = \"BAR\", schema = \"BAZ\", uniqueConstraints = @UniqueConstraint(columnNames=\"BAR\"))");
+	}
+
+	
+	public void testPkJoinColumns() throws Exception {
+		IType testType = this.createTestSecondaryTables();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		SecondaryTable table = (SecondaryTable) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
+		
+		ListIterator<PrimaryKeyJoinColumn> iterator = table.pkJoinColumns();
+		
+		assertEquals(0, CollectionTools.size(iterator));
+	}
+	
+	public void testPkJoinColumns2() throws Exception {
+		IType testType = this.createTestSecondaryTables();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		SecondaryTable table = (SecondaryTable) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
+		
+		table.addPkJoinColumn(0);
+		table.addPkJoinColumn(1);
+		table.updateFromJava(JDTTools.buildASTRoot(testType));
+		
+		ListIterator<PrimaryKeyJoinColumn> iterator = table.pkJoinColumns();
+		
+		assertEquals(2, CollectionTools.size(iterator));
+	}
+	
+	public void testPkJoinColumns3() throws Exception {
+		IType testType = this.createTestSecondaryTablesWithPkJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		SecondaryTable table = (SecondaryTable) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
+				
+		ListIterator<PrimaryKeyJoinColumn> iterator = table.pkJoinColumns();
+		
+		assertEquals(2, CollectionTools.size(iterator));
+	}
+	
+	public void testAddPkJoinColumn() throws Exception {
+		IType testType = this.createTestSecondaryTables();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		SecondaryTable table = (SecondaryTable) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
+		
+		table.addPkJoinColumn(0).setName("FOO");
+		table.addPkJoinColumn(1);
+
+		assertSourceContains("@SecondaryTables(@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"FOO\"),@PrimaryKeyJoinColumn}))");
+	}
+	
+	public void testRemovePkJoinColumn() throws Exception {
+		IType testType = this.createTestSecondaryTablesWithPkJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		SecondaryTable table = (SecondaryTable) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
+		
+		table.removePkJoinColumn(1);
+		assertSourceContains("@SecondaryTables(@SecondaryTable(pkJoinColumns=@PrimaryKeyJoinColumn(name=\"BAR\")))");	
+
+		table.removePkJoinColumn(0);
+		assertSourceDoesNotContain("@SecondaryTable");
+	}
+	
+	public void testMovePkJoinColumn() throws Exception {
+		IType testType = this.createTestSecondaryTablesWithPkJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		SecondaryTable table = (SecondaryTable) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
+		PrimaryKeyJoinColumn joinColumn = table.pkJoinColumnAt(0);
+		joinColumn.setReferencedColumnName("REF_NAME");
+		joinColumn.setColumnDefinition("COLUMN_DEF");
+		table.movePkJoinColumn(0, 1);
+		assertSourceContains("@SecondaryTables(@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn, @PrimaryKeyJoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", columnDefinition = \"COLUMN_DEF\")}))");
+	}
+	
+	public void testMovePkJoinColumn2() throws Exception {
+		IType testType = this.createTestSecondaryTablesWithPkJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		SecondaryTable table = (SecondaryTable) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
+
+		
+		PrimaryKeyJoinColumn joinColumn = table.pkJoinColumnAt(0);
+		joinColumn.setReferencedColumnName("REF_NAME");
+		joinColumn.setColumnDefinition("COLUMN_DEF");
+		table.movePkJoinColumn(1, 0);
+		assertSourceContains("@SecondaryTables(@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn, @PrimaryKeyJoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", columnDefinition = \"COLUMN_DEF\")}))");
+	}
+	
+	public void testSetPkJoinColumnName() throws Exception {
+		IType testType = this.createTestSecondaryTablesWithPkJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		SecondaryTable table = (SecondaryTable) typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES).next();
+				
+		ListIterator<PrimaryKeyJoinColumn> iterator = table.pkJoinColumns();
+		assertEquals(2, CollectionTools.size(iterator));
+		
+		PrimaryKeyJoinColumn joinColumn = table.pkJoinColumns().next();
+		
+		assertEquals("BAR", joinColumn.getName());
+		
+		joinColumn.setName("foo");
+		assertEquals("foo", joinColumn.getName());
+		
+		assertSourceContains("@SecondaryTables(@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"foo\"), @PrimaryKeyJoinColumn}))");
 	}
 
 }

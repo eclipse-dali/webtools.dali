@@ -16,8 +16,8 @@ public interface PrimaryKeyJoinColumn extends NamedColumn
 {
 	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.PRIMARY_KEY_JOIN_COLUMN);
 
-	String getReferenceColumnName();
+	String getReferencedColumnName();
 	
-	void setReferenceColumnName(String referenceColumnName);
+	void setReferencedColumnName(String referenceColumnName);
 
 }

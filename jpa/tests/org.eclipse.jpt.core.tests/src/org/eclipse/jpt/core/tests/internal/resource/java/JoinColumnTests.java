@@ -178,6 +178,7 @@ public class JoinColumnTests extends AnnotationTestCase {
 		assertNull(column.isUnique());
 		assertNull(column.isUpdatable());
 		assertNull(column.getTable());
+		assertNull(column.getReferencedColumnName());
 		assertNull(column.getColumnDefinition());
 	}
 

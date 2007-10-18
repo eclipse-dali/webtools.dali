@@ -63,7 +63,9 @@ public class JptJavaResourceTests {
 		suite.addTestSuite(InheritanceTests.class);
 		suite.addTestSuite(DiscriminatorValueTests.class);
 		suite.addTestSuite(DiscriminatorColumnTests.class);
-		
+		suite.addTestSuite(PrimaryKeyJoinColumnTests.class);
+		suite.addTestSuite(PrimaryKeyJoinColumnsTests.class);
+			
 		return suite;
 	}
 
