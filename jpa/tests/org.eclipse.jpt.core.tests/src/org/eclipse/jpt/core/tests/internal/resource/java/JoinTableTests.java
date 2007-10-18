@@ -44,11 +44,29 @@ public class JoinTableTests extends AnnotationTestCase {
 	}
 
 	private void createJoinColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers("JoinColumn", "String name() default \"\";");
+		this.createAnnotationAndMembers("JoinColumn", "String name() default \"\";" +
+				"String referencedColumnName() default \"\";" +
+				"boolean unique() default false;" +
+				"boolean nullable() default true;" +
+				"boolean insertable() default true;" +
+				"boolean updatable() default true;" +
+				"String columnDefinition() default \"\";" +
+				"String table() default \"\";");
+		
+	}
+
+	private void createUniqueConstraintAnnotation() throws Exception {
+		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
+	}
+	
+	private void createJoinTableAnnotation() throws Exception {
+		createJoinColumnAnnotation();
+		createUniqueConstraintAnnotation();
+		this.createAnnotationAndMembers("JoinTable", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";JoinColumn[] joinColumns() default {}; JoinColumn[] inverseJoinColumns() default {}; UniqueConstraint[] uniqueConstraints() default {};");
 	}
 	
 	private IType createTestJoinTable() throws Exception {
-		this.createAnnotationAndMembers("JoinTable", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";");
+		createJoinTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -62,7 +80,7 @@ public class JoinTableTests extends AnnotationTestCase {
 	}
 	
 	private IType createTestJoinTableWithName() throws Exception {
-		this.createAnnotationAndMembers("JoinTable", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";");
+		createJoinTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -76,7 +94,7 @@ public class JoinTableTests extends AnnotationTestCase {
 	}
 	
 	private IType createTestJoinTableWithSchema() throws Exception {
-		this.createAnnotationAndMembers("JoinTable", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";");
+		createJoinTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -91,7 +109,7 @@ public class JoinTableTests extends AnnotationTestCase {
 	}
 	
 	private IType createTestJoinTableWithCatalog() throws Exception {
-		this.createAnnotationAndMembers("JoinTable", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";");
+		createJoinTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -105,8 +123,7 @@ public class JoinTableTests extends AnnotationTestCase {
 	}
 	
 	private IType createTestJoinTableWithUniqueConstraints() throws Exception {
-		this.createAnnotationAndMembers("JoinTable", "UniqueConstraint[] uniqueConstraints() default {}");
-		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
+		createJoinTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -120,8 +137,7 @@ public class JoinTableTests extends AnnotationTestCase {
 	}
 	
 	private IType createTestJoinTableWithJoinColumns() throws Exception {
-		this.createAnnotationAndMembers("JoinTable", "JoinColumn[] joinColumns() default {}");
-		this.createJoinColumnAnnotation();
+		createJoinTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -130,6 +146,20 @@ public class JoinTableTests extends AnnotationTestCase {
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuffer sb) {
 				sb.append("@JoinTable(joinColumns={@JoinColumn(name=\"BAR\"), @JoinColumn})");
+			}
+		});
+	}
+	
+	private IType createTestJoinTableWithInverseJoinColumns() throws Exception {
+		createJoinTableAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.JOIN_TABLE, JPA.JOIN_COLUMN);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@JoinTable(inverseJoinColumns={@JoinColumn(name=\"BAR\"), @JoinColumn})");
 			}
 		});
 	}
@@ -297,7 +327,6 @@ public class JoinTableTests extends AnnotationTestCase {
 	
 	public void testUniqueConstraints2() throws Exception {
 		IType testType = this.createTestJoinTable();
-		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
@@ -327,7 +356,6 @@ public class JoinTableTests extends AnnotationTestCase {
 	
 	public void testAddUniqueConstraint() throws Exception {
 		IType testType = this.createTestJoinTable();
-		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
@@ -389,7 +417,6 @@ public class JoinTableTests extends AnnotationTestCase {
 	
 	public void testJoinColumns2() throws Exception {
 		IType testType = this.createTestJoinTable();
-		this.createJoinColumnAnnotation();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
@@ -419,7 +446,7 @@ public class JoinTableTests extends AnnotationTestCase {
 	
 	public void testAddJoinColumn() throws Exception {
 		IType testType = this.createTestJoinTable();
-		this.createJoinColumnAnnotation();		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
@@ -450,9 +477,16 @@ public class JoinTableTests extends AnnotationTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
-		
+		JoinColumn joinColumn = table.joinColumnAt(0);
+		joinColumn.setReferencedColumnName("REF_NAME");
+		joinColumn.setUnique(false);
+		joinColumn.setNullable(false);
+		joinColumn.setInsertable(false);
+		joinColumn.setUpdatable(false);
+		joinColumn.setColumnDefinition("COLUMN_DEF");
+		joinColumn.setTable("TABLE");
 		table.moveJoinColumn(0, 1);
-		assertSourceContains("@JoinTable(joinColumns={@JoinColumn, @JoinColumn(name=\"BAR\")})");
+		assertSourceContains("@JoinTable(joinColumns={@JoinColumn, @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\")})");
 	}
 	
 	public void testMoveJoinColumn2() throws Exception {
@@ -462,8 +496,16 @@ public class JoinTableTests extends AnnotationTestCase {
 		
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
 		
+		JoinColumn joinColumn = table.joinColumnAt(0);
+		joinColumn.setReferencedColumnName("REF_NAME");
+		joinColumn.setUnique(false);
+		joinColumn.setNullable(false);
+		joinColumn.setInsertable(false);
+		joinColumn.setUpdatable(false);
+		joinColumn.setColumnDefinition("COLUMN_DEF");
+		joinColumn.setTable("TABLE");
 		table.moveJoinColumn(1, 0);
-		assertSourceContains("@JoinTable(joinColumns={@JoinColumn, @JoinColumn(name=\"BAR\")})");
+		assertSourceContains("@JoinTable(joinColumns={@JoinColumn, @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\")})");
 	}
 	
 	public void testSetJoinColumnName() throws Exception {
@@ -484,6 +526,116 @@ public class JoinTableTests extends AnnotationTestCase {
 		assertEquals("foo", joinColumn.getName());
 		
 		assertSourceContains("@JoinTable(joinColumns={@JoinColumn(name=\"foo\"), @JoinColumn})");
+	}
+
+	public void testInverseJoinColumns() throws Exception {
+		IType testType = this.createTestJoinTable();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		ListIterator<JoinColumn> iterator = table.inverseJoinColumns();
+		
+		assertEquals(0, CollectionTools.size(iterator));
+	}
+	
+	public void testInverseJoinColumns2() throws Exception {
+		IType testType = this.createTestJoinTable();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+
+		
+		table.addInverseJoinColumn(0);
+		table.addInverseJoinColumn(1);
+		table.updateFromJava(JDTTools.buildASTRoot(testType));
+		
+		ListIterator<JoinColumn> iterator = table.inverseJoinColumns();
+		
+		assertEquals(2, CollectionTools.size(iterator));
+	}
+	
+	public void testInverseJoinColumns3() throws Exception {
+		IType testType = this.createTestJoinTableWithInverseJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+				
+		ListIterator<JoinColumn> iterator = table.inverseJoinColumns();
+		
+		assertEquals(2, CollectionTools.size(iterator));
+	}
+	
+	public void testAddInverseJoinColumn() throws Exception {
+		IType testType = this.createTestJoinTable();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		table.addInverseJoinColumn(0).setName("FOO");
+		table.addInverseJoinColumn(1);
+
+		assertSourceContains("@JoinTable(inverseJoinColumns={@JoinColumn(name=\"FOO\"),@JoinColumn})");
+	}
+	
+	public void testRemoveInverseJoinColumn() throws Exception {
+		IType testType = this.createTestJoinTableWithInverseJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		table.removeInverseJoinColumn(1);
+		assertSourceContains("@JoinTable(inverseJoinColumns=@JoinColumn(name=\"BAR\"))");	
+
+		table.removeInverseJoinColumn(0);
+		assertSourceDoesNotContain("@JoinTable");
+	}
+	
+	public void testMoveInverseJoinColumn() throws Exception {
+		IType testType = this.createTestJoinTableWithInverseJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		table.moveInverseJoinColumn(0, 1);
+		assertSourceContains("@JoinTable(inverseJoinColumns={@JoinColumn, @JoinColumn(name=\"BAR\")})");
+	}
+	
+	public void testMoveInverseJoinColumn2() throws Exception {
+		IType testType = this.createTestJoinTableWithInverseJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+		
+		table.moveInverseJoinColumn(1, 0);
+		assertSourceContains("@JoinTable(inverseJoinColumns={@JoinColumn, @JoinColumn(name=\"BAR\")})");
+	}
+	
+	public void testSetInverseJoinColumnName() throws Exception {
+		IType testType = this.createTestJoinTableWithInverseJoinColumns();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
+				
+		ListIterator<JoinColumn> iterator = table.inverseJoinColumns();
+		assertEquals(2, CollectionTools.size(iterator));
+		
+		JoinColumn joinColumn = table.inverseJoinColumns().next();
+		
+		assertEquals("BAR", joinColumn.getName());
+		
+		joinColumn.setName("foo");
+		assertEquals("foo", joinColumn.getName());
+		
+		assertSourceContains("@JoinTable(inverseJoinColumns={@JoinColumn(name=\"foo\"), @JoinColumn})");
 	}
 
 }

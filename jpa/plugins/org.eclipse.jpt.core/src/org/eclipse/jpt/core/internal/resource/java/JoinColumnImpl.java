@@ -97,8 +97,9 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 	}
 	
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		// TODO add tests and support this
-		
+		super.initializeFrom(oldAnnotation);
+		JoinColumn oldColumn = (JoinColumn) oldAnnotation;
+		setReferencedColumnName(oldColumn.getReferencedColumnName());
 	}
 	
 	public String getReferencedColumnName() {

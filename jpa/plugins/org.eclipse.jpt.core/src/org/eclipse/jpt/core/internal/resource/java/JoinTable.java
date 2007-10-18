@@ -27,4 +27,19 @@ public interface JoinTable extends Table
 	
 	void moveJoinColumn(int oldIndex, int newIndex);
 
+	
+	ListIterator<JoinColumn> inverseJoinColumns();
+	
+	JoinColumn inverseJoinColumnAt(int index);
+	
+	int indexOfInverseJoinColumn(JoinColumn joinColumn);
+	
+	int inverseJoinColumnsSize();
+
+	JoinColumn addInverseJoinColumn(int index);
+	
+	void removeInverseJoinColumn(int index);
+	
+	void moveInverseJoinColumn(int oldIndex, int newIndex);
+
 }

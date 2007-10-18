@@ -37,12 +37,18 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 	
 	private final List<NestableJoinColumn> joinColumns;
 	
+	private final List<NestableJoinColumn> inverseJoinColumns;
+	
 	private final JoinColumnsContainerAnnotation joinColumnsContainerAnnotation;
+	
+	private final InverseJoinColumnsContainerAnnotation inverseJoinColumnsContainerAnnotation;
 
 	protected JoinTableImpl(JavaResource parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 		this.joinColumns = new ArrayList<NestableJoinColumn>();
+		this.inverseJoinColumns = new ArrayList<NestableJoinColumn>();
 		this.joinColumnsContainerAnnotation = new JoinColumnsContainerAnnotation();
+		this.inverseJoinColumnsContainerAnnotation = new InverseJoinColumnsContainerAnnotation();
 	}
 
 	public String getAnnotationName() {
@@ -76,14 +82,15 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		this.updateJoinColumnsFromJava(astRoot);
+		this.updateInverseJoinColumnsFromJava(astRoot);
 	}
 	
-	/**
-	 * here we just worry about getting the unique constraints lists the same size;
-	 * then we delegate to the unique constraints to synch themselves up
-	 */
 	private void updateJoinColumnsFromJava(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this.joinColumnsContainerAnnotation);
+	}
+	
+	private void updateInverseJoinColumnsFromJava(CompilationUnit astRoot) {
+		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this.inverseJoinColumnsContainerAnnotation);
 	}
 	
 	public ListIterator<JoinColumn> joinColumns() {
@@ -106,7 +113,7 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 		NestableJoinColumn joinColumn = createJoinColumn(index);
 		addJoinColumn(joinColumn);
 		joinColumn.newAnnotation();
-		synchJoinColumnAnnotationsAfterAdd(index);
+		ContainerAnnotationTools.synchAnnotationsAfterAdd(index, this.joinColumnsContainerAnnotation);
 		return joinColumn;
 	}
 	
@@ -118,40 +125,63 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 	public void removeJoinColumn(int index) {
 		NestableJoinColumn joinColumn = this.joinColumns.remove(index);
 		joinColumn.removeAnnotation();
-		synchJoinColumnAnnotationsAfterRemove(index);
+		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, this.joinColumnsContainerAnnotation);
 	}
 
 	public void moveJoinColumn(int oldIndex, int newIndex) {
 		this.joinColumns.add(newIndex, this.joinColumns.remove(oldIndex));
-		joinColumnMoved(newIndex, oldIndex);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.joinColumnsContainerAnnotation);
 	}
 
-	private void joinColumnMoved(int sourceIndex, int targetIndex) {		
-		ContainerAnnotationTools.synchAnnotationsAfterMove(sourceIndex, targetIndex, this.joinColumnsContainerAnnotation);
-	}
-
-	/**
-	 * synchronize the annotations with the model join columns,
-	 * starting at the end of the list to prevent overlap
-	 */
-	private void synchJoinColumnAnnotationsAfterAdd(int index) {
-		ContainerAnnotationTools.synchAnnotationsAfterAdd(index, this.joinColumnsContainerAnnotation);
-	}
-
-	/**
-	 * synchronize the annotations with the model join columns,
-	 * starting at the specified index to prevent overlap
-	 */
-	private void synchJoinColumnAnnotationsAfterRemove(int index) {
-		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, this.joinColumnsContainerAnnotation);
+	public ListIterator<JoinColumn> inverseJoinColumns() {
+		return new CloneListIterator<JoinColumn>(this.inverseJoinColumns);
 	}
 	
+	public int inverseJoinColumnsSize() {
+		return this.inverseJoinColumns.size();
+	}
+	
+	public NestableJoinColumn inverseJoinColumnAt(int index) {
+		return this.inverseJoinColumns.get(index);
+	}
+	
+	public int indexOfInverseJoinColumn(JoinColumn joinColumn) {
+		return this.inverseJoinColumns.indexOf(joinColumn);
+	}
+	
+	public JoinColumn addInverseJoinColumn(int index) {
+		NestableJoinColumn joinColumn = createInverseJoinColumn(index);
+		addInverseJoinColumn(joinColumn);
+		joinColumn.newAnnotation();
+		ContainerAnnotationTools.synchAnnotationsAfterAdd(index, this.inverseJoinColumnsContainerAnnotation);
+		return joinColumn;
+	}
+	
+	private void addInverseJoinColumn(NestableJoinColumn joinColumn) {
+		this.inverseJoinColumns.add(joinColumn);
+		//property change notification
+	}
+	
+	public void removeInverseJoinColumn(int index) {
+		NestableJoinColumn joinColumn = this.inverseJoinColumns.remove(index);
+		joinColumn.removeAnnotation();
+		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, this.inverseJoinColumnsContainerAnnotation);
+	}
+
+	public void moveInverseJoinColumn(int oldIndex, int newIndex) {
+		this.inverseJoinColumns.add(newIndex, this.inverseJoinColumns.remove(oldIndex));
+		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.inverseJoinColumnsContainerAnnotation);
+	}
+
 	protected NestableJoinColumn createJoinColumn(int index) {
 		return JoinColumnImpl.createJoinTableJoinColumn(this, getMember(), index);
 	}
 
-	
-	private class JoinColumnsContainerAnnotation implements ContainerAnnotation<NestableJoinColumn> {
+	protected NestableJoinColumn createInverseJoinColumn(int index) {
+		return JoinColumnImpl.createJoinTableInverseJoinColumn(this, getMember(), index);
+	}
+
+	private class JoinColumnsContainerAnnotation extends AbstractContainerAnnotation {
 
 		public NestableJoinColumn add(int index) {
 			NestableJoinColumn joinColumn = createNestedAnnotation(index);
@@ -161,14 +191,6 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 
 		public NestableJoinColumn createNestedAnnotation(int index) {
 			return JoinTableImpl.this.createJoinColumn(index);
-		}
-
-		public String getAnnotationName() {
-			return JoinTableImpl.this.getAnnotationName();
-		}
-
-		public String getNestableAnnotationName() {
-			return JPA.JOIN_COLUMN;
 		}
 
 		public int indexOf(NestableJoinColumn joinColumn) {
@@ -183,6 +205,66 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 			return JoinTableImpl.this.joinColumnAt(index);
 		}
 
+		public ListIterator<NestableJoinColumn> nestedAnnotations() {
+			return new CloneListIterator<NestableJoinColumn>(JoinTableImpl.this.joinColumns);
+		}
+
+		public int nestedAnnotationsSize() {
+			return joinColumnsSize();
+		}
+
+		public void remove(int index) {
+			JoinTableImpl.this.removeJoinColumn(index);	
+		}		
+	}
+	
+	private class InverseJoinColumnsContainerAnnotation extends AbstractContainerAnnotation {
+
+		public NestableJoinColumn add(int index) {
+			NestableJoinColumn joinColumn = createNestedAnnotation(index);
+			JoinTableImpl.this.addInverseJoinColumn(joinColumn);
+			return joinColumn;
+		}
+
+		public NestableJoinColumn createNestedAnnotation(int index) {
+			return JoinTableImpl.this.createInverseJoinColumn(index);
+		}
+
+		public int indexOf(NestableJoinColumn joinColumn) {
+			return JoinTableImpl.this.indexOfInverseJoinColumn(joinColumn);
+		}
+
+		public void move(int oldIndex, int newIndex) {
+			JoinTableImpl.this.inverseJoinColumns.add(newIndex, JoinTableImpl.this.inverseJoinColumns.remove(oldIndex));
+		}
+
+		public NestableJoinColumn nestedAnnotationAt(int index) {
+			return JoinTableImpl.this.inverseJoinColumnAt(index);
+		}
+
+		public ListIterator<NestableJoinColumn> nestedAnnotations() {
+			return new CloneListIterator<NestableJoinColumn>(JoinTableImpl.this.inverseJoinColumns);
+		}
+
+		public int nestedAnnotationsSize() {
+			return inverseJoinColumnsSize();
+		}
+
+		public void remove(int index) {
+			JoinTableImpl.this.removeInverseJoinColumn(index);	
+		}		
+	}
+
+	private abstract class AbstractContainerAnnotation implements ContainerAnnotation<NestableJoinColumn> {
+
+		public String getAnnotationName() {
+			return JoinTableImpl.this.getAnnotationName();
+		}
+
+		public String getNestableAnnotationName() {
+			return JPA.JOIN_COLUMN;
+		}
+
 		public NestableJoinColumn nestedAnnotationFor(org.eclipse.jdt.core.dom.Annotation jdtAnnotation) {
 			for (NestableJoinColumn joinColumn : CollectionTools.iterable(nestedAnnotations())) {
 				if (jdtAnnotation == joinColumn.jdtAnnotation((CompilationUnit) jdtAnnotation.getRoot())) {
@@ -192,20 +274,8 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 			return null;
 		}
 
-		public ListIterator<NestableJoinColumn> nestedAnnotations() {
-			return new CloneListIterator<NestableJoinColumn>(JoinTableImpl.this.joinColumns);
-		}
-
-		public int nestedAnnotationsSize() {
-			return JoinTableImpl.this.joinColumns.size();
-		}
-
 		public void remove(NestableJoinColumn joinColumn) {
 			this.remove(indexOf(joinColumn));
-		}
-
-		public void remove(int index) {
-			JoinTableImpl.this.removeJoinColumn(index);	
 		}
 
 		public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
@@ -229,7 +299,6 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 		}
 		
 	}
-	
 	public static class JoinTableAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
