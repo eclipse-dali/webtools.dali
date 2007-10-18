@@ -402,7 +402,7 @@ public final class ClassTools {
 	 * Return a string representation of the specified field.
 	 */
 	private static String fullyQualifiedFieldName(Class<?> javaClass, String fieldName) {
-		StringBuffer sb = new StringBuffer(200);
+		StringBuilder sb = new StringBuilder(200);
 		sb.append(javaClass.getName());
 		sb.append('.');
 		sb.append(fieldName);
@@ -420,7 +420,7 @@ public final class ClassTools {
 	 * Return a string representation of the specified method.
 	 */
 	private static String fullyQualifiedMethodSignature(Class<?> javaClass, String methodName, Class<?>[] parameterTypes) {
-		StringBuffer sb = new StringBuffer(200);
+		StringBuilder sb = new StringBuilder(200);
 		sb.append(javaClass.getName());
 		// this check allows us to use this code for constructors, where the methodName is null
 		if (methodName != null) {
@@ -984,7 +984,7 @@ public final class ClassTools {
 	 * Class#getShortNameWithPackage()
 	 */
 	public static String shortNameWithPackage(Class<?> javaClass) {
-		StringBuffer sb = new StringBuffer(200);
+		StringBuilder sb = new StringBuilder(200);
 		sb.append(shortNameFor(javaClass));
 		if ( ! javaClass.isPrimitive()) {
 			sb.append(" (");
@@ -1388,7 +1388,7 @@ public final class ClassTools {
 		}
 
 		// array
-		StringBuffer sb = new StringBuffer(100);
+		StringBuilder sb = new StringBuilder(100);
 		for (int i = arrayDepth; i-- > 0; ) {
 			sb.append(ARRAY_INDICATOR);
 		}
@@ -1415,7 +1415,7 @@ public final class ClassTools {
 			throw new IllegalArgumentException("'void' must have an array depth of zero: " + arrayDepth + '.');
 		}
 		// array
-		StringBuffer sb = new StringBuffer(100);
+		StringBuilder sb = new StringBuilder(100);
 		for (int i = arrayDepth; i-- > 0; ) {
 			sb.append(ARRAY_INDICATOR);
 		}

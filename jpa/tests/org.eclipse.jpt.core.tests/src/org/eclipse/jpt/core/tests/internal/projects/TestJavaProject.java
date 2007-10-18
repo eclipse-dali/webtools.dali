@@ -90,7 +90,7 @@ public class TestJavaProject extends TestFacetedProject {
 	 * it will be added here.
 	 */
 	public IType createType(IPackageFragment packageFragment, String compilationUnitName, SourceWriter sourceWriter) throws CoreException {
-		StringBuffer sb = new StringBuffer(2000);
+		StringBuilder sb = new StringBuilder(2000);
 		sb.append("package ").append(packageFragment.getElementName()).append(";").append(CR);
 		sb.append(CR);
 		sourceWriter.appendSourceTo(sb);
@@ -107,7 +107,7 @@ public class TestJavaProject extends TestFacetedProject {
 	// ********** member classes **********
 
 	public interface SourceWriter {
-		void appendSourceTo(StringBuffer sb);
+		void appendSourceTo(StringBuilder sb);
 	}
 
 	public class SimpleSourceWriter implements SourceWriter {
@@ -116,7 +116,7 @@ public class TestJavaProject extends TestFacetedProject {
 			super();
 			this.source = source;
 		}
-		public void appendSourceTo(StringBuffer sb) {
+		public void appendSourceTo(StringBuilder sb) {
 			sb.append(source);
 		}
 	}

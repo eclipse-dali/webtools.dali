@@ -1302,7 +1302,7 @@ public class AbstractModelTests
 		}
 	
 		@Override
-		public void toString(StringBuffer sb) {
+		public void toString(StringBuilder sb) {
 			sb.append(TEST_TO_STRING);
 		}
 	

@@ -470,7 +470,7 @@ public class Classpath
 		if (max == -1) {
 			return "";
 		}
-		StringBuffer sb = new StringBuffer(2000);
+		StringBuilder sb = new StringBuilder(2000);
 		// stop one short of the end of the array
 		for (int i = 0; i < max; i++) {
 			sb.append(localEntries[i].fileName());

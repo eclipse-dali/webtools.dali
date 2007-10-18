@@ -68,6 +68,17 @@ public final class StringTools {
 	 * Pad the specified string to the specified length.
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
+	 * If it is shorter than the specified length, it is padded with spaces at the end.
+	 * String#padOn(int, StringBuilder)
+	 */
+	public static void padOn(String string, int length, StringBuilder sb) {
+		padOn(string, length, ' ', sb);
+	}
+
+	/**
+	 * Pad the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the end.
 	 * String#pad(int, char)
@@ -111,6 +122,18 @@ public final class StringTools {
 	 * Pad the specified string to the specified length.
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
+	 * If it is shorter than the specified length, it is padded with the
+	 * specified character at the end.
+	 * String#padOn(int, char, StringBuilder)
+	 */
+	public static void padOn(String string, int length, char c, StringBuilder sb) {
+		padOn(string.toCharArray(), length, c, sb);
+	}
+
+	/**
+	 * Pad the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
 	 * String#pad(int)
 	 */
@@ -137,6 +160,17 @@ public final class StringTools {
 	 * String#padOn(int, StringBuffer)
 	 */
 	public static void padOn(char[] string, int length, StringBuffer sb) {
+		padOn(string, length, ' ', sb);
+	}
+
+	/**
+	 * Pad the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
+	 * If it is shorter than the specified length, it is padded with spaces at the end.
+	 * String#padOn(int, StringBuilder)
+	 */
+	public static void padOn(char[] string, int length, StringBuilder sb) {
 		padOn(string, length, ' ', sb);
 	}
 
@@ -200,6 +234,26 @@ public final class StringTools {
 	}
 
 	/**
+	 * Pad the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
+	 * If it is shorter than the specified length, it is padded with the
+	 * specified character at the end.
+	 * String#padOn(int, char, StringBuilder)
+	 */
+	public static void padOn(char[] string, int length, char c, StringBuilder sb) {
+		int stringLength = string.length;
+		if (stringLength > length) {
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+		}
+		if (stringLength == length) {
+			sb.append(string);
+		} else {
+			padOnInternal(string, length, c, sb);
+		}
+	}
+
+	/**
 	 * Pad or truncate the specified string to the specified length.
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, it is truncated.
@@ -229,6 +283,17 @@ public final class StringTools {
 	 * String#padOrTruncateOn(int, StringBuffer)
 	 */
 	public static void padOrTruncateOn(String string, int length, StringBuffer sb) {
+		padOrTruncateOn(string, length, ' ', sb);
+	}
+
+	/**
+	 * Pad or truncate the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, it is truncated.
+	 * If it is shorter than the specified length, it is padded with spaces at the end.
+	 * String#padOrTruncateOn(int, StringBuilder)
+	 */
+	public static void padOrTruncateOn(String string, int length, StringBuilder sb) {
 		padOrTruncateOn(string, length, ' ', sb);
 	}
 
@@ -279,6 +344,18 @@ public final class StringTools {
 	 * Pad or truncate the specified string to the specified length.
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, it is truncated.
+	 * If it is shorter than the specified length, it is padded with the
+	 * specified character at the end.
+	 * String#padOrTruncateOn(int, char, StringBuilder)
+	 */
+	public static void padOrTruncateOn(String string, int length, char c, StringBuilder sb) {
+		padOrTruncateOn(string.toCharArray(), length, c, sb);
+	}
+
+	/**
+	 * Pad or truncate the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, it is truncated.
 	 * If it is shorter than the specified length, it is padded with spaces at the end.
 	 * String#padOrTruncate(int)
 	 */
@@ -305,6 +382,17 @@ public final class StringTools {
 	 * String#padOrTruncateOn(int, StringBuffer)
 	 */
 	public static void padOrTruncate(char[] string, int length, StringBuffer sb) {
+		padOrTruncateOn(string, length, ' ', sb);
+	}
+
+	/**
+	 * Pad or truncate the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, it is truncated.
+	 * If it is shorter than the specified length, it is padded with spaces at the end.
+	 * String#padOrTruncateOn(int, StringBuilder)
+	 */
+	public static void padOrTruncate(char[] string, int length, StringBuilder sb) {
 		padOrTruncateOn(string, length, ' ', sb);
 	}
 
@@ -368,6 +456,25 @@ public final class StringTools {
 	}
 
 	/**
+	 * Pad or truncate the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, it is truncated.
+	 * If it is shorter than the specified length, it is padded with the
+	 * specified character at the end.
+	 * String#padOrTruncateOn(int, char, StringBuilder)
+	 */
+	public static void padOrTruncateOn(char[] string, int length, char c, StringBuilder sb) {
+		int stringLength = string.length;
+		if (stringLength == length) {
+			sb.append(string);
+		} else if (stringLength > length) {
+			sb.append(string, 0, length);
+		} else {
+			padOnInternal(string, length, c, sb);
+		}
+	}
+
+	/**
 	 * Pad the specified string without validating the parms.
 	 */
 	private static String padInternal(String string, int length, char c) {
@@ -402,6 +509,14 @@ public final class StringTools {
 	}
 
 	/**
+	 * Pad the specified string without validating the parms.
+	 */
+	private static void padOnInternal(char[] string, int length, char c, StringBuilder sb) {
+		sb.append(string);
+		sb.append(CollectionTools.fill(new char[length - string.length], c));
+	}
+
+	/**
 	 * Pad the specified string to the specified length.
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
@@ -431,6 +546,17 @@ public final class StringTools {
 	 * String#zeroPadOn(int, StringBuffer)
 	 */
 	public static void zeroPadOn(String string, int length, StringBuffer sb) {
+		frontPadOn(string, length, '0', sb);
+	}
+
+	/**
+	 * Pad the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
+	 * If it is shorter than the specified length, it is padded with zeros at the front.
+	 * String#zeroPadOn(int, StringBuilder)
+	 */
+	public static void zeroPadOn(String string, int length, StringBuilder sb) {
 		frontPadOn(string, length, '0', sb);
 	}
 
@@ -481,6 +607,18 @@ public final class StringTools {
 	 * Pad the specified string to the specified length.
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
+	 * If it is shorter than the specified length, it is padded with the
+	 * specified character at the front.
+	 * String#frontPadOn(int, char, StringBuilder)
+	 */
+	public static void frontPadOn(String string, int length, char c, StringBuilder sb) {
+		frontPadOn(string.toCharArray(), length, c, sb);
+	}
+
+	/**
+	 * Pad the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
 	 * String#zeroPad(int)
 	 */
@@ -507,6 +645,17 @@ public final class StringTools {
 	 * String#zeroPadOn(int, StringBuffer)
 	 */
 	public static void zeroPadOn(char[] string, int length, StringBuffer sb) {
+		frontPadOn(string, length, '0', sb);
+	}
+
+	/**
+	 * Pad the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
+	 * If it is shorter than the specified length, it is padded with zeros at the front.
+	 * String#zeroPadOn(int, StringBuilder)
+	 */
+	public static void zeroPadOn(char[] string, int length, StringBuilder sb) {
 		frontPadOn(string, length, '0', sb);
 	}
 
@@ -570,6 +719,26 @@ public final class StringTools {
 	}
 
 	/**
+	 * Pad the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
+	 * If it is shorter than the specified length, it is padded with the
+	 * specified character at the front.
+	 * String#frontPadOn(int, char, StringBuilder)
+	 */
+	public static void frontPadOn(char[] string, int length, char c, StringBuilder sb) {
+		int stringLength = string.length;
+		if (stringLength > length) {
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+		}
+		if (stringLength == length) {
+			sb.append(string);
+		} else {
+			frontPadOnInternal(string, length, c, sb);
+		}
+	}
+
+	/**
 	 * Pad or truncate the specified string to the specified length.
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
@@ -599,6 +768,17 @@ public final class StringTools {
 	 * String#zeroPadOrTruncateOn(int, StringBuffer)
 	 */
 	public static void zeroPadOrTruncateOn(String string, int length, StringBuffer sb) {
+		frontPadOrTruncateOn(string, length, '0', sb);
+	}
+
+	/**
+	 * Pad or truncate the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, only the last part of the string is returned.
+	 * If it is shorter than the specified length, it is padded with zeros at the front.
+	 * String#zeroPadOrTruncateOn(int, StringBuilder)
+	 */
+	public static void zeroPadOrTruncateOn(String string, int length, StringBuilder sb) {
 		frontPadOrTruncateOn(string, length, '0', sb);
 	}
 
@@ -649,6 +829,18 @@ public final class StringTools {
 	 * Pad or truncate the specified string to the specified length.
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
+	 * If it is shorter than the specified length, it is padded with the
+	 * specified character at the front.
+	 * String#frontPadOrTruncateOn(int, char, StringBuilder)
+	 */
+	public static void frontPadOrTruncateOn(String string, int length, char c, StringBuilder sb) {
+		frontPadOrTruncateOn(string.toCharArray(), length, c, sb);
+	}
+
+	/**
+	 * Pad or truncate the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, only the last part of the string is returned.
 	 * If it is shorter than the specified length, it is padded with zeros at the front.
 	 * String#zeroPadOrTruncate(int)
 	 */
@@ -675,6 +867,17 @@ public final class StringTools {
 	 * String#zeroPadOrTruncateOn(int, StringBuffer)
 	 */
 	public static void zeroPadOrTruncateOn(char[] string, int length, StringBuffer sb) {
+		frontPadOrTruncateOn(string, length, '0', sb);
+	}
+
+	/**
+	 * Pad or truncate the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, only the last part of the string is returned.
+	 * If it is shorter than the specified length, it is padded with zeros at the front.
+	 * String#zeroPadOrTruncateOn(int, StringBuilder)
+	 */
+	public static void zeroPadOrTruncateOn(char[] string, int length, StringBuilder sb) {
 		frontPadOrTruncateOn(string, length, '0', sb);
 	}
 
@@ -738,6 +941,25 @@ public final class StringTools {
 	}
 
 	/**
+	 * Pad or truncate the specified string to the specified length.
+	 * If the string is already the specified length, it is returned unchanged.
+	 * If it is longer than the specified length, only the last part of the string is returned.
+	 * If it is shorter than the specified length, it is padded with the 
+	 * specified character at the front.
+	 * String#frontPadOrTruncateOn(int, char, StringBuilder)
+	 */
+	public static void frontPadOrTruncateOn(char[] string, int length, char c, StringBuilder sb) {
+		int stringLength = string.length;
+		if (stringLength == length) {
+			sb.append(string);
+		} else if (stringLength > length) {
+			sb.append(string, stringLength - length, length);
+		} else {
+			frontPadOnInternal(string, length, c, sb);
+		}
+	}
+
+	/**
 	 * Front-pad the specified string without validating the parms.
 	 */
 	private static String frontPadInternal(String string, int length, char c) {
@@ -772,6 +994,14 @@ public final class StringTools {
 		sb.append(string);
 	}
 
+	/**
+	 * Pad the specified string without validating the parms.
+	 */
+	private static void frontPadOnInternal(char[] string, int length, char c, StringBuilder sb) {
+		sb.append(CollectionTools.fill(new char[length - string.length], c));
+		sb.append(string);
+	}
+
 
 	// ********** wrapping/quoting **********
 
@@ -793,6 +1023,13 @@ public final class StringTools {
 	 * Wrap the specified string with double quotes.
 	 */
 	public static void quoteOn(String string, StringBuffer sb) {
+		wrapOn(string, QUOTE, sb);
+	}
+
+	/**
+	 * Wrap the specified string with double quotes.
+	 */
+	public static void quoteOn(String string, StringBuilder sb) {
 		wrapOn(string, QUOTE, sb);
 	}
 
@@ -829,6 +1066,14 @@ public final class StringTools {
 	 * the wrap at the front and back of the resulting string.
 	 */
 	public static void wrapOn(String string, char wrap, StringBuffer sb) {
+		wrapOn(string.toCharArray(), wrap, sb);
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static void wrapOn(String string, char wrap, StringBuilder sb) {
 		wrapOn(string.toCharArray(), wrap, sb);
 	}
 
@@ -870,6 +1115,14 @@ public final class StringTools {
 	}
 
 	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static void wrapOn(String string, String wrap, StringBuilder sb) {
+		wrapOn(string.toCharArray(), wrap.toCharArray(), sb);
+	}
+
+	/**
 	 * Wrap each of the specified strings with the specified wrap; i.e. put a
 	 * copy of the wrap at the front and back of the resulting string.
 	 */
@@ -900,6 +1153,13 @@ public final class StringTools {
 	 * Wrap the specified string with double quotes.
 	 */
 	public static void quoteOn(char[] string, StringBuffer sb) {
+		wrapOn(string, QUOTE, sb);
+	}
+
+	/**
+	 * Wrap the specified string with double quotes.
+	 */
+	public static void quoteOn(char[] string, StringBuilder sb) {
 		wrapOn(string, QUOTE, sb);
 	}
 
@@ -949,6 +1209,16 @@ public final class StringTools {
 	}
 
 	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static void wrapOn(char[] string, char wrap, StringBuilder sb) {
+		sb.append(wrap);
+		sb.append(string);
+		sb.append(wrap);
+	}
+
+	/**
 	 * Wrap each of the specified strings with the specified wrap; i.e. put a
 	 * copy of the wrap at the front and back of the resulting string.
 	 */
@@ -990,6 +1260,16 @@ public final class StringTools {
 	 * the wrap at the front and back of the resulting string.
 	 */
 	public static void wrapOn(char[] string, char[] wrap, StringBuffer sb) {
+		sb.append(wrap);
+		sb.append(string);
+		sb.append(wrap);
+	}
+
+	/**
+	 * Wrap the specified string with the specified wrap; i.e. put a copy of
+	 * the wrap at the front and back of the resulting string.
+	 */
+	public static void wrapOn(char[] string, char[] wrap, StringBuilder sb) {
 		sb.append(wrap);
 		sb.append(string);
 		sb.append(wrap);
@@ -1050,6 +1330,15 @@ public final class StringTools {
 	 * String#removeFirstOccurrenceOn(char, StringBuffer)
 	 */
 	public static void removeFirstOccurrenceOn(String string, char c, StringBuffer sb) {
+		removeFirstOccurrenceOn(string.toCharArray(), c, sb);
+	}
+
+	/**
+	 * Remove the first occurrence of the specified character
+	 * from the specified string and print the result on the specified stream.
+	 * String#removeFirstOccurrenceOn(char, StringBuilder)
+	 */
+	public static void removeFirstOccurrenceOn(String string, char c, StringBuilder sb) {
 		removeFirstOccurrenceOn(string.toCharArray(), c, sb);
 	}
 
@@ -1136,6 +1425,33 @@ public final class StringTools {
 	}
 
 	/**
+	 * Remove the first occurrence of the specified character
+	 * from the specified string and print the result on the specified stream.
+	 * String#removeFirstOccurrenceOn(char, StringBuilder)
+	 */
+	public static void removeFirstOccurrenceOn(char[] string, char c, StringBuilder sb) {
+		int index = CollectionTools.indexOf(string, c);
+		if (index == -1) {
+			// character not found
+			sb.append(string);
+			return;
+		}
+
+		int len = string.length - 1;
+		if (index == 0) {
+			// character found at the front of string
+			sb.append(string, 1, len);
+		} else if (index == len) {
+			// character found at the end of string
+			sb.append(string, 0, len);
+		} else {
+			// character found somewhere in the middle of the string
+			sb.append(string, 0, index);
+			sb.append(string, index + 1, len - index);
+		}
+	}
+
+	/**
 	 * Remove all occurrences of the specified character
 	 * from the specified string and return the result.
 	 * String#removeAllOccurrences(char)
@@ -1164,11 +1480,20 @@ public final class StringTools {
 
 	/**
 	 * Remove all occurrences of the specified character
+	 * from the specified string and write the result to the specified stream.
+	 * String#removeAllOccurrencesOn(char, StringBuilder)
+	 */
+	public static void removeAllOccurrencesOn(String string, char c, StringBuilder sb) {
+		removeAllOccurrencesOn(string.toCharArray(), c, sb);
+	}
+
+	/**
+	 * Remove all occurrences of the specified character
 	 * from the specified string and return the result.
 	 * String#removeAllOccurrences(char)
 	 */
 	public static char[] removeAllOccurrences(char[] string, char c) {
-		StringBuffer sb = new StringBuffer(string.length);
+		StringBuilder sb = new StringBuilder(string.length);
 		removeAllOccurrencesOn(string, c, sb);
 		int len = sb.length();
 		char[] result = new char[len];
@@ -1201,6 +1526,20 @@ public final class StringTools {
 	 * String#removeAllOccurrencesOn(char, StringBuffer)
 	 */
 	public static void removeAllOccurrencesOn(char[] string, char c, StringBuffer sb) {
+		for (char d : string) {
+			if (d != c) {
+				sb.append(d);
+			}
+		}
+	}
+
+	/**
+	 * Remove all occurrences of the specified character
+	 * from the specified string and append the result to the
+	 * specified string buffer.
+	 * String#removeAllOccurrencesOn(char, StringBuilder)
+	 */
+	public static void removeAllOccurrencesOn(char[] string, char c, StringBuilder sb) {
 		for (char d : string) {
 			if (d != c) {
 				sb.append(d);
@@ -1307,6 +1646,14 @@ public final class StringTools {
 	}
 
 	/**
+	 * no zero-length check or upper case check
+	 */
+	private static void capitalizeOnInternal(char[] string, StringBuilder sb) {
+		sb.append(Character.toUpperCase(string[0]));
+		sb.append(string, 1, string.length - 1);
+	}
+
+	/**
 	 * Append the specified string to the specified string buffer
 	 * with its first letter capitalized.
 	 */
@@ -1324,9 +1671,40 @@ public final class StringTools {
 	/**
 	 * Append the specified string to the specified string buffer
 	 * with its first letter capitalized.
+	 */
+	public static void capitalizeOn(char[] string, StringBuilder sb) {
+		if (string.length == 0) {
+			return;
+		}
+		if (Character.isUpperCase(string[0])) {
+			sb.append(string);
+		} else {
+			capitalizeOnInternal(string, sb);
+		}
+	}
+
+	/**
+	 * Append the specified string to the specified string buffer
+	 * with its first letter capitalized.
 	 * String#capitalizeOn(StringBuffer)
 	 */
 	public static void capitalizeOn(String string, StringBuffer sb) {
+		if (string.length() == 0) {
+			return;
+		}
+		if (Character.isUpperCase(string.charAt(0))) {
+			sb.append(string);
+		} else {
+			capitalizeOnInternal(string.toCharArray(), sb);
+		}
+	}
+
+	/**
+	 * Append the specified string to the specified string buffer
+	 * with its first letter capitalized.
+	 * String#capitalizeOn(StringBuilder)
+	 */
+	public static void capitalizeOn(String string, StringBuilder sb) {
 		if (string.length() == 0) {
 			return;
 		}
@@ -1453,6 +1831,14 @@ public final class StringTools {
 	}
 
 	/**
+	 * no zero-length check or lower case check
+	 */
+	private static void uncapitalizeOnInternal(char[] string, StringBuilder sb) {
+		sb.append(Character.toLowerCase(string[0]));
+		sb.append(string, 1, string.length - 1);
+	}
+
+	/**
 	 * Append the specified string to the specified string buffer
 	 * with its first letter converted to lower case.
 	 * (Unless both the first and second letters are upper case,
@@ -1471,9 +1857,38 @@ public final class StringTools {
 	 * with its first letter converted to lower case.
 	 * (Unless both the first and second letters are upper case,
 	 * in which case the string is returned unchanged.)
+	 */
+	public static void uncapitalizeOn(char[] string, StringBuilder sb) {
+		if (stringNeedNotBeUncapitalized(string)) {
+			sb.append(string);
+		} else {
+			uncapitalizeOnInternal(string, sb);
+		}
+	}
+
+	/**
+	 * Append the specified string to the specified string buffer
+	 * with its first letter converted to lower case.
+	 * (Unless both the first and second letters are upper case,
+	 * in which case the string is returned unchanged.)
 	 * String#uncapitalizeOn(StringBuffer)
 	 */
 	public static void uncapitalizeOn(String string, StringBuffer sb) {
+		if (stringNeedNotBeUncapitalized(string)) {
+			sb.append(string);
+		} else {
+			uncapitalizeOnInternal(string.toCharArray(), sb);
+		}
+	}
+
+	/**
+	 * Append the specified string to the specified string buffer
+	 * with its first letter converted to lower case.
+	 * (Unless both the first and second letters are upper case,
+	 * in which case the string is returned unchanged.)
+	 * String#uncapitalizeOn(StringBuilder)
+	 */
+	public static void uncapitalizeOn(String string, StringBuilder sb) {
 		if (stringNeedNotBeUncapitalized(string)) {
 			sb.append(string);
 		} else {
@@ -1527,7 +1942,7 @@ public final class StringTools {
 	 * 	ClassName[00F3EE42] (add'l info)
 	 */
 	public static String buildToStringFor(Object o, Object additionalInfo) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		buildSimpleToStringOn(o, sb);
 		sb.append(" (");
 		sb.append(additionalInfo);
@@ -1540,7 +1955,7 @@ public final class StringTools {
 	 * 	ClassName[00F3EE42]
 	 */
 	public static String buildToStringFor(Object o) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		buildSimpleToStringOn(o, sb);
 		return sb.toString();
 	}
@@ -1551,6 +1966,19 @@ public final class StringTools {
 	 * 	ClassName[00F3EE42]
 	 */
 	public static void buildSimpleToStringOn(Object o, StringBuffer sb) {
+		sb.append(ClassTools.toStringClassNameForObject(o));
+		sb.append('[');
+		// use System#identityHashCode(Object), since Object#hashCode() may be overridden
+		sb.append(zeroPad(Integer.toHexString(System.identityHashCode(o)).toUpperCase(), 8));
+		sb.append(']');
+	}
+
+	/**
+	 * Append a "standard" simple #toString() for the specified object to
+	 * the specified string builder:
+	 * 	ClassName[00F3EE42]
+	 */
+	public static void buildSimpleToStringOn(Object o, StringBuilder sb) {
 		sb.append(ClassTools.toStringClassNameForObject(o));
 		sb.append('[');
 		// use System#identityHashCode(Object), since Object#hashCode() may be overridden
@@ -1682,7 +2110,7 @@ public final class StringTools {
 		if (len == 0) {
 			return camelCaseString;
 		}
-		StringBuffer sb = new StringBuffer(len * 2);
+		StringBuilder sb = new StringBuilder(len * 2);
 		convertCamelCaseToAllCapsOnInternal(camelCaseString, len, sb);
 		return convertToCharArray(sb);
 	}
@@ -1699,6 +2127,14 @@ public final class StringTools {
 	 * Convert the specified "camel case" string to an "all caps" string:
 	 * "largeProject" -> "LARGE_PROJECT"
 	 */
+	public static void convertCamelCaseToAllCapsOn(String camelCaseString, StringBuilder sb) {
+		convertCamelCaseToAllCapsOn(camelCaseString.toCharArray(), sb);
+	}
+
+	/**
+	 * Convert the specified "camel case" string to an "all caps" string:
+	 * "largeProject" -> "LARGE_PROJECT"
+	 */
 	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, StringBuffer sb) {
 		int len = camelCaseString.length;
 		if (len != 0) {
@@ -1706,7 +2142,33 @@ public final class StringTools {
 		}
 	}
 
+	/**
+	 * Convert the specified "camel case" string to an "all caps" string:
+	 * "largeProject" -> "LARGE_PROJECT"
+	 */
+	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, StringBuilder sb) {
+		int len = camelCaseString.length;
+		if (len != 0) {
+			convertCamelCaseToAllCapsOnInternal(camelCaseString, len, sb);
+		}
+	}
+
 	private static void convertCamelCaseToAllCapsOnInternal(char[] camelCaseString, int len, StringBuffer sb) {
+		char prev = 0;	// assume 0 is not a valid char
+		char c = 0;
+		char next = camelCaseString[0];
+		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
+			c = next;
+			next = ((i == len) ? 0 : camelCaseString[i]);
+			if (camelCaseWordBreak(prev, c, next)) {
+				sb.append('_');
+			}
+			sb.append(Character.toUpperCase(c));
+			prev = c;
+		}
+	}
+
+	private static void convertCamelCaseToAllCapsOnInternal(char[] camelCaseString, int len, StringBuilder sb) {
 		char prev = 0;	// assume 0 is not a valid char
 		char c = 0;
 		char next = camelCaseString[0];
@@ -1774,7 +2236,7 @@ public final class StringTools {
 		if ((len == 0) || (maxLength == 0)) {
 			return camelCaseString;
 		}
-		StringBuffer sb = new StringBuffer(maxLength);
+		StringBuilder sb = new StringBuilder(maxLength);
 		convertCamelCaseToAllCapsOnInternal(camelCaseString, maxLength, len, sb);
 		return convertToCharArray(sb);
 	}
@@ -1793,6 +2255,15 @@ public final class StringTools {
 	 * "largeProject" -> "LARGE_PROJECT"
 	 * Limit the resulting string to the specified maximum length.
 	 */
+	public static void convertCamelCaseToAllCapsOn(String camelCaseString, int maxLength, StringBuilder sb) {
+		convertCamelCaseToAllCapsOn(camelCaseString.toCharArray(), maxLength, sb);
+	}
+
+	/**
+	 * Convert the specified "camel case" string to an "all caps" string:
+	 * "largeProject" -> "LARGE_PROJECT"
+	 * Limit the resulting string to the specified maximum length.
+	 */
 	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, int maxLength, StringBuffer sb) {
 		int len = camelCaseString.length;
 		if ((len != 0) && (maxLength != 0)) {
@@ -1800,7 +2271,40 @@ public final class StringTools {
 		}
 	}
 
+	/**
+	 * Convert the specified "camel case" string to an "all caps" string:
+	 * "largeProject" -> "LARGE_PROJECT"
+	 * Limit the resulting string to the specified maximum length.
+	 */
+	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, int maxLength, StringBuilder sb) {
+		int len = camelCaseString.length;
+		if ((len != 0) && (maxLength != 0)) {
+			convertCamelCaseToAllCapsOnInternal(camelCaseString, maxLength, len, sb);
+		}
+	}
+
 	private static void convertCamelCaseToAllCapsOnInternal(char[] camelCaseString, int maxLength, int len, StringBuffer sb) {
+		char prev = 0;	// assume 0 is not a valid char
+		char c = 0;
+		char next = camelCaseString[0];
+		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
+			c = next;
+			next = ((i == len) ? 0 : camelCaseString[i]);
+			if (camelCaseWordBreak(prev, c, next)) {
+				sb.append('_');
+				if (sb.length() == maxLength) {
+					return;
+				}
+			}
+			sb.append(Character.toUpperCase(c));
+			if (sb.length() == maxLength) {
+				return;
+			}
+			prev = c;
+		}
+	}
+
+	private static void convertCamelCaseToAllCapsOnInternal(char[] camelCaseString, int maxLength, int len, StringBuilder sb) {
 		char prev = 0;	// assume 0 is not a valid char
 		char c = 0;
 		char next = camelCaseString[0];
@@ -1932,7 +2436,7 @@ public final class StringTools {
 		if (len == 0) {
 			return underscoreString;
 		}
-		StringBuffer sb = new StringBuffer(len);
+		StringBuilder sb = new StringBuilder(len);
 		convertUnderscoresToCamelCaseOnInternal(underscoreString, capitalizeFirstLetter, len, sb);
 		return convertToCharArray(sb);
 	}
@@ -1951,6 +2455,15 @@ public final class StringTools {
 	 * "LARGE_PROJECT" -> "largeProject"
 	 * Optionally capitalize the first letter.
 	 */
+	public static void convertUnderscoresToCamelCaseOn(String underscoreString, boolean capitalizeFirstLetter, StringBuilder sb) {
+		convertUnderscoresToCamelCaseOn(underscoreString.toCharArray(), capitalizeFirstLetter, sb);
+	}
+
+	/**
+	 * Convert the specified "underscore" string to a "camel case" string:
+	 * "LARGE_PROJECT" -> "largeProject"
+	 * Optionally capitalize the first letter.
+	 */
 	public static void convertUnderscoresToCamelCaseOn(char[] underscoreString, boolean capitalizeFirstLetter, StringBuffer sb) {
 		int len = underscoreString.length;
 		if (len != 0) {
@@ -1958,7 +2471,46 @@ public final class StringTools {
 		}
 	}
 
+	/**
+	 * Convert the specified "underscore" string to a "camel case" string:
+	 * "LARGE_PROJECT" -> "largeProject"
+	 * Optionally capitalize the first letter.
+	 */
+	public static void convertUnderscoresToCamelCaseOn(char[] underscoreString, boolean capitalizeFirstLetter, StringBuilder sb) {
+		int len = underscoreString.length;
+		if (len != 0) {
+			convertUnderscoresToCamelCaseOnInternal(underscoreString, capitalizeFirstLetter, len, sb);
+		}
+	}
+
 	private static void convertUnderscoresToCamelCaseOnInternal(char[] underscoreString, boolean capitalizeFirstLetter, int len, StringBuffer sb) {
+		char prev = 0;
+		char c = 0;
+		boolean first = true;
+		for (int i = 0; i < len; i++) {
+			prev = c;
+			c = underscoreString[i];
+			if (c == '_') {
+				continue;
+			}
+			if (first) {
+				first = false;
+				if (capitalizeFirstLetter) {
+					sb.append(Character.toUpperCase(c));
+				} else {
+					sb.append(Character.toLowerCase(c));
+				}
+			} else {
+				if (prev == '_') {
+					sb.append(Character.toUpperCase(c));
+				} else {
+					sb.append(Character.toLowerCase(c));
+				}
+			}
+		}
+	}
+
+	private static void convertUnderscoresToCamelCaseOnInternal(char[] underscoreString, boolean capitalizeFirstLetter, int len, StringBuilder sb) {
 		char prev = 0;
 		char c = 0;
 		boolean first = true;
@@ -2043,9 +2595,16 @@ public final class StringTools {
 		return result;
 	}
 
-	/**
-	 * checked exceptions suck
-	 */
+	public static char[] convertToCharArray(StringBuilder sb) {
+		int len = sb.length();
+		char[] result = new char[len];
+		sb.getChars(0, len, result, 0);
+		return result;
+	}
+
+
+	// ********** wrap Writer IOExceptions **********
+
 	private static void writeStringOn(char[] string, Writer writer) {
 		try {
 			writer.write(string);
@@ -2054,9 +2613,6 @@ public final class StringTools {
 		}
 	}
 
-	/**
-	 * checked exceptions suck
-	 */
 	private static void writeStringOn(char[] string, int off, int len, Writer writer) {
 		try {
 			writer.write(string, off, len);
@@ -2065,9 +2621,6 @@ public final class StringTools {
 		}
 	}
 
-	/**
-	 * checked exceptions suck
-	 */
 	private static void writeStringOn(String string, Writer writer) {
 		try {
 			writer.write(string);
@@ -2076,9 +2629,6 @@ public final class StringTools {
 		}
 	}
 
-	/**
-	 * checked exceptions suck
-	 */
 	private static void writeCharOn(char c, Writer writer) {
 		try {
 			writer.write(c);

@@ -198,12 +198,12 @@ public final class DTPTools {
 
 		@Override
 		public String toString() {
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			this.appendTo(sb);
 			return sb.toString();
 		}
 
-		public void appendTo(StringBuffer sb) {
+		public void appendTo(StringBuilder sb) {
 			sb.append(this.primitiveType.getName());
 			sb.append(" => ");
 			this.jdbcType.appendTo(sb);
