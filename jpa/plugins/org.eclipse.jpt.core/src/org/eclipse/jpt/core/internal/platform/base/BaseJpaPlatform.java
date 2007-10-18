@@ -28,6 +28,8 @@ import org.eclipse.jpt.core.internal.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.MappingAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.AssociationOverrideImpl.AssociationOverrideAnnotationDefinition;
+import org.eclipse.jpt.core.internal.resource.java.AssociationOverridesImpl.AssociationOverridesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrideImpl.AttributeOverrideAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverridesImpl.AttributeOverridesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.BasicImpl.BasicAnnotationDefinition;
@@ -177,6 +179,9 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 * The default includes the JPA spec-defined annotations.
 	 */
 	protected void addTypeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
+		definitions.add(AssociationOverrideAnnotationDefinition.instance());
+		definitions.add(AssociationOverridesAnnotationDefinition.instance());
+		definitions.add(AttributeOverrideAnnotationDefinition.instance());
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
 		definitions.add(AttributeOverridesAnnotationDefinition.instance());
 		definitions.add(DiscriminatorColumnAnnotationDefinition.instance());
@@ -235,6 +240,8 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 * The default includes the JPA spec-defined annotations.
 	 */
 	protected void addAttributeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
+		definitions.add(AssociationOverrideAnnotationDefinition.instance());
+		definitions.add(AssociationOverridesAnnotationDefinition.instance());
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
 		definitions.add(AttributeOverridesAnnotationDefinition.instance());
 		definitions.add(ColumnAnnotationDefinition.instance());

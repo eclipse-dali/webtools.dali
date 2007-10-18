@@ -12,17 +12,6 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public interface Basic extends JavaResource
 {
-	/**
-	 * Corresponds to the optional element of the Basic annotation.
-	 * Returns null if the optional element does not exist in java.
-	 */
-	Boolean getOptional();
-	
-	/**
-	 * Corresponds to the optional element of the Basic annotation.
-	 * Set to null to remove the optional element.
-	 */
-	void setOptional(Boolean optional);
 	
 	/**
 	 * Corresponds to the fetch element of the Basic annotation.
@@ -35,4 +24,17 @@ public interface Basic extends JavaResource
 	 * Set to null to remove the fetch element.
 	 */
 	void setFetch(FetchType fetch);
+	
+	/**
+	 * Corresponds to the optional element of the Basic annotation.
+	 * Returns null if the optional element does not exist in java.
+	 */
+	Boolean getOptional();
+	
+	/**
+	 * Corresponds to the optional element of the Basic annotation.
+	 * Set to null to remove the optional element.
+	 */
+	void setOptional(Boolean optional);
+
 }

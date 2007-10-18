@@ -165,9 +165,9 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	private class PkJoinColumnsContainerAnnotation implements ContainerAnnotation<NestablePrimaryKeyJoinColumn> {
 
 		public NestablePrimaryKeyJoinColumn add(int index) {
-			NestablePrimaryKeyJoinColumn pKeyJoinColumn = createNestedAnnotation(index);
-			SecondaryTableImpl.this.addPkJoinColumn(pKeyJoinColumn);
-			return pKeyJoinColumn;
+			NestablePrimaryKeyJoinColumn pKJoinColumn = createNestedAnnotation(index);
+			SecondaryTableImpl.this.addPkJoinColumn(pKJoinColumn);
+			return pKJoinColumn;
 		}
 
 		public NestablePrimaryKeyJoinColumn createNestedAnnotation(int index) {

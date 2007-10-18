@@ -9,37 +9,41 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.ListIterator;
+
 /**
- * Corresponds to the javax.persistence.AttributeOverride annotation
+ * Corresponds to the javax.persistence.AssociationOverride annotation
  */
-public interface AttributeOverride extends JavaResource
+public interface AssociationOverride extends JavaResource
 {
 	/**
-	 * Corresponds to the name element of the AttributeOverride annotation.
+	 * Corresponds to the name element of the AssociationOverride annotation.
 	 * Returns null if the name element does not exist in java.
 	 */
 	String getName();
 	
 	/**
-	 * Corresponds to the name element of the AttributeOverride annotation.
+	 * Corresponds to the name element of the AssociationOverride annotation.
 	 * Set to null to remove the name element.
 	 */
 	void setName(String name);
-	
+
 	/**
-	 * Corresponds to the column element of the AttributeOverride annotation.
-	 * Returns null if the column element does not exist in java.
+	 * Corresponds to the joinColumns element of the AssociationOverride annotation.
+	 * Returns an empty iterator if the joinColumns element does not exist in java.
 	 */
-	Column getColumn();
+	ListIterator<JoinColumn> joinColumns();
 	
-	/**
-	 * Add the column element to the AttributeOverride annotation.
-	 */
-	Column addColumn();
+	JoinColumn joinColumnAt(int index);
 	
-	/**
-	 * Remove the column element from the AttributeOverride annotation.
-	 */
-	void removeColumn();
+	int indexOfJoinColumn(JoinColumn joinColumn);
+	
+	int joinColumnsSize();
+
+	JoinColumn addJoinColumn(int index);
+	
+	void removeJoinColumn(int index);
+	
+	void moveJoinColumn(int oldIndex, int newIndex);
 
 }

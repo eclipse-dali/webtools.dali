@@ -146,6 +146,16 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 		return new NestedIndexedDeclarationAnnotationAdapter(JoinTableImpl.DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__INVERSE_JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
 	}
 	
+	
+	static NestableJoinColumn createAssociationOverrideJoinColumn(DeclarationAnnotationAdapter associationOverrideAdapter, JavaResource parent, Member member, int index) {
+		return new JoinColumnImpl(parent, member, buildAssociationOverrideAnnotationAdapter(associationOverrideAdapter, index));
+	}
+
+	private static IndexedDeclarationAnnotationAdapter buildAssociationOverrideAnnotationAdapter(DeclarationAnnotationAdapter associationOverrideAdapter, int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(associationOverrideAdapter, JPA.ASSOCIATION_OVERRIDE__JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
+	}
+
+
 	public static class JoinColumnAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
