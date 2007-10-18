@@ -14,9 +14,9 @@ import java.util.Map;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
+import org.eclipse.jpt.ui.internal.platform.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.selection.Selection;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.swt.SWT;
@@ -105,7 +105,7 @@ public class JpaDetailsView extends AbstractJpaView
 		
 		if (provider == null) {
 			String platformId = contentNode.jpaPlatform().getId();
-			IJpaPlatformUi jpaPlatformUI = PlatformRegistry.instance().jpaPlatform(platformId);
+			IJpaPlatformUi jpaPlatformUI = PlatformRegistry.instance().jpaPlatformUi(platformId);
 			provider = jpaPlatformUI.detailsProvider(contentId);
 			
 			//TODO this view and the detailsProviders Map is not created on a per project basis.

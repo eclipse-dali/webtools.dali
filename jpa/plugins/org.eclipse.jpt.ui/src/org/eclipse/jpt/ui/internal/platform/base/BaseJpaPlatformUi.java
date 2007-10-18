@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal;
+package org.eclipse.jpt.ui.internal.platform.base;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,8 +16,9 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
+import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
-import org.eclipse.jpt.ui.internal.generic.EntitiesGenerator;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaDetailsProvider;

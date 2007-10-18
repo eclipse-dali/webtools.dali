@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.osgi.framework.BundleContext;

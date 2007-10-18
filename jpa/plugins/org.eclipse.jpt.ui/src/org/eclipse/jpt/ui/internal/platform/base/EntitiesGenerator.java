@@ -7,7 +7,7 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.ui.internal.generic;
+package org.eclipse.jpt.ui.internal.platform.base;
 
 import java.util.Collection;
 import org.eclipse.core.resources.ResourcesPlugin;

@@ -39,7 +39,7 @@
 		
 		<jpaPlatform
 			id="generic"
-			class="org.eclipse.jpt.ui.internal.generic.GenericPlatformUi"/>
+			class="org.eclipse.jpt.ui.internal.platform.generic.GenericPlatformUi"/>
 		
 	</extension>
 	

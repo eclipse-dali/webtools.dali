@@ -31,8 +31,8 @@ import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.platform.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
@@ -65,7 +65,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 	
 	protected IJpaPlatformUi jpaPlatformUi() {
 		String platformId = getAttribute().jpaPlatform().getId();
-		return PlatformRegistry.instance().jpaPlatform(platformId);
+		return PlatformRegistry.instance().jpaPlatformUi(platformId);
 	}
 
 	protected IJpaUiFactory jpaUiFactory() {

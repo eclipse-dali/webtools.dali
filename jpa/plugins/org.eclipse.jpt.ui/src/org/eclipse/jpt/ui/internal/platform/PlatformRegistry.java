@@ -6,7 +6,7 @@
  *  
  *  Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.ui.internal;
+package org.eclipse.jpt.ui.internal.platform;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,6 +17,8 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
+import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -91,7 +93,7 @@ public class PlatformRegistry
 		this.jpaPlatforms.put(platformId, configElement);
 	}
 	
-	public IJpaPlatformUi jpaPlatform(String platformId) {
+	public IJpaPlatformUi jpaPlatformUi(String platformId) {
 		IConfigurationElement registeredConfigElement = this.jpaPlatforms.get(platformId);
 		
 		if (registeredConfigElement == null) {
