@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model;
 
-import java.awt.EventQueue;
 import java.io.Serializable;
 
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
@@ -24,45 +23,42 @@ import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
 
 /**
- * AWT-aware implementation of ChangeEventDispatcher interface:
- * If we are executing on the AWT event-dispatch thread,
+ * UI-aware implementation of ChangeEventDispatcher interface:
+ * If we are executing on the UI event-dispatch thread,
  * simply forward the change notification directly to the listener.
  * If we are executing on some other thread, queue up the
- * notification on the AWT event queue so it can be executed
+ * notification on the UI event queue so it can be executed
  * on the event-dispatch thread (after the pending events have
  * been dispatched).
  */
-public class AWTChangeEventDispatcher
+public class UIChangeEventDispatcher
 	implements ChangeEventDispatcher, Serializable
 {
-	// singleton
-	private static ChangeEventDispatcher INSTANCE;
+	/**
+	 * This adapter will provide the platform-specific behavior
+	 * (e.g. AWT, SWT).
+	 */
+	private final PlatformAdapter platformAdapter;
 
 	private static final long serialVersionUID = 1L;
 
 
-	/**
-	 * Return the singleton.
-	 */
-	public synchronized static ChangeEventDispatcher instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new AWTChangeEventDispatcher();
+	public UIChangeEventDispatcher(PlatformAdapter platformAdapter) {
+		super();
+		if (platformAdapter == null) {
+			throw new NullPointerException();
 		}
-		return INSTANCE;
+		this.platformAdapter = platformAdapter;
 	}
 
-	/**
-	 * Ensure non-instantiability.
-	 */
-	private AWTChangeEventDispatcher() {
-		super();
-	}
+
+	// ********** ChangeEventDispatcher implementation **********
 
 	public void stateChanged(final StateChangeListener listener, final StateChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.stateChanged(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.stateChanged(event);
@@ -77,10 +73,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void propertyChanged(final PropertyChangeListener listener, final PropertyChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.propertyChanged(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.propertyChanged(event);
@@ -95,10 +91,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void itemsAdded(final CollectionChangeListener listener, final CollectionChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.itemsAdded(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.itemsAdded(event);
@@ -113,10 +109,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void itemsRemoved(final CollectionChangeListener listener, final CollectionChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.itemsRemoved(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.itemsRemoved(event);
@@ -131,10 +127,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void collectionCleared(final CollectionChangeListener listener, final CollectionChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.collectionCleared(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.collectionCleared(event);
@@ -149,10 +145,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void collectionChanged(final CollectionChangeListener listener, final CollectionChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.collectionChanged(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.collectionChanged(event);
@@ -167,10 +163,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void itemsAdded(final ListChangeListener listener, final ListChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.itemsAdded(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.itemsAdded(event);
@@ -185,10 +181,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void itemsRemoved(final ListChangeListener listener, final ListChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.itemsRemoved(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.itemsRemoved(event);
@@ -203,10 +199,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void itemsReplaced(final ListChangeListener listener, final ListChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.itemsReplaced(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.itemsReplaced(event);
@@ -221,10 +217,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void itemsMoved(final ListChangeListener listener, final ListChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.itemsMoved(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.itemsMoved(event);
@@ -239,10 +235,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void listCleared(final ListChangeListener listener, final ListChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.listCleared(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.listCleared(event);
@@ -257,10 +253,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void listChanged(final ListChangeListener listener, final ListChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.listChanged(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.listChanged(event);
@@ -275,10 +271,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void nodeAdded(final TreeChangeListener listener, final TreeChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.nodeAdded(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.nodeAdded(event);
@@ -293,10 +289,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void nodeRemoved(final TreeChangeListener listener, final TreeChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.nodeRemoved(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.nodeRemoved(event);
@@ -311,10 +307,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void treeCleared(final TreeChangeListener listener, final TreeChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.treeCleared(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.treeCleared(event);
@@ -329,10 +325,10 @@ public class AWTChangeEventDispatcher
 	}
 
 	public void treeChanged(final TreeChangeListener listener, final TreeChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
+		if (this.isExecutingOnUIThread()) {
 			listener.treeChanged(event);
 		} else {
-			this.invoke(
+			this.executeOnUIThread(
 				new Runnable() {
 					public void run() {
 						listener.treeChanged(event);
@@ -346,27 +342,36 @@ public class AWTChangeEventDispatcher
 		}
 	}
 
-	/**
-	 * EventQueue.invokeLater(Runnable) seems to work OK;
-	 * but using #invokeAndWait() can somtimes make things
-	 * more predictable when debugging.
-	 */
-	private void invoke(Runnable r) {
-		EventQueue.invokeLater(r);
-//		try {
-//			EventQueue.invokeAndWait(r);
-//		} catch (InterruptedException ex) {
-//			throw new RuntimeException(ex);
-//		} catch (java.lang.reflect.InvocationTargetException ex) {
-//			throw new RuntimeException(ex);
-//		}
+
+	// ********** internal methods **********
+
+	private boolean isExecutingOnUIThread() {
+		return this.platformAdapter.currentThreadIsUIThread();
 	}
 
+	private void executeOnUIThread(Runnable r) {
+		this.platformAdapter.executeOnUIThread(r);
+	}
+
+
+	// ********** platform adapter **********
+
 	/**
-	 * Serializable singleton support
+	 * Define the UI platform-specific methods required by the UI change event
+	 * dispatcher.
 	 */
-	private Object readResolve() {
-		return instance();
+	public interface PlatformAdapter {
+
+		/**
+		 * Return whether the current thread is the UI event dispatch thread.
+		 */
+		boolean currentThreadIsUIThread();
+
+		/**
+		 * Execute the specified runnable on the UI event dispatch thread.
+		 */
+		void executeOnUIThread(Runnable r);
+
 	}
 
 }

@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  * Straightforward implementation of ChangeEventDispatcher interface:
  * Just forward the change notification directly to the listener.
  */
-public class DefaultChangeEventDispatcher
+public class SimpleChangeEventDispatcher
 	implements ChangeEventDispatcher, Serializable
 {
 	// singleton
@@ -40,7 +40,7 @@ public class DefaultChangeEventDispatcher
 	 */
 	public synchronized static ChangeEventDispatcher instance() {
 		if (INSTANCE == null) {
-			INSTANCE = new DefaultChangeEventDispatcher();
+			INSTANCE = new SimpleChangeEventDispatcher();
 		}
 		return INSTANCE;
 	}
@@ -48,7 +48,7 @@ public class DefaultChangeEventDispatcher
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private DefaultChangeEventDispatcher() {
+	private SimpleChangeEventDispatcher() {
 		super();
 	}
 

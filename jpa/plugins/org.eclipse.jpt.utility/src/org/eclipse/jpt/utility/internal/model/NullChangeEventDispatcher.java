@@ -45,7 +45,7 @@ public class NullChangeEventDispatcher
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private NullChangeEventDispatcher() {
 		super();
