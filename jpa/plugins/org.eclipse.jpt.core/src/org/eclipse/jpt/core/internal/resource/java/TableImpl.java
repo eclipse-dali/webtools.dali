@@ -56,7 +56,7 @@ public class TableImpl extends AbstractTableResource
 	
 	@Override
 	protected NestableUniqueConstraint createUniqueConstraint(int index) {
-		return UniqueConstraintImpl.createTableUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
+		return UniqueConstraintImpl.createTableUniqueConstraint(this, this.getMember(), index);
 	}
 	
 	public static class TableAnnotationDefinition implements AnnotationDefinition

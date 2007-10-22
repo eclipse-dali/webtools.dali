@@ -91,7 +91,10 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 		this.setReferencedColumnName(this.referencedColumnNameAdapter.getValue(astRoot));
 	}
 	
-	
+	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.referencedColumnNameDeclarationAdapter, pos, astRoot);
+	}
+
 	// ********** static methods **********
 
 	static PrimaryKeyJoinColumnImpl createPrimaryKeyJoinColumn(JavaResource parent, Member member) {

@@ -42,4 +42,19 @@ public abstract class AbstractResource<E extends Member> extends JpaNodeModel im
 		return (elementTextRange != null) ? elementTextRange : this.textRange(astRoot);
 	}
 	
+	/**
+	 * Convenience method. Return whether the specified position touches the element.
+	 * Returns false if the element does not exist
+	 */
+	protected boolean elementTouches(DeclarationAnnotationElementAdapter<?> elementAdapter, int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.member.annotationElementTextRange(elementAdapter, astRoot), pos);
+	}
+	
+	/**
+	 * Convenience method. Return whether element's text range is not
+	 * null (meaning the element exists) and the specified position touches it.
+	 */
+	protected boolean elementTouches(ITextRange elementTextRange, int pos) {
+		return (elementTextRange != null) && elementTextRange.touches(pos);
+	}
 }

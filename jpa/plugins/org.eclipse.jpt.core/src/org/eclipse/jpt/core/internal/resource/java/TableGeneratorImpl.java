@@ -232,7 +232,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 	}
 	
 	protected NestableUniqueConstraint createUniqueConstraint(int index) {
-		return UniqueConstraintImpl.createTableGeneratorUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
+		return UniqueConstraintImpl.createTableGeneratorUniqueConstraint(this, this.getMember(), index);
 	}
 
 	public ITextRange tableTextRange(CompilationUnit astRoot) {

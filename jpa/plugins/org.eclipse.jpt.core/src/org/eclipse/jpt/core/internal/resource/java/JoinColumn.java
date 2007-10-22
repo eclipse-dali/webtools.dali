@@ -35,4 +35,10 @@ public interface JoinColumn extends AbstractColumn
 	 */
 	ITextRange referencedColumnNameTextRange(CompilationUnit astRoot);
 
+	/**
+	 * Return whether the specified postition touches the  referencedColumnName element.
+	 * Return false if the  referencedColumnName element does not exist.
+	 */
+	boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot);
+
 }

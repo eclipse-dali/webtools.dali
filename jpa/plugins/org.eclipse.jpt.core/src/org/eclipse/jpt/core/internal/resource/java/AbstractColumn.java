@@ -107,4 +107,10 @@ public interface AbstractColumn extends NamedColumn
 	 */
 	ITextRange tableTextRange(CompilationUnit astRoot);
 
+	/**
+	 * Return whether the specified postition touches the table element.
+	 * Return false if the table element does not exist.
+	 */
+	boolean tableTouches(int pos, CompilationUnit astRoot);
+
 }

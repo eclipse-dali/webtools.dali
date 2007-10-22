@@ -87,7 +87,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	
 	@Override
 	protected NestableUniqueConstraint createUniqueConstraint(int index) {
-		return UniqueConstraintImpl.createSecondaryTableUniqueConstraint(new UniqueConstraintOwner(this), this.getDeclarationAnnotationAdapter(), this.getMember(), index);
+		return UniqueConstraintImpl.createSecondaryTableUniqueConstraint(this, this.getDeclarationAnnotationAdapter(), this.getMember(), index);
 	}
 	
 	// ************* SecondaryTable implementation *******************

@@ -51,4 +51,10 @@ public interface AttributeOverride extends JavaResource
 	 */
 	ITextRange nameTextRange(CompilationUnit astRoot);
 
+	/**
+	 * Return whether the specified postition touches the table element.
+	 * Return false if the table element does not exist.
+	 */
+	boolean nameTouches(int pos, CompilationUnit astRoot);
+
 }

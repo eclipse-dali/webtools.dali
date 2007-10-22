@@ -54,8 +54,12 @@ public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements
 		return this.elementTextRange(NAME_ADAPTER, astRoot);
 	}
 
+	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(NAME_ADAPTER, pos, astRoot);
+	}
+	
 	public void updateFromJava(CompilationUnit astRoot) {
-		setName(nameAdapter.getValue(astRoot));
+		setName(this.nameAdapter.getValue(astRoot));
 	}
 	
 	// ********** static methods **********

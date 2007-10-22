@@ -156,6 +156,10 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 		return this.elementTextRange(this.tableDeclarationAdapter, astRoot);
 	}
 	
+	public boolean tableTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.tableDeclarationAdapter, pos, astRoot);
+	}
+
 
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);

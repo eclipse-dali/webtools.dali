@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
  * Corresponds to the javax.persistence.TableGenerator annotation
@@ -155,23 +153,4 @@ public interface TableGenerator extends Generator
 	 */
 	ITextRange pkColumnValueTextRange(CompilationUnit astRoot);
 
-	
-	class UniqueConstraintOwner implements UniqueConstraint.Owner
-	{
-		private final TableGenerator tableGenerator;
-
-		public UniqueConstraintOwner(TableGenerator tableGenerator) {
-			super();
-			this.tableGenerator = tableGenerator;
-		}
-
-		public Iterator<String> candidateUniqueConstraintColumnNames() {
-			return EmptyIterator.instance();
-			//TODO this.table.dbTable().columnNames();
-		}
-		
-		public JavaResource javaResource() {
-			return this.tableGenerator;
-		}
-	}
 }

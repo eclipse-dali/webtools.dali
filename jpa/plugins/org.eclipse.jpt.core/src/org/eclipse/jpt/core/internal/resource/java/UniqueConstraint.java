@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import java.util.ListIterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 
 /**
  * Corresponds to the javax.persistence.UniqueConstraint annotation
@@ -24,12 +24,9 @@ public interface UniqueConstraint extends JavaResource
 	void removeColumnName(String columnName);
 
 	/**
-	 * All containers must implement this interface.
+	 * Return whether the specified postition touches the columnNames element.
+	 * Return false if the columnNames element does not exist.
 	 */
-	interface Owner
-	{
-		Iterator<String> candidateUniqueConstraintColumnNames();
-		
-		JavaResource javaResource();
-	}
+	boolean columnNamesTouches(int pos, CompilationUnit astRoot);
+
 }

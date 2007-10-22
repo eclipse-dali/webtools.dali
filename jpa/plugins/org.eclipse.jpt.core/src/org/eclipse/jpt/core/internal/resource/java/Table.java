@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public interface Table extends JavaResource
 {
@@ -60,23 +58,11 @@ public interface Table extends JavaResource
 	 * does not exist return the ITextRange for the *Table annotation.
 	 */
 	ITextRange schemaTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return whether the specified postition touches the name element.
+	 * Return false if the name element does not exist.
+	 */
+	boolean nameTouches(int pos, CompilationUnit astRoot);
 
-	class UniqueConstraintOwner implements UniqueConstraint.Owner
-	{
-		private final Table table;
-
-		public UniqueConstraintOwner(Table table) {
-			super();
-			this.table = table;
-		}
-
-		public Iterator<String> candidateUniqueConstraintColumnNames() {
-			return EmptyIterator.instance();
-			//TODO this.table.dbTable().columnNames();
-		}
-		
-		public JavaResource javaResource() {
-			return this.table;
-		}
-	}
 }

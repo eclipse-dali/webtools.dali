@@ -117,6 +117,10 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 		return this.elementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
 	}
 
+	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.referencedColumnNameDeclarationAdapter, pos, astRoot);
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		this.setReferencedColumnName(this.referencedColumnNameAdapter.getValue(astRoot));

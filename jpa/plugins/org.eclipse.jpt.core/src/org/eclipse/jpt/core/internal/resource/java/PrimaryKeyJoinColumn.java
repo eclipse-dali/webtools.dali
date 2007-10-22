@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
@@ -19,5 +20,11 @@ public interface PrimaryKeyJoinColumn extends NamedColumn
 	String getReferencedColumnName();
 	
 	void setReferencedColumnName(String referenceColumnName);
+
+	/**
+	 * Return whether the specified postition touches the referencedColumnName element.
+	 * Return false if the referencedColumnName element does not exist.
+	 */
+	boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot);
 
 }

@@ -77,7 +77,7 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 	
 	@Override
 	protected NestableUniqueConstraint createUniqueConstraint(int index) {
-		return UniqueConstraintImpl.createJoinTableUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
+		return UniqueConstraintImpl.createJoinTableUniqueConstraint(this, this.getMember(), index);
 	}
 	
 	@Override

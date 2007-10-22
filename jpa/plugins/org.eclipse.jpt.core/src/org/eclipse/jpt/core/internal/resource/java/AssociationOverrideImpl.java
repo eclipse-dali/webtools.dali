@@ -140,7 +140,11 @@ public class AssociationOverrideImpl
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
-	
+
+	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		setName(this.nameAdapter.getValue(astRoot));
 		this.updateJoinColumnsFromJava(astRoot);

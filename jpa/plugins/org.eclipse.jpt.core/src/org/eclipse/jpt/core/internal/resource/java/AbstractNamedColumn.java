@@ -104,6 +104,10 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 		return this.elementTextRange(this.columnDefinitionDeclarationAdapter, astRoot);
 	}
 	
+	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		setName(this.nameAdapter.getValue(astRoot));
 		setColumnDefinition(this.columnDefinitionAdapter.getValue(astRoot));

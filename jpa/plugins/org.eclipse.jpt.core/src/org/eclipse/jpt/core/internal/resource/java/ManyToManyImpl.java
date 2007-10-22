@@ -88,7 +88,11 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 	public ITextRange mappedByTextRange(CompilationUnit astRoot) {
 		return elementTextRange(MAPPED_BY_ADAPTER, astRoot);
 	}
-	
+
+	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(MAPPED_BY_ADAPTER, pos, astRoot);
+	}
+
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildTargetEntityAdapter() {

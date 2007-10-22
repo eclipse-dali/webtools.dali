@@ -54,4 +54,10 @@ public interface AssociationOverride extends JavaResource
 	 */
 	ITextRange nameTextRange(CompilationUnit astRoot);
 	
+	/**
+	 * Return whether the specified postition touches the name element.
+	 * Return falamese if the n element does not exist.
+	 */
+	boolean nameTouches(int pos, CompilationUnit astRoot);
+
 }

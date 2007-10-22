@@ -102,6 +102,10 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 	public ITextRange optionalTextRange(CompilationUnit astRoot) {
 		return elementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
+	
+	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(MAPPED_BY_ADAPTER, pos, astRoot);
+	}
 
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {

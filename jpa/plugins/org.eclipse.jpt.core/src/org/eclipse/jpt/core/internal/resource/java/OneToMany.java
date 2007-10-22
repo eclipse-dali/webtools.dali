@@ -34,4 +34,9 @@ public interface OneToMany extends RelationshipMappingAnnotation
 	 */
 	ITextRange mappedByTextRange(CompilationUnit astRoot);
 
+	/**
+	 * Return whether the specified postition touches the mappedBy element.
+	 * Return false if the mappedBy element does not exist.
+	 */
+	boolean mappedByTouches(int pos, CompilationUnit astRoot);
 }
