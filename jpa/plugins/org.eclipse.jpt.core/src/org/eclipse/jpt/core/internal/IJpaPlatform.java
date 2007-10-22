@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -156,11 +155,7 @@ public interface IJpaPlatform
 	/**
 	 * Iterator of fully qualified annotation(non-mapping) names that can apply to an Attribute
 	 */
-	Iterator<String>  attributeAnnotationNames();
-	
-	//TODO get this from IJpaProject
-	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();
-	
+	Iterator<String>  attributeAnnotationNames();	
 	
 	/**
 	 * Adds validation messages to the growing list of messages

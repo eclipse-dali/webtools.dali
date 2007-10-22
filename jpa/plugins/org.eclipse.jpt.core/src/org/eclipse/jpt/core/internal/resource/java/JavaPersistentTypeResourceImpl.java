@@ -259,7 +259,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	 * delegate to the type's project (there is one provider per project)
 	 */
 	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
-		return this.jpaPlatform().modifySharedDocumentCommandExecutorProvider();
+		return this.jpaProject().modifySharedDocumentCommandExecutorProvider();
 	}
 	
 	private void updatePersistentAttributes(CompilationUnit astRoot) {
