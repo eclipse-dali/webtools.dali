@@ -10,7 +10,9 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
@@ -22,6 +24,15 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 	// this adapter is only used by a Column annotation associated with a mapping annotation (e.g. Basic)
 	public static final DeclarationAnnotationAdapter MAPPING_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
+	// hold this so we can get the 'length' text range
+	private final DeclarationAnnotationElementAdapter<String> lengthDeclarationAdapter;
+	
+	// hold this so we can get the 'precision' text range
+	private final DeclarationAnnotationElementAdapter<String> precisionDeclarationAdapter;
+	
+	// hold this so we can get the 'scale' text range
+	private final DeclarationAnnotationElementAdapter<String> scaleDeclarationAdapter;
+	
 	private final IntAnnotationElementAdapter lengthAdapter;
 
 	private final IntAnnotationElementAdapter precisionAdapter;
@@ -36,9 +47,12 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 	
 	protected ColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
-		this.lengthAdapter = this.buildShortCircuitIntElementAdapter(JPA.COLUMN__LENGTH);
-		this.precisionAdapter = this.buildShortCircuitIntElementAdapter(JPA.COLUMN__PRECISION);
-		this.scaleAdapter = this.buildShortCircuitIntElementAdapter(JPA.COLUMN__SCALE);
+		this.lengthDeclarationAdapter = this.buildNumberElementAdapter(JPA.COLUMN__LENGTH);
+		this.lengthAdapter = this.buildShortCircuitIntElementAdapter(this.lengthDeclarationAdapter);
+		this.precisionDeclarationAdapter = this.buildNumberElementAdapter(JPA.COLUMN__PRECISION);
+		this.precisionAdapter = this.buildShortCircuitIntElementAdapter(this.precisionDeclarationAdapter);
+		this.scaleDeclarationAdapter = this.buildNumberElementAdapter(JPA.COLUMN__SCALE);
+		this.scaleAdapter = this.buildShortCircuitIntElementAdapter(this.scaleDeclarationAdapter);
 	}
 	
 	@Override
@@ -93,6 +107,7 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 		setScale(oldColumn.getScale());
 	}
 	
+	//************** Column implementation **************
 	public int getLength() {
 		return this.length;
 	}
@@ -120,6 +135,18 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 		this.scaleAdapter.setValue(scale);
 	}
 	
+	public ITextRange lengthTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.lengthDeclarationAdapter, astRoot);
+	}
+	
+	public ITextRange precisionTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.precisionDeclarationAdapter, astRoot);
+	}
+	
+	public ITextRange scaleTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.scaleDeclarationAdapter, astRoot);
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		this.setLength(this.lengthAdapter.getValue(astRoot));

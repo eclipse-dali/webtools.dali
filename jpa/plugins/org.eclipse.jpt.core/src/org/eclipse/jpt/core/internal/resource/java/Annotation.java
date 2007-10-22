@@ -30,4 +30,5 @@ public interface Annotation extends JavaResource
 	 * Create and add Java annotation
 	 */
 	void newAnnotation();
+	
 }

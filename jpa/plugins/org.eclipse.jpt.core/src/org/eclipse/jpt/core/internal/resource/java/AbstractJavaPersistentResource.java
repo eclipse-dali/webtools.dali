@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jpt.core.internal.IJpaNodeModel;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -382,4 +383,18 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		//that the list of persistable fields has been updated
 		//
 	}
+	
+
+	public ITextRange fullTextRange(CompilationUnit astRoot) {
+		return this.getMember().textRange(astRoot);
+	}
+
+	public ITextRange textRange(CompilationUnit astRoot) {
+		return this.selectionTextRange(astRoot);
+	}
+
+	public ITextRange selectionTextRange(CompilationUnit astRoot) {
+		return this.getMember().nameTextRange(astRoot);
+	}
+
 }

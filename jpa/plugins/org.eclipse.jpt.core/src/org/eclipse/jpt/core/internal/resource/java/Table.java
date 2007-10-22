@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public interface Table extends JavaResource
@@ -40,6 +42,24 @@ public interface Table extends JavaResource
 	void removeUniqueConstraint(int index);
 	
 	void moveUniqueConstraint(int oldIndex, int newIndex);
+
+	/**
+	 * Return the ITextRange for the name element.  If the name element 
+	 * does not exist return the ITextRange for the *Table annotation.
+	 */
+	ITextRange nameTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the catalog element.  If the catalog element 
+	 * does not exist return the ITextRange for the *Table annotation.
+	 */
+	ITextRange catalogTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the schema element.  If the schema element 
+	 * does not exist return the ITextRange for the *Table annotation.
+	 */
+	ITextRange schemaTextRange(CompilationUnit astRoot);
 
 	class UniqueConstraintOwner implements UniqueConstraint.Owner
 	{

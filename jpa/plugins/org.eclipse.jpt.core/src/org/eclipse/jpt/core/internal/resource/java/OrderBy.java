@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
+
 /**
  * Corresponds to the javax.persistence.OrderBy annotation
  */
@@ -26,4 +29,10 @@ public interface OrderBy extends JavaResource
 	 */
 	void setValue(String value);
 	
+	/**
+	 * Return the ITextRange for the value element.  If the value element 
+	 * does not exist return the ITextRange for the OrderBy annotation.
+	 */
+	ITextRange valueTextRange(CompilationUnit astRoot);
+
 }

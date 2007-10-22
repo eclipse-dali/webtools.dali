@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
+
 /**
  * This interface corresponds to the javax.persistence.IdClass annotation
  */
@@ -41,5 +44,11 @@ public interface IdClass extends JavaResource
 	 * @return
 	 */
 	String getFullyQualifiedClass();
+
+	/**
+	 * Return the ITextRange for the value element.  If the value element 
+	 * does not exist return the ITextRange for the IdClass annotation.
+	 */
+	ITextRange valueTextRange(CompilationUnit astRoot);
 
 }

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -21,6 +22,18 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 {
 	// hold this so we can get the 'table' text range
 	private final DeclarationAnnotationElementAdapter<String> tableDeclarationAdapter;
+	
+	// hold this so we can get the 'unique' text range
+	private final DeclarationAnnotationElementAdapter<String> uniqueDeclarationAdapter;
+	
+	// hold this so we can get the 'nullable' text range
+	private final DeclarationAnnotationElementAdapter<String> nullableDeclarationAdapter;
+	
+	// hold this so we can get the 'insertable' text range
+	private final DeclarationAnnotationElementAdapter<String> insertableDeclarationAdapter;
+	
+	// hold this so we can get the 'updatable' text range
+	private final DeclarationAnnotationElementAdapter<String> updatableDeclarationAdapter;
 
 	private final AnnotationElementAdapter<String> tableAdapter;
 
@@ -47,12 +60,16 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 		super(parent, member, daa, annotationAdapter);
 		this.tableDeclarationAdapter = this.buildStringElementAdapter(this.tableElementName());
 		this.tableAdapter = this.buildShortCircuitElementAdapter(this.tableDeclarationAdapter);
-		this.uniqueAdapter = this.buildShortCircuitBooleanElementAdapter(this.uniqueElementName());
-		this.nullableAdapter = this.buildShortCircuitBooleanElementAdapter(this.nullableElementName());
-		this.insertableAdapter = this.buildShortCircuitBooleanElementAdapter(this.insertableElementName());
-		this.updatableAdapter = this.buildShortCircuitBooleanElementAdapter(this.updatableElementName());
-
+		this.uniqueDeclarationAdapter = this.buildBooleanElementAdapter(this.uniqueElementName());
+		this.uniqueAdapter = this.buildShortCircuitElementAdapter(this.uniqueDeclarationAdapter);
+		this.nullableDeclarationAdapter = this.buildBooleanElementAdapter(this.nullableElementName());
+		this.nullableAdapter = this.buildShortCircuitElementAdapter(this.nullableDeclarationAdapter);
+		this.insertableDeclarationAdapter = this.buildBooleanElementAdapter(this.insertableElementName());
+		this.insertableAdapter = this.buildShortCircuitElementAdapter(this.insertableDeclarationAdapter);
+		this.updatableDeclarationAdapter = this.buildBooleanElementAdapter(this.updatableElementName());
+		this.updatableAdapter = this.buildShortCircuitElementAdapter(this.updatableDeclarationAdapter);
 	}
+	
 	protected abstract String tableElementName();
 
 	protected abstract String uniqueElementName();
@@ -73,6 +90,7 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 		setUpdatable(oldColumn.isUpdatable());
 	}
 
+	//************* AbstractColumn implementation *************
 	public String getTable() {
 		return this.table;
 	}
@@ -117,6 +135,27 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 		this.updatable = updatable;
 		this.updatableAdapter.setValue(BooleanUtility.toJavaAnnotationValue(updatable));
 	}
+
+	public ITextRange nullableTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.nullableDeclarationAdapter, astRoot);
+	}
+	
+	public ITextRange insertableTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.insertableDeclarationAdapter, astRoot);
+	}
+	
+	public ITextRange uniqueTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.uniqueDeclarationAdapter, astRoot);
+	}
+	
+	public ITextRange updatableTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.updatableDeclarationAdapter, astRoot);
+	}
+	
+	public ITextRange tableTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.tableDeclarationAdapter, astRoot);
+	}
+	
 
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);

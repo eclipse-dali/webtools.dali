@@ -9,7 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 
+/**
+ * Corresponds to the javax.persistence.GeneratedValue annotation
+ */
 public interface GeneratedValue extends JavaResource
 {	
 	/**
@@ -35,5 +40,18 @@ public interface GeneratedValue extends JavaResource
 	 * Set to null to remove the generator element.
 	 */
 	void setGenerator(String generator);
+
+	
+	/**
+	 * Return the ITextRange for the generator element.  If the generator element 
+	 * does not exist return the ITextRange for the Enumerated annotation.
+	 */
+	ITextRange generatorTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the strategy element.  If the strategy element 
+	 * does not exist return the ITextRange for the Enumerated annotation.
+	 */
+	ITextRange strategyTextRange(CompilationUnit astRoot);
 
 }

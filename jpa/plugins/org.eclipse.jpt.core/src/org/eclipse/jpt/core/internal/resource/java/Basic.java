@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
+
 
 public interface Basic extends JavaResource
 {
@@ -36,5 +39,17 @@ public interface Basic extends JavaResource
 	 * Set to null to remove the optional element.
 	 */
 	void setOptional(Boolean optional);
+
+	/**
+	 * Return the ITextRange for the fetch element.  If the fetch element 
+	 * does not exist return the ITextRange for the Basic annotation.
+	 */
+	ITextRange fetchTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return the ITextRange for the optional element.  If the optional element 
+	 * does not exist return the ITextRange for the Basic annotation.
+	 */
+	ITextRange optionalTextRange(CompilationUnit astRoot);
 
 }

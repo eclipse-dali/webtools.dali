@@ -1,6 +1,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -51,6 +52,10 @@ public class IdClassImpl extends AbstractAnnotationResource<Type> implements IdC
 	private void setFullyQualifiedClass(String qualifiedClass) {
 		this.fullyQualifiedValue = qualifiedClass;
 		//change notification
+	}
+
+	public ITextRange valueTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.VALUE_ADAPTER, astRoot);
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {

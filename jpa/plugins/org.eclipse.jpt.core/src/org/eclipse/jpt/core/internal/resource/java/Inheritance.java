@@ -9,9 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
+
+/**
+ * Corresponds to the javax.persistence.Inheritance annotation
+ */
 public interface Inheritance extends JavaResource
 {
 	InheritanceType getStrategy();
 	
 	void setStrategy(InheritanceType strategy);
+	
+	/**
+	 * Return the ITextRange for the strategy element.  If the strategy element 
+	 * does not exist return the ITextRange for the Inheritance annotation.
+	 */
+	ITextRange strategyTextRange(CompilationUnit astRoot);
+
 }

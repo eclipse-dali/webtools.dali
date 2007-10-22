@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -64,6 +65,14 @@ public class GeneratedValueImpl extends AbstractAnnotationResource<Member> imple
 	public void setGenerator(String generator) {
 		this.generator = generator;
 		this.generatorAdapter.setValue(generator);
+	}
+
+	public ITextRange strategyTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(STRATEGY_ADAPTER, astRoot);
+	}
+	
+	public ITextRange generatorTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(GENERATOR_ADAPTER, astRoot);
 	}
 
 	// ********** java annotations -> persistence model **********

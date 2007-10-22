@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -76,6 +77,10 @@ public class OneToManyImpl extends AbstractRelationshipMappingAnnotation impleme
 		this.mappedByAdapter.setValue(mappedBy);
 	}
 	
+	public ITextRange mappedByTextRange(CompilationUnit astRoot) {
+		return elementTextRange(MAPPED_BY_ADAPTER, astRoot);
+	}
+
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);

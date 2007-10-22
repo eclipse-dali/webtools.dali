@@ -11,8 +11,13 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
+/**
+ * Corresponds to the javax.persistence.TableGenerator annotation
+ */
 public interface TableGenerator extends Generator
 {
 	
@@ -113,6 +118,42 @@ public interface TableGenerator extends Generator
 	void removeUniqueConstraint(int index);
 	
 	void moveUniqueConstraint(int oldIndex, int newIndex);
+
+	/**
+	 * Return the ITextRange for the table element.  If the table element 
+	 * does not exist return the ITextRange for the TableGenerator annotation.
+	 */
+	ITextRange tableTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the catalog element.  If the catalog element 
+	 * does not exist return the ITextRange for the TableGenerator annotation.
+	 */
+	ITextRange catalogTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the schema element.  If the schema element 
+	 * does not exist return the ITextRange for the TableGenerator annotation.
+	 */
+	ITextRange schemaTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the pkColumnName element.  If the pkColumnName element 
+	 * does not exist return the ITextRange for the TableGenerator annotation.
+	 */
+	ITextRange pkColumnNameTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the valueColumnName element.  If the valueColumnName element 
+	 * does not exist return the ITextRange for the TableGenerator annotation.
+	 */
+	ITextRange valueColumnNameTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the pkColumnValue element.  If the pkColumnValue element 
+	 * does not exist return the ITextRange for the TableGenerator annotation.
+	 */
+	ITextRange pkColumnValueTextRange(CompilationUnit astRoot);
 
 	
 	class UniqueConstraintOwner implements UniqueConstraint.Owner

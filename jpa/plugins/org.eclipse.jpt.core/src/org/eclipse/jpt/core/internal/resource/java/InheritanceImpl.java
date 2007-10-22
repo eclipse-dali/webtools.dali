@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
@@ -46,6 +47,10 @@ public class InheritanceImpl extends AbstractAnnotationResource<Type> implements
 	public void setStrategy(InheritanceType strategy) {
 		this.strategy = strategy;
 		this.strategyAdapter.setValue(InheritanceType.toJavaAnnotationValue(strategy));
+	}
+
+	public ITextRange strategyTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(STRATEGY_ADAPTER, astRoot);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

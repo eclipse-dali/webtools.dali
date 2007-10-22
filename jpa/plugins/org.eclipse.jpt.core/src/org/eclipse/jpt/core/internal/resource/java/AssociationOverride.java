@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 
 /**
  * Corresponds to the javax.persistence.AssociationOverride annotation
@@ -45,5 +47,11 @@ public interface AssociationOverride extends JavaResource
 	void removeJoinColumn(int index);
 	
 	void moveJoinColumn(int oldIndex, int newIndex);
-
+	
+	/**
+	 * Return the ITextRange for the name element. If name element
+	 * does not exist return the ITextRange for the AssociationOverride annotation.
+	 */
+	ITextRange nameTextRange(CompilationUnit astRoot);
+	
 }

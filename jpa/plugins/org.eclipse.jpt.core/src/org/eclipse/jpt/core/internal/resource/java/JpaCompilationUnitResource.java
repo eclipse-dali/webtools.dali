@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
@@ -93,11 +94,24 @@ public class JpaCompilationUnitResource extends JpaNodeModel implements JavaReso
 			persistentType.updateFromJava(astRoot);
 		}
 	}
-
+	
 	/**
 	 * delegate to the type's project (there is one provider per project)
 	 */
 	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
 		return jpaProject().modifySharedDocumentCommandExecutorProvider();
 	}
+	
+	public ITextRange textRange(CompilationUnit astRoot) {
+		return null;//this.selectionTextRange();
+	}
+
+//	/**
+//	 * Return null for selection textRange.  Entire java file will appear selected when
+//	 * switching files otherwise
+//	 */
+//	public ITextRange selectionTextRange() {
+//		return null;
+//	}
+
 }

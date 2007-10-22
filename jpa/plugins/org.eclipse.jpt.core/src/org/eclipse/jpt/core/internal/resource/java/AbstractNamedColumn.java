@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter;
@@ -25,6 +26,9 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 	// hold this so we can get the 'name' text range
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 
+	// hold this so we can get the 'columnDefinition' text range
+	private final DeclarationAnnotationElementAdapter<String> columnDefinitionDeclarationAdapter;
+
 	private final AnnotationElementAdapter<String> nameAdapter;
 
 	private final AnnotationElementAdapter<String> columnDefinitionAdapter;
@@ -36,7 +40,8 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildStringElementAdapter(this.nameElementName());
 		this.nameAdapter = this.buildShortCircuitElementAdapter(this.nameDeclarationAdapter);
-		this.columnDefinitionAdapter = this.buildShortCircuitStringElementAdapter(this.columnDefinitionElementName());
+		this.columnDefinitionDeclarationAdapter = this.buildStringElementAdapter(this.columnDefinitionElementName());		
+		this.columnDefinitionAdapter = this.buildShortCircuitElementAdapter(this.columnDefinitionDeclarationAdapter);
 	}
 
 	protected DeclarationAnnotationElementAdapter<String> buildStringElementAdapter(String elementName) {
@@ -54,19 +59,14 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 	protected AnnotationElementAdapter<String> buildShortCircuitElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
 		return new ShortCircuitAnnotationElementAdapter<String>(getMember(), daea);
 	}
+	
+	protected IntAnnotationElementAdapter buildShortCircuitIntElementAdapter(DeclarationAnnotationElementAdapter<String> adapter) {
+		return new IntAnnotationElementAdapter(this.buildShortCircuitElementAdapter(adapter));
+	}
 
 	protected AnnotationElementAdapter<String> buildShortCircuitStringElementAdapter(String elementName) {
 		return this.buildShortCircuitElementAdapter(this.buildStringElementAdapter(elementName));
 	}
-
-	protected AnnotationElementAdapter<String> buildShortCircuitBooleanElementAdapter(String elementName) {
-		return this.buildShortCircuitElementAdapter(this.buildBooleanElementAdapter(elementName));
-	}
-
-	protected IntAnnotationElementAdapter buildShortCircuitIntElementAdapter(String elementName) {
-		return new IntAnnotationElementAdapter(this.buildShortCircuitElementAdapter(this.buildNumberElementAdapter(elementName)));
-	}
-
 	protected abstract String nameElementName();
 
 	protected abstract String columnDefinitionElementName();
@@ -77,6 +77,7 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 		setColumnDefinition(oldColumn.getColumnDefinition());
 	}
 
+	//************* NamedColumn implementation **************
 	public String getName() {
 		return this.name;
 	}
@@ -93,6 +94,14 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 	public void setColumnDefinition(String columnDefinition) {
 		this.columnDefinition = columnDefinition;
 		this.columnDefinitionAdapter.setValue(columnDefinition);
+	}	
+
+	public ITextRange nameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
+	}
+
+	public ITextRange columnDefinitionTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.columnDefinitionDeclarationAdapter, astRoot);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

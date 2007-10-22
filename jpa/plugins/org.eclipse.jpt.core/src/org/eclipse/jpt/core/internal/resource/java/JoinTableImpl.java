@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -303,6 +304,9 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 			JoinTableImpl.this.updateFromJava(astRoot);
 		}
 		
+		public ITextRange textRange(CompilationUnit astRoot) {
+			return JoinTableImpl.this.textRange(astRoot);
+		}
 	}
 	public static class JoinTableAnnotationDefinition implements AnnotationDefinition
 	{

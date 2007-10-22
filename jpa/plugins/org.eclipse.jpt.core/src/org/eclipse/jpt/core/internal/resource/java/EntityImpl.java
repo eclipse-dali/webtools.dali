@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -40,10 +41,12 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), NAME_ADAPTER);
 	}
 	
+	//*********** Annotation implementation ****************
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
-			
+	
+	//*********** Entity implementation ****************
 	public String getName() {
 		return this.name;
 	}
@@ -53,10 +56,17 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 		this.nameAdapter.setValue(name);
 	}
 
+	public ITextRange nameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(NAME_ADAPTER, astRoot);
+	}
+	
+	//*********** JavaResource implementation ****************
 	public void updateFromJava(CompilationUnit astRoot) {
 		setName(this.nameAdapter.getValue(astRoot));
 	}
 	
+	
+	//*********** static methods ****************
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ENTITY__NAME, false); // false = do not remove annotation when empty
 	}

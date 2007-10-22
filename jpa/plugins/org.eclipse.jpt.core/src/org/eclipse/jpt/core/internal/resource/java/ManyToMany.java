@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
+
 
 public interface ManyToMany extends RelationshipMappingAnnotation
 {
@@ -24,4 +27,11 @@ public interface ManyToMany extends RelationshipMappingAnnotation
 	 * Set to null to remove the mappedBy element.
 	 */
 	void setMappedBy(String mappedBy);
+	
+	/**
+	 * Return the ITextRange for the mappedBy element.  If the mappedBy element 
+	 * does not exist return the ITextRange for the ManyToMany annotation.
+	 */
+	ITextRange mappedByTextRange(CompilationUnit astRoot);
+
 }

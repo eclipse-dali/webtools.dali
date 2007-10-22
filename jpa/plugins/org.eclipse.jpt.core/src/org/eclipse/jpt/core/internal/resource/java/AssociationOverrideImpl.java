@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -79,6 +80,9 @@ public class AssociationOverrideImpl
 		}
 	}
 	
+
+	// ************* Association implementation *******************
+	
 	public String getName() {
 		return this.name;
 	}
@@ -88,9 +92,6 @@ public class AssociationOverrideImpl
 		this.nameAdapter.setValue(name);
 	}
 
-	// ************* SecondaryTable implementation *******************
-	
-	
 	public ListIterator<JoinColumn> joinColumns() {
 		return new CloneListIterator<JoinColumn>(this.joinColumns);
 	}
@@ -136,6 +137,10 @@ public class AssociationOverrideImpl
 		return JoinColumnImpl.createAssociationOverrideJoinColumn(getDeclarationAnnotationAdapter(), this, getMember(), index);
 	}
 
+	public ITextRange nameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
+	}
+	
 	public void updateFromJava(CompilationUnit astRoot) {
 		setName(this.nameAdapter.getValue(astRoot));
 		this.updateJoinColumnsFromJava(astRoot);
@@ -242,6 +247,9 @@ public class AssociationOverrideImpl
 			AssociationOverrideImpl.this.updateFromJava(astRoot);
 		}
 		
+		public ITextRange textRange(CompilationUnit astRoot) {
+			return AssociationOverrideImpl.this.textRange(astRoot);
+		}
 	}
 
 	public static class AssociationOverrideAnnotationDefinition implements AnnotationDefinition

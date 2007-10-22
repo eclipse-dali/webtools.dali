@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-
+/**
+ * Corresponds to the javax.persistence.NamedQuery annotation
+ */
 public interface NamedQuery extends Query
 {
-	
 
 }

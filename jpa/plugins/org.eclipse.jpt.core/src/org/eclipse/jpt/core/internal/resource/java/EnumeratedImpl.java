@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -46,6 +47,10 @@ public class EnumeratedImpl extends AbstractAnnotationResource<Attribute> implem
 	public void setValue(EnumType value) {
 		this.value = value;
 		this.valueAdapter.setValue(EnumType.toJavaAnnotationValue(value));
+	}
+	
+	public ITextRange valueTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(VALUE_ADAPTER, astRoot);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

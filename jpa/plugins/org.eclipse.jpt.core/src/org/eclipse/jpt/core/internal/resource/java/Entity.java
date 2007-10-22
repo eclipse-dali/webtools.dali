@@ -9,7 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 
+/**
+ * Corresponds to the javax.persistence.Entity annotation
+ */
 public interface Entity extends JavaResource
 {
 
@@ -24,5 +29,11 @@ public interface Entity extends JavaResource
 	 * Set to null to remove the name element.
 	 */
 	void setName(String name);
+	
+	/**
+	 * Return the ITextRange for the name element.  If the name element 
+	 * does not exist return the ITextRange for the Entity annotation.
+	 */
+	ITextRange nameTextRange(CompilationUnit astRoot);
 
 }

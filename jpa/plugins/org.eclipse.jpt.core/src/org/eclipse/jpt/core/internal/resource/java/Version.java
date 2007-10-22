@@ -10,6 +10,9 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 
+/**
+ * Corresponds to the javax.persistence.Version annotation
+ */
 public interface Version extends JavaResource
 {
 

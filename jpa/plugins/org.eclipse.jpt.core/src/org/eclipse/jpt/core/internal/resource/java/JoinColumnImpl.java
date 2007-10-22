@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -102,6 +103,7 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 		setReferencedColumnName(oldColumn.getReferencedColumnName());
 	}
 	
+	//************ JoinColumn implementation ***************
 	public String getReferencedColumnName() {
 		return this.referencedColumnName;
 	}
@@ -111,10 +113,15 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 		this.referencedColumnNameAdapter.setValue(referencedColumnName);
 	}
 	
+	public ITextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		this.setReferencedColumnName(this.referencedColumnNameAdapter.getValue(astRoot));
 	}
+	
 	// ********** static methods **********
 
 	static JoinColumnImpl createJoinColumn(JavaResource parent, Member member) {

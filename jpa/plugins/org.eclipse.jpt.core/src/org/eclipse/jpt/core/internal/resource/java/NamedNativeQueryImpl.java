@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -33,6 +34,13 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 
 	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
+	// hold this so we can get the 'resultClass' text range
+	private final DeclarationAnnotationElementAdapter<String> resultClassDeclarationAdapter;
+
+	// hold this so we can get the 'resultSetMapping' text range
+	private final DeclarationAnnotationElementAdapter<String> resultSetMappingDeclarationAdapter;
+
+
 	private final AnnotationElementAdapter<String> resultClassAdapter;
 
 	private final AnnotationElementAdapter<String> resultSetMappingAdapter;
@@ -45,8 +53,10 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	
 	protected NamedNativeQueryImpl(JavaResource parent, Type type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, type, daa, annotationAdapter);
-		this.resultClassAdapter = this.buildAdapter(resultClassAdapter(daa));
-		this.resultSetMappingAdapter = this.buildAdapter(resultSetMappingAdapter(daa));
+		this.resultClassDeclarationAdapter = resultClassAdapter(daa);
+		this.resultClassAdapter = this.buildAdapter(this.resultClassDeclarationAdapter);
+		this.resultSetMappingDeclarationAdapter = resultSetMappingAdapter(daa);
+		this.resultSetMappingAdapter = this.buildAdapter(this.resultSetMappingDeclarationAdapter);
 	}
 
 	// ********** initialization **********
@@ -107,6 +117,14 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	public void setResultSetMapping(String resultSetMapping) {
 		this.resultSetMapping = resultSetMapping;
 		this.resultSetMappingAdapter.setValue(resultSetMapping);
+	}
+
+	public ITextRange resultClassTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.resultClassDeclarationAdapter, astRoot);
+	}
+	
+	public ITextRange resultSetMappingTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.resultSetMappingDeclarationAdapter, astRoot);
 	}
 	
 	@Override

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
@@ -75,6 +76,10 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 		this.sequenceNameAdapter.setValue(sequenceName);
 	}
 	
+	public ITextRange sequenceNameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(SEQUENCE_NAME_ADAPTER, astRoot);
+	}
+
 	// ********** java annotations -> persistence model **********
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {

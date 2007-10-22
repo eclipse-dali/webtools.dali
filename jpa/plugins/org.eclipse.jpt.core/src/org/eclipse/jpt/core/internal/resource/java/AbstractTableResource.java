@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -111,21 +112,6 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		this.schemaAdapter.setValue(schema);
 	}
 	
-	public void updateFromJava(CompilationUnit astRoot) {
-		this.setName(this.nameAdapter.getValue(astRoot));
-		this.setSchema(this.schemaAdapter.getValue(astRoot));
-		this.setCatalog(this.catalogAdapter.getValue(astRoot));
-		this.updateUniqueConstraintsFromJava(astRoot);
-	}
-	
-	/**
-	 * here we just worry about getting the unique constraints lists the same size;
-	 * then we delegate to the unique constraints to synch themselves up
-	 */
-	private void updateUniqueConstraintsFromJava(CompilationUnit astRoot) {
-		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this.uniqueConstraintsContainerAnnotation);
-	}
-	
 	public ListIterator<UniqueConstraint> uniqueConstraints() {
 		return new CloneListIterator<UniqueConstraint>(this.uniqueConstraints);
 	}
@@ -146,7 +132,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		NestableUniqueConstraint uniqueConstraint = createUniqueConstraint(index);
 		addUniqueConstraint(uniqueConstraint);
 		uniqueConstraint.newAnnotation();
-		synchUniqueConstraintAnnotationsAfterAdd(index);
+		ContainerAnnotationTools.synchAnnotationsAfterAdd(index, this.uniqueConstraintsContainerAnnotation);
 		return uniqueConstraint;
 	}
 	
@@ -158,36 +144,42 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	public void removeUniqueConstraint(int index) {
 		NestableUniqueConstraint uniqueConstraint = this.uniqueConstraints.remove(index);
 		uniqueConstraint.removeAnnotation();
-		synchUniqueConstraintAnnotationsAfterRemove(index);
+		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, this.uniqueConstraintsContainerAnnotation);
 	}
 
 	public void moveUniqueConstraint(int oldIndex, int newIndex) {
-		this.uniqueConstraints.add(newIndex, this.uniqueConstraints.remove(oldIndex));
-		
-		uniqueConstraintMoved(newIndex, oldIndex);
-	}
-
-	private void uniqueConstraintMoved(int sourceIndex, int targetIndex) {		
-		ContainerAnnotationTools.synchAnnotationsAfterMove(sourceIndex, targetIndex, this.uniqueConstraintsContainerAnnotation);
-	}
-
-	/**
-	 * synchronize the annotations with the model join columns,
-	 * starting at the end of the list to prevent overlap
-	 */
-	private void synchUniqueConstraintAnnotationsAfterAdd(int index) {
-		ContainerAnnotationTools.synchAnnotationsAfterAdd(index, this.uniqueConstraintsContainerAnnotation);
-	}
-
-	/**
-	 * synchronize the annotations with the model join columns,
-	 * starting at the specified index to prevent overlap
-	 */
-	private void synchUniqueConstraintAnnotationsAfterRemove(int index) {
-		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, this.uniqueConstraintsContainerAnnotation);
+		this.uniqueConstraints.add(newIndex, this.uniqueConstraints.remove(oldIndex));		
+		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.uniqueConstraintsContainerAnnotation);
 	}
 	
 	protected abstract NestableUniqueConstraint createUniqueConstraint(int index);
+
+	public ITextRange nameTextRange(CompilationUnit astRoot) {
+		return elementTextRange(this.nameDeclarationAdapter, astRoot);
+	}
+	
+	public ITextRange schemaTextRange(CompilationUnit astRoot) {
+		return elementTextRange(this.schemaDeclarationAdapter, astRoot);
+	}
+	
+	public ITextRange catalogTextRange(CompilationUnit astRoot) {
+		return elementTextRange(this.catalogDeclarationAdapter, astRoot);
+	}
+	
+	public void updateFromJava(CompilationUnit astRoot) {
+		this.setName(this.nameAdapter.getValue(astRoot));
+		this.setSchema(this.schemaAdapter.getValue(astRoot));
+		this.setCatalog(this.catalogAdapter.getValue(astRoot));
+		this.updateUniqueConstraintsFromJava(astRoot);
+	}
+	
+	/**
+	 * here we just worry about getting the unique constraints lists the same size;
+	 * then we delegate to the unique constraints to synch themselves up
+	 */
+	private void updateUniqueConstraintsFromJava(CompilationUnit astRoot) {
+		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this.uniqueConstraintsContainerAnnotation);
+	}
 
 	
 	private class UniqueConstraintsContainerAnnotation extends JpaNodeModel implements ContainerAnnotation<NestableUniqueConstraint> {
@@ -271,5 +263,8 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 			AbstractTableResource.this.updateFromJava(astRoot);
 		}
 		
+		public ITextRange textRange(CompilationUnit astRoot) {
+			return AbstractTableResource.this.textRange(astRoot);
+		}
 	}
 }

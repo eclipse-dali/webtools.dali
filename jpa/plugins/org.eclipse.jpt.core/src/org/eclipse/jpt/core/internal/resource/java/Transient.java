@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-
+/**
+ * Corresponds to the javax.persistence.Transient annotation
+ */
 public interface Transient extends JavaResource
 {
 

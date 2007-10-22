@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -20,6 +21,15 @@ import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAda
 
 public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> implements Generator
 {
+	// hold this so we can get the 'name' text range
+	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
+
+	// hold this so we can get the 'initialValue' text range
+	private final DeclarationAnnotationElementAdapter<String> initialValueDeclarationAdapter;
+
+	// hold this so we can get the 'allocationSize' text range
+	private final DeclarationAnnotationElementAdapter<String> allocationSizeDeclarationAdapter;
+
 	private final AnnotationElementAdapter<String> nameAdapter;
 
 	private final IntAnnotationElementAdapter initialValueAdapter;
@@ -34,9 +44,12 @@ public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> i
 		
 	public GeneratorImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
-		this.nameAdapter = this.buildAdapter(this.nameAdapter());
-		this.initialValueAdapter = this.buildIntAdapter(this.initialValueAdapter());
-		this.allocationSizeAdapter = this.buildIntAdapter(this.allocationSizeAdapter());
+		this.nameDeclarationAdapter = this.nameAdapter();
+		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
+		this.initialValueDeclarationAdapter = this.initialValueAdapter();
+		this.initialValueAdapter = this.buildIntAdapter(this.initialValueDeclarationAdapter);
+		this.allocationSizeDeclarationAdapter = this.allocationSizeAdapter();
+		this.allocationSizeAdapter = this.buildIntAdapter(this.allocationSizeDeclarationAdapter);
 	}
 	
 	// ********** initialization **********
@@ -85,7 +98,18 @@ public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> i
 		this.nameAdapter.setValue(name);
 	}
 	
+	public ITextRange nameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(nameDeclarationAdapter, astRoot);
+	}
 	
+	public ITextRange initialValueTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(initialValueDeclarationAdapter, astRoot);
+	}
+	
+	public ITextRange allocationSizeTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(allocationSizeDeclarationAdapter, astRoot);
+	}
+
 	// ********** java annotations -> persistence model **********
 	public void updateFromJava(CompilationUnit astRoot) {
 		setName(this.nameAdapter.getValue(astRoot));

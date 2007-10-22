@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -25,6 +26,12 @@ public class QueryHintImpl extends AbstractAnnotationResource<Type>
 	implements NestableQueryHint
 {
 
+	// hold this so we can get the 'name' text range
+	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
+	
+	// hold this so we can get the 'value' text range
+	private final DeclarationAnnotationElementAdapter<String> valueDeclarationAdapter;
+	
 	private final AnnotationElementAdapter<String> nameAdapter;
 
 	private final AnnotationElementAdapter<String> valueAdapter;
@@ -35,8 +42,10 @@ public class QueryHintImpl extends AbstractAnnotationResource<Type>
 	
 	public QueryHintImpl(JavaResource parent, Type type, IndexedDeclarationAnnotationAdapter idaa) {
 		super(parent, type, idaa, new MemberIndexedAnnotationAdapter(type, idaa));
-		this.nameAdapter = this.buildAdapter(nameAdapter(idaa));
-		this.valueAdapter = this.buildAdapter(valueAdapter(idaa));
+		this.nameDeclarationAdapter = nameAdapter(idaa);
+		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
+		this.valueDeclarationAdapter = valueAdapter(idaa);
+		this.valueAdapter = this.buildAdapter(this.valueDeclarationAdapter);
 	}
 	
 	// ********** initialization **********
@@ -77,6 +86,14 @@ public class QueryHintImpl extends AbstractAnnotationResource<Type>
 	public void setValue(String value) {
 		this.value = value;
 		this.valueAdapter.setValue(value);
+	}
+
+	public ITextRange nameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
+	}
+	
+	public ITextRange valueTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.valueDeclarationAdapter, astRoot);
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {

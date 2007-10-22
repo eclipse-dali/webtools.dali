@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -47,6 +48,10 @@ public class DiscriminatorValueImpl extends AbstractAnnotationResource<Type> imp
 	public void setValue(String value) {
 		this.value = value;
 		this.valueAdapter.setValue(value);
+	}
+	
+	public ITextRange valueTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(VALUE_ADAPTER, astRoot);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

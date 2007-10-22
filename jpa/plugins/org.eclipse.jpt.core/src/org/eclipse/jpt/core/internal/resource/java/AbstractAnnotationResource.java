@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
@@ -50,5 +51,9 @@ public abstract class AbstractAnnotationResource<E extends Member> extends Abstr
 	
 	public void newAnnotation() {
 		getAnnotationAdapter().newMarkerAnnotation();
+	}
+	
+	public ITextRange textRange(CompilationUnit astRoot) {
+		return getMember().annotationTextRange(this.daa, astRoot);
 	}
 }

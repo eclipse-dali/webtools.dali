@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter;
@@ -76,6 +77,10 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 	public void setOptional(Boolean optional) {
 		this.optional = optional;
 		this.optionalAdapter.setValue(BooleanUtility.toJavaAnnotationValue(optional));
+	}
+
+	public ITextRange optionalTextRange(CompilationUnit astRoot) {
+		return elementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
 
 	@Override

@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
+
 
 public interface OneToOne extends RelationshipMappingAnnotation
 {
@@ -36,4 +39,17 @@ public interface OneToOne extends RelationshipMappingAnnotation
 	 * Set to null to remove the mappedBy element.
 	 */
 	void setMappedBy(String mappedBy);
+	
+	/**
+	 * Return the ITextRange for the mappedBy element.  If the mappedBy element 
+	 * does not exist return the ITextRange for the OneToOne annotation.
+	 */
+	ITextRange mappedByTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the optional element.  If the optional element 
+	 * does not exist return the ITextRange for the OneToOne annotation.
+	 */
+	ITextRange optionalTextRange(CompilationUnit astRoot);
+
 }

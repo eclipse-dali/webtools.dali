@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -169,8 +170,6 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 		this.pkColumnValueAdapter.setValue(pkColumnValue);
 	}
 
-
-
 	public ListIterator<UniqueConstraint> uniqueConstraints() {
 		return new CloneListIterator<UniqueConstraint>(this.uniqueConstraints);
 	}
@@ -235,7 +234,30 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 	protected NestableUniqueConstraint createUniqueConstraint(int index) {
 		return UniqueConstraintImpl.createTableGeneratorUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
 	}
+
+	public ITextRange tableTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(TABLE_ADAPTER, astRoot);
+	}
 	
+	public ITextRange catalogTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(CATALOG_ADAPTER, astRoot);
+	}
+	
+	public ITextRange schemaTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(SCHEMA_ADAPTER, astRoot);
+	}
+	
+	public ITextRange pkColumnNameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(PK_COLUMN_NAME_ADAPTER, astRoot);
+	}
+	
+	public ITextRange pkColumnValueTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(PK_COLUMN_VALUE_ADAPTER, astRoot);
+	}
+	
+	public ITextRange valueColumnNameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(VALUE_COLUMN_NAME_ADAPTER, astRoot);
+	}
 
 	// ********** java annotations -> persistence model **********
 	@Override
@@ -349,6 +371,9 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 			TableGeneratorImpl.this.updateFromJava(astRoot);
 		}
 		
+		public ITextRange textRange(CompilationUnit astRoot) {
+			return TableGeneratorImpl.this.textRange(astRoot);
+		}		
 	}
 	
 	public static class TableGeneratorAnnotationDefinition implements AnnotationDefinition

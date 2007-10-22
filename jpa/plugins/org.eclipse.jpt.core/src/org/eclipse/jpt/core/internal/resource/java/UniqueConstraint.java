@@ -12,6 +12,9 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+/**
+ * Corresponds to the javax.persistence.UniqueConstraint annotation
+ */
 public interface UniqueConstraint extends JavaResource
 {
 	ListIterator<String> columnNames();

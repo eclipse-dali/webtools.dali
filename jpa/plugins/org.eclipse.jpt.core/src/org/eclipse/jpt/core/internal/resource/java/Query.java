@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 
 public interface Query extends JavaResource
 {
@@ -34,5 +36,17 @@ public interface Query extends JavaResource
 	void removeHint(int index);
 	
 	void moveHint(int oldIndex, int newIndex);
+
+	/**
+	 * Return the ITextRange for the name element. If name element
+	 * does not exist return the ITextRange for the *Query annotation.
+	 */
+	ITextRange nameTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the query element. If query element
+	 * does not exist return the ITextRange for the *Query annotation.
+	 */
+	ITextRange queryTextRange(CompilationUnit astRoot);
 
 }

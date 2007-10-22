@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -132,7 +133,14 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.hintsContainerAnnotation);
 	}
 	
+	public ITextRange nameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
+	}
 
+	public ITextRange queryTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.queryDeclarationAdapter, astRoot);
+	}
+	
 	public void updateFromJava(CompilationUnit astRoot) {
 		this.setName(this.nameAdapter.getValue(astRoot));
 		this.setQuery(this.queryAdapter.getValue(astRoot));
@@ -246,5 +254,8 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 			AbstractNamedQuery.this.updateFromJava(astRoot);
 		}
 		
+		public ITextRange textRange(CompilationUnit astRoot) {
+			return AbstractNamedQuery.this.textRange(astRoot);
+		}
 	}
 }

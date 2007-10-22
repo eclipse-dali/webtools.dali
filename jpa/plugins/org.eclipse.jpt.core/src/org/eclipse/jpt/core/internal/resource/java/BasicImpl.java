@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter;
@@ -52,6 +53,7 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 		return ANNOTATION_NAME;
 	}
 	
+	//*************** Basic implementation ****************
 	public Boolean getOptional() {
 		return this.optional;
 	}
@@ -70,6 +72,14 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
 	}
 	
+	public ITextRange fetchTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(FETCH_ADAPTER, astRoot);
+	}
+	
+	public ITextRange optionalTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(OPTIONAL_ADAPTER, astRoot);
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		this.setOptional(BooleanUtility.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot)));
 		this.setFetch(FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot)));

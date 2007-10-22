@@ -27,6 +27,9 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 	
 	private static final DeclarationAnnotationElementAdapter<String> DISCRIMINATOR_TYPE_ADAPTER = buildDiscriminatorTypeAdapter();
 
+	// hold this so we can get the 'length' text range
+	private final DeclarationAnnotationElementAdapter<String> lengthDeclarationAdapter;
+
 	private final AnnotationElementAdapter<String> discriminatorTypeAdapter;
 
 	private final IntAnnotationElementAdapter lengthAdapter;
@@ -38,7 +41,8 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 	protected DiscriminatorColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa,  new MemberAnnotationAdapter(member, daa));
 		this.discriminatorTypeAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, DISCRIMINATOR_TYPE_ADAPTER);
-		this.lengthAdapter = this.buildShortCircuitIntElementAdapter(JPA.DISCRIMINATOR_COLUMN__LENGTH);
+		this.lengthDeclarationAdapter = this.buildNumberElementAdapter(JPA.DISCRIMINATOR_COLUMN__LENGTH);
+		this.lengthAdapter = this.buildShortCircuitIntElementAdapter(this.lengthDeclarationAdapter);
 	}
 	
 	@Override

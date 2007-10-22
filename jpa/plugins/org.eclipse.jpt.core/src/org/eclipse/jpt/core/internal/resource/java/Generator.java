@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
+
 
 public interface Generator extends JavaResource
 {
@@ -53,5 +56,24 @@ public interface Generator extends JavaResource
 	 * the *Generator annotation will be removed as well.
 	 */
 	void setAllocationSize(int allocationSize);
+	
+	/**
+	 * Return the ITextRange for the name element.  If the name element 
+	 * does not exist return the ITextRange for the *Generator annotation.
+	 */
+	ITextRange nameTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the initialValue element.  If the initialValue element 
+	 * does not exist return the ITextRange for the *Generator annotation.
+	 */
+	ITextRange initialValueTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the allocationSize element.  If the allocationSize element 
+	 * does not exist return the ITextRange for the *Generator annotation.
+	 */
+	ITextRange allocationSizeTextRange(CompilationUnit astRoot);
+
 
 }

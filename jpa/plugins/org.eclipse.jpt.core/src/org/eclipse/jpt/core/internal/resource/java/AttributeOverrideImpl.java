@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -72,6 +73,7 @@ public class AttributeOverrideImpl
 		}
 	}
 	
+	//************ AttriubteOverride implementation ****************
 	public String getName() {
 		return this.name;
 	}
@@ -101,6 +103,11 @@ public class AttributeOverrideImpl
 		this.column = column;
 		//change notification
 	}
+	
+	public ITextRange nameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		setName(this.nameAdapter.getValue(astRoot));
 		if (this.columnAdapter.getAnnotation(astRoot) == null) {

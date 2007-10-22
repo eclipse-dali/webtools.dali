@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -49,6 +50,10 @@ public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements
 		this.nameAdapter.setValue(name);
 	}
 	
+	public ITextRange nameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(NAME_ADAPTER, astRoot);
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		setName(nameAdapter.getValue(astRoot));
 	}

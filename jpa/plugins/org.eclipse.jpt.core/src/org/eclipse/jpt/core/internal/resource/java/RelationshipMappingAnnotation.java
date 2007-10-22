@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
+
 
 
 public interface RelationshipMappingAnnotation extends JavaResource
@@ -75,5 +78,24 @@ public interface RelationshipMappingAnnotation extends JavaResource
 	boolean isCascadeRemove();
 	
 	void setCascadeRemove(boolean remove);
+
+	
+	/**
+	 * Return the ITextRange for the targetEntity element.  If the targetEntity element 
+	 * does not exist return the ITextRange for the mapping annotation.
+	 */
+	ITextRange targetEntityTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the fetch element.  If the fetch element 
+	 * does not exist return the ITextRange for the mapping annotation.
+	 */
+	ITextRange fetchTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the cascade element.  If the cascade element 
+	 * does not exist return the ITextRange for the mapping annotation.
+	 */
+	ITextRange cascadeTextRange(CompilationUnit astRoot);
 
 }

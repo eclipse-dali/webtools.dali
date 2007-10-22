@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -49,6 +50,10 @@ public class OrderByImpl extends AbstractAnnotationResource<Attribute> implement
 		this.valueAdapter.setValue(value);
 	}
 	
+	public ITextRange valueTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(VALUE_ADAPTER, astRoot);
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		setValue(valueAdapter.getValue(astRoot));
 	}

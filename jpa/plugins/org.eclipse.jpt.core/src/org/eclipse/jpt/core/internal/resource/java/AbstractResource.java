@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaNodeModel;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaNodeModel;
+import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
 public abstract class AbstractResource<E extends Member> extends JpaNodeModel implements JavaResource
@@ -25,4 +28,18 @@ public abstract class AbstractResource<E extends Member> extends JpaNodeModel im
 	public E getMember() {
 		return this.member;
 	}
+	
+	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter, CompilationUnit astRoot) {
+		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter, astRoot), astRoot);
+	}
+	
+	/**
+	 * Convenience method. If the specified element text range is null
+	 * return the Java object's text range instead (which is usually the
+	 * annotation's text range).
+	 */
+	protected ITextRange elementTextRange(ITextRange elementTextRange, CompilationUnit astRoot) {
+		return (elementTextRange != null) ? elementTextRange : this.textRange(astRoot);
+	}
+	
 }

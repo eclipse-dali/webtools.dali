@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -28,6 +29,15 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnnotationResource<Attribute> implements RelationshipMappingAnnotation
 {
+	// hold this so we can get the 'targetEntity' text range
+	private final DeclarationAnnotationElementAdapter<String> targetEntityDeclarationAdapter;
+	
+	// hold this so we can get the 'fetch' text range
+	private final DeclarationAnnotationElementAdapter<String> fetchDeclarationAdapter;
+	
+	// hold this so we can get the 'cascade' text range
+	private final DeclarationAnnotationElementAdapter<String[]> cascadeDeclarationAdapter;
+	
 	private final AnnotationElementAdapter<String> targetEntityAdapter;
 
 	private final AnnotationElementAdapter<String> fetchAdapter;
@@ -44,9 +54,12 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 	
 	public AbstractRelationshipMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
 		super(parent, attribute, daa);
-		this.targetEntityAdapter = buildAnnotationElementAdapter(targetEntityAdapter());
-		this.fetchAdapter = buildAnnotationElementAdapter(fetchAdapter());
-		this.cascadeAdapter = new ShortCircuitArrayAnnotationElementAdapter<String>(attribute, cascadeAdapter());
+		this.targetEntityDeclarationAdapter = targetEntityAdapter();
+		this.targetEntityAdapter = buildAnnotationElementAdapter(this.targetEntityDeclarationAdapter);
+		this.fetchDeclarationAdapter = fetchAdapter();
+		this.fetchAdapter = buildAnnotationElementAdapter(this.fetchDeclarationAdapter);
+		this.cascadeDeclarationAdapter = cascadeAdapter();
+		this.cascadeAdapter = new ShortCircuitArrayAnnotationElementAdapter<String>(attribute, this.cascadeDeclarationAdapter);
 	}
 	
 	protected AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
@@ -165,6 +178,18 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 				addCascadeType(cascadeType);
 			}
 		}
+	}
+	
+	public ITextRange targetEntityTextRange(CompilationUnit astRoot) {
+		return elementTextRange(this.targetEntityDeclarationAdapter, astRoot);
+	}
+	
+	public ITextRange fetchTextRange(CompilationUnit astRoot) {
+		return elementTextRange(this.fetchDeclarationAdapter, astRoot);
+	}
+	
+	public ITextRange cascadeTextRange(CompilationUnit astRoot) {
+		return elementTextRange(this.cascadeDeclarationAdapter, astRoot);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

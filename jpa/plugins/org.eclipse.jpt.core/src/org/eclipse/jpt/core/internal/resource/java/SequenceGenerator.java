@@ -9,7 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 
+
+/**
+ * Corresponds to the javax.persistence.SequenceGenerator annotation
+ */
 public interface SequenceGenerator extends Generator
 {
 	/**
@@ -25,5 +31,12 @@ public interface SequenceGenerator extends Generator
 	 * the SequenceGenerator annotation will be removed as well.
 	 */
 	void setSequenceName(String sequenceName);
+
+	/**
+	 * Return the ITextRange for the sequenceName element.  If the sequenceName element 
+	 * does not exist return the ITextRange for the SequenceGenerator annotation.
+	 */
+	ITextRange sequenceNameTextRange(CompilationUnit astRoot);
+
 
 }
