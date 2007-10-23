@@ -25,16 +25,16 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef#getFileName <em>File Name</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef#getFileName <em>File Name</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getMappingFileRef()
+ * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlMappingFileRef()
  * @model kind="class"
  * @extends IJptEObject
  * @generated
  */
-public class MappingFileRef extends JptEObject implements IJptEObject
+public class XmlMappingFileRef extends JptEObject implements IJptEObject
 {
 	/**
 	 * The default value of the '{@link #getFileName() <em>File Name</em>}' attribute.
@@ -61,7 +61,7 @@ public class MappingFileRef extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected MappingFileRef()
+	protected XmlMappingFileRef()
 	{
 		super();
 	}
@@ -74,7 +74,7 @@ public class MappingFileRef extends JptEObject implements IJptEObject
 	@Override
 	protected EClass eStaticClass()
 	{
-		return PersistencePackage.Literals.MAPPING_FILE_REF;
+		return PersistencePackage.Literals.XML_MAPPING_FILE_REF;
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class MappingFileRef extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>File Name</em>' attribute.
 	 * @see #setFileName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getMappingFileRef_FileName()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlMappingFileRef_FileName()
 	 * @model default="" unique="false" ordered="false"
 	 * @generated
 	 */
@@ -98,7 +98,7 @@ public class MappingFileRef extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef#getFileName <em>File Name</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef#getFileName <em>File Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>File Name</em>' attribute.
@@ -110,7 +110,7 @@ public class MappingFileRef extends JptEObject implements IJptEObject
 		String oldFileName = fileName;
 		fileName = newFileName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.MAPPING_FILE_REF__FILE_NAME, oldFileName, fileName));
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_MAPPING_FILE_REF__FILE_NAME, oldFileName, fileName));
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class MappingFileRef extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.MAPPING_FILE_REF__FILE_NAME:
+			case PersistencePackage.XML_MAPPING_FILE_REF__FILE_NAME:
 				return getFileName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -139,7 +139,7 @@ public class MappingFileRef extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.MAPPING_FILE_REF__FILE_NAME:
+			case PersistencePackage.XML_MAPPING_FILE_REF__FILE_NAME:
 				setFileName((String)newValue);
 				return;
 		}
@@ -156,7 +156,7 @@ public class MappingFileRef extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.MAPPING_FILE_REF__FILE_NAME:
+			case PersistencePackage.XML_MAPPING_FILE_REF__FILE_NAME:
 				setFileName(FILE_NAME_EDEFAULT);
 				return;
 		}
@@ -173,7 +173,7 @@ public class MappingFileRef extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.MAPPING_FILE_REF__FILE_NAME:
+			case PersistencePackage.XML_MAPPING_FILE_REF__FILE_NAME:
 				return FILE_NAME_EDEFAULT == null ? fileName != null : !FILE_NAME_EDEFAULT.equals(fileName);
 		}
 		return super.eIsSet(featureID);
@@ -196,4 +196,4 @@ public class MappingFileRef extends JptEObject implements IJptEObject
 		return result.toString();
 	}
 
-} // MappingFileRef
+} // XmlMappingFileRef

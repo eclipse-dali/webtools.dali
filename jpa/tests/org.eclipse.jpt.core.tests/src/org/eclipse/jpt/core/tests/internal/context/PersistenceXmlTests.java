@@ -12,48 +12,51 @@ package org.eclipse.jpt.core.tests.internal.context;
 
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
+import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
-import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
-public class BaseJpaContentTests extends ContextModelTestCase
+public class PersistenceXmlTests extends ContextModelTestCase
 {
-	public BaseJpaContentTests(String name) {
+	public PersistenceXmlTests(String name) {
 		super(name);
 	}
 	
-	public void testAddPersistenceXml() throws Exception {
+	public void testAddPersistence() throws Exception {
 		String persistenceXmlUri = JptCorePlugin.persistenceXmlDeploymentURI(jpaProject.getProject());
 		PersistenceArtifactEdit pae = 
 				PersistenceArtifactEdit.getArtifactEditForWrite(jpaProject.getProject(), persistenceXmlUri);
 		PersistenceResourceModel prm = pae.getPersistenceResource();
-		WorkbenchResourceHelper.deleteResource(prm); // throws CoreException, possibly
+		IBaseJpaContent baseJpaContent = (IBaseJpaContent) jpaProject.getJpaProject().contextModel();
+		IPersistenceXml persistenceXml = baseJpaContent.getPersistenceXml();
+		prm.getContents().clear();
+		prm.save(null);
 		waitForUpdate();
 		
-		assertTrue(! jpaProject.getProject().getFile(persistenceXmlUri).exists());
-		
-		IBaseJpaContent baseJpaContent = (IBaseJpaContent) jpaProject.getJpaProject().contextModel();
-		assertNull(baseJpaContent.getPersistenceXml());
+		assertNull(persistenceXml.getPersistence());
 		
 		prm.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
 		prm.save(null);
 		waitForUpdate();
-		assertNotNull(baseJpaContent.getPersistenceXml());
+		
+		assertNotNull(persistenceXml.getPersistence());
+		
 	}
 	
-	public void testRemovePersistenceXml() throws Exception {
+	public void testRemovePersistence() throws Exception {
 		String persistenceXmlUri = JptCorePlugin.persistenceXmlDeploymentURI(jpaProject.getProject());
 		PersistenceArtifactEdit pae = 
 				PersistenceArtifactEdit.getArtifactEditForWrite(jpaProject.getProject(), persistenceXmlUri);
 		PersistenceResourceModel prm = pae.getPersistenceResource();
 		IBaseJpaContent baseJpaContent = (IBaseJpaContent) jpaProject.getJpaProject().contextModel();
+		IPersistenceXml persistenceXml = baseJpaContent.getPersistenceXml();
 		
-		assertNotNull(baseJpaContent.getPersistenceXml());
+		assertNotNull(persistenceXml.getPersistence());
 		
-		WorkbenchResourceHelper.deleteResource(prm); // throws CoreException, possibly
-		waitForUpdate();
+		prm.getContents().clear();
+		prm.save(null);
 		
-		assertNull(baseJpaContent.getPersistenceXml());
+		assertNull(persistenceXml.getPersistence());
 	}
 }

@@ -23,7 +23,6 @@ import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
-import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JpaCompilationUnitResourceTests extends AnnotationTestCase {
@@ -65,7 +64,7 @@ public class JpaCompilationUnitResourceTests extends AnnotationTestCase {
 		IJpaProject jpaProject = ((TestJpaProject) this.javaProject).getJpaProject();
 		IJpaFile jpaFile = jpaProject.jpaFile((IFile) testCompilationUnit.getResource());
 		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
-		return (JpaCompilationUnitResource) ClassTools.getFieldValue(javaResourceModel, "compilationUnitResource");
+		return javaResourceModel.getCompilationUnitResource();
 	}
 	
 	public void testGetPersistentType() throws Exception {

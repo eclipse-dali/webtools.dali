@@ -9,16 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.resource.java.Annotation;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -59,7 +52,7 @@ public interface IJpaPlatform
 	void setProject(IJpaProject jpaProject);
 	
 	
-	// **************** Model construction / updating *************************
+	// **************** Model construction / updating **************************
 	
 	/**
 	 * Construct a JPA file for the specified file, to be added to the specified 
@@ -85,77 +78,16 @@ public interface IJpaPlatform
 	
 	
 	
-	// **************** Java annotation support *******************************
+	// **************** Java annotation support ********************************
 	
 	/**
-	 * Build an Annotation with the given fully qualififed annotation name.
-	 * @param type
-	 * @param mappingAnnotationName
-	 * @return
+	 * Return an annotation provider responsible for determining what annotations
+	 * are supported and constructing java resource model objects
 	 */
-	Annotation buildTypeMappingAnnotation(JavaPersistentTypeResource parent, Type type, String mappingAnnotationName);
-
-	/**
-	 * Build an Annotation with the given fully qualififed annotation name.
-	 * @param type
-	 * @param annotationName
-	 * @return
-	 */
-	Annotation buildTypeAnnotation(JavaPersistentTypeResource parent, Type type, String annotationName);
+	IJpaAnnotationProvider annotationProvider();
 	
-	/**
-	 * Return the fully qualified names of the annotations that can exist
-	 * with the given mapping annotation on a Type.  This will be all the JPA 
-	 * annotations that can apply in the same context as the given mapping annotation. 
-	 * @param mappingAnnotationName
-	 * @return
-	 */
-	Iterator<String> correspondingTypeAnnotationNames(String mappingAnnotationName);
 	
-	/**
-	 * Ordered iterator of fully qualified annotation names that can apply to a Type
-	 */
-	ListIterator<String> typeMappingAnnotationNames();
-	
-	/**
-	 * Iterator of fully qualified annotation(non-mapping) names that can apply to a Type
-	 */
-	Iterator<String> typeAnnotationNames();
-	
-	/**
-	 * Build a Annotation with the given fully qualififed annotation name.
-	 * @param attribute
-	 * @param mappingAnnotationName
-	 * @return
-	 */
-	Annotation buildAttributeMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String mappingAnnotationName);
-	
-	/**
-	 * Build an Annotation with the given fully qualififed annotation name.
-	 * @param attribute
-	 * @param annotationName
-	 * @return
-	 */
-	Annotation buildAttributeAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String annotationName);
-	
-	/**
-	 * Return the fully qualified names of the annotations that can exist
-	 * with the given mapping annotation on an attribute.  This will be all the JPA 
-	 * annotations that can apply in the same context as the given mapping annotation. 
-	 * @param mappingAnnotationName
-	 * @return
-	 */
-	Iterator<String> correspondingAttributeAnnotationNames(String mappingAnnotationName);
-	
-	/**
-	 * Ordered iterator of fully qualified annotation names that can apply to an Attribute
-	 */
-	ListIterator<String> attributeMappingAnnotationNames();
-	
-	/**
-	 * Iterator of fully qualified annotation(non-mapping) names that can apply to an Attribute
-	 */
-	Iterator<String>  attributeAnnotationNames();	
+	// *************************************************************************
 	
 	/**
 	 * Adds validation messages to the growing list of messages
@@ -163,12 +95,12 @@ public interface IJpaPlatform
 	void addToMessages(List<IMessage> messages);
 		
 		
-	// ********** Persistence Unit ********************************************
+	// ********** XmlPersistence Unit ********************************************
 	//	boolean containsPersistenceUnitNamed(String name);
 	//	
-	//	PersistenceUnit persistenceUnitNamed(String name);
+	//	XmlPersistenceUnit persistenceUnitNamed(String name);
 	//	
-	//	Iterator<PersistenceUnit> persistenceUnits();
+	//	Iterator<XmlPersistenceUnit> persistenceUnits();
 	//	
 	//	int persistenceUnitSize();
 	// ********** Persistent Types ********************************************

@@ -60,7 +60,7 @@ public class PersistenceResourceModel extends JptXmlResourceModel
 		// TODO Auto-generated method stub	
 	}
 	
-	public Persistence getPersistence() {
-		return (Persistence) getRootObject();
+	public XmlPersistence getPersistence() {
+		return (XmlPersistence) getRootObject();
 	}
 }

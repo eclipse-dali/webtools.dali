@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.core.internal.jdtutility.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
+import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 
 public class JavaResourceModelTestCase extends AnnotationTestCase
@@ -64,7 +66,6 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	}
 	
 	private IJpaProject.Config buildJpaProjectConfig(IProject project) {
-		
 		SimpleJpaProjectConfig config = new SimpleJpaProjectConfig();
 		config.setProject(project);
 		config.setJpaPlatform(JptCorePlugin.jpaPlatform(project));
@@ -73,11 +74,20 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		return config;
 	}
 
-	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) throws CoreException {
+	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) 
+			throws CoreException {
 		Type type = new Type(testType, MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER, NullAnnotationEditFormatter.instance());
-		JavaPersistentTypeResource typeResource = new JavaPersistentTypeResourceImpl(buildJpaProject(), type);
+		JavaPersistentTypeResource typeResource = new JavaPersistentTypeResourceImpl(buildJpaCompilationUnitResource(testType), type);
 		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		return typeResource;
+	}
+	
+	protected JpaCompilationUnitResource buildJpaCompilationUnitResource(IType testType) 
+			throws CoreException {
+		IFile file = (IFile) testType.getResource();
+		IJpaProject jpaProject = buildJpaProject();
+		return new JpaCompilationUnitResource(file, jpaProject.jpaPlatform().annotationProvider(),
+				jpaProject.modifySharedDocumentCommandExecutorProvider());
 	}
 
 }

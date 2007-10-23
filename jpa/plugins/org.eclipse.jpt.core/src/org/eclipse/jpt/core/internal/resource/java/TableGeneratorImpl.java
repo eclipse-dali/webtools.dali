@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
@@ -290,8 +288,9 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 	}
 
 	
-	private class UniqueConstraintsContainerAnnotation extends JpaNodeModel implements ContainerAnnotation<NestableUniqueConstraint> {
-
+	private class UniqueConstraintsContainerAnnotation extends AbstractResource 
+		implements ContainerAnnotation<NestableUniqueConstraint> 
+	{
 		public UniqueConstraintsContainerAnnotation() {
 			super(TableGeneratorImpl.this);
 		}
@@ -361,10 +360,6 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 
 		public void removeAnnotation() {
 			TableGeneratorImpl.this.removeAnnotation();
-		}
-
-		public IJpaPlatform jpaPlatform() {
-			return TableGeneratorImpl.this.jpaPlatform();
 		}
 
 		public void updateFromJava(CompilationUnit astRoot) {

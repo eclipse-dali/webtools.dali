@@ -30,6 +30,6 @@ public class PropertiesTranslator extends Translator
 	}
 	
 	private Translator createPropertyTranslator() {
-		return new PropertyTranslator(PROPERTY, PERSISTENCE_PKG.getProperties_Properties());
+		return new PropertyTranslator(PROPERTY, PERSISTENCE_PKG.getXmlProperties_Properties());
 	}
 }

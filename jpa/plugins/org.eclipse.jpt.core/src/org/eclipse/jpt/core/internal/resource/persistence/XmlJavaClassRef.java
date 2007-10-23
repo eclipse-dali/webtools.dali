@@ -25,16 +25,16 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef#getJavaClass <em>Java Class</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef#getJavaClass <em>Java Class</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getJavaClassRef()
+ * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlJavaClassRef()
  * @model kind="class"
  * @extends IJptEObject
  * @generated
  */
-public class JavaClassRef extends JptEObject implements IJptEObject
+public class XmlJavaClassRef extends JptEObject implements IJptEObject
 {
 	/**
 	 * The default value of the '{@link #getJavaClass() <em>Java Class</em>}' attribute.
@@ -61,7 +61,7 @@ public class JavaClassRef extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected JavaClassRef()
+	protected XmlJavaClassRef()
 	{
 		super();
 	}
@@ -74,7 +74,7 @@ public class JavaClassRef extends JptEObject implements IJptEObject
 	@Override
 	protected EClass eStaticClass()
 	{
-		return PersistencePackage.Literals.JAVA_CLASS_REF;
+		return PersistencePackage.Literals.XML_JAVA_CLASS_REF;
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class JavaClassRef extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Java Class</em>' attribute.
 	 * @see #setJavaClass(String)
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getJavaClassRef_JavaClass()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlJavaClassRef_JavaClass()
 	 * @model unique="false" ordered="false"
 	 * @generated
 	 */
@@ -97,7 +97,7 @@ public class JavaClassRef extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef#getJavaClass <em>Java Class</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef#getJavaClass <em>Java Class</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Java Class</em>' attribute.
@@ -109,7 +109,7 @@ public class JavaClassRef extends JptEObject implements IJptEObject
 		String oldJavaClass = javaClass;
 		javaClass = newJavaClass;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.JAVA_CLASS_REF__JAVA_CLASS, oldJavaClass, javaClass));
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_JAVA_CLASS_REF__JAVA_CLASS, oldJavaClass, javaClass));
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class JavaClassRef extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.JAVA_CLASS_REF__JAVA_CLASS:
+			case PersistencePackage.XML_JAVA_CLASS_REF__JAVA_CLASS:
 				return getJavaClass();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -138,7 +138,7 @@ public class JavaClassRef extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.JAVA_CLASS_REF__JAVA_CLASS:
+			case PersistencePackage.XML_JAVA_CLASS_REF__JAVA_CLASS:
 				setJavaClass((String)newValue);
 				return;
 		}
@@ -155,7 +155,7 @@ public class JavaClassRef extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.JAVA_CLASS_REF__JAVA_CLASS:
+			case PersistencePackage.XML_JAVA_CLASS_REF__JAVA_CLASS:
 				setJavaClass(JAVA_CLASS_EDEFAULT);
 				return;
 		}
@@ -172,7 +172,7 @@ public class JavaClassRef extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.JAVA_CLASS_REF__JAVA_CLASS:
+			case PersistencePackage.XML_JAVA_CLASS_REF__JAVA_CLASS:
 				return JAVA_CLASS_EDEFAULT == null ? javaClass != null : !JAVA_CLASS_EDEFAULT.equals(javaClass);
 		}
 		return super.eIsSet(featureID);
@@ -195,4 +195,4 @@ public class JavaClassRef extends JptEObject implements IJptEObject
 		return result.toString();
 	}
 
-} // JavaClassRef
+} // XmlJavaClassRef

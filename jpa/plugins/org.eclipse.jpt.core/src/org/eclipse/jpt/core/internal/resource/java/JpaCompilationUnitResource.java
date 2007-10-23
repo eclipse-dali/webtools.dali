@@ -15,14 +15,19 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
+import org.eclipse.jpt.utility.internal.node.Node;
 
-public class JpaCompilationUnitResource extends JpaNodeModel implements JavaResource
+public class JpaCompilationUnitResource extends AbstractResource implements JavaResource
 {
+	protected IJpaAnnotationProvider annotationProvider;
+	
+	protected CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
+	
 	/**
 	 * The primary type of the CompilationUnit. Not going to handle
 	 * multiple Types defined in a compilation unit.  Entities must have
@@ -30,11 +35,17 @@ public class JpaCompilationUnitResource extends JpaNodeModel implements JavaReso
 	 * it in a non-public/protected class.
 	 */
 	private JavaPersistentTypeResource persistentType;
-
+	
 	private final ICompilationUnit compilationUnit;
 	
-	public JpaCompilationUnitResource(JavaResourceModel parent, IFile file) {
-		super(parent);
+	
+	public JpaCompilationUnitResource(
+			IFile file, 
+			IJpaAnnotationProvider annotationProvider, 
+			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+		// The jpa compilation unit is the root of its sub-tree
+		super(null);
+		this.annotationProvider = annotationProvider;
 		this.compilationUnit = compilationUnitFrom(file);
 		updateFromJava(astRoot());
 	}
@@ -49,7 +60,30 @@ public class JpaCompilationUnitResource extends JpaNodeModel implements JavaReso
 		}
 		return compilationUnit;
 	}
-
+	
+	
+	// **************** overrides **********************************************
+	
+	@Override
+	protected void checkParent(Node parentNode) {
+		if (parentNode != null) {
+			throw new IllegalArgumentException("The parent node must be null");
+		}
+	}
+	
+	@Override
+	public IJpaAnnotationProvider annotationProvider() {
+		return annotationProvider;
+	}
+	
+	@Override
+	public CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
+		return modifySharedDocumentCommandExecutorProvider;
+	}
+	
+	
+	// *************************************************************************
+	
 	public ICompilationUnit getCompilationUnit() {
 		return this.compilationUnit;
 	}
@@ -95,12 +129,7 @@ public class JpaCompilationUnitResource extends JpaNodeModel implements JavaReso
 		}
 	}
 	
-	/**
-	 * delegate to the type's project (there is one provider per project)
-	 */
-	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
-		return jpaProject().modifySharedDocumentCommandExecutorProvider();
-	}
+	
 	
 	public ITextRange textRange(CompilationUnit astRoot) {
 		return null;//this.selectionTextRange();

@@ -149,7 +149,7 @@ public interface JPA {
 		String PERSISTENCE_CONTEXT__TYPE = "type";
 	String PERSISTENCE_CONTEXTS = PACKAGE_ + "PersistenceContexts";
 		String PERSISTENCE_CONTEXTS__VALUE = "value";
-	String PERSISTENCE_UNIT = PACKAGE_ + "PersistenceUnit";
+	String PERSISTENCE_UNIT = PACKAGE_ + "XmlPersistenceUnit";
 		String PERSISTENCE_UNIT__NAME = "name";
 		String PERSISTENCE_UNIT__UNIT_NAME = "unitName";
 	String PERSISTENCE_UNITS = PACKAGE_ + "PersistenceUnits";
@@ -272,7 +272,7 @@ public interface JPA {
 	String QUERY = PACKAGE_ + "Query";
 
 	// JPA classes
-	String PERSISTENCE = PACKAGE_ + "Persistence";
+	String PERSISTENCE = PACKAGE_ + "XmlPersistence";
 
 	// JPA exceptions
 	String NON_UNIQUE_RESULT_EXCEPTION = PACKAGE_ + "NonUniqueResultException";

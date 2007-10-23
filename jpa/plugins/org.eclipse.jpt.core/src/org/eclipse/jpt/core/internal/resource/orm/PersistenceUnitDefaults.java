@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: PersistenceUnitDefaults.java,v 1.1.2.2 2007/10/16 17:01:40 pfullbright Exp $
+ * $Id: PersistenceUnitDefaults.java,v 1.1.2.3 2007/10/23 23:36:43 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Persistence Unit Defaults</b></em>'.
+ * A representation of the model object '<em><b>XmlPersistence Unit Defaults</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>

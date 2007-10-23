@@ -19,23 +19,23 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Property</b></em>'.
+ * A representation of the model object '<em><b>XmlProperty</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.Property#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.Property#getValue <em>Value</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperty#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperty#getValue <em>Value</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getProperty()
+ * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlProperty()
  * @model kind="class"
  * @extends IJptEObject
  * @generated
  */
-public class Property extends JptEObject implements IJptEObject
+public class XmlProperty extends JptEObject implements IJptEObject
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -82,7 +82,7 @@ public class Property extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Property()
+	protected XmlProperty()
 	{
 		super();
 	}
@@ -95,7 +95,7 @@ public class Property extends JptEObject implements IJptEObject
 	@Override
 	protected EClass eStaticClass()
 	{
-		return PersistencePackage.Literals.PROPERTY;
+		return PersistencePackage.Literals.XML_PROPERTY;
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class Property extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getProperty_Name()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlProperty_Name()
 	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -118,7 +118,7 @@ public class Property extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.Property#getName <em>Name</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperty#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
@@ -130,7 +130,7 @@ public class Property extends JptEObject implements IJptEObject
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.PROPERTY__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PROPERTY__NAME, oldName, name));
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class Property extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Value</em>' attribute.
 	 * @see #setValue(String)
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getProperty_Value()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlProperty_Value()
 	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -153,7 +153,7 @@ public class Property extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.Property#getValue <em>Value</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperty#getValue <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Value</em>' attribute.
@@ -165,7 +165,7 @@ public class Property extends JptEObject implements IJptEObject
 		String oldValue = value;
 		value = newValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.PROPERTY__VALUE, oldValue, value));
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PROPERTY__VALUE, oldValue, value));
 	}
 
 	/**
@@ -178,9 +178,9 @@ public class Property extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PROPERTY__NAME:
+			case PersistencePackage.XML_PROPERTY__NAME:
 				return getName();
-			case PersistencePackage.PROPERTY__VALUE:
+			case PersistencePackage.XML_PROPERTY__VALUE:
 				return getValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -196,10 +196,10 @@ public class Property extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PROPERTY__NAME:
+			case PersistencePackage.XML_PROPERTY__NAME:
 				setName((String)newValue);
 				return;
-			case PersistencePackage.PROPERTY__VALUE:
+			case PersistencePackage.XML_PROPERTY__VALUE:
 				setValue((String)newValue);
 				return;
 		}
@@ -216,10 +216,10 @@ public class Property extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PROPERTY__NAME:
+			case PersistencePackage.XML_PROPERTY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case PersistencePackage.PROPERTY__VALUE:
+			case PersistencePackage.XML_PROPERTY__VALUE:
 				setValue(VALUE_EDEFAULT);
 				return;
 		}
@@ -236,9 +236,9 @@ public class Property extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PROPERTY__NAME:
+			case PersistencePackage.XML_PROPERTY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case PersistencePackage.PROPERTY__VALUE:
+			case PersistencePackage.XML_PROPERTY__VALUE:
 				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
 		}
 		return super.eIsSet(featureID);
@@ -263,4 +263,4 @@ public class Property extends JptEObject implements IJptEObject
 		return result.toString();
 	}
 
-} // Property
+} // XmlProperty

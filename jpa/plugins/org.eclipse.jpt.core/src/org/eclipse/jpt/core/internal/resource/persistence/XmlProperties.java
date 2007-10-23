@@ -23,22 +23,22 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Properties</b></em>'.
+ * A representation of the model object '<em><b>XmlProperties</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.Properties#getProperties <em>Properties</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperties#getProperties <em>Properties</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getProperties()
+ * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlProperties()
  * @model kind="class"
  * @extends IJptEObject
  * @generated
  */
-public class Properties extends JptEObject implements IJptEObject
+public class XmlProperties extends JptEObject implements IJptEObject
 {
 	/**
 	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
@@ -48,14 +48,14 @@ public class Properties extends JptEObject implements IJptEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Property> properties;
+	protected EList<XmlProperty> properties;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Properties()
+	protected XmlProperties()
 	{
 		super();
 	}
@@ -68,28 +68,28 @@ public class Properties extends JptEObject implements IJptEObject
 	@Override
 	protected EClass eStaticClass()
 	{
-		return PersistencePackage.Literals.PROPERTIES;
+		return PersistencePackage.Literals.XML_PROPERTIES;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Properties</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.internal.resource.persistence.Property}.
+	 * The list contents are of type {@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperty}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Properties</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>XmlProperties</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Properties</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getProperties_Properties()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlProperties_Properties()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<Property> getProperties()
+	public EList<XmlProperty> getProperties()
 	{
 		if (properties == null)
 		{
-			properties = new EObjectContainmentEList<Property>(Property.class, this, PersistencePackage.PROPERTIES__PROPERTIES);
+			properties = new EObjectContainmentEList<XmlProperty>(XmlProperty.class, this, PersistencePackage.XML_PROPERTIES__PROPERTIES);
 		}
 		return properties;
 	}
@@ -104,7 +104,7 @@ public class Properties extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PROPERTIES__PROPERTIES:
+			case PersistencePackage.XML_PROPERTIES__PROPERTIES:
 				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -120,7 +120,7 @@ public class Properties extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PROPERTIES__PROPERTIES:
+			case PersistencePackage.XML_PROPERTIES__PROPERTIES:
 				return getProperties();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -137,9 +137,9 @@ public class Properties extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PROPERTIES__PROPERTIES:
+			case PersistencePackage.XML_PROPERTIES__PROPERTIES:
 				getProperties().clear();
-				getProperties().addAll((Collection<? extends Property>)newValue);
+				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -155,7 +155,7 @@ public class Properties extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PROPERTIES__PROPERTIES:
+			case PersistencePackage.XML_PROPERTIES__PROPERTIES:
 				getProperties().clear();
 				return;
 		}
@@ -172,10 +172,10 @@ public class Properties extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PROPERTIES__PROPERTIES:
+			case PersistencePackage.XML_PROPERTIES__PROPERTIES:
 				return properties != null && !properties.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
 
-} // Properties
+} // XmlProperties

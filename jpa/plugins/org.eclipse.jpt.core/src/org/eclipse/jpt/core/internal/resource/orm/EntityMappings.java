@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: EntityMappings.java,v 1.1.2.2 2007/10/16 17:01:41 pfullbright Exp $
+ * $Id: EntityMappings.java,v 1.1.2.3 2007/10/23 23:36:43 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.resource.common.IJptEObject;
 import org.eclipse.jpt.core.internal.resource.common.JptEObject;
 
@@ -28,7 +29,7 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getVersion <em>Version</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getDescription <em>Description</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPackage <em>Package</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getSchema <em>Schema</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getCatalog <em>Catalog</em>}</li>
@@ -101,7 +102,7 @@ public class EntityMappings extends JptEObject implements IJptEObject
 	protected String description = DESCRIPTION_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getPersistenceUnitMetadata() <em>Persistence Unit Metadata</em>}' containment reference.
+	 * The cached value of the '{@link #getPersistenceUnitMetadata() <em>XmlPersistence Unit Metadata</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getPersistenceUnitMetadata()
@@ -412,14 +413,14 @@ public class EntityMappings extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Persistence Unit Metadata</b></em>' containment reference.
+	 * Returns the value of the '<em><b>XmlPersistence Unit Metadata</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Persistence Unit Metadata</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>XmlPersistence Unit Metadata</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Persistence Unit Metadata</em>' containment reference.
+	 * @return the value of the '<em>XmlPersistence Unit Metadata</em>' containment reference.
 	 * @see #setPersistenceUnitMetadata(PersistenceUnitMetadata)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntityMappings_PersistenceUnitMetadata()
 	 * @model containment="true"
@@ -448,10 +449,10 @@ public class EntityMappings extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Persistence Unit Metadata</em>' containment reference.
+	 * @param value the new value of the '<em>XmlPersistence Unit Metadata</em>' containment reference.
 	 * @see #getPersistenceUnitMetadata()
 	 * @generated
 	 */
@@ -1085,7 +1086,10 @@ public class EntityMappings extends JptEObject implements IJptEObject
 		}
 		return super.eIsSet(featureID);
 	}
-
+	
+	
+	// **************** overrides **********************************************
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1112,5 +1116,18 @@ public class EntityMappings extends JptEObject implements IJptEObject
 		result.append(')');
 		return result.toString();
 	}
-
-} // EntityMappings
+	
+	@Override
+	public IJptEObject root() {
+		return this;
+	}
+	
+	@Override
+	public IJpaFile jpaFile() {
+		return resourceModel().jpaFile();
+	}
+	
+	public OrmResourceModel resourceModel() {
+		return (OrmResourceModel) eResource();
+	}
+}

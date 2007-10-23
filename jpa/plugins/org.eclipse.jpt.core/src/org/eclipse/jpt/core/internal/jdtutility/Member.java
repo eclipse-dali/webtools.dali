@@ -377,7 +377,7 @@ public abstract class Member {
 	 *     - when editing headlessly, a "working copy" must be created
 	 *        (at least as far as I can tell  ~kfm)
 	 *     - when editing via a plain text editor, make a working copy or else things are screwed
-	 *        up the second time you edit through the Persistence Properties View
+	 *        up the second time you edit through the XmlPersistence XmlProperties View
 	 */
 	private void edit_(Editor editor) throws JavaModelException, BadLocationException {
 		ICompilationUnit compilationUnit = this.compilationUnit();

@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
@@ -257,7 +255,7 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 		}		
 	}
 
-	private abstract class AbstractContainerAnnotation extends JpaNodeModel implements ContainerAnnotation<NestableJoinColumn> {
+	private abstract class AbstractContainerAnnotation extends AbstractResource implements ContainerAnnotation<NestableJoinColumn> {
 
 		public AbstractContainerAnnotation() {
 			super(JoinTableImpl.this);
@@ -294,10 +292,6 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 
 		public void removeAnnotation() {
 			JoinTableImpl.this.removeAnnotation();
-		}
-
-		public IJpaPlatform jpaPlatform() {
-			return JoinTableImpl.this.jpaPlatform();
 		}
 
 		public void updateFromJava(CompilationUnit astRoot) {

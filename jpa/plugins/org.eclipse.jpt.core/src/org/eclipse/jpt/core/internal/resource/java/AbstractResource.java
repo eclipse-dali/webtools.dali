@@ -9,52 +9,48 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaNodeModel;
-import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.JpaNodeModel;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
+import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
+import org.eclipse.jpt.utility.internal.node.AbstractNodeModel;
+import org.eclipse.jpt.utility.internal.node.Node;
 
-public abstract class AbstractResource<E extends Member> extends JpaNodeModel implements JavaResource
+public abstract class AbstractResource extends AbstractNodeModel 
+	implements JavaResource
 {	
-	private final E member;
-	
-	protected AbstractResource(IJpaNodeModel parent, E member) {
+	protected AbstractResource(JavaResource parent) {
 		super(parent);
-		this.member = member;
 	}
 	
-	public E getMember() {
-		return this.member;
+	
+	// **************** overrides **********************************************
+	
+	@Override
+	public JavaResource parent() {
+		return (JavaResource) super.parent();
 	}
 	
-	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter, CompilationUnit astRoot) {
-		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter, astRoot), astRoot);
+	@Override
+	public JpaCompilationUnitResource root() {
+		return (JpaCompilationUnitResource) super.root();
+	}
+	
+	
+	// **************** JavaResource implementation ****************************
+	
+	public IJpaAnnotationProvider annotationProvider() {
+		return root().annotationProvider();
+	}
+	
+	public CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
+		return root().modifySharedDocumentCommandExecutorProvider();
 	}
 	
 	/**
-	 * Convenience method. If the specified element text range is null
-	 * return the Java object's text range instead (which is usually the
-	 * annotation's text range).
+	 * @see Node#displayString()
+	 * 
+	 * Return simple toString.  Override if this class is to be displayed.
 	 */
-	protected ITextRange elementTextRange(ITextRange elementTextRange, CompilationUnit astRoot) {
-		return (elementTextRange != null) ? elementTextRange : this.textRange(astRoot);
-	}
-	
-	/**
-	 * Convenience method. Return whether the specified position touches the element.
-	 * Returns false if the element does not exist
-	 */
-	protected boolean elementTouches(DeclarationAnnotationElementAdapter<?> elementAdapter, int pos, CompilationUnit astRoot) {
-		return this.elementTouches(this.member.annotationElementTextRange(elementAdapter, astRoot), pos);
-	}
-	
-	/**
-	 * Convenience method. Return whether element's text range is not
-	 * null (meaning the element exists) and the specified position touches it.
-	 */
-	protected boolean elementTouches(ITextRange elementTextRange, int pos) {
-		return (elementTextRange != null) && elementTextRange.touches(pos);
+	public String displayString() {
+		return toString();
 	}
 }

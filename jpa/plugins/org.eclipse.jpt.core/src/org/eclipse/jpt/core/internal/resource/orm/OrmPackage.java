@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmPackage.java,v 1.1.2.2 2007/10/16 17:01:40 pfullbright Exp $
+ * $Id: OrmPackage.java,v 1.1.2.3 2007/10/23 23:36:43 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
@@ -96,7 +96,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int ENTITY_MAPPINGS__DESCRIPTION = 1;
 
 	/**
-	 * The feature id for the '<em><b>Persistence Unit Metadata</b></em>' containment reference.
+	 * The feature id for the '<em><b>XmlPersistence Unit Metadata</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -222,7 +222,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int ENTITY_MAPPINGS_FEATURE_COUNT = 15;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata
@@ -241,7 +241,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE = 0;
 
 	/**
-	 * The feature id for the '<em><b>Persistence Unit Defaults</b></em>' containment reference.
+	 * The feature id for the '<em><b>XmlPersistence Unit Defaults</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -250,7 +250,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS = 1;
 
 	/**
-	 * The number of structural features of the '<em>Persistence Unit Metadata</em>' class.
+	 * The number of structural features of the '<em>XmlPersistence Unit Metadata</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -259,7 +259,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_METADATA_FEATURE_COUNT = 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults
@@ -314,7 +314,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS = 4;
 
 	/**
-	 * The number of structural features of the '<em>Persistence Unit Defaults</em>' class.
+	 * The number of structural features of the '<em>XmlPersistence Unit Defaults</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -4112,10 +4112,10 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Persistence Unit Metadata</em>'.
+	 * @return the meta object for the containment reference '<em>XmlPersistence Unit Metadata</em>'.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata()
 	 * @see #getEntityMappings()
 	 * @generated
@@ -4294,10 +4294,10 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>Persistence Unit Metadata</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Persistence Unit Metadata</em>'.
+	 * @return the meta object for class '<em>XmlPersistence Unit Metadata</em>'.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata
 	 * @generated
 	 */
@@ -4321,10 +4321,10 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Persistence Unit Defaults</em>'.
+	 * @return the meta object for the containment reference '<em>XmlPersistence Unit Defaults</em>'.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults()
 	 * @see #getPersistenceUnitMetadata()
 	 * @generated
@@ -4335,10 +4335,10 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>Persistence Unit Defaults</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Persistence Unit Defaults</em>'.
+	 * @return the meta object for class '<em>XmlPersistence Unit Defaults</em>'.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults
 	 * @generated
 	 */
@@ -9232,7 +9232,7 @@ public class OrmPackage extends EPackageImpl
 		public static final EAttribute ENTITY_MAPPINGS__DESCRIPTION = eINSTANCE.getEntityMappings_Description();
 
 		/**
-		 * The meta object literal for the '<em><b>Persistence Unit Metadata</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>XmlPersistence Unit Metadata</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -9336,7 +9336,7 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference ENTITY_MAPPINGS__EMBEDDABLES = eINSTANCE.getEntityMappings_Embeddables();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata
@@ -9354,7 +9354,7 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE = eINSTANCE.getPersistenceUnitMetadata_XmlMappingMetadataComplete();
 
 		/**
-		 * The meta object literal for the '<em><b>Persistence Unit Defaults</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>XmlPersistence Unit Defaults</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -9362,7 +9362,7 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS = eINSTANCE.getPersistenceUnitMetadata_PersistenceUnitDefaults();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults

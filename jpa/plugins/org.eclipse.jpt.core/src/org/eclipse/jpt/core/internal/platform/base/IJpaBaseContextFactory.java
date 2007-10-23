@@ -11,8 +11,9 @@
 package org.eclipse.jpt.core.internal.platform.base;
 
 import org.eclipse.jpt.core.internal.IJpaFactory;
-import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
-import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
+import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
+import org.eclipse.jpt.core.internal.context.base.IPersistence;
+import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
 
 /**
  * An IJpaFactory that also assumes a base JPA project context structure 
@@ -30,5 +31,7 @@ import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
  */
 public interface IJpaBaseContextFactory extends IJpaFactory
 {
-	PersistenceXml createPersistenceXml(BaseJpaContent baseJpaContent);
+	IPersistenceXml createPersistenceXml(IBaseJpaContent baseJpaContent);
+	
+	IPersistence createPersistence(IPersistenceXml persistenceXml);
 }

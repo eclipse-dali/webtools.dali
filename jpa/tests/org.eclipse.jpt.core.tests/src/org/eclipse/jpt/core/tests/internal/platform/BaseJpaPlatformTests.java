@@ -40,7 +40,7 @@ public class BaseJpaPlatformTests extends TestCase
 //		IFile persistenceXmlIFile = jpaProject.getProject().getFile(PERSISTENCE_XML_LOCATION);
 //		IJpaFile persistenceXmlJpaFile = jpaProject.getJpaProject().getJpaFile(persistenceXmlIFile);
 //		PersistenceXmlRootContentNode persistenceRoot = (PersistenceXmlRootContentNode) persistenceXmlJpaFile.getContent();
-//		Persistence persistence = persistenceRoot.getPersistence();
+//		XmlPersistence persistence = persistenceRoot.getPersistence();
 //		
 //		IFile ormXmlIFile = jpaProject.getProject().getFile(ORM_XML_LOCATION);
 //		IJpaFile ormXmlJpaFile = jpaProject.getJpaProject().getJpaFile(ormXmlIFile);
@@ -58,7 +58,7 @@ public class BaseJpaPlatformTests extends TestCase
 //		jpaProject.createType(PACKAGE_NAME, "JavaEntity.java", 
 //				"@Entity public class JavaEntity {}"
 //			);
-//		JavaClassRef javaClassRef = PersistenceFactory.eINSTANCE.createJavaClassRef();
+//		XmlJavaClassRef javaClassRef = PersistenceFactory.eINSTANCE.createJavaClassRef();
 //		javaClassRef.setJavaClass(PACKAGE_NAME + ".JavaEntity");
 //		persistence.getPersistenceUnits().get(0).getClasses().add(javaClassRef);
 //		persistence.eResource().save(null);

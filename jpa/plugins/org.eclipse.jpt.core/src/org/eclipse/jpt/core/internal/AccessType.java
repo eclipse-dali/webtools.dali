@@ -42,7 +42,7 @@ public enum AccessType implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	PROPERTY(1, "PROPERTY", "Property"),
+	PROPERTY(1, "PROPERTY", "XmlProperty"),
 	/**
 	 * The '<em><b>FIELD</b></em>' literal object.
 	 * <!-- begin-user-doc -->
@@ -76,7 +76,7 @@ public enum AccessType implements Enumerator {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #PROPERTY
-	 * @model literal="Property"
+	 * @model literal="XmlProperty"
 	 * @generated
 	 * @ordered
 	 */

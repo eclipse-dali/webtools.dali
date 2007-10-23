@@ -35,6 +35,7 @@ public abstract class ContextModelTestCase extends TestCase
 		super.setUp();
 		ProjectUtility.deleteAllProjects();
 		this.jpaProject = this.buildJpaProject(PROJECT_NAME, false);  // false = no auto-build
+		waitForUpdate();
 	}
 	
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild) 

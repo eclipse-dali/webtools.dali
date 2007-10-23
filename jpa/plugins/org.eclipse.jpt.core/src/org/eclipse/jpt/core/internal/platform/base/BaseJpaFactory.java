@@ -25,6 +25,10 @@ import org.eclipse.jpt.core.internal.JpaFile;
 import org.eclipse.jpt.core.internal.JpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
+import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
+import org.eclipse.jpt.core.internal.context.base.IPersistence;
+import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
+import org.eclipse.jpt.core.internal.context.base.Persistence;
 import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
@@ -55,8 +59,26 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	// **************** Resource objects **************************************
 	
-	public IResourceModel buildResourceModel(IJpaProject jpaProject, IFile file) {
+	public boolean hasRelevantContent(IFile file) {
 		if (! JavaCore.create(file.getProject()).isOnClasspath(file)) {
+			return false;
+		}
+		IContentType contentType = this.contentType(file);
+		if (contentType == null) {
+			return false;
+		}
+		String contentTypeId = contentType.getId();
+		return supportsContentType(contentTypeId);
+	}
+	
+	protected boolean supportsContentType(String contentTypeId) {
+		return contentTypeId.equals(JavaCore.JAVA_SOURCE_CONTENT_TYPE)
+				|| contentTypeId.equals(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)
+				|| contentTypeId.equals(JptCorePlugin.ORM_XML_CONTENT_TYPE);
+	}
+	
+	public IResourceModel buildResourceModel(IJpaProject jpaProject, IFile file) {
+		if (! JavaCore.create(jpaProject.project()).isOnClasspath(file)) {
 			return null;
 		}
 		IContentType contentType = this.contentType(file);
@@ -82,7 +104,9 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	}
 	
 	protected IResourceModel buildJavaResourceModel(IJpaProject jpaProject, IFile file) {
-		return new JavaResourceModel(jpaProject, file);
+		return new JavaResourceModel(
+				file, jpaProject.jpaPlatform().annotationProvider(), 
+				jpaProject.modifySharedDocumentCommandExecutorProvider());
 	}
 	
 	protected IResourceModel buildPersistenceResourceModel(IFile file) {
@@ -122,7 +146,11 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return new BaseJpaContent(jpaProject);
 	}
 	
-	public PersistenceXml createPersistenceXml(BaseJpaContent baseJpaContent) {
+	public IPersistenceXml createPersistenceXml(IBaseJpaContent baseJpaContent) {
 		return new PersistenceXml(baseJpaContent);
+	}
+	
+	public IPersistence createPersistence(IPersistenceXml persistenceXml) {
+		return new Persistence(persistenceXml);
 	}
 }

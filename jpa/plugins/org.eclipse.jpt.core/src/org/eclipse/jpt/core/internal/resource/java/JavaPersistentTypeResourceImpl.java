@@ -21,14 +21,12 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.AccessType;
-import org.eclipse.jpt.core.internal.IJpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
 import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
@@ -45,7 +43,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	
 	private String superClassQualifiedName;
 	
-	public JavaPersistentTypeResourceImpl(IJpaNodeModel parent, Type type){
+	public JavaPersistentTypeResourceImpl(JavaResource parent, Type type){
 		super(parent, type);
 		this.nestedTypes = new ArrayList<JavaPersistentTypeResource>(); 
 		this.attributes = new ArrayList<JavaPersistentAttributeResource>();
@@ -55,32 +53,32 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 
 	@Override
 	protected Annotation buildMappingAnnotation(String mappingAnnotationName) {
-		return jpaPlatform().buildTypeMappingAnnotation(this, getMember(), mappingAnnotationName);
+		return annotationProvider().buildTypeMappingAnnotation(this, getMember(), mappingAnnotationName);
 	}
 
 	@Override
 	protected Annotation buildAnnotation(String annotationName) {
-		return jpaPlatform().buildTypeAnnotation(this, getMember(), annotationName);
+		return annotationProvider().buildTypeAnnotation(this, getMember(), annotationName);
 	}
 		
 	@Override
 	protected Iterator<String> correspondingAnnotationNames(String mappingAnnotationName) {
-		return jpaPlatform().correspondingTypeAnnotationNames(mappingAnnotationName);
+		return annotationProvider().correspondingTypeAnnotationNames(mappingAnnotationName);
 	}
 	
 	@Override
 	protected ListIterator<String> possibleMappingAnnotationNames() {
-		return jpaPlatform().typeMappingAnnotationNames();
+		return annotationProvider().typeMappingAnnotationNames();
 	}
 	
 	@Override
 	protected boolean isPossibleAnnotation(String annotationName) {
-		return CollectionTools.contains(jpaPlatform().typeAnnotationNames(), annotationName);
+		return CollectionTools.contains(annotationProvider().typeAnnotationNames(), annotationName);
 	}
 	
 	@Override
 	protected boolean isPossibleMappingAnnotation(String annotationName) {
-		return CollectionTools.contains(jpaPlatform().typeMappingAnnotationNames(), annotationName);
+		return CollectionTools.contains(annotationProvider().typeMappingAnnotationNames(), annotationName);
 	}
 	
 	@Override
@@ -255,13 +253,6 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		}
 	}
 	
-	/**
-	 * delegate to the type's project (there is one provider per project)
-	 */
-	private CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
-		return this.jpaProject().modifySharedDocumentCommandExecutorProvider();
-	}
-	
 	private void updatePersistentAttributes(CompilationUnit astRoot) {
 		List<JavaPersistentAttributeResource> persistentAttributesToRemove = new ArrayList<JavaPersistentAttributeResource>(this.attributes);
 		updatePersistentFields(astRoot, persistentAttributesToRemove);
@@ -295,8 +286,8 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	/**
 	 * Return the AccessType currently implied by the Java source code:
 	 *     - if only Fields are annotated => FIELD
-	 *     - if only Properties are annotated => PROPERTY
-	 *     - if both Fields and Properties are annotated => FIELD
+	 *     - if only XmlProperties are annotated => PROPERTY
+	 *     - if both Fields and XmlProperties are annotated => FIELD
 	 *     - if nothing is annotated
 	 *     		- and fields exist => FIELD
 	 *     		- and properties exist, but no fields exist => PROPERTY

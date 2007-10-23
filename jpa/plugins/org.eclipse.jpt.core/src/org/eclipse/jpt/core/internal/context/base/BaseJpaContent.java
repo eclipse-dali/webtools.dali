@@ -11,23 +11,39 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.core.internal.IContextModel;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
-public class BaseJpaContent extends JpaContextNodeModel implements IContextModel
+public class BaseJpaContent extends JpaContextNode 
+	implements IBaseJpaContent
 {
-	protected PersistenceXml persistenceXml;
-		public static final String PERSISTENCE_XML_PROPERTY = "persistenceXml";
+	protected IPersistenceXml persistenceXml;
 	
 	
 	public BaseJpaContent(IJpaProject jpaProject) {
 		super(jpaProject);
 	}
 	
+	
+	// **************** persistence xml ***************************************
+	
+	public IPersistenceXml getPersistenceXml() {
+		return persistenceXml;
+	}
+	
+	public void setPersistenceXml(IPersistenceXml newPersistenceXml) {
+		if (persistenceXml != newPersistenceXml) {
+			IPersistenceXml oldPersistenceXml = persistenceXml;
+			persistenceXml = newPersistenceXml;
+			firePropertyChanged(PERSISTENCE_XML_PROPERTY, oldPersistenceXml, newPersistenceXml);
+		}
+	}
+	
+	
+	// **************** updating **********************************************
 	
 	public void update(IJpaProject jpaProject, IProgressMonitor monitor) {
 		PersistenceArtifactEdit pae = 
@@ -38,30 +54,15 @@ public class BaseJpaContent extends JpaContextNodeModel implements IContextModel
 		
 		if (WorkbenchResourceHelper.getFile(persistenceResource).exists()) {
 			if (persistenceXml == null) {
-				PersistenceXml persistenceXml = jpaFactory().createPersistenceXml(this);
+				IPersistenceXml persistenceXml = jpaFactory().createPersistenceXml(this);
 				setPersistenceXml(persistenceXml);
-				persistenceXml.update(persistenceResource);
 			}
+			persistenceXml.update(persistenceResource);
 		}
 		else {
 			if (persistenceXml != null) {
 				setPersistenceXml(null);
 			}
-		}
-	}
-	
-	
-	// **************** persistence xml ***************************************
-	
-	public PersistenceXml persistenceXml() {
-		return persistenceXml;
-	}
-	
-	public void setPersistenceXml(PersistenceXml newPersistenceXml) {
-		if (persistenceXml != newPersistenceXml) {
-			PersistenceXml oldPersistenceXml = persistenceXml;
-			persistenceXml = newPersistenceXml;
-			firePropertyChanged(PERSISTENCE_XML_PROPERTY, newPersistenceXml, oldPersistenceXml);
 		}
 	}
 }

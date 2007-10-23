@@ -14,24 +14,27 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
+import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IResourceModel;
-import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.utility.internal.BitTools;
+import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
-public class JavaResourceModel extends JpaNodeModel implements IResourceModel
+public class JavaResourceModel implements IResourceModel
 {
 	private final JpaCompilationUnitResource compilationUnitResource;
 	
-	public JavaResourceModel(IJpaProject jpaProject, IFile file) {
-		super(jpaProject);
-		this.compilationUnitResource = buildJpaCompilationUnit(file);
-	}
+	protected IJpaFile jpaFile;
 	
-	protected JpaCompilationUnitResource buildJpaCompilationUnit(IFile file) {
-		return new JpaCompilationUnitResource(this, file);
+	
+	public JavaResourceModel(
+			IFile file, IJpaAnnotationProvider annotationProvider, 
+			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+		super();
+		this.compilationUnitResource = 
+			new JpaCompilationUnitResource(file, annotationProvider, modifySharedDocumentCommandExecutorProvider);
 	}
 	
 	public JpaCompilationUnitResource getCompilationUnitResource() {
@@ -40,6 +43,15 @@ public class JavaResourceModel extends JpaNodeModel implements IResourceModel
 	
 	public String getResourceType() {
 		return JAVA_RESOURCE_TYPE;
+	}
+	
+	public IJpaFile jpaFile() {
+		return jpaFile;
+	}
+	
+	// NB: To be done *once*, when constructing the jpa file
+	public void setJpaFile(IJpaFile jpaFile) {
+		this.jpaFile = jpaFile;
 	}
 	
 	public void handleJavaElementChangedEvent(ElementChangedEvent event) {

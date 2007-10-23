@@ -14,13 +14,14 @@ package org.eclipse.jpt.core.internal.resource.persistence.util;
 import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef;
-import org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.resource.persistence.Persistence;
+import org.eclipse.jpt.core.internal.resource.persistence.*;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.resource.persistence.Properties;
-import org.eclipse.jpt.core.internal.resource.persistence.Property;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlProperties;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlProperty;
 
 /**
  * <!-- begin-user-doc -->
@@ -105,45 +106,45 @@ public class PersistenceSwitch<T>
 	{
 		switch (classifierID)
 		{
-			case PersistencePackage.PERSISTENCE:
+			case PersistencePackage.XML_PERSISTENCE:
 			{
-				Persistence persistence = (Persistence)theEObject;
-				T result = casePersistence(persistence);
+				XmlPersistence xmlPersistence = (XmlPersistence)theEObject;
+				T result = caseXmlPersistence(xmlPersistence);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case PersistencePackage.PERSISTENCE_UNIT:
+			case PersistencePackage.XML_PERSISTENCE_UNIT:
 			{
-				PersistenceUnit persistenceUnit = (PersistenceUnit)theEObject;
-				T result = casePersistenceUnit(persistenceUnit);
+				XmlPersistenceUnit xmlPersistenceUnit = (XmlPersistenceUnit)theEObject;
+				T result = caseXmlPersistenceUnit(xmlPersistenceUnit);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case PersistencePackage.MAPPING_FILE_REF:
+			case PersistencePackage.XML_MAPPING_FILE_REF:
 			{
-				MappingFileRef mappingFileRef = (MappingFileRef)theEObject;
-				T result = caseMappingFileRef(mappingFileRef);
+				XmlMappingFileRef xmlMappingFileRef = (XmlMappingFileRef)theEObject;
+				T result = caseXmlMappingFileRef(xmlMappingFileRef);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case PersistencePackage.JAVA_CLASS_REF:
+			case PersistencePackage.XML_JAVA_CLASS_REF:
 			{
-				JavaClassRef javaClassRef = (JavaClassRef)theEObject;
-				T result = caseJavaClassRef(javaClassRef);
+				XmlJavaClassRef xmlJavaClassRef = (XmlJavaClassRef)theEObject;
+				T result = caseXmlJavaClassRef(xmlJavaClassRef);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case PersistencePackage.PROPERTIES:
+			case PersistencePackage.XML_PROPERTIES:
 			{
-				Properties properties = (Properties)theEObject;
-				T result = caseProperties(properties);
+				XmlProperties xmlProperties = (XmlProperties)theEObject;
+				T result = caseXmlProperties(xmlProperties);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case PersistencePackage.PROPERTY:
+			case PersistencePackage.XML_PROPERTY:
 			{
-				Property property = (Property)theEObject;
-				T result = caseProperty(property);
+				XmlProperty xmlProperty = (XmlProperty)theEObject;
+				T result = caseXmlProperty(xmlProperty);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -152,97 +153,97 @@ public class PersistenceSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Persistence</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Persistence</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Persistence</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Persistence</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T casePersistence(Persistence object)
+	public T caseXmlPersistence(XmlPersistence object)
 	{
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Unit</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Persistence Unit</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Unit</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Persistence Unit</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T casePersistenceUnit(PersistenceUnit object)
+	public T caseXmlPersistenceUnit(XmlPersistenceUnit object)
 	{
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Mapping File Ref</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Mapping File Ref</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Mapping File Ref</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Mapping File Ref</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseMappingFileRef(MappingFileRef object)
+	public T caseXmlMappingFileRef(XmlMappingFileRef object)
 	{
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Java Class Ref</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Java Class Ref</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Java Class Ref</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Java Class Ref</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseJavaClassRef(JavaClassRef object)
+	public T caseXmlJavaClassRef(XmlJavaClassRef object)
 	{
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Properties</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Properties</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Properties</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Properties</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseProperties(Properties object)
+	public T caseXmlProperties(XmlProperties object)
 	{
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Property</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Property</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Property</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Property</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseProperty(Property object)
+	public T caseXmlProperty(XmlProperty object)
 	{
 		return null;
 	}

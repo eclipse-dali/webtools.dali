@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmAdapterFactory.java,v 1.1.2.1 2007/09/17 20:58:27 pfullbright Exp $
+ * $Id: OrmAdapterFactory.java,v 1.1.2.2 2007/10/23 23:36:43 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -437,7 +437,7 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>Persistence Unit Metadata</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -452,7 +452,7 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>Persistence Unit Defaults</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.

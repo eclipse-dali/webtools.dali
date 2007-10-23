@@ -19,11 +19,11 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef;
-import org.eclipse.jpt.core.internal.resource.persistence.Persistence;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
@@ -57,27 +57,27 @@ public class SynchronizeClassesJob extends Job
 			return new Status(IStatus.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.INVALID_PERSISTENCE_XML_CONTENT);
 		}
 		
-		Persistence persistence = resource.getPersistence();
+		XmlPersistence persistence = resource.getPersistence();
 		
 		if (persistence == null) {
-			persistence = PersistenceFactory.eINSTANCE.createPersistence();
+			persistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
 			resource.getContents().add(persistence);
 		}
 		
-		PersistenceUnit persistenceUnit;
+		XmlPersistenceUnit persistenceUnit;
 		
 		if (persistence.getPersistenceUnits().size() > 0) {
 			persistenceUnit = persistence.getPersistenceUnits().get(0);
 		}
 		else {
-			persistenceUnit = PersistenceFactory.eINSTANCE.createPersistenceUnit();
+			persistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
 			persistenceUnit.setName(this.persistenceXmlFile.getProject().getName());
 			persistence.getPersistenceUnits().add(persistenceUnit);
 		}
 		
 		persistenceUnit.getClasses().clear();
 		for (Iterator<String> stream = this.sortedMappedTypeNames(persistenceUnit); stream.hasNext(); ) {
-			JavaClassRef classRef = PersistenceFactory.eINSTANCE.createJavaClassRef();
+			XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 			classRef.setJavaClass(stream.next());
 			persistenceUnit.getClasses().add(classRef);
 		}
@@ -94,12 +94,12 @@ public class SynchronizeClassesJob extends Job
 		return Status.OK_STATUS;
 	}
 	
-	private Iterator<String> sortedMappedTypeNames(PersistenceUnit persistenceUnit) {
+	private Iterator<String> sortedMappedTypeNames(XmlPersistenceUnit persistenceUnit) {
 		return EmptyIterator.instance();
 //		return CollectionTools.sort(this.mappedTypeNames(persistenceUnit));
 	}
 //	
-//	private Iterator<String> mappedTypeNames(PersistenceUnit persistenceUnit) {
+//	private Iterator<String> mappedTypeNames(XmlPersistenceUnit persistenceUnit) {
 //		return new TransformationIterator<IPersistentType, String>(this.mappedTypes(persistenceUnit)) {
 //			@Override
 //			protected String transform(IPersistentType pType) {
@@ -108,7 +108,7 @@ public class SynchronizeClassesJob extends Job
 //		};
 //	}
 //	
-//	private Iterator<IPersistentType> mappedTypes(PersistenceUnit persistenceUnit) {
+//	private Iterator<IPersistentType> mappedTypes(XmlPersistenceUnit persistenceUnit) {
 //		return new FilteringIterator<IPersistentType>(allJavaTypes(persistenceUnit.getJpaProject()), filter(persistenceUnit));
 //	}
 //	
@@ -122,7 +122,7 @@ public class SynchronizeClassesJob extends Job
 //		};
 //	}
 //	
-//	private Filter<IPersistentType> filter(final PersistenceUnit persistenceUnit) {
+//	private Filter<IPersistentType> filter(final XmlPersistenceUnit persistenceUnit) {
 //		return new Filter<IPersistentType>() {
 //			public boolean accept(IPersistentType o) {
 //				if (o == null) {
@@ -135,7 +135,7 @@ public class SynchronizeClassesJob extends Job
 //				if (jdtType == null) {
 //					return false;
 //				}
-//				for (MappingFileRef mappingFileRef : persistenceUnit.getMappingFiles()) {
+//				for (XmlMappingFileRef mappingFileRef : persistenceUnit.getMappingFiles()) {
 //					if (containsType(mappingFileRef, jdtType)) {
 //						return false;
 //					}
@@ -145,7 +145,7 @@ public class SynchronizeClassesJob extends Job
 //		};
 //	}
 //	
-//	private boolean containsType(MappingFileRef mappingFileRef, IType jdtType) {
+//	private boolean containsType(XmlMappingFileRef mappingFileRef, IType jdtType) {
 //		IJpaFile mappingFile = mappingFileRef.getMappingFile();
 //		if (mappingFile == null) {
 //			return false;

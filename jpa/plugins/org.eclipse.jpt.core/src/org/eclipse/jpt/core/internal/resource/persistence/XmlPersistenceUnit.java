@@ -32,26 +32,26 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getDescription <em>Description</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getProvider <em>Provider</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getJtaDataSource <em>Jta Data Source</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getNonJtaDataSource <em>Non Jta Data Source</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getMappingFiles <em>Mapping Files</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getJarFiles <em>Jar Files</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getClasses <em>Classes</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getProperties <em>Properties</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getTransactionType <em>Transaction Type</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getDescription <em>Description</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getProvider <em>Provider</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getJtaDataSource <em>Jta Data Source</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getNonJtaDataSource <em>Non Jta Data Source</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getMappingFiles <em>Mapping Files</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getJarFiles <em>Jar Files</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getClasses <em>Classes</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getProperties <em>Properties</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getTransactionType <em>Transaction Type</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit()
+ * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit()
  * @model kind="class"
  * @extends IJptEObject
  * @generated
  */
-public class PersistenceUnit extends JptEObject implements IJptEObject
+public class XmlPersistenceUnit extends JptEObject implements IJptEObject
 {
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
@@ -141,7 +141,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<MappingFileRef> mappingFiles;
+	protected EList<XmlMappingFileRef> mappingFiles;
 
 	/**
 	 * The cached value of the '{@link #getJarFiles() <em>Jar Files</em>}' attribute list.
@@ -161,7 +161,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<JavaClassRef> classes;
+	protected EList<XmlJavaClassRef> classes;
 
 	/**
 	 * The default value of the '{@link #isExcludeUnlistedClasses() <em>Exclude Unlisted Classes</em>}' attribute.
@@ -200,7 +200,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected Properties properties;
+	protected XmlProperties properties;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -230,7 +230,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected static final PersistenceUnitTransactionType TRANSACTION_TYPE_EDEFAULT = PersistenceUnitTransactionType.JTA;
+	protected static final XmlPersistenceUnitTransactionType TRANSACTION_TYPE_EDEFAULT = XmlPersistenceUnitTransactionType.JTA;
 
 	/**
 	 * The cached value of the '{@link #getTransactionType() <em>Transaction Type</em>}' attribute.
@@ -240,7 +240,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected PersistenceUnitTransactionType transactionType = TRANSACTION_TYPE_EDEFAULT;
+	protected XmlPersistenceUnitTransactionType transactionType = TRANSACTION_TYPE_EDEFAULT;
 
 	/**
 	 * This is true if the Transaction Type attribute has been set.
@@ -256,7 +256,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected PersistenceUnit()
+	protected XmlPersistenceUnit()
 	{
 		super();
 	}
@@ -269,7 +269,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	@Override
 	protected EClass eStaticClass()
 	{
-		return PersistencePackage.Literals.PERSISTENCE_UNIT;
+		return PersistencePackage.Literals.XML_PERSISTENCE_UNIT;
 	}
 
 	/**
@@ -282,7 +282,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit_Name()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit_Name()
 	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -292,7 +292,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getName <em>Name</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
@@ -304,13 +304,13 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.PERSISTENCE_UNIT__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__NAME, oldName, name));
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Transaction Type</b></em>' attribute.
 	 * The default value is <code>"JTA"</code>.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnitTransactionType}.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTransactionType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Transaction Type</em>' attribute isn't clear,
@@ -318,67 +318,67 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Transaction Type</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnitTransactionType
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTransactionType
 	 * @see #isSetTransactionType()
 	 * @see #unsetTransactionType()
-	 * @see #setTransactionType(PersistenceUnitTransactionType)
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit_TransactionType()
+	 * @see #setTransactionType(XmlPersistenceUnitTransactionType)
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit_TransactionType()
 	 * @model default="JTA" unique="false" unsettable="true"
 	 * @generated
 	 */
-	public PersistenceUnitTransactionType getTransactionType()
+	public XmlPersistenceUnitTransactionType getTransactionType()
 	{
 		return transactionType;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getTransactionType <em>Transaction Type</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getTransactionType <em>Transaction Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Transaction Type</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnitTransactionType
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTransactionType
 	 * @see #isSetTransactionType()
 	 * @see #unsetTransactionType()
 	 * @see #getTransactionType()
 	 * @generated
 	 */
-	public void setTransactionType(PersistenceUnitTransactionType newTransactionType)
+	public void setTransactionType(XmlPersistenceUnitTransactionType newTransactionType)
 	{
-		PersistenceUnitTransactionType oldTransactionType = transactionType;
+		XmlPersistenceUnitTransactionType oldTransactionType = transactionType;
 		transactionType = newTransactionType == null ? TRANSACTION_TYPE_EDEFAULT : newTransactionType;
 		boolean oldTransactionTypeESet = transactionTypeESet;
 		transactionTypeESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.PERSISTENCE_UNIT__TRANSACTION_TYPE, oldTransactionType, transactionType, !oldTransactionTypeESet));
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__TRANSACTION_TYPE, oldTransactionType, transactionType, !oldTransactionTypeESet));
 	}
 
 	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getTransactionType <em>Transaction Type</em>}' attribute.
+	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getTransactionType <em>Transaction Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #isSetTransactionType()
 	 * @see #getTransactionType()
-	 * @see #setTransactionType(PersistenceUnitTransactionType)
+	 * @see #setTransactionType(XmlPersistenceUnitTransactionType)
 	 * @generated
 	 */
 	public void unsetTransactionType()
 	{
-		PersistenceUnitTransactionType oldTransactionType = transactionType;
+		XmlPersistenceUnitTransactionType oldTransactionType = transactionType;
 		boolean oldTransactionTypeESet = transactionTypeESet;
 		transactionType = TRANSACTION_TYPE_EDEFAULT;
 		transactionTypeESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, PersistencePackage.PERSISTENCE_UNIT__TRANSACTION_TYPE, oldTransactionType, TRANSACTION_TYPE_EDEFAULT, oldTransactionTypeESet));
+			eNotify(new ENotificationImpl(this, Notification.UNSET, PersistencePackage.XML_PERSISTENCE_UNIT__TRANSACTION_TYPE, oldTransactionType, TRANSACTION_TYPE_EDEFAULT, oldTransactionTypeESet));
 	}
 
 	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getTransactionType <em>Transaction Type</em>}' attribute is set.
+	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getTransactionType <em>Transaction Type</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Transaction Type</em>' attribute is set.
 	 * @see #unsetTransactionType()
 	 * @see #getTransactionType()
-	 * @see #setTransactionType(PersistenceUnitTransactionType)
+	 * @see #setTransactionType(XmlPersistenceUnitTransactionType)
 	 * @generated
 	 */
 	public boolean isSetTransactionType()
@@ -396,7 +396,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Description</em>' attribute.
 	 * @see #setDescription(String)
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit_Description()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit_Description()
 	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -406,7 +406,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getDescription <em>Description</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getDescription <em>Description</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Description</em>' attribute.
@@ -418,7 +418,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 		String oldDescription = description;
 		description = newDescription;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.PERSISTENCE_UNIT__DESCRIPTION, oldDescription, description));
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -431,7 +431,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Provider</em>' attribute.
 	 * @see #setProvider(String)
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit_Provider()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit_Provider()
 	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -441,7 +441,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getProvider <em>Provider</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getProvider <em>Provider</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Provider</em>' attribute.
@@ -453,7 +453,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 		String oldProvider = provider;
 		provider = newProvider;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.PERSISTENCE_UNIT__PROVIDER, oldProvider, provider));
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__PROVIDER, oldProvider, provider));
 	}
 
 	/**
@@ -466,7 +466,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Jta Data Source</em>' attribute.
 	 * @see #setJtaDataSource(String)
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit_JtaDataSource()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit_JtaDataSource()
 	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -476,7 +476,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getJtaDataSource <em>Jta Data Source</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getJtaDataSource <em>Jta Data Source</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Jta Data Source</em>' attribute.
@@ -488,7 +488,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 		String oldJtaDataSource = jtaDataSource;
 		jtaDataSource = newJtaDataSource;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.PERSISTENCE_UNIT__JTA_DATA_SOURCE, oldJtaDataSource, jtaDataSource));
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__JTA_DATA_SOURCE, oldJtaDataSource, jtaDataSource));
 	}
 
 	/**
@@ -501,7 +501,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Non Jta Data Source</em>' attribute.
 	 * @see #setNonJtaDataSource(String)
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit_NonJtaDataSource()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit_NonJtaDataSource()
 	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -511,7 +511,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getNonJtaDataSource <em>Non Jta Data Source</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getNonJtaDataSource <em>Non Jta Data Source</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Non Jta Data Source</em>' attribute.
@@ -523,12 +523,12 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 		String oldNonJtaDataSource = nonJtaDataSource;
 		nonJtaDataSource = newNonJtaDataSource;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE, oldNonJtaDataSource, nonJtaDataSource));
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE, oldNonJtaDataSource, nonJtaDataSource));
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Mapping Files</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef}.
+	 * The list contents are of type {@link org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Mapping Files</em>' containment reference list isn't clear,
@@ -536,15 +536,15 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapping Files</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit_MappingFiles()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit_MappingFiles()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<MappingFileRef> getMappingFiles()
+	public EList<XmlMappingFileRef> getMappingFiles()
 	{
 		if (mappingFiles == null)
 		{
-			mappingFiles = new EObjectContainmentEList<MappingFileRef>(MappingFileRef.class, this, PersistencePackage.PERSISTENCE_UNIT__MAPPING_FILES);
+			mappingFiles = new EObjectContainmentEList<XmlMappingFileRef>(XmlMappingFileRef.class, this, PersistencePackage.XML_PERSISTENCE_UNIT__MAPPING_FILES);
 		}
 		return mappingFiles;
 	}
@@ -559,7 +559,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Jar Files</em>' attribute list.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit_JarFiles()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit_JarFiles()
 	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -567,14 +567,14 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	{
 		if (jarFiles == null)
 		{
-			jarFiles = new EDataTypeEList<String>(String.class, this, PersistencePackage.PERSISTENCE_UNIT__JAR_FILES);
+			jarFiles = new EDataTypeEList<String>(String.class, this, PersistencePackage.XML_PERSISTENCE_UNIT__JAR_FILES);
 		}
 		return jarFiles;
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Classes</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef}.
+	 * The list contents are of type {@link org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Classes</em>' containment reference list isn't clear,
@@ -582,15 +582,15 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Classes</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit_Classes()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit_Classes()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<JavaClassRef> getClasses()
+	public EList<XmlJavaClassRef> getClasses()
 	{
 		if (classes == null)
 		{
-			classes = new EObjectContainmentEList<JavaClassRef>(JavaClassRef.class, this, PersistencePackage.PERSISTENCE_UNIT__CLASSES);
+			classes = new EObjectContainmentEList<XmlJavaClassRef>(XmlJavaClassRef.class, this, PersistencePackage.XML_PERSISTENCE_UNIT__CLASSES);
 		}
 		return classes;
 	}
@@ -608,7 +608,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * @see #isSetExcludeUnlistedClasses()
 	 * @see #unsetExcludeUnlistedClasses()
 	 * @see #setExcludeUnlistedClasses(boolean)
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit_ExcludeUnlistedClasses()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit_ExcludeUnlistedClasses()
 	 * @model default="false" unique="false" unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
@@ -618,7 +618,7 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Exclude Unlisted Classes</em>' attribute.
@@ -634,11 +634,11 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 		boolean oldExcludeUnlistedClassesESet = excludeUnlistedClassesESet;
 		excludeUnlistedClassesESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES, oldExcludeUnlistedClasses, excludeUnlistedClasses, !oldExcludeUnlistedClassesESet));
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES, oldExcludeUnlistedClasses, excludeUnlistedClasses, !oldExcludeUnlistedClassesESet));
 	}
 
 	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}' attribute.
+	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #isSetExcludeUnlistedClasses()
@@ -653,11 +653,11 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 		excludeUnlistedClasses = EXCLUDE_UNLISTED_CLASSES_EDEFAULT;
 		excludeUnlistedClassesESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, PersistencePackage.PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES, oldExcludeUnlistedClasses, EXCLUDE_UNLISTED_CLASSES_EDEFAULT, oldExcludeUnlistedClassesESet));
+			eNotify(new ENotificationImpl(this, Notification.UNSET, PersistencePackage.XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES, oldExcludeUnlistedClasses, EXCLUDE_UNLISTED_CLASSES_EDEFAULT, oldExcludeUnlistedClassesESet));
 	}
 
 	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}' attribute is set.
+	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Exclude Unlisted Classes</em>' attribute is set.
@@ -675,17 +675,17 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * Returns the value of the '<em><b>Properties</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Properties</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>XmlProperties</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Properties</em>' containment reference.
-	 * @see #setProperties(Properties)
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit_Properties()
+	 * @see #setProperties(XmlProperties)
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit_Properties()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public Properties getProperties()
+	public XmlProperties getProperties()
 	{
 		return properties;
 	}
@@ -695,40 +695,40 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetProperties(Properties newProperties, NotificationChain msgs)
+	public NotificationChain basicSetProperties(XmlProperties newProperties, NotificationChain msgs)
 	{
-		Properties oldProperties = properties;
+		XmlProperties oldProperties = properties;
 		properties = newProperties;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PersistencePackage.PERSISTENCE_UNIT__PROPERTIES, oldProperties, newProperties);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES, oldProperties, newProperties);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getProperties <em>Properties</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getProperties <em>Properties</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Properties</em>' containment reference.
 	 * @see #getProperties()
 	 * @generated
 	 */
-	public void setProperties(Properties newProperties)
+	public void setProperties(XmlProperties newProperties)
 	{
 		if (newProperties != properties)
 		{
 			NotificationChain msgs = null;
 			if (properties != null)
-				msgs = ((InternalEObject)properties).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PersistencePackage.PERSISTENCE_UNIT__PROPERTIES, null, msgs);
+				msgs = ((InternalEObject)properties).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES, null, msgs);
 			if (newProperties != null)
-				msgs = ((InternalEObject)newProperties).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PersistencePackage.PERSISTENCE_UNIT__PROPERTIES, null, msgs);
+				msgs = ((InternalEObject)newProperties).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES, null, msgs);
 			msgs = basicSetProperties(newProperties, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.PERSISTENCE_UNIT__PROPERTIES, newProperties, newProperties));
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES, newProperties, newProperties));
 	}
 
 	/**
@@ -741,11 +741,11 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PERSISTENCE_UNIT__MAPPING_FILES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__MAPPING_FILES:
 				return ((InternalEList<?>)getMappingFiles()).basicRemove(otherEnd, msgs);
-			case PersistencePackage.PERSISTENCE_UNIT__CLASSES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__CLASSES:
 				return ((InternalEList<?>)getClasses()).basicRemove(otherEnd, msgs);
-			case PersistencePackage.PERSISTENCE_UNIT__PROPERTIES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES:
 				return basicSetProperties(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -761,27 +761,27 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PERSISTENCE_UNIT__DESCRIPTION:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__DESCRIPTION:
 				return getDescription();
-			case PersistencePackage.PERSISTENCE_UNIT__PROVIDER:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__PROVIDER:
 				return getProvider();
-			case PersistencePackage.PERSISTENCE_UNIT__JTA_DATA_SOURCE:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__JTA_DATA_SOURCE:
 				return getJtaDataSource();
-			case PersistencePackage.PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE:
 				return getNonJtaDataSource();
-			case PersistencePackage.PERSISTENCE_UNIT__MAPPING_FILES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__MAPPING_FILES:
 				return getMappingFiles();
-			case PersistencePackage.PERSISTENCE_UNIT__JAR_FILES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__JAR_FILES:
 				return getJarFiles();
-			case PersistencePackage.PERSISTENCE_UNIT__CLASSES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__CLASSES:
 				return getClasses();
-			case PersistencePackage.PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES:
 				return isExcludeUnlistedClasses() ? Boolean.TRUE : Boolean.FALSE;
-			case PersistencePackage.PERSISTENCE_UNIT__PROPERTIES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES:
 				return getProperties();
-			case PersistencePackage.PERSISTENCE_UNIT__NAME:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__NAME:
 				return getName();
-			case PersistencePackage.PERSISTENCE_UNIT__TRANSACTION_TYPE:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__TRANSACTION_TYPE:
 				return getTransactionType();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -798,41 +798,41 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PERSISTENCE_UNIT__DESCRIPTION:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__DESCRIPTION:
 				setDescription((String)newValue);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__PROVIDER:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__PROVIDER:
 				setProvider((String)newValue);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__JTA_DATA_SOURCE:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__JTA_DATA_SOURCE:
 				setJtaDataSource((String)newValue);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE:
 				setNonJtaDataSource((String)newValue);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__MAPPING_FILES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__MAPPING_FILES:
 				getMappingFiles().clear();
-				getMappingFiles().addAll((Collection<? extends MappingFileRef>)newValue);
+				getMappingFiles().addAll((Collection<? extends XmlMappingFileRef>)newValue);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__JAR_FILES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__JAR_FILES:
 				getJarFiles().clear();
 				getJarFiles().addAll((Collection<? extends String>)newValue);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__CLASSES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__CLASSES:
 				getClasses().clear();
-				getClasses().addAll((Collection<? extends JavaClassRef>)newValue);
+				getClasses().addAll((Collection<? extends XmlJavaClassRef>)newValue);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES:
 				setExcludeUnlistedClasses(((Boolean)newValue).booleanValue());
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__PROPERTIES:
-				setProperties((Properties)newValue);
+			case PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES:
+				setProperties((XmlProperties)newValue);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__NAME:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__NAME:
 				setName((String)newValue);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__TRANSACTION_TYPE:
-				setTransactionType((PersistenceUnitTransactionType)newValue);
+			case PersistencePackage.XML_PERSISTENCE_UNIT__TRANSACTION_TYPE:
+				setTransactionType((XmlPersistenceUnitTransactionType)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -848,37 +848,37 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PERSISTENCE_UNIT__DESCRIPTION:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__PROVIDER:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__PROVIDER:
 				setProvider(PROVIDER_EDEFAULT);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__JTA_DATA_SOURCE:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__JTA_DATA_SOURCE:
 				setJtaDataSource(JTA_DATA_SOURCE_EDEFAULT);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE:
 				setNonJtaDataSource(NON_JTA_DATA_SOURCE_EDEFAULT);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__MAPPING_FILES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__MAPPING_FILES:
 				getMappingFiles().clear();
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__JAR_FILES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__JAR_FILES:
 				getJarFiles().clear();
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__CLASSES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__CLASSES:
 				getClasses().clear();
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES:
 				unsetExcludeUnlistedClasses();
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__PROPERTIES:
-				setProperties((Properties)null);
+			case PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES:
+				setProperties((XmlProperties)null);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__NAME:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case PersistencePackage.PERSISTENCE_UNIT__TRANSACTION_TYPE:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__TRANSACTION_TYPE:
 				unsetTransactionType();
 				return;
 		}
@@ -895,27 +895,27 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 	{
 		switch (featureID)
 		{
-			case PersistencePackage.PERSISTENCE_UNIT__DESCRIPTION:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
-			case PersistencePackage.PERSISTENCE_UNIT__PROVIDER:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__PROVIDER:
 				return PROVIDER_EDEFAULT == null ? provider != null : !PROVIDER_EDEFAULT.equals(provider);
-			case PersistencePackage.PERSISTENCE_UNIT__JTA_DATA_SOURCE:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__JTA_DATA_SOURCE:
 				return JTA_DATA_SOURCE_EDEFAULT == null ? jtaDataSource != null : !JTA_DATA_SOURCE_EDEFAULT.equals(jtaDataSource);
-			case PersistencePackage.PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE:
 				return NON_JTA_DATA_SOURCE_EDEFAULT == null ? nonJtaDataSource != null : !NON_JTA_DATA_SOURCE_EDEFAULT.equals(nonJtaDataSource);
-			case PersistencePackage.PERSISTENCE_UNIT__MAPPING_FILES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__MAPPING_FILES:
 				return mappingFiles != null && !mappingFiles.isEmpty();
-			case PersistencePackage.PERSISTENCE_UNIT__JAR_FILES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__JAR_FILES:
 				return jarFiles != null && !jarFiles.isEmpty();
-			case PersistencePackage.PERSISTENCE_UNIT__CLASSES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__CLASSES:
 				return classes != null && !classes.isEmpty();
-			case PersistencePackage.PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES:
 				return isSetExcludeUnlistedClasses();
-			case PersistencePackage.PERSISTENCE_UNIT__PROPERTIES:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES:
 				return properties != null;
-			case PersistencePackage.PERSISTENCE_UNIT__NAME:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case PersistencePackage.PERSISTENCE_UNIT__TRANSACTION_TYPE:
+			case PersistencePackage.XML_PERSISTENCE_UNIT__TRANSACTION_TYPE:
 				return isSetTransactionType();
 		}
 		return super.eIsSet(featureID);
@@ -952,4 +952,4 @@ public class PersistenceUnit extends JptEObject implements IJptEObject
 		return result.toString();
 	}
 
-} // PersistenceUnit
+} // XmlPersistenceUnit

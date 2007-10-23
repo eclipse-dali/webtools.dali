@@ -41,46 +41,46 @@ public class PersistenceUnitTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, PERSISTENCE_PKG.getPersistenceUnit_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, PERSISTENCE_PKG.getXmlPersistenceUnit_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createTransactionTypeTranslator() {
-		return new Translator(TRANSACTION_TYPE, PERSISTENCE_PKG.getPersistenceUnit_TransactionType(), DOM_ATTRIBUTE);
+		return new Translator(TRANSACTION_TYPE, PERSISTENCE_PKG.getXmlPersistenceUnit_TransactionType(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createDescriptionTranslator() {
-		return new Translator(DESCRIPTION, PERSISTENCE_PKG.getPersistenceUnit_Description());
+		return new Translator(DESCRIPTION, PERSISTENCE_PKG.getXmlPersistenceUnit_Description());
 	}
 	
 	private Translator createProviderTranslator() {
-		return new Translator(PROVIDER, PERSISTENCE_PKG.getPersistenceUnit_Provider());
+		return new Translator(PROVIDER, PERSISTENCE_PKG.getXmlPersistenceUnit_Provider());
 	}
 	
 	private Translator createJtaDataSourceTranslator() {
-		return new Translator(JTA_DATA_SOURCE, PERSISTENCE_PKG.getPersistenceUnit_JtaDataSource());
+		return new Translator(JTA_DATA_SOURCE, PERSISTENCE_PKG.getXmlPersistenceUnit_JtaDataSource());
 	}
 	
 	private Translator createNonJtaDataSourceTranslator() {
-		return new Translator(NON_JTA_DATA_SOURCE, PERSISTENCE_PKG.getPersistenceUnit_NonJtaDataSource());
+		return new Translator(NON_JTA_DATA_SOURCE, PERSISTENCE_PKG.getXmlPersistenceUnit_NonJtaDataSource());
 	}
 	
 	private Translator createMappingFileTranslator() {
-		return new MappingFileTranslator(MAPPING_FILE, PERSISTENCE_PKG.getPersistenceUnit_MappingFiles());
+		return new MappingFileTranslator(MAPPING_FILE, PERSISTENCE_PKG.getXmlPersistenceUnit_MappingFiles());
 	}
 	
 	private Translator createJarFileTranslator() {
-		return new Translator(JAR_FILE, PERSISTENCE_PKG.getPersistenceUnit_JarFiles());
+		return new Translator(JAR_FILE, PERSISTENCE_PKG.getXmlPersistenceUnit_JarFiles());
 	}
 	
 	private Translator createClassTranslator() {
-		return new JavaClassRefTranslator(CLASS, PERSISTENCE_PKG.getPersistenceUnit_Classes());
+		return new JavaClassRefTranslator(CLASS, PERSISTENCE_PKG.getXmlPersistenceUnit_Classes());
 	}
 	
 	private Translator createExcludeUnlistedClassesTranslator() {
-		return new BooleanTranslator(EXCLUDE_UNLISTED_CLASSES, PERSISTENCE_PKG.getPersistenceUnit_ExcludeUnlistedClasses());
+		return new BooleanTranslator(EXCLUDE_UNLISTED_CLASSES, PERSISTENCE_PKG.getXmlPersistenceUnit_ExcludeUnlistedClasses());
 	}
 	
 	private Translator createPropertiesTranslator() {
-		return new PropertiesTranslator(PROPERTIES, PERSISTENCE_PKG.getPersistenceUnit_Properties());
+		return new PropertiesTranslator(PROPERTIES, PERSISTENCE_PKG.getXmlPersistenceUnit_Properties());
 	}
 }

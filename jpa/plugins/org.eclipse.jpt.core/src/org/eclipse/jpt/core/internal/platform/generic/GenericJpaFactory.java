@@ -13,21 +13,7 @@ import org.eclipse.jpt.core.internal.platform.base.BaseJpaFactory;
 
 public class GenericJpaFactory extends BaseJpaFactory 
 {
-	// **************** singleton *********************************************
-	
-	private static GenericJpaFactory INSTANCE;  // lazily-final
-	
-	/**
-	 * Return the singleton Generic JPA factory
-	 */
-	public static final synchronized GenericJpaFactory instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new GenericJpaFactory();
-		}
-		return INSTANCE;
+	public GenericJpaFactory() {
+		super();
 	}
-	
-	
-	
-	// nothing for now... just take everything from the abstract superclass
 }

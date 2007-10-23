@@ -24,7 +24,7 @@ public class PersistenceTranslator extends RootTranslator
 	
 	
 	public PersistenceTranslator() {
-		super(PERSISTENCE, PERSISTENCE_PKG.eINSTANCE.getPersistence());
+		super(PERSISTENCE, PERSISTENCE_PKG.eINSTANCE.getXmlPersistence());
 	}
 	
 	
@@ -47,10 +47,10 @@ public class PersistenceTranslator extends RootTranslator
 	}
 	
 	private Translator createVersionTranslator() {
-		return new Translator(VERSION, PERSISTENCE_PKG.getPersistence_Version(), DOM_ATTRIBUTE);
+		return new Translator(VERSION, PERSISTENCE_PKG.getXmlPersistence_Version(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createPersistenceUnitTranslator() {
-		return new PersistenceUnitTranslator(PERSISTENCE_UNIT, PERSISTENCE_PKG.getPersistence_PersistenceUnits());
+		return new PersistenceUnitTranslator(PERSISTENCE_UNIT, PERSISTENCE_PKG.getXmlPersistence_PersistenceUnits());
 	}
 }

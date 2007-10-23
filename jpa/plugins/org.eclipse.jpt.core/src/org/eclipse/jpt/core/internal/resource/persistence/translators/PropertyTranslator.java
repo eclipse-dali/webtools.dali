@@ -31,10 +31,10 @@ public class PropertyTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, PERSISTENCE_PKG.getProperty_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, PERSISTENCE_PKG.getXmlProperty_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createValueTranslator() {
-		return new Translator(VALUE, PERSISTENCE_PKG.getProperty_Value(), DOM_ATTRIBUTE);
+		return new Translator(VALUE, PERSISTENCE_PKG.getXmlProperty_Value(), DOM_ATTRIBUTE);
 	}
 }

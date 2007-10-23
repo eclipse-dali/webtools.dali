@@ -396,41 +396,41 @@
   </genPackages>
   <genPackages prefix="Persistence" basePackage="org.eclipse.jpt.core.internal.resource"
       resource="XML" disposableProviderFactory="true" ecorePackage="persistence.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="persistence.ecore#//PersistenceUnitTransactionType">
-      <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//PersistenceUnitTransactionType/JTA"/>
-      <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//PersistenceUnitTransactionType/RESOURCE_LOCAL"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="persistence.ecore#//XmlPersistenceUnitTransactionType">
+      <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/JTA"/>
+      <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/RESOURCE_LOCAL"/>
     </genEnums>
-    <genDataTypes ecoreDataType="persistence.ecore#//PersistenceUnitTransactionTypeObject"/>
-    <genDataTypes ecoreDataType="persistence.ecore#//Version"/>
-    <genClasses ecoreClass="persistence.ecore#//Persistence">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//Persistence/persistenceUnits"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//Persistence/version"/>
+    <genDataTypes ecoreDataType="persistence.ecore#//XmlPersistenceUnitTransactionTypeObject"/>
+    <genDataTypes ecoreDataType="persistence.ecore#//XmlVersion"/>
+    <genClasses ecoreClass="persistence.ecore#//XmlPersistence">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//XmlPersistence/persistenceUnits"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlPersistence/version"/>
     </genClasses>
-    <genClasses ecoreClass="persistence.ecore#//PersistenceUnit">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//PersistenceUnit/description"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//PersistenceUnit/provider"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//PersistenceUnit/jtaDataSource"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//PersistenceUnit/nonJtaDataSource"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//PersistenceUnit/mappingFiles"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//PersistenceUnit/jarFiles"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//PersistenceUnit/classes"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//PersistenceUnit/excludeUnlistedClasses"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//PersistenceUnit/properties"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//PersistenceUnit/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//PersistenceUnit/transactionType"/>
+    <genClasses ecoreClass="persistence.ecore#//XmlPersistenceUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlPersistenceUnit/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlPersistenceUnit/provider"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlPersistenceUnit/jtaDataSource"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlPersistenceUnit/nonJtaDataSource"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//XmlPersistenceUnit/mappingFiles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlPersistenceUnit/jarFiles"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//XmlPersistenceUnit/classes"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlPersistenceUnit/excludeUnlistedClasses"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//XmlPersistenceUnit/properties"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlPersistenceUnit/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlPersistenceUnit/transactionType"/>
     </genClasses>
-    <genClasses ecoreClass="persistence.ecore#//MappingFileRef">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//MappingFileRef/fileName"/>
+    <genClasses ecoreClass="persistence.ecore#//XmlMappingFileRef">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlMappingFileRef/fileName"/>
     </genClasses>
-    <genClasses ecoreClass="persistence.ecore#//JavaClassRef">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//JavaClassRef/javaClass"/>
+    <genClasses ecoreClass="persistence.ecore#//XmlJavaClassRef">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlJavaClassRef/javaClass"/>
     </genClasses>
-    <genClasses ecoreClass="persistence.ecore#//Properties">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//Properties/properties"/>
+    <genClasses ecoreClass="persistence.ecore#//XmlProperties">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//XmlProperties/properties"/>
     </genClasses>
-    <genClasses ecoreClass="persistence.ecore#//Property">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//Property/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//Property/value"/>
+    <genClasses ecoreClass="persistence.ecore#//XmlProperty">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlProperty/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlProperty/value"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

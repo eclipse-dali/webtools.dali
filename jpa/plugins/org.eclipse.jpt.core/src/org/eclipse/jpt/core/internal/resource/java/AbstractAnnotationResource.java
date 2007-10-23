@@ -16,7 +16,8 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 
-public abstract class AbstractAnnotationResource<E extends Member> extends AbstractResource<E> implements Annotation
+public abstract class AbstractAnnotationResource<E extends Member> extends AbstractMemberResource<E> 
+	implements Annotation
 {
 	private final DeclarationAnnotationAdapter daa;
 

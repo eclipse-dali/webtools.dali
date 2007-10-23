@@ -73,14 +73,14 @@ public class PersistencePackage extends EPackageImpl
 	public static final PersistencePackage eINSTANCE = org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage.init();
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.Persistence <em>Persistence</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence <em>Xml Persistence</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Persistence
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistence()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistence()
 	 * @generated
 	 */
-	public static final int PERSISTENCE = 0;
+	public static final int XML_PERSISTENCE = 0;
 
 	/**
 	 * The feature id for the '<em><b>Persistence Units</b></em>' containment reference list.
@@ -89,7 +89,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE__PERSISTENCE_UNITS = 0;
+	public static final int XML_PERSISTENCE__PERSISTENCE_UNITS = 0;
 
 	/**
 	 * The feature id for the '<em><b>Version</b></em>' attribute.
@@ -98,26 +98,26 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE__VERSION = 1;
+	public static final int XML_PERSISTENCE__VERSION = 1;
 
 	/**
-	 * The number of structural features of the '<em>Persistence</em>' class.
+	 * The number of structural features of the '<em>Xml Persistence</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE_FEATURE_COUNT = 2;
+	public static final int XML_PERSISTENCE_FEATURE_COUNT = 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit <em>Unit</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit <em>Xml Persistence Unit</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit()
 	 * @generated
 	 */
-	public static final int PERSISTENCE_UNIT = 1;
+	public static final int XML_PERSISTENCE_UNIT = 1;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -126,7 +126,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE_UNIT__DESCRIPTION = 0;
+	public static final int XML_PERSISTENCE_UNIT__DESCRIPTION = 0;
 
 	/**
 	 * The feature id for the '<em><b>Provider</b></em>' attribute.
@@ -135,7 +135,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE_UNIT__PROVIDER = 1;
+	public static final int XML_PERSISTENCE_UNIT__PROVIDER = 1;
 
 	/**
 	 * The feature id for the '<em><b>Jta Data Source</b></em>' attribute.
@@ -144,7 +144,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE_UNIT__JTA_DATA_SOURCE = 2;
+	public static final int XML_PERSISTENCE_UNIT__JTA_DATA_SOURCE = 2;
 
 	/**
 	 * The feature id for the '<em><b>Non Jta Data Source</b></em>' attribute.
@@ -153,7 +153,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE = 3;
+	public static final int XML_PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE = 3;
 
 	/**
 	 * The feature id for the '<em><b>Mapping Files</b></em>' containment reference list.
@@ -162,7 +162,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE_UNIT__MAPPING_FILES = 4;
+	public static final int XML_PERSISTENCE_UNIT__MAPPING_FILES = 4;
 
 	/**
 	 * The feature id for the '<em><b>Jar Files</b></em>' attribute list.
@@ -171,7 +171,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE_UNIT__JAR_FILES = 5;
+	public static final int XML_PERSISTENCE_UNIT__JAR_FILES = 5;
 
 	/**
 	 * The feature id for the '<em><b>Classes</b></em>' containment reference list.
@@ -180,7 +180,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE_UNIT__CLASSES = 6;
+	public static final int XML_PERSISTENCE_UNIT__CLASSES = 6;
 
 	/**
 	 * The feature id for the '<em><b>Exclude Unlisted Classes</b></em>' attribute.
@@ -189,7 +189,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES = 7;
+	public static final int XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES = 7;
 
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference.
@@ -198,7 +198,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE_UNIT__PROPERTIES = 8;
+	public static final int XML_PERSISTENCE_UNIT__PROPERTIES = 8;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -207,7 +207,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE_UNIT__NAME = 9;
+	public static final int XML_PERSISTENCE_UNIT__NAME = 9;
 
 	/**
 	 * The feature id for the '<em><b>Transaction Type</b></em>' attribute.
@@ -216,26 +216,26 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE_UNIT__TRANSACTION_TYPE = 10;
+	public static final int XML_PERSISTENCE_UNIT__TRANSACTION_TYPE = 10;
 
 	/**
-	 * The number of structural features of the '<em>Unit</em>' class.
+	 * The number of structural features of the '<em>Xml Persistence Unit</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PERSISTENCE_UNIT_FEATURE_COUNT = 11;
+	public static final int XML_PERSISTENCE_UNIT_FEATURE_COUNT = 11;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef <em>Mapping File Ref</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef <em>Xml Mapping File Ref</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getMappingFileRef()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlMappingFileRef()
 	 * @generated
 	 */
-	public static final int MAPPING_FILE_REF = 2;
+	public static final int XML_MAPPING_FILE_REF = 2;
 
 	/**
 	 * The feature id for the '<em><b>File Name</b></em>' attribute.
@@ -244,26 +244,26 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MAPPING_FILE_REF__FILE_NAME = 0;
+	public static final int XML_MAPPING_FILE_REF__FILE_NAME = 0;
 
 	/**
-	 * The number of structural features of the '<em>Mapping File Ref</em>' class.
+	 * The number of structural features of the '<em>Xml Mapping File Ref</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MAPPING_FILE_REF_FEATURE_COUNT = 1;
+	public static final int XML_MAPPING_FILE_REF_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef <em>Java Class Ref</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef <em>Xml Java Class Ref</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getJavaClassRef()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlJavaClassRef()
 	 * @generated
 	 */
-	public static final int JAVA_CLASS_REF = 3;
+	public static final int XML_JAVA_CLASS_REF = 3;
 
 	/**
 	 * The feature id for the '<em><b>Java Class</b></em>' attribute.
@@ -272,26 +272,26 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_CLASS_REF__JAVA_CLASS = 0;
+	public static final int XML_JAVA_CLASS_REF__JAVA_CLASS = 0;
 
 	/**
-	 * The number of structural features of the '<em>Java Class Ref</em>' class.
+	 * The number of structural features of the '<em>Xml Java Class Ref</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JAVA_CLASS_REF_FEATURE_COUNT = 1;
+	public static final int XML_JAVA_CLASS_REF_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.Properties <em>Properties</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperties <em>Xml Properties</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Properties
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getProperties()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlProperties
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlProperties()
 	 * @generated
 	 */
-	public static final int PROPERTIES = 4;
+	public static final int XML_PROPERTIES = 4;
 
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
@@ -300,26 +300,26 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PROPERTIES__PROPERTIES = 0;
+	public static final int XML_PROPERTIES__PROPERTIES = 0;
 
 	/**
-	 * The number of structural features of the '<em>Properties</em>' class.
+	 * The number of structural features of the '<em>Xml Properties</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PROPERTIES_FEATURE_COUNT = 1;
+	public static final int XML_PROPERTIES_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.Property <em>Property</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperty <em>Xml Property</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Property
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getProperty()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlProperty
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlProperty()
 	 * @generated
 	 */
-	public static final int PROPERTY = 5;
+	public static final int XML_PROPERTY = 5;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -328,7 +328,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PROPERTY__NAME = 0;
+	public static final int XML_PROPERTY__NAME = 0;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -337,109 +337,109 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PROPERTY__VALUE = 1;
+	public static final int XML_PROPERTY__VALUE = 1;
 
 	/**
-	 * The number of structural features of the '<em>Property</em>' class.
+	 * The number of structural features of the '<em>Xml Property</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PROPERTY_FEATURE_COUNT = 2;
+	public static final int XML_PROPERTY_FEATURE_COUNT = 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnitTransactionType <em>Unit Transaction Type</em>}' enum.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTransactionType <em>Xml Persistence Unit Transaction Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnitTransactionType
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnitTransactionType()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTransactionType
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnitTransactionType()
 	 * @generated
 	 */
-	public static final int PERSISTENCE_UNIT_TRANSACTION_TYPE = 6;
+	public static final int XML_PERSISTENCE_UNIT_TRANSACTION_TYPE = 6;
 
 	/**
-	 * The meta object id for the '<em>Unit Transaction Type Object</em>' data type.
+	 * The meta object id for the '<em>Xml Persistence Unit Transaction Type Object</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnitTransactionTypeObject()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnitTransactionTypeObject()
 	 * @generated
 	 */
-	public static final int PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT = 7;
+	public static final int XML_PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT = 7;
 
 	/**
-	 * The meta object id for the '<em>Version</em>' data type.
+	 * The meta object id for the '<em>Xml Version</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see java.lang.String
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getVersion()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlVersion()
 	 * @generated
 	 */
-	public static final int VERSION = 8;
+	public static final int XML_VERSION = 8;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass persistenceEClass = null;
+	private EClass xmlPersistenceEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass persistenceUnitEClass = null;
+	private EClass xmlPersistenceUnitEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass mappingFileRefEClass = null;
+	private EClass xmlMappingFileRefEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass javaClassRefEClass = null;
+	private EClass xmlJavaClassRefEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass propertiesEClass = null;
+	private EClass xmlPropertiesEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass propertyEClass = null;
+	private EClass xmlPropertyEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EEnum persistenceUnitTransactionTypeEEnum = null;
+	private EEnum xmlPersistenceUnitTransactionTypeEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EDataType persistenceUnitTransactionTypeObjectEDataType = null;
+	private EDataType xmlPersistenceUnitTransactionTypeObjectEDataType = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EDataType versionEDataType = null;
+	private EDataType xmlVersionEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -522,375 +522,402 @@ public class PersistencePackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.persistence.Persistence <em>Persistence</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence <em>Xml Persistence</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Persistence</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Persistence
+	 * @return the meta object for class '<em>Xml Persistence</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence
 	 * @generated
 	 */
-	public EClass getPersistence()
+	public EClass getXmlPersistence()
 	{
-		return persistenceEClass;
+		return xmlPersistenceEClass;
 	}
 
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.Persistence#getVersion <em>Version</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Version</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Persistence#getVersion()
-	 * @see #getPersistence()
-	 * @generated
-	 */
-	public EAttribute getPersistence_Version()
-	{
-		return (EAttribute)persistenceEClass.getEStructuralFeatures().get(1);
-	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.persistence.Persistence#getPersistenceUnits <em>Persistence Units</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence#getPersistenceUnits <em>Persistence Units</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Persistence Units</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Persistence#getPersistenceUnits()
-	 * @see #getPersistence()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence#getPersistenceUnits()
+	 * @see #getXmlPersistence()
 	 * @generated
 	 */
-	public EReference getPersistence_PersistenceUnits()
+	public EReference getXmlPersistence_PersistenceUnits()
 	{
-		return (EReference)persistenceEClass.getEStructuralFeatures().get(0);
+		return (EReference)xmlPersistenceEClass.getEStructuralFeatures().get(0);
 	}
 
+
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit <em>Unit</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence#getVersion <em>Version</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Unit</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit
+	 * @return the meta object for the attribute '<em>Version</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence#getVersion()
+	 * @see #getXmlPersistence()
 	 * @generated
 	 */
-	public EClass getPersistenceUnit()
+	public EAttribute getXmlPersistence_Version()
 	{
-		return persistenceUnitEClass;
+		return (EAttribute)xmlPersistenceEClass.getEStructuralFeatures().get(1);
 	}
 
+
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getName <em>Name</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit <em>Xml Persistence Unit</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getName()
-	 * @see #getPersistenceUnit()
+	 * @return the meta object for class '<em>Xml Persistence Unit</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit
 	 * @generated
 	 */
-	public EAttribute getPersistenceUnit_Name()
+	public EClass getXmlPersistenceUnit()
 	{
-		return (EAttribute)persistenceUnitEClass.getEStructuralFeatures().get(9);
+		return xmlPersistenceUnitEClass;
 	}
 
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getTransactionType <em>Transaction Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Transaction Type</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getTransactionType()
-	 * @see #getPersistenceUnit()
-	 * @generated
-	 */
-	public EAttribute getPersistenceUnit_TransactionType()
-	{
-		return (EAttribute)persistenceUnitEClass.getEStructuralFeatures().get(10);
-	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getDescription <em>Description</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getDescription <em>Description</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Description</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getDescription()
-	 * @see #getPersistenceUnit()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getDescription()
+	 * @see #getXmlPersistenceUnit()
 	 * @generated
 	 */
-	public EAttribute getPersistenceUnit_Description()
+	public EAttribute getXmlPersistenceUnit_Description()
 	{
-		return (EAttribute)persistenceUnitEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)xmlPersistenceUnitEClass.getEStructuralFeatures().get(0);
 	}
 
+
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getProvider <em>Provider</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getProvider <em>Provider</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Provider</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getProvider()
-	 * @see #getPersistenceUnit()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getProvider()
+	 * @see #getXmlPersistenceUnit()
 	 * @generated
 	 */
-	public EAttribute getPersistenceUnit_Provider()
+	public EAttribute getXmlPersistenceUnit_Provider()
 	{
-		return (EAttribute)persistenceUnitEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)xmlPersistenceUnitEClass.getEStructuralFeatures().get(1);
 	}
 
+
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getJtaDataSource <em>Jta Data Source</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getJtaDataSource <em>Jta Data Source</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Jta Data Source</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getJtaDataSource()
-	 * @see #getPersistenceUnit()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getJtaDataSource()
+	 * @see #getXmlPersistenceUnit()
 	 * @generated
 	 */
-	public EAttribute getPersistenceUnit_JtaDataSource()
+	public EAttribute getXmlPersistenceUnit_JtaDataSource()
 	{
-		return (EAttribute)persistenceUnitEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)xmlPersistenceUnitEClass.getEStructuralFeatures().get(2);
 	}
 
+
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getNonJtaDataSource <em>Non Jta Data Source</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getNonJtaDataSource <em>Non Jta Data Source</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Non Jta Data Source</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getNonJtaDataSource()
-	 * @see #getPersistenceUnit()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getNonJtaDataSource()
+	 * @see #getXmlPersistenceUnit()
 	 * @generated
 	 */
-	public EAttribute getPersistenceUnit_NonJtaDataSource()
+	public EAttribute getXmlPersistenceUnit_NonJtaDataSource()
 	{
-		return (EAttribute)persistenceUnitEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)xmlPersistenceUnitEClass.getEStructuralFeatures().get(3);
 	}
 
+
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getMappingFiles <em>Mapping Files</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getMappingFiles <em>Mapping Files</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Mapping Files</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getMappingFiles()
-	 * @see #getPersistenceUnit()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getMappingFiles()
+	 * @see #getXmlPersistenceUnit()
 	 * @generated
 	 */
-	public EReference getPersistenceUnit_MappingFiles()
+	public EReference getXmlPersistenceUnit_MappingFiles()
 	{
-		return (EReference)persistenceUnitEClass.getEStructuralFeatures().get(4);
+		return (EReference)xmlPersistenceUnitEClass.getEStructuralFeatures().get(4);
 	}
 
+
 	/**
-	 * Returns the meta object for the attribute list '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getJarFiles <em>Jar Files</em>}'.
+	 * Returns the meta object for the attribute list '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getJarFiles <em>Jar Files</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>Jar Files</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getJarFiles()
-	 * @see #getPersistenceUnit()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getJarFiles()
+	 * @see #getXmlPersistenceUnit()
 	 * @generated
 	 */
-	public EAttribute getPersistenceUnit_JarFiles()
+	public EAttribute getXmlPersistenceUnit_JarFiles()
 	{
-		return (EAttribute)persistenceUnitEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)xmlPersistenceUnitEClass.getEStructuralFeatures().get(5);
 	}
 
+
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getClasses <em>Classes</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getClasses <em>Classes</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Classes</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getClasses()
-	 * @see #getPersistenceUnit()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getClasses()
+	 * @see #getXmlPersistenceUnit()
 	 * @generated
 	 */
-	public EReference getPersistenceUnit_Classes()
+	public EReference getXmlPersistenceUnit_Classes()
 	{
-		return (EReference)persistenceUnitEClass.getEStructuralFeatures().get(6);
+		return (EReference)xmlPersistenceUnitEClass.getEStructuralFeatures().get(6);
 	}
 
+
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Exclude Unlisted Classes</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#isExcludeUnlistedClasses()
-	 * @see #getPersistenceUnit()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#isExcludeUnlistedClasses()
+	 * @see #getXmlPersistenceUnit()
 	 * @generated
 	 */
-	public EAttribute getPersistenceUnit_ExcludeUnlistedClasses()
+	public EAttribute getXmlPersistenceUnit_ExcludeUnlistedClasses()
 	{
-		return (EAttribute)persistenceUnitEClass.getEStructuralFeatures().get(7);
+		return (EAttribute)xmlPersistenceUnitEClass.getEStructuralFeatures().get(7);
 	}
 
+
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getProperties <em>Properties</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getProperties <em>Properties</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Properties</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit#getProperties()
-	 * @see #getPersistenceUnit()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getProperties()
+	 * @see #getXmlPersistenceUnit()
 	 * @generated
 	 */
-	public EReference getPersistenceUnit_Properties()
+	public EReference getXmlPersistenceUnit_Properties()
 	{
-		return (EReference)persistenceUnitEClass.getEStructuralFeatures().get(8);
+		return (EReference)xmlPersistenceUnitEClass.getEStructuralFeatures().get(8);
 	}
 
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef <em>Mapping File Ref</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Mapping File Ref</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef
-	 * @generated
-	 */
-	public EClass getMappingFileRef()
-	{
-		return mappingFileRefEClass;
-	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef#getFileName <em>File Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>File Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef#getFileName()
-	 * @see #getMappingFileRef()
-	 * @generated
-	 */
-	public EAttribute getMappingFileRef_FileName()
-	{
-		return (EAttribute)mappingFileRefEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef <em>Java Class Ref</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Java Class Ref</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef
-	 * @generated
-	 */
-	public EClass getJavaClassRef()
-	{
-		return javaClassRefEClass;
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef#getJavaClass <em>Java Class</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Java Class</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef#getJavaClass()
-	 * @see #getJavaClassRef()
-	 * @generated
-	 */
-	public EAttribute getJavaClassRef_JavaClass()
-	{
-		return (EAttribute)javaClassRefEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.persistence.Properties <em>Properties</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Properties</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Properties
-	 * @generated
-	 */
-	public EClass getProperties()
-	{
-		return propertiesEClass;
-	}
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.persistence.Properties#getProperties <em>Properties</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Properties</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Properties#getProperties()
-	 * @see #getProperties()
-	 * @generated
-	 */
-	public EReference getProperties_Properties()
-	{
-		return (EReference)propertiesEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.persistence.Property <em>Property</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Property</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Property
-	 * @generated
-	 */
-	public EClass getProperty()
-	{
-		return propertyEClass;
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.Property#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Property#getName()
-	 * @see #getProperty()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getName()
+	 * @see #getXmlPersistenceUnit()
 	 * @generated
 	 */
-	public EAttribute getProperty_Name()
+	public EAttribute getXmlPersistenceUnit_Name()
 	{
-		return (EAttribute)propertyEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)xmlPersistenceUnitEClass.getEStructuralFeatures().get(9);
 	}
 
+
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.Property#getValue <em>Value</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getTransactionType <em>Transaction Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Transaction Type</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit#getTransactionType()
+	 * @see #getXmlPersistenceUnit()
+	 * @generated
+	 */
+	public EAttribute getXmlPersistenceUnit_TransactionType()
+	{
+		return (EAttribute)xmlPersistenceUnitEClass.getEStructuralFeatures().get(10);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef <em>Xml Mapping File Ref</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Mapping File Ref</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef
+	 * @generated
+	 */
+	public EClass getXmlMappingFileRef()
+	{
+		return xmlMappingFileRefEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef#getFileName <em>File Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>File Name</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef#getFileName()
+	 * @see #getXmlMappingFileRef()
+	 * @generated
+	 */
+	public EAttribute getXmlMappingFileRef_FileName()
+	{
+		return (EAttribute)xmlMappingFileRefEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef <em>Xml Java Class Ref</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Java Class Ref</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef
+	 * @generated
+	 */
+	public EClass getXmlJavaClassRef()
+	{
+		return xmlJavaClassRefEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef#getJavaClass <em>Java Class</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Java Class</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef#getJavaClass()
+	 * @see #getXmlJavaClassRef()
+	 * @generated
+	 */
+	public EAttribute getXmlJavaClassRef_JavaClass()
+	{
+		return (EAttribute)xmlJavaClassRefEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperties <em>Xml Properties</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Properties</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlProperties
+	 * @generated
+	 */
+	public EClass getXmlProperties()
+	{
+		return xmlPropertiesEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperties#getProperties <em>Properties</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Properties</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlProperties#getProperties()
+	 * @see #getXmlProperties()
+	 * @generated
+	 */
+	public EReference getXmlProperties_Properties()
+	{
+		return (EReference)xmlPropertiesEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperty <em>Xml Property</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Property</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlProperty
+	 * @generated
+	 */
+	public EClass getXmlProperty()
+	{
+		return xmlPropertyEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperty#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlProperty#getName()
+	 * @see #getXmlProperty()
+	 * @generated
+	 */
+	public EAttribute getXmlProperty_Name()
+	{
+		return (EAttribute)xmlPropertyEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperty#getValue <em>Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Value</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Property#getValue()
-	 * @see #getProperty()
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlProperty#getValue()
+	 * @see #getXmlProperty()
 	 * @generated
 	 */
-	public EAttribute getProperty_Value()
+	public EAttribute getXmlProperty_Value()
 	{
-		return (EAttribute)propertyEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)xmlPropertyEClass.getEStructuralFeatures().get(1);
 	}
 
+
 	/**
-	 * Returns the meta object for enum '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnitTransactionType <em>Unit Transaction Type</em>}'.
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTransactionType <em>Xml Persistence Unit Transaction Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Unit Transaction Type</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnitTransactionType
+	 * @return the meta object for enum '<em>Xml Persistence Unit Transaction Type</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTransactionType
 	 * @generated
 	 */
-	public EEnum getPersistenceUnitTransactionType()
+	public EEnum getXmlPersistenceUnitTransactionType()
 	{
-		return persistenceUnitTransactionTypeEEnum;
+		return xmlPersistenceUnitTransactionTypeEEnum;
 	}
 
+
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.util.Enumerator <em>Unit Transaction Type Object</em>}'.
+	 * Returns the meta object for data type '{@link org.eclipse.emf.common.util.Enumerator <em>Xml Persistence Unit Transaction Type Object</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Unit Transaction Type Object</em>'.
+	 * @return the meta object for data type '<em>Xml Persistence Unit Transaction Type Object</em>'.
 	 * @see org.eclipse.emf.common.util.Enumerator
 	 * @model instanceClass="org.eclipse.emf.common.util.Enumerator"
 	 * @generated
 	 */
-	public EDataType getPersistenceUnitTransactionTypeObject()
+	public EDataType getXmlPersistenceUnitTransactionTypeObject()
 	{
-		return persistenceUnitTransactionTypeObjectEDataType;
+		return xmlPersistenceUnitTransactionTypeObjectEDataType;
 	}
 
+
 	/**
-	 * Returns the meta object for data type '{@link java.lang.String <em>Version</em>}'.
+	 * Returns the meta object for data type '{@link java.lang.String <em>Xml Version</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Version</em>'.
+	 * @return the meta object for data type '<em>Xml Version</em>'.
 	 * @see java.lang.String
 	 * @model instanceClass="java.lang.String"
 	 * @generated
 	 */
-	public EDataType getVersion()
+	public EDataType getXmlVersion()
 	{
-		return versionEDataType;
+		return xmlVersionEDataType;
 	}
+
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -924,42 +951,42 @@ public class PersistencePackage extends EPackageImpl
 		isCreated = true;
 
 		// Create classes and their features
-		persistenceEClass = createEClass(PERSISTENCE);
-		createEReference(persistenceEClass, PERSISTENCE__PERSISTENCE_UNITS);
-		createEAttribute(persistenceEClass, PERSISTENCE__VERSION);
+		xmlPersistenceEClass = createEClass(XML_PERSISTENCE);
+		createEReference(xmlPersistenceEClass, XML_PERSISTENCE__PERSISTENCE_UNITS);
+		createEAttribute(xmlPersistenceEClass, XML_PERSISTENCE__VERSION);
 
-		persistenceUnitEClass = createEClass(PERSISTENCE_UNIT);
-		createEAttribute(persistenceUnitEClass, PERSISTENCE_UNIT__DESCRIPTION);
-		createEAttribute(persistenceUnitEClass, PERSISTENCE_UNIT__PROVIDER);
-		createEAttribute(persistenceUnitEClass, PERSISTENCE_UNIT__JTA_DATA_SOURCE);
-		createEAttribute(persistenceUnitEClass, PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE);
-		createEReference(persistenceUnitEClass, PERSISTENCE_UNIT__MAPPING_FILES);
-		createEAttribute(persistenceUnitEClass, PERSISTENCE_UNIT__JAR_FILES);
-		createEReference(persistenceUnitEClass, PERSISTENCE_UNIT__CLASSES);
-		createEAttribute(persistenceUnitEClass, PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES);
-		createEReference(persistenceUnitEClass, PERSISTENCE_UNIT__PROPERTIES);
-		createEAttribute(persistenceUnitEClass, PERSISTENCE_UNIT__NAME);
-		createEAttribute(persistenceUnitEClass, PERSISTENCE_UNIT__TRANSACTION_TYPE);
+		xmlPersistenceUnitEClass = createEClass(XML_PERSISTENCE_UNIT);
+		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__DESCRIPTION);
+		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__PROVIDER);
+		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__JTA_DATA_SOURCE);
+		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE);
+		createEReference(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__MAPPING_FILES);
+		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__JAR_FILES);
+		createEReference(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__CLASSES);
+		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES);
+		createEReference(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__PROPERTIES);
+		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__NAME);
+		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__TRANSACTION_TYPE);
 
-		mappingFileRefEClass = createEClass(MAPPING_FILE_REF);
-		createEAttribute(mappingFileRefEClass, MAPPING_FILE_REF__FILE_NAME);
+		xmlMappingFileRefEClass = createEClass(XML_MAPPING_FILE_REF);
+		createEAttribute(xmlMappingFileRefEClass, XML_MAPPING_FILE_REF__FILE_NAME);
 
-		javaClassRefEClass = createEClass(JAVA_CLASS_REF);
-		createEAttribute(javaClassRefEClass, JAVA_CLASS_REF__JAVA_CLASS);
+		xmlJavaClassRefEClass = createEClass(XML_JAVA_CLASS_REF);
+		createEAttribute(xmlJavaClassRefEClass, XML_JAVA_CLASS_REF__JAVA_CLASS);
 
-		propertiesEClass = createEClass(PROPERTIES);
-		createEReference(propertiesEClass, PROPERTIES__PROPERTIES);
+		xmlPropertiesEClass = createEClass(XML_PROPERTIES);
+		createEReference(xmlPropertiesEClass, XML_PROPERTIES__PROPERTIES);
 
-		propertyEClass = createEClass(PROPERTY);
-		createEAttribute(propertyEClass, PROPERTY__NAME);
-		createEAttribute(propertyEClass, PROPERTY__VALUE);
+		xmlPropertyEClass = createEClass(XML_PROPERTY);
+		createEAttribute(xmlPropertyEClass, XML_PROPERTY__NAME);
+		createEAttribute(xmlPropertyEClass, XML_PROPERTY__VALUE);
 
 		// Create enums
-		persistenceUnitTransactionTypeEEnum = createEEnum(PERSISTENCE_UNIT_TRANSACTION_TYPE);
+		xmlPersistenceUnitTransactionTypeEEnum = createEEnum(XML_PERSISTENCE_UNIT_TRANSACTION_TYPE);
 
 		// Create data types
-		persistenceUnitTransactionTypeObjectEDataType = createEDataType(PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT);
-		versionEDataType = createEDataType(VERSION);
+		xmlPersistenceUnitTransactionTypeObjectEDataType = createEDataType(XML_PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT);
+		xmlVersionEDataType = createEDataType(XML_VERSION);
 	}
 
 	/**
@@ -997,44 +1024,44 @@ public class PersistencePackage extends EPackageImpl
 		// Add supertypes to classes
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(persistenceEClass, Persistence.class, "Persistence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getPersistence_PersistenceUnits(), this.getPersistenceUnit(), null, "persistenceUnits", null, 0, -1, Persistence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPersistence_Version(), this.getVersion(), "version", null, 1, 1, Persistence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(xmlPersistenceEClass, XmlPersistence.class, "XmlPersistence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlPersistence_PersistenceUnits(), this.getXmlPersistenceUnit(), null, "persistenceUnits", null, 0, -1, XmlPersistence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlPersistence_Version(), this.getXmlVersion(), "version", null, 1, 1, XmlPersistence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(persistenceUnitEClass, PersistenceUnit.class, "PersistenceUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getPersistenceUnit_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPersistenceUnit_Provider(), theXMLTypePackage.getString(), "provider", null, 0, 1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPersistenceUnit_JtaDataSource(), theXMLTypePackage.getString(), "jtaDataSource", null, 0, 1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPersistenceUnit_NonJtaDataSource(), theXMLTypePackage.getString(), "nonJtaDataSource", null, 0, 1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPersistenceUnit_MappingFiles(), this.getMappingFileRef(), null, "mappingFiles", null, 0, -1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPersistenceUnit_JarFiles(), theXMLTypePackage.getString(), "jarFiles", null, 0, -1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPersistenceUnit_Classes(), this.getJavaClassRef(), null, "classes", null, 0, -1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPersistenceUnit_ExcludeUnlistedClasses(), theXMLTypePackage.getBoolean(), "excludeUnlistedClasses", "false", 0, 1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPersistenceUnit_Properties(), this.getProperties(), null, "properties", null, 0, 1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPersistenceUnit_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPersistenceUnit_TransactionType(), this.getPersistenceUnitTransactionType(), "transactionType", "JTA", 0, 1, PersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(xmlPersistenceUnitEClass, XmlPersistenceUnit.class, "XmlPersistenceUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlPersistenceUnit_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlPersistenceUnit_Provider(), theXMLTypePackage.getString(), "provider", null, 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlPersistenceUnit_JtaDataSource(), theXMLTypePackage.getString(), "jtaDataSource", null, 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlPersistenceUnit_NonJtaDataSource(), theXMLTypePackage.getString(), "nonJtaDataSource", null, 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPersistenceUnit_MappingFiles(), this.getXmlMappingFileRef(), null, "mappingFiles", null, 0, -1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlPersistenceUnit_JarFiles(), theXMLTypePackage.getString(), "jarFiles", null, 0, -1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPersistenceUnit_Classes(), this.getXmlJavaClassRef(), null, "classes", null, 0, -1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlPersistenceUnit_ExcludeUnlistedClasses(), theXMLTypePackage.getBoolean(), "excludeUnlistedClasses", "false", 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPersistenceUnit_Properties(), this.getXmlProperties(), null, "properties", null, 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlPersistenceUnit_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlPersistenceUnit_TransactionType(), this.getXmlPersistenceUnitTransactionType(), "transactionType", "JTA", 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(mappingFileRefEClass, MappingFileRef.class, "MappingFileRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getMappingFileRef_FileName(), theEcorePackage.getEString(), "fileName", "", 0, 1, MappingFileRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEClass(xmlMappingFileRefEClass, XmlMappingFileRef.class, "XmlMappingFileRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlMappingFileRef_FileName(), theEcorePackage.getEString(), "fileName", "", 0, 1, XmlMappingFileRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
-		initEClass(javaClassRefEClass, JavaClassRef.class, "JavaClassRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getJavaClassRef_JavaClass(), theEcorePackage.getEString(), "javaClass", null, 0, 1, JavaClassRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEClass(xmlJavaClassRefEClass, XmlJavaClassRef.class, "XmlJavaClassRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlJavaClassRef_JavaClass(), theEcorePackage.getEString(), "javaClass", null, 0, 1, XmlJavaClassRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
-		initEClass(propertiesEClass, Properties.class, "Properties", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getProperties_Properties(), this.getProperty(), null, "properties", null, 0, -1, Properties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(xmlPropertiesEClass, XmlProperties.class, "XmlProperties", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlProperties_Properties(), this.getXmlProperty(), null, "properties", null, 0, -1, XmlProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(propertyEClass, Property.class, "Property", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getProperty_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, Property.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getProperty_Value(), theXMLTypePackage.getString(), "value", null, 1, 1, Property.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(xmlPropertyEClass, XmlProperty.class, "XmlProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlProperty_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, XmlProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlProperty_Value(), theXMLTypePackage.getString(), "value", null, 1, 1, XmlProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
-		initEEnum(persistenceUnitTransactionTypeEEnum, PersistenceUnitTransactionType.class, "PersistenceUnitTransactionType");
-		addEEnumLiteral(persistenceUnitTransactionTypeEEnum, PersistenceUnitTransactionType.JTA);
-		addEEnumLiteral(persistenceUnitTransactionTypeEEnum, PersistenceUnitTransactionType.RESOURCE_LOCAL);
+		initEEnum(xmlPersistenceUnitTransactionTypeEEnum, XmlPersistenceUnitTransactionType.class, "XmlPersistenceUnitTransactionType");
+		addEEnumLiteral(xmlPersistenceUnitTransactionTypeEEnum, XmlPersistenceUnitTransactionType.JTA);
+		addEEnumLiteral(xmlPersistenceUnitTransactionTypeEEnum, XmlPersistenceUnitTransactionType.RESOURCE_LOCAL);
 
 		// Initialize data types
-		initEDataType(persistenceUnitTransactionTypeObjectEDataType, Enumerator.class, "PersistenceUnitTransactionTypeObject", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(versionEDataType, String.class, "Version", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(xmlPersistenceUnitTransactionTypeObjectEDataType, Enumerator.class, "XmlPersistenceUnitTransactionTypeObject", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(xmlVersionEDataType, String.class, "XmlVersion", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -1055,22 +1082,14 @@ public class PersistencePackage extends EPackageImpl
 	public interface Literals
 	{
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.Persistence <em>Persistence</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence <em>Xml Persistence</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.Persistence
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistence()
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistence()
 		 * @generated
 		 */
-		public static final EClass PERSISTENCE = eINSTANCE.getPersistence();
-
-		/**
-		 * The meta object literal for the '<em><b>Version</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute PERSISTENCE__VERSION = eINSTANCE.getPersistence_Version();
+		public static final EClass XML_PERSISTENCE = eINSTANCE.getXmlPersistence();
 
 		/**
 		 * The meta object literal for the '<em><b>Persistence Units</b></em>' containment reference list feature.
@@ -1078,33 +1097,25 @@ public class PersistencePackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference PERSISTENCE__PERSISTENCE_UNITS = eINSTANCE.getPersistence_PersistenceUnits();
+		public static final EReference XML_PERSISTENCE__PERSISTENCE_UNITS = eINSTANCE.getXmlPersistence_PersistenceUnits();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit <em>Unit</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnit()
-		 * @generated
-		 */
-		public static final EClass PERSISTENCE_UNIT = eINSTANCE.getPersistenceUnit();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Version</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute PERSISTENCE_UNIT__NAME = eINSTANCE.getPersistenceUnit_Name();
+		public static final EAttribute XML_PERSISTENCE__VERSION = eINSTANCE.getXmlPersistence_Version();
 
 		/**
-		 * The meta object literal for the '<em><b>Transaction Type</b></em>' attribute feature.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit <em>Xml Persistence Unit</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnit()
 		 * @generated
 		 */
-		public static final EAttribute PERSISTENCE_UNIT__TRANSACTION_TYPE = eINSTANCE.getPersistenceUnit_TransactionType();
+		public static final EClass XML_PERSISTENCE_UNIT = eINSTANCE.getXmlPersistenceUnit();
 
 		/**
 		 * The meta object literal for the '<em><b>Description</b></em>' attribute feature.
@@ -1112,7 +1123,7 @@ public class PersistencePackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute PERSISTENCE_UNIT__DESCRIPTION = eINSTANCE.getPersistenceUnit_Description();
+		public static final EAttribute XML_PERSISTENCE_UNIT__DESCRIPTION = eINSTANCE.getXmlPersistenceUnit_Description();
 
 		/**
 		 * The meta object literal for the '<em><b>Provider</b></em>' attribute feature.
@@ -1120,7 +1131,7 @@ public class PersistencePackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute PERSISTENCE_UNIT__PROVIDER = eINSTANCE.getPersistenceUnit_Provider();
+		public static final EAttribute XML_PERSISTENCE_UNIT__PROVIDER = eINSTANCE.getXmlPersistenceUnit_Provider();
 
 		/**
 		 * The meta object literal for the '<em><b>Jta Data Source</b></em>' attribute feature.
@@ -1128,7 +1139,7 @@ public class PersistencePackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute PERSISTENCE_UNIT__JTA_DATA_SOURCE = eINSTANCE.getPersistenceUnit_JtaDataSource();
+		public static final EAttribute XML_PERSISTENCE_UNIT__JTA_DATA_SOURCE = eINSTANCE.getXmlPersistenceUnit_JtaDataSource();
 
 		/**
 		 * The meta object literal for the '<em><b>Non Jta Data Source</b></em>' attribute feature.
@@ -1136,7 +1147,7 @@ public class PersistencePackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE = eINSTANCE.getPersistenceUnit_NonJtaDataSource();
+		public static final EAttribute XML_PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE = eINSTANCE.getXmlPersistenceUnit_NonJtaDataSource();
 
 		/**
 		 * The meta object literal for the '<em><b>Mapping Files</b></em>' containment reference list feature.
@@ -1144,7 +1155,7 @@ public class PersistencePackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference PERSISTENCE_UNIT__MAPPING_FILES = eINSTANCE.getPersistenceUnit_MappingFiles();
+		public static final EReference XML_PERSISTENCE_UNIT__MAPPING_FILES = eINSTANCE.getXmlPersistenceUnit_MappingFiles();
 
 		/**
 		 * The meta object literal for the '<em><b>Jar Files</b></em>' attribute list feature.
@@ -1152,7 +1163,7 @@ public class PersistencePackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute PERSISTENCE_UNIT__JAR_FILES = eINSTANCE.getPersistenceUnit_JarFiles();
+		public static final EAttribute XML_PERSISTENCE_UNIT__JAR_FILES = eINSTANCE.getXmlPersistenceUnit_JarFiles();
 
 		/**
 		 * The meta object literal for the '<em><b>Classes</b></em>' containment reference list feature.
@@ -1160,7 +1171,7 @@ public class PersistencePackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference PERSISTENCE_UNIT__CLASSES = eINSTANCE.getPersistenceUnit_Classes();
+		public static final EReference XML_PERSISTENCE_UNIT__CLASSES = eINSTANCE.getXmlPersistenceUnit_Classes();
 
 		/**
 		 * The meta object literal for the '<em><b>Exclude Unlisted Classes</b></em>' attribute feature.
@@ -1168,7 +1179,7 @@ public class PersistencePackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES = eINSTANCE.getPersistenceUnit_ExcludeUnlistedClasses();
+		public static final EAttribute XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES = eINSTANCE.getXmlPersistenceUnit_ExcludeUnlistedClasses();
 
 		/**
 		 * The meta object literal for the '<em><b>Properties</b></em>' containment reference feature.
@@ -1176,71 +1187,7 @@ public class PersistencePackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference PERSISTENCE_UNIT__PROPERTIES = eINSTANCE.getPersistenceUnit_Properties();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef <em>Mapping File Ref</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getMappingFileRef()
-		 * @generated
-		 */
-		public static final EClass MAPPING_FILE_REF = eINSTANCE.getMappingFileRef();
-
-		/**
-		 * The meta object literal for the '<em><b>File Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute MAPPING_FILE_REF__FILE_NAME = eINSTANCE.getMappingFileRef_FileName();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef <em>Java Class Ref</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getJavaClassRef()
-		 * @generated
-		 */
-		public static final EClass JAVA_CLASS_REF = eINSTANCE.getJavaClassRef();
-
-		/**
-		 * The meta object literal for the '<em><b>Java Class</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute JAVA_CLASS_REF__JAVA_CLASS = eINSTANCE.getJavaClassRef_JavaClass();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.Properties <em>Properties</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.Properties
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getProperties()
-		 * @generated
-		 */
-		public static final EClass PROPERTIES = eINSTANCE.getProperties();
-
-		/**
-		 * The meta object literal for the '<em><b>Properties</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference PROPERTIES__PROPERTIES = eINSTANCE.getProperties_Properties();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.Property <em>Property</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.Property
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getProperty()
-		 * @generated
-		 */
-		public static final EClass PROPERTY = eINSTANCE.getProperty();
+		public static final EReference XML_PERSISTENCE_UNIT__PROPERTIES = eINSTANCE.getXmlPersistenceUnit_Properties();
 
 		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -1248,7 +1195,87 @@ public class PersistencePackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute PROPERTY__NAME = eINSTANCE.getProperty_Name();
+		public static final EAttribute XML_PERSISTENCE_UNIT__NAME = eINSTANCE.getXmlPersistenceUnit_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Transaction Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_PERSISTENCE_UNIT__TRANSACTION_TYPE = eINSTANCE.getXmlPersistenceUnit_TransactionType();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef <em>Xml Mapping File Ref</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlMappingFileRef()
+		 * @generated
+		 */
+		public static final EClass XML_MAPPING_FILE_REF = eINSTANCE.getXmlMappingFileRef();
+
+		/**
+		 * The meta object literal for the '<em><b>File Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_MAPPING_FILE_REF__FILE_NAME = eINSTANCE.getXmlMappingFileRef_FileName();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef <em>Xml Java Class Ref</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlJavaClassRef()
+		 * @generated
+		 */
+		public static final EClass XML_JAVA_CLASS_REF = eINSTANCE.getXmlJavaClassRef();
+
+		/**
+		 * The meta object literal for the '<em><b>Java Class</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_JAVA_CLASS_REF__JAVA_CLASS = eINSTANCE.getXmlJavaClassRef_JavaClass();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperties <em>Xml Properties</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlProperties
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlProperties()
+		 * @generated
+		 */
+		public static final EClass XML_PROPERTIES = eINSTANCE.getXmlProperties();
+
+		/**
+		 * The meta object literal for the '<em><b>Properties</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_PROPERTIES__PROPERTIES = eINSTANCE.getXmlProperties_Properties();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperty <em>Xml Property</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlProperty
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlProperty()
+		 * @generated
+		 */
+		public static final EClass XML_PROPERTY = eINSTANCE.getXmlProperty();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_PROPERTY__NAME = eINSTANCE.getXmlProperty_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
@@ -1256,37 +1283,37 @@ public class PersistencePackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute PROPERTY__VALUE = eINSTANCE.getProperty_Value();
+		public static final EAttribute XML_PROPERTY__VALUE = eINSTANCE.getXmlProperty_Value();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnitTransactionType <em>Unit Transaction Type</em>}' enum.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTransactionType <em>Xml Persistence Unit Transaction Type</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnitTransactionType
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnitTransactionType()
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTransactionType
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnitTransactionType()
 		 * @generated
 		 */
-		public static final EEnum PERSISTENCE_UNIT_TRANSACTION_TYPE = eINSTANCE.getPersistenceUnitTransactionType();
+		public static final EEnum XML_PERSISTENCE_UNIT_TRANSACTION_TYPE = eINSTANCE.getXmlPersistenceUnitTransactionType();
 
 		/**
-		 * The meta object literal for the '<em>Unit Transaction Type Object</em>' data type.
+		 * The meta object literal for the '<em>Xml Persistence Unit Transaction Type Object</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @see org.eclipse.emf.common.util.Enumerator
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnitTransactionTypeObject()
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnitTransactionTypeObject()
 		 * @generated
 		 */
-		public static final EDataType PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT = eINSTANCE.getPersistenceUnitTransactionTypeObject();
+		public static final EDataType XML_PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT = eINSTANCE.getXmlPersistenceUnitTransactionTypeObject();
 
 		/**
-		 * The meta object literal for the '<em>Version</em>' data type.
+		 * The meta object literal for the '<em>Xml Version</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @see java.lang.String
-		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getVersion()
+		 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlVersion()
 		 * @generated
 		 */
-		public static final EDataType VERSION = eINSTANCE.getVersion();
+		public static final EDataType XML_VERSION = eINSTANCE.getXmlVersion();
 
 	}
 

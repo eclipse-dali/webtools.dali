@@ -32,6 +32,7 @@ public class JpaFile extends JpaNodeModel implements IJpaFile
 		super(jpaProject);
 		this.file = file;
 		this.resourceModel = resourceModel;
+		resourceModel.setJpaFile(this);
 	}
 	
 	/**

@@ -12,13 +12,46 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 
-public class PersistenceXml extends JpaContextNodeModel
+public class PersistenceXml extends JpaContextNode
+	implements IPersistenceXml
 {
-	public PersistenceXml(BaseJpaContent baseJpaContent) {
+	protected IPersistence persistence;
+	
+	
+	public PersistenceXml(IBaseJpaContent baseJpaContent) {
 		super(baseJpaContent);
 	}
 	
+	
+	// **************** persistence *******************************************
+	
+	public IPersistence getPersistence() {
+		return persistence;
+	}
+	
+	public void setPersistence(IPersistence newPersistence) {
+		if (persistence != newPersistence) {
+			IPersistence oldPersistence = persistence;
+			persistence = newPersistence;
+			firePropertyChanged(PERSISTENCE_PROPERTY, oldPersistence, newPersistence);
+		}
+	}
+	
+	
+	// **************** updating **********************************************
+	
 	public void update(PersistenceResourceModel persistenceResource) {
-		// TODO
+		if (persistenceResource.getPersistence() != null) {
+			if (persistence == null) {
+				IPersistence persistence = jpaFactory().createPersistence(this);
+				setPersistence(persistence);
+			}
+			persistence.update(persistenceResource.getPersistence());
+		}
+		else {
+			if (persistence != null) {
+				setPersistence(null);
+			}
+		}
 	}
 }

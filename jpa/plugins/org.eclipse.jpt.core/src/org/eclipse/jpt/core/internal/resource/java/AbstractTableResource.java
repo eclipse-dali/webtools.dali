@@ -14,9 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.JpaNodeModel;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -186,8 +184,9 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	}
 
 	
-	private class UniqueConstraintsContainerAnnotation extends JpaNodeModel implements ContainerAnnotation<NestableUniqueConstraint> {
-
+	private class UniqueConstraintsContainerAnnotation extends AbstractResource 
+		implements ContainerAnnotation<NestableUniqueConstraint> 
+	{
 		public UniqueConstraintsContainerAnnotation() {
 			super(AbstractTableResource.this);
 		}
@@ -257,10 +256,6 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 
 		public void removeAnnotation() {
 			AbstractTableResource.this.removeAnnotation();
-		}
-
-		public IJpaPlatform jpaPlatform() {
-			return AbstractTableResource.this.jpaPlatform();
 		}
 
 		public void updateFromJava(CompilationUnit astRoot) {

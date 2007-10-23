@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform.generic;
 
+import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.platform.base.BaseJpaPlatform;
 
@@ -17,13 +18,24 @@ public class GenericJpaPlatform extends BaseJpaPlatform
 {
 	public static String ID = "generic";
 	
+	
 	public GenericJpaPlatform() {
 		super();
 	}
 	
-	// **************** Model construction / updating *************************
 	
-	public IJpaFactory jpaFactory() {
-		return GenericJpaFactory.instance();
+	// **************** Model construction / updating **************************
+	
+	@Override
+	protected IJpaFactory buildJpaFactory() {
+		return new GenericJpaFactory();
+	}
+	
+	
+	// **************** java annotation support ********************************
+	
+	@Override
+	protected IJpaAnnotationProvider buildAnnotationProvider() {
+		return new GenericJpaAnnotationProvider();
 	}
 }

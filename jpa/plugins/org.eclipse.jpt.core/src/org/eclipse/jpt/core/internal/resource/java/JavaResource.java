@@ -10,15 +10,21 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaNodeModel;
+import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
+import org.eclipse.jpt.utility.internal.node.NodeModel;
 
-public interface JavaResource extends IJpaNodeModel
+public interface JavaResource extends NodeModel
 {
+	JpaCompilationUnitResource root();
+	
+	IJpaAnnotationProvider annotationProvider();
+	
+	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();
 	
 	void updateFromJava(CompilationUnit astRoot);
-
-
+	
 	/**
 	 * Return the ITextRange 
 	 */

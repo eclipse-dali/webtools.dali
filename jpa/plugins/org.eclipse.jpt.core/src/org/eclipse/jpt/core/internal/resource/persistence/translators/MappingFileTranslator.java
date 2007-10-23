@@ -34,7 +34,7 @@ public class MappingFileTranslator extends Translator
 	
 	protected Translator[] createChildren() {
 		return new Translator[] {
-			new Translator(TEXT_ATTRIBUTE_VALUE, PersistencePackage.eINSTANCE.getMappingFileRef_FileName())
+			new Translator(TEXT_ATTRIBUTE_VALUE, PersistencePackage.eINSTANCE.getXmlMappingFileRef_FileName())
 		};
 	}
 }

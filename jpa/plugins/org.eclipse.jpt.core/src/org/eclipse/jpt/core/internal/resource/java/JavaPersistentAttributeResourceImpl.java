@@ -22,13 +22,6 @@ public class JavaPersistentAttributeResourceImpl
 	extends AbstractJavaPersistentResource<Attribute>
 	implements JavaPersistentAttributeResource
 {
-
-//	private String typeName;
-//	
-//	private String typeNameInContainer;
-//	
-//	private boolean typeIsArray;
-	
 	public JavaPersistentAttributeResourceImpl(JavaPersistentTypeResource parent, Attribute attribute){
 		super(parent, attribute);
 	}
@@ -37,32 +30,32 @@ public class JavaPersistentAttributeResourceImpl
 	
 	@Override
 	protected Annotation buildMappingAnnotation(String mappingAnnotationName) {
-		return jpaPlatform().buildAttributeMappingAnnotation(this, getMember(), mappingAnnotationName);
+		return annotationProvider().buildAttributeMappingAnnotation(this, getMember(), mappingAnnotationName);
 	}
 
 	@Override
 	protected Annotation buildAnnotation(String annotationName) {
-		return jpaPlatform().buildAttributeAnnotation(this, getMember(), annotationName);
+		return annotationProvider().buildAttributeAnnotation(this, getMember(), annotationName);
 	}
 		
 	@Override
 	protected Iterator<String> correspondingAnnotationNames(String mappingAnnotationName) {
-		return jpaPlatform().correspondingAttributeAnnotationNames(mappingAnnotationName);
+		return annotationProvider().correspondingAttributeAnnotationNames(mappingAnnotationName);
 	}
 	
 	@Override
 	protected ListIterator<String> possibleMappingAnnotationNames() {
-		return jpaPlatform().attributeMappingAnnotationNames();
+		return annotationProvider().attributeMappingAnnotationNames();
 	}
 		
 	@Override
 	protected boolean isPossibleAnnotation(String annotationName) {
-		return CollectionTools.contains(jpaPlatform().attributeAnnotationNames(), annotationName);
+		return CollectionTools.contains(annotationProvider().attributeAnnotationNames(), annotationName);
 	}
 	
 	@Override
 	protected boolean isPossibleMappingAnnotation(String annotationName) {
-		return CollectionTools.contains(jpaPlatform().attributeMappingAnnotationNames(), annotationName);
+		return CollectionTools.contains(annotationProvider().attributeMappingAnnotationNames(), annotationName);
 	}
 
 	@Override

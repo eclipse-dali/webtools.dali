@@ -23,7 +23,7 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
+import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
@@ -95,10 +95,10 @@ public class JpaContentProvider
 			}
 		}
 		
-		if (parentElement instanceof BaseJpaContent) {
-			BaseJpaContent baseJpaContent = (BaseJpaContent) parentElement;
-			if (baseJpaContent.persistenceXml() != null) {
-				return new Object[] {baseJpaContent.persistenceXml()};
+		if (parentElement instanceof IBaseJpaContent) {
+			IBaseJpaContent baseJpaContent = (IBaseJpaContent) parentElement;
+			if (baseJpaContent.getPersistenceXml() != null) {
+				return new Object[] {baseJpaContent.getPersistenceXml()};
 			}
 		}
 		

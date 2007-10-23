@@ -16,12 +16,14 @@ import java.util.Map;
 import java.util.Set;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.IResourceModel;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -43,13 +45,13 @@ import org.w3c.dom.Node;
 public abstract class JptEObject extends EObjectImpl implements IJptEObject
 {
 	protected IDOMNode node;
-
+	
 	/**
 	 * Sets of "insignificant" feature ids, keyed by class.
 	 * This is built up lazily, as the objects are modified.
 	 */
 	private static final Map<Class, Set<Integer>> insignificantFeatureIdSets = new Hashtable<Class, Set<Integer>>();
-
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -58,6 +60,9 @@ public abstract class JptEObject extends EObjectImpl implements IJptEObject
 	protected JptEObject() {
 		super();
 	}
+	
+	
+	// **************** IJptEObject implementation *****************************
 	
 	public IJpaProject jpaProject() {
 		return jpaFile().jpaProject();
@@ -71,6 +76,10 @@ public abstract class JptEObject extends EObjectImpl implements IJptEObject
 		return jpaFile().getFile();
 	}
 	
+	public IResourceModel resourceModel() {
+		return root().resourceModel();
+	}
+	
 	public IJpaFile jpaFile() {
 		return root().jpaFile();
 	}
@@ -82,6 +91,81 @@ public abstract class JptEObject extends EObjectImpl implements IJptEObject
 		return ((IJptEObject) eContainer()).root();
 		
 	}
+	
+	
+	// **************** change notification ************************************
+	
+	/**
+	 * override to prevent notification when the object's state is unchanged
+	 */
+	@Override
+	public void eNotify(Notification notification) {
+		if (!notification.isTouch()) {
+			super.eNotify(notification);
+			this.featureChanged(notification.getFeatureID(this.getClass()));
+		}
+	}
+	
+	protected void featureChanged(int featureId) {
+		if (this.featureIsSignificant(featureId) 
+				// if jpa file is null, the resource model is still being 
+				// constructed
+				&& jpaFile() != null) { 
+			IJpaProject project = this.jpaProject();
+			// check that the model is fully initialized
+			if (project != null) {
+				project.update();
+			}
+		}
+	}
+	
+	protected boolean featureIsSignificant(int featureId) {
+		return ! this.featureIsInsignificant(featureId);
+	}
+	
+	protected boolean featureIsInsignificant(int featureId) {
+		return this.insignificantFeatureIds().contains(featureId);
+	}
+	
+	/**
+	 * Return a set of the object's "insignificant" feature ids.
+	 * These are the EMF features that will not be used to determine if all
+	 * the features are unset.  We use this to determine when to remove 
+	 * an element from the xml.
+	 * 
+	 * If you need instance-based calculation of your xml "insignificant" aspects,
+	 * override this method. If class-based calculation is sufficient,
+	 * override #addInsignificantXmlFeatureIdsTo(Set).
+	 * 
+	 * @see isAllFeaturesUnset()
+	 */
+	protected Set<Integer> insignificantFeatureIds() {
+		synchronized (insignificantFeatureIdSets) {
+			Set<Integer> insignificantXmlFeatureIds = insignificantFeatureIdSets.get(this.getClass());
+			if (insignificantXmlFeatureIds == null) {
+				insignificantXmlFeatureIds = new HashSet<Integer>();
+				this.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
+				insignificantFeatureIdSets.put(this.getClass(), insignificantXmlFeatureIds);
+			}
+			return insignificantXmlFeatureIds;
+		}
+	}
+	
+	/**
+	 * Add the object's "insignificant" feature ids to the specified set.
+	 * These are the EMF features that, when they change, will NOT cause the
+	 * object (or its containing tree) to be resynched, i.e. defaults calculated.
+	 * If class-based calculation of your "insignificant" features is sufficient,
+	 * override this method. If you need instance-based calculation,
+	 * override #insignificantXmlFeatureIds().
+	 */
+	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
+	// when you override this method, don't forget to include:
+	//	super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
+	}
+	
+	
+	// *************************************************************************
 	
 	@Override
 	public EList<Adapter> eAdapters() {
@@ -140,53 +224,8 @@ public abstract class JptEObject extends EObjectImpl implements IJptEObject
 		}
 		return new DOMNodeTextRange(domNode);
 	}
-
-	protected boolean featureIsSignificant(int featureId) {
-		return ! this.featureIsInsignificant(featureId);
-	}
-
-	protected boolean featureIsInsignificant(int featureId) {
-		return this.insignificantFeatureIds().contains(featureId);
-	}
-
-	/**
-	 * Return a set of the object's "insignificant" feature ids.
-	 * These are the EMF features that will not be used to determine if all
-	 * the features are unset.  We use this to determine when to remove 
-	 * an element from the xml.
-	 * 
-	 * If you need instance-based calculation of your xml "insignificant" aspects,
-	 * override this method. If class-based calculation is sufficient,
-	 * override #addInsignificantXmlFeatureIdsTo(Set).
-	 * 
-	 * @see isAllFeaturesUnset()
-	 */
-	protected Set<Integer> insignificantFeatureIds() {
-		synchronized (insignificantFeatureIdSets) {
-			Set<Integer> insignificantXmlFeatureIds = insignificantFeatureIdSets.get(this.getClass());
-			if (insignificantXmlFeatureIds == null) {
-				insignificantXmlFeatureIds = new HashSet<Integer>();
-				this.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
-				insignificantFeatureIdSets.put(this.getClass(), insignificantXmlFeatureIds);
-			}
-			return insignificantXmlFeatureIds;
-		}
-	}
-
-	/**
-	 * Add the object's "insignificant" feature ids to the specified set.
-	 * These are the EMF features that, when they change, will NOT cause the
-	 * object (or its containing tree) to be resynched, i.e. defaults calculated.
-	 * If class-based calculation of your "insignificant" features is sufficient,
-	 * override this method. If you need instance-based calculation,
-	 * override #insignificantXmlFeatureIds().
-	 */
-	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
-	// when you override this method, don't forget to include:
-	//	super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
-	}
-
-
+	
+	
 	/**
 	 * Implementation of ITextRange that adapts a IDOMNode.
 	 */

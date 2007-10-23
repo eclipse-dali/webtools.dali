@@ -21,11 +21,11 @@ import org.eclipse.emf.common.util.Enumerator;
  * A representation of the literals of the enumeration '<em><b>Unit Transaction Type</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getPersistenceUnitTransactionType()
+ * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlPersistenceUnitTransactionType()
  * @model
  * @generated
  */
-public enum PersistenceUnitTransactionType implements Enumerator
+public enum XmlPersistenceUnitTransactionType implements Enumerator
 {
 	/**
 	 * The '<em><b>JTA</b></em>' literal object.
@@ -78,37 +78,37 @@ public enum PersistenceUnitTransactionType implements Enumerator
 	public static final int RESOURCE_LOCAL_VALUE = 1;
 
 	/**
-	 * An array of all the '<em><b>Unit Transaction Type</b></em>' enumerators.
+	 * An array of all the '<em><b>Xml Persistence Unit Transaction Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static final PersistenceUnitTransactionType[] VALUES_ARRAY =
-		new PersistenceUnitTransactionType[]
+	private static final XmlPersistenceUnitTransactionType[] VALUES_ARRAY =
+		new XmlPersistenceUnitTransactionType[]
 		{
 			JTA,
 			RESOURCE_LOCAL,
 		};
 
 	/**
-	 * A public read-only list of all the '<em><b>Unit Transaction Type</b></em>' enumerators.
+	 * A public read-only list of all the '<em><b>Xml Persistence Unit Transaction Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final List<PersistenceUnitTransactionType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<XmlPersistenceUnitTransactionType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Unit Transaction Type</b></em>' literal with the specified literal value.
+	 * Returns the '<em><b>Xml Persistence Unit Transaction Type</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static PersistenceUnitTransactionType get(String literal)
+	public static XmlPersistenceUnitTransactionType get(String literal)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			PersistenceUnitTransactionType result = VALUES_ARRAY[i];
+			XmlPersistenceUnitTransactionType result = VALUES_ARRAY[i];
 			if (result.toString().equals(literal))
 			{
 				return result;
@@ -118,16 +118,16 @@ public enum PersistenceUnitTransactionType implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Unit Transaction Type</b></em>' literal with the specified name.
+	 * Returns the '<em><b>Xml Persistence Unit Transaction Type</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static PersistenceUnitTransactionType getByName(String name)
+	public static XmlPersistenceUnitTransactionType getByName(String name)
 	{
 		for (int i = 0; i < VALUES_ARRAY.length; ++i)
 		{
-			PersistenceUnitTransactionType result = VALUES_ARRAY[i];
+			XmlPersistenceUnitTransactionType result = VALUES_ARRAY[i];
 			if (result.getName().equals(name))
 			{
 				return result;
@@ -137,12 +137,12 @@ public enum PersistenceUnitTransactionType implements Enumerator
 	}
 
 	/**
-	 * Returns the '<em><b>Unit Transaction Type</b></em>' literal with the specified integer value.
+	 * Returns the '<em><b>Xml Persistence Unit Transaction Type</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static PersistenceUnitTransactionType get(int value)
+	public static XmlPersistenceUnitTransactionType get(int value)
 	{
 		switch (value)
 		{
@@ -179,7 +179,7 @@ public enum PersistenceUnitTransactionType implements Enumerator
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private PersistenceUnitTransactionType(int value, String name, String literal)
+	private XmlPersistenceUnitTransactionType(int value, String name, String literal)
 	{
 		this.value = value;
 		this.name = name;
@@ -228,4 +228,4 @@ public enum PersistenceUnitTransactionType implements Enumerator
 		return literal;
 	}
 	
-} //PersistenceUnitTransactionType
+} //XmlPersistenceUnitTransactionType

@@ -3,10 +3,14 @@ package org.eclipse.jpt.core.internal.resource.common;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
+import org.eclipse.jpt.core.internal.IJpaFile;
+import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IResourceModel;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
@@ -15,12 +19,30 @@ import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
 public abstract class JptXmlResourceModel extends TranslatorResourceImpl
 	implements IResourceModel
 {
+	protected IJpaFile jpaFile;
+	
+	
 	protected JptXmlResourceModel(Renderer aRenderer) {
 		super(aRenderer);
+		initialize();
 	}
 
 	protected JptXmlResourceModel(URI uri, Renderer aRenderer) {
 		super(uri, aRenderer);
+		initialize();
+	}
+	
+	protected void initialize() {
+		eAdapters().add(
+				new AdapterImpl() {
+					@Override
+					public void notifyChanged(Notification msg) {
+						if (jpaFile() != null) {
+							jpaProject().update();
+						}
+					}
+				}
+ 			);
 	}
 	
 	/**
@@ -89,5 +111,18 @@ public abstract class JptXmlResourceModel extends TranslatorResourceImpl
 			return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fileString));
 		}
 		return null;
+	}
+	
+	public IJpaFile jpaFile() {
+		return jpaFile;
+	}
+	
+	// NB: To be done *once*, when constructing the jpa file
+	public void setJpaFile(IJpaFile jpaFile) {
+		this.jpaFile = jpaFile;
+	}
+	
+	public IJpaProject jpaProject() {
+		return jpaFile().jpaProject();
 	}
 }

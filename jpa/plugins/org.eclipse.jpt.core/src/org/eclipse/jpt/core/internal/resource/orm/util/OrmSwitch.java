@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmSwitch.java,v 1.1.2.1 2007/09/17 20:58:27 pfullbright Exp $
+ * $Id: OrmSwitch.java,v 1.1.2.2 2007/10/23 23:36:43 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -554,13 +554,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Persistence Unit Metadata</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>XmlPersistence Unit Metadata</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Persistence Unit Metadata</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>XmlPersistence Unit Metadata</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -570,13 +570,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Persistence Unit Defaults</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>XmlPersistence Unit Defaults</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Persistence Unit Defaults</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>XmlPersistence Unit Defaults</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */

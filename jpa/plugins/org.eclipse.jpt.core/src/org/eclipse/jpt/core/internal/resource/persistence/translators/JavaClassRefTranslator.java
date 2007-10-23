@@ -38,7 +38,7 @@ public class JavaClassRefTranslator extends Translator
 	
 	private static Translator[] createChildren() {
 		return new Translator[] {
-			new Translator(TEXT_ATTRIBUTE_VALUE, PersistencePackage.eINSTANCE.getJavaClassRef_JavaClass())
+			new Translator(TEXT_ATTRIBUTE_VALUE, PersistencePackage.eINSTANCE.getXmlJavaClassRef_JavaClass())
 		};
 	}
 }

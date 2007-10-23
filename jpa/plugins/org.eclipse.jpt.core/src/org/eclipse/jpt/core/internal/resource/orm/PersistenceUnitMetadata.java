@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: PersistenceUnitMetadata.java,v 1.1.2.2 2007/10/16 17:01:40 pfullbright Exp $
+ * $Id: PersistenceUnitMetadata.java,v 1.1.2.3 2007/10/23 23:36:43 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
@@ -16,14 +16,14 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Persistence Unit Metadata</b></em>'.
+ * A representation of the model object '<em><b>XmlPersistence Unit Metadata</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}</li>
  * </ul>
  * </p>
  *
@@ -45,7 +45,7 @@ public class PersistenceUnitMetadata extends JptEObject implements IJptEObject
 	protected EmptyType xmlMappingMetadataComplete;
 
 	/**
-	 * The cached value of the '{@link #getPersistenceUnitDefaults() <em>Persistence Unit Defaults</em>}' containment reference.
+	 * The cached value of the '{@link #getPersistenceUnitDefaults() <em>XmlPersistence Unit Defaults</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getPersistenceUnitDefaults()
@@ -136,14 +136,14 @@ public class PersistenceUnitMetadata extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Persistence Unit Defaults</b></em>' containment reference.
+	 * Returns the value of the '<em><b>XmlPersistence Unit Defaults</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Persistence Unit Defaults</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>XmlPersistence Unit Defaults</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Persistence Unit Defaults</em>' containment reference.
+	 * @return the value of the '<em>XmlPersistence Unit Defaults</em>' containment reference.
 	 * @see #setPersistenceUnitDefaults(PersistenceUnitDefaults)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getPersistenceUnitMetadata_PersistenceUnitDefaults()
 	 * @model containment="true"
@@ -172,10 +172,10 @@ public class PersistenceUnitMetadata extends JptEObject implements IJptEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Persistence Unit Defaults</em>' containment reference.
+	 * @param value the new value of the '<em>XmlPersistence Unit Defaults</em>' containment reference.
 	 * @see #getPersistenceUnitDefaults()
 	 * @generated
 	 */

@@ -39,6 +39,17 @@ public interface IResourceModel
 	String getResourceType();
 	
 	/**
+	 * Return the IJpaFile that contains this resource model
+	 */
+	IJpaFile jpaFile();
+	
+	/**
+	 * Set the IJpaFile on the resource model
+	 * (NB: This is only done at jpa file/resource model construction)
+	 */
+	void setJpaFile(IJpaFile jpaFile);
+	
+	/**
 	 * Return the content node corresponding to the given offset in the source.
 	 * This may (and often will) be <code>null</code>.
 	 */

@@ -15,13 +15,14 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef;
-import org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.resource.persistence.Persistence;
+import org.eclipse.jpt.core.internal.resource.persistence.*;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.resource.persistence.Properties;
-import org.eclipse.jpt.core.internal.resource.persistence.Property;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlProperties;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlProperty;
 
 /**
  * <!-- begin-user-doc -->
@@ -87,34 +88,34 @@ public class PersistenceAdapterFactory extends AdapterFactoryImpl
 		new PersistenceSwitch<Adapter>()
 		{
 			@Override
-			public Adapter casePersistence(Persistence object)
+			public Adapter caseXmlPersistence(XmlPersistence object)
 			{
-				return createPersistenceAdapter();
+				return createXmlPersistenceAdapter();
 			}
 			@Override
-			public Adapter casePersistenceUnit(PersistenceUnit object)
+			public Adapter caseXmlPersistenceUnit(XmlPersistenceUnit object)
 			{
-				return createPersistenceUnitAdapter();
+				return createXmlPersistenceUnitAdapter();
 			}
 			@Override
-			public Adapter caseMappingFileRef(MappingFileRef object)
+			public Adapter caseXmlMappingFileRef(XmlMappingFileRef object)
 			{
-				return createMappingFileRefAdapter();
+				return createXmlMappingFileRefAdapter();
 			}
 			@Override
-			public Adapter caseJavaClassRef(JavaClassRef object)
+			public Adapter caseXmlJavaClassRef(XmlJavaClassRef object)
 			{
-				return createJavaClassRefAdapter();
+				return createXmlJavaClassRefAdapter();
 			}
 			@Override
-			public Adapter caseProperties(Properties object)
+			public Adapter caseXmlProperties(XmlProperties object)
 			{
-				return createPropertiesAdapter();
+				return createXmlPropertiesAdapter();
 			}
 			@Override
-			public Adapter caseProperty(Property object)
+			public Adapter caseXmlProperty(XmlProperty object)
 			{
-				return createPropertyAdapter();
+				return createXmlPropertyAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object)
@@ -139,91 +140,91 @@ public class PersistenceAdapterFactory extends AdapterFactoryImpl
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.persistence.Persistence <em>Persistence</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence <em>Xml Persistence</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Persistence
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence
 	 * @generated
 	 */
-	public Adapter createPersistenceAdapter()
+	public Adapter createXmlPersistenceAdapter()
 	{
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit <em>Unit</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit <em>Xml Persistence Unit</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.PersistenceUnit
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit
 	 * @generated
 	 */
-	public Adapter createPersistenceUnitAdapter()
+	public Adapter createXmlPersistenceUnitAdapter()
 	{
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef <em>Mapping File Ref</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef <em>Xml Mapping File Ref</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.MappingFileRef
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef
 	 * @generated
 	 */
-	public Adapter createMappingFileRefAdapter()
+	public Adapter createXmlMappingFileRefAdapter()
 	{
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef <em>Java Class Ref</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef <em>Xml Java Class Ref</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.JavaClassRef
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef
 	 * @generated
 	 */
-	public Adapter createJavaClassRefAdapter()
+	public Adapter createXmlJavaClassRefAdapter()
 	{
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.persistence.Properties <em>Properties</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperties <em>Xml Properties</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Properties
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlProperties
 	 * @generated
 	 */
-	public Adapter createPropertiesAdapter()
+	public Adapter createXmlPropertiesAdapter()
 	{
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.persistence.Property <em>Property</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.persistence.XmlProperty <em>Xml Property</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.resource.persistence.Property
+	 * @see org.eclipse.jpt.core.internal.resource.persistence.XmlProperty
 	 * @generated
 	 */
-	public Adapter createPropertyAdapter()
+	public Adapter createXmlPropertyAdapter()
 	{
 		return null;
 	}

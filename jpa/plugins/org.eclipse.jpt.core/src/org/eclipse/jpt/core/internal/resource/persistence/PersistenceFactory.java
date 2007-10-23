@@ -81,12 +81,12 @@ public class PersistenceFactory extends EFactoryImpl
 	{
 		switch (eClass.getClassifierID())
 		{
-			case PersistencePackage.PERSISTENCE: return (EObject)createPersistence();
-			case PersistencePackage.PERSISTENCE_UNIT: return (EObject)createPersistenceUnit();
-			case PersistencePackage.MAPPING_FILE_REF: return (EObject)createMappingFileRef();
-			case PersistencePackage.JAVA_CLASS_REF: return (EObject)createJavaClassRef();
-			case PersistencePackage.PROPERTIES: return (EObject)createProperties();
-			case PersistencePackage.PROPERTY: return (EObject)createProperty();
+			case PersistencePackage.XML_PERSISTENCE: return (EObject)createXmlPersistence();
+			case PersistencePackage.XML_PERSISTENCE_UNIT: return (EObject)createXmlPersistenceUnit();
+			case PersistencePackage.XML_MAPPING_FILE_REF: return (EObject)createXmlMappingFileRef();
+			case PersistencePackage.XML_JAVA_CLASS_REF: return (EObject)createXmlJavaClassRef();
+			case PersistencePackage.XML_PROPERTIES: return (EObject)createXmlProperties();
+			case PersistencePackage.XML_PROPERTY: return (EObject)createXmlProperty();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -102,12 +102,12 @@ public class PersistenceFactory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
-			case PersistencePackage.PERSISTENCE_UNIT_TRANSACTION_TYPE:
-				return createPersistenceUnitTransactionTypeFromString(eDataType, initialValue);
-			case PersistencePackage.PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT:
-				return createPersistenceUnitTransactionTypeObjectFromString(eDataType, initialValue);
-			case PersistencePackage.VERSION:
-				return createVersionFromString(eDataType, initialValue);
+			case PersistencePackage.XML_PERSISTENCE_UNIT_TRANSACTION_TYPE:
+				return createXmlPersistenceUnitTransactionTypeFromString(eDataType, initialValue);
+			case PersistencePackage.XML_PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT:
+				return createXmlPersistenceUnitTransactionTypeObjectFromString(eDataType, initialValue);
+			case PersistencePackage.XML_VERSION:
+				return createXmlVersionFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -123,12 +123,12 @@ public class PersistenceFactory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
-			case PersistencePackage.PERSISTENCE_UNIT_TRANSACTION_TYPE:
-				return convertPersistenceUnitTransactionTypeToString(eDataType, instanceValue);
-			case PersistencePackage.PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT:
-				return convertPersistenceUnitTransactionTypeObjectToString(eDataType, instanceValue);
-			case PersistencePackage.VERSION:
-				return convertVersionToString(eDataType, instanceValue);
+			case PersistencePackage.XML_PERSISTENCE_UNIT_TRANSACTION_TYPE:
+				return convertXmlPersistenceUnitTransactionTypeToString(eDataType, instanceValue);
+			case PersistencePackage.XML_PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT:
+				return convertXmlPersistenceUnitTransactionTypeObjectToString(eDataType, instanceValue);
+			case PersistencePackage.XML_VERSION:
+				return convertXmlVersionToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -139,10 +139,10 @@ public class PersistenceFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Persistence createPersistence()
+	public XmlPersistence createXmlPersistence()
 	{
-		Persistence persistence = new Persistence();
-		return persistence;
+		XmlPersistence xmlPersistence = new XmlPersistence();
+		return xmlPersistence;
 	}
 
 	/**
@@ -150,10 +150,10 @@ public class PersistenceFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PersistenceUnit createPersistenceUnit()
+	public XmlPersistenceUnit createXmlPersistenceUnit()
 	{
-		PersistenceUnit persistenceUnit = new PersistenceUnit();
-		return persistenceUnit;
+		XmlPersistenceUnit xmlPersistenceUnit = new XmlPersistenceUnit();
+		return xmlPersistenceUnit;
 	}
 
 	/**
@@ -161,10 +161,10 @@ public class PersistenceFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MappingFileRef createMappingFileRef()
+	public XmlMappingFileRef createXmlMappingFileRef()
 	{
-		MappingFileRef mappingFileRef = new MappingFileRef();
-		return mappingFileRef;
+		XmlMappingFileRef xmlMappingFileRef = new XmlMappingFileRef();
+		return xmlMappingFileRef;
 	}
 
 	/**
@@ -172,10 +172,10 @@ public class PersistenceFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public JavaClassRef createJavaClassRef()
+	public XmlJavaClassRef createXmlJavaClassRef()
 	{
-		JavaClassRef javaClassRef = new JavaClassRef();
-		return javaClassRef;
+		XmlJavaClassRef xmlJavaClassRef = new XmlJavaClassRef();
+		return xmlJavaClassRef;
 	}
 
 	/**
@@ -183,10 +183,10 @@ public class PersistenceFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Properties createProperties()
+	public XmlProperties createXmlProperties()
 	{
-		Properties properties = new Properties();
-		return properties;
+		XmlProperties xmlProperties = new XmlProperties();
+		return xmlProperties;
 	}
 
 	/**
@@ -194,10 +194,10 @@ public class PersistenceFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Property createProperty()
+	public XmlProperty createXmlProperty()
 	{
-		Property property = new Property();
-		return property;
+		XmlProperty xmlProperty = new XmlProperty();
+		return xmlProperty;
 	}
 
 	/**
@@ -205,9 +205,9 @@ public class PersistenceFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PersistenceUnitTransactionType createPersistenceUnitTransactionTypeFromString(EDataType eDataType, String initialValue)
+	public XmlPersistenceUnitTransactionType createXmlPersistenceUnitTransactionTypeFromString(EDataType eDataType, String initialValue)
 	{
-		PersistenceUnitTransactionType result = PersistenceUnitTransactionType.get(initialValue);
+		XmlPersistenceUnitTransactionType result = XmlPersistenceUnitTransactionType.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
@@ -217,7 +217,7 @@ public class PersistenceFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertPersistenceUnitTransactionTypeToString(EDataType eDataType, Object instanceValue)
+	public String convertXmlPersistenceUnitTransactionTypeToString(EDataType eDataType, Object instanceValue)
 	{
 		return instanceValue == null ? null : instanceValue.toString();
 	}
@@ -227,7 +227,7 @@ public class PersistenceFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Enumerator createPersistenceUnitTransactionTypeObjectFromString(EDataType eDataType, String initialValue)
+	public Enumerator createXmlPersistenceUnitTransactionTypeObjectFromString(EDataType eDataType, String initialValue)
 	{
 		return (Enumerator)super.createFromString(eDataType, initialValue);
 	}
@@ -237,7 +237,7 @@ public class PersistenceFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertPersistenceUnitTransactionTypeObjectToString(EDataType eDataType, Object instanceValue)
+	public String convertXmlPersistenceUnitTransactionTypeObjectToString(EDataType eDataType, Object instanceValue)
 	{
 		return super.convertToString(eDataType, instanceValue);
 	}
@@ -247,7 +247,7 @@ public class PersistenceFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String createVersionFromString(EDataType eDataType, String initialValue)
+	public String createXmlVersionFromString(EDataType eDataType, String initialValue)
 	{
 		return (String)super.createFromString(eDataType, initialValue);
 	}
@@ -257,7 +257,7 @@ public class PersistenceFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertVersionToString(EDataType eDataType, Object instanceValue)
+	public String convertXmlVersionToString(EDataType eDataType, Object instanceValue)
 	{
 		return super.convertToString(eDataType, instanceValue);
 	}
