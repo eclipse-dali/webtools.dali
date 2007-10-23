@@ -222,7 +222,7 @@ public class ChangeSupport
 	 * Return a dispatcher that will forward change notifications to the listeners.
 	 */
 	protected ChangeEventDispatcher dispatcher() {
-		return DefaultChangeEventDispatcher.instance();
+		return SimpleChangeEventDispatcher.instance();
 	}
 
 	/**
