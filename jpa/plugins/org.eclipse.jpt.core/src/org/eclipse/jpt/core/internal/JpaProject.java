@@ -238,6 +238,10 @@ public class JpaProject extends JpaNode implements IJpaProject {
 		return new CloneIterator<IJpaFile>(this.jpaFiles);  // read-only
 	}
 
+	public int jpaFilesSize() {
+		return this.jpaFiles.size();
+	}
+
 	public IJpaFile jpaFile(IFile file) {
 		synchronized (this.jpaFiles) {
 			for (IJpaFile jpaFile : this.jpaFiles) {

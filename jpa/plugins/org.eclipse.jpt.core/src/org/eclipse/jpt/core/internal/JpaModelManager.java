@@ -42,6 +42,7 @@ import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceArt
 import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceResource;
 import org.eclipse.jpt.core.internal.facet.IJpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
+import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
@@ -56,16 +57,30 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
  * and the various global listeners.
  * All the methods that handle the events from the listeners are 'synchronized',
  * effectively single-threading them and forcing the events to be queued up
- * and handled one at a time.
+ * and handled one at a time. Hopefully we don't cause any deadlocks.
  * 
  * Various things that cause us to add or remove a JPA project:
- * - Project created via the "New Project" wizard - facet POST_INSTALL
- * - Project created programmatically - facet POST_INSTALL
- * - Project closed - resource PRE_CLOSE
- * - Project deleted - resource PRE_DELETE
- * - Project opened - facet PROJECT_MODIFIED
- * - Pre-existing project imported - facet PROJECT_MODIFIED
- * - Project facet uninstalled via "Properties" dialog - facet PRE_UNINSTALL
+ * - Startup of the Dali plug-in will trigger all the JPA projects to be added
+ * 
+ * - Project created and facet installed
+ *     facet POST_INSTALL
+ * - Project facet uninstalled
+ *     facet PRE_UNINSTALL
+ * 
+ * - Project opened
+ *     facet PROJECT_MODIFIED
+ * - Project closed
+ *     facet PROJECT_MODIFIED
+ * 
+ * - Pre-existing project imported (created and opened)
+ *     resource POST_CHANGE -> PROJECT -> CHANGED -> OPEN
+ * - Project deleted
+ *     resource PRE_DELETE
+ * 
+ * - Project facet installed by editing the facets settings file directly
+ *     facet PROJECT_MODIFIED
+ * - Project facet uninstalled by editing the facets settings file directly
+ *     facet PROJECT_MODIFIED
  */
 public class JpaModelManager {
 
@@ -99,15 +114,12 @@ public class JpaModelManager {
 
 	// ********** singleton **********
 
-	private static JpaModelManager INSTANCE;  // lazily-final
+	private static final JpaModelManager INSTANCE = new JpaModelManager();
 
 	/**
 	 * Return the singleton JPA model manager.
 	 */
 	public static final synchronized JpaModelManager instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new JpaModelManager();
-		}
 		return INSTANCE;
 	}
 
@@ -132,6 +144,7 @@ public class JpaModelManager {
 	 * internal - called by JptCorePlugin
 	 */
 	public synchronized void start() throws Exception {
+		debug("*** START JPA model manager ***");
 		try {
 			this.jpaModel = this.buildJpaModel();
 			ResourcesPlugin.getWorkspace().addResourceChangeListener(this.resourceChangeListener);
@@ -154,6 +167,7 @@ public class JpaModelManager {
 	 * internal - called by JptCorePlugin
 	 */
 	public synchronized void stop() throws Exception {
+		debug("*** STOP JPA model manager ***");
 		JptCorePlugin.instance().getPluginPreferences().removePropertyChangeListener(this.preferencesListener);
 		JavaCore.removeElementChangedListener(this.javaElementChangeListener);
 		FacetedProjectFramework.removeListener(this.facetedProjectListener);
@@ -305,6 +319,24 @@ public class JpaModelManager {
 
 	// ********** internal **********
 
+	/**
+	 * Check whether the JPA facet has been added or removed.
+	 */
+	private void checkForTransition(IProject project) {
+		boolean jpaFacet = JptCorePlugin.projectHasJpaFacet(project);
+		boolean jpaProject = this.jpaModel.containsJpaProject(project);
+
+		if (jpaFacet) {
+			if ( ! jpaProject) {  // JPA facet added
+				this.addJpaProject(project);
+			}
+		} else {
+			if (jpaProject) {  // JPA facet removed
+				this.removeJpaProject(project);
+			}
+		}
+	}
+
 	private void addJpaProject(IProject project) {
 		this.jpaModel.addJpaProject(this.buildJpaProjectConfig(project));
 	}
@@ -313,18 +345,9 @@ public class JpaModelManager {
 	 * Remove the JPA project corresponding to the specified Eclipse project.
 	 * Do nothing if there is no corresponding JPA project.
 	 */
+	// TODO remove classpath items? persistence.xml? orm.xml?
 	private void removeJpaProject(IProject project) {
-		if (this.jpaModel.removeJpaProject(project)) {
-//			try {
-//				// TODO remove classpath items?
-//				// TODO remove persistence.xml?
-//				// TODO remove orm.xml?
-//				// TODO copy to dispose()? where were the markers added in the first place???
-//				ResourcesPlugin.getWorkspace().deleteMarkers(project.findMarkers(JptCorePlugin.VALIDATION_MARKER_ID, true, IResource.DEPTH_INFINITE));
-//			} catch (CoreException ex) {
-//				this.log(ex);  // not much we can do
-//			}
-		}
+		this.jpaModel.removeJpaProject(project);
 	}
 
 
@@ -341,12 +364,12 @@ public class JpaModelManager {
 		}
 		switch (event.getType()){
 			case IResourceChangeEvent.PRE_DELETE :  // project-only event
-			case IResourceChangeEvent.PRE_CLOSE :  // project-only event
-				this.projectPreDeleteOrClose(event);
+				this.resourcePreDelete(event);
 				break;
 			case IResourceChangeEvent.POST_CHANGE :
 				this.resourcePostChange(event);
 				break;
+			case IResourceChangeEvent.PRE_CLOSE :  // project-only event
 			case IResourceChangeEvent.PRE_BUILD :
 			case IResourceChangeEvent.POST_BUILD :
 			default :
@@ -355,16 +378,15 @@ public class JpaModelManager {
 	}
 
 	/**
-	 * A project is being deleted or closed. Remove its corresponding
+	 * A project is being deleted. Remove its corresponding
 	 * JPA project if appropriate.
 	 */
-	private void projectPreDeleteOrClose(IResourceChangeEvent event) {
-		IResource resource = event.getResource();
-		if (resource.getType() != IResource.PROJECT) {
-			return;  // this probably shouldn't happen...
-		}
-		IProject project = (IProject) resource;
-		if (JptCorePlugin.projectHasJpaFacet(project)) {
+	private void resourcePreDelete(IResourceChangeEvent event) {
+		debug("Resource (Project) PRE_DELETE: " + event.getResource());
+		// we don't get any events from the Facets Framework when a
+		// project is deleted, so we need this check...
+		IProject project = (IProject) event.getResource();
+		if (this.jpaModel.containsJpaProject(project)) {
 			this.removeJpaProject(project);
 		}
 	}
@@ -376,7 +398,9 @@ public class JpaModelManager {
 	 * changed files.)
 	 */
 	private void resourcePostChange(IResourceChangeEvent event) {
+		debug("Resource POST_CHANGE");
 		this.synchronizeFiles(event.getDelta());
+		this.checkForOpenedProjects(event.getDelta());
 	}
 
 	private void synchronizeFiles(IResourceDelta delta) {
@@ -402,7 +426,7 @@ public class JpaModelManager {
 	}
 
 	private void synchronizeFiles(IProject project, IResourceDelta delta) {
-		if (JptCorePlugin.projectHasJpaFacet(project)) {
+		if (this.jpaModel.containsJpaProject(project)) {
 			this.synchronizeJpaFiles(project, delta);
 		}
 	}
@@ -418,6 +442,62 @@ public class JpaModelManager {
 		}
 	}
 
+	/**
+	 * Crawl the specified delta, looking for projects being opened.
+	 * Projects being deleted are handled in IResourceChangeEvent.PRE_DELETE.
+	 * Projects being closed are handled in IFacetedProjectEvent.Type.PROJECT_MODIFIED.
+	 */
+	private void checkForOpenedProjects(IResourceDelta delta) {
+		IResource resource = delta.getResource();
+		switch (resource.getType()) {
+			case IResource.ROOT :
+				this.checkForOpenedProjects(delta.getAffectedChildren());  // recurse
+				break;
+			case IResource.PROJECT :
+				this.checkForOpenedProject((IProject) resource, delta);
+				break;
+			case IResource.FILE :
+			case IResource.FOLDER :
+			default :
+				break;
+		}
+	}
+
+	private void checkForOpenedProjects(IResourceDelta[] deltas) {
+		for (int i = 0; i < deltas.length; i++) {
+			this.checkForOpenedProjects(deltas[i]);  // recurse
+		}
+	}
+
+	private void checkForOpenedProject(IProject project, IResourceDelta delta) {
+		switch (delta.getKind()) {
+			case IResourceDelta.CHANGED : 
+				this.checkForOpenedProject2(project, delta);
+				break;
+			case IResourceDelta.REMOVED :  // already handled with the PRE_DELETE event
+			case IResourceDelta.ADDED :  // already handled with the facet POST_INSTALL event
+			case IResourceDelta.ADDED_PHANTOM :  // ignore
+			case IResourceDelta.REMOVED_PHANTOM :  // ignore
+			default :
+				break;
+		}
+	}
+
+	/**
+	 * We don't get any events from the Facets Framework when a pre-existing
+	 * project is imported, so we need to check for the newly imported project here.
+	 * 
+	 * This event also occurs when a project is simply opened. Project opening
+	 * also triggers a Facet PROJECT_MODIFIED event and that is where we add
+	 * the JPA project, not here
+	 */
+	private void checkForOpenedProject2(IProject project, IResourceDelta delta) {
+		if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.OPEN) && project.isOpen()) {
+			debug("\tProject CHANGED - OPEN: " + project.getName());
+			this.checkForTransition(project);
+		}
+	}
+
 
 	// ********** faceted project changed **********
 
@@ -425,7 +505,7 @@ public class JpaModelManager {
 	 * Check for:
 	 *   - install of JPA facet
 	 *   - un-install of JPA facet
-	 *   - sudden appearance or disappearance of JPA facet
+	 *   - any other appearance or disappearance of the JPA facet
 	 */
 	/* private */ synchronized void facetedProjectChanged(IFacetedProjectEvent event) {
 		switch (event.getType()) {
@@ -444,7 +524,8 @@ public class JpaModelManager {
 	}
 
 	private void facetedProjectPostInstall(IProjectFacetActionEvent event) {
-		if (JptCorePlugin.projectHasJpaFacet(event.getProject().getProject())) {
+		debug("Facet POST_INSTALL: " + event.getProjectFacet());
+		if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
 			this.jpaFacetedProjectPostInstall(event);
 		}
 	}
@@ -459,6 +540,7 @@ public class JpaModelManager {
 			this.createOrmXml(project);
 		}
 
+		// assume(?) this is the first event to indicate we need to add the JPA project to the JPA model
 		this.addJpaProject(project);
 	}
 
@@ -498,39 +580,27 @@ public class JpaModelManager {
 	}
 
 	private void facetedProjectPreUninstall(IProjectFacetActionEvent event) {
-		if (JptCorePlugin.projectHasJpaFacet(event.getProject().getProject())) {
+		debug("Facet PRE_UNINSTALL: " + event.getProjectFacet());
+		if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
 			this.jpaFacetedProjectPreUninstall(event);
 		}
 	}
 
 	private void jpaFacetedProjectPreUninstall(IProjectFacetActionEvent event) {
+		// assume(?) this is the first event to indicate we need to remove the JPA project to the JPA model
 		this.removeJpaProject(event.getProject().getProject());
 	}
 
 	/**
-	 * This event is triggered when various, unknown, things happen to a
-	 * faceted project, e.g.
+	 * This event is triggered for any change to a faceted project.
+	 * We use the event to watch for the following:
+	 *   - an open project is closed
 	 *   - a closed project is opened
-	 *   - a pre-existing project is imported
-	 *   - one of a project's metadata files is modified directly
-	 * Add a JPA project if the Eclipse project has a JPA facet but the JPA
-	 * model does not have a corresponding JPA project. Remove the JPA
-	 * project if the Eclipse project does not have a JPA facet but the JPA
-	 * model does have a corresponding JPA project.
+	 *   - one of a project's (facet) metadata files is edited directly
 	 */
 	private void facetedProjectModified(IProject project) {
-		boolean jpaFacet = JptCorePlugin.projectHasJpaFacet(project);
-		boolean jpaProject = this.jpaModel.containsJpaProject(project);
-
-		if (jpaFacet) {
-			if ( ! jpaProject) {  // facet added
-				this.addJpaProject(project);
-			}
-		} else {
-			if (jpaProject) {  // facet removed
-				this.removeJpaProject(project);
-			}
-		}
+		debug("Facet PROJECT_MODIFIED: " + project.getName());
+		this.checkForTransition(project);
 	}
 
 
@@ -633,6 +703,17 @@ public class JpaModelManager {
 		@Override
 		public String toString() {
 			return StringTools.buildToStringFor(this);
+		}
+	}
+
+
+	// ********** debug **********
+
+	private static final boolean DEBUG = false;
+
+	private static void debug(String message) {
+		if (DEBUG) {
+			System.out.println(Thread.currentThread().getName() + ": " + message);
 		}
 	}
 

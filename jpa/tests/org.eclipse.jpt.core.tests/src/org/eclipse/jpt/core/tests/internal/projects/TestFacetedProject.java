@@ -57,13 +57,24 @@ public class TestFacetedProject extends TestPlatformProject {
 		this.installFacet(facetName, versionName, null);
 	}
 
+	public void uninstallFacet(String facetName, String versionName) throws CoreException {
+		this.uninstallFacet(facetName, versionName, null);
+	}
+
 	/**
 	 * if 'config' is null, the JPA project will be built with the defaults
 	 * defined in JpaFacetDataModelProvider#getDefaultProperty(String)
 	 */
 	public void installFacet(String facetName, String versionName, IDataModel config) throws CoreException {
-		IProjectFacetVersion facetVersion = ProjectFacetsManager.getProjectFacet(facetName).getVersion(versionName);
-		this.facetedProject.installProjectFacet(facetVersion, config, null);
+		this.facetedProject.installProjectFacet(this.facetVersion(facetName, versionName), config, null);
+	}
+
+	public void uninstallFacet(String facetName, String versionName, IDataModel config) throws CoreException {
+		this.facetedProject.uninstallProjectFacet(this.facetVersion(facetName, versionName), config, null);
+	}
+
+	private IProjectFacetVersion facetVersion(String facetName, String versionName) {
+		return ProjectFacetsManager.getProjectFacet(facetName).getVersion(versionName);
 	}
 
 }

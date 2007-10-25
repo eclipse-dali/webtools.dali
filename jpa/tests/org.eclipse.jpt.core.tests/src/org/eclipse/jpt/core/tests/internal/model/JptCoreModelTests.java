@@ -20,7 +20,7 @@ public class JptCoreModelTests {
 	
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptCoreModelTests.class.getPackage().getName());
-		suite.addTestSuite(ModelInitializationTests.class);
+		suite.addTestSuite(JpaModelTests.class);
 		return suite;
 	}
 

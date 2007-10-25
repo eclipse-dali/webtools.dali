@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.validation;
 
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.SimpleTextRange;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -19,7 +18,7 @@ public class JpaValidationMessages
 {	
 	private static String[] DEFAULT_PARAMS = new String[0];
 	
-	private static ITextRange DEFAULT_TEXT_RANGE = new SimpleTextRange(0, 0, 0);
+	private static ITextRange DEFAULT_TEXT_RANGE = ITextRange.Empty.instance();
 	
 	public static IMessage buildMessage(
 			int severity, String messageId, Object targetObject) {
@@ -48,5 +47,7 @@ public class JpaValidationMessages
 	
 	private JpaValidationMessages() {
 		super();
+		throw new UnsupportedOperationException();
 	}
+
 }

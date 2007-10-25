@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -30,6 +31,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.tests.internal.jdtutility.JptCoreJdtUtilityTests;
 
 import junit.framework.Assert;
 
@@ -116,35 +119,33 @@ public class ProjectUtility {
 					Exception lastException = null;
 					// Don't make 2^12 is about 4 seconds which is the max we
 					// will wait for the VM to die
-					for (int j = 0; j < 13 && !success; j++) {
+					for (int j = 0; j < 14 && !success; j++) {
 						try {
 							if (project.exists()) {
 								project.delete(true, true, null);
 								ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 							}
 							success = true;
-						} catch (Exception e) {
-							lastException = e;
+						} catch (Exception ex) {
+							lastException = ex;
 							if (project.exists()) {
 								try {
 									project.close(null);
 									project.open(null);
-								} catch (Exception e2) {
+								} catch (Exception ex2) {
+									// ignore this exception
 								}
 							}
 							try {
 								Thread.sleep((int) Math.pow(2, j));
-							} catch (InterruptedException e1) {
-							} // if the VM
-																// isn't dead,
-																// try sleeping
+							} catch (InterruptedException ex2) {
+								// probably won't happen
+							}
 						}
 					}
-					if (!success && lastException != null) {
-						// Logger.getLogger().log("Problem while deleting: " + lastException.getMessage());
-						// Assert.fail("Caught Exception=" +
-						// lastException.getMessage() + " when deleting
-						// project=" + project.getName());
+					if ( ! success) {
+						System.out.println("Problem while deleting: " + project.getName());
+						lastException.printStackTrace(System.out);
 					}
 				}
 			}

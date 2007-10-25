@@ -68,6 +68,11 @@ public interface IJpaProject extends IJpaNode {
 		String JPA_FILES_COLLECTION = "jpaFiles";
 
 	/**
+	 * Return the size of the JPA project's JPA files.
+	 */
+	int jpaFilesSize();
+
+	/**
 	 * Return the JPA file corresponding to the specified file.
 	 * Return null if unable to associate the given file
 	 * with a JPA file.

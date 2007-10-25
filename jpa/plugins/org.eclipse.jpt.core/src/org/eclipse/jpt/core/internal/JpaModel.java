@@ -108,6 +108,7 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 	 * The JPA project will only be instantiated later, on demand.
 	 */
 	synchronized void addJpaProject(IJpaProject.Config config) {
+		dumpStackTrace();  // figure out exactly when JPA projects are built
 		this.jpaProjectHolders.add(this.jpaProjectHolder(config.project()).buildJpaProjectHolder(this, config));
 	}
 
@@ -117,6 +118,7 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 	 * JPA projects can only be removed by the JPA model manager.
 	 */
 	synchronized boolean removeJpaProject(IProject project) {
+		dumpStackTrace();  // figure out exactly when JPA projects are removed
 		return this.jpaProjectHolder(project).remove();
 	}
 
@@ -307,6 +309,28 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 			return StringTools.buildToStringFor(this, this.config.project().getName());
 		}
 
+	}
+
+
+	// ********** debug **********
+
+	private static final boolean DEBUG = false;
+
+	private static void dumpStackTrace() {
+		if (DEBUG) {
+			// lock System.out so the stack elements are printed out contiguously
+			synchronized (System.out) {
+				StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+				// skip the first 3 elements - those are this method and 2 methods in Thread
+				for (int i = 3; i < stackTrace.length; i++) {
+					StackTraceElement element = stackTrace[i];
+					if (element.getMethodName().equals("invoke0")) {
+						break;  // skip all elements outside of the JUnit test
+					}
+					System.out.println("\t" + element);
+				}
+			}
+		}
 	}
 
 }
