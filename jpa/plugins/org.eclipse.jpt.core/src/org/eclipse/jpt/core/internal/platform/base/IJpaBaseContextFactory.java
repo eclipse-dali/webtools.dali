@@ -12,7 +12,10 @@ package org.eclipse.jpt.core.internal.platform.base;
 
 import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
+import org.eclipse.jpt.core.internal.context.base.IClassRef;
+import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
+import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
 
 /**
@@ -31,7 +34,13 @@ import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
  */
 public interface IJpaBaseContextFactory extends IJpaFactory
 {
-	IPersistenceXml createPersistenceXml(IBaseJpaContent baseJpaContent);
+	IPersistenceXml createPersistenceXml(IBaseJpaContent parent);
 	
-	IPersistence createPersistence(IPersistenceXml persistenceXml);
+	IPersistence createPersistence(IPersistenceXml parent);
+	
+	IPersistenceUnit createPersistenceUnit(IPersistence parent);
+	
+	IMappingFileRef createMappingFileRef(IPersistenceUnit parent);
+	
+	IClassRef createClassRef(IPersistenceUnit parent);
 }

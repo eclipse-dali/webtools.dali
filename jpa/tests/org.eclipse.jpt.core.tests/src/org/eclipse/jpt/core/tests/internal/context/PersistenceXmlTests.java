@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context;
 
-import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 
@@ -24,38 +22,30 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testAddPersistence() throws Exception {
-		String persistenceXmlUri = JptCorePlugin.persistenceXmlDeploymentURI(jpaProject.getProject());
-		PersistenceArtifactEdit pae = 
-				PersistenceArtifactEdit.getArtifactEditForWrite(jpaProject.getProject(), persistenceXmlUri);
-		PersistenceResourceModel prm = pae.getPersistenceResource();
+		PersistenceResourceModel prm = persistenceResourceModel();
 		IBaseJpaContent baseJpaContent = (IBaseJpaContent) jpaProject.getJpaProject().contextModel();
 		IPersistenceXml persistenceXml = baseJpaContent.getPersistenceXml();
 		prm.getContents().clear();
 		prm.save(null);
-		waitForUpdate();
+		waitForProjectUpdate();
 		
 		assertNull(persistenceXml.getPersistence());
 		
 		prm.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
-		prm.save(null);
-		waitForUpdate();
+		waitForProjectUpdate();
 		
 		assertNotNull(persistenceXml.getPersistence());
 		
 	}
 	
 	public void testRemovePersistence() throws Exception {
-		String persistenceXmlUri = JptCorePlugin.persistenceXmlDeploymentURI(jpaProject.getProject());
-		PersistenceArtifactEdit pae = 
-				PersistenceArtifactEdit.getArtifactEditForWrite(jpaProject.getProject(), persistenceXmlUri);
-		PersistenceResourceModel prm = pae.getPersistenceResource();
+		PersistenceResourceModel prm = persistenceResourceModel();
 		IBaseJpaContent baseJpaContent = (IBaseJpaContent) jpaProject.getJpaProject().contextModel();
 		IPersistenceXml persistenceXml = baseJpaContent.getPersistenceXml();
 		
 		assertNotNull(persistenceXml.getPersistence());
 		
 		prm.getContents().clear();
-		prm.save(null);
 		
 		assertNull(persistenceXml.getPersistence());
 	}

@@ -11,10 +11,15 @@
 package org.eclipse.jpt.core.tests.internal.context;
 
 import junit.framework.TestCase;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 
@@ -34,8 +39,10 @@ public abstract class ContextModelTestCase extends TestCase
 	protected void setUp() throws Exception {
 		super.setUp();
 		ProjectUtility.deleteAllProjects();
+		waitForWorkspaceJobs();
 		this.jpaProject = this.buildJpaProject(PROJECT_NAME, false);  // false = no auto-build
-		waitForUpdate();
+		waitForWorkspaceJobs();
+		waitForProjectUpdate();
 	}
 	
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild) 
@@ -51,7 +58,28 @@ public abstract class ContextModelTestCase extends TestCase
 		super.tearDown();
 	}
 	
-	protected void waitForUpdate() {
+	protected void waitForWorkspaceJobs() {
+		// This job will not finish running until the workspace jobs are done
+		Job waitJob = new Job("Wait job") {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					return Status.OK_STATUS;
+				}
+			};
+		waitJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
+		waitJob.schedule();
+		
+		while (waitJob.getState() != Job.NONE) {
+			try {
+				Thread.sleep(50);
+			}
+			catch (InterruptedException ie) {
+				// do nothing
+			}
+		}
+	}
+	
+	protected void waitForProjectUpdate() {
 		// This job will not finish running until the update job has finished
 		Job waitJob = new Job("Wait job") {
 				@Override
@@ -70,5 +98,16 @@ public abstract class ContextModelTestCase extends TestCase
 				// do nothing
 			}
 		}
+	}
+	
+	protected PersistenceResourceModel persistenceResourceModel() {
+		String persistenceXmlUri = JptCorePlugin.persistenceXmlDeploymentURI(jpaProject.getProject());
+		PersistenceArtifactEdit pae = 
+				PersistenceArtifactEdit.getArtifactEditForWrite(jpaProject.getProject(), persistenceXmlUri);
+		return pae.getPersistenceResource();
+	}
+	
+	protected BaseJpaContent jpaContent() {
+		return (BaseJpaContent) jpaProject.getJpaProject().contextModel();
 	}
 }

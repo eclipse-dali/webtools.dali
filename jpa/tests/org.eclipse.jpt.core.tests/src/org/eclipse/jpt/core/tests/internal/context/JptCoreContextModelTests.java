@@ -24,6 +24,8 @@ public class JptCoreContextModelTests extends TestCase
 		TestSuite suite = new TestSuite(JptCoreContextModelTests.class.getName());
 		suite.addTestSuite(BaseJpaContentTests.class);
 		suite.addTestSuite(PersistenceXmlTests.class);
+		suite.addTestSuite(PersistenceTests.class);
+		suite.addTestSuite(PersistenceUnitTests.class);
 		return suite;
 	}
 

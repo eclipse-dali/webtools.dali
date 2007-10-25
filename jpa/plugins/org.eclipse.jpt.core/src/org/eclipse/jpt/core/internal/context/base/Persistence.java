@@ -11,9 +11,11 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class Persistence extends JpaContextNode
@@ -22,8 +24,8 @@ public class Persistence extends JpaContextNode
 	protected List<IPersistenceUnit> persistenceUnits;
 	
 	
-	public Persistence(IPersistenceXml persistenceXml) {
-		super(persistenceXml);
+	public Persistence(IPersistenceXml parent) {
+		super(parent);
 	}
 	
 	@Override
@@ -63,7 +65,25 @@ public class Persistence extends JpaContextNode
 	// **************** updating ***********************************************
 	
 	public void update(XmlPersistence persistence) {
+		Iterator<IPersistenceUnit> stream = persistenceUnits();
+		Iterator<XmlPersistenceUnit> stream2 = persistence.getPersistenceUnits().iterator();
 		
+		while (stream.hasNext()) {
+			IPersistenceUnit persistenceUnit = stream.next();
+			if (stream2.hasNext()) {
+				XmlPersistenceUnit xmlPersistenceUnit = stream2.next();
+				persistenceUnit.update(xmlPersistenceUnit);
+			}
+			else {
+				removePersistenceUnit(persistenceUnit);
+			}
+		}
 		
+		while (stream2.hasNext()) {
+			XmlPersistenceUnit xmlPersistenceUnit = stream2.next();
+			IPersistenceUnit persistenceUnit = jpaFactory().createPersistenceUnit(this);
+			addPersistenceUnit(persistenceUnit);
+			persistenceUnit.update(xmlPersistenceUnit);
+		}
 	}
 }

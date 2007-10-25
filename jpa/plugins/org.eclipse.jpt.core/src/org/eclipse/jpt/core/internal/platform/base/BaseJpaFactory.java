@@ -25,10 +25,16 @@ import org.eclipse.jpt.core.internal.JpaFile;
 import org.eclipse.jpt.core.internal.JpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
+import org.eclipse.jpt.core.internal.context.base.ClassRef;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
+import org.eclipse.jpt.core.internal.context.base.IClassRef;
+import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
+import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
+import org.eclipse.jpt.core.internal.context.base.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.Persistence;
+import org.eclipse.jpt.core.internal.context.base.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
@@ -142,15 +148,27 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	// **************** Context objects ***************************************
 	
-	public IContextModel buildContextModel(IJpaProject jpaProject) {
-		return new BaseJpaContent(jpaProject);
+	public IContextModel buildContextModel(IJpaProject parent) {
+		return new BaseJpaContent(parent);
 	}
 	
-	public IPersistenceXml createPersistenceXml(IBaseJpaContent baseJpaContent) {
-		return new PersistenceXml(baseJpaContent);
+	public IPersistenceXml createPersistenceXml(IBaseJpaContent parent) {
+		return new PersistenceXml(parent);
 	}
 	
-	public IPersistence createPersistence(IPersistenceXml persistenceXml) {
-		return new Persistence(persistenceXml);
+	public IPersistence createPersistence(IPersistenceXml parent) {
+		return new Persistence(parent);
+	}
+	
+	public IPersistenceUnit createPersistenceUnit(IPersistence parent) {
+		return new PersistenceUnit(parent);
+	}
+	
+	public IMappingFileRef createMappingFileRef(IPersistenceUnit parent) {
+		return new MappingFileRef(parent);
+	}
+	
+	public IClassRef createClassRef(IPersistenceUnit parent) {
+		return new ClassRef(parent);
 	}
 }

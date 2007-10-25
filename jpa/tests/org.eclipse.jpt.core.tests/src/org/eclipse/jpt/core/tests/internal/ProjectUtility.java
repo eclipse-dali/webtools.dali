@@ -125,9 +125,19 @@ public class ProjectUtility {
 							if (project.exists()) {
 								try {
 									project.close(null);
-									project.open(null);
-								} catch (Exception e2) {
 								}
+								catch (Exception e2) {
+								}
+								try {
+									project.open(null);
+								}
+								catch (Exception e3) {
+									try {
+										project.create(null);
+									}
+									catch (Exception e4) {
+									}
+ 								}
 							}
 							try {
 								Thread.sleep((int) Math.pow(2, j));
