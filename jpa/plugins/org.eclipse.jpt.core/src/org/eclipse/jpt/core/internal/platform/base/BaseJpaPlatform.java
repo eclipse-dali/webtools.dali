@@ -11,8 +11,6 @@ package org.eclipse.jpt.core.internal.platform.base;
 
 import java.util.List;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.core.internal.IContextModel;
 import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.IJpaFile;
@@ -24,8 +22,6 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public abstract class BaseJpaPlatform implements IJpaPlatform
 {
 	private String id;
-	
-	protected IJpaProject project;
 	
 	protected IJpaFactory jpaFactory;
 	
@@ -52,14 +48,6 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		this.id = theId;
 	}
 	
-	public IJpaProject getProject() {
-		return this.project;
-	}
-	
-	public void setProject(IJpaProject jpaProject) {
-		this.project = jpaProject;
-	}
-	
 	
 	// **************** Model construction / updating **************************
 	
@@ -79,10 +67,6 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		}
 		
 		return null;
-	}
-	
-	public void update(IJpaProject jpaProject, IContextModel contextModel, IProgressMonitor monitor) {
-		contextModel.update(jpaProject, monitor);
 	}
 	
 	

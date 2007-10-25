@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 
 public interface IClassRef extends IJpaContextNode
 {
 	void update(XmlJavaClassRef classRef);
+	
+	IJavaPersistentType getJavaPersistentType();
+
 }

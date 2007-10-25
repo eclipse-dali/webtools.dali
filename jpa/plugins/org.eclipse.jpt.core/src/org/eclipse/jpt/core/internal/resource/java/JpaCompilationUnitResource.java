@@ -88,6 +88,10 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 		return this.compilationUnit;
 	}
 	
+	public JavaPersistentTypeResource javaPersistentTypeResource(String fullyQualifiedTypeName) {
+		return getPersistentType().javaPersistentTypeResource(fullyQualifiedTypeName);
+	}
+
 	/**
 	 * The persistentType resource for the compilation unit's primary type.
 	 * Will be null if the primary type is null.

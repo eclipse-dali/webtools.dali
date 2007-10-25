@@ -7,5 +7,5 @@ public interface IContextModel
 	/**
 	 * Update the context model with the content of the JPA project
 	 */
-	void update(IJpaProject jpaProject, IProgressMonitor monitor);
+	void update(IProgressMonitor monitor);
 }

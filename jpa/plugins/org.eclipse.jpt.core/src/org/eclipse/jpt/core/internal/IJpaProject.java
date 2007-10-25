@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
@@ -98,11 +99,11 @@ public interface IJpaProject extends IJpaNodeModel {
 //	 */
 //	Iterator<JavaPersistentType> javaPersistentTypes();
 //
-//	/**
-//	 * Return the Java persistent type for the specified JDT type;
-//	 * null, if none exists.
-//	 */
-//	JavaPersistentType javaPersistentType(IType type);
+	/**
+	 * Return the Java persistent type resource for the specified fully qualified type name;
+	 * null, if none exists.
+	 */
+	JavaPersistentTypeResource javaPersistentTypeResource(String fullyQualifiedTypeName);
 
 	/**
 	 * Synchronize the JPA project's JPA files with the specified resource

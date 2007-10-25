@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context;
 
-import junit.framework.TestCase;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -20,16 +19,14 @@ import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
-import org.eclipse.jpt.core.tests.internal.ProjectUtility;
+import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 
-public abstract class ContextModelTestCase extends TestCase
+public abstract class ContextModelTestCase extends AnnotationTestCase
 {
 	protected static final String PROJECT_NAME = "ContextModelTestProject";
-	
-	
-	protected TestJpaProject jpaProject;
-	
+		
 	
 	protected ContextModelTestCase(String name) {
 		super(name);
@@ -38,24 +35,18 @@ public abstract class ContextModelTestCase extends TestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		ProjectUtility.deleteAllProjects();
-		waitForWorkspaceJobs();
-		this.jpaProject = this.buildJpaProject(PROJECT_NAME, false);  // false = no auto-build
 		waitForWorkspaceJobs();
 		waitForProjectUpdate();
+	}
+	
+	@Override
+	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
+		return buildJpaProject(PROJECT_NAME, autoBuild);
 	}
 	
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild) 
 			throws Exception {
 		return new TestJpaProject(projectName, autoBuild);  // false = no auto-build
-	}
-	
-	@Override
-	protected void tearDown() throws Exception {
-//		this.dumpSource();
-//		this.javaProject.dispose();
-		this.jpaProject = null;
-		super.tearDown();
 	}
 	
 	protected void waitForWorkspaceJobs() {
@@ -87,9 +78,8 @@ public abstract class ContextModelTestCase extends TestCase
 					return Status.OK_STATUS;
 				}
 			};
-		waitJob.setRule(jpaProject.getProject());
+		waitJob.setRule(getJavaProject().getProject());
 		waitJob.schedule();
-		
 		while (waitJob.getState() != Job.NONE) {
 			try {
 				Thread.sleep(50);
@@ -101,13 +91,18 @@ public abstract class ContextModelTestCase extends TestCase
 	}
 	
 	protected PersistenceResourceModel persistenceResourceModel() {
-		String persistenceXmlUri = JptCorePlugin.persistenceXmlDeploymentURI(jpaProject.getProject());
+		String persistenceXmlUri = JptCorePlugin.persistenceXmlDeploymentURI(getJavaProject().getProject());
 		PersistenceArtifactEdit pae = 
-				PersistenceArtifactEdit.getArtifactEditForWrite(jpaProject.getProject(), persistenceXmlUri);
+				PersistenceArtifactEdit.getArtifactEditForWrite(getJavaProject().getProject(), persistenceXmlUri);
 		return pae.getPersistenceResource();
 	}
 	
 	protected BaseJpaContent jpaContent() {
-		return (BaseJpaContent) jpaProject.getJpaProject().contextModel();
+		return (BaseJpaContent) getJavaProject().getJpaProject().contextModel();
+	}
+	
+	@Override
+	protected TestJpaProject getJavaProject() {
+		return (TestJpaProject) super.getJavaProject();
 	}
 }

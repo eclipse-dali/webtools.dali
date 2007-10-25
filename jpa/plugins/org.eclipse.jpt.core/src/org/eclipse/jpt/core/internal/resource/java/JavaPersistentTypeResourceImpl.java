@@ -43,6 +43,8 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	
 	private String superClassQualifiedName;
 	
+	private String qualifiedName;
+	
 	public JavaPersistentTypeResourceImpl(JavaResource parent, Type type){
 		super(parent, type);
 		this.nestedTypes = new ArrayList<JavaPersistentTypeResource>(); 
@@ -87,7 +89,18 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	}
 
 	// ******** JavaPersistentTypeResource implementation ********
-	
+	public JavaPersistentTypeResource javaPersistentTypeResource(String fullyQualifiedTypeName) {
+		if (getQualifiedName().equals(fullyQualifiedTypeName)) {
+			return this;
+		}
+		for (JavaPersistentTypeResource jptr : CollectionTools.iterable(nestedTypes())) {
+			if (jptr.getQualifiedName().equals(fullyQualifiedTypeName)) {
+				return jptr;
+			}
+		}
+		return null;
+	}
+
 	public Iterator<JavaPersistentTypeResource> nestedTypes() {
 		//TODO since we are filtering how do we handle the case where a type becomes persistable?
 		//what kind of change notificiation for that case?
@@ -225,9 +238,19 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		//TODO change notification
 	}
 
+	public String getQualifiedName() {
+		return this.qualifiedName;
+	}
+	
+	protected void setQualifiedName(String qualifiedName) {
+		this.qualifiedName = qualifiedName;
+		//TODO change notification
+	}
+	
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
+		setQualifiedName(getMember().binding(astRoot).getQualifiedName());
 		updateNestedTypes(astRoot);
 		updatePersistentAttributes(astRoot);
 		setAccess(accessType());

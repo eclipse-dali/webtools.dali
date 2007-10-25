@@ -71,9 +71,13 @@ public abstract class AnnotationTestCase extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		ProjectUtility.deleteAllProjects();
-		this.javaProject = this.buildJavaProject(PROJECT_NAME, false);  // false = no auto-build
+		this.javaProject = this.buildJavaProject(false);  // false = no auto-build
 	}
-
+	
+	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
+		return buildJavaProject(PROJECT_NAME, autoBuild);
+	}
+	
 	protected TestJavaProject buildJavaProject(String projectName, boolean autoBuild) throws Exception {
 		return new TestJavaProject(projectName, autoBuild);  // false = no auto-build
 	}
@@ -196,6 +200,10 @@ public abstract class AnnotationTestCase extends TestCase {
 
 	// ********** queries **********
 
+	protected TestJavaProject getJavaProject() {
+		return this.javaProject;
+	}
+	
 	protected IType jdtType() throws JavaModelException {
 		return this.javaProject.findType(FULLY_QUALIFIED_TYPE_NAME);
 	}

@@ -30,11 +30,9 @@ public class PersistenceXml extends JpaContextNode
 	}
 	
 	public void setPersistence(IPersistence newPersistence) {
-		if (persistence != newPersistence) {
-			IPersistence oldPersistence = persistence;
-			persistence = newPersistence;
-			firePropertyChanged(PERSISTENCE_PROPERTY, oldPersistence, newPersistence);
-		}
+		IPersistence oldPersistence = persistence;
+		persistence = newPersistence;
+		firePropertyChanged(PERSISTENCE_PROPERTY, oldPersistence, newPersistence);
 	}
 	
 	
@@ -43,15 +41,12 @@ public class PersistenceXml extends JpaContextNode
 	public void update(PersistenceResourceModel persistenceResource) {
 		if (persistenceResource.getPersistence() != null) {
 			if (persistence == null) {
-				IPersistence persistence = jpaFactory().createPersistence(this);
-				setPersistence(persistence);
+				setPersistence(jpaFactory().createPersistence(this));
 			}
 			persistence.update(persistenceResource.getPersistence());
 		}
 		else {
-			if (persistence != null) {
-				setPersistence(null);
-			}
+			setPersistence(null);
 		}
 	}
 }

@@ -45,11 +45,11 @@ public class BaseJpaContent extends JpaContextNode
 	
 	// **************** updating **********************************************
 	
-	public void update(IJpaProject jpaProject, IProgressMonitor monitor) {
+	public void update(IProgressMonitor monitor) {
 		PersistenceArtifactEdit pae = 
 				PersistenceArtifactEdit.getArtifactEditForRead(
-						jpaProject.project(), 
-						JptCorePlugin.persistenceXmlDeploymentURI(jpaProject.project()));
+						jpaProject().project(), 
+						JptCorePlugin.persistenceXmlDeploymentURI(jpaProject().project()));
 		PersistenceResourceModel persistenceResource = pae.getPersistenceResource();
 		
 		if (WorkbenchResourceHelper.getFile(persistenceResource).exists()) {

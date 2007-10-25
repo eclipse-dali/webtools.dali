@@ -36,6 +36,8 @@ import org.eclipse.jpt.core.internal.context.base.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.Persistence;
 import org.eclipse.jpt.core.internal.context.base.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
@@ -170,5 +172,9 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IClassRef createClassRef(IPersistenceUnit parent) {
 		return new ClassRef(parent);
+	}
+	
+	public IJavaPersistentType createJavaPersistentType(IClassRef parent) {
+		return new JavaPersistentType(parent);
 	}
 }

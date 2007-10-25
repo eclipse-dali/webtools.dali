@@ -43,6 +43,14 @@ public interface JavaPersistentTypeResource extends JavaPersistentResource
 	 */
 	Iterator<JavaPersistentAttributeResource> properties();
 	
+	JavaPersistentTypeResource javaPersistentTypeResource(String fullyQualifiedTypeName);
+
+	/**
+	 * Return the fully qualified type name
+	 * @return
+	 */
+	String getQualifiedName();
+	
 	String getSuperClassQualifiedName();
 	
 	AccessType getAccess();

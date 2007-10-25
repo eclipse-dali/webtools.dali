@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.List;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -41,16 +40,6 @@ public interface IJpaPlatform
 	 */
 	void setId(String theId);
 
-	/**
-	 * Get the IJpaProject for this platform
-	 */
-	IJpaProject getProject();
-
-	/**
-	 * Set the IJpaProject on this platform
-	 */
-	void setProject(IJpaProject jpaProject);
-	
 	
 	// **************** Model construction / updating **************************
 	
@@ -68,14 +57,6 @@ public interface IJpaPlatform
 	 * objects
 	 */
 	IJpaFactory jpaFactory();
-	
-	/**
-	 * Update the existing context model.
-	 * This will be called when resource models change or when any project setting
-	 * causes there to be a change in how resource models are combined.
-	 */
-	void update(IJpaProject jpaProject, IContextModel contextModel, IProgressMonitor monitor);
-	
 	
 	
 	// **************** Java annotation support ********************************

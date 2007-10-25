@@ -30,11 +30,16 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
+import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.ChangeEventDispatcher;
 import org.eclipse.jpt.utility.internal.model.DefaultChangeEventDispatcher;
 import org.eclipse.jpt.utility.internal.node.Node;
@@ -112,7 +117,6 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 		}
 		this.project = config.project();
 		this.jpaPlatform = config.jpaPlatform();
-		this.jpaPlatform.setProject(this);  // TODO this must go
 		this.dataSource = this.jpaFactory().createJpaDataSource(this, config.connectionProfileName());
 		this.discoversAnnotatedClasses = config.discoverAnnotatedClasses();
 		this.jpaFiles = this.buildJpaFiles();
@@ -126,6 +130,8 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 		// build the JPA files corresponding to the Eclipse project's files
 		this.project.accept(this.buildInitialResourceProxyVisitor(), IResource.NONE);
 
+		this.contextModel = jpaFactory().buildContextModel(this);
+		
 		this.update();
 	}
 
@@ -257,7 +263,7 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 	}
 
 	public Iterator<IJpaFile> javaJpaFiles() {
-		return this.jpaFiles(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
+		return this.jpaFiles(IResourceModel.JAVA_RESOURCE_TYPE);
 	}
 
 	/**
@@ -314,40 +320,24 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 
 	// ********** more queries **********
 
-//	protected Iterator<JpaCompilationUnit> jpaCompilationUnits() {
-//		return new TransformationIterator<IJpaFile, JpaCompilationUnit>(this.javaJpaFiles()) {
-//			@Override
-//			protected JpaCompilationUnit transform(IJpaFile jpaFile) {
-//				return (JpaCompilationUnit) jpaFile.getContent();
-//			}
-//		};
-//	}
-//
-//	/**
-//	 * Return an iterator of iterators on Java persistent types
-//	 */
-//	protected Iterator<Iterator<JavaPersistentType>> javaPersistentTypeIterators() {
-//		return new TransformationIterator<JpaCompilationUnit, Iterator<JavaPersistentType>>(this.jpaCompilationUnits()) {
-//			@Override
-//			protected Iterator<JavaPersistentType> transform(JpaCompilationUnit jcu) {
-//				return jcu.getTypes().iterator();
-//			}
-//		};
-//	}
-//
-//	public Iterator<JavaPersistentType> javaPersistentTypes() {
-//		return new CompositeIterator<JavaPersistentType>(this.javaPersistentTypeIterators());
-//	}
-//
-//	public JavaPersistentType javaPersistentType(IType type) {
-//		for (Iterator<JavaPersistentType> stream = this.javaPersistentTypes(); stream.hasNext(); ) {
-//			JavaPersistentType jpt = stream.next();
-//			if (jpt.getType().getJdtMember().equals(type)) {
-//				return jpt;
-//			}
-//		}
-//		return null;
-//	}
+	protected Iterator<JpaCompilationUnitResource> jpaCompilationUnitResources() {
+		return new TransformationIterator<IJpaFile, JpaCompilationUnitResource>(this.javaJpaFiles()) {
+			@Override
+			protected JpaCompilationUnitResource transform(IJpaFile jpaFile) {
+				return ((JavaResourceModel) jpaFile.getResourceModel()).getCompilationUnitResource();
+			}
+		};
+	}
+
+	public JavaPersistentTypeResource javaPersistentTypeResource(String fullyQualifiedTypeName) {
+		for (JpaCompilationUnitResource jpCompilationUnitResource : CollectionTools.iterable(this.jpaCompilationUnitResources())) {
+			JavaPersistentTypeResource jptr =  jpCompilationUnitResource.javaPersistentTypeResource(fullyQualifiedTypeName);
+			if (jptr != null) {
+				return jptr;
+			}
+		}
+		return null;
+	}
 
 
 	// ********** Java change **********
@@ -505,11 +495,7 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 		}
 
 		try {
-			if (contextModel == null) {
-				setContextModel(jpaPlatform().jpaFactory().buildContextModel(this));
-			}
-			
-			jpaPlatform().update(this, contextModel, monitor);
+			contextModel().update(monitor);
 		} catch (OperationCanceledException ex) {
 			return Status.CANCEL_STATUS;
 		} catch (Throwable ex) {
