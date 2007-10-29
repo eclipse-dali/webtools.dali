@@ -509,7 +509,10 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 	}
 
 	public void update() {
-		this.updateJpaProjectJobScheduler.schedule();
+		if (contextModel() != null) {
+			contextModel().update(null); //TODO put this back on a job, running synchronously for tests
+			//this.updateJpaProjectJobScheduler.schedule();
+		}
 	}
 
 	protected static class UpdateJpaProjectJobScheduler {

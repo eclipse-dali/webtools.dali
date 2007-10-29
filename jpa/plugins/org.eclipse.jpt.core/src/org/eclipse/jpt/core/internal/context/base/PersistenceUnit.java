@@ -17,6 +17,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -26,23 +27,32 @@ public class PersistenceUnit extends JpaContextNode
 {
 	protected String name;
 	
-	protected List<IMappingFileRef> mappingFileRefs;
+	protected final List<IMappingFileRef> mappingFileRefs;
 	
-	protected List<IClassRef> classRefs;
+	protected final List<IClassRef> classRefs;
 	
 	
 	public PersistenceUnit(IPersistence parent) {
 		super(parent);
-	}
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
 		mappingFileRefs = new ArrayList<IMappingFileRef>();
 		classRefs = new ArrayList<IClassRef>();
 	}
 	
+	public IPersistentType persistentType(String fullyQualifiedTypeName) {
+		for (IClassRef classRef : CollectionTools.iterable(classRefs())) {
+			if (classRef.isFor(fullyQualifiedTypeName)) {
+				return classRef.getJavaPersistentType();
+			}
+		}
+		//TODO check mappingFileRefs (probably check these first??)
+		return null;
+	}
 	
+	@Override
+	public IPersistenceUnit persistenceUnit() {
+		return this;
+	}
+
 	// **************** name ***************************************************
 	
 	public String getName() {

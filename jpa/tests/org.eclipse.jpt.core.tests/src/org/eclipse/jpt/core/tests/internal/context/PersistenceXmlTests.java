@@ -27,12 +27,10 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		IPersistenceXml persistenceXml = baseJpaContent.getPersistenceXml();
 		prm.getContents().clear();
 		prm.save(null);
-		waitForProjectUpdate();
 		
 		assertNull(persistenceXml.getPersistence());
 		
 		prm.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
-		waitForProjectUpdate();
 		
 		assertNotNull(persistenceXml.getPersistence());
 		

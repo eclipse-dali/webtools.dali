@@ -9,18 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import java.util.Iterator;
+import org.eclipse.jpt.core.internal.AccessType;
+
 
 public interface IPersistentType
 {
 	String getName();
 	String NAME_PROPERTY = "nameProperty";
 	
+	AccessType access();
+		String ACCESS_PROPERTY = "accessProperty";
+		
 //	ITypeMapping getMapping();
 //	String mappingKey();
 //	void setMappingKey(String key);
 //		String MAPPING_PROPERTY = "mappingProperty";
 //
-//	boolean isMapped();
+	boolean isMapped();
 	
 	/**
 	 * Return the parent IPersistentType from the inheritance hierarchy.
@@ -28,7 +34,7 @@ public interface IPersistentType
 	 * up the hierarchy.  Return null if this persistentType is the root
 	 * persistent type. 
 	 */
-//	IPersistentType parentPersistentType();
+	IPersistentType parentPersistentType();
 
 //	/**
 //	 * Return a read-only iterator of the contained IPersistentAttributes
@@ -59,6 +65,6 @@ public interface IPersistentType
 //	 */
 //	IPersistentAttribute resolveAttribute(String attributeName);
 
-//	Iterator<IPersistentType> inheritanceHierarchy();
+	Iterator<IPersistentType> inheritanceHierarchy();
 
 }

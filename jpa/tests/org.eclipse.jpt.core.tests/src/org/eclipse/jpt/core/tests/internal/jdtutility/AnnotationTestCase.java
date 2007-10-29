@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.tests.internal.jdtutility;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
-
+import junit.framework.TestCase;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -37,8 +37,6 @@ import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
-
-import junit.framework.TestCase;
 
 /**
  * Provide an easy(?) way to build an annotated source file.
@@ -70,8 +68,12 @@ public abstract class AnnotationTestCase extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		ProjectUtility.deleteAllProjects();
+		deleteAllProjects();
 		this.javaProject = this.buildJavaProject(false);  // false = no auto-build
+	}
+	
+	protected void deleteAllProjects()  throws Exception {
+		ProjectUtility.deleteAllProjects(); 		
 	}
 	
 	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
@@ -132,15 +134,24 @@ public abstract class AnnotationTestCase extends TestCase {
 		return this.createTestType(null, idFieldAnnotation);
 	}
 
+	
 	protected IType createTestType(AnnotationWriter annotationWriter) throws CoreException {
 		return this.javaProject.createType(PACKAGE_NAME, FILE_NAME, this.createSourceWriter(annotationWriter));
+	}
+	
+	protected IType createTestType(String packageName, String fileName, String typeName, AnnotationWriter annotationWriter) throws CoreException {
+		return this.javaProject.createType(packageName, fileName, this.createSourceWriter(annotationWriter, typeName));
 	}
 
 	protected SourceWriter createSourceWriter(AnnotationWriter annotationWriter) {
 		return new AnnotatedSourceWriter(annotationWriter);
 	}
+	
+	protected SourceWriter createSourceWriter(AnnotationWriter annotationWriter, String typeName) {
+		return new AnnotatedSourceWriter(annotationWriter, typeName);
+	}
 
-	protected void appendSourceTo(StringBuffer sb, AnnotationWriter annotationWriter) {
+	protected void appendSourceTo(StringBuffer sb, AnnotationWriter annotationWriter, String typeName) {
 		sb.append(CR);
 		for (Iterator<String> stream = annotationWriter.imports(); stream.hasNext(); ) {
 			sb.append("import ");
@@ -150,7 +161,9 @@ public abstract class AnnotationTestCase extends TestCase {
 		}
 		annotationWriter.appendTypeAnnotationTo(sb);
 		sb.append(CR);
-		sb.append("public class ").append(TYPE_NAME).append(" {").append(CR);
+		sb.append("public class ").append(typeName).append(" ");
+		annotationWriter.appendExtendsImplementsTo(sb);
+		sb.append("{").append(CR);
 		sb.append(CR);
 		sb.append("    ");
 		annotationWriter.appendIdFieldAnnotationTo(sb);
@@ -425,6 +438,7 @@ public abstract class AnnotationTestCase extends TestCase {
 	public interface AnnotationWriter {
 		Iterator<String> imports();
 		void appendTypeAnnotationTo(StringBuffer sb);
+		void appendExtendsImplementsTo(StringBuffer sb);
 		void appendIdFieldAnnotationTo(StringBuffer sb);
 		void appendNameFieldAnnotationTo(StringBuffer sb);
 		void appendGetIdMethodAnnotationTo(StringBuffer sb);
@@ -438,6 +452,7 @@ public abstract class AnnotationTestCase extends TestCase {
 	public static class DefaultAnnotationWriter implements AnnotationWriter {
 		public Iterator<String> imports() {return EmptyIterator.instance();}
 		public void appendTypeAnnotationTo(StringBuffer sb) {/* do nothing */}
+		public void appendExtendsImplementsTo(StringBuffer sb) {/* do nothing */}
 		public void appendIdFieldAnnotationTo(StringBuffer sb) {/* do nothing */}
 		public void appendNameFieldAnnotationTo(StringBuffer sb) {/* do nothing */}
 		public void appendGetIdMethodAnnotationTo(StringBuffer sb) {/* do nothing */}
@@ -456,6 +471,7 @@ public abstract class AnnotationTestCase extends TestCase {
 		}
 		public Iterator<String> imports() {return aw.imports();}
 		public void appendTypeAnnotationTo(StringBuffer sb) {aw.appendTypeAnnotationTo(sb);}
+		public void appendExtendsImplementsTo(StringBuffer sb) {aw.appendExtendsImplementsTo(sb);}
 		public void appendIdFieldAnnotationTo(StringBuffer sb) {aw.appendIdFieldAnnotationTo(sb);}
 		public void appendNameFieldAnnotationTo(StringBuffer sb) {aw.appendNameFieldAnnotationTo(sb);}
 		public void appendGetIdMethodAnnotationTo(StringBuffer sb) {aw.appendGetIdMethodAnnotationTo(sb);}
@@ -468,12 +484,17 @@ public abstract class AnnotationTestCase extends TestCase {
 
 	public class AnnotatedSourceWriter implements SourceWriter {
 		private AnnotationWriter annotationWriter;
+		private String typeName;
 		public AnnotatedSourceWriter(AnnotationWriter annotationWriter) {
+			this(annotationWriter, TYPE_NAME);
+		}
+		public AnnotatedSourceWriter(AnnotationWriter annotationWriter, String typeName) {
 			super();
 			this.annotationWriter = annotationWriter;
+			this.typeName = typeName;
 		}
 		public void appendSourceTo(StringBuffer sb) {
-			AnnotationTestCase.this.appendSourceTo(sb, this.annotationWriter);
+			AnnotationTestCase.this.appendSourceTo(sb, this.annotationWriter, typeName);
 		}
 	}
 

@@ -13,8 +13,8 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
+import org.eclipse.jpt.core.internal.resource.java.AccessType;
 import org.eclipse.jpt.core.internal.resource.java.Embeddable;
 import org.eclipse.jpt.core.internal.resource.java.EmbeddableImpl;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
@@ -848,56 +848,49 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		IType jdtType = createTestEntity();
 		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
 		
-		AccessType accessType = persistentType.getAccess();
-		assertEquals(AccessType.FIELD, accessType);
+		assertNull(persistentType.getAccess());
 	}
 	
 	public void testGetAccessFieldsAnnotated() throws Exception {
 		IType jdtType = createTestEntityAnnotatedField();
 		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
 		
-		AccessType accessType = persistentType.getAccess();
-		assertEquals(AccessType.FIELD, accessType);
+		assertEquals(AccessType.FIELD, persistentType.getAccess());
 	}
 	
 	public void testGetAccessMethodsAnnotated() throws Exception {
 		IType jdtType = createTestEntityAnnotatedMethod();
 		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
 		
-		AccessType accessType = persistentType.getAccess();
-		assertEquals(AccessType.PROPERTY, accessType);
+		assertEquals(AccessType.PROPERTY, persistentType.getAccess());
 	}
 	
 	public void testGetAccessFieldsAndMethodsAnnotated() throws Exception {
 		IType jdtType = createTestEntityAnnotatedFieldAndMethod();
 		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
 		
-		AccessType accessType = persistentType.getAccess();
-		assertEquals(AccessType.FIELD, accessType);
+		assertEquals(AccessType.FIELD, persistentType.getAccess());
 	}
 	
 	public void testGetAccessNonPersistableMethodAnnotated() throws Exception {
 		IType jdtType = createTestEntityAnnotatedNonPersistableMethod();
 		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
 		
-		AccessType accessType = persistentType.getAccess();
-		assertEquals(AccessType.FIELD, accessType);
+		assertNull(persistentType.getAccess());
 	}
 	
 	public void testGetAccessPersistableMethodAndNonPersistableFieldAnnotated() throws Exception {
 		IType jdtType = createTestEntityAnnotatedPersistableMethodNonPersistableField();
 		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
 		
-		AccessType accessType = persistentType.getAccess();
-		assertEquals(AccessType.PROPERTY, accessType);
+		assertEquals(AccessType.PROPERTY, persistentType.getAccess());
 	}
 	
 	public void testGetAccessNoPersistableFieldsAnnotated() throws Exception {
 		IType jdtType = createTestEntityNoPersistableFields();
 		JavaPersistentTypeResource persistentType = buildJavaTypeResource(jdtType);
 		
-		AccessType accessType = persistentType.getAccess();
-		assertEquals(AccessType.PROPERTY, accessType);
+		assertEquals(AccessType.PROPERTY, persistentType.getAccess());
 	}
 	
 	//TODO more tests here with superclasses other than Object.

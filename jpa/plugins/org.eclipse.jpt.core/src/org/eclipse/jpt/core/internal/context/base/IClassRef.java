@@ -17,6 +17,16 @@ public interface IClassRef extends IJpaContextNode
 {
 	void update(XmlJavaClassRef classRef);
 	
+	/**
+	 * Return the JavaPersistentType that corresponds to this IClassRef.  
+	 * This can be null.
+	 */
 	IJavaPersistentType getJavaPersistentType();
-
+		String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentTypeProperty";
+	
+	/**
+	 * Return true if the IClassRef matches the fullyQualfiedTypeName
+	 */
+	boolean isFor(String fullyQualifiedTypeName);
+	
 }

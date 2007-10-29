@@ -30,4 +30,11 @@ public abstract class JpaContextNode extends JpaNodeModel
 	protected IJpaBaseContextFactory jpaFactory() {
 		return (IJpaBaseContextFactory) super.jpaFactory();
 	}
+	
+	//TODO casting to IJpaContextNode here(possible CCE).
+	//Overriding in BaseJpaContext, Persistence, PersitsenceXml throws UnsupportedOperationException
+	//Overriding in PersistenceUnit to return it.
+	public IPersistenceUnit persistenceUnit() {
+		return ((IJpaContextNode) parent()).persistenceUnit();
+	}
 }

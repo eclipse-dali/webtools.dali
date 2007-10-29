@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
@@ -27,7 +28,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 {
 	protected static final String PROJECT_NAME = "ContextModelTestProject";
 		
-	
+	protected PersistenceResourceModel persistenceResourceModel;
 	protected ContextModelTestCase(String name) {
 		super(name);
 	}
@@ -36,7 +37,20 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected void setUp() throws Exception {
 		super.setUp();
 		waitForWorkspaceJobs();
-		waitForProjectUpdate();
+	}
+	
+	@Override
+	protected void deleteAllProjects()  throws Exception{
+		//don't delete projects, creating a new one with a new name
+		//workspace will be deleted next time tests are run.
+		//not saying this is the ultimate solution, but it will work for now
+		//until we can figure out how to properly delete projects in tests
+	}
+	
+	@Override
+	protected void tearDown() throws Exception {
+		this.persistenceResourceModel = null;
+		super.tearDown();
 	}
 	
 	@Override
@@ -46,7 +60,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild) 
 			throws Exception {
-		return new TestJpaProject(projectName, autoBuild);  // false = no auto-build
+		return TestJpaProject.buildJpaProject(projectName, autoBuild);  // false = no auto-build
 	}
 	
 	protected void waitForWorkspaceJobs() {
@@ -70,31 +84,16 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		}
 	}
 	
-	protected void waitForProjectUpdate() {
-		// This job will not finish running until the update job has finished
-		Job waitJob = new Job("Wait job") {
-				@Override
-				protected IStatus run(IProgressMonitor monitor) {
-					return Status.OK_STATUS;
-				}
-			};
-		waitJob.setRule(getJavaProject().getProject());
-		waitJob.schedule();
-		while (waitJob.getState() != Job.NONE) {
-			try {
-				Thread.sleep(50);
-			}
-			catch (InterruptedException ie) {
-				// do nothing
-			}
-		}
-	}
-	
 	protected PersistenceResourceModel persistenceResourceModel() {
+		if (this.persistenceResourceModel != null) {
+			return this.persistenceResourceModel;
+		}
 		String persistenceXmlUri = JptCorePlugin.persistenceXmlDeploymentURI(getJavaProject().getProject());
 		PersistenceArtifactEdit pae = 
 				PersistenceArtifactEdit.getArtifactEditForWrite(getJavaProject().getProject(), persistenceXmlUri);
-		return pae.getPersistenceResource();
+		 this.persistenceResourceModel = pae.getPersistenceResource();
+		 
+		 return this.persistenceResourceModel;
 	}
 	
 	protected BaseJpaContent jpaContent() {
@@ -104,5 +103,9 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	@Override
 	protected TestJpaProject getJavaProject() {
 		return (TestJpaProject) super.getJavaProject();
+	}
+	
+	protected IType createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
+		return this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 }

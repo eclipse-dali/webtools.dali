@@ -24,7 +24,6 @@ public class BaseJpaContentTests extends ContextModelTestCase
 	public void testAddPersistenceXml() throws Exception {
 		PersistenceResourceModel prm = persistenceResourceModel();
 		WorkbenchResourceHelper.deleteResource(prm); // throws CoreException, possibly
-		waitForProjectUpdate();
 		
 		assertTrue(! prm.getFile().exists());
 		
@@ -33,7 +32,6 @@ public class BaseJpaContentTests extends ContextModelTestCase
 		
 		prm.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
 		prm.save(null);
-		waitForProjectUpdate();
 		assertNotNull(baseJpaContent.getPersistenceXml());
 	}
 	
@@ -44,7 +42,6 @@ public class BaseJpaContentTests extends ContextModelTestCase
 		assertNotNull(baseJpaContent.getPersistenceXml());
 		
 		WorkbenchResourceHelper.deleteResource(prm); // throws CoreException, possibly
-		waitForProjectUpdate();
 		
 		assertNull(baseJpaContent.getPersistenceXml());
 	}

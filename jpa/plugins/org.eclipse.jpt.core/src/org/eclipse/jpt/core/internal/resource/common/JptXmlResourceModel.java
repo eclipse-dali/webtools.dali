@@ -4,7 +4,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
@@ -24,27 +23,25 @@ public abstract class JptXmlResourceModel extends TranslatorResourceImpl
 	
 	protected JptXmlResourceModel(Renderer aRenderer) {
 		super(aRenderer);
-		initialize();
 	}
 
 	protected JptXmlResourceModel(URI uri, Renderer aRenderer) {
 		super(uri, aRenderer);
-		initialize();
 	}
 	
-	protected void initialize() {
-		eAdapters().add(
-				new AdapterImpl() {
-					@Override
-					public void notifyChanged(Notification msg) {
-						if (jpaFile() != null) {
-							jpaProject().update();
-						}
-					}
-				}
- 			);
+	/**
+	 * override to prevent notification when the object's state is unchanged
+	 */
+	@Override
+	public void eNotify(Notification notification) {
+		if (!notification.isTouch()) {
+			super.eNotify(notification);
+			if (jpaFile() != null) {
+				jpaProject().update();
+			}
+		}
 	}
-	
+
 	/**
 	 * @see TranslatorResourceImpl#getDefaultPublicId() 
 	 */

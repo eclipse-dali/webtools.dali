@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.AccessType;
 
 public interface JavaPersistentTypeResource extends JavaPersistentResource
 {	

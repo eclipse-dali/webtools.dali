@@ -8,11 +8,12 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.context.base;
+package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.internal.IJpaNodeModel;
 
-public interface IJpaContextNode extends IJpaNodeModel
-{
-	IPersistenceUnit persistenceUnit();
+public enum AccessType {
+
+	PROPERTY,
+	FIELD;
+
 }

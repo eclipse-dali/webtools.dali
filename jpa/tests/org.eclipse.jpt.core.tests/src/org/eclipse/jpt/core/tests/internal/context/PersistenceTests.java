@@ -31,7 +31,6 @@ public class PersistenceTests extends ContextModelTestCase
 		
 		// clear xml persistence units, test that it's clear in context
 		xmlPersistence.getPersistenceUnits().clear();
-		waitForProjectUpdate();
 		
 		assertTrue(CollectionTools.list(persistence.persistenceUnits()).isEmpty());
 		
@@ -39,7 +38,6 @@ public class PersistenceTests extends ContextModelTestCase
 		XmlPersistenceUnit xmlPersistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
 		xmlPersistenceUnit.setName("test");
 		xmlPersistence.getPersistenceUnits().add(xmlPersistenceUnit);
-		waitForProjectUpdate();
 		
 		assertTrue(CollectionTools.size(persistence.persistenceUnits()) == 1);
 		
@@ -47,7 +45,6 @@ public class PersistenceTests extends ContextModelTestCase
 		xmlPersistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
 		xmlPersistenceUnit.setName("test2");
 		xmlPersistence.getPersistenceUnits().add(xmlPersistenceUnit);
-		waitForProjectUpdate();
 		
 		assertTrue(CollectionTools.size(persistence.persistenceUnits()) == 2);
 	}
@@ -61,7 +58,6 @@ public class PersistenceTests extends ContextModelTestCase
 		XmlPersistenceUnit xmlPersistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
 		xmlPersistenceUnit.setName("test");
 		xmlPersistence.getPersistenceUnits().add(xmlPersistenceUnit);
-		waitForProjectUpdate();
 		
 		assertTrue(xmlPersistence.getPersistenceUnits().size() == 2);
 		assertTrue(CollectionTools.size(persistence.persistenceUnits()) == 2);
@@ -69,14 +65,12 @@ public class PersistenceTests extends ContextModelTestCase
 		// remove persistence unit from xml, test that it's removed from context
 		xmlPersistenceUnit = xmlPersistence.getPersistenceUnits().get(0);
 		xmlPersistence.getPersistenceUnits().remove(xmlPersistenceUnit);
-		waitForProjectUpdate();
 		
 		assertTrue(CollectionTools.size(persistence.persistenceUnits()) == 1);
 		
 		// remove another one ...
 		xmlPersistenceUnit = xmlPersistence.getPersistenceUnits().get(0);
 		xmlPersistence.getPersistenceUnits().remove(xmlPersistenceUnit);
-		waitForProjectUpdate();
 		
 		assertTrue(CollectionTools.size(persistence.persistenceUnits()) == 0);
 	}

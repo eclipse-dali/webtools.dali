@@ -15,6 +15,12 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 
 public interface IPersistenceUnit extends IJpaContextNode
 {
+	/**
+	 * Return the IPersistentType specified in this PersistenceUnit with the given
+	 * fully qualified type name
+	 */
+	IPersistentType persistentType(String fullyQualifiedTypeName);
+
 	// **************** name ***************************************************
 	
 	public final static String NAME_PROPERTY = "name";

@@ -44,7 +44,6 @@ public class ClassRefTests extends ContextModelTestCase
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass(FULLY_QUALIFIED_TYPE_NAME);
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
-		waitForProjectUpdate();
 		
 		IClassRef classRef = classRef();
 		
@@ -52,7 +51,6 @@ public class ClassRefTests extends ContextModelTestCase
 		
 		//test setting to a class that does not exist in the project
 		xmlClassRef.setJavaClass("com.foo.Bar");
-		waitForProjectUpdate();
 		
 		classRef = classRef();		
 		assertNull(classRef.getJavaPersistentType());		

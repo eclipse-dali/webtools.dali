@@ -21,17 +21,17 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 public class Persistence extends JpaContextNode
 	implements IPersistence
 {	
-	protected List<IPersistenceUnit> persistenceUnits;
+	protected final List<IPersistenceUnit> persistenceUnits;
 	
 	
 	public Persistence(IPersistenceXml parent) {
 		super(parent);
+		this.persistenceUnits = new ArrayList<IPersistenceUnit>();
 	}
 	
 	@Override
-	protected void initialize() {
-		super.initialize();
-		persistenceUnits = new ArrayList<IPersistenceUnit>();
+	public IPersistenceUnit persistenceUnit() {
+		throw new UnsupportedOperationException("No PersistenceUnit in this context");
 	}
 	
 	

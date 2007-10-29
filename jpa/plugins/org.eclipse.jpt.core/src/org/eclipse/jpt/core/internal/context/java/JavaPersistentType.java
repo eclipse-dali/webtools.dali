@@ -13,22 +13,20 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
+import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 
 public class JavaPersistentType extends JavaContextModel implements IJavaPersistentType
 {
-	private String name;
+	protected String name;
 	
 	//protected IJavaTypeMapping mapping;
 
 	//private final List<JavaPersistentAttribute> attributes;
 
-	protected static final AccessType ACCESS_EDEFAULT = AccessType.DEFAULT;
-
-	protected AccessType access = ACCESS_EDEFAULT;
-
-	private JavaPersistentTypeResource persistentTypeResource;
+	protected AccessType access;
 
 	/**
 	 * Store the parentPersistentType during default calculation.  This will
@@ -45,7 +43,9 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	 * If this is the Cat JavaPersistentType then parentPersistentType is the Model JavaPersistentType
 	 * The parentPersistentType could be found in java or xml.
 	 */
-//	private IPersistentType parentPersistentType;
+	protected IPersistentType parentPersistentType;
+
+	protected JavaPersistentTypeResource persistentTypeResource;
 
 	public JavaPersistentType(IClassRef parent) {
 		super(parent);
@@ -83,17 +83,24 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 //		this.mapping = newMapping;	
 //		firePropertyChanged(IPersistentType.MAPPING_PROPERTY, oldMapping, newMapping);
 //	}
-//	
-//	public boolean isMapped() {
-//		return getMapping().isMapped();
-//	}
-//	
+	
+	public boolean isMapped() {
+		return true;
+		// TODO return getMapping().isMapped();
+	}
+	
 //	private String annotationNameForTypeMappingKey(String typeMappingKey) {
 //		return jpaPlatform().annotationNameFor(typeMappingKey);
 //	}
 
-	protected AccessType access() {
-		return this.persistentTypeResource.getAccess();
+	public AccessType access() {
+		return this.access;
+	}
+	
+	protected void setAccess(AccessType newAccess) {
+		AccessType oldAccess = this.access;
+		this.access = newAccess;
+		firePropertyChanged(ACCESS_PROPERTY, oldAccess, newAccess);
 	}
 
 //	private IJavaTypeMapping buildJavaTypeMapping(String key) {
@@ -219,34 +226,54 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 //		return this.attributeNames(this.allAttributes());
 //	}
 
-//	public Iterator<IPersistentType> inheritanceHierarchy() {
-//		// using a chain iterator to traverse up the inheritance tree
-//		return new ChainIterator<IPersistentType>(this) {
-//			@Override
-//			protected IPersistentType nextLink(IPersistentType pt) {
-//				return pt.parentPersistentType();
-//			}
-//		};
-//	}
-//
-//	public IPersistentType parentPersistentType() {
-//		return this.parentPersistentType;
-//	}
+	public Iterator<IPersistentType> inheritanceHierarchy() {
+		// using a chain iterator to traverse up the inheritance tree
+		return new ChainIterator<IPersistentType>(this) {
+			@Override
+			protected IPersistentType nextLink(IPersistentType pt) {
+				return pt.parentPersistentType();
+			}
+		};
+	}
+
+	public IPersistentType parentPersistentType() {
+		return this.parentPersistentType;
+	}
 
 	// ******************** Uupdating **********************
 	public void update(JavaPersistentTypeResource persistentTypeResource) {
 		this.persistentTypeResource = persistentTypeResource;
+		updateParentPersistentType(persistentTypeResource);
+		updateAccess(persistentTypeResource);
 		updateName(persistentTypeResource);
 		updateMapping(persistentTypeResource);
 		updatePersistentAttributes(persistentTypeResource);
-		updateParentPersistentType(persistentTypeResource);
 	}
 	
-	private void updateName(JavaPersistentTypeResource persistentTypeResource) {
+	/**
+	 * Check the access "specified" by the java resource model.
+	 * 		If this is not null then use that as the access. (validation will handle where this doesn't match inheritance)
+	 * 		If null then set to parentPersistentType access.
+	 * 		Default to FIELD if no parentPersistentType.
+	 */
+	protected void updateAccess(JavaPersistentTypeResource persistentTypeResource) {
+		AccessType javaAccess = AccessType.fromJavaResourceModel(persistentTypeResource.getAccess());
+		if (javaAccess == null) {
+			if (parentPersistentType() != null) {
+				javaAccess = parentPersistentType().access();
+			}
+			if (javaAccess == null) {
+				javaAccess = AccessType.FIELD;
+			}
+		}
+		setAccess(javaAccess);
+	}
+
+	protected void updateName(JavaPersistentTypeResource persistentTypeResource) {
 		setName(persistentTypeResource.getQualifiedName());	
 	}
 	
-	private void updateMapping(JavaPersistentTypeResource persistentTypeResource) {
+	protected void updateMapping(JavaPersistentTypeResource persistentTypeResource) {
 //		setMapping(buildJavaTypeMapping(this.javaTypeMappingKey(persistentTypeResource)));
 //		getMapping().update(persistentTypeResource);
 	}
@@ -256,7 +283,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 //		return jpaPlatform().typeMappingKey(mappingAnnotation.getAnnotationName());
 //	}
 
-	private void updatePersistentAttributes(JavaPersistentTypeResource persistentTypeResource) {
+	protected void updatePersistentAttributes(JavaPersistentTypeResource persistentTypeResource) {
 //		Iterable<JavaPersistentAttributeResource> iterable = CollectionTools.iterable(persistentTypeResource.fields());
 //		if (access() == AccessType.PROPERTY) {
 //			iterable = CollectionTools.iterable(persistentTypeResource.properties());
@@ -286,23 +313,39 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	
 	public void updateParentPersistentType(JavaPersistentTypeResource persistentTypeResource) {
 		//TODO do we need any change notification for this?
-//		this.parentPersistentType = parentPersistentType(persistentTypeResource.getSuperClassQualifiedName());
+		this.parentPersistentType = parentPersistentType(persistentTypeResource.getSuperClassQualifiedName());
+	}
+	
+	protected IPersistentType parentPersistentType(String fullyQualifiedTypeName) {
+		IPersistentType possibleParent = possibleParent(fullyQualifiedTypeName);
+		if (possibleParent == null) {
+			return null;
+		}
+		if (possibleParent.isMapped()) {
+			return possibleParent;
+		}
+		return possibleParent.parentPersistentType();
 	}
 
-	//TODO get thie from the jpaProject or the persistenceUnit
-//	private IPersistentType persistentType(String fullyQualifiedTypeName) {
-//		return null;
-//	}
-//	
-//	private IPersistentType parentPersistentType(String fullyQualifiedTypeName) {
-//		IPersistentType possibleParent = persistentType(fullyQualifiedTypeName);
-//		if (possibleParent == null) {
-//			//TODO look to superclass
-//			return null;
-//		}
-//		//if (possibleParent.isMapped()) {
-//		//	return possibleParent;
-//		//}
-//		return possibleParent.parentPersistentType();
-//	}
+	/**
+	 * JPA spec supports the case where there are non-persistent types in the hierarchy
+	 * This will check for a PersistentType with the given name in this PersistenceUnit.
+	 * If it is not found then find the JavaPersistentTypeResource and look for its parent type
+	 */
+	protected IPersistentType possibleParent(String fullyQualifiedTypeName) {
+		IPersistentType possibleParent = persistentType(fullyQualifiedTypeName);
+		if (possibleParent != null) {
+			return possibleParent;
+		}
+		JavaPersistentTypeResource javaPersistentTypeResource = jpaProject().javaPersistentTypeResource(fullyQualifiedTypeName);
+		if (javaPersistentTypeResource != null) {
+			return possibleParent(javaPersistentTypeResource.getSuperClassQualifiedName());
+		}
+		return null;		
+	}
+	
+	protected IPersistentType persistentType(String fullyQualifiedTypeName) {
+		return persistenceUnit().persistentType(fullyQualifiedTypeName);
+	}
+
 }

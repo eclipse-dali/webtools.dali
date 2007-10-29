@@ -17,11 +17,16 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 public class ClassRef extends JpaContextNode implements IClassRef
 {
 	
-	private IJavaPersistentType javaPersistentType;
-		public static final String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentTypeProperty";
+	protected IJavaPersistentType javaPersistentType;
+	
+	protected String javaClassName = "";
 	
 	public ClassRef(IPersistenceUnit parent) {
 		super(parent);
+	}
+	
+	public boolean isFor(String fullyQualifiedTypeName) {
+		return this.javaClassName.equals(fullyQualifiedTypeName);
 	}
 	
 	public IJavaPersistentType getJavaPersistentType() {
@@ -31,14 +36,15 @@ public class ClassRef extends JpaContextNode implements IClassRef
 	protected void setJavaPersistentType(IJavaPersistentType newJavaPersistentType) {
 		IJavaPersistentType oldJavaPersistentType = this.javaPersistentType;
 		this.javaPersistentType = newJavaPersistentType;
-		firePropertyChanged(JAVA_PERSISTENT_TYPE_PROPERTY, oldJavaPersistentType, newJavaPersistentType);
+		firePropertyChanged(IClassRef.JAVA_PERSISTENT_TYPE_PROPERTY, oldJavaPersistentType, newJavaPersistentType);
 	}
 	
 	
 	// **************** updating ***********************************************
 	
 	public void update(XmlJavaClassRef classRef) {
-		JavaPersistentTypeResource persistentTypeResource = jpaProject().javaPersistentTypeResource(classRef.getJavaClass());
+		this.javaClassName = classRef.getJavaClass();
+		JavaPersistentTypeResource persistentTypeResource = jpaProject().javaPersistentTypeResource(this.javaClassName);
 		if (persistentTypeResource == null) {
 			setJavaPersistentType(null);
 		}

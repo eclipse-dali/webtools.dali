@@ -110,12 +110,8 @@ public abstract class JptEObject extends EObjectImpl implements IJptEObject
 		if (this.featureIsSignificant(featureId) 
 				// if jpa file is null, the resource model is still being 
 				// constructed
-				&& jpaFile() != null) { 
-			IJpaProject project = this.jpaProject();
-			// check that the model is fully initialized
-			if (project != null) {
-				project.update();
-			}
+				&& jpaFile() != null) {
+			this.jpaProject().update();
 		}
 	}
 	

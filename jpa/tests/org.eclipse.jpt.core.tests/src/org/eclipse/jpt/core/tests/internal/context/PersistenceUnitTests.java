@@ -42,25 +42,21 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		// set name to different name, test equality
 		xmlPersistenceUnit.setName("newName");
-		waitForProjectUpdate();
 		
 		assertEquals(xmlPersistenceUnit.getName(), persistenceUnit.getName());
 		
 		// set name to empty string, test equality
 		xmlPersistenceUnit.setName("");
-		waitForProjectUpdate();
 		
 		assertEquals(xmlPersistenceUnit.getName(), persistenceUnit.getName());
 		
 		// set name to null, test equality
 		xmlPersistenceUnit.setName(null);
-		waitForProjectUpdate();
 		
 		assertEquals(xmlPersistenceUnit.getName(), persistenceUnit.getName());
 		
 		// set name back to non-null, test equality
 		xmlPersistenceUnit.setName("newName");
-		waitForProjectUpdate();
 		
 		assertEquals(xmlPersistenceUnit.getName(), persistenceUnit.getName());
 	}
@@ -105,7 +101,6 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		xmlMappingFileRef.setFileName("orm.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
-		waitForProjectUpdate();
 		
 		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 1);
 		
@@ -113,7 +108,6 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		xmlMappingFileRef.setFileName("orm2.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
-		waitForProjectUpdate();
 		
 		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 2);
 	}
@@ -129,7 +123,6 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		xmlMappingFileRef.setFileName("orm2.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
-		waitForProjectUpdate();
 		
 		assertEquals(xmlPersistenceUnit.getMappingFiles().size(), 2);
 		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 2);
@@ -137,14 +130,12 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		// remove mapping file ref from xml, test that it's removed from context
 		xmlMappingFileRef = xmlPersistenceUnit.getMappingFiles().get(0);
 		xmlPersistenceUnit.getMappingFiles().remove(xmlMappingFileRef);
-		waitForProjectUpdate();
 		
 		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 1);
 		
 		// remove another one ...
 		xmlMappingFileRef = xmlPersistenceUnit.getMappingFiles().get(0);
 		xmlPersistenceUnit.getMappingFiles().remove(xmlMappingFileRef);
-		waitForProjectUpdate();
 		
 		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 0);
 	}
@@ -161,7 +152,6 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass("com.foo.Bar");
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
-		waitForProjectUpdate();
 		
 		assertEquals(CollectionTools.size(persistenceUnit.classRefs()), 1);
 		
@@ -169,7 +159,6 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass("com.foo.Baz");
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
-		waitForProjectUpdate();
 		
 		assertEquals(CollectionTools.size(persistenceUnit.classRefs()), 2);
 	}
@@ -185,7 +174,6 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass("com.foo.Baz");
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
-		waitForProjectUpdate();
 		
 		assertEquals(xmlPersistenceUnit.getClasses().size(), 2);
 		assertEquals(CollectionTools.size(persistenceUnit.classRefs()), 2);
@@ -193,14 +181,12 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		// remove mapping file ref from xml, test that it's removed from context
 		xmlClassRef = xmlPersistenceUnit.getClasses().get(0);
 		xmlPersistenceUnit.getClasses().remove(xmlClassRef);
-		waitForProjectUpdate();
 		
 		assertEquals(CollectionTools.size(persistenceUnit.classRefs()), 1);
 		
 		// remove another one ...
 		xmlClassRef = xmlPersistenceUnit.getClasses().get(0);
 		xmlPersistenceUnit.getClasses().remove(xmlClassRef);
-		waitForProjectUpdate();
 		
 		assertEquals(CollectionTools.size(persistenceUnit.classRefs()), 0);
 	}

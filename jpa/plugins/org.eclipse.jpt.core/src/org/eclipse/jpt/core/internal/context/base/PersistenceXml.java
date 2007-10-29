@@ -22,6 +22,10 @@ public class PersistenceXml extends JpaContextNode
 		super(baseJpaContent);
 	}
 	
+	@Override
+	public IPersistenceUnit persistenceUnit() {
+		throw new UnsupportedOperationException("No PersistenceUnit in this context");
+	}
 	
 	// **************** persistence *******************************************
 	

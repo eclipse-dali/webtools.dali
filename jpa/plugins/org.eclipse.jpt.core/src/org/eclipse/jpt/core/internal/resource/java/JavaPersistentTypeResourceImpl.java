@@ -20,7 +20,6 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
@@ -309,16 +308,13 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	/**
 	 * Return the AccessType currently implied by the Java source code:
 	 *     - if only Fields are annotated => FIELD
-	 *     - if only XmlProperties are annotated => PROPERTY
-	 *     - if both Fields and XmlProperties are annotated => FIELD
+	 *     - if only Properties are annotated => PROPERTY
+	 *     - if both Fields and Properties are annotated => FIELD
 	 *     - if nothing is annotated
 	 *     		- and fields exist => FIELD
 	 *     		- and properties exist, but no fields exist => PROPERTY
-	 *     		- and neither fields nor properties exist => FIELD
+	 *     		- and neither fields nor properties exist => null at this level (FIELD in the context model)
 	 */
-	//TODO where do we handle getting accessType from your parent Embeddable or from the inheritance parent?
-	//I think that will be done in the ContextModel since that is dependent on other files in the system.
-	//the accessType of this particular file can be determined on it's own and thus is part of the "resource" model
 	private AccessType accessType() {
 		boolean hasPersistableFields = false;
 		boolean hasPersistableProperties = false;
@@ -337,15 +333,13 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 			}
 		}
 
-		// no annotations exist - default to fields, unless it's *obvious* to use properties
 		if (hasPersistableProperties && !hasPersistableFields) {
 			return AccessType.PROPERTY;
 		}
-		return AccessType.FIELD;
+		//no annotations exist, access is null at the resource model level
+		return null;
 	}
 	
-	//TODO do we need to build resource model objects for every parent in the hierarchy?  how
-	//do we handle inheritance where some of the classes in the hierarchy are not persistent?
 	private String superClassQualifiedName(CompilationUnit astRoot) {
 		ITypeBinding typeBinding = getMember().binding(astRoot);
 		if (typeBinding == null) {
