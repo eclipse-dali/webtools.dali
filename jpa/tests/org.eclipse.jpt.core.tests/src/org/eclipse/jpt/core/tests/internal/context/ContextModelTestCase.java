@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
@@ -61,6 +62,10 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild) 
 			throws Exception {
 		return TestJpaProject.buildJpaProject(projectName, autoBuild);  // false = no auto-build
+	}
+	
+	protected IJpaProject jpaProject() {
+		return getJavaProject().getJpaProject();
 	}
 	
 	protected void waitForWorkspaceJobs() {

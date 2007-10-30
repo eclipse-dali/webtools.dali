@@ -46,10 +46,14 @@ public interface JavaPersistentTypeResource extends JavaPersistentResource
 
 	/**
 	 * Return the fully qualified type name
-	 * @return
 	 */
 	String getQualifiedName();
 	
+	/**
+	 * Return the fully unqualified type name
+	 */
+	String getName();
+
 	String getSuperClassQualifiedName();
 	
 	AccessType getAccess();

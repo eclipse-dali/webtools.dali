@@ -25,8 +25,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class EntityImpl extends AbstractAnnotationResource<Type> implements Entity
 {
-	private static final String ANNOTATION_NAME = JPA.ENTITY;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private final AnnotationElementAdapter<String> nameAdapter;
@@ -43,7 +41,7 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 	
 	//*********** Annotation implementation ****************
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return Entity.ANNOTATION_NAME;
 	}
 	
 	//*********** Entity implementation ****************
@@ -130,7 +128,7 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 		}
 
 		public String getAnnotationName() {
-			return ANNOTATION_NAME;
+			return Entity.ANNOTATION_NAME;
 		}
 	}
 }

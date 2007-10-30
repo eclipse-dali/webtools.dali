@@ -12,8 +12,10 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.AccessType;
+import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
+import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
@@ -22,7 +24,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 {
 	protected String name;
 	
-	//protected IJavaTypeMapping mapping;
+	protected IJavaTypeMapping mapping;
 
 	//private final List<JavaPersistentAttribute> attributes;
 
@@ -50,7 +52,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	public JavaPersistentType(IClassRef parent) {
 		super(parent);
 		//this.attributes = new ArrayList<JavaPersistentAttribute>();
-		//this.mapping = jpaPlatform().buildJavaTypeMapping(this, IMappingKeys.NULL_TYPE_MAPPING_KEY);
+		this.mapping = createJavaTypeMappingFromMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
 	}
 	
 	public String getName() {
@@ -62,36 +64,33 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		this.name = newName;
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
-//	public IJavaTypeMapping getMapping() {
-//		return this.mapping;
-//	}
-//
-//	public String mappingKey() {
-//		return getMapping().getKey();
-//	}
-//	
-//	public void setMappingKey(String key) {
-//		if (key == getMapping().getKey()) {
-//			return;
-//		}
-//		setMapping(buildJavaTypeMapping(key));		
-//		this.persistentTypeResource.setMappingAnnotation(annotationNameForTypeMappingKey(key));
-//	}
-//	
-//	private void setMapping(IJavaTypeMapping newMapping) {
-//		IJavaTypeMapping oldMapping = this.mapping;
-//		this.mapping = newMapping;	
-//		firePropertyChanged(IPersistentType.MAPPING_PROPERTY, oldMapping, newMapping);
-//	}
 	
-	public boolean isMapped() {
-		return true;
-		// TODO return getMapping().isMapped();
+	public IJavaTypeMapping getMapping() {
+		return this.mapping;
+	}
+
+	public String mappingKey() {
+		return getMapping().getKey();
 	}
 	
-//	private String annotationNameForTypeMappingKey(String typeMappingKey) {
-//		return jpaPlatform().annotationNameFor(typeMappingKey);
-//	}
+	public void setMappingKey(String key) {
+		if (key == getMapping().getKey()) {
+			return;
+		}
+		IJavaTypeMapping newMapping = createJavaTypeMappingFromMappingKey(key);
+		this.persistentTypeResource.setMappingAnnotation(newMapping.annotationName());
+		setMapping(newMapping);		
+	}
+	
+	protected void setMapping(IJavaTypeMapping newMapping) {
+		IJavaTypeMapping oldMapping = this.mapping;
+		this.mapping = newMapping;	
+		firePropertyChanged(IPersistentType.MAPPING_PROPERTY, oldMapping, newMapping);
+	}
+	
+	public boolean isMapped() {
+		return getMapping().isMapped();
+	}
 
 	public AccessType access() {
 		return this.access;
@@ -103,9 +102,6 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		firePropertyChanged(ACCESS_PROPERTY, oldAccess, newAccess);
 	}
 
-//	private IJavaTypeMapping buildJavaTypeMapping(String key) {
-//		return jpaPlatform().buildJavaTypeMapping(this, key);
-//	}
 
 //	protected Iterator<JavaPersistentAttribute> attributesNamed(final String attributeName) {
 //		return new FilteringIterator<JavaPersistentAttribute>(attributes()) {
@@ -136,10 +132,10 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		if (result != null) {
 			return result;
 		}
-//		Iterator<String> values = this.mapping.candidateValuesFor(pos, filter, astRoot);
-//		if (values != null) {
-//			return values;
-//		}
+		Iterator<String> values = this.mapping.candidateValuesFor(pos, filter, astRoot);
+		if (values != null) {
+			return values;
+		}
 //		for (Iterator<JavaPersistentAttribute> stream = attributes(); stream.hasNext();) {
 //			values = stream.next().candidateValuesFor(pos, filter, astRoot);
 //			if (values != null) {
@@ -274,14 +270,28 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	}
 	
 	protected void updateMapping(JavaPersistentTypeResource persistentTypeResource) {
-//		setMapping(buildJavaTypeMapping(this.javaTypeMappingKey(persistentTypeResource)));
-//		getMapping().update(persistentTypeResource);
+		String javaMappingAnnotationName = this.javaMappingAnnotationName(persistentTypeResource);
+		if (getMapping().annotationName() != javaMappingAnnotationName) {
+			setMapping(createJavaTypeMappingFromAnnotation(javaMappingAnnotationName));
+		}
+		getMapping().update(persistentTypeResource);
 	}
 	
-//	private String javaTypeMappingKey(JavaPersistentTypeResource typeResource) {
-//		Annotation mappingAnnotation = (Annotation) typeResource.mappingAnnotation();//TODO casting here
-//		return jpaPlatform().typeMappingKey(mappingAnnotation.getAnnotationName());
-//	}
+	protected IJavaTypeMapping createJavaTypeMappingFromMappingKey(String key) {
+		return jpaPlatform().createJavaTypeMappingFromMappingKey(key, this);
+	}
+	
+	protected IJavaTypeMapping createJavaTypeMappingFromAnnotation(String annotationName) {
+		return jpaPlatform().createJavaTypeMappingFromAnnotation(annotationName, this);
+	}
+
+	private String javaMappingAnnotationName(JavaPersistentTypeResource typeResource) {
+		Annotation mappingAnnotation = (Annotation) typeResource.mappingAnnotation();
+		if (mappingAnnotation != null) {
+			return mappingAnnotation.getAnnotationName();
+		}
+		return null;
+	}
 
 	protected void updatePersistentAttributes(JavaPersistentTypeResource persistentTypeResource) {
 //		Iterable<JavaPersistentAttributeResource> iterable = CollectionTools.iterable(persistentTypeResource.fields());

@@ -13,19 +13,19 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.internal.AccessType;
 
 
-public interface IPersistentType
+public interface IPersistentType extends IJpaContextNode
 {
 	String getName();
-	String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "nameProperty";
 	
 	AccessType access();
 		String ACCESS_PROPERTY = "accessProperty";
 		
-//	ITypeMapping getMapping();
-//	String mappingKey();
-//	void setMappingKey(String key);
-//		String MAPPING_PROPERTY = "mappingProperty";
-//
+	ITypeMapping getMapping();
+	String mappingKey();
+	void setMappingKey(String key);
+		String MAPPING_PROPERTY = "mappingProperty";
+
 	boolean isMapped();
 	
 	/**

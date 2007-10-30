@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
  */
 public interface Entity extends JavaResource
 {
+	String ANNOTATION_NAME = JPA.ENTITY;
 
 	/**
 	 * Corresponds to the name element of the Entity annotation.

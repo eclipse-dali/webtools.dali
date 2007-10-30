@@ -387,6 +387,20 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		assertSourceContains("@Column"); //common between Id and Basic
 	}
 	
+	public void testSetJavaAttributeMappingAnnotationNull() throws Exception {
+		IType testType = createTestEntityWithIdColumnGeneratedValue();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		assertTrue(attributeResource.mappingAnnotation() instanceof Id);
+		
+		attributeResource.setMappingAnnotation(null);
+		assertNull(attributeResource.mappingAnnotation());
+		
+		assertSourceDoesNotContain("@Id");
+		assertSourceDoesNotContain("@GeneratedValue"); //not supported by Basic
+		assertSourceDoesNotContain("@Column"); //common between Id and Basic
+	}
+
 	public void testAddJavaAttributeAnnotation() throws Exception {
 		IType testType = createTestEntity();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 

@@ -44,6 +44,8 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	
 	private String qualifiedName;
 	
+	private String name;
+	
 	public JavaPersistentTypeResourceImpl(JavaResource parent, Type type){
 		super(parent, type);
 		this.nestedTypes = new ArrayList<JavaPersistentTypeResource>(); 
@@ -246,10 +248,20 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		//TODO change notification
 	}
 	
+	public String getName() {
+		return this.name;
+	}
+	
+	protected void setName(String name) {
+		this.name = name;
+		//TODO change notification
+	}
+	
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		setQualifiedName(getMember().binding(astRoot).getQualifiedName());
+		setName(getMember().binding(astRoot).getName());
 		updateNestedTypes(astRoot);
 		updatePersistentAttributes(astRoot);
 		setAccess(accessType());

@@ -14,11 +14,14 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.AccessType;
+import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
@@ -411,5 +414,73 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		
 		assertEquals(childJavaPersistentType, inheritanceHierarchy.next());
 		assertEquals(rootJavaPersistentType, inheritanceHierarchy.next());
+	}
+	
+	public void testGetMapping() throws Exception {
+		createTestEntityAnnotatedMethod();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().getMapping().getKey());
+	}
+	
+	public void testGetMappingNull() throws Exception {
+		createTestType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertEquals(IMappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().getMapping().getKey());
+	}
+	
+	public void testMappingKey() throws Exception {
+		createTestEntityAnnotatedMethod();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+	}
+	
+	public void testMappingKeyNull() throws Exception {
+		createTestType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertEquals(IMappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+	}
+	
+	public void testSetMappingKey() throws Exception {
+		createTestType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertEquals(IMappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+
+		javaPersistentType().setMappingKey(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		assertNotNull(typeResource.mappingAnnotation());
+		assertTrue(typeResource.mappingAnnotation() instanceof Entity);
+		
+		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+	}
+
+	public void testSetMappingKeyNull() throws Exception {
+		createTestEntityAnnotatedMethod();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+
+		javaPersistentType().setMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		assertNull(typeResource.mappingAnnotation());
+		assertNull(typeResource.mappingAnnotation(Entity.ANNOTATION_NAME));
+		
+		assertEquals(IMappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+	}
+	
+	public void testIsMapped() throws Exception {
+		createTestEntityAnnotatedMethod();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertTrue(javaPersistentType().isMapped());
+		
+		javaPersistentType().setMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);	
+		assertFalse(javaPersistentType().isMapped());	
 	}
 }

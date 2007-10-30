@@ -235,7 +235,9 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		if (oldMapping != null) {
 			removeUnnecessaryAnnotations(oldMapping.getAnnotationName(), annotationName);
 		}
-		addMappingAnnotation(annotationName);
+		if (annotationName != null) {
+			addMappingAnnotation(annotationName);
+		}
 	}
 	
 	/**
@@ -245,7 +247,9 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	private void removeUnnecessaryAnnotations(String oldMappingAnnotationName, String newMappingAnnotationName) {		
 		//TODO what about corresponding annotations for all other mapping types, those will stay??
 		Collection<String> annotationsToRemove = CollectionTools.collection(correspondingAnnotationNames(oldMappingAnnotationName));
-		CollectionTools.removeAll(annotationsToRemove, correspondingAnnotationNames(newMappingAnnotationName));
+		if (newMappingAnnotationName != null) {
+			CollectionTools.removeAll(annotationsToRemove, correspondingAnnotationNames(newMappingAnnotationName));
+		}
 		
 		for (String annotationName : annotationsToRemove) {
 			removeAnnotation(annotationName);
