@@ -40,7 +40,6 @@ Export-Package: org.eclipse.jpt.core.internal;x-friends:="org.eclipse.jpt.ui,org
  org.eclipse.jpt.core.internal.emfutility;x-internal:=true,
  org.eclipse.jpt.core.internal.facet;x-friends:="org.eclipse.jpt.ui",
  org.eclipse.jpt.core.internal.jdtutility;x-friends:="org.eclipse.jpt.ui,org.eclipse.jpt.core.tests.extension.resource",
- org.eclipse.jpt.core.internal.mappings;x-friends:="org.eclipse.jpt.ui",
  org.eclipse.jpt.core.internal.platform,
  org.eclipse.jpt.core.internal.platform.base;x-friends:="org.eclipse.jpt.ui,org.eclipse.jpt.core.tests.extension.resource",
  org.eclipse.jpt.core.internal.platform.generic;x-friends:="org.eclipse.jpt.ui",
