@@ -92,10 +92,6 @@ public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> imp
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}
 	
-	public NestableNamedNativeQuery createNestedAnnotation(int index) {
-		return createNamedNativeQuery(index);
-	}
-	
 	private NamedNativeQueryImpl createNamedNativeQuery(int index) {
 		return NamedNativeQueryImpl.createNestedNamedNativeQuery(this, getMember(), index, getDeclarationAnnotationAdapter());
 	}

@@ -176,13 +176,9 @@ public class AssociationOverrideImpl
 		}
 		
 		public NestableJoinColumn add(int index) {
-			NestableJoinColumn joinColumn = createNestedAnnotation(index);
+			NestableJoinColumn joinColumn = AssociationOverrideImpl.this.createJoinColumn(index);
 			AssociationOverrideImpl.this.addJoinColumn(joinColumn);
 			return joinColumn;
-		}
-
-		public NestableJoinColumn createNestedAnnotation(int index) {
-			return AssociationOverrideImpl.this.createJoinColumn(index);
 		}
 
 		public int indexOf(NestableJoinColumn pkJoinColumn) {

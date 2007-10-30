@@ -178,13 +178,9 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 		}
 		
 		public NestableQueryHint add(int index) {
-			NestableQueryHint queryHint = createNestedAnnotation(index);
+			NestableQueryHint queryHint = AbstractNamedQuery.this.createQueryHint(index);
 			AbstractNamedQuery.this.addHint(queryHint);
 			return queryHint;
-		}
-
-		public NestableQueryHint createNestedAnnotation(int index) {
-			return AbstractNamedQuery.this.createQueryHint(index);
 		}
 
 		public String getAnnotationName() {

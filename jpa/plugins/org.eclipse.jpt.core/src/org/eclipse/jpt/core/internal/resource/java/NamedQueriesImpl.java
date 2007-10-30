@@ -92,10 +92,6 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}
 	
-	public NestableNamedQuery createNestedAnnotation(int index) {
-		return createNamedQuery(index);
-	}
-	
 	private NamedQueryImpl createNamedQuery(int index) {
 		return NamedQueryImpl.createNestedNamedQuery(this, getMember(), index, getDeclarationAnnotationAdapter());
 	}

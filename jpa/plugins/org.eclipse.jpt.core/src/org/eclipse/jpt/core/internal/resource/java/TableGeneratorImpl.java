@@ -296,13 +296,9 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 		}
 		
 		public NestableUniqueConstraint add(int index) {
-			NestableUniqueConstraint uniqueConstraint = createNestedAnnotation(index);
+			NestableUniqueConstraint uniqueConstraint = TableGeneratorImpl.this.createUniqueConstraint(index);
 			TableGeneratorImpl.this.addUniqueConstraint(uniqueConstraint);
 			return uniqueConstraint;
-		}
-
-		public NestableUniqueConstraint createNestedAnnotation(int index) {
-			return TableGeneratorImpl.this.createUniqueConstraint(index);
 		}
 
 		public String getAnnotationName() {

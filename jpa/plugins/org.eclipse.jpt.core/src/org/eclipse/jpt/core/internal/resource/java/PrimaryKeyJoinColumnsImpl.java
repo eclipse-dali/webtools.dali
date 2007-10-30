@@ -92,10 +92,6 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractAnnotationResource<Member
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}
 	
-	public NestablePrimaryKeyJoinColumn createNestedAnnotation(int index) {
-		return createPrimaryKeyJoinColumn(index);
-	}
-	
 	private PrimaryKeyJoinColumnImpl createPrimaryKeyJoinColumn(int index) {
 		return PrimaryKeyJoinColumnImpl.createNestedPrimaryKeyJoinColumn(this, getMember(), index, getDeclarationAnnotationAdapter());
 	}

@@ -91,11 +91,7 @@ public class JoinColumnsImpl extends AbstractAnnotationResource<Member> implemen
 	public void updateFromJava(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}
-	
-	public NestableJoinColumn createNestedAnnotation(int index) {
-		return createJoinColumn(index);
-	}
-	
+		
 	private JoinColumnImpl createJoinColumn(int index) {
 		return JoinColumnImpl.createNestedJoinColumn(this, getMember(), index, getDeclarationAnnotationAdapter());
 	}

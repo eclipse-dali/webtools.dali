@@ -89,10 +89,6 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 	public void updateFromJava(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}
-		
-	public NestableSecondaryTable createNestedAnnotation(int index) {
-		return createSecondaryTable(index);
-	}
 	
 	private SecondaryTableImpl createSecondaryTable(int index) {
 		return SecondaryTableImpl.createNestedSecondaryTable(this, getMember(), index, getDeclarationAnnotationAdapter());

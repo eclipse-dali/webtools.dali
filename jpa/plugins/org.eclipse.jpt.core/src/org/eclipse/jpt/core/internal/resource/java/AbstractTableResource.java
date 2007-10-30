@@ -192,15 +192,11 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		}
 		
 		public NestableUniqueConstraint add(int index) {
-			NestableUniqueConstraint uniqueConstraint = createNestedAnnotation(index);
+			NestableUniqueConstraint uniqueConstraint = AbstractTableResource.this.createUniqueConstraint(index);
 			AbstractTableResource.this.addUniqueConstraint(uniqueConstraint);
 			return uniqueConstraint;
 		}
-
-		public NestableUniqueConstraint createNestedAnnotation(int index) {
-			return AbstractTableResource.this.createUniqueConstraint(index);
-		}
-
+		
 		public String getAnnotationName() {
 			return AbstractTableResource.this.getAnnotationName();
 		}

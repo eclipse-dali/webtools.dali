@@ -170,13 +170,9 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 		}
 		
 		public NestablePrimaryKeyJoinColumn add(int index) {
-			NestablePrimaryKeyJoinColumn pKJoinColumn = createNestedAnnotation(index);
+			NestablePrimaryKeyJoinColumn pKJoinColumn = SecondaryTableImpl.this.createPrimaryKeyJoinColumn(index);
 			SecondaryTableImpl.this.addPkJoinColumn(pKJoinColumn);
 			return pKJoinColumn;
-		}
-
-		public NestablePrimaryKeyJoinColumn createNestedAnnotation(int index) {
-			return SecondaryTableImpl.this.createPrimaryKeyJoinColumn(index);
 		}
 
 		public int indexOf(NestablePrimaryKeyJoinColumn pkJoinColumn) {

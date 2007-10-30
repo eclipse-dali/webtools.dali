@@ -92,10 +92,6 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}
 	
-	public NestableAttributeOverride createNestedAnnotation(int index) {
-		return createAttributeOverride(index);
-	}
-	
 	private AttributeOverrideImpl createAttributeOverride(int index) {
 		return AttributeOverrideImpl.createNestedAttributeOverride(this, getMember(), index, getDeclarationAnnotationAdapter());
 	}

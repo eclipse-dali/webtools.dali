@@ -92,10 +92,6 @@ public class AssociationOverridesImpl extends AbstractAnnotationResource<Member>
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}
 	
-	public NestableAssociationOverride createNestedAnnotation(int index) {
-		return createAssociationOverride(index);
-	}
-	
 	private AssociationOverrideImpl createAssociationOverride(int index) {
 		return AssociationOverrideImpl.createNestedAssociationOverride(this, getMember(), index, getDeclarationAnnotationAdapter());
 	}
