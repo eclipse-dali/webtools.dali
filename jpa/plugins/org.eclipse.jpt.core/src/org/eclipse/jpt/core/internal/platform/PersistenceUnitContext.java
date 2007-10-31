@@ -72,9 +72,9 @@ public class PersistenceUnitContext extends BaseContext
 	public PersistenceUnitContext(IContext parentContext, PersistenceUnit persistenceUnit) {
 		super(parentContext);
 		this.persistenceUnit = persistenceUnit;
+		this.mappingFileContexts = buildMappingFileContexts();
 		this.persistenceUnitMetadatas = buildPersistenceUnitMetadatas();
 		this.duplicateJavaPersistentTypes = new ArrayList<JavaTypeContext>();
-		this.mappingFileContexts = buildMappingFileContexts();
 		this.javaPersistentTypeContexts = buildJavaClassesContexts();
 		this.generatorRepository = buildGeneratorRepository();
 	}
@@ -85,8 +85,8 @@ public class PersistenceUnitContext extends BaseContext
 	
 	private List<PersistenceUnitMetadata> buildPersistenceUnitMetadatas() {
 		List<PersistenceUnitMetadata> metadatas = new ArrayList<PersistenceUnitMetadata>();
-		for (MappingFileRef mappingFileRef : persistenceUnit.getMappingFiles()) {
-			XmlRootContentNode content = xmlRootContentNodeFor(mappingFileRef);
+		for (MappingFileContext mappingFileContext : this.mappingFileContexts) {
+			XmlRootContentNode content = mappingFileContext.getXmlRootContentNode();
 			if (content != null && content.getEntityMappings() != null 
 					&& ! content.getEntityMappings().getPersistenceUnitMetadata().isAllFeaturesUnset()) {
 				metadatas.add(content.getEntityMappings().getPersistenceUnitMetadata());
