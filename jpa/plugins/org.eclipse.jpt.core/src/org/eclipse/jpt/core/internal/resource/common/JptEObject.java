@@ -21,9 +21,6 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.IResourceModel;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -63,20 +60,12 @@ public abstract class JptEObject extends EObjectImpl implements IJptEObject
 	
 	
 	// **************** IJptEObject implementation *****************************
-	
-	public IJpaProject jpaProject() {
-		return jpaFile().jpaProject();
-	}
-	
-	public IJpaPlatform jpaPlatform() {
-		return jpaProject().jpaPlatform();
-	}
-	
+		
 	public IResource platformResource() {
 		return jpaFile().getFile();
 	}
 	
-	public IResourceModel resourceModel() {
+	public JptXmlResourceModel resourceModel() {
 		return root().resourceModel();
 	}
 	
@@ -111,7 +100,7 @@ public abstract class JptEObject extends EObjectImpl implements IJptEObject
 				// if jpa file is null, the resource model is still being 
 				// constructed
 				&& jpaFile() != null) {
-			this.jpaProject().update();
+			resourceModel().resourceChanged();
 		}
 	}
 	

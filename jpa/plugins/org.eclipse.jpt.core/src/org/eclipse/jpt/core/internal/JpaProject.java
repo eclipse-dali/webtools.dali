@@ -42,6 +42,7 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.ChangeEventDispatcher;
 import org.eclipse.jpt.utility.internal.model.DefaultChangeEventDispatcher;
+import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.internal.node.Node;
 
 /**
@@ -104,6 +105,12 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 	 */
 	protected final UpdateJpaProjectJobScheduler updateJpaProjectJobScheduler;
 
+	/**
+	 * Resource models notify this listener when they change. a project update
+	 * should occur any time a resource model changes.
+	 */
+	protected ResourceModelListener resourceModelListener;
+	
 
 	// ********** constructor/initialization **********
 
@@ -272,6 +279,7 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 	protected void addJpaFile(IFile file) {
 		IJpaFile jpaFile = this.jpaPlatform.buildJpaFile(this, file);
 		if (jpaFile != null) {
+			jpaFile.getResourceModel().addResourceModelChangeListener(getResourceModelListener());
 			this.addItemToCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION);
 		}
 	}
@@ -283,6 +291,7 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
 			throw new IllegalArgumentException("JPA file: " + jpaFile.getFile().getName());
 		}
+		jpaFile.getResourceModel().removeResourceModelChangeListener(getResourceModelListener());
 		jpaFile.dispose();
 	}
 
@@ -592,8 +601,24 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 			protected IStatus run(IProgressMonitor monitor) {
 				return this.jpaProject.update(monitor);
 			}
-
 		}
-
 	}
+	
+	protected ResourceModelListener getResourceModelListener() {
+		if (this.resourceModelListener == null) {
+			this.resourceModelListener = new ResourceModelListener();
+		}
+		return this.resourceModelListener;
+	}
+		
+	public class ResourceModelListener implements ChangeListener {
+		
+		private ResourceModelListener() {
+			super();
+		}
+		public void resourceModelChanged() {
+			JpaProject.this.update();
+		}
+	}
+
 }

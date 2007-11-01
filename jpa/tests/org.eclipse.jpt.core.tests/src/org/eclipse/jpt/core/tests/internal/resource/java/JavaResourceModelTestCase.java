@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.SimpleJpaProjectConfig;
 import org.eclipse.jpt.core.internal.jdtutility.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 
 public class JavaResourceModelTestCase extends AnnotationTestCase
@@ -72,15 +72,14 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	}
 	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) 
 		throws CoreException {
-		JpaCompilationUnitResource jpaCompilationUnitResource = buildJpaCompilationUnitResource(testType);
-		return jpaCompilationUnitResource.getPersistentType();
+		JavaResourceModel javaResourceModel = buildJavaResourceModel(testType);
+		return javaResourceModel.getCompilationUnitResource().getPersistentType();
 	}
 	
-	protected JpaCompilationUnitResource buildJpaCompilationUnitResource(IType testType) 
-		throws CoreException {
+	protected JavaResourceModel buildJavaResourceModel(IType testType) throws CoreException {
 		IFile file = (IFile) testType.getResource();
 		IJpaProject jpaProject = buildJpaProject();
-		return new JpaCompilationUnitResource(
+		return new JavaResourceModel(
 			file, 
 			jpaProject.jpaPlatform().annotationProvider(),
 			MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER,

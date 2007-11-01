@@ -14,22 +14,10 @@ package org.eclipse.jpt.core.internal.resource.common;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.IResourceModel;
 import org.eclipse.jpt.core.internal.ITextRange;
 
 public interface IJptEObject extends EObject
 {
-	/**
-	 * Return the JPA project containing this object
-	 */
-	IJpaProject jpaProject();
-	
-	/**
-	 * Return the JPA platform corresponding to the JPA project containing this object
-	 */
-	IJpaPlatform jpaPlatform();
 	
 	/**
 	 * Return the resource that most directly contains this object
@@ -44,7 +32,7 @@ public interface IJptEObject extends EObject
 	/**
 	 * Return the IResourceModel containing this object.
 	 */
-	IResourceModel resourceModel();
+	JptXmlResourceModel resourceModel();
 	
 	/**
 	 * Return the root object of the model

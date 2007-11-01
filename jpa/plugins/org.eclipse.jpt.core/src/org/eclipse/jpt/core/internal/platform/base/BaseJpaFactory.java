@@ -92,11 +92,11 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IResourceModel buildResourceModel(IJpaProject jpaProject, IFile file) {
 		if (! JavaCore.create(jpaProject.project()).isOnClasspath(file)) {
-			return null;
+			throw new IllegalArgumentException("The file" + file + " is not on the project classpath");
 		}
 		IContentType contentType = this.contentType(file);
 		if (contentType == null) {
-			return null;
+			throw new IllegalArgumentException("The file" + file + " does not have a supported content type");
 		}
 		String contentTypeId = contentType.getId();
 		return buildResourceModel(jpaProject, file, contentTypeId);

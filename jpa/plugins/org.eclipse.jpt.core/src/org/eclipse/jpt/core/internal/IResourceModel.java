@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jpt.core.internal.JpaProject.ResourceModelListener;
 
 public interface IResourceModel
 {
@@ -58,5 +59,11 @@ public interface IResourceModel
 	void dispose();
 	
 	void handleJavaElementChangedEvent(ElementChangedEvent event);
+	
+	
+	void addResourceModelChangeListener(ResourceModelListener listener);
+
+	void removeResourceModelChangeListener(ResourceModelListener listener);
+
 }
 
