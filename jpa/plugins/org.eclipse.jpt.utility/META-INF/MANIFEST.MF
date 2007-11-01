@@ -10,5 +10,8 @@ Export-Package: org.eclipse.jpt.utility.internal,
  org.eclipse.jpt.utility.internal.model,
  org.eclipse.jpt.utility.internal.model.event,
  org.eclipse.jpt.utility.internal.model.listener,
+ org.eclipse.jpt.utility.internal.model.value,
+ org.eclipse.jpt.utility.internal.model.value.prefs,
+ org.eclipse.jpt.utility.internal.model.value.swing,
  org.eclipse.jpt.utility.internal.node
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
