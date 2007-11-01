@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model;
 
-import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.tests.internal.model.listener.JptUtilityModelListenerTests;
+import org.eclipse.jpt.utility.tests.internal.model.value.JptUtilityModelValueTests;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -18,9 +18,11 @@ import junit.framework.TestSuite;
 public class JptUtilityModelTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(ClassTools.packageNameFor(JptUtilityModelTests.class));
+		TestSuite suite = new TestSuite(JptUtilityModelTests.class.getPackage().getName());
 
 		suite.addTest(JptUtilityModelListenerTests.suite());
+		suite.addTest(JptUtilityModelValueTests.suite());
+
 		suite.addTestSuite(AbstractModelTests.class);
 
 		return suite;
