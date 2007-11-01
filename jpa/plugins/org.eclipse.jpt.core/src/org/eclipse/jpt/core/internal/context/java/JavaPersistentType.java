@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -36,7 +35,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	
 	protected IJavaTypeMapping mapping;
 
-	protected final List<JavaPersistentAttribute> attributes;
+	protected final List<IJavaPersistentAttribute> attributes;
 
 	protected AccessType access;
 
@@ -61,7 +60,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 
 	public JavaPersistentType(IClassRef parent) {
 		super(parent);
-		this.attributes = new ArrayList<JavaPersistentAttribute>();
+		this.attributes = new ArrayList<IJavaPersistentAttribute>();
 		this.mapping = createJavaTypeMappingFromMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
 	}
 	
@@ -135,20 +134,20 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 //		return (parentPersistentType() == null) ? null : parentPersistentType().resolveAttribute(attributeName);
 //	}
 	
-	public ListIterator<JavaPersistentAttribute> attributes() {
-		return new CloneListIterator<JavaPersistentAttribute>(this.attributes);
+	public ListIterator<IJavaPersistentAttribute> attributes() {
+		return new CloneListIterator<IJavaPersistentAttribute>(this.attributes);
 	}
 	
 	public int attributesSize() {
 		return this.attributes.size();
 	}
 	
-	private void addAttribute(JavaPersistentAttribute attribute) {
+	private void addAttribute(IJavaPersistentAttribute attribute) {
 		addItemToList(attribute, this.attributes, IPersistentType.ATTRIBUTES_LIST);
 	}
 
-	private void removeAttribute(int index) {
-		removeItemFromList(index, this.attributes, IPersistentType.ATTRIBUTES_LIST);
+	private void removeAttribute(IJavaPersistentAttribute attribute) {
+		removeItemFromList(attribute, this.attributes, IPersistentType.ATTRIBUTES_LIST);
 	}
 	
 	public Iterator<String> attributeNames() {
@@ -304,31 +303,31 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	}
 
 	protected void updatePersistentAttributes(JavaPersistentTypeResource persistentTypeResource) {
-		Iterable<JavaPersistentAttributeResource> iterable = CollectionTools.iterable(persistentTypeResource.fields());
+		ListIterator<IJavaPersistentAttribute> contextAttributes = attributes();
+		Iterator<JavaPersistentAttributeResource> resourceAttributes = persistentTypeResource.fields();
 		if (access() == AccessType.PROPERTY) {
-			iterable = CollectionTools.iterable(persistentTypeResource.properties());
-		}
-		int index = 0;
-		for (JavaPersistentAttributeResource attributeResource : iterable) {
-			JavaPersistentAttribute persistentAttribute;
-			if (this.attributes.size() > index) {
-				persistentAttribute = this.attributes.get(index);
+			resourceAttributes = persistentTypeResource.properties();
+		}		
+		
+		while (contextAttributes.hasNext()) {
+			IJavaPersistentAttribute persistentAttribute = contextAttributes.next();
+			if (resourceAttributes.hasNext()) {
+				persistentAttribute.update(resourceAttributes.next());
 			}
 			else {
-				persistentAttribute = createAttribute();
-				addAttribute(persistentAttribute);
+				removeAttribute(persistentAttribute);
 			}
-			persistentAttribute.update(attributeResource);
-			index++;
 		}
-		while (index < this.attributes.size()) {
-			removeAttribute(index);
-			index++;
+		
+		while (resourceAttributes.hasNext()) {
+			IJavaPersistentAttribute persistentAttribute = createAttribute();
+			addAttribute(persistentAttribute);
+			persistentAttribute.update(resourceAttributes.next());
 		}
 	}
 	
-	protected JavaPersistentAttribute createAttribute() {
-		return new JavaPersistentAttribute(this);
+	protected IJavaPersistentAttribute createAttribute() {
+		return jpaFactory().createJavaPersistentAttribute(this);
 	}
 	
 	public void updateParentPersistentType(JavaPersistentTypeResource persistentTypeResource) {

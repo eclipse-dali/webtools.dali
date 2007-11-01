@@ -37,10 +37,12 @@ import org.eclipse.jpt.core.internal.context.base.Persistence;
 import org.eclipse.jpt.core.internal.context.base.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaEntity;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
+import org.eclipse.jpt.core.internal.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
@@ -180,12 +182,17 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return new ClassRef(parent);
 	}
 	
-	public IJavaTypeMapping createJavaNullTypeMapping(IJavaPersistentType parent) {
-		return new JavaNullTypeMapping(parent);
-	}
 	
 	public IJavaPersistentType createJavaPersistentType(IClassRef parent) {
 		return new JavaPersistentType(parent);
+	}
+	
+	public IJavaPersistentAttribute createJavaPersistentAttribute(IJavaPersistentType parent) {
+		return new JavaPersistentAttribute(parent);
+	}
+	
+	public IJavaTypeMapping createJavaNullTypeMapping(IJavaPersistentType parent) {
+		return new JavaNullTypeMapping(parent);
 	}
 	
 	public IJavaEntity createJavaEntity(IJavaPersistentType parent) {

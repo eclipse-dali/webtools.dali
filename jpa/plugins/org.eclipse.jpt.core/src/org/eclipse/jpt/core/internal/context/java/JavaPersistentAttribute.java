@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
@@ -19,7 +18,7 @@ import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public class JavaPersistentAttribute extends JavaContextModel
-	implements IPersistentAttribute
+	implements IJavaPersistentAttribute
 {
 	protected String name;
 
@@ -30,7 +29,7 @@ public class JavaPersistentAttribute extends JavaContextModel
 
 	protected JavaPersistentAttributeResource persistentAttributeResource;
 
-	protected JavaPersistentAttribute(IPersistentType parent) {
+	public JavaPersistentAttribute(IJavaPersistentType parent) {
 		super(parent);
 		//no access to the jpaFactory() in the constructor because the parent is not set yet
 //		this.defaultMapping = createJavaAttributeMappingFromMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
