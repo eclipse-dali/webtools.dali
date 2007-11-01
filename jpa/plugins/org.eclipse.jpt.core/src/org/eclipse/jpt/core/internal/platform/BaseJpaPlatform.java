@@ -118,8 +118,6 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 * *************
 	 * * IMPORTANT *   For INTERNAL use only !!
 	 * *************
-	 * 
-	 * @see IJpaPlatform#setId(String)
 	 */
 	public void setId(String theId) {
 		this.id = theId;

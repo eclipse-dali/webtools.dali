@@ -84,20 +84,16 @@ public class SelectionManagerFactory
 	
 	private class WindowListener implements IWindowListener
 	{
-		/* @see IWindowListener#windowOpened(IWorkbenchWindow) */
 		public void windowOpened(IWorkbenchWindow aWindow) {}
 		
-		/* @see IWindowListener#windowClosed(IWorkbenchWindow) */
 		public void windowClosed(IWorkbenchWindow aWindow) {
 			SelectionManager manager = internalGetSelectionManager(aWindow);
 			manager.dispose();
 			managers.remove(aWindow);
 		}
 		
-		/* @see IWindowListener#windowActivated(IWorkbenchWindow) */
 		public void windowActivated(IWorkbenchWindow aWindow) {}
 		
-		/* @see IWindowListener#windowDeactivated(IWorkbenchWindow) */
 		public void windowDeactivated(IWorkbenchWindow aWindow) {}
 	}
 }

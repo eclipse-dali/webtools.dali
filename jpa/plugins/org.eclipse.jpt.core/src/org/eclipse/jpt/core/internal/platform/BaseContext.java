@@ -29,16 +29,10 @@ public abstract class BaseContext implements IContext
 	 */
 	protected abstract void initialize();
 	
-	/**
-	 * @see IContext#getParentContext()
-	 */
 	public IJpaPlatform getPlatform() {
 		return getParentContext().getPlatform();
 	}
 	
-	/**
-	 * @see IContext#getParentContext()
-	 */
 	public IContext getParentContext() {
 		return parentContext;
 	}
