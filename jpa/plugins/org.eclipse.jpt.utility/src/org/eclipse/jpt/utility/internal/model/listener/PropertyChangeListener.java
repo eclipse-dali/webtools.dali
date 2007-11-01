@@ -21,7 +21,7 @@ public interface PropertyChangeListener extends ChangeListener {
 	/**
 	 * This method gets called when a model has changed a bound property.
 	 * 
-	 * @param event A StateChangeEvent describing the event source
+	 * @param event A PropertyChangeEvent describing the event source
 	 * and the property's old and new values.
 	 */
 	void propertyChanged(PropertyChangeEvent event);
