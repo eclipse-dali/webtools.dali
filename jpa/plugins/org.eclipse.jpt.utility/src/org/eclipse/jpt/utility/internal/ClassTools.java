@@ -1326,7 +1326,7 @@ public final class ClassTools {
 	
 	/**
 	 * Return the class code for the specified class.
-	 * @see java.lang.Class.getName()
+	 * @see java.lang.Class#getName()
 	 */
 	public static char codeForClass(Class<?> javaClass) {
 		if (( ! javaClass.isArray()) && (javaClass.getName().length() <= maxPrimitiveClassNameLength())) {
@@ -1342,7 +1342,7 @@ public final class ClassTools {
 	
 	/**
 	 * Return the class code for the specified class.
-	 * @see java.lang.Class.getName()
+	 * @see java.lang.Class#getName()
 	 */
 	public static char codeForClassNamed(String className) {
 		if (( ! classNamedIsArray(className)) && (className.length() <= maxPrimitiveClassNameLength())) {

@@ -957,7 +957,7 @@ public abstract class AbstractNode
 	 * If you want to give more information in your #toString(),
 	 * override #toString(StringBuilder sb). 
 	 * Whatever you add to that string buffer will show up between the parentheses.
-	 * @see oracle.toplink.workbench.utility.AbstractModel#toString(StringBuilder sb)
+	 * @see AbstractModel#toString(StringBuilder sb)
 	 * @see #displayString()
 	 */
 	@Override

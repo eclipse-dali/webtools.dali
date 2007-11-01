@@ -37,7 +37,6 @@ public class AsynchronousValidator
 	 * Set the shared "validate" flag to true, triggering
 	 * an asynchronous validation of the appropriate
 	 * branch of nodes.
-	 * @see PluggableValidator.Delegate#validate()
 	 */
 	public void validate() {
 		this.validateFlag.setTrue();
