@@ -60,6 +60,7 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 		this.fetchAdapter = buildAnnotationElementAdapter(this.fetchDeclarationAdapter);
 		this.cascadeDeclarationAdapter = cascadeAdapter();
 		this.cascadeAdapter = new ShortCircuitArrayAnnotationElementAdapter<String>(attribute, this.cascadeDeclarationAdapter);
+//		this.cascadeTypes = new CascadeType[0];
 	}
 	
 	protected AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
@@ -85,7 +86,7 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 		this.targetEntity = this.targetEntity(astRoot);
 		this.fullyQualifiedTargetEntity = this.fullyQualifiedTargetEntity(astRoot);
 		this.fetch = this.fetch(astRoot);
-		this.initializeCascadeFromJava(astRoot);
+		this.updateCascadeFromJava(astRoot);
 	}
 	
 	private void initializeCascadeFromJava(CompilationUnit astRoot) {
@@ -251,13 +252,17 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 	
 	private void updateCascadeFromJava(CompilationUnit astRoot) {
 		String[] javaValue = this.cascadeAdapter.getValue(astRoot);
-		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValue(javaValue);
-		setCascadeAll(CollectionTools.contains(cascadeTypes, CascadeType.ALL));
-		setCascadeMerge(CollectionTools.contains(cascadeTypes, CascadeType.MERGE));
-		setCascadePersist(CollectionTools.contains(cascadeTypes, CascadeType.PERSIST));
-		setCascadeRefresh(CollectionTools.contains(cascadeTypes, CascadeType.REFRESH));
-		setCascadeRemove(CollectionTools.contains(cascadeTypes, CascadeType.REMOVE));
+		setCascadeTypes(CascadeType.fromJavaAnnotationValue(javaValue));
 	}
+//	private void updateCascadeFromJava(CompilationUnit astRoot) {
+//		String[] javaValue = this.cascadeAdapter.getValue(astRoot);
+//		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValue(javaValue);
+//		setCascadeAll(CollectionTools.contains(cascadeTypes, CascadeType.ALL));
+//		setCascadeMerge(CollectionTools.contains(cascadeTypes, CascadeType.MERGE));
+//		setCascadePersist(CollectionTools.contains(cascadeTypes, CascadeType.PERSIST));
+//		setCascadeRefresh(CollectionTools.contains(cascadeTypes, CascadeType.REFRESH));
+//		setCascadeRemove(CollectionTools.contains(cascadeTypes, CascadeType.REMOVE));
+//	}
 	
 	private String fullyQualifiedTargetEntity(CompilationUnit astRoot) {
 		if (getTargetEntity() == null) {
