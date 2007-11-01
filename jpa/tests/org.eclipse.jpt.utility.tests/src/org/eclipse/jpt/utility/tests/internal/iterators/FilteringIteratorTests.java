@@ -282,4 +282,17 @@ public class FilteringIteratorTests extends TestCase {
 		};
 	}
 
+	public void testInvalidFilteringIterator() {
+		boolean exCaught = false;
+		try {
+			// missing method override
+			Iterator<String> iterator = new FilteringIterator<String>(this.buildNestedIterator());
+			String s = iterator.next();
+			fail("invalid string: " + s);
+		} catch (UnsupportedOperationException ex) {
+			exCaught = true;
+		}
+		assertTrue("NoSuchElementException not thrown", exCaught);
+	}
+
 }

@@ -99,6 +99,19 @@ public class GraphIteratorTests extends TestCase {
 		assertTrue("Too many items in iterator.", iteratorSize <= actualSize);
 	}
 
+	public void testInvalidGraphIterator() {
+		boolean exCaught = false;
+		try {
+			// missing method override
+			Iterator<GraphNode> iterator = new GraphIterator<GraphNode>(this.buildGraphRoot());
+			GraphNode gn = iterator.next();
+			fail("invalid graph node: " + gn);
+		} catch (UnsupportedOperationException ex) {
+			exCaught = true;
+		}
+		assertTrue("NoSuchElementException not thrown", exCaught);
+	}
+
 	/**
 	 * build a graph iterator with an explicit misterRogers
 	 */

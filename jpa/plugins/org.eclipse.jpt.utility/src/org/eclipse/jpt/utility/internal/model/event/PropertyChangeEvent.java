@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.event;
 
+import org.eclipse.jpt.utility.internal.model.Model;
+
 /**
  * A "property change" event gets delivered whenever a model changes a "bound"
  * or "constrained" property. A PropertyChangeEvent is sent as an
@@ -36,7 +38,7 @@ public class PropertyChangeEvent extends ChangeEvent {
 	 * @param oldValue The old value of the property.
 	 * @param newValue The new value of the property.
 	 */
-	public PropertyChangeEvent(Object source, String propertyName, Object oldValue, Object newValue) {
+	public PropertyChangeEvent(Model source, String propertyName, Object oldValue, Object newValue) {
 		super(source);
 		if (propertyName == null) {
 			throw new NullPointerException();
@@ -73,7 +75,7 @@ public class PropertyChangeEvent extends ChangeEvent {
 	}
 
 	@Override
-	public PropertyChangeEvent cloneWithSource(Object newSource) {
+	public PropertyChangeEvent cloneWithSource(Model newSource) {
 		return new PropertyChangeEvent(newSource, this.propertyName, this.oldValue, this.newValue);
 	}
 
@@ -81,7 +83,7 @@ public class PropertyChangeEvent extends ChangeEvent {
 	 * Return a copy of the event with the specified source
 	 * replacing the current source and the property name.
 	 */
-	public PropertyChangeEvent cloneWithSource(Object newSource, String newPropertyName) {
+	public PropertyChangeEvent cloneWithSource(Model newSource, String newPropertyName) {
 		return new PropertyChangeEvent(newSource, newPropertyName, this.oldValue, this.newValue);
 	}
 

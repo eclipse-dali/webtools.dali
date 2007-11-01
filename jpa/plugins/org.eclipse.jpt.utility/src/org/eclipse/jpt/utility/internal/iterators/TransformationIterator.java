@@ -31,13 +31,13 @@ public class TransformationIterator<E1, E2>
 
 	/**
 	 * Construct an iterator with the specified nested iterator
-	 * and a transformer that simply returns the object, unchanged.
+	 * and a disabled transformer.
 	 * Use this constructor if you want to override the
 	 * <code>transform(Object)</code> method instead of building
 	 * a <code>Transformer</code>.
 	 */
 	public TransformationIterator(Iterator<? extends E1> nestedIterator) {
-		this(nestedIterator, Transformer.Null.<E1, E2>instance());
+		this(nestedIterator, Transformer.Disabled.<E1, E2>instance());
 	}
 
 	/**

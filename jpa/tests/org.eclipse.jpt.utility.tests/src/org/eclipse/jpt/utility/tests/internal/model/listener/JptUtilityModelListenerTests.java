@@ -9,15 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model.listener;
 
-import org.eclipse.jpt.utility.internal.ClassTools;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 public class JptUtilityModelListenerTests {
 	
 	public static Test suite() {
-		TestSuite suite = new TestSuite(ClassTools.packageNameFor(JptUtilityModelListenerTests.class));
+		TestSuite suite = new TestSuite(JptUtilityModelListenerTests.class.getPackage().getName());
 
 		suite.addTestSuite(ReflectiveCollectionChangeListenerTests.class);
 		suite.addTestSuite(ReflectiveListChangeListenerTests.class);

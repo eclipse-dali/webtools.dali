@@ -35,13 +35,13 @@ public class ChainIterator<E>
 
 	/**
 	 * Construct an iterator with the specified starting link
-	 * and a linker that simply returns null, indicating the end of the chain.
+	 * and a disabled linker.
 	 * Use this constructor if you want to override the
 	 * <code>nextLink(Object)</code> method instead of building
 	 * a <code>Linker</code>.
 	 */
 	public ChainIterator(E startLink) {
-		this(startLink, Linker.Null.<E>instance());
+		this(startLink, Linker.Disabled.<E>instance());
 	}
 	
 	/**
@@ -116,6 +116,27 @@ public class ChainIterator<E>
 			@Override
 			public String toString() {
 				return "ChainIterator.Linker.Null";
+			}
+		}
+
+		final class Disabled<S> implements Linker<S> {
+			@SuppressWarnings("unchecked")
+			public static final Linker INSTANCE = new Disabled();
+			@SuppressWarnings("unchecked")
+			public static <R> Linker<R> instance() {
+				return INSTANCE;
+			}
+			// ensure single instance
+			private Disabled() {
+				super();
+			}
+			// throw an exception
+			public S nextLink(S currentLink) {
+				throw new UnsupportedOperationException();  // ChainIterator.nextLink(Object) was not implemented
+			}
+			@Override
+			public String toString() {
+				return "ChainIterator.Linker.Disabled";
 			}
 		}
 

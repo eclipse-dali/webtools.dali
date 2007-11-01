@@ -213,4 +213,17 @@ public class TransformationIteratorTests extends TestCase {
 		return Collections.unmodifiableCollection(this.buildCollection());
 	}
 
+	public void testInvalidTransformationIterator() {
+		// missing method override
+		Iterator<Integer> iterator = new TransformationIterator<String, Integer>(this.buildCollection().iterator());
+		boolean exCaught = false;
+		try {
+			Integer integer = iterator.next();
+			fail("invalid integer: " + integer);
+		} catch (UnsupportedOperationException ex) {
+			exCaught = true;
+		}
+		assertTrue("NoSuchElementException not thrown", exCaught);
+	}
+
 }

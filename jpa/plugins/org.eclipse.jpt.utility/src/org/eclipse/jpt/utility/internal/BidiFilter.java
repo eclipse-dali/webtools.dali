@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,23 +10,26 @@
 package org.eclipse.jpt.utility.internal;
 
 /**
- * Used by various "pluggable" classes to filter objects.
+ * Used by various "pluggable" classes to filter objects
+ * in both directions.
+ * 
+ * If anyone can come up with a better class name
+ * and/or method name, I would love to hear it.  ~bjv
  */
-public interface Filter<T> {
+public interface BidiFilter<T> extends Filter<T> {
 
 	/**
 	 * Return whether the specified object is "accepted" by the
-	 * filter. The semantics of "accept" is determined by the
-	 * contract between the client and the server.
+	 * "reverse" filter. What that means is determined by the client.
 	 */
-	boolean accept(T o);
+	boolean reverseAccept(T o);
 
 
-	final class Null<S> implements Filter<S> {
+	final class Null<S> implements BidiFilter<S> {
 		@SuppressWarnings("unchecked")
-		public static final Filter INSTANCE = new Null();
+		public static final BidiFilter INSTANCE = new Null();
 		@SuppressWarnings("unchecked")
-		public static <R> Filter<R> instance() {
+		public static <R> BidiFilter<R> instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
@@ -37,17 +40,21 @@ public interface Filter<T> {
 		public boolean accept(S next) {
 			return true;
 		}
+		// nothing is "reverse-filtered" - everything is accepted
+		public boolean reverseAccept(S o) {
+			return true;
+		}
 		@Override
 		public String toString() {
-			return "Filter.Null";
+			return "BidiFilter.Null";
 		}
 	}
 
-	final class Disabled<S> implements Filter<S> {
+	final class Disabled<S> implements BidiFilter<S> {
 		@SuppressWarnings("unchecked")
-		public static final Filter INSTANCE = new Disabled();
+		public static final BidiFilter INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
-		public static <R> Filter<R> instance() {
+		public static <R> BidiFilter<R> instance() {
 			return INSTANCE;
 		}
 		// ensure single instance
@@ -58,9 +65,13 @@ public interface Filter<T> {
 		public boolean accept(S next) {
 			throw new UnsupportedOperationException();
 		}
+		// throw an exception
+		public boolean reverseAccept(S o) {
+			throw new UnsupportedOperationException();
+		}
 		@Override
 		public String toString() {
-			return "Filter.Disabled";
+			return "BidiFilter.Disabled";
 		}
 	}
 

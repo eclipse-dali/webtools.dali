@@ -46,13 +46,13 @@ public class FilteringIterator<E>
 
 	/**
 	 * Construct an iterator with the specified nested
-	 * iterator and a filter that simply accepts every object.
+	 * iterator and a disabled filter.
 	 * Use this constructor if you want to override the
 	 * <code>accept(Object)</code> method instead of building
 	 * a <code>Filter</code>.
 	 */
 	public FilteringIterator(Iterator<?> nestedIterator) {
-		this(nestedIterator, Filter.Null.instance());
+		this(nestedIterator, Filter.Disabled.instance());
 	}
 
 	/**

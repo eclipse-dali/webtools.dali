@@ -56,13 +56,17 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  * 
  * NB3: This class is serializable, but it will only write out listeners that
  * are also serializable while silently leaving behind listeners that are not.
+ * 
+ * TODO support a dispatcher per listener
+ * TODO fire a state change event with *every* change?
+ * TODO use objects (IDs?) instead of strings to identify aspects
  */
 public class ChangeSupport
 	implements Serializable
 {
 
 	/** The object to be provided as the "source" for any generated events. */
-	protected final Object source;
+	protected final Model source;
 
 	/** Maps a listener class to a collection of "generic" listeners for that class. */
 	transient private GenericListenerList[] genericListeners = EMPTY_GENERIC_LISTENERS;
@@ -81,7 +85,7 @@ public class ChangeSupport
 	 * Construct support for the specified source of change events.
 	 * The source cannot be null.
 	 */
-	public ChangeSupport(Object source) {
+	public ChangeSupport(Model source) {
 		super();
 		if (source == null) {
 			throw new NullPointerException();

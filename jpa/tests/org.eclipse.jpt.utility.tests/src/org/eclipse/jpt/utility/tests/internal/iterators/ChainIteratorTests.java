@@ -116,4 +116,17 @@ public class ChainIteratorTests extends TestCase {
 		};
 	}
 
+	public void testInvalidChainIterator() {
+		// missing method override
+		Iterator<Class<?>> iterator = new ChainIterator<Class<?>>(Vector.class);
+		boolean exCaught = false;
+		try {
+			Class<?> c = iterator.next();
+			fail("invalid class: " + c.getName());
+		} catch (UnsupportedOperationException ex) {
+			exCaught = true;
+		}
+		assertTrue("NoSuchElementException not thrown", exCaught);
+	}
+
 }

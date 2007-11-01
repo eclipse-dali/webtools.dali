@@ -15,7 +15,7 @@ import org.eclipse.jpt.utility.internal.Transformer;
 
 /**
  * A <code>TransformationListIterator</code> wraps another <code>ListIterator</code>
- * and transforms it results for client consumption. To use, supply a 
+ * and transforms its results for client consumption. To use, supply a 
  * <code>Transformer</code> or subclass <code>TransformationIterator</code>
  * and override the <code>transform(Object)</code> method.
  * 
@@ -31,13 +31,13 @@ public class TransformationListIterator<E1, E2>
 
 	/**
 	 * Construct an iterator with the specified nested iterator
-	 * and a transformer that simply returns the object, unchanged.
+	 * and a disabled transformer.
 	 * Use this constructor if you want to override the
 	 * <code>transform(Object)</code> method instead of building
 	 * a <code>Transformer</code>.
 	 */
 	public TransformationListIterator(ListIterator<? extends E1> nestedIterator) {
-		this(nestedIterator, Transformer.Null.<E1, E2>instance());
+		this(nestedIterator, Transformer.Disabled.<E1, E2>instance());
 	}
 
 	/**

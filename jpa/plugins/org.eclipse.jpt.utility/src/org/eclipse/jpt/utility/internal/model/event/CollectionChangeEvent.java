@@ -13,6 +13,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.eclipse.jpt.utility.internal.model.Model;
+
 /**
  * A "collection change" event gets delivered whenever a model changes a "bound"
  * or "constrained" collection. A CollectionChangeEvent is sent as an
@@ -26,7 +28,7 @@ import java.util.Iterator;
  * 	(this is the option we implemented below and in collaborating code)
  * 	since there is no way to optimize downstream code for
  * 	single items, we take another performance hit by building
- * 	a collection each time  (@see Collections.singleton(Object))
+ * 	a collection each time  (@see Collections#singleton(Object))
  * 	and forcing downstream code to use an iterator every time
  * 
  * - fire a separate event for each item added or removed
@@ -53,7 +55,7 @@ public class CollectionChangeEvent extends ChangeEvent {
 	 * @param collectionName The programmatic name of the collection that was changed.
 	 * @param items The items that were added to or removed from the collection.
 	 */
-	public CollectionChangeEvent(Object source, String collectionName, Collection<?> items) {
+	public CollectionChangeEvent(Model source, String collectionName, Collection<?> items) {
 		super(source);
 		if ((collectionName == null) || (items == null)) {
 			throw new NullPointerException();
@@ -69,7 +71,7 @@ public class CollectionChangeEvent extends ChangeEvent {
 	 * @param collectionName The programmatic name of the collection that was changed.
 	 */
 	@SuppressWarnings("unchecked")
-	public CollectionChangeEvent(Object source, String collectionName) {
+	public CollectionChangeEvent(Model source, String collectionName) {
 		this(source, collectionName, Collections.emptySet());
 	}
 
@@ -108,7 +110,7 @@ public class CollectionChangeEvent extends ChangeEvent {
 	 * replacing the current source.
 	 */
 	@Override
-	public CollectionChangeEvent cloneWithSource(Object newSource) {
+	public CollectionChangeEvent cloneWithSource(Model newSource) {
 		return new CollectionChangeEvent(newSource, this.collectionName, this.items);
 	}
 
@@ -116,7 +118,7 @@ public class CollectionChangeEvent extends ChangeEvent {
 	 * Return a copy of the event with the specified source
 	 * replacing the current source and collection name.
 	 */
-	public CollectionChangeEvent cloneWithSource(Object newSource, String newCollectionName) {
+	public CollectionChangeEvent cloneWithSource(Model newSource, String newCollectionName) {
 		return new CollectionChangeEvent(newSource, newCollectionName, this.items);
 	}
 
