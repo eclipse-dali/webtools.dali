@@ -23,6 +23,7 @@ public class JptCoreContextJavaModelTests extends TestCase
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptCoreContextJavaModelTests.class.getName());
 		suite.addTestSuite(JavaPersistentTypeTests.class);
+		suite.addTestSuite(JavaPersistentAttributeTests.class);
 		suite.addTestSuite(JavaEntityTests.class);
 		return suite;
 	}

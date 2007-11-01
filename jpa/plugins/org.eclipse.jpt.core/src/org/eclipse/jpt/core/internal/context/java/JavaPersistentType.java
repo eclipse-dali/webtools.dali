@@ -9,16 +9,26 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 public class JavaPersistentType extends JavaContextModel implements IJavaPersistentType
 {
@@ -26,7 +36,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	
 	protected IJavaTypeMapping mapping;
 
-	//private final List<JavaPersistentAttribute> attributes;
+	protected final List<JavaPersistentAttribute> attributes;
 
 	protected AccessType access;
 
@@ -51,7 +61,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 
 	public JavaPersistentType(IClassRef parent) {
 		super(parent);
-		//this.attributes = new ArrayList<JavaPersistentAttribute>();
+		this.attributes = new ArrayList<JavaPersistentAttribute>();
 		this.mapping = createJavaTypeMappingFromMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
 	}
 	
@@ -102,21 +112,20 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		firePropertyChanged(ACCESS_PROPERTY, oldAccess, newAccess);
 	}
 
+	protected Iterator<JavaPersistentAttribute> attributesNamed(final String attributeName) {
+		return new FilteringIterator<JavaPersistentAttribute>(attributes()) {
+			@Override
+			protected boolean accept(Object o) {
+				return attributeName.equals(((JavaPersistentAttribute) o).getName());
+			}
+		};
+	}
 
-//	protected Iterator<JavaPersistentAttribute> attributesNamed(final String attributeName) {
-//		return new FilteringIterator<JavaPersistentAttribute>(attributes()) {
-//			@Override
-//			protected boolean accept(Object o) {
-//				return attributeName.equals(((JavaPersistentAttribute) o).getName());
-//			}
-//		};
-//	}
+	public JavaPersistentAttribute attributeNamed(String attributeName) {
+		Iterator<JavaPersistentAttribute> stream = attributesNamed(attributeName);
+		return (stream.hasNext()) ? stream.next() : null;
+	}
 
-//	public JavaPersistentAttribute attributeNamed(String attributeName) {
-//		Iterator<JavaPersistentAttribute> stream = attributesNamed(attributeName);
-//		return (stream.hasNext()) ? stream.next() : null;
-//	}
-//
 //	public IPersistentAttribute resolveAttribute(String attributeName) {
 //		Iterator<JavaPersistentAttribute> stream = attributesNamed(attributeName);
 //		if (stream.hasNext()) {
@@ -125,6 +134,49 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 //		}
 //		return (parentPersistentType() == null) ? null : parentPersistentType().resolveAttribute(attributeName);
 //	}
+	
+	public ListIterator<JavaPersistentAttribute> attributes() {
+		return new CloneListIterator<JavaPersistentAttribute>(this.attributes);
+	}
+	
+	public int attributesSize() {
+		return this.attributes.size();
+	}
+	
+	private void addAttribute(JavaPersistentAttribute attribute) {
+		addItemToList(attribute, this.attributes, IPersistentType.ATTRIBUTES_LIST);
+	}
+
+	private void removeAttribute(int index) {
+		removeItemFromList(index, this.attributes, IPersistentType.ATTRIBUTES_LIST);
+	}
+	
+	public Iterator<String> attributeNames() {
+		return this.attributeNames(this.attributes());
+	}
+	
+	private Iterator<String> attributeNames(Iterator<? extends IPersistentAttribute> attrs) {
+		return new TransformationIterator<IPersistentAttribute, String>(attrs) {
+			@Override
+			protected String transform(IPersistentAttribute attribute) {
+				return attribute.getName();
+			}
+		};
+	}
+	
+	public Iterator<IPersistentAttribute> allAttributes() {
+		return new CompositeIterator<IPersistentAttribute>(new TransformationIterator<IPersistentType, Iterator<IPersistentAttribute>>(this.inheritanceHierarchy()) {
+			@Override
+			protected Iterator<IPersistentAttribute> transform(IPersistentType pt) {
+				//TODO how to remove this warning?
+				return (Iterator<IPersistentAttribute>) pt.attributes();
+			}
+		});
+	}
+	
+	public Iterator<String> allAttributeNames() {
+		return this.attributeNames(this.allAttributes());
+	}
 
 	@Override
 	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -179,48 +231,6 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 //		return this.persistentTypeResource.textRange();
 //	}
 
-//	public ListIterator<JavaPersistentAttribute> attributes() {
-//		return new CloneListIterator<JavaPersistentAttribute>(this.attributes);
-//	}
-//
-//	public int attributesSize() {
-//		return this.attributes.size();
-//	}
-//	
-//	private void addAttribute(JavaPersistentAttribute attribute) {
-//		addItemToList(attribute, this.attributes, IPersistentType.ATTRIBUTES_LIST);
-//	}
-//	
-//	private void removeAttribute(int index) {
-//		removeItemFromList(index, this.attributes, IPersistentType.ATTRIBUTES_LIST);
-//	}
-//	
-//	public Iterator<String> attributeNames() {
-//		return this.attributeNames(this.attributes());
-//	}
-//
-//	private Iterator<String> attributeNames(Iterator<? extends IPersistentAttribute> attrs) {
-//		return new TransformationIterator<IPersistentAttribute, String>(attrs) {
-//			@Override
-//			protected String transform(IPersistentAttribute attribute) {
-//				return attribute.getName();
-//			}
-//		};
-//	}
-//
-//	public Iterator<IPersistentAttribute> allAttributes() {
-//		return new CompositeIterator<IPersistentAttribute>(new TransformationIterator<IPersistentType, Iterator<IPersistentAttribute>>(this.inheritanceHierarchy()) {
-//			@Override
-//			protected Iterator<IPersistentAttribute> transform(IPersistentType pt) {
-//				//TODO how to remove this warning?
-//				return (Iterator<IPersistentAttribute>) pt.attributes();
-//			}
-//		});
-//	}
-//
-//	public Iterator<String> allAttributeNames() {
-//		return this.attributeNames(this.allAttributes());
-//	}
 
 	public Iterator<IPersistentType> inheritanceHierarchy() {
 		// using a chain iterator to traverse up the inheritance tree
@@ -285,7 +295,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		return jpaPlatform().createJavaTypeMappingFromAnnotation(annotationName, this);
 	}
 
-	private String javaMappingAnnotationName(JavaPersistentTypeResource typeResource) {
+	protected String javaMappingAnnotationName(JavaPersistentTypeResource typeResource) {
 		Annotation mappingAnnotation = (Annotation) typeResource.mappingAnnotation();
 		if (mappingAnnotation != null) {
 			return mappingAnnotation.getAnnotationName();
@@ -294,32 +304,32 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	}
 
 	protected void updatePersistentAttributes(JavaPersistentTypeResource persistentTypeResource) {
-//		Iterable<JavaPersistentAttributeResource> iterable = CollectionTools.iterable(persistentTypeResource.fields());
-//		if (access() == AccessType.PROPERTY) {
-//			iterable = CollectionTools.iterable(persistentTypeResource.properties());
-//		}
-//		int index = 0;
-//		for (JavaPersistentAttributeResource attributeResource : iterable) {
-//			JavaPersistentAttribute persistentAttribute;
-//			if (this.attributes.size() > index) {
-//				persistentAttribute = this.attributes.get(index);
-//			}
-//			else {
-//				persistentAttribute = createAttribute();
-//				addAttribute(persistentAttribute);
-//			}
-//			persistentAttribute.update(attributeResource);
-//			index++;
-//		}
-//		while (index < this.attributes.size()) {
-//			removeAttribute(index);
-//			index++;
-//		}
+		Iterable<JavaPersistentAttributeResource> iterable = CollectionTools.iterable(persistentTypeResource.fields());
+		if (access() == AccessType.PROPERTY) {
+			iterable = CollectionTools.iterable(persistentTypeResource.properties());
+		}
+		int index = 0;
+		for (JavaPersistentAttributeResource attributeResource : iterable) {
+			JavaPersistentAttribute persistentAttribute;
+			if (this.attributes.size() > index) {
+				persistentAttribute = this.attributes.get(index);
+			}
+			else {
+				persistentAttribute = createAttribute();
+				addAttribute(persistentAttribute);
+			}
+			persistentAttribute.update(attributeResource);
+			index++;
+		}
+		while (index < this.attributes.size()) {
+			removeAttribute(index);
+			index++;
+		}
 	}
 	
-//	private JavaPersistentAttribute createAttribute() {
-//		return new JavaPersistentAttribute(this);
-//	}
+	protected JavaPersistentAttribute createAttribute() {
+		return new JavaPersistentAttribute(this);
+	}
 	
 	public void updateParentPersistentType(JavaPersistentTypeResource persistentTypeResource) {
 		//TODO do we need any change notification for this?

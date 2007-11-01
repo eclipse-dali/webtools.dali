@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
@@ -483,4 +484,61 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		javaPersistentType().setMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);	
 		assertFalse(javaPersistentType().isMapped());	
 	}
+	
+	public void testAttributes() throws Exception {
+		createTestEntityAnnotatedMethod();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		ListIterator<IPersistentAttribute> attributes = javaPersistentType().attributes();
+		
+		assertEquals("id", attributes.next().getName());
+		assertFalse(attributes.hasNext());
+	}
+	
+	public void testAttributes2() throws Exception {
+		createTestEntityAnnotatedFieldAndMethod();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		ListIterator<IPersistentAttribute> attributes = javaPersistentType().attributes();
+		
+		assertEquals("id", attributes.next().getName());
+		assertEquals("name", attributes.next().getName());
+		assertFalse(attributes.hasNext());
+	}
+	
+	public void testAttributesSize() throws Exception {
+		createTestEntityAnnotatedMethod();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertEquals(1, javaPersistentType().attributesSize());
+	}
+	
+	public void testAttributesSize2() throws Exception {
+		createTestEntityAnnotatedFieldAndMethod();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertEquals(2, javaPersistentType().attributesSize());
+	}
+	
+	public void testAttributeNamed() throws Exception {
+		createTestEntityAnnotatedMethod();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		IPersistentAttribute attribute = javaPersistentType().attributeNamed("id");
+		
+		assertEquals("id", attribute.getName());
+		assertNull(javaPersistentType().attributeNamed("name"));
+		assertNull(javaPersistentType().attributeNamed("foo"));
+	}
+	
+	public void testAttributeNamed2() throws Exception {
+		createTestEntityAnnotatedField();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		IPersistentAttribute attribute = javaPersistentType().attributeNamed("name");
+		
+		assertEquals("name", attribute.getName());
+		
+		assertNull(javaPersistentType().attributeNamed("foo"));
+	}
+
 }

@@ -22,8 +22,13 @@ public class JavaPersistentAttributeResourceImpl
 	extends AbstractJavaPersistentResource<Attribute>
 	implements JavaPersistentAttributeResource
 {
+
 	public JavaPersistentAttributeResourceImpl(JavaPersistentTypeResource parent, Attribute attribute){
 		super(parent, attribute);
+	}
+
+	public String getName() {
+		return getMember().attributeName();
 	}
 
 	// ******** AbstractJavaPersistentResource implementation ********
@@ -107,7 +112,8 @@ public class JavaPersistentAttributeResourceImpl
 		super.updateFromJava(astRoot);
 //TODO		updateTypeName(astRoot);
 	}
-	
+
+
 //	private void updateTypeName(CompilationUnit astRoot) {
 //		ITypeBinding typeBinding = getMember().typeBinding(astRoot);
 //		setTypeIsArray(typeBinding.isArray());

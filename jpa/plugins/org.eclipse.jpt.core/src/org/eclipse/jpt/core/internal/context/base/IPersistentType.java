@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.AccessType;
 
 
@@ -36,29 +37,29 @@ public interface IPersistentType extends IJpaContextNode
 	 */
 	IPersistentType parentPersistentType();
 
-//	/**
-//	 * Return a read-only iterator of the contained IPersistentAttributes
-//	 */
-//	ListIterator<? extends IPersistentAttribute> attributes();
-//	int attributesSize();
-//		String ATTRIBUTES_LIST = "attributesList";
-//	
-//	Iterator<String> attributeNames();
-//
-//	/**
-//	 * Return a read-only iterator of the all the IPersistentAttributes
-//	 * in the hierarchy
-//	 */
-//	Iterator<IPersistentAttribute> allAttributes();
-//
-//	Iterator<String> allAttributeNames();
-//
-//	/**
-//	 * Return the attribute named <code>attributeName</code> if
-//	 * it exists locally on this type
-//	 */
-//	IPersistentAttribute attributeNamed(String attributeName);
-//
+	/**
+	 * Return a read-only iterator of the contained IPersistentAttributes
+	 */
+	<T extends IPersistentAttribute> ListIterator<T> attributes();
+	int attributesSize();
+		String ATTRIBUTES_LIST = "attributesList";
+	
+	Iterator<String> attributeNames();
+
+	/**
+	 * Return a read-only iterator of the all the IPersistentAttributes
+	 * in the hierarchy
+	 */
+	Iterator<IPersistentAttribute> allAttributes();
+
+	Iterator<String> allAttributeNames();
+
+	/**
+	 * Return the attribute named <code>attributeName</code> if
+	 * it exists locally on this type
+	 */
+	IPersistentAttribute attributeNamed(String attributeName);
+
 //	/**
 //	 * Resolve and return the attribute named <code>attributeName</code> if it
 //	 * is distinct and exists within the context of this type

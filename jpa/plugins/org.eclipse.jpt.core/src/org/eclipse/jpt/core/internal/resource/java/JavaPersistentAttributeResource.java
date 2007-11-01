@@ -16,6 +16,8 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public interface JavaPersistentAttributeResource extends JavaPersistentResource
 {
+	String getName();
+	
 	boolean isForField();
 	
 	boolean isForProperty();
