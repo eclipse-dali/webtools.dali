@@ -24,8 +24,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implements OneToOne
 {
-	private static final String ANNOTATION_NAME = JPA.ONE_TO_ONE;
-
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter();	
@@ -51,6 +49,13 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.mappedByAdapter = buildAnnotationElementAdapter(MAPPED_BY_ADAPTER);
 		this.optionalAdapter = this.buildAnnotationElementAdapter(OPTIONAL_ADAPTER);
+	}
+	
+	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.mappedBy = this.mappedBy(astRoot);
+		this.optional = this.optional(astRoot);
 	}
 	
 	//**************** AbstractRelationshipMappingAnnotation implementation **************
@@ -81,18 +86,22 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 		return this.optional;
 	}
 	
-	public void setOptional(Boolean optional) {
-		this.optional = optional;
-		this.optionalAdapter.setValue(BooleanUtility.toJavaAnnotationValue(optional));
+	public void setOptional(Boolean newOptional) {
+		Boolean oldOptional = this.optional;
+		this.optional = newOptional;
+		this.optionalAdapter.setValue(BooleanUtility.toJavaAnnotationValue(newOptional));
+		firePropertyChanged(OPTIONAL_PROPERTY, oldOptional, newOptional);
 	}
 
 	public String getMappedBy() {
 		return this.mappedBy;
 	}
 	
-	public void setMappedBy(String mappedBy) {
-		this.mappedBy = mappedBy;
-		this.mappedByAdapter.setValue(mappedBy);
+	public void setMappedBy(String newMappedBy) {
+		String oldMappedBy = this.mappedBy;
+		this.mappedBy = newMappedBy;
+		this.mappedByAdapter.setValue(newMappedBy);
+		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
 	
 	public ITextRange mappedByTextRange(CompilationUnit astRoot) {
@@ -110,8 +119,16 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		this.setOptional(BooleanUtility.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot)));
+		this.setOptional(this.optional(astRoot));
 		this.setMappedBy(this.mappedByAdapter.getValue(astRoot));
+	}
+
+	protected String mappedBy(CompilationUnit astRoot) {
+		return this.mappedByAdapter.getValue(astRoot);
+	}
+	
+	protected Boolean optional(CompilationUnit astRoot) {
+		return BooleanUtility.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot));
 	}
 
 

@@ -12,5 +12,6 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public interface Id extends JavaResource
 {
+	String ANNOTATION_NAME = JPA.ID;
 
 }

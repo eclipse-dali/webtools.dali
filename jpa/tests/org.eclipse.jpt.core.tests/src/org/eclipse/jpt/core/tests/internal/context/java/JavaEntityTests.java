@@ -165,9 +165,19 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertNull(javaEntity().getSpecifiedName());
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		Entity entity = (Entity) typeResource.mappingAnnotation();
 		
 		assertNull(((Entity) typeResource.mappingAnnotation()).getName());
 	}
+	
+//	public void testUpdateFromSpecifiedNameChangeInResourceModel() throws Exception {
+//		createTestEntityWithName();
+//		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+//		
+//		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+//		Entity entity = (Entity) typeResource.mappingAnnotation();
+//		entity.setName("foo");
+//		
+//		assertEquals("foo", javaEntity().getSpecifiedName());
+//	}
 
 }

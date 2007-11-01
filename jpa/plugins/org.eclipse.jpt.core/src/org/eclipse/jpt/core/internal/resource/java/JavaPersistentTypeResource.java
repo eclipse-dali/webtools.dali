@@ -17,7 +17,8 @@ public interface JavaPersistentTypeResource extends JavaPersistentResource
 	 * Return only the persistable nestedTypes
 	 */
 	Iterator<JavaPersistentTypeResource> nestedTypes();
-	
+		String NESTED_TYPES_COLLECTION = "nestedTypesCollection";
+
 	/**
 	 * Return only the persistable attributes, those that respond true to
 	 * {@link JavaPersistentAttributeResource#isPersistable()}
@@ -25,6 +26,7 @@ public interface JavaPersistentTypeResource extends JavaPersistentResource
 	 * @return
 	 */
 	Iterator<JavaPersistentAttributeResource> attributes();
+		String ATTRIBUTES_COLLECTION = "attributesCollection";
 	
 	/**
 	 * Return only the persistable fields, those that respond true to
@@ -48,13 +50,17 @@ public interface JavaPersistentTypeResource extends JavaPersistentResource
 	 * Return the fully qualified type name
 	 */
 	String getQualifiedName();
-	
+		String QUALIFIED_NAME_PROPERTY = "qualifiedNameProperty";
+
 	/**
 	 * Return the fully unqualified type name
 	 */
 	String getName();
+		String NAME_PROPERTY = "nameProperty";
 
 	String getSuperClassQualifiedName();
+		String SUPER_CLASS_QUALIFIED_NAME_PROPERTY = "superClassQualifiedNameProperty";
 	
 	AccessType getAccess();
+		String ACCESS_PROPERTY = "accessProperty";
 }

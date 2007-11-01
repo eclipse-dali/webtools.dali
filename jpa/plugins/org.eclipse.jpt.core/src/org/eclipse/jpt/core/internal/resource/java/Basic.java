@@ -16,6 +16,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
 public interface Basic extends JavaResource
 {
 	
+	String ANNOTATION_NAME = JPA.BASIC;
+	
 	/**
 	 * Corresponds to the fetch element of the Basic annotation.
 	 * Returns null if the fetch element does not exist in java.
@@ -27,7 +29,8 @@ public interface Basic extends JavaResource
 	 * Set to null to remove the fetch element.
 	 */
 	void setFetch(FetchType fetch);
-	
+		String FETCH_PROPERTY = "fetchProperty";
+		
 	/**
 	 * Corresponds to the optional element of the Basic annotation.
 	 * Returns null if the optional element does not exist in java.
@@ -39,7 +42,8 @@ public interface Basic extends JavaResource
 	 * Set to null to remove the optional element.
 	 */
 	void setOptional(Boolean optional);
-
+		String OPTIONAL_PROPERTY = "optionalProperty";
+	
 	/**
 	 * Return the ITextRange for the fetch element.  If the fetch element 
 	 * does not exist return the ITextRange for the Basic annotation.

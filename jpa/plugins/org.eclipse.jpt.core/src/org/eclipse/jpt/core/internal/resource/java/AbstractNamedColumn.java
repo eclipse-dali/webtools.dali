@@ -71,6 +71,11 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 
 	protected abstract String columnDefinitionElementName();
 
+	public void initialize(CompilationUnit astRoot) {
+		this.name = this.name(astRoot);
+		this.columnDefinition = this.columnDefinition(astRoot);
+	}
+	
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		NamedColumn oldColumn = (NamedColumn) oldAnnotation;
 		setName(oldColumn.getName());
@@ -82,18 +87,22 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 		return this.name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-		this.nameAdapter.setValue(name);
+	public void setName(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		this.nameAdapter.setValue(newName);
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
 	public String getColumnDefinition() {
 		return this.columnDefinition;
 	}
 	
-	public void setColumnDefinition(String columnDefinition) {
-		this.columnDefinition = columnDefinition;
-		this.columnDefinitionAdapter.setValue(columnDefinition);
+	public void setColumnDefinition(String newColumnDefinition) {
+		String oldColumnDefinition = this.columnDefinition;
+		this.columnDefinition = newColumnDefinition;
+		this.columnDefinitionAdapter.setValue(newColumnDefinition);
+		firePropertyChanged(COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
 	}	
 
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
@@ -109,8 +118,16 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-		setName(this.nameAdapter.getValue(astRoot));
-		setColumnDefinition(this.columnDefinitionAdapter.getValue(astRoot));
+		this.setName(this.name(astRoot));
+		this.setColumnDefinition(this.columnDefinition(astRoot));
+	}
+	
+	protected String name(CompilationUnit astRoot) {
+		return this.nameAdapter.getValue(astRoot);
+	}
+	
+	protected String columnDefinition(CompilationUnit astRoot) {
+		return this.columnDefinitionAdapter.getValue(astRoot);
 	}
 
 }

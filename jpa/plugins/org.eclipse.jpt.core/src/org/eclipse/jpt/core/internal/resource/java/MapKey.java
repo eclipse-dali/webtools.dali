@@ -8,10 +8,12 @@ import org.eclipse.jpt.core.internal.ITextRange;
  */
 public interface MapKey extends JavaResource
 {
-	String getName();
-	
+	String ANNOTATION_NAME = JPA.MAP_KEY;
+
+	String getName();	
 	void setName(String name);
-	
+		String NAME_PROPERTY = "nameProperty";
+		
 	/**
 	 * Return the ITextRange for the name element.  If the name element 
 	 * does not exist return the ITextRange for the MapKey annotation.

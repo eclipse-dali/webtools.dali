@@ -165,8 +165,9 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 		
 		associationOverride.addJoinColumn(0).setName("FOO");
 		associationOverride.addJoinColumn(1);
+		associationOverride.addJoinColumn(0).setName("BAR");
 
-		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns = {@JoinColumn(name=\"FOO\"),@JoinColumn})");
+		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns = {@JoinColumn(name=\"BAR\"),@JoinColumn(name=\"FOO\"), @JoinColumn})");
 	}
 	
 	public void testRemoveJoinColumn() throws Exception {

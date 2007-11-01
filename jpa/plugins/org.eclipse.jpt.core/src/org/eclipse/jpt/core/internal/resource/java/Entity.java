@@ -31,6 +31,8 @@ public interface Entity extends JavaResource
 	 */
 	void setName(String name);
 	
+	String NAME_PROPERTY = "nameProperty";
+	
 	/**
 	 * Return the ITextRange for the name element.  If the name element 
 	 * does not exist return the ITextRange for the Entity annotation.

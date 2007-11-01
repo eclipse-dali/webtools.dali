@@ -12,5 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public interface SecondaryTables extends ContainerAnnotation<NestableSecondaryTable>
 {
+	String ANNOTATION_NAME = JPA.SECONDARY_TABLES;
 
+	String SECONDARY_TABLES_LIST = "secondaryTablesList";
 }

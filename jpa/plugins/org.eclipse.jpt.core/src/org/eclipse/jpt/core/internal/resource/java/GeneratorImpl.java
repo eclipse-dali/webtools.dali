@@ -52,6 +52,12 @@ public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> i
 		this.allocationSizeAdapter = this.buildIntAdapter(this.allocationSizeDeclarationAdapter);
 	}
 	
+	public void initialize(CompilationUnit astRoot) {
+		this.name = this.name(astRoot);
+		this.initialValue = this.initialValue(astRoot);
+		this.allocationSize = this.allocationSize(astRoot);
+	}
+	
 	// ********** initialization **********
 	protected AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
 		return new ShortCircuitAnnotationElementAdapter<String>(getMember(), daea);
@@ -74,49 +80,67 @@ public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> i
 	public int getAllocationSize() {
 		return this.allocationSize;
 	}
+	
+	public void setAllocationSize(int newAllocationSize) {
+		int oldAllocationSize = this.allocationSize;
+		this.allocationSize = newAllocationSize;
+		this.allocationSizeAdapter.setValue(newAllocationSize);
+		firePropertyChanged(ALLOCATION_SIZE_PROPERTY, oldAllocationSize, newAllocationSize);
+	}
 
 	public int getInitialValue() {
 		return this.initialValue;
+	}
+
+	public void setInitialValue(int newInitialValue) {
+		int oldInitialValue = this.initialValue;
+		this.initialValue = newInitialValue;
+		this.initialValueAdapter.setValue(newInitialValue);
+		firePropertyChanged(INITIAL_VALUE_PROPERTY, oldInitialValue, newInitialValue);
 	}
 
 	public String getName() {
 		return this.name;
 	}
 
-	public void setAllocationSize(int allocationSize) {
-		this.allocationSize = allocationSize;
-		this.allocationSizeAdapter.setValue(allocationSize);
-	}
-
-	public void setInitialValue(int initialValue) {
-		this.initialValue = initialValue;
-		this.initialValueAdapter.setValue(initialValue);
-	}
-
-	public void setName(String name) {
-		this.name = name;
-		this.nameAdapter.setValue(name);
+	public void setName(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		this.nameAdapter.setValue(newName);
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(nameDeclarationAdapter, astRoot);
+		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 	
 	public ITextRange initialValueTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(initialValueDeclarationAdapter, astRoot);
+		return this.elementTextRange(this.initialValueDeclarationAdapter, astRoot);
 	}
 	
 	public ITextRange allocationSizeTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(allocationSizeDeclarationAdapter, astRoot);
+		return this.elementTextRange(this.allocationSizeDeclarationAdapter, astRoot);
 	}
 
 	// ********** java annotations -> persistence model **********
 	public void updateFromJava(CompilationUnit astRoot) {
-		setName(this.nameAdapter.getValue(astRoot));
-		setAllocationSize(this.allocationSizeAdapter.getValue(astRoot));
-		setInitialValue(this.initialValueAdapter.getValue(astRoot));
+		this.setName(this.name(astRoot));
+		this.setAllocationSize(this.allocationSize(astRoot));
+		this.setInitialValue(this.initialValue(astRoot));
 	}
 
+	protected String name(CompilationUnit astRoot) {
+		return this.nameAdapter.getValue(astRoot);
+	}
+	
+	protected int allocationSize(CompilationUnit astRoot) {
+		return this.allocationSizeAdapter.getValue(astRoot);
+	}
+	
+	protected int initialValue(CompilationUnit astRoot) {
+		return this.initialValueAdapter.getValue(astRoot);
+	}
+	
 	// ********** static methods **********
 	protected static DeclarationAnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(annotationAdapter, elementName);

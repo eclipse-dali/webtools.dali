@@ -17,6 +17,8 @@ import org.eclipse.jpt.utility.internal.node.NodeModel;
 
 public interface JavaResource extends NodeModel
 {
+	void initialize(CompilationUnit astRoot);
+	
 	JpaCompilationUnitResource root();
 	
 	IJpaAnnotationProvider annotationProvider();

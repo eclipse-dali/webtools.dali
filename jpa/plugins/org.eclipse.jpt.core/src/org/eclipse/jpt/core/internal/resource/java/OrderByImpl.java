@@ -22,9 +22,8 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class OrderByImpl extends AbstractAnnotationResource<Attribute> implements OrderBy
 {
-	private static final String ANNOTATION_NAME = JPA.ORDER_BY;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 
 	
@@ -36,6 +35,10 @@ public class OrderByImpl extends AbstractAnnotationResource<Attribute> implement
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, VALUE_ADAPTER);
 	}
+	
+	public void initialize(CompilationUnit astRoot) {
+		this.value = this.value(astRoot);
+	}
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
@@ -45,9 +48,11 @@ public class OrderByImpl extends AbstractAnnotationResource<Attribute> implement
 		return this.value;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
-		this.valueAdapter.setValue(value);
+	public void setValue(String newValue) {
+		String oldValue = this.value;
+		this.value = newValue;
+		this.valueAdapter.setValue(newValue);
+		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
 	public ITextRange valueTextRange(CompilationUnit astRoot) {
@@ -55,7 +60,11 @@ public class OrderByImpl extends AbstractAnnotationResource<Attribute> implement
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-		setValue(valueAdapter.getValue(astRoot));
+		this.setValue(this.value(astRoot));
+	}
+	
+	protected String value(CompilationUnit astRoot) {
+		return this.valueAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********
@@ -86,7 +95,7 @@ public class OrderByImpl extends AbstractAnnotationResource<Attribute> implement
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new OrderByImpl(parent, (Attribute) member);
 		}
-
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

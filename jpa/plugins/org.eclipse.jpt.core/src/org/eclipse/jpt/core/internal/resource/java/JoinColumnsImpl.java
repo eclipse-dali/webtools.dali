@@ -21,7 +21,6 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class JoinColumnsImpl extends AbstractAnnotationResource<Member> implements JoinColumns
 {
-	private static final String ANNOTATION_NAME = JPA.JOIN_COLUMNS;
 	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -32,12 +31,16 @@ public class JoinColumnsImpl extends AbstractAnnotationResource<Member> implemen
 		this.joinColumns = new ArrayList<NestableJoinColumn>();
 	}
 
+	public void initialize(CompilationUnit astRoot) {
+		ContainerAnnotationTools.initializeNestedAnnotations(astRoot, this);
+	}
+	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
 
 	public String getNestableAnnotationName() {
-		return JPA.JOIN_COLUMN;
+		return JoinColumn.ANNOTATION_NAME;
 	}
 		
 	public ListIterator<NestableJoinColumn> nestedAnnotations() {
@@ -48,23 +51,27 @@ public class JoinColumnsImpl extends AbstractAnnotationResource<Member> implemen
 		return this.joinColumns.size();
 	}	
 
+	public void addInternal(int index) {
+		JoinColumnImpl joinColumn = createJoinColumn(index);
+		this.joinColumns.add(index, joinColumn);
+	}
+	
 	public NestableJoinColumn add(int index) {
 		JoinColumnImpl joinColumn = createJoinColumn(index);
 		add(index, joinColumn);
 		return joinColumn;
 	}
 	
-	private void add(int index, NestableJoinColumn joinColumn) {
-		this.joinColumns.add(index, joinColumn);
-		//TODO event notification
+	protected void add(int index, NestableJoinColumn joinColumn) {
+		addItemToList(index, joinColumn, this.joinColumns, JOIN_COLUMNS_LIST);
 	}
 
 	public void remove(NestableJoinColumn joinColumn) {
-		this.joinColumns.remove(joinColumn);		
+		removeItemFromList(joinColumn, this.joinColumns, JOIN_COLUMNS_LIST);
 	}
 	
 	public void remove(int index) {
-		this.joinColumns.remove(index);
+		removeItemFromList(index, this.joinColumns, JOIN_COLUMNS_LIST);
 	}
 	
 	public int indexOf(NestableJoinColumn joinColumn) {
@@ -85,7 +92,7 @@ public class JoinColumnsImpl extends AbstractAnnotationResource<Member> implemen
 	}
 	
 	public void move(int oldIndex, int newIndex) {
-		this.joinColumns.add(newIndex, this.joinColumns.remove(oldIndex));
+		moveItemInList(newIndex, oldIndex, this.joinColumns, JOIN_COLUMNS_LIST);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

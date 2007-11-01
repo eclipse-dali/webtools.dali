@@ -15,7 +15,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public interface OneToMany extends RelationshipMappingAnnotation
 {
-	
+	String ANNOTATION_NAME = JPA.ONE_TO_MANY;
+
 	/**
 	 * Corresponds to the mappedBy element of the OneToMany annotation. 
 	 * Returns null if the mappedBy element does not exist in java.
@@ -27,6 +28,7 @@ public interface OneToMany extends RelationshipMappingAnnotation
 	 * Set to null to remove the mappedBy element.
 	 */
 	void setMappedBy(String mappedBy);
+		String MAPPED_BY_PROPERTY = "mappedByProperty";
 	
 	/**
 	 * Return the ITextRange for the mappedBy element.  If the mappedBy element 

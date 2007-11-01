@@ -46,7 +46,7 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 	private final List<NestableQueryHint> hints;
 	private final HintsContainerAnnotation hintsContainerAnnotation;
 	
-	protected AbstractNamedQuery(JavaResource parent, Type type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected AbstractNamedQuery(JavaResource parent, Type type,DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, type, daa, annotationAdapter);
 		this.nameDeclarationAdapter = nameAdapter(daa);
 		this.queryDeclarationAdapter = queryAdapter(daa);
@@ -55,7 +55,14 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 		this.hints = new ArrayList<NestableQueryHint>();
 		this.hintsContainerAnnotation = new HintsContainerAnnotation();
 	}
-
+	
+	public void initialize(CompilationUnit astRoot) {
+		this.name = this.name(astRoot);
+		this.query = this.query(astRoot);
+		ContainerAnnotationTools.initializeNestedAnnotations(astRoot, this.hintsContainerAnnotation);
+	}
+	
+	
 	// ********** initialization **********
 	protected AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
 		return new ShortCircuitAnnotationElementAdapter<String>(getMember(), daea);
@@ -77,18 +84,22 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 		return this.name;
 	}
 	
-	public void setName(String name) {
-		this.name = name;
-		this.nameAdapter.setValue(name);
+	public void setName(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		this.nameAdapter.setValue(newName);
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
 	public String getQuery() {
 		return this.query;
 	}
 
-	public void setQuery(String query) {
-		this.query = query;
-		this.queryAdapter.setValue(query);
+	public void setQuery(String newQuery) {
+		String oldQuery = this.query;
+		this.query = newQuery;
+		this.queryAdapter.setValue(newQuery);
+		firePropertyChanged(QUERY_PROPERTY, oldQuery, newQuery);
 	}
 
 	public ListIterator<QueryHint> hints() {
@@ -109,25 +120,29 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 	
 	public NestableQueryHint addHint(int index) {
 		NestableQueryHint queryHint = createQueryHint(index);
-		addHint(queryHint);
+		addHint(index, queryHint);
+		ContainerAnnotationTools.synchAnnotationsAfterAdd(index + 1, this.hintsContainerAnnotation);
 		queryHint.newAnnotation();
-		ContainerAnnotationTools.synchAnnotationsAfterAdd(index, this.hintsContainerAnnotation);
 		return queryHint;
 	}
 	
-	private void addHint(NestableQueryHint queryHint) {
-		this.hints.add(queryHint);
-		//property change notification
+	private void addHint(int index, NestableQueryHint queryHint) {
+		addItemToList(index, queryHint, this.hints, QUERY_HINTS_LIST);
 	}
 	
 	public void removeHint(int index) {
-		NestableQueryHint queryHint = this.hints.remove(index);
+		NestableQueryHint queryHint = hintAt(index);
+		removeHint(queryHint);
 		queryHint.removeAnnotation();
 		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, this.hintsContainerAnnotation);
 	}
+	
+	private void removeHint(NestableQueryHint queryHint) {
+		removeItemFromList(queryHint, this.hints, QUERY_HINTS_LIST);
+	}
 
 	public void moveHint(int oldIndex, int newIndex) {
-		this.hints.add(newIndex, this.hints.remove(oldIndex));
+		moveItemInList(newIndex, oldIndex, this.hints, QUERY_HINTS_LIST);
 		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.hintsContainerAnnotation);
 	}
 	
@@ -140,11 +155,19 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
-		this.setName(this.nameAdapter.getValue(astRoot));
-		this.setQuery(this.queryAdapter.getValue(astRoot));
+		this.setName(this.name(astRoot));
+		this.setQuery(this.query(astRoot));
 		this.updateQueryHintsFromJava(astRoot);
 	}
 
+	protected String name(CompilationUnit astRoot) {
+		return this.nameAdapter.getValue(astRoot);
+	}
+	
+	protected String query(CompilationUnit astRoot) {
+		return this.queryAdapter.getValue(astRoot);
+	}
+	
 	private void updateQueryHintsFromJava(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this.hintsContainerAnnotation);
 	}
@@ -177,12 +200,20 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 			super(AbstractNamedQuery.this);
 		}
 		
+		public void initialize(CompilationUnit astRoot) {
+			// nothing to initialize
+		}
+		
 		public NestableQueryHint add(int index) {
 			NestableQueryHint queryHint = AbstractNamedQuery.this.createQueryHint(index);
-			AbstractNamedQuery.this.addHint(queryHint);
+			AbstractNamedQuery.this.addHint(index, queryHint);
 			return queryHint;
 		}
-
+		
+		public void addInternal(int index) {
+			AbstractNamedQuery.this.hints.add(index, AbstractNamedQuery.this.createQueryHint(index));
+		}
+		
 		public String getAnnotationName() {
 			return AbstractNamedQuery.this.getAnnotationName();
 		}
@@ -221,11 +252,11 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 		}
 
 		public void remove(NestableQueryHint queryHint) {
-			this.remove(indexOf(queryHint));
+			AbstractNamedQuery.this.removeHint(queryHint);
 		}
 
 		public void remove(int index) {
-			AbstractNamedQuery.this.removeHint(index);	
+			AbstractNamedQuery.this.removeHint(nestedAnnotationAt(index));	
 		}
 
 		public Annotation jdtAnnotation(CompilationUnit astRoot) {

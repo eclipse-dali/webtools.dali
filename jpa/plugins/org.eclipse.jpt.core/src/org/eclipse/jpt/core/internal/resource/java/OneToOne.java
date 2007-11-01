@@ -15,7 +15,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public interface OneToOne extends RelationshipMappingAnnotation
 {
-	
+	String ANNOTATION_NAME = JPA.ONE_TO_ONE;
+
 	/**
 	 * Corresponds to the optional element of the OneToOne annotation.
 	 * Returns null if the optional element does not exist in java.
@@ -27,6 +28,7 @@ public interface OneToOne extends RelationshipMappingAnnotation
 	 * Set to null to remove the optional element.
 	 */
 	void setOptional(Boolean optional);
+		String OPTIONAL_PROPERTY = "optionalProperty";
 	
 	/**
 	 * Corresponds to the mappedBy element of the OneToOne annotation. 
@@ -39,6 +41,7 @@ public interface OneToOne extends RelationshipMappingAnnotation
 	 * Set to null to remove the mappedBy element.
 	 */
 	void setMappedBy(String mappedBy);
+		String MAPPED_BY_PROPERTY = "mappedByProperty";
 	
 	/**
 	 * Return the ITextRange for the mappedBy element.  If the mappedBy element 

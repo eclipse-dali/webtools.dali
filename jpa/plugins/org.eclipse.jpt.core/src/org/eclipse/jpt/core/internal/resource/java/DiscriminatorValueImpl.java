@@ -22,8 +22,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 public class DiscriminatorValueImpl extends AbstractAnnotationResource<Type> implements DiscriminatorValue
 {
-	private static final String ANNOTATION_NAME = JPA.DISCRIMINATOR_VALUE;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 
@@ -36,6 +34,10 @@ public class DiscriminatorValueImpl extends AbstractAnnotationResource<Type> imp
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, VALUE_ADAPTER);
 	}
+	
+	public void initialize(CompilationUnit astRoot) {
+		this.value = this.value(astRoot);
+	}
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
@@ -45,9 +47,11 @@ public class DiscriminatorValueImpl extends AbstractAnnotationResource<Type> imp
 		return this.value;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
-		this.valueAdapter.setValue(value);
+	public void setValue(String newValue) {
+		String oldValue = this.value;
+		this.value = newValue;
+		this.valueAdapter.setValue(newValue);
+		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
 	public ITextRange valueTextRange(CompilationUnit astRoot) {
@@ -55,7 +59,11 @@ public class DiscriminatorValueImpl extends AbstractAnnotationResource<Type> imp
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
-		setValue(valueAdapter.getValue(astRoot));
+		this.setValue(this.value(astRoot));
+	}
+	
+	protected String value(CompilationUnit astRoot) {
+		return this.valueAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********

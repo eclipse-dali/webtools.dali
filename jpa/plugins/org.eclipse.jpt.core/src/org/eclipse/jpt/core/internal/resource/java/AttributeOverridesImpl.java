@@ -20,24 +20,26 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> implements AttributeOverrides
-{
-	private static final String ANNOTATION_NAME = JPA.ATTRIBUTE_OVERRIDES;
-	
+{	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private List<NestableAttributeOverride> attributesOverrides;
+	private final List<NestableAttributeOverride> attributesOverrides;
 	
 	protected AttributeOverridesImpl(JavaResource parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.attributesOverrides = new ArrayList<NestableAttributeOverride>();
 	}
 
+	public void initialize(CompilationUnit astRoot) {
+		ContainerAnnotationTools.initializeNestedAnnotations(astRoot, this);
+	}
+	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
 
 	public String getNestableAnnotationName() {
-		return JPA.ATTRIBUTE_OVERRIDE;
+		return AttributeOverride.ANNOTATION_NAME;
 	}
 		
 	public ListIterator<NestableAttributeOverride> nestedAnnotations() {
@@ -48,6 +50,11 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 		return this.attributesOverrides.size();
 	}	
 
+	public void addInternal(int index) {
+		NestableAttributeOverride attributeOverride = createAttributeOverride(index);
+		this.attributesOverrides.add(index, attributeOverride);	
+	}
+	
 	public NestableAttributeOverride add(int index) {
 		NestableAttributeOverride attributeOverride = createAttributeOverride(index);
 		add(index, attributeOverride);
@@ -55,16 +62,15 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 	}
 	
 	private void add(int index, NestableAttributeOverride attributeOverride) {
-		this.attributesOverrides.add(index, attributeOverride);
-		//TODO event notification
+		addItemToList(index, attributeOverride, this.attributesOverrides, ATTRIBUTE_OVERRIDES_LIST);
 	}
 
 	public void remove(NestableAttributeOverride attributeOverride) {
-		this.attributesOverrides.remove(attributeOverride);		
+		removeItemFromList(attributeOverride, this.attributesOverrides, ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
 	public void remove(int index) {
-		this.attributesOverrides.remove(index);
+		removeItemFromList(index, this.attributesOverrides, ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
 	public int indexOf(NestableAttributeOverride attributeOverride) {
@@ -85,7 +91,7 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 	}
 	
 	public void move(int oldIndex, int newIndex) {
-		this.attributesOverrides.add(newIndex, this.attributesOverrides.remove(oldIndex));
+		moveItemInList(newIndex, oldIndex, this.attributesOverrides, ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

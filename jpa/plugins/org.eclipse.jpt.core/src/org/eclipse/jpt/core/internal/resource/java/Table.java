@@ -16,16 +16,16 @@ import org.eclipse.jpt.core.internal.ITextRange;
 public interface Table extends JavaResource
 {
 	String getName();
-	
 	void setName(String name);
-	
+		String NAME_PROPERTY = "nameProperty";
+		
 	String getCatalog();
-	
 	void setCatalog(String catalog);
+		String CATALOG_PROPERTY = "catalogProperty";
 
 	String getSchema();
-	
 	void setSchema(String schema);
+		String SCHEMA_PROPERTY = "schemaProperty";
 	
 	ListIterator<UniqueConstraint> uniqueConstraints();
 	
@@ -40,6 +40,7 @@ public interface Table extends JavaResource
 	void removeUniqueConstraint(int index);
 	
 	void moveUniqueConstraint(int oldIndex, int newIndex);
+		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraintsList";
 
 	/**
 	 * Return the ITextRange for the name element.  If the name element 

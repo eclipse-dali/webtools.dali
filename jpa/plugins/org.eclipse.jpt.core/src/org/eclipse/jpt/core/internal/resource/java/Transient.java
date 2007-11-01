@@ -14,5 +14,6 @@ package org.eclipse.jpt.core.internal.resource.java;
  */
 public interface Transient extends JavaResource
 {
+	String ANNOTATION_NAME = JPA.TRANSIENT;
 
 }

@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public interface JoinColumn extends AbstractColumn
 {
+	String ANNOTATION_NAME = JPA.JOIN_COLUMN;
 
 	/**
 	 * Corresponds to the referencedColumnName element of the javax.persistence.JoinColumn annotation.
@@ -27,7 +28,8 @@ public interface JoinColumn extends AbstractColumn
 	 * Set to null to remove the referencedColumnName valuePait from the Annotation
 	 */
 	void setReferencedColumnName(String referencedColumnName);
-
+		String REFERENCED_COLUMN_NAME_PROPERTY = "referencedColumnNameProperty";
+	
 	/**
 	 * Return the ITextRange for the referencedColumnName element. If the 
 	 * referencedColumnName element does not exist return the ITextRange 

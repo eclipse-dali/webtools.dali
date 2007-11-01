@@ -12,5 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public interface AssociationOverrides extends ContainerAnnotation<NestableAssociationOverride>
 {
+	String ANNOTATION_NAME = JPA.ASSOCIATION_OVERRIDES;
 
+	String ASSOCIATION_OVERRIDES_LIST = "associationOveridesList";
 }

@@ -22,8 +22,6 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class GeneratedValueImpl extends AbstractAnnotationResource<Member> implements GeneratedValue
 {
-	private static final String ANNOTATION_NAME = JPA.GENERATED_VALUE;
-
 	private final AnnotationElementAdapter<String> strategyAdapter;
 
 	private final AnnotationElementAdapter<String> generatorAdapter;
@@ -45,6 +43,11 @@ public class GeneratedValueImpl extends AbstractAnnotationResource<Member> imple
 		this.generatorAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, GENERATOR_ADAPTER);
 	}
 	
+	public void initialize(CompilationUnit astRoot) {
+		this.strategy = this.strategy(astRoot);
+		this.generator = this.generator(astRoot);
+	}
+	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
@@ -53,18 +56,22 @@ public class GeneratedValueImpl extends AbstractAnnotationResource<Member> imple
 		return this.strategy;
 	}
 	
-	public void setStrategy(GenerationType strategy) {
-		this.strategy = strategy;
-		this.strategyAdapter.setValue(GenerationType.toJavaAnnotationValue(strategy));
-		
+	public void setStrategy(GenerationType newStrategy) {
+		GenerationType oldStrategy = this.strategy;
+		this.strategy = newStrategy;
+		this.strategyAdapter.setValue(GenerationType.toJavaAnnotationValue(newStrategy));
+		firePropertyChanged(STRATEGY_PROPERTY, oldStrategy, newStrategy);
 	}
+	
 	public String getGenerator() {
 		return this.generator;
 	}
 	
-	public void setGenerator(String generator) {
-		this.generator = generator;
-		this.generatorAdapter.setValue(generator);
+	public void setGenerator(String newGenerator) {
+		String oldGenerator = this.generator;
+		this.generator = newGenerator;
+		this.generatorAdapter.setValue(newGenerator);
+		firePropertyChanged(GENERATOR_PROPERTY, oldGenerator, newGenerator);
 	}
 
 	public ITextRange strategyTextRange(CompilationUnit astRoot) {
@@ -77,10 +84,18 @@ public class GeneratedValueImpl extends AbstractAnnotationResource<Member> imple
 
 	// ********** java annotations -> persistence model **********
 	public void updateFromJava(CompilationUnit astRoot) {
-		setStrategy(GenerationType.fromJavaAnnotationValue(this.strategyAdapter.getValue(astRoot)));
-		setGenerator(this.generatorAdapter.getValue(astRoot));
+		this.setStrategy(this.strategy(astRoot));
+		this.setGenerator(this.generator(astRoot));
 	}
 
+	protected GenerationType strategy(CompilationUnit astRoot) {
+		return GenerationType.fromJavaAnnotationValue(this.strategyAdapter.getValue(astRoot));
+	}
+	
+	protected String generator(CompilationUnit astRoot) {
+		return this.generatorAdapter.getValue(astRoot);
+	}
+	
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter<String> buildStrategyAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.GENERATED_VALUE__STRATEGY, false);
@@ -112,7 +127,7 @@ public class GeneratedValueImpl extends AbstractAnnotationResource<Member> imple
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new GeneratedValueImpl(parent, member);
 		}
-
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

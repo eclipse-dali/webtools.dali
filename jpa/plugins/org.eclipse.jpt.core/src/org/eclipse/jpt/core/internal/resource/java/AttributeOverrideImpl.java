@@ -28,9 +28,7 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 public class AttributeOverrideImpl 
 	extends AbstractAnnotationResource<Member>  
 	implements NestableAttributeOverride
-{	
-	private static final String ANNOTATION_NAME = JPA.ATTRIBUTE_OVERRIDE;
-	
+{		
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	// hold this so we can get the 'name' text range
@@ -52,6 +50,14 @@ public class AttributeOverrideImpl
 		this.columnAdapter = new MemberAnnotationAdapter(getMember(), ColumnImpl.buildAttributeOverrideAnnotationAdapter(getDeclarationAnnotationAdapter()));
 	}
 
+	public void initialize(CompilationUnit astRoot) {
+		this.name = this.name(astRoot);
+		if (this.columnAdapter.getAnnotation(astRoot) != null) {
+			this.column = ColumnImpl.createAttributeOverrideColumn(this, getMember(), getDeclarationAnnotationAdapter());
+			this.column.initialize(astRoot);
+		}
+	}
+	
 	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
 		return (IndexedAnnotationAdapter) super.getAnnotationAdapter();
 	}
@@ -78,9 +84,11 @@ public class AttributeOverrideImpl
 		return this.name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-		this.nameAdapter.setValue(name);
+	public void setName(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		this.nameAdapter.setValue(newName);
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
 	public Column getColumn() {
@@ -99,9 +107,10 @@ public class AttributeOverrideImpl
 		setColumn(null);
 	}
 	
-	private void setColumn(ColumnImpl column) {
-		this.column = column;
-		//change notification
+	protected void setColumn(ColumnImpl newColumn) {
+		ColumnImpl oldColumn = this.column;
+		this.column = newColumn;
+		firePropertyChanged(COLUMN_PROPERTY, oldColumn, newColumn);
 	}
 	
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
@@ -113,17 +122,25 @@ public class AttributeOverrideImpl
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-		setName(this.nameAdapter.getValue(astRoot));
+		this.setName(this.name(astRoot));
 		if (this.columnAdapter.getAnnotation(astRoot) == null) {
-			setColumn(null);
+			this.setColumn(null);
 		}
 		else {
-			ColumnImpl column = ColumnImpl.createAttributeOverrideColumn(this, getMember(), getDeclarationAnnotationAdapter());
-			setColumn(column);
-			column.updateFromJava(astRoot);
+			if (getColumn() != null) {
+				getColumn().updateFromJava(astRoot);
+			}
+			else {
+				ColumnImpl column = ColumnImpl.createAttributeOverrideColumn(this, getMember(), getDeclarationAnnotationAdapter());
+				column.initialize(astRoot);
+				this.setColumn(column);
+			}
 		}
 	}
 	
+	protected String name(CompilationUnit astRoot) {
+		return this.nameAdapter.getValue(astRoot);
+	}
 
 	// ********** static methods **********
 	static AttributeOverrideImpl createAttributeOverride(JavaResource parent, Member member) {

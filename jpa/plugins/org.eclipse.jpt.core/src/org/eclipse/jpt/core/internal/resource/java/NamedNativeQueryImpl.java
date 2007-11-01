@@ -30,7 +30,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 public class NamedNativeQueryImpl extends AbstractNamedQuery
 	implements NestableNamedNativeQuery
 {
-	private static final String ANNOTATION_NAME = JPA.NAMED_NATIVE_QUERY;
 
 	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -58,6 +57,15 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 		this.resultSetMappingDeclarationAdapter = resultSetMappingAdapter(daa);
 		this.resultSetMappingAdapter = this.buildAdapter(this.resultSetMappingDeclarationAdapter);
 	}
+
+	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.resultClass = this.resultClass(astRoot);
+		this.fullyQualifiedResultClass = this.fullyQualifiedResultClass(astRoot);
+		this.resultSetMapping = this.resultSetMapping(astRoot);
+	}
+	
 
 	// ********** initialization **********
 	protected DeclarationAnnotationElementAdapter<String> resultClassAdapter(DeclarationAnnotationAdapter daa) {
@@ -96,27 +104,32 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 		return this.resultClass;
 	}
 	
-	public void setResultClass(String resultClass) {
-		this.resultClass = resultClass;
-		this.resultClassAdapter.setValue(resultClass);
+	public void setResultClass(String newResultClass) {
+		String oldResultClass = this.resultClass;
+		this.resultClass = newResultClass;
+		this.resultClassAdapter.setValue(newResultClass);
+		firePropertyChanged(RESULT_CLASS_PROPERTY, oldResultClass, newResultClass);
 	}
 	
 	public String getFullyQualifiedResultClass()  {
 		return this.fullyQualifiedResultClass;
 	}
 	
-	private void setFullyQualifiedResultClass(String qualifiedResultClass) {
-		this.fullyQualifiedResultClass = qualifiedResultClass;
-		//change notification
+	protected void setFullyQualifiedResultClass(String newQualifiedResultClass) {
+		String oldFullyQualifiedResultClass = this.fullyQualifiedResultClass;
+		this.fullyQualifiedResultClass = newQualifiedResultClass;
+		firePropertyChanged(FULLY_QUALIFIED_RESULT_CLASS_PROPERTY, oldFullyQualifiedResultClass, newQualifiedResultClass);
 	}
 
 	public String getResultSetMapping() {
 		return this.resultSetMapping;
 	}
 	
-	public void setResultSetMapping(String resultSetMapping) {
-		this.resultSetMapping = resultSetMapping;
-		this.resultSetMappingAdapter.setValue(resultSetMapping);
+	public void setResultSetMapping(String newResultSetMapping) {
+		String oldResultSetMapping = this.resultSetMapping;
+		this.resultSetMapping = newResultSetMapping;
+		this.resultSetMappingAdapter.setValue(newResultSetMapping);
+		firePropertyChanged(RESULT_SET_MAPPING_PROPERTY, oldResultSetMapping, newResultSetMapping);
 	}
 
 	public ITextRange resultClassTextRange(CompilationUnit astRoot) {
@@ -130,12 +143,20 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		this.setResultClass(this.resultClassAdapter.getValue(astRoot));
-		this.setFullyQualifiedResultClass(fullyQualifiedResultClass(astRoot));
-		this.setResultSetMapping(this.resultSetMappingAdapter.getValue(astRoot));
+		this.setResultClass(this.resultClass(astRoot));
+		this.setFullyQualifiedResultClass(this.fullyQualifiedResultClass(astRoot));
+		this.setResultSetMapping(this.resultSetMapping(astRoot));
 	}
 
-	private String fullyQualifiedResultClass(CompilationUnit astRoot) {
+	protected String resultClass(CompilationUnit astRoot) {
+		return this.resultClassAdapter.getValue(astRoot);
+	}
+	
+	protected String resultSetMapping(CompilationUnit astRoot) {
+		return this.resultSetMappingAdapter.getValue(astRoot);
+	}
+	
+	protected String fullyQualifiedResultClass(CompilationUnit astRoot) {
 		if (getResultClass() == null) {
 			return null;
 		}

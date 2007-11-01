@@ -17,15 +17,18 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class LobImpl extends AbstractAnnotationResource<Attribute> implements Lob
 {
-	private static final String ANNOTATION_NAME = JPA.LOB;
-	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	protected LobImpl(JavaResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
+	public void initialize(CompilationUnit astRoot) {
+		//nothing to initialize
+	}
+	
 	public void updateFromJava(CompilationUnit astRoot) {
+		//nothing to update
 	}
 
 	public String getAnnotationName() {

@@ -15,13 +15,13 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public interface Query extends JavaResource
 {
-	String getName();
-	
+	String getName();	
 	void setName(String name);
+		String NAME_PROPERTY = "nameProperty";
 	
-	String getQuery();
-	
+	String getQuery();	
 	void setQuery(String query);
+		String QUERY_PROPERTY = "queryProperty";
 	
 	ListIterator<QueryHint> hints();
 	
@@ -36,6 +36,7 @@ public interface Query extends JavaResource
 	void removeHint(int index);
 	
 	void moveHint(int oldIndex, int newIndex);
+		String QUERY_HINTS_LIST = "queryHintsList";
 
 	/**
 	 * Return the ITextRange for the name element. If name element

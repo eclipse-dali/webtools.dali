@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class EnumeratedImpl extends AbstractAnnotationResource<Attribute> implements Enumerated
 {
-	private static final String ANNOTATION_NAME = JPA.ENUMERATED;
 
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
@@ -35,6 +34,10 @@ public class EnumeratedImpl extends AbstractAnnotationResource<Attribute> implem
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, VALUE_ADAPTER);
 	}
+	
+	public void initialize(CompilationUnit astRoot) {
+		this.value = this.value(astRoot);
+	}
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
@@ -44,9 +47,11 @@ public class EnumeratedImpl extends AbstractAnnotationResource<Attribute> implem
 		return this.value;
 	}
 	
-	public void setValue(EnumType value) {
-		this.value = value;
-		this.valueAdapter.setValue(EnumType.toJavaAnnotationValue(value));
+	public void setValue(EnumType newValue) {
+		EnumType oldValue = this.value;
+		this.value = newValue;
+		this.valueAdapter.setValue(EnumType.toJavaAnnotationValue(newValue));
+		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
 	public ITextRange valueTextRange(CompilationUnit astRoot) {
@@ -54,7 +59,11 @@ public class EnumeratedImpl extends AbstractAnnotationResource<Attribute> implem
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
-		setValue(EnumType.fromJavaAnnotationValue(valueAdapter.getValue(astRoot)));
+		this.setValue(this.value(astRoot));
+	}
+	
+	protected EnumType value(CompilationUnit astRoot) {
+		return EnumType.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot));
 	}
 	
 	// ********** static methods **********
@@ -84,7 +93,7 @@ public class EnumeratedImpl extends AbstractAnnotationResource<Attribute> implem
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new EnumeratedImpl(parent, (Attribute) member);
 		}
-
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

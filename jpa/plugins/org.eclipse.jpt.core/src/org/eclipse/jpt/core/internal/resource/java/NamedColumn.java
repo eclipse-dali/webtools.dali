@@ -26,7 +26,8 @@ public interface NamedColumn extends JavaResource
 	 * Set to null to remove the name valuePair from the annotation
 	 */
 	void setName(String name);
-	
+		String NAME_PROPERTY = "nameProperty";
+		
 	/**
 	 * Corresponds to the columnDefinition element of the *Column annotation.
 	 * Returns null if the columnDefinition valuePair does not exist in the annotation
@@ -38,6 +39,7 @@ public interface NamedColumn extends JavaResource
 	 * Set to null to remove the columnDefinition valuePair from the annotation
 	 */
 	void setColumnDefinition(String columnDefinition);
+		String COLUMN_DEFINITION_PROPERTY = "columnDefinitionPropety";
 
 	/**
 	 * Return the ITextRange for the name element. If the name element

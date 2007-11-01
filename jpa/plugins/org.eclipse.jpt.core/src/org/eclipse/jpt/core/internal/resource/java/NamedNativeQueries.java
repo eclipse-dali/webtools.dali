@@ -12,5 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public interface NamedNativeQueries extends ContainerAnnotation<NestableNamedNativeQuery>
 {
+	String ANNOTATION_NAME = JPA.NAMED_NATIVE_QUERIES;
 
+	String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueriesList";
 }

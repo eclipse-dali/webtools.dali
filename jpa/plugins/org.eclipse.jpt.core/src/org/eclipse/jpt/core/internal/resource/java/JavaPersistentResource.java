@@ -25,6 +25,8 @@ public interface JavaPersistentResource extends JavaResource
 	 */
 	<T extends JavaResource> Iterator<T> mappingAnnotations();
 	
+		String MAPPING_ANNOTATIONS_COLLECTION = "mappingAnnotationsCollection";
+	
 	/**
 	 * Return the <code>JavaResource</code> specified on this JavaPersistentResource
 	 * In the case of multiples the first one will be returned as defined by the order of
@@ -63,6 +65,8 @@ public interface JavaPersistentResource extends JavaResource
 	 */
 	<T extends JavaResource> Iterator<T>  annotations();
 	
+		String ANNOTATIONS_COLLECTION = "annotationsCollection";
+
 	//TODO tie the singular and plural annotations together somehow in the resource model so we can give
 	//a validation error for the case of both being specified
 	/**
@@ -108,7 +112,8 @@ public interface JavaPersistentResource extends JavaResource
 	 * @return
 	 */
 	boolean isPersistable();
-	
+		String PERSISTABLE_PROPERTY = "persistableProperty";
+
 	/**
 	 * Return true if this JavaPersistentResource represents the underlying JDT IMeber
 	 * @param member

@@ -17,6 +17,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
  */
 public interface AttributeOverride extends JavaResource
 {
+	String ANNOTATION_NAME = JPA.ATTRIBUTE_OVERRIDE;
+
 	/**
 	 * Corresponds to the name element of the AttributeOverride annotation.
 	 * Returns null if the name element does not exist in java.
@@ -28,7 +30,8 @@ public interface AttributeOverride extends JavaResource
 	 * Set to null to remove the name element.
 	 */
 	void setName(String name);
-	
+		String NAME_PROPERTY = "nameProperty";
+		
 	/**
 	 * Corresponds to the column element of the AttributeOverride annotation.
 	 * Returns null if the column element does not exist in java.
@@ -44,6 +47,8 @@ public interface AttributeOverride extends JavaResource
 	 * Remove the column element from the AttributeOverride annotation.
 	 */
 	void removeColumn();
+	
+	String COLUMN_PROPERTY = "columnProperty";
 
 	/**
 	 * Return the ITextRange for the name element. If name element

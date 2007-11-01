@@ -23,7 +23,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 public class NamedQueryImpl extends AbstractNamedQuery
 	implements NestableNamedQuery
 {
-	private static final String ANNOTATION_NAME = JPA.NAMED_QUERY;
 
 	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

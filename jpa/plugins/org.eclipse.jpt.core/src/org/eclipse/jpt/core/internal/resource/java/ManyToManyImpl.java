@@ -24,8 +24,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implements ManyToMany
 {
-	private static final String ANNOTATION_NAME = JPA.MANY_TO_MANY;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter();	
@@ -43,6 +41,12 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 	protected ManyToManyImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.mappedByAdapter = buildAnnotationElementAdapter(MAPPED_BY_ADAPTER);
+	}
+
+	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.mappedBy = this.mappedBy(astRoot);
 	}
 	
 	//**************** AbstractRelationshipMappingAnnotation implementation **************
@@ -74,17 +78,23 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 		return this.mappedBy;
 	}
 	
-	public void setMappedBy(String mappedBy) {
-		this.mappedBy = mappedBy;
-		this.mappedByAdapter.setValue(mappedBy);
+	public void setMappedBy(String newMappedBy) {
+		String oldMappedBy = this.mappedBy;
+		this.mappedBy = newMappedBy;
+		this.mappedByAdapter.setValue(newMappedBy);
+		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
 	
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		this.setMappedBy(this.mappedByAdapter.getValue(astRoot));
+		this.setMappedBy(this.mappedBy(astRoot));
 	}
 	
+	protected String mappedBy(CompilationUnit astRoot) {
+		return this.mappedByAdapter.getValue(astRoot);
+	}
+
 	public ITextRange mappedByTextRange(CompilationUnit astRoot) {
 		return elementTextRange(MAPPED_BY_ADAPTER, astRoot);
 	}

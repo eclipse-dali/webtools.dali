@@ -18,6 +18,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
  */
 public interface SequenceGenerator extends Generator
 {
+	String ANNOTATION_NAME = JPA.SEQUENCE_GENERATOR;
+
 	/**
 	 * Corresponds to the sequenceName element of the SequenceGenerator annotation.
 	 * Returns null if the sequenceName element does not exist in java.  If no other memberValuePairs exist
@@ -31,7 +33,8 @@ public interface SequenceGenerator extends Generator
 	 * the SequenceGenerator annotation will be removed as well.
 	 */
 	void setSequenceName(String sequenceName);
-
+		String SEQUENCE_NAME_PROPERTY = "sequenceNameProperty";
+		
 	/**
 	 * Return the ITextRange for the sequenceName element.  If the sequenceName element 
 	 * does not exist return the ITextRange for the SequenceGenerator annotation.

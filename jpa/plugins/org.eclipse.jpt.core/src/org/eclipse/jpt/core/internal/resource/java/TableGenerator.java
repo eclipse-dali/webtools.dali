@@ -19,6 +19,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
 public interface TableGenerator extends Generator
 {
 	
+	String ANNOTATION_NAME = JPA.TABLE_GENERATOR;
+
 	/**
 	 * Corresponds to the table element of the TableGenerator annotation.
 	 * Returns null if the table element does not exist in java.  If no other memberValuePairs exist
@@ -32,7 +34,8 @@ public interface TableGenerator extends Generator
 	 * the TableGenerator annotation will be removed as well.
 	 */
 	void setTable(String table);
-	
+		String TABLE_PROPERTY = "tableProperty";
+		
 	/**
 	 * Corresponds to the catalog element of the TableGenerator annotation.
 	 * Returns null if the catalog element does not exist in java.  If no other memberValuePairs exist
@@ -46,6 +49,7 @@ public interface TableGenerator extends Generator
 	 * the TableGenerator annotation will be removed as well.
 	 */
 	void setCatalog(String catalog);
+		String CATALOG_PROPERTY = "catalogProperty";
 	
 	/**
 	 * Corresponds to the schema element of the TableGenerator annotation.
@@ -60,6 +64,7 @@ public interface TableGenerator extends Generator
 	 * the TableGenerator annotation will be removed as well.
 	 */
 	void setSchema(String schema);
+		String SCHEMA_PROPERTY = "schemaProperty";
 	
 	/**
 	 * Corresponds to the pkColumnName element of the TableGenerator annotation.
@@ -74,6 +79,7 @@ public interface TableGenerator extends Generator
 	 * the TableGenerator annotation will be removed as well.
 	 */
 	void setPkColumnName(String pkColumnName);
+		String PK_COLUMN_NAME_PROPERTY = "pkColumnNameProperty";
 	
 	/**
 	 * Corresponds to the valueColumnName element of the TableGenerator annotation.
@@ -88,6 +94,7 @@ public interface TableGenerator extends Generator
 	 * the TableGenerator annotation will be removed as well.
 	 */
 	void setValueColumnName(String valueColumnName);
+		String VALUE_COLUMN_NAME_PROPERTY = "valueColumnNameProperty";
 	
 	/**
 	 * Corresponds to the pkColumnValue element of the TableGenerator annotation.
@@ -102,6 +109,7 @@ public interface TableGenerator extends Generator
 	 * the TableGenerator annotation will be removed as well.
 	 */
 	void setPkColumnValue(String pkColumnValue);
+		String PK_COLUMN_VALUE_PROPERTY = "pkColumnValueProperty";
 	
 	ListIterator<UniqueConstraint> uniqueConstraints();
 	
@@ -116,6 +124,7 @@ public interface TableGenerator extends Generator
 	void removeUniqueConstraint(int index);
 	
 	void moveUniqueConstraint(int oldIndex, int newIndex);
+		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraintsList";
 
 	/**
 	 * Return the ITextRange for the table element.  If the table element 

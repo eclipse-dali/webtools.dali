@@ -14,6 +14,8 @@ import java.util.ListIterator;
 
 public interface SecondaryTable extends Table
 {
+	String ANNOTATION_NAME = JPA.SECONDARY_TABLE;
+
 	ListIterator<PrimaryKeyJoinColumn> pkJoinColumns();
 	
 	PrimaryKeyJoinColumn pkJoinColumnAt(int index);
@@ -28,4 +30,5 @@ public interface SecondaryTable extends Table
 	
 	void movePkJoinColumn(int oldIndex, int newIndex);
 
+	String PK_JOIN_COLUMNS_LIST = "pkJoinColumnsList";
 }

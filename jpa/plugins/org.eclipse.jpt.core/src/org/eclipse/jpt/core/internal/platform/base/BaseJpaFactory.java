@@ -42,6 +42,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaEntity;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
@@ -118,7 +119,8 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	protected IResourceModel buildJavaResourceModel(IJpaProject jpaProject, IFile file) {
 		return new JavaResourceModel(
 				file, jpaProject.jpaPlatform().annotationProvider(), 
-				jpaProject.modifySharedDocumentCommandExecutorProvider());
+				jpaProject.modifySharedDocumentCommandExecutorProvider(),
+				DefaultAnnotationEditFormatter.instance());
 	}
 	
 	protected IResourceModel buildPersistenceResourceModel(IFile file) {

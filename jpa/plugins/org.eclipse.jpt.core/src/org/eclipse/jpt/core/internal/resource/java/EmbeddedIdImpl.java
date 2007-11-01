@@ -19,19 +19,21 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class EmbeddedIdImpl extends AbstractAnnotationResource<Attribute> implements EmbeddedId
 {
-	private static final String ANNOTATION_NAME = JPA.EMBEDDED_ID;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	protected EmbeddedIdImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
+	public void initialize(CompilationUnit astRoot) {
+		//nothing to initialize
+	}
+	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
 
-	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
+	public void updateFromJava(CompilationUnit astRoot) {
 		//no annotation members
 	}
 
@@ -58,7 +60,7 @@ public class EmbeddedIdImpl extends AbstractAnnotationResource<Attribute> implem
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new EmbeddedIdImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 		}
-
+		
 		public Iterator<String> correspondingAnnotationNames() {
 			return new ArrayIterator<String>(
 				JPA.ATTRIBUTE_OVERRIDE,

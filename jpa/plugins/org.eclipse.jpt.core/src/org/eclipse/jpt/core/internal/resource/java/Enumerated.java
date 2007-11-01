@@ -17,6 +17,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
  */
 public interface Enumerated extends JavaResource
 {
+	String ANNOTATION_NAME = JPA.ENUMERATED;
+
 	/**
 	 * Corresponds to the value element of the Enumerated annotation.
 	 * Returns null if the value element does not exist in java.
@@ -28,6 +30,7 @@ public interface Enumerated extends JavaResource
 	 * Set to null to remove the value element.
 	 */
 	void setValue(EnumType value);
+		String VALUE_PROPERTY = "valueProperty";
 		
 	/**
 	 * Return the ITextRange for the value element.  If the value element 

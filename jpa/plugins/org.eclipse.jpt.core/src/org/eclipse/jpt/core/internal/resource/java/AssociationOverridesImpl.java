@@ -20,24 +20,26 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class AssociationOverridesImpl extends AbstractAnnotationResource<Member> implements AssociationOverrides
-{
-	private static final String ANNOTATION_NAME = JPA.ASSOCIATION_OVERRIDES;
-	
+{	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private List<NestableAssociationOverride> associationOverrides;
+	protected final List<NestableAssociationOverride> associationOverrides;
 	
 	protected AssociationOverridesImpl(JavaResource parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.associationOverrides = new ArrayList<NestableAssociationOverride>();
 	}
 
+	public void initialize(CompilationUnit astRoot) {
+		ContainerAnnotationTools.initializeNestedAnnotations(astRoot, this);
+	}
+	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
 
 	public String getNestableAnnotationName() {
-		return JPA.ASSOCIATION_OVERRIDE;
+		return AssociationOverride.ANNOTATION_NAME;
 	}
 		
 	public ListIterator<NestableAssociationOverride> nestedAnnotations() {
@@ -48,6 +50,11 @@ public class AssociationOverridesImpl extends AbstractAnnotationResource<Member>
 		return this.associationOverrides.size();
 	}	
 
+	public void addInternal(int index) {
+		NestableAssociationOverride associationOverride = createAssociationOverride(index);
+		this.associationOverrides.add(index, associationOverride);
+	}
+	
 	public NestableAssociationOverride add(int index) {
 		NestableAssociationOverride associationOverride = createAssociationOverride(index);
 		add(index, associationOverride);
@@ -55,16 +62,15 @@ public class AssociationOverridesImpl extends AbstractAnnotationResource<Member>
 	}
 	
 	private void add(int index, NestableAssociationOverride associationOverride) {
-		this.associationOverrides.add(index, associationOverride);
-		//TODO event notification
+		addItemToList(index, associationOverride, this.associationOverrides, ASSOCIATION_OVERRIDES_LIST);
 	}
 
 	public void remove(NestableAssociationOverride associationOverride) {
-		this.associationOverrides.remove(associationOverride);		
+		removeItemFromList(associationOverride, this.associationOverrides, ASSOCIATION_OVERRIDES_LIST);
 	}
 	
 	public void remove(int index) {
-		this.associationOverrides.remove(index);
+		removeItemFromList(index, this.associationOverrides, ASSOCIATION_OVERRIDES_LIST);
 	}
 	
 	public int indexOf(NestableAssociationOverride associationOverride) {
@@ -85,7 +91,7 @@ public class AssociationOverridesImpl extends AbstractAnnotationResource<Member>
 	}
 	
 	public void move(int oldIndex, int newIndex) {
-		this.associationOverrides.add(newIndex, this.associationOverrides.remove(oldIndex));
+		moveItemInList(newIndex, oldIndex, this.associationOverrides, ASSOCIATION_OVERRIDES_LIST);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

@@ -13,6 +13,8 @@ import java.util.ListIterator;
 
 public interface JoinTable extends Table
 {
+	String ANNOTATION_NAME = JPA.JOIN_TABLE;
+
 	ListIterator<JoinColumn> joinColumns();
 	
 	JoinColumn joinColumnAt(int index);
@@ -26,7 +28,7 @@ public interface JoinTable extends Table
 	void removeJoinColumn(int index);
 	
 	void moveJoinColumn(int oldIndex, int newIndex);
-
+		String JOIN_COLUMNS_LIST = "joinColumnsList";
 	
 	ListIterator<JoinColumn> inverseJoinColumns();
 	
@@ -41,5 +43,6 @@ public interface JoinTable extends Table
 	void removeInverseJoinColumn(int index);
 	
 	void moveInverseJoinColumn(int oldIndex, int newIndex);
+		String INVERSE_JOIN_COLUMNS_LIST = "inverseJoinColumnsList";
 
 }

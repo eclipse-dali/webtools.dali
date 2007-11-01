@@ -118,7 +118,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
 		
 		NamedQueries namedQueries = (NamedQueries) typeResource.annotation(JPA.NAMED_QUERIES);
-		NamedQuery namedQuery = (NamedQuery) namedQueries.nestedAnnotations().next();
+		NamedQuery namedQuery = namedQueries.nestedAnnotations().next();
 		assertNotNull(namedQuery);
 	}
 
@@ -127,7 +127,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
 		NamedQueries namedQueries = (NamedQueries) typeResource.annotation(JPA.NAMED_QUERIES);
-		NamedQuery namedQuery = (NamedQuery) namedQueries.nestedAnnotations().next();
+		NamedQuery namedQuery = namedQueries.nestedAnnotations().next();
 		assertEquals(QUERY_NAME, namedQuery.getName());
 	}
 
@@ -136,7 +136,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
 		NamedQueries namedQueries = (NamedQueries) typeResource.annotation(JPA.NAMED_QUERIES);
-		NamedQuery namedQuery = (NamedQuery) namedQueries.nestedAnnotations().next();
+		NamedQuery namedQuery = namedQueries.nestedAnnotations().next();
 		assertEquals(QUERY_NAME, namedQuery.getName());
 		
 		namedQuery.setName("foo");
@@ -155,7 +155,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
 		NamedQueries namedQueries = (NamedQueries) typeResource.annotation(JPA.NAMED_QUERIES);
-		NamedQuery namedQuery = (NamedQuery) namedQueries.nestedAnnotations().next();
+		NamedQuery namedQuery = namedQueries.nestedAnnotations().next();
 		assertEquals(QUERY_QUERY, namedQuery.getQuery());
 	}
 
@@ -164,7 +164,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
 		NamedQueries namedQueries = (NamedQueries) typeResource.annotation(JPA.NAMED_QUERIES);
-		NamedQuery namedQuery = (NamedQuery) namedQueries.nestedAnnotations().next();
+		NamedQuery namedQuery = namedQueries.nestedAnnotations().next();
 		assertEquals(QUERY_QUERY, namedQuery.getQuery());
 		
 		namedQuery.setQuery("foo");
@@ -183,7 +183,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
 		NamedQueries namedQueries = (NamedQueries) typeResource.annotation(JPA.NAMED_QUERIES);
-		NamedQuery namedQuery = (NamedQuery) namedQueries.nestedAnnotations().next();
+		NamedQuery namedQuery = namedQueries.nestedAnnotations().next();
 		
 		ListIterator<QueryHint> iterator = namedQuery.hints();
 		
@@ -195,7 +195,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
 		NamedQueries namedQueries = (NamedQueries) typeResource.annotation(JPA.NAMED_QUERIES);
-		NamedQuery namedQuery = (NamedQuery) namedQueries.nestedAnnotations().next();
+		NamedQuery namedQuery = namedQueries.nestedAnnotations().next();
 		
 		namedQuery.addHint(0);
 		namedQuery.addHint(1);
@@ -211,7 +211,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
 		NamedQueries namedQueries = (NamedQueries) typeResource.annotation(JPA.NAMED_QUERIES);
-		NamedQuery namedQuery = (NamedQuery) namedQueries.nestedAnnotations().next();
+		NamedQuery namedQuery = namedQueries.nestedAnnotations().next();
 		
 		ListIterator<QueryHint> iterator = namedQuery.hints();
 		
@@ -223,12 +223,13 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
 		NamedQueries namedQueries = (NamedQueries) typeResource.annotation(JPA.NAMED_QUERIES);
-		NamedQuery namedQuery = (NamedQuery) namedQueries.nestedAnnotations().next();
+		NamedQuery namedQuery = namedQueries.nestedAnnotations().next();
 		
 		namedQuery.addHint(0).setName("FOO");
 		namedQuery.addHint(1);
+		namedQuery.addHint(0).setName("BAR");
 
-		assertSourceContains("@NamedQuery(hints={@QueryHint(name=\"FOO\"),@QueryHint})");
+		assertSourceContains("@NamedQuery(hints={@QueryHint(name=\"BAR\"),@QueryHint(name=\"FOO\"), @QueryHint})");
 	}
 	
 	public void testRemoveHint() throws Exception {
@@ -236,7 +237,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
 		NamedQueries namedQueries = (NamedQueries) typeResource.annotation(JPA.NAMED_QUERIES);
-		NamedQuery namedQuery = (NamedQuery) namedQueries.nestedAnnotations().next();
+		NamedQuery namedQuery = namedQueries.nestedAnnotations().next();
 		
 		namedQuery.removeHint(1);
 		assertSourceContains("@NamedQuery(hints=@QueryHint(name=\"BAR\", value=\"FOO\"))");
@@ -250,7 +251,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
 		NamedQueries namedQueries = (NamedQueries) typeResource.annotation(JPA.NAMED_QUERIES);
-		NamedQuery namedQuery = (NamedQuery) namedQueries.nestedAnnotations().next();
+		NamedQuery namedQuery = namedQueries.nestedAnnotations().next();
 		
 		namedQuery.moveHint(0, 1);
 		assertSourceContains("@NamedQuery(hints={@QueryHint, @QueryHint(name=\"BAR\", value=\"FOO\")})");
@@ -261,7 +262,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
 		NamedQueries namedQueries = (NamedQueries) typeResource.annotation(JPA.NAMED_QUERIES);
-		NamedQuery namedQuery = (NamedQuery) namedQueries.nestedAnnotations().next();
+		NamedQuery namedQuery = namedQueries.nestedAnnotations().next();
 		
 		namedQuery.moveHint(1, 0);
 		assertSourceContains("@NamedQuery(hints={@QueryHint, @QueryHint(name=\"BAR\", value=\"FOO\")})");

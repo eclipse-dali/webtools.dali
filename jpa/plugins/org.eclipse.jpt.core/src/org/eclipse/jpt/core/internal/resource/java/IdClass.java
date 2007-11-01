@@ -17,6 +17,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
  */
 public interface IdClass extends JavaResource
 {
+	final String ANNOTATION_NAME = JPA.ID_CLASS;
+
 	/**
 	 * Corresponds to the value element of the IdClass annotation.
 	 * Returns null if the value element does not exist in java.
@@ -34,7 +36,8 @@ public interface IdClass extends JavaResource
 	 * annotation itself.
 	 */
 	void setValue(String value);
-	
+		String VALUE_PROPERTY = "valueProperty";
+		
 	/**
 	 * Returns the qualified value name as it is resolved in the AST
 	 * <p>
@@ -44,6 +47,7 @@ public interface IdClass extends JavaResource
 	 * @return
 	 */
 	String getFullyQualifiedClass();
+		String FULLY_QUALIFIED_CLASS_PROPERTY = "fullyQualifiedClassProperty";
 
 	/**
 	 * Return the ITextRange for the value element.  If the value element 

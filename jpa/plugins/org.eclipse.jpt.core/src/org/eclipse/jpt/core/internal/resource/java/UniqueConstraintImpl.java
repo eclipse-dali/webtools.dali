@@ -48,6 +48,13 @@ public class UniqueConstraintImpl extends AbstractAnnotationResource<Member> imp
 		this.columnNames = new ArrayList<String>();
 	}
 
+	public void initialize(CompilationUnit astRoot) {
+		String[] javaColumnNames = this.columnNamesAdapter.getValue(astRoot);
+		for (int i = 0; i < javaColumnNames.length; i++) {
+			this.columnNames.add(javaColumnNames[i]);
+		}
+	}
+	
 	protected AnnotationElementAdapter<String[]> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String[]> daea) {
 		return new ShortCircuitArrayAnnotationElementAdapter<String>(getMember(), daea);
 	}
@@ -61,7 +68,7 @@ public class UniqueConstraintImpl extends AbstractAnnotationResource<Member> imp
 	}
 
 	public String getAnnotationName() {
-		return JPA.UNIQUE_CONSTRAINT;
+		return ANNOTATION_NAME;
 	}
 	
 	@Override
@@ -81,12 +88,12 @@ public class UniqueConstraintImpl extends AbstractAnnotationResource<Member> imp
 	}
 
 	public void addColumnName(String columnName) {
-		this.columnNames.add(columnName);
+		addItemToList(columnName, this.columnNames, COLUMN_NAMES_LIST);
 		this.columnNamesAdapter.setValue(this.columnNames.toArray(new String[this.columnNames.size()]));
 	}
 	
 	public void removeColumnName(String columnName) {
-		this.columnNames.remove(columnName);
+		removeItemFromList(columnName, this.columnNames, COLUMN_NAMES_LIST);
 		this.columnNamesAdapter.setValue(this.columnNames.toArray(new String[this.columnNames.size()]));
 	}
 
@@ -94,18 +101,11 @@ public class UniqueConstraintImpl extends AbstractAnnotationResource<Member> imp
 		return this.elementTouches(this.columnNamesDeclarationAdapter, pos, astRoot);
 	}
 
-	/**
-	 * allow owners to verify the annotation
-	 */
-	public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
-		return getAnnotationAdapter().getAnnotation(astRoot);
-	}
-
 	public void updateFromJava(CompilationUnit astRoot) {
-		updateColumnNamesFromJava(astRoot);
+		this.updateColumnNamesFromJava(astRoot);
 	}
 
-	private void updateColumnNamesFromJava(CompilationUnit astRoot) {
+	protected void updateColumnNamesFromJava(CompilationUnit astRoot) {
 		String[] javaColumnNames = this.columnNamesAdapter.getValue(astRoot);
 		CollectionTools.retainAll(this.columnNames, javaColumnNames);
 		for (int i = 0; i < javaColumnNames.length; i++) {
@@ -121,16 +121,8 @@ public class UniqueConstraintImpl extends AbstractAnnotationResource<Member> imp
 		getAnnotationAdapter().moveAnnotation(newIndex);
 	}
 
-	public void newAnnotation() {
-		getAnnotationAdapter().newMarkerAnnotation();
-	}
-
-	public void removeAnnotation() {
-		getAnnotationAdapter().removeAnnotation();
-	}
-
 	// ********** static methods **********
-	static NestableUniqueConstraint createSecondaryTableUniqueConstraint(JavaResource parent, DeclarationAnnotationAdapter declarationAnnotationAdapter, Member member, int index) {
+	static NestableUniqueConstraint createSecondaryTableUniqueConstraint(JavaResource parent, Member member, DeclarationAnnotationAdapter declarationAnnotationAdapter, int index) {
 		return new UniqueConstraintImpl(parent, member, buildSecondaryTableUniqueConstraintAnnotationAdapter(declarationAnnotationAdapter, index));
 	}
 

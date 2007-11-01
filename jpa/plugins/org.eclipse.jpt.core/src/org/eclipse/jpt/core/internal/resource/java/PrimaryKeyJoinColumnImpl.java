@@ -24,7 +24,6 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements NestablePrimaryKeyJoinColumn
 {
-	private static final String ANNOTATION_NAME = JPA.PRIMARY_KEY_JOIN_COLUMN;
 
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -50,6 +49,12 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 	}
 	
 	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.referencedColumnName = this.referencedColumnName(astRoot);
+	}
+	
+	@Override
 	protected String nameElementName() {
 		return JPA.PRIMARY_KEY_JOIN_COLUMN__NAME;
 	}
@@ -71,6 +76,7 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 		getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
 	
+	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
 		PrimaryKeyJoinColumn oldColumn = (PrimaryKeyJoinColumn) oldAnnotation;
@@ -81,14 +87,21 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 		return this.referencedColumnName;
 	}
 	
-	public void setReferencedColumnName(String referencedColumnName) {
-		this.referencedColumnName = referencedColumnName;
-		this.referencedColumnNameAdapter.setValue(referencedColumnName);
+	public void setReferencedColumnName(String newReferencedColumnName) {
+		String oldReferencedColumnName = this.referencedColumnName;
+		this.referencedColumnName = newReferencedColumnName;
+		this.referencedColumnNameAdapter.setValue(newReferencedColumnName);
+		firePropertyChanged(REFERENCED_COLUMN_NAME_PROPERTY, oldReferencedColumnName, newReferencedColumnName);
 	}
 	
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		this.setReferencedColumnName(this.referencedColumnNameAdapter.getValue(astRoot));
+		this.setReferencedColumnName(this.referencedColumnName(astRoot));
+	}
+	
+	protected String referencedColumnName(CompilationUnit astRoot) {
+		return this.referencedColumnNameAdapter.getValue(astRoot);
 	}
 	
 	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {

@@ -81,71 +81,113 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 	 */
 	protected abstract DeclarationAnnotationElementAdapter<String> fetchAdapter();
 
+	public void initialize(CompilationUnit astRoot) {
+		this.targetEntity = this.targetEntity(astRoot);
+		this.fullyQualifiedTargetEntity = this.fullyQualifiedTargetEntity(astRoot);
+		this.fetch = this.fetch(astRoot);
+		this.initializeCascadeFromJava(astRoot);
+	}
+	
+	private void initializeCascadeFromJava(CompilationUnit astRoot) {
+		String[] javaValue = this.cascadeAdapter.getValue(astRoot);
+		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValue(javaValue);
+		if (CollectionTools.contains(cascadeTypes, CascadeType.ALL)) {
+			addCascadeType(CascadeType.ALL);
+		}
+		if (CollectionTools.contains(cascadeTypes, CascadeType.MERGE)) {
+			addCascadeType(CascadeType.MERGE);
+		}
+		if (CollectionTools.contains(cascadeTypes, CascadeType.PERSIST)) {
+			addCascadeType(CascadeType.PERSIST);
+		}
+		if (CollectionTools.contains(cascadeTypes, CascadeType.REFRESH)) {
+			addCascadeType(CascadeType.REFRESH);
+		}
+		if (CollectionTools.contains(cascadeTypes, CascadeType.REMOVE)) {
+			addCascadeType(CascadeType.REMOVE);
+		}
+	}
+
 	public String getTargetEntity() {
 		return this.targetEntity;
 	}
 	
-	public void setTargetEntity(String targetEntity) {
-		this.targetEntity = targetEntity;
-		this.targetEntityAdapter.setValue(targetEntity);
+	public void setTargetEntity(String newTargetEntity) {
+		String oldTargetEntity = this.targetEntity;
+		this.targetEntity = newTargetEntity;
+		this.targetEntityAdapter.setValue(newTargetEntity);
+		firePropertyChanged(TARGET_ENTITY_PROPERTY, oldTargetEntity, newTargetEntity);
 	}
 	
 	public String getFullyQualifiedTargetEntity() {
 		return this.fullyQualifiedTargetEntity;
 	}
 	
-	private void setFullyQualifiedTargetEntity(String targetEntity) {
-		this.fullyQualifiedTargetEntity = targetEntity;
-		//change notification
+	protected void setFullyQualifiedTargetEntity(String newTargetEntity) {
+		String oldTargetEntity = this.fullyQualifiedTargetEntity;
+		this.fullyQualifiedTargetEntity = newTargetEntity;
+		firePropertyChanged(FULLY_QUALFIEID_TARGET_ENTITY_PROPERTY, oldTargetEntity, newTargetEntity);
 	}
 	
 	public FetchType getFetch() {
 		return this.fetch;
 	}
 	
-	public void setFetch(FetchType fetch) {
-		this.fetch = fetch;
-		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
+	public void setFetch(FetchType newFetch) {
+		FetchType oldFetch = this.fetch;
+		this.fetch = newFetch;
+		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(newFetch));
+		firePropertyChanged(FETCH_PROPERTY, oldFetch, newFetch);
 	}
 		
 	public boolean isCascadeAll() {
 		return CollectionTools.contains(this.cascadeTypes, CascadeType.ALL);
 	}
 	
-	public void setCascadeAll(boolean all) {
-		setCascade(all, CascadeType.ALL);
+	public void setCascadeAll(boolean newCascadeAll) {
+		boolean oldCascadeAll = isCascadeAll();
+		setCascade(newCascadeAll, CascadeType.ALL);
+		firePropertyChanged(CASCADE_ALL_PROPERTY, oldCascadeAll, newCascadeAll);
 	}
 	
 	public boolean isCascadePersist() {
 		return CollectionTools.contains(this.cascadeTypes, CascadeType.PERSIST);
 	}
 	
-	public void setCascadePersist(boolean persist) {
-		setCascade(persist, CascadeType.PERSIST);
+	public void setCascadePersist(boolean newCascadePersist) {
+		boolean oldCascadePersist = isCascadePersist();
+		setCascade(newCascadePersist, CascadeType.PERSIST);
+		firePropertyChanged(CASCADE_PERSIST_PROPERTY, oldCascadePersist, newCascadePersist);
 	}
 	
 	public boolean isCascadeMerge() {
 		return CollectionTools.contains(this.cascadeTypes, CascadeType.MERGE);
 	}
 	
-	public void setCascadeMerge(boolean merge) {
-		setCascade(merge, CascadeType.MERGE);
+	public void setCascadeMerge(boolean newCascadeMerge) {
+		boolean oldCascadeMerge = isCascadeMerge();
+		setCascade(newCascadeMerge, CascadeType.MERGE);
+		firePropertyChanged(CASCADE_MERGE_PROPERTY, oldCascadeMerge, newCascadeMerge);
 	}
 	
 	public boolean isCascadeRemove() {
 		return CollectionTools.contains(this.cascadeTypes, CascadeType.REMOVE);
 	}
 	
-	public void setCascadeRemove(boolean remove) {
-		setCascade(remove, CascadeType.REMOVE);
+	public void setCascadeRemove(boolean newCascadeRemove) {
+		boolean oldCascadeRemove = isCascadeRemove();
+		setCascade(newCascadeRemove, CascadeType.REMOVE);
+		firePropertyChanged(CASCADE_REMOVE_PROPERTY, oldCascadeRemove, newCascadeRemove);
 	}
 	
 	public boolean isCascadeRefresh() {
 		return CollectionTools.contains(this.cascadeTypes, CascadeType.REFRESH);
 	}
 	
-	public void setCascadeRefresh(boolean refresh) {
-		setCascade(refresh, CascadeType.REFRESH);
+	public void setCascadeRefresh(boolean newCascadeRefresh) {
+		boolean oldCascadeRefresh = isCascadeRefresh();
+		setCascade(newCascadeRefresh, CascadeType.REFRESH);
+		firePropertyChanged(CASCADE_REFRESH_PROPERTY, oldCascadeRefresh, newCascadeRefresh);
 	}
 		
 	private void addCascadeType(CascadeType cascadeType) {
@@ -193,15 +235,28 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
-		this.setFetch(FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot)));
-		this.setTargetEntity(this.targetEntityAdapter.getValue(astRoot));
-		this.setFullyQualifiedTargetEntity(fullyQualifiedTargetEntity(astRoot));
-		updateCascadeFromJava(astRoot);
+		this.setFetch(this.fetch(astRoot));
+		this.setTargetEntity(this.targetEntity(astRoot));
+		this.setFullyQualifiedTargetEntity(this.fullyQualifiedTargetEntity(astRoot));
+		this.updateCascadeFromJava(astRoot);
+	}
+	
+	protected FetchType fetch(CompilationUnit astRoot) {
+		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot));
+	}
+	
+	protected String targetEntity(CompilationUnit astRoot) {
+		return this.targetEntityAdapter.getValue(astRoot);
 	}
 	
 	private void updateCascadeFromJava(CompilationUnit astRoot) {
 		String[] javaValue = this.cascadeAdapter.getValue(astRoot);
-		setCascadeTypes(CascadeType.fromJavaAnnotationValue(javaValue));
+		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValue(javaValue);
+		setCascadeAll(CollectionTools.contains(cascadeTypes, CascadeType.ALL));
+		setCascadeMerge(CollectionTools.contains(cascadeTypes, CascadeType.MERGE));
+		setCascadePersist(CollectionTools.contains(cascadeTypes, CascadeType.PERSIST));
+		setCascadeRefresh(CollectionTools.contains(cascadeTypes, CascadeType.REFRESH));
+		setCascadeRemove(CollectionTools.contains(cascadeTypes, CascadeType.REMOVE));
 	}
 	
 	private String fullyQualifiedTargetEntity(CompilationUnit astRoot) {

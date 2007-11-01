@@ -30,8 +30,6 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class SecondaryTableImpl extends AbstractTableResource implements NestableSecondaryTable
 {	
-	private static final String ANNOTATION_NAME = JPA.SECONDARY_TABLE;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	
 	private final List<NestablePrimaryKeyJoinColumn> pkJoinColumns;
@@ -43,6 +41,12 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 		super(parent, member, daa, annotationAdapter);
 		this.pkJoinColumns = new ArrayList<NestablePrimaryKeyJoinColumn>();
 		this.pkJoinColumnsContainerAnnotation = new PkJoinColumnsContainerAnnotation();
+	}
+	
+	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		ContainerAnnotationTools.initializeNestedAnnotations(astRoot, this.pkJoinColumnsContainerAnnotation);
 	}
 
 	@Override
@@ -85,7 +89,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	
 	@Override
 	protected NestableUniqueConstraint createUniqueConstraint(int index) {
-		return UniqueConstraintImpl.createSecondaryTableUniqueConstraint(this, this.getDeclarationAnnotationAdapter(), this.getMember(), index);
+		return UniqueConstraintImpl.createSecondaryTableUniqueConstraint(this, this.getMember(), this.getDeclarationAnnotationAdapter(), index);
 	}
 	
 	// ************* SecondaryTable implementation *******************
@@ -109,22 +113,27 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	
 	public PrimaryKeyJoinColumn addPkJoinColumn(int index) {
 		NestablePrimaryKeyJoinColumn pkJoinColumn = createPrimaryKeyJoinColumn(index);
-		addPkJoinColumn(pkJoinColumn);
+		addPkJoinColumn(index, pkJoinColumn);
+		ContainerAnnotationTools.synchAnnotationsAfterAdd(index+1, this.pkJoinColumnsContainerAnnotation);
 		pkJoinColumn.newAnnotation();
-		ContainerAnnotationTools.synchAnnotationsAfterAdd(index, this.pkJoinColumnsContainerAnnotation);
 		return pkJoinColumn;
 	}
 	
-	private void addPkJoinColumn(NestablePrimaryKeyJoinColumn pkJoinColumn) {
-		this.pkJoinColumns.add(pkJoinColumn);
-		//property change notification
+	protected void addPkJoinColumn(int index, NestablePrimaryKeyJoinColumn pkJoinColumn) {
+		addItemToList(index, pkJoinColumn, this.pkJoinColumns,PK_JOIN_COLUMNS_LIST);
 	}
 	
 	public void removePkJoinColumn(int index) {
-		NestablePrimaryKeyJoinColumn joinColumn = this.pkJoinColumns.remove(index);
-		joinColumn.removeAnnotation();
+		NestablePrimaryKeyJoinColumn pkJoinColumn = this.pkJoinColumns.get(index);
+		removePkJoinColumn(pkJoinColumn);
+		pkJoinColumn.removeAnnotation();
 		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, this.pkJoinColumnsContainerAnnotation);
 	}
+	
+	protected void removePkJoinColumn(NestablePrimaryKeyJoinColumn pkJoinColumn) {
+		removeItemFromList(pkJoinColumn, this.pkJoinColumns,PK_JOIN_COLUMNS_LIST);
+	}
+	
 
 	public void movePkJoinColumn(int oldIndex, int newIndex) {
 		this.pkJoinColumns.add(newIndex, this.pkJoinColumns.remove(oldIndex));
@@ -169,9 +178,18 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 			super(SecondaryTableImpl.this);
 		}
 		
+		public void initialize(CompilationUnit astRoot) {
+			//nothing to initialize
+		}
+		
+		public void addInternal(int index) {
+			NestablePrimaryKeyJoinColumn pKJoinColumn = SecondaryTableImpl.this.createPrimaryKeyJoinColumn(index);
+			SecondaryTableImpl.this.pkJoinColumns.add(index, pKJoinColumn);
+		}
+		
 		public NestablePrimaryKeyJoinColumn add(int index) {
 			NestablePrimaryKeyJoinColumn pKJoinColumn = SecondaryTableImpl.this.createPrimaryKeyJoinColumn(index);
-			SecondaryTableImpl.this.addPkJoinColumn(pKJoinColumn);
+			SecondaryTableImpl.this.addPkJoinColumn(index, pKJoinColumn);
 			return pKJoinColumn;
 		}
 
@@ -180,7 +198,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 		}
 
 		public void move(int oldIndex, int newIndex) {
-			SecondaryTableImpl.this.pkJoinColumns.add(newIndex, SecondaryTableImpl.this.pkJoinColumns.remove(oldIndex));
+			SecondaryTableImpl.this.movePkJoinColumn(oldIndex, newIndex);
 		}
 
 		public NestablePrimaryKeyJoinColumn nestedAnnotationAt(int index) {
@@ -194,10 +212,6 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 		public int nestedAnnotationsSize() {
 			return pkJoinColumnsSize();
 		}
-
-		public void remove(int index) {
-			SecondaryTableImpl.this.removePkJoinColumn(index);	
-		}		
 
 		public String getAnnotationName() {
 			return SecondaryTableImpl.this.getAnnotationName();
@@ -216,8 +230,12 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 			return null;
 		}
 
-		public void remove(NestablePrimaryKeyJoinColumn joinColumn) {
-			this.remove(indexOf(joinColumn));
+		public void remove(int index) {
+			this.remove(nestedAnnotationAt(index));	
+		}		
+
+		public void remove(NestablePrimaryKeyJoinColumn pkJoinColumn) {
+			SecondaryTableImpl.this.removePkJoinColumn(pkJoinColumn);
 		}
 
 		public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {

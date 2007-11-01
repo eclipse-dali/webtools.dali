@@ -14,6 +14,8 @@ package org.eclipse.jpt.core.internal.resource.java;
  */
 public interface DiscriminatorColumn extends NamedColumn
 {
+	String ANNOTATION_NAME = JPA.DISCRIMINATOR_COLUMN;
+
 	/**
 	 * Corresponds to the discriminatorType element of the javax.persistence.DiscriminatorColumn annotation.
 	 * Returns null if the discriminatorType valuePair does not exist in the annotation
@@ -25,6 +27,7 @@ public interface DiscriminatorColumn extends NamedColumn
 	 * Set the discriminatorType to null to remove the discriminatorType valuePair
 	 */
 	void setDiscriminatorType(DiscriminatorType discriminatorType);
+		String DISCRIMINATOR_TYPE_PROPERTY = "discriminatorTypeProperty";
 	
 	/**
 	 * Corresponds to the length element of the javax.persistence.DiscriminatorColumn annotation.
@@ -37,5 +40,6 @@ public interface DiscriminatorColumn extends NamedColumn
 	 * Set the length to -1 to remove the length valuePair
 	 */
 	void setLength(int length);
+		String LENGTH_PROPERTY = "lengthProperty";
 
 }

@@ -70,6 +70,16 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 		this.updatableAdapter = this.buildShortCircuitElementAdapter(this.updatableDeclarationAdapter);
 	}
 	
+	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.table = this.table(astRoot);
+		this.unique = this.unique(astRoot);
+		this.nullable = this.nullable(astRoot);
+		this.insertable = this.insertable(astRoot);
+		this.updatable = this.updatable(astRoot);
+	}
+	
 	protected abstract String tableElementName();
 
 	protected abstract String uniqueElementName();
@@ -80,6 +90,7 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 
 	protected abstract String updatableElementName();
 
+	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
 		AbstractColumn oldColumn = (AbstractColumn) oldAnnotation;
@@ -95,45 +106,55 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 		return this.table;
 	}
 
-	public void setTable(String table) {
-		this.table = table;
-		this.tableAdapter.setValue(table);
+	public void setTable(String newTable) {
+		String oldTable = this.table;
+		this.table = newTable;
+		this.tableAdapter.setValue(newTable);
+		firePropertyChanged(TABLE_PROPERTY, oldTable, newTable);
 	}
 	
 	public Boolean isUnique() {
 		return this.unique;
 	}
 
-	public void setUnique(Boolean unique) {
-		this.unique = unique;
-		this.uniqueAdapter.setValue(BooleanUtility.toJavaAnnotationValue(unique));
+	public void setUnique(Boolean newUnique) {
+		Boolean oldUnique = this.unique;
+		this.unique = newUnique;
+		this.uniqueAdapter.setValue(BooleanUtility.toJavaAnnotationValue(newUnique));
+		firePropertyChanged(UNIQUE_PROPERTY, oldUnique, newUnique);
 	}
 
 	public Boolean isNullable() {
 		return this.nullable;
 	}
 
-	public void setNullable(Boolean nullable) {
-		this.nullable = nullable;
-		this.nullableAdapter.setValue(BooleanUtility.toJavaAnnotationValue(nullable));
+	public void setNullable(Boolean newNullable) {
+		Boolean oldNullable = this.nullable;
+		this.nullable = newNullable;
+		this.nullableAdapter.setValue(BooleanUtility.toJavaAnnotationValue(newNullable));
+		firePropertyChanged(NULLABLE_PROPERTY, oldNullable, newNullable);
 	}
 
 	public Boolean isInsertable() {
 		return this.insertable;
 	}
 
-	public void setInsertable(Boolean insertable) {
-		this.insertable = insertable;
-		this.insertableAdapter.setValue(BooleanUtility.toJavaAnnotationValue(insertable));
+	public void setInsertable(Boolean newInsertable) {
+		Boolean oldInsertable = this.insertable;
+		this.insertable = newInsertable;
+		this.insertableAdapter.setValue(BooleanUtility.toJavaAnnotationValue(newInsertable));
+		firePropertyChanged(INSERTABLE_PROPERTY, oldInsertable, newInsertable);
 	}
 
 	public Boolean isUpdatable() {
 		return this.updatable;
 	}
 
-	public void setUpdatable(Boolean updatable) {
-		this.updatable = updatable;
-		this.updatableAdapter.setValue(BooleanUtility.toJavaAnnotationValue(updatable));
+	public void setUpdatable(Boolean newUpdatable) {
+		Boolean oldUpdatable = this.updatable;
+		this.updatable = newUpdatable;
+		this.updatableAdapter.setValue(BooleanUtility.toJavaAnnotationValue(newUpdatable));
+		firePropertyChanged(UPDATABLE_PROPERTY, oldUpdatable, newUpdatable);
 	}
 
 	public ITextRange nullableTextRange(CompilationUnit astRoot) {
@@ -161,13 +182,34 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 	}
 
 
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		this.setTable(this.tableAdapter.getValue(astRoot));
-		this.setUnique(BooleanUtility.fromJavaAnnotationValue(this.uniqueAdapter.getValue(astRoot)));
-		this.setNullable(BooleanUtility.fromJavaAnnotationValue(this.nullableAdapter.getValue(astRoot)));
-		this.setInsertable(BooleanUtility.fromJavaAnnotationValue(this.insertableAdapter.getValue(astRoot)));
-		this.setUpdatable(BooleanUtility.fromJavaAnnotationValue(this.updatableAdapter.getValue(astRoot)));
+		this.setTable(this.table(astRoot));
+		this.setUnique(this.unique(astRoot));
+		this.setNullable(this.nullable(astRoot));
+		this.setInsertable(this.insertable(astRoot));
+		this.setUpdatable(this.updatable(astRoot));
+	}
+	
+	protected String table(CompilationUnit astRoot) {
+		return this.tableAdapter.getValue(astRoot);
+	}
+	
+	protected Boolean unique(CompilationUnit astRoot) {
+		return BooleanUtility.fromJavaAnnotationValue(this.uniqueAdapter.getValue(astRoot));
+	}
+	
+	protected Boolean nullable(CompilationUnit astRoot) {
+		return BooleanUtility.fromJavaAnnotationValue(this.nullableAdapter.getValue(astRoot));
+	}
+	
+	protected Boolean insertable(CompilationUnit astRoot) {
+		return BooleanUtility.fromJavaAnnotationValue(this.insertableAdapter.getValue(astRoot));
+	}
+	
+	protected Boolean updatable(CompilationUnit astRoot) {
+		return BooleanUtility.fromJavaAnnotationValue(this.updatableAdapter.getValue(astRoot));
 	}
 
 }

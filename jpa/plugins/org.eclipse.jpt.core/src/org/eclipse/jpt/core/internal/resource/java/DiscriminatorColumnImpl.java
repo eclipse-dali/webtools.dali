@@ -21,8 +21,6 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class DiscriminatorColumnImpl extends AbstractNamedColumn implements DiscriminatorColumn
 {
-	private static final String ANNOTATION_NAME = JPA.DISCRIMINATOR_COLUMN;
-
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	
 	private static final DeclarationAnnotationElementAdapter<String> DISCRIMINATOR_TYPE_ADAPTER = buildDiscriminatorTypeAdapter();
@@ -46,6 +44,13 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 	}
 	
 	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.discriminatorType = this.discriminatorType(astRoot);
+		this.length = this.length(astRoot);
+	}
+	
+	@Override
 	protected String nameElementName() {
 		return JPA.DISCRIMINATOR_COLUMN__NAME;
 	}
@@ -64,6 +69,7 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 		//needs to be split up and we could have IndexableAnnotation
 	}
 	
+	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
 		DiscriminatorColumn oldColumn = (DiscriminatorColumn) oldAnnotation;
@@ -75,26 +81,39 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 		return this.discriminatorType;
 	}
 	
-	public void setDiscriminatorType(DiscriminatorType discriminatorType) {
-		this.discriminatorType = discriminatorType;
-		this.discriminatorTypeAdapter.setValue(DiscriminatorType.toJavaAnnotationValue(discriminatorType));
+	public void setDiscriminatorType(DiscriminatorType newDiscriminatorType) {
+		DiscriminatorType oldDiscriminatorType = this.discriminatorType;
+		this.discriminatorType = newDiscriminatorType;
+		this.discriminatorTypeAdapter.setValue(DiscriminatorType.toJavaAnnotationValue(newDiscriminatorType));
+		firePropertyChanged(DISCRIMINATOR_TYPE_PROPERTY, oldDiscriminatorType, newDiscriminatorType);
 	}
 	
 	public int getLength() {
 		return this.length;
 	}
 
-	public void setLength(int length) {
-		this.length = length;
-		this.lengthAdapter.setValue(length);
+	public void setLength(int newLength) {
+		int oldLength = this.length;
+		this.length = newLength;
+		this.lengthAdapter.setValue(newLength);
+		firePropertyChanged(LENGTH_PROPERTY, oldLength, newLength);
 	}
 	
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		this.setLength(this.lengthAdapter.getValue(astRoot));
-		setDiscriminatorType(DiscriminatorType.fromJavaAnnotationValue(this.discriminatorTypeAdapter.getValue(astRoot)));
+		this.setLength(this.length(astRoot));
+		this.setDiscriminatorType(this.discriminatorType(astRoot));
 	}
 
+	protected int length(CompilationUnit astRoot) {
+		return this.lengthAdapter.getValue(astRoot);
+	}
+	
+	protected DiscriminatorType discriminatorType(CompilationUnit astRoot) {
+		return DiscriminatorType.fromJavaAnnotationValue(this.discriminatorTypeAdapter.getValue(astRoot));
+	}
+	
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter<String> buildDiscriminatorTypeAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE);

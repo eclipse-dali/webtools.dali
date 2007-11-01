@@ -27,8 +27,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class BasicImpl extends AbstractAnnotationResource<Attribute> implements Basic
 {
-	private static final String ANNOTATION_NAME = JPA.BASIC;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private final AnnotationElementAdapter<String> optionalAdapter;
@@ -49,6 +47,11 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 		this.fetchAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
 	}
 	
+	public void initialize(CompilationUnit astRoot) {
+		this.optional = this.optional(astRoot);
+		this.fetch = this.fetch(astRoot);
+	}
+	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
@@ -58,18 +61,22 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 		return this.optional;
 	}
 	
-	public void setOptional(Boolean optional) {
-		this.optional = optional;
-		this.optionalAdapter.setValue(BooleanUtility.toJavaAnnotationValue(optional));
+	public void setOptional(Boolean newOptional) {
+		Boolean oldOptional = this.optional;
+		this.optional = newOptional;
+		this.optionalAdapter.setValue(BooleanUtility.toJavaAnnotationValue(newOptional));
+		firePropertyChanged(OPTIONAL_PROPERTY, oldOptional, newOptional);
 	}
 
 	public FetchType getFetch() {
 		return this.fetch;
 	}
 	
-	public void setFetch(FetchType fetch) {
-		this.fetch = fetch;
-		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(fetch));
+	public void setFetch(FetchType newFetch) {
+		FetchType oldFetch = this.fetch;
+		this.fetch = newFetch;
+		this.fetchAdapter.setValue(FetchType.toJavaAnnotationValue(newFetch));
+		firePropertyChanged(FETCH_PROPERTY, oldFetch, newFetch);
 	}
 	
 	public ITextRange fetchTextRange(CompilationUnit astRoot) {
@@ -81,8 +88,16 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-		this.setOptional(BooleanUtility.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot)));
-		this.setFetch(FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot)));
+		this.setOptional(this.optional(astRoot));
+		this.setFetch(this.fetch(astRoot));
+	}
+	
+	protected FetchType fetch(CompilationUnit astRoot) {
+		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot));
+	}
+	
+	protected Boolean optional(CompilationUnit astRoot) {
+		return BooleanUtility.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot));
 	}
 	
 	// ********** static methods **********

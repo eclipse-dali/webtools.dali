@@ -330,8 +330,9 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		
 		secondaryTable.addUniqueConstraint(0).addColumnName("FOO");
 		secondaryTable.addUniqueConstraint(1);
+		secondaryTable.addUniqueConstraint(0).addColumnName("BAR");
 
-		assertSourceContains("@SecondaryTables(@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames=\"FOO\"),@UniqueConstraint}))");
+		assertSourceContains("@SecondaryTables(@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames=\"BAR\"),@UniqueConstraint(columnNames=\"FOO\"), @UniqueConstraint}))");
 	}
 	
 	public void testRemoveUniqueConstraint() throws Exception {
@@ -437,8 +438,9 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		
 		table.addPkJoinColumn(0).setName("FOO");
 		table.addPkJoinColumn(1);
+		table.addPkJoinColumn(0).setName("BAR");
 
-		assertSourceContains("@SecondaryTables(@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"FOO\"),@PrimaryKeyJoinColumn}))");
+		assertSourceContains("@SecondaryTables(@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"BAR\"),@PrimaryKeyJoinColumn(name=\"FOO\"), @PrimaryKeyJoinColumn}))");
 	}
 	
 	public void testRemovePkJoinColumn() throws Exception {

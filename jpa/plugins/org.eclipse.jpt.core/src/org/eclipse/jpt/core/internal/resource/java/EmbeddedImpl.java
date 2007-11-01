@@ -20,19 +20,21 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class EmbeddedImpl extends AbstractAnnotationResource<Attribute> implements Embedded
 {
-	private static final String ANNOTATION_NAME = JPA.EMBEDDED;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	protected EmbeddedImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
+	}
+
+	public void initialize(CompilationUnit astRoot) {
+		//nothing to initialize
 	}
 	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
 
-	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
+	public void updateFromJava(CompilationUnit astRoot) {
 		//no annotation members
 	}
 	

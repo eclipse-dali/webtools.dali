@@ -17,6 +17,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
  */
 public interface GeneratedValue extends JavaResource
 {	
+	String ANNOTATION_NAME = JPA.GENERATED_VALUE;
+
 	/**
 	 * Corresponds to the strategy element of the GeneratedValue annotation.
 	 * Returns null if the strategy element does not exist in java.
@@ -28,7 +30,8 @@ public interface GeneratedValue extends JavaResource
 	 * Set to null to remove the strategy element.
 	 */
 	void setStrategy(GenerationType strategy);
-	
+		String STRATEGY_PROPERTY = "strategyProperty";
+		
 	/**
 	 * Corresponds to the generator element of the GeneratedValue annotation.
 	 * Returns null if the generator element does not exist in java.
@@ -40,7 +43,8 @@ public interface GeneratedValue extends JavaResource
 	 * Set to null to remove the generator element.
 	 */
 	void setGenerator(String generator);
-
+		String GENERATOR_PROPERTY = "generatorProperty";
+	
 	
 	/**
 	 * Return the ITextRange for the generator element.  If the generator element 

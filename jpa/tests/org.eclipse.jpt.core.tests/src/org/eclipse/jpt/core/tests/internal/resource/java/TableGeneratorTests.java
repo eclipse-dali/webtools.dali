@@ -482,8 +482,9 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		
 		tableGenerator.addUniqueConstraint(0).addColumnName("FOO");
 		tableGenerator.addUniqueConstraint(1);
+		tableGenerator.addUniqueConstraint(0).addColumnName("BAR");
 
-		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames=\"FOO\"),@UniqueConstraint})");
+		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames=\"BAR\"),@UniqueConstraint(columnNames=\"FOO\"), @UniqueConstraint})");
 	}
 	
 	public void testRemoveUniqueConstraint() throws Exception {

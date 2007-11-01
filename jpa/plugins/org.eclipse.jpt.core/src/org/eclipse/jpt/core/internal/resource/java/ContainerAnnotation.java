@@ -24,8 +24,14 @@ public interface ContainerAnnotation<T extends NestableAnnotation> extends Annot
 	T nestedAnnotationFor(org.eclipse.jdt.core.dom.Annotation jdtAnnotation);
 	
 	int indexOf(T nestedAnnotation);
-	
+		
 	T add(int index);
+	
+	/**
+	 * Add directly to the List without firing change notification.
+	 * This is only done during construction
+	 */
+	void addInternal(int index);
 	
 	void remove(T nestedAnnotation);
 	

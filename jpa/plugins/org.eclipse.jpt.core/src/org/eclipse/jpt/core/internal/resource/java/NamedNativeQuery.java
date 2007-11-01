@@ -18,6 +18,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
  */
 public interface NamedNativeQuery extends Query
 {
+	String ANNOTATION_NAME = JPA.NAMED_NATIVE_QUERY;
+
 	/**
 	 * Corresponds to the resultClass element of the NamedNativeQuery annotation.
 	 * Returns null if the resultClass element does not exist in java.
@@ -29,6 +31,7 @@ public interface NamedNativeQuery extends Query
 	 * Set to null to remove the resultClass element.
 	 */
 	void setResultClass(String resultClass);
+		String RESULT_CLASS_PROPERTY = "resultClassProperty";
 	
 	/**
 	 * Corresponds to the resultSetMapping element of the NamedNativeQuery annotation.
@@ -41,9 +44,11 @@ public interface NamedNativeQuery extends Query
 	 * Set to null to remove the resultSetMapping element.
 	 */
 	void setResultSetMapping(String resultSetMapping);
+		String RESULT_SET_MAPPING_PROPERTY = "resultSetMappingProperty";
 	
 	String getFullyQualifiedResultClass();
-
+	String FULLY_QUALIFIED_RESULT_CLASS_PROPERTY = "fullyQualifiedResultClassProperty";
+	
 	/**
 	 * Return the ITextRange for the resultClass element. If resultClass element
 	 * does not exist return the ITextRange for the NamedNativeQuery annotation.

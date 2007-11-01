@@ -19,19 +19,21 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class VersionImpl extends AbstractAnnotationResource<Attribute> implements Version
 {
-	private static final String ANNOTATION_NAME = JPA.VERSION;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	public VersionImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 	}
-		
+	
+	public void initialize(CompilationUnit astRoot) {
+		//nothing to initialize
+	}
+	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
 
-	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
+	public void updateFromJava(CompilationUnit astRoot) {
 		//no annotation members
 	}
 	

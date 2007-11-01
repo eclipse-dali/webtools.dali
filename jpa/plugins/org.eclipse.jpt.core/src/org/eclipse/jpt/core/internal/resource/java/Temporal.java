@@ -17,6 +17,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
  */
 public interface Temporal extends JavaResource
 {
+	String ANNOTATION_NAME = JPA.TEMPORAL;
+
 	/**
 	 * Corresponds to the value element of the Temporal annotation.
 	 * Returns null if the value element does not exist in java.
@@ -28,6 +30,7 @@ public interface Temporal extends JavaResource
 	 * Set to null to remove the value element.
 	 */
 	void setValue(TemporalType value);
+		String VALUE_PROPERTY = "valueProperty";
 	
 	/**
 	 * Return the ITextRange for the value element.  If the value element 

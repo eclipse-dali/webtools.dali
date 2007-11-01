@@ -21,7 +21,6 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class PrimaryKeyJoinColumnsImpl extends AbstractAnnotationResource<Member> implements PrimaryKeyJoinColumns
 {
-	private static final String ANNOTATION_NAME = JPA.PRIMARY_KEY_JOIN_COLUMNS;
 	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -32,12 +31,16 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractAnnotationResource<Member
 		this.pkJoinColumns = new ArrayList<NestablePrimaryKeyJoinColumn>();
 	}
 
+	public void initialize(CompilationUnit astRoot) {
+		ContainerAnnotationTools.initializeNestedAnnotations(astRoot, this);
+	}
+	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
 
 	public String getNestableAnnotationName() {
-		return JPA.PRIMARY_KEY_JOIN_COLUMN;
+		return PrimaryKeyJoinColumn.ANNOTATION_NAME;
 	}
 		
 	public ListIterator<NestablePrimaryKeyJoinColumn> nestedAnnotations() {
@@ -48,23 +51,27 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractAnnotationResource<Member
 		return this.pkJoinColumns.size();
 	}	
 
+	public void addInternal(int index) {
+		PrimaryKeyJoinColumnImpl pkJoinColumn = createPrimaryKeyJoinColumn(index);
+		this.pkJoinColumns.add(index, pkJoinColumn);
+	}
+	
 	public NestablePrimaryKeyJoinColumn add(int index) {
 		PrimaryKeyJoinColumnImpl pkJoinColumn = createPrimaryKeyJoinColumn(index);
 		add(index, pkJoinColumn);
 		return pkJoinColumn;
 	}
 	
-	private void add(int index, NestablePrimaryKeyJoinColumn pkJoinColumn) {
-		this.pkJoinColumns.add(index, pkJoinColumn);
-		//TODO event notification
+	protected void add(int index, NestablePrimaryKeyJoinColumn pkJoinColumn) {
+		addItemToList(index, pkJoinColumn, this.pkJoinColumns, PK_JOIN_COLUMNS_LIST);
 	}
 
 	public void remove(NestablePrimaryKeyJoinColumn pkJoinColumn) {
-		this.pkJoinColumns.remove(pkJoinColumn);		
+		removeItemFromList(pkJoinColumn, this.pkJoinColumns, PK_JOIN_COLUMNS_LIST);
 	}
 	
 	public void remove(int index) {
-		this.pkJoinColumns.remove(index);
+		removeItemFromList(index, this.pkJoinColumns, PK_JOIN_COLUMNS_LIST);
 	}
 	
 	public int indexOf(NestablePrimaryKeyJoinColumn pkJoinColumn) {
@@ -85,7 +92,7 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractAnnotationResource<Member
 	}
 	
 	public void move(int oldIndex, int newIndex) {
-		this.pkJoinColumns.add(newIndex, this.pkJoinColumns.remove(oldIndex));
+		moveItemInList(newIndex, oldIndex, this.pkJoinColumns, PK_JOIN_COLUMNS_LIST);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

@@ -22,9 +22,8 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements MapKey
 {
-	private static final String ANNOTATION_NAME = JPA.MAP_KEY;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
 
 	
@@ -36,6 +35,10 @@ public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, NAME_ADAPTER);
 	}
+	
+	public void initialize(CompilationUnit astRoot) {
+		this.name = name(astRoot);
+	}
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
@@ -45,9 +48,11 @@ public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements
 		return this.name;
 	}
 	
-	public void setName(String name) {
-		this.name = name;
-		this.nameAdapter.setValue(name);
+	public void setName(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		this.nameAdapter.setValue(newName);
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
@@ -59,7 +64,11 @@ public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
-		setName(this.nameAdapter.getValue(astRoot));
+		this.setName(this.name(astRoot));
+	}
+	
+	protected String name(CompilationUnit astRoot) {
+		return this.nameAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********
@@ -90,7 +99,7 @@ public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new MapKeyImpl(parent, (Attribute) member);
 		}
-
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

@@ -186,6 +186,10 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		ListIterator<QueryHint> iterator = namedQuery.hints();
 		
 		assertEquals(2, CollectionTools.size(iterator));
+		
+		iterator = namedQuery.hints();
+		assertEquals("BAR", iterator.next().getName());
+		assertNull(iterator.next().getName());
 	}
 	
 	public void testAddHint() throws Exception {
@@ -196,8 +200,9 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		
 		namedQuery.addHint(0).setName("FOO");
 		namedQuery.addHint(1);
+		namedQuery.addHint(0).setName("BAR");
 
-		assertSourceContains("@NamedQuery(hints={@QueryHint(name=\"FOO\"),@QueryHint})");
+		assertSourceContains("@NamedQuery(hints={@QueryHint(name=\"BAR\"),@QueryHint(name=\"FOO\"), @QueryHint})");
 	}
 	
 	public void testRemoveHint() throws Exception {

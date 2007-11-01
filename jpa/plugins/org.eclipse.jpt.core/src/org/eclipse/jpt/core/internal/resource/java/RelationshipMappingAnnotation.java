@@ -34,6 +34,7 @@ public interface RelationshipMappingAnnotation extends JavaResource
 	 * Set to null to remove the targetEntity element.
 	 */
 	void setTargetEntity(String targetEntity);
+		String TARGET_ENTITY_PROPERTY = "targetEntityProperty";
 	
 	/**
 	 * Returns the qualified targetEntity name as it is resolved in the AST
@@ -44,6 +45,7 @@ public interface RelationshipMappingAnnotation extends JavaResource
 	 * @return
 	 */
 	String getFullyQualifiedTargetEntity();
+		String FULLY_QUALFIEID_TARGET_ENTITY_PROPERTY = "fullyQualifiedTargetEntityProperty";
 	
 	/**
 	 * Corresponds to the fetch element of the relationship 
@@ -58,26 +60,27 @@ public interface RelationshipMappingAnnotation extends JavaResource
 	 * Set to null to remove the fetch element.
 	 */
 	void setFetch(FetchType fetch);
+		String FETCH_PROPERTY = "fetchProperty";
 	
-	boolean isCascadeAll();
-	
+	boolean isCascadeAll();	
 	void setCascadeAll(boolean all);
+		String CASCADE_ALL_PROPERTY = "cascadeAllProperty";
 	
-	boolean isCascadeMerge();
-	
+	boolean isCascadeMerge();	
 	void setCascadeMerge(boolean merge);
+	String CASCADE_MERGE_PROPERTY = "cascadeMergeProperty";
 
-	boolean isCascadePersist();
-	
+	boolean isCascadePersist();	
 	void setCascadePersist(boolean persist);
+		String CASCADE_PERSIST_PROPERTY = "cascadePersistProperty";
 
-	boolean isCascadeRefresh();
-	
+	boolean isCascadeRefresh();	
 	void setCascadeRefresh(boolean refresh);
+		String CASCADE_REFRESH_PROPERTY = "cascadeRefreshProperty";
 
-	boolean isCascadeRemove();
-	
+	boolean isCascadeRemove();	
 	void setCascadeRemove(boolean remove);
+		String CASCADE_REMOVE_PROPERTY = "cascadeRemoveProperty";
 
 	
 	/**

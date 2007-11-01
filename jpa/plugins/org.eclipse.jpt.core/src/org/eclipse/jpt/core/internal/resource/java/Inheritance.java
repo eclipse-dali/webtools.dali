@@ -17,10 +17,13 @@ import org.eclipse.jpt.core.internal.ITextRange;
  */
 public interface Inheritance extends JavaResource
 {
+	String ANNOTATION_NAME = JPA.INHERITANCE;
+
 	InheritanceType getStrategy();
 	
 	void setStrategy(InheritanceType strategy);
-	
+		String STRATEGY_PROPERTY = "strategyProperty";
+		
 	/**
 	 * Return the ITextRange for the strategy element.  If the strategy element 
 	 * does not exist return the ITextRange for the Inheritance annotation.

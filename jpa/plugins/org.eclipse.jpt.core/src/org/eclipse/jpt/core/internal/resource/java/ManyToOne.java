@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public interface ManyToOne extends RelationshipMappingAnnotation
 {
+	String ANNOTATION_NAME = JPA.MANY_TO_ONE;
 	
 	/**
 	 * Corresponds to the optional element of the ManyToOne annotation.
@@ -27,6 +28,7 @@ public interface ManyToOne extends RelationshipMappingAnnotation
 	 * Set to null to remove the optional element.
 	 */
 	void setOptional(Boolean optional);
+		String OPTIONAL_PROPERTY = "optionalProperty";
 
 	/**
 	 * Return the ITextRange for the optional element.  If the optional element 

@@ -24,8 +24,6 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 {
-	private static final String ANNOTATION_NAME = JPA.TABLE_GENERATOR;
-
 	private final AnnotationElementAdapter<String> tableAdapter;
 
 	private final AnnotationElementAdapter<String> catalogAdapter;
@@ -87,6 +85,18 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 		this.uniqueConstraintsContainerAnnotation = new UniqueConstraintsContainerAnnotation();
 	}
 	
+	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.table = this.table(astRoot);
+		this.catalog = this.catalog(astRoot);
+		this.schema = this.schema(astRoot);
+		this.pkColumnName = this.pkColumnName(astRoot);
+		this.valueColumnName = this.valueColumnName(astRoot);
+		this.pkColumnValue = this.pkColumnValue(astRoot);
+		ContainerAnnotationTools.initializeNestedAnnotations(astRoot, this.uniqueConstraintsContainerAnnotation);
+	}
+
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
@@ -118,54 +128,66 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 		return this.table;
 	}
 	
-	public void setTable(String table) {
-		this.table = table;
-		this.tableAdapter.setValue(table);
+	public void setTable(String newTable) {
+		String oldTable = this.table;
+		this.table = newTable;
+		this.tableAdapter.setValue(newTable);
+		firePropertyChanged(TABLE_PROPERTY, oldTable, newTable);
 	}
 
 	public String getCatalog() {
 		return this.catalog;
 	}
 	
-	public void setCatalog(String catalog) {
-		this.catalog = catalog;
-		this.catalogAdapter.setValue(catalog);
+	public void setCatalog(String newCatalog) {
+		String oldCatalog = this.catalog;
+		this.catalog = newCatalog;
+		this.catalogAdapter.setValue(newCatalog);
+		firePropertyChanged(CATALOG_PROPERTY, oldCatalog, newCatalog);
 	}
 	
 	public String getSchema() {
 		return this.schema;
 	}
 	
-	public void setSchema(String schema) {
-		this.schema = schema;
-		this.schemaAdapter.setValue(schema);
+	public void setSchema(String newSchema) {
+		String oldSchema = this.schema;
+		this.schema = newSchema;
+		this.schemaAdapter.setValue(newSchema);
+		firePropertyChanged(SCHEMA_PROPERTY, oldSchema, newSchema);
 	}
 
 	public String getPkColumnName() {
 		return this.pkColumnName;
 	}
 	
-	public void setPkColumnName(String pkColumnName) {
-		this.pkColumnName = pkColumnName;
-		this.pkColumnNameAdapter.setValue(pkColumnName);
+	public void setPkColumnName(String newPkColumnName) {
+		String oldPkColumnName = this.pkColumnName;
+		this.pkColumnName = newPkColumnName;
+		this.pkColumnNameAdapter.setValue(newPkColumnName);
+		firePropertyChanged(PK_COLUMN_NAME_PROPERTY, oldPkColumnName, newPkColumnName);
 	}
 	
 	public String getValueColumnName() {
 		return this.valueColumnName;
 	}
 	
-	public void setValueColumnName(String valueColumnName) {
-		this.valueColumnName = valueColumnName;
-		this.valueColumnNameAdapter.setValue(valueColumnName);
+	public void setValueColumnName(String newValueColumnName) {
+		String oldValueColumnName = this.valueColumnName;
+		this.valueColumnName = newValueColumnName;
+		this.valueColumnNameAdapter.setValue(newValueColumnName);
+		firePropertyChanged(VALUE_COLUMN_NAME_PROPERTY, oldValueColumnName, newValueColumnName);
 	}
 
 	public String getPkColumnValue() {
 		return this.pkColumnValue;
 	}
 	
-	public void setPkColumnValue(String pkColumnValue) {
-		this.pkColumnValue = pkColumnValue;
-		this.pkColumnValueAdapter.setValue(pkColumnValue);
+	public void setPkColumnValue(String newPkColumnValue) {
+		String oldPkColumnValue = this.pkColumnValue;
+		this.pkColumnValue = newPkColumnValue;
+		this.pkColumnValueAdapter.setValue(newPkColumnValue);
+		firePropertyChanged(PK_COLUMN_VALUE_PROPERTY, oldPkColumnValue, newPkColumnValue);
 	}
 
 	public ListIterator<UniqueConstraint> uniqueConstraints() {
@@ -186,39 +208,30 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 	
 	public UniqueConstraint addUniqueConstraint(int index) {
 		NestableUniqueConstraint uniqueConstraint = createUniqueConstraint(index);
-		addUniqueConstraint(uniqueConstraint);
+		addUniqueConstraint(index, uniqueConstraint);
+		ContainerAnnotationTools.synchAnnotationsAfterAdd(index+1, this.uniqueConstraintsContainerAnnotation);
 		uniqueConstraint.newAnnotation();
-		synchUniqueConstraintAnnotationsAfterAdd(index);
 		return uniqueConstraint;
 	}
 	
-	private void addUniqueConstraint(NestableUniqueConstraint uniqueConstraint) {
-		this.uniqueConstraints.add(uniqueConstraint);
-		//property change notification
+	protected void addUniqueConstraint(int index, NestableUniqueConstraint uniqueConstraint) {
+		addItemToList(index, uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 	
 	public void removeUniqueConstraint(int index) {
-		NestableUniqueConstraint uniqueConstraint = this.uniqueConstraints.remove(index);
+		NestableUniqueConstraint uniqueConstraint = this.uniqueConstraints.get(index);
+		removeUniqueConstraint(uniqueConstraint);
 		uniqueConstraint.removeAnnotation();
 		synchUniqueConstraintAnnotationsAfterRemove(index);
 	}
+	
+	protected void removeUniqueConstraint(NestableUniqueConstraint uniqueConstraint) {
+		removeItemFromList(uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+	}
 
 	public void moveUniqueConstraint(int oldIndex, int newIndex) {
-		this.uniqueConstraints.add(newIndex, this.uniqueConstraints.remove(oldIndex));
-		
-		uniqueConstraintMoved(newIndex, oldIndex);
-	}
-
-	private void uniqueConstraintMoved(int sourceIndex, int targetIndex) {		
-		ContainerAnnotationTools.synchAnnotationsAfterMove(sourceIndex, targetIndex, this.uniqueConstraintsContainerAnnotation);
-	}
-
-	/**
-	 * synchronize the annotations with the model join columns,
-	 * starting at the end of the list to prevent overlap
-	 */
-	private void synchUniqueConstraintAnnotationsAfterAdd(int index) {
-		ContainerAnnotationTools.synchAnnotationsAfterAdd(index, this.uniqueConstraintsContainerAnnotation);
+		moveItemInList(newIndex, oldIndex, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.uniqueConstraintsContainerAnnotation);
 	}
 
 	/**
@@ -261,15 +274,34 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		setTable(this.tableAdapter.getValue(astRoot));
-		setCatalog(this.catalogAdapter.getValue(astRoot));
-		setSchema(this.schemaAdapter.getValue(astRoot));
-		setPkColumnName(this.pkColumnNameAdapter.getValue(astRoot));
-		setValueColumnName(this.valueColumnNameAdapter.getValue(astRoot));
-		setPkColumnValue(this.pkColumnValueAdapter.getValue(astRoot));
+		this.setTable(this.table(astRoot));
+		this.setCatalog(this.catalog(astRoot));
+		this.setSchema(this.schema(astRoot));
+		this.setPkColumnName(this.pkColumnName(astRoot));
+		this.setValueColumnName(this.valueColumnName(astRoot));
+		this.setPkColumnValue(this.pkColumnValue(astRoot));
 		this.updateUniqueConstraintsFromJava(astRoot);
 	}
 
+	protected String table(CompilationUnit astRoot) {
+		return this.tableAdapter.getValue(astRoot);
+	}
+	protected String catalog(CompilationUnit astRoot) {
+		return this.catalogAdapter.getValue(astRoot);
+	}
+	protected String schema(CompilationUnit astRoot) {
+		return this.schemaAdapter.getValue(astRoot);
+	}
+	protected String pkColumnName(CompilationUnit astRoot) {
+		return this.pkColumnNameAdapter.getValue(astRoot);
+	}
+	protected String valueColumnName(CompilationUnit astRoot) {
+		return this.valueColumnNameAdapter.getValue(astRoot);
+	}
+	protected String pkColumnValue(CompilationUnit astRoot) {
+		return this.pkColumnValueAdapter.getValue(astRoot);
+	}
+	
 	/**
 	 * here we just worry about getting the unique constraints lists the same size;
 	 * then we delegate to the unique constraints to synch themselves up
@@ -295,9 +327,18 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 			super(TableGeneratorImpl.this);
 		}
 		
+		public void initialize(CompilationUnit astRoot) {
+			//nothing to initialize
+		}
+		
+		public void addInternal(int index) {
+			NestableUniqueConstraint uniqueConstraint = TableGeneratorImpl.this.createUniqueConstraint(index);
+			TableGeneratorImpl.this.uniqueConstraints.add(index, uniqueConstraint);
+		}
+		
 		public NestableUniqueConstraint add(int index) {
 			NestableUniqueConstraint uniqueConstraint = TableGeneratorImpl.this.createUniqueConstraint(index);
-			TableGeneratorImpl.this.addUniqueConstraint(uniqueConstraint);
+			TableGeneratorImpl.this.addUniqueConstraint(index, uniqueConstraint);
 			return uniqueConstraint;
 		}
 
@@ -314,7 +355,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 		}
 
 		public void move(int oldIndex, int newIndex) {
-			TableGeneratorImpl.this.uniqueConstraints.add(newIndex, TableGeneratorImpl.this.uniqueConstraints.remove(oldIndex));
+			TableGeneratorImpl.this.moveUniqueConstraint(oldIndex, newIndex);
 		}
 
 		public NestableUniqueConstraint nestedAnnotationAt(int index) {
@@ -339,11 +380,11 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 		}
 
 		public void remove(NestableUniqueConstraint uniqueConstraint) {
-			this.remove(indexOf(uniqueConstraint));
+			TableGeneratorImpl.this.removeUniqueConstraint(uniqueConstraint);	
 		}
 
 		public void remove(int index) {
-			TableGeneratorImpl.this.removeUniqueConstraint(index);	
+			this.remove(nestedAnnotationAt(index));
 		}
 
 		public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
@@ -385,7 +426,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 		private TableGeneratorAnnotationDefinition() {
 			super();
 		}
-
+		
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new TableGeneratorImpl(parent, member);
 		}

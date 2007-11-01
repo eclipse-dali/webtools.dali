@@ -15,8 +15,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 public class IdClassImpl extends AbstractAnnotationResource<Type> implements IdClass
 {
-	private static final String ANNOTATION_NAME = JPA.ID_CLASS;
-
 	private final AnnotationElementAdapter<String> valueAdapter;
 
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -31,6 +29,11 @@ public class IdClassImpl extends AbstractAnnotationResource<Type> implements IdC
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, VALUE_ADAPTER);
 	}
+	
+	public void initialize(CompilationUnit astRoot) {
+		this.value = this.value(astRoot);
+		this.fullyQualifiedValue = fullyQualifiedClass(astRoot);
+	}
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
@@ -40,29 +43,36 @@ public class IdClassImpl extends AbstractAnnotationResource<Type> implements IdC
 		return this.value;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
-		this.valueAdapter.setValue(value);
+	public void setValue(String newValue) {
+		String oldValue = this.value;
+		this.value = newValue;
+		this.valueAdapter.setValue(newValue);
+		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 
 	public String getFullyQualifiedClass() {
 		return this.fullyQualifiedValue;
 	}
 	
-	private void setFullyQualifiedClass(String qualifiedClass) {
-		this.fullyQualifiedValue = qualifiedClass;
-		//change notification
+	private void setFullyQualifiedClass(String newQualifiedClass) {
+		String oldQualifiedClass = this.fullyQualifiedValue;
+		this.fullyQualifiedValue = newQualifiedClass;
+		firePropertyChanged(FULLY_QUALIFIED_CLASS_PROPERTY, oldQualifiedClass, newQualifiedClass);
 	}
 
 	public ITextRange valueTextRange(CompilationUnit astRoot) {
-		return this.elementTextRange(this.VALUE_ADAPTER, astRoot);
+		return this.elementTextRange(VALUE_ADAPTER, astRoot);
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-		this.setValue(this.valueAdapter.getValue(astRoot));
-		this.setFullyQualifiedClass(fullyQualifiedClass(astRoot));
+		this.setValue(this.value(astRoot));
+		this.setFullyQualifiedClass(this.fullyQualifiedClass(astRoot));
 	}
 
+	protected String value(CompilationUnit astRoot) {
+		return this.valueAdapter.getValue(astRoot);
+	}
+	
 	private String fullyQualifiedClass(CompilationUnit astRoot) {
 		if (getValue() == null) {
 			return null;
@@ -98,7 +108,7 @@ public class IdClassImpl extends AbstractAnnotationResource<Type> implements IdC
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new IdClassImpl(parent, (Type) member);
 		}
-
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

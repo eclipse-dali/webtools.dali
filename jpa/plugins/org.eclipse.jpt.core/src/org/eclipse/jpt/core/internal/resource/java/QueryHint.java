@@ -17,6 +17,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
  */
 public interface QueryHint extends JavaResource
 {
+	String ANNOTATION_NAME = JPA.QUERY_HINT;
+
 	/**
 	 * Corresponds to the name element of the QueryHint annotation.
 	 * Returns null if the name valuePair does not exist in the annotation
@@ -28,7 +30,8 @@ public interface QueryHint extends JavaResource
 	 * Setting to null will remove the name valuePair
 	 */
 	void setName(String name);
-	
+		String NAME_PROPERTY = "nameProperty";
+		
 	/**
 	 * Corresponds to the value element of the QueryHint annotation.
 	 * Returns null if the value valuePair does not exist in the annotation
@@ -40,6 +43,7 @@ public interface QueryHint extends JavaResource
 	 * Setting to null will remove the value valuePair
 	 */
 	void setValue(String value);
+		String VALUE_PROPERTY = "valueProperty";
 
 	/**
 	 * Return the ITextRange for the name element.  If the name element 

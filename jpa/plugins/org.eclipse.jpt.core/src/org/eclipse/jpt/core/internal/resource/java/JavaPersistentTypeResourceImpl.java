@@ -20,12 +20,14 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
 import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
@@ -52,6 +54,32 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		this.attributes = new ArrayList<JavaPersistentAttributeResource>();
 	}
 
+	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.qualifiedName = qualifiedName(astRoot);
+		this.name = name(astRoot);
+		initializeNestedTypes(astRoot);
+		initializeAttributes(astRoot);
+		this.accessType = calculateAccessType();
+		this.superClassQualifiedName = superClassQualifiedName(astRoot);
+	}
+	
+	protected void initializeNestedTypes(CompilationUnit astRoot) {
+		for (IType declaredType : getMember().declaredTypes()) {
+			this.nestedTypes.add(createJavaPersistentType(declaredType, astRoot));
+		}
+	}
+	
+	protected void initializeAttributes(CompilationUnit astRoot) {
+		for (IField field : getMember().fields()) {
+			this.attributes.add(createJavaPersistentAttribute(field, astRoot));
+		}
+		for (IMethod method : getMember().methods()) {
+			this.attributes.add(createJavaPersistentAttribute(method, astRoot));
+		}
+	}
+	
 	// ******** AbstractJavaPersistentResource implementation ********
 
 	@Override
@@ -113,7 +141,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		};
 	}
 	
-	private JavaPersistentTypeResource nestedTypeFor(IType type) {
+	protected JavaPersistentTypeResource nestedTypeFor(IType type) {
 		for (JavaPersistentTypeResource nestedType : this.nestedTypes) {
 			if (nestedType.isFor(type)) {
 				return nestedType;
@@ -122,31 +150,37 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		return null;
 	}
 	
-	//I think this should be private since adding/removing of nestedTypes
-	//only depends on the underlying java IType, not on anything our context model can do.
-	private JavaPersistentTypeResource addNestedType(IType nestedType) {
-		JavaPersistentTypeResource persistentType = createJavaPersistentType(nestedType);
+	protected JavaPersistentTypeResource addNestedType(IType nestedType, CompilationUnit astRoot) {
+		JavaPersistentTypeResource persistentType = createJavaPersistentType(nestedType, astRoot);
 		addNestedType(persistentType);
 		return persistentType;
 	}
 
-	private void addNestedType(JavaPersistentTypeResource nestedType) {
-		this.nestedTypes.add(nestedType);
-		//TODO property change notification, or other notification to the context model
+	protected void addNestedType(JavaPersistentTypeResource nestedType) {
+		addItemToCollection(nestedType, this.nestedTypes, NESTED_TYPES_COLLECTION);
 	}
 	
-	//I think this should be private since adding/removing of nestedTypes
-	//only depends on the underlying java IType, not on anything our context model can do.
-	private void removeNestedType(JavaPersistentTypeResource nestedType) {
-		this.nestedTypes.remove(nestedType);
-		//TODO property change notification, or other notification to the context model
+	protected void removeNestedType(JavaPersistentTypeResource nestedType) {
+		removeItemFromCollection(nestedType, this.nestedTypes, NESTED_TYPES_COLLECTION);
 	}
 	
-	private JavaPersistentTypeResource createJavaPersistentType(IType nestedType) {
-		Type type = new Type(nestedType, this.modifySharedDocumentCommandExecutorProvider());
-		return new JavaPersistentTypeResourceImpl(this, type);
+	protected JavaPersistentTypeResource createJavaPersistentType(IType nestedType, CompilationUnit astRoot) {
+		return createJavaPersistentType(this, nestedType, modifySharedDocumentCommandExecutorProvider(), annotationEditFormatter(), astRoot);
 	}
 
+	public static JavaPersistentTypeResource createJavaPersistentType(
+		JavaResource parent, 
+		IType nestedType, 
+		CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+		AnnotationEditFormatter annotationEditFormatter, 
+		CompilationUnit astRoot) {
+		
+		Type type = new Type(nestedType, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+		JavaPersistentTypeResourceImpl javaPersistentType = new JavaPersistentTypeResourceImpl(parent, type);
+		javaPersistentType.initialize(astRoot);
+		return javaPersistentType;	
+	}
+	
 	public Iterator<JavaPersistentAttributeResource> attributes() {
 		//TODO since we are filtering how do we handle the case where an attribute becomes persistable?
 		//what kind of change notificiation for that case?
@@ -176,18 +210,17 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		};
 	}
 
-	private JavaPersistentAttributeResource addAttribute(IMember jdtMember) {
-		JavaPersistentAttributeResource persistentAttribute = createJavaPersistentAttribute(jdtMember);
+	protected JavaPersistentAttributeResource addAttribute(IMember jdtMember, CompilationUnit astRoot) {
+		JavaPersistentAttributeResource persistentAttribute = createJavaPersistentAttribute(jdtMember, astRoot);
 		addAttribute(persistentAttribute);
 		return persistentAttribute;
 	}
 	
-	private void addAttribute(JavaPersistentAttributeResource attribute) {
-		this.attributes.add(attribute);
-		//TODO fire change notification
+	protected void addAttribute(JavaPersistentAttributeResource attribute) {
+		addItemToCollection(attribute, this.attributes, ATTRIBUTES_COLLECTION);
 	}
 
-	private JavaPersistentAttributeResource createJavaPersistentAttribute(IMember member) {
+	protected JavaPersistentAttributeResource createJavaPersistentAttribute(IMember member, CompilationUnit astRoot) {
 		Attribute attribute = null;
 		if (member instanceof IField) {
 			attribute = new FieldAttribute((IField) member, this.modifySharedDocumentCommandExecutorProvider());
@@ -198,15 +231,16 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		else {
 			throw new IllegalArgumentException();
 		}
-		return new JavaPersistentAttributeResourceImpl(this, attribute);
+		JavaPersistentAttributeResource javaPersistentAttribute = new JavaPersistentAttributeResourceImpl(this, attribute);
+		javaPersistentAttribute.initialize(astRoot);
+		return javaPersistentAttribute;
 	}
 	
-	private void removeAttribute(JavaPersistentAttributeResource attribute) {
-		this.attributes.remove(attribute);
-		//TODO fire change notification	
+	protected void removeAttribute(JavaPersistentAttributeResource attribute) {
+		removeItemFromCollection(attribute, this.attributes, ATTRIBUTES_COLLECTION);
 	}
 	
-	private JavaPersistentAttributeResource attributeFor(IMember member) {
+	protected JavaPersistentAttributeResource attributeFor(IMember member) {
 		for (JavaPersistentAttributeResource persistentAttribute : this.attributes) {
 			if (persistentAttribute.isFor(member)) {
 				return persistentAttribute;
@@ -225,57 +259,69 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	//corresponding field/method does not exist?
 	//making this internal since it should only be set based on changes in the source, the
 	//context model should not need to set this
-	private void setAccess(AccessType access) {
-		this.accessType = access;
-		//fire property change notification
+	protected void setAccess(AccessType newAccess) {
+		AccessType oldAccess = this.accessType;
+		this.accessType = newAccess;
+		firePropertyChanged(ACCESS_PROPERTY, oldAccess, newAccess);
 	}
 
 	public String getSuperClassQualifiedName() {
 		return this.superClassQualifiedName;
 	}
 	
-	private void setSuperClassQualifiedName(String qualifiedName) {
-		this.superClassQualifiedName = qualifiedName;
-		//TODO change notification
+	private void setSuperClassQualifiedName(String newSuperClassQualifiedName) {
+		String oldSuperClassQualifiedName = this.superClassQualifiedName;
+		this.superClassQualifiedName = newSuperClassQualifiedName;
+		firePropertyChanged(SUPER_CLASS_QUALIFIED_NAME_PROPERTY, oldSuperClassQualifiedName, newSuperClassQualifiedName);
 	}
 
 	public String getQualifiedName() {
 		return this.qualifiedName;
 	}
 	
-	protected void setQualifiedName(String qualifiedName) {
-		this.qualifiedName = qualifiedName;
-		//TODO change notification
+	protected void setQualifiedName(String newQualifiedName) {
+		String oldQualifiedName = this.qualifiedName;
+		this.qualifiedName = newQualifiedName;
+		firePropertyChanged(QUALIFIED_NAME_PROPERTY, oldQualifiedName, newQualifiedName);
 	}
 	
 	public String getName() {
 		return this.name;
 	}
 	
-	protected void setName(String name) {
-		this.name = name;
-		//TODO change notification
+	protected void setName(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		setQualifiedName(getMember().binding(astRoot).getQualifiedName());
-		setName(getMember().binding(astRoot).getName());
-		updateNestedTypes(astRoot);
-		updatePersistentAttributes(astRoot);
-		setAccess(accessType());
-		setSuperClassQualifiedName(superClassQualifiedName(astRoot));
+		this.setQualifiedName(this.qualifiedName(astRoot));
+		this.setName(this.name(astRoot));
+		this.updateNestedTypes(astRoot);
+		this.updatePersistentAttributes(astRoot);
+		this.setAccess(this.calculateAccessType());
+		this.setSuperClassQualifiedName(this.superClassQualifiedName(astRoot));
+	}
+
+	protected String qualifiedName(CompilationUnit astRoot) {
+		return getMember().binding(astRoot).getQualifiedName();
 	}
 	
-	private void updateNestedTypes(CompilationUnit astRoot) {
+	protected String name(CompilationUnit astRoot) {
+		return getMember().binding(astRoot).getName();
+	}
+	
+	protected void updateNestedTypes(CompilationUnit astRoot) {
 		IType[] declaredTypes = getMember().declaredTypes();
 		
 		List<JavaPersistentTypeResource> nestedTypesToRemove = new ArrayList<JavaPersistentTypeResource>(this.nestedTypes);
 		for (IType declaredType : declaredTypes) {
 			JavaPersistentTypeResource nestedType = nestedTypeFor(declaredType);
 			if (nestedType == null) {
-				nestedType = addNestedType(declaredType);
+				nestedType = addNestedType(declaredType, astRoot);
 			}
 			else {
 				nestedTypesToRemove.remove(nestedType);
@@ -287,7 +333,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		}
 	}
 	
-	private void updatePersistentAttributes(CompilationUnit astRoot) {
+	protected void updatePersistentAttributes(CompilationUnit astRoot) {
 		List<JavaPersistentAttributeResource> persistentAttributesToRemove = new ArrayList<JavaPersistentAttributeResource>(this.attributes);
 		updatePersistentFields(astRoot, persistentAttributesToRemove);
 		updatePersistentProperties(astRoot, persistentAttributesToRemove);
@@ -296,19 +342,19 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		}
 	}
 	
-	private void updatePersistentFields(CompilationUnit astRoot, List<JavaPersistentAttributeResource> persistentAttributesToRemove) {
+	protected void updatePersistentFields(CompilationUnit astRoot, List<JavaPersistentAttributeResource> persistentAttributesToRemove) {
 		updatePersistentAttributes(astRoot, persistentAttributesToRemove, getMember().fields());
 	}
 
-	private void updatePersistentProperties(CompilationUnit astRoot, List<JavaPersistentAttributeResource> persistentAttributesToRemove) {
+	protected void updatePersistentProperties(CompilationUnit astRoot, List<JavaPersistentAttributeResource> persistentAttributesToRemove) {
 		updatePersistentAttributes(astRoot, persistentAttributesToRemove, getMember().methods());
 	}
 
-	private void updatePersistentAttributes(CompilationUnit astRoot, List<JavaPersistentAttributeResource> persistentAttributesToRemove, IMember[] members) {
+	protected void updatePersistentAttributes(CompilationUnit astRoot, List<JavaPersistentAttributeResource> persistentAttributesToRemove, IMember[] members) {
 		for (IMember member : members) {
 			JavaPersistentAttributeResource persistentAttribute = attributeFor(member);
 			if (persistentAttribute == null) {
-				persistentAttribute = addAttribute(member);
+				persistentAttribute = addAttribute(member, astRoot);
 			}
 			else {
 				persistentAttributesToRemove.remove(persistentAttribute);
@@ -327,7 +373,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	 *     		- and properties exist, but no fields exist => PROPERTY
 	 *     		- and neither fields nor properties exist => null at this level (FIELD in the context model)
 	 */
-	private AccessType accessType() {
+	private AccessType calculateAccessType() {
 		boolean hasPersistableFields = false;
 		boolean hasPersistableProperties = false;
 		for (JavaPersistentAttributeResource field : CollectionTools.iterable(fields())) {

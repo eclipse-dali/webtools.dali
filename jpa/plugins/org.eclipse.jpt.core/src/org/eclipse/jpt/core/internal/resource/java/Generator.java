@@ -28,6 +28,7 @@ public interface Generator extends JavaResource
 	 * the *Generator annotation will be removed as well.
 	 */
 	void setName(String name);
+		String NAME_PROPERTY = "nameProperty";
 	
 	/**
 	 * Corresponds to the initialValue element of the TableGenerator or SequenceGenerator annotation.
@@ -42,6 +43,7 @@ public interface Generator extends JavaResource
 	 * the *Generator annotation will be removed as well.
 	 */
 	void setInitialValue(int initialValue);
+		String INITIAL_VALUE_PROPERTY = "initialValueProperty";
 	
 	/**
 	 * Corresponds to the allocationSize element of the TableGenerator or SequenceGenerator annotation.
@@ -56,6 +58,7 @@ public interface Generator extends JavaResource
 	 * the *Generator annotation will be removed as well.
 	 */
 	void setAllocationSize(int allocationSize);
+		String ALLOCATION_SIZE_PROPERTY = "allocationSizeProperty";
 	
 	/**
 	 * Return the ITextRange for the name element.  If the name element 

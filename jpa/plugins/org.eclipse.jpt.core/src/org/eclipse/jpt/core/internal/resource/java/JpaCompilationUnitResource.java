@@ -17,16 +17,20 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.node.Node;
 
 public class JpaCompilationUnitResource extends AbstractResource implements JavaResource
 {
-	protected IJpaAnnotationProvider annotationProvider;
+	protected final IJpaAnnotationProvider annotationProvider;
 	
-	protected CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
+	protected final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
+	
+	protected final AnnotationEditFormatter annotationEditFormatter;
+	
+	protected final ICompilationUnit compilationUnit;
 	
 	/**
 	 * The primary type of the CompilationUnit. Not going to handle
@@ -34,23 +38,25 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 	 * a public/protected no-arg constructor and there is no way to access
 	 * it in a non-public/protected class.
 	 */
-	private JavaPersistentTypeResource persistentType;
+	protected JavaPersistentTypeResource persistentType;	
+		public static final String PERSISTENT_TYPE_PROPERTY = "persistentTypeProperty";
 	
-	private final ICompilationUnit compilationUnit;
-	
-	
+
 	public JpaCompilationUnitResource(
 			IFile file, 
 			IJpaAnnotationProvider annotationProvider, 
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			AnnotationEditFormatter annotationEditFormatter) {
 		// The jpa compilation unit is the root of its sub-tree
 		super(null);
 		this.annotationProvider = annotationProvider;
+		this.modifySharedDocumentCommandExecutorProvider = modifySharedDocumentCommandExecutorProvider;
+		this.annotationEditFormatter = annotationEditFormatter;
 		this.compilationUnit = compilationUnitFrom(file);
-		updateFromJava(astRoot());
+		this.initialize(JDTTools.buildASTRoot(this.compilationUnit));
 	}
 	
-	private ICompilationUnit compilationUnitFrom(IFile file) {
+	protected ICompilationUnit compilationUnitFrom(IFile file) {
 		ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(file);
 		try {
 			compilationUnit.open(null);
@@ -61,9 +67,21 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 		return compilationUnit;
 	}
 	
+	public void initialize(CompilationUnit astRoot) {
+		IType iType = this.compilationUnit.findPrimaryType();
+		if (iType != null) {
+			this.persistentType = createJavaPersistentType(iType, astRoot);
+		}
+	}
 	
 	// **************** overrides **********************************************
 	
+	
+	@Override
+	public Validator validator() {
+		return Node.NULL_VALIDATOR;
+	}
+
 	@Override
 	protected void checkParent(Node parentNode) {
 		if (parentNode != null) {
@@ -73,14 +91,18 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 	
 	@Override
 	public IJpaAnnotationProvider annotationProvider() {
-		return annotationProvider;
+		return this.annotationProvider;
 	}
 	
 	@Override
 	public CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
-		return modifySharedDocumentCommandExecutorProvider;
+		return this.modifySharedDocumentCommandExecutorProvider;
 	}
 	
+	@Override
+	public AnnotationEditFormatter annotationEditFormatter()  {
+		return this.annotationEditFormatter;
+	}
 	
 	// *************************************************************************
 	
@@ -107,18 +129,19 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 //	return null;
 	}
 	
-	private JavaPersistentTypeResource createJavaPersistentType(IType iType) {
-		Type type = new Type(iType, this.modifySharedDocumentCommandExecutorProvider());
-		return new JavaPersistentTypeResourceImpl(this, type);
+	protected void setPersistentType(JavaPersistentTypeResource newPersistentType) {
+		JavaPersistentTypeResource oldPersistentType = this.persistentType;
+		this.persistentType = newPersistentType;
+		firePropertyChanged(PERSISTENT_TYPE_PROPERTY, oldPersistentType, newPersistentType);
 	}
 	
-	private void setPersistentType(JavaPersistentTypeResource persistentType) {
-		this.persistentType = persistentType;
-		//TODO property change notification, or other notification to the context model
-	}
-	
-	private CompilationUnit astRoot() {
-		return JDTTools.buildASTRoot(this.compilationUnit);
+	private JavaPersistentTypeResource createJavaPersistentType(IType iType, CompilationUnit astRoot) {
+		return 
+		JavaPersistentTypeResourceImpl.createJavaPersistentType(this, 
+			iType, 
+			modifySharedDocumentCommandExecutorProvider(), 
+			annotationEditFormatter(), 
+			astRoot);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
@@ -127,12 +150,14 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 			setPersistentType(null);
 		}
 		else {
-			JavaPersistentTypeResource persistentType = createJavaPersistentType(iType);
-			setPersistentType(persistentType);
-			persistentType.updateFromJava(astRoot);
+			if (getPersistentType() == null) {
+				setPersistentType(createJavaPersistentType(iType, astRoot));
+			}
+			else {
+				getPersistentType().updateFromJava(astRoot);
+			}
 		}
 	}
-	
 	
 	
 	public ITextRange textRange(CompilationUnit astRoot) {
@@ -145,6 +170,10 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 //	 */
 //	public ITextRange selectionTextRange() {
 //		return null;
+//	}
+	
+//	void resourceChanged(String aspectName) {
+//		fireStateChanged();
 //	}
 
 }

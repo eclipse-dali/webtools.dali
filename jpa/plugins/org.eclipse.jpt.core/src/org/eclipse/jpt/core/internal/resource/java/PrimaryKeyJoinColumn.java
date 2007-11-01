@@ -10,16 +10,15 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 
 public interface PrimaryKeyJoinColumn extends NamedColumn
 {
-	DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JPA.PRIMARY_KEY_JOIN_COLUMN);
+	String ANNOTATION_NAME = JPA.PRIMARY_KEY_JOIN_COLUMN;
 
 	String getReferencedColumnName();
 	
-	void setReferencedColumnName(String referenceColumnName);
+	void setReferencedColumnName(String referencedColumnName);
+		String REFERENCED_COLUMN_NAME_PROPERTY = "referencedColumnNameProperty";
 
 	/**
 	 * Return whether the specified postition touches the referencedColumnName element.

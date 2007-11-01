@@ -42,10 +42,15 @@ public class QueryHintImpl extends AbstractAnnotationResource<Type>
 	
 	public QueryHintImpl(JavaResource parent, Type type, IndexedDeclarationAnnotationAdapter idaa) {
 		super(parent, type, idaa, new MemberIndexedAnnotationAdapter(type, idaa));
-		this.nameDeclarationAdapter = nameAdapter(idaa);
+		this.nameDeclarationAdapter = this.nameAdapter(idaa);
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
-		this.valueDeclarationAdapter = valueAdapter(idaa);
+		this.valueDeclarationAdapter = this.valueAdapter(idaa);
 		this.valueAdapter = this.buildAdapter(this.valueDeclarationAdapter);
+	}
+	
+	public void initialize(CompilationUnit astRoot) {
+		this.name = this.name(astRoot);
+		this.value = this.value(astRoot);		
 	}
 	
 	// ********** initialization **********
@@ -62,7 +67,7 @@ public class QueryHintImpl extends AbstractAnnotationResource<Type>
 	}
 
 	public String getAnnotationName() {
-		return JPA.QUERY_HINT;
+		return ANNOTATION_NAME;
 	}
 	
 	@Override
@@ -74,18 +79,22 @@ public class QueryHintImpl extends AbstractAnnotationResource<Type>
 		return this.name;
 	}
 	
-	public void setName(String name) {
-		this.name = name;
-		this.nameAdapter.setValue(name);
+	public void setName(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		this.nameAdapter.setValue(newName);
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
 	public String getValue() {
 		return this.value;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
-		this.valueAdapter.setValue(value);
+	public void setValue(String newValue) {
+		String oldValue = this.value;
+		this.value = newValue;
+		this.valueAdapter.setValue(newValue);
+		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
@@ -97,10 +106,18 @@ public class QueryHintImpl extends AbstractAnnotationResource<Type>
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-		this.setName(this.nameAdapter.getValue(astRoot));
-		this.setValue(this.valueAdapter.getValue(astRoot));
+		this.setName(this.name(astRoot));
+		this.setValue(this.value(astRoot));
 	}
 	
+	protected String name(CompilationUnit astRoot) {
+		return this.nameAdapter.getValue(astRoot);
+	}
+	
+	protected String value(CompilationUnit astRoot) {
+		return this.valueAdapter.getValue(astRoot);
+	}
+
 	// ********** persistence model -> java annotations **********
 	public void moveAnnotation(int newIndex) {
 		getAnnotationAdapter().moveAnnotation(newIndex);
@@ -113,7 +130,7 @@ public class QueryHintImpl extends AbstractAnnotationResource<Type>
 	}
 	
 	// ********** static methods **********
-	static QueryHintImpl createNamedQueryQueryHint(JavaResource parent, Type type, DeclarationAnnotationAdapter namedQueryAdapter, int index) {
+	static QueryHintImpl createNamedQueryQueryHint(JavaResource parent, Type type,  DeclarationAnnotationAdapter namedQueryAdapter, int index) {
 		return new QueryHintImpl(parent, type, buildNamedQueryQueryHintAnnotationAdapter(namedQueryAdapter, index));
 	}
 

@@ -22,8 +22,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 public class InheritanceImpl extends AbstractAnnotationResource<Type> implements Inheritance
 {
-	private static final String ANNOTATION_NAME = JPA.INHERITANCE;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	private static final DeclarationAnnotationElementAdapter<String> STRATEGY_ADAPTER = buildStrategyAdapter();
 
@@ -35,6 +33,10 @@ public class InheritanceImpl extends AbstractAnnotationResource<Type> implements
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.strategyAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, STRATEGY_ADAPTER);
 	}
+	
+	public void initialize(CompilationUnit astRoot) {
+		this.strategy = this.strategy(astRoot);
+	}
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
@@ -44,9 +46,11 @@ public class InheritanceImpl extends AbstractAnnotationResource<Type> implements
 		return this.strategy;
 	}
 	
-	public void setStrategy(InheritanceType strategy) {
-		this.strategy = strategy;
-		this.strategyAdapter.setValue(InheritanceType.toJavaAnnotationValue(strategy));
+	public void setStrategy(InheritanceType newStrategy) {
+		InheritanceType oldStrategy = this.strategy;
+		this.strategy = newStrategy;
+		this.strategyAdapter.setValue(InheritanceType.toJavaAnnotationValue(newStrategy));
+		firePropertyChanged(STRATEGY_PROPERTY, oldStrategy, newStrategy);
 	}
 
 	public ITextRange strategyTextRange(CompilationUnit astRoot) {
@@ -54,7 +58,11 @@ public class InheritanceImpl extends AbstractAnnotationResource<Type> implements
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
-		setStrategy(InheritanceType.fromJavaAnnotationValue(strategyAdapter.getValue(astRoot)));
+		this.setStrategy(this.strategy(astRoot));
+	}
+	
+	protected InheritanceType strategy(CompilationUnit astRoot) {
+		return InheritanceType.fromJavaAnnotationValue(this.strategyAdapter.getValue(astRoot));
 	}
 	
 	// ********** static methods **********

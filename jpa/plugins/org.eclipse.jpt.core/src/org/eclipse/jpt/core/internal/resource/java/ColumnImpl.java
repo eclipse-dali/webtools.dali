@@ -19,8 +19,6 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAnnotation
 {
-	private static final String ANNOTATION_NAME = JPA.COLUMN;
-
 	// this adapter is only used by a Column annotation associated with a mapping annotation (e.g. Basic)
 	public static final DeclarationAnnotationAdapter MAPPING_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -53,6 +51,14 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 		this.precisionAdapter = this.buildShortCircuitIntElementAdapter(this.precisionDeclarationAdapter);
 		this.scaleDeclarationAdapter = this.buildNumberElementAdapter(JPA.COLUMN__SCALE);
 		this.scaleAdapter = this.buildShortCircuitIntElementAdapter(this.scaleDeclarationAdapter);
+	}
+	
+	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.length = this.length(astRoot);
+		this.precision = this.precision(astRoot);
+		this.scale = this.scale(astRoot);
 	}
 	
 	@Override
@@ -99,6 +105,7 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 		//needs to be split up and we could have IndexableAnnotation
 	}
 	
+	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
 		Column oldColumn = (Column) oldAnnotation;
@@ -112,27 +119,33 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 		return this.length;
 	}
 
-	public void setLength(int length) {
-		this.length = length;
-		this.lengthAdapter.setValue(length);
+	public void setLength(int newLength) {
+		int oldLength = this.length;
+		this.length = newLength;
+		this.lengthAdapter.setValue(newLength);
+		firePropertyChanged(LENGTH_PROPERTY, oldLength, newLength);
 	}
 
 	public int getPrecision() {
 		return this.precision;
 	}
 
-	public void setPrecision(int precision) {
-		this.precision = precision;
-		this.precisionAdapter.setValue(precision);
+	public void setPrecision(int newPrecision) {
+		int oldPrecision = this.precision;
+		this.precision = newPrecision;
+		this.precisionAdapter.setValue(newPrecision);
+		firePropertyChanged(PRECISION_PROPERTY, oldPrecision, newPrecision);
 	}
 
 	public int getScale() {
 		return this.scale;
 	}
 
-	public void setScale(int scale) {
-		this.scale = scale;
-		this.scaleAdapter.setValue(scale);
+	public void setScale(int newScale) {
+		int oldScale = this.scale;
+		this.scale = newScale;
+		this.scaleAdapter.setValue(newScale);
+		firePropertyChanged(SCALE_PROPERTY, oldScale, newScale);
 	}
 	
 	public ITextRange lengthTextRange(CompilationUnit astRoot) {
@@ -147,13 +160,26 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 		return this.elementTextRange(this.scaleDeclarationAdapter, astRoot);
 	}
 
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		this.setLength(this.lengthAdapter.getValue(astRoot));
-		this.setPrecision(this.precisionAdapter.getValue(astRoot));
-		this.setScale(this.scaleAdapter.getValue(astRoot));
+		this.setLength(this.length(astRoot));
+		this.setPrecision(this.precision(astRoot));
+		this.setScale(this.scale(astRoot));
 	}
 
+	protected int length(CompilationUnit astRoot) {
+		return this.lengthAdapter.getValue(astRoot);
+	}	
+	
+	protected int precision(CompilationUnit astRoot) {
+		return this.precisionAdapter.getValue(astRoot);
+	}	
+	
+	protected int scale(CompilationUnit astRoot) {
+		return this.scaleAdapter.getValue(astRoot);
+	}
+	
 	// ********** static methods **********
 
 	static ColumnImpl createAttributeOverrideColumn(JavaResource parent, Member member, DeclarationAnnotationAdapter attributeOverrideAnnotationAdapter) {
@@ -187,7 +213,7 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new ColumnImpl(parent, member, ColumnImpl.MAPPING_DECLARATION_ANNOTATION_ADAPTER);
 		}
-
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

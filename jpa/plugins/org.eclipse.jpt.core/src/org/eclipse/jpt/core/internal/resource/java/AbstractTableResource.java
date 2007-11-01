@@ -63,6 +63,13 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		this.uniqueConstraintsContainerAnnotation = new UniqueConstraintsContainerAnnotation();
 	}
 	
+	public void initialize(CompilationUnit astRoot) {
+		this.name = this.name(astRoot);
+		this.catalog = this.catalog(astRoot);
+		this.schema = this.schema(astRoot);
+		ContainerAnnotationTools.initializeNestedAnnotations(astRoot, this.uniqueConstraintsContainerAnnotation);
+	}
+	
 	protected AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
 		return new ShortCircuitAnnotationElementAdapter<String>(this.getMember(), daea);
 	}
@@ -87,27 +94,33 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		return this.name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-		this.nameAdapter.setValue(name);
+	public void setName(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		this.nameAdapter.setValue(newName);
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
 	public String getCatalog() {
 		return this.catalog;
 	}
 
-	public void setCatalog(String catalog) {
-		this.catalog = catalog;
-		this.catalogAdapter.setValue(catalog);
+	public void setCatalog(String newCatalog) {
+		String oldCatalog = this.catalog;
+		this.catalog = newCatalog;
+		this.catalogAdapter.setValue(newCatalog);
+		firePropertyChanged(CATALOG_PROPERTY, oldCatalog, newCatalog);
 	}
 
 	public String getSchema() {
 		return this.schema;
 	}
 
-	public void setSchema(String schema) {
-		this.schema = schema;
-		this.schemaAdapter.setValue(schema);
+	public void setSchema(String newSchema) {
+		String oldSchema = this.schema;
+		this.schema = newSchema;
+		this.schemaAdapter.setValue(newSchema);
+		firePropertyChanged(SCHEMA_PROPERTY, oldSchema, newSchema);
 	}
 	
 	public ListIterator<UniqueConstraint> uniqueConstraints() {
@@ -128,25 +141,29 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	
 	public NestableUniqueConstraint addUniqueConstraint(int index) {
 		NestableUniqueConstraint uniqueConstraint = createUniqueConstraint(index);
-		addUniqueConstraint(uniqueConstraint);
+		addUniqueConstraint(index, uniqueConstraint);
+		ContainerAnnotationTools.synchAnnotationsAfterAdd(index + 1, this.uniqueConstraintsContainerAnnotation);
 		uniqueConstraint.newAnnotation();
-		ContainerAnnotationTools.synchAnnotationsAfterAdd(index, this.uniqueConstraintsContainerAnnotation);
 		return uniqueConstraint;
 	}
 	
-	private void addUniqueConstraint(NestableUniqueConstraint uniqueConstraint) {
-		this.uniqueConstraints.add(uniqueConstraint);
-		//property change notification
+	private void addUniqueConstraint(int index, NestableUniqueConstraint uniqueConstraint) {
+		addItemToList(index, uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 	
 	public void removeUniqueConstraint(int index) {
-		NestableUniqueConstraint uniqueConstraint = this.uniqueConstraints.remove(index);
+		NestableUniqueConstraint uniqueConstraint = this.uniqueConstraintAt(index);
+		removeUniqueConstraint(uniqueConstraint);
 		uniqueConstraint.removeAnnotation();
 		ContainerAnnotationTools.synchAnnotationsAfterRemove(index, this.uniqueConstraintsContainerAnnotation);
 	}
 
+	private void removeUniqueConstraint(NestableUniqueConstraint uniqueConstraint) {
+		removeItemFromList(uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+	}
+	
 	public void moveUniqueConstraint(int oldIndex, int newIndex) {
-		this.uniqueConstraints.add(newIndex, this.uniqueConstraints.remove(oldIndex));		
+		moveItemInList(newIndex, oldIndex, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.uniqueConstraintsContainerAnnotation);
 	}
 	
@@ -169,10 +186,22 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-		this.setName(this.nameAdapter.getValue(astRoot));
-		this.setSchema(this.schemaAdapter.getValue(astRoot));
-		this.setCatalog(this.catalogAdapter.getValue(astRoot));
+		this.setName(this.name(astRoot));
+		this.setSchema(this.schema(astRoot));
+		this.setCatalog(this.catalog(astRoot));
 		this.updateUniqueConstraintsFromJava(astRoot);
+	}
+	
+	protected String name(CompilationUnit astRoot) {
+		return this.nameAdapter.getValue(astRoot);
+	}
+	
+	protected String schema(CompilationUnit astRoot) {
+		return this.schemaAdapter.getValue(astRoot);
+	}
+	
+	protected String catalog(CompilationUnit astRoot) {
+		return this.catalogAdapter.getValue(astRoot);
 	}
 	
 	/**
@@ -191,9 +220,18 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 			super(AbstractTableResource.this);
 		}
 		
+		public void initialize(CompilationUnit astRoot) {
+			//nothing to initialize
+		}
+
+		public void addInternal(int index) {
+			NestableUniqueConstraint uniqueConstraint = AbstractTableResource.this.createUniqueConstraint(index);
+			AbstractTableResource.this.uniqueConstraints.add(index, uniqueConstraint);			
+		}
+		
 		public NestableUniqueConstraint add(int index) {
 			NestableUniqueConstraint uniqueConstraint = AbstractTableResource.this.createUniqueConstraint(index);
-			AbstractTableResource.this.addUniqueConstraint(uniqueConstraint);
+			AbstractTableResource.this.addUniqueConstraint(index, uniqueConstraint);
 			return uniqueConstraint;
 		}
 		
@@ -235,11 +273,11 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		}
 
 		public void remove(NestableUniqueConstraint uniqueConstraint) {
-			this.remove(indexOf(uniqueConstraint));
+			AbstractTableResource.this.removeUniqueConstraint(uniqueConstraint);	
 		}
 
 		public void remove(int index) {
-			AbstractTableResource.this.removeUniqueConstraint(index);	
+			this.remove(nestedAnnotationAt(index));
 		}
 
 		public Annotation jdtAnnotation(CompilationUnit astRoot) {

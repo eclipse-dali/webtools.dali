@@ -26,7 +26,8 @@ public interface AbstractColumn extends NamedColumn
 	 * Corresponds to the unique element of the *Column annotation.
 	 * Set to null to remove the unique valuePair from the annotation
 	 */
-	void setUnique(Boolean unique);
+	void setUnique(Boolean unique);	
+		String UNIQUE_PROPERTY = "uniqueProperty";
 	
 	/**
 	 * Corresponds to the nullable element of the *Column annotation.
@@ -39,6 +40,7 @@ public interface AbstractColumn extends NamedColumn
 	 * Set to null to remove the nullable valuePair from the annotation
 	 */
 	void setNullable(Boolean nullable);
+		String NULLABLE_PROPERTY = "nullableProperty";
 	
 	/**
 	 * Corresponds to the insertable element of the *Column annotation.
@@ -51,6 +53,7 @@ public interface AbstractColumn extends NamedColumn
 	 * Set to null to remove the insertable valuePair from the annotation
 	 */
 	void setInsertable(Boolean insertable);
+		String INSERTABLE_PROPERTY = "insertableProperty";
 	
 	/**
 	 * Corresponds to the updatable element of the *Column annotation.
@@ -63,6 +66,7 @@ public interface AbstractColumn extends NamedColumn
 	 * Set to null to remove the updatable valuePair from the annotation
 	 */
 	void setUpdatable(Boolean updatable);
+		String UPDATABLE_PROPERTY = "updatableProperty";
 	
 	/**
 	 * Corresponds to the table element of the *Column annotation.
@@ -75,6 +79,7 @@ public interface AbstractColumn extends NamedColumn
 	 * Set to null to remove the table valuePair from the annotation
 	 */
 	void setTable(String table);
+		String TABLE_PROPERTY = "tableProperty";
 
 	
 	/**

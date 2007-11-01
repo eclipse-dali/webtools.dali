@@ -12,5 +12,5 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public interface NamedQueries extends ContainerAnnotation<NestableNamedQuery>
 {
-
+	String NAMED_QUERIES_LIST = "namedQueriesList";
 }

@@ -20,11 +20,8 @@ import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.SimpleJpaProjectConfig;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.NullAnnotationEditFormatter;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResourceImpl;
 import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 
@@ -73,21 +70,21 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		config.setDiscoverAnnotatedClasses(JptCorePlugin.discoverAnnotatedClasses(project));
 		return config;
 	}
-
 	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) 
-			throws CoreException {
-		Type type = new Type(testType, MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER, NullAnnotationEditFormatter.instance());
-		JavaPersistentTypeResource typeResource = new JavaPersistentTypeResourceImpl(buildJpaCompilationUnitResource(testType), type);
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
-		return typeResource;
+		throws CoreException {
+		JpaCompilationUnitResource jpaCompilationUnitResource = buildJpaCompilationUnitResource(testType);
+		return jpaCompilationUnitResource.getPersistentType();
 	}
 	
 	protected JpaCompilationUnitResource buildJpaCompilationUnitResource(IType testType) 
-			throws CoreException {
+		throws CoreException {
 		IFile file = (IFile) testType.getResource();
 		IJpaProject jpaProject = buildJpaProject();
-		return new JpaCompilationUnitResource(file, jpaProject.jpaPlatform().annotationProvider(),
-				jpaProject.modifySharedDocumentCommandExecutorProvider());
+		return new JpaCompilationUnitResource(
+			file, 
+			jpaProject.jpaPlatform().annotationProvider(),
+			MODIFY_SHARED_DOCUMENT_COMMAND_EXECUTOR_PROVIDER,
+			NullAnnotationEditFormatter.instance());
 	}
 
 }

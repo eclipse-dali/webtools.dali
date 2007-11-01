@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public interface ManyToMany extends RelationshipMappingAnnotation
 {
+	String ANNOTATION_NAME = JPA.MANY_TO_MANY;
 
 	/**
 	 * Corresponds to the mappedBy element of the ManyToMany annotation. 
@@ -27,7 +28,8 @@ public interface ManyToMany extends RelationshipMappingAnnotation
 	 * Set to null to remove the mappedBy element.
 	 */
 	void setMappedBy(String mappedBy);
-	
+		String MAPPED_BY_PROPERTY = "mappedByProperty";
+		
 	/**
 	 * Return the ITextRange for the mappedBy element.  If the mappedBy element 
 	 * does not exist return the ITextRange for the ManyToMany annotation.

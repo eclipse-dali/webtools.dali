@@ -21,7 +21,6 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> implements NamedNativeQueries
 {
-	private static final String ANNOTATION_NAME = JPA.NAMED_NATIVE_QUERIES;
 	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -31,13 +30,17 @@ public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> imp
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.namedNativeQueries = new ArrayList<NestableNamedNativeQuery>();
 	}
+	
+	public void initialize(CompilationUnit astRoot) {
+		ContainerAnnotationTools.initializeNestedAnnotations(astRoot, this);
+	}
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
 
 	public String getNestableAnnotationName() {
-		return JPA.NAMED_NATIVE_QUERY;
+		return NamedNativeQuery.ANNOTATION_NAME;
 	}
 		
 	public ListIterator<NestableNamedNativeQuery> nestedAnnotations() {
@@ -48,19 +51,23 @@ public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> imp
 		return this.namedNativeQueries.size();
 	}	
 
+	public void addInternal(int index) {
+		NestableNamedNativeQuery namedNativeQuery = createNamedNativeQuery(index);
+		this.namedNativeQueries.add(index, namedNativeQuery);
+	}
+	
 	public NestableNamedNativeQuery add(int index) {
 		NestableNamedNativeQuery namedNativeQuery = createNamedNativeQuery(index);
 		add(index, namedNativeQuery);
 		return namedNativeQuery;
 	}
 	
-	private void add(int index, NestableNamedNativeQuery query) {
-		this.namedNativeQueries.add(index, query);
-		//TODO event notification
+	protected void add(int index, NestableNamedNativeQuery query) {
+		addItemToList(index, query, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
 	}
 
 	public void remove(NestableNamedNativeQuery query) {
-		this.namedNativeQueries.remove(query);		
+		removeItemFromList( query, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	public void remove(int index) {
@@ -85,7 +92,7 @@ public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> imp
 	}
 	
 	public void move(int oldIndex, int newIndex) {
-		this.namedNativeQueries.add(newIndex, this.namedNativeQueries.remove(oldIndex));
+		moveItemInList(newIndex, oldIndex, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

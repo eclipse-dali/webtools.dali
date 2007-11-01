@@ -25,8 +25,6 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinColumn
 {
-	private static final String ANNOTATION_NAME = JPA.JOIN_COLUMN;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	// hold this so we can get the 'referenced column name' text range
@@ -48,6 +46,12 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 	
 	public JoinColumnImpl(JavaResource parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
 		this(parent, member, idaa, new MemberIndexedAnnotationAdapter(member, idaa));
+	}
+	
+	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.referencedColumnName = this.referencedColumnName(astRoot);
 	}
 	
 	@Override
@@ -97,6 +101,7 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 		getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
 	
+	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
 		JoinColumn oldColumn = (JoinColumn) oldAnnotation;
@@ -108,9 +113,11 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 		return this.referencedColumnName;
 	}
 	
-	public void setReferencedColumnName(String referencedColumnName) {
-		this.referencedColumnName = referencedColumnName;
-		this.referencedColumnNameAdapter.setValue(referencedColumnName);
+	public void setReferencedColumnName(String newReferencedColumnName) {
+		String oldReferencedColumnName = this.referencedColumnName;
+		this.referencedColumnName = newReferencedColumnName;
+		this.referencedColumnNameAdapter.setValue(newReferencedColumnName);
+		firePropertyChanged(REFERENCED_COLUMN_NAME_PROPERTY, oldReferencedColumnName, newReferencedColumnName);
 	}
 	
 	public ITextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
@@ -120,10 +127,15 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
 		return this.elementTouches(this.referencedColumnNameDeclarationAdapter, pos, astRoot);
 	}
-
+	
+	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		this.setReferencedColumnName(this.referencedColumnNameAdapter.getValue(astRoot));
+		this.setReferencedColumnName(this.referencedColumnName(astRoot));
+	}
+	
+	protected String referencedColumnName(CompilationUnit astRoot) {
+		return this.referencedColumnNameAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********
@@ -149,7 +161,7 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 		return new NestedIndexedDeclarationAnnotationAdapter(JoinTableImpl.DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
 	}
 
-	static NestableJoinColumn createJoinTableInverseJoinColumn(JavaResource parent,  Member member, int index) {
+	static NestableJoinColumn createJoinTableInverseJoinColumn(JavaResource parent, Member member, int index) {
 		return new JoinColumnImpl(parent, member, buildJoinTableInverseAnnotationAdapter(index));
 	}
 

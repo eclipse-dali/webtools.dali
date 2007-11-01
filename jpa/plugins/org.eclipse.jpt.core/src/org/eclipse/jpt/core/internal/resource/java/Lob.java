@@ -13,4 +13,7 @@ package org.eclipse.jpt.core.internal.resource.java;
  * Corresponds to the javax.persistence.Lob annotation
  */
 public interface Lob extends JavaResource
-{}
+{
+	String ANNOTATION_NAME = JPA.LOB;
+	
+}

@@ -12,5 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public interface PrimaryKeyJoinColumns extends ContainerAnnotation<NestablePrimaryKeyJoinColumn>
 {
+	String ANNOTATION_NAME = JPA.PRIMARY_KEY_JOIN_COLUMNS;
 
+	String PK_JOIN_COLUMNS_LIST = "pkJoinColumnsList";
 }

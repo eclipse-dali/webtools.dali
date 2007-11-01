@@ -12,5 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public interface AttributeOverrides extends ContainerAnnotation<NestableAttributeOverride>
 {
+	String ANNOTATION_NAME = JPA.ATTRIBUTE_OVERRIDES;
 
+	String ATTRIBUTE_OVERRIDES_LIST = "attributeOverridesList";
 }

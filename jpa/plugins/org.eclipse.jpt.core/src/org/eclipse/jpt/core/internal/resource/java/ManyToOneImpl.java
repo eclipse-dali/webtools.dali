@@ -25,8 +25,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation implements ManyToOne
 {	
-	private static final String ANNOTATION_NAME = JPA.MANY_TO_ONE;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	
 	private static final DeclarationAnnotationElementAdapter<String> TARGET_ENTITY_ADAPTER = buildTargetEntityAdapter();	
@@ -44,6 +42,12 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 	protected ManyToOneImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.optionalAdapter = this.buildAnnotationElementAdapter(OPTIONAL_ADAPTER);
+	}
+
+	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.optional = this.optional(astRoot);
 	}
 	
 	//**************** AbstractRelationshipMappingAnnotation implementation **************
@@ -74,9 +78,11 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 		return this.optional;
 	}
 	
-	public void setOptional(Boolean optional) {
-		this.optional = optional;
-		this.optionalAdapter.setValue(BooleanUtility.toJavaAnnotationValue(optional));
+	public void setOptional(Boolean newOptional) {
+		Boolean oldOptional = this.optional;
+		this.optional = newOptional;
+		this.optionalAdapter.setValue(BooleanUtility.toJavaAnnotationValue(newOptional));
+		firePropertyChanged(OPTIONAL_PROPERTY, oldOptional, newOptional);
 	}
 
 	public ITextRange optionalTextRange(CompilationUnit astRoot) {
@@ -86,7 +92,11 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		this.setOptional(BooleanUtility.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot)));
+		this.setOptional(this.optional(astRoot));
+	}
+	
+	protected Boolean optional(CompilationUnit astRoot) {
+		return BooleanUtility.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot));
 	}
 
 	// ********** static methods **********

@@ -283,8 +283,9 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		
 		namedQuery.addHint(0).setName("FOO");
 		namedQuery.addHint(1);
+		namedQuery.addHint(0).setName("BAR");
 
-		assertSourceContains("@NamedNativeQuery(hints={@QueryHint(name=\"FOO\"),@QueryHint})");
+		assertSourceContains("@NamedNativeQuery(hints={@QueryHint(name=\"BAR\"),@QueryHint(name=\"FOO\"), @QueryHint})");
 	}
 	
 	public void testRemoveHint() throws Exception {

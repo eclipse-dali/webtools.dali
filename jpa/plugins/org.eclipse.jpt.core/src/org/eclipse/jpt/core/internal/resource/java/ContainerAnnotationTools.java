@@ -68,6 +68,45 @@ public class ContainerAnnotationTools
 		synch(nestableAnnotation, targetIndex);
 	}
 	
+	
+	public static void initializeNestedAnnotations(CompilationUnit astRoot, ContainerAnnotation<?> containerAnnotation) {
+		addAnnotationInSource(astRoot, containerAnnotation);
+	}	
+	
+	private static void addAnnotationInSource(CompilationUnit astRoot, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
+		containerAnnotation.jdtAnnotation(astRoot).accept(initialJavaMemberAnnotationAstVisitor(astRoot, containerAnnotation));
+	}
+	
+	private static ASTVisitor initialJavaMemberAnnotationAstVisitor(final CompilationUnit astRoot, final ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
+		return new ASTVisitor() {
+			@Override
+			public boolean visit(SingleMemberAnnotation node) {
+				return visit((org.eclipse.jdt.core.dom.Annotation) node);
+			}
+		
+			@Override
+			public boolean visit(NormalAnnotation node) {
+				return visit((org.eclipse.jdt.core.dom.Annotation) node);
+			}
+		
+			@Override
+			public boolean visit(MarkerAnnotation node) {
+				return visit((org.eclipse.jdt.core.dom.Annotation) node);
+			}
+			
+			private boolean visit(org.eclipse.jdt.core.dom.Annotation node) {
+				if (containerAnnotation.getAnnotationName().equals(JDTTools.resolveAnnotation(node))) {
+					return true;
+				}
+				if (containerAnnotation.getNestableAnnotationName().equals(JDTTools.resolveAnnotation(node))) {
+					Annotation nestedAnnotation = containerAnnotation.add(containerAnnotation.nestedAnnotationsSize());
+					nestedAnnotation.initialize(astRoot);
+				}
+				return false;
+			}
+		};
+	}
+	
 	public static void updateNestedAnnotationsFromJava(CompilationUnit astRoot, ContainerAnnotation<?> containerAnnotation) {
 		addOrUpdateAnnotationInSource(astRoot, containerAnnotation);
 		//TODO not sure how to handle generics here and get rid of this warning
@@ -109,10 +148,13 @@ public class ContainerAnnotationTools
 				}
 				if (containerAnnotation.getNestableAnnotationName().equals(JDTTools.resolveAnnotation(node))) {
 					NestableAnnotation nestedAnnotation = containerAnnotation.nestedAnnotationFor(node);
-					if (nestedAnnotation == null) {
-						nestedAnnotation = containerAnnotation.add(containerAnnotation.nestedAnnotationsSize());
+					if (nestedAnnotation != null) {
+						nestedAnnotation.updateFromJava(astRoot);
 					}
-					nestedAnnotation.updateFromJava(astRoot);
+					else {
+						nestedAnnotation = containerAnnotation.add(containerAnnotation.nestedAnnotationsSize());
+						nestedAnnotation.initialize(astRoot);
+					}
 				}
 				return false;
 			}

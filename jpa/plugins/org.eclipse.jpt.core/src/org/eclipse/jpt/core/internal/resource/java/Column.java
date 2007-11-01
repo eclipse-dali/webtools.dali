@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public interface Column extends AbstractColumn
 {
+	String ANNOTATION_NAME = JPA.COLUMN;
 
 	/**
 	 * Corresponds to the length element of the javax.persistence.Column annotation.
@@ -27,6 +28,7 @@ public interface Column extends AbstractColumn
 	 * Set to -1 to remove the length valuePair from the annotation
 	 */
 	void setLength(int length);
+		String LENGTH_PROPERTY = "lengthProperty";
 	
 	/**
 	 * Corresponds to the precision element of the javax.persistence.Column annotation.
@@ -39,6 +41,7 @@ public interface Column extends AbstractColumn
 	 * Set to -1 to remove the precision valuePair from the annotation
 	 */
 	void setPrecision(int precision);
+		String PRECISION_PROPERTY = "precisionProperty";
 	
 	/**
 	 * Corresponds to the scale element of the javax.persistence.Column annotation.
@@ -51,6 +54,7 @@ public interface Column extends AbstractColumn
 	 * Set to -1 to remove the scale valuePair from the annotation
 	 */
 	void setScale(int scale);
+		String SCALE_PROPERTY = "scaleProperty";
 
 	/**
 	 * Return the ITextRange for the length element. If length element

@@ -12,5 +12,6 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public interface MappedSuperclass extends JavaResource
 {
+	String ANNOTATION_NAME = JPA.MAPPED_SUPERCLASS;
 
 }

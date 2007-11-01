@@ -12,5 +12,8 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public interface JoinColumns extends ContainerAnnotation<NestableJoinColumn>
 {
-
+	String ANNOTATION_NAME = JPA.JOIN_COLUMNS;
+	
+	String JOIN_COLUMNS_LIST = "joinColumnsList";
+	
 }

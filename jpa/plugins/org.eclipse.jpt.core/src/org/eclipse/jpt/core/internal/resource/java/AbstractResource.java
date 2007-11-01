@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
+import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.node.AbstractNodeModel;
 import org.eclipse.jpt.utility.internal.node.Node;
@@ -45,6 +46,10 @@ public abstract class AbstractResource extends AbstractNodeModel
 		return root().modifySharedDocumentCommandExecutorProvider();
 	}
 	
+	public AnnotationEditFormatter annotationEditFormatter()  {
+		return root().annotationEditFormatter();
+	}
+
 	/**
 	 * @see Node#displayString()
 	 * 
@@ -53,4 +58,10 @@ public abstract class AbstractResource extends AbstractNodeModel
 	public String displayString() {
 		return toString();
 	}
+	
+//	@Override
+//	protected void aspectChanged(String aspectName) {
+//		super.aspectChanged(aspectName);
+//		root().resourceChanged(aspectName);
+//	}
 }

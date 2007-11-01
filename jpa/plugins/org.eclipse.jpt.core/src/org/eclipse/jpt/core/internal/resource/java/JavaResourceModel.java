@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IResourceModel;
+import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
@@ -31,10 +32,11 @@ public class JavaResourceModel implements IResourceModel
 	
 	public JavaResourceModel(
 			IFile file, IJpaAnnotationProvider annotationProvider, 
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			AnnotationEditFormatter annotationEditFormatter) {
 		super();
 		this.compilationUnitResource = 
-			new JpaCompilationUnitResource(file, annotationProvider, modifySharedDocumentCommandExecutorProvider);
+			new JpaCompilationUnitResource(file, annotationProvider, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
 	}
 	
 	public JpaCompilationUnitResource getCompilationUnitResource() {
@@ -44,9 +46,9 @@ public class JavaResourceModel implements IResourceModel
 	public String getResourceType() {
 		return JAVA_RESOURCE_TYPE;
 	}
-	
+
 	public IJpaFile jpaFile() {
-		return jpaFile;
+		return this.jpaFile;
 	}
 	
 	// NB: To be done *once*, when constructing the jpa file

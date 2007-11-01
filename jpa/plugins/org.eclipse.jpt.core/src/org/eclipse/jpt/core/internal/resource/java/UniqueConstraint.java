@@ -17,12 +17,15 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
  */
 public interface UniqueConstraint extends JavaResource
 {
+	String ANNOTATION_NAME = JPA.UNIQUE_CONSTRAINT;
+
 	ListIterator<String> columnNames();
 
 	void addColumnName(String columnName);
 	
 	void removeColumnName(String columnName);
-
+		String COLUMN_NAMES_LIST = "columnNamesList";
+		
 	/**
 	 * Return whether the specified postition touches the columnNames element.
 	 * Return false if the columnNames element does not exist.

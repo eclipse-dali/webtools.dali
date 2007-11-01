@@ -33,10 +33,13 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 
 	private String name;
 
-	
 	protected EntityImpl(JavaPersistentTypeResource parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), NAME_ADAPTER);
+	}
+	
+	public void initialize(CompilationUnit astRoot) {
+		this.name = this.name(astRoot);
 	}
 	
 	//*********** Annotation implementation ****************
@@ -49,9 +52,11 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 		return this.name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-		this.nameAdapter.setValue(name);
+	public void setName(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		this.nameAdapter.setValue(newName);
+		firePropertyChanged(Entity.NAME_PROPERTY, oldName, newName);
 	}
 
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
@@ -60,10 +65,13 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 	
 	//*********** JavaResource implementation ****************
 	public void updateFromJava(CompilationUnit astRoot) {
-		setName(this.nameAdapter.getValue(astRoot));
+		this.setName(this.name(astRoot));
 	}
-	
-	
+
+	protected String name(CompilationUnit astRoot) {
+		return this.nameAdapter.getValue(astRoot);
+	}
+
 	//*********** static methods ****************
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ENTITY__NAME, false); // false = do not remove annotation when empty

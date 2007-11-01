@@ -32,12 +32,16 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 		this.namedQueries = new ArrayList<NestableNamedQuery>();
 	}
 
+	public void initialize(CompilationUnit astRoot) {
+		ContainerAnnotationTools.initializeNestedAnnotations(astRoot, this);
+	}
+	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
 
 	public String getNestableAnnotationName() {
-		return JPA.NAMED_QUERY;
+		return NamedQuery.ANNOTATION_NAME;
 	}
 		
 	public ListIterator<NestableNamedQuery> nestedAnnotations() {
@@ -48,23 +52,27 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 		return this.namedQueries.size();
 	}	
 
+	public void addInternal(int index) {
+		NestableNamedQuery namedQuery = createNamedQuery(index);
+		this.namedQueries.add(index, namedQuery);
+	}
+	
 	public NestableNamedQuery add(int index) {
 		NestableNamedQuery namedQuery = createNamedQuery(index);
 		add(index, namedQuery);
 		return namedQuery;
 	}
 	
-	private void add(int index, NestableNamedQuery attributeOverride) {
-		this.namedQueries.add(index, attributeOverride);
-		//TODO event notification
+	protected void add(int index, NestableNamedQuery namedQuery) {
+		addItemToList(index, namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
 	}
 
-	public void remove(NestableNamedQuery attributeOverride) {
-		this.namedQueries.remove(attributeOverride);		
+	public void remove(NestableNamedQuery namedQuery) {
+		removeItemFromList(namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
 	}
 	
 	public void remove(int index) {
-		this.namedQueries.remove(index);
+		removeItemFromList(index, this.namedQueries, NAMED_QUERIES_LIST);
 	}
 	
 	public int indexOf(NestableNamedQuery attributeOverride) {
@@ -85,7 +93,7 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 	}
 	
 	public void move(int oldIndex, int newIndex) {
-		this.namedQueries.add(newIndex, this.namedQueries.remove(oldIndex));
+		moveItemInList(newIndex, oldIndex, this.namedQueries, NAMED_QUERIES_LIST);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

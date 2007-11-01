@@ -20,19 +20,21 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class MappedSuperclassImpl extends AbstractAnnotationResource<Type> implements MappedSuperclass
 {
-	private static final String ANNOTATION_NAME = JPA.MAPPED_SUPERCLASS;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	protected MappedSuperclassImpl(JavaPersistentTypeResource parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
+	public void initialize(CompilationUnit astRoot) {
+		//nothing to initialize
+	}
+	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
 
-	public void updateFromJava(@SuppressWarnings("unused") CompilationUnit astRoot) {
+	public void updateFromJava(CompilationUnit astRoot) {
 		//no annotation members
 	}
 	

@@ -22,8 +22,6 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class TemporalImpl extends AbstractAnnotationResource<Attribute> implements Temporal
 {
-	private static final String ANNOTATION_NAME = JPA.TEMPORAL;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
@@ -37,6 +35,10 @@ public class TemporalImpl extends AbstractAnnotationResource<Attribute> implemen
 		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, VALUE_ADAPTER);
 	}
 
+	public void initialize(CompilationUnit astRoot) {
+		this.value = this.value(astRoot);		
+	}
+
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
@@ -45,9 +47,11 @@ public class TemporalImpl extends AbstractAnnotationResource<Attribute> implemen
 		return this.value;
 	}
 	
-	public void setValue(TemporalType value) {
-		this.value = value;
-		this.valueAdapter.setValue(TemporalType.toJavaAnnotationValue(value));
+	public void setValue(TemporalType newValue) {
+		TemporalType oldValue = this.value;
+		this.value = newValue;
+		this.valueAdapter.setValue(TemporalType.toJavaAnnotationValue(newValue));
+		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
 	public ITextRange valueTextRange(CompilationUnit astRoot) {
@@ -55,7 +59,11 @@ public class TemporalImpl extends AbstractAnnotationResource<Attribute> implemen
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
-		setValue(TemporalType.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot)));
+		this.setValue(this.value(astRoot));
+	}
+	
+	protected TemporalType value(CompilationUnit astRoot) {
+		return TemporalType.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot));
 	}
 	
 	// ********** static methods **********
@@ -85,7 +93,7 @@ public class TemporalImpl extends AbstractAnnotationResource<Attribute> implemen
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new TemporalImpl(parent, (Attribute) member);
 		}
-
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

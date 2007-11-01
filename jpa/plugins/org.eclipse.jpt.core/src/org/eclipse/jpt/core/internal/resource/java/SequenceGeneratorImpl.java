@@ -19,8 +19,6 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 
 public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGenerator
 {
-	private static final String ANNOTATION_NAME = JPA.SEQUENCE_GENERATOR;
-
 	private final AnnotationElementAdapter<String> sequenceNameAdapter;
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -38,6 +36,12 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 	protected SequenceGeneratorImpl(JavaResource parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.sequenceNameAdapter = this.buildAdapter(SEQUENCE_NAME_ADAPTER);
+	}
+
+	@Override
+	public void initialize(CompilationUnit astRoot) {
+		super.initialize(astRoot);
+		this.sequenceName = this.sequenceName(astRoot);
 	}
 	
 	public String getAnnotationName() {
@@ -71,9 +75,11 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 		return this.sequenceName;
 	}
 
-	public void setSequenceName(String sequenceName) {
-		this.sequenceName = sequenceName;
-		this.sequenceNameAdapter.setValue(sequenceName);
+	public void setSequenceName(String newSequenceName) {
+		String oldSequenceName = this.sequenceName;
+		this.sequenceName = newSequenceName;
+		this.sequenceNameAdapter.setValue(newSequenceName);
+		firePropertyChanged(SEQUENCE_NAME_PROPERTY, oldSequenceName, newSequenceName);
 	}
 	
 	public ITextRange sequenceNameTextRange(CompilationUnit astRoot) {
@@ -84,7 +90,11 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
-		setSequenceName(this.sequenceNameAdapter.getValue(astRoot));
+		this.setSequenceName(this.sequenceName(astRoot));
+	}
+	
+	protected String sequenceName(CompilationUnit astRoot) {
+		return this.sequenceNameAdapter.getValue(astRoot);
 	}
 
 	// ********** static methods **********
@@ -114,7 +124,7 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 		private SequenceGeneratorAnnotationDefinition() {
 			super();
 		}
-
+		
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new SequenceGeneratorImpl(parent, member);
 		}

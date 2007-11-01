@@ -17,6 +17,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
  */
 public interface OrderBy extends JavaResource
 {
+	String ANNOTATION_NAME = JPA.ORDER_BY;
+
 	/**
 	 * Corresponds to the value element of the javax.persistence.OrderBy annotation.
 	 * Returns null if the value valuePair does not exist in the annotation
@@ -28,7 +30,8 @@ public interface OrderBy extends JavaResource
 	 * Setting the value to null will not remove the OrderBy annotation
 	 */
 	void setValue(String value);
-	
+		String VALUE_PROPERTY = "valueProperty";
+		
 	/**
 	 * Return the ITextRange for the value element.  If the value element 
 	 * does not exist return the ITextRange for the OrderBy annotation.
