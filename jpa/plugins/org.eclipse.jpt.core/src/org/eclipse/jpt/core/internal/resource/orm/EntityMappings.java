@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: EntityMappings.java,v 1.1.2.3 2007/10/23 23:36:43 pfullbright Exp $
+ * $Id: EntityMappings.java,v 1.1.2.4 2007/11/01 16:45:10 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
@@ -1127,6 +1127,7 @@ public class EntityMappings extends JptEObject implements IJptEObject
 		return resourceModel().jpaFile();
 	}
 	
+	@Override
 	public OrmResourceModel resourceModel() {
 		return (OrmResourceModel) eResource();
 	}

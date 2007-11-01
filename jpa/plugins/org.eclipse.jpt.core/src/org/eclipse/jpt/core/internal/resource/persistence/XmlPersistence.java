@@ -277,6 +277,7 @@ public class XmlPersistence extends JptEObject implements IJptEObject
 		return resourceModel().jpaFile();
 	}
 	
+	@Override
 	public PersistenceResourceModel resourceModel() {
 		return (PersistenceResourceModel) eResource();
 	}
