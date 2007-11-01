@@ -113,7 +113,7 @@ public class JavaResourceModel implements IResourceModel
 		if (listener == null) {
 			throw new IllegalArgumentException("Listener cannot be null");
 		}
-		if (!this.resourceModelListeners.contains(listener)) {
+		if (this.resourceModelListeners.contains(listener)) {
 			throw new IllegalArgumentException("Listener " + listener + " already added");		
 		}
 		this.resourceModelListeners.add(listener);
