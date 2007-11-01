@@ -210,8 +210,10 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 			return queryHint;
 		}
 		
-		public void addInternal(int index) {
-			AbstractNamedQuery.this.hints.add(index, AbstractNamedQuery.this.createQueryHint(index));
+		public NestableQueryHint addInternal(int index) {
+			NestableQueryHint queryHint = AbstractNamedQuery.this.createQueryHint(index);
+			AbstractNamedQuery.this.hints.add(index, queryHint);
+			return queryHint;
 		}
 		
 		public String getAnnotationName() {

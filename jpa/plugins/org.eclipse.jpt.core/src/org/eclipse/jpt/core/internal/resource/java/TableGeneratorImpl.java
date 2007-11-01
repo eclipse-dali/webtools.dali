@@ -331,9 +331,10 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 			//nothing to initialize
 		}
 		
-		public void addInternal(int index) {
+		public NestableUniqueConstraint addInternal(int index) {
 			NestableUniqueConstraint uniqueConstraint = TableGeneratorImpl.this.createUniqueConstraint(index);
 			TableGeneratorImpl.this.uniqueConstraints.add(index, uniqueConstraint);
+			return uniqueConstraint;
 		}
 		
 		public NestableUniqueConstraint add(int index) {

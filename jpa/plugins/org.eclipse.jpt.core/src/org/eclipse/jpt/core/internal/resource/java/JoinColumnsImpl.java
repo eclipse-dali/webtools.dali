@@ -51,9 +51,10 @@ public class JoinColumnsImpl extends AbstractAnnotationResource<Member> implemen
 		return this.joinColumns.size();
 	}	
 
-	public void addInternal(int index) {
+	public NestableJoinColumn addInternal(int index) {
 		JoinColumnImpl joinColumn = createJoinColumn(index);
 		this.joinColumns.add(index, joinColumn);
+		return joinColumn;
 	}
 	
 	public NestableJoinColumn add(int index) {

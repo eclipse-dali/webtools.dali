@@ -51,13 +51,14 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractAnnotationResource<Member
 		return this.pkJoinColumns.size();
 	}	
 
-	public void addInternal(int index) {
-		PrimaryKeyJoinColumnImpl pkJoinColumn = createPrimaryKeyJoinColumn(index);
+	public NestablePrimaryKeyJoinColumn addInternal(int index) {
+		NestablePrimaryKeyJoinColumn pkJoinColumn = createPrimaryKeyJoinColumn(index);
 		this.pkJoinColumns.add(index, pkJoinColumn);
+		return pkJoinColumn;
 	}
 	
 	public NestablePrimaryKeyJoinColumn add(int index) {
-		PrimaryKeyJoinColumnImpl pkJoinColumn = createPrimaryKeyJoinColumn(index);
+		NestablePrimaryKeyJoinColumn pkJoinColumn = createPrimaryKeyJoinColumn(index);
 		add(index, pkJoinColumn);
 		return pkJoinColumn;
 	}

@@ -52,9 +52,10 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 		return this.namedQueries.size();
 	}	
 
-	public void addInternal(int index) {
+	public NestableNamedQuery addInternal(int index) {
 		NestableNamedQuery namedQuery = createNamedQuery(index);
 		this.namedQueries.add(index, namedQuery);
+		return namedQuery;
 	}
 	
 	public NestableNamedQuery add(int index) {

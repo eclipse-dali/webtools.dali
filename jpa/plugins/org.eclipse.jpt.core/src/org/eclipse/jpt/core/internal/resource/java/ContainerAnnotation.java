@@ -31,7 +31,7 @@ public interface ContainerAnnotation<T extends NestableAnnotation> extends Annot
 	 * Add directly to the List without firing change notification.
 	 * This is only done during construction
 	 */
-	void addInternal(int index);
+	T addInternal(int index);
 	
 	void remove(T nestedAnnotation);
 	

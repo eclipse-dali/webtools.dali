@@ -51,9 +51,10 @@ public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> imp
 		return this.namedNativeQueries.size();
 	}	
 
-	public void addInternal(int index) {
+	public NestableNamedNativeQuery addInternal(int index) {
 		NestableNamedNativeQuery namedNativeQuery = createNamedNativeQuery(index);
 		this.namedNativeQueries.add(index, namedNativeQuery);
+		return namedNativeQuery;
 	}
 	
 	public NestableNamedNativeQuery add(int index) {

@@ -192,9 +192,10 @@ public class AssociationOverrideImpl
 			//nothing to initialize
 		}
 		
-		public void addInternal(int index) {
+		public NestableJoinColumn addInternal(int index) {
 			NestableJoinColumn joinColumn = AssociationOverrideImpl.this.createJoinColumn(index);
 			AssociationOverrideImpl.this.joinColumns.add(index, joinColumn);
+			return joinColumn;
 		}
 		
 		public NestableJoinColumn add(int index) {

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaElement;
@@ -18,6 +20,7 @@ import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IResourceModel;
+import org.eclipse.jpt.core.internal.JpaProject.ResourceModelListener;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.utility.internal.BitTools;
@@ -29,14 +32,16 @@ public class JavaResourceModel implements IResourceModel
 	
 	protected IJpaFile jpaFile;
 	
+	private final Collection<ResourceModelListener> resourceModelListeners;
 	
 	public JavaResourceModel(
 			IFile file, IJpaAnnotationProvider annotationProvider, 
 			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
 			AnnotationEditFormatter annotationEditFormatter) {
 		super();
+		this.resourceModelListeners = new ArrayList<ResourceModelListener>();
 		this.compilationUnitResource = 
-			new JpaCompilationUnitResource(file, annotationProvider, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+			new JpaCompilationUnitResource(file, annotationProvider, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter, this);
 	}
 	
 	public JpaCompilationUnitResource getCompilationUnitResource() {
@@ -104,4 +109,26 @@ public class JavaResourceModel implements IResourceModel
 		}
 	}
 
+	public void addResourceModelChangeListener(ResourceModelListener listener) {
+		if (listener == null) {
+			throw new IllegalArgumentException("Listener cannot be null");
+		}
+		this.resourceModelListeners.add(listener);
+	}
+	
+	public void removeResourceModelChangeListener(ResourceModelListener listener) {
+		if (!this.resourceModelListeners.contains(listener)) {
+			throw new IllegalArgumentException("Listener " + listener + " was never added");		
+		}
+		this.resourceModelListeners.add(listener);
+	}
+
+	public void resourceChanged() {
+		if (this.compilationUnitResource == null) {
+			throw new IllegalStateException("Change events should not be fired during construction");
+		}
+		for (ResourceModelListener listener : this.resourceModelListeners) {
+			listener.resourceModelChanged();
+		}
+	}
 }

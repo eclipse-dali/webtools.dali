@@ -196,9 +196,10 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 
 	private class JoinColumnsContainerAnnotation extends AbstractContainerAnnotation {
 
-		public void addInternal(int index) {
+		public NestableJoinColumn addInternal(int index) {
 			NestableJoinColumn joinColumn = JoinTableImpl.this.createJoinColumn(index);
 			JoinTableImpl.this.joinColumns.add(index, joinColumn);
+			return joinColumn;
 		}
 		
 		public NestableJoinColumn add(int index) {
@@ -234,9 +235,10 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 	
 	private class InverseJoinColumnsContainerAnnotation extends AbstractContainerAnnotation {
 
-		public void addInternal(int index) {
+		public NestableJoinColumn addInternal(int index) {
 			NestableJoinColumn joinColumn = JoinTableImpl.this.createInverseJoinColumn(index);
 			JoinTableImpl.this.inverseJoinColumns.add(index, joinColumn);
+			return joinColumn;
 		}
 		
 		public NestableJoinColumn add(int index) {

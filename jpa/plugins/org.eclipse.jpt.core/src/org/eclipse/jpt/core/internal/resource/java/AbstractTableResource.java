@@ -224,9 +224,10 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 			//nothing to initialize
 		}
 
-		public void addInternal(int index) {
+		public NestableUniqueConstraint addInternal(int index) {
 			NestableUniqueConstraint uniqueConstraint = AbstractTableResource.this.createUniqueConstraint(index);
 			AbstractTableResource.this.uniqueConstraints.add(index, uniqueConstraint);			
+			return uniqueConstraint;
 		}
 		
 		public NestableUniqueConstraint add(int index) {

@@ -70,10 +70,10 @@ public class ContainerAnnotationTools
 	
 	
 	public static void initializeNestedAnnotations(CompilationUnit astRoot, ContainerAnnotation<?> containerAnnotation) {
-		addAnnotationInSource(astRoot, containerAnnotation);
+		addAnnotationsFromSource(astRoot, containerAnnotation);
 	}	
 	
-	private static void addAnnotationInSource(CompilationUnit astRoot, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
+	private static void addAnnotationsFromSource(CompilationUnit astRoot, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
 		containerAnnotation.jdtAnnotation(astRoot).accept(initialJavaMemberAnnotationAstVisitor(astRoot, containerAnnotation));
 	}
 	
@@ -99,7 +99,7 @@ public class ContainerAnnotationTools
 					return true;
 				}
 				if (containerAnnotation.getNestableAnnotationName().equals(JDTTools.resolveAnnotation(node))) {
-					Annotation nestedAnnotation = containerAnnotation.add(containerAnnotation.nestedAnnotationsSize());
+					Annotation nestedAnnotation = containerAnnotation.addInternal(containerAnnotation.nestedAnnotationsSize());
 					nestedAnnotation.initialize(astRoot);
 				}
 				return false;

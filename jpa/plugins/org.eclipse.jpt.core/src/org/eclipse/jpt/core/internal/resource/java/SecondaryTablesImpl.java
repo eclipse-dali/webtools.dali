@@ -49,9 +49,10 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		return this.secondaryTables.size();
 	}
 	
-	public void addInternal(int index) {
+	public NestableSecondaryTable addInternal(int index) {
 		NestableSecondaryTable secondaryTable = createSecondaryTable(index);
 		this.secondaryTables.add(index, secondaryTable);
+		return secondaryTable;
 	}
 
 	public NestableSecondaryTable add(int index) {

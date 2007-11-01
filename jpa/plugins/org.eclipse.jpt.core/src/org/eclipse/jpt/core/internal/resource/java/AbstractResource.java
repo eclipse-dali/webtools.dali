@@ -59,9 +59,9 @@ public abstract class AbstractResource extends AbstractNodeModel
 		return toString();
 	}
 	
-//	@Override
-//	protected void aspectChanged(String aspectName) {
-//		super.aspectChanged(aspectName);
-//		root().resourceChanged(aspectName);
-//	}
+	@Override
+	protected void aspectChanged(String aspectName) {
+		super.aspectChanged(aspectName);
+		root().resourceChanged();
+	}
 }

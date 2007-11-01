@@ -41,17 +41,20 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 	protected JavaPersistentTypeResource persistentType;	
 		public static final String PERSISTENT_TYPE_PROPERTY = "persistentTypeProperty";
 	
-
+	protected final JavaResourceModel javaResourceModel;
+	
 	public JpaCompilationUnitResource(
 			IFile file, 
 			IJpaAnnotationProvider annotationProvider, 
 			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
-			AnnotationEditFormatter annotationEditFormatter) {
+			AnnotationEditFormatter annotationEditFormatter,
+			JavaResourceModel javaResourceModel) {
 		// The jpa compilation unit is the root of its sub-tree
 		super(null);
 		this.annotationProvider = annotationProvider;
 		this.modifySharedDocumentCommandExecutorProvider = modifySharedDocumentCommandExecutorProvider;
 		this.annotationEditFormatter = annotationEditFormatter;
+		this.javaResourceModel = javaResourceModel;
 		this.compilationUnit = compilationUnitFrom(file);
 		this.initialize(JDTTools.buildASTRoot(this.compilationUnit));
 	}
@@ -172,8 +175,8 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 //		return null;
 //	}
 	
-//	void resourceChanged(String aspectName) {
-//		fireStateChanged();
-//	}
+	public void resourceChanged() {
+		this.javaResourceModel.resourceChanged();
+	}
 
 }

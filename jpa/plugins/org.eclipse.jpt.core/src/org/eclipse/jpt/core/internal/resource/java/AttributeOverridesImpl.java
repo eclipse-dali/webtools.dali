@@ -50,9 +50,10 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 		return this.attributesOverrides.size();
 	}	
 
-	public void addInternal(int index) {
+	public NestableAttributeOverride addInternal(int index) {
 		NestableAttributeOverride attributeOverride = createAttributeOverride(index);
 		this.attributesOverrides.add(index, attributeOverride);	
+		return attributeOverride;
 	}
 	
 	public NestableAttributeOverride add(int index) {

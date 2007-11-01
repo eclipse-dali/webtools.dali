@@ -50,9 +50,10 @@ public class AssociationOverridesImpl extends AbstractAnnotationResource<Member>
 		return this.associationOverrides.size();
 	}	
 
-	public void addInternal(int index) {
+	public NestableAssociationOverride addInternal(int index) {
 		NestableAssociationOverride associationOverride = createAssociationOverride(index);
 		this.associationOverrides.add(index, associationOverride);
+		return associationOverride;
 	}
 	
 	public NestableAssociationOverride add(int index) {

@@ -182,9 +182,10 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 			//nothing to initialize
 		}
 		
-		public void addInternal(int index) {
+		public NestablePrimaryKeyJoinColumn addInternal(int index) {
 			NestablePrimaryKeyJoinColumn pKJoinColumn = SecondaryTableImpl.this.createPrimaryKeyJoinColumn(index);
 			SecondaryTableImpl.this.pkJoinColumns.add(index, pKJoinColumn);
+			return pKJoinColumn;
 		}
 		
 		public NestablePrimaryKeyJoinColumn add(int index) {
