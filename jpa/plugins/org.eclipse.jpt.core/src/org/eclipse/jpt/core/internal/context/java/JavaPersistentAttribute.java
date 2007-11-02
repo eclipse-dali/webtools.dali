@@ -36,6 +36,10 @@ public class JavaPersistentAttribute extends JavaContextModel
 //		this.setDefaultMapping(this.nullAttributeMappingProvider().buildMapping(this.attribute, null));
 	}
 	
+	public void initialize(JavaPersistentAttributeResource persistentAttributeResource) {
+		this.persistentAttributeResource = persistentAttributeResource;
+		this.name = this.name(persistentAttributeResource);
+	}
 
 	public IPersistentType getPersistentType() {
 		return (IPersistentType) this.parent();
@@ -188,11 +192,11 @@ public class JavaPersistentAttribute extends JavaContextModel
 
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		this.persistentAttributeResource = persistentAttributeResource;
-		updateName(persistentAttributeResource);
+		this.setName(this.name(persistentAttributeResource));
 	}
 	
-	protected void updateName(JavaPersistentAttributeResource persistentAttributeResource) {
-		setName(persistentAttributeResource.getName());	
+	protected String name(JavaPersistentAttributeResource persistentAttributeResource) {
+		return persistentAttributeResource.getName();	
 	}
 
 //	public void updateFromJava(CompilationUnit astRoot) {

@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 
@@ -34,8 +33,26 @@ public class PersistenceUnit extends JpaContextNode
 	
 	public PersistenceUnit(IPersistence parent) {
 		super(parent);
-		mappingFileRefs = new ArrayList<IMappingFileRef>();
-		classRefs = new ArrayList<IClassRef>();
+		this.mappingFileRefs = new ArrayList<IMappingFileRef>();
+		this.classRefs = new ArrayList<IClassRef>();
+	}
+	
+	public void initialize(XmlPersistenceUnit xmlPersistenceUnit) {
+		this.name = xmlPersistenceUnit.getName();
+		initializeMappingFileRefs(xmlPersistenceUnit);
+		initializeClassRefs(xmlPersistenceUnit);
+	}
+	
+	protected void initializeMappingFileRefs(XmlPersistenceUnit xmlPersistenceUnit) {
+		for (XmlMappingFileRef xmlMappingFileRef : xmlPersistenceUnit.getMappingFiles()) {
+			this.mappingFileRefs.add(createMappingFileRef(xmlMappingFileRef));
+		}
+	}
+
+	protected void initializeClassRefs(XmlPersistenceUnit xmlPersistenceUnit) {
+		for (XmlJavaClassRef xmlJavaClassRef : xmlPersistenceUnit.getClasses()) {
+			this.classRefs.add(createClassRef(xmlJavaClassRef));
+		}
 	}
 	
 	public IPersistentType persistentType(String fullyQualifiedTypeName) {
@@ -60,11 +77,9 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	public void setName(String newName) {
-		if (! StringTools.stringsAreEqualIgnoreCase(name, newName)) {
-			String oldName = name;
-			name = newName;
-			firePropertyChanged(NAME_PROPERTY, oldName, newName);
-		}
+		String oldName = name;
+		name = newName;
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
 	
@@ -140,8 +155,7 @@ public class PersistenceUnit extends JpaContextNode
 		while (stream.hasNext()) {
 			IMappingFileRef mappingFileRef = stream.next();
 			if (stream2.hasNext()) {
-				XmlMappingFileRef xmlMappingFileRef = stream2.next();
-				mappingFileRef.update(xmlMappingFileRef);
+				mappingFileRef.update(stream2.next());
 			}
 			else {
 				removeMappingFileRef(mappingFileRef);
@@ -149,11 +163,14 @@ public class PersistenceUnit extends JpaContextNode
 		}
 		
 		while (stream2.hasNext()) {
-			XmlMappingFileRef xmlMappingFileRef = stream2.next();
-			IMappingFileRef mappingFileRef = jpaFactory().createMappingFileRef(this);
-			addMappingFileRef(mappingFileRef);
-			mappingFileRef.update(xmlMappingFileRef);
+			addMappingFileRef(createMappingFileRef(stream2.next()));
 		}
+	}
+	
+	protected IMappingFileRef createMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {
+		IMappingFileRef mappingFileRef = jpaFactory().createMappingFileRef(this);
+		mappingFileRef.initialize(xmlMappingFileRef);
+		return mappingFileRef;
 	}
 	
 	public void updateClassRefs(XmlPersistenceUnit persistenceUnit) {
@@ -163,8 +180,7 @@ public class PersistenceUnit extends JpaContextNode
 		while (stream.hasNext()) {
 			IClassRef classRef = stream.next();
 			if (stream2.hasNext()) {
-				XmlJavaClassRef xmlClassRef = stream2.next();
-				classRef.update(xmlClassRef);
+				classRef.update(stream2.next());
 			}
 			else {
 				removeClassRef(classRef);
@@ -172,10 +188,13 @@ public class PersistenceUnit extends JpaContextNode
 		}
 		
 		while (stream2.hasNext()) {
-			XmlJavaClassRef xmlClassRef = stream2.next();
-			IClassRef classRef = jpaFactory().createClassRef(this);
-			addClassRef(classRef);
-			classRef.update(xmlClassRef);
+			addClassRef(createClassRef(stream2.next()));
 		}
+	}
+	
+	protected IClassRef createClassRef(XmlJavaClassRef xmlClassRef) {
+		IClassRef classRef = jpaFactory().createClassRef(this);
+		classRef.initialize(xmlClassRef);
+		return classRef;
 	}
 }

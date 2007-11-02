@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 public class BaseJpaContent extends JpaContextNode 
@@ -25,6 +26,16 @@ public class BaseJpaContent extends JpaContextNode
 	
 	public BaseJpaContent(IJpaProject jpaProject) {
 		super(jpaProject);
+	}
+	
+	@Override
+	protected void initialize(Node parentNode) {
+		super.initialize(parentNode);
+		PersistenceResourceModel persistenceResource = persistenceResource();
+		
+		if (resourceExists(persistenceResource)) {
+			this.persistenceXml = createPersistenceXml(persistenceResource);
+		}
 	}
 	
 	@Override
@@ -39,34 +50,46 @@ public class BaseJpaContent extends JpaContextNode
 	}
 	
 	public void setPersistenceXml(IPersistenceXml newPersistenceXml) {
-		if (persistenceXml != newPersistenceXml) {
-			IPersistenceXml oldPersistenceXml = persistenceXml;
-			persistenceXml = newPersistenceXml;
-			firePropertyChanged(PERSISTENCE_XML_PROPERTY, oldPersistenceXml, newPersistenceXml);
-		}
+		IPersistenceXml oldPersistenceXml = persistenceXml;
+		persistenceXml = newPersistenceXml;
+		firePropertyChanged(PERSISTENCE_XML_PROPERTY, oldPersistenceXml, newPersistenceXml);
 	}
 	
 	
 	// **************** updating **********************************************
 	
 	public void update(IProgressMonitor monitor) {
-		PersistenceArtifactEdit pae = 
-				PersistenceArtifactEdit.getArtifactEditForRead(
-						jpaProject().project(), 
-						JptCorePlugin.persistenceXmlDeploymentURI(jpaProject().project()));
-		PersistenceResourceModel persistenceResource = pae.getPersistenceResource();
+		PersistenceResourceModel persistenceResource = persistenceResource();
 		
-		if (WorkbenchResourceHelper.getFile(persistenceResource).exists()) {
-			if (persistenceXml == null) {
-				IPersistenceXml persistenceXml = jpaFactory().createPersistenceXml(this);
-				setPersistenceXml(persistenceXml);
+		if (resourceExists(persistenceResource)) {
+			if (this.persistenceXml == null) {
+				setPersistenceXml(createPersistenceXml(persistenceResource));
 			}
-			persistenceXml.update(persistenceResource);
+			else {
+				this.persistenceXml.update(persistenceResource);
+			}
 		}
 		else {
-			if (persistenceXml != null) {
-				setPersistenceXml(null);
-			}
+			setPersistenceXml(null);
 		}
+	}
+	
+	protected PersistenceResourceModel persistenceResource() {
+		PersistenceArtifactEdit pae = 
+			PersistenceArtifactEdit.getArtifactEditForRead(
+					jpaProject().project(), 
+					JptCorePlugin.persistenceXmlDeploymentURI(jpaProject().project()));
+	
+		return pae.getPersistenceResource();
+	}
+	
+	protected boolean resourceExists(PersistenceResourceModel persistenceResource) {
+		return WorkbenchResourceHelper.getFile(persistenceResource).exists();
+	}
+
+	protected IPersistenceXml createPersistenceXml(PersistenceResourceModel persistenceResource) {
+		IPersistenceXml persistenceXml = jpaFactory().createPersistenceXml(this);
+		persistenceXml.initialize(persistenceResource);
+		return persistenceXml;
 	}
 }

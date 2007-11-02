@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.AccessType;
-import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
@@ -61,9 +60,32 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	public JavaPersistentType(IClassRef parent) {
 		super(parent);
 		this.attributes = new ArrayList<IJavaPersistentAttribute>();
-		this.mapping = createJavaTypeMappingFromMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
 	}
 	
+	public void initialize(JavaPersistentTypeResource persistentTypeResource) {
+		this.parentPersistentType = this.parentPersistentType(persistentTypeResource);
+		this.access = this.access(persistentTypeResource);
+		this.name = this.name(persistentTypeResource);
+		this.initializeMapping(persistentTypeResource);
+		this.initializePersistentAttributes(persistentTypeResource);
+	}
+	
+	protected void initializeMapping(JavaPersistentTypeResource persistentTypeResource) {
+		this.mapping = createJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(persistentTypeResource));
+		this.mapping.initialize(persistentTypeResource);
+	}
+	
+	protected void initializePersistentAttributes(JavaPersistentTypeResource persistentTypeResource) {
+		Iterator<JavaPersistentAttributeResource> resourceAttributes = persistentTypeResource.fields();
+		if (access() == AccessType.PROPERTY) {
+			resourceAttributes = persistentTypeResource.properties();
+		}		
+		
+		while (resourceAttributes.hasNext()) {
+			this.attributes.add(createAttribute(resourceAttributes.next()));
+		}
+	}
+
 	public String getName() {
 		return this.name;
 	}
@@ -255,13 +277,17 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		updatePersistentAttributes(persistentTypeResource);
 	}
 	
+	protected void updateAccess(JavaPersistentTypeResource persistentTypeResource) {
+		this.setAccess(this.access(persistentTypeResource));
+	}
+
 	/**
 	 * Check the access "specified" by the java resource model.
 	 * 		If this is not null then use that as the access. (validation will handle where this doesn't match inheritance)
 	 * 		If null then set to parentPersistentType access.
 	 * 		Default to FIELD if no parentPersistentType.
 	 */
-	protected void updateAccess(JavaPersistentTypeResource persistentTypeResource) {
+	protected AccessType access(JavaPersistentTypeResource persistentTypeResource) {
 		AccessType javaAccess = AccessType.fromJavaResourceModel(persistentTypeResource.getAccess());
 		if (javaAccess == null) {
 			if (parentPersistentType() != null) {
@@ -271,13 +297,16 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 				javaAccess = AccessType.FIELD;
 			}
 		}
-		setAccess(javaAccess);
-	}
-
-	protected void updateName(JavaPersistentTypeResource persistentTypeResource) {
-		setName(persistentTypeResource.getQualifiedName());	
+		return javaAccess;
 	}
 	
+	protected void updateName(JavaPersistentTypeResource persistentTypeResource) {
+		this.setName(this.name(persistentTypeResource));	
+	}
+	
+	protected String name(JavaPersistentTypeResource persistentTypeResource) {
+		return persistentTypeResource.getQualifiedName();
+	}
 	protected void updateMapping(JavaPersistentTypeResource persistentTypeResource) {
 		String javaMappingAnnotationName = this.javaMappingAnnotationName(persistentTypeResource);
 		if (getMapping().annotationName() != javaMappingAnnotationName) {
@@ -320,19 +349,23 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		}
 		
 		while (resourceAttributes.hasNext()) {
-			IJavaPersistentAttribute persistentAttribute = createAttribute();
-			addAttribute(persistentAttribute);
-			persistentAttribute.update(resourceAttributes.next());
+			addAttribute(createAttribute(resourceAttributes.next()));
 		}
 	}
 	
-	protected IJavaPersistentAttribute createAttribute() {
-		return jpaFactory().createJavaPersistentAttribute(this);
+	protected IJavaPersistentAttribute createAttribute(JavaPersistentAttributeResource persistentAttributeResource) {
+		IJavaPersistentAttribute javaPersistentAttribute = jpaFactory().createJavaPersistentAttribute(this);
+		javaPersistentAttribute.initialize(persistentAttributeResource);
+		return javaPersistentAttribute;
 	}
 	
 	public void updateParentPersistentType(JavaPersistentTypeResource persistentTypeResource) {
 		//TODO do we need any change notification for this?
-		this.parentPersistentType = parentPersistentType(persistentTypeResource.getSuperClassQualifiedName());
+		this.parentPersistentType = parentPersistentType(persistentTypeResource);
+	}
+	
+	protected IPersistentType parentPersistentType(JavaPersistentTypeResource persistentTypeResource) {
+		return parentPersistentType(persistentTypeResource.getSuperClassQualifiedName());
 	}
 	
 	protected IPersistentType parentPersistentType(String fullyQualifiedTypeName) {

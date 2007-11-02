@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 
 public class PersistenceXml extends JpaContextNode
 	implements IPersistenceXml
@@ -22,6 +23,12 @@ public class PersistenceXml extends JpaContextNode
 		super(baseJpaContent);
 	}
 	
+	public void initialize(PersistenceResourceModel persistenceResource) {
+		if (persistenceResource.getPersistence() != null) {
+			this.persistence = createPersistence(persistenceResource.getPersistence());
+		}
+	}
+
 	@Override
 	public IPersistenceUnit persistenceUnit() {
 		throw new UnsupportedOperationException("No PersistenceUnit in this context");
@@ -44,13 +51,21 @@ public class PersistenceXml extends JpaContextNode
 	
 	public void update(PersistenceResourceModel persistenceResource) {
 		if (persistenceResource.getPersistence() != null) {
-			if (persistence == null) {
-				setPersistence(jpaFactory().createPersistence(this));
+			if (this.persistence != null) {
+				this.persistence.update(persistenceResource.getPersistence());
 			}
-			persistence.update(persistenceResource.getPersistence());
+			else {
+				setPersistence(createPersistence(persistenceResource.getPersistence()));
+			}
 		}
 		else {
 			setPersistence(null);
 		}
+	}
+	
+	protected IPersistence createPersistence(XmlPersistence xmlPersistence) {
+		IPersistence persistence = jpaFactory().createPersistence(this);
+		persistence.initialize(xmlPersistence);
+		return persistence;
 	}
 }

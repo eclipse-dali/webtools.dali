@@ -76,6 +76,15 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
 	}
 
+	@Override
+	public void initialize(JavaPersistentTypeResource persistentTypeResource) {
+		super.initialize(persistentTypeResource);
+		this.entityResource = (Entity) persistentTypeResource.mappingAnnotation(Entity.ANNOTATION_NAME);
+		
+		this.specifiedName = this.specifiedName(this.entityResource);
+		this.defaultName = this.defaultName(persistentTypeResource);
+	}
+	
 //	private ITable.Owner buildTableOwner() {
 //		return new ITable.Owner() {
 //			public ITextRange validationTextRange() {
@@ -464,8 +473,16 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		super.update(persistentTypeResource);
 		this.entityResource = (Entity) persistentTypeResource.mappingAnnotation(Entity.ANNOTATION_NAME);
 		
-		setSpecifiedName(this.entityResource.getName());
-		setDefaultName(persistentTypeResource.getName());
+		this.setSpecifiedName(this.specifiedName(this.entityResource));
+		this.setDefaultName(this.defaultName(persistentTypeResource));
+	}
+	
+	protected String specifiedName(Entity entityResource) {
+		return entityResource.getName();
+	}
+	
+	protected String defaultName(JavaPersistentTypeResource persistentTypeResource) {
+		return persistentTypeResource.getName();
 	}
 //	@Override
 //	public void updateFromJava(CompilationUnit astRoot) {

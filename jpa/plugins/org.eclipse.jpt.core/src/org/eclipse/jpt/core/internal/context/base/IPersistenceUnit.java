@@ -15,6 +15,8 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 
 public interface IPersistenceUnit extends IJpaContextNode
 {
+	void initialize(XmlPersistenceUnit persistenceUnit);
+	
 	/**
 	 * Return the IPersistentType specified in this PersistenceUnit with the given
 	 * fully qualified type name

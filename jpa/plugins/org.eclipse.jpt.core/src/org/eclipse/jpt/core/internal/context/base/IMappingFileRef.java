@@ -14,6 +14,8 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 
 public interface IMappingFileRef extends IJpaContextNode
 {
+	void initialize(XmlMappingFileRef mappingFileRef);
+
 	// **************** udpating ***********************************************
 	
 	void update(XmlMappingFileRef mappingFileRef);

@@ -14,6 +14,8 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 
 public interface IJavaPersistentType extends IPersistentType
 {
+	void initialize(JavaPersistentTypeResource persistentTypeResource);
+
 	void update(JavaPersistentTypeResource persistentTypeResource);
 
 }

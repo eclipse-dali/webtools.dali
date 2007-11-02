@@ -18,6 +18,9 @@ public class MappingFileRef extends JpaContextNode implements IMappingFileRef
 		super(parent);
 	}
 	
+	public void initialize(XmlMappingFileRef mappingFileRef) {
+		
+	}
 	
 	// **************** updating ***********************************************
 	

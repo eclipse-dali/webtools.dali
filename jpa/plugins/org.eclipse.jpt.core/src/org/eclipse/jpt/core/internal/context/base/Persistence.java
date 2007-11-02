@@ -29,6 +29,16 @@ public class Persistence extends JpaContextNode
 		this.persistenceUnits = new ArrayList<IPersistenceUnit>();
 	}
 	
+	public void initialize(XmlPersistence xmlPersistence) {
+		initializePersistenceUnits(xmlPersistence);
+	}
+	
+	protected void initializePersistenceUnits(XmlPersistence persistence) {
+		for (XmlPersistenceUnit xmlPersistenceUnit : persistence.getPersistenceUnits()) {
+			this.persistenceUnits.add(createPersistenceUnit(xmlPersistenceUnit));
+		}
+	}
+
 	@Override
 	public IPersistenceUnit persistenceUnit() {
 		throw new UnsupportedOperationException("No PersistenceUnit in this context");
@@ -71,8 +81,7 @@ public class Persistence extends JpaContextNode
 		while (stream.hasNext()) {
 			IPersistenceUnit persistenceUnit = stream.next();
 			if (stream2.hasNext()) {
-				XmlPersistenceUnit xmlPersistenceUnit = stream2.next();
-				persistenceUnit.update(xmlPersistenceUnit);
+				persistenceUnit.update(stream2.next());
 			}
 			else {
 				removePersistenceUnit(persistenceUnit);
@@ -80,10 +89,13 @@ public class Persistence extends JpaContextNode
 		}
 		
 		while (stream2.hasNext()) {
-			XmlPersistenceUnit xmlPersistenceUnit = stream2.next();
-			IPersistenceUnit persistenceUnit = jpaFactory().createPersistenceUnit(this);
-			addPersistenceUnit(persistenceUnit);
-			persistenceUnit.update(xmlPersistenceUnit);
+			addPersistenceUnit(createPersistenceUnit(stream2.next()));
 		}
+	}
+	
+	protected IPersistenceUnit createPersistenceUnit(XmlPersistenceUnit xmlPersistenceUnit) {
+		IPersistenceUnit persistenceUnit = jpaFactory().createPersistenceUnit(this);
+		persistenceUnit.initialize(xmlPersistenceUnit);
+		return persistenceUnit;
 	}
 }

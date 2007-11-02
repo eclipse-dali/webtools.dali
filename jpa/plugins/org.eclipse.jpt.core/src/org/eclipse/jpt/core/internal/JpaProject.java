@@ -190,7 +190,7 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 				case IResource.FOLDER :
 					return true;  // visit children
 				case IResource.FILE :
-					JpaProject.this.addJpaFile((IFile) resource.requestResource());
+					JpaProject.this.addJpaFileInternal((IFile) resource.requestResource());
 					return false;  // no children
 				default :
 					return false;  // no children
@@ -281,6 +281,17 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 		if (jpaFile != null) {
 			jpaFile.getResourceModel().addResourceModelChangeListener(getResourceModelListener());
 			this.addItemToCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION);
+		}
+	}
+	
+	/**
+	 * Add directly to the collection so that we don't fire change events during construction
+	 */
+	protected void addJpaFileInternal(IFile file) {
+		IJpaFile jpaFile = this.jpaPlatform.buildJpaFile(this, file);
+		if (jpaFile != null) {
+			jpaFile.getResourceModel().addResourceModelChangeListener(getResourceModelListener());
+			this.jpaFiles.add(jpaFile);
 		}
 	}
 
@@ -518,10 +529,8 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 	}
 
 	public void update() {
-		if (contextModel() != null) {
-			contextModel().update(null); //TODO put this back on a job, running synchronously for tests
-			//this.updateJpaProjectJobScheduler.schedule();
-		}
+		contextModel().update(null); //TODO put this back on a job, running synchronously for tests
+		//this.updateJpaProjectJobScheduler.schedule();
 	}
 
 	protected static class UpdateJpaProjectJobScheduler {

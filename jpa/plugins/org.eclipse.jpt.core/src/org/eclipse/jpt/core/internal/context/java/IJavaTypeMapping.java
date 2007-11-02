@@ -17,6 +17,8 @@ import org.eclipse.jpt.utility.internal.Filter;
 
 public interface IJavaTypeMapping extends ITypeMapping
 {
+	void initialize(JavaPersistentTypeResource persistentTypeResource);
+	
 	void update(JavaPersistentTypeResource persistentTypeResource);
 
 	/**

@@ -25,6 +25,14 @@ public class ClassRef extends JpaContextNode implements IClassRef
 		super(parent);
 	}
 	
+	public void initialize(XmlJavaClassRef classRef) {
+		this.javaClassName = classRef.getJavaClass();
+		JavaPersistentTypeResource persistentTypeResource = jpaProject().javaPersistentTypeResource(this.javaClassName);
+		if (persistentTypeResource != null) {
+			this.javaPersistentType = createJavaPersistentType(persistentTypeResource);
+		}		
+	}
+	
 	public boolean isFor(String fullyQualifiedTypeName) {
 		return this.javaClassName.equals(fullyQualifiedTypeName);
 	}
@@ -49,10 +57,18 @@ public class ClassRef extends JpaContextNode implements IClassRef
 			setJavaPersistentType(null);
 		}
 		else { 
-			if (getJavaPersistentType() == null) {
-				setJavaPersistentType(jpaFactory().createJavaPersistentType(this));
+			if (getJavaPersistentType() != null) {
+				getJavaPersistentType().update(persistentTypeResource);
 			}
-			getJavaPersistentType().update(persistentTypeResource);
+			else {
+				setJavaPersistentType(createJavaPersistentType(persistentTypeResource));
+			}
 		}		
+	}
+	
+	protected IJavaPersistentType createJavaPersistentType(JavaPersistentTypeResource persistentTypeResource) {
+		IJavaPersistentType javaPersistentType = jpaFactory().createJavaPersistentType(this);
+		javaPersistentType.initialize(persistentTypeResource);
+		return javaPersistentType;
 	}
 }

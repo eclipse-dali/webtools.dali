@@ -29,6 +29,10 @@ public abstract class JavaTypeMapping extends JavaContextModel
 		super(parent);
 	}
 
+	public void initialize(JavaPersistentTypeResource persistentTypeResource) {
+		//nothing to initialize
+	}
+	
 	public String getName() {
 		return this.getPersistentType().getName();
 	}
