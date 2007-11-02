@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
-//import org.eclipse.jpt.utility.tests.internal.model.value.prefs.JptUtilityModelValuePrefsTests;
+import org.eclipse.jpt.utility.tests.internal.model.value.prefs.JptUtilityModelValuePrefsTests;
 //import org.eclipse.jpt.utility.tests.internal.model.value.swing.JptUtilityModelValueSwingTests;
 
 import junit.framework.Test;
@@ -20,7 +20,7 @@ public class JptUtilityModelValueTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptUtilityModelValueTests.class.getPackage().getName());
 
-//		suite.addTest(JptUtilityModelValuePrefsTests.suite());
+		suite.addTest(JptUtilityModelValuePrefsTests.suite());
 //		suite.addTest(JptUtilityModelValueSwingTests.suite());
 		
 		suite.addTestSuite(BufferedPropertyValueModelTests.class);
