@@ -159,7 +159,7 @@ public abstract class AbstractTreeNodeValueModel
 	 * a tree's expanded paths. The nodes in the expanded paths that are
 	 * saved before any modification (e.g. renaming a node) will be different
 	 * from the nodes in the tree's paths after the modification, if the modification
-	 * results in a possible change in the node sort order.  -bjv
+	 * results in a possible change in the node sort order.  ~bjv
 	 */
 	@Override
 	public boolean equals(Object o) {
