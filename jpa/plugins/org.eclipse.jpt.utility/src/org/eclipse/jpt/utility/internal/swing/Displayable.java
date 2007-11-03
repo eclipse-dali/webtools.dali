@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.utility.internal;
+package org.eclipse.jpt.utility.internal.swing;
 
 import java.text.Collator;
 import java.util.Comparator;
