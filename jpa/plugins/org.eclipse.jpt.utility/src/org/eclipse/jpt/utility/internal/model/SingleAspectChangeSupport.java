@@ -7,12 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.utility.internal.model.value;
+package org.eclipse.jpt.utility.internal.model;
 
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
@@ -23,43 +22,44 @@ import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 /**
  * This support class changes the behavior of the standard
  * ChangeSupport in several ways:
- * 	- The source must be a ValueModel.
- * 	- All events fired by the source must specify the VALUE aspect name.
- * 	- Listeners are required to be either VALUE listeners or
- * 		"generic" listeners.
- * 	- VALUE listeners are stored alongside the "generic" listeners,
- * 		improving performance a bit (in terms of both time and space)
+ * 	- All events fired by the source must specify the expected aspect name.
+ * 	- Listeners are required to be either "generic" listeners or
+ * 	    listeners of the aspect name.
+ * 	- The "aspect-specific" listeners are stored alongside the "generic"
+ *     listeners, improving performance a bit (in terms of both time and space)
  */
-public class ValueModelChangeSupport extends ChangeSupport {
+public class SingleAspectChangeSupport extends ChangeSupport {
+	private final String aspectName;
 	private static final long serialVersionUID = 1L;
 
-	public ValueModelChangeSupport(ValueModel source) {
+	public SingleAspectChangeSupport(Model source, String aspectName) {
 		super(source);
+		this.aspectName = aspectName;
 	}
 
 
 	// ******************** internal behavior ********************
 
 	private UnsupportedOperationException unsupportedOperationException() {
-		return new UnsupportedOperationException("ValueModels only support VALUE changes");
+		return new UnsupportedOperationException("This Model supports only changes for the aspect \"" + this.aspectName + "\"");
 	}
 
-	private void checkAspectName(String aspectName) {
-		if (aspectName != ValueModel.VALUE) {
-			throw new IllegalArgumentException("ValueModels only support VALUE changes: \"" + aspectName + "\"");
+	private void checkAspectName(String aName) {
+		if (aName != this.aspectName) {
+			throw new IllegalArgumentException("This Model supports only changes for the aspect \"" + this.aspectName + "\" : \"" + aName + "\"");
 		}
 	}
 
 	@Override
-	protected <T extends ChangeListener> void addListener(String aspectName, Class<T> listenerClass, T listener) {
-		this.checkAspectName(aspectName);
+	protected <T extends ChangeListener> void addListener(String aName, Class<T> listenerClass, T listener) {
+		this.checkAspectName(aName);
 		// redirect to "generic" listeners collection
 		this.addListener(listenerClass, listener);
 	}
 
 	@Override
-	protected <T extends ChangeListener> void removeListener(String aspectName, Class<T> listenerClass, T listener) {
-		this.checkAspectName(aspectName);
+	protected <T extends ChangeListener> void removeListener(String aName, Class<T> listenerClass, T listener) {
+		this.checkAspectName(aName);
 		// redirect to "generic" listeners collection
 		this.removeListener(listenerClass, listener);
 	}
@@ -68,8 +68,8 @@ public class ValueModelChangeSupport extends ChangeSupport {
 	// ******************** internal queries ********************
 
 	@Override
-	protected boolean hasAnyListeners(Class<? extends ChangeListener> listenerClass, String aspectName) {
-		this.checkAspectName(aspectName);
+	protected boolean hasAnyListeners(Class<? extends ChangeListener> listenerClass, String aName) {
+		this.checkAspectName(aName);
 		// redirect to "generic" listeners collection
 		return this.hasAnyListeners(listenerClass);
 	}

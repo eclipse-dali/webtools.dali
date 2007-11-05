@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
+import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 
 /**
  * Implementation of ListValueModel that simply holds on to a
@@ -46,7 +47,7 @@ public class SimpleListValueModel
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new ValueModelChangeSupport(this);
+		return new SingleAspectChangeSupport(this, VALUE);
 	}
 
 

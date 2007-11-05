@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
+import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 
@@ -56,7 +57,7 @@ public abstract class PropertyValueModelWrapper
 	
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new ValueModelChangeSupport(this);
+		return new SingleAspectChangeSupport(this, VALUE);
 	}
 
 	protected PropertyChangeListener buildValueChangeListener() {

@@ -58,7 +58,7 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  * are also serializable while silently leaving behind listeners that are not.
  * 
  * TODO support a dispatcher per listener
- * TODO fire a state change event with *every* change?
+ * TODO fire a STATE change event with *every* change?
  * TODO use objects (IDs?) instead of strings to identify aspects
  */
 public class ChangeSupport

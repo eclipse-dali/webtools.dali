@@ -42,7 +42,7 @@ public class LobCheckBox extends BaseJpaController
 	private void buildBasicMappingListener() {
 		this.basicMappingListener = new AdapterImpl() {
 			public void notifyChanged(Notification notification) {
-				bsaicMappingChanged(notification);
+				basicMappingChanged(notification);
 			}
 		};
 	}
@@ -72,7 +72,8 @@ public class LobCheckBox extends BaseJpaController
 		}
 	}
 
-	private void bsaicMappingChanged(Notification notification) {
+	private void basicMappingChanged(Notification notification) {
+		// ui thread
 		if (notification.getFeatureID(IBasic.class) == 
 				JpaCoreMappingsPackage.IBASIC__LOB) {
 			Display.getDefault().asyncExec(

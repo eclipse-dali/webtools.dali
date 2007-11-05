@@ -1043,7 +1043,7 @@ public abstract class AbstractJavaTable extends JavaEObject implements ITable
 		}
 	}
 
-	// bjv look at this
+	// look at this
 	public void uniqueConstraintsAdded(int index, List<IUniqueConstraint> constraints) {
 		// JoinColumn was added to jpa model when updating from java, do not need
 		// to edit the java in this case. TODO is there a better way to handle this??

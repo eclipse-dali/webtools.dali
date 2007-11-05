@@ -96,6 +96,7 @@ public abstract class JavaEObject extends JpaEObject
 		return (elementTextRange != null) ? elementTextRange : this.validationTextRange();
 	}
 
+	// TODO better name?
 	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		if (this.isConnected()) {
 			Iterator<String> result = this.connectedCandidateValuesFor(pos, filter, astRoot);

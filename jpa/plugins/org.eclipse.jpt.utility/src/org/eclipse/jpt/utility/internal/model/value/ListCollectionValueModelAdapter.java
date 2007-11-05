@@ -16,6 +16,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
+import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
@@ -75,7 +76,7 @@ public class ListCollectionValueModelAdapter
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new ValueModelChangeSupport(this);
+		return new SingleAspectChangeSupport(this, VALUE);
 	}
 
 	/**

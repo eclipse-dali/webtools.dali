@@ -14,6 +14,7 @@ import java.util.Iterator;
 
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
+import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 
@@ -57,7 +58,7 @@ public abstract class CollectionValueModelWrapper
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new ValueModelChangeSupport(this);
+		return new SingleAspectChangeSupport(this, VALUE);
 	}
 
 	protected CollectionChangeListener buildCollectionChangeListener() {

@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
+import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
@@ -75,7 +76,7 @@ public abstract class CollectionPropertyValueModelAdapter
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new ValueModelChangeSupport(this);
+		return new SingleAspectChangeSupport(this, VALUE);
 	}
 
 	protected CollectionChangeListener buildCollectionChangeListener() {
