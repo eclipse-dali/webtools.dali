@@ -29,7 +29,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaTableTests extends ContextModelTestCase
 {
-	private static final String ENTITY_NAME = "entityName";
 	private static final String TABLE_NAME = "MY_TABLE";
 	
 	private void createEntityAnnotation() throws Exception{
@@ -74,6 +73,25 @@ public class JavaTableTests extends ContextModelTestCase
 			}
 		});
 	}
+
+	private IType createTestSubType() throws Exception {
+		return this.createTestType(PACKAGE_NAME, "AnnotationTestTypeChild.java", "AnnotationTestTypeChild", new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY);
+			}
+			@Override
+			public void appendExtendsImplementsTo(StringBuffer sb) {
+				sb.append("extends " + TYPE_NAME + " ");
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity");
+			}
+
+		});
+	}
+
 
 		
 	public JavaTableTests(String name) {
@@ -141,6 +159,22 @@ public class JavaTableTests extends ContextModelTestCase
 		assertEquals("foo", javaEntity().getTable().getDefaultName());
 	}
 	
+	public void testGetDefaultNameSingleTableInheritance() throws Exception {
+		createTestEntity();
+		createTestSubType();
+		
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertNotSame(javaEntity(), javaEntity().rootEntity());
+		assertEquals(TYPE_NAME, javaEntity().getTable().getDefaultName());
+		assertEquals(TYPE_NAME, javaEntity().rootEntity().getTable().getDefaultName());
+		
+		//test that setting the root java entity name will change the table default name of the child
+		javaEntity().rootEntity().setSpecifiedName("foo");
+		assertEquals("foo", javaEntity().getTable().getDefaultName());
+	}
+
 	public void testGetNameSpecifiedNameNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

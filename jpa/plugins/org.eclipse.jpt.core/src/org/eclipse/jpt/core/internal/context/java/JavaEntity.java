@@ -15,13 +15,18 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.ITable;
+import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
+import org.eclipse.jpt.core.internal.resource.java.Inheritance;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.utility.internal.Filter;
 
 
 public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 {
+	protected JavaPersistentTypeResource persistentTypeResource;
+	
 	protected Entity entityResource;
 	
 	protected String specifiedName;
@@ -29,17 +34,18 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	protected String defaultName;
 
 	protected final ITable table;
-//
+
 //	protected List<ISecondaryTable> specifiedSecondaryTables;
 //
 //	protected List<IPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
 //
 //	protected List<IPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns;
-//
-//	protected static final InheritanceType INHERITANCE_STRATEGY_EDEFAULT = InheritanceType.DEFAULT;
-//
-//	protected InheritanceType inheritanceStrategy = INHERITANCE_STRATEGY_EDEFAULT;
-//
+
+
+	protected InheritanceType specifiedInheritanceStrategy;
+	
+	protected InheritanceType defaultInheritanceStrategy;
+
 //	protected static final String DEFAULT_DISCRIMINATOR_VALUE_EDEFAULT = null;
 //
 //	protected String defaultDiscriminatorValue = DEFAULT_DISCRIMINATOR_VALUE_EDEFAULT;
@@ -81,13 +87,25 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	@Override
 	public void initialize(JavaPersistentTypeResource persistentTypeResource) {
 		super.initialize(persistentTypeResource);
+		this.persistentTypeResource = persistentTypeResource;
 		this.entityResource = (Entity) persistentTypeResource.mappingAnnotation(Entity.ANNOTATION_NAME);
 		
 		this.specifiedName = this.specifiedName(this.entityResource);
 		this.defaultName = this.defaultName(persistentTypeResource);
 		this.table.initialize(persistentTypeResource);
+		this.defaultInheritanceStrategy = this.defaultInheritanceStrategy();
+		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(inheritanceResource());
 	}
 	
+	//query for the table resource every time on setters.
+	//call one setter and the tableResource could change. 
+	//You could call more than one setter before this object has received any notification
+	//from the java resource model
+	protected Inheritance inheritanceResource() {
+		//TODO get the NullInheritance from the resource model or build it here in the context model??
+		return (Inheritance) this.persistentTypeResource.nonNullAnnotation(JPA.INHERITANCE);
+	}
+
 //	private ITable.Owner buildTableOwner() {
 //		return new ITable.Owner() {
 //			public ITextRange validationTextRange() {
@@ -171,16 +189,32 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //		return false;
 //	}
 //
-//	public InheritanceType getInheritanceStrategy() {
-//		return inheritanceStrategy;
-//	}
-//
-//	public void setInheritanceStrategy(InheritanceType newInheritanceStrategy) {
-//		InheritanceType oldInheritanceStrategy = inheritanceStrategy;
-//		inheritanceStrategy = newInheritanceStrategy == null ? INHERITANCE_STRATEGY_EDEFAULT : newInheritanceStrategy;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ENTITY__INHERITANCE_STRATEGY, oldInheritanceStrategy, inheritanceStrategy));
-//	}
+	public InheritanceType getInheritanceStrategy() {
+		return (this.getSpecifiedInheritanceStrategy() == null) ? this.getDefaultInheritanceStrategy() : this.getSpecifiedInheritanceStrategy();
+	}
+	
+	public InheritanceType getDefaultInheritanceStrategy() {
+		return this.defaultInheritanceStrategy;
+	}
+	
+	protected void setDefaultInheritanceStrategy(InheritanceType newInheritanceType) {
+		InheritanceType oldInheritanceType = this.defaultInheritanceStrategy;
+		this.defaultInheritanceStrategy = newInheritanceType;
+		firePropertyChanged(DEFAULT_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
+	}
+	
+	public InheritanceType getSpecifiedInheritanceStrategy() {
+		return this.specifiedInheritanceStrategy;
+	}
+	
+	public void setSpecifiedInheritanceStrategy(InheritanceType newInheritanceType) {
+		InheritanceType oldInheritanceType = this.specifiedInheritanceStrategy;
+		this.specifiedInheritanceStrategy = newInheritanceType;
+		inheritanceResource().setStrategy(InheritanceType.toJavaResourceModel(newInheritanceType));
+		firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
+	}
+
+
 //
 //	public IDiscriminatorColumn getDiscriminatorColumn() {
 //		return discriminatorColumn;
@@ -480,18 +514,35 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.setDefaultName(this.defaultName(persistentTypeResource));
 		
 		updateTable(persistentTypeResource);
+		updateInheritance(inheritanceResource());
 	}
-	
-	protected void updateTable(JavaPersistentTypeResource persistentTypeResource) {
-		getTable().update(persistentTypeResource);
-	}
-	
+		
 	protected String specifiedName(Entity entityResource) {
 		return entityResource.getName();
 	}
 	
 	protected String defaultName(JavaPersistentTypeResource persistentTypeResource) {
 		return persistentTypeResource.getName();
+	}
+
+	protected void updateTable(JavaPersistentTypeResource persistentTypeResource) {
+		getTable().update(persistentTypeResource);
+	}
+	
+	protected void updateInheritance(Inheritance inheritanceResource) {
+		this.setSpecifiedInheritanceStrategy(this.specifiedInheritanceStrategy(inheritanceResource));
+		this.setDefaultInheritanceStrategy(this.defaultInheritanceStrategy());
+	}
+	
+	protected InheritanceType specifiedInheritanceStrategy(Inheritance inheritanceResource) {
+		return InheritanceType.fromJavaResourceModel(inheritanceResource.getStrategy());
+	}
+	
+	protected InheritanceType defaultInheritanceStrategy() {
+		if (rootEntity() == this) {
+			return InheritanceType.SINGLE_TABLE;
+		}
+		return rootEntity().getInheritanceStrategy();
 	}
 	
 //	@Override

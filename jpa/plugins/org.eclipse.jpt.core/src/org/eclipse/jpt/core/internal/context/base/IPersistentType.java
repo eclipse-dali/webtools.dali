@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.AccessType;
 
 
 public interface IPersistentType extends IJpaContextNode

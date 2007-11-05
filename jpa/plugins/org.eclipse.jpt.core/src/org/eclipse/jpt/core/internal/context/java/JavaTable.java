@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.resource.java.Table;
 
 
@@ -40,16 +41,20 @@ public class JavaTable extends AbstractJavaTable
 	}
 	
 	@Override
+	/**
+	 * Table name default to the owning java entity name.
+	 * If this entity is part of a single table inheritance hierarchy, table
+	 * name defaults to the root entity's table name.
+	 */
 	protected String defaultName() {
-		//TODO default name after inheritanceStrategy is added
-//		if (rootEntity().getInheritanceStrategy().isSingleTable()) {
-//			if (rootEntity() != javaEntity()) {
-//				return rootEntity().getTable().getName();
-//			}
-//		}
+		if (javaEntity().getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
+			if (rootEntity() != javaEntity()) {
+				return rootEntity().getTable().getName();
+			}
+		}
 		return javaEntity().getName();
-
 	}
+	
 //	@Override
 //	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
 //		return JavaUniqueConstraint.createTableUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);

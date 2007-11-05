@@ -94,7 +94,7 @@ public class InheritanceImpl extends AbstractAnnotationResource<Type> implements
 		}
 		
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
-			return null;
+			return new NullInheritance(parent);
 		}
 
 		public String getAnnotationName() {

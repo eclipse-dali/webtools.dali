@@ -8,7 +8,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal;
+package org.eclipse.jpt.core.internal.context.base;
 
 public enum AccessType {
 

@@ -25,11 +25,17 @@ public interface IEntity extends ITypeMapping
 //	EList<ISecondaryTable> getSpecifiedSecondaryTables();
 //
 //	EList<ISecondaryTable> getSecondaryTables();
-//
-//	InheritanceType getInheritanceStrategy();
-//
-//	void setInheritanceStrategy(InheritanceType value);
-//
+
+	
+	InheritanceType getInheritanceStrategy();
+	
+	InheritanceType getDefaultInheritanceStrategy();
+		String DEFAULT_INHERITANCE_STRATEGY_PROPERTY = "defaultInheritanceStrategy";
+		
+	InheritanceType getSpecifiedInheritanceStrategy();
+	void setSpecifiedInheritanceStrategy(InheritanceType newInheritanceType);
+		String SPECIFIED_INHERITANCE_STRATEGY_PROPERTY = "specifiedInheritanceStrategy";
+	
 //	IDiscriminatorColumn getDiscriminatorColumn();
 //
 //	ISequenceGenerator getSequenceGenerator();

@@ -113,4 +113,10 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected IType createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
 		return this.javaProject.createType("javax.persistence", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
+	
+	protected IType createEnumAndMembers(String enumName, String enumBody) throws Exception {
+		return this.javaProject.createType("javax.persistence", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
+	}
+
+
 }

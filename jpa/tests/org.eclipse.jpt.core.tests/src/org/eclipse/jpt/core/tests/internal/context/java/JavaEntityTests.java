@@ -16,8 +16,10 @@ import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.ITable;
+import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
+import org.eclipse.jpt.core.internal.resource.java.Inheritance;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
@@ -32,14 +34,23 @@ public class JavaEntityTests extends ContextModelTestCase
 	private static final String ENTITY_NAME = "entityName";
 	private static final String TABLE_NAME = "MY_TABLE";
 	
-	private void createEntityAnnotation() throws Exception{
+	private void createEntityAnnotation() throws Exception {
 		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
 	}
-	private void createTableAnnotation() throws Exception{
+	
+	private void createTableAnnotation() throws Exception {
 		this.createAnnotationAndMembers("Table", "String name() default \"\";");		
 	}
+	
+	private void createInheritanceAnnotation() throws Exception {
+		createInheritanceTypeEnum();
+		this.createAnnotationAndMembers("Inheritance", "InheritanceType strategy() default SINGLE_TABLE;");		
+	}
+	
+	private void createInheritanceTypeEnum() throws Exception {
+		this.createEnumAndMembers("InheritanceType", "SINGLE_TABLE, JOINED, TABLE_PER_CLASS");
+	}
 		
-
 	private IType createTestEntity() throws Exception {
 		createEntityAnnotation();
 	
@@ -70,6 +81,7 @@ public class JavaEntityTests extends ContextModelTestCase
 			}
 		});
 	}
+	
 	private IType createTestEntityWithTable() throws Exception {
 		createEntityAnnotation();
 		createTableAnnotation();
@@ -81,13 +93,47 @@ public class JavaEntityTests extends ContextModelTestCase
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Entity");
+				sb.append("@Entity").append(CR);
 				sb.append("@Table(name=\"" + TABLE_NAME + "\")");
 			}
 		});
 	}
 
-		
+	private IType createTestSubType() throws Exception {
+		return this.createTestType(PACKAGE_NAME, "AnnotationTestTypeChild.java", "AnnotationTestTypeChild", new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY);
+			}
+			@Override
+			public void appendExtendsImplementsTo(StringBuffer sb) {
+				sb.append("extends " + TYPE_NAME + " ");
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity");
+			}
+
+		});
+	}
+
+	private IType createTestEntityWithInheritance() throws Exception {
+		createEntityAnnotation();
+		createInheritanceAnnotation();
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.INHERITANCE, JPA.INHERITANCE_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity").append(CR);
+				sb.append("@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)").append(CR);
+			}
+		});
+	}
+
 	public JavaEntityTests(String name) {
 		super(name);
 	}
@@ -172,7 +218,6 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("foo", javaEntity().getSpecifiedName());
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		Entity entity = (Entity) typeResource.mappingAnnotation();
 		
 		assertEquals("foo", ((Entity) typeResource.mappingAnnotation()).getName());
 	}
@@ -237,11 +282,79 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(TABLE_NAME, table.getName());
 
 		table.setSpecifiedCatalog(TABLE_NAME);
-
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-	
 	}
 
 	
+	
+//	InheritanceType getInheritanceStrategy();
+//	
+//	InheritanceType getDefaultInheritanceStrategy();
+//		String DEFAULT_INHERITANCE_STRATEGY_PROPERTY = "defaultInheritanceStrategy";
+//		
+//	InheritanceType getSpecifiedInheritanceStrategy();
+//	void setSpecifiedInheritanceStrategy(InheritanceType newInheritanceType);
+//		String SPECIFIED_INHERITANCE_STRATEGY_PROPERTY = "specifiedInheritanceStrategy";
+
+		
+	public void testGetInheritanceStrategy() throws Exception {
+		createTestEntityWithInheritance();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertEquals(InheritanceType.TABLE_PER_CLASS, javaEntity().getInheritanceStrategy());		
+	}
+	
+	public void testGetDefaultInheritanceStrategy() throws Exception {
+		createTestEntity();
+		createTestSubType();
+				
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertNotSame(javaEntity(), javaEntity().rootEntity());
+		assertEquals(InheritanceType.SINGLE_TABLE, javaEntity().getDefaultInheritanceStrategy());
+		
+		//change root inheritance strategy, verify default is changed for child entity
+		javaEntity().rootEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+
+		assertEquals(InheritanceType.SINGLE_TABLE, javaEntity().rootEntity().getDefaultInheritanceStrategy());
+		assertEquals(InheritanceType.TABLE_PER_CLASS, javaEntity().getDefaultInheritanceStrategy());
+		assertEquals(InheritanceType.TABLE_PER_CLASS, javaEntity().getInheritanceStrategy());
+		assertNull(javaEntity().getSpecifiedInheritanceStrategy());
+	}
+	
+	public void testGetSpecifiedInheritanceStrategy() throws Exception {
+		createTestEntityWithInheritance();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertEquals(InheritanceType.TABLE_PER_CLASS, javaEntity().getSpecifiedInheritanceStrategy());
+
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		Inheritance inheritance = (Inheritance) typeResource.annotation(Inheritance.ANNOTATION_NAME);
+
+		inheritance.setStrategy(org.eclipse.jpt.core.internal.resource.java.InheritanceType.JOINED);
+		
+		assertEquals(InheritanceType.JOINED, javaEntity().getSpecifiedInheritanceStrategy());
+		
+		inheritance.setStrategy(null);
+		
+		assertNull(javaEntity().getSpecifiedInheritanceStrategy());
+	}
+	
+	public void testSetSpecifiedInheritanceStrategy() throws Exception {
+		createTestEntityWithInheritance();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		assertEquals(InheritanceType.TABLE_PER_CLASS, javaEntity().getSpecifiedInheritanceStrategy());
+
+		javaEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		
+		assertEquals(InheritanceType.JOINED, javaEntity().getSpecifiedInheritanceStrategy());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		Inheritance inheritance = (Inheritance) typeResource.annotation(Inheritance.ANNOTATION_NAME);
+		assertEquals(org.eclipse.jpt.core.internal.resource.java.InheritanceType.JOINED, inheritance.getStrategy());
+		
+	}
+	
+		
 	
 }
