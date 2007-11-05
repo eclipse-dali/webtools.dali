@@ -70,4 +70,4 @@ public enum InheritanceType {
 		}
 		return null;
 	}
-} //InheritanceType
+}

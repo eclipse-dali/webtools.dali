@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.ITable;
@@ -56,7 +57,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //
 //	protected static final String DISCRIMINATOR_VALUE_EDEFAULT = null;
 //	
-//	protected IDiscriminatorColumn discriminatorColumn;
+	protected IDiscriminatorColumn discriminatorColumn;
 //
 //	protected ISequenceGenerator sequenceGenerator;
 //
@@ -80,7 +81,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	public JavaEntity(IJavaPersistentType parent) {
 		super(parent);
 		this.table = jpaFactory().createJavaTable(this);
-//		this.discriminatorColumn = JpaJavaMappingsFactory.eINSTANCE.createJavaDiscriminatorColumn(new IDiscriminatorColumn.Owner(this), type, JavaDiscriminatorColumn.DECLARATION_ANNOTATION_ADAPTER);
+		this.discriminatorColumn = jpaFactory().createJavaDiscriminatorColumn(this);
 //		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
 	}
 
@@ -95,6 +96,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.table.initialize(persistentTypeResource);
 		this.defaultInheritanceStrategy = this.defaultInheritanceStrategy();
 		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(inheritanceResource());
+		this.discriminatorColumn.initialize(persistentTypeResource);
 	}
 	
 	//query for the table resource every time on setters.
@@ -214,26 +216,11 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
 	}
 
+	public IDiscriminatorColumn getDiscriminatorColumn() {
+		return this.discriminatorColumn;
+	}
 
-//
-//	public IDiscriminatorColumn getDiscriminatorColumn() {
-//		return discriminatorColumn;
-//	}
-//
-//	public NotificationChain basicSetDiscriminatorColumn(IDiscriminatorColumn newDiscriminatorColumn, NotificationChain msgs) {
-//		IDiscriminatorColumn oldDiscriminatorColumn = discriminatorColumn;
-//		discriminatorColumn = newDiscriminatorColumn;
-//		if (eNotificationRequired()) {
-//			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ENTITY__DISCRIMINATOR_COLUMN, oldDiscriminatorColumn, newDiscriminatorColumn);
-//			if (msgs == null)
-//				msgs = notification;
-//			else
-//				msgs.add(notification);
-//		}
-//		return msgs;
-//	}
-//
-//
+
 //	public ISequenceGenerator getSequenceGenerator() {
 //		return sequenceGenerator;
 //	}
@@ -469,7 +456,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //	}
 
 	public IEntity rootEntity() {
-		IEntity rootEntity = null;
+		IEntity rootEntity = this;
 		for (Iterator<IPersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
 			IPersistentType persistentType = i.next();
 			if (persistentType.getMapping() instanceof IEntity) {
@@ -508,6 +495,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	@Override
 	public void update(JavaPersistentTypeResource persistentTypeResource) {
 		super.update(persistentTypeResource);
+		this.persistentTypeResource = persistentTypeResource;
 		this.entityResource = (Entity) persistentTypeResource.mappingAnnotation(Entity.ANNOTATION_NAME);
 		
 		this.setSpecifiedName(this.specifiedName(this.entityResource));
@@ -515,6 +503,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		
 		updateTable(persistentTypeResource);
 		updateInheritance(inheritanceResource());
+		updateDiscriminatorColumn(persistentTypeResource);
 	}
 		
 	protected String specifiedName(Entity entityResource) {
@@ -545,6 +534,11 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return rootEntity().getInheritanceStrategy();
 	}
 	
+	protected void updateDiscriminatorColumn(JavaPersistentTypeResource persistentTypeResource) {
+		getDiscriminatorColumn().update(persistentTypeResource);
+	}
+	
+	
 //	@Override
 //	public void updateFromJava(CompilationUnit astRoot) {
 //		this.setSpecifiedName(this.getType().annotationElementValue(NAME_ADAPTER, astRoot));
@@ -574,13 +568,13 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //		}
 //	}
 //
-//	private JavaTable getJavaTable() {
-//		return (JavaTable) this.table;
-//	}
-//
-//	private JavaDiscriminatorColumn getJavaDiscriminatorColumn() {
-//		return (JavaDiscriminatorColumn) this.discriminatorColumn;
-//	}
+	private JavaTable getJavaTable() {
+		return (JavaTable) this.table;
+	}
+
+	private JavaDiscriminatorColumn getJavaDiscriminatorColumn() {
+		return (JavaDiscriminatorColumn) this.discriminatorColumn;
+	}
 //
 //	private void updateTableGeneratorFromJava(CompilationUnit astRoot) {
 //		if (this.tableGeneratorAnnotationAdapter.getAnnotation(astRoot) == null) {
@@ -1112,10 +1106,10 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		if (result != null) {
 			return result;
 		}
-//		result = this.getJavaTable().candidateValuesFor(pos, filter, astRoot);
-//		if (result != null) {
-//			return result;
-//		}
+		result = this.getJavaTable().candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 //		for (ISecondaryTable sTable : this.getSecondaryTables()) {
 //			result = ((JavaSecondaryTable) sTable).candidateValuesFor(pos, filter, astRoot);
 //			if (result != null) {
@@ -1140,10 +1134,10 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //				return result;
 //			}
 //		}
-//		result = this.getJavaDiscriminatorColumn().candidateValuesFor(pos, filter, astRoot);
-//		if (result != null) {
-//			return result;
-//		}
+		result = this.getJavaDiscriminatorColumn().candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 //		JavaTableGenerator jtg = this.getJavaTableGenerator();
 //		if (jtg != null) {
 //			result = jtg.candidateValuesFor(pos, filter, astRoot);

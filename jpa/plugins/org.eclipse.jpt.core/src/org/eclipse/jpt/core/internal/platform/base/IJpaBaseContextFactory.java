@@ -13,6 +13,7 @@ package org.eclipse.jpt.core.internal.platform.base;
 import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
+import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
@@ -58,4 +59,6 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	IJavaEntity createJavaEntity(IJavaPersistentType parent);
 	
 	ITable createJavaTable(IJavaEntity parent);
+	
+	IDiscriminatorColumn createJavaDiscriminatorColumn(IJavaEntity parent);
 }

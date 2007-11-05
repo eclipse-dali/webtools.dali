@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.ITable;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 import org.eclipse.jpt.core.internal.resource.java.Table;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.Filter;
@@ -34,7 +34,7 @@ public abstract class AbstractJavaTable extends JavaContextModel implements ITab
 	protected String specifiedSchema;
 	protected String defaultSchema;
 
-	protected JavaPersistentTypeResource persistentTypeResource;
+	protected JavaPersistentResource persistentResource;
 	
 //	protected EList<IUniqueConstraint> uniqueConstraints;
 
@@ -45,8 +45,8 @@ public abstract class AbstractJavaTable extends JavaContextModel implements ITab
 		super(parent);
 	}
 
-	public void initialize(JavaPersistentTypeResource persistentTypeResource) {
-		this.persistentTypeResource = persistentTypeResource;
+	public void initialize(JavaPersistentResource persistentResource) {
+		this.persistentResource = persistentResource;
 		initialize(tableResource());
 		
 	}
@@ -65,7 +65,7 @@ public abstract class AbstractJavaTable extends JavaContextModel implements ITab
 	//from the java resource model
 	protected Table tableResource() {
 		//TODO get the NullTable from the resource model or build it here in the context model??
-		return (Table) this.persistentTypeResource.nonNullAnnotation(annotationName());
+		return (Table) this.persistentResource.nonNullAnnotation(annotationName());
 	}
 	
 	protected abstract String annotationName();
@@ -196,8 +196,8 @@ public abstract class AbstractJavaTable extends JavaContextModel implements ITab
 //		this.setDefaultSchema((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TABLE_SCHEMA_KEY));
 //	}
 
-	public void update(JavaPersistentTypeResource persistentTypeResource) {
-		this.persistentTypeResource = persistentTypeResource;
+	public void update(JavaPersistentResource persistentResource) {
+		this.persistentResource = persistentResource;
 		this.update(tableResource());
 	}
 	
@@ -209,7 +209,6 @@ public abstract class AbstractJavaTable extends JavaContextModel implements ITab
 		this.setDefaultSchema(this.defaultSchema());
 		this.setDefaultCatalog(this.defaultCatalog());
 		//this.updateUniqueConstraints(table);
-		
 	}
 	
 	protected abstract String defaultName();

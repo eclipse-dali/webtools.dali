@@ -34,7 +34,7 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 
 	private DiscriminatorType discriminatorType;
 
-	private int length = -1;	
+	private int length = DEFAULT_LENGTH;	
 	
 	protected DiscriminatorColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa,  new MemberAnnotationAdapter(member, daa));
@@ -144,7 +144,7 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 		}
 		
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
-			return null;
+			return new NullDiscriminatorColumn(parent);
 		}
 
 		public String getAnnotationName() {

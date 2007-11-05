@@ -11,12 +11,12 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 import org.eclipse.jpt.db.internal.Schema;
 
 public interface ITable extends IJpaContextNode
 {
-	void initialize(JavaPersistentTypeResource persistentTypeResource);
+	void initialize(JavaPersistentResource persistentResource);
 
 	String getName();
 	
@@ -50,7 +50,7 @@ public interface ITable extends IJpaContextNode
 //	EList<IUniqueConstraint> getUniqueConstraints();
 //	IUniqueConstraint createUniqueConstraint(int index);
 
-	void update(JavaPersistentTypeResource persistentTypeResource);
+	void update(JavaPersistentResource persistentResource);
 
 	org.eclipse.jpt.db.internal.Table dbTable();
 

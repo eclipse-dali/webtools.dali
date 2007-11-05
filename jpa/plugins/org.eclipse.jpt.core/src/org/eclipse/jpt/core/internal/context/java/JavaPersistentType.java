@@ -71,8 +71,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	}
 	
 	protected void initializeMapping(JavaPersistentTypeResource persistentTypeResource) {
-		this.mapping = createJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(persistentTypeResource));
-		this.mapping.initialize(persistentTypeResource);
+		this.mapping = createJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(persistentTypeResource), persistentTypeResource);
 	}
 	
 	protected void initializePersistentAttributes(JavaPersistentTypeResource persistentTypeResource) {
@@ -109,8 +108,8 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 			return;
 		}
 		IJavaTypeMapping newMapping = createJavaTypeMappingFromMappingKey(key);
-		this.persistentTypeResource.setMappingAnnotation(newMapping.annotationName());
 		setMapping(newMapping);		
+		this.persistentTypeResource.setMappingAnnotation(newMapping.annotationName());
 	}
 	
 	protected void setMapping(IJavaTypeMapping newMapping) {
@@ -310,17 +309,21 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	protected void updateMapping(JavaPersistentTypeResource persistentTypeResource) {
 		String javaMappingAnnotationName = this.javaMappingAnnotationName(persistentTypeResource);
 		if (getMapping().annotationName() != javaMappingAnnotationName) {
-			setMapping(createJavaTypeMappingFromAnnotation(javaMappingAnnotationName));
+			setMapping(createJavaTypeMappingFromAnnotation(javaMappingAnnotationName, persistentTypeResource));
 		}
-		getMapping().update(persistentTypeResource);
+		else {
+			getMapping().update(persistentTypeResource);
+		}
 	}
 	
 	protected IJavaTypeMapping createJavaTypeMappingFromMappingKey(String key) {
 		return jpaPlatform().createJavaTypeMappingFromMappingKey(key, this);
 	}
 	
-	protected IJavaTypeMapping createJavaTypeMappingFromAnnotation(String annotationName) {
-		return jpaPlatform().createJavaTypeMappingFromAnnotation(annotationName, this);
+	protected IJavaTypeMapping createJavaTypeMappingFromAnnotation(String annotationName, JavaPersistentTypeResource persistentTypeResource) {
+		IJavaTypeMapping mapping = jpaPlatform().createJavaTypeMappingFromAnnotation(annotationName, this);
+		mapping.initialize(persistentTypeResource);
+		return mapping;
 	}
 
 	protected String javaMappingAnnotationName(JavaPersistentTypeResource typeResource) {

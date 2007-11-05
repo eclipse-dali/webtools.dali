@@ -36,16 +36,8 @@ public interface IEntity extends ITypeMapping
 	void setSpecifiedInheritanceStrategy(InheritanceType newInheritanceType);
 		String SPECIFIED_INHERITANCE_STRATEGY_PROPERTY = "specifiedInheritanceStrategy";
 	
-//	IDiscriminatorColumn getDiscriminatorColumn();
-//
-//	ISequenceGenerator getSequenceGenerator();
-//
-//	void setSequenceGenerator(ISequenceGenerator value);
-//
-//	ITableGenerator getTableGenerator();
-//
-//	void setTableGenerator(ITableGenerator value);
-//
+	IDiscriminatorColumn getDiscriminatorColumn();
+
 //	String getDefaultDiscriminatorValue();
 //
 //	void setDefaultDiscriminatorValue(String value);
@@ -55,7 +47,17 @@ public interface IEntity extends ITypeMapping
 //	void setSpecifiedDiscriminatorValue(String value);
 //	
 //	String getDiscriminatorValue();
+
+		
+//	ISequenceGenerator getSequenceGenerator();
 //
+//	void setSequenceGenerator(ISequenceGenerator value);
+//
+//	ITableGenerator getTableGenerator();
+//
+//	void setTableGenerator(ITableGenerator value);
+//
+
 //	EList<IPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
 //
 //	EList<IPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();

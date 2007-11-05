@@ -34,6 +34,7 @@ public interface DiscriminatorColumn extends NamedColumn
 	 * Returns -1 if the length valuePair does not exist in the annotation
 	 */
 	int getLength();
+		int DEFAULT_LENGTH = -1;
 	
 	/**
 	 * Corresponds to the length element of the javax.persistence.OrderBy annotation.
