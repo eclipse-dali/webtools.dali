@@ -246,9 +246,6 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	}
 	// ********** TableCellRenderer implementation **********
 
-	/**
-	 * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
-	 */
 	public Component getTableCellRendererComponent(JTable table, Object val, boolean selected, boolean hasFocus, int row, int column) {
 		this.fakeFocusFlag = selected || hasFocus;
 		if (this.comboBox == null) {

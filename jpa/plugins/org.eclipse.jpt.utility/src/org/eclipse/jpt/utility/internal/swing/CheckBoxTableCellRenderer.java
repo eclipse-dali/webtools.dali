@@ -100,9 +100,6 @@ public class CheckBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 
 	// ********** TableCellRenderer implementation **********
 
-	/**
-	 * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
-	 */
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean hasFocus, int row, int column) {
 	    this.checkBox.setHorizontalAlignment(SwingConstants.CENTER);
 		this.checkBox.setComponentOrientation(table.getComponentOrientation());

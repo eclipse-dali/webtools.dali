@@ -128,7 +128,6 @@ public class FilteringListBrowser
 		 * Disable the performance tweak because JOptionPane
 		 * will try open wide enough to disable the horizontal scroll bar;
 		 * and it looks a bit clumsy.
-		 * @see oracle.toplink.workbench.uitools.FilteringListPanel#prototypeCellValue()
 		 */
 		protected String prototypeCellValue() {
 			return null;

@@ -77,9 +77,6 @@ public class SpinnerTableCellRenderer implements TableCellEditorAdapter.Renderer
 
 	// ********** TableCellRenderer implementation **********
 
-	/**
-	 * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
-	 */
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean hasFocus, int row, int column) {
 		this.spinner.setComponentOrientation(table.getComponentOrientation());
 		this.spinner.setFont(table.getFont());
