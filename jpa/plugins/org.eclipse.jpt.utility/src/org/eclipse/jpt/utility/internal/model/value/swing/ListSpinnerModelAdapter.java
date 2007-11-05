@@ -61,7 +61,7 @@ public class ListSpinnerModelAdapter extends SpinnerListModel {
 	 * Use the model value itself as the default spinner value.
 	 */
 	public ListSpinnerModelAdapter(PropertyValueModel valueHolder) {
-		this(valueHolder, valueHolder.getValue());
+		this(valueHolder, valueHolder.value());
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class ListSpinnerModelAdapter extends SpinnerListModel {
 	public Object getValue() {
 		if (this.getChangeListeners().length == 0) {
 			// sorry about this "lateral" call to super  ~bjv
-			super.setValue(this.spinnerValueOf(this.valueHolder.getValue()));
+			super.setValue(this.spinnerValueOf(this.valueHolder.value()));
 		}
 		return super.getValue();
 	}
@@ -157,7 +157,7 @@ public class ListSpinnerModelAdapter extends SpinnerListModel {
 	public void addChangeListener(ChangeListener listener) {
 		if (this.getChangeListeners().length == 0) {
 			this.valueHolder.addPropertyChangeListener(ValueModel.VALUE, this.valueChangeListener);
-			this.synchronize(this.valueHolder.getValue());
+			this.synchronize(this.valueHolder.value());
 		}
 		super.addChangeListener(listener);
 	}

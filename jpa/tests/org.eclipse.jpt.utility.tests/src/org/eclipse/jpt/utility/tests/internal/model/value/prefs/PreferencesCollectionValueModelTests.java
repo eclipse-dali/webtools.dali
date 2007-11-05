@@ -120,7 +120,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		this.expectedValues.clear();
 		this.nodeHolder.setValue(null);
 		this.verifyEvent(this.expectedValues);
-		assertFalse(((Iterator) this.preferencesAdapter.getValue()).hasNext());
+		assertFalse(((Iterator) this.preferencesAdapter.value()).hasNext());
 		
 		this.event = null;
 		this.nodeHolder.setValue(this.testNode);
@@ -252,14 +252,14 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 
 	private void verifyAdapter(PreferencesCollectionValueModel cvm) {
 		assertEquals(this.expectedValues.size(), cvm.size());
-		this.verifyItems(this.expectedValues, (Iterator) cvm.getValue());
+		this.verifyItems(this.expectedValues, (Iterator) cvm.value());
 	}
 
 	private void verifyItems(Map expected, Iterator stream) {
 		while (stream.hasNext()) {
 			PreferencePropertyValueModel model = (PreferencePropertyValueModel) stream.next();
 			model.addPropertyChangeListener(ValueModel.VALUE, this.itemListener);
-			assertEquals(expected.get(model.getKey()), model.getValue());
+			assertEquals(expected.get(model.getKey()), model.value());
 			model.removePropertyChangeListener(ValueModel.VALUE, this.itemListener);
 		}
 	}

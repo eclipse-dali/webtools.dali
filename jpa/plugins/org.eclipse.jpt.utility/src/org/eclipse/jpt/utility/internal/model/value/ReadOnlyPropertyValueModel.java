@@ -34,7 +34,7 @@ public class ReadOnlyPropertyValueModel
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		return this.value;
 	}
 

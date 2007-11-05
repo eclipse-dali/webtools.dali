@@ -443,7 +443,7 @@ public class TableModelAdapterUITest {
 			}
 			if ((eyeColor.length() == 0)) {
 				JOptionPane.showMessageDialog(null, "The eye color is required.", "Invalid Eye Color", JOptionPane.ERROR_MESSAGE);
-			} else if (CollectionTools.contains((Iterator) this.eyeColorListHolder.getValue(), eyeColor)) {
+			} else if (CollectionTools.contains((Iterator) this.eyeColorListHolder.value(), eyeColor)) {
 				JOptionPane.showMessageDialog(null, "The eye color already exists.", "Invalid Eye Color", JOptionPane.ERROR_MESSAGE);
 			} else {
 				return eyeColor;
@@ -696,7 +696,7 @@ public class TableModelAdapterUITest {
 	// ********** queries **********
 
 	private Crowd crowd() {
-		return (Crowd) this.crowdHolder.getValue();
+		return (Crowd) this.crowdHolder.value();
 	}
 
 	private Person selectedPerson() {

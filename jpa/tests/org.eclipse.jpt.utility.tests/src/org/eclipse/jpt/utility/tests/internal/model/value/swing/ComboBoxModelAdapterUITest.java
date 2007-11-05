@@ -103,7 +103,7 @@ public class ComboBoxModelAdapterUITest {
 	protected ListValueModel buildColorListHolder() {
 		return new SimpleListValueModel(TestModel.validColors());
 //		return new AbstractReadOnlyListValueModel() {
-//			public Object getValue() {
+//			public Object value() {
 //				return new ArrayListIterator(TestModel.VALID_COLORS);
 //			}
 //			public int size() {

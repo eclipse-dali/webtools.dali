@@ -38,7 +38,7 @@ public class ReadOnlyListValueModelTests extends TestCase {
 
 	private ListValueModel buildListHolder() {
 		return new AbstractReadOnlyListValueModel() {
-			public Object getValue() {
+			public Object value() {
 				return ReadOnlyListValueModelTests.list();
 			}
 		};
@@ -75,8 +75,8 @@ public class ReadOnlyListValueModelTests extends TestCase {
 		}
 	}
 
-	public void testGetValue() {
-		assertEquals(buildList(), CollectionTools.list((Iterator) this.listHolder.getValue()));
+	public void testValue() {
+		assertEquals(buildList(), CollectionTools.list((Iterator) this.listHolder.value()));
 	}
 
 	public void testSize() {

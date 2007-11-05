@@ -16,7 +16,7 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
  * A <code>TransformationPropertyValueModel</code> wraps another
  * <code>PropertyValueModel</code> and uses a <code>BidiTransformer</code>
  * to:<ul>
- * <li>transform the wrapped value before it is returned by <code>getValue()</code>
+ * <li>transform the wrapped value before it is returned by <code>value()</code>
  * <li>"reverse-transform" the new value that comes in via
  * <code>setValue(Object)</code>
  * </ul>
@@ -54,9 +54,9 @@ public class TransformationPropertyValueModel extends PropertyValueModelWrapper 
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		// transform the object returned by the nested value model before returning it
-		return this.transform(this.valueHolder.getValue());
+		return this.transform(this.valueHolder.value());
 	}
 
 
@@ -83,7 +83,7 @@ public class TransformationPropertyValueModel extends PropertyValueModelWrapper 
 
 	/**
 	 * Transform the specified object and return the result.
-	 * This is called by #getValue().
+	 * This is called by #value().
 	 */
 	protected Object transform(Object value) {
 		return this.transformer.transform(value);

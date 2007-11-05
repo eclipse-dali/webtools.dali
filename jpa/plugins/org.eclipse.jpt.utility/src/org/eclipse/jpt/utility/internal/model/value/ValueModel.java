@@ -20,7 +20,7 @@ public interface ValueModel extends Model {
 	/**
 	 * Return the value.
 	 */
-	Object getValue();
+	Object value();
 		String VALUE = "value";
 
 }

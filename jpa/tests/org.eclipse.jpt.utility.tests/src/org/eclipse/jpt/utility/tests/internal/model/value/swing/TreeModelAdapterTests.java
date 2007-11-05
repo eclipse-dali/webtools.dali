@@ -505,7 +505,7 @@ public class TreeModelAdapterTests extends TestCase {
 
 		// ********** TreeNodeValueModel implementation **********
 
-		public Object getValue() {
+		public Object value() {
 			return this.testModel;
 		}
 
@@ -564,7 +564,7 @@ public class TreeModelAdapterTests extends TestCase {
 		public void dumpOn(IndentingPrintWriter writer) {
 			writer.println(this);
 			writer.indent();
-			for (Iterator stream = (Iterator) this.childrenModel.getValue(); stream.hasNext(); ) {
+			for (Iterator stream = (Iterator) this.childrenModel.value(); stream.hasNext(); ) {
 				((TestNode) stream.next()).dumpOn(writer);
 			}
 			writer.undent();
@@ -604,7 +604,7 @@ public class TreeModelAdapterTests extends TestCase {
 		 * testing convenience method
 		 */
 		public TestNode childNamed(String name) {
-			for (Iterator stream = (Iterator) this.childrenModel.getValue(); stream.hasNext(); ) {
+			for (Iterator stream = (Iterator) this.childrenModel.value(); stream.hasNext(); ) {
 				TestNode childNode = (TestNode) stream.next();
 				if (childNode.getTestModel().getName().equals(name)) {
 					return childNode;
@@ -774,8 +774,8 @@ public class TreeModelAdapterTests extends TestCase {
 
 		// ********** TreeNodeValueModel implementation **********
 
-		public Object getValue() {
-			return this.nameAdapter.getValue();
+		public Object value() {
+			return this.nameAdapter.value();
 		}
 		@Override
 		public void setValue(Object value) {

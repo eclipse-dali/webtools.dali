@@ -70,31 +70,31 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetValue() {
+	public void testValue() {
 		// add a listener to "activate" the wrapper
 		this.filteredCollectionHolder.addCollectionChangeListener(ValueModel.VALUE, this.buildFilteredListener());
 
-		assertEquals("foo", ((Iterator) this.collectionHolder.getValue()).next());
-		assertFalse(((Iterator) this.filteredCollectionHolder.getValue()).hasNext());
+		assertEquals("foo", ((Iterator) this.collectionHolder.value()).next());
+		assertFalse(((Iterator) this.filteredCollectionHolder.value()).hasNext());
 
 		this.collectionHolder.addItem("bar");
-		Iterator collectionHolderValue = (Iterator) this.collectionHolder.getValue();
+		Iterator collectionHolderValue = (Iterator) this.collectionHolder.value();
 		assertEquals("foo", collectionHolderValue.next());
 		assertEquals("bar", collectionHolderValue.next());
-		assertTrue(((Iterator) this.filteredCollectionHolder.getValue()).hasNext());
-		assertEquals("bar", ((Iterator) this.filteredCollectionHolder.getValue()).next());
+		assertTrue(((Iterator) this.filteredCollectionHolder.value()).hasNext());
+		assertEquals("bar", ((Iterator) this.filteredCollectionHolder.value()).next());
 
 		this.collectionHolder.removeItem("bar");
-		assertEquals("foo", ((Iterator) this.collectionHolder.getValue()).next());
-		assertFalse(((Iterator) this.filteredCollectionHolder.getValue()).hasNext());
+		assertEquals("foo", ((Iterator) this.collectionHolder.value()).next());
+		assertFalse(((Iterator) this.filteredCollectionHolder.value()).hasNext());
 
 		this.collectionHolder.removeItem("foo");
-		assertFalse(((Iterator) this.collectionHolder.getValue()).hasNext());
-		assertFalse(((Iterator) this.filteredCollectionHolder.getValue()).hasNext());
+		assertFalse(((Iterator) this.collectionHolder.value()).hasNext());
+		assertFalse(((Iterator) this.filteredCollectionHolder.value()).hasNext());
 
 		this.collectionHolder.addItem("foo");
-		assertEquals("foo", ((Iterator) this.collectionHolder.getValue()).next());
-		assertFalse(((Iterator) this.filteredCollectionHolder.getValue()).hasNext());
+		assertEquals("foo", ((Iterator) this.collectionHolder.value()).next());
+		assertFalse(((Iterator) this.filteredCollectionHolder.value()).hasNext());
 	}
 
 	public void testSetValue() {
@@ -107,10 +107,10 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		
 		((SimpleCollectionValueModel) this.collectionHolder).setValue(newCollection);
 
-		Iterator collectionValues = (Iterator) this.collectionHolder.getValue();
+		Iterator collectionValues = (Iterator) this.collectionHolder.value();
 		assertEquals("fox", collectionValues.next());
 		assertEquals("baz", collectionValues.next());
-		Iterator filteredCollectionValues = (Iterator) this.filteredCollectionHolder.getValue();
+		Iterator filteredCollectionValues = (Iterator) this.filteredCollectionHolder.value();
 		assertEquals("baz", filteredCollectionValues.next());
 		assertFalse(filteredCollectionValues.hasNext());
 	}		

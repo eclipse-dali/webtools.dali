@@ -90,8 +90,8 @@ public class NullCollectionValueModelTests extends TestCase {
 		assertEquals(0, this.collectionHolder.size());
 	}
 
-	public void testGetValue() {
-		assertFalse(((Iterator) this.collectionHolder.getValue()).hasNext());
+	public void testValue() {
+		assertFalse(((Iterator) this.collectionHolder.value()).hasNext());
 	}
 
 }

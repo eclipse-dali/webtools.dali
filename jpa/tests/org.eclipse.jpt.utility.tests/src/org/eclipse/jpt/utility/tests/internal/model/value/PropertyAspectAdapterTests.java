@@ -96,7 +96,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 	}
 
 	public void testSubjectHolder() {
-		assertEquals("foo", this.aa1.getValue());
+		assertEquals("foo", this.aa1.value());
 		assertNull(this.event1);
 
 		this.subjectHolder1.setValue(this.subject2);
@@ -105,7 +105,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 		assertEquals(ValueModel.VALUE, this.event1.propertyName());
 		assertEquals("foo", this.event1.oldValue());
 		assertEquals("bar", this.event1.newValue());
-		assertEquals("bar", this.aa1.getValue());
+		assertEquals("bar", this.aa1.value());
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(null);
@@ -114,7 +114,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 		assertEquals(ValueModel.VALUE, this.event1.propertyName());
 		assertEquals("bar", this.event1.oldValue());
 		assertNull(this.event1.newValue());
-		assertNull(this.aa1.getValue());
+		assertNull(this.aa1.value());
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(this.subject1);
@@ -123,11 +123,11 @@ public class PropertyAspectAdapterTests extends TestCase {
 		assertEquals(ValueModel.VALUE, this.event1.propertyName());
 		assertEquals(null, this.event1.oldValue());
 		assertEquals("foo", this.event1.newValue());
-		assertEquals("foo", this.aa1.getValue());
+		assertEquals("foo", this.aa1.value());
 	}
 
 	public void testPropertyChange() {
-		assertEquals("foo", this.aa1.getValue());
+		assertEquals("foo", this.aa1.value());
 		assertNull(this.event1);
 
 		this.subject1.setName("baz");
@@ -136,7 +136,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 		assertEquals(ValueModel.VALUE, this.event1.propertyName());
 		assertEquals("foo", this.event1.oldValue());
 		assertEquals("baz", this.event1.newValue());
-		assertEquals("baz", this.aa1.getValue());
+		assertEquals("baz", this.aa1.value());
 		
 		this.event1 = null;
 		this.subject1.setName(null);
@@ -145,7 +145,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 		assertEquals(ValueModel.VALUE, this.event1.propertyName());
 		assertEquals("baz", this.event1.oldValue());
 		assertEquals(null, this.event1.newValue());
-		assertEquals(null, this.aa1.getValue());
+		assertEquals(null, this.aa1.value());
 		
 		this.event1 = null;
 		this.subject1.setName("foo");
@@ -154,35 +154,35 @@ public class PropertyAspectAdapterTests extends TestCase {
 		assertEquals(ValueModel.VALUE, this.event1.propertyName());
 		assertEquals(null, this.event1.oldValue());
 		assertEquals("foo", this.event1.newValue());
-		assertEquals("foo", this.aa1.getValue());
+		assertEquals("foo", this.aa1.value());
 	}
 
-	public void testGetValue() {
+	public void testValue() {
 		assertEquals("foo", this.subject1.getName());
-		assertEquals("foo", this.aa1.getValue());
+		assertEquals("foo", this.aa1.value());
 	}
 
 	public void testStaleValue() {
 		assertEquals("foo", this.subject1.getName());
-		assertEquals("foo", this.aa1.getValue());
+		assertEquals("foo", this.aa1.value());
 
 		this.aa1.removePropertyChangeListener(ValueModel.VALUE, this.listener1);
-		assertEquals(null, this.aa1.getValue());
+		assertEquals(null, this.aa1.value());
 
 		this.aa1.addPropertyChangeListener(ValueModel.VALUE, this.listener1);
-		assertEquals("foo", this.aa1.getValue());
+		assertEquals("foo", this.aa1.value());
 
 		this.aa1.removePropertyChangeListener(ValueModel.VALUE, this.listener1);
 		this.subjectHolder1.setValue(this.subject2);
-		assertEquals(null, this.aa1.getValue());
+		assertEquals(null, this.aa1.value());
 
 		this.aa1.addPropertyChangeListener(ValueModel.VALUE, this.listener1);
-		assertEquals("bar", this.aa1.getValue());
+		assertEquals("bar", this.aa1.value());
 	}
 
 	public void testSetValue() {
 		this.aa1.setValue("baz");
-		assertEquals("baz", this.aa1.getValue());
+		assertEquals("baz", this.aa1.value());
 		assertEquals("baz", this.subject1.getName());
 	}
 
@@ -208,17 +208,17 @@ public class PropertyAspectAdapterTests extends TestCase {
 		PropertyValueModel testAA = this.buildMultipleAspectAdapter(testSubjectHolder);
 		PropertyChangeListener testListener = this.buildMultipleValueChangeListener();
 		testAA.addPropertyChangeListener(ValueModel.VALUE, testListener);
-		assertEquals("fred:husband", testAA.getValue());
+		assertEquals("fred:husband", testAA.value());
 
 		this.multipleValueEvent = null;
 		testSubject.setName("wilma");
-		assertEquals("wilma:husband", testAA.getValue());
+		assertEquals("wilma:husband", testAA.value());
 		assertEquals("fred:husband", this.multipleValueEvent.oldValue());
 		assertEquals("wilma:husband", this.multipleValueEvent.newValue());
 
 		this.multipleValueEvent = null;
 		testSubject.setDescription("wife");
-		assertEquals("wilma:wife", testAA.getValue());
+		assertEquals("wilma:wife", testAA.value());
 		assertEquals("wilma:husband", this.multipleValueEvent.oldValue());
 		assertEquals("wilma:wife", this.multipleValueEvent.newValue());
 	}
@@ -257,18 +257,18 @@ public class PropertyAspectAdapterTests extends TestCase {
 		PropertyValueModel customAA = this.buildCustomAspectAdapter(customSubjectHolder);
 		PropertyChangeListener customListener = this.buildCustomValueChangeListener();
 		customAA.addPropertyChangeListener(ValueModel.VALUE, customListener);
-		assertEquals("fred", customAA.getValue());
+		assertEquals("fred", customAA.value());
 
 		this.customValueEvent = null;
 		customSubject.setName("wilma");
-		assertEquals("wilma", customAA.getValue());
+		assertEquals("wilma", customAA.value());
 		assertEquals("fred", this.customValueEvent.oldValue());
 		assertEquals("wilma", this.customValueEvent.newValue());
 
 		this.customValueEvent = null;
 		customSubjectHolder.setValue(null);
 		// this would fail - the value would be null...
-		assertEquals("<unnamed>", customAA.getValue());
+		assertEquals("<unnamed>", customAA.value());
 		assertEquals("wilma", this.customValueEvent.oldValue());
 		assertEquals("<unnamed>", this.customValueEvent.newValue());
 	}

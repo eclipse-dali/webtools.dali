@@ -109,21 +109,21 @@ public class RadioButtonModelAdapterTests extends TestCase {
 		assertFalse(this.redEventFired);
 		assertTrue(this.greenEventFired);
 		assertFalse(this.blueEventFired);
-		assertEquals(GREEN, this.valueHolder.getValue());
+		assertEquals(GREEN, this.valueHolder.value());
 
 		this.clearFlags();
 		this.blueButtonModelAdapter.setSelected(true);
 		assertFalse(this.redEventFired);
 		assertTrue(this.greenEventFired);
 		assertTrue(this.blueEventFired);
-		assertEquals(BLUE, this.valueHolder.getValue());
+		assertEquals(BLUE, this.valueHolder.value());
 
 		this.clearFlags();
 		this.redButtonModelAdapter.setSelected(true);
 		assertTrue(this.redEventFired);
 		assertFalse(this.greenEventFired);
 		assertTrue(this.blueEventFired);
-		assertEquals(RED, this.valueHolder.getValue());
+		assertEquals(RED, this.valueHolder.value());
 	}
 
 	public void testSetValue() throws Exception {

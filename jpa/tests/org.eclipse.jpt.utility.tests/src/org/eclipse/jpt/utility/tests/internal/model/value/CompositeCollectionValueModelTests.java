@@ -59,7 +59,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	}
 
 	private void verifySynch(CollectionValueModel compositeCVM) {
-		assertEquals(0, CollectionTools.size((Iterator) compositeCVM.getValue()));
+		assertEquals(0, CollectionTools.size((Iterator) compositeCVM.value()));
 		Bag familiesSynch = new SynchronizedBag(this.buildFamiliesAspectAdapter(this.neighborhoodHolder));
 		Bag membersSynch = new SynchronizedBag(compositeCVM);
 		this.populateNeighborhood(this.neighborhood);
@@ -70,35 +70,35 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		assertEquals(12, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(12, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.getValue()));
+		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.value()));
 
 		jetsons.removeMember(jetsons.memberNamed("Astro"));
 		assertEquals(3, familiesSynch.size());
 		assertEquals(11, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(11, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.getValue()));
+		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.value()));
 
 		jetsons.removeMember(jetsons.memberNamed("Judy"));
 		assertEquals(3, familiesSynch.size());
 		assertEquals(10, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(10, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.getValue()));
+		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.value()));
 
 		jetsons.addMember("Fido");
 		assertEquals(3, familiesSynch.size());
 		assertEquals(11, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(11, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.getValue()));
+		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.value()));
 
 		this.neighborhood.removeFamily(jetsons);
 		assertEquals(2, familiesSynch.size());
 		assertEquals(7, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(7, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.getValue()));
+		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.value()));
 
 		Family bears = this.neighborhood.addFamily("Bear");
 			bears.addMember("Yogi");
@@ -106,14 +106,14 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		assertEquals(8, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(8, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.getValue()));
+		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.value()));
 
 		bears.addMember("Boo-Boo");
 		assertEquals(3, familiesSynch.size());
 		assertEquals(9, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(9, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.getValue()));
+		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.value()));
 
 		Neighborhood n2 = new Neighborhood("Hanna-Barbera 2");
 		this.neighborhoodHolder.setValue(n2);
@@ -122,7 +122,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		assertEquals(12, CollectionTools.size(n2.allMembers()));
 		assertEquals(12, membersSynch.size());
 		assertEquals(CollectionTools.bag(n2.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.getValue()));
+		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.value()));
 	}
 
 	public void testNoTransformer() {

@@ -97,7 +97,7 @@ public class ComboBoxModelAdapter extends ListModelAdapter implements ComboBoxMo
 	// ********** ComboBoxModel implementation **********
 
 	public Object getSelectedItem() {
-		return this.selectionHolder.getValue();
+		return this.selectionHolder.value();
 	}
 
 	public void setSelectedItem(Object selectedItem) {

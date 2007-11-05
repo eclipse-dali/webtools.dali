@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Extend ValueModel to allow the adding and
  * removing of items in a list value.
- * Typically the value returned from #getValue()
+ * Typically the value returned from #value()
  * will be a ListIterator.
  */
 public interface ListValueModel extends ValueModel {

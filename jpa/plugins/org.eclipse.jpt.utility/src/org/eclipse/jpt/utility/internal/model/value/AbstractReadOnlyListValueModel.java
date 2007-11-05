@@ -20,13 +20,13 @@ import org.eclipse.jpt.utility.internal.model.NullModel;
  * Implementation of ListValueModel that can be subclassed and used for
  * returning a list iterator on a static list, but still allows listeners to be added.
  * Listeners will NEVER be notified of any changes, because there should be none.
- * Subclasses need only implement the #getValue() method to
+ * Subclasses need only implement the #value() method to
  * return a list iterator on the static values required by the client code. This class is
  * really only useful for simplifying the building of anonymous inner
  * classes that implement the ListValueModel interface:
  * 	private ListValueModel buildCacheUsageOptionsHolder() {
  * 		return new AbstractReadOnlyListValueModel() {
- * 			public Object getValue() {
+ * 			public Object value() {
  * 				return MWQuery.cacheUsageOptions();
  * 			}
  * 			public int size() {
@@ -76,11 +76,11 @@ public abstract class AbstractReadOnlyListValueModel
 	}
 
 	public Object getItem(int index) {
-		return CollectionTools.get((ListIterator) this.getValue(), index);
+		return CollectionTools.get((ListIterator) this.value(), index);
 	}
 
 	public int size() {
-		return CollectionTools.size((ListIterator) this.getValue());
+		return CollectionTools.size((ListIterator) this.value());
 	}
 
 
@@ -88,7 +88,7 @@ public abstract class AbstractReadOnlyListValueModel
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, CollectionTools.collection((ListIterator) this.getValue()));
+		return StringTools.buildToStringFor(this, CollectionTools.collection((ListIterator) this.value()));
 	}
 
 }

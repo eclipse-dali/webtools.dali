@@ -120,9 +120,6 @@ public class SimpleStringMatcher
 
 	// ********** StringMatcher implementation **********
 
-	/**
-	 * @see StringMatcher#setPatternString(String)
-	 */
 	public synchronized void setPatternString(String patternString) {
 		this.patternString = patternString;
 		this.rebuildPattern();

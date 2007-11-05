@@ -105,7 +105,7 @@ public abstract class CollectionPropertyValueModelAdapter
 	/**
 	 * Return the cached value.
 	 */
-	public Object getValue() {
+	public Object value() {
 		return this.value;
 	}
 

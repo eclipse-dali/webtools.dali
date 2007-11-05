@@ -149,7 +149,7 @@ public abstract class PrimitiveListTreeModel extends DefaultTreeModel {
 	}
 		
 	private void buildList() {
-		for (Iterator stream = (Iterator) this.listHolder.getValue(); stream.hasNext(); ) {
+		for (Iterator stream = (Iterator) this.listHolder.value(); stream.hasNext(); ) {
 			this.addPrimitive(stream.next());
 		}
 	}

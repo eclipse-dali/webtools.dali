@@ -16,13 +16,13 @@ import org.eclipse.jpt.utility.internal.model.NullModel;
  * Implementation of ValueModel that can be subclassed and used for
  * returning a static value, but still allows listeners to be added.
  * Listeners will NEVER be notified of any changes, because there should be none.
- * Subclasses need only implement the #getValue() method to
+ * Subclasses need only implement the #value() method to
  * return the static value required by the client code. This class is
  * really only useful for simplifying the building of anonymous inner
  * classes that implement the PropertyValueModel interface:
  * 	private PropertyValueModel buildAbstractModifierHolder() {
  * 		return new AbstractReadOnlyPropertyValueModel() {
- * 			public Object getValue() {
+ * 			public Object value() {
  * 				return Modifier.ABSTRACT;
  * 			}
  * 		};
@@ -53,7 +53,7 @@ public abstract class AbstractReadOnlyPropertyValueModel
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.getValue());
+		return StringTools.buildToStringFor(this, this.value());
 	}
 
 }

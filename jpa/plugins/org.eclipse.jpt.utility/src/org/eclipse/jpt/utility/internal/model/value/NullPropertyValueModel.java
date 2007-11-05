@@ -42,7 +42,7 @@ public final class NullPropertyValueModel
 
 	// ********** PropertyValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		return null;
 	}
 

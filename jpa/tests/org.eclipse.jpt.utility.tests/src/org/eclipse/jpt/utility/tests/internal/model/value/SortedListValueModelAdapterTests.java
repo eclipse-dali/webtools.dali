@@ -64,7 +64,7 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		Collection sortedSet = new TreeSet(comparator);
 		sortedSet.addAll(expected);
 		List expectedList = new ArrayList(sortedSet);
-		List actualList = CollectionTools.list((ListIterator) actual.getValue());
+		List actualList = CollectionTools.list((ListIterator) actual.value());
 		assertEquals(expectedList, actualList);
 	}
 

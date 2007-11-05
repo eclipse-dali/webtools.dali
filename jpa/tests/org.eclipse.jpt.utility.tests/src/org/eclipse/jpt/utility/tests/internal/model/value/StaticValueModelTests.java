@@ -31,7 +31,7 @@ public class StaticValueModelTests extends TestCase {
 
 	private ValueModel buildObjectHolder() {
 		return new AbstractReadOnlyPropertyValueModel() {
-			public Object getValue() {
+			public Object value() {
 				return "foo";
 			}
 		};
@@ -43,8 +43,8 @@ public class StaticValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetValue() {
-		assertEquals("foo", this.objectHolder.getValue());
+	public void testValue() {
+		assertEquals("foo", this.objectHolder.value());
 	}
 
 	public void testToString() {

@@ -12,7 +12,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 /**
  * Extend ValueModel to allow the adding and
  * removing of nodes in a tree value.
- * Typically the value returned from #getValue()
+ * Typically the value returned from #value()
  * will be an Iterator.
  */
 public interface TreeValueModel extends ValueModel {

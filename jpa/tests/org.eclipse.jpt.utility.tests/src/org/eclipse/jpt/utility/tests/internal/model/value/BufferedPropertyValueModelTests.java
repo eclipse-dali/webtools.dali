@@ -107,38 +107,38 @@ public class BufferedPropertyValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetValue() {
+	public void testValue() {
 		PropertyChangeListener bufferedListener = this.buildBufferedListener();
 		this.bufferedIDHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
 		this.bufferedNameHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
 		this.bufferedHireDateHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
 
-		assertEquals(new Integer(17), this.idAdapter.getValue());
-		assertEquals(new Integer(17), this.bufferedIDHolder.getValue());
+		assertEquals(new Integer(17), this.idAdapter.value());
+		assertEquals(new Integer(17), this.bufferedIDHolder.value());
 
 		assertEquals("Freddy", this.employee.getName());
-		assertEquals("Freddy", this.nameAdapter.getValue());
-		assertEquals("Freddy", this.bufferedNameHolder.getValue());
+		assertEquals("Freddy", this.nameAdapter.value());
+		assertEquals("Freddy", this.bufferedNameHolder.value());
 
 		Date temp = this.employee.getHireDate();
 		assertEquals(temp, this.employee.getHireDate());
-		assertEquals(temp, this.hireDateAdapter.getValue());
-		assertEquals(temp, this.bufferedHireDateHolder.getValue());
+		assertEquals(temp, this.hireDateAdapter.value());
+		assertEquals(temp, this.bufferedHireDateHolder.value());
 
 		this.bufferedIDHolder.setValue(new Integer(323));
 		assertEquals(17, this.employee.getID());
-		assertEquals(new Integer(17), this.idAdapter.getValue());
-		assertEquals(new Integer(323), this.bufferedIDHolder.getValue());
+		assertEquals(new Integer(17), this.idAdapter.value());
+		assertEquals(new Integer(323), this.bufferedIDHolder.value());
 
 		this.bufferedNameHolder.setValue("Ripley");
 		assertEquals("Freddy", this.employee.getName());
-		assertEquals("Freddy", this.nameAdapter.getValue());
-		assertEquals("Ripley", this.bufferedNameHolder.getValue());
+		assertEquals("Freddy", this.nameAdapter.value());
+		assertEquals("Ripley", this.bufferedNameHolder.value());
 
 		this.bufferedHireDateHolder.setValue(null);
 		assertEquals(temp, this.employee.getHireDate());
-		assertEquals(temp, this.hireDateAdapter.getValue());
-		assertEquals(null, this.bufferedHireDateHolder.getValue());
+		assertEquals(temp, this.hireDateAdapter.value());
+		assertEquals(null, this.bufferedHireDateHolder.value());
 	}
 
 	public void testAccept() {
@@ -149,33 +149,33 @@ public class BufferedPropertyValueModelTests extends TestCase {
 
 		this.bufferedIDHolder.setValue(new Integer(323));
 		assertEquals(17, this.employee.getID());
-		assertEquals(new Integer(17), this.idAdapter.getValue());
-		assertEquals(new Integer(323), this.bufferedIDHolder.getValue());
+		assertEquals(new Integer(17), this.idAdapter.value());
+		assertEquals(new Integer(323), this.bufferedIDHolder.value());
 
 		this.bufferedNameHolder.setValue("Ripley");
 		assertEquals("Freddy", this.employee.getName());
-		assertEquals("Freddy", this.nameAdapter.getValue());
-		assertEquals("Ripley", this.bufferedNameHolder.getValue());
+		assertEquals("Freddy", this.nameAdapter.value());
+		assertEquals("Ripley", this.bufferedNameHolder.value());
 
 		Date temp = this.employee.getHireDate();
 		this.bufferedHireDateHolder.setValue(null);
 		assertEquals(temp, this.employee.getHireDate());
-		assertEquals(temp, this.hireDateAdapter.getValue());
-		assertEquals(null, this.bufferedHireDateHolder.getValue());
+		assertEquals(temp, this.hireDateAdapter.value());
+		assertEquals(null, this.bufferedHireDateHolder.value());
 
 		this.trigger.accept();
 
 		assertEquals(323, this.employee.getID());
-		assertEquals(new Integer(323), this.idAdapter.getValue());
-		assertEquals(new Integer(323), this.bufferedIDHolder.getValue());
+		assertEquals(new Integer(323), this.idAdapter.value());
+		assertEquals(new Integer(323), this.bufferedIDHolder.value());
 
 		assertEquals("Ripley", this.employee.getName());
-		assertEquals("Ripley", this.nameAdapter.getValue());
-		assertEquals("Ripley", this.bufferedNameHolder.getValue());
+		assertEquals("Ripley", this.nameAdapter.value());
+		assertEquals("Ripley", this.bufferedNameHolder.value());
 
 		assertEquals(null, this.employee.getHireDate());
-		assertEquals(null, this.hireDateAdapter.getValue());
-		assertEquals(null, this.bufferedHireDateHolder.getValue());
+		assertEquals(null, this.hireDateAdapter.value());
+		assertEquals(null, this.bufferedHireDateHolder.value());
 	}
 
 	public void testReset() {
@@ -186,33 +186,33 @@ public class BufferedPropertyValueModelTests extends TestCase {
 
 		this.bufferedIDHolder.setValue(new Integer(323));
 		assertEquals(17, this.employee.getID());
-		assertEquals(new Integer(17), this.idAdapter.getValue());
-		assertEquals(new Integer(323), this.bufferedIDHolder.getValue());
+		assertEquals(new Integer(17), this.idAdapter.value());
+		assertEquals(new Integer(323), this.bufferedIDHolder.value());
 
 		this.bufferedNameHolder.setValue("Ripley");
 		assertEquals("Freddy", this.employee.getName());
-		assertEquals("Freddy", this.nameAdapter.getValue());
-		assertEquals("Ripley", this.bufferedNameHolder.getValue());
+		assertEquals("Freddy", this.nameAdapter.value());
+		assertEquals("Ripley", this.bufferedNameHolder.value());
 
 		Date temp = this.employee.getHireDate();
 		this.bufferedHireDateHolder.setValue(null);
 		assertEquals(temp, this.employee.getHireDate());
-		assertEquals(temp, this.hireDateAdapter.getValue());
-		assertEquals(null, this.bufferedHireDateHolder.getValue());
+		assertEquals(temp, this.hireDateAdapter.value());
+		assertEquals(null, this.bufferedHireDateHolder.value());
 
 		this.trigger.reset();
 
 		assertEquals(17, this.employee.getID());
-		assertEquals(new Integer(17), this.idAdapter.getValue());
-		assertEquals(new Integer(17), this.bufferedIDHolder.getValue());
+		assertEquals(new Integer(17), this.idAdapter.value());
+		assertEquals(new Integer(17), this.bufferedIDHolder.value());
 
 		assertEquals("Freddy", this.employee.getName());
-		assertEquals("Freddy", this.nameAdapter.getValue());
-		assertEquals("Freddy", this.bufferedNameHolder.getValue());
+		assertEquals("Freddy", this.nameAdapter.value());
+		assertEquals("Freddy", this.bufferedNameHolder.value());
 
 		assertEquals(temp, this.employee.getHireDate());
-		assertEquals(temp, this.hireDateAdapter.getValue());
-		assertEquals(temp, this.bufferedHireDateHolder.getValue());
+		assertEquals(temp, this.hireDateAdapter.value());
+		assertEquals(temp, this.bufferedHireDateHolder.value());
 	}
 
 	public void testLazyListening() {

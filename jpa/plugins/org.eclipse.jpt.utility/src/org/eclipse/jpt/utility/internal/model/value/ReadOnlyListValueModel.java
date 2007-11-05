@@ -47,7 +47,7 @@ public class ReadOnlyListValueModel
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		return this.value.listIterator();
 	}
 

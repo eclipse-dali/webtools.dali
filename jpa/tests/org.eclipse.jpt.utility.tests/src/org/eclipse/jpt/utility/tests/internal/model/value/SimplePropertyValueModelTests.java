@@ -39,17 +39,17 @@ public class SimplePropertyValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetValue() {
-		assertEquals("foo", this.objectHolder.getValue());
+	public void testValue() {
+		assertEquals("foo", this.objectHolder.value());
 	}
 
 	public void testSetValue() {
 		this.objectHolder.setValue("bar");
-		assertEquals("bar", this.objectHolder.getValue());
+		assertEquals("bar", this.objectHolder.value());
 		this.objectHolder.setValue(null);
-		assertEquals(null, this.objectHolder.getValue());
+		assertEquals(null, this.objectHolder.value());
 		this.objectHolder.setValue("baz");
-		assertEquals("baz", this.objectHolder.getValue());
+		assertEquals("baz", this.objectHolder.value());
 	}
 
 	public void testPropertyChange1() {

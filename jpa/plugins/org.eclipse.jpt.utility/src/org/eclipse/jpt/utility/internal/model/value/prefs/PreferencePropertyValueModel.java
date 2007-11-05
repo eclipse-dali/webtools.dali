@@ -157,7 +157,7 @@ public class PreferencePropertyValueModel
 	/**
 	 * Return the cached (converted) value.
 	 */
-	public synchronized Object getValue() {
+	public synchronized Object value() {
 		return this.value;
 	}
 

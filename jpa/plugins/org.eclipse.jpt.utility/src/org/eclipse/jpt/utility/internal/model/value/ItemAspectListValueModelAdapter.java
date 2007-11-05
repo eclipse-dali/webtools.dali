@@ -77,8 +77,8 @@ public abstract class ItemAspectListValueModelAdapter extends ListValueModelWrap
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
-		return this.listHolder.getValue();
+	public Object value() {
+		return this.listHolder.value();
 	}
 
 
@@ -129,7 +129,7 @@ public abstract class ItemAspectListValueModelAdapter extends ListValueModelWrap
 	}
 
 	protected void engageAllItems() {
-		this.engageItems((ListIterator) this.listHolder.getValue());
+		this.engageItems((ListIterator) this.listHolder.value());
 	}
 
 	protected void engageItems(Iterator stream) {
@@ -164,7 +164,7 @@ public abstract class ItemAspectListValueModelAdapter extends ListValueModelWrap
 	}
 
 	protected void disengageAllItems() {
-		this.disengageItems((ListIterator) this.listHolder.getValue());
+		this.disengageItems((ListIterator) this.listHolder.value());
 	}
 
 	protected void disengageItems(Iterator stream) {

@@ -16,7 +16,7 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
  * A <code>FilteringPropertyValueModel</code> wraps another
  * <code>PropertyValueModel</code> and uses a <code>BidiFilter</code>
  * to determine when the wrapped value is to be returned by calls
- * to <code>getValue()</code> and modified by calls to
+ * to <code>value()</code> and modified by calls to
  * <code>setValue(Object)</code>
  * <p>
  * As an alternative to building a <code>BidiFilter</code>, a subclass
@@ -86,8 +86,8 @@ public class FilteringPropertyValueModel extends PropertyValueModelWrapper {
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
-		return this.filterValue(this.valueHolder.getValue());
+	public Object value() {
+		return this.filterValue(this.valueHolder.value());
 	}
 
 
@@ -124,7 +124,7 @@ public class FilteringPropertyValueModel extends PropertyValueModelWrapper {
 	/**
 	 * Return whether the <code>FilteringPropertyValueModel</code> should
 	 * return the specified value from a call to the
-	 * <code>getValue()</code> method; the value came
+	 * <code>value()</code> method; the value came
 	 * from the nested property value model
 	 * <p>
 	 * This method can be overridden by a subclass as an

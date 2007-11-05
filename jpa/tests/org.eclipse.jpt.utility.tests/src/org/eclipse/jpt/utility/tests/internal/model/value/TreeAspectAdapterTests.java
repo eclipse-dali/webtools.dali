@@ -230,8 +230,8 @@ public class TreeAspectAdapterTests extends TestCase {
 		assertEquals("name 1.3", ((TestNode) path[path.length - 1]).getText());
 	}
 
-	public void testGetValue() {
-		assertEquals(this.convertToNames(this.subject1.namePaths()), this.convertToNames((Iterator) this.aa1.getValue()));
+	public void testValue() {
+		assertEquals(this.convertToNames(this.subject1.namePaths()), this.convertToNames((Iterator) this.aa1.value()));
 	}
 
 	private Collection convertToNames(Iterator namePaths) {

@@ -21,7 +21,7 @@ import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
 /**
  * Subclasses need only implement the following methods:
  * 
- * #getValue()
+ * #value()
  *	    return the user-determined "value" of the node,
  *     i.e. the object "wrapped" by the node
  * 
@@ -170,17 +170,17 @@ public abstract class AbstractTreeNodeValueModel
 			return false;
 		}
 		AbstractTreeNodeValueModel other = (AbstractTreeNodeValueModel) o;
-		return this.getValue().equals(other.getValue());
+		return this.value().equals(other.value());
 	}
 
 	@Override
 	public int hashCode() {
-		return this.getValue().hashCode();
+		return this.value().hashCode();
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.getValue());
+		sb.append(this.value());
 	}
 
 }

@@ -257,7 +257,7 @@ public class TreeModelAdapter extends AbstractTreeModel {
 	 */
 	private void engageModel() {
 		this.rootHolder.addPropertyChangeListener(ValueModel.VALUE, this.rootListener);
-		this.root = (TreeNodeValueModel) this.rootHolder.getValue();
+		this.root = (TreeNodeValueModel) this.rootHolder.value();
 		if (this.root == null) {
 			throw new NullPointerException();	// the root cannot be null while we have listeners
 		}
@@ -297,7 +297,7 @@ public class TreeModelAdapter extends AbstractTreeModel {
 	 * non-root nodes.
 	 */
 	void rootChanged() {
-		TreeNodeValueModel newRoot = (TreeNodeValueModel) this.rootHolder.getValue();
+		TreeNodeValueModel newRoot = (TreeNodeValueModel) this.rootHolder.value();
 		if (newRoot == null) {
 			throw new NullPointerException();	// the root cannot be null while we have listeners
 		}
@@ -634,7 +634,7 @@ public class TreeModelAdapter extends AbstractTreeModel {
 			TreeModelAdapter.this.removeChildren(parentPath, childIndices, childArray);
 
 			childIndices = this.buildIndices(parent.getChildrenModel().size());
-			childArray = this.buildArray((Iterator) parent.getChildrenModel().getValue(), parent.childrenSize());
+			childArray = this.buildArray((Iterator) parent.getChildrenModel().value(), parent.childrenSize());
 			TreeModelAdapter.this.addChildren(parentPath, childIndices, childArray);
 		}
 
@@ -692,7 +692,7 @@ public class TreeModelAdapter extends AbstractTreeModel {
 		 */
 		@Override
 		Iterator children() {
-			return (Iterator) this.node.getChildrenModel().getValue();
+			return (Iterator) this.node.getChildrenModel().value();
 		}
 
 	}

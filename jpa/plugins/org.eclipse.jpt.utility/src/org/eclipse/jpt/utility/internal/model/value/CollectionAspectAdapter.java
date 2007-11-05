@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
  * #getValueFromSubject()
  *     at the very minimum, override this method to return an iterator on the
  *     subject's collection aspect; it does not need to be overridden if
- *     #getValue() is overridden and its behavior changed
+ *     #value() is overridden and its behavior changed
  * #sizeFromSubject()
  *     override this method to improve performance; it does not need to be overridden if
  *     #size() is overridden and its behavior changed
@@ -35,7 +35,7 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
  *     (e.g. UI) will need only to *get* the value
  * #addItems(Collection) and #removeItems(Collection)
  *     override these methods to improve performance, if necessary
- * #getValue()
+ * #value()
  *     override this method only if returning an empty iterator when the
  *     subject is null is unacceptable
  * #size()
@@ -126,7 +126,7 @@ public abstract class CollectionAspectAdapter
 	 * Return the value of the subject's collection aspect.
 	 * This should be an *iterator* on the collection.
 	 */
-	public Object getValue() {
+	public Object value() {
 		if (this.subject == null) {
 			return EmptyIterator.instance();
 		}
@@ -137,7 +137,7 @@ public abstract class CollectionAspectAdapter
 	 * Return the value of the subject's collection aspect.
 	 * This should be an *iterator* on the collection.
 	 * At this point we can be sure that the subject is not null.
-	 * @see #getValue()
+	 * @see #value()
 	 */
 	protected Iterator getValueFromSubject() {
 		throw new UnsupportedOperationException();
@@ -191,7 +191,7 @@ public abstract class CollectionAspectAdapter
 	 * @see #size()
 	 */
 	protected int sizeFromSubject() {
-		return CollectionTools.size((Iterator) this.getValue());
+		return CollectionTools.size((Iterator) this.value());
 	}
 
 

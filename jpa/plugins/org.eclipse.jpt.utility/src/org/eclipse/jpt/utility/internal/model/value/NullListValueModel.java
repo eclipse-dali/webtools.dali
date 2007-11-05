@@ -50,7 +50,7 @@ public final class NullListValueModel
 		return 0;
 	}
 
-	public Object getValue() {
+	public Object value() {
 		return EmptyListIterator.instance();
 	}
 

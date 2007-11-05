@@ -44,8 +44,8 @@ public class NullPropertyValueModelTests extends TestCase {
 		assertTrue(exCaught);
 	}
 
-	public void testGetValue() {
-		assertNull(this.valueHolder.getValue());
+	public void testValue() {
+		assertNull(this.valueHolder.value());
 	}
 
 }

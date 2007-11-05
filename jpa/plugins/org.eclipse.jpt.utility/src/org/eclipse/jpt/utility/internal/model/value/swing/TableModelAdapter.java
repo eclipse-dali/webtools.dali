@@ -191,7 +191,7 @@ public class TableModelAdapter extends AbstractTableModel {
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		PropertyValueModel[] row = this.rows.get(rowIndex);
-		return row[columnIndex].getValue();
+		return row[columnIndex].value();
 	}
 
 	@Override
@@ -291,7 +291,7 @@ public class TableModelAdapter extends AbstractTableModel {
 	 */
 	private void engageAllCells() {
 		this.rows.ensureCapacity(this.listHolder.size());
-		for (Iterator stream = (Iterator) this.listHolder.getValue(); stream.hasNext(); ) {
+		for (Iterator stream = (Iterator) this.listHolder.value(); stream.hasNext(); ) {
 			PropertyValueModel[] row = this.columnAdapter.cellModels(stream.next());
 			this.engageRow(row);
 			this.rows.add(row);

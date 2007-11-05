@@ -57,7 +57,7 @@ public class DateSpinnerModelAdapterTests extends TestCase {
 		newDate.setTime(777777);
 		this.spinnerModelAdapter.setValue(newDate);
 		assertTrue(this.eventFired);
-		assertEquals(777777, ((Date) this.valueHolder.getValue()).getTime());
+		assertEquals(777777, ((Date) this.valueHolder.value()).getTime());
 	}
 
 	public void testSetValueValueHolder() throws Exception {

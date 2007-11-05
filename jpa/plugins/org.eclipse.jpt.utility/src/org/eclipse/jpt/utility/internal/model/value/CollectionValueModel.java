@@ -14,7 +14,7 @@ import java.util.Collection;
 /**
  * Extend ValueModel to allow the adding and
  * removing of items in a collection value.
- * Typically the value returned from #getValue()
+ * Typically the value returned from #value()
  * will be an Iterator.
  */
 public interface CollectionValueModel extends ValueModel {

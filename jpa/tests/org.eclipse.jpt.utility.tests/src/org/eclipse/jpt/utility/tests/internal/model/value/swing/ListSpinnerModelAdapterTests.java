@@ -53,10 +53,10 @@ public class ListSpinnerModelAdapterTests extends TestCase {
 				ListSpinnerModelAdapterTests.this.eventFired = true;
 			}
 		});
-		assertEquals(DEFAULT_VALUE, this.valueHolder.getValue());
+		assertEquals(DEFAULT_VALUE, this.valueHolder.value());
 		this.spinnerModelAdapter.setValue(VALUE_LIST[2]);
 		assertTrue(this.eventFired);
-		assertEquals(VALUE_LIST[2], this.valueHolder.getValue());
+		assertEquals(VALUE_LIST[2], this.valueHolder.value());
 	}
 
 	public void testSetValueValueHolder() throws Exception {

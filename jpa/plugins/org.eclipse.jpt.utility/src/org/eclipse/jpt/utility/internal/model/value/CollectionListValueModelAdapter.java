@@ -111,7 +111,7 @@ public class CollectionListValueModelAdapter
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		// try to prevent backdoor modification of the list
 		return new ReadOnlyListIterator(this.list);
 	}
@@ -234,7 +234,7 @@ public class CollectionListValueModelAdapter
 	// ********** behavior **********
 
 	protected void buildList() {
-		Iterator stream = (Iterator) this.collectionHolder.getValue();
+		Iterator stream = (Iterator) this.collectionHolder.value();
 		// if the new collection is empty, do nothing
 		if (stream.hasNext()) {
 			this.list.ensureCapacity(this.collectionHolder.size());

@@ -46,7 +46,7 @@ public class ReadOnlyCollectionValueModel
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		return this.value.iterator();
 	}
 

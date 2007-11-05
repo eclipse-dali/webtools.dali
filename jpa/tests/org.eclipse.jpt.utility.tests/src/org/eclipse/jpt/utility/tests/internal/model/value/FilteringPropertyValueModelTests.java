@@ -56,45 +56,45 @@ public class FilteringPropertyValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetValue() {
-		assertEquals("foo", this.objectHolder.getValue());
-		assertNull(this.filteredObjectHolder.getValue());
+	public void testValue() {
+		assertEquals("foo", this.objectHolder.value());
+		assertNull(this.filteredObjectHolder.value());
 
 		this.objectHolder.setValue("bar");
-		assertEquals("bar", this.objectHolder.getValue());
-		assertNotNull(this.filteredObjectHolder.getValue());
-		assertEquals("bar", this.filteredObjectHolder.getValue());
+		assertEquals("bar", this.objectHolder.value());
+		assertNotNull(this.filteredObjectHolder.value());
+		assertEquals("bar", this.filteredObjectHolder.value());
 
 		this.objectHolder.setValue("baz");
-		assertEquals("baz", this.objectHolder.getValue());
-		assertNotNull(this.filteredObjectHolder.getValue());
-		assertEquals("baz", this.filteredObjectHolder.getValue());
+		assertEquals("baz", this.objectHolder.value());
+		assertNotNull(this.filteredObjectHolder.value());
+		assertEquals("baz", this.filteredObjectHolder.value());
 
 		this.objectHolder.setValue(null);
-		assertNull(this.objectHolder.getValue());
-		assertNull(this.filteredObjectHolder.getValue());
+		assertNull(this.objectHolder.value());
+		assertNull(this.filteredObjectHolder.value());
 
 		this.objectHolder.setValue("foo");
-		assertEquals("foo", this.objectHolder.getValue());
-		assertNull(this.filteredObjectHolder.getValue());
+		assertEquals("foo", this.objectHolder.value());
+		assertNull(this.filteredObjectHolder.value());
 	}
 
 	public void testSetValue() {
 		this.filteredObjectHolder.setValue("bar");
-		assertEquals("bar", this.objectHolder.getValue());
-		assertEquals("bar", this.filteredObjectHolder.getValue());
+		assertEquals("bar", this.objectHolder.value());
+		assertEquals("bar", this.filteredObjectHolder.value());
 
 		this.filteredObjectHolder.setValue("foo");
-		assertEquals("bar", this.objectHolder.getValue());
-		assertEquals("bar", this.filteredObjectHolder.getValue());
+		assertEquals("bar", this.objectHolder.value());
+		assertEquals("bar", this.filteredObjectHolder.value());
 
 		this.filteredObjectHolder.setValue(null);
-		assertEquals("bar", this.objectHolder.getValue());
-		assertEquals("bar", this.filteredObjectHolder.getValue());
+		assertEquals("bar", this.objectHolder.value());
+		assertEquals("bar", this.filteredObjectHolder.value());
 
 		this.filteredObjectHolder.setValue("baz");
-		assertEquals("baz", this.objectHolder.getValue());
-		assertEquals("baz", this.filteredObjectHolder.getValue());
+		assertEquals("baz", this.objectHolder.value());
+		assertEquals("baz", this.filteredObjectHolder.value());
 	}
 
 	public void testLazyListening() {

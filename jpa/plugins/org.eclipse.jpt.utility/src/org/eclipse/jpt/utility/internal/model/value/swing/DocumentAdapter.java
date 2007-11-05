@@ -262,7 +262,7 @@ public class DocumentAdapter implements Document, Serializable {
 
 	protected void engageStringHolder() {
 		this.stringHolder.addPropertyChangeListener(ValueModel.VALUE, this.stringListener);
-		this.synchronizeDelegate((String) this.stringHolder.getValue());
+		this.synchronizeDelegate((String) this.stringHolder.value());
 	}
 
 	protected void disengageStringHolder() {

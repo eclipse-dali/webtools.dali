@@ -20,13 +20,13 @@ import org.eclipse.jpt.utility.internal.model.NullModel;
  * Implementation of CollectionValueModel that can be subclassed and used for
  * returning an iterator on a static collection, but still allows listeners to be added.
  * Listeners will NEVER be notified of any changes, because there should be none.
- * Subclasses need only implement the #getValue() method to
+ * Subclasses need only implement the #value() method to
  * return an iterator on the static values required by the client code. This class is
  * really only useful for simplifying the building of anonymous inner
  * classes that implement the CollectionValueModel interface:
  * 	private CollectionValueModel buildCacheUsageOptionsHolder() {
  * 		return new AbstractReadOnlyCollectionValueModel() {
- * 			public Object getValue() {
+ * 			public Object value() {
  * 				return MWQuery.cacheUsageOptions();
  * 			}
  * 			public int size() {
@@ -68,7 +68,7 @@ public abstract class AbstractReadOnlyCollectionValueModel
 	}
 
 	public int size() {
-		return CollectionTools.size((Iterator) this.getValue());
+		return CollectionTools.size((Iterator) this.value());
 	}
 
 
@@ -76,7 +76,7 @@ public abstract class AbstractReadOnlyCollectionValueModel
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, CollectionTools.collection((Iterator) this.getValue()));
+		return StringTools.buildToStringFor(this, CollectionTools.collection((Iterator) this.value()));
 	}
 
 }

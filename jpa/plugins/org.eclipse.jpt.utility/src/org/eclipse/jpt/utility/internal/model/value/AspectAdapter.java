@@ -115,15 +115,15 @@ public abstract class AspectAdapter
 	 * The subject has changed. Notify listeners that the value has changed.
 	 */
 	protected synchronized void subjectChanged() {
-		Object oldValue = this.getValue();
+		Object oldValue = this.value();
 		boolean hasListeners = this.hasListeners();
 		if (hasListeners) {
 			this.disengageSubject();
 		}
-		this.subject = this.subjectHolder.getValue();
+		this.subject = this.subjectHolder.value();
 		if (hasListeners) {
 			this.engageSubject();
-			this.fireAspectChange(oldValue, this.getValue());
+			this.fireAspectChange(oldValue, this.value());
 		}
 	}
 
@@ -172,7 +172,7 @@ public abstract class AspectAdapter
 		this.subjectHolder.addPropertyChangeListener(VALUE, this.subjectChangeListener);
 		// synch our subject *after* we start listening to the subject holder,
 		// since its value might change when a listener is added
-		this.subject = this.subjectHolder.getValue();
+		this.subject = this.subjectHolder.value();
 	}
 
 	protected void disengageSubjectHolder() {

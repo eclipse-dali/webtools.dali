@@ -46,7 +46,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	}
 
 	private Collection wrappedCollection() {
-		return CollectionTools.collection(new SingleElementIterator(this.wrappedValueHolder.getValue()));
+		return CollectionTools.collection(new SingleElementIterator(this.wrappedValueHolder.value()));
 	}
 
 	@Override
@@ -55,12 +55,12 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetValue() {
+	public void testValue() {
 		this.adapter.addCollectionChangeListener(ValueModel.VALUE, new TestListener() {
 			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
 		});
 		this.wrappedValueHolder.setValue("foo");
-		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.getValue());
+		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.value());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());
@@ -72,18 +72,18 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 		};
 		this.adapter.addCollectionChangeListener(ValueModel.VALUE, listener);
 		this.wrappedValueHolder.setValue("foo");
-		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.getValue());
+		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.value());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());
 
 		this.adapter.removeCollectionChangeListener(ValueModel.VALUE, listener);
-		adapterCollection = CollectionTools.collection((Iterator) this.adapter.getValue());
+		adapterCollection = CollectionTools.collection((Iterator) this.adapter.value());
 		assertEquals(0, adapterCollection.size());
 		assertEquals(new HashBag(), adapterCollection);
 
 		this.adapter.addCollectionChangeListener(ValueModel.VALUE, listener);
-		adapterCollection = CollectionTools.collection((Iterator) this.adapter.getValue());
+		adapterCollection = CollectionTools.collection((Iterator) this.adapter.value());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());

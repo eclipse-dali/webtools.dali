@@ -23,12 +23,12 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  * #getValueFromSubject()
  *     at the very minimum, override this method to return an iterator
  *     on the subject's tree aspect; it does not need to be overridden if
- *     #getValue() is overridden and its behavior changed
+ *     #value() is overridden and its behavior changed
  * #addNode(Object[], Object) and #removeNode(Object[])
  *     override these methods if the client code needs to *change* the contents of
  *     the subject's tree aspect; oftentimes, though, the client code
  *     (e.g. UI) will need only to *get* the value
- * #getValue()
+ * #value()
  *     override this method only if returning an empty iterator when the
  *     subject is null is unacceptable
  */
@@ -106,7 +106,7 @@ public abstract class TreeAspectAdapter
 	 * Return the value of the subject's tree aspect.
 	 * This should be an *iterator* on the tree.
 	 */
-	public Object getValue() {
+	public Object value() {
 		if (this.subject == null) {
 			return EmptyIterator.instance();
 		}
@@ -117,7 +117,7 @@ public abstract class TreeAspectAdapter
 	 * Return the value of the subject's tree aspect.
 	 * This should be an *iterator* on the tree.
 	 * At this point we can be sure that the subject is not null.
-	 * @see #getValue()
+	 * @see #value()
 	 */
 	protected Iterator getValueFromSubject() {	// private-protected
 		throw new UnsupportedOperationException();

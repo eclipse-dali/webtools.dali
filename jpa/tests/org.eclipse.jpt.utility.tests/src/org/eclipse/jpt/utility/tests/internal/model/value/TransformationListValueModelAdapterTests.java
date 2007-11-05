@@ -116,35 +116,35 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetValue() {
+	public void testValue() {
 		this.transformedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
-		assertEquals(this.buildTransformedList(), CollectionTools.list((Iterator) this.transformedListHolder.getValue()));
+		assertEquals(this.buildTransformedList(), CollectionTools.list((Iterator) this.transformedListHolder.value()));
 	}
 
 	public void testStaleValue() {
 		ListChangeListener listener = this.buildListener();
 		this.transformedListHolder.addListChangeListener(ValueModel.VALUE, listener);
-		assertEquals(this.buildTransformedList(), CollectionTools.list((Iterator) this.transformedListHolder.getValue()));
+		assertEquals(this.buildTransformedList(), CollectionTools.list((Iterator) this.transformedListHolder.value()));
 
 		this.transformedListHolder.removeListChangeListener(ValueModel.VALUE, listener);
-		assertEquals(Collections.EMPTY_LIST, CollectionTools.list((Iterator) this.transformedListHolder.getValue()));
+		assertEquals(Collections.EMPTY_LIST, CollectionTools.list((Iterator) this.transformedListHolder.value()));
 	}
 
 	public void testSize() {
 		this.transformedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
-		assertEquals(this.buildTransformedList().size(), CollectionTools.size((Iterator) this.transformedListHolder.getValue()));
+		assertEquals(this.buildTransformedList().size(), CollectionTools.size((Iterator) this.transformedListHolder.value()));
 	}
 
 	private boolean transformedListContains(Object item) {
-		return CollectionTools.contains((Iterator) this.transformedListHolder.getValue(), item);
+		return CollectionTools.contains((Iterator) this.transformedListHolder.value(), item);
 	}
 
 	private boolean transformedListContainsAll(Collection items) {
-		return CollectionTools.containsAll((Iterator) this.transformedListHolder.getValue(), items);
+		return CollectionTools.containsAll((Iterator) this.transformedListHolder.value(), items);
 	}
 
 	private boolean transformedListContainsAny(Collection items) {
-		List transformedList = CollectionTools.list((ListIterator) this.transformedListHolder.getValue());
+		List transformedList = CollectionTools.list((ListIterator) this.transformedListHolder.value());
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
 			if (transformedList.contains(stream.next())) {
 				return true;

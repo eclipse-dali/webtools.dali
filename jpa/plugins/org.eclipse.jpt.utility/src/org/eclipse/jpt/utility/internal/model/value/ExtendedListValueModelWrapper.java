@@ -91,12 +91,12 @@ public class ExtendedListValueModelWrapper
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		// try to prevent backdoor modification of the lists
 		return new ReadOnlyListIterator(
 			new CompositeListIterator(
 				this.prefix.listIterator(),
-				(ListIterator) this.listHolder.getValue(),
+				(ListIterator) this.listHolder.value(),
 				this.suffix.listIterator()
 			)
 		);

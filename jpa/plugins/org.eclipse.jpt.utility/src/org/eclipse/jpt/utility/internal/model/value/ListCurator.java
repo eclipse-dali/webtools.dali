@@ -28,7 +28,7 @@ import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
  * #getValueForRecord()
  * 	at the very minimum, override this method to return an iterator
  * 	on the subject's collection state; it does not need to be overridden if
- * 	#getValue() is overridden and its behavior changed
+ * 	#value() is overridden and its behavior changed
  */
 public abstract class ListCurator 
 	extends AspectAdapter
@@ -86,7 +86,7 @@ public abstract class ListCurator
 	
 	// **************** ValueModel contract ***********************************
 	
-	public Object getValue() {
+	public Object value() {
 		return new ReadOnlyListIterator(this.record);
 	}
 	

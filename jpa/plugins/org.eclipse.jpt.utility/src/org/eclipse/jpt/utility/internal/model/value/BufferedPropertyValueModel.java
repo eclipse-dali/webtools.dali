@@ -120,8 +120,8 @@ public class BufferedPropertyValueModel extends PropertyValueModelWrapper {
 	 * If we are currently "buffering" a value, return that;
 	 * otherwise, return the wrapped value.
 	 */
-	public Object getValue() {
-		return (this.bufferedValue == UNASSIGNED) ? this.valueHolder.getValue() : this.bufferedValue;
+	public Object value() {
+		return (this.bufferedValue == UNASSIGNED) ? this.valueHolder.value() : this.bufferedValue;
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class BufferedPropertyValueModel extends PropertyValueModelWrapper {
 	 * when the trigger is "accepted".
 	 */
 	public void setValue(Object value) {
-		Object old = this.getValue();
+		Object old = this.value();
 		this.bufferedValue = value;
 		this.firePropertyChanged(VALUE, old, this.bufferedValue);
 	}
@@ -215,13 +215,13 @@ public class BufferedPropertyValueModel extends PropertyValueModelWrapper {
 			// notify our listeners that our value has been reset
 			Object old = this.bufferedValue;
 			this.bufferedValue = UNASSIGNED;
-			this.firePropertyChanged(VALUE, old, this.valueHolder.getValue());
+			this.firePropertyChanged(VALUE, old, this.valueHolder.value());
 		}
 	}
 	
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.getValue());
+		sb.append(this.value());
 	}
 
 
@@ -264,9 +264,9 @@ public class BufferedPropertyValueModel extends PropertyValueModelWrapper {
 		 * change notification triggered by #setValue(Object).
 		 */
 		@Override
-		public Object getValue() {
+		public Object value() {
 			if (this.value == null) {
-				throw new IllegalStateException("The method Trigger.getValue() may only be called during change notification.");
+				throw new IllegalStateException("The method Trigger.value() may only be called during change notification.");
 			}
 			return this.value;
 		}
@@ -299,7 +299,7 @@ public class BufferedPropertyValueModel extends PropertyValueModelWrapper {
 		 * 	- false indicates "reset"
 		 */
 		public boolean booleanValue() {
-			return ((Boolean) this.getValue()).booleanValue();
+			return ((Boolean) this.value()).booleanValue();
 		}
 
 		/**

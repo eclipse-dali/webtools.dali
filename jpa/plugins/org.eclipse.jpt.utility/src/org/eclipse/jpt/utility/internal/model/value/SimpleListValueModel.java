@@ -52,7 +52,7 @@ public class SimpleListValueModel
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		// try to prevent backdoor modification of the list
 		return new ReadOnlyListIterator(this.value);
 	}

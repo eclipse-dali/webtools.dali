@@ -55,7 +55,7 @@ public class SpinnerModelAdapterTests extends TestCase {
 		});
 		this.spinnerModelAdapter.setValue(new Integer(5));
 		assertTrue(this.eventFired);
-		assertEquals(new Integer(5), this.valueHolder.getValue());
+		assertEquals(new Integer(5), this.valueHolder.value());
 	}
 
 	public void testSetValueValueHolder() throws Exception {

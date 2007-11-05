@@ -49,11 +49,11 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 	}
 
 	private boolean booleanValue() {
-		return ((Boolean) this.adapter.getValue()).booleanValue();
+		return ((Boolean) this.adapter.value()).booleanValue();
 	}
 
 	private Collection wrappedCollection() {
-		return CollectionTools.collection((Iterator) this.wrappedCollectionHolder.getValue());
+		return CollectionTools.collection((Iterator) this.wrappedCollectionHolder.value());
 	}
 
 	public void testGetValue() {
@@ -198,8 +198,8 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 		 * always return a Boolean
 		 */
 		@Override
-		public Object getValue() {
-			Object result = super.getValue();
+		public Object value() {
+			Object result = super.value();
 			return (result == null) ? Boolean.FALSE : result;
 		}
 		@Override
@@ -218,7 +218,7 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 		}
 		@Override
 		protected Object buildValue() {
-			return Boolean.valueOf(CollectionTools.contains((Iterator) this.collectionHolder.getValue(), this.item));
+			return Boolean.valueOf(CollectionTools.contains((Iterator) this.collectionHolder.value(), this.item));
 		}
 
 		// ********** internal methods **********

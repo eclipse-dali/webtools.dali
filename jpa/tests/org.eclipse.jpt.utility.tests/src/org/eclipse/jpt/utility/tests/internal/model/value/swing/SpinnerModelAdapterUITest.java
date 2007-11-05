@@ -111,7 +111,7 @@ public class SpinnerModelAdapterUITest {
 	}
 
 	private SpinnerModel buildAgeSpinnerModel(PropertyValueModel valueHolder) {
-		return new NumberSpinnerModelAdapter(valueHolder, ((Integer) valueHolder.getValue()).intValue(), TestModel.MIN_AGE, TestModel.MAX_AGE, 1);
+		return new NumberSpinnerModelAdapter(valueHolder, ((Integer) valueHolder.value()).intValue(), TestModel.MIN_AGE, TestModel.MAX_AGE, 1);
 	}
 
 	private PropertyValueModel buildEyeColorHolder(ValueModel vm) {

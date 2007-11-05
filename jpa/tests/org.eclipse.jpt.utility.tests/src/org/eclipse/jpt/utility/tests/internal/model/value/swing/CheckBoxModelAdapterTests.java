@@ -55,7 +55,7 @@ public class CheckBoxModelAdapterTests extends TestCase {
 		});
 		this.buttonModelAdapter.setSelected(false);
 		assertTrue(this.eventFired);
-		assertEquals(Boolean.FALSE, this.booleanHolder.getValue());
+		assertEquals(Boolean.FALSE, this.booleanHolder.value());
 	}
 
 	public void testSetValue() throws Exception {

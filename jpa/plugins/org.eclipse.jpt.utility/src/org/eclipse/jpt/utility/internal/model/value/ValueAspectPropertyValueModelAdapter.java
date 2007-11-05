@@ -56,7 +56,7 @@ public abstract class ValueAspectPropertyValueModelAdapter
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		return this.value;
 	}
 
@@ -90,7 +90,7 @@ public abstract class ValueAspectPropertyValueModelAdapter
 	}
 
 	protected void engageValue() {
-		this.value = this.valueHolder.getValue();
+		this.value = this.valueHolder.value();
 		if (this.value != null) {
 			this.startListeningToValue();
 		}

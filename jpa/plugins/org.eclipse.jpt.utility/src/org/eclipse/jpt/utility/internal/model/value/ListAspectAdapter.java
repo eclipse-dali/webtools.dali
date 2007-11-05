@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  * #getValueFromSubject()
  *     at the very minimum, override this method to return a list iterator
  *     on the subject's list aspect; it does not need to be overridden if
- *     #getValue() is overridden and its behavior changed
+ *     #value() is overridden and its behavior changed
  * #getItem(int)
  *     override this method to improve performance
  * #sizeFromSubject()
@@ -38,7 +38,7 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  *     (e.g. UI) will need only to *get* the value
  * #addItems(int, List) and #removeItems(int, int)
  *     override these methods to improve performance, if necessary
- * #getValue()
+ * #value()
  *     override this method only if returning an empty list iterator when the
  *     subject is null is unacceptable
  * #size()
@@ -135,7 +135,7 @@ public abstract class ListAspectAdapter
 	 * Return the value of the subject's list aspect.
 	 * This should be a *list iterator* on the list.
 	 */
-	public Object getValue() {
+	public Object value() {
 		if (this.subject == null) {
 			return EmptyListIterator.instance();
 		}
@@ -146,7 +146,7 @@ public abstract class ListAspectAdapter
 	 * Return the value of the subject's list aspect.
 	 * This should be a *list iterator* on the list.
 	 * At this point we can be sure that the subject is not null.
-	 * @see #getValue()
+	 * @see #value()
 	 */
 	protected ListIterator getValueFromSubject() {
 		throw new UnsupportedOperationException();
@@ -211,7 +211,7 @@ public abstract class ListAspectAdapter
 	 * Return the item at the specified index of the subject's list aspect.
 	 */
 	public Object getItem(int index) {
-		return CollectionTools.get((ListIterator) this.getValue(), index);
+		return CollectionTools.get((ListIterator) this.value(), index);
 	}
 
 	/**
@@ -227,7 +227,7 @@ public abstract class ListAspectAdapter
 	 * @see #size()
 	 */
 	protected int sizeFromSubject() {
-		return CollectionTools.size((ListIterator) this.getValue());
+		return CollectionTools.size((ListIterator) this.value());
 	}
 
 

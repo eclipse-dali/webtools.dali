@@ -22,7 +22,7 @@ import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
  * A <code>FilteringCollectionValueModel</code> wraps another
  * <code>CollectionValueModel</code> and uses a <code>Filter</code>
  * to determine which items in the collection are returned by calls
- * to <code>getValue()</code>.
+ * to <code>value()</code>.
  * <p>
  * As an alternative to building a <code>Filter</code>, a subclass
  * of <code>FilteringCollectionValueModel</code> can override the
@@ -119,7 +119,7 @@ public class FilteringCollectionValueModel
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		return this.filteredItems.iterator();
 	}
 
@@ -179,7 +179,7 @@ public class FilteringCollectionValueModel
 	/**
 	 * Return whether the <code>FilteringCollectionValueModel</code> should
 	 * include the specified value in the iterator returned from a call to the
-	 * <code>getValue()</code> method; the value came
+	 * <code>value()</code> method; the value came
 	 * from the nested collection value model.
 	 * <p>
 	 * This method can be overridden by a subclass as an
@@ -204,7 +204,7 @@ public class FilteringCollectionValueModel
 	 */
 	protected void synchFilteredItems() {
 		this.filteredItems.clear();
-		CollectionTools.addAll(this.filteredItems, this.filter((Iterator) this.collectionHolder.getValue()));
+		CollectionTools.addAll(this.filteredItems, this.filter((Iterator) this.collectionHolder.value()));
 	}
 
 }

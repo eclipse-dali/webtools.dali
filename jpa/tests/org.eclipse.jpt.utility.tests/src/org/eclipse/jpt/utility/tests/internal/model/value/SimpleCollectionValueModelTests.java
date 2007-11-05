@@ -91,34 +91,34 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetValue() {
-		assertEquals(this.buildBag(), CollectionTools.bag((Iterator) this.bagHolder.getValue()));
-		assertEquals(this.buildSet(), CollectionTools.set((Iterator) this.setHolder.getValue()));
+	public void testValue() {
+		assertEquals(this.buildBag(), CollectionTools.bag((Iterator) this.bagHolder.value()));
+		assertEquals(this.buildSet(), CollectionTools.set((Iterator) this.setHolder.value()));
 	}
 
 	public void testSize() {
-		assertEquals(this.buildBag().size(), CollectionTools.size((Iterator) this.bagHolder.getValue()));
-		assertEquals(this.buildSet().size(), CollectionTools.size((Iterator) this.setHolder.getValue()));
+		assertEquals(this.buildBag().size(), CollectionTools.size((Iterator) this.bagHolder.value()));
+		assertEquals(this.buildSet().size(), CollectionTools.size((Iterator) this.setHolder.value()));
 	}
 
 	private boolean bagHolderContains(Object item) {
-		return CollectionTools.contains((Iterator) this.bagHolder.getValue(), item);
+		return CollectionTools.contains((Iterator) this.bagHolder.value(), item);
 	}
 
 	private boolean setHolderContains(Object item) {
-		return CollectionTools.contains((Iterator) this.setHolder.getValue(), item);
+		return CollectionTools.contains((Iterator) this.setHolder.value(), item);
 	}
 
 	private boolean bagHolderContainsAll(Collection<String> items) {
-		return CollectionTools.containsAll((Iterator) this.bagHolder.getValue(), items);
+		return CollectionTools.containsAll((Iterator) this.bagHolder.value(), items);
 	}
 
 	private boolean setHolderContainsAll(Collection<String> items) {
-		return CollectionTools.containsAll((Iterator) this.setHolder.getValue(), items);
+		return CollectionTools.containsAll((Iterator) this.setHolder.value(), items);
 	}
 
 	private boolean bagHolderContainsAny(Collection<String> items) {
-		Bag bag = CollectionTools.bag((Iterator) this.bagHolder.getValue());
+		Bag bag = CollectionTools.bag((Iterator) this.bagHolder.value());
 		for (String string : items) {
 			if (bag.contains(string)) {
 				return true;
@@ -128,7 +128,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	}
 
 	private boolean setHolderContainsAny(Collection<String> items) {
-		Set set = CollectionTools.set((Iterator) this.setHolder.getValue());
+		Set set = CollectionTools.set((Iterator) this.setHolder.value());
 		for (String string : items) {
 			if (set.contains(string)) {
 				return true;

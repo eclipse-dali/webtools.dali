@@ -67,7 +67,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 	}
 
 	public void testSubjectHolder() throws Exception {
-		assertEquals(STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(STRING_VALUE, this.preferenceAdapter.value());
 		assertNull(this.event);
 
 		String ANOTHER_STRING_VALUE = "some other value";
@@ -76,50 +76,50 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 
 		this.nodeHolder.setValue(anotherNode);
 		this.verifyEvent(STRING_VALUE, ANOTHER_STRING_VALUE);
-		assertEquals(ANOTHER_STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(ANOTHER_STRING_VALUE, this.preferenceAdapter.value());
 		
 		this.event = null;
 		this.nodeHolder.setValue(null);
 		this.verifyEvent(ANOTHER_STRING_VALUE, null);
-		assertNull(this.preferenceAdapter.getValue());
+		assertNull(this.preferenceAdapter.value());
 		
 		this.event = null;
 		this.nodeHolder.setValue(this.testNode);
 		this.verifyEvent(null, STRING_VALUE);
-		assertEquals(STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(STRING_VALUE, this.preferenceAdapter.value());
 	}
 
 	public void testPreferenceChange() throws Exception {
-		assertEquals(STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(STRING_VALUE, this.preferenceAdapter.value());
 		assertNull(this.event);
 
 		this.testNode.put(KEY_NAME, STRING_VALUE + STRING_VALUE);
 		this.waitForEventQueueToClear();
 		this.verifyEvent(STRING_VALUE, STRING_VALUE + STRING_VALUE);
-		assertEquals(STRING_VALUE + STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(STRING_VALUE + STRING_VALUE, this.preferenceAdapter.value());
 		
 		this.event = null;
 		this.testNode.remove(KEY_NAME);
 		this.waitForEventQueueToClear();
 		this.verifyEvent(STRING_VALUE + STRING_VALUE, null);
-		assertNull(this.preferenceAdapter.getValue());
+		assertNull(this.preferenceAdapter.value());
 		
 		this.event = null;
 		this.testNode.put(KEY_NAME, STRING_VALUE);
 		this.waitForEventQueueToClear();
 		this.verifyEvent(null, STRING_VALUE);
-		assertEquals(STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(STRING_VALUE, this.preferenceAdapter.value());
 	}
 
-	public void testGetValue() throws Exception {
+	public void testValue() throws Exception {
 		assertEquals(STRING_VALUE, this.testNode.get(KEY_NAME, "<missing preference>"));
-		assertEquals(STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(STRING_VALUE, this.preferenceAdapter.value());
 	}
 
 	public void testSetValue() throws Exception {
 		String ANOTHER_STRING_VALUE = "some other value";
 		this.preferenceAdapter.setValue(ANOTHER_STRING_VALUE);
-		assertEquals(ANOTHER_STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(ANOTHER_STRING_VALUE, this.preferenceAdapter.value());
 		assertEquals(ANOTHER_STRING_VALUE, this.testNode.get(KEY_NAME, "<missing preference>"));
 	}
 
@@ -141,7 +141,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 
 	public void testRemoveAndReAddPreference() throws Exception {
 		assertEquals(STRING_VALUE, this.testNode.get(KEY_NAME, null));
-		assertEquals(STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(STRING_VALUE, this.preferenceAdapter.value());
 		assertNull(this.event);
 
 		// remove the preference entirely...
@@ -149,7 +149,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		this.waitForEventQueueToClear();
 		assertNull(this.testNode.get(KEY_NAME, null));
 		this.verifyEvent(STRING_VALUE, null);
-		assertNull(this.preferenceAdapter.getValue());
+		assertNull(this.preferenceAdapter.value());
 
 		// ...then re-add it with the same key
 		this.event = null;
@@ -157,7 +157,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		this.waitForEventQueueToClear();
 		assertEquals(STRING_VALUE, this.testNode.get(KEY_NAME, null));
 		this.verifyEvent(null, STRING_VALUE);
-		assertEquals(STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(STRING_VALUE, this.preferenceAdapter.value());
 	}
 
 	public void testDefaultValue() throws Exception {
@@ -168,7 +168,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		this.preferenceAdapter.addPropertyChangeListener(ValueModel.VALUE, this.listener);
 
 		assertEquals(STRING_VALUE, this.testNode.get(KEY_NAME, null));
-		assertEquals(STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(STRING_VALUE, this.preferenceAdapter.value());
 		assertNull(this.event);
 
 		// remove the preference entirely...
@@ -176,7 +176,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		this.waitForEventQueueToClear();
 		assertNull(this.testNode.get(KEY_NAME, null));
 		this.verifyEvent(STRING_VALUE, DEFAULT_VALUE);
-		assertEquals(DEFAULT_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(DEFAULT_VALUE, this.preferenceAdapter.value());
 
 		// ...then re-add it with the same key
 		this.event = null;
@@ -184,11 +184,11 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		this.waitForEventQueueToClear();
 		assertEquals(STRING_VALUE, this.testNode.get(KEY_NAME, null));
 		this.verifyEvent(DEFAULT_VALUE, STRING_VALUE);
-		assertEquals(STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(STRING_VALUE, this.preferenceAdapter.value());
 	}
 
 	public void testUnsynchronizedValue() throws Exception {
-		assertEquals(STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(STRING_VALUE, this.preferenceAdapter.value());
 		assertNull(this.event);
 
 		// remove the this.listener so the adapter no longer listens to the preference
@@ -199,21 +199,21 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		// no this.event should have been fired...
 		assertNull(this.event);
 		// ...and the adapter's value should be null
-		assertNull(this.preferenceAdapter.getValue());
+		assertNull(this.preferenceAdapter.value());
 		
 		this.testNode.remove(KEY_NAME);
 		this.waitForEventQueueToClear();
 		assertNull(this.event);
-		assertNull(this.preferenceAdapter.getValue());
+		assertNull(this.preferenceAdapter.value());
 		
 		this.testNode.put(KEY_NAME, STRING_VALUE);
 		this.waitForEventQueueToClear();
 		assertNull(this.event);
-		assertNull(this.preferenceAdapter.getValue());
+		assertNull(this.preferenceAdapter.value());
 
 		// add the this.listener so the adapter synchs
 		this.preferenceAdapter.addPropertyChangeListener(ValueModel.VALUE, this.listener);
-		assertEquals(STRING_VALUE, this.preferenceAdapter.getValue());
+		assertEquals(STRING_VALUE, this.preferenceAdapter.value());
 	}
 
 	public void testIntegerPreference() throws Exception {
@@ -222,25 +222,25 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		this.testNode.putInt(KEY_NAME, 123);
 		this.preferenceAdapter.setConverter(BidiStringConverter.IntegerConverter.instance());
 		this.preferenceAdapter.addPropertyChangeListener(ValueModel.VALUE, this.listener);
-		assertEquals(new Integer(123), this.preferenceAdapter.getValue());
+		assertEquals(new Integer(123), this.preferenceAdapter.value());
 		assertNull(this.event);
 
 		this.testNode.putInt(KEY_NAME, 246);
 		this.waitForEventQueueToClear();
 		this.verifyEvent(new Integer(123), new Integer(246));
-		assertEquals(new Integer(246), this.preferenceAdapter.getValue());
+		assertEquals(new Integer(246), this.preferenceAdapter.value());
 		
 		this.event = null;
 		this.testNode.remove(KEY_NAME);
 		this.waitForEventQueueToClear();
 		this.verifyEvent(new Integer(246), null);
-		assertNull(this.preferenceAdapter.getValue());
+		assertNull(this.preferenceAdapter.value());
 		
 		this.event = null;
 		this.testNode.putInt(KEY_NAME, 123);
 		this.waitForEventQueueToClear();
 		this.verifyEvent(null, new Integer(123));
-		assertEquals(new Integer(123), this.preferenceAdapter.getValue());
+		assertEquals(new Integer(123), this.preferenceAdapter.value());
 	}
 
 	/**

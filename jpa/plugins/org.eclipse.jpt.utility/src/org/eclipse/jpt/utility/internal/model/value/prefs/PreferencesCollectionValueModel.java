@@ -89,7 +89,7 @@ public class PreferencesCollectionValueModel
 	/**
 	 * Return an iterator on the preference models.
 	 */
-	public synchronized Object getValue() {
+	public synchronized Object value() {
 		return this.preferences.values().iterator();
 	}
 

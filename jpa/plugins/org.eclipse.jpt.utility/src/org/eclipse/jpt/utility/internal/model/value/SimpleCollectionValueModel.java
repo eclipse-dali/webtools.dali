@@ -53,7 +53,7 @@ public class SimpleCollectionValueModel
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		// try to prevent backdoor modification of the collection
 		return new ReadOnlyIterator(this.value);
 	}

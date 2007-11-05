@@ -161,7 +161,7 @@ public abstract class PropertyAspectAdapter
 	/**
 	 * Return the value of the subject's property.
 	 */
-	public final Object getValue() {
+	public final Object value() {
 		return this.value;
 	}
 
@@ -258,7 +258,7 @@ public abstract class PropertyAspectAdapter
 	/**
 	 * Return the value of the subject's property.
 	 * At this point we can be sure that the subject is not null.
-	 * @see #getValue()
+	 * @see #value()
 	 */
 	protected Object getValueFromSubject() {
 		throw new UnsupportedOperationException();

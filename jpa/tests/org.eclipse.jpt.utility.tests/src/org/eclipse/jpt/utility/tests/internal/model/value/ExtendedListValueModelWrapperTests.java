@@ -93,27 +93,27 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetValue() {
+	public void testValue() {
 		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
-		assertEquals(this.buildExtendedList(), CollectionTools.list((Iterator) this.extendedListHolder.getValue()));
+		assertEquals(this.buildExtendedList(), CollectionTools.list((Iterator) this.extendedListHolder.value()));
 	}
 
 	public void testSize() {
 		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
-		assertEquals(this.buildExtendedList().size(), CollectionTools.size((Iterator) this.extendedListHolder.getValue()));
+		assertEquals(this.buildExtendedList().size(), CollectionTools.size((Iterator) this.extendedListHolder.value()));
 		assertEquals(this.buildExtendedList().size(), this.extendedListHolder.size());
 	}
 
 	private boolean extendedListContains(Object item) {
-		return CollectionTools.contains((Iterator) this.extendedListHolder.getValue(), item);
+		return CollectionTools.contains((Iterator) this.extendedListHolder.value(), item);
 	}
 
 	private boolean extendedListContainsAll(Collection items) {
-		return CollectionTools.containsAll((Iterator) this.extendedListHolder.getValue(), items);
+		return CollectionTools.containsAll((Iterator) this.extendedListHolder.value(), items);
 	}
 
 	private boolean extendedListContainsAny(Collection items) {
-		List extendedList = CollectionTools.list((ListIterator) this.extendedListHolder.getValue());
+		List extendedList = CollectionTools.list((ListIterator) this.extendedListHolder.value());
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
 			if (extendedList.contains(stream.next())) {
 				return true;
@@ -123,15 +123,15 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 	}
 
 	private boolean listContains(Object item) {
-		return CollectionTools.contains((Iterator) this.listHolder.getValue(), item);
+		return CollectionTools.contains((Iterator) this.listHolder.value(), item);
 	}
 
 	private boolean listContainsAll(Collection items) {
-		return CollectionTools.containsAll((Iterator) this.listHolder.getValue(), items);
+		return CollectionTools.containsAll((Iterator) this.listHolder.value(), items);
 	}
 
 	private boolean listContainsAny(Collection items) {
-		List extendedList = CollectionTools.list((ListIterator) this.listHolder.getValue());
+		List extendedList = CollectionTools.list((ListIterator) this.listHolder.value());
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
 			if (extendedList.contains(stream.next())) {
 				return true;
@@ -290,7 +290,7 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		assertTrue(this.extendedListContains("x"));
 		boolean exCaught = false;
 		try {
-			this.extendedListHolder.removeItem(CollectionTools.indexOf((ListIterator) this.extendedListHolder.getValue(), "x"));
+			this.extendedListHolder.removeItem(CollectionTools.indexOf((ListIterator) this.extendedListHolder.value(), "x"));
 		} catch (IllegalArgumentException ex) {
 			if (ex.getMessage().indexOf("prefix") != -1) {
 				exCaught = true;
@@ -306,7 +306,7 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		assertTrue(this.extendedListContains("i"));
 		boolean exCaught = false;
 		try {
-			this.extendedListHolder.removeItem(CollectionTools.indexOf((ListIterator) this.extendedListHolder.getValue(), "i"));
+			this.extendedListHolder.removeItem(CollectionTools.indexOf((ListIterator) this.extendedListHolder.value(), "i"));
 		} catch (IllegalArgumentException ex) {
 			if (ex.getMessage().indexOf("suffix") != -1) {
 				exCaught = true;
@@ -347,7 +347,7 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		assertTrue(this.extendedListContains("y"));
 		boolean exCaught = false;
 		try {
-			this.extendedListHolder.removeItems(CollectionTools.indexOf((ListIterator) this.extendedListHolder.getValue(), "x"), 2);
+			this.extendedListHolder.removeItems(CollectionTools.indexOf((ListIterator) this.extendedListHolder.value(), "x"), 2);
 		} catch (IllegalArgumentException ex) {
 			if (ex.getMessage().indexOf("prefix") != -1) {
 				exCaught = true;
@@ -365,7 +365,7 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		assertTrue(this.extendedListContains("i"));
 		boolean exCaught = false;
 		try {
-			this.extendedListHolder.removeItems(CollectionTools.indexOf((ListIterator) this.extendedListHolder.getValue(), "D"), 2);
+			this.extendedListHolder.removeItems(CollectionTools.indexOf((ListIterator) this.extendedListHolder.value(), "D"), 2);
 		} catch (IllegalArgumentException ex) {
 			if (ex.getMessage().indexOf("suffix") != -1) {
 				exCaught = true;

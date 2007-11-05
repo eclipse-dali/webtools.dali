@@ -140,7 +140,7 @@ public class CompositeCollectionValueModel
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		return new CompositeIterator(this.buildCollectionsIterators());
 	}
 
@@ -170,7 +170,7 @@ public class CompositeCollectionValueModel
 		// the following will trigger the firing of a number of unnecessary events
 		// (since we don't have any listeners yet),
 		// but it reduces the amount of duplicate code
-		this.addComponentSources((Iterator) this.collectionHolder.getValue());
+		this.addComponentSources((Iterator) this.collectionHolder.value());
 	}
 
 	@Override
@@ -276,7 +276,7 @@ public class CompositeCollectionValueModel
 	protected void collectionChanged(CollectionChangeEvent e) {
 		// copy the keys so we don't eat our own tail
 		this.removeComponentSources(new ArrayList(this.components.keySet()).iterator());
-		this.addComponentSources((Iterator) this.collectionHolder.getValue());
+		this.addComponentSources((Iterator) this.collectionHolder.value());
 	}
 
 
@@ -323,7 +323,7 @@ public class CompositeCollectionValueModel
 	 * Update our cache.
 	 */
 	protected void addComponentItems(CollectionValueModel itemsHolder, ArrayList componentCollection) {
-		this.addComponentItems((Iterator) itemsHolder.getValue(), itemsHolder.size(), componentCollection);
+		this.addComponentItems((Iterator) itemsHolder.value(), itemsHolder.size(), componentCollection);
 	}
 
 	/**

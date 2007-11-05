@@ -45,7 +45,7 @@ public class SimplePropertyValueModel
 	}
 
 
-	public Object getValue() {
+	public Object value() {
 		return this.value;
 	}
 

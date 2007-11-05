@@ -88,7 +88,7 @@ public class TransformationListValueModelAdapter extends ListValueModelWrapper {
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		// try to prevent backdoor modification of the list
 		return new ReadOnlyListIterator(this.transformedList);
 	}
@@ -157,7 +157,7 @@ public class TransformationListValueModelAdapter extends ListValueModelWrapper {
 	 * Transform the items in the specified list value model.
 	 */
 	protected List transformItems(ListValueModel lvm) {
-		return this.transformItems((ListIterator) lvm.getValue(), lvm.size());
+		return this.transformItems((ListIterator) lvm.value(), lvm.size());
 	}
 
 	/**

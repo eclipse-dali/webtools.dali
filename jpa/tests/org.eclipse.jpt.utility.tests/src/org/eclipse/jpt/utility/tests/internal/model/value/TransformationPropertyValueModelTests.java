@@ -56,43 +56,43 @@ public class TransformationPropertyValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetValue() {
-		assertEquals("foo", this.objectHolder.getValue());
-		assertEquals("FOO", this.transformationObjectHolder.getValue());
+	public void testValue() {
+		assertEquals("foo", this.objectHolder.value());
+		assertEquals("FOO", this.transformationObjectHolder.value());
 
 		this.objectHolder.setValue("bar");
-		assertEquals("bar", this.objectHolder.getValue());
-		assertEquals("BAR", this.transformationObjectHolder.getValue());
+		assertEquals("bar", this.objectHolder.value());
+		assertEquals("BAR", this.transformationObjectHolder.value());
 
 		this.objectHolder.setValue("baz");
-		assertEquals("baz", this.objectHolder.getValue());
-		assertEquals("BAZ", this.transformationObjectHolder.getValue());
+		assertEquals("baz", this.objectHolder.value());
+		assertEquals("BAZ", this.transformationObjectHolder.value());
 
 		this.objectHolder.setValue(null);
-		assertNull(this.objectHolder.getValue());
-		assertNull(this.transformationObjectHolder.getValue());
+		assertNull(this.objectHolder.value());
+		assertNull(this.transformationObjectHolder.value());
 
 		this.objectHolder.setValue("foo");
-		assertEquals("foo", this.objectHolder.getValue());
-		assertEquals("FOO", this.transformationObjectHolder.getValue());
+		assertEquals("foo", this.objectHolder.value());
+		assertEquals("FOO", this.transformationObjectHolder.value());
 	}
 
 	public void testSetValue() {
 		this.transformationObjectHolder.setValue("BAR");
-		assertEquals("bar", this.objectHolder.getValue());
-		assertEquals("BAR", this.transformationObjectHolder.getValue());
+		assertEquals("bar", this.objectHolder.value());
+		assertEquals("BAR", this.transformationObjectHolder.value());
 
 		this.transformationObjectHolder.setValue("Foo");
-		assertEquals("foo", this.objectHolder.getValue());
-		assertEquals("FOO", this.transformationObjectHolder.getValue());
+		assertEquals("foo", this.objectHolder.value());
+		assertEquals("FOO", this.transformationObjectHolder.value());
 
 		this.transformationObjectHolder.setValue(null);
-		assertNull(this.objectHolder.getValue());
-		assertNull(this.transformationObjectHolder.getValue());
+		assertNull(this.objectHolder.value());
+		assertNull(this.transformationObjectHolder.value());
 
 		this.transformationObjectHolder.setValue("baz");
-		assertEquals("baz", this.objectHolder.getValue());
-		assertEquals("BAZ", this.transformationObjectHolder.getValue());
+		assertEquals("baz", this.objectHolder.value());
+		assertEquals("BAZ", this.transformationObjectHolder.value());
 	}
 
 	public void testLazyListening() {

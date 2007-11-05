@@ -60,7 +60,7 @@ public class DocumentAdapterTests extends TestCase {
 		});
 		this.documentAdapter.remove(2, 5);
 		assertTrue(this.eventFired);
-		assertEquals("01789", this.stringHolder.getValue());
+		assertEquals("01789", this.stringHolder.value());
 	}
 
 	public void testInsert() throws Exception {
@@ -78,7 +78,7 @@ public class DocumentAdapterTests extends TestCase {
 		});
 		this.documentAdapter.insertString(2, "xxxxx", null);
 		assertTrue(this.eventFired);
-		assertEquals("01xxxxx23456789", this.stringHolder.getValue());
+		assertEquals("01xxxxx23456789", this.stringHolder.value());
 	}
 
 	public void testSetValue() throws Exception {

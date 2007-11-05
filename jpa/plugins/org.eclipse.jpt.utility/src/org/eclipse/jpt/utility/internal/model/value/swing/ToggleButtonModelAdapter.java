@@ -213,7 +213,7 @@ public class ToggleButtonModelAdapter extends ToggleButtonModel {
 
 	protected void engageModel() {
 		this.booleanHolder.addPropertyChangeListener(ValueModel.VALUE, this.booleanChangeListener);
-		this.setSelected((Boolean) this.booleanHolder.getValue());
+		this.setSelected((Boolean) this.booleanHolder.value());
 	}
 
 	protected void disengageModel() {

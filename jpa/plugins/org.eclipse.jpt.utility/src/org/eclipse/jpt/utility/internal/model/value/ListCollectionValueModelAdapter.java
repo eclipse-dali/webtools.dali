@@ -29,7 +29,7 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  * NB: Since we only listen to the wrapped list when we have
  * listeners ourselves and we can only stay in synch with the wrapped
  * list while we are listening to it, results to various methods
- * (e.g. #size(), getValue()) will be unpredictable whenever
+ * (e.g. #size(), value()) will be unpredictable whenever
  * we do not have any listeners. This should not be too painful since,
  * most likely, client objects will also be listeners.
  */
@@ -112,7 +112,7 @@ public class ListCollectionValueModelAdapter
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		// try to prevent backdoor modification of the list
 		return new ReadOnlyIterator(this.collection);
 	}
@@ -223,7 +223,7 @@ public class ListCollectionValueModelAdapter
 	// ********** behavior **********
 
 	protected void buildCollection() {
-		Iterator stream = (Iterator) this.listHolder.getValue();
+		Iterator stream = (Iterator) this.listHolder.value();
 		// if the new list is empty, do nothing
 		if (stream.hasNext()) {
 			this.collection.ensureCapacity(this.listHolder.size());

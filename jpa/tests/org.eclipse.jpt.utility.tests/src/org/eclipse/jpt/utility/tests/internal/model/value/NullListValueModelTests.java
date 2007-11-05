@@ -120,8 +120,8 @@ public class NullListValueModelTests extends TestCase {
 		assertEquals(0, this.listHolder.size());
 	}
 
-	public void testGetValue() {
-		assertFalse(((ListIterator) this.listHolder.getValue()).hasNext());
+	public void testValue() {
+		assertFalse(((ListIterator) this.listHolder.value()).hasNext());
 	}
 
 }

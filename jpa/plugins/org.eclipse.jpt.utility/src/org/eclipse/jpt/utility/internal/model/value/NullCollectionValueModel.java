@@ -51,7 +51,7 @@ public final class NullCollectionValueModel
 		return 0;
 	}
 
-	public Object getValue() {
+	public Object value() {
 		return EmptyIterator.instance();
 	}
 

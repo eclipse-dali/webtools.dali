@@ -77,24 +77,24 @@ public class SimpleListValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetValue() {
-		assertEquals(this.buildList(), CollectionTools.list((Iterator) this.listHolder.getValue()));
+	public void testValue() {
+		assertEquals(this.buildList(), CollectionTools.list((Iterator) this.listHolder.value()));
 	}
 
 	public void testSize() {
-		assertEquals(this.buildList().size(), CollectionTools.size((Iterator) this.listHolder.getValue()));
+		assertEquals(this.buildList().size(), CollectionTools.size((Iterator) this.listHolder.value()));
 	}
 
 	private boolean listContains(Object item) {
-		return CollectionTools.contains((Iterator) this.listHolder.getValue(), item);
+		return CollectionTools.contains((Iterator) this.listHolder.value(), item);
 	}
 
 	private boolean listContainsAll(Collection items) {
-		return CollectionTools.containsAll((Iterator) this.listHolder.getValue(), items);
+		return CollectionTools.containsAll((Iterator) this.listHolder.value(), items);
 	}
 
 	private boolean listContainsAny(Collection items) {
-		List list = CollectionTools.list((ListIterator) this.listHolder.getValue());
+		List list = CollectionTools.list((ListIterator) this.listHolder.value());
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
 			if (list.contains(stream.next())) {
 				return true;

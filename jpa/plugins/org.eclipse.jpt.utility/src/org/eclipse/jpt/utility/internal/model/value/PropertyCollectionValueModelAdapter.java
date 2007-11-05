@@ -85,7 +85,7 @@ public class PropertyCollectionValueModelAdapter
 
 	// ********** ValueModel implementation **********
 
-	public Object getValue() {
+	public Object value() {
 		if (this.value == null) {
 			return EmptyIterator.instance();
 		}
@@ -180,7 +180,7 @@ public class PropertyCollectionValueModelAdapter
 		this.valueHolder.addPropertyChangeListener(VALUE, this.propertyChangeListener);
 		// synch our value *after* we start listening to the value holder,
 		// since its value might change when a listener is added
-		this.value = this.valueHolder.getValue();
+		this.value = this.valueHolder.value();
 	}
 
 	protected void disengageModel() {

@@ -195,7 +195,7 @@ public class SpinnerModelAdapter extends AbstractSpinnerModel {
 
 	protected void engageValueHolder() {
 		this.valueHolder.addPropertyChangeListener(ValueModel.VALUE, this.valueListener);
-		this.synchronizeDelegate(this.valueHolder.getValue());
+		this.synchronizeDelegate(this.valueHolder.value());
 	}
 
 	protected void disengageValueHolder() {
