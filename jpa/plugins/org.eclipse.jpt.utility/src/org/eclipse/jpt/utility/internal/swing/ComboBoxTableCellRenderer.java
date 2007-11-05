@@ -311,16 +311,10 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 
 	// ********** TableCellEditorAdapter.Renderer implementation **********
 
-	/**
-	 * @see TableCellEditorAdapter#getValue()
-	 */
 	public Object getValue() {
 		return this.value;
 	}
 	
-	/**
-	 * @see TableCellEditorAdapter#setImmediateEditListener(TableCellEditorAdapter.ImmediateEditListener)
-	 */
 	public void setImmediateEditListener(TableCellEditorAdapter.ImmediateEditListener listener) {
 		this.immediateEditListener = listener;
 	}

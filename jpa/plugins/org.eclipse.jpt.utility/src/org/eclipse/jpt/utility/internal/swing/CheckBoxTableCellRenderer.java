@@ -178,16 +178,10 @@ public class CheckBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 
 	// ********** TableCellEditorAdapter.Renderer implementation **********
 
-	/**
-	 * @see TableCellEditorAdapter
-	 */
 	public Object getValue() {
 		return Boolean.valueOf(this.checkBox.isSelected());
 	}
 	
-	/**
-	 * @see TableCellEditorAdapter
-	 */
 	public void setImmediateEditListener(ImmediateEditListener listener) {
 		this.immediateEditListener = listener;
 	}

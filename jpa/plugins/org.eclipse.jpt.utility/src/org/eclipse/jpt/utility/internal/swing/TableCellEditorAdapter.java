@@ -55,23 +55,16 @@ public class TableCellEditorAdapter extends AbstractCellEditor implements TableC
 	
 	// ********** CellEditor implementation **********
 	
-	/**
-	 * @see javax.swing.CellEditor#getCellEditorValue()
-	 */
 	public Object getCellEditorValue() {
 		return this.renderer.getValue();
 	}
 	
 	
 	// ********** TableCellEditor implementation **********
-	
-	/**
-	 * @see javax.swing.table.TableCellEditor#getTableCellEditorComponent(javax.swing.JTable, java.lang.Object, boolean, int, int)
-	 */
+
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean selected, int row, int column) {
 		return this.renderer.getTableCellRendererComponent(table, value, selected, true, row, column);
 	}
-	
 	
 	
 	// ********** Member classes **********************************************
