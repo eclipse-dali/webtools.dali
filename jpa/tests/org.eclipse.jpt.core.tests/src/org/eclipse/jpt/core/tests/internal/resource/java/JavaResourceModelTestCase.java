@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.internal.IContextModel;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
@@ -50,6 +51,11 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 					}
 				};
 			}
+			@Override
+			protected IContextModel buildContextModel() {
+				return null;
+			}
+
 			@Override
 			public void javaElementChanged(ElementChangedEvent event) {
 				//do nothing

@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
@@ -36,15 +35,6 @@ public class Type extends Member {
 	@Override
 	public IType getJdtMember() {
 		return (IType) super.getJdtMember();
-	}
-
-	//TODO I believe this should move to the resource model and should be stored when updating from java
-	public boolean isAbstract() {
-		try {
-			return Flags.isAbstract(this.getJdtMember().getFlags());
-		} catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
-		}
 	}
 
 	@Override

@@ -15,10 +15,10 @@ public interface IEntity extends ITypeMapping
 {
 	String getSpecifiedName();
 	void setSpecifiedName(String value);
-		String SPECIFIED_NAME_PROPERTY = "specifiedName";
+		String SPECIFIED_NAME_PROPERTY = "specifiedNameProperty";
 	
 	String getDefaultName();
-		String DEFAULT_NAME_PROPERTY = "defaultName";
+		String DEFAULT_NAME_PROPERTY = "defaultNameProperty";
 
 	ITable getTable();
 
@@ -30,25 +30,26 @@ public interface IEntity extends ITypeMapping
 	InheritanceType getInheritanceStrategy();
 	
 	InheritanceType getDefaultInheritanceStrategy();
-		String DEFAULT_INHERITANCE_STRATEGY_PROPERTY = "defaultInheritanceStrategy";
+		String DEFAULT_INHERITANCE_STRATEGY_PROPERTY = "defaultInheritanceStrategyProperty";
 		
 	InheritanceType getSpecifiedInheritanceStrategy();
 	void setSpecifiedInheritanceStrategy(InheritanceType newInheritanceType);
-		String SPECIFIED_INHERITANCE_STRATEGY_PROPERTY = "specifiedInheritanceStrategy";
+		String SPECIFIED_INHERITANCE_STRATEGY_PROPERTY = "specifiedInheritanceStrategyProperty";
 	
 	IDiscriminatorColumn getDiscriminatorColumn();
 
-//	String getDefaultDiscriminatorValue();
-//
-//	void setDefaultDiscriminatorValue(String value);
-//
-//	String getSpecifiedDiscriminatorValue();
-//
-//	void setSpecifiedDiscriminatorValue(String value);
-//	
-//	String getDiscriminatorValue();
+	
+	String getDiscriminatorValue();
+	
+	String getDefaultDiscriminatorValue();
+		String DEFAULT_DISCRIMINATOR_VALUE_PROPERTY = "defaultDiscriminatorValueProperty";
 
-		
+	String getSpecifiedDiscriminatorValue();
+	void setSpecifiedDiscriminatorValue(String value);
+		String SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY = "specifiedDiscriminatorValueProperty";
+	
+
+//		
 //	ISequenceGenerator getSequenceGenerator();
 //
 //	void setSequenceGenerator(ISequenceGenerator value);

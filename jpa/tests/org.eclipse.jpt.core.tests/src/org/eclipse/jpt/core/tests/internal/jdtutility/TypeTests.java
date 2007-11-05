@@ -41,10 +41,6 @@ public class TypeTests extends AnnotationTestCase {
 		assertEquals(this.jdtType, this.testType.getJdtMember());
 	}
 
-	public void testIsAbstract() throws Exception {
-		assertFalse(this.testType.isAbstract());
-	}
-
 	public void testTopLevelDeclaringType() throws Exception {
 		assertEquals(this.testType, this.testType.topLevelDeclaringType());
 	}

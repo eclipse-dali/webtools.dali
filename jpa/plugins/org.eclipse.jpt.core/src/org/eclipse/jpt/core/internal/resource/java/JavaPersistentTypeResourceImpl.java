@@ -48,6 +48,8 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	
 	private String name;
 	
+	private boolean isAbstract;
+	
 	public JavaPersistentTypeResourceImpl(JavaResource parent, Type type){
 		super(parent, type);
 		this.nestedTypes = new ArrayList<JavaPersistentTypeResource>(); 
@@ -57,12 +59,13 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
-		this.qualifiedName = qualifiedName(astRoot);
-		this.name = name(astRoot);
-		initializeNestedTypes(astRoot);
-		initializeAttributes(astRoot);
-		this.accessType = calculateAccessType();
-		this.superClassQualifiedName = superClassQualifiedName(astRoot);
+		this.qualifiedName = this.qualifiedName(astRoot);
+		this.name = this.name(astRoot);
+		this.initializeNestedTypes(astRoot);
+		this.initializeAttributes(astRoot);
+		this.accessType = this.calculateAccessType();
+		this.superClassQualifiedName = this.superClassQualifiedName(astRoot);
+		this.isAbstract = this.isAbstract(astRoot);
 	}
 	
 	protected void initializeNestedTypes(CompilationUnit astRoot) {
@@ -300,6 +303,16 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
+	public boolean isAbstract() {
+		return this.isAbstract;
+	}
+	
+	protected void setAbstract(boolean newAbstract) {
+		boolean oldAbstract = this.isAbstract;
+		this.isAbstract = newAbstract;
+		firePropertyChanged(ABSTRACT_PROPERTY, oldAbstract, newAbstract);
+	}
+	
 	@Override
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
@@ -309,6 +322,11 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		this.updatePersistentAttributes(astRoot);
 		this.setAccess(this.calculateAccessType());
 		this.setSuperClassQualifiedName(this.superClassQualifiedName(astRoot));
+		this.setAbstract(isAbstract(astRoot));
+	}
+
+	protected boolean isAbstract(CompilationUnit astRoot) {
+		return JPTTools.typeIsAbstract(getMember().binding(astRoot));
 	}
 
 	protected String qualifiedName(CompilationUnit astRoot) {

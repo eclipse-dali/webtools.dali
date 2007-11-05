@@ -513,5 +513,15 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	}
 	//TODO still need to test typeIsPersistable() returns false for local and anonymous classes
 
+	
+
+	public void testIsAbstract() throws Exception {
+		IType testType = createTestType();
+		Type type = buildType(testType);
+		CompilationUnit astRoot = JDTTools.buildASTRoot(testType);
+	
+		assertFalse(JPTTools.typeIsAbstract(type.binding(astRoot)));
+	}
+
 }
 

@@ -179,4 +179,8 @@ public class JPTTools {
 		return true;
 	}
 
+	public static boolean typeIsAbstract(ITypeBinding typeBinding) {
+		return Modifier.isAbstract(typeBinding.getModifiers());	
+	}
+
 }

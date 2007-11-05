@@ -63,4 +63,7 @@ public interface JavaPersistentTypeResource extends JavaPersistentResource
 	
 	AccessType getAccess();
 		String ACCESS_PROPERTY = "accessProperty";
+		
+	boolean isAbstract();
+		String ABSTRACT_PROPERTY = "abstractProperty";
 }

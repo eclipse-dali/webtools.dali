@@ -12,14 +12,15 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
+import org.eclipse.jpt.core.internal.resource.java.DiscriminatorValue;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.Inheritance;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.utility.internal.Filter;
 
@@ -47,18 +48,12 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	
 	protected InheritanceType defaultInheritanceStrategy;
 
-//	protected static final String DEFAULT_DISCRIMINATOR_VALUE_EDEFAULT = null;
-//
-//	protected String defaultDiscriminatorValue = DEFAULT_DISCRIMINATOR_VALUE_EDEFAULT;
-//
-//	protected static final String SPECIFIED_DISCRIMINATOR_VALUE_EDEFAULT = null;
-//
-//	protected String specifiedDiscriminatorValue = SPECIFIED_DISCRIMINATOR_VALUE_EDEFAULT;
-//
-//	protected static final String DISCRIMINATOR_VALUE_EDEFAULT = null;
-//	
+	protected String defaultDiscriminatorValue;
+
+	protected String specifiedDiscriminatorValue;
+	
 	protected IDiscriminatorColumn discriminatorColumn;
-//
+
 //	protected ISequenceGenerator sequenceGenerator;
 //
 //	protected ITableGenerator tableGenerator;
@@ -105,7 +100,11 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	//from the java resource model
 	protected Inheritance inheritanceResource() {
 		//TODO get the NullInheritance from the resource model or build it here in the context model??
-		return (Inheritance) this.persistentTypeResource.nonNullAnnotation(JPA.INHERITANCE);
+		return (Inheritance) this.persistentTypeResource.nonNullAnnotation(Inheritance.ANNOTATION_NAME);
+	}
+	
+	protected DiscriminatorValue discriminatorValueResource() {
+		return (DiscriminatorValue) this.persistentTypeResource.nonNullAnnotation(DiscriminatorValue.ANNOTATION_NAME);
 	}
 
 //	private ITable.Owner buildTableOwner() {
@@ -221,6 +220,33 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 
 
+	public String getDefaultDiscriminatorValue() {
+		return this.defaultDiscriminatorValue;
+	}
+
+	protected void setDefaultDiscriminatorValue(String newDefaultDiscriminatorValue) {
+		String oldDefaultDiscriminatorValue = this.defaultDiscriminatorValue;
+		this.defaultDiscriminatorValue = newDefaultDiscriminatorValue;
+		firePropertyChanged(DEFAULT_DISCRIMINATOR_VALUE_PROPERTY, oldDefaultDiscriminatorValue, newDefaultDiscriminatorValue);
+	}
+
+	public String getSpecifiedDiscriminatorValue() {
+		return this.specifiedDiscriminatorValue;
+	}
+
+	public void setSpecifiedDiscriminatorValue(String newSpecifiedDiscriminatorValue) {
+		String oldSpecifiedDiscriminatorValue = this.specifiedDiscriminatorValue;
+		this.specifiedDiscriminatorValue = newSpecifiedDiscriminatorValue;
+		discriminatorValueResource().setValue(newSpecifiedDiscriminatorValue);
+		firePropertyChanged(SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY, oldSpecifiedDiscriminatorValue, newSpecifiedDiscriminatorValue);
+	}
+
+	public String getDiscriminatorValue() {
+		return (this.getSpecifiedDiscriminatorValue() == null) ? getDefaultDiscriminatorValue() : this.getSpecifiedDiscriminatorValue();
+	}
+
+
+
 //	public ISequenceGenerator getSequenceGenerator() {
 //		return sequenceGenerator;
 //	}
@@ -284,33 +310,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //		else if (eNotificationRequired())
 //			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ENTITY__TABLE_GENERATOR, newTableGenerator, newTableGenerator));
 //	}
-//
-//	public String getDefaultDiscriminatorValue() {
-//		return defaultDiscriminatorValue;
-//	}
-//
-//	public void setDefaultDiscriminatorValue(String newDefaultDiscriminatorValue) {
-//		String oldDefaultDiscriminatorValue = defaultDiscriminatorValue;
-//		defaultDiscriminatorValue = newDefaultDiscriminatorValue;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ENTITY__DEFAULT_DISCRIMINATOR_VALUE, oldDefaultDiscriminatorValue, defaultDiscriminatorValue));
-//	}
-//
-//	public String getSpecifiedDiscriminatorValue() {
-//		return specifiedDiscriminatorValue;
-//	}
-//
-//	public void setSpecifiedDiscriminatorValue(String newSpecifiedDiscriminatorValue) {
-//		String oldSpecifiedDiscriminatorValue = specifiedDiscriminatorValue;
-//		specifiedDiscriminatorValue = newSpecifiedDiscriminatorValue;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_DISCRIMINATOR_VALUE, oldSpecifiedDiscriminatorValue, specifiedDiscriminatorValue));
-//	}
-//
-//	public String getDiscriminatorValue() {
-//		return (this.getSpecifiedDiscriminatorValue() == null) ? getDefaultDiscriminatorValue() : this.getSpecifiedDiscriminatorValue();
-//	}
-//
+
 //	public EList<IPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
 //		return this.getSpecifiedPrimaryKeyJoinColumns().isEmpty() ? this.getDefaultPrimaryKeyJoinColumns() : this.getSpecifiedPrimaryKeyJoinColumns();
 //	}
@@ -504,6 +504,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		updateTable(persistentTypeResource);
 		updateInheritance(inheritanceResource());
 		updateDiscriminatorColumn(persistentTypeResource);
+		updateDiscrininatorValue(discriminatorValueResource());
 	}
 		
 	protected String specifiedName(Entity entityResource) {
@@ -538,6 +539,10 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		getDiscriminatorColumn().update(persistentTypeResource);
 	}
 	
+	protected void updateDiscrininatorValue(DiscriminatorValue discriminatorValueResource) {
+		this.setSpecifiedDiscriminatorValue(discriminatorValueResource.getValue());
+		this.setDefaultDiscriminatorValue(this.javaDefaultDiscriminatorValue());
+	}
 	
 //	@Override
 //	public void updateFromJava(CompilationUnit astRoot) {
@@ -612,30 +617,30 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //		return (JavaSequenceGenerator) this.sequenceGenerator;
 //	}
 //
-//	/**
-//	 * From the Spec:
-//	 * If the DiscriminatorValue annotation is not specified, a
-//	 * provider-specific function to generate a value representing
-//	 * the entity type is used for the value of the discriminator
-//	 * column. If the DiscriminatorType is STRING, the discriminator
-//	 * value default is the entity name.
-//	 * 
-//	 * TODO extension point for provider-specific function?
-//	 */
-//	private String javaDefaultDiscriminatorValue() {
-//		if (this.getType().isAbstract()) {
-//			return null;
-//		}
-//		if (!this.discriminatorType().isString()) {
-//			return null;
-//		}
-//		return this.getName();
-//	}
-//
-//	private DiscriminatorType discriminatorType() {
-//		return this.getDiscriminatorColumn().getDiscriminatorType();
-//	}
-//
+	/**
+	 * From the Spec:
+	 * If the DiscriminatorValue annotation is not specified, a
+	 * provider-specific function to generate a value representing
+	 * the entity type is used for the value of the discriminator
+	 * column. If the DiscriminatorType is STRING, the discriminator
+	 * value default is the entity name.
+	 * 
+	 * TODO extension point for provider-specific function?
+	 */
+	protected String javaDefaultDiscriminatorValue() {
+		if (this.persistentTypeResource.isAbstract()) {
+			return null;
+		}
+		if (this.discriminatorType() != DiscriminatorType.STRING) {
+			return null;
+		}
+		return this.getName();
+	}
+
+	protected DiscriminatorType discriminatorType() {
+		return this.getDiscriminatorColumn().getDiscriminatorType();
+	}
+
 //	/**
 //	 * here we just worry about getting the attribute override lists the same size;
 //	 * then we delegate to the attribute overrides to synch themselves up

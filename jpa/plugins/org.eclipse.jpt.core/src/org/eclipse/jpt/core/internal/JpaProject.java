@@ -137,11 +137,15 @@ public class JpaProject extends JpaNodeModel implements IJpaProject
 		// build the JPA files corresponding to the Eclipse project's files
 		this.project.accept(this.buildInitialResourceProxyVisitor(), IResource.NONE);
 
-		this.contextModel = jpaFactory().buildContextModel(this);
+		this.contextModel = buildContextModel();
 		
 		this.update();
 	}
 
+	protected IContextModel buildContextModel() {
+		return jpaFactory().buildContextModel(this);
+	}
+	
 	@Override
 	protected void checkParent(Node parentNode) {
 		if (parentNode != null) {

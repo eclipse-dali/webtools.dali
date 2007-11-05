@@ -12,12 +12,14 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.resource.java.DiscriminatorValue;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.Inheritance;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
@@ -33,6 +35,7 @@ public class JavaEntityTests extends ContextModelTestCase
 {
 	private static final String ENTITY_NAME = "entityName";
 	private static final String TABLE_NAME = "MY_TABLE";
+	private static final String DISCRIMINATOR_VALUE = "MY_DISCRIMINATOR_VALUE";
 	
 	private void createEntityAnnotation() throws Exception {
 		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
@@ -49,6 +52,10 @@ public class JavaEntityTests extends ContextModelTestCase
 	
 	private void createInheritanceTypeEnum() throws Exception {
 		this.createEnumAndMembers("InheritanceType", "SINGLE_TABLE, JOINED, TABLE_PER_CLASS");
+	}
+	
+	private void createDiscriminatorValueAnnotation() throws Exception {
+		this.createAnnotationAndMembers("DiscriminatorValue", "String value();");		
 	}
 		
 	private IType createTestEntity() throws Exception {
@@ -130,6 +137,23 @@ public class JavaEntityTests extends ContextModelTestCase
 			public void appendTypeAnnotationTo(StringBuffer sb) {
 				sb.append("@Entity").append(CR);
 				sb.append("@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)").append(CR);
+			}
+		});
+	}
+	
+	private IType createTestEntityWithDiscriminatorValue() throws Exception {
+		createEntityAnnotation();
+		createDiscriminatorValueAnnotation();
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.DISCRIMINATOR_VALUE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity").append(CR);
+				sb.append("@DiscriminatorValue(value=\"" + DISCRIMINATOR_VALUE + "\")");
 			}
 		});
 	}
@@ -283,18 +307,6 @@ public class JavaEntityTests extends ContextModelTestCase
 
 		table.setSpecifiedCatalog(TABLE_NAME);
 	}
-
-	
-	
-//	InheritanceType getInheritanceStrategy();
-//	
-//	InheritanceType getDefaultInheritanceStrategy();
-//		String DEFAULT_INHERITANCE_STRATEGY_PROPERTY = "defaultInheritanceStrategy";
-//		
-//	InheritanceType getSpecifiedInheritanceStrategy();
-//	void setSpecifiedInheritanceStrategy(InheritanceType newInheritanceType);
-//		String SPECIFIED_INHERITANCE_STRATEGY_PROPERTY = "specifiedInheritanceStrategy";
-
 		
 	public void testGetInheritanceStrategy() throws Exception {
 		createTestEntityWithInheritance();
@@ -355,6 +367,66 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 	}
 	
+	
+	
+	
+	
+	
+
+//	String getSpecifiedDiscriminatorValue();
+//	void setSpecifiedDiscriminatorValue(String value);
+	
+	
+	
+	public void testGetDiscriminatorValue() throws Exception {
+		createTestEntityWithDiscriminatorValue();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertEquals(DISCRIMINATOR_VALUE, javaEntity().getDiscriminatorValue());		
+	}
+	
+	public void testGetDefaultDiscriminatorValue() throws Exception {
+		createTestEntityWithDiscriminatorValue();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
+		assertEquals(javaEntity().getName(), javaEntity().getDefaultDiscriminatorValue());
+
+		javaEntity().getDiscriminatorColumn().setSpecifiedDiscriminatorType(DiscriminatorType.INTEGER);
+		assertNull(javaEntity().getDefaultDiscriminatorValue());
+	}
+	
+	public void testGetSpecifiedDiscriminatorValue() throws Exception {
+		createTestEntityWithDiscriminatorValue();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertEquals(DISCRIMINATOR_VALUE, javaEntity().getSpecifiedDiscriminatorValue());
+
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		DiscriminatorValue discriminatorValue = (DiscriminatorValue) typeResource.annotation(DiscriminatorValue.ANNOTATION_NAME);
+
+		discriminatorValue.setValue("foo");
+		
+		assertEquals("foo", javaEntity().getSpecifiedDiscriminatorValue());
+		
+		discriminatorValue.setValue(null);
+		
+		assertNull(javaEntity().getSpecifiedDiscriminatorValue());
+		assertNull(typeResource.annotation(DiscriminatorValue.ANNOTATION_NAME));
+	}
+	
+	public void testSetSpecifiedDiscriminatorValue() throws Exception {
+		createTestEntityWithDiscriminatorValue();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		assertEquals(DISCRIMINATOR_VALUE, javaEntity().getSpecifiedDiscriminatorValue());
+
+		javaEntity().setSpecifiedDiscriminatorValue("foo");
+		
+		assertEquals("foo", javaEntity().getSpecifiedDiscriminatorValue());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		DiscriminatorValue discriminatorValue = (DiscriminatorValue) typeResource.annotation(DiscriminatorValue.ANNOTATION_NAME);
+		assertEquals("foo", discriminatorValue.getValue());
+	}
+
 	
 }

@@ -96,7 +96,7 @@ public class DiscriminatorValueImpl extends AbstractAnnotationResource<Type> imp
 		}
 		
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
-			return null;
+			return new NullDiscriminatorValue(parent);
 		}
 
 		public String getAnnotationName() {
