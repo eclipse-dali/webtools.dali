@@ -13,6 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.internal.context.base.IPersistentType;
+import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.utility.internal.Filter;
@@ -26,7 +28,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 
 	protected String defaultName;
 
-//	protected ITable table;
+	protected final ITable table;
 //
 //	protected List<ISecondaryTable> specifiedSecondaryTables;
 //
@@ -71,7 +73,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	
 	public JavaEntity(IJavaPersistentType parent) {
 		super(parent);
-//		this.table = JpaJavaMappingsFactory.eINSTANCE.createJavaTable(buildTableOwner(), getType());
+		this.table = jpaFactory().createJavaTable(this);
 //		this.discriminatorColumn = JpaJavaMappingsFactory.eINSTANCE.createJavaDiscriminatorColumn(new IDiscriminatorColumn.Owner(this), type, JavaDiscriminatorColumn.DECLARATION_ANNOTATION_ADAPTER);
 //		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
 	}
@@ -83,6 +85,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		
 		this.specifiedName = this.specifiedName(this.entityResource);
 		this.defaultName = this.defaultName(persistentTypeResource);
+		this.table.initialize(persistentTypeResource);
 	}
 	
 //	private ITable.Owner buildTableOwner() {
@@ -135,10 +138,10 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		firePropertyChanged(IEntity.DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
 	}
 
-//	public ITable getTable() {
-//		return table;
-//	}
-//
+	public ITable getTable() {
+		return this.table;
+	}
+
 //	public EList<ISecondaryTable> getSpecifiedSecondaryTables() {
 //		if (specifiedSecondaryTables == null) {
 //			specifiedSecondaryTables = new EObjectContainmentEList<ISecondaryTable>(ISecondaryTable.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_SECONDARY_TABLES);
@@ -430,22 +433,22 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //		}
 //		return this;
 //	}
-//
-//	public IEntity rootEntity() {
-//		IEntity rootEntity = null;
-//		for (Iterator<IPersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
-//			IPersistentType persistentType = i.next();
-//			if (persistentType.getMapping() instanceof IEntity) {
-//				rootEntity = (IEntity) persistentType.getMapping();
-//			}
-//		}
-//		return rootEntity;
-//	}
-//
-//	@Override
-//	public String getTableName() {
-//		return getTable().getName();
-//	}
+
+	public IEntity rootEntity() {
+		IEntity rootEntity = null;
+		for (Iterator<IPersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
+			IPersistentType persistentType = i.next();
+			if (persistentType.getMapping() instanceof IEntity) {
+				rootEntity = (IEntity) persistentType.getMapping();
+			}
+		}
+		return rootEntity;
+	}
+
+	@Override
+	public String getTableName() {
+		return getTable().getName();
+	}
 //
 //	@Override
 //	public Table primaryDbTable() {
@@ -475,6 +478,12 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		
 		this.setSpecifiedName(this.specifiedName(this.entityResource));
 		this.setDefaultName(this.defaultName(persistentTypeResource));
+		
+		updateTable(persistentTypeResource);
+	}
+	
+	protected void updateTable(JavaPersistentTypeResource persistentTypeResource) {
+		getTable().update(persistentTypeResource);
 	}
 	
 	protected String specifiedName(Entity entityResource) {
@@ -484,6 +493,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	protected String defaultName(JavaPersistentTypeResource persistentTypeResource) {
 		return persistentTypeResource.getName();
 	}
+	
 //	@Override
 //	public void updateFromJava(CompilationUnit astRoot) {
 //		this.setSpecifiedName(this.getType().annotationElementValue(NAME_ADAPTER, astRoot));

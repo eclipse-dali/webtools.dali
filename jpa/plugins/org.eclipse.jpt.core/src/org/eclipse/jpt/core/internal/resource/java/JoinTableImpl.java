@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class JoinTableImpl extends AbstractTableResource implements JoinTable
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JoinTable.ANNOTATION_NAME);
 	
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__NAME);
 
@@ -57,7 +57,7 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return JoinTable.ANNOTATION_NAME;
 	}
 	
 	@Override
@@ -346,8 +346,12 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 			return new JoinTableImpl(parent, member);
 		}
 		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
+		
 		public String getAnnotationName() {
-			return ANNOTATION_NAME;
+			return JoinTable.ANNOTATION_NAME;
 		}
 	}
 

@@ -44,6 +44,11 @@ public class JavaPersistentAttributeResourceImpl
 	}
 		
 	@Override
+	protected Annotation buildNullAnnotation(String annotationName) {
+		return annotationProvider().buildNullAttributeAnnotation(this, getMember(), annotationName);
+	}
+
+	@Override
 	protected Iterator<String> correspondingAnnotationNames(String mappingAnnotationName) {
 		return annotationProvider().correspondingAttributeAnnotationNames(mappingAnnotationName);
 	}

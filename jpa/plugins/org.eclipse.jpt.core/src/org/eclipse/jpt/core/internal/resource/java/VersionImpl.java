@@ -59,6 +59,10 @@ public class VersionImpl extends AbstractAnnotationResource<Attribute> implement
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new VersionImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public Iterator<String> correspondingAnnotationNames() {
 			return new ArrayIterator<String>(

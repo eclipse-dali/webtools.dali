@@ -100,6 +100,10 @@ public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements
 			return new MapKeyImpl(parent, (Attribute) member);
 		}
 		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

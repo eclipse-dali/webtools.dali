@@ -36,6 +36,8 @@ public interface IJpaAnnotationProvider
 	 */
 	Annotation buildTypeAnnotation(JavaPersistentTypeResource parent, Type type, String annotationName);
 	
+	Annotation buildNullTypeAnnotation(JavaPersistentTypeResource parent, Type type, String annotationName);
+
 	/**
 	 * Return the fully qualified names of the annotations that can exist
 	 * with the given mapping annotation on a Type.  This will be all the JPA 
@@ -71,6 +73,8 @@ public interface IJpaAnnotationProvider
 	 */
 	Annotation buildAttributeAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String annotationName);
 	
+	Annotation buildNullAttributeAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String annotationName);
+
 	/**
 	 * Return the fully qualified names of the annotations that can exist
 	 * with the given mapping annotation on an attribute.  This will be all the JPA 

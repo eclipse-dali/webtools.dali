@@ -61,6 +61,10 @@ public class EmbeddedIdImpl extends AbstractAnnotationResource<Attribute> implem
 			return new EmbeddedIdImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 		}
 		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
+		
 		public Iterator<String> correspondingAnnotationNames() {
 			return new ArrayIterator<String>(
 				JPA.ATTRIBUTE_OVERRIDE,

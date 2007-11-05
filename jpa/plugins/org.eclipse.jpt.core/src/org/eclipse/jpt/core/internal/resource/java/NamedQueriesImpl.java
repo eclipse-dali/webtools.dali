@@ -127,6 +127,10 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new NamedQueriesImpl(parent, (Type) member);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

@@ -100,6 +100,10 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new EntityImpl((JavaPersistentTypeResource) parent, (Type) member);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public Iterator<String> correspondingAnnotationNames() {
 			return new ArrayIterator<String>(

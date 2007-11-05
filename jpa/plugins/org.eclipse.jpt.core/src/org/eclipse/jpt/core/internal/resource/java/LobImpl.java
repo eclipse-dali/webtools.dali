@@ -58,6 +58,10 @@ public class LobImpl extends AbstractAnnotationResource<Attribute> implements Lo
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new LobImpl(parent, (Attribute) member);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

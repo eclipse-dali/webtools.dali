@@ -17,9 +17,9 @@ import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
-import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.Table;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaEntityTests extends ContextModelTestCase
+public class JavaTableTests extends ContextModelTestCase
 {
 	private static final String ENTITY_NAME = "entityName";
 	private static final String TABLE_NAME = "MY_TABLE";
@@ -36,17 +36,20 @@ public class JavaEntityTests extends ContextModelTestCase
 		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
 	}
 	private void createTableAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Table", "String name() default \"\";");		
+		this.createAnnotationAndMembers("Table", 
+			"String name() default \"\"; " +
+			"String catalog() default \"\"; " +
+			"String schema() default \"\";");		
 	}
 		
 
 	private IType createTestEntity() throws Exception {
 		createEntityAnnotation();
-	
+
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+				return new ArrayIterator<String>(JPA.ENTITY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuffer sb) {
@@ -55,21 +58,6 @@ public class JavaEntityTests extends ContextModelTestCase
 		});
 	}
 
-
-	private IType createTestEntityWithName() throws Exception {
-		createEntityAnnotation();
-	
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Entity(name=\"" + ENTITY_NAME + "\")");
-			}
-		});
-	}
 	private IType createTestEntityWithTable() throws Exception {
 		createEntityAnnotation();
 		createTableAnnotation();
@@ -81,14 +69,14 @@ public class JavaEntityTests extends ContextModelTestCase
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuffer sb) {
-				sb.append("@Entity");
+				sb.append("@Entity").append(CR);
 				sb.append("@Table(name=\"" + TABLE_NAME + "\")");
 			}
 		});
 	}
 
 		
-	public JavaEntityTests(String name) {
+	public JavaTableTests(String name) {
 		super(name);
 	}
 	
@@ -129,119 +117,162 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 
 	public void testGetSpecifiedName() throws Exception {
-		createTestEntityWithName();
+		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(ENTITY_NAME, javaEntity().getSpecifiedName());
+		assertEquals(TABLE_NAME, javaEntity().getTable().getSpecifiedName());
 	}
 	
 	public void testGetDefaultNameSpecifiedNameNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(TYPE_NAME, javaEntity().getDefaultName());
+		assertEquals(TYPE_NAME, javaEntity().getTable().getDefaultName());
 	}
 
 	public void testGetDefaultName() throws Exception {
-		createTestEntityWithName();
+		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(TYPE_NAME, javaEntity().getDefaultName());
+		assertEquals(TYPE_NAME, javaEntity().getTable().getDefaultName());
+		
+		//test that setting the java entity name will change the table default name
+		javaEntity().setSpecifiedName("foo");
+		assertEquals("foo", javaEntity().getTable().getDefaultName());
 	}
 	
 	public void testGetNameSpecifiedNameNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(TYPE_NAME, javaEntity().getName());
+		assertEquals(TYPE_NAME, javaEntity().getTable().getName());
 	}
 	
 	public void testGetName() throws Exception {
-		createTestEntityWithName();
+		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(ENTITY_NAME, javaEntity().getName());
+		assertEquals(TABLE_NAME, javaEntity().getTable().getName());
 	}
 
 	public void testSetSpecifiedName() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		javaEntity().setSpecifiedName("foo");
+		javaEntity().getTable().setSpecifiedName("foo");
 		
-		assertEquals("foo", javaEntity().getSpecifiedName());
+		assertEquals("foo", javaEntity().getTable().getSpecifiedName());
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		Entity entity = (Entity) typeResource.mappingAnnotation();
+		Table table = (Table) typeResource.annotation(JPA.TABLE);
 		
-		assertEquals("foo", ((Entity) typeResource.mappingAnnotation()).getName());
+		assertEquals("foo", table.getName());
 	}
 	
 	public void testSetSpecifiedNameNull() throws Exception {
-		createTestEntityWithName();
+		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		javaEntity().setSpecifiedName(null);
+		javaEntity().getTable().setSpecifiedName(null);
 		
-		assertNull(javaEntity().getSpecifiedName());
+		assertNull(javaEntity().getTable().getSpecifiedName());
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		
-		assertNull(((Entity) typeResource.mappingAnnotation()).getName());
+		Table table = (Table) typeResource.annotation(JPA.TABLE);
+	
+		assertNull(table);
 	}
 	
 	public void testUpdateFromSpecifiedNameChangeInResourceModel() throws Exception {
-		createTestEntityWithName();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		Entity entity = (Entity) typeResource.mappingAnnotation();
-		entity.setName("foo");
-		
-		assertEquals("foo", javaEntity().getSpecifiedName());
-	}
-
-	public void testGetTableName() throws Exception {
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		createTestEntityWithName();
-	
-		assertEquals(ENTITY_NAME, javaEntity().getTableName());
-	}
-	
-	public void testGetTableName2() throws Exception {
-		createTestEntity();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-	
-		assertEquals(TYPE_NAME, javaEntity().getTableName());
-	}
-	
-	public void testGetTableName3() throws Exception {
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		Table table = (Table) typeResource.annotation(JPA.TABLE);
+		table.setName("foo");
+		
+		assertEquals("foo", javaEntity().getTable().getSpecifiedName());
+		
+		typeResource.removeAnnotation(JPA.TABLE);
+		assertNull(javaEntity().getTable().getSpecifiedName());
+	}
 	
-		assertEquals(TABLE_NAME, javaEntity().getTableName());
-	}	
+	public void testGetCatalog() throws Exception {
+		createTestEntityWithTable();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		Table table = (Table) typeResource.annotation(JPA.TABLE);
+		
+		table.setCatalog("myCatalog");
+		
+		assertEquals("myCatalog", javaEntity().getTable().getSpecifiedCatalog());
+		assertEquals("myCatalog", javaEntity().getTable().getCatalog());
+	}
 	
-	public void testSetTableNameWithNullTable() throws Exception {
+	public void testGetDefaultCatalog() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertNull(javaEntity().getTable().getDefaultCatalog());
+		
+		javaEntity().getTable().setSpecifiedCatalog("myCatalog");
+		
+		assertNull(javaEntity().getTable().getDefaultCatalog());
+	}
 	
+	public void testSetSpecifiedCatalog() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		ITable table = javaEntity().getTable();
-		assertEquals(TYPE_NAME, table.getName());
-		assertSourceDoesNotContain("@Table");
+		table.setSpecifiedCatalog("myCatalog");
 		
-		table.setSpecifiedName(TABLE_NAME);
-		assertSourceContains("@Table(name=\"" + TABLE_NAME + "\")");
-		
-		assertEquals(TABLE_NAME, javaEntity().getTableName());
-		assertEquals(TABLE_NAME, table.getName());
-
-		table.setSpecifiedCatalog(TABLE_NAME);
-
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		Table tableResource = (Table) typeResource.annotation(JPA.TABLE);
+		
+		assertEquals("myCatalog", tableResource.getCatalog());
+		
+		table.setSpecifiedCatalog(null);
+		assertNull(typeResource.annotation(JPA.TABLE));
+	}
 	
+	public void testGetSchema() throws Exception {
+		createTestEntityWithTable();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		Table table = (Table) typeResource.annotation(JPA.TABLE);
+		
+		table.setSchema("mySchema");
+		
+		assertEquals("mySchema", javaEntity().getTable().getSpecifiedSchema());
+		assertEquals("mySchema", javaEntity().getTable().getSchema());
+	}
+	
+	public void testGetDefaultSchema() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertNull(javaEntity().getTable().getDefaultSchema());
+		
+		javaEntity().getTable().setSpecifiedSchema("mySchema");
+		
+		assertNull(javaEntity().getTable().getDefaultSchema());
+	}
+	
+	public void testSetSpecifiedSchema() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		ITable table = javaEntity().getTable();
+		table.setSpecifiedSchema("mySchema");
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		Table tableResource = (Table) typeResource.annotation(JPA.TABLE);
+		
+		assertEquals("mySchema", tableResource.getSchema());
+		
+		table.setSpecifiedSchema(null);
+		assertNull(typeResource.annotation(JPA.TABLE));
 	}
 
-	
-	
 }

@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
+import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.Persistence;
 import org.eclipse.jpt.core.internal.context.base.PersistenceUnit;
@@ -44,6 +45,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaEntity;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.internal.context.java.JavaTable;
 import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
@@ -199,4 +201,7 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return new JavaEntity(parent);
 	}
 
+	public ITable createJavaTable(IJavaEntity parent) {
+		return new JavaTable(parent);
+	}
 }

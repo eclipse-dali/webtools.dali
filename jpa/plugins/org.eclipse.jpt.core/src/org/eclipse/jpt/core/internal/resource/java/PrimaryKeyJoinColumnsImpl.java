@@ -128,6 +128,10 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractAnnotationResource<Member
 		public PrimaryKeyJoinColumns buildAnnotation(JavaResource parent, Member member) {
 			return new PrimaryKeyJoinColumnsImpl(parent, member);
 		}
+		
+		public PrimaryKeyJoinColumns buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

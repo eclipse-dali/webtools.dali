@@ -61,10 +61,15 @@ public class EmbeddableImpl extends AbstractAnnotationResource<Type> implements 
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new EmbeddableImpl((JavaPersistentTypeResource) parent, (Type) member);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public Iterator<String> correspondingAnnotationNames() {
 			return EmptyIterator.instance();
 		}
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

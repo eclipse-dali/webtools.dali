@@ -128,6 +128,10 @@ public class JoinColumnsImpl extends AbstractAnnotationResource<Member> implemen
 		public JoinColumns buildAnnotation(JavaResource parent, Member member) {
 			return new JoinColumnsImpl(parent, member);
 		}
+		
+		public JoinColumns buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

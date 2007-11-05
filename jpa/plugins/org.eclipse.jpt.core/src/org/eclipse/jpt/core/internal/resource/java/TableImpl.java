@@ -33,7 +33,7 @@ public class TableImpl extends AbstractTableResource
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return Table.ANNOTATION_NAME;
 	}
 	
 	@Override
@@ -82,6 +82,10 @@ public class TableImpl extends AbstractTableResource
 			return new TableImpl(parent, member);
 		}
 
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return new NullTable(parent);
+		}
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

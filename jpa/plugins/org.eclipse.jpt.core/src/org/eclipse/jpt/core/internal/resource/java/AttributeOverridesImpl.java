@@ -126,6 +126,10 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 		public AttributeOverrides buildAnnotation(JavaResource parent, Member member) {
 			return new AttributeOverridesImpl(parent, member);
 		}
+		
+		public AttributeOverrides buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

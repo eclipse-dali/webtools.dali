@@ -96,6 +96,10 @@ public class OrderByImpl extends AbstractAnnotationResource<Attribute> implement
 			return new OrderByImpl(parent, (Attribute) member);
 		}
 		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

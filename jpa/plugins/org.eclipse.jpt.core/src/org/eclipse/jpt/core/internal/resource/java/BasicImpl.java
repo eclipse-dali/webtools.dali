@@ -131,6 +131,10 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new BasicImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public Iterator<String> correspondingAnnotationNames() {
 			return new ArrayIterator<String>(

@@ -60,6 +60,10 @@ public class TransientImpl extends AbstractAnnotationResource<Attribute> impleme
 			return new TransientImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 		}
 		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
+		
 		public Iterator<String> correspondingAnnotationNames() {
 			return EmptyIterator.instance();
 		}

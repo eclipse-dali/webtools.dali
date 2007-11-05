@@ -145,6 +145,10 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new ManyToManyImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public Iterator<String> correspondingAnnotationNames() {
 			return new ArrayIterator<String>(

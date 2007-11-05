@@ -15,6 +15,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public interface Table extends JavaResource
 {
+	String ANNOTATION_NAME = JPA.TABLE;
+
 	String getName();
 	void setName(String name);
 		String NAME_PROPERTY = "nameProperty";
@@ -65,5 +67,17 @@ public interface Table extends JavaResource
 	 * Return false if the name element does not exist.
 	 */
 	boolean nameTouches(int pos, CompilationUnit astRoot);
+	
+	/**
+	 * Return whether the specified postition touches the schema element.
+	 * Return false if the name element does not exist.
+	 */
+	boolean schemaTouches(int pos, CompilationUnit astRoot);
+	
+	/**
+	 * Return whether the specified postition touches the catalog element.
+	 * Return false if the name element does not exist.
+	 */
+	boolean catalogTouches(int pos, CompilationUnit astRoot);
 
 }

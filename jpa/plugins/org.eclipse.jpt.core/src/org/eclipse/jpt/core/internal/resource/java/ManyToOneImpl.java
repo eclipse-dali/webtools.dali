@@ -144,6 +144,10 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new ManyToOneImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public Iterator<String> correspondingAnnotationNames() {
 			return new ArrayIterator<String>(

@@ -142,6 +142,10 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new DiscriminatorColumnImpl(parent, member, DiscriminatorColumnImpl.DECLARATION_ANNOTATION_ADAPTER);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

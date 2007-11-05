@@ -20,8 +20,8 @@ public interface IEntity extends ITypeMapping
 	String getDefaultName();
 		String DEFAULT_NAME_PROPERTY = "defaultName";
 
-//	ITable getTable();
-//
+	ITable getTable();
+
 //	EList<ISecondaryTable> getSpecifiedSecondaryTables();
 //
 //	EList<ISecondaryTable> getSecondaryTables();
@@ -78,16 +78,16 @@ public interface IEntity extends ITypeMapping
 //
 //	boolean discriminatorValueIsAllowed();
 //
-//	/**
-//	 * Return the ultimate top of the inheritance hierarchy 
-//	 * This method should never return null. The root
-//	 * is defined as the persistent type in the inheritance hierarchy
-//	 * that has no parent.  The root should be an entity
-//	 *  
-//	 * Non-entities in the hierarchy should be ignored, ie skip
-//	 * over them in the search for the root. 
-//	 */
-//	IEntity rootEntity();
+	/**
+	 * Return the ultimate top of the inheritance hierarchy 
+	 * This method should never return null. The root
+	 * is defined as the persistent type in the inheritance hierarchy
+	 * that has no parent.  The root should be an entity
+	 *  
+	 * Non-entities in the hierarchy should be ignored, ie skip
+	 * over them in the search for the root. 
+	 */
+	IEntity rootEntity();
 //
 //	/**
 //	 * <!-- begin-user-doc -->

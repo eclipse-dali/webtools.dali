@@ -30,7 +30,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class SecondaryTableImpl extends AbstractTableResource implements NestableSecondaryTable
 {	
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(SecondaryTable.ANNOTATION_NAME);
 	
 	private final List<NestablePrimaryKeyJoinColumn> pkJoinColumns;
 	
@@ -69,7 +69,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	}
 	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return SecondaryTable.ANNOTATION_NAME;
 	}
 	
 	public void moveAnnotation(int newIndex) {
@@ -283,8 +283,12 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 			return SecondaryTableImpl.createSecondaryTable(parent, member);
 		}
 		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
+		
 		public String getAnnotationName() {
-			return ANNOTATION_NAME;
+			return SecondaryTable.ANNOTATION_NAME;
 		}
 	}
 

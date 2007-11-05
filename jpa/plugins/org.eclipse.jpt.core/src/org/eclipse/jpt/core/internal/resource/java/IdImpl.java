@@ -61,6 +61,10 @@ public class IdImpl extends AbstractAnnotationResource<Attribute> implements Id
 			return new IdImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 		}
 		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
+		
 		public Iterator<String> correspondingAnnotationNames() {
 			return new ArrayIterator<String>(
 				JPA.COLUMN,

@@ -87,6 +87,10 @@ public class NamedQueryImpl extends AbstractNamedQuery
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return NamedQueryImpl.createNamedQuery(parent, (Type) member);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

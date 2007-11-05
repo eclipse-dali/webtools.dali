@@ -128,6 +128,10 @@ public class GeneratedValueImpl extends AbstractAnnotationResource<Member> imple
 			return new GeneratedValueImpl(parent, member);
 		}
 		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

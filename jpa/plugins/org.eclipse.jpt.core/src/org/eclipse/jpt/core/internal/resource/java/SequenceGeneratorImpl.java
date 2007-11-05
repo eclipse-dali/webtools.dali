@@ -128,6 +128,10 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new SequenceGeneratorImpl(parent, member);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

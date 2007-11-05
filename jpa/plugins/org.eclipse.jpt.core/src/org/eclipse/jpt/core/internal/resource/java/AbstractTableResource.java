@@ -185,6 +185,14 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
 	}
 
+	public boolean catalogTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.catalogDeclarationAdapter, pos, astRoot);
+	}
+	
+	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(this.schemaDeclarationAdapter, pos, astRoot);
+	}
+	
 	public void updateFromJava(CompilationUnit astRoot) {
 		this.setName(this.name(astRoot));
 		this.setSchema(this.schema(astRoot));

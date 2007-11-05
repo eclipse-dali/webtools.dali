@@ -109,6 +109,10 @@ public class IdClassImpl extends AbstractAnnotationResource<Type> implements IdC
 			return new IdClassImpl(parent, (Type) member);
 		}
 		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

@@ -103,6 +103,8 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 
 	protected abstract Annotation buildAnnotation(String annotationName);
 	
+	protected abstract Annotation buildNullAnnotation(String annotationName);
+
 	protected abstract Annotation buildMappingAnnotation(String mappingAnnotationName);
 	
 	protected abstract Iterator<String> correspondingAnnotationNames(String mappingAnnotationName);
@@ -123,6 +125,14 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 			}
 		}
 		return null;
+	}
+	
+	public JavaResource nonNullAnnotation(String annotationName) {
+		Annotation annotation = annotation(annotationName);
+		if (annotation == null) {
+			return buildNullAnnotation(annotationName);	
+		}
+		return annotation;
 	}
 	
 	public Annotation mappingAnnotation(String annotationName) {

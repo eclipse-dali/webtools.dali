@@ -431,6 +431,10 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return new TableGeneratorImpl(parent, member);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

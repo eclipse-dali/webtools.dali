@@ -32,4 +32,6 @@ public interface AnnotationDefinition
 	 * Build and return an Annotation given the Member
 	 */
 	Annotation buildAnnotation(JavaResource parent, Member member);
+	
+	Annotation buildNullAnnotation(JavaResource parent, Member member);
 }

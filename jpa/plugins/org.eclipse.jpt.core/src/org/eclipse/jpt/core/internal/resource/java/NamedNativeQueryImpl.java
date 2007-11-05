@@ -205,6 +205,10 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return NamedNativeQueryImpl.createNamedNativeQuery(parent, (Type) member);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

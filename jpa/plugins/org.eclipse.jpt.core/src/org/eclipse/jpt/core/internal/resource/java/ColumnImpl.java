@@ -214,6 +214,10 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 			return new ColumnImpl(parent, member, ColumnImpl.MAPPING_DECLARATION_ANNOTATION_ADAPTER);
 		}
 		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
+		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

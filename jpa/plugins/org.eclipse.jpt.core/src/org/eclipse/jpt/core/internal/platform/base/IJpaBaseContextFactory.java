@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
+import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
@@ -55,5 +56,6 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	IJavaTypeMapping createJavaNullTypeMapping(IJavaPersistentType parent);
 
 	IJavaEntity createJavaEntity(IJavaPersistentType parent);
-		
+	
+	ITable createJavaTable(IJavaEntity parent);
 }

@@ -292,6 +292,10 @@ public class AssociationOverrideImpl
 		public Annotation buildAnnotation(JavaResource parent, Member member) {
 			return AssociationOverrideImpl.createAssociationOverride(parent, member);
 		}
+		
+		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+			return null;
+		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
