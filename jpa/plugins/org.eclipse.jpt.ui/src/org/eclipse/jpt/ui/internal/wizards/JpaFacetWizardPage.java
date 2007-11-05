@@ -50,8 +50,10 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelEvent;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelListener;
-import org.eclipse.wst.common.project.facet.ui.internal.AbstractDataModel;
-import org.eclipse.wst.common.project.facet.ui.internal.ChangeTargetedRuntimesDataModel;
+import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
+import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
+import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
+import org.eclipse.wst.common.project.facet.ui.ModifyFacetedProjectWizard;
 import org.eclipse.wst.common.project.facet.ui.internal.FacetsSelectionPage;
 import org.eclipse.wst.web.ui.internal.wizards.DataModelFacetInstallPage;
 
@@ -89,34 +91,19 @@ public class JpaFacetWizardPage
 	}
 	
 	private void setUpRuntimeListener() {
-		final ChangeTargetedRuntimesDataModel runtimeDataModel = getRuntimeDataModel();
+	    final IFacetedProjectWorkingCopy wc = ( (ModifyFacetedProjectWizard) getWizard() ).getFacetedProjectWorkingCopy();
 		// must do it manually the first time
-		model.setProperty(RUNTIME, runtimeDataModel.getPrimaryRuntime());
-		runtimeDataModel.addListener(
-			ChangeTargetedRuntimesDataModel.EVENT_PRIMARY_RUNTIME_CHANGED,
-			new AbstractDataModel.IDataModelListener() {
-				public void handleEvent() {
-					model.setProperty(RUNTIME, runtimeDataModel.getPrimaryRuntime());
+		model.setProperty(RUNTIME, wc.getPrimaryRuntime());
+		wc.addListener(
+			new IFacetedProjectListener() {
+				public void handleEvent( final IFacetedProjectEvent event ) {
+					model.setProperty(RUNTIME, wc.getPrimaryRuntime());
 				}
-			}
+			},
+			IFacetedProjectEvent.Type.PRIMARY_RUNTIME_CHANGED
 		);
 	}
 	
-	private ChangeTargetedRuntimesDataModel getRuntimeDataModel() {
-		// This is hacky, but unfortunately the only current way to do this
-		// see bug 138074
-		FacetsSelectionPage facetPage = null;
-		for (IWizardPage page : getWizard().getPages()) {
-			if (page instanceof FacetsSelectionPage) {
-				facetPage = (FacetsSelectionPage) page;
-				break;
-			}
-		}
-		return (facetPage == null) ?
-			null :
-			facetPage.panel.getDataModel().getTargetedRuntimesDataModel();
-	}
-		
 	private Button createButton(Composite container, int span, String text, int style) {
 		Button button = new Button(container, SWT.NONE | style);
 		button.setText(text);
