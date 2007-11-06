@@ -12,9 +12,9 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 
-public interface IJavaPersistentType extends IPersistentType
+public interface IJavaPersistentType extends IPersistentType, IJavaJpaContextNode
 {
-	void initialize(JavaPersistentTypeResource persistentTypeResource);
+	void initializeFromResource(JavaPersistentTypeResource persistentTypeResource);
 
 	void update(JavaPersistentTypeResource persistentTypeResource);
 

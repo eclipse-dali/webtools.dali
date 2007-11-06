@@ -11,12 +11,11 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorColumn;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 
 public class JavaDiscriminatorColumn extends JavaNamedColumn
-	implements IDiscriminatorColumn
+	implements IJavaDiscriminatorColumn
 {
 
 	protected DiscriminatorType specifiedDiscriminatorType;
@@ -24,18 +23,22 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 
 	protected int specifiedLength;
 
-	public JavaDiscriminatorColumn(IJpaContextNode parent) {
+	public JavaDiscriminatorColumn(IJavaEntity parent) {
 		super(parent);
 	}
 
 	@Override
-	public void initialize(JavaPersistentResource persistentResource) {
-		super.initialize(persistentResource);
+	public void initializeFromResource(JavaPersistentResource persistentResource) {
+		super.initializeFromResource(persistentResource);
 		DiscriminatorColumn discriminatorColumn = columnResource();
 		this.specifiedDiscriminatorType = this.discriminatorType(discriminatorColumn);
 		this.specifiedLength = discriminatorColumn.getLength();		
 	}
 	
+	protected IJavaEntity javaEntity() {
+		return (IJavaEntity) super.parent();
+	}
+
 	@Override
 	protected String annotationName() {
 		return DiscriminatorColumn.ANNOTATION_NAME;
@@ -47,7 +50,7 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 	}
 
 	public DiscriminatorType getDefaultDiscriminatorType() {
-		return DEFAULT_DISCRIMINATOR_TYPE;
+		return IDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
 	}
 		
 	public DiscriminatorType getSpecifiedDiscriminatorType() {
@@ -58,7 +61,7 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 		DiscriminatorType oldDiscriminatorType = this.specifiedDiscriminatorType;
 		this.specifiedDiscriminatorType = newSpecifiedDiscriminatorType;
 		columnResource().setDiscriminatorType(DiscriminatorType.toJavaResourceModel(newSpecifiedDiscriminatorType));
-		firePropertyChanged(SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY, oldDiscriminatorType, newSpecifiedDiscriminatorType);
+		firePropertyChanged(IDiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY, oldDiscriminatorType, newSpecifiedDiscriminatorType);
 	}
 		
 	public int getLength() {
@@ -66,7 +69,7 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 	}
 
 	public int getDefaultLength() {
-		return DEFAULT_LENGTH;
+		return IDiscriminatorColumn.DEFAULT_LENGTH;
 	}
 
 	public int getSpecifiedLength() {
@@ -77,7 +80,7 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 		int oldSpecifiedLength = this.specifiedLength;
 		this.specifiedLength = newSpecifiedLength;
 		columnResource().setLength(newSpecifiedLength);
-		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
+		firePropertyChanged(IDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
 	}
 
 	@Override
@@ -85,12 +88,11 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 		return (DiscriminatorColumn) super.columnResource();
 	}
 
-//
-//	@Override
-//	protected String tableName() {
-//		return this.getOwner().getTypeMapping().getTableName();
-//	}
-//	
+	@Override
+	protected String tableName() {
+		return javaEntity().getTableName();
+	}
+	
 	
 	// ********** java annotations -> persistence model **********
 	@Override
@@ -107,7 +109,7 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 
 	@Override
 	protected String defaultName() {
-		return DEFAULT_NAME;
+		return IDiscriminatorColumn.DEFAULT_NAME;
 	}
 
 }

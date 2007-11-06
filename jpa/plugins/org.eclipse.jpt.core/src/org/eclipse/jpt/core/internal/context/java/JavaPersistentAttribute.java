@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
@@ -36,7 +37,7 @@ public class JavaPersistentAttribute extends JavaContextModel
 //		this.setDefaultMapping(this.nullAttributeMappingProvider().buildMapping(this.attribute, null));
 	}
 	
-	public void initialize(JavaPersistentAttributeResource persistentAttributeResource) {
+	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
 		this.persistentAttributeResource = persistentAttributeResource;
 		this.name = this.name(persistentAttributeResource);
 	}
@@ -182,13 +183,13 @@ public class JavaPersistentAttribute extends JavaContextModel
 //		return this.attribute.textRange();
 //	}
 //
-//	public ITextRange validationTextRange() {
-//		return this.selectionTextRange();
-//	}
-//
-//	public ITextRange selectionTextRange() {
-//		return this.attribute.nameTextRange();
-//	}
+	public ITextRange validationTextRange(CompilationUnit astRoot) {
+		return this.selectionTextRange(astRoot);
+	}
+
+	public ITextRange selectionTextRange(CompilationUnit astRoot) {
+		return this.persistentAttributeResource.textRange(astRoot);
+	}
 
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		this.persistentAttributeResource = persistentAttributeResource;

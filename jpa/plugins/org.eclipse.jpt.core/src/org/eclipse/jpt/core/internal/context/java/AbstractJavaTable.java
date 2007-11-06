@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 import org.eclipse.jpt.core.internal.resource.java.Table;
@@ -22,7 +21,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
-public abstract class AbstractJavaTable extends JavaContextModel implements ITable
+public abstract class AbstractJavaTable extends JavaContextModel implements IJavaTable
 {
 
 	protected String specifiedName;
@@ -38,14 +37,12 @@ public abstract class AbstractJavaTable extends JavaContextModel implements ITab
 	
 //	protected EList<IUniqueConstraint> uniqueConstraints;
 
-//	private final Owner owner;
 
-
-	protected AbstractJavaTable(IJpaContextNode parent) {
+	protected AbstractJavaTable(IJavaJpaContextNode parent) {
 		super(parent);
 	}
 
-	public void initialize(JavaPersistentResource persistentResource) {
+	public void initializeFromResource(JavaPersistentResource persistentResource) {
 		this.persistentResource = persistentResource;
 		initialize(tableResource());
 		
@@ -179,23 +176,15 @@ public abstract class AbstractJavaTable extends JavaContextModel implements ITab
 		this.defaultSchema = newDefaultSchema;
 		firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, oldDefaultSchema, newDefaultSchema);
 	}
-//
-//	public Owner getOwner() {
-//		return owner;
-//	}
-//
+
 //	public IUniqueConstraint createUniqueConstraint(int index) {
 //		return createJavaUniqueConstraint(index);
 //	}
 //
 //	protected abstract JavaUniqueConstraint createJavaUniqueConstraint(int index);
-//
-//	//set these defaults here or call setDefaultCatalog from JavaTableContext instead
-//	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		this.setDefaultCatalog((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TABLE_CATALOG_KEY));
-//		this.setDefaultSchema((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TABLE_SCHEMA_KEY));
-//	}
 
+
+	
 	public void update(JavaPersistentResource persistentResource) {
 		this.persistentResource = persistentResource;
 		this.update(tableResource());
@@ -269,11 +258,14 @@ public abstract class AbstractJavaTable extends JavaContextModel implements ITab
 //		}
 //	}
 
-	public ITextRange validationTextRange() {
-		//TODO textRange
-		return null;
-//		ITextRange textRange = this.member.annotationTextRange(this.daa);
-//		return (textRange != null) ? textRange : this.getOwner().validationTextRange();
+	@Override
+	public IJavaJpaContextNode parent() {
+		return (IJavaJpaContextNode) super.parent();
+	}
+	
+	public ITextRange validationTextRange(CompilationUnit astRoot) {
+		ITextRange textRange = tableResource().textRange(astRoot);
+		return (textRange != null) ? textRange : this.parent().validationTextRange(astRoot);
 	}
 
 	public org.eclipse.jpt.db.internal.Table dbTable() {

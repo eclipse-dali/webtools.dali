@@ -15,9 +15,9 @@ import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.utility.internal.Filter;
 
-public interface IJavaTypeMapping extends ITypeMapping
+public interface IJavaTypeMapping extends ITypeMapping, IJavaJpaContextNode
 {
-	void initialize(JavaPersistentTypeResource persistentTypeResource);
+	void initializeFromResource(JavaPersistentTypeResource persistentTypeResource);
 	
 	void update(JavaPersistentTypeResource persistentTypeResource);
 

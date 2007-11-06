@@ -10,7 +10,8 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.context.base.IPersistentType;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
@@ -24,13 +25,15 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 public abstract class JavaTypeMapping extends JavaContextModel
 	implements IJavaTypeMapping
 {
+	protected JavaPersistentTypeResource persistentTypeResource;
+	
 
 	protected JavaTypeMapping(IJavaPersistentType parent) {
 		super(parent);
 	}
 
-	public void initialize(JavaPersistentTypeResource persistentTypeResource) {
-		//nothing to initialize
+	public void initializeFromResource(JavaPersistentTypeResource persistentTypeResource) {
+		this.persistentTypeResource = persistentTypeResource;
 	}
 	
 	public String getName() {
@@ -40,16 +43,15 @@ public abstract class JavaTypeMapping extends JavaContextModel
 	public String getTableName() {
 		return null;
 	}
-
-	public IPersistentType getPersistentType() {
-		return (IPersistentType) parent();
+	
+	public IJavaPersistentType getPersistentType() {
+		return (IJavaPersistentType) parent();
 	}
 
-
-//	public ITextRange validationTextRange() {
-//		ITextRange textRange = this.type.annotationTextRange(this.declarationAnnotationAdapter());
-//		return (textRange != null) ? textRange : this.getPersistentType().validationTextRange();
-//	}
+	public ITextRange validationTextRange(CompilationUnit astRoot) {
+		ITextRange textRange = this.persistentTypeResource.textRange(astRoot);
+		return (textRange != null) ? textRange : this.getPersistentType().validationTextRange(astRoot);
+	}
 
 	public Table primaryDbTable() {
 		return null;
@@ -100,6 +102,6 @@ public abstract class JavaTypeMapping extends JavaContextModel
 	}
 	
 	public void update(JavaPersistentTypeResource persistentTypeResource) {
-		//do nothing
+		this.persistentTypeResource = persistentTypeResource;
 	}
 }

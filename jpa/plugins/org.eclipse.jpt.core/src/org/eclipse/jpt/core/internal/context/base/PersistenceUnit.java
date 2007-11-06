@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
@@ -30,6 +31,7 @@ public class PersistenceUnit extends JpaContextNode
 	
 	protected final List<IClassRef> classRefs;
 	
+	protected XmlPersistenceUnit xmlPersistenceUnit;
 	
 	public PersistenceUnit(IPersistence parent) {
 		super(parent);
@@ -37,7 +39,8 @@ public class PersistenceUnit extends JpaContextNode
 		this.classRefs = new ArrayList<IClassRef>();
 	}
 	
-	public void initialize(XmlPersistenceUnit xmlPersistenceUnit) {
+	public void initializeFromResource(XmlPersistenceUnit xmlPersistenceUnit) {
+		this.xmlPersistenceUnit = xmlPersistenceUnit;
 		this.name = xmlPersistenceUnit.getName();
 		initializeMappingFileRefs(xmlPersistenceUnit);
 		initializeClassRefs(xmlPersistenceUnit);
@@ -139,6 +142,7 @@ public class PersistenceUnit extends JpaContextNode
 	// **************** updating ***********************************************
 	
 	public void update(XmlPersistenceUnit persistenceUnit) {
+		this.xmlPersistenceUnit = xmlPersistenceUnit;
 		updateName(persistenceUnit);
 		updateMappingFileRefs(persistenceUnit);
 		updateClassRefs(persistenceUnit);
@@ -169,7 +173,7 @@ public class PersistenceUnit extends JpaContextNode
 	
 	protected IMappingFileRef createMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {
 		IMappingFileRef mappingFileRef = jpaFactory().createMappingFileRef(this);
-		mappingFileRef.initialize(xmlMappingFileRef);
+		mappingFileRef.initializeFromResource(xmlMappingFileRef);
 		return mappingFileRef;
 	}
 	
@@ -194,7 +198,11 @@ public class PersistenceUnit extends JpaContextNode
 	
 	protected IClassRef createClassRef(XmlJavaClassRef xmlClassRef) {
 		IClassRef classRef = jpaFactory().createClassRef(this);
-		classRef.initialize(xmlClassRef);
+		classRef.initializeFromResource(xmlClassRef);
 		return classRef;
+	}
+	
+	public ITextRange validationTextRange() {
+		return this.xmlPersistenceUnit.validationTextRange();
 	}
 }

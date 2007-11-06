@@ -89,7 +89,7 @@ public class BaseJpaContent extends JpaContextNode
 
 	protected IPersistenceXml createPersistenceXml(PersistenceResourceModel persistenceResource) {
 		IPersistenceXml persistenceXml = jpaFactory().createPersistenceXml(this);
-		persistenceXml.initialize(persistenceResource);
+		persistenceXml.initializeFromResource(persistenceResource);
 		return persistenceXml;
 	}
 }

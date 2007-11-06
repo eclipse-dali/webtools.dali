@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceMod
 
 public interface IPersistenceXml extends IJpaContextNode
 {
-	void initialize(PersistenceResourceModel persistenceResource);
+	void initializeFromResource(PersistenceResourceModel persistenceResource);
 
 	// **************** persistence *******************************************
 	

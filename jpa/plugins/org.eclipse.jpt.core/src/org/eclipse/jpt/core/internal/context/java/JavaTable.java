@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.resource.java.Table;
 
@@ -18,7 +17,7 @@ import org.eclipse.jpt.core.internal.resource.java.Table;
 public class JavaTable extends AbstractJavaTable
 {
 
-	public JavaTable(IJpaContextNode parent) {
+	public JavaTable(IJavaEntity parent) {
 		super(parent);
 	}
 

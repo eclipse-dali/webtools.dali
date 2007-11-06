@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
@@ -21,11 +22,14 @@ public class ClassRef extends JpaContextNode implements IClassRef
 	
 	protected String javaClassName = "";
 	
+	protected XmlJavaClassRef xmlJavaClassRef;
+	
 	public ClassRef(IPersistenceUnit parent) {
 		super(parent);
 	}
 	
-	public void initialize(XmlJavaClassRef classRef) {
+	public void initializeFromResource(XmlJavaClassRef classRef) {
+		this.xmlJavaClassRef = classRef;
 		this.javaClassName = classRef.getJavaClass();
 		JavaPersistentTypeResource persistentTypeResource = jpaProject().javaPersistentTypeResource(this.javaClassName);
 		if (persistentTypeResource != null) {
@@ -47,10 +51,15 @@ public class ClassRef extends JpaContextNode implements IClassRef
 		firePropertyChanged(IClassRef.JAVA_PERSISTENT_TYPE_PROPERTY, oldJavaPersistentType, newJavaPersistentType);
 	}
 	
+	public ITextRange validationTextRange() {
+		return this.xmlJavaClassRef.validationTextRange();
+	}
+	
 	
 	// **************** updating ***********************************************
 	
 	public void update(XmlJavaClassRef classRef) {
+		this.xmlJavaClassRef = classRef;
 		this.javaClassName = classRef.getJavaClass();
 		JavaPersistentTypeResource persistentTypeResource = jpaProject().javaPersistentTypeResource(this.javaClassName);
 		if (persistentTypeResource == null) {
@@ -68,7 +77,7 @@ public class ClassRef extends JpaContextNode implements IClassRef
 	
 	protected IJavaPersistentType createJavaPersistentType(JavaPersistentTypeResource persistentTypeResource) {
 		IJavaPersistentType javaPersistentType = jpaFactory().createJavaPersistentType(this);
-		javaPersistentType.initialize(persistentTypeResource);
+		javaPersistentType.initializeFromResource(persistentTypeResource);
 		return javaPersistentType;
 	}
 }

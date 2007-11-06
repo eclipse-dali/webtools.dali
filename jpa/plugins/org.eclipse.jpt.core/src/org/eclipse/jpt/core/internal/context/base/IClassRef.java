@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 
 public interface IClassRef extends IJpaContextNode
 {
-	void initialize(XmlJavaClassRef classRef);
+	void initializeFromResource(XmlJavaClassRef classRef);
 
 	void update(XmlJavaClassRef classRef);
 	

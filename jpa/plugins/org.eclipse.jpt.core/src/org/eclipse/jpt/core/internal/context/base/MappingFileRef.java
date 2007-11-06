@@ -10,21 +10,29 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 
 public class MappingFileRef extends JpaContextNode implements IMappingFileRef
 {
+	
+	protected XmlMappingFileRef xmlMappingFileRef;
+	
 	public MappingFileRef(IPersistenceUnit parent) {
 		super(parent);
 	}
 	
-	public void initialize(XmlMappingFileRef mappingFileRef) {
-		
+	public void initializeFromResource(XmlMappingFileRef mappingFileRef) {
+		this.xmlMappingFileRef = mappingFileRef;		
 	}
 	
 	// **************** updating ***********************************************
 	
 	public void update(XmlMappingFileRef mappingFileRef) {
+		this.xmlMappingFileRef = mappingFileRef;
+	}
 	
+	public ITextRange validationTextRange() {
+		return this.xmlMappingFileRef.validationTextRange();
 	}
 }

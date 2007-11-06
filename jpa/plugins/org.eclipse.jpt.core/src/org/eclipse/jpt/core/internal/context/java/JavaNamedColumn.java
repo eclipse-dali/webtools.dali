@@ -12,10 +12,11 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 import org.eclipse.jpt.core.internal.resource.java.NamedColumn;
+import org.eclipse.jpt.db.internal.Column;
+import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -35,13 +36,11 @@ public abstract class JavaNamedColumn extends JavaContextModel
 	
 	protected JavaPersistentResource persistentResource;
 
-//	private final Owner owner;
-
-	protected JavaNamedColumn(IJpaContextNode parent) {
+	protected JavaNamedColumn(Owner parent) {
 		super(parent);
 	}
 
-	public void initialize(JavaPersistentResource persistentResource) {
+	public void initializeFromResource(JavaPersistentResource persistentResource) {
 		this.persistentResource = persistentResource;
 		NamedColumn column = columnResource();
 		this.specifiedName = column.getName();
@@ -97,15 +96,13 @@ public abstract class JavaNamedColumn extends JavaContextModel
 		firePropertyChanged(COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
 	}
 
-//	public Owner getOwner() {
-//		return this.owner;
-//	}
-
-	public ITextRange validationTextRange() {
-		//TODO textRange
-		return null;
-//		ITextRange textRange = this.member.annotationTextRange(this.daa);
-//		return (textRange != null) ? textRange : this.owner.validationTextRange();
+	protected Owner owner() {
+		return (Owner) super.parent();
+	}
+	
+	public ITextRange validationTextRange(CompilationUnit astRoot) {
+		ITextRange textRange = this.persistentResource.textRange(astRoot);
+		return (textRange != null) ? textRange : this.owner().validationTextRange(astRoot);
 	}
 
 
@@ -131,24 +128,24 @@ public abstract class JavaNamedColumn extends JavaContextModel
 	protected abstract String defaultName();
 
 	
-//	public Column dbColumn() {
-//		Table table = this.dbTable();
-//		return (table == null) ? null : table.columnNamed(this.getName());
-//	}
-//
-//	public Table dbTable() {
-//		return this.owner.dbTable(this.tableName());
-//	}
-//
-//	/**
-//	 * Return the name of the column's table.
-//	 */
-//	protected abstract String tableName();
-//
-//	public boolean isResolved() {
-//		return this.dbColumn() != null;
-//	}
-//
+	public Column dbColumn() {
+		Table table = this.dbTable();
+		return (table == null) ? null : table.columnNamed(this.getName());
+	}
+
+	public Table dbTable() {
+		return owner().dbTable(this.tableName());
+	}
+
+	/**
+	 * Return the name of the column's table.
+	 */
+	protected abstract String tableName();
+
+	public boolean isResolved() {
+		return this.dbColumn() != null;
+	}
+
 	@Override
 	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.connectedCandidateValuesFor(pos, filter, astRoot);

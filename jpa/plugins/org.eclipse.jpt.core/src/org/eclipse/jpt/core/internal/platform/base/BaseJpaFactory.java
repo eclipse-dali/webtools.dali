@@ -28,19 +28,19 @@ import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.ClassRef;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
-import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
-import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.Persistence;
 import org.eclipse.jpt.core.internal.context.base.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
+import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.context.java.IJavaTable;
 import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.JavaEntity;
@@ -203,11 +203,11 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return new JavaEntity(parent);
 	}
 
-	public ITable createJavaTable(IJavaEntity parent) {
+	public IJavaTable createJavaTable(IJavaEntity parent) {
 		return new JavaTable(parent);
 	}
 	
-	public IDiscriminatorColumn createJavaDiscriminatorColumn(IJavaEntity parent) {
+	public IJavaDiscriminatorColumn createJavaDiscriminatorColumn(IJavaEntity parent) {
 		return new JavaDiscriminatorColumn(parent);
 	}
 }

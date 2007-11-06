@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
@@ -62,7 +63,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		this.attributes = new ArrayList<IJavaPersistentAttribute>();
 	}
 	
-	public void initialize(JavaPersistentTypeResource persistentTypeResource) {
+	public void initializeFromResource(JavaPersistentTypeResource persistentTypeResource) {
 		this.parentPersistentType = this.parentPersistentType(persistentTypeResource);
 		this.access = this.access(persistentTypeResource);
 		this.name = this.name(persistentTypeResource);
@@ -243,14 +244,13 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 //		return this.persistentTypeResource.fullTextRange();
 //	}
 //
-//	public ITextRange validationTextRange(CompilationUnit astRoot) {
-//		return this.selectionTextRange();
-//	}
-//
-//	public ITextRange selectionTextRange() {
-//		return this.persistentTypeResource.textRange();
-//	}
+	public ITextRange validationTextRange(CompilationUnit astRoot) {
+		return this.selectionTextRange(astRoot);
+	}
 
+	public ITextRange selectionTextRange(CompilationUnit astRoot) {
+		return this.persistentTypeResource.textRange(astRoot);
+	}
 
 	public Iterator<IPersistentType> inheritanceHierarchy() {
 		// using a chain iterator to traverse up the inheritance tree
@@ -322,7 +322,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	
 	protected IJavaTypeMapping createJavaTypeMappingFromAnnotation(String annotationName, JavaPersistentTypeResource persistentTypeResource) {
 		IJavaTypeMapping mapping = jpaPlatform().createJavaTypeMappingFromAnnotation(annotationName, this);
-		mapping.initialize(persistentTypeResource);
+		mapping.initializeFromResource(persistentTypeResource);
 		return mapping;
 	}
 
@@ -358,7 +358,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	
 	protected IJavaPersistentAttribute createAttribute(JavaPersistentAttributeResource persistentAttributeResource) {
 		IJavaPersistentAttribute javaPersistentAttribute = jpaFactory().createJavaPersistentAttribute(this);
-		javaPersistentAttribute.initialize(persistentAttributeResource);
+		javaPersistentAttribute.initializeFromResource(persistentAttributeResource);
 		return javaPersistentAttribute;
 	}
 	

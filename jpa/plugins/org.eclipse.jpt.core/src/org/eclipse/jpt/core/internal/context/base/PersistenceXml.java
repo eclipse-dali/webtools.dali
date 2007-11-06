@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 
@@ -23,7 +24,7 @@ public class PersistenceXml extends JpaContextNode
 		super(baseJpaContent);
 	}
 	
-	public void initialize(PersistenceResourceModel persistenceResource) {
+	public void initializeFromResource(PersistenceResourceModel persistenceResource) {
 		if (persistenceResource.getPersistence() != null) {
 			this.persistence = createPersistence(persistenceResource.getPersistence());
 		}
@@ -65,7 +66,11 @@ public class PersistenceXml extends JpaContextNode
 	
 	protected IPersistence createPersistence(XmlPersistence xmlPersistence) {
 		IPersistence persistence = jpaFactory().createPersistence(this);
-		persistence.initialize(xmlPersistence);
+		persistence.initializeFromResource(xmlPersistence);
 		return persistence;
+	}
+	
+	public ITextRange validationTextRange() {
+		return ITextRange.Empty.instance();
 	}
 }

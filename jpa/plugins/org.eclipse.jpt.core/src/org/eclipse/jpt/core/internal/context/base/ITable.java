@@ -11,13 +11,10 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 import org.eclipse.jpt.db.internal.Schema;
 
 public interface ITable extends IJpaContextNode
 {
-	void initialize(JavaPersistentResource persistentResource);
-
 	String getName();
 	
 	String getDefaultName();
@@ -50,8 +47,6 @@ public interface ITable extends IJpaContextNode
 //	EList<IUniqueConstraint> getUniqueConstraints();
 //	IUniqueConstraint createUniqueConstraint(int index);
 
-	void update(JavaPersistentResource persistentResource);
-
 	org.eclipse.jpt.db.internal.Table dbTable();
 
 	Schema dbSchema();
@@ -71,19 +66,6 @@ public interface ITable extends IJpaContextNode
 	ITextRange schemaTextRange(CompilationUnit astRoot);
 	
 	ITextRange catalogTextRange(CompilationUnit astRoot);
-
-//	Owner getOwner();
-
-
-	/**
-	 * interface allowing tables to be owned by various objects
-	 */
-	interface Owner
-	{
-		ITextRange validationTextRange();
-
-		ITypeMapping getTypeMapping();
-	}
 
 //
 //	class UniqueConstraintOwner implements IUniqueConstraint.Owner

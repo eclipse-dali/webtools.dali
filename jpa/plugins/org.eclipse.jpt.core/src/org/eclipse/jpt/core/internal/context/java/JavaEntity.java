@@ -13,10 +13,9 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
-import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
-import org.eclipse.jpt.core.internal.context.base.ITable;
+import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorValue;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
@@ -27,15 +26,13 @@ import org.eclipse.jpt.utility.internal.Filter;
 
 public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 {
-	protected JavaPersistentTypeResource persistentTypeResource;
-	
 	protected Entity entityResource;
 	
 	protected String specifiedName;
 
 	protected String defaultName;
 
-	protected final ITable table;
+	protected final IJavaTable table;
 
 //	protected List<ISecondaryTable> specifiedSecondaryTables;
 //
@@ -52,7 +49,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 
 	protected String specifiedDiscriminatorValue;
 	
-	protected IDiscriminatorColumn discriminatorColumn;
+	protected IJavaDiscriminatorColumn discriminatorColumn;
 
 //	protected ISequenceGenerator sequenceGenerator;
 //
@@ -81,17 +78,16 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 
 	@Override
-	public void initialize(JavaPersistentTypeResource persistentTypeResource) {
-		super.initialize(persistentTypeResource);
-		this.persistentTypeResource = persistentTypeResource;
+	public void initializeFromResource(JavaPersistentTypeResource persistentTypeResource) {
+		super.initializeFromResource(persistentTypeResource);
 		this.entityResource = (Entity) persistentTypeResource.mappingAnnotation(Entity.ANNOTATION_NAME);
 		
 		this.specifiedName = this.specifiedName(this.entityResource);
 		this.defaultName = this.defaultName(persistentTypeResource);
-		this.table.initialize(persistentTypeResource);
+		this.table.initializeFromResource(persistentTypeResource);
 		this.defaultInheritanceStrategy = this.defaultInheritanceStrategy();
 		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(inheritanceResource());
-		this.discriminatorColumn.initialize(persistentTypeResource);
+		this.discriminatorColumn.initializeFromResource(persistentTypeResource);
 	}
 	
 	//query for the table resource every time on setters.
@@ -157,7 +153,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		firePropertyChanged(IEntity.DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
 	}
 
-	public ITable getTable() {
+	public IJavaTable getTable() {
 		return this.table;
 	}
 
@@ -215,7 +211,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
 	}
 
-	public IDiscriminatorColumn getDiscriminatorColumn() {
+	public IJavaDiscriminatorColumn getDiscriminatorColumn() {
 		return this.discriminatorColumn;
 	}
 
@@ -455,6 +451,10 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //		return this;
 //	}
 
+	public ITypeMapping getTypeMapping() {
+		return this;
+	}
+
 	public IEntity rootEntity() {
 		IEntity rootEntity = this;
 		for (Iterator<IPersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
@@ -495,7 +495,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	@Override
 	public void update(JavaPersistentTypeResource persistentTypeResource) {
 		super.update(persistentTypeResource);
-		this.persistentTypeResource = persistentTypeResource;
 		this.entityResource = (Entity) persistentTypeResource.mappingAnnotation(Entity.ANNOTATION_NAME);
 		
 		this.setSpecifiedName(this.specifiedName(this.entityResource));

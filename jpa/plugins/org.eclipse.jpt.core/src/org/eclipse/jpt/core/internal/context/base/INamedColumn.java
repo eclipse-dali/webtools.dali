@@ -9,13 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.db.internal.Column;
+import org.eclipse.jpt.db.internal.Table;
 
 
 public interface INamedColumn extends IJpaContextNode
 {
-	void initialize(JavaPersistentResource persistentResource);
-
 	String getName();
 
 	String getDefaultName();
@@ -32,27 +33,25 @@ public interface INamedColumn extends IJpaContextNode
 		String COLUMN_DEFINITION_PROPERTY = "columnDefinitionProperty";
 
 
-	void update(JavaPersistentResource persistentResource);
-
 	/**
 	 * Return the wrapper for the datasource column
 	 */
-//	Column dbColumn();
-//
-//	/**
-//	 * Return the wrapper for the datasource table
-//	 */
-//	Table dbTable();
-//
-//	/**
-//	 * Return whether the column is found on the datasource.
-//	 */
-//	boolean isResolved();
-//
-//	/**
-//	 * Return the (best guess) text location of the column's name.
-//	 */
-//	ITextRange nameTextRange();
+	Column dbColumn();
+
+	/**
+	 * Return the wrapper for the datasource table
+	 */
+	Table dbTable();
+
+	/**
+	 * Return whether the column is found on the datasource.
+	 */
+	boolean isResolved();
+
+	/**
+	 * Return the (best guess) text location of the column's name.
+	 */
+	ITextRange nameTextRange(CompilationUnit astRoot);
 //
 //	/**
 //	 * Return whether the column's datasource is connected
@@ -66,26 +65,26 @@ public interface INamedColumn extends IJpaContextNode
 //	Owner getOwner();
 //
 //
-//	/**
-//	 * interface allowing columns to be used in multiple places
-//	 * (e.g. basic mappings and attribute overrides)
-//	 */
-//	interface Owner
-//	{
-//		/**
-//		 * Return the type mapping that contains the column.
-//		 */
-//		ITypeMapping getTypeMapping();
-//
-//		/**
-//		 * Return the column owner's text range. This can be returned by the
-//		 * column when its annotation is not present.
-//		 */
-//		ITextRange validationTextRange();
-//
-//		/**
-//		 * Return the wrapper for the datasource table for the given table name
-//		 */
-//		Table dbTable(String tableName);
-//	}
+	/**
+	 * interface allowing columns to be used in multiple places
+	 * (e.g. basic mappings and attribute overrides)
+	 */
+	interface Owner extends IJpaContextNode
+	{
+		/**
+		 * Return the type mapping that contains the column.
+		 */
+		ITypeMapping getTypeMapping();
+
+		/**
+		 * Return the column owner's text range. This can be returned by the
+		 * column when its annotation is not present.
+		 */
+		ITextRange validationTextRange(CompilationUnit astRoot);
+
+		/**
+		 * Return the wrapper for the datasource table for the given table name
+		 */
+		Table dbTable(String tableName);
+	}
 }

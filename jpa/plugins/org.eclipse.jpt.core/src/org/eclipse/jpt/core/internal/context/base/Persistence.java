@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -23,13 +24,15 @@ public class Persistence extends JpaContextNode
 {	
 	protected final List<IPersistenceUnit> persistenceUnits;
 	
+	protected XmlPersistence xmlPersistence;
 	
 	public Persistence(IPersistenceXml parent) {
 		super(parent);
 		this.persistenceUnits = new ArrayList<IPersistenceUnit>();
 	}
 	
-	public void initialize(XmlPersistence xmlPersistence) {
+	public void initializeFromResource(XmlPersistence xmlPersistence) {
+		this.xmlPersistence = xmlPersistence;
 		initializePersistenceUnits(xmlPersistence);
 	}
 	
@@ -75,6 +78,7 @@ public class Persistence extends JpaContextNode
 	// **************** updating ***********************************************
 	
 	public void update(XmlPersistence persistence) {
+		this.xmlPersistence = persistence;
 		Iterator<IPersistenceUnit> stream = persistenceUnits();
 		Iterator<XmlPersistenceUnit> stream2 = persistence.getPersistenceUnits().iterator();
 		
@@ -95,7 +99,11 @@ public class Persistence extends JpaContextNode
 	
 	protected IPersistenceUnit createPersistenceUnit(XmlPersistenceUnit xmlPersistenceUnit) {
 		IPersistenceUnit persistenceUnit = jpaFactory().createPersistenceUnit(this);
-		persistenceUnit.initialize(xmlPersistenceUnit);
+		persistenceUnit.initializeFromResource(xmlPersistenceUnit);
 		return persistenceUnit;
+	}
+	
+	public ITextRange validationTextRange() {
+		return this.xmlPersistence.validationTextRange();
 	}
 }

@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 
 public interface IPersistence extends IJpaContextNode
 {
-	void initialize(XmlPersistence xmlPersistence);
+	void initializeFromResource(XmlPersistence xmlPersistence);
 
 	
 	// **************** persistence units **************************************

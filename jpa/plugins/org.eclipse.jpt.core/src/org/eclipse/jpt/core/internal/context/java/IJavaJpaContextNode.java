@@ -8,15 +8,14 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.context.base;
+package org.eclipse.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 
-public interface IMappingFileRef extends IJpaContextNode
+public interface IJavaJpaContextNode extends IJpaContextNode
 {
-	void initializeFromResource(XmlMappingFileRef mappingFileRef);
+	ITextRange validationTextRange(CompilationUnit astRoot);
 
-	// **************** udpating ***********************************************
-	
-	void update(XmlMappingFileRef mappingFileRef);
 }
