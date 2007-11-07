@@ -88,7 +88,7 @@ import org.eclipse.jpt.utility.tests.internal.model.value.swing.TableModelAdapte
  * list value model (the sorted people adapter)
  */
 public class TableModelAdapterUITest {
-	private CollectionValueModel eyeColorListHolder;
+	private CollectionValueModel eyeColorsHolder;
 	private PropertyValueModel crowdHolder;
 	private PropertyValueModel selectedPersonHolder;
 	private ListValueModel sortedPeopleAdapter;
@@ -107,7 +107,7 @@ public class TableModelAdapterUITest {
 
 	protected void exec(String[] args) throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		this.eyeColorListHolder = this. buildEyeColorCollectionHolder();
+		this.eyeColorsHolder = this. buildEyeColorCollectionHolder();
 		this.crowdHolder = this.buildCrowdHolder();
 		this.selectedPersonHolder = this.buildSelectedPersonHolder();
 		this.sortedPeopleAdapter = this.buildSortedPeopleAdapter();
@@ -298,7 +298,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ComboBoxModel buildReadOnlyEyeColorComboBoxModel() {
-		return new ComboBoxModelAdapter(this.eyeColorListHolder, new SimplePropertyValueModel());
+		return new ComboBoxModelAdapter(this.eyeColorsHolder, new SimplePropertyValueModel());
 	}
 
 	private ListCellRenderer buildEyeColorRenderer() {
@@ -431,7 +431,7 @@ public class TableModelAdapterUITest {
 	void addEyeColor() {
 		String color = this.promptUserForEyeColor();
 		if (color != null) {
-			this.eyeColorListHolder.addItem(color);
+			this.eyeColorsHolder.add(color);
 		}
 	}
 
@@ -443,7 +443,7 @@ public class TableModelAdapterUITest {
 			}
 			if ((eyeColor.length() == 0)) {
 				JOptionPane.showMessageDialog(null, "The eye color is required.", "Invalid Eye Color", JOptionPane.ERROR_MESSAGE);
-			} else if (CollectionTools.contains((Iterator) this.eyeColorListHolder.value(), eyeColor)) {
+			} else if (CollectionTools.contains((Iterator) this.eyeColorsHolder.values(), eyeColor)) {
 				JOptionPane.showMessageDialog(null, "The eye color already exists.", "Invalid Eye Color", JOptionPane.ERROR_MESSAGE);
 			} else {
 				return eyeColor;
@@ -601,7 +601,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ComboBoxModel buildEyeColorComboBoxModel() {
-		return new ComboBoxModelAdapter(this.eyeColorListHolder, this.buildEyeColorAdapter());
+		return new ComboBoxModelAdapter(this.eyeColorsHolder, this.buildEyeColorAdapter());
 	}
 
 	private PropertyValueModel buildEyeColorAdapter() {

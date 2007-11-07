@@ -12,13 +12,13 @@ package org.eclipse.jpt.utility.internal.model.value;
 import org.eclipse.jpt.utility.internal.model.Model;
 
 /**
- * Interface used to abstract attribute accessing and
+ * Interface used to abstract property accessing and
  * change notification and make it more pluggable.
  */
 public interface ValueModel extends Model {
 
 	/**
-	 * Return the value.
+	 * Return the property's value.
 	 */
 	Object value();
 		String VALUE = "value";

@@ -23,6 +23,7 @@ import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
@@ -60,7 +61,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		this.preferencesAdapter = new PreferencesCollectionValueModel(this.nodeHolder);
 		this.listener = this.buildCollectionChangeListener();
 		this.itemListener = this.buildItemListener();
-		this.preferencesAdapter.addCollectionChangeListener(ValueModel.VALUE, this.listener);
+		this.preferencesAdapter.addCollectionChangeListener(CollectionValueModel.VALUES, this.listener);
 		this.event = null;
 	}
 
@@ -120,7 +121,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		this.expectedValues.clear();
 		this.nodeHolder.setValue(null);
 		this.verifyEvent(this.expectedValues);
-		assertFalse(((Iterator) this.preferencesAdapter.value()).hasNext());
+		assertFalse(((Iterator) this.preferencesAdapter.values()).hasNext());
 		
 		this.event = null;
 		this.nodeHolder.setValue(this.testNode);
@@ -156,7 +157,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 
 		assertNotNull(this.event);
 		assertEquals(this.preferencesAdapter, this.event.getSource());
-		assertEquals(ValueModel.VALUE, this.event.collectionName());
+		assertEquals(CollectionValueModel.VALUES, this.event.collectionName());
 		assertEquals(1, this.event.itemsSize());
 		assertEquals(KEY_NAME_2, ((PreferencePropertyValueModel) this.event.items().next()).getKey());
 
@@ -191,7 +192,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 	 * - the node will throw an IllegalStateException - the adapter should handle it OK...
 	 */
 	public void testRemoveNode() throws Exception {
-		assertTrue(this.preferencesAdapter.hasAnyCollectionChangeListeners(ValueModel.VALUE));
+		assertTrue(this.preferencesAdapter.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 
 		Preferences parent = this.testNode.parent();
 		parent.addNodeChangeListener(this.buildParentNodeChangeListener());
@@ -200,7 +201,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		this.waitForEventQueueToClear();
 
 		assertTrue(this.listenerRemoved);
-		assertFalse(this.preferencesAdapter.hasAnyCollectionChangeListeners(ValueModel.VALUE));
+		assertFalse(this.preferencesAdapter.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 	}
 
 	private NodeChangeListener buildParentNodeChangeListener() {
@@ -210,7 +211,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 			}
 			public void childRemoved(NodeChangeEvent e) {
 				if (e.getChild() == PreferencesCollectionValueModelTests.this.testNode) {
-					PreferencesCollectionValueModelTests.this.preferencesAdapter.removeCollectionChangeListener(ValueModel.VALUE, PreferencesCollectionValueModelTests.this.listener);
+					PreferencesCollectionValueModelTests.this.preferencesAdapter.removeCollectionChangeListener(CollectionValueModel.VALUES, PreferencesCollectionValueModelTests.this.listener);
 					// this line of code will not execute if the line above triggers an exception
 					PreferencesCollectionValueModelTests.this.listenerRemoved = true;
 				}
@@ -219,25 +220,25 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		assertTrue(this.preferencesAdapter.hasAnyCollectionChangeListeners(ValueModel.VALUE));
+		assertTrue(this.preferencesAdapter.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 		assertTrue(this.nodeHasAnyPrefListeners(this.testNode));
-		this.preferencesAdapter.removeCollectionChangeListener(ValueModel.VALUE, this.listener);
+		this.preferencesAdapter.removeCollectionChangeListener(CollectionValueModel.VALUES, this.listener);
 		assertFalse(this.nodeHasAnyPrefListeners(this.testNode));
-		assertFalse(this.preferencesAdapter.hasAnyCollectionChangeListeners(ValueModel.VALUE));
+		assertFalse(this.preferencesAdapter.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 
 		CollectionChangeListener listener2 = this.buildCollectionChangeListener();
 		this.preferencesAdapter.addCollectionChangeListener(listener2);
-		assertTrue(this.preferencesAdapter.hasAnyCollectionChangeListeners(ValueModel.VALUE));
+		assertTrue(this.preferencesAdapter.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 		assertTrue(this.nodeHasAnyPrefListeners(this.testNode));
 		this.preferencesAdapter.removeCollectionChangeListener(listener2);
 		assertFalse(this.nodeHasAnyPrefListeners(this.testNode));
-		assertFalse(this.preferencesAdapter.hasAnyCollectionChangeListeners(ValueModel.VALUE));
+		assertFalse(this.preferencesAdapter.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 	}
 
 	private void verifyEvent(Map items) {
 		assertNotNull(this.event);
 		assertEquals(this.preferencesAdapter, this.event.getSource());
-		assertEquals(ValueModel.VALUE, this.event.collectionName());
+		assertEquals(CollectionValueModel.VALUES, this.event.collectionName());
 		assertEquals(items.size(), this.event.itemsSize());
 		this.verifyItems(items, this.event.items());
 	}
@@ -252,7 +253,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 
 	private void verifyAdapter(PreferencesCollectionValueModel cvm) {
 		assertEquals(this.expectedValues.size(), cvm.size());
-		this.verifyItems(this.expectedValues, (Iterator) cvm.value());
+		this.verifyItems(this.expectedValues, (Iterator) cvm.values());
 	}
 
 	private void verifyItems(Map expected, Iterator stream) {

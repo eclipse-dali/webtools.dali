@@ -138,9 +138,9 @@ public class CompositeCollectionValueModel
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** CollectionValueModel implementation **********
 
-	public Object value() {
+	public Iterator values() {
 		return new CompositeIterator(this.buildCollectionsIterators());
 	}
 
@@ -151,9 +151,6 @@ public class CompositeCollectionValueModel
 			}
 		};
 	}
-
-
-	// ********** CollectionValueModel implementation **********
 
 	public int size() {
 		return this.size;
@@ -170,7 +167,7 @@ public class CompositeCollectionValueModel
 		// the following will trigger the firing of a number of unnecessary events
 		// (since we don't have any listeners yet),
 		// but it reduces the amount of duplicate code
-		this.addComponentSources((Iterator) this.collectionHolder.value());
+		this.addComponentSources((Iterator) this.collectionHolder.values());
 	}
 
 	@Override
@@ -178,7 +175,7 @@ public class CompositeCollectionValueModel
 		super.disengageModel();
 		// stop listening to the components...
 		for (Iterator stream = this.components.values().iterator(); stream.hasNext(); ) {
-			((CollectionValueModel) stream.next()).removeCollectionChangeListener(ValueModel.VALUE, this.componentListener);
+			((CollectionValueModel) stream.next()).removeCollectionChangeListener(CollectionValueModel.VALUES, this.componentListener);
 		}
 		// ...and clear the cache
 		this.components.clear();
@@ -214,7 +211,7 @@ public class CompositeCollectionValueModel
 		if (this.components.put(source, component) != null) {
 			throw new IllegalStateException("duplicate component: " + source);
 		}
-		component.addCollectionChangeListener(ValueModel.VALUE, this.componentListener);
+		component.addCollectionChangeListener(CollectionValueModel.VALUES, this.componentListener);
 		ArrayList componentCollection = new ArrayList(component.size());
 		if (this.collections.put(component, componentCollection) != null) {
 			throw new IllegalStateException("duplicate collection: " + source);
@@ -250,7 +247,7 @@ public class CompositeCollectionValueModel
 		if (component == null) {
 			throw new IllegalStateException("missing component: " + source);
 		}
-		component.removeCollectionChangeListener(VALUE, this.componentListener);
+		component.removeCollectionChangeListener(CollectionValueModel.VALUES, this.componentListener);
 		ArrayList componentCollection = (ArrayList) this.collections.remove(component);
 		if (componentCollection == null) {
 			throw new IllegalStateException("missing collection: " + source);
@@ -276,7 +273,7 @@ public class CompositeCollectionValueModel
 	protected void collectionChanged(CollectionChangeEvent e) {
 		// copy the keys so we don't eat our own tail
 		this.removeComponentSources(new ArrayList(this.components.keySet()).iterator());
-		this.addComponentSources((Iterator) this.collectionHolder.value());
+		this.addComponentSources((Iterator) this.collectionHolder.values());
 	}
 
 
@@ -323,7 +320,7 @@ public class CompositeCollectionValueModel
 	 * Update our cache.
 	 */
 	protected void addComponentItems(CollectionValueModel itemsHolder, ArrayList componentCollection) {
-		this.addComponentItems((Iterator) itemsHolder.value(), itemsHolder.size(), componentCollection);
+		this.addComponentItems((Iterator) itemsHolder.values(), itemsHolder.size(), componentCollection);
 	}
 
 	/**
@@ -332,7 +329,7 @@ public class CompositeCollectionValueModel
 	protected void addComponentItems(Iterator items, int itemsSize, ArrayList componentCollection) {
 		this.size += itemsSize;
 		componentCollection.ensureCapacity(componentCollection.size() + itemsSize);
-		this.addItemsToCollection(items, componentCollection, VALUE);
+		this.addItemsToCollection(items, componentCollection, CollectionValueModel.VALUES);
 	}
 
 	/**
@@ -363,7 +360,7 @@ public class CompositeCollectionValueModel
 	 */
 	protected void removeComponentItems(Iterator items, int itemsSize, ArrayList componentCollection) {
 		this.size -= itemsSize;
-		this.removeItemsFromCollection(items, componentCollection, VALUE);
+		this.removeItemsFromCollection(items, componentCollection, CollectionValueModel.VALUES);
 	}
 
 	/**

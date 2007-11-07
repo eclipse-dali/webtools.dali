@@ -77,15 +77,15 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 
-		collectionHolder.addItem(this.tom);
-		collectionHolder.addItem(this.dick);
-		collectionHolder.addItem(this.harry);
+		collectionHolder.add(this.tom);
+		collectionHolder.add(this.dick);
+		collectionHolder.add(this.harry);
 		assertEquals(9, synchList.size());
 		this.compare(listValueModel, synchList);
 
-		collectionHolder.removeItem(this.foo);
-		collectionHolder.removeItem(this.jar);
-		collectionHolder.removeItem(this.harry);
+		collectionHolder.remove(this.foo);
+		collectionHolder.remove(this.jar);
+		collectionHolder.remove(this.harry);
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 
@@ -158,15 +158,15 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 		assertEquals(6, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
 
-		collectionHolder.addItem(this.tom);
-		collectionHolder.addItem(this.dick);
-		collectionHolder.addItem(this.harry);
+		collectionHolder.add(this.tom);
+		collectionHolder.add(this.dick);
+		collectionHolder.add(this.harry);
 		assertEquals(9, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
 
-		collectionHolder.removeItem(this.foo);
-		collectionHolder.removeItem(this.jar);
-		collectionHolder.removeItem(this.harry);
+		collectionHolder.remove(this.foo);
+		collectionHolder.remove(this.jar);
+		collectionHolder.remove(this.harry);
 		assertEquals(6, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
 

@@ -17,6 +17,8 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.event.StateChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
 
 /**
@@ -33,41 +35,36 @@ import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
 public abstract class ListCurator 
 	extends AspectAdapter
 	implements ListValueModel
-{	
+{
 	/** How the list looked before the last state change */
-	private List record;
-	
+	private final ArrayList record;
+
 	/** A listener that listens for the subject's state to change */
-	private StateChangeListener stateChangeListener;
-	
-	
-	// **************** Constructors ******************************************
-	
+	private final StateChangeListener stateChangeListener;
+
+
+	// ********** constructors **********
+
 	/**
 	 * Construct a Curator for the specified subject.
 	 */
 	protected ListCurator(Model subject) {
-		super(subject);
+		this(new ReadOnlyPropertyValueModel(subject));
 	}
-	
+
 	/**
 	 * Construct a curator for the specified subject holder.
 	 * The subject holder cannot be null.
 	 */
 	protected ListCurator(ValueModel subjectHolder) {
 		super(subjectHolder);
-	}
-	
-	
-	// **************** Initialization ****************************************
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
 		this.record = new ArrayList();
 		this.stateChangeListener = this.buildStateChangeListener();
 	}
-	
+
+
+	// ********** initialization **********
+
 	/**
 	 * The subject's state has changed, do inventory and report to listeners.
 	 */
@@ -82,38 +79,39 @@ public abstract class ListCurator
 			}
 		};
 	}
-	
-	
-	// **************** ValueModel contract ***********************************
-	
+
+
+	// ********** ValueModel implementation **********
+
+	@Override
 	public Object value() {
 		return new ReadOnlyListIterator(this.record);
 	}
-	
-	
-	// **************** ListValueModel contract *******************************
-	
+
+
+	// ********** ListValueModel implementation **********
+
 	/**
 	 * Return the item at the specified index of the subject's list aspect.
 	 */
 	public Object getItem(int index) {
 		return this.record.get(index);
 	}
-	
+
 	/**
 	 * Return the size of the subject's list aspect.
 	 */
 	public int size() {
 		return this.record.size();
 	}
-	
+
 	/**
 	 * Unsupported in this implementation
 	 */
 	public void addItem(int index, Object item) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * Unsupported in this implementation
 	 */
@@ -122,14 +120,14 @@ public abstract class ListCurator
 			this.addItem(index + i, items.get(i));
 		}
 	}
-	
+
 	/**
 	 * Unsupported in this implementation
 	 */
 	public Object removeItem(int index) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * Unsupported in this implementation
 	 */
@@ -140,14 +138,14 @@ public abstract class ListCurator
 		}
 		return removedItems;
 	}
-	
+
 	/**
 	 * Unsupported in this implementation
 	 */
 	public Object replaceItem(int index, Object item) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * Unsupported in this implementation
 	 */
@@ -158,18 +156,25 @@ public abstract class ListCurator
 		}
 		return replacedItems;
 	}
-	
-	
-	// ***************** AspectAdapter contract *******************************
-	
-	/**
-	 * Return whether there are any listeners.
-	 */
+
+
+	// ********** AspectAdapter implementation **********
+
+	@Override
+	protected Class<? extends ChangeListener> listenerClass() {
+		return ListChangeListener.class;
+	}
+
+	@Override
+	protected String listenerAspectName() {
+		return VALUE;
+	}
+
 	@Override
 	protected boolean hasListeners() {
 		return this.hasAnyListChangeListeners(VALUE);
 	}
-	
+
 	/**
 	 * The aspect has changed, notify listeners appropriately.
 	 */
@@ -177,7 +182,7 @@ public abstract class ListCurator
 	protected void fireAspectChange(Object oldValue, Object newValue) {
 		this.fireListChanged(VALUE);
 	}
-	
+
 	/**
 	 * The subject is not null - add our listener.
 	 */
@@ -188,7 +193,7 @@ public abstract class ListCurator
 		// since its value might change when a listener is added
 		CollectionTools.addAll(this.record, this.getValueForRecord());
 	}
-	
+
 	/**
 	 * The subject is not null - remove our listener.
 	 */
@@ -198,33 +203,33 @@ public abstract class ListCurator
 		// clear out the list when we are not listening to the subject
 		this.record.clear();
 	}
-	
 
-	// **************** ListCurator contract **********************************
-	
+
+	// ********** ListCurator contract **********
+
 	/**
 	 * This is intended to be different from #ValueModel.getValue().
 	 * It is intended to be used only when the subject changes or the subject's state changes.
 	 */
 	protected abstract Iterator getValueForRecord();
-	
-	
-	// **************** Behavior **********************************************
-	
+
+
+	// ********** behavior **********
+
 	void submitInventoryReport() {
 		List newRecord = CollectionTools.list(this.getValueForRecord());
 		int recordIndex = 0;
-		
+
 		// add items from the new record
 		for (Iterator newItems = newRecord.iterator(); newItems.hasNext(); ) {
 			this.inventoryNewItem(recordIndex, newItems.next());
 			recordIndex ++;
 		}
-		
+
 		// clean out items that are no longer in the new record
 		for (recordIndex = 0; recordIndex < this.record.size(); ) {
 			Object item = this.record.get(recordIndex);
-			
+
 			if (! newRecord.contains(item)) {
 				this.removeItemFromInventory(recordIndex, item);
 			}
@@ -233,10 +238,10 @@ public abstract class ListCurator
 			}
 		}
 	}
-	
+
 	private void inventoryNewItem(int recordIndex, Object newItem) {
 		List rec = new ArrayList(this.record);
-		
+
 		if (recordIndex < rec.size() && rec.get(recordIndex).equals(newItem)) {
 			return;
 		}
@@ -248,11 +253,11 @@ public abstract class ListCurator
 			this.inventoryNewItem(recordIndex, newItem);
 		}
 	}
-	
+
 	private void addItemToInventory(int index, Object item) {
 		this.addItemToList(index, item, this.record, VALUE);
 	}
-	
+
 	private void removeItemFromInventory(int index, Object item) {
 		this.removeItemFromList(index, this.record, VALUE);
 	}

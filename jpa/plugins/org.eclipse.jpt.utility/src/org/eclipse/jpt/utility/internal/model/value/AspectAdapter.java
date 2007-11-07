@@ -13,17 +13,14 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
 
 /**
  * This abstract extension of AbstractModel provides a base for adding 
  * change listeners (PropertyChange, CollectionChange, ListChange, TreeChange)
  * to a subject and converting the subject's change notifications into a single
- * set of change notifications for the aspect VALUE.
+ * set of change notifications for a common aspect (e.g. VALUE).
  * 
  * The adapter will only listen to the subject (and subject holder) when the
  * adapter itself actually has listeners. This will allow the adapter to be
@@ -31,7 +28,6 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  */
 public abstract class AspectAdapter 
 	extends AbstractModel
-	implements ValueModel
 {
 	/**
 	 * The subject that holds the aspect and fires
@@ -50,10 +46,10 @@ public abstract class AspectAdapter
 	 * For now, this is can only be set upon construction and is
 	 * immutable.
 	 */
-	protected ValueModel subjectHolder;
+	protected final ValueModel subjectHolder;
 
 	/** A listener that keeps us in synch with the subjectHolder. */
-	protected PropertyChangeListener subjectChangeListener;
+	protected final PropertyChangeListener subjectChangeListener;
 
 
 	// ********** constructors **********
@@ -75,6 +71,7 @@ public abstract class AspectAdapter
 			throw new NullPointerException();
 		}
 		this.subjectHolder = subjectHolder;
+		this.subjectChangeListener = this.buildSubjectChangeListener();
 		// the subject is null when we are not listening to it
 		// this will typically result in our value being null
 		this.subject = null;
@@ -82,16 +79,10 @@ public abstract class AspectAdapter
 
 
 	// ********** initialization **********
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.subjectChangeListener = this.buildSubjectChangeListener();
-	}
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUE);
+		return new LocalChangeSupport(this, this.listenerAspectName());
 	}
 
 	/**
@@ -129,12 +120,30 @@ public abstract class AspectAdapter
 	}
 
 	/**
+	 * Return the aspect's current value.
+	 */
+	protected abstract Object value();
+
+	/**
+	 * Return the class of listener that is interested in the aspect adapter's
+	 * changes.
+	 */
+	protected abstract Class<? extends ChangeListener> listenerClass();
+
+	/**
+	 * Return the name of the aspect adapter's aspect (e.g. VALUE).
+	 * This is the name of the aspect adapter's single aspect, not the
+	 * name of the subject's aspect the aspect adapter is adapting.
+	 */
+	protected abstract String listenerAspectName();
+
+	/**
 	 * Return whether there are any listeners for the aspect.
 	 */
 	protected abstract boolean hasListeners();
 
 	/**
-	 * Return whether there are any listeners for the aspect.
+	 * Return whether there are no listeners for the aspect.
 	 */
 	protected boolean hasNoListeners() {
 		return ! this.hasListeners();
@@ -170,14 +179,14 @@ public abstract class AspectAdapter
 	}
 
 	protected void engageSubjectHolder() {
-		this.subjectHolder.addPropertyChangeListener(VALUE, this.subjectChangeListener);
+		this.subjectHolder.addPropertyChangeListener(ValueModel.VALUE, this.subjectChangeListener);
 		// synch our subject *after* we start listening to the subject holder,
 		// since its value might change when a listener is added
 		this.subject = this.subjectHolder.value();
 	}
 
 	protected void disengageSubjectHolder() {
-		this.subjectHolder.removePropertyChangeListener(VALUE, this.subjectChangeListener);
+		this.subjectHolder.removePropertyChangeListener(ValueModel.VALUE, this.subjectChangeListener);
 		// clear out the subject when we are not listening to its holder
 		this.subject = null;
 	}
@@ -193,204 +202,77 @@ public abstract class AspectAdapter
 	}
 
 
-	// ********** extend change support **********
-	
-	/**
-	 * Extend to start listening to the models if necessary.
-	 */
-	@Override
-	public synchronized void addStateChangeListener(StateChangeListener listener) {
-		if (this.hasNoListeners()) {
-			this.engageModels();
-		}
-		super.addStateChangeListener(listener);
-	}
-	
-	/**
-	 * Extend to stop listening to the models if appropriate.
-	 */
-	@Override
-	public synchronized void removeStateChangeListener(StateChangeListener listener) {
-		super.removeStateChangeListener(listener);
-		if (this.hasNoListeners()) {
-			this.disengageModels();
-		}
-	}
-	
-	/**
-	 * Extend to start listening to the models if necessary.
-	 */
-	@Override
-	public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
-		if (this.hasNoListeners()) {
-			this.engageModels();
-		}
-		super.addPropertyChangeListener(listener);
-	}
-	
-	/**
-	 * Extend to start listening to the models if necessary.
-	 */
-	@Override
-	public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		if (propertyName == VALUE && this.hasNoListeners()) {
-			this.engageModels();
-		}
-		super.addPropertyChangeListener(propertyName, listener);
-	}
+	// ********** local change support **********
 
 	/**
-	 * Extend to stop listening to the models if appropriate.
+	 * Extend change support to start listening to the aspect adapter's
+	 * models (the subject holder and the subject itself) when the first
+	 * relevant listener is added.
+	 * Conversely, stop listening to the aspect adapter's models when the
+	 * last relevant listener is removed.
+	 * A relevant listener is a listener of the relevant type.
 	 */
-	@Override
-	public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
-		super.removePropertyChangeListener(listener);
-		if (this.hasNoListeners()) {
-			this.disengageModels();
-		}
-	}
+	protected class LocalChangeSupport extends SingleAspectChangeSupport {
+		private static final long serialVersionUID = 1L;
 
-	/**
-	 * Extend to stop listening to the models if appropriate.
-	 */
-	@Override
-	public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		super.removePropertyChangeListener(propertyName, listener);
-		if (propertyName == VALUE && this.hasNoListeners()) {
-			this.disengageModels();
+		public LocalChangeSupport(AspectAdapter source, String aspectName) {
+			super(source, aspectName);
 		}
-	}
 
-	/**
-	 * Extend to start listening to the models if necessary.
-	 */
-	@Override
-	public synchronized void addCollectionChangeListener(CollectionChangeListener listener) {
-		if (this.hasNoListeners()) {
-			this.engageModels();
+		protected boolean listenerIsRelevant(Class<? extends ChangeListener> listenerClass) {
+			return listenerClass == AspectAdapter.this.listenerClass();
 		}
-		super.addCollectionChangeListener(listener);
-	}
 
-	/**
-	 * Extend to start listening to the models if necessary.
-	 */
-	@Override
-	public synchronized void addCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		if (collectionName == VALUE && this.hasNoListeners()) {
-			this.engageModels();
+		protected boolean hasNoRelevantListeners(Class<? extends ChangeListener> listenerClass) {
+			return this.listenerIsRelevant(listenerClass)
+						&& this.hasNoListeners(listenerClass);
 		}
-		super.addCollectionChangeListener(collectionName, listener);
-	}
 
-	/**
-	 * Extend to stop listening to the models if appropriate.
-	 */
-	@Override
-	public synchronized void removeCollectionChangeListener(CollectionChangeListener listener) {
-		super.removeCollectionChangeListener(listener);
-		if (this.hasNoListeners()) {
-			this.disengageModels();
+		protected boolean listenerIsRelevant(Class<? extends ChangeListener> listenerClass, String listenerAspectName) {
+			return this.listenerIsRelevant(listenerClass)
+						&& (listenerAspectName == AspectAdapter.this.listenerAspectName());
 		}
-	}
 
-	/**
-	 * Extend to stop listening to the models if appropriate.
-	 */
-	@Override
-	public synchronized void removeCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		super.removeCollectionChangeListener(collectionName, listener);
-		if (collectionName == VALUE && this.hasNoListeners()) {
-			this.disengageModels();
+		protected boolean hasNoRelevantListeners(Class<? extends ChangeListener> listenerClass, String listenerAspectName) {
+			return this.listenerIsRelevant(listenerClass, listenerAspectName)
+						&& this.hasNoListeners(listenerClass, listenerAspectName);
 		}
-	}
 
-	/**
-	 * Extend to start listening to the models if necessary.
-	 */
-	@Override
-	public synchronized void addListChangeListener(ListChangeListener listener) {
-		if (this.hasNoListeners()) {
-			this.engageModels();
-		}
-		super.addListChangeListener(listener);
-	}
 
-	/**
-	 * Extend to start listening to the models if necessary.
-	 */
-	@Override
-	public synchronized void addListChangeListener(String listName, ListChangeListener listener) {
-		if (listName == VALUE && this.hasNoListeners()) {
-			this.engageModels();
-		}
-		super.addListChangeListener(listName, listener);
-	}
+		// ********** overrides **********
 
-	/**
-	 * Extend to stop listening to the models if appropriate.
-	 */
-	@Override
-	public synchronized void removeListChangeListener(ListChangeListener listener) {
-		super.removeListChangeListener(listener);
-		if (this.hasNoListeners()) {
-			this.disengageModels();
+		@Override
+		protected <T extends ChangeListener> void addListener(Class<T> listenerClass, T listener) {
+			if (this.hasNoRelevantListeners(listenerClass)) {
+				AspectAdapter.this.engageModels();
+			}
+			super.addListener(listenerClass, listener);
 		}
-	}
 
-	/**
-	 * Extend to stop listening to the models if appropriate.
-	 */
-	@Override
-	public synchronized void removeListChangeListener(String listName, ListChangeListener listener) {
-		super.removeListChangeListener(listName, listener);
-		if (listName == VALUE && this.hasNoListeners()) {
-			this.disengageModels();
+		@Override
+		protected <T extends ChangeListener> void addListener(String listenerAspectName, Class<T> listenerClass, T listener) {
+			if (this.hasNoRelevantListeners(listenerClass, listenerAspectName)) {
+				AspectAdapter.this.engageModels();
+			}
+			super.addListener(listenerAspectName, listenerClass, listener);
 		}
-	}
 
-	/**
-	 * Extend to start listening to the models if necessary.
-	 */
-	@Override
-	public synchronized void addTreeChangeListener(TreeChangeListener listener) {
-		if (this.hasNoListeners()) {
-			this.engageModels();
+		@Override
+		protected <T extends ChangeListener> void removeListener(Class<T> listenerClass, T listener) {
+			super.removeListener(listenerClass, listener);
+			if (this.hasNoRelevantListeners(listenerClass)) {
+				AspectAdapter.this.disengageModels();
+			}
 		}
-		super.addTreeChangeListener(listener);
-	}
 
-	/**
-	 * Extend to start listening to the models if necessary.
-	 */
-	@Override
-	public synchronized void addTreeChangeListener(String treeName, TreeChangeListener listener) {
-		if (treeName == VALUE && this.hasNoListeners()) {
-			this.engageModels();
+		@Override
+		protected <T extends ChangeListener> void removeListener(String listenerAspectName, Class<T> listenerClass, T listener) {
+			super.removeListener(listenerAspectName, listenerClass, listener);
+			if (this.hasNoRelevantListeners(listenerClass, listenerAspectName)) {
+				AspectAdapter.this.disengageModels();
+			}
 		}
-		super.addTreeChangeListener(treeName, listener);
-	}
 
-	/**
-	 * Extend to stop listening to the models if appropriate.
-	 */
-	@Override
-	public synchronized void removeTreeChangeListener(TreeChangeListener listener) {
-		super.removeTreeChangeListener(listener);
-		if (this.hasNoListeners()) {
-			this.disengageModels();
-		}
-	}
-
-	/**
-	 * Extend to stop listening to the models if appropriate.
-	 */
-	@Override
-	public synchronized void removeTreeChangeListener(String treeName, TreeChangeListener listener) {
-		super.removeTreeChangeListener(treeName, listener);
-		if (treeName == VALUE && this.hasNoListeners()) {
-			this.disengageModels();
-		}
 	}
 
 }

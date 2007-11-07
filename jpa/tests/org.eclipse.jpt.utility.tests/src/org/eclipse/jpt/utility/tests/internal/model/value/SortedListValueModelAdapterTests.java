@@ -73,9 +73,9 @@ public class SortedListValueModelAdapterTests extends TestCase {
 			public void itemsAdded(ListChangeEvent e) {/* OK */}
 			public void itemsReplaced(ListChangeEvent e) {/* OK */}
 		});
-		this.wrappedCollectionHolder.addItem("foo");
-		this.wrappedCollectionHolder.addItem("bar");
-		this.wrappedCollectionHolder.addItem("baz");
+		this.wrappedCollectionHolder.add("foo");
+		this.wrappedCollectionHolder.add("bar");
+		this.wrappedCollectionHolder.add("baz");
 		assertEquals(3, this.adapter.size());
 		this.verifyList(this.wrappedCollection, this.adapter);
 	}
@@ -83,13 +83,13 @@ public class SortedListValueModelAdapterTests extends TestCase {
 	public void testAddItem() {
 		List synchList = new SynchronizedList(this.adapter);
 		Bag synchCollection = new SynchronizedBag(this.wrappedCollectionHolder);
-		this.wrappedCollectionHolder.addItem("foo");
+		this.wrappedCollectionHolder.add("foo");
 		assertTrue(this.wrappedCollection.contains("foo"));
-		this.wrappedCollectionHolder.addItem("bar");
-		this.wrappedCollectionHolder.addItem("baz");
-		this.wrappedCollectionHolder.addItem("joo");
-		this.wrappedCollectionHolder.addItem("jar");
-		this.wrappedCollectionHolder.addItem("jaz");
+		this.wrappedCollectionHolder.add("bar");
+		this.wrappedCollectionHolder.add("baz");
+		this.wrappedCollectionHolder.add("joo");
+		this.wrappedCollectionHolder.add("jar");
+		this.wrappedCollectionHolder.add("jaz");
 		assertEquals(6, this.wrappedCollection.size());
 
 		this.verifyList(this.wrappedCollection, this.adapter);
@@ -100,15 +100,15 @@ public class SortedListValueModelAdapterTests extends TestCase {
 	public void testRemoveItem() {
 		List synchList = new SynchronizedList(this.adapter);
 		Bag synchCollection = new SynchronizedBag(this.wrappedCollectionHolder);
-		this.wrappedCollectionHolder.addItem("foo");
-		this.wrappedCollectionHolder.addItem("bar");
-		this.wrappedCollectionHolder.addItem("baz");
-		this.wrappedCollectionHolder.addItem("joo");
-		this.wrappedCollectionHolder.addItem("jar");
-		this.wrappedCollectionHolder.addItem("jaz");
-		this.wrappedCollectionHolder.removeItem("jaz");
+		this.wrappedCollectionHolder.add("foo");
+		this.wrappedCollectionHolder.add("bar");
+		this.wrappedCollectionHolder.add("baz");
+		this.wrappedCollectionHolder.add("joo");
+		this.wrappedCollectionHolder.add("jar");
+		this.wrappedCollectionHolder.add("jaz");
+		this.wrappedCollectionHolder.remove("jaz");
 		assertFalse(this.wrappedCollection.contains("jaz"));
-		this.wrappedCollectionHolder.removeItem("foo");
+		this.wrappedCollectionHolder.remove("foo");
 		assertFalse(this.wrappedCollection.contains("foo"));
 		assertEquals(4, this.wrappedCollection.size());
 
@@ -123,15 +123,15 @@ public class SortedListValueModelAdapterTests extends TestCase {
 			public void itemsRemoved(ListChangeEvent e) {/* OK */}
 			public void itemsReplaced(ListChangeEvent e) {/* OK */}
 		});
-		this.wrappedCollectionHolder.addItem("foo");
-		this.wrappedCollectionHolder.addItem("bar");
-		this.wrappedCollectionHolder.addItem("baz");
-		this.wrappedCollectionHolder.addItem("joo");
-		this.wrappedCollectionHolder.addItem("jar");
-		this.wrappedCollectionHolder.addItem("jaz");
-		this.wrappedCollectionHolder.removeItem("jaz");
+		this.wrappedCollectionHolder.add("foo");
+		this.wrappedCollectionHolder.add("bar");
+		this.wrappedCollectionHolder.add("baz");
+		this.wrappedCollectionHolder.add("joo");
+		this.wrappedCollectionHolder.add("jar");
+		this.wrappedCollectionHolder.add("jaz");
+		this.wrappedCollectionHolder.remove("jaz");
 		assertFalse(this.wrappedCollection.contains("jaz"));
-		this.wrappedCollectionHolder.removeItem("foo");
+		this.wrappedCollectionHolder.remove("foo");
 		assertFalse(this.wrappedCollection.contains("foo"));
 		assertEquals(4, this.wrappedCollection.size());
 
@@ -141,13 +141,13 @@ public class SortedListValueModelAdapterTests extends TestCase {
 	public void testSetComparator() {
 		List synchList = new SynchronizedList(this.adapter);
 		Bag synchCollection = new SynchronizedBag(this.wrappedCollectionHolder);
-		this.wrappedCollectionHolder.addItem("foo");
+		this.wrappedCollectionHolder.add("foo");
 		assertTrue(this.wrappedCollection.contains("foo"));
-		this.wrappedCollectionHolder.addItem("bar");
-		this.wrappedCollectionHolder.addItem("baz");
-		this.wrappedCollectionHolder.addItem("joo");
-		this.wrappedCollectionHolder.addItem("jar");
-		this.wrappedCollectionHolder.addItem("jaz");
+		this.wrappedCollectionHolder.add("bar");
+		this.wrappedCollectionHolder.add("baz");
+		this.wrappedCollectionHolder.add("joo");
+		this.wrappedCollectionHolder.add("jar");
+		this.wrappedCollectionHolder.add("jaz");
 		assertEquals(6, this.wrappedCollection.size());
 
 		this.verifyList(this.wrappedCollection, this.adapter);

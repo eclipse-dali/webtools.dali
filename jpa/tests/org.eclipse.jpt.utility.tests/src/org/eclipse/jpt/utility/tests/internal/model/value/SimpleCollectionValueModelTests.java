@@ -92,33 +92,33 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	}
 
 	public void testValue() {
-		assertEquals(this.buildBag(), CollectionTools.bag((Iterator) this.bagHolder.value()));
-		assertEquals(this.buildSet(), CollectionTools.set((Iterator) this.setHolder.value()));
+		assertEquals(this.buildBag(), CollectionTools.bag((Iterator) this.bagHolder.values()));
+		assertEquals(this.buildSet(), CollectionTools.set((Iterator) this.setHolder.values()));
 	}
 
 	public void testSize() {
-		assertEquals(this.buildBag().size(), CollectionTools.size((Iterator) this.bagHolder.value()));
-		assertEquals(this.buildSet().size(), CollectionTools.size((Iterator) this.setHolder.value()));
+		assertEquals(this.buildBag().size(), CollectionTools.size((Iterator) this.bagHolder.values()));
+		assertEquals(this.buildSet().size(), CollectionTools.size((Iterator) this.setHolder.values()));
 	}
 
 	private boolean bagHolderContains(Object item) {
-		return CollectionTools.contains((Iterator) this.bagHolder.value(), item);
+		return CollectionTools.contains((Iterator) this.bagHolder.values(), item);
 	}
 
 	private boolean setHolderContains(Object item) {
-		return CollectionTools.contains((Iterator) this.setHolder.value(), item);
+		return CollectionTools.contains((Iterator) this.setHolder.values(), item);
 	}
 
 	private boolean bagHolderContainsAll(Collection<String> items) {
-		return CollectionTools.containsAll((Iterator) this.bagHolder.value(), items);
+		return CollectionTools.containsAll((Iterator) this.bagHolder.values(), items);
 	}
 
 	private boolean setHolderContainsAll(Collection<String> items) {
-		return CollectionTools.containsAll((Iterator) this.setHolder.value(), items);
+		return CollectionTools.containsAll((Iterator) this.setHolder.values(), items);
 	}
 
 	private boolean bagHolderContainsAny(Collection<String> items) {
-		Bag bag = CollectionTools.bag((Iterator) this.bagHolder.value());
+		Bag bag = CollectionTools.bag((Iterator) this.bagHolder.values());
 		for (String string : items) {
 			if (bag.contains(string)) {
 				return true;
@@ -128,7 +128,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	}
 
 	private boolean setHolderContainsAny(Collection<String> items) {
-		Set set = CollectionTools.set((Iterator) this.setHolder.value());
+		Set set = CollectionTools.set((Iterator) this.setHolder.values());
 		for (String string : items) {
 			if (set.contains(string)) {
 				return true;
@@ -139,59 +139,59 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 	public void testAddItem() {
 		assertFalse(this.bagHolderContains("joo"));
-		this.bagHolder.addItem("joo");
+		this.bagHolder.add("joo");
 		assertTrue(this.bagHolderContains("joo"));
 
 		assertFalse(this.bagHolderContains(null));
-		this.bagHolder.addItem(null);
+		this.bagHolder.add(null);
 		assertTrue(this.bagHolderContains(null));
 
 		assertFalse(this.setHolderContains("joo"));
-		this.setHolder.addItem("joo");
+		this.setHolder.add("joo");
 		assertTrue(this.setHolderContains("joo"));
 
 		assertFalse(this.setHolderContains(null));
-		this.setHolder.addItem(null);
+		this.setHolder.add(null);
 		assertTrue(this.setHolderContains(null));
 	}
 
 	public void testAddItems() {
 		assertFalse(this.bagHolderContainsAny(this.buildAddItems()));
-		this.bagHolder.addItems(this.buildAddItems());
+		this.bagHolder.addAll(this.buildAddItems());
 		assertTrue(this.bagHolderContainsAll(this.buildAddItems()));
 
 		assertFalse(this.setHolderContainsAny(this.buildAddItems()));
-		this.setHolder.addItems(this.buildAddItems());
+		this.setHolder.addAll(this.buildAddItems());
 		assertTrue(this.setHolderContainsAll(this.buildAddItems()));
 	}
 
 	public void testRemoveItem() {
 		assertTrue(this.bagHolderContains("bar"));
-		this.bagHolder.removeItem("bar");
+		this.bagHolder.remove("bar");
 		assertFalse(this.bagHolderContains("bar"));
 
-		this.bagHolder.addItem(null);
+		this.bagHolder.add(null);
 		assertTrue(this.bagHolderContains(null));
-		this.bagHolder.removeItem(null);
+		this.bagHolder.remove(null);
 		assertFalse(this.bagHolderContains(null));
 
 		assertTrue(this.setHolderContains("bar"));
-		this.setHolder.removeItem("bar");
+		this.setHolder.remove("bar");
 		assertFalse(this.setHolderContains("bar"));
 
-		this.setHolder.addItem(null);
+		this.setHolder.add(null);
 		assertTrue(this.setHolderContains(null));
-		this.setHolder.removeItem(null);
+		this.setHolder.remove(null);
 		assertFalse(this.setHolderContains(null));
 	}
 
 	public void testRemoveItems() {
 		assertTrue(this.bagHolderContainsAll(this.buildRemoveItems()));
-		this.bagHolder.removeItems(this.buildRemoveItems());
+		this.bagHolder.removeAll(this.buildRemoveItems());
 		assertFalse(this.bagHolderContainsAny(this.buildRemoveItems()));
 
 		assertTrue(this.setHolderContainsAll(this.buildRemoveItems()));
-		this.setHolder.removeItems(this.buildRemoveItems());
+		this.setHolder.removeAll(this.buildRemoveItems());
 		assertFalse(this.setHolderContainsAny(this.buildRemoveItems()));
 	}
 
@@ -202,9 +202,9 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		assertFalse(this.bagHolderContains("bar"));
 		assertTrue(this.bagHolderContains("jar"));
 
-		this.bagHolder.addItem(null);
+		this.bagHolder.add(null);
 		assertTrue(this.bagHolderContains(null));
-		this.bagHolder.removeItem(null);
+		this.bagHolder.remove(null);
 		assertFalse(this.bagHolderContains(null));
 
 		((SimpleCollectionValueModel) this.bagHolder).setValue(null);
@@ -216,9 +216,9 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		assertFalse(this.setHolderContains("bar"));
 		assertTrue(this.setHolderContains("jar"));
 
-		this.setHolder.addItem(null);
+		this.setHolder.add(null);
 		assertTrue(this.setHolderContains(null));
-		this.setHolder.removeItem(null);
+		this.setHolder.remove(null);
 		assertFalse(this.setHolderContains(null));
 
 		((SimpleCollectionValueModel) this.setHolder).setValue(null);
@@ -234,47 +234,47 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	}
 
 	public void testCollectionChange2() {
-		this.bagHolder.addCollectionChangeListener(ValueModel.VALUE, this.buildBagListener());
+		this.bagHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.buildBagListener());
 		this.verifyBagChange();
 
-		this.setHolder.addCollectionChangeListener(ValueModel.VALUE, this.buildSetListener());
+		this.setHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.buildSetListener());
 		this.verifySetChange();
 	}
 
 	private void verifyBagChange() {
 		this.bagEvent = null;
 		this.bagEventType = null;
-		this.bagHolder.addItem("foo");
+		this.bagHolder.add("foo");
 		this.verifyBagEvent(ADD, "foo");
 
 		this.bagEvent = null;
 		this.bagEventType = null;
-		this.bagHolder.addItem("foo");
+		this.bagHolder.add("foo");
 		this.verifyBagEvent(ADD, "foo");
 
 		this.bagEvent = null;
 		this.bagEventType = null;
-		this.bagHolder.addItem("joo");
+		this.bagHolder.add("joo");
 		this.verifyBagEvent(ADD, "joo");
 
 		this.bagEvent = null;
 		this.bagEventType = null;
-		this.bagHolder.addItem(null);
+		this.bagHolder.add(null);
 		this.verifyBagEvent(ADD, null);
 
 		this.bagEvent = null;
 		this.bagEventType = null;
-		this.bagHolder.addItem(null);
+		this.bagHolder.add(null);
 		this.verifyBagEvent(ADD, null);
 
 		this.bagEvent = null;
 		this.bagEventType = null;
-		this.bagHolder.removeItem("joo");
+		this.bagHolder.remove("joo");
 		this.verifyBagEvent(REMOVE, "joo");
 
 		this.bagEvent = null;
 		this.bagEventType = null;
-		this.bagHolder.removeItem(null);
+		this.bagHolder.remove(null);
 		this.verifyBagEvent(REMOVE, null);
 
 		this.bagEvent = null;
@@ -284,7 +284,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 		this.bagEvent = null;
 		this.bagEventType = null;
-		this.bagHolder.addItems(this.buildBag());
+		this.bagHolder.addAll(this.buildBag());
 		this.verifyBagEvent(ADD);
 		assertEquals(this.buildBag(), CollectionTools.bag(this.bagEvent.items()));
 	}
@@ -292,46 +292,46 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	private void verifySetChange() {
 		this.setEvent = null;
 		this.setEventType = null;
-		this.setHolder.addItem("foo");
+		this.setHolder.add("foo");
 		assertNull(this.setEvent);
 		assertNull(this.setEventType);
 
 		this.setEvent = null;
 		this.setEventType = null;
-		this.setHolder.addItem("joo");
+		this.setHolder.add("joo");
 		this.verifySetEvent(ADD, "joo");
 
 		this.setEvent = null;
 		this.setEventType = null;
-		this.setHolder.addItem("joo");
+		this.setHolder.add("joo");
 		assertNull(this.setEvent);
 		assertNull(this.setEventType);
 
 		this.setEvent = null;
 		this.setEventType = null;
-		this.setHolder.addItem(null);
+		this.setHolder.add(null);
 		this.verifySetEvent(ADD, null);
 
 		this.setEvent = null;
 		this.setEventType = null;
-		this.setHolder.addItem(null);
+		this.setHolder.add(null);
 		assertNull(this.setEvent);
 		assertNull(this.setEventType);
 
 		this.setEvent = null;
 		this.setEventType = null;
-		this.setHolder.removeItem("joo");
+		this.setHolder.remove("joo");
 		this.verifySetEvent(REMOVE, "joo");
 
 		this.setEvent = null;
 		this.setEventType = null;
-		this.setHolder.removeItem("joo");
+		this.setHolder.remove("joo");
 		assertNull(this.setEvent);
 		assertNull(this.setEventType);
 
 		this.setEvent = null;
 		this.setEventType = null;
-		this.setHolder.removeItem(null);
+		this.setHolder.remove(null);
 		this.verifySetEvent(REMOVE, null);
 
 		this.setEvent = null;
@@ -341,7 +341,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 		this.setEvent = null;
 		this.setEventType = null;
-		this.setHolder.addItems(this.buildSet());
+		this.setHolder.addAll(this.buildSet());
 		assertNull(this.setEvent);
 		assertNull(this.setEventType);
 	}
@@ -391,7 +391,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	private void verifyBagEvent(String eventType) {
 		assertEquals(eventType, this.bagEventType);
 		assertEquals(this.bagHolder, this.bagEvent.getSource());
-		assertEquals(ValueModel.VALUE, this.bagEvent.collectionName());
+		assertEquals(CollectionValueModel.VALUES, this.bagEvent.collectionName());
 	}
 
 	private void verifyBagEvent(String eventType, Object item) {
@@ -402,7 +402,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	private void verifySetEvent(String eventType) {
 		assertEquals(eventType, this.setEventType);
 		assertEquals(this.setHolder, this.setEvent.getSource());
-		assertEquals(ValueModel.VALUE, this.setEvent.collectionName());
+		assertEquals(CollectionValueModel.VALUES, this.setEvent.collectionName());
 	}
 
 	private void verifySetEvent(String eventType, Object item) {

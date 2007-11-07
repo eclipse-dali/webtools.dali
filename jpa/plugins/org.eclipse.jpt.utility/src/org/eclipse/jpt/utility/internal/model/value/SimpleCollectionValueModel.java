@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
@@ -48,34 +49,31 @@ public class SimpleCollectionValueModel
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUE);
-	}
-
-
-	// ********** ValueModel implementation **********
-
-	public Object value() {
-		// try to prevent backdoor modification of the collection
-		return new ReadOnlyIterator(this.value);
+		return new SingleAspectChangeSupport(this, VALUES);
 	}
 
 
 	// ********** CollectionValueModel implementation **********
 
-	public void addItem(Object item) {
-		this.addItemToCollection(item, this.value, VALUE);
+	public Iterator values() {
+		// try to prevent backdoor modification of the collection
+		return new ReadOnlyIterator(this.value);
 	}
 
-	public void addItems(Collection items) {
-		this.addItemsToCollection(items, this.value, VALUE);
+	public void add(Object item) {
+		this.addItemToCollection(item, this.value, VALUES);
 	}
 
-	public void removeItem(Object item) {
-		this.removeItemFromCollection(item, this.value, VALUE);
+	public void addAll(Collection items) {
+		this.addItemsToCollection(items, this.value, VALUES);
 	}
 
-	public void removeItems(Collection items) {
-		this.removeItemsFromCollection(items, this.value, VALUE);
+	public void remove(Object item) {
+		this.removeItemFromCollection(item, this.value, VALUES);
+	}
+
+	public void removeAll(Collection items) {
+		this.removeItemsFromCollection(items, this.value, VALUES);
 	}
 
 	public int size() {
@@ -90,7 +88,7 @@ public class SimpleCollectionValueModel
 	 */
 	public void setValue(Collection value) {
 		this.value = ((value == null) ? new HashBag() : value);
-		this.fireCollectionChanged(VALUE);
+		this.fireCollectionChanged(VALUES);
 	}
 
 	/**
@@ -102,7 +100,7 @@ public class SimpleCollectionValueModel
 		}
 		Collection items = new ArrayList(this.value);
 		this.value.clear();
-		this.fireItemsRemoved(VALUE, items);
+		this.fireItemsRemoved(VALUES, items);
 	}
 
 	@Override

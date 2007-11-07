@@ -188,7 +188,7 @@ public abstract class CollectionPropertyValueModelAdapter
 	 * Start listening to the collection holder.
 	 */
 	protected void engageModel() {
-		this.collectionHolder.addCollectionChangeListener(VALUE, this.collectionChangeListener);
+		this.collectionHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
 		// synch our value *after* we start listening to the collection,
 		// since the collection's value might change when a listener is added
 		this.value = this.buildValue();
@@ -204,7 +204,7 @@ public abstract class CollectionPropertyValueModelAdapter
 	 * Stop listening to the collection holder.
 	 */
 	protected void disengageModel() {
-		this.collectionHolder.removeCollectionChangeListener(VALUE, this.collectionChangeListener);
+		this.collectionHolder.removeCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
 		// clear out our value when we are not listening to the collection
 		this.value = null;
 	}

@@ -58,17 +58,17 @@ public class ListModelAdapterTests extends TestCase {
 		assertEquals(6, synchList.size());
 		this.compare(listModel, synchList);
 
-		collectionHolder.addItem("tom");
-		collectionHolder.addItem("dick");
-		collectionHolder.addItem("harry");
-		collectionHolder.addItem(null);
+		collectionHolder.add("tom");
+		collectionHolder.add("dick");
+		collectionHolder.add("harry");
+		collectionHolder.add(null);
 		assertEquals(10, synchList.size());
 		this.compare(listModel, synchList);
 
-		collectionHolder.removeItem("foo");
-		collectionHolder.removeItem("jar");
-		collectionHolder.removeItem("harry");
-		collectionHolder.removeItem(null);
+		collectionHolder.remove("foo");
+		collectionHolder.remove("jar");
+		collectionHolder.remove("harry");
+		collectionHolder.remove(null);
 		assertEquals(6, synchList.size());
 		this.compare(listModel, synchList);
 	}
@@ -156,15 +156,15 @@ public class ListModelAdapterTests extends TestCase {
 		assertEquals(6, synchList.size());
 		this.compareSort(listModel, synchList, comparator);
 
-		collectionHolder.addItem("tom");
-		collectionHolder.addItem("dick");
-		collectionHolder.addItem("harry");
+		collectionHolder.add("tom");
+		collectionHolder.add("dick");
+		collectionHolder.add("harry");
 		assertEquals(9, synchList.size());
 		this.compareSort(listModel, synchList, comparator);
 
-		collectionHolder.removeItem("foo");
-		collectionHolder.removeItem("jar");
-		collectionHolder.removeItem("harry");
+		collectionHolder.remove("foo");
+		collectionHolder.remove("jar");
+		collectionHolder.remove("harry");
 		assertEquals(6, synchList.size());
 		this.compareSort(listModel, synchList, comparator);
 	}

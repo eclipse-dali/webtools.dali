@@ -76,7 +76,7 @@ public class ListCollectionValueModelAdapter
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUE);
+		return new SingleAspectChangeSupport(this, VALUES);
 	}
 
 	/**
@@ -111,29 +111,26 @@ public class ListCollectionValueModelAdapter
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** CollectionValueModel implementation **********
 
-	public Object value() {
+	public Iterator values() {
 		// try to prevent backdoor modification of the list
 		return new ReadOnlyIterator(this.collection);
 	}
 
-
-	// ********** CollectionValueModel implementation **********
-
-	public void addItem(Object item) {
+	public void add(Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void addItems(Collection items) {
+	public void addAll(Collection items) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeItem(Object item) {
+	public void remove(Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeItems(Collection items) {
+	public void removeAll(Collection items) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -160,7 +157,7 @@ public class ListCollectionValueModelAdapter
 	 */
 	@Override
 	public void addCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		if (collectionName == VALUE && this.hasNoListeners()) {
+		if (collectionName == VALUES && this.hasNoListeners()) {
 			this.engageModel();
 		}
 		super.addCollectionChangeListener(collectionName, listener);
@@ -183,7 +180,7 @@ public class ListCollectionValueModelAdapter
 	@Override
 	public void removeCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
 		super.removeCollectionChangeListener(collectionName, listener);
-		if (collectionName == VALUE && this.hasNoListeners()) {
+		if (collectionName == VALUES && this.hasNoListeners()) {
 			this.disengageModel();
 		}
 	}
@@ -192,7 +189,7 @@ public class ListCollectionValueModelAdapter
 	// ********** queries **********
 
 	protected boolean hasListeners() {
-		return this.hasAnyCollectionChangeListeners(VALUE);
+		return this.hasAnyCollectionChangeListeners(VALUES);
 	}
 
 	protected boolean hasNoListeners() {
@@ -235,20 +232,20 @@ public class ListCollectionValueModelAdapter
 	}
 
 	protected void engageModel() {
-		this.listHolder.addListChangeListener(VALUE, this.listChangeListener);
+		this.listHolder.addListChangeListener(ValueModel.VALUE, this.listChangeListener);
 		// synch our collection *after* we start listening to the list holder,
 		// since its value might change when a listener is added
 		this.buildCollection();
 	}
 
 	protected void disengageModel() {
-		this.listHolder.removeListChangeListener(VALUE, this.listChangeListener);
+		this.listHolder.removeListChangeListener(ValueModel.VALUE, this.listChangeListener);
 		// clear out the collection when we are not listening to the list holder
 		this.collection.clear();
 	}
 
 	protected void itemsAdded(ListChangeEvent e) {
-		this.addItemsToCollection(e.items(), this.collection, VALUE);
+		this.addItemsToCollection(e.items(), this.collection, VALUES);
 	}
 
 	protected void removeInternalItems(Iterator items) {
@@ -258,7 +255,7 @@ public class ListCollectionValueModelAdapter
 			Object removedItem = items.next();
 			int index = this.lastIdentityIndexOf(removedItem);
 			this.collection.remove(index);
-			this.fireItemRemoved(VALUE, removedItem);
+			this.fireItemRemoved(VALUES, removedItem);
 		}
 	}
 
@@ -268,7 +265,7 @@ public class ListCollectionValueModelAdapter
 
 	protected void itemsReplaced(ListChangeEvent e) {
 		this.removeInternalItems(e.replacedItems());
-		this.addItemsToCollection(e.items(), this.collection, VALUE);
+		this.addItemsToCollection(e.items(), this.collection, VALUES);
 	}
 
 	protected void itemsMoved(ListChangeEvent e) {
@@ -279,7 +276,7 @@ public class ListCollectionValueModelAdapter
 		// put in empty check so we don't fire events unnecessarily
 		if ( ! this.collection.isEmpty()) {
 			this.collection.clear();
-			this.fireCollectionCleared(VALUE);
+			this.fireCollectionCleared(VALUES);
 		}
 	}
 
@@ -294,13 +291,13 @@ public class ListCollectionValueModelAdapter
 			Collection removedItems = this.collection;
 			// ...or we create a new one here (which is what we do)
 			this.collection = new ArrayList();
-			this.fireItemsRemoved(VALUE, removedItems);
+			this.fireItemsRemoved(VALUES, removedItems);
 		}
 
 		this.buildCollection();
 		// put in empty check so we don't fire events unnecessarily
 		if ( ! this.collection.isEmpty()) {
-			this.fireItemsAdded(VALUE, this.collection);
+			this.fireItemsAdded(VALUES, this.collection);
 		}
 	}
 

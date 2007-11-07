@@ -17,6 +17,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 
 /**
@@ -52,10 +53,10 @@ public abstract class ListAspectAdapter
 	/**
 	 * The name of the subject's list that we use for the value.
 	 */
-	protected String listName;
+	protected final String listName;
 
 	/** A listener that listens to the subject's list aspect. */
-	protected ListChangeListener listChangeListener;
+	protected final ListChangeListener listChangeListener;
 
 
 	// ********** constructors **********
@@ -65,17 +66,7 @@ public abstract class ListAspectAdapter
 	 * and list.
 	 */
 	protected ListAspectAdapter(String listName, Model subject) {
-		super(subject);
-		this.listName = listName;
-	}
-
-	/**
-	 * Construct a ListAspectAdapter for the specified subject holder
-	 * and list.
-	 */
-	protected ListAspectAdapter(ValueModel subjectHolder, String listName) {
-		super(subjectHolder);
-		this.listName = listName;
+		this(new ReadOnlyPropertyValueModel(subject), listName);
 	}
 
 	/**
@@ -88,14 +79,18 @@ public abstract class ListAspectAdapter
 		this(subjectHolder, null);
 	}
 
-
-	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
+	/**
+	 * Construct a ListAspectAdapter for the specified subject holder
+	 * and list.
+	 */
+	protected ListAspectAdapter(ValueModel subjectHolder, String listName) {
+		super(subjectHolder);
+		this.listName = listName;
 		this.listChangeListener = this.buildListChangeListener();
 	}
+
+
+	// ********** initialization **********
 
 	/**
 	 * The subject's list aspect has changed, notify the listeners.
@@ -135,6 +130,7 @@ public abstract class ListAspectAdapter
 	 * Return the value of the subject's list aspect.
 	 * This should be a *list iterator* on the list.
 	 */
+	@Override
 	public Object value() {
 		if (this.subject == null) {
 			return EmptyListIterator.instance();
@@ -232,6 +228,16 @@ public abstract class ListAspectAdapter
 
 
 	// ********** AspectAdapter implementation **********
+
+	@Override
+	protected Class<? extends ChangeListener> listenerClass() {
+		return ListChangeListener.class;
+	}
+
+	@Override
+	protected String listenerAspectName() {
+		return VALUE;
+	}
 
 	@Override
 	protected boolean hasListeners() {

@@ -20,8 +20,11 @@ import java.util.prefs.Preferences;
 
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
 /**
@@ -35,10 +38,10 @@ public class PreferencesCollectionValueModel
 {
 
 	/** Cache the current preferences, stored in models and keyed by name. */
-	protected Map preferences;
+	protected final Map preferences;
 
 	/** A listener that listens to the preferences node for added or removed preferences. */
-	protected PreferenceChangeListener preferenceChangeListener;
+	protected final PreferenceChangeListener preferenceChangeListener;
 
 
 	// ********** constructors **********
@@ -47,7 +50,7 @@ public class PreferencesCollectionValueModel
 	 * Construct an adapter for the specified preferences node.
 	 */
 	public PreferencesCollectionValueModel(Preferences preferences) {
-		super(preferences);
+		this(new ReadOnlyPropertyValueModel(preferences));
 	}
 
 	/**
@@ -55,17 +58,12 @@ public class PreferencesCollectionValueModel
 	 */
 	public PreferencesCollectionValueModel(ValueModel preferencesHolder) {
 		super(preferencesHolder);
+		this.preferences = new HashMap();
+		this.preferenceChangeListener = this.buildPreferenceChangeListener();
 	}
 
 
 	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.preferences = new HashMap();
-		this.preferenceChangeListener = this.buildPreferenceChangeListener();
-	}
 
 	/**
 	 * A preferences have changed, notify the listeners.
@@ -84,35 +82,32 @@ public class PreferencesCollectionValueModel
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** CollectionValueModel implementation **********
 
 	/**
 	 * Return an iterator on the preference models.
 	 */
-	public synchronized Object value() {
+	public synchronized Iterator values() {
 		return this.preferences.values().iterator();
 	}
 
-
-	// ********** CollectionValueModel implementation **********
-
-	public void addItem(Object item) {
+	public void add(Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void addItems(Collection items) {
+	public void addAll(Collection items) {
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
-			this.addItem(stream.next());
+			this.add(stream.next());
 		}
 	}
 
-	public void removeItem(Object item) {
+	public void remove(Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeItems(Collection items) {
+	public void removeAll(Collection items) {
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
-			this.removeItem(stream.next());
+			this.remove(stream.next());
 		}
 	}
 
@@ -123,14 +118,29 @@ public class PreferencesCollectionValueModel
 
 	// ********** AspectAdapter implementation **********
 
+	@Override
+	protected Object value() {
+		return this.values();
+	}
+
+	@Override
+	protected Class<? extends ChangeListener> listenerClass() {
+		return CollectionChangeListener.class;
+	}
+
+	@Override
+	protected String listenerAspectName() {
+		return VALUES;
+	}
+
     @Override
 	protected boolean hasListeners() {
-		return this.hasAnyCollectionChangeListeners(VALUE);
+		return this.hasAnyCollectionChangeListeners(VALUES);
 	}
 
     @Override
 	protected void fireAspectChange(Object oldValue, Object newValue) {
-		this.fireCollectionChanged(VALUE);
+		this.fireCollectionChanged(VALUES);
 	}
 
     @Override
@@ -198,12 +208,12 @@ public class PreferencesCollectionValueModel
 		if (newValue == null) {
 			// a preference was removed
 			PreferencePropertyValueModel preferenceModel = (PreferencePropertyValueModel) this.preferences.remove(key);
-			this.fireItemRemoved(VALUE, preferenceModel);
+			this.fireItemRemoved(VALUES, preferenceModel);
 		} else if ( ! this.preferences.containsKey(key)) {
 			// a preference was added
 			PreferencePropertyValueModel preferenceModel = this.buildPreferenceModel(key);
 			this.preferences.put(key, preferenceModel);
-			this.fireItemAdded(VALUE, preferenceModel);
+			this.fireItemAdded(VALUES, preferenceModel);
 		} else {
 			// a preference's value changed - do nothing
 		}

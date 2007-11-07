@@ -10,34 +10,41 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Collection;
+import java.util.Iterator;
+
+import org.eclipse.jpt.utility.internal.model.Model;
 
 /**
- * Extend ValueModel to allow the adding and
- * removing of items in a collection value.
- * Typically the value returned from #value()
- * will be an Iterator.
+ * Interface used to abstract collection accessing and
+ * change notification and make it more pluggable.
  */
-public interface CollectionValueModel extends ValueModel {
+public interface CollectionValueModel extends Model {
 
 	/**
-	 * Add the specified item to the collection value.
+	 * Return the collection's values.
 	 */
-	void addItem(Object item);
+	Iterator values();
+		String VALUES = "values";
 
 	/**
-	 * Add the specified items to the collection value.
+	 * Add the specified item to the collection.
 	 */
-	void addItems(Collection items);
+	void add(Object item);
 
 	/**
-	 * Remove the specified item from the collection value.
+	 * Add the specified items to the collection.
 	 */
-	void removeItem(Object item);
+	void addAll(Collection items);
 
 	/**
-	 * Remove the specified items from the collection value.
+	 * Remove the specified item from the collection.
 	 */
-	void removeItems(Collection items);
+	void remove(Object item);
+
+	/**
+	 * Remove the specified items from the collection.
+	 */
+	void removeAll(Collection items);
 
 	/**
 	 * Return the size of the collection value.

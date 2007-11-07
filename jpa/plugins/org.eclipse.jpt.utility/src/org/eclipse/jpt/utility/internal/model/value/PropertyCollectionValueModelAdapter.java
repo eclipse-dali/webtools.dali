@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
@@ -64,7 +65,7 @@ public class PropertyCollectionValueModelAdapter
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUE);
+		return new SingleAspectChangeSupport(this, VALUES);
 	}
 
 	/**
@@ -84,31 +85,28 @@ public class PropertyCollectionValueModelAdapter
 	}
 
 
-	// ********** ValueModel implementation **********
-
-	public Object value() {
-		if (this.value == null) {
-			return EmptyIterator.instance();
-		}
-		return new SingleElementIterator(this.value);
-	}
-
-
 	// ********** CollectionValueModel implementation **********
 
-	public void addItem(Object item) {
+	public Iterator values() {
+		return (this.value == null) ?
+					EmptyIterator.instance()
+				:
+					new SingleElementIterator(this.value);
+	}
+
+	public void add(Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void addItems(Collection items) {
+	public void addAll(Collection items) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeItem(Object item) {
+	public void remove(Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeItems(Collection items) {
+	public void removeAll(Collection items) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -135,7 +133,7 @@ public class PropertyCollectionValueModelAdapter
 	 */
 	@Override
 	public void addCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		if (collectionName == VALUE && this.hasNoListeners()) {
+		if (collectionName == VALUES && this.hasNoListeners()) {
 			this.engageModel();
 		}
 		super.addCollectionChangeListener(collectionName, listener);
@@ -158,7 +156,7 @@ public class PropertyCollectionValueModelAdapter
 	@Override
 	public void removeCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
 		super.removeCollectionChangeListener(collectionName, listener);
-		if (collectionName == VALUE && this.hasNoListeners()) {
+		if (collectionName == VALUES && this.hasNoListeners()) {
 			this.disengageModel();
 		}
 	}
@@ -167,7 +165,7 @@ public class PropertyCollectionValueModelAdapter
 	// ********** queries **********
 
 	protected boolean hasListeners() {
-		return this.hasAnyCollectionChangeListeners(VALUE);
+		return this.hasAnyCollectionChangeListeners(VALUES);
 	}
 
 	protected boolean hasNoListeners() {
@@ -178,14 +176,14 @@ public class PropertyCollectionValueModelAdapter
 	// ********** behavior **********
 
 	protected void engageModel() {
-		this.valueHolder.addPropertyChangeListener(VALUE, this.propertyChangeListener);
+		this.valueHolder.addPropertyChangeListener(ValueModel.VALUE, this.propertyChangeListener);
 		// synch our value *after* we start listening to the value holder,
 		// since its value might change when a listener is added
 		this.value = this.valueHolder.value();
 	}
 
 	protected void disengageModel() {
-		this.valueHolder.removePropertyChangeListener(VALUE, this.propertyChangeListener);
+		this.valueHolder.removePropertyChangeListener(ValueModel.VALUE, this.propertyChangeListener);
 		// clear out the value when we are not listening to the value holder
 		this.value = null;
 	}
@@ -199,12 +197,12 @@ public class PropertyCollectionValueModelAdapter
 		if (this.value != null) {
 			Object oldValue = this.value;
 			this.value = null;
-			this.fireItemRemoved(VALUE, oldValue);
+			this.fireItemRemoved(VALUES, oldValue);
 		}
 		this.value = newValue;
 		// put in "empty" check so we don't fire events unnecessarily
 		if (this.value != null) {
-			this.fireItemAdded(VALUE, this.value);
+			this.fireItemAdded(VALUES, this.value);
 		}
 	}
 

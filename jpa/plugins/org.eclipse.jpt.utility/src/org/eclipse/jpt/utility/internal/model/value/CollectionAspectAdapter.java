@@ -16,6 +16,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 
 /**
@@ -35,7 +36,7 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
  *     (e.g. UI) will need only to *get* the value
  * #addItems(Collection) and #removeItems(Collection)
  *     override these methods to improve performance, if necessary
- * #value()
+ * #values()
  *     override this method only if returning an empty iterator when the
  *     subject is null is unacceptable
  * #size()
@@ -49,10 +50,10 @@ public abstract class CollectionAspectAdapter
 	/**
 	 * The name of the subject's collection that we use for the value.
 	 */
-	protected String collectionName;
+	protected final String collectionName;
 
 	/** A listener that listens to the subject's collection aspect. */
-	protected CollectionChangeListener collectionChangeListener;
+	protected final CollectionChangeListener collectionChangeListener;
 
 
 	// ********** constructors **********
@@ -62,17 +63,7 @@ public abstract class CollectionAspectAdapter
 	 * and collection.
 	 */
 	protected CollectionAspectAdapter(String collectionName, Model subject) {
-		super(subject);
-		this.collectionName = collectionName;
-	}
-
-	/**
-	 * Construct a CollectionAspectAdapter for the specified subject holder
-	 * and collection.
-	 */
-	protected CollectionAspectAdapter(ValueModel subjectHolder, String collectionName) {
-		super(subjectHolder);
-		this.collectionName = collectionName;
+		this(new ReadOnlyPropertyValueModel(subject), collectionName);
 	}
 
 	/**
@@ -85,14 +76,18 @@ public abstract class CollectionAspectAdapter
 		this(subjectHolder, null);
 	}
 
-
-	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
+	/**
+	 * Construct a CollectionAspectAdapter for the specified subject holder
+	 * and collection.
+	 */
+	protected CollectionAspectAdapter(ValueModel subjectHolder, String collectionName) {
+		super(subjectHolder);
+		this.collectionName = collectionName;
 		this.collectionChangeListener = this.buildCollectionChangeListener();
 	}
+
+
+	// ********** initialization **********
 
 	/**
 	 * The subject's collection aspect has changed, notify the listeners.
@@ -120,13 +115,13 @@ public abstract class CollectionAspectAdapter
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** CollectionValueModel implementation **********
 
 	/**
 	 * Return the value of the subject's collection aspect.
 	 * This should be an *iterator* on the collection.
 	 */
-	public Object value() {
+	public Iterator values() {
 		if (this.subject == null) {
 			return EmptyIterator.instance();
 		}
@@ -137,44 +132,41 @@ public abstract class CollectionAspectAdapter
 	 * Return the value of the subject's collection aspect.
 	 * This should be an *iterator* on the collection.
 	 * At this point we can be sure that the subject is not null.
-	 * @see #value()
+	 * @see #values()
 	 */
 	protected Iterator getValueFromSubject() {
 		throw new UnsupportedOperationException();
 	}
 
-
-	// ********** CollectionValueModel implementation **********
-
 	/**
 	 * Add the specified item to the subject's collection aspect.
 	 */
-	public void addItem(Object item) {
+	public void add(Object item) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * Add the specified items to the subject's collection aspect.
 	 */
-	public void addItems(Collection items) {
+	public void addAll(Collection items) {
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
-			this.addItem(stream.next());
+			this.add(stream.next());
 		}
 	}
 
 	/**
 	 * Remove the specified item from the subject's collection aspect.
 	 */
-	public void removeItem(Object item) {
+	public void remove(Object item) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * Remove the specified items from the subject's collection aspect.
 	 */
-	public void removeItems(Collection items) {
+	public void removeAll(Collection items) {
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
-			this.removeItem(stream.next());
+			this.remove(stream.next());
 		}
 	}
 
@@ -191,20 +183,35 @@ public abstract class CollectionAspectAdapter
 	 * @see #size()
 	 */
 	protected int sizeFromSubject() {
-		return CollectionTools.size((Iterator) this.value());
+		return CollectionTools.size((Iterator) this.values());
 	}
 
 
 	// ********** AspectAdapter implementation **********
 
 	@Override
+	protected Object value() {
+		return this.values();
+	}
+
+	@Override
+	protected Class<? extends ChangeListener> listenerClass() {
+		return CollectionChangeListener.class;
+	}
+
+	@Override
+	protected String listenerAspectName() {
+		return VALUES;
+	}
+
+	@Override
 	protected boolean hasListeners() {
-		return this.hasAnyCollectionChangeListeners(VALUE);
+		return this.hasAnyCollectionChangeListeners(VALUES);
 	}
 
 	@Override
 	protected void fireAspectChange(Object oldValue, Object newValue) {
-		this.fireCollectionChanged(VALUE);
+		this.fireCollectionChanged(VALUES);
 	}
 
 	@Override
@@ -230,19 +237,19 @@ public abstract class CollectionAspectAdapter
 	// ********** behavior **********
 
 	protected void itemsAdded(CollectionChangeEvent e) {
-		this.fireItemsAdded(e.cloneWithSource(this, VALUE));
+		this.fireItemsAdded(e.cloneWithSource(this, VALUES));
 	}
 
 	protected void itemsRemoved(CollectionChangeEvent e) {
-		this.fireItemsRemoved(e.cloneWithSource(this, VALUE));
+		this.fireItemsRemoved(e.cloneWithSource(this, VALUES));
 	}
 
 	protected void collectionCleared(CollectionChangeEvent e) {
-		this.fireCollectionCleared(VALUE);
+		this.fireCollectionCleared(VALUES);
 	}
 
 	protected void collectionChanged(CollectionChangeEvent e) {
-		this.fireCollectionChanged(VALUE);
+		this.fireCollectionChanged(VALUES);
 	}
 
 }

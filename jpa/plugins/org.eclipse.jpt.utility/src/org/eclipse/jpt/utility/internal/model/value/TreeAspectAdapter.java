@@ -14,6 +14,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
 
 /**
@@ -39,10 +40,10 @@ public abstract class TreeAspectAdapter
 	/**
 	 * The name of the subject's tree that we use for the value.
 	 */
-	protected String treeName;
+	protected final String treeName;
 
 	/** A listener that listens to the subject's tree aspect. */
-	protected TreeChangeListener treeChangeListener;
+	protected final TreeChangeListener treeChangeListener;
 
 
 	// ********** constructors **********
@@ -52,8 +53,7 @@ public abstract class TreeAspectAdapter
 	 * and tree.
 	 */
 	protected TreeAspectAdapter(String treeName, Model subject) {
-		super(subject);
-		this.treeName = treeName;
+		this(new ReadOnlyPropertyValueModel(subject), treeName);
 	}
 
 	/**
@@ -63,16 +63,11 @@ public abstract class TreeAspectAdapter
 	protected TreeAspectAdapter(ValueModel subjectHolder, String treeName) {
 		super(subjectHolder);
 		this.treeName = treeName;
+		this.treeChangeListener = this.buildTreeChangeListener();
 	}
 
 
 	// ********** initialization **********
-
-    @Override
-	protected void initialize() {
-		super.initialize();
-		this.treeChangeListener = this.buildTreeChangeListener();
-	}
 
 	/**
 	 * The subject's tree aspect has changed, notify the listeners.
@@ -142,6 +137,16 @@ public abstract class TreeAspectAdapter
 
 
 	// ********** AspectAdapter implementation **********
+
+	@Override
+	protected Class<? extends ChangeListener> listenerClass() {
+		return TreeChangeListener.class;
+	}
+
+	@Override
+	protected String listenerAspectName() {
+		return VALUE;
+	}
 
     @Override
 	protected boolean hasListeners() {

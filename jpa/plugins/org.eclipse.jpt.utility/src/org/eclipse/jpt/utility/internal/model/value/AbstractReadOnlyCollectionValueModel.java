@@ -51,24 +51,24 @@ public abstract class AbstractReadOnlyCollectionValueModel
 
 	// ********** CollectionValueModel implementation **********
 
-	public void addItem(Object item) {
+	public void add(Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void addItems(Collection items) {
+	public void addAll(Collection items) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeItem(Object item) {
+	public void remove(Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeItems(Collection items) {
+	public void removeAll(Collection items) {
 		throw new UnsupportedOperationException();
 	}
 
 	public int size() {
-		return CollectionTools.size((Iterator) this.value());
+		return CollectionTools.size((Iterator) this.values());
 	}
 
 
@@ -76,7 +76,7 @@ public abstract class AbstractReadOnlyCollectionValueModel
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, CollectionTools.collection((Iterator) this.value()));
+		return StringTools.buildToStringFor(this, CollectionTools.collection((Iterator) this.values()));
 	}
 
 }

@@ -1,4 +1,4 @@
-/*******************************************************************************
+/*************************************************
  * Copyright (c) 2007 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
@@ -6,7 +6,7 @@
  * 
  * Contributors:
  *     Oracle - initial API and implementation
- ******************************************************************************/
+ ************************************************/
 package org.eclipse.jpt.utility.internal.model;
 
 import java.util.Collection;
@@ -20,17 +20,21 @@ import org.eclipse.jpt.utility.internal.model.event.TreeChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 
 /**
- * This support class changes the behavior of the standard
+ * This change support class changes the behavior of the standard
  * ChangeSupport in several ways:
- * 	- All events fired by the source must specify the expected aspect name.
+ * 	- All events fired by the source must specify the single aspect name.
  * 	- Listeners are required to be either "generic" listeners or
- * 	    listeners of the aspect name.
- * 	- The "aspect-specific" listeners are stored alongside the "generic"
- *     listeners, improving performance a bit (in terms of both time and space)
+ * 	    listeners of the single aspect name.
  */
-public class SingleAspectChangeSupport extends ChangeSupport {
+public class SingleAspectChangeSupport
+	extends ChangeSupport
+{
 	private final String aspectName;
+
 	private static final long serialVersionUID = 1L;
+
+
+	// ********** constructor **********
 
 	public SingleAspectChangeSupport(Model source, String aspectName) {
 		super(source);
@@ -38,44 +42,41 @@ public class SingleAspectChangeSupport extends ChangeSupport {
 	}
 
 
-	// ******************** internal behavior ********************
+	// ********** internal behavior **********
 
 	private UnsupportedOperationException unsupportedOperationException() {
 		return new UnsupportedOperationException("This Model supports only changes for the aspect \"" + this.aspectName + "\"");
 	}
 
-	private void checkAspectName(String aName) {
-		if (aName != this.aspectName) {
-			throw new IllegalArgumentException("This Model supports only changes for the aspect \"" + this.aspectName + "\" : \"" + aName + "\"");
+	private void checkAspectName(String listenerAspectName) {
+		if (listenerAspectName != this.aspectName) {
+			throw new IllegalArgumentException("This Model supports only changes for the aspect \"" + this.aspectName + "\" : \"" + listenerAspectName + "\"");
 		}
 	}
 
 	@Override
-	protected <T extends ChangeListener> void addListener(String aName, Class<T> listenerClass, T listener) {
-		this.checkAspectName(aName);
-		// redirect to "generic" listeners collection
-		this.addListener(listenerClass, listener);
+	protected <T extends ChangeListener> void addListener(String listenerAspectName, Class<T> listenerClass, T listener) {
+		this.checkAspectName(listenerAspectName);
+		super.addListener(listenerAspectName, listenerClass, listener);
 	}
 
 	@Override
-	protected <T extends ChangeListener> void removeListener(String aName, Class<T> listenerClass, T listener) {
-		this.checkAspectName(aName);
-		// redirect to "generic" listeners collection
-		this.removeListener(listenerClass, listener);
+	protected <T extends ChangeListener> void removeListener(String listenerAspectName, Class<T> listenerClass, T listener) {
+		this.checkAspectName(listenerAspectName);
+		super.removeListener(listenerAspectName, listenerClass, listener);
 	}
 
 
-	// ******************** internal queries ********************
+	// ********** internal queries **********
 
 	@Override
-	protected boolean hasAnyListeners(Class<? extends ChangeListener> listenerClass, String aName) {
-		this.checkAspectName(aName);
-		// redirect to "generic" listeners collection
-		return this.hasAnyListeners(listenerClass);
+	protected boolean hasAnyListeners(Class<? extends ChangeListener> listenerClass, String listenerAspectName) {
+		this.checkAspectName(listenerAspectName);
+		return super.hasAnyListeners(listenerClass, listenerAspectName);
 	}
 
 
-	// ******************** state change support ********************
+	// ********** state change support **********
 
 	@Override
 	public void fireStateChanged(StateChangeEvent event) {
@@ -88,7 +89,7 @@ public class SingleAspectChangeSupport extends ChangeSupport {
 	}
 
 
-	// ******************** property change support ********************
+	// ********** property change support **********
 
 	@Override
 	public void firePropertyChanged(PropertyChangeEvent event) {
@@ -115,7 +116,7 @@ public class SingleAspectChangeSupport extends ChangeSupport {
 	}
 
 
-	// ******************** collection change support ********************
+	// ********** collection change support **********
 
 	@Override
 	public void fireItemsAdded(CollectionChangeEvent event) {
@@ -178,7 +179,7 @@ public class SingleAspectChangeSupport extends ChangeSupport {
 	}
 
 
-	// ******************** list change support ********************
+	// ********** list change support **********
 
 	@Override
 	public void fireItemsAdded(ListChangeEvent event) {
@@ -271,7 +272,7 @@ public class SingleAspectChangeSupport extends ChangeSupport {
 	}
 
 
-	// ******************** tree change support ********************
+	// ********** tree change support **********
 
 	@Override
 	public void fireNodeAdded(TreeChangeEvent event) {

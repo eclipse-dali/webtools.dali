@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Implementation of CollectionValueModel that can be used for
@@ -43,10 +44,7 @@ public class ReadOnlyCollectionValueModel
 		return this.value.size();
 	}
 
-
-	// ********** ValueModel implementation **********
-
-	public Object value() {
+	public Iterator values() {
 		return this.value.iterator();
 	}
 

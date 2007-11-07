@@ -41,7 +41,7 @@ public class NullCollectionValueModelTests extends TestCase {
 	public void testAddItem() {
 		boolean exCaught = false;
 		try {
-			this.collectionHolder.addItem("foo");
+			this.collectionHolder.add("foo");
 		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
 		}
@@ -55,7 +55,7 @@ public class NullCollectionValueModelTests extends TestCase {
 		items.add("bar");
 		items.add("baz");
 		try {
-			this.collectionHolder.addItems(items);
+			this.collectionHolder.addAll(items);
 		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
 		}
@@ -65,7 +65,7 @@ public class NullCollectionValueModelTests extends TestCase {
 	public void testRemoveItem() {
 		boolean exCaught = false;
 		try {
-			this.collectionHolder.removeItem("foo");
+			this.collectionHolder.remove("foo");
 		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
 		}
@@ -79,7 +79,7 @@ public class NullCollectionValueModelTests extends TestCase {
 		items.add("bar");
 		items.add("baz");
 		try {
-			this.collectionHolder.removeItems(items);
+			this.collectionHolder.removeAll(items);
 		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
 		}
@@ -91,7 +91,7 @@ public class NullCollectionValueModelTests extends TestCase {
 	}
 
 	public void testValue() {
-		assertFalse(((Iterator) this.collectionHolder.value()).hasNext());
+		assertFalse(((Iterator) this.collectionHolder.values()).hasNext());
 	}
 
 }

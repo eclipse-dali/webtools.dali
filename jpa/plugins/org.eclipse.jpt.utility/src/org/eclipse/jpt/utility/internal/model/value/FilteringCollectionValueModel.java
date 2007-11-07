@@ -117,14 +117,11 @@ public class FilteringCollectionValueModel
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** CollectionValueModel implementation **********
 
-	public Object value() {
+	public Iterator values() {
 		return this.filteredItems.iterator();
 	}
-
-
-	// ********** CollectionValueModel implementation **********
 
 	public int size() {
 		return this.filteredItems.size();
@@ -151,7 +148,7 @@ public class FilteringCollectionValueModel
 	@Override
 	protected void itemsAdded(CollectionChangeEvent e) {
 		// filter the values before propagating the change event
-		this.addItemsToCollection(this.filter(e.items()), this.filteredItems, VALUE);
+		this.addItemsToCollection(this.filter(e.items()), this.filteredItems, VALUES);
 	}
 
 	@Override
@@ -159,18 +156,18 @@ public class FilteringCollectionValueModel
 		// do *not* filter the values, because they may no longer be
 		// "accepted" and that might be why they were removed in the first place;
 		// anyway, any extraneous items are harmless
-		this.removeItemsFromCollection(e.items(), this.filteredItems, VALUE);
+		this.removeItemsFromCollection(e.items(), this.filteredItems, VALUES);
 	}
 
 	@Override
 	protected void collectionCleared(CollectionChangeEvent e) {
-		this.clearCollection(this.filteredItems, VALUE);
+		this.clearCollection(this.filteredItems, VALUES);
 	}
 
 	@Override
 	protected void collectionChanged(CollectionChangeEvent e) {
 		this.synchFilteredItems();
-		this.fireCollectionChanged(VALUE);
+		this.fireCollectionChanged(VALUES);
 	}
 
 
@@ -204,7 +201,7 @@ public class FilteringCollectionValueModel
 	 */
 	protected void synchFilteredItems() {
 		this.filteredItems.clear();
-		CollectionTools.addAll(this.filteredItems, this.filter((Iterator) this.collectionHolder.value()));
+		CollectionTools.addAll(this.filteredItems, this.filter((Iterator) this.collectionHolder.values()));
 	}
 
 }

@@ -14,6 +14,7 @@ import java.util.Collection;
 
 import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 
 /**
@@ -52,10 +53,11 @@ public abstract class PropertyAspectAdapter
 	protected Object value;
 
 	/** The name of the subject's properties that we use for the value. */
-	protected String[] propertyNames;
+	protected final String[] propertyNames;
+		private static final String[] EMPTY_PROPERTY_NAMES = new String[0];
 
 	/** A listener that listens to the appropriate properties of the subject. */
-	protected PropertyChangeListener propertyChangeListener;
+	protected final PropertyChangeListener propertyChangeListener;
 
 
 	// ********** constructors **********
@@ -73,41 +75,19 @@ public abstract class PropertyAspectAdapter
 	 * and properties.
 	 */
 	protected PropertyAspectAdapter(String[] propertyNames, Model subject) {
-		super(subject);
-		this.propertyNames = propertyNames;
-	}
-
-	/**
-	 * Construct a PropertyAspectAdapter for the specified subject holder
-	 * and property.
-	 */
-	protected PropertyAspectAdapter(ValueModel subjectHolder, String propertyName) {
-		this(subjectHolder, new String[] {propertyName});
+		this(new ReadOnlyPropertyValueModel(subject), propertyNames);
 	}
 
 	/**
 	 * Construct a PropertyAspectAdapter for the specified subject holder
 	 * and properties.
 	 */
-	protected PropertyAspectAdapter(ValueModel subjectHolder, String propertyName1, String propertyName2) {
-		this(subjectHolder, new String[] {propertyName1, propertyName2});
-	}
-
-	/**
-	 * Construct a PropertyAspectAdapter for the specified subject holder
-	 * and properties.
-	 */
-	protected PropertyAspectAdapter(ValueModel subjectHolder, String propertyName1, String propertyName2, String propertyName3) {
-		this(subjectHolder, new String[] {propertyName1, propertyName2, propertyName3});
-	}
-
-	/**
-	 * Construct a PropertyAspectAdapter for the specified subject holder
-	 * and properties.
-	 */
-	protected PropertyAspectAdapter(ValueModel subjectHolder, String[] propertyNames) {
+	protected PropertyAspectAdapter(ValueModel subjectHolder, String... propertyNames) {
 		super(subjectHolder);
 		this.propertyNames = propertyNames;
+		this.propertyChangeListener = this.buildPropertyChangeListener();
+		// our value is null when we are not listening to the subject
+		this.value = null;
 	}
 
 	/**
@@ -125,19 +105,11 @@ public abstract class PropertyAspectAdapter
 	 * a new property.
 	 */
 	protected PropertyAspectAdapter(ValueModel subjectHolder) {
-		this(subjectHolder, new String[0]);
+		this(subjectHolder, EMPTY_PROPERTY_NAMES);
 	}
 
 
 	// ********** initialization **********
-
-    @Override
-	protected void initialize() {
-		super.initialize();
-		// our value is null when we are not listening to the subject
-		this.value = null;
-		this.propertyChangeListener = this.buildPropertyChangeListener();
-	}
 
 	/**
 	 * The subject's property has changed, notify the listeners.
@@ -161,6 +133,7 @@ public abstract class PropertyAspectAdapter
 	/**
 	 * Return the value of the subject's property.
 	 */
+	@Override
 	public final Object value() {
 		return this.value;
 	}
@@ -188,6 +161,16 @@ public abstract class PropertyAspectAdapter
 
 
 	// ********** AspectAdapter implementation **********
+
+	@Override
+	protected Class<? extends ChangeListener> listenerClass() {
+		return PropertyChangeListener.class;
+	}
+
+	@Override
+	protected String listenerAspectName() {
+		return VALUE;
+	}
 
     @Override
 	protected boolean hasListeners() {
@@ -242,7 +225,7 @@ public abstract class PropertyAspectAdapter
 	}
 
 
-	// ********** queries **********
+	// ********** behavior **********
 
 	/**
 	 * Return the aspect's value.
@@ -263,9 +246,6 @@ public abstract class PropertyAspectAdapter
 	protected Object getValueFromSubject() {
 		throw new UnsupportedOperationException();
 	}
-
-
-	// ********** behavior **********
 
 	protected void propertyChanged() {
 		Object old = this.value;

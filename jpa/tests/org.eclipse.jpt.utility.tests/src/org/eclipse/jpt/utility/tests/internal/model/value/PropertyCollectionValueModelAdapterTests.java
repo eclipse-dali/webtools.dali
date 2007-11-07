@@ -56,11 +56,11 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	}
 
 	public void testValue() {
-		this.adapter.addCollectionChangeListener(ValueModel.VALUE, new TestListener() {
+		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, new TestListener() {
 			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
 		});
 		this.wrappedValueHolder.setValue("foo");
-		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.value());
+		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());
@@ -70,39 +70,39 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 		CollectionChangeListener listener = new TestListener() {
 			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
 		};
-		this.adapter.addCollectionChangeListener(ValueModel.VALUE, listener);
+		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, listener);
 		this.wrappedValueHolder.setValue("foo");
-		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.value());
+		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());
 
-		this.adapter.removeCollectionChangeListener(ValueModel.VALUE, listener);
-		adapterCollection = CollectionTools.collection((Iterator) this.adapter.value());
+		this.adapter.removeCollectionChangeListener(CollectionValueModel.VALUES, listener);
+		adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
 		assertEquals(0, adapterCollection.size());
 		assertEquals(new HashBag(), adapterCollection);
 
-		this.adapter.addCollectionChangeListener(ValueModel.VALUE, listener);
-		adapterCollection = CollectionTools.collection((Iterator) this.adapter.value());
+		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, listener);
+		adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());
 	}
 
 	public void testHasListeners() {
-		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(ValueModel.VALUE));
+		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 		SynchronizedBag synchCollection = new SynchronizedBag(this.adapter);
-		assertTrue(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(ValueModel.VALUE));
-		this.adapter.removeCollectionChangeListener(ValueModel.VALUE, synchCollection);
-		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
+		this.adapter.removeCollectionChangeListener(CollectionValueModel.VALUES, synchCollection);
+		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 		this.adapter.addCollectionChangeListener(synchCollection);
-		assertTrue(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 		this.adapter.removeCollectionChangeListener(synchCollection);
-		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(ValueModel.VALUE));
+		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 	}
 
 	public void testListChangedToEmpty() {
-		this.adapter.addCollectionChangeListener(ValueModel.VALUE, new TestListener() {
+		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, new TestListener() {
 			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
 			public void itemsRemoved(CollectionChangeEvent e) {/* OK */}
 		});
@@ -113,7 +113,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	}
 
 	public void testCollectionChangedFromEmpty() {
-		this.adapter.addCollectionChangeListener(ValueModel.VALUE, new TestListener() {
+		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, new TestListener() {
 			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
 		});
 		JList jList = new JList(new ListModelAdapter(this.adapter));
@@ -123,7 +123,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	}
 	
 	public void testCollectionChangedFromEmptyToEmpty() {
-		this.adapter.addCollectionChangeListener(ValueModel.VALUE, new TestListener());
+		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, new TestListener());
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		
 		this.wrappedValueHolder.setValue(null);

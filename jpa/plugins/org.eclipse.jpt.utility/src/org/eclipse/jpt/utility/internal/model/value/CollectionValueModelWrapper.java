@@ -58,7 +58,7 @@ public abstract class CollectionValueModelWrapper
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUE);
+		return new SingleAspectChangeSupport(this, VALUES);
 	}
 
 	protected CollectionChangeListener buildCollectionChangeListener() {
@@ -90,7 +90,7 @@ public abstract class CollectionValueModelWrapper
 	 */
 	@Override
 	public synchronized void addCollectionChangeListener(CollectionChangeListener listener) {
-		if (this.hasNoCollectionChangeListeners(VALUE)) {
+		if (this.hasNoCollectionChangeListeners(VALUES)) {
 			this.engageModel();
 		}
 		super.addCollectionChangeListener(listener);
@@ -101,7 +101,7 @@ public abstract class CollectionValueModelWrapper
 	 */
 	@Override
 	public synchronized void addCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		if (collectionName == VALUE && this.hasNoCollectionChangeListeners(VALUE)) {
+		if (collectionName == VALUES && this.hasNoCollectionChangeListeners(VALUES)) {
 			this.engageModel();
 		}
 		super.addCollectionChangeListener(collectionName, listener);
@@ -113,7 +113,7 @@ public abstract class CollectionValueModelWrapper
 	@Override
 	public synchronized void removeCollectionChangeListener(CollectionChangeListener listener) {
 		super.removeCollectionChangeListener(listener);
-		if (this.hasNoCollectionChangeListeners(VALUE)) {
+		if (this.hasNoCollectionChangeListeners(VALUES)) {
 			this.disengageModel();
 		}
 	}
@@ -124,7 +124,7 @@ public abstract class CollectionValueModelWrapper
 	@Override
 	public synchronized void removeCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
 		super.removeCollectionChangeListener(collectionName, listener);
-		if (collectionName == VALUE && this.hasNoCollectionChangeListeners(VALUE)) {
+		if (collectionName == VALUES && this.hasNoCollectionChangeListeners(VALUES)) {
 			this.disengageModel();
 		}
 	}
@@ -135,26 +135,26 @@ public abstract class CollectionValueModelWrapper
 	/**
 	 * wrappers cannot be modified - the underlying model must be modified directly
 	 */
-	public void addItem(Object item) {
+	public void add(Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void addItems(Collection items) {
+	public void addAll(Collection items) {
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
-			this.addItem(stream.next());
+			this.add(stream.next());
 		}
 	}
 
 	/**
 	 * wrappers cannot be modified - the underlying model must be modified directly
 	 */
-	public void removeItem(Object item) {
+	public void remove(Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeItems(Collection items) {
+	public void removeAll(Collection items) {
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
-			this.removeItem(stream.next());
+			this.remove(stream.next());
 		}
 	}
 
@@ -165,14 +165,14 @@ public abstract class CollectionValueModelWrapper
 	 * Start listening to the collection holder.
 	 */
 	protected void engageModel() {
-		this.collectionHolder.addCollectionChangeListener(VALUE, this.collectionChangeListener);
+		this.collectionHolder.addCollectionChangeListener(VALUES, this.collectionChangeListener);
 	}
 
 	/**
 	 * Stop listening to the collection holder.
 	 */
 	protected void disengageModel() {
-		this.collectionHolder.removeCollectionChangeListener(VALUE, this.collectionChangeListener);
+		this.collectionHolder.removeCollectionChangeListener(VALUES, this.collectionChangeListener);
 	}
 
 	@Override

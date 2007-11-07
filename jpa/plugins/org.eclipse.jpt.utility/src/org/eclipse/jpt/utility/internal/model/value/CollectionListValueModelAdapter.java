@@ -235,7 +235,7 @@ public class CollectionListValueModelAdapter
 	// ********** behavior **********
 
 	protected void buildList() {
-		Iterator stream = (Iterator) this.collectionHolder.value();
+		Iterator stream = (Iterator) this.collectionHolder.values();
 		// if the new collection is empty, do nothing
 		if (stream.hasNext()) {
 			this.list.ensureCapacity(this.collectionHolder.size());
@@ -255,14 +255,14 @@ public class CollectionListValueModelAdapter
 	}
 
 	protected void engageModel() {
-		this.collectionHolder.addCollectionChangeListener(VALUE, this.collectionChangeListener);
+		this.collectionHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
 		// synch our list *after* we start listening to the collection holder,
 		// since its value might change when a listener is added
 		this.buildList();
 	}
 
 	protected void disengageModel() {
-		this.collectionHolder.removeCollectionChangeListener(VALUE, this.collectionChangeListener);
+		this.collectionHolder.removeCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
 		// clear out the list when we are not listening to the collection holder
 		this.list.clear();
 	}

@@ -14,8 +14,11 @@ import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
 import org.eclipse.jpt.utility.internal.BidiStringConverter;
+import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
 /**
@@ -45,7 +48,7 @@ public class PreferencePropertyValueModel
 	implements PropertyValueModel
 {
 	/** The key to the preference we use for the value. */
-	protected String key;
+	protected final String key;
 
 	/**
 	 * Cache the current (object) value of the preference so we
@@ -57,7 +60,7 @@ public class PreferencePropertyValueModel
 	 * The default (object) value returned if there is no value
 	 * associated with the preference.
 	 */
-	protected Object defaultValue;
+	protected final Object defaultValue;
 
 	/**
 	 * This converter is used to convert the preference's
@@ -66,7 +69,7 @@ public class PreferencePropertyValueModel
 	protected BidiStringConverter converter;
 
 	/** A listener that listens to the appropriate preference. */
-	protected PreferenceChangeListener preferenceChangeListener;
+	protected final PreferenceChangeListener preferenceChangeListener;
 
 
 	// ********** constructors **********
@@ -84,9 +87,7 @@ public class PreferencePropertyValueModel
 	 * the specified default value for the preference.
 	 */
 	public PreferencePropertyValueModel(Preferences preferences, String key, Object defaultValue) {
-		super(preferences);
-		this.key = key;
-		this.defaultValue = defaultValue;
+		this(new ReadOnlyPropertyValueModel(preferences), key, defaultValue);
 	}
 
 	/**
@@ -121,19 +122,14 @@ public class PreferencePropertyValueModel
 		super(preferencesHolder);
 		this.key = key;
 		this.defaultValue = defaultValue;
+		this.converter = BidiStringConverter.Default.instance();
+		this.preferenceChangeListener = this.buildPreferenceChangeListener();
+		// our value is null when we are not listening to the preference
+		this.value = null;
 	}
 
 
 	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		// our value is null when we are not listening to the preference
-		this.value = null;
-		this.converter = BidiStringConverter.Default.instance();
-		this.preferenceChangeListener = this.buildPreferenceChangeListener();
-	}
 
 	/**
 	 * A preference has changed, notify the listeners if necessary.
@@ -157,6 +153,7 @@ public class PreferencePropertyValueModel
 	/**
 	 * Return the cached (converted) value.
 	 */
+	@Override
 	public synchronized Object value() {
 		return this.value;
 	}
@@ -183,6 +180,16 @@ public class PreferencePropertyValueModel
 
 
 	// ********** AspectAdapter implementation **********
+
+	@Override
+	protected Class<? extends ChangeListener> listenerClass() {
+		return PropertyChangeListener.class;
+	}
+
+	@Override
+	protected String listenerAspectName() {
+		return VALUE;
+	}
 
 	@Override
 	protected boolean hasListeners() {
