@@ -30,7 +30,7 @@ import org.eclipse.jpt.utility.internal.swing.TableCellEditorAdapter.ImmediateEd
 public class CheckBoxTableCellRenderer implements TableCellEditorAdapter.Renderer {
 
 	/** the component used to paint the cell */
-	private JCheckBox checkBox;
+	private final JCheckBox checkBox;
 	
 	/** the listener to be notified on an immediate edit */
 	protected TableCellEditorAdapter.ImmediateEditListener immediateEditListener;
@@ -46,7 +46,11 @@ public class CheckBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	 */
 	public CheckBoxTableCellRenderer() {
 		super();
-		this.initialize();
+		this.checkBox = this.buildCheckBox();
+		// by default, check boxes do not paint their borders
+		this.checkBox.setBorderPainted(true);
+		// this setting is recommended for check boxes inside of trees and tables
+		this.checkBox.setBorderPaintedFlat(true);
 	}
 
 	/**
@@ -71,14 +75,6 @@ public class CheckBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	 */
 	public CheckBoxTableCellRenderer(Icon icon) {
 		this(null, icon);
-	}
-
-	protected void initialize() {
-		this.checkBox = this.buildCheckBox();
-		// by default, check boxes do not paint their borders
-		this.checkBox.setBorderPainted(true);
-		// this setting is recommended for check boxes inside of trees and tables
-		this.checkBox.setBorderPaintedFlat(true);
 	}
 
 	protected JCheckBox buildCheckBox() {

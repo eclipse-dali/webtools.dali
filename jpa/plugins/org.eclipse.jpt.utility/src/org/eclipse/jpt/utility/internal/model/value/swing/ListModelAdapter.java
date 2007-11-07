@@ -29,8 +29,9 @@ import org.eclipse.jpt.utility.internal.model.value.ValueModel;
  * on the bound collection. This is required - the list (or collection)
  * itself can be null, but the value model that holds it cannot.
  */
-public class ListModelAdapter extends AbstractListModel {
-
+public class ListModelAdapter
+	extends AbstractListModel
+{
 	/** A value model on the underlying model list. */
 	protected ListValueModel listHolder;
 
@@ -41,7 +42,7 @@ public class ListModelAdapter extends AbstractListModel {
 	protected int listSize;
 
 	/** A listener that allows us to forward changes made to the underlying model list. */
-	protected ListChangeListener listChangeListener;
+	protected final ListChangeListener listChangeListener;
 
 
 	// ********** constructors **********
@@ -51,7 +52,8 @@ public class ListModelAdapter extends AbstractListModel {
 	 */
 	private ListModelAdapter() {
 		super();
-		this.initialize();
+		this.listSize = 0;
+		this.listChangeListener = this.buildListChangeListener();
 	}
 
 	/**
@@ -72,11 +74,6 @@ public class ListModelAdapter extends AbstractListModel {
 
 
 	// ********** initialization **********
-
-	protected void initialize() {
-		this.listSize = 0;
-		this.listChangeListener = this.buildListChangeListener();
-	}
 
 	protected ListChangeListener buildListChangeListener() {
 		return new ListChangeListener() {

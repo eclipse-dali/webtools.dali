@@ -20,15 +20,12 @@ public final class NullPropertyValueModel
 	private static final long serialVersionUID = 1L;
 
 	// singleton
-	private static NullPropertyValueModel INSTANCE;
+	private static final NullPropertyValueModel INSTANCE = new NullPropertyValueModel();
 
 	/**
 	 * Return the singleton.
 	 */
 	public static synchronized PropertyValueModel instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new NullPropertyValueModel();
-		}
 		return INSTANCE;
 	}
 

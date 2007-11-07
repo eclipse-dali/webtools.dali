@@ -20,7 +20,7 @@ public class ReadOnlyListValueModel
 	extends AbstractReadOnlyListValueModel
 {
 	/** The value. */
-	protected List value;
+	protected final List value;
 
 	private static final long serialVersionUID = 1L;
 

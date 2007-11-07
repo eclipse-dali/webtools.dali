@@ -36,13 +36,15 @@ import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
  * we do not have any listeners. This should not be too painful since,
  * most likely, client objects will also be listeners.
  */
-public class TransformationListValueModelAdapter extends ListValueModelWrapper {
+public class TransformationListValueModelAdapter
+	extends ListValueModelWrapper
+{
 
 	/** This transforms the items, unless the subclass overrides #transformItem(Object). */
 	protected final Transformer transformer;
 
 	/** The list of transformed items. */
-	protected List transformedList;
+	protected final List transformedList;
 
 
 	// ********** constructors **********
@@ -53,6 +55,7 @@ public class TransformationListValueModelAdapter extends ListValueModelWrapper {
 	public TransformationListValueModelAdapter(ListValueModel listHolder, Transformer transformer) {
 		super(listHolder);
 		this.transformer = transformer;
+		this.transformedList = new ArrayList();
 	}
 
 	/**
@@ -74,15 +77,6 @@ public class TransformationListValueModelAdapter extends ListValueModelWrapper {
 	 */
 	public TransformationListValueModelAdapter(CollectionValueModel collectionHolder) {
 		this(collectionHolder, Transformer.Disabled.instance());
-	}
-
-
-	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.transformedList = new ArrayList();
 	}
 
 

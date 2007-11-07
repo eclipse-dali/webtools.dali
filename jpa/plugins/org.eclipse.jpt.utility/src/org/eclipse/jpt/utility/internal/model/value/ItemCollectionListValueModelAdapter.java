@@ -19,13 +19,15 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
  * Extend ItemAspectListValueModelAdapter to listen to one or more collection
  * aspects of each item in the wrapped list model.
  */
-public class ItemCollectionListValueModelAdapter extends ItemAspectListValueModelAdapter {
+public class ItemCollectionListValueModelAdapter
+	extends ItemAspectListValueModelAdapter
+{
 
 	/** The names of the items' collections that we listen to. */
 	protected final String[] collectionNames;
 
 	/** Listener that listens to all the items in the list. */
-	protected CollectionChangeListener itemCollectionListener;
+	protected final CollectionChangeListener itemCollectionListener;
 
 
 	// ********** constructors **********
@@ -57,6 +59,7 @@ public class ItemCollectionListValueModelAdapter extends ItemAspectListValueMode
 	public ItemCollectionListValueModelAdapter(ListValueModel listHolder, String[] collectionNames) {
 		super(listHolder);
 		this.collectionNames = collectionNames;
+		this.itemCollectionListener = this.buildItemCollectionListener();
 	}
 
 	/**
@@ -84,18 +87,11 @@ public class ItemCollectionListValueModelAdapter extends ItemAspectListValueMode
 	 * Construct an adapter for the specified item Collections.
 	 */
 	public ItemCollectionListValueModelAdapter(CollectionValueModel collectionHolder, String[] collectionNames) {
-		super(collectionHolder);
-		this.collectionNames = collectionNames;
+		this(new CollectionListValueModelAdapter(collectionHolder), collectionNames);
 	}
 
 
 	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.itemCollectionListener = this.buildItemCollectionListener();
-	}
 
 	/**
 	 * All we really care about is the fact that a Collection aspect has 

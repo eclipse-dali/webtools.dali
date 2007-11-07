@@ -21,7 +21,7 @@ public class ItemStateListValueModelAdapter
 	extends ItemAspectListValueModelAdapter
 {
 	/** Listener that listens to all the items in the list. */
-	protected StateChangeListener itemStateListener;
+	protected final StateChangeListener itemStateListener;
 
 
 	// ********** constructors **********
@@ -31,23 +31,18 @@ public class ItemStateListValueModelAdapter
 	 */
 	public ItemStateListValueModelAdapter(ListValueModel listHolder) {
 		super(listHolder);
+		this.itemStateListener = this.buildItemStateListener();
 	}
 
 	/**
 	 * Construct an adapter for the item state.
 	 */
 	public ItemStateListValueModelAdapter(CollectionValueModel collectionHolder) {
-		super(collectionHolder);
+		this(new CollectionListValueModelAdapter(collectionHolder));
 	}
 
 
 	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.itemStateListener = this.buildItemStateListener();
-	}
 
 	protected StateChangeListener buildItemStateListener() {
 		return new StateChangeListener() {

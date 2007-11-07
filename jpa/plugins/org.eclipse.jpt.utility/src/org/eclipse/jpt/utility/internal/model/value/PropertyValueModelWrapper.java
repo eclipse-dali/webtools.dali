@@ -26,10 +26,10 @@ public abstract class PropertyValueModelWrapper
 {
 
 	/** The wrapped property value model. */
-	protected PropertyValueModel valueHolder;
+	protected final PropertyValueModel valueHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped value holder. */
-	protected PropertyChangeListener valueChangeListener;
+	protected final PropertyChangeListener valueChangeListener;
 
 
 	// ********** constructors **********
@@ -44,17 +44,12 @@ public abstract class PropertyValueModelWrapper
 			throw new NullPointerException();
 		}
 		this.valueHolder = valueHolder;
+		this.valueChangeListener = this.buildValueChangeListener();
 	}
 	
 
 	// ********** initialization **********
 
-    @Override
-	protected void initialize() {
-		super.initialize();
-		this.valueChangeListener = this.buildValueChangeListener();
-	}
-	
 	@Override
 	protected ChangeSupport buildChangeSupport() {
 		return new SingleAspectChangeSupport(this, VALUE);

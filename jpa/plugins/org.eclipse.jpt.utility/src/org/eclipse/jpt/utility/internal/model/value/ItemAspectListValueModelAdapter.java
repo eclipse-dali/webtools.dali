@@ -40,13 +40,15 @@ import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
  * stopListeningToItem(Model)
  *     stop listening to the appropriate aspect of the specified item
  */
-public abstract class ItemAspectListValueModelAdapter extends ListValueModelWrapper {
+public abstract class ItemAspectListValueModelAdapter
+	extends ListValueModelWrapper
+{
 
 	/**
 	 * Maintain a counter for each of the items in the
 	 * wrapped list holder we are listening to.
 	 */
-	protected IdentityHashMap counters;
+	protected final IdentityHashMap counters;
 
 
 	// ********** constructors **********
@@ -56,6 +58,7 @@ public abstract class ItemAspectListValueModelAdapter extends ListValueModelWrap
 	 */
 	protected ItemAspectListValueModelAdapter(ListValueModel listHolder) {
 		super(listHolder);
+		this.counters = new IdentityHashMap();
 	}
 
 	/**
@@ -63,15 +66,6 @@ public abstract class ItemAspectListValueModelAdapter extends ListValueModelWrap
 	 */
 	protected ItemAspectListValueModelAdapter(CollectionValueModel collectionHolder) {
 		this(new CollectionListValueModelAdapter(collectionHolder));
-	}
-
-
-	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.counters = new IdentityHashMap();
 	}
 
 

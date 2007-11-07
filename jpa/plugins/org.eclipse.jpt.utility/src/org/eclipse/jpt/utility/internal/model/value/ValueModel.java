@@ -15,7 +15,9 @@ import org.eclipse.jpt.utility.internal.model.Model;
  * Interface used to abstract property accessing and
  * change notification and make it more pluggable.
  */
-public interface ValueModel extends Model {
+public interface ValueModel
+	extends Model
+{
 
 	/**
 	 * Return the property's value.

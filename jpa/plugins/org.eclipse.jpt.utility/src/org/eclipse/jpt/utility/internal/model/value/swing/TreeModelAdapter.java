@@ -42,23 +42,24 @@ import org.eclipse.jpt.utility.internal.model.value.ValueModel;
  * which, typically, should not be a problem. (If you want to display an empty
  * tree you can set the JTree's treeModel to null.)
  */
-public class TreeModelAdapter extends AbstractTreeModel {
-
+public class TreeModelAdapter
+	extends AbstractTreeModel
+{
 	/**
 	 * A value model on the underlying tree's root node and its
 	 * corresponding listener. This allows clients to swap out
 	 * the entire tree. Due to limitations in JTree, the root should
 	 * never be set to null while we have listeners.
 	 */
-	private PropertyValueModel rootHolder;
-	private PropertyChangeListener rootListener;
+	private final PropertyValueModel rootHolder;
+	private final PropertyChangeListener rootListener;
 
 	/**
 	 * A listener that notifies us when a node's internal
 	 * "state" changes (as opposed to the node's value or list of
 	 * children), allowing us to forward notification to our listeners.
 	 */
-	private StateChangeListener nodeStateListener;
+	private final StateChangeListener nodeStateListener;
 
 	/**
 	 * A listener that notifies us when a node's "value"
@@ -67,14 +68,14 @@ public class TreeModelAdapter extends AbstractTreeModel {
 	 * Typically, this will only happen with nodes that hold
 	 * primitive data.
 	 */
-	private PropertyChangeListener nodeValueListener;
+	private final PropertyChangeListener nodeValueListener;
 
 	/**
 	 * A listener that notifies us when an underlying node's
 	 * "list" of children changes, allowing us to keep our
 	 * internal tree in synch with the underlying tree model.
 	 */
-	private ListChangeListener childrenListener;
+	private final ListChangeListener childrenListener;
 
 	/* these attributes make up our internal tree */
 	/**
@@ -91,7 +92,7 @@ public class TreeModelAdapter extends AbstractTreeModel {
 	 * the items that were affected).
 	 * @see EventChangePolicy#rebuildChildren()
 	 */
-	IdentityHashMap<TreeNodeValueModel, List<TreeNodeValueModel>> childrenLists;
+	final IdentityHashMap<TreeNodeValueModel, List<TreeNodeValueModel>> childrenLists;
 
 	/**
 	 * Map the children models to their parents.
@@ -99,7 +100,7 @@ public class TreeModelAdapter extends AbstractTreeModel {
 	 * list change events (the parent).
 	 * @see EventChangePolicy#parent()
 	 */
-	IdentityHashMap<ListValueModel, TreeNodeValueModel> parents;
+	final IdentityHashMap<ListValueModel, TreeNodeValueModel> parents;
 
 
 	// ********** constructors **********
@@ -113,6 +114,12 @@ public class TreeModelAdapter extends AbstractTreeModel {
 			throw new NullPointerException();
 		}
 		this.rootHolder = rootHolder;
+		this.rootListener = this.buildRootListener();
+		this.nodeStateListener = this.buildNodeStateListener();
+		this.nodeValueListener = this.buildNodeValueListener();
+		this.childrenListener = this.buildChildrenListener();
+		this.childrenLists = new IdentityHashMap<TreeNodeValueModel, List<TreeNodeValueModel>>();
+		this.parents = new IdentityHashMap<ListValueModel, TreeNodeValueModel>();
 	}
 
 	/**
@@ -124,17 +131,6 @@ public class TreeModelAdapter extends AbstractTreeModel {
 
 
 	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.rootListener = this.buildRootListener();
-		this.nodeStateListener = this.buildNodeStateListener();
-		this.nodeValueListener = this.buildNodeValueListener();
-		this.childrenListener = this.buildChildrenListener();
-		this.childrenLists = new IdentityHashMap<TreeNodeValueModel, List<TreeNodeValueModel>>();
-		this.parents = new IdentityHashMap<ListValueModel, TreeNodeValueModel>();
-	}
 
 	private PropertyChangeListener buildRootListener() {
 		return new PropertyChangeListener() {

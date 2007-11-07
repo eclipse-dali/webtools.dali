@@ -39,40 +39,34 @@ import org.eclipse.jpt.utility.internal.model.value.ValueModel;
  * i.e. documents used by text fields, not text panes.
  * @see #synchronizeDelegate(String)
  */
-public class DocumentAdapter implements Document, Serializable {
+public class DocumentAdapter
+	implements Document, Serializable
+{
 
 	/** The delegate document whose behavior we "enhance". */
-	protected Document delegate;
+	protected final Document delegate;
 
 	/** A listener that allows us to forward any changes made to the delegate document. */
-	protected CombinedListener delegateListener;
+	protected final CombinedListener delegateListener;
 
 	/** A value model on the underlying model string. */
-	protected PropertyValueModel stringHolder;
+	protected final PropertyValueModel stringHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying model string. */
-	protected PropertyChangeListener stringListener;
+	protected final PropertyChangeListener stringListener;
 
     /** The event listener list for the document. */
-    protected EventListenerList listenerList = new EventListenerList();
+    protected final EventListenerList listenerList = new EventListenerList();
 
 
 	// ********** constructors **********
-
-	/**
-	 * Default constructor - initialize stuff.
-	 */
-	private DocumentAdapter() {
-		super();
-		this.initialize();
-	}
 
 	/**
 	 * Constructor - the string holder is required.
 	 * Wrap the specified document.
 	 */
 	public DocumentAdapter(PropertyValueModel stringHolder, Document delegate) {
-		this();
+		super();
 		if (stringHolder == null || delegate == null) {
 			throw new NullPointerException();
 		}
@@ -80,6 +74,8 @@ public class DocumentAdapter implements Document, Serializable {
 		// postpone listening to the underlying model string
 		// until we have listeners ourselves...
 		this.delegate = delegate;
+		this.stringListener = this.buildStringListener();
+		this.delegateListener = this.buildDelegateListener();
 	}
 
 	/**
@@ -92,11 +88,6 @@ public class DocumentAdapter implements Document, Serializable {
 
 
 	// ********** initialization **********
-
-	protected void initialize() {
-		this.stringListener = this.buildStringListener();
-		this.delegateListener = this.buildDelegateListener();
-	}
 
 	protected PropertyChangeListener buildStringListener() {
 		return new PropertyChangeListener() {

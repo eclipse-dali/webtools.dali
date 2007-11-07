@@ -21,7 +21,7 @@ public class ValueStatePropertyValueModelAdapter
 	extends ValueAspectPropertyValueModelAdapter
 {
 	/** Listener that listens to value. */
-	protected StateChangeListener valueStateListener;
+	protected final StateChangeListener valueStateListener;
 
 
 	// ********** constructors **********
@@ -31,16 +31,11 @@ public class ValueStatePropertyValueModelAdapter
 	 */
 	public ValueStatePropertyValueModelAdapter(PropertyValueModel valueHolder) {
 		super(valueHolder);
+		this.valueStateListener = this.buildValueStateListener();
 	}
 
 
 	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.valueStateListener = this.buildValueStateListener();
-	}
 
 	protected StateChangeListener buildValueStateListener() {
 		return new StateChangeListener() {

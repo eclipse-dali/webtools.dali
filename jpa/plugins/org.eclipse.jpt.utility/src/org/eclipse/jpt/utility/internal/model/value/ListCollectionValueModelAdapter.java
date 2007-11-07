@@ -39,17 +39,17 @@ public class ListCollectionValueModelAdapter
 	implements CollectionValueModel
 {
 	/** The wrapped list value model. */
-	protected ListValueModel listHolder;
+	protected final ListValueModel listHolder;
 
 	/** A listener that forwards any events fired by the list holder. */
-	protected ListChangeListener listChangeListener;
+	protected final ListChangeListener listChangeListener;
 
 	/**
 	 * Our internal collection, which holds the same elements as
 	 * the wrapped list.
 	 */
 	// we declare this an ArrayList so we can use #clone() and #ensureCapacity(int)
-	protected ArrayList collection;
+	protected final ArrayList collection;
 
 
 	// ********** constructors/initialization **********
@@ -63,15 +63,10 @@ public class ListCollectionValueModelAdapter
 			throw new NullPointerException();
 		}
 		this.listHolder = listHolder;
-		// postpone building the collection and listening to the underlying list
-		// until we have listeners ourselves...
-	}
-
-	@Override
-	protected void initialize() {
-		super.initialize();
 		this.listChangeListener = this.buildListChangeListener();
 		this.collection = new ArrayList();
+		// postpone building the collection and listening to the underlying list
+		// until we have listeners ourselves...
 	}
 
 	@Override
@@ -287,10 +282,8 @@ public class ListCollectionValueModelAdapter
 	protected void listChanged(ListChangeEvent e) {
 		// put in empty check so we don't fire events unnecessarily
 		if ( ! this.collection.isEmpty()) {
-			// either we clone the list here...
-			Collection removedItems = this.collection;
-			// ...or we create a new one here (which is what we do)
-			this.collection = new ArrayList();
+			ArrayList removedItems = (ArrayList) this.collection.clone();
+			this.collection.clear();
 			this.fireItemsRemoved(VALUES, removedItems);
 		}
 

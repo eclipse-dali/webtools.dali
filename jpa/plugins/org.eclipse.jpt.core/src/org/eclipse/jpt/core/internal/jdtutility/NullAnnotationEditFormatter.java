@@ -18,7 +18,7 @@ public final class NullAnnotationEditFormatter
 	implements AnnotationEditFormatter
 {
 
-	private static NullAnnotationEditFormatter INSTANCE = new NullAnnotationEditFormatter();
+	private static final NullAnnotationEditFormatter INSTANCE = new NullAnnotationEditFormatter();
 
 	/**
 	 * Return the singleton.

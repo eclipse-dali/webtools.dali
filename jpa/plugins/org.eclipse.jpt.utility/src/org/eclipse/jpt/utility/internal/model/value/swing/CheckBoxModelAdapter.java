@@ -19,8 +19,9 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
  * Maybe not the richest class in our toolbox, but it was the
  * victim of refactoring....  ~bjv
  */
-public class CheckBoxModelAdapter extends ToggleButtonModelAdapter {
-
+public class CheckBoxModelAdapter
+	extends ToggleButtonModelAdapter
+{
 
 	// ********** constructors **********
 

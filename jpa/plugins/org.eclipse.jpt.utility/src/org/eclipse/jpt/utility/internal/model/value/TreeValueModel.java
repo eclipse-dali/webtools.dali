@@ -15,7 +15,9 @@ package org.eclipse.jpt.utility.internal.model.value;
  * Typically the value returned from #value()
  * will be an Iterator.
  */
-public interface TreeValueModel extends ValueModel {
+public interface TreeValueModel
+	extends ValueModel
+{
 
 	/**
 	 * Add the specified node to the tree value.

@@ -49,10 +49,10 @@ public abstract class CollectionPropertyValueModelAdapter
 	protected Object value;
 
 	/** The wrapped collection value model. */
-	protected CollectionValueModel collectionHolder;
+	protected final CollectionValueModel collectionHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped collection holder. */
-	protected CollectionChangeListener collectionChangeListener;
+	protected final CollectionChangeListener collectionChangeListener;
 
 
 	// ********** constructor/initialization **********
@@ -64,11 +64,6 @@ public abstract class CollectionPropertyValueModelAdapter
 	protected CollectionPropertyValueModelAdapter(CollectionValueModel collectionHolder) {
 		super();
 		this.collectionHolder = collectionHolder;
-	}
-
-	@Override
-	protected void initialize() {
-		super.initialize();
 		// our value is null when we are not listening to the collection holder
 		this.value = null;
 		this.collectionChangeListener = this.buildCollectionChangeListener();

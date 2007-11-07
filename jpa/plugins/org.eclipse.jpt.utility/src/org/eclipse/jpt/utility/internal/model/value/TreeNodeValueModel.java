@@ -22,7 +22,9 @@ package org.eclipse.jpt.utility.internal.model.value;
  * 
  * @see AbstractTreeNodeValueModel
  */
-public interface TreeNodeValueModel extends PropertyValueModel {
+public interface TreeNodeValueModel
+	extends PropertyValueModel
+{
 
 	/**
 	 * Return the node's parent node; null if the node

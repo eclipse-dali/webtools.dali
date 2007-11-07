@@ -33,10 +33,10 @@ public class PropertyCollectionValueModelAdapter
 	implements CollectionValueModel
 {
 	/** The wrapped property value model. */
-	protected PropertyValueModel valueHolder;
+	protected final PropertyValueModel valueHolder;
 
 	/** A listener that forwards any events fired by the value holder. */
-	protected PropertyChangeListener propertyChangeListener;
+	protected final PropertyChangeListener propertyChangeListener;
 
 	/** Cache the value. */
 	protected Object value;
@@ -53,14 +53,9 @@ public class PropertyCollectionValueModelAdapter
 			throw new NullPointerException();
 		}
 		this.valueHolder = valueHolder;
+		this.propertyChangeListener = this.buildPropertyChangeListener();
 		// postpone building the value and listening to the underlying value
 		// until we have listeners ourselves...
-	}
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.propertyChangeListener = this.buildPropertyChangeListener();
 	}
 
 	@Override

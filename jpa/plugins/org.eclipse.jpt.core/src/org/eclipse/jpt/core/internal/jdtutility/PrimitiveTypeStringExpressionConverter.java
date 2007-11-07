@@ -22,15 +22,12 @@ import org.eclipse.jdt.core.dom.TypeLiteral;
 public final class PrimitiveTypeStringExpressionConverter
 	extends AbstractExpressionConverter<String>
 {
-	private static ExpressionConverter<String> INSTANCE;
+	private static final ExpressionConverter<String> INSTANCE = new PrimitiveTypeStringExpressionConverter();
 
 	/**
 	 * Return the singleton.
 	 */
 	public static ExpressionConverter<String> instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new PrimitiveTypeStringExpressionConverter();
-		}
 		return INSTANCE;
 	}
 

@@ -27,7 +27,7 @@ public class ValueCollectionPropertyValueModelAdapter
 	protected final String[] collectionNames;
 
 	/** Listener that listens to the value. */
-	protected CollectionChangeListener valueCollectionListener;
+	protected final CollectionChangeListener valueCollectionListener;
 
 
 	// ********** constructors **********
@@ -59,16 +59,11 @@ public class ValueCollectionPropertyValueModelAdapter
 	public ValueCollectionPropertyValueModelAdapter(PropertyValueModel valueHolder, String[] collectionNames) {
 		super(valueHolder);
 		this.collectionNames = collectionNames;
+		this.valueCollectionListener = this.buildValueCollectionListener();
 	}
 
 
 	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.valueCollectionListener = this.buildValueCollectionListener();
-	}
 
 	/**
 	 * All we really care about is the fact that a Collection aspect has 

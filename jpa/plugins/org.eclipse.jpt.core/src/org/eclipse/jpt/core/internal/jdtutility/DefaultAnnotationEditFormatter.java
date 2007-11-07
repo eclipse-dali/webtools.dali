@@ -24,7 +24,7 @@ import org.eclipse.text.edits.TextEdit;
 public final class DefaultAnnotationEditFormatter
 	implements AnnotationEditFormatter
 {
-	private static DefaultAnnotationEditFormatter INSTANCE = new DefaultAnnotationEditFormatter();
+	private static final DefaultAnnotationEditFormatter INSTANCE = new DefaultAnnotationEditFormatter();
 
 	/**
 	 * Return the singleton.

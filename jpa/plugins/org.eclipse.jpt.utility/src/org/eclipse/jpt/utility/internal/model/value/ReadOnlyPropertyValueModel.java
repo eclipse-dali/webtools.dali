@@ -18,7 +18,7 @@ public class ReadOnlyPropertyValueModel
 	extends AbstractReadOnlyPropertyValueModel
 {
 	/** The value. */
-	protected Object value;
+	protected final Object value;
 
 	private static final long serialVersionUID = 1L;
 

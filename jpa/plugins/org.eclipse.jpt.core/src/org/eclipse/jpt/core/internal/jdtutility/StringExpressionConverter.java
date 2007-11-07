@@ -19,15 +19,12 @@ import org.eclipse.jdt.core.dom.StringLiteral;
 public final class StringExpressionConverter
 	extends AbstractExpressionConverter<String>
 {
-	private static ExpressionConverter<String> INSTANCE;
+	private static final ExpressionConverter<String> INSTANCE = new StringExpressionConverter();
 
 	/**
 	 * Return the singleton.
 	 */
 	public static ExpressionConverter<String> instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new StringExpressionConverter();
-		}
 		return INSTANCE;
 	}
 

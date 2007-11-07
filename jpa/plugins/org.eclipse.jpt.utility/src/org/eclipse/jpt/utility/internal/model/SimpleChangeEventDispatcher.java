@@ -30,7 +30,7 @@ public class SimpleChangeEventDispatcher
 	implements ChangeEventDispatcher, Serializable
 {
 	// singleton
-	private static ChangeEventDispatcher INSTANCE;
+	private static final ChangeEventDispatcher INSTANCE = new SimpleChangeEventDispatcher();
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,14 +39,11 @@ public class SimpleChangeEventDispatcher
 	 * Return the singleton.
 	 */
 	public synchronized static ChangeEventDispatcher instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new SimpleChangeEventDispatcher();
-		}
 		return INSTANCE;
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private SimpleChangeEventDispatcher() {
 		super();

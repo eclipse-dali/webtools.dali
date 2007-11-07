@@ -21,7 +21,7 @@ public class ReadOnlyCollectionValueModel
 	extends AbstractReadOnlyCollectionValueModel
 {
 	/** The value. */
-	protected Collection value;
+	protected final Collection value;
 
 	private static final long serialVersionUID = 1L;
 

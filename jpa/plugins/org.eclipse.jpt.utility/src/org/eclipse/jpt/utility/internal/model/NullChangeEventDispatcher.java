@@ -29,7 +29,7 @@ public class NullChangeEventDispatcher
 	implements ChangeEventDispatcher, Serializable
 {
 	// singleton
-	private static ChangeEventDispatcher INSTANCE;
+	private static final ChangeEventDispatcher INSTANCE = new NullChangeEventDispatcher();
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,9 +38,6 @@ public class NullChangeEventDispatcher
 	 * Return the singleton.
 	 */
 	public synchronized static ChangeEventDispatcher instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new NullChangeEventDispatcher();
-		}
 		return INSTANCE;
 	}
 

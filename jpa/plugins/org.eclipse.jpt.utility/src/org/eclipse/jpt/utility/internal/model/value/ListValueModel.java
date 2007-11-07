@@ -17,7 +17,9 @@ import java.util.List;
  * Typically the value returned from #value()
  * will be a ListIterator.
  */
-public interface ListValueModel extends ValueModel {
+public interface ListValueModel
+	extends ValueModel
+{
 
 	/**
 	 * Add the item at the specified index in the list value.

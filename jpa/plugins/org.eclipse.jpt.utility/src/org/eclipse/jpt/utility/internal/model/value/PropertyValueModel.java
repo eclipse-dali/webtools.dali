@@ -12,7 +12,9 @@ package org.eclipse.jpt.utility.internal.model.value;
 /**
  * Extend ValueModel to allow the setting of the property's value.
  */
-public interface PropertyValueModel extends ValueModel {
+public interface PropertyValueModel
+	extends ValueModel
+{
 
 	/**
 	 * Set the value and fire a property change notification.

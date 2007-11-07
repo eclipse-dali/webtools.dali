@@ -21,7 +21,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public class SynchronousValidator
 	implements PluggableValidator.Delegate
 {
-	private Node node;
+	private final Node node;
 
 	/**
 	 * Construct a validator that will immediately validate the

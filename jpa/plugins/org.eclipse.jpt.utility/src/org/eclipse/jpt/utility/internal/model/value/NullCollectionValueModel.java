@@ -26,15 +26,12 @@ public final class NullCollectionValueModel
 	private static final long serialVersionUID = 1L;
 
 	// singleton
-	private static NullCollectionValueModel INSTANCE;
+	private static final NullCollectionValueModel INSTANCE = new NullCollectionValueModel();
 
 	/**
 	 * Return the singleton.
 	 */
 	public static synchronized CollectionValueModel instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new NullCollectionValueModel();
-		}
 		return INSTANCE;
 	}
 

@@ -38,10 +38,12 @@ import org.eclipse.jpt.utility.internal.model.value.ValueModel;
  * selection holder, which is a PropertyValueModel that provides access
  * to the selection (typically a PropertyAspectAdapter).
  */
-public class ComboBoxModelAdapter extends ListModelAdapter implements ComboBoxModel {
-
-	protected PropertyValueModel selectionHolder;
-	protected PropertyChangeListener selectionListener;
+public class ComboBoxModelAdapter
+	extends ListModelAdapter
+	implements ComboBoxModel
+{
+	protected final PropertyValueModel selectionHolder;
+	protected final PropertyChangeListener selectionListener;
 
 
 	// ********** constructors **********
@@ -55,6 +57,7 @@ public class ComboBoxModelAdapter extends ListModelAdapter implements ComboBoxMo
 			throw new NullPointerException();
 		}
 		this.selectionHolder = selectionHolder;
+		this.selectionListener = this.buildSelectionListener();
 	}
 
 	/**
@@ -66,19 +69,11 @@ public class ComboBoxModelAdapter extends ListModelAdapter implements ComboBoxMo
 			throw new NullPointerException();
 		}
 		this.selectionHolder = selectionHolder;
+		this.selectionListener = this.buildSelectionListener();
 	}
 
 
 	// ********** initialization **********
-
-	/**
-	 * Extend to build the selection listener.
-	 */
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.selectionListener = this.buildSelectionListener();
-	}
 
 	protected PropertyChangeListener buildSelectionListener() {
 		return new PropertyChangeListener() {

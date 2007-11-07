@@ -26,43 +26,37 @@ import org.eclipse.jpt.utility.internal.model.value.ValueModel;
  * (e.g. a JCheckBox or a JRadioButton) in synch with a PropertyValueModel
  * on a boolean.
  */
-public class ToggleButtonModelAdapter extends ToggleButtonModel {
-
+public class ToggleButtonModelAdapter
+	extends ToggleButtonModel
+{
 	/**
 	 * The default setting for the toggle button; for when the underlying model is null.
 	 * The default [default value] is false (i.e. the toggle button is unchecked/empty).
 	 */
-	protected boolean defaultValue;
+	protected final boolean defaultValue;
 
 	/** A value model on the underlying model boolean. */
-	protected PropertyValueModel booleanHolder;
+	protected final PropertyValueModel booleanHolder;
 
 	/**
 	 * A listener that allows us to synchronize with
 	 * changes made to the underlying model boolean.
 	 */
-	protected PropertyChangeListener booleanChangeListener;
+	protected final PropertyChangeListener booleanChangeListener;
 
 
 	// ********** constructors **********
 
 	/**
-	 * Default constructor - initialize stuff.
-	 */
-	private ToggleButtonModelAdapter() {
-		super();
-		this.initialize();
-	}
-
-	/**
 	 * Constructor - the boolean holder is required.
 	 */
 	public ToggleButtonModelAdapter(PropertyValueModel booleanHolder, boolean defaultValue) {
-		this();
+		super();
 		if (booleanHolder == null) {
 			throw new NullPointerException();
 		}
 		this.booleanHolder = booleanHolder;
+		this.booleanChangeListener = this.buildBooleanChangeListener();
 		// postpone listening to the underlying model
 		// until we have listeners ourselves...
 		this.defaultValue = defaultValue;
@@ -78,10 +72,6 @@ public class ToggleButtonModelAdapter extends ToggleButtonModel {
 
 
 	// ********** initialization **********
-
-	protected void initialize() {
-		this.booleanChangeListener = this.buildBooleanChangeListener();
-	}
 
 	protected PropertyChangeListener buildBooleanChangeListener() {
 		return new PropertyChangeListener() {

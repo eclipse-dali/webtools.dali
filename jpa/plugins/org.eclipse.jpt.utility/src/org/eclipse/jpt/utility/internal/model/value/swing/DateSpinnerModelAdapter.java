@@ -34,19 +34,21 @@ import org.eclipse.jpt.utility.internal.model.value.ValueModel;
  * @see ListSpinnerModelAdapter
  * @see NumberSpinnerModelAdapter
  */
-public class DateSpinnerModelAdapter extends SpinnerDateModel {
+public class DateSpinnerModelAdapter
+	extends SpinnerDateModel
+{
 
 	/**
 	 * The default spinner value; used when the underlying model date value is null.
 	 * The default is the current date.
 	 */
-	private Date defaultValue;
+	private final Date defaultValue;
 
 	/** A value model on the underlying date. */
-	private PropertyValueModel dateHolder;
+	private final PropertyValueModel dateHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying date. */
-	private PropertyChangeListener dateChangeListener;
+	private final PropertyChangeListener dateChangeListener;
 
 
 	// ********** constructors **********

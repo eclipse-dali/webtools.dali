@@ -17,9 +17,11 @@ import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
  * pause/resume portion of the protocol, but delegates the actual
  * validation to a "pluggable" delegate.
  */
-public class PluggableValidator implements Node.Validator {
+public class PluggableValidator
+	implements Node.Validator
+{
 	private boolean pause;
-	private Delegate delegate;
+	private final Delegate delegate;
 
 
 	/**

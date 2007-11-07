@@ -20,15 +20,12 @@ import org.eclipse.jdt.core.dom.NumberLiteral;
 public final class NumberStringExpressionConverter
 	extends AbstractExpressionConverter<String>
 {
-	private static ExpressionConverter<String> INSTANCE;
+	private static final ExpressionConverter<String> INSTANCE = new NumberStringExpressionConverter();
 
 	/**
 	 * Return the singleton.
 	 */
 	public static ExpressionConverter<String> instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new NumberStringExpressionConverter();
-		}
 		return INSTANCE;
 	}
 

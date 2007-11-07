@@ -26,8 +26,9 @@ import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueM
  * us to uncheck all the radio buttons in a group when the shared
  * value is null.
  */
-public class RadioButtonModelAdapter extends ToggleButtonModelAdapter {
-
+public class RadioButtonModelAdapter
+	extends ToggleButtonModelAdapter
+{
 
 	// ********** constructors **********
 

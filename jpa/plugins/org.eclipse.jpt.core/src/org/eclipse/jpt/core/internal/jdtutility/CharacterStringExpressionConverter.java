@@ -20,15 +20,12 @@ import org.eclipse.jdt.core.dom.Expression;
 public final class CharacterStringExpressionConverter
 	extends AbstractExpressionConverter<String>
 {
-	private static ExpressionConverter<String> INSTANCE;
+	private static final ExpressionConverter<String> INSTANCE = new CharacterStringExpressionConverter();
 
 	/**
 	 * Return the singleton.
 	 */
 	public static ExpressionConverter<String> instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new CharacterStringExpressionConverter();
-		}
 		return INSTANCE;
 	}
 

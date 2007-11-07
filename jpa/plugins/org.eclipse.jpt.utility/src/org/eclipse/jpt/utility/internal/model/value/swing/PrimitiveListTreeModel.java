@@ -45,42 +45,29 @@ import org.eclipse.jpt.utility.internal.model.value.ValueModel;
  * 	tree.setEditable(true);
  */
 // TODO convert to use an adapter instead of requiring subclass
-public abstract class PrimitiveListTreeModel extends DefaultTreeModel {
-
+public abstract class PrimitiveListTreeModel
+	extends DefaultTreeModel
+{
 	/** a model on the list of primitives */
-	private ListValueModel listHolder;
+	private final ListValueModel listHolder;
 
 	/** a listener that handles the adding, removing, and replacing of the primitives */
-	private ListChangeListener listChangeListener;
+	private final ListChangeListener listChangeListener;
 
 
 	// ********** constructors **********
 	
 	/**
-	 * Default constructor - initialize
-	 */
-	private PrimitiveListTreeModel() {
-		super(new DefaultMutableTreeNode(null, true));	// the root can have children
-		this.initialize();
-	}
-
-	/**
 	 * Public constructor - the list holder is required
 	 */
 	public PrimitiveListTreeModel(ListValueModel listHolder) {
-		this();
+		super(new DefaultMutableTreeNode(null, true));  // true = the root can have children
 		if (listHolder == null) {
 			throw new NullPointerException();
 		}
 		this.listHolder = listHolder;
-		// postpone listening to the model until we have listeners ourselves
-	}
-
-
-	// ********** initialization **********
-
-	private void initialize() {
 		this.listChangeListener = new PrimitiveListChangeListener();
+		// postpone listening to the model until we have listeners ourselves
 	}
 
 

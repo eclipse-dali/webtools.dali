@@ -31,22 +31,24 @@ import org.eclipse.jpt.utility.internal.model.value.ValueModel;
  * @see DateSpinnerModelAdapter
  * @see ListSpinnerModelAdapter
  */
-public class NumberSpinnerModelAdapter extends SpinnerNumberModel {
+public class NumberSpinnerModelAdapter
+	extends SpinnerNumberModel
+{
 
 	/**
 	 * The default spinner value; used when the
 	 * underlying model number value is null.
 	 */
-	private Number defaultValue;
+	private final Number defaultValue;
 
 	/** A value model on the underlying number. */
-	private PropertyValueModel numberHolder;
+	private final PropertyValueModel numberHolder;
 
 	/**
 	 * A listener that allows us to synchronize with
 	 * changes made to the underlying number.
 	 */
-	private PropertyChangeListener numberChangeListener;
+	private final PropertyChangeListener numberChangeListener;
 
 
 	// ********** constructors **********

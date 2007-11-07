@@ -32,9 +32,11 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
  * Likewise, if an incoming value is not "reverseAccepted", *nothing* will passed
  * through to the wrapped value holder, not even <code>null</code>.
  */
-public class FilteringPropertyValueModel extends PropertyValueModelWrapper {
-	private BidiFilter filter;
-	private Object defaultValue;
+public class FilteringPropertyValueModel
+	extends PropertyValueModelWrapper
+{
+	private final BidiFilter filter;
+	private final Object defaultValue;
 
 
 	// ********** constructors **********

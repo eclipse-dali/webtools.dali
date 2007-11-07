@@ -35,36 +35,29 @@ import org.eclipse.jpt.utility.internal.model.value.ValueModel;
  * inexpensive #equals() implementation.
  * @see #synchronizeDelegate(Object)
  */
-public class SpinnerModelAdapter extends AbstractSpinnerModel {
-
+public class SpinnerModelAdapter
+	extends AbstractSpinnerModel
+{
 	/** The delegate spinner model whose behavior we "enhance". */
-	protected SpinnerModel delegate;
+	protected final SpinnerModel delegate;
 
 	/** A listener that allows us to forward any changes made to the delegate spinner model. */
-	protected ChangeListener delegateListener;
+	protected final ChangeListener delegateListener;
 
 	/** A value model on the underlying value. */
-	protected PropertyValueModel valueHolder;
+	protected final PropertyValueModel valueHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying value. */
-	protected PropertyChangeListener valueListener;
+	protected final PropertyChangeListener valueListener;
 
 
 	// ********** constructors **********
 
 	/**
-	 * Default constructor - initialize stuff.
-	 */
-	private SpinnerModelAdapter() {
-		super();
-		this.initialize();
-	}
-
-	/**
 	 * Constructor - the value holder and delegate are required.
 	 */
 	public SpinnerModelAdapter(PropertyValueModel valueHolder, SpinnerModel delegate) {
-		this();
+		super();
 		if (valueHolder == null || delegate == null) {
 			throw new NullPointerException();
 		}
@@ -72,6 +65,8 @@ public class SpinnerModelAdapter extends AbstractSpinnerModel {
 		this.delegate = delegate;
 		// postpone listening to the underlying value
 		// until we have listeners ourselves...
+		this.valueListener = this.buildValueListener();
+		this.delegateListener = this.buildDelegateListener();
 	}
 
 	/**
@@ -84,11 +79,6 @@ public class SpinnerModelAdapter extends AbstractSpinnerModel {
 
 
 	// ********** initialization **********
-
-	protected void initialize() {
-		this.valueListener = this.buildValueListener();
-		this.delegateListener = this.buildDelegateListener();
-	}
 
 	protected PropertyChangeListener buildValueListener() {
 		return new PropertyChangeListener() {

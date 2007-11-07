@@ -26,10 +26,10 @@ public abstract class ListValueModelWrapper
 {
 
 	/** The wrapped list value model. */
-	protected ListValueModel listHolder;
+	protected final ListValueModel listHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped list holder. */
-	protected ListChangeListener listChangeListener;
+	protected final ListChangeListener listChangeListener;
 
 
 	// ********** constructors **********
@@ -44,16 +44,11 @@ public abstract class ListValueModelWrapper
 			throw new NullPointerException();
 		}
 		this.listHolder = listHolder;
+		this.listChangeListener = this.buildListChangeListener();
 	}
 	
 
 	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.listChangeListener = this.buildListChangeListener();
-	}
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {

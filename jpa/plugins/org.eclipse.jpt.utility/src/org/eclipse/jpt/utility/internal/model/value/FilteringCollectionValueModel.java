@@ -43,13 +43,13 @@ public class FilteringCollectionValueModel
 	extends CollectionValueModelWrapper
 {
 	/** This filters the items in the nested collection. */
-	private Filter filter;
+	private final Filter filter;
 
 	/** This filters the items in the nested collection. */
-	private Filter localFilter;
+	private final Filter localFilter;
 
 	/** Cache the items that were accepted by the filter */
-	private Collection filteredItems;
+	private final Collection filteredItems;
 
 
 	// ********** constructors **********
@@ -72,6 +72,8 @@ public class FilteringCollectionValueModel
 	public FilteringCollectionValueModel(CollectionValueModel collectionHolder, Filter filter) {
 		super(collectionHolder);
 		this.filter = filter;
+		this.localFilter = this.buildLocalFilter();
+		this.filteredItems = new ArrayList();
 	}
 
 	/**
@@ -95,13 +97,6 @@ public class FilteringCollectionValueModel
 
 
 	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.localFilter = this.buildLocalFilter();
-		this.filteredItems = new ArrayList();
-	}
 
 	/**
 	 * Implement the filter by calling back to the collection
@@ -201,7 +196,7 @@ public class FilteringCollectionValueModel
 	 */
 	protected void synchFilteredItems() {
 		this.filteredItems.clear();
-		CollectionTools.addAll(this.filteredItems, this.filter((Iterator) this.collectionHolder.values()));
+		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder.values()));
 	}
 
 }

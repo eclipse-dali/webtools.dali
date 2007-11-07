@@ -37,7 +37,9 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  * 
  * @see PropertyAspectAdapter
  */
-public class BufferedPropertyValueModel extends PropertyValueModelWrapper {
+public class BufferedPropertyValueModel
+	extends PropertyValueModelWrapper
+{
 
 	/**
 	 * We cache the value here until it is accepted and passed
@@ -60,10 +62,10 @@ public class BufferedPropertyValueModel extends PropertyValueModelWrapper {
 	 * This is the trigger that indicates whether the buffered value
 	 * should be accepted or reset.
 	 */
-	protected ValueModel triggerHolder;
+	protected final ValueModel triggerHolder;
 
 	/** This listens to the trigger holder. */
-	protected PropertyChangeListener triggerChangeListener;
+	protected final PropertyChangeListener triggerChangeListener;
 
 	/**
 	 * Our buffered value points at this until it has been assigned
@@ -80,20 +82,18 @@ public class BufferedPropertyValueModel extends PropertyValueModelWrapper {
 	 */
 	public BufferedPropertyValueModel(PropertyValueModel valueHolder, ValueModel triggerHolder) {
 		super(valueHolder);
-		this.initializeTriggerHolder(triggerHolder);
-	}
-	
-
-	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
+		if (triggerHolder == null) {
+			throw new NullPointerException();
+		}
+		this.triggerHolder = triggerHolder;
 		this.bufferedValue = UNASSIGNED;
 		this.accepting = false;
 		this.triggerChangeListener = this.buildTriggerChangeListener();
 	}
 	
+
+	// ********** initialization **********
+
 	protected PropertyChangeListener buildTriggerChangeListener() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
@@ -106,13 +106,6 @@ public class BufferedPropertyValueModel extends PropertyValueModelWrapper {
 		};
 	}
 	
-	protected void initializeTriggerHolder(ValueModel triggerVM) {
-		if (triggerVM == null) {
-			throw new NullPointerException();
-		}
-		this.triggerHolder = triggerVM;
-	}
-
 
 	// ********** ValueModel implementation **********
 

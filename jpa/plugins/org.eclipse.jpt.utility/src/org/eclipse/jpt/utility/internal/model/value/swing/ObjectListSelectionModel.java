@@ -25,27 +25,23 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * provides convenience methods to access and set the
  * selected *objects*, as opposed to the selected *indexes*.
  */
-public class ObjectListSelectionModel extends DefaultListSelectionModel {
+public class ObjectListSelectionModel
+	extends DefaultListSelectionModel
+{
 	/** The list model referenced by the list selection model. */
-	private ListModel listModel;
+	private final ListModel listModel;
+
 	/** A listener that allows us to clear the selection when the list model has changed. */
-	private ListDataListener listDataListener;
+	private final ListDataListener listDataListener;
 
 
 	// ********** constructors **********
 
 	/**
-	 * Default constructor - private.
-	 */
-	private ObjectListSelectionModel() {
-		super();
-	}
-
-	/**
 	 * Construct a list selection model for the specified list model.
 	 */
 	public ObjectListSelectionModel(ListModel listModel) {
-		this();
+		super();
 		this.listModel = listModel;
 		this.listDataListener = this.buildListDataListener();
 	}

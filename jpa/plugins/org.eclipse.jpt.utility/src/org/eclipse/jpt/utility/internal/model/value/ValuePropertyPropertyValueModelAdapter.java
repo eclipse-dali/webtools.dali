@@ -23,10 +23,10 @@ public class ValuePropertyPropertyValueModelAdapter
 	extends ValueAspectPropertyValueModelAdapter
 {
 	/** The names of the value's properties that we listen to. */
-	protected String[] propertyNames;
+	protected final String[] propertyNames;
 
 	/** Listener that listens to the value. */
-	protected PropertyChangeListener valuePropertyListener;
+	protected final PropertyChangeListener valuePropertyListener;
 
 
 	// ********** constructors **********
@@ -58,16 +58,11 @@ public class ValuePropertyPropertyValueModelAdapter
 	public ValuePropertyPropertyValueModelAdapter(PropertyValueModel valueHolder, String[] propertyNames) {
 		super(valueHolder);
 		this.propertyNames = propertyNames;
+		this.valuePropertyListener = this.buildValuePropertyListener();
 	}
 
 
 	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.valuePropertyListener = this.buildValuePropertyListener();
-	}
 
 	protected PropertyChangeListener buildValuePropertyListener() {
 		return new PropertyChangeListener() {

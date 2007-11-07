@@ -22,20 +22,17 @@ import javax.swing.tree.TreeModel;
  * - support for a collection of listeners
  * - a number of convenience methods for firing events for those listeners
  */
-public abstract class AbstractTreeModel implements TreeModel, Serializable {
-
+public abstract class AbstractTreeModel
+	implements TreeModel, Serializable
+{
 	/** Our listeners. */
-	protected EventListenerList listenerList;
+	protected final EventListenerList listenerList;
 
 
 	// ********** constructors/initialization **********
 
 	protected AbstractTreeModel() {
 		super();
-		this.initialize();
-	}
-
-	protected void initialize() {
 		this.listenerList = new EventListenerList();
 	}
 

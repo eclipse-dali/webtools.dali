@@ -23,15 +23,12 @@ import org.eclipse.jdt.core.dom.TypeLiteral;
 public final class SimpleTypeStringExpressionConverter
 	extends AbstractExpressionConverter<String>
 {
-	private static ExpressionConverter<String> INSTANCE;
+	private static final ExpressionConverter<String> INSTANCE = new SimpleTypeStringExpressionConverter();
 
 	/**
 	 * Return the singleton.
 	 */
 	public static ExpressionConverter<String> instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new SimpleTypeStringExpressionConverter();
-		}
 		return INSTANCE;
 	}
 

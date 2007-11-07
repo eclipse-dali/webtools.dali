@@ -25,8 +25,10 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
  * override the <code>transform(Object)</code> and 
  * <code>reverseTransform(Object)</code> methods.
  */
-public class TransformationPropertyValueModel extends PropertyValueModelWrapper {
-	private BidiTransformer transformer;
+public class TransformationPropertyValueModel
+	extends PropertyValueModelWrapper
+{
+	private final BidiTransformer transformer;
 
 
 	// ********** constructors **********

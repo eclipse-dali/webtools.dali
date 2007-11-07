@@ -28,12 +28,11 @@ public abstract class CollectionValueModelWrapper
 	implements CollectionValueModel
 {
 
-
 	/** The wrapped collection value model. */
-	protected CollectionValueModel collectionHolder;
+	protected final CollectionValueModel collectionHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped collection holder. */
-	protected CollectionChangeListener collectionChangeListener;
+	protected final CollectionChangeListener collectionChangeListener;
 
 
 	// ********** constructors **********
@@ -45,16 +44,11 @@ public abstract class CollectionValueModelWrapper
 	protected CollectionValueModelWrapper(CollectionValueModel collectionHolder) {
 		super();
 		this.collectionHolder = collectionHolder;
+		this.collectionChangeListener = this.buildCollectionChangeListener();
 	}
 	
 
 	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.collectionChangeListener = this.buildCollectionChangeListener();
-	}
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {

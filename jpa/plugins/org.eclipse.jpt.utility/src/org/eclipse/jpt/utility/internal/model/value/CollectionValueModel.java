@@ -18,7 +18,9 @@ import org.eclipse.jpt.utility.internal.model.Model;
  * Interface used to abstract collection accessing and
  * change notification and make it more pluggable.
  */
-public interface CollectionValueModel extends Model {
+public interface CollectionValueModel
+	extends Model
+{
 
 	/**
 	 * Return the collection's values.

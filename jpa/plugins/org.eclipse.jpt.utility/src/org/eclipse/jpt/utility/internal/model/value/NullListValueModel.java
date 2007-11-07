@@ -23,15 +23,12 @@ public final class NullListValueModel
 	private static final long serialVersionUID = 1L;
 
 	// singleton
-	private static NullListValueModel INSTANCE;
+	private static final NullListValueModel INSTANCE = new NullListValueModel();
 
 	/**
 	 * Return the singleton.
 	 */
 	public static synchronized ListValueModel instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new NullListValueModel();
-		}
 		return INSTANCE;
 	}
 

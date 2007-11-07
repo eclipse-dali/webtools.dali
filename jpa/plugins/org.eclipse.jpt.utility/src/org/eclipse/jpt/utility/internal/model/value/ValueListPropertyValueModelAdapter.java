@@ -27,7 +27,7 @@ public class ValueListPropertyValueModelAdapter
 	protected final String[] listNames;
 
 	/** Listener that listens to the value. */
-	protected ListChangeListener valueListListener;
+	protected final ListChangeListener valueListListener;
 
 
 	// ********** constructors **********
@@ -59,16 +59,11 @@ public class ValueListPropertyValueModelAdapter
 	public ValueListPropertyValueModelAdapter(PropertyValueModel valueHolder, String[] listNames) {
 		super(valueHolder);
 		this.listNames = listNames;
+		this.valueListListener = this.buildValueListListener();
 	}
 
 
 	// ********** initialization **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.valueListListener = this.buildValueListListener();
-	}
 
 	/**
 	 * All we really care about is the fact that a List aspect has 

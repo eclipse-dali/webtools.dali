@@ -20,15 +20,12 @@ import org.eclipse.jdt.core.dom.Expression;
 public final class BooleanStringExpressionConverter
 	extends AbstractExpressionConverter<String>
 {
-	private static ExpressionConverter<String> INSTANCE;
+	private static final ExpressionConverter<String> INSTANCE = new BooleanStringExpressionConverter();
 
 	/**
 	 * Return the singleton.
 	 */
 	public static ExpressionConverter<String> instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new BooleanStringExpressionConverter();
-		}
 		return INSTANCE;
 	}
 

@@ -57,54 +57,51 @@ import org.eclipse.jpt.utility.internal.model.value.ValueModel;
  * 	- 1 cell listener per row
  * 	- 1 cell listener per cell
  */
-public class TableModelAdapter extends AbstractTableModel {
-
+public class TableModelAdapter
+	extends AbstractTableModel
+{
 	/**
 	 * a list of user objects that are converted to
 	 * rows via the column adapter
 	 */
 	private ListValueModel listHolder;
-	private ListChangeListener listChangeListener;
+	private final ListChangeListener listChangeListener;
 
 	/**
 	 * each row is an array of cell models
 	 */
-	private ArrayList<PropertyValueModel[]> rows;	// declare as ArrayList so we can use #ensureCapacity(int)
+	// declare as ArrayList so we can use #ensureCapacity(int)
+	private final ArrayList<PropertyValueModel[]> rows;
 
 	/**
 	 * client-supplied adapter that provides with the various column
 	 * settings and converts the objects in the LVM
 	 * into an array of cell models
 	 */
-	private ColumnAdapter columnAdapter;
+	private final ColumnAdapter columnAdapter;
 
 	/**
 	 * the single listener that listens to every cell's model
 	 */
-	private PropertyChangeListener cellListener;
+	private final PropertyChangeListener cellListener;
 
 
 	// ********** constructors **********
-
-	/**
-	 * internal constructor
-	 */
-	private TableModelAdapter() {
-		super();
-		this.initialize();
-	}
 
 	/**
 	 * Construct a table model adapter for the specified objects
 	 * and adapter.
 	 */
 	public TableModelAdapter(ListValueModel listHolder, ColumnAdapter columnAdapter) {
-		this();
+		super();
 		if (listHolder == null) {
 			throw new NullPointerException();
 		}
 		this.listHolder = listHolder;
 		this.columnAdapter = columnAdapter;
+		this.listChangeListener = this.buildListChangeListener();
+		this.rows = new ArrayList<PropertyValueModel[]>();
+		this.cellListener = this.buildCellListener();
 	}
 
 	/**
@@ -117,12 +114,6 @@ public class TableModelAdapter extends AbstractTableModel {
 
 
 	// ********** initialization **********
-
-	private void initialize() {
-		this.listChangeListener = this.buildListChangeListener();
-		this.rows = new ArrayList<PropertyValueModel[]>();
-		this.cellListener = this.buildCellListener();
-	}
 
 	private ListChangeListener buildListChangeListener() {
 		return new ListChangeListener() {
