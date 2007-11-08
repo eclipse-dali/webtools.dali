@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.content.java.JpaJavaPackage;
+import org.eclipse.jpt.core.internal.content.java.mappings.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.mappings.IEmbeddable;
 import org.eclipse.jpt.core.internal.mappings.IEntity;
 import org.eclipse.jpt.core.internal.mappings.IMappedSuperclass;
@@ -54,8 +55,10 @@ public class JavaPersistentTypeItemProvider extends ItemProviderAdapter
 	public Object getImage(Object object) {
 		ITypeMapping mapping = ((IPersistentType) object).getMapping();
 		
-		
-		if (mapping instanceof IEntity) {
+		if (mapping instanceof JavaNullTypeMapping) {
+			return JptUiMappingsImages.getImage(JptUiMappingsImages.NULL_TYPE_MAPPING);
+		}
+		else if (mapping instanceof IEntity) {
 			return JptUiMappingsImages.getImage(JptUiMappingsImages.ENTITY);
 		}
 		else if (mapping instanceof IEmbeddable) {
