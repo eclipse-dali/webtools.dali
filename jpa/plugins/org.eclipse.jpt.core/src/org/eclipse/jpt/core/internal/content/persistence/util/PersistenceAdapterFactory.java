@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.internal.IJpaSourceObject;
 import org.eclipse.jpt.core.internal.IXmlEObject;
 import org.eclipse.jpt.core.internal.JpaEObject;
 import org.eclipse.jpt.core.internal.XmlEObject;
-import org.eclipse.jpt.core.internal.content.persistence.*;
 import org.eclipse.jpt.core.internal.content.persistence.JavaClassRef;
 import org.eclipse.jpt.core.internal.content.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.content.persistence.Persistence;

@@ -24,7 +24,6 @@ import org.eclipse.jpt.core.internal.ITypeMapping;
 import org.eclipse.jpt.core.internal.IXmlEObject;
 import org.eclipse.jpt.core.internal.JpaEObject;
 import org.eclipse.jpt.core.internal.XmlEObject;
-import org.eclipse.jpt.core.internal.content.orm.*;
 import org.eclipse.jpt.core.internal.content.orm.AbstractXmlColumn;
 import org.eclipse.jpt.core.internal.content.orm.AbstractXmlNamedColumn;
 import org.eclipse.jpt.core.internal.content.orm.AbstractXmlQuery;

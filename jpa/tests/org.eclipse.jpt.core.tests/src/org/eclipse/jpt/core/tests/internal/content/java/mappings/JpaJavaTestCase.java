@@ -10,14 +10,10 @@
 package org.eclipse.jpt.core.tests.internal.content.java.mappings;
 
 import java.util.Iterator;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.internal.synch.SynchronizeClassesJob;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;

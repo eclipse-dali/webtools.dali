@@ -17,8 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
-
+import junit.framework.Assert;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -31,10 +30,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.tests.internal.jdtutility.JptCoreJdtUtilityTests;
-
-import junit.framework.Assert;
 
 /**
  * Copied from org.eclipse.wst.common.tests

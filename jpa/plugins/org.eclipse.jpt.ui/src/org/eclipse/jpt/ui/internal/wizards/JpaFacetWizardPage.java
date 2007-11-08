@@ -22,7 +22,6 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.facet.IJpaFacetDataModelProperties;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
@@ -54,7 +53,6 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
 import org.eclipse.wst.common.project.facet.ui.ModifyFacetedProjectWizard;
-import org.eclipse.wst.common.project.facet.ui.internal.FacetsSelectionPage;
 import org.eclipse.wst.web.ui.internal.wizards.DataModelFacetInstallPage;
 
 public class JpaFacetWizardPage 

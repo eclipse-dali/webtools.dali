@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.internal.IAttributeMapping;
 import org.eclipse.jpt.core.internal.IJpaEObject;
 import org.eclipse.jpt.core.internal.IJpaSourceObject;
 import org.eclipse.jpt.core.internal.ITypeMapping;
-import org.eclipse.jpt.core.internal.mappings.*;
 import org.eclipse.jpt.core.internal.mappings.IAbstractColumn;
 import org.eclipse.jpt.core.internal.mappings.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.mappings.IAssociationOverride;

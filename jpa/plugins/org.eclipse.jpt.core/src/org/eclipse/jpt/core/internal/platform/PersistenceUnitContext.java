@@ -26,7 +26,6 @@ import org.eclipse.jpt.core.internal.IPersistentType;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.content.orm.XmlRootContentNode;

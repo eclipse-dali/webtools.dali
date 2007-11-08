@@ -12,7 +12,7 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
-
+import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -21,10 +21,7 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.FilteringCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
-
-import junit.framework.TestCase;
 
 public class FilteringCollectionValueModelTests extends TestCase {
 	private CollectionValueModel collectionHolder;

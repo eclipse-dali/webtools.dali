@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.internal.JpaEObject;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.JavaEObject;
-import org.eclipse.jpt.core.internal.content.java.mappings.*;
 import org.eclipse.jpt.core.internal.content.java.mappings.AbstractJavaColumn;
 import org.eclipse.jpt.core.internal.content.java.mappings.AbstractJavaTable;
 import org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic;
