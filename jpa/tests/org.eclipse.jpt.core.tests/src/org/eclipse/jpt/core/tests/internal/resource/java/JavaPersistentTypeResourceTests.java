@@ -386,6 +386,24 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 			}
 		});
 	}
+	private IType createTestEntityWithEmptySecondaryTables() throws Exception {
+		createEntityAnnotation();
+		this.createAnnotationAndMembers("SecondaryTable", "String name();");
+		this.createAnnotationAndMembers("SecondaryTables", "SecondaryTable[] value();");
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuffer sb) {
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("@SecondaryTables()");
+			}
+		});
+	}
+
 	private IType createTestEntityWithSecondaryTables() throws Exception {
 		createEntityAnnotation();
 		this.createAnnotationAndMembers("SecondaryTable", "String name();");
@@ -643,6 +661,20 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		assertEquals("FOO", secondaryTableResource.getName());
 	}
 	
+	public void testJavaTypeAnnotationsNoNestable() throws Exception {
+		IType jdtType = createTestEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		
+		assertEquals(0, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
+	}
+	
+	public void testJavaTypeAnnotationsContainerNoNestable() throws Exception {
+		IType jdtType = createTestEntityWithEmptySecondaryTables();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		
+		assertEquals(0, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
+	}
+
 	public void testJavaTypeAnnotationsNestableAndContainer() throws Exception {
 		IType jdtType = createTestEntityWithSecondaryTableAndSecondaryTables();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);

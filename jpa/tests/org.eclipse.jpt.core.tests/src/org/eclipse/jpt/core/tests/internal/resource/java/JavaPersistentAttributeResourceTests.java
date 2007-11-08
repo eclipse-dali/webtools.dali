@@ -226,6 +226,22 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 			}
 		});
 	}
+	private IType createTestEmbeddedWithAttributeOverridesEmpty() throws Exception {
+		this.createAnnotationAndMembers("Embedded", "String name();");
+		this.createAnnotationAndMembers("AttributeOverrides", "AttributeOverride[] value();");
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.EMBEDDED, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+				sb.append("@Embedded");
+				sb.append(CR);
+				sb.append("@AttributeOverrides()");
+			}
+		});
+	}
 	
 	private IType createTestEmbeddedWith2AttributeOverrides() throws Exception {
 		this.createAnnotationAndMembers("Embedded", "String name();");
@@ -456,6 +472,22 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		assertEquals("FOO", attributeOverride.getName());
 	}
 	
+	public void testJavaAttributeAnnotationsNoNestable() throws Exception {
+		IType jdtType = createTestEntity();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		assertEquals(0, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
+	}
+	
+	public void testJavaAttributeAnnotationsContainerNoNestable() throws Exception {
+		IType jdtType = createTestEmbeddedWithAttributeOverridesEmpty();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+	
+		assertEquals(0, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
+	}
+
 	public void testJavaAttributeAnnotationsNestableAndContainer() throws Exception {
 		IType jdtType = createTestEmbeddedWithAttributeOverrideAndAttributeOverrides();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);

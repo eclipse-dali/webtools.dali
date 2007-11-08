@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
 public abstract class AbstractJavaPersistentResource<E extends Member> extends AbstractMemberResource<E> 
@@ -348,7 +349,11 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		if (containerAnnotation != null) {
 			return containerAnnotation.nestedAnnotations();
 		}
-		return new SingleElementListIterator<NestableAnnotation>(nestableAnnotation(nestableAnnotationName));
+		NestableAnnotation nestableAnnotation = nestableAnnotation(nestableAnnotationName);
+		if (nestableAnnotation != null) {
+			return new SingleElementListIterator<NestableAnnotation>(nestableAnnotation);
+		}
+		return EmptyListIterator.instance();
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
