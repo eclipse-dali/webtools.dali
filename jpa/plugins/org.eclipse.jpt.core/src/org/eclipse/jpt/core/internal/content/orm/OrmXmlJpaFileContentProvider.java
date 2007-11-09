@@ -9,63 +9,59 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.orm;
 
+import java.io.IOException;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.content.orm.resource.OrmArtifactEdit;
-import org.eclipse.jpt.core.internal.emfutility.ComponentUtilities;
+import org.eclipse.wst.common.internal.emfworkbench.integration.EditModelEvent;
+import org.eclipse.wst.common.internal.emfworkbench.integration.EditModelListener;
 
 public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 {
-	public static OrmXmlJpaFileContentProvider INSTANCE = new OrmXmlJpaFileContentProvider();
+	//singleton
+	private static final OrmXmlJpaFileContentProvider INSTANCE = new OrmXmlJpaFileContentProvider();
 	
 	
-	private IFile file;
+	/**
+	 * Return the singleton.
+	 */
+	public static IJpaFileContentProvider instance() {
+		return INSTANCE;
+	}
 	
 	
 	/**
 	 * Restrict access
 	 */
 	private OrmXmlJpaFileContentProvider() {
-		
+		super();
 	}
 
 	public IJpaRootContentNode buildRootContent(IFile resourceFile) {
-		file = resourceFile;
-		IPath deployPath = ComponentUtilities.computeDeployPath(resourceFile);
-		OrmArtifactEdit artifactEdit = 
-				OrmArtifactEdit.getArtifactEditForWrite(
-						resourceFile.getProject(),
-						deployPath.toString());
-		OrmResource resource = artifactEdit.getOrmResource();
+		OrmArtifactEdit oae = 
+				OrmArtifactEdit.getArtifactEditForRead(resourceFile.getProject());
+		OrmResource resource = 
+				oae.getOrmResource(resourceFile);
 		XmlRootContentNode root = OrmFactory.eINSTANCE.createXmlRootContentNode();
-			
-		if (resourceFile.equals(resource.getFile())) {
-			root.setArtifactEdit(artifactEdit);
-			root.setEntityMappings(resource.getEntityMappings());
-			resource.eAdapters().add(buildRootNodeListener(root));
-		}
-		else {
-			artifactEdit.dispose();
-		}
-		
+		root.setResource(resource);
+		root.setEntityMappings(resource.getEntityMappings());
+		resource.eAdapters().add(buildRootNodeListener(resourceFile, root));
+		oae.addListener(buildReloadListener(resource));
 		return root;
 	}
 	
-	private Adapter buildRootNodeListener(XmlRootContentNode root) {
-		return new RootAdapter(root);
+	private Adapter buildRootNodeListener(IFile resourceFile, XmlRootContentNode root) {
+		return new RootAdapter(resourceFile, root);
 	}
 
-	protected ResourceSet getResourceSet(IFile file) {
-		return WorkbenchResourceHelperBase.getResourceSet(file.getProject());
+	private EditModelListener buildReloadListener(OrmResource resource) {
+		return new ReloadListener(resource);
 	}
 
 	public String contentType() {
@@ -75,28 +71,69 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 	
 	private class RootAdapter extends AdapterImpl 
 	{
-		XmlRootContentNode root;
+		final IFile resourceFile;
+		final XmlRootContentNode rootContentNode;
 		
-		private RootAdapter(XmlRootContentNode rootContentNode) {
+		RootAdapter(IFile resourceFile, XmlRootContentNode rootContentNode) {
 			super();
-			root = rootContentNode;
+			this.resourceFile = resourceFile;
+			this.rootContentNode = rootContentNode;
 		}
+		@Override
 		public void notifyChanged(Notification notification) {
 			int featureId = notification.getFeatureID(Resource.class);
 			if (featureId == Resource.RESOURCE__CONTENTS) {
 				if (notification.getEventType() == Notification.ADD
 						|| notification.getEventType() == Notification.REMOVE) {
 					OrmResource resource = (OrmResource) notification.getNotifier();
-					root.setEntityMappings(resource.getEntityMappings());
+					this.rootContentNode.setEntityMappings(resource.getEntityMappings());
 				}
 			}
+		}
+	}
+	
+	
+	private class ReloadListener implements EditModelListener
+	{
+		final OrmResource resource;
+		
+		ReloadListener(OrmResource resource) {
+			super();
+			this.resource = resource;
+		}
+		
+		public void editModelChanged(EditModelEvent anEvent) {
+			switch (anEvent.getEventCode()) {
+				case EditModelEvent.UNLOADED_RESOURCE :
+					if (anEvent.getChangedResources().contains(resource)
+							&& ! resource.isLoaded()) {
+						try {
+							resource.load(resource.getResourceSet().getLoadOptions());
+						}
+						catch (IOException ioe) {
+							JptCorePlugin.log(ioe);
+						}
+					}
+					break;
+				case EditModelEvent.REMOVED_RESOURCE :
+					if (anEvent.getChangedResources().contains(resource)) {
+						anEvent.getEditModel().removeListener(this);
+					}
+					break;
+//				case EditModelEvent.SAVE :
+//				case EditModelEvent.PRE_DISPOSE :				
+			}
+			
+		}
 			// commenting out for now - this *was* a workaround for 202190, but with ArtifactEdit
 			// usage, it no longer works
+			// 
+			// 11/07/07 - Actually, it has now been replaced by the above code
 //			else if (featureId == Resource.RESOURCE__IS_LOADED) {
 //				if (file.exists()) {
 //					// dumb translator is unloading my resource, reload it
 //					if (notification.getNewBooleanValue() == false) {
-//						OrmResource resource = (OrmResource) notification.getNotifier();
+//						PersistenceResource resource = (PersistenceResource) notification.getNotifier();
 //						try {
 //							resource.load(Collections.EMPTY_MAP);
 //						}
@@ -107,6 +144,5 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 //					}
 //				}
 //			}
-		}
 	}
 }

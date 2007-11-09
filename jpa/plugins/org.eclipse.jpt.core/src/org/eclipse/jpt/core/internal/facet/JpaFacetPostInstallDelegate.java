@@ -82,8 +82,8 @@ public class JpaFacetPostInstallDelegate
 		}
 		
 		PersistenceArtifactEdit pae = 
-				PersistenceArtifactEdit.getArtifactEditForWrite(project, deployPath);
-		PersistenceResource resource = pae.getPersistenceResource();
+				PersistenceArtifactEdit.getArtifactEditForWrite(project);
+		PersistenceResource resource = pae.getPersistenceResource(deployPath);
 		
 		// fix for bug 202811 - only add content if it does not already have content
 		if (resource.getPersistence() == null) {
@@ -112,8 +112,8 @@ public class JpaFacetPostInstallDelegate
 		}
 		
 		OrmArtifactEdit oae =
-				OrmArtifactEdit.getArtifactEditForWrite(project, deployPath);
-		OrmResource resource = oae.getOrmResource();
+				OrmArtifactEdit.getArtifactEditForWrite(project);
+		OrmResource resource = oae.getOrmResource(deployPath);
 		
 		// fix for bug 202811 - only add content if it does not already have content
 		if (resource.getEntityMappings() == null) {
