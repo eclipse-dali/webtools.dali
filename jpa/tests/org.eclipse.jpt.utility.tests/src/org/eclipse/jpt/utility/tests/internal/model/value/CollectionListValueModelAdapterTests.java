@@ -25,7 +25,6 @@ import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdap
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
