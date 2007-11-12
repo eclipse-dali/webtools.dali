@@ -51,36 +51,36 @@ public abstract class AbstractReadOnlyListValueModel
 
 	// ********** ListValueModel implementation **********
 
-	public void addItem(int index, Object item) {
+	public void add(int index, Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void addItems(int index, List items) {
+	public void addAll(int index, List items) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Object removeItem(int index) {
+	public Object remove(int index) {
 		throw new UnsupportedOperationException();
 	}
 
-	public List removeItems(int index, int length) {
+	public List remove(int index, int length) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Object replaceItem(int index, Object item) {
+	public Object replace(int index, Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public List replaceItems(int index, List items) {
+	public List replaceAll(int index, List items) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Object getItem(int index) {
-		return CollectionTools.get((ListIterator) this.value(), index);
+	public Object get(int index) {
+		return CollectionTools.get((ListIterator) this.values(), index);
 	}
 
 	public int size() {
-		return CollectionTools.size((ListIterator) this.value());
+		return CollectionTools.size((ListIterator) this.values());
 	}
 
 
@@ -88,7 +88,7 @@ public abstract class AbstractReadOnlyListValueModel
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, CollectionTools.collection((ListIterator) this.value()));
+		return StringTools.buildToStringFor(this, CollectionTools.collection((ListIterator) this.values()));
 	}
 
 }

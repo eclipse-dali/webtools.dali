@@ -564,7 +564,7 @@ public class TreeModelAdapterTests extends TestCase {
 		public void dumpOn(IndentingPrintWriter writer) {
 			writer.println(this);
 			writer.indent();
-			for (Iterator stream = (Iterator) this.childrenModel.value(); stream.hasNext(); ) {
+			for (Iterator stream = (Iterator) this.childrenModel.values(); stream.hasNext(); ) {
 				((TestNode) stream.next()).dumpOn(writer);
 			}
 			writer.undent();
@@ -604,7 +604,7 @@ public class TreeModelAdapterTests extends TestCase {
 		 * testing convenience method
 		 */
 		public TestNode childNamed(String name) {
-			for (Iterator stream = (Iterator) this.childrenModel.value(); stream.hasNext(); ) {
+			for (Iterator stream = (Iterator) this.childrenModel.values(); stream.hasNext(); ) {
 				TestNode childNode = (TestNode) stream.next();
 				if (childNode.getTestModel().getName().equals(name)) {
 					return childNode;

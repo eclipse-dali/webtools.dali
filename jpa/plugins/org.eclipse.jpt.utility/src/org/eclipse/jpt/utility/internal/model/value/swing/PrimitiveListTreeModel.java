@@ -100,7 +100,7 @@ public abstract class PrimitiveListTreeModel
     @Override
 	public void addTreeModelListener(TreeModelListener l) {
 		if (this.getTreeModelListeners().length == 0) {
-			this.listHolder.addListChangeListener(ValueModel.VALUE, this.listChangeListener);
+			this.listHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 			this.synchronizeList();
 		}
 		super.addTreeModelListener(l);
@@ -113,7 +113,7 @@ public abstract class PrimitiveListTreeModel
 	public void removeTreeModelListener(TreeModelListener l) {
 		super.removeTreeModelListener(l);
 		if (this.getTreeModelListeners().length == 0) {
-			this.listHolder.removeListChangeListener(ValueModel.VALUE, this.listChangeListener);
+			this.listHolder.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 		}
 	}
 
@@ -136,7 +136,7 @@ public abstract class PrimitiveListTreeModel
 	}
 		
 	private void buildList() {
-		for (Iterator stream = (Iterator) this.listHolder.value(); stream.hasNext(); ) {
+		for (Iterator stream = (Iterator) this.listHolder.values(); stream.hasNext(); ) {
 			this.addPrimitive(stream.next());
 		}
 	}

@@ -101,15 +101,15 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 
-		listHolder.addItem(6, this.tom);
-		listHolder.addItem(7, this.dick);
-		listHolder.addItem(8, this.harry);
+		listHolder.add(6, this.tom);
+		listHolder.add(7, this.dick);
+		listHolder.add(8, this.harry);
 		assertEquals(9, synchList.size());
 		this.compare(listValueModel, synchList);
 
-		listHolder.removeItem(8);
-		listHolder.removeItem(0);
-		listHolder.removeItem(4);
+		listHolder.remove(8);
+		listHolder.remove(0);
+		listHolder.remove(4);
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 
@@ -122,7 +122,7 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 	private void compare(ListValueModel listValueModel, List list) {
 		assertEquals(listValueModel.size(), list.size());
 		for (int i = 0; i < listValueModel.size(); i++) {
-			assertEquals(listValueModel.getItem(i), list.get(i));
+			assertEquals(listValueModel.get(i), list.get(i));
 		}
 	}
 
@@ -182,16 +182,16 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 		assertEquals(6, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
 
-		listHolder.addItem(0, this.tom);
-		listHolder.addItem(0, this.dick);
-		listHolder.addItem(0, this.harry);
+		listHolder.add(0, this.tom);
+		listHolder.add(0, this.dick);
+		listHolder.add(0, this.harry);
 		assertEquals(9, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
 
-		listHolder.removeItem(8);
-		listHolder.removeItem(4);
-		listHolder.removeItem(0);
-		listHolder.removeItem(5);
+		listHolder.remove(8);
+		listHolder.remove(4);
+		listHolder.remove(0);
+		listHolder.remove(5);
 		assertEquals(5, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
 
@@ -203,7 +203,7 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 	private void compareSort(ListValueModel listValueModel, List list, Comparator comparator) {
 		SortedSet ss = new TreeSet(comparator);
 		for (int i = 0; i < listValueModel.size(); i++) {
-			ss.add(listValueModel.getItem(i));
+			ss.add(listValueModel.get(i));
 		}
 		assertEquals(ss.size(), list.size());
 		for (Iterator stream1 = ss.iterator(), stream2 = list.iterator(); stream1.hasNext(); ) {
@@ -213,14 +213,14 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 
 	public void testHasListeners() throws Exception {
 		SimpleListValueModel listHolder = this.buildListHolder();
-		assertFalse(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertFalse(this.foo.hasAnyPropertyChangeListeners(Displayable.DISPLAY_STRING_PROPERTY));
 		assertFalse(this.foo.hasAnyPropertyChangeListeners(Displayable.ICON_PROPERTY));
 		assertFalse(this.jaz.hasAnyPropertyChangeListeners(Displayable.DISPLAY_STRING_PROPERTY));
 		assertFalse(this.jaz.hasAnyPropertyChangeListeners(Displayable.ICON_PROPERTY));
 
 		ListValueModel listValueModel = new ItemPropertyListValueModelAdapter(new SortedListValueModelAdapter(listHolder), Displayable.DISPLAY_STRING_PROPERTY, Displayable.ICON_PROPERTY);
-		assertFalse(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertFalse(this.foo.hasAnyPropertyChangeListeners(Displayable.DISPLAY_STRING_PROPERTY));
 		assertFalse(this.foo.hasAnyPropertyChangeListeners(Displayable.ICON_PROPERTY));
 		assertFalse(this.jaz.hasAnyPropertyChangeListeners(Displayable.DISPLAY_STRING_PROPERTY));
@@ -228,15 +228,15 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 		this.verifyHasNoListeners(listValueModel);
 
 		SynchronizedList synchList = new SynchronizedList(listValueModel);
-		assertTrue(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertTrue(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(this.foo.hasAnyPropertyChangeListeners(Displayable.DISPLAY_STRING_PROPERTY));
 		assertTrue(this.foo.hasAnyPropertyChangeListeners(Displayable.ICON_PROPERTY));
 		assertTrue(this.jaz.hasAnyPropertyChangeListeners(Displayable.DISPLAY_STRING_PROPERTY));
 		assertTrue(this.jaz.hasAnyPropertyChangeListeners(Displayable.ICON_PROPERTY));
 		this.verifyHasListeners(listValueModel);
 
-		listValueModel.removeListChangeListener(ValueModel.VALUE, synchList);
-		assertFalse(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		listValueModel.removeListChangeListener(ListValueModel.LIST_VALUES, synchList);
+		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertFalse(this.foo.hasAnyPropertyChangeListeners(Displayable.DISPLAY_STRING_PROPERTY));
 		assertFalse(this.foo.hasAnyPropertyChangeListeners(Displayable.ICON_PROPERTY));
 		assertFalse(this.jaz.hasAnyPropertyChangeListeners(Displayable.DISPLAY_STRING_PROPERTY));
@@ -253,25 +253,25 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 		assertEquals(6, synchList.size());
 	}
 
-	public void testGetElementAt() throws Exception {
+	public void testGet() throws Exception {
 		SimpleListValueModel listHolder = this.buildListHolder();
 		ListValueModel listValueModel = new SortedListValueModelAdapter(new ItemPropertyListValueModelAdapter(listHolder, Displayable.DISPLAY_STRING_PROPERTY, Displayable.ICON_PROPERTY));
 		SynchronizedList synchList = new SynchronizedList(listValueModel);
 		this.verifyHasListeners(listValueModel);
-		assertEquals(this.bar, listValueModel.getItem(0));
+		assertEquals(this.bar, listValueModel.get(0));
 		assertEquals(this.bar, synchList.get(0));
 		this.bar.setName("zzz");
-		assertEquals(this.bar, listValueModel.getItem(5));
+		assertEquals(this.bar, listValueModel.get(5));
 		assertEquals(this.bar, synchList.get(5));
 		this.bar.setName("this.bar");
 	}
 
 	private void verifyHasNoListeners(ListValueModel listValueModel) throws Exception {
-		assertTrue(((AbstractModel) listValueModel).hasNoListChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) listValueModel).hasNoListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
 	private void verifyHasListeners(ListValueModel listValueModel) throws Exception {
-		assertTrue(((AbstractModel) listValueModel).hasAnyListChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) listValueModel).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
 	private SimpleCollectionValueModel buildCollectionHolder() {

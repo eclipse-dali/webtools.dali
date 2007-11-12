@@ -23,7 +23,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
 /**
  * Helper class that keeps an internal list in synch with the
@@ -33,8 +32,8 @@ public class SynchronizedList<E> implements List<E>, ListChangeListener, ListDat
 	private List<E> synchList = new ArrayList<E>();
 
 	public SynchronizedList(ListValueModel listValueModel) {
-		listValueModel.addListChangeListener(ValueModel.VALUE, this);
-		for (Iterator<E> stream = (ListIterator<E>) listValueModel.value(); stream.hasNext(); ) {
+		listValueModel.addListChangeListener(ListValueModel.LIST_VALUES, this);
+		for (Iterator<E> stream = (ListIterator<E>) listValueModel.values(); stream.hasNext(); ) {
 			this.add(stream.next());
 		}
 	}
@@ -176,7 +175,7 @@ public class SynchronizedList<E> implements List<E>, ListChangeListener, ListDat
 
 	public void listChanged(ListChangeEvent e) {
 		this.synchList.clear();
-		CollectionTools.addAll(this.synchList, (Iterator) ((ListValueModel) e.getSource()).value());
+		CollectionTools.addAll(this.synchList, (Iterator) ((ListValueModel) e.getSource()).values());
 	}
 
 

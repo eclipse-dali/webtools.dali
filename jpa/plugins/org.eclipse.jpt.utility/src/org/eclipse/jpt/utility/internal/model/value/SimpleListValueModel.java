@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -47,44 +48,42 @@ public class SimpleListValueModel
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUE);
+		return new SingleAspectChangeSupport(this, LIST_VALUES);
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** ListValueModel implementation **********
 
-	public Object value() {
+	public ListIterator values() {
 		// try to prevent backdoor modification of the list
 		return new ReadOnlyListIterator(this.value);
 	}
 
-	// ********** ListValueModel implementation **********
-
-	public void addItem(int index, Object item) {
-		this.addItemToList(index, item, this.value, VALUE);
+	public void add(int index, Object item) {
+		this.addItemToList(index, item, this.value, LIST_VALUES);
 	}
 
-	public void addItems(int index, List items) {
-		this.addItemsToList(index, items, this.value, VALUE);
+	public void addAll(int index, List items) {
+		this.addItemsToList(index, items, this.value, LIST_VALUES);
 	}
 
-	public Object removeItem(int index) {
-		return this.removeItemFromList(index, this.value, VALUE);
+	public Object remove(int index) {
+		return this.removeItemFromList(index, this.value, LIST_VALUES);
 	}
 
-	public List removeItems(int index, int length) {
-		return this.removeItemsFromList(index, length, this.value, VALUE);
+	public List remove(int index, int length) {
+		return this.removeItemsFromList(index, length, this.value, LIST_VALUES);
 	}
 
-	public Object replaceItem(int index, Object item) {
-		return this.setItemInList(index, item, this.value, VALUE);
+	public Object replace(int index, Object item) {
+		return this.setItemInList(index, item, this.value, LIST_VALUES);
 	}
 
-	public List replaceItems(int index, List items) {
-		return this.setItemsInList(index, items, this.value, VALUE);
+	public List replaceAll(int index, List items) {
+		return this.setItemsInList(index, items, this.value, LIST_VALUES);
 	}
 
-	public Object getItem(int index) {
+	public Object get(int index) {
 		return this.value.get(index);
 	}
 
@@ -100,14 +99,14 @@ public class SimpleListValueModel
 	 */
 	public void setValue(List value) {
 		this.value = ((value == null) ? new ArrayList() : value);
-		this.fireListChanged(VALUE);
+		this.fireListChanged(LIST_VALUES);
 	}
 
 	/**
 	 * Add the specified item to the end of the list.
 	 */
 	public void addItem(Object item) {
-		this.addItem(this.size(), item);
+		this.add(this.size(), item);
 	}
 
 	/**
@@ -121,7 +120,7 @@ public class SimpleListValueModel
 	 * Remove the first occurrence of the specified item.
 	 */
 	public void removeItem(Object item) {
-		this.removeItem(this.indexOfItem(item));
+		this.remove(this.indexOfItem(item));
 	}
 
 	/**
@@ -133,7 +132,7 @@ public class SimpleListValueModel
 		}
 		List items = new ArrayList(this.value);
 		this.value.clear();
-		this.fireItemsRemoved(VALUE, 0, items);
+		this.fireItemsRemoved(LIST_VALUES, 0, items);
 	}
 
 	@Override

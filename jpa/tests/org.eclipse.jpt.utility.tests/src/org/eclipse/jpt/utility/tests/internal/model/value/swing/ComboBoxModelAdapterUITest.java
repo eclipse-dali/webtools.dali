@@ -279,7 +279,7 @@ public class ComboBoxModelAdapterUITest {
 
 	void addTen() {
 		for (int i = this.nextColorNumber; i < this.nextColorNumber + 20; i++) {
-			this.colorListHolder.addItem(this.colorListHolder.size(), "color" + i);
+			this.colorListHolder.add(this.colorListHolder.size(), "color" + i);
 		}
 		this.nextColorNumber += 20;
 	}
@@ -302,7 +302,7 @@ public class ComboBoxModelAdapterUITest {
 	void removeTen() {
 		for (int i = 0; i < 20; i++) {
 			if (this.colorListHolder.size() > 0) {
-				this.colorListHolder.removeItem(this.colorListHolder.size() - 1);
+				this.colorListHolder.remove(this.colorListHolder.size() - 1);
 			}
 		}
 	}

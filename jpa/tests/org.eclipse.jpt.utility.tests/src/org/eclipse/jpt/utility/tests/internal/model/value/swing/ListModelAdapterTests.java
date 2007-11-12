@@ -80,17 +80,17 @@ public class ListModelAdapterTests extends TestCase {
 		assertEquals(6, synchList.size());
 		this.compare(listModel, synchList);
 
-		listHolder.addItem(6, "tom");
-		listHolder.addItem(7, "dick");
-		listHolder.addItem(8, "harry");
-		listHolder.addItem(9, null);
+		listHolder.add(6, "tom");
+		listHolder.add(7, "dick");
+		listHolder.add(8, "harry");
+		listHolder.add(9, null);
 		assertEquals(10, synchList.size());
 		this.compare(listModel, synchList);
 
-		listHolder.removeItem(9);
-		listHolder.removeItem(8);
-		listHolder.removeItem(4);
-		listHolder.removeItem(0);
+		listHolder.remove(9);
+		listHolder.remove(8);
+		listHolder.remove(4);
+		listHolder.remove(0);
 		assertEquals(6, synchList.size());
 		this.compare(listModel, synchList);
 	}
@@ -99,7 +99,7 @@ public class ListModelAdapterTests extends TestCase {
 		SimpleListValueModel listHolder1 = this.buildListHolder();
 		ListModelAdapter listModel = new ListModelAdapter(listHolder1);
 		SynchronizedList synchList = new SynchronizedList(listModel);
-		assertTrue(listHolder1.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertTrue(listHolder1.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertEquals(6, synchList.size());
 		this.compare(listModel, synchList);
 
@@ -107,14 +107,14 @@ public class ListModelAdapterTests extends TestCase {
 		listModel.setModel(listHolder2);
 		assertEquals(3, synchList.size());
 		this.compare(listModel, synchList);
-		assertTrue(listHolder1.hasNoListChangeListeners(ValueModel.VALUE));
-		assertTrue(listHolder2.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertTrue(listHolder1.hasNoListChangeListeners(ListValueModel.LIST_VALUES));
+		assertTrue(listHolder2.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
 		listModel.setModel(new SimpleListValueModel());
 		assertEquals(0, synchList.size());
 		this.compare(listModel, synchList);
-		assertTrue(listHolder1.hasNoListChangeListeners(ValueModel.VALUE));
-		assertTrue(listHolder2.hasNoListChangeListeners(ValueModel.VALUE));
+		assertTrue(listHolder1.hasNoListChangeListeners(ListValueModel.LIST_VALUES));
+		assertTrue(listHolder2.hasNoListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
 	private void compare(ListModel listModel, List list) {
@@ -176,16 +176,16 @@ public class ListModelAdapterTests extends TestCase {
 		assertEquals(6, synchList.size());
 		this.compareSort(listModel, synchList, comparator);
 
-		listHolder.addItem(0, "tom");
-		listHolder.addItem(0, "dick");
-		listHolder.addItem(0, "harry");
+		listHolder.add(0, "tom");
+		listHolder.add(0, "dick");
+		listHolder.add(0, "harry");
 		assertEquals(9, synchList.size());
 		this.compareSort(listModel, synchList, comparator);
 
-		listHolder.removeItem(8);
-		listHolder.removeItem(4);
-		listHolder.removeItem(0);
-		listHolder.removeItem(5);
+		listHolder.remove(8);
+		listHolder.remove(4);
+		listHolder.remove(0);
+		listHolder.remove(5);
 		assertEquals(5, synchList.size());
 		this.compareSort(listModel, synchList, comparator);
 	}
@@ -203,18 +203,18 @@ public class ListModelAdapterTests extends TestCase {
 
 	public void testHasListeners() throws Exception {
 		SimpleListValueModel listHolder = this.buildListHolder();
-		assertFalse(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
 		ListModel listModel = new ListModelAdapter(listHolder);
-		assertFalse(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		this.verifyHasNoListeners(listModel);
 
 		SynchronizedList synchList = new SynchronizedList(listModel);
-		assertTrue(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertTrue(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		this.verifyHasListeners(listModel);
 
 		listModel.removeListDataListener(synchList);
-		assertFalse(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		this.verifyHasNoListeners(listModel);
 	}
 

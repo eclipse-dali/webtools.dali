@@ -12,6 +12,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
@@ -76,7 +77,7 @@ public class CollectionListValueModelAdapter
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUE);
+		return new SingleAspectChangeSupport(this, LIST_VALUES);
 	}
 
 	/**
@@ -105,41 +106,38 @@ public class CollectionListValueModelAdapter
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** ListValueModel implementation **********
 
-	public Object value() {
+	public ListIterator values() {
 		// try to prevent backdoor modification of the list
 		return new ReadOnlyListIterator(this.list);
 	}
 
-
-	// ********** ListValueModel implementation **********
-
-	public void addItem(int index, Object item) {
+	public void add(int index, Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void addItems(int index, List items) {
+	public void addAll(int index, List items) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Object removeItem(int index) {
+	public Object remove(int index) {
 		throw new UnsupportedOperationException();
 	}
 
-	public List removeItems(int index, int length) {
+	public List remove(int index, int length) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Object replaceItem(int index, Object item) {
+	public Object replace(int index, Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public List replaceItems(int index, List items) {
+	public List replaceAll(int index, List items) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Object getItem(int index) {
+	public Object get(int index) {
 		return this.list.get(index);
 	}
 
@@ -166,7 +164,7 @@ public class CollectionListValueModelAdapter
 	 */
 	@Override
 	public void addListChangeListener(String listName, ListChangeListener listener) {
-		if (listName == VALUE && this.hasNoListeners()) {
+		if (listName == LIST_VALUES && this.hasNoListeners()) {
 			this.engageModel();
 		}
 		super.addListChangeListener(listName, listener);
@@ -189,7 +187,7 @@ public class CollectionListValueModelAdapter
 	@Override
 	public void removeListChangeListener(String listName, ListChangeListener listener) {
 		super.removeListChangeListener(listName, listener);
-		if (listName == VALUE && this.hasNoListeners()) {
+		if (listName == LIST_VALUES && this.hasNoListeners()) {
 			this.disengageModel();
 		}
 	}
@@ -198,7 +196,7 @@ public class CollectionListValueModelAdapter
 	// ********** queries **********
 
 	protected boolean hasListeners() {
-		return this.hasAnyListChangeListeners(VALUE);
+		return this.hasAnyListChangeListeners(LIST_VALUES);
 	}
 
 	protected boolean hasNoListeners() {
@@ -263,7 +261,7 @@ public class CollectionListValueModelAdapter
 	}
 
 	protected void itemsAdded(CollectionChangeEvent e) {
-		this.addItemsToList(this.indexToAddItems(), CollectionTools.list(e.items()), this.list, VALUE);
+		this.addItemsToList(this.indexToAddItems(), CollectionTools.list(e.items()), this.list, LIST_VALUES);
 	}
 	
     protected int indexToAddItems() {
@@ -274,12 +272,12 @@ public class CollectionListValueModelAdapter
 		// we have to remove the items individually,
 		// since they are probably not in sequence
 		for (Iterator stream = e.items(); stream.hasNext(); ) {
-			this.removeItemFromList(this.lastIdentityIndexOf(stream.next()), this.list, VALUE);
+			this.removeItemFromList(this.lastIdentityIndexOf(stream.next()), this.list, LIST_VALUES);
 		}
 	}
 
 	protected void collectionCleared(CollectionChangeEvent e) {
-		this.clearList(this.list, VALUE);
+		this.clearList(this.list, LIST_VALUES);
 	}
 	
 	/**
@@ -291,13 +289,13 @@ public class CollectionListValueModelAdapter
 		if ( ! this.list.isEmpty()) {
 			ArrayList removedItems = (ArrayList) this.list.clone();
 			this.list.clear();
-			this.fireItemsRemoved(VALUE, 0, removedItems);
+			this.fireItemsRemoved(LIST_VALUES, 0, removedItems);
 		}
 
 		this.buildList();
 		// put in empty check so we don't fire events unnecessarily
 		if ( ! this.list.isEmpty()) {
-			this.fireItemsAdded(VALUE, 0, this.list);
+			this.fireItemsAdded(LIST_VALUES, 0, this.list);
 		}
 	}
 

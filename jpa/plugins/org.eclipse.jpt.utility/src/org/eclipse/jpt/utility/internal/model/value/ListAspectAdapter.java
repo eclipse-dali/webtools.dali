@@ -124,14 +124,13 @@ public abstract class ListAspectAdapter
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** ListValueModel implementation **********
 
 	/**
 	 * Return the value of the subject's list aspect.
 	 * This should be a *list iterator* on the list.
 	 */
-	@Override
-	public Object value() {
+	public ListIterator values() {
 		if (this.subject == null) {
 			return EmptyListIterator.instance();
 		}
@@ -148,39 +147,36 @@ public abstract class ListAspectAdapter
 		throw new UnsupportedOperationException();
 	}
 
-
-	// ********** ListValueModel implementation **********
-
 	/**
 	 * Insert the specified item in the subject's list aspect at the specified index.
 	 */
-	public void addItem(int index, Object item) {
+	public void add(int index, Object item) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * Insert the specified items in the subject's list aspect at the specified index.
 	 */
-	public void addItems(int index, List items) {
+	public void addAll(int index, List items) {
 		for (int i = 0; i < items.size(); i++) {
-			this.addItem(index + i, items.get(i));
+			this.add(index + i, items.get(i));
 		}
 	}
 
 	/**
 	 * Remove the item at the specified index in the subject's list aspect.
 	 */
-	public Object removeItem(int index) {
+	public Object remove(int index) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * Remove the items at the specified index in the subject's list aspect.
 	 */
-	public List removeItems(int index, int length) {
+	public List remove(int index, int length) {
 		List removedItems = new ArrayList(length);
 		for (int i = 0; i < length; i++) {
-			removedItems.add(this.removeItem(index));
+			removedItems.add(this.remove(index));
 		}
 		return removedItems;
 	}
@@ -188,17 +184,17 @@ public abstract class ListAspectAdapter
 	/**
 	 * Replace the item at the specified index of the subject's list aspect.
 	 */
-	public Object replaceItem(int index, Object item) {
+	public Object replace(int index, Object item) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * Replace the items at the specified index of the subject's list aspect.
 	 */
-	public List replaceItems(int index, List items) {
+	public List replaceAll(int index, List items) {
 		List replacedItems = new ArrayList(items.size());
 		for (int i = 0; i < items.size(); i++) {
-			replacedItems.add(this.replaceItem(index + i, items.get(i)));
+			replacedItems.add(this.replace(index + i, items.get(i)));
 		}
 		return replacedItems;
 	}
@@ -206,7 +202,7 @@ public abstract class ListAspectAdapter
 	/**
 	 * Return the item at the specified index of the subject's list aspect.
 	 */
-	public Object getItem(int index) {
+	public Object get(int index) {
 		return CollectionTools.get((ListIterator) this.value(), index);
 	}
 
@@ -230,23 +226,28 @@ public abstract class ListAspectAdapter
 	// ********** AspectAdapter implementation **********
 
 	@Override
+	protected Object value() {
+		return this.values();
+	}
+
+	@Override
 	protected Class<? extends ChangeListener> listenerClass() {
 		return ListChangeListener.class;
 	}
 
 	@Override
 	protected String listenerAspectName() {
-		return VALUE;
+		return LIST_VALUES;
 	}
 
 	@Override
 	protected boolean hasListeners() {
-		return this.hasAnyListChangeListeners(VALUE);
+		return this.hasAnyListChangeListeners(LIST_VALUES);
 	}
 
 	@Override
 	protected void fireAspectChange(Object oldValue, Object newValue) {
-		this.fireListChanged(VALUE);
+		this.fireListChanged(LIST_VALUES);
 	}
 
 	@Override
@@ -272,27 +273,27 @@ public abstract class ListAspectAdapter
 	// ********** behavior **********
 
 	protected void itemsAdded(ListChangeEvent e) {
-		this.fireItemsAdded(e.cloneWithSource(ListAspectAdapter.this, VALUE));
+		this.fireItemsAdded(e.cloneWithSource(ListAspectAdapter.this, LIST_VALUES));
 	}
 
 	protected void itemsRemoved(ListChangeEvent e) {
-		this.fireItemsRemoved(e.cloneWithSource(ListAspectAdapter.this, VALUE));
+		this.fireItemsRemoved(e.cloneWithSource(ListAspectAdapter.this, LIST_VALUES));
 	}
 
 	protected void itemsReplaced(ListChangeEvent e) {
-		this.fireItemsReplaced(e.cloneWithSource(ListAspectAdapter.this, VALUE));
+		this.fireItemsReplaced(e.cloneWithSource(ListAspectAdapter.this, LIST_VALUES));
 	}
 
 	protected void itemsMoved(ListChangeEvent e) {
-		this.fireItemsMoved(e.cloneWithSource(ListAspectAdapter.this, VALUE));
+		this.fireItemsMoved(e.cloneWithSource(ListAspectAdapter.this, LIST_VALUES));
 	}
 
 	protected void listCleared(ListChangeEvent e) {
-		this.fireListCleared(VALUE);
+		this.fireListCleared(LIST_VALUES);
 	}
 
 	protected void listChanged(ListChangeEvent e) {
-		this.fireListChanged(VALUE);
+		this.fireListChanged(LIST_VALUES);
 	}
 
 }

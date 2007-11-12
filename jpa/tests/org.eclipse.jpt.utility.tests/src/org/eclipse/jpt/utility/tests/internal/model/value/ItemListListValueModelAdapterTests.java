@@ -94,15 +94,15 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 
-		listHolder.addItem(6, this.tom);
-		listHolder.addItem(7, this.dick);
-		listHolder.addItem(8, this.harry);
+		listHolder.add(6, this.tom);
+		listHolder.add(7, this.dick);
+		listHolder.add(8, this.harry);
 		assertEquals(9, synchList.size());
 		this.compare(listValueModel, synchList);
 
-		listHolder.removeItem(8);
-		listHolder.removeItem(0);
-		listHolder.removeItem(4);
+		listHolder.remove(8);
+		listHolder.remove(0);
+		listHolder.remove(4);
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 	}
@@ -110,31 +110,31 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 	private void compare(ListValueModel listValueModel, List list) {
 		assertEquals(listValueModel.size(), list.size());
 		for (int i = 0; i < listValueModel.size(); i++) {
-			assertEquals(listValueModel.getItem(i), list.get(i));
+			assertEquals(listValueModel.get(i), list.get(i));
 		}
 	}
 
 
 	public void testHasListeners() throws Exception {
 		SimpleListValueModel listHolder = this.buildListHolder();
-		assertFalse(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertFalse(this.foo.hasAnyListChangeListeners(Junk.STUFF_LIST));
 		assertFalse(this.jaz.hasAnyListChangeListeners(Junk.STUFF_LIST));
 
 		ListValueModel listValueModel = new ItemListListValueModelAdapter(listHolder, Junk.STUFF_LIST);
-		assertFalse(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertFalse(this.foo.hasAnyListChangeListeners(Junk.STUFF_LIST));
 		assertFalse(this.jaz.hasAnyListChangeListeners(Junk.STUFF_LIST));
 		this.verifyHasNoListeners(listValueModel);
 
 		SynchronizedList synchList = new SynchronizedList(listValueModel);
-		assertTrue(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertTrue(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(this.foo.hasAnyListChangeListeners(Junk.STUFF_LIST));
 		assertTrue(this.jaz.hasAnyListChangeListeners(Junk.STUFF_LIST));
 		this.verifyHasListeners(listValueModel);
 
-		listValueModel.removeListChangeListener(ValueModel.VALUE, synchList);
-		assertFalse(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		listValueModel.removeListChangeListener(ListValueModel.LIST_VALUES, synchList);
+		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertFalse(this.foo.hasAnyListChangeListeners(Junk.STUFF_LIST));
 		assertFalse(this.jaz.hasAnyListChangeListeners(Junk.STUFF_LIST));
 		this.verifyHasNoListeners(listValueModel);
@@ -149,27 +149,27 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 		assertEquals(6, synchList.size());
 	}
 
-	public void testGetElementAt() throws Exception {
+	public void testGet() throws Exception {
 		SimpleListValueModel listHolder = this.buildListHolder();
 		ListValueModel listValueModel = new SortedListValueModelAdapter(new ItemListListValueModelAdapter(listHolder, Junk.STUFF_LIST));
 		SynchronizedList synchList = new SynchronizedList(listValueModel);
 		this.verifyHasListeners(listValueModel);
-		assertEquals(this.bar, listValueModel.getItem(0));
+		assertEquals(this.bar, listValueModel.get(0));
 		assertEquals(this.bar, synchList.get(0));
 		this.bar.removeStuff("bar");
 		this.bar.addStuff("zzz");
 		this.bar.addStuff("bar");
-		assertEquals(this.bar, listValueModel.getItem(5));
+		assertEquals(this.bar, listValueModel.get(5));
 		assertEquals(this.bar, synchList.get(5));
 		this.bar.removeStuff("zzz");
 	}
 
 	private void verifyHasNoListeners(ListValueModel listValueModel) throws Exception {
-		assertTrue(((AbstractModel) listValueModel).hasNoListChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) listValueModel).hasNoListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
 	private void verifyHasListeners(ListValueModel listValueModel) throws Exception {
-		assertTrue(((AbstractModel) listValueModel).hasAnyListChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) listValueModel).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
 	private CollectionValueModel buildCollectionHolder() {

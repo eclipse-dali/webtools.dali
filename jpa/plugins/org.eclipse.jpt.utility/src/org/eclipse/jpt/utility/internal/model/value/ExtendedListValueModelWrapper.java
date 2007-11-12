@@ -89,27 +89,24 @@ public class ExtendedListValueModelWrapper
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** ListValueModel implementation **********
 
-	public Object value() {
+	public ListIterator values() {
 		// try to prevent backdoor modification of the lists
 		return new ReadOnlyListIterator(
 			new CompositeListIterator(
 				this.prefix.listIterator(),
-				(ListIterator) this.listHolder.value(),
+				(ListIterator) this.listHolder.values(),
 				this.suffix.listIterator()
 			)
 		);
 	}
 
-
-	// ********** ListValueModel implementation **********
-
-	public void addItem(int index, Object item) {
-		this.addItems(index, Collections.singletonList(item));
+	public void add(int index, Object item) {
+		this.addAll(index, Collections.singletonList(item));
 	}
 
-	public void addItems(int index, List items) {
+	public void addAll(int index, List items) {
 		if (items.size() == 0) {
 			return;
 		}
@@ -120,10 +117,10 @@ public class ExtendedListValueModelWrapper
 		if (index > prefixSize + this.listHolder.size()) {
 			throw new IllegalArgumentException("the suffix cannot be modified");
 		}
-		this.listHolder.addItems(index - prefixSize, items);
+		this.listHolder.addAll(index - prefixSize, items);
 	}
 
-	public Object removeItem(int index) {
+	public Object remove(int index) {
 		int prefixSize = this.prefix.size();
 		if (index < prefixSize) {
 			throw new IllegalArgumentException("the prefix cannot be modified");
@@ -131,10 +128,10 @@ public class ExtendedListValueModelWrapper
 		if (index >= prefixSize + this.listHolder.size()) {
 			throw new IllegalArgumentException("the suffix cannot be modified");
 		}
-		return this.listHolder.removeItem(index - prefixSize);
+		return this.listHolder.remove(index - prefixSize);
 	}
 
-	public List removeItems(int index, int length) {
+	public List remove(int index, int length) {
 		if (length == 0) {
 			return Collections.EMPTY_LIST;
 		}
@@ -145,10 +142,10 @@ public class ExtendedListValueModelWrapper
 		if (index + length > prefixSize + this.listHolder.size()) {
 			throw new IllegalArgumentException("the suffix cannot be modified");
 		}
-		return this.listHolder.removeItems(index - prefixSize, length);
+		return this.listHolder.remove(index - prefixSize, length);
 	}
 
-	public Object replaceItem(int index, Object item) {
+	public Object replace(int index, Object item) {
 		int prefixSize = this.prefix.size();
 		if (index < prefixSize) {
 			throw new IllegalArgumentException("the prefix cannot be modified");
@@ -156,10 +153,10 @@ public class ExtendedListValueModelWrapper
 		if (index >= prefixSize + this.listHolder.size()) {
 			throw new IllegalArgumentException("the suffix cannot be modified");
 		}
-		return this.listHolder.replaceItem(index - prefixSize, item);
+		return this.listHolder.replace(index - prefixSize, item);
 	}
 
-	public List replaceItems(int index, List items) {
+	public List replaceAll(int index, List items) {
 		if (items.size() == 0) {
 			return Collections.EMPTY_LIST;
 		}
@@ -170,17 +167,17 @@ public class ExtendedListValueModelWrapper
 		if (index + items.size() > prefixSize + this.listHolder.size()) {
 			throw new IllegalArgumentException("the suffix cannot be modified");
 		}
-		return this.listHolder.replaceItems(index - prefixSize, items);
+		return this.listHolder.replaceAll(index - prefixSize, items);
 	}
 
-	public Object getItem(int index) {
+	public Object get(int index) {
 		int prefixSize = this.prefix.size();
 		if (index < prefixSize) {
 			return this.prefix.get(index);
 		} else if (index >= prefixSize + this.listHolder.size()) {
 			return this.suffix.get(index - (prefixSize + this.listHolder.size()));
 		} else {
-			return this.listHolder.getItem(index - prefixSize);
+			return this.listHolder.get(index - prefixSize);
 		}
 	}
 
@@ -193,32 +190,32 @@ public class ExtendedListValueModelWrapper
 
 	@Override
 	protected void itemsAdded(ListChangeEvent e) {
-		this.fireItemsAdded(e.cloneWithSource(this, VALUE, this.prefix.size()));
+		this.fireItemsAdded(e.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
 	}
 
 	@Override
 	protected void itemsRemoved(ListChangeEvent e) {
-		this.fireItemsRemoved(e.cloneWithSource(this, VALUE, this.prefix.size()));
+		this.fireItemsRemoved(e.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
 	}
 
 	@Override
 	protected void itemsReplaced(ListChangeEvent e) {
-		this.fireItemsReplaced(e.cloneWithSource(this, VALUE, this.prefix.size()));
+		this.fireItemsReplaced(e.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
 	}
 
 	@Override
 	protected void itemsMoved(ListChangeEvent e) {
-		this.fireItemsMoved(e.cloneWithSource(this, VALUE, this.prefix.size()));
+		this.fireItemsMoved(e.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
 	}
 
 	@Override
 	protected void listCleared(ListChangeEvent e) {
-		this.fireListCleared(VALUE);
+		this.fireListCleared(LIST_VALUES);
 	}
 
 	@Override
 	protected void listChanged(ListChangeEvent e) {
-		this.fireListChanged(VALUE);
+		this.fireListChanged(LIST_VALUES);
 	}
 
 

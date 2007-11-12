@@ -80,41 +80,38 @@ public class TransformationListValueModelAdapter
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** ListValueModel implementation **********
 
-	public Object value() {
+	public ListIterator values() {
 		// try to prevent backdoor modification of the list
 		return new ReadOnlyListIterator(this.transformedList);
 	}
 
-
-	// ********** ListValueModel implementation **********
-
-	public void addItem(int index, Object item) {
+	public void add(int index, Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void addItems(int index, List items) {
+	public void addAll(int index, List items) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Object removeItem(int index) {
+	public Object remove(int index) {
 		throw new UnsupportedOperationException();
 	}
 
-	public List removeItems(int index, int length) {
+	public List remove(int index, int length) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Object replaceItem(int index, Object item) {
+	public Object replace(int index, Object item) {
 		throw new UnsupportedOperationException();
 	}
 
-	public List replaceItems(int index, List items) {
+	public List replaceAll(int index, List items) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Object getItem(int index) {
+	public Object get(int index) {
 		return this.transformedList.get(index);
 	}
 
@@ -151,7 +148,7 @@ public class TransformationListValueModelAdapter
 	 * Transform the items in the specified list value model.
 	 */
 	protected List transformItems(ListValueModel lvm) {
-		return this.transformItems((ListIterator) lvm.value(), lvm.size());
+		return this.transformItems((ListIterator) lvm.values(), lvm.size());
 	}
 
 	/**
@@ -189,7 +186,7 @@ public class TransformationListValueModelAdapter
 	 */
     @Override
 	protected void itemsAdded(ListChangeEvent e) {
-		this.addItemsToList(e.index(), this.transformItems(e), this.transformedList, VALUE);
+		this.addItemsToList(e.index(), this.transformItems(e), this.transformedList, LIST_VALUES);
 	}
 
 	/**
@@ -199,7 +196,7 @@ public class TransformationListValueModelAdapter
 	 */
     @Override
 	protected void itemsRemoved(ListChangeEvent e) {
-		this.removeItemsFromList(e.index(), e.itemsSize(), this.transformedList, VALUE);
+		this.removeItemsFromList(e.index(), e.itemsSize(), this.transformedList, LIST_VALUES);
 	}
 
 	/**
@@ -209,7 +206,7 @@ public class TransformationListValueModelAdapter
 	 */
     @Override
 	protected void itemsReplaced(ListChangeEvent e) {
-		this.setItemsInList(e.index(), this.transformItems(e), this.transformedList, VALUE);
+		this.setItemsInList(e.index(), this.transformItems(e), this.transformedList, LIST_VALUES);
 	}
 
 	/**
@@ -219,7 +216,7 @@ public class TransformationListValueModelAdapter
 	 */
     @Override
 	protected void itemsMoved(ListChangeEvent e) {
-    	this.moveItemsInList(e.targetIndex(), e.sourceIndex(), e.moveLength(), this.transformedList, VALUE);
+    	this.moveItemsInList(e.targetIndex(), e.sourceIndex(), e.moveLength(), this.transformedList, LIST_VALUES);
 	}
 
 	/**
@@ -228,7 +225,7 @@ public class TransformationListValueModelAdapter
 	 */
     @Override
 	protected void listCleared(ListChangeEvent e) {
-    	this.clearList(this.transformedList, VALUE);
+    	this.clearList(this.transformedList, LIST_VALUES);
 	}
 
 	/**
@@ -239,7 +236,7 @@ public class TransformationListValueModelAdapter
 	protected void listChanged(ListChangeEvent e) {
 		this.transformedList.clear();
 		this.transformedList.addAll(this.transformItems(this.listHolder));
-		this.fireListChanged(VALUE);
+		this.fireListChanged(LIST_VALUES);
 	}
 
 }

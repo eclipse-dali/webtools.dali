@@ -190,7 +190,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.values()));
 	}
 
-	public void testAddItem() {
+	public void testAdd() {
 		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.values()));
 		assertNull(this.event1);
 
@@ -216,7 +216,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(namesPlus, CollectionTools.bag((Iterator) this.aa1.values()));
 	}
 
-	public void testRemoveItem() {
+	public void testRemove() {
 		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.values()));
 		assertNull(this.event1);
 
@@ -258,7 +258,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(namesPlus2, CollectionTools.bag((Iterator) this.aa1.values()));
 	}
 
-	public void testValue() {
+	public void testValues() {
 		assertEquals(this.subject1Names(), CollectionTools.bag(this.subject1.names()));
 		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.values()));
 	}

@@ -38,7 +38,7 @@ public class NullCollectionValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testAddItem() {
+	public void testAdd() {
 		boolean exCaught = false;
 		try {
 			this.collectionHolder.add("foo");
@@ -48,7 +48,7 @@ public class NullCollectionValueModelTests extends TestCase {
 		assertTrue(exCaught);
 	}
 
-	public void testAddItems() {
+	public void testAddAll() {
 		boolean exCaught = false;
 		Collection<String> items = new ArrayList<String>();
 		items.add("foo");
@@ -62,7 +62,7 @@ public class NullCollectionValueModelTests extends TestCase {
 		assertTrue(exCaught);
 	}
 
-	public void testRemoveItem() {
+	public void testRemove() {
 		boolean exCaught = false;
 		try {
 			this.collectionHolder.remove("foo");
@@ -72,7 +72,7 @@ public class NullCollectionValueModelTests extends TestCase {
 		assertTrue(exCaught);
 	}
 
-	public void testRemoveItems() {
+	public void testRemoveAll() {
 		boolean exCaught = false;
 		Collection<String> items = new ArrayList<String>();
 		items.add("foo");
@@ -90,7 +90,7 @@ public class NullCollectionValueModelTests extends TestCase {
 		assertEquals(0, this.collectionHolder.size());
 	}
 
-	public void testValue() {
+	public void testValues() {
 		assertFalse(((Iterator) this.collectionHolder.values()).hasNext());
 	}
 

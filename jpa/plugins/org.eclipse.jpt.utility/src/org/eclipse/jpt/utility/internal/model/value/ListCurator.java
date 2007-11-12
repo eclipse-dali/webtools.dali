@@ -12,6 +12,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
@@ -81,20 +82,16 @@ public abstract class ListCurator
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** ListValueModel implementation **********
 
-	@Override
-	public Object value() {
+	public ListIterator values() {
 		return new ReadOnlyListIterator(this.record);
 	}
-
-
-	// ********** ListValueModel implementation **********
 
 	/**
 	 * Return the item at the specified index of the subject's list aspect.
 	 */
-	public Object getItem(int index) {
+	public Object get(int index) {
 		return this.record.get(index);
 	}
 
@@ -108,33 +105,33 @@ public abstract class ListCurator
 	/**
 	 * Unsupported in this implementation
 	 */
-	public void addItem(int index, Object item) {
+	public void add(int index, Object item) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * Unsupported in this implementation
 	 */
-	public void addItems(int index, List items) {
+	public void addAll(int index, List items) {
 		for (int i = 0; i < items.size(); i++) {
-			this.addItem(index + i, items.get(i));
+			this.add(index + i, items.get(i));
 		}
 	}
 
 	/**
 	 * Unsupported in this implementation
 	 */
-	public Object removeItem(int index) {
+	public Object remove(int index) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * Unsupported in this implementation
 	 */
-	public List removeItems(int index, int length) {
+	public List remove(int index, int length) {
 		List removedItems = new ArrayList(length);
 		for (int i = 0; i < length; i++) {
-			removedItems.add(this.removeItem(index));
+			removedItems.add(this.remove(index));
 		}
 		return removedItems;
 	}
@@ -142,17 +139,17 @@ public abstract class ListCurator
 	/**
 	 * Unsupported in this implementation
 	 */
-	public Object replaceItem(int index, Object item) {
+	public Object replace(int index, Object item) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * Unsupported in this implementation
 	 */
-	public List replaceItems(int index, List items) {
+	public List replaceAll(int index, List items) {
 		List replacedItems = new ArrayList(items.size());
 		for (int i = 0; i < items.size(); i++) {
-			replacedItems.add(this.replaceItem(index + i, items.get(i)));
+			replacedItems.add(this.replace(index + i, items.get(i)));
 		}
 		return replacedItems;
 	}
@@ -161,18 +158,23 @@ public abstract class ListCurator
 	// ********** AspectAdapter implementation **********
 
 	@Override
+	protected Object value() {
+		return this.values();
+	}
+
+	@Override
 	protected Class<? extends ChangeListener> listenerClass() {
 		return ListChangeListener.class;
 	}
 
 	@Override
 	protected String listenerAspectName() {
-		return VALUE;
+		return LIST_VALUES;
 	}
 
 	@Override
 	protected boolean hasListeners() {
-		return this.hasAnyListChangeListeners(VALUE);
+		return this.hasAnyListChangeListeners(LIST_VALUES);
 	}
 
 	/**
@@ -180,7 +182,7 @@ public abstract class ListCurator
 	 */
 	@Override
 	protected void fireAspectChange(Object oldValue, Object newValue) {
-		this.fireListChanged(VALUE);
+		this.fireListChanged(LIST_VALUES);
 	}
 
 	/**
@@ -255,11 +257,11 @@ public abstract class ListCurator
 	}
 
 	private void addItemToInventory(int index, Object item) {
-		this.addItemToList(index, item, this.record, VALUE);
+		this.addItemToList(index, item, this.record, LIST_VALUES);
 	}
 
 	private void removeItemFromInventory(int index, Object item) {
-		this.removeItemFromList(index, this.record, VALUE);
+		this.removeItemFromList(index, this.record, LIST_VALUES);
 	}
 
 }

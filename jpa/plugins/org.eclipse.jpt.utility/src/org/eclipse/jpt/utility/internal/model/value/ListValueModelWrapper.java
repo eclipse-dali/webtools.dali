@@ -52,7 +52,7 @@ public abstract class ListValueModelWrapper
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUE);
+		return new SingleAspectChangeSupport(this, LIST_VALUES);
 	}
 
 	protected ListChangeListener buildListChangeListener() {
@@ -90,7 +90,7 @@ public abstract class ListValueModelWrapper
 	 */
 	@Override
 	public synchronized void addListChangeListener(ListChangeListener listener) {
-		if (this.hasNoListChangeListeners(VALUE)) {
+		if (this.hasNoListChangeListeners(LIST_VALUES)) {
 			this.engageModel();
 		}
 		super.addListChangeListener(listener);
@@ -101,7 +101,7 @@ public abstract class ListValueModelWrapper
 	 */
 	@Override
 	public synchronized void addListChangeListener(String listName, ListChangeListener listener) {
-		if (listName == VALUE && this.hasNoListChangeListeners(VALUE)) {
+		if (listName == LIST_VALUES && this.hasNoListChangeListeners(LIST_VALUES)) {
 			this.engageModel();
 		}
 		super.addListChangeListener(listName, listener);
@@ -113,7 +113,7 @@ public abstract class ListValueModelWrapper
 	@Override
 	public synchronized void removeListChangeListener(ListChangeListener listener) {
 		super.removeListChangeListener(listener);
-		if (this.hasNoListChangeListeners(VALUE)) {
+		if (this.hasNoListChangeListeners(LIST_VALUES)) {
 			this.disengageModel();
 		}
 	}
@@ -124,7 +124,7 @@ public abstract class ListValueModelWrapper
 	@Override
 	public synchronized void removeListChangeListener(String listName, ListChangeListener listener) {
 		super.removeListChangeListener(listName, listener);
-		if (listName == VALUE && this.hasNoListChangeListeners(VALUE)) {
+		if (listName == LIST_VALUES && this.hasNoListChangeListeners(LIST_VALUES)) {
 			this.disengageModel();
 		}
 	}
@@ -136,14 +136,14 @@ public abstract class ListValueModelWrapper
 	 * Start listening to the list holder.
 	 */
 	protected void engageModel() {
-		this.listHolder.addListChangeListener(VALUE, this.listChangeListener);
+		this.listHolder.addListChangeListener(LIST_VALUES, this.listChangeListener);
 	}
 
 	/**
 	 * Stop listening to the list holder.
 	 */
 	protected void disengageModel() {
-		this.listHolder.removeListChangeListener(VALUE, this.listChangeListener);
+		this.listHolder.removeListChangeListener(LIST_VALUES, this.listChangeListener);
 	}
 
 	@Override

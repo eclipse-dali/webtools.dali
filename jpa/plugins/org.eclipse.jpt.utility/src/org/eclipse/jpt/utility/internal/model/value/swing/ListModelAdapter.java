@@ -110,7 +110,7 @@ public class ListModelAdapter
 	}
 
 	public Object getElementAt(int index) {
-		return this.listHolder.getItem(index);
+		return this.listHolder.get(index);
 	}
 
 	/**
@@ -193,11 +193,11 @@ public class ListModelAdapter
 	// ********** behavior **********
 
 	protected void engageModel() {
-		this.listHolder.addListChangeListener(ValueModel.VALUE, this.listChangeListener);
+		this.listHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 	}
 
 	protected void disengageModel() {
-		this.listHolder.removeListChangeListener(ValueModel.VALUE, this.listChangeListener);
+		this.listHolder.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 	}
 
 

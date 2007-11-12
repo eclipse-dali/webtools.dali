@@ -88,7 +88,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testValue() {
+	public void testValues() {
 		assertEquals(this.buildBag(), CollectionTools.bag((Iterator) this.bagHolder.values()));
 		assertEquals(this.buildSet(), CollectionTools.set((Iterator) this.setHolder.values()));
 	}
@@ -134,7 +134,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		return false;
 	}
 
-	public void testAddItem() {
+	public void testAdd() {
 		assertFalse(this.bagHolderContains("joo"));
 		this.bagHolder.add("joo");
 		assertTrue(this.bagHolderContains("joo"));
@@ -152,7 +152,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		assertTrue(this.setHolderContains(null));
 	}
 
-	public void testAddItems() {
+	public void testAddAll() {
 		assertFalse(this.bagHolderContainsAny(this.buildAddItems()));
 		this.bagHolder.addAll(this.buildAddItems());
 		assertTrue(this.bagHolderContainsAll(this.buildAddItems()));
@@ -162,7 +162,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		assertTrue(this.setHolderContainsAll(this.buildAddItems()));
 	}
 
-	public void testRemoveItem() {
+	public void testRemove() {
 		assertTrue(this.bagHolderContains("bar"));
 		this.bagHolder.remove("bar");
 		assertFalse(this.bagHolderContains("bar"));
@@ -182,7 +182,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		assertFalse(this.setHolderContains(null));
 	}
 
-	public void testRemoveItems() {
+	public void testRemoveAll() {
 		assertTrue(this.bagHolderContainsAll(this.buildRemoveItems()));
 		this.bagHolder.removeAll(this.buildRemoveItems());
 		assertFalse(this.bagHolderContainsAny(this.buildRemoveItems()));

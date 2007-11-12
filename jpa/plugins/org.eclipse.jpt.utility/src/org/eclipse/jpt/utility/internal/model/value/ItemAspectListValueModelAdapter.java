@@ -69,41 +69,38 @@ public abstract class ItemAspectListValueModelAdapter
 	}
 
 
-	// ********** ValueModel implementation **********
-
-	public Object value() {
-		return this.listHolder.value();
-	}
-
-
 	// ********** ListValueModel implementation **********
 
-	public void addItem(int index, Object item) {
-		this.listHolder.addItem(index, item);
+	public ListIterator values() {
+		return this.listHolder.values();
 	}
 
-	public void addItems(int index, List items) {
-		this.listHolder.addItems(index, items);
+	public void add(int index, Object item) {
+		this.listHolder.add(index, item);
 	}
 
-	public Object removeItem(int index) {
-		return this.listHolder.removeItem(index);
+	public void addAll(int index, List items) {
+		this.listHolder.addAll(index, items);
 	}
 
-	public List removeItems(int index, int length) {
-		return this.listHolder.removeItems(index, length);
+	public Object remove(int index) {
+		return this.listHolder.remove(index);
 	}
 
-	public Object replaceItem(int index, Object item) {
-		return this.listHolder.replaceItem(index, item);
+	public List remove(int index, int length) {
+		return this.listHolder.remove(index, length);
 	}
 
-	public List replaceItems(int index, List items) {
-		return this.listHolder.replaceItems(index, items);
+	public Object replace(int index, Object item) {
+		return this.listHolder.replace(index, item);
 	}
 
-	public Object getItem(int index) {
-		return this.listHolder.getItem(index);
+	public List replaceAll(int index, List items) {
+		return this.listHolder.replaceAll(index, items);
+	}
+
+	public Object get(int index) {
+		return this.listHolder.get(index);
 	}
 
 	public int size() {
@@ -123,7 +120,7 @@ public abstract class ItemAspectListValueModelAdapter
 	}
 
 	protected void engageAllItems() {
-		this.engageItems((ListIterator) this.listHolder.value());
+		this.engageItems((ListIterator) this.listHolder.values());
 	}
 
 	protected void engageItems(Iterator stream) {
@@ -158,7 +155,7 @@ public abstract class ItemAspectListValueModelAdapter
 	}
 
 	protected void disengageAllItems() {
-		this.disengageItems((ListIterator) this.listHolder.value());
+		this.disengageItems((ListIterator) this.listHolder.values());
 	}
 
 	protected void disengageItems(Iterator stream) {
@@ -195,7 +192,7 @@ public abstract class ItemAspectListValueModelAdapter
 	@Override
 	protected void itemsAdded(ListChangeEvent e) {
 		// re-fire event with the wrapper as the source
-		this.fireItemsAdded(e.cloneWithSource(this, VALUE));
+		this.fireItemsAdded(e.cloneWithSource(this, LIST_VALUES));
 		this.engageItems(e.items());
 	}
 
@@ -207,7 +204,7 @@ public abstract class ItemAspectListValueModelAdapter
 	protected void itemsRemoved(ListChangeEvent e) {
 		this.disengageItems(e.items());
 		// re-fire event with the wrapper as the source
-		this.fireItemsRemoved(e.cloneWithSource(this, VALUE));
+		this.fireItemsRemoved(e.cloneWithSource(this, LIST_VALUES));
 	}
 
 	/**
@@ -219,7 +216,7 @@ public abstract class ItemAspectListValueModelAdapter
 	protected void itemsReplaced(ListChangeEvent e) {
 		this.disengageItems(e.replacedItems());
 		// re-fire event with the wrapper as the source
-		this.fireItemsReplaced(e.cloneWithSource(this, VALUE));
+		this.fireItemsReplaced(e.cloneWithSource(this, LIST_VALUES));
 		this.engageItems(e.items());
 	}
 
@@ -230,7 +227,7 @@ public abstract class ItemAspectListValueModelAdapter
 	@Override
 	protected void itemsMoved(ListChangeEvent e) {
 		// re-fire event with the wrapper as the source
-		this.fireItemsMoved(e.cloneWithSource(this, VALUE));
+		this.fireItemsMoved(e.cloneWithSource(this, LIST_VALUES));
 	}
 
 	/**
@@ -245,7 +242,7 @@ public abstract class ItemAspectListValueModelAdapter
 		this.disengageItems(keys.iterator());
 		this.counters.clear();
 		// re-fire event with the wrapper as the source
-		this.fireListCleared(VALUE);
+		this.fireListCleared(LIST_VALUES);
 	}
 
 	/**
@@ -260,7 +257,7 @@ public abstract class ItemAspectListValueModelAdapter
 		this.disengageItems(keys.iterator());
 		this.counters.clear();
 		// re-fire event with the wrapper as the source
-		this.fireListChanged(VALUE);
+		this.fireListChanged(LIST_VALUES);
 		this.engageAllItems();
 	}
 
@@ -285,7 +282,7 @@ public abstract class ItemAspectListValueModelAdapter
 	 * Notify listeners of the change.
 	 */
 	protected void itemAspectChanged(int index, Object item) {
-		this.fireItemReplaced(VALUE, index, item, item);		// hmmm...
+		this.fireItemReplaced(LIST_VALUES, index, item, item);		// hmmm...
 	}
 
 	/**
@@ -302,7 +299,7 @@ public abstract class ItemAspectListValueModelAdapter
 	 */
 	protected int lastIdentityIndexOf(Object o, int end) {
 		for (int i = end; i-- > 0; ) {
-			if (this.listHolder.getItem(i) == o) {
+			if (this.listHolder.get(i) == o) {
 				return i;
 			}
 		}

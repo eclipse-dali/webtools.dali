@@ -67,7 +67,7 @@ public class ReadOnlyCollectionValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testValue() {
+	public void testValues() {
 		assertEquals(buildCollection(), CollectionTools.bag((Iterator) this.collectionHolder.values()));
 	}
 

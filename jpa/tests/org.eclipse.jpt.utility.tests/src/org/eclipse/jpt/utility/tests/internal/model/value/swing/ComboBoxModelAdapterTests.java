@@ -20,6 +20,7 @@ import javax.swing.ListModel;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
@@ -50,25 +51,25 @@ public class ComboBoxModelAdapterTests extends TestCase {
 
 	public void testHasListeners() throws Exception {
 		SimpleListValueModel listHolder = this.buildListHolder();
-		assertFalse(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
-		SimplePropertyValueModel selectionHolder = new SimplePropertyValueModel(((ListIterator) listHolder.value()).next());
+		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
+		SimplePropertyValueModel selectionHolder = new SimplePropertyValueModel(((ListIterator) listHolder.values()).next());
 		assertFalse(selectionHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
 
 		ComboBoxModel comboBoxModel = new ComboBoxModelAdapter(listHolder, selectionHolder);
-		assertFalse(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertFalse(selectionHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
 		this.verifyHasNoListeners(comboBoxModel);
 
 		SynchronizedList synchList = new SynchronizedList(comboBoxModel);
 		PropertyChangeListener selectionListener = this.buildSelectionListener();
 		selectionHolder.addPropertyChangeListener(ValueModel.VALUE, selectionListener);
-		assertTrue(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertTrue(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(selectionHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
 		this.verifyHasListeners(comboBoxModel);
 
 		comboBoxModel.removeListDataListener(synchList);
 		selectionHolder.removePropertyChangeListener(ValueModel.VALUE, selectionListener);
-		assertFalse(listHolder.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertFalse(selectionHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
 		this.verifyHasNoListeners(comboBoxModel);
 	}

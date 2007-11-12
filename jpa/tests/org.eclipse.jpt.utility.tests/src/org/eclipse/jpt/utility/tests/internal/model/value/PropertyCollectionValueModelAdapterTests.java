@@ -51,7 +51,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testValue() {
+	public void testValues() {
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, new TestListener() {
 			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
 		});

@@ -56,7 +56,7 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 		return CollectionTools.collection((Iterator) this.wrappedCollectionHolder.values());
 	}
 
-	public void testGetValue() {
+	public void testValue() {
 		this.adapter.addPropertyChangeListener(ValueModel.VALUE, new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {/* OK */}
 		});

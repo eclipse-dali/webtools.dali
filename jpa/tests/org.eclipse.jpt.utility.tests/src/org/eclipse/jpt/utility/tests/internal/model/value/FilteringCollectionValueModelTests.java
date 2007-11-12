@@ -67,7 +67,7 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testValue() {
+	public void testValues() {
 		// add a listener to "activate" the wrapper
 		this.filteredCollectionHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.buildFilteredListener());
 

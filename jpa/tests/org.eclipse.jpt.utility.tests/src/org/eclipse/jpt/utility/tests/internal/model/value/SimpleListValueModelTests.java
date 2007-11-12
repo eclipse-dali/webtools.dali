@@ -77,24 +77,24 @@ public class SimpleListValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testValue() {
-		assertEquals(this.buildList(), CollectionTools.list((Iterator) this.listHolder.value()));
+	public void testValues() {
+		assertEquals(this.buildList(), CollectionTools.list((Iterator) this.listHolder.values()));
 	}
 
 	public void testSize() {
-		assertEquals(this.buildList().size(), CollectionTools.size((Iterator) this.listHolder.value()));
+		assertEquals(this.buildList().size(), CollectionTools.size((Iterator) this.listHolder.values()));
 	}
 
 	private boolean listContains(Object item) {
-		return CollectionTools.contains((Iterator) this.listHolder.value(), item);
+		return CollectionTools.contains((Iterator) this.listHolder.values(), item);
 	}
 
 	private boolean listContainsAll(Collection items) {
-		return CollectionTools.containsAll((Iterator) this.listHolder.value(), items);
+		return CollectionTools.containsAll((Iterator) this.listHolder.values(), items);
 	}
 
 	private boolean listContainsAny(Collection items) {
-		List list = CollectionTools.list((ListIterator) this.listHolder.value());
+		List list = CollectionTools.list((ListIterator) this.listHolder.values());
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
 			if (list.contains(stream.next())) {
 				return true;
@@ -103,40 +103,40 @@ public class SimpleListValueModelTests extends TestCase {
 		return false;
 	}
 
-	public void testAddItem() {
+	public void testAdd() {
 		assertFalse(this.listContains("joo"));
-		this.listHolder.addItem(2, "joo");
+		this.listHolder.add(2, "joo");
 		assertTrue(this.listContains("joo"));
 
 		assertFalse(this.listContains(null));
-		this.listHolder.addItem(0, null);
+		this.listHolder.add(0, null);
 		assertTrue(this.listContains(null));
 	}
 
-	public void testAddItems() {
+	public void testAddAll() {
 		assertFalse(this.listContainsAny(this.buildAddList()));
-		this.listHolder.addItems(2, this.buildAddList());
+		this.listHolder.addAll(2, this.buildAddList());
 		assertTrue(this.listContainsAll(this.buildAddList()));
 	}
 
-	public void testRemoveItem() {
+	public void testRemove() {
 		assertTrue(this.listContains("bar"));
-		this.listHolder.removeItem(this.buildList().indexOf("bar"));
+		this.listHolder.remove(this.buildList().indexOf("bar"));
 		assertFalse(this.listContains("bar"));
 
-		this.listHolder.addItem(1, null);
+		this.listHolder.add(1, null);
 		assertTrue(this.listContains(null));
-		this.listHolder.removeItem(1);
+		this.listHolder.remove(1);
 		assertFalse(this.listContains(null));
 	}
 
-	public void testRemoveItems() {
+	public void testRemoveLength() {
 		assertTrue(this.listContainsAll(this.buildRemoveList()));
-		this.listHolder.removeItems(0, 2);
+		this.listHolder.remove(0, 2);
 		assertFalse(this.listContainsAny(this.buildRemoveList()));
 	}
 
-	public void testSetValue() {
+	public void testSetValues() {
 		List newList = new ArrayList();
 		newList.add("joo");
 		newList.add("jar");
@@ -148,9 +148,9 @@ public class SimpleListValueModelTests extends TestCase {
 		assertFalse(this.listContains("bar"));
 		assertTrue(this.listContains("jar"));
 
-		this.listHolder.addItem(1, null);
+		this.listHolder.add(1, null);
 		assertTrue(this.listContains(null));
-		this.listHolder.removeItem(1);
+		this.listHolder.remove(1);
 		assertFalse(this.listContains(null));
 
 		((SimpleListValueModel) this.listHolder).setValue(null);
@@ -163,29 +163,29 @@ public class SimpleListValueModelTests extends TestCase {
 	}
 
 	public void testListChange2() {
-		this.listHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+		this.listHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 		this.verifyListChange();
 	}
 
 	private void verifyListChange() {
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.addItem(1, "joo");
+		this.listHolder.add(1, "joo");
 		this.verifyEvent(ADD, 1, "joo");
 
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.addItem(1, null);
+		this.listHolder.add(1, null);
 		this.verifyEvent(ADD, 1, null);
 
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.removeItem(1);
+		this.listHolder.remove(1);
 		this.verifyEvent(REMOVE, 1, null);
 
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.removeItem(1);
+		this.listHolder.remove(1);
 		this.verifyEvent(REMOVE, 1, "joo");
 
 		this.event = null;
@@ -195,13 +195,13 @@ public class SimpleListValueModelTests extends TestCase {
 
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.addItems(0, this.buildList());
+		this.listHolder.addAll(0, this.buildList());
 		this.verifyEvent(ADD);
 		assertEquals(this.buildList(), CollectionTools.list(this.event.items()));
 
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.replaceItem(0, "joo");
+		this.listHolder.replace(0, "joo");
 		this.verifyEvent(REPLACE);
 		assertFalse(CollectionTools.contains(this.event.items(), "foo"));
 		assertTrue(CollectionTools.contains(this.event.items(), "joo"));
@@ -239,7 +239,7 @@ public class SimpleListValueModelTests extends TestCase {
 	private void verifyEvent(String e) {
 		assertEquals(e, this.eventType);
 		assertEquals(this.listHolder, this.event.getSource());
-		assertEquals(ValueModel.VALUE, this.event.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event.listName());
 	}
 
 	private void verifyEvent(String e, int index, Object item) {

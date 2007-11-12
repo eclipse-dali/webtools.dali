@@ -273,7 +273,7 @@ public class TableModelAdapter
 	 * of the objects that make up the rows.
 	 */
 	private void engageModel() {
-		this.listHolder.addListChangeListener(ValueModel.VALUE, this.listChangeListener);
+		this.listHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 		this.engageAllCells();
 	}
 
@@ -282,7 +282,7 @@ public class TableModelAdapter
 	 */
 	private void engageAllCells() {
 		this.rows.ensureCapacity(this.listHolder.size());
-		for (Iterator stream = (Iterator) this.listHolder.value(); stream.hasNext(); ) {
+		for (Iterator stream = (Iterator) this.listHolder.values(); stream.hasNext(); ) {
 			PropertyValueModel[] row = this.columnAdapter.cellModels(stream.next());
 			this.engageRow(row);
 			this.rows.add(row);
@@ -303,7 +303,7 @@ public class TableModelAdapter
 	 */
 	private void disengageModel() {
 		this.disengageAllCells();
-		this.listHolder.removeListChangeListener(ValueModel.VALUE, this.listChangeListener);
+		this.listHolder.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 	}
 
 	private void disengageAllCells() {

@@ -179,7 +179,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		this.verifyAdapter(this.preferencesAdapter);
 	}
 
-	public void testGetValue() throws Exception {
+	public void testValues() throws Exception {
 		this.verifyNode(this.testNode);
 		this.verifyAdapter(this.preferencesAdapter);
 	}

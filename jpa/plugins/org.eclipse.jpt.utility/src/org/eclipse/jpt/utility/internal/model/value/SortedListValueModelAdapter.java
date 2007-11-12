@@ -122,7 +122,7 @@ public class SortedListValueModelAdapter
 		if (diffRange.size > 0) {
 			List unsortedItems = unsortedList.subList(diffRange.start, diffRange.end + 1);
 			List sortedItems = this.list.subList(diffRange.start, diffRange.end + 1);
-			this.fireItemsReplaced(VALUE, diffRange.start, sortedItems, unsortedItems);
+			this.fireItemsReplaced(LIST_VALUES, diffRange.start, sortedItems, unsortedItems);
 		}
 	}
 

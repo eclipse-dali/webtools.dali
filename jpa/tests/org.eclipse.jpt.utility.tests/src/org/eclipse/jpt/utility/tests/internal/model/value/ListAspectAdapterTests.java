@@ -20,6 +20,7 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
@@ -49,7 +50,7 @@ public class ListAspectAdapterTests extends TestCase {
 		this.subjectHolder1 = new SimplePropertyValueModel(this.subject1);
 		this.aa1 = this.buildAspectAdapter(this.subjectHolder1);
 		this.listener1 = this.buildValueChangeListener1();
-		this.aa1.addListChangeListener(ValueModel.VALUE, this.listener1);
+		this.aa1.addListChangeListener(ListValueModel.LIST_VALUES, this.listener1);
 		this.event1 = null;
 
 		this.subject2 = new TestSubject();
@@ -101,7 +102,7 @@ public class ListAspectAdapterTests extends TestCase {
 					throw new IllegalStateException("invalid aspect name: " + this.listName);
 				}
 			}
-			public void addItem(int index, Object item) {
+			public void add(int index, Object item) {
 				if (this.listName == TestSubject.NAMES_LIST) {
 					((TestSubject) this.subject).addName(index, (String) item);
 				} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
@@ -110,7 +111,7 @@ public class ListAspectAdapterTests extends TestCase {
 					throw new IllegalStateException("invalid aspect name: " + this.listName);
 				}
 			}
-			public Object removeItem(int index) {
+			public Object remove(int index) {
 				if (this.listName == TestSubject.NAMES_LIST) {
 					return ((TestSubject) this.subject).removeName(index);
 				} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
@@ -119,7 +120,7 @@ public class ListAspectAdapterTests extends TestCase {
 					throw new IllegalStateException("invalid aspect name: " + this.listName);
 				}
 			}
-			public Object replaceItem(int index, Object item) {
+			public Object replace(int index, Object item) {
 				if (this.listName == TestSubject.NAMES_LIST) {
 					return ((TestSubject) this.subject).setName(index, (String) item);
 				} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
@@ -165,63 +166,63 @@ public class ListAspectAdapterTests extends TestCase {
 	}
 
 	public void testSubjectHolder() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
 		assertNull(this.event1);
 
 		this.subjectHolder1.setValue(this.subject2);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(-1, this.event1.index());
 		assertFalse(this.event1.items().hasNext());
-		assertEquals(this.subject2Names(), CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(this.subject2Names(), CollectionTools.list((ListIterator) this.aa1.values()));
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(null);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(-1, this.event1.index());
 		assertFalse(this.event1.items().hasNext());
-		assertFalse(((Iterator) this.aa1.value()).hasNext());
+		assertFalse(((Iterator) this.aa1.values()).hasNext());
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(this.subject1);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(-1, this.event1.index());
 		assertFalse(this.event1.items().hasNext());
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
 	}
 
-	public void testAddItem() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.value()));
+	public void testAdd() {
+		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
 		assertNull(this.event1);
 
 		this.subject1.addName("jam");
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(this.subject1Names().size(), this.event1.index());
 		assertEquals("jam", this.event1.items().next());
 		List namesPlus = this.subject1Names();
 		namesPlus.add("jam");
-		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.values()));
 
 		this.event1 = null;
-		this.aa1.addItem(2, "jaz");
+		this.aa1.add(2, "jaz");
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(2, this.event1.index());
 		assertEquals("jaz", this.event1.items().next());
 		namesPlus.add(2, "jaz");
-		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.values()));
 	}
 
-	public void testDefaultAddItems() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.value()));
+	public void testDefaultAdd() {
+		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
 		assertNull(this.event1);
 
 		List items = new ArrayList();
@@ -231,44 +232,44 @@ public class ListAspectAdapterTests extends TestCase {
 		items.add("jam");
 
 		this.event1 = null;
-		this.aa1.addItems(2, items);
+		this.aa1.addAll(2, items);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(5, this.event1.index());		// only the last "add" event will still be there
 		assertEquals("jam", this.event1.items().next());
 		List namesPlus = this.subject1Names();
 		namesPlus.addAll(2, items);
-		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.values()));
 	}
 
-	public void testRemoveItem() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.value()));
+	public void testRemove() {
+		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
 		assertNull(this.event1);
 
 		String removedName = this.subject1.removeName(0);	// should be "foo"
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(0, this.event1.index());
 		assertEquals(removedName, this.event1.items().next());
 		List namesMinus = this.subject1Names();
 		namesMinus.remove(0);
-		assertEquals(namesMinus, CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(namesMinus, CollectionTools.list((ListIterator) this.aa1.values()));
 
 		this.event1 = null;
-		Object removedItem = this.aa1.removeItem(0);	
+		Object removedItem = this.aa1.remove(0);	
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(0, this.event1.index());
 		assertEquals(removedItem, this.event1.items().next());
 		namesMinus.remove(0);
-		assertEquals(namesMinus, CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(namesMinus, CollectionTools.list((ListIterator) this.aa1.values()));
 	}
 
-	public void testDefaultRemoveItems() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.value()));
+	public void testDefaultLength() {
+		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
 		assertNull(this.event1);
 
 		List items = new ArrayList();
@@ -276,49 +277,49 @@ public class ListAspectAdapterTests extends TestCase {
 		items.add("baz");
 
 		this.event1 = null;
-		this.aa1.removeItems(1, 2);
+		this.aa1.remove(1, 2);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(1, this.event1.index());		// only the last "remove" event will still be there
 		assertEquals("baz", this.event1.items().next());
 		List namesPlus = this.subject1Names();
 		namesPlus.remove(1);
 		namesPlus.remove(1);
-		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.values()));
 	}
 
-	public void testReplaceItem() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.value()));
+	public void testReplace() {
+		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
 		assertNull(this.event1);
 
 		String replacedName = this.subject1.setName(0, "jelly");	// should be "foo"
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(0, this.event1.index());
 		assertEquals("jelly", this.event1.items().next());
 		assertEquals(replacedName, this.event1.replacedItems().next());
 		List namesChanged = this.subject1Names();
 		namesChanged.set(0, "jelly");
-		assertEquals(namesChanged, CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(namesChanged, CollectionTools.list((ListIterator) this.aa1.values()));
 
 		this.event1 = null;
 		replacedName = this.subject1.setName(1, "roll");	// should be "bar"
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(1, this.event1.index());
 		assertEquals("roll", this.event1.items().next());
 		assertEquals(replacedName, this.event1.replacedItems().next());
 		namesChanged = this.subject1Names();
 		namesChanged.set(0, "jelly");
 		namesChanged.set(1, "roll");
-		assertEquals(namesChanged, CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(namesChanged, CollectionTools.list((ListIterator) this.aa1.values()));
 	}
 
-	public void testDefaultReplaceItems() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.value()));
+	public void testDefaultReplaceAll() {
+		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
 		assertNull(this.event1);
 
 		List items = new ArrayList();
@@ -326,64 +327,64 @@ public class ListAspectAdapterTests extends TestCase {
 		items.add("jaz");
 
 		this.event1 = null;
-		this.aa1.replaceItems(1, items);
+		this.aa1.replaceAll(1, items);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(2, this.event1.index());		// only the last "replace" event will still be there
 		assertEquals("baz", this.event1.replacedItems().next());
 		assertEquals("jaz", this.event1.items().next());
 		List namesPlus = this.subject1Names();
 		namesPlus.set(1, items.get(0));
 		namesPlus.set(2, items.get(1));
-		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.values()));
 	}
 
 	public void testListChange() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
 		assertNull(this.event1);
 
 		this.subject1.addTwoNames("jam", "jaz");
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(-1, this.event1.index());
 		assertFalse(this.event1.items().hasNext());
 		List namesPlus2 = this.subject1Names();
 		namesPlus2.add(0, "jaz");
 		namesPlus2.add(0, "jam");
-		assertEquals(namesPlus2, CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(namesPlus2, CollectionTools.list((ListIterator) this.aa1.values()));
 	}
 
-	public void testValue() {
+	public void testValues() {
 		assertEquals(this.subject1Names(), CollectionTools.list(this.subject1.names()));
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.value()));
+		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
 	}
 
-	public void testGetItem() {
+	public void testGet() {
 		assertEquals(this.subject1Names().get(0), this.subject1.getName(0));
-		assertEquals(this.subject1Names().get(0), this.aa1.getItem(0));
+		assertEquals(this.subject1Names().get(0), this.aa1.get(0));
 	}
 
 	public void testSize() {
 		assertEquals(this.subject1Names().size(), CollectionTools.size(this.subject1.names()));
-		assertEquals(this.subject1Names().size(), CollectionTools.size((ListIterator) this.aa1.value()));
+		assertEquals(this.subject1Names().size(), CollectionTools.size((ListIterator) this.aa1.values()));
 	}
 
 	public void testHasListeners() {
-		assertTrue(this.aa1.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertTrue(this.aa1.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(this.subject1.hasAnyListChangeListeners(TestSubject.NAMES_LIST));
-		this.aa1.removeListChangeListener(ValueModel.VALUE, this.listener1);
+		this.aa1.removeListChangeListener(ListValueModel.LIST_VALUES, this.listener1);
 		assertFalse(this.subject1.hasAnyListChangeListeners(TestSubject.NAMES_LIST));
-		assertFalse(this.aa1.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(this.aa1.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
 		ListChangeListener listener2 = this.buildValueChangeListener1();
 		this.aa1.addListChangeListener(listener2);
-		assertTrue(this.aa1.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertTrue(this.aa1.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(this.subject1.hasAnyListChangeListeners(TestSubject.NAMES_LIST));
 		this.aa1.removeListChangeListener(listener2);
 		assertFalse(this.subject1.hasAnyListChangeListeners(TestSubject.NAMES_LIST));
-		assertFalse(this.aa1.hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(this.aa1.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
 // ********** inner class **********

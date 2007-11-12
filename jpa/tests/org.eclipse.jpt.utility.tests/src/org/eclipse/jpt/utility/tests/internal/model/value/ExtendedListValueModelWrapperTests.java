@@ -93,27 +93,27 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testValue() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
-		assertEquals(this.buildExtendedList(), CollectionTools.list((Iterator) this.extendedListHolder.value()));
+	public void testValues() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
+		assertEquals(this.buildExtendedList(), CollectionTools.list((Iterator) this.extendedListHolder.values()));
 	}
 
 	public void testSize() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
-		assertEquals(this.buildExtendedList().size(), CollectionTools.size((Iterator) this.extendedListHolder.value()));
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
+		assertEquals(this.buildExtendedList().size(), CollectionTools.size((Iterator) this.extendedListHolder.values()));
 		assertEquals(this.buildExtendedList().size(), this.extendedListHolder.size());
 	}
 
 	private boolean extendedListContains(Object item) {
-		return CollectionTools.contains((Iterator) this.extendedListHolder.value(), item);
+		return CollectionTools.contains((Iterator) this.extendedListHolder.values(), item);
 	}
 
 	private boolean extendedListContainsAll(Collection items) {
-		return CollectionTools.containsAll((Iterator) this.extendedListHolder.value(), items);
+		return CollectionTools.containsAll((Iterator) this.extendedListHolder.values(), items);
 	}
 
 	private boolean extendedListContainsAny(Collection items) {
-		List extendedList = CollectionTools.list((ListIterator) this.extendedListHolder.value());
+		List extendedList = CollectionTools.list((ListIterator) this.extendedListHolder.values());
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
 			if (extendedList.contains(stream.next())) {
 				return true;
@@ -123,15 +123,15 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 	}
 
 	private boolean listContains(Object item) {
-		return CollectionTools.contains((Iterator) this.listHolder.value(), item);
+		return CollectionTools.contains((Iterator) this.listHolder.values(), item);
 	}
 
 	private boolean listContainsAll(Collection items) {
-		return CollectionTools.containsAll((Iterator) this.listHolder.value(), items);
+		return CollectionTools.containsAll((Iterator) this.listHolder.values(), items);
 	}
 
 	private boolean listContainsAny(Collection items) {
-		List extendedList = CollectionTools.list((ListIterator) this.listHolder.value());
+		List extendedList = CollectionTools.list((ListIterator) this.listHolder.values());
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
 			if (extendedList.contains(stream.next())) {
 				return true;
@@ -140,39 +140,39 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		return false;
 	}
 
-	public void testAddItem1() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testAdd1() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		assertFalse(this.extendedListContains("E"));
-		this.listHolder.addItem(4, "E");
+		this.listHolder.add(4, "E");
 		assertTrue(this.extendedListContains("E"));
 		assertTrue(this.listContains("E"));
 	}
 
-	public void testAddItem2() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testAdd2() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		assertFalse(this.extendedListContains(null));
-		this.listHolder.addItem(4, null);
+		this.listHolder.add(4, null);
 		assertTrue(this.extendedListContains(null));
 		assertTrue(this.listContains(null));
 	}
 
-	public void testAddItem3() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testAdd3() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		assertFalse(this.extendedListContains("E"));
-		this.extendedListHolder.addItem(7, "E");
+		this.extendedListHolder.add(7, "E");
 		assertTrue(this.extendedListContains("E"));
 		assertTrue(this.listContains("E"));
 	}
 
-	public void testAddItem4() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testAdd4() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		boolean exCaught = false;
 		try {
-			this.extendedListHolder.addItem(0, "Z");
+			this.extendedListHolder.add(0, "Z");
 		} catch (IllegalArgumentException ex) {
 			if (ex.getMessage().indexOf("prefix") != -1) {
 				exCaught = true;
@@ -183,12 +183,12 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		assertFalse(this.listContains("Z"));
 	}
 
-	public void testAddItem5() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testAdd5() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		boolean exCaught = false;
 		try {
-			this.extendedListHolder.addItem(8, "Z");
+			this.extendedListHolder.add(8, "Z");
 		} catch (IllegalArgumentException ex) {
 			if (ex.getMessage().indexOf("suffix") != -1) {
 				exCaught = true;
@@ -206,30 +206,30 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		return addList;
 	}
 
-	public void testAddItems1() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testAddAll1() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		assertFalse(this.extendedListContainsAny(this.buildAddList()));
-		this.listHolder.addItems(4, this.buildAddList());
+		this.listHolder.addAll(4, this.buildAddList());
 		assertTrue(this.extendedListContainsAll(this.buildAddList()));
 		assertTrue(this.listContainsAll(this.buildAddList()));
 	}
 
-	public void testAddItems2() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testAddAll2() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		assertFalse(this.extendedListContainsAny(this.buildAddList()));
-		this.extendedListHolder.addItems(4, this.buildAddList());
+		this.extendedListHolder.addAll(4, this.buildAddList());
 		assertTrue(this.extendedListContainsAll(this.buildAddList()));
 		assertTrue(this.listContainsAll(this.buildAddList()));
 	}
 
-	public void testAddItems3() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testAddAll3() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		boolean exCaught = false;
 		try {
-			this.extendedListHolder.addItems(0, this.buildAddList());
+			this.extendedListHolder.addAll(0, this.buildAddList());
 		} catch (IllegalArgumentException ex) {
 			if (ex.getMessage().indexOf("prefix") != -1) {
 				exCaught = true;
@@ -240,12 +240,12 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		assertFalse(this.listContainsAny(this.buildAddList()));
 	}
 
-	public void testAddItems4() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testAddAll4() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		boolean exCaught = false;
 		try {
-			this.extendedListHolder.addItem(8, this.buildAddList());
+			this.extendedListHolder.add(8, this.buildAddList());
 		} catch (IllegalArgumentException ex) {
 			if (ex.getMessage().indexOf("suffix") != -1) {
 				exCaught = true;
@@ -256,41 +256,41 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		assertFalse(this.listContainsAny(this.buildAddList()));
 	}
 
-	public void testRemoveItem1() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testRemove1() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		assertTrue(this.extendedListContains("B"));
-		this.listHolder.removeItem(this.buildList().indexOf("B"));
+		this.listHolder.remove(this.buildList().indexOf("B"));
 		assertFalse(this.extendedListContains("B"));
 		assertFalse(this.listContains("B"));
 	}
 
-	public void testRemoveItem2() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testRemove2() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		assertTrue(this.extendedListContains("B"));
-		this.extendedListHolder.removeItem(this.buildPrefix().size() + this.buildList().indexOf("B"));
+		this.extendedListHolder.remove(this.buildPrefix().size() + this.buildList().indexOf("B"));
 		assertFalse(this.extendedListContains("B"));
 		assertFalse(this.listContains("B"));
 	}
 
-	public void testRemoveItem3() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testRemove3() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
-		this.listHolder.addItem(0, null);
+		this.listHolder.add(0, null);
 		assertTrue(this.extendedListContains(null));
-		this.extendedListHolder.removeItem(this.buildPrefix().size());
+		this.extendedListHolder.remove(this.buildPrefix().size());
 		assertFalse(this.extendedListContains(null));
 		assertFalse(this.listContains(null));
 	}
 
-	public void testRemoveItem4() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testRemove4() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		assertTrue(this.extendedListContains("x"));
 		boolean exCaught = false;
 		try {
-			this.extendedListHolder.removeItem(CollectionTools.indexOf((ListIterator) this.extendedListHolder.value(), "x"));
+			this.extendedListHolder.remove(CollectionTools.indexOf((ListIterator) this.extendedListHolder.values(), "x"));
 		} catch (IllegalArgumentException ex) {
 			if (ex.getMessage().indexOf("prefix") != -1) {
 				exCaught = true;
@@ -300,13 +300,13 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		assertTrue(this.extendedListContains("x"));
 	}
 
-	public void testRemoveItem5() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testRemove5() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		assertTrue(this.extendedListContains("i"));
 		boolean exCaught = false;
 		try {
-			this.extendedListHolder.removeItem(CollectionTools.indexOf((ListIterator) this.extendedListHolder.value(), "i"));
+			this.extendedListHolder.remove(CollectionTools.indexOf((ListIterator) this.extendedListHolder.values(), "i"));
 		} catch (IllegalArgumentException ex) {
 			if (ex.getMessage().indexOf("suffix") != -1) {
 				exCaught = true;
@@ -316,38 +316,38 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		assertTrue(this.extendedListContains("i"));
 	}
 
-	public void testRemoveItems1() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testRemoveLength1() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		assertTrue(this.extendedListContains("B"));
 		assertTrue(this.extendedListContains("C"));
-		this.listHolder.removeItems(this.buildList().indexOf("B"), 2);
+		this.listHolder.remove(this.buildList().indexOf("B"), 2);
 		assertFalse(this.extendedListContains("B"));
 		assertFalse(this.extendedListContains("C"));
 		assertFalse(this.listContains("B"));
 		assertFalse(this.listContains("C"));
 	}
 
-	public void testRemoveItems2() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testRemoveLength2() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		assertTrue(this.extendedListContains("B"));
 		assertTrue(this.extendedListContains("C"));
-		this.extendedListHolder.removeItems(this.buildPrefix().size() + this.buildList().indexOf("B"), 2);
+		this.extendedListHolder.remove(this.buildPrefix().size() + this.buildList().indexOf("B"), 2);
 		assertFalse(this.extendedListContains("B"));
 		assertFalse(this.extendedListContains("C"));
 		assertFalse(this.listContains("B"));
 		assertFalse(this.listContains("C"));
 	}
 
-	public void testRemoveItems3() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testRemoveLength3() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		assertTrue(this.extendedListContains("x"));
 		assertTrue(this.extendedListContains("y"));
 		boolean exCaught = false;
 		try {
-			this.extendedListHolder.removeItems(CollectionTools.indexOf((ListIterator) this.extendedListHolder.value(), "x"), 2);
+			this.extendedListHolder.remove(CollectionTools.indexOf((ListIterator) this.extendedListHolder.values(), "x"), 2);
 		} catch (IllegalArgumentException ex) {
 			if (ex.getMessage().indexOf("prefix") != -1) {
 				exCaught = true;
@@ -358,14 +358,14 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		assertTrue(this.extendedListContains("y"));
 	}
 
-	public void testRemoveItems4() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+	public void testRemoveLength4() {
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
 		assertTrue(this.extendedListContains("D"));
 		assertTrue(this.extendedListContains("i"));
 		boolean exCaught = false;
 		try {
-			this.extendedListHolder.removeItems(CollectionTools.indexOf((ListIterator) this.extendedListHolder.value(), "D"), 2);
+			this.extendedListHolder.remove(CollectionTools.indexOf((ListIterator) this.extendedListHolder.values(), "D"), 2);
 		} catch (IllegalArgumentException ex) {
 			if (ex.getMessage().indexOf("suffix") != -1) {
 				exCaught = true;
@@ -382,40 +382,40 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 	}
 
 	public void testListChangeNamed() {
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, this.buildListener());
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 		this.verifyListChange();
 	}
 
 	private void verifyListChange() {
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.addItem(4, "E");
+		this.listHolder.add(4, "E");
 		this.verifyEvent(ADD, 7, "E");
 
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.addItem(5, null);
+		this.listHolder.add(5, null);
 		this.verifyEvent(ADD, 8, null);
 
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.removeItem(5);
+		this.listHolder.remove(5);
 		this.verifyEvent(REMOVE, 8, null);
 
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.removeItem(4);
+		this.listHolder.remove(4);
 		this.verifyEvent(REMOVE, 7, "E");
 
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.addItems(0, this.buildList());
+		this.listHolder.addAll(0, this.buildList());
 		this.verifyEvent(ADD);
 		assertEquals(this.buildList(), CollectionTools.list(this.event.items()));
 
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.replaceItem(0, "AA");
+		this.listHolder.replace(0, "AA");
 		this.verifyEvent(REPLACE);
 		assertFalse(CollectionTools.contains(this.event.items(), "A"));
 		assertTrue(CollectionTools.contains(this.event.items(), "AA"));
@@ -453,7 +453,7 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 	private void verifyEvent(String type) {
 		assertEquals(type, this.eventType);
 		assertEquals(this.extendedListHolder, this.event.getSource());
-		assertEquals(ValueModel.VALUE, this.event.listName());
+		assertEquals(ListValueModel.LIST_VALUES, this.event.listName());
 	}
 
 	private void verifyEvent(String type, int index, Object item) {
@@ -469,21 +469,21 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		 * likewise, removing listeners from the extended list will
 		 * cause listeners to be removed from the wrapped list
 		 */
-		assertFalse(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
 		ListChangeListener listener = this.buildListener();
 
-		this.extendedListHolder.addListChangeListener(ValueModel.VALUE, listener);
-		assertTrue(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ValueModel.VALUE));
+		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+		assertTrue(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
-		this.extendedListHolder.removeListChangeListener(ValueModel.VALUE, listener);
-		assertFalse(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ValueModel.VALUE));
+		this.extendedListHolder.removeListChangeListener(ListValueModel.LIST_VALUES, listener);
+		assertFalse(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
 		this.extendedListHolder.addListChangeListener(listener);
-		assertTrue(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
 		this.extendedListHolder.removeListChangeListener(listener);
-		assertFalse(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
 }

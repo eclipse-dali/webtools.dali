@@ -64,12 +64,12 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		Collection sortedSet = new TreeSet(comparator);
 		sortedSet.addAll(expected);
 		List expectedList = new ArrayList(sortedSet);
-		List actualList = CollectionTools.list((ListIterator) actual.value());
+		List actualList = CollectionTools.list((ListIterator) actual.values());
 		assertEquals(expectedList, actualList);
 	}
 
-	public void testGetValue() {
-		this.adapter.addListChangeListener(ValueModel.VALUE, new TestListChangeListener() {
+	public void testAdd() {
+		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
 			public void itemsAdded(ListChangeEvent e) {/* OK */}
 			public void itemsReplaced(ListChangeEvent e) {/* OK */}
 		});
@@ -118,7 +118,7 @@ public class SortedListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testListSynch() {
-		this.adapter.addListChangeListener(ValueModel.VALUE, new TestListChangeListener() {
+		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
 			public void itemsAdded(ListChangeEvent e) {/* OK */}
 			public void itemsRemoved(ListChangeEvent e) {/* OK */}
 			public void itemsReplaced(ListChangeEvent e) {/* OK */}
@@ -161,15 +161,15 @@ public class SortedListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() {
-		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		SynchronizedList synchList = new SynchronizedList(this.adapter);
-		assertTrue(((AbstractModel) this.adapter).hasAnyListChangeListeners(ValueModel.VALUE));
-		this.adapter.removeListChangeListener(ValueModel.VALUE, synchList);
-		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
+		this.adapter.removeListChangeListener(ListValueModel.LIST_VALUES, synchList);
+		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		this.adapter.addListChangeListener(synchList);
-		assertTrue(((AbstractModel) this.adapter).hasAnyListChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		this.adapter.removeListChangeListener(synchList);
-		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ValueModel.VALUE));
+		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
 	private class TestListChangeListener implements ListChangeListener {

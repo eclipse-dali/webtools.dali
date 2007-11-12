@@ -38,78 +38,78 @@ public class NullListValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testAddItem() {
+	public void testAdd() {
 		boolean exCaught = false;
 		try {
-			this.listHolder.addItem(0, "foo");
+			this.listHolder.add(0, "foo");
 		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
 		}
 		assertTrue(exCaught);
 	}
 
-	public void testAddItems() {
+	public void testAddAll() {
 		boolean exCaught = false;
 		List<String> items = new ArrayList<String>();
 		items.add("foo");
 		items.add("bar");
 		items.add("baz");
 		try {
-			this.listHolder.addItems(0, items);
+			this.listHolder.addAll(0, items);
 		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
 		}
 		assertTrue(exCaught);
 	}
 
-	public void testRemoveItem() {
+	public void testRemove() {
 		boolean exCaught = false;
 		try {
-			this.listHolder.removeItem(0);
+			this.listHolder.remove(0);
 		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
 		}
 		assertTrue(exCaught);
 	}
 
-	public void testRemoveItems() {
+	public void testRemoveLength() {
 		boolean exCaught = false;
 		try {
-			this.listHolder.removeItems(0, 3);
+			this.listHolder.remove(0, 3);
 		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
 		}
 		assertTrue(exCaught);
 	}
 
-	public void testReplaceItem() {
+	public void testReplace() {
 		boolean exCaught = false;
 		try {
-			this.listHolder.replaceItem(0, "foo");
+			this.listHolder.replace(0, "foo");
 		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
 		}
 		assertTrue(exCaught);
 	}
 
-	public void testReplaceItems() {
+	public void testReplaceAll() {
 		boolean exCaught = false;
 		List<String> items = new ArrayList<String>();
 		items.add("foo");
 		items.add("bar");
 		items.add("baz");
 		try {
-			this.listHolder.replaceItems(0, items);
+			this.listHolder.replaceAll(0, items);
 		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
 		}
 		assertTrue(exCaught);
 	}
 
-	public void testGetItem() {
+	public void testGet() {
 		boolean exCaught = false;
 		try {
-			this.listHolder.getItem(0);
+			this.listHolder.get(0);
 		} catch (IndexOutOfBoundsException ex) {
 			exCaught = true;
 		}
@@ -120,8 +120,8 @@ public class NullListValueModelTests extends TestCase {
 		assertEquals(0, this.listHolder.size());
 	}
 
-	public void testValue() {
-		assertFalse(((ListIterator) this.listHolder.value()).hasNext());
+	public void testValues() {
+		assertFalse(((ListIterator) this.listHolder.values()).hasNext());
 	}
 
 }

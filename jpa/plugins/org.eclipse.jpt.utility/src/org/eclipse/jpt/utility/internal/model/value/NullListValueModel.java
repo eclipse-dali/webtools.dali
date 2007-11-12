@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import java.util.ListIterator;
+
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 
@@ -47,7 +49,7 @@ public final class NullListValueModel
 		return 0;
 	}
 
-	public Object value() {
+	public ListIterator values() {
 		return EmptyListIterator.instance();
 	}
 

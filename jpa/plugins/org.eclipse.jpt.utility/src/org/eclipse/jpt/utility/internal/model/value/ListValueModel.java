@@ -10,58 +10,64 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.List;
+import java.util.ListIterator;
+
+import org.eclipse.jpt.utility.internal.model.Model;
 
 /**
- * Extend ValueModel to allow the adding and
- * removing of items in a list value.
- * Typically the value returned from #value()
- * will be a ListIterator.
+ * Interface used to abstract list accessing and
+ * change notification and make it more pluggable.
  */
 public interface ListValueModel
-	extends ValueModel
+	extends Model
 {
+	/**
+	 * Return the list's values.
+	 */
+	ListIterator values();
+		String LIST_VALUES = "list values";
 
 	/**
-	 * Add the item at the specified index in the list value.
+	 * Add the specified item to the list at the specified index.
 	 */
-	void addItem(int index, Object item);
-	
+	void add(int index, Object item);
+
 	/**
-	 * Add the items at the specified index in the list value.
+	 * Add the specified items to the list at the specified index.
 	 */
-	void addItems(int index, List items);
-	
+	void addAll(int index, List items);
+
 	/**
-	 * Remove the item at the specified index from the list value
+	 * Remove the item at the specified index from the list
 	 * and return it.
 	 */
-	Object removeItem(int index);
-	
+	Object remove(int index);
+
 	/**
-	 * Remove the items from the list value, starting at the specified index
+	 * Remove the items from the list, starting at the specified index
 	 * for the specified length. Return a list containing the removed items.
 	 */
-	List removeItems(int index, int length);
-	
+	List remove(int index, int length);
+
 	/**
-	 * Replace the item at the specified index of the list value
+	 * Replace the item at the specified index of the list
 	 * and return the item that was there previously.
 	 */
-	Object replaceItem(int index, Object item);
-	
+	Object replace(int index, Object item);
+
 	/**
-	 * Replace the items at the specified index of the list value
+	 * Replace the items at the specified index of the list
 	 * and return the items that were there previously.
 	 */
-	List replaceItems(int index, List items);
-	
+	List replaceAll(int index, List items);
+
 	/**
-	 * Return the item at the specified index of the list value.
+	 * Return the item at the specified index of the list.
 	 */
-	Object getItem(int index);
-	
+	Object get(int index);
+
 	/**
-	 * Return the size of the list value.
+	 * Return the size of the list.
 	 */
 	int size();
 

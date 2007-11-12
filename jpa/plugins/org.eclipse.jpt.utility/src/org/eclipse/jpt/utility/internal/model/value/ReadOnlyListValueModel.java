@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Implementation of ListValueModel that can be used for
@@ -44,10 +45,7 @@ public class ReadOnlyListValueModel
 		return this.value.size();
 	}
 
-
-	// ********** ValueModel implementation **********
-
-	public Object value() {
+	public ListIterator values() {
 		return this.value.listIterator();
 	}
 
