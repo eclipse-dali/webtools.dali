@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.CoreException;
@@ -87,6 +88,10 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 		return this.jpaProjectHolders.size();
 	}
 
+	public synchronized IJpaFile jpaFile(IFile file) throws CoreException {
+		IJpaProject jpaProject = this.jpaProject(file.getProject());
+		return (jpaProject == null) ? null : jpaProject.jpaFile(file);
+	}
 
 	// ********** internal methods **********
 
@@ -119,7 +124,10 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 	 */
 	synchronized boolean removeJpaProject(IProject project) {
 		dumpStackTrace();  // figure out exactly when JPA projects are removed
-		return this.jpaProjectHolder(project).remove();
+		if (containsJpaProject(project)) {
+			return this.jpaProjectHolder(project).remove();
+		}
+		return false;
 	}
 
 	/**
@@ -143,11 +151,17 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 
 	// ********** events **********
 
+	synchronized void synchronizeFiles(IProject project, IResourceDelta delta)  throws CoreException {
+		if (containsJpaProject(project)) {
+			this.synchronizeJpaFiles(project, delta);
+		}
+	}
+
 	/**
 	 * Forward the specified resource delta to the JPA project corresponding
 	 * to the specified Eclipse project.
 	 */
-	synchronized void synchronizeJpaFiles(IProject project, IResourceDelta delta) throws CoreException {
+	private void synchronizeJpaFiles(IProject project, IResourceDelta delta) throws CoreException {
 		this.jpaProjectHolder(project).synchronizeJpaFiles(delta);
 	}
 

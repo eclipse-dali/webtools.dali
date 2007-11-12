@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal;
 
 import java.util.ArrayList;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -27,6 +26,9 @@ import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
 import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaElementDelta;
+import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.internal.IJpaProject.Config;
@@ -195,15 +197,6 @@ public class JpaModelManager {
 	}
 
 	/**
-	 * Return the JPA file corresponding to the specified Eclipse file,
-	 * or null if unable to associate the specified file with a JPA file.
-	 */
-	public synchronized IJpaFile jpaFile(IFile file) throws CoreException {
-		IJpaProject jpaProject = this.jpaProject(file.getProject());
-		return (jpaProject == null) ? null : jpaProject.jpaFile(file);
-	}
-
-	/**
 	 * The JPA settings associated with the specified Eclipse project
 	 * have changed in such a way as to require the associated
 	 * JPA project to be completely rebuilt.
@@ -357,7 +350,8 @@ public class JpaModelManager {
 	 *   - project close/delete
 	 *   - file add/remove
 	 */
-	/* private */ synchronized void resourceChanged(IResourceChangeEvent event) {
+	//not synchronized, synchronizing once we know we are going to access JpaModel
+	/* private */ void resourceChanged(IResourceChangeEvent event) {
 		if (! (event.getSource() instanceof IWorkspace)) {
 			return;  // this probably shouldn't happen...
 		}
@@ -382,12 +376,7 @@ public class JpaModelManager {
 	 */
 	private void resourcePreDelete(IResourceChangeEvent event) {
 		debug("Resource (Project) PRE_DELETE: " + event.getResource());
-		// we don't get any events from the Facets Framework when a
-		// project is deleted, so we need this check...
-		IProject project = (IProject) event.getResource();
-		if (this.jpaModel.containsJpaProject(project)) {
-			this.removeJpaProject(project);
-		}
+		this.removeJpaProject((IProject) event.getResource());
 	}
 
 	/**
@@ -424,18 +413,12 @@ public class JpaModelManager {
 		}
 	}
 
-	private void synchronizeFiles(IProject project, IResourceDelta delta) {
-		if (this.jpaModel.containsJpaProject(project)) {
-			this.synchronizeJpaFiles(project, delta);
-		}
-	}
-
 	/**
 	 * Checked exceptions bite.
 	 */
-	private void synchronizeJpaFiles(IProject project, IResourceDelta delta) {
+	private void synchronizeFiles(IProject project, IResourceDelta delta) {
 		try {
-			this.jpaModel.synchronizeJpaFiles(project, delta);
+			this.jpaModel.synchronizeFiles(project, delta);
 		} catch (CoreException ex) {
 			this.log(ex);  // problem traversing the project's resources - not much we can do
 		}
@@ -490,7 +473,7 @@ public class JpaModelManager {
 	 * also triggers a Facet PROJECT_MODIFIED event and that is where we add
 	 * the JPA project, not here
 	 */
-	private void checkForOpenedProject2(IProject project, IResourceDelta delta) {
+	private synchronized void checkForOpenedProject2(IProject project, IResourceDelta delta) {
 		if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.OPEN) && project.isOpen()) {
 			debug("\tProject CHANGED - OPEN: " + project.getName());
 			this.checkForTransition(project);
@@ -608,10 +591,38 @@ public class JpaModelManager {
 	/**
 	 * Forward the event to the JPA model.
 	 */
-	/* private */ synchronized void javaElementChanged(ElementChangedEvent event) {
+	// not synchronized because of a conflict between facet install and 
+	// java element change notifiation.  synchronize on JpaModel instead.
+	/* private */ void javaElementChanged(ElementChangedEvent event) {
+		if (isAddProjectNotOpenEvent(event)) {
+			return;
+		}
 		this.jpaModel.javaElementChanged(event);
 	}
 
+	//209275 - This particular event only causes problems in a clean workspace the first time a JPA project
+	//is created through the JPA wizard.  The second time a JPA project is created, this event occurs, but 
+	//it occurs as the wizard is closing so it does not cause a deadlock.
+	private boolean isAddProjectNotOpenEvent(ElementChangedEvent event) {
+		IJavaElementDelta delta = event.getDelta();
+		if (delta.getKind() == IJavaElementDelta.CHANGED) {
+			if (delta.getElement().getElementType() == IJavaElement.JAVA_MODEL) {
+				if (delta.getAffectedChildren().length == 1) {
+					IJavaElementDelta childDelta = delta.getAffectedChildren()[0];
+					if (childDelta.getKind() == IJavaElementDelta.ADDED) {
+						if (childDelta.getElement().getElementType() == IJavaElement.JAVA_PROJECT) {
+							if (childDelta.getAffectedChildren().length == 0) {
+								if (!((IOpenable) childDelta.getElement()).isOpen()) {
+									return true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}	
+		return false;
+	}
 
 	// ********** preference changed **********
 

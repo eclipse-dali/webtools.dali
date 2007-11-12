@@ -146,7 +146,7 @@ public class JptCorePlugin extends Plugin {
 	 */
 	public static IJpaFile jpaFile(IFile file) {
 		try {
-			return JpaModelManager.instance().jpaFile(file);
+			return jpaModel().jpaFile(file);
 		} catch (CoreException ex) {
 			log(ex);
 			return null;
