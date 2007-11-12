@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.content.persistence;
 
+import java.io.IOException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -18,8 +19,10 @@ import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaFileContentProvider;
 import org.eclipse.jpt.core.internal.IJpaRootContentNode;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceResource;
-import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
+import org.eclipse.wst.common.internal.emfworkbench.integration.EditModelEvent;
+import org.eclipse.wst.common.internal.emfworkbench.integration.EditModelListener;
 
 public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProvider
 {
@@ -44,19 +47,25 @@ public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProv
 
 	public IJpaRootContentNode buildRootContent(IJpaFile jpaFile) {
 		IFile resourceFile = jpaFile.getFile();
+		PersistenceArtifactEdit pae = 
+				PersistenceArtifactEdit.getArtifactEditForRead(resourceFile.getProject());
 		PersistenceResource resource = 
-				(PersistenceResource) WorkbenchResourceHelper.getResource(resourceFile, true);
+				pae.getPersistenceResource(resourceFile);
 		PersistenceXmlRootContentNode root = PersistenceFactory.eINSTANCE.createPersistenceXmlRootContentNode();		
-		resource.accessForWrite();
 		root.setResource(resource);
 		root.setPersistence(resource.getPersistence());
 		resource.eAdapters().add(buildRootNodeListener(resourceFile, root));
+		pae.addListener(buildReloadListener(resource));
 		jpaFile.setContent(root);
 		return root;
 	}
 	
 	private Adapter buildRootNodeListener(IFile resourceFile, PersistenceXmlRootContentNode rootContentNode) {
 		return new RootAdapter(resourceFile, rootContentNode);
+	}
+	
+	private EditModelListener buildReloadListener(PersistenceResource resource) {
+		return new ReloadListener(resource);
 	}
 
 	public String contentType() {
@@ -85,8 +94,46 @@ public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProv
 					this.rootContentNode.setPersistence(resource.getPersistence());
 				}
 			}
+		}
+	}
+	
+	
+	private class ReloadListener implements EditModelListener
+	{
+		final PersistenceResource resource;
+		
+		ReloadListener(PersistenceResource resource) {
+			super();
+			this.resource = resource;
+		}
+		
+		public void editModelChanged(EditModelEvent anEvent) {
+			switch (anEvent.getEventCode()) {
+				case EditModelEvent.UNLOADED_RESOURCE :
+					if (anEvent.getChangedResources().contains(resource)
+							&& ! resource.isLoaded()) {
+						try {
+							resource.load(resource.getResourceSet().getLoadOptions());
+						}
+						catch (IOException ioe) {
+							JptCorePlugin.log(ioe);
+						}
+					}
+					break;
+				case EditModelEvent.REMOVED_RESOURCE :
+					if (anEvent.getChangedResources().contains(resource)) {
+						anEvent.getEditModel().removeListener(this);
+					}
+					break;
+//				case EditModelEvent.SAVE :
+//				case EditModelEvent.PRE_DISPOSE :				
+			}
+			
+		}
 			// commenting out for now - this *was* a workaround for 202190, but with ArtifactEdit
 			// usage, it no longer works
+			// 
+			// 11/07/07 - Actually, it has now been replaced by the above code
 //			else if (featureId == Resource.RESOURCE__IS_LOADED) {
 //				if (file.exists()) {
 //					// dumb translator is unloading my resource, reload it
@@ -102,6 +149,5 @@ public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProv
 //					}
 //				}
 //			}
-		}
 	}
 }

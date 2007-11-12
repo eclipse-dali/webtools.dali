@@ -344,7 +344,7 @@ public class PersistenceXmlRootContentNode extends XmlEObject
 	
 	public void dispose() {
 		if (resource != null) {
-			resource.releaseFromWrite();
+			resource.releaseFromRead();
 		}
 	}
 	
@@ -362,6 +362,11 @@ public class PersistenceXmlRootContentNode extends XmlEObject
 	
 	public Object getId() {
 		return IPersistenceXmlContentNodes.PERSISTENCEXML_ROOT_ID;
+	}
+	
+	@Override
+	public IJpaRootContentNode getRoot() {
+		return this;
 	}
 	
 	public void javaElementChanged(ElementChangedEvent event) {

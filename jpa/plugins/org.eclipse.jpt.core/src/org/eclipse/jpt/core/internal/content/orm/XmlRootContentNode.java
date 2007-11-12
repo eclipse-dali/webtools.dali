@@ -79,7 +79,12 @@ public class XmlRootContentNode extends XmlEObject
 	public Object getId() {
 		return IXmlContentNodes.XML_ROOT_ID;
 	}
-
+	
+	@Override
+	public IJpaRootContentNode getRoot() {
+		return this;
+	}
+	
 	/**
 	 * Returns the value of the '<em><b>Jpa File</b></em>' container reference.
 	 * It is bidirectional and its opposite is '{@link org.eclipse.jpt.core.internal.JpaFile#getContent <em>Content</em>}'.
@@ -329,7 +334,7 @@ public class XmlRootContentNode extends XmlEObject
 
 	public void dispose() {
 		if (resource != null) {
-			resource.releaseFromWrite();
+			resource.releaseFromRead();
 		}
 	}
 	

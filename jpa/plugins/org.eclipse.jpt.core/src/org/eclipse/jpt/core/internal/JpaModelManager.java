@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal;
 
 import java.util.ArrayList;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -546,9 +545,9 @@ public class JpaModelManager {
 
 	private void createPersistenceXml(IProject project) {
 		PersistenceArtifactEdit pae = 
-				PersistenceArtifactEdit.getArtifactEditForWrite(project, JptCorePlugin.persistenceXmlDeploymentURI(project));
-		PersistenceResource resource = pae.getPersistenceResource();
-
+				PersistenceArtifactEdit.getArtifactEditForWrite(project);
+		PersistenceResource resource = pae.getPersistenceResource(JptCorePlugin.persistenceXmlDeploymentURI(project));
+		
 		// 202811 - do not add content if it is already present
 		if (resource.getPersistence() == null) {
 			Persistence persistence = PersistenceFactory.eINSTANCE.createPersistence();
@@ -565,8 +564,8 @@ public class JpaModelManager {
 
 	private void createOrmXml(IProject project) {
 		OrmArtifactEdit oae =
-				OrmArtifactEdit.getArtifactEditForWrite(project, JptCorePlugin.ormXmlDeploymentURI(project));
-		OrmResource resource = oae.getOrmResource();
+				OrmArtifactEdit.getArtifactEditForWrite(project);
+		OrmResource resource = oae.getOrmResource(JptCorePlugin.ormXmlDeploymentURI(project));
 
 		// 202811 - do not add content if it is already present
 		if (resource.getEntityMappings() == null) {
