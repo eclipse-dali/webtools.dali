@@ -519,11 +519,11 @@ public class TreeModelAdapterTests extends TestCase {
 			this.firePropertyChanged(VALUE, old, this.testModel);
 		}
 
-		public TreeNodeValueModel getParent() {
+		public TreeNodeValueModel parent() {
 			return this.parent;
 		}
 
-		public ListValueModel getChildrenModel() {
+		public ListValueModel childrenModel() {
 			return this.childrenModel;
 		}
 
@@ -564,7 +564,7 @@ public class TreeModelAdapterTests extends TestCase {
 		public void dumpOn(IndentingPrintWriter writer) {
 			writer.println(this);
 			writer.indent();
-			for (Iterator stream = (Iterator) this.childrenModel.values(); stream.hasNext(); ) {
+			for (Iterator stream = this.childrenModel.values(); stream.hasNext(); ) {
 				((TestNode) stream.next()).dumpOn(writer);
 			}
 			writer.undent();
@@ -604,7 +604,7 @@ public class TreeModelAdapterTests extends TestCase {
 		 * testing convenience method
 		 */
 		public TestNode childNamed(String name) {
-			for (Iterator stream = (Iterator) this.childrenModel.values(); stream.hasNext(); ) {
+			for (Iterator stream = this.childrenModel.values(); stream.hasNext(); ) {
 				TestNode childNode = (TestNode) stream.next();
 				if (childNode.getTestModel().getName().equals(name)) {
 					return childNode;
@@ -781,10 +781,10 @@ public class TreeModelAdapterTests extends TestCase {
 		public void setValue(Object value) {
 			this.nameAdapter.setValue(value);
 		}
-		public TreeNodeValueModel getParent() {
+		public TreeNodeValueModel parent() {
 			return this.specialNode;
 		}
-		public ListValueModel getChildrenModel() {
+		public ListValueModel childrenModel() {
 			return NullListValueModel.instance();
 		}
 

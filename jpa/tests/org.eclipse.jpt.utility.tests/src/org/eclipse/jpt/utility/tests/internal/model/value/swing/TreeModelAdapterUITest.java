@@ -314,7 +314,7 @@ public class TreeModelAdapterUITest {
 		if ((selectedTestModel != null) && (selectedTestModel != this.root())) {
 			// save the parent and index, so we can select another, nearby, node
 			// once the selected node is removed
-			TestNode parentNode = (TestNode) this.selectedNode().getParent();
+			TestNode parentNode = (TestNode) this.selectedNode().parent();
 			int childIndex = parentNode.indexOfChild(this.selectedNode());
 
 			selectedTestModel.getParent().removeChild(selectedTestModel);
@@ -322,14 +322,14 @@ public class TreeModelAdapterUITest {
 			int childrenSize = parentNode.childrenSize();
 			if (childIndex < childrenSize) {
 				// select the child that moved up and replaced the just-deleted child
-				this.setSelectedNode((TestNode) parentNode.getChild(childIndex));
+				this.setSelectedNode((TestNode) parentNode.child(childIndex));
 			} else {
 				if (childrenSize == 0) {
 					// if there are no more children, select the parent
 					this.setSelectedNode(parentNode);
 				} else {
 					// if the child at the bottom of the list was deleted, select the next child up
-					this.setSelectedNode((TestNode) parentNode.getChild(childIndex - 1));
+					this.setSelectedNode((TestNode) parentNode.child(childIndex - 1));
 				}
 			}
 		}

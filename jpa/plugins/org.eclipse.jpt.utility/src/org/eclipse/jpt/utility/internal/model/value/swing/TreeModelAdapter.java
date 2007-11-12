@@ -203,7 +203,7 @@ public class TreeModelAdapter
 	}
 
 	public Object getChild(Object parent, int index) {
-		return ((TreeNodeValueModel) parent).getChild(index);
+		return ((TreeNodeValueModel) parent).child(index);
 	}
 
 	public int getChildCount(Object parent) {
@@ -322,7 +322,7 @@ public class TreeModelAdapter
 	 * forward notification to our listeners.
 	 */
 	void nodeChanged(TreeNodeValueModel node) {
-		TreeNodeValueModel parent = node.getParent();
+		TreeNodeValueModel parent = node.parent();
 		if (parent == null) {
 			this.fireTreeRootChanged(node);
 		} else {
@@ -353,7 +353,7 @@ public class TreeModelAdapter
 	private void engageNode(TreeNodeValueModel node) {
 		node.addStateChangeListener(this.nodeStateListener);
 		node.addPropertyChangeListener(ValueModel.VALUE, this.nodeValueListener);
-		node.getChildrenModel().addListChangeListener(ListValueModel.LIST_VALUES, this.childrenListener);
+		node.childrenModel().addListChangeListener(ListValueModel.LIST_VALUES, this.childrenListener);
 	}
 
 	/**
@@ -362,7 +362,7 @@ public class TreeModelAdapter
 	 * adding them to the internal tree also.
 	 */
 	private void addNode(int index, TreeNodeValueModel node) {
-		this.addNodeToInternalTree(node.getParent(), index, node, node.getChildrenModel());
+		this.addNodeToInternalTree(node.parent(), index, node, node.childrenModel());
 		new NodeChangePolicy(node).addChildren();
 	}
 
@@ -405,7 +405,7 @@ public class TreeModelAdapter
 	 */
 	private void removeNode(int index, TreeNodeValueModel node) {
 		new NodeChangePolicy(node).removeChildren();
-		this.removeNodeFromInternalTree(node.getParent(), index, node, node.getChildrenModel());
+		this.removeNodeFromInternalTree(node.parent(), index, node, node.childrenModel());
 	}
 
 	/**
@@ -425,7 +425,7 @@ public class TreeModelAdapter
 	 * Stop listening to the node and its children model.
 	 */
 	private void disengageNode(TreeNodeValueModel node) {
-		node.getChildrenModel().removeListChangeListener(ListValueModel.LIST_VALUES, this.childrenListener);
+		node.childrenModel().removeListChangeListener(ListValueModel.LIST_VALUES, this.childrenListener);
 		node.removePropertyChangeListener(ValueModel.VALUE, this.nodeValueListener);
 		node.removeStateChangeListener(this.nodeStateListener);
 	}
@@ -629,8 +629,8 @@ public class TreeModelAdapter
 			Object[] childArray = this.buildArray(childrenList.iterator(), childrenList.size());
 			TreeModelAdapter.this.removeChildren(parentPath, childIndices, childArray);
 
-			childIndices = this.buildIndices(parent.getChildrenModel().size());
-			childArray = this.buildArray((Iterator) parent.getChildrenModel().values(), parent.childrenSize());
+			childIndices = this.buildIndices(parent.childrenModel().size());
+			childArray = this.buildArray((Iterator) parent.childrenModel().values(), parent.childrenSize());
 			TreeModelAdapter.this.addChildren(parentPath, childIndices, childArray);
 		}
 
@@ -678,7 +678,7 @@ public class TreeModelAdapter
 		 */
 		@Override
 		int childrenSize() {
-			return this.node.getChildrenModel().size();
+			return this.node.childrenModel().size();
 		}
 
 		/**
@@ -688,7 +688,7 @@ public class TreeModelAdapter
 		 */
 		@Override
 		Iterator children() {
-			return (Iterator) this.node.getChildrenModel().values();
+			return (Iterator) this.node.childrenModel().values();
 		}
 
 	}
