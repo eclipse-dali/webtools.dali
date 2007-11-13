@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaCorePackage;
 import org.eclipse.jpt.core.internal.JpaFile;
 import org.eclipse.jpt.core.internal.XmlEObject;
+import org.eclipse.jpt.core.internal.content.orm.resource.OrmArtifactEdit;
 
 /**
  * <!-- begin-user-doc -->
@@ -53,7 +54,7 @@ public class XmlRootContentNode extends XmlEObject
 	 */
 	protected EntityMappingsInternal entityMappings;
 	
-	private OrmResource resource;
+	private OrmArtifactEdit artifactEdit;
 	
 	
 	/**
@@ -333,8 +334,8 @@ public class XmlRootContentNode extends XmlEObject
 	}
 
 	public void dispose() {
-		if (resource != null) {
-			resource.releaseFromRead();
+		if (artifactEdit != null) {
+			artifactEdit.dispose();
 		}
 	}
 	
@@ -360,7 +361,7 @@ public class XmlRootContentNode extends XmlEObject
 		}
 	}
 
-	public void setResource(OrmResource ormResource) {
-		resource = ormResource;
+	public void setArtifactEdit(OrmArtifactEdit ormArtifactEdit) {
+		artifactEdit = ormArtifactEdit;
 	}
 }

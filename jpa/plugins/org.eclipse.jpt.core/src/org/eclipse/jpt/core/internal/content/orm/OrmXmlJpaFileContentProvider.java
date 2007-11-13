@@ -50,11 +50,11 @@ public class OrmXmlJpaFileContentProvider implements IJpaFileContentProvider
 				OrmArtifactEdit.getArtifactEditForRead(resourceFile.getProject());
 		OrmResource resource = 
 				oae.getOrmResource(resourceFile);
+		oae.addListener(buildReloadListener(resource));
 		XmlRootContentNode root = OrmFactory.eINSTANCE.createXmlRootContentNode();
-		root.setResource(resource);
+		root.setArtifactEdit(oae);
 		root.setEntityMappings(resource.getEntityMappings());
 		resource.eAdapters().add(buildRootNodeListener(resourceFile, root));
-		oae.addListener(buildReloadListener(resource));
 		jpaFile.setContent(root);
 		return root;
 	}
