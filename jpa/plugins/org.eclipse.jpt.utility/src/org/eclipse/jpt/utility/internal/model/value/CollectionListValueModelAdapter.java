@@ -77,7 +77,7 @@ public class CollectionListValueModelAdapter
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, LIST_VALUES);
+		return new SingleAspectChangeSupport(this, ListChangeListener.class, LIST_VALUES);
 	}
 
 	/**

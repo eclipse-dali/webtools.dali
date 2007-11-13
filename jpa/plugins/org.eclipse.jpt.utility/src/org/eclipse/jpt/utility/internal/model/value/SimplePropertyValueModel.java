@@ -12,6 +12,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 
 /**
  * Implementation of PropertyValueModel that simply holds on to an
@@ -42,7 +43,7 @@ public class SimplePropertyValueModel
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUE);
+		return new SingleAspectChangeSupport(this, PropertyChangeListener.class, VALUE);
 	}
 
 

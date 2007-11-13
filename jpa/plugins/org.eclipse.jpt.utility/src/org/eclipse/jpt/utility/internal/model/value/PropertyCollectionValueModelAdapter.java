@@ -60,7 +60,7 @@ public class PropertyCollectionValueModelAdapter
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUES);
+		return new SingleAspectChangeSupport(this, CollectionChangeListener.class, VALUES);
 	}
 
 	/**

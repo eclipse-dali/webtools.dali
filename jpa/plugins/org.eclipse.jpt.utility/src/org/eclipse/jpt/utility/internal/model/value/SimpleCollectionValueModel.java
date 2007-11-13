@@ -18,6 +18,7 @@ import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
+import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 
 /**
  * Implementation of CollectionValueModel that simply holds on to a
@@ -49,7 +50,7 @@ public class SimpleCollectionValueModel
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUES);
+		return new SingleAspectChangeSupport(this, CollectionChangeListener.class, VALUES);
 	}
 
 

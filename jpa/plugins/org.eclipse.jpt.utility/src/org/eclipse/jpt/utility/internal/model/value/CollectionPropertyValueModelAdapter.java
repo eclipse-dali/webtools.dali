@@ -71,7 +71,7 @@ public abstract class CollectionPropertyValueModelAdapter
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUE);
+		return new SingleAspectChangeSupport(this, PropertyChangeListener.class, VALUE);
 	}
 
 	protected CollectionChangeListener buildCollectionChangeListener() {

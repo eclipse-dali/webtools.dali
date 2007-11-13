@@ -294,7 +294,7 @@ public class ChangeSupport
 
 	// ********** state change support **********
 
-	private static final Class<StateChangeListener> STATE_CHANGE_LISTENER_CLASS = StateChangeListener.class;
+	protected static final Class<StateChangeListener> STATE_CHANGE_LISTENER_CLASS = StateChangeListener.class;
 
 	/**
 	 * Add a state change listener.
@@ -389,7 +389,7 @@ public class ChangeSupport
 
 	// ********** property change support **********
 
-	private static final Class<PropertyChangeListener> PROPERTY_CHANGE_LISTENER_CLASS = PropertyChangeListener.class;
+	protected static final Class<PropertyChangeListener> PROPERTY_CHANGE_LISTENER_CLASS = PropertyChangeListener.class;
 
 	/**
 	 * Return whether the values are equal, with the appropriate null checks.
@@ -662,7 +662,7 @@ public class ChangeSupport
 
 	// ********** collection change support **********
 
-	private static final Class<CollectionChangeListener> COLLECTION_CHANGE_LISTENER_CLASS = CollectionChangeListener.class;
+	protected static final Class<CollectionChangeListener> COLLECTION_CHANGE_LISTENER_CLASS = CollectionChangeListener.class;
 
 	/**
 	 * Add a collection change listener that is registered for all collections.
@@ -1140,7 +1140,7 @@ public class ChangeSupport
 
 	// ********** list change support **********
 
-	private static final Class<ListChangeListener> LIST_CHANGE_LISTENER_CLASS = ListChangeListener.class;
+	protected static final Class<ListChangeListener> LIST_CHANGE_LISTENER_CLASS = ListChangeListener.class;
 
 	/**
 	 * Add a list change listener that is registered for all lists.
@@ -1844,7 +1844,7 @@ public class ChangeSupport
 
 	// ********** tree change support **********
 
-	private static final Class<TreeChangeListener> TREE_CHANGE_LISTENER_CLASS = TreeChangeListener.class;
+	protected static final Class<TreeChangeListener> TREE_CHANGE_LISTENER_CLASS = TreeChangeListener.class;
 	private static final Object[] EMPTY_TREE_PATH = new Object[0];
 
 	/**

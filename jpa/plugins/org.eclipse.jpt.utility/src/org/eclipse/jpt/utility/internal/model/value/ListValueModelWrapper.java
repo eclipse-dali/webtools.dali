@@ -52,7 +52,7 @@ public abstract class ListValueModelWrapper
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, LIST_VALUES);
+		return new SingleAspectChangeSupport(this, ListChangeListener.class, LIST_VALUES);
 	}
 
 	protected ListChangeListener buildListChangeListener() {
