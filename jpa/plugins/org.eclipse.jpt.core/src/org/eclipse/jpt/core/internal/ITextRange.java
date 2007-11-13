@@ -61,7 +61,7 @@ public interface ITextRange {
 	 * Empty implementation of text range.
 	 */
 	final class Empty implements ITextRange {
-		private static final ITextRange INSTANCE = new Empty();
+		public static final ITextRange INSTANCE = new Empty();
 		public static ITextRange instance() {
 			return INSTANCE;
 		}

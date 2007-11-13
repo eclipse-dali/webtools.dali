@@ -43,9 +43,7 @@ public class ScrolledPageContent extends SharedScrolledComposite {
 		setContent(body);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.swt.widgets.Widget#dispose()
-	 */
+    @Override
 	public void dispose() {
 		fToolkit.dispose();
 		super.dispose();

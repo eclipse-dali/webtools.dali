@@ -34,7 +34,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_MANY);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToMany");
 			}
 		});
@@ -49,7 +49,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_MANY, JPA.FETCH_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToMany(fetch=FetchType.EAGER)");
 			}
 		});
@@ -63,7 +63,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_MANY);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToMany(targetEntity=AnnotationTestType.class)");
 			}
 		});
@@ -78,7 +78,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_MANY);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToMany(mappedBy=\"foo\")");
 			}
 		});
@@ -93,7 +93,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_MANY, JPA.CASCADE_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToMany(cascade=CascadeType.ALL)");
 			}
 		});
@@ -108,7 +108,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_MANY, JPA.CASCADE_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToMany(cascade={CascadeType.MERGE, CascadeType.REMOVE})");
 			}
 		});
@@ -123,7 +123,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_MANY, JPA.CASCADE_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToMany(cascade={CascadeType.MERGE, CascadeType.MERGE})");
 			}
 		});

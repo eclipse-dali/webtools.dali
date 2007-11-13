@@ -19,11 +19,7 @@ import org.eclipse.jpt.core.internal.JptCorePlugin;
  */
 public class JpaPreferenceInitializer extends AbstractPreferenceInitializer 
 {
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-	 */
+	@Override
 	public void initializeDefaultPreferences() {
 		IEclipsePreferences node = new DefaultScope().getNode(JptCorePlugin.instance().getBundle().getSymbolicName());
 		

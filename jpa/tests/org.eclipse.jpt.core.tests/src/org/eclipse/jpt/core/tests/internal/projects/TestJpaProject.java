@@ -21,8 +21,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  * The JPA project's settings (platform, database connection, etc.) can be
  * controlled by building a data model and passing it into the constructor.
  */
-public class TestJpaProject extends TestJavaProject 
-{
+public class TestJpaProject extends TestJavaProject {
 	private final IJpaProject jpaProject;
 
 	public static final String JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
@@ -34,8 +33,8 @@ public class TestJpaProject extends TestJavaProject
 			throws CoreException {
 		return new TestJpaProject(uniqueProjectName(baseProjectName), autoBuild);
 	}
-	
-	
+
+
 	// ********** constructors/initialization **********
 
 	public TestJpaProject(String projectName) throws CoreException {

@@ -51,7 +51,7 @@ public class JavaTableTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 		});
@@ -67,7 +67,7 @@ public class JavaTableTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.TABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity").append(CR);
 				sb.append("@Table(name=\"" + TABLE_NAME + "\")");
 			}
@@ -81,11 +81,11 @@ public class JavaTableTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY);
 			}
 			@Override
-			public void appendExtendsImplementsTo(StringBuffer sb) {
+			public void appendExtendsImplementsTo(StringBuilder sb) {
 				sb.append("extends " + TYPE_NAME + " ");
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 

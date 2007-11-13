@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
-import org.eclipse.jpt.core.internal.IJpaNodeModel;
+import org.eclipse.jpt.core.internal.IJpaNode;
 
-public interface IJpaContextNode extends IJpaNodeModel
+public interface IJpaContextNode extends IJpaNode
 {
 	IPersistenceUnit persistenceUnit();
 }

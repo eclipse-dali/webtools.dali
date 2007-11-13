@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
-import org.eclipse.jpt.utility.internal.node.AbstractNodeModel;
+import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
 
-public abstract class AbstractResource extends AbstractNodeModel 
+public abstract class AbstractResource extends AbstractNode
 	implements JavaResource
 {	
 	protected AbstractResource(JavaResource parent) {

@@ -11,25 +11,19 @@ package org.eclipse.jpt.core.internal.validation;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.internal.IJpaEObject;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JpaNodeModel;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.IJpaNode;
 
-public class JpaHelper extends org.eclipse.wst.validation.internal.operations.WorkbenchContext
-{
-	IJpaProject getJpaProject() {
-		return JptCorePlugin.jpaProject(getProject());
-	}
-	
+public class JpaHelper extends org.eclipse.wst.validation.internal.operations.WorkbenchContext {
+
 	@Override
 	public IResource getResource(Object obj) {
 		// TODO temporary hack until we get rid of EMF
 		return (obj instanceof IJpaEObject) ?
 			((IJpaEObject) obj).getResource()
 		:
-			((JpaNodeModel) obj).resource();
+			((IJpaNode) obj).resource();
 	}
-	
+
 	/*
 	 * This is used when no line number is set.  We generally use line numbers.
 	 * Therefore, when this is called, we will use the default location, i.e.
@@ -39,4 +33,5 @@ public class JpaHelper extends org.eclipse.wst.validation.internal.operations.Wo
 	public String getLocation(Object object) {
 		return null;
 	}
+
 }

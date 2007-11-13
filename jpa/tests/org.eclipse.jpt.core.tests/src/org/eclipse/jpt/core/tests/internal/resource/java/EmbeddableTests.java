@@ -32,7 +32,7 @@ public class EmbeddableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.EMBEDDABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Embeddable");
 			}
 		});
@@ -47,7 +47,7 @@ public class EmbeddableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.EMBEDDABLE, JPA.ENTITY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append("@Embeddable");
 			}

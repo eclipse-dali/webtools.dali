@@ -49,7 +49,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.NAMED_QUERY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@NamedQuery");
 			}
 		});
@@ -71,7 +71,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.NAMED_QUERY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@NamedQuery(" + elementName + "=\"" + value + "\")");
 			}
 		});
@@ -85,7 +85,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.NAMED_QUERY, JPA.QUERY_HINT);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@NamedQuery(hints={@QueryHint(name=\"BAR\", value=\"FOO\"), @QueryHint})");
 			}
 		});

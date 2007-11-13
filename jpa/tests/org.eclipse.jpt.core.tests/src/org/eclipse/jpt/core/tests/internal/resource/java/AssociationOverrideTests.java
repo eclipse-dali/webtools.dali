@@ -55,7 +55,7 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ASSOCIATION_OVERRIDE, JPA.COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\")");
 			}
 		});
@@ -69,7 +69,7 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ASSOCIATION_OVERRIDE, JPA.JOIN_COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"BAR\"), @JoinColumn})");
 			}
 		});

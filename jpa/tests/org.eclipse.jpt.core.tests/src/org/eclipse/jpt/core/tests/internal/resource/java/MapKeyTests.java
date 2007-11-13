@@ -31,7 +31,7 @@ public class MapKeyTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MAP_KEY);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@MapKey");
 			}
 		});
@@ -45,7 +45,7 @@ public class MapKeyTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MAP_KEY);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@MapKey(name=\"key\")");
 			}
 		});

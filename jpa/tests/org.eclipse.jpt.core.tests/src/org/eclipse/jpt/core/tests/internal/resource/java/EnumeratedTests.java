@@ -33,7 +33,7 @@ public class EnumeratedTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENUMERATED);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Enumerated");
 			}
 		});
@@ -48,7 +48,7 @@ public class EnumeratedTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENUMERATED, JPA.ENUM_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Enumerated(EnumType.ORDINAL)");
 			}
 		});

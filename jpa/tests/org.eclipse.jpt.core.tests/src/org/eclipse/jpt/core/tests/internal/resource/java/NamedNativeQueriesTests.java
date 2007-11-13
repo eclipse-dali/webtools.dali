@@ -58,7 +58,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.NAMED_NATIVE_QUERIES, JPA.NAMED_NATIVE_QUERY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@NamedNativeQueries(@NamedNativeQuery)");
 			}
 		});
@@ -85,7 +85,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.NAMED_NATIVE_QUERIES, JPA.NAMED_NATIVE_QUERY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@NamedNativeQueries(@NamedNativeQuery(" + elementName + "=\"" + value + "\"))");
 			}
 		});
@@ -99,7 +99,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.NAMED_NATIVE_QUERIES, JPA.NAMED_NATIVE_QUERY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@NamedNativeQueries(@NamedNativeQuery(resultClass=" + QUERY_RESULT_CLASS + ".class))");
 			}
 		});
@@ -112,7 +112,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.NAMED_NATIVE_QUERIES, JPA.NAMED_NATIVE_QUERY, JPA.QUERY_HINT);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@NamedNativeQueries(@NamedNativeQuery(hints={@QueryHint(name=\"BAR\", value=\"FOO\"), @QueryHint}))");
 			}
 		});
@@ -126,7 +126,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.NAMED_NATIVE_QUERY, JPA.QUERY_HINT);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@NamedNativeQuery(name=\"foo\", query=\"bar\", hints=@QueryHint(name=\"BAR\", value=\"FOO\"), resultClass=Foo.class, resultSetMapping=\"mapping\")");
 			}
 		});

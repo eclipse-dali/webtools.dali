@@ -1,14 +1,14 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
+
 /**
  * Copied from org.eclipse.wst.common.tests
  */
@@ -113,45 +114,33 @@ public class ProjectUtility {
 					Exception lastException = null;
 					// Don't make 2^12 is about 4 seconds which is the max we
 					// will wait for the VM to die
-					for (int j = 0; j < 13 && !success; j++) {
+					for (int j = 0; j < 14 && !success; j++) {
 						try {
 							if (project.exists()) {
 								project.delete(true, true, null);
 								ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 							}
 							success = true;
-						} catch (Exception e) {
-							lastException = e;
+						} catch (Exception ex) {
+							lastException = ex;
 							if (project.exists()) {
 								try {
 									project.close(null);
-								}
-								catch (Exception e2) {
-								}
-								try {
 									project.open(null);
+								} catch (Exception ex2) {
+									// ignore this exception
 								}
-								catch (Exception e3) {
-									try {
-										project.create(null);
-									}
-									catch (Exception e4) {
-									}
- 								}
 							}
 							try {
 								Thread.sleep((int) Math.pow(2, j));
-							} catch (InterruptedException e1) {
-							} // if the VM
-																// isn't dead,
-																// try sleeping
+							} catch (InterruptedException ex2) {
+								// probably won't happen
+							}
 						}
 					}
-					if (!success && lastException != null) {
-						// Logger.getLogger().log("Problem while deleting: " + lastException.getMessage());
-						// Assert.fail("Caught Exception=" +
-						// lastException.getMessage() + " when deleting
-						// project=" + project.getName());
+					if ( ! success) {
+						System.out.println("Problem while deleting: " + project.getName());
+						lastException.printStackTrace(System.out);
 					}
 				}
 			}

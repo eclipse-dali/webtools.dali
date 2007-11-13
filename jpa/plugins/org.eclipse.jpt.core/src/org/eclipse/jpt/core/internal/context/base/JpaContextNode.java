@@ -10,16 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
-import org.eclipse.jpt.core.internal.IJpaNodeModel;
-import org.eclipse.jpt.core.internal.JpaNodeModel;
+import org.eclipse.jpt.core.internal.IJpaNode;
+import org.eclipse.jpt.core.internal.JpaNode;
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
 
-public abstract class JpaContextNode extends JpaNodeModel
+public abstract class JpaContextNode extends JpaNode
 	implements IJpaContextNode
 {
 	// **************** constructor *******************************************
 	
-	protected JpaContextNode(IJpaNodeModel parent) {
+	protected JpaContextNode(IJpaNode parent) {
 		super(parent);
 	}
 	

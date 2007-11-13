@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaNodeModel;
+import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.utility.internal.Filter;
 
@@ -19,7 +19,7 @@ public abstract class JavaContextModel extends JpaContextNode
 {
 	// ********** constructor **********
 
-	protected JavaContextModel(IJpaNodeModel parent) {
+	protected JavaContextModel(IJpaNode parent) {
 		super(parent);
 	}
 

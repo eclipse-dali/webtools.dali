@@ -31,7 +31,7 @@ public class LobTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.LOB);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Lob");
 			}
 		});

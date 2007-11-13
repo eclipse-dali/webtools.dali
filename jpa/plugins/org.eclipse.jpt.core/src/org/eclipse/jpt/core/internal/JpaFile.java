@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 /**
  * 
  */
-public class JpaFile extends JpaNodeModel implements IJpaFile
+public class JpaFile extends JpaNode implements IJpaFile
 {
 	/**
 	 * The IFile associated with this JPA file
@@ -65,7 +65,7 @@ public class JpaFile extends JpaNodeModel implements IJpaFile
 	}
 	
 	@Override
-	public void toString(StringBuffer sb) {
+	public void toString(StringBuilder sb) {
 		sb.append(getFile().toString());
 		sb.append(" (resourceType: ");
 		sb.append(getResourceType());

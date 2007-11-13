@@ -142,6 +142,19 @@ public class TreeIteratorTests extends TestCase {
 		};
 	}
 
+	public void testInvalidTreeIterator() {
+		// missing method override
+		Iterator<TreeNode> iterator = new TreeIterator<TreeNode>(this.buildTree());
+		boolean exCaught = false;
+		try {
+			TreeNode tn = iterator.next();
+			fail("invalid tree node: " + tn);
+		} catch (UnsupportedOperationException ex) {
+			exCaught = true;
+		}
+		assertTrue("NoSuchElementException not thrown", exCaught);
+	}
+
 	private TreeNode buildTree() {
 		TreeNode root = new TreeNode("root");
 		TreeNode child1 = new TreeNode(root, "child 1");

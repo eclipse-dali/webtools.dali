@@ -49,7 +49,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn)");
 			}
 		});
@@ -63,7 +63,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(name=\"" + COLUMN_NAME + "\"))");
 			}
 		});
@@ -77,7 +77,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(referencedColumnName=\"" + COLUMN_REFERENCED_COLUMN_NAME + "\"))");
 			}
 		});
@@ -91,7 +91,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(columnDefinition=\"" + COLUMN_COLUMN_DEFINITION + "\"))");
 			}
 		});
@@ -105,7 +105,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@PrimaryKeyJoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\")");
 			}
 		});

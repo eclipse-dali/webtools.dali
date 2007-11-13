@@ -32,7 +32,7 @@ public class IdTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ID);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 		});

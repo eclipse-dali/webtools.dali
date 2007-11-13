@@ -51,7 +51,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.NAMED_NATIVE_QUERY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@NamedNativeQuery");
 			}
 		});
@@ -78,7 +78,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.NAMED_NATIVE_QUERY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@NamedNativeQuery(" + elementName + "=\"" + value + "\")");
 			}
 		});
@@ -92,7 +92,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.NAMED_NATIVE_QUERY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@NamedNativeQuery(resultClass=" + QUERY_RESULT_CLASS + ".class)");
 			}
 		});
@@ -105,7 +105,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.NAMED_NATIVE_QUERY, JPA.QUERY_HINT);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@NamedNativeQuery(hints={@QueryHint(name=\"BAR\", value=\"FOO\"), @QueryHint})");
 			}
 		});

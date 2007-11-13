@@ -24,7 +24,7 @@ import org.eclipse.text.edits.TextEdit;
 public final class DefaultAnnotationEditFormatter
 	implements AnnotationEditFormatter
 {
-	private static DefaultAnnotationEditFormatter INSTANCE = new DefaultAnnotationEditFormatter();
+	private static final DefaultAnnotationEditFormatter INSTANCE = new DefaultAnnotationEditFormatter();
 
 	/**
 	 * Return the singleton.
@@ -165,7 +165,7 @@ public final class DefaultAnnotationEditFormatter
 
 	private String buildCR(IDocument doc, int offset, String suffix) throws BadLocationException {
 		int line = doc.getLineOfOffset(offset);
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(doc.getLineDelimiter(line));  // use same CR as current line
 
 		int o = doc.getLineOffset(line);  // match the whitespace of the current line

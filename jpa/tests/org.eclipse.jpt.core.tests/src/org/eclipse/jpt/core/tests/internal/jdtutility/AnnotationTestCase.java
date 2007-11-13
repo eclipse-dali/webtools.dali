@@ -121,7 +121,7 @@ public abstract class AnnotationTestCase extends TestCase {
 					new SingleElementIterator<String>(annotationImport);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append(idFieldAnnotation);
 			}
 		});
@@ -151,7 +151,7 @@ public abstract class AnnotationTestCase extends TestCase {
 		return new AnnotatedSourceWriter(annotationWriter, typeName);
 	}
 
-	protected void appendSourceTo(StringBuffer sb, AnnotationWriter annotationWriter, String typeName) {
+	protected void appendSourceTo(StringBuilder sb, AnnotationWriter annotationWriter, String typeName) {
 		sb.append(CR);
 		for (Iterator<String> stream = annotationWriter.imports(); stream.hasNext(); ) {
 			sb.append("import ");
@@ -437,30 +437,30 @@ public abstract class AnnotationTestCase extends TestCase {
 
 	public interface AnnotationWriter {
 		Iterator<String> imports();
-		void appendTypeAnnotationTo(StringBuffer sb);
-		void appendExtendsImplementsTo(StringBuffer sb);
-		void appendIdFieldAnnotationTo(StringBuffer sb);
-		void appendNameFieldAnnotationTo(StringBuffer sb);
-		void appendGetIdMethodAnnotationTo(StringBuffer sb);
-		void appendSetIdMethodAnnotationTo(StringBuffer sb);
-		void appendGetNameMethodAnnotationTo(StringBuffer sb);
-		void appendSetNameMethodAnnotationTo(StringBuffer sb);
-		void appendMemberTypeTo(StringBuffer sb);
-		void appendTopLevelTypesTo(StringBuffer sb);
+		void appendTypeAnnotationTo(StringBuilder sb);
+		void appendExtendsImplementsTo(StringBuilder sb);
+		void appendIdFieldAnnotationTo(StringBuilder sb);
+		void appendNameFieldAnnotationTo(StringBuilder sb);
+		void appendGetIdMethodAnnotationTo(StringBuilder sb);
+		void appendSetIdMethodAnnotationTo(StringBuilder sb);
+		void appendGetNameMethodAnnotationTo(StringBuilder sb);
+		void appendSetNameMethodAnnotationTo(StringBuilder sb);
+		void appendMemberTypeTo(StringBuilder sb);
+		void appendTopLevelTypesTo(StringBuilder sb);
 	}
 
 	public static class DefaultAnnotationWriter implements AnnotationWriter {
 		public Iterator<String> imports() {return EmptyIterator.instance();}
-		public void appendTypeAnnotationTo(StringBuffer sb) {/* do nothing */}
-		public void appendExtendsImplementsTo(StringBuffer sb) {/* do nothing */}
-		public void appendIdFieldAnnotationTo(StringBuffer sb) {/* do nothing */}
-		public void appendNameFieldAnnotationTo(StringBuffer sb) {/* do nothing */}
-		public void appendGetIdMethodAnnotationTo(StringBuffer sb) {/* do nothing */}
-		public void appendSetIdMethodAnnotationTo(StringBuffer sb) {/* do nothing */}
-		public void appendGetNameMethodAnnotationTo(StringBuffer sb) {/* do nothing */}
-		public void appendSetNameMethodAnnotationTo(StringBuffer sb) {/* do nothing */}
-		public void appendMemberTypeTo(StringBuffer sb) {/* do nothing */}
-		public void appendTopLevelTypesTo(StringBuffer sb) {/* do nothing */}
+		public void appendTypeAnnotationTo(StringBuilder sb) {/* do nothing */}
+		public void appendExtendsImplementsTo(StringBuilder sb) {/* do nothing */}
+		public void appendIdFieldAnnotationTo(StringBuilder sb) {/* do nothing */}
+		public void appendNameFieldAnnotationTo(StringBuilder sb) {/* do nothing */}
+		public void appendGetIdMethodAnnotationTo(StringBuilder sb) {/* do nothing */}
+		public void appendSetIdMethodAnnotationTo(StringBuilder sb) {/* do nothing */}
+		public void appendGetNameMethodAnnotationTo(StringBuilder sb) {/* do nothing */}
+		public void appendSetNameMethodAnnotationTo(StringBuilder sb) {/* do nothing */}
+		public void appendMemberTypeTo(StringBuilder sb) {/* do nothing */}
+		public void appendTopLevelTypesTo(StringBuilder sb) {/* do nothing */}
 	}
 
 	public static class AnnotationWriterWrapper implements AnnotationWriter {
@@ -470,16 +470,16 @@ public abstract class AnnotationTestCase extends TestCase {
 			this.aw = aw;
 		}
 		public Iterator<String> imports() {return aw.imports();}
-		public void appendTypeAnnotationTo(StringBuffer sb) {aw.appendTypeAnnotationTo(sb);}
-		public void appendExtendsImplementsTo(StringBuffer sb) {aw.appendExtendsImplementsTo(sb);}
-		public void appendIdFieldAnnotationTo(StringBuffer sb) {aw.appendIdFieldAnnotationTo(sb);}
-		public void appendNameFieldAnnotationTo(StringBuffer sb) {aw.appendNameFieldAnnotationTo(sb);}
-		public void appendGetIdMethodAnnotationTo(StringBuffer sb) {aw.appendGetIdMethodAnnotationTo(sb);}
-		public void appendSetIdMethodAnnotationTo(StringBuffer sb) {aw.appendSetIdMethodAnnotationTo(sb);}
-		public void appendGetNameMethodAnnotationTo(StringBuffer sb) {aw.appendGetNameMethodAnnotationTo(sb);}
-		public void appendSetNameMethodAnnotationTo(StringBuffer sb) {aw.appendSetNameMethodAnnotationTo(sb);}
-		public void appendMemberTypeTo(StringBuffer sb) {aw.appendMemberTypeTo(sb);}
-		public void appendTopLevelTypesTo(StringBuffer sb) {aw.appendTopLevelTypesTo(sb);}
+		public void appendTypeAnnotationTo(StringBuilder sb) {aw.appendTypeAnnotationTo(sb);}
+		public void appendExtendsImplementsTo(StringBuilder sb) {aw.appendExtendsImplementsTo(sb);}
+		public void appendIdFieldAnnotationTo(StringBuilder sb) {aw.appendIdFieldAnnotationTo(sb);}
+		public void appendNameFieldAnnotationTo(StringBuilder sb) {aw.appendNameFieldAnnotationTo(sb);}
+		public void appendGetIdMethodAnnotationTo(StringBuilder sb) {aw.appendGetIdMethodAnnotationTo(sb);}
+		public void appendSetIdMethodAnnotationTo(StringBuilder sb) {aw.appendSetIdMethodAnnotationTo(sb);}
+		public void appendGetNameMethodAnnotationTo(StringBuilder sb) {aw.appendGetNameMethodAnnotationTo(sb);}
+		public void appendSetNameMethodAnnotationTo(StringBuilder sb) {aw.appendSetNameMethodAnnotationTo(sb);}
+		public void appendMemberTypeTo(StringBuilder sb) {aw.appendMemberTypeTo(sb);}
+		public void appendTopLevelTypesTo(StringBuilder sb) {aw.appendTopLevelTypesTo(sb);}
 	}
 
 	public class AnnotatedSourceWriter implements SourceWriter {
@@ -493,7 +493,7 @@ public abstract class AnnotationTestCase extends TestCase {
 			this.annotationWriter = annotationWriter;
 			this.typeName = typeName;
 		}
-		public void appendSourceTo(StringBuffer sb) {
+		public void appendSourceTo(StringBuilder sb) {
 			AnnotationTestCase.this.appendSourceTo(sb, this.annotationWriter, typeName);
 		}
 	}

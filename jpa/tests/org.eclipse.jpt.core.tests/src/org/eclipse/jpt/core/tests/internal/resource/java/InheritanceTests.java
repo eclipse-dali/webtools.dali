@@ -32,7 +32,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.INHERITANCE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Inheritance");
 			}
 		});
@@ -47,7 +47,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.INHERITANCE, JPA.INHERITANCE_TYPE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Inheritance(strategy=InheritanceType.JOINED)");
 			}
 		});

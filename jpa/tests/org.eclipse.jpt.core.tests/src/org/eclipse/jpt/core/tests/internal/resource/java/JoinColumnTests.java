@@ -48,7 +48,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.JOIN_COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@JoinColumn");
 			}
 		});
@@ -62,7 +62,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.JOIN_COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@JoinColumn(name=\"" + COLUMN_NAME + "\")");
 			}
 		});
@@ -76,7 +76,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.JOIN_COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@JoinColumn(table=\"" + COLUMN_TABLE + "\")");
 			}
 		});
@@ -90,7 +90,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.JOIN_COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@JoinColumn(referencedColumnName=\"" + COLUMN_REFERENCED_COLUMN_NAME + "\")");
 			}
 		});
@@ -104,7 +104,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.JOIN_COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@JoinColumn(columnDefinition=\"" + COLUMN_COLUMN_DEFINITION + "\")");
 			}
 		});
@@ -118,7 +118,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.JOIN_COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@JoinColumn(" + booleanElement + "=true)");
 			}
 		});

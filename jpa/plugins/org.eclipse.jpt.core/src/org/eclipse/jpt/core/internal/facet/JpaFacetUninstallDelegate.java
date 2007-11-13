@@ -1,11 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2007 Oracle. All rights reserved. This
- *  program and the accompanying materials are made available under the terms of
- *  the Eclipse Public License v1.0 which accompanies this distribution, and is
- *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.facet;
 
 import org.eclipse.core.resources.IProject;
@@ -23,8 +24,8 @@ public class JpaFacetUninstallDelegate
 		// There is nothing to do here.  Everything is taken care of by the 
 		// JpaModelManager *whenever* the facet is removed (even via meta-file
 		// editing and CVS updating), but this delegate needs to be here because
-		// it is required by the facet extension point in order to allow the 
-		// facet UI to uninstall this facet.
+		// it is required by the facet extension point action element, and that 
+		// is required by the facet UI to allow uninstallation of this facet.
 	}
 
 }

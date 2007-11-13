@@ -30,7 +30,7 @@ public class DiscriminatorValueTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.DISCRIMINATOR_VALUE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@DiscriminatorValue");
 			}
 		});
@@ -44,7 +44,7 @@ public class DiscriminatorValueTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.DISCRIMINATOR_VALUE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@DiscriminatorValue(value=\"discriminator\")");
 			}
 		});

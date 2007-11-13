@@ -43,7 +43,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 				return new ArrayIterator<String>(JPA.ENTITY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 		});
@@ -59,12 +59,12 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.COLUMN);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
 				sb.append("    ");
 				sb.append("@Id");
@@ -87,12 +87,12 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.BASIC);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 				sb.append(CR);
 				sb.append("@Basic");
@@ -111,12 +111,12 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.COLUMN);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 				sb.append(CR);
 				sb.append("    ");
@@ -134,12 +134,12 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.COLUMN);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Column(name=\"FOO\", table=\"MY_TABLE\")");
 			}
 		});
@@ -156,11 +156,11 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.COLUMN, JPA.ID, JPA.GENERATED_VALUE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 				sb.append(CR);
 				sb.append("@Column");
@@ -180,12 +180,12 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.COLUMN);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Column(name=\"FOO\")");
 				sb.append(CR);
 				sb.append("@Column(name=\"BAR\")");
@@ -202,7 +202,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 				return new ArrayIterator<String>(JPA.EMBEDDED, JPA.ATTRIBUTE_OVERRIDE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Embedded");
 				sb.append(CR);
 				sb.append("@AttributeOverride(name=\"FOO\")");
@@ -219,7 +219,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 				return new ArrayIterator<String>(JPA.EMBEDDED, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Embedded");
 				sb.append(CR);
 				sb.append("@AttributeOverrides(@AttributeOverride(name=\"FOO\"))");
@@ -235,7 +235,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 				return new ArrayIterator<String>(JPA.EMBEDDED, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Embedded");
 				sb.append(CR);
 				sb.append("@AttributeOverrides()");
@@ -253,7 +253,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 				return new ArrayIterator<String>(JPA.EMBEDDED, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Embedded");
 				sb.append(CR);
 				sb.append("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAR\")})");
@@ -271,7 +271,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 				return new ArrayIterator<String>(JPA.EMBEDDED, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Embedded");
 				sb.append(CR);
 				sb.append("@AttributeOverride(name=\"FOO\")");

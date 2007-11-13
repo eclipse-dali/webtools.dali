@@ -33,7 +33,7 @@ public class TemporalTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.TEMPORAL);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Temporal");
 			}
 		});
@@ -48,7 +48,7 @@ public class TemporalTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.TEMPORAL, JPA.TEMPORAL_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Temporal(TemporalType.DATE)");
 			}
 		});

@@ -43,7 +43,7 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SEQUENCE_GENERATOR);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@SequenceGenerator");
 			}
 		});
@@ -57,7 +57,7 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SEQUENCE_GENERATOR);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@SequenceGenerator");
 			}
 		});
@@ -79,7 +79,7 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SEQUENCE_GENERATOR);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@SequenceGenerator(" + elementName + "=\"" + value + "\")");
 			}
 		});
@@ -101,7 +101,7 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SEQUENCE_GENERATOR);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@SequenceGenerator(" + elementName + "=" + value + ")");
 			}
 		});

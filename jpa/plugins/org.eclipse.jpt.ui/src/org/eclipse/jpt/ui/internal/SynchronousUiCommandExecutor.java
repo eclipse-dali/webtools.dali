@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal;
 
 import org.eclipse.jpt.utility.internal.Command;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * This implementation of CommandExecutor can be used by a non-UI
@@ -33,7 +33,7 @@ public final class SynchronousUiCommandExecutor
 	}
 
 	public void execute(Command command) {
-		Display.getDefault().syncExec(this.buildRunnable(command));
+		PlatformUI.getWorkbench().getDisplay().syncExec(this.buildRunnable(command));
 	}
 
 	private Runnable buildRunnable(final Command command) {

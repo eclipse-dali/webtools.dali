@@ -58,7 +58,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.TABLE_GENERATOR);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@TableGenerator");
 			}
 		});
@@ -72,7 +72,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.TABLE_GENERATOR);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@TableGenerator");
 			}
 		});
@@ -113,7 +113,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.TABLE_GENERATOR);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@TableGenerator(" + elementName + "=\"" + value + "\")");
 			}
 		});
@@ -135,7 +135,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.TABLE_GENERATOR);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@TableGenerator(" + elementName + "=" + value + ")");
 			}
 		});
@@ -150,7 +150,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.TABLE_GENERATOR, JPA.UNIQUE_CONSTRAINT);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint})");
 			}
 		});

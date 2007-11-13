@@ -13,9 +13,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
-import org.eclipse.jpt.utility.internal.node.NodeModel;
+import org.eclipse.jpt.utility.internal.node.Node;
 
-public interface JavaResource extends NodeModel
+public interface JavaResource extends Node
 {
 	void initialize(CompilationUnit astRoot);
 	

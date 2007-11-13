@@ -21,15 +21,12 @@ public final class NullExpressionConverter
 {
 
 	// singleton
-	private static ExpressionConverter<Expression> INSTANCE = new NullExpressionConverter();
+	private static final ExpressionConverter<Expression> INSTANCE = new NullExpressionConverter();
 
 	/**
 	 * Return the singleton.
 	 */
 	public static ExpressionConverter<Expression> instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new NullExpressionConverter();
-		}
 		return INSTANCE;
 	}
 

@@ -32,7 +32,7 @@ public class MappedSuperclassTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@MappedSuperclass");
 			}
 		});
@@ -47,7 +47,7 @@ public class MappedSuperclassTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS, JPA.ENTITY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@MappedSuperclass");
 				sb.append("@Entity");
 			}

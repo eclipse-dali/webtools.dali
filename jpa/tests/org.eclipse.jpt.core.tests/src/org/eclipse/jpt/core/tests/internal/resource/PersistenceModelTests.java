@@ -31,16 +31,16 @@ public class PersistenceModelTests extends TestCase
 	}
 	
 	public void testModelLoad() {
-		PersistenceArtifactEdit artifactEdit = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject.getProject(), "META-INF/persistence.xml");
+		PersistenceArtifactEdit artifactEdit = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject.getProject());
 		assertNotNull(artifactEdit);
-		PersistenceResourceModel resource = artifactEdit.getPersistenceResource();
+		PersistenceResourceModel resource = artifactEdit.getPersistenceResource("META-INF/persistence.xml");
 		assertNotNull(resource);
 	}
 	
 	public void testModelLoad2() {
-		PersistenceArtifactEdit artifactEdit = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject.getProject(), "META-INF/persistence.xml");
+		PersistenceArtifactEdit artifactEdit = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject.getProject());
 		assertNotNull(artifactEdit);
-		PersistenceResourceModel resource = artifactEdit.getPersistenceResource();
+		PersistenceResourceModel resource = artifactEdit.getPersistenceResource("META-INF/persistence.xml");
 		assertNotNull(resource);
 	}
 }

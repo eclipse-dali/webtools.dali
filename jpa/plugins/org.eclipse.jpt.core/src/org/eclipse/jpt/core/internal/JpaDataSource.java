@@ -20,7 +20,7 @@ import org.eclipse.jpt.db.internal.Table;
 /**
  * 
  */
-public class JpaDataSource extends JpaNodeModel implements IJpaDataSource
+public class JpaDataSource extends JpaNode implements IJpaDataSource
 {
 	// cache the connection profile name so we can detect when it changes and fire events
 	protected String connectionProfileName;
@@ -132,7 +132,7 @@ public class JpaDataSource extends JpaNodeModel implements IJpaDataSource
 	}
 	
 	@Override
-	public void toString(StringBuffer sb) {
+	public void toString(StringBuilder sb) {
 		sb.append("connectionProfileName: ");
 		sb.append(connectionProfileName);
 	}

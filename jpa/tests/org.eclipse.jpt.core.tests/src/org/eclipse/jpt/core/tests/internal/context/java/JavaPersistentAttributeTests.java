@@ -41,12 +41,12 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 		});
@@ -62,12 +62,12 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 		});
@@ -82,17 +82,17 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 			
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 		});
@@ -105,11 +105,11 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY);
 			}
 			@Override
-			public void appendExtendsImplementsTo(StringBuffer sb) {
+			public void appendExtendsImplementsTo(StringBuilder sb) {
 				sb.append("extends " + TYPE_NAME + " ");
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 
@@ -123,16 +123,16 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
 			}
 			@Override
-			public void appendExtendsImplementsTo(StringBuffer sb) {
+			public void appendExtendsImplementsTo(StringBuilder sb) {
 				sb.append("extends " + TYPE_NAME + " ");
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 		});
@@ -145,16 +145,16 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
 			}
 			@Override
-			public void appendExtendsImplementsTo(StringBuffer sb) {
+			public void appendExtendsImplementsTo(StringBuilder sb) {
 				sb.append("extends " + TYPE_NAME + " ");
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 		});
@@ -163,7 +163,7 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 	private IType createTestSubTypeNonPersistent() throws Exception {
 		return this.createTestType(PACKAGE_NAME, "AnnotationTestTypeChild.java", "AnnotationTestTypeChild", new DefaultAnnotationWriter() {
 			@Override
-			public void appendExtendsImplementsTo(StringBuffer sb) {
+			public void appendExtendsImplementsTo(StringBuilder sb) {
 				sb.append("extends " + TYPE_NAME + " ");
 			}
 		});
@@ -176,16 +176,16 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
 			}
 			@Override
-			public void appendExtendsImplementsTo(StringBuffer sb) {
+			public void appendExtendsImplementsTo(StringBuilder sb) {
 				sb.append("extends AnnotationTestTypeChild ");
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 		});

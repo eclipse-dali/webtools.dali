@@ -32,7 +32,7 @@ public class VersionTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.VERSION);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Version");
 			}
 		});

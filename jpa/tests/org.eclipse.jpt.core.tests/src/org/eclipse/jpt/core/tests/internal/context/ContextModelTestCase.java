@@ -95,8 +95,8 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		}
 		String persistenceXmlUri = JptCorePlugin.persistenceXmlDeploymentURI(getJavaProject().getProject());
 		PersistenceArtifactEdit pae = 
-				PersistenceArtifactEdit.getArtifactEditForWrite(getJavaProject().getProject(), persistenceXmlUri);
-		 this.persistenceResourceModel = pae.getPersistenceResource();
+				PersistenceArtifactEdit.getArtifactEditForWrite(getJavaProject().getProject());
+		 this.persistenceResourceModel = pae.getPersistenceResource(persistenceXmlUri);
 		 
 		 return this.persistenceResourceModel;
 	}

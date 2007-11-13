@@ -93,7 +93,7 @@ public class JpaFacetDataModelProvider
 		}
 		return super.getDefaultProperty(propertyName);
 	}
-	
+
 	@Override
 	public boolean propertySet(String propertyName, Object propertyValue) {
 		boolean ok = super.propertySet(propertyName, propertyValue);
@@ -103,7 +103,7 @@ public class JpaFacetDataModelProvider
 		}
 		return ok;
 	}
-	
+
 	@Override
 	public DataModelPropertyDescriptor[] getValidPropertyDescriptors(String propertyName) {
 		if (propertyName.equals(JPA_LIBRARY)) {
@@ -120,7 +120,7 @@ public class JpaFacetDataModelProvider
 		
 		return super.getValidPropertyDescriptors(propertyName);
 	}
-	
+
 	@Override
 	public IStatus validate(String name) {
 		if (name.equals(PLATFORM_ID)) {
@@ -141,7 +141,7 @@ public class JpaFacetDataModelProvider
 	private IRuntime runtime() {
 		return (IRuntime) this.getProperty(RUNTIME);
 	}
-	
+
 	private boolean runtimeSupportsEjb30(IRuntime runtime) {
 		IProjectFacetVersion ejb30 = ProjectFacetsManager.getProjectFacet(EJB_FACET_ID).getVersion("3.0");
 		return (runtime == null) ? false : runtime.supports(ejb30);

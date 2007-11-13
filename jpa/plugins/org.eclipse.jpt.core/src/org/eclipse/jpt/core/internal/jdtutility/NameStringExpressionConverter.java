@@ -21,15 +21,12 @@ import org.eclipse.jdt.core.dom.Name;
 public final class NameStringExpressionConverter
 	extends AbstractExpressionConverter<String>
 {
-	private static ExpressionConverter<String> INSTANCE;
+	private static final ExpressionConverter<String> INSTANCE = new NameStringExpressionConverter();
 
 	/**
 	 * Return the singleton.
 	 */
 	public static ExpressionConverter<String> instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new NameStringExpressionConverter();
-		}
 		return INSTANCE;
 	}
 

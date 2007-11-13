@@ -57,7 +57,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SECONDARY_TABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@SecondaryTable");
 			}
 		});
@@ -71,7 +71,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SECONDARY_TABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@SecondaryTable(name=\"" + TABLE_NAME + "\")");
 			}
 		});
@@ -85,7 +85,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SECONDARY_TABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@SecondaryTable(schema=\"" + SCHEMA_NAME + "\")");
 			}
 		});
@@ -98,7 +98,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SECONDARY_TABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@SecondaryTable(catalog=\"" + CATALOG_NAME + "\")");
 			}
 		});
@@ -113,7 +113,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.UNIQUE_CONSTRAINT);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint})");
 			}
 		});
@@ -127,7 +127,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.PRIMARY_KEY_JOIN_COLUMN);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"BAR\"), @PrimaryKeyJoinColumn})");
 			}
 		});

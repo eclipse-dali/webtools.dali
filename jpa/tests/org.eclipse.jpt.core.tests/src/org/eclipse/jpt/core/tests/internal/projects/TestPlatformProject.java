@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.tests.internal.projects;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -27,14 +28,12 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * This builds and holds a "general" Eclipse project.
  * Support for adding natures, folders, and files.
  */
-public class TestPlatformProject 
-{
+public class TestPlatformProject {
 	private final IProject project;
-	
+
 	/** carriage return */
 	public static final String CR = System.getProperty("line.separator");
-	
-	
+
 	
 	// ********** builders **********
 	

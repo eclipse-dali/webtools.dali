@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal;
 
 import java.util.Iterator;
-
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.utility.internal.model.Model;
@@ -43,5 +43,11 @@ public interface IJpaModel extends Model {
 	 * Return the size of the JPA model's list of JPA projects.
 	 */
 	int jpaProjectsSize();
+	
+	/**
+	 * Return the JPA file corresponding to the specified Eclipse file,
+	 * or null if unable to associate the specified file with a JPA file.
+	 */
+	IJpaFile jpaFile(IFile file) throws CoreException;
 
 }

@@ -38,7 +38,7 @@ public class TableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.TABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Table");
 			}
 		});
@@ -52,7 +52,7 @@ public class TableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.TABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Table(name=\"" + TABLE_NAME + "\")");
 			}
 		});
@@ -66,7 +66,7 @@ public class TableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.TABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Table(schema=\"" + SCHEMA_NAME + "\")");
 			}
 		});
@@ -79,7 +79,7 @@ public class TableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.TABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Table(catalog=\"" + CATALOG_NAME + "\")");
 			}
 		});
@@ -94,7 +94,7 @@ public class TableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.TABLE, JPA.UNIQUE_CONSTRAINT);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint})");
 			}
 		});

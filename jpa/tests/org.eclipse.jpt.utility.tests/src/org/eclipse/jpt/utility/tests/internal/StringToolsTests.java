@@ -88,6 +88,27 @@ public class StringToolsTests extends TestCase {
 		assertTrue(exThrown);
 	}
 
+	public void testPadOnStringBuilder() {
+		StringBuilder sb;
+		sb = new StringBuilder();
+		StringTools.padOn("fred", 4, sb);
+		assertEquals("fred", sb.toString());
+
+		sb = new StringBuilder();
+		StringTools.padOn("fred", 6, sb);
+		assertEquals("fred  ", sb.toString());
+
+		sb = new StringBuilder();
+		boolean exThrown = false;
+		try {
+			StringTools.padOn("fred", 2, sb);
+			fail();
+		} catch (IllegalArgumentException ex) {
+			exThrown = true;
+		}
+		assertTrue(exThrown);
+	}
+
 	public void testPadOrTruncate() {
 		assertEquals("fred", StringTools.padOrTruncate("fred", 4));
 		assertEquals("fred  ", StringTools.padOrTruncate("fred", 6));
@@ -120,6 +141,18 @@ public class StringToolsTests extends TestCase {
 
 	private void verifyPadOrTruncateOnStringBuffer(String expected, String string, int length) {
 		StringBuffer sb = new StringBuffer();
+		StringTools.padOrTruncateOn(string, length, sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testPadOrTruncateOnStringBuilder() {
+		this.verifyPadOrTruncateOnStringBuilder("fred", "fred", 4);
+		this.verifyPadOrTruncateOnStringBuilder("fred  ", "fred", 6);
+		this.verifyPadOrTruncateOnStringBuilder("fr", "fred", 2);
+	}
+
+	private void verifyPadOrTruncateOnStringBuilder(String expected, String string, int length) {
+		StringBuilder sb = new StringBuilder();
 		StringTools.padOrTruncateOn(string, length, sb);
 		assertEquals(expected, sb.toString());
 	}
@@ -190,6 +223,27 @@ public class StringToolsTests extends TestCase {
 		assertTrue(exThrown);
 	}
 
+	public void testZeroPadOnStringBuilder() {
+		StringBuilder sb;
+		sb = new StringBuilder();
+		StringTools.zeroPadOn("1234", 4, sb);
+		assertEquals("1234", sb.toString());
+
+		sb = new StringBuilder();
+		StringTools.zeroPadOn("1234", 6, sb);
+		assertEquals("001234", sb.toString());
+
+		sb = new StringBuilder();
+		boolean exThrown = false;
+		try {
+			StringTools.zeroPadOn("1234", 2, sb);
+			fail();
+		} catch (IllegalArgumentException ex) {
+			exThrown = true;
+		}
+		assertTrue(exThrown);
+	}
+
 	public void testZeroPadOrTruncate() {
 		assertEquals("1234", StringTools.zeroPadOrTruncate("1234", 4));
 		assertEquals("001234", StringTools.zeroPadOrTruncate("1234", 6));
@@ -222,6 +276,18 @@ public class StringToolsTests extends TestCase {
 
 	private void verifyZeroPadOrTruncateOnStringBuffer(String expected, String string, int length) {
 		StringBuffer sb = new StringBuffer();
+		StringTools.zeroPadOrTruncateOn(string, length, sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testZeroPadOrTruncateOnStringBuilder() {
+		this.verifyZeroPadOrTruncateOnStringBuilder("1234", "1234", 4);
+		this.verifyZeroPadOrTruncateOnStringBuilder("001234", "1234", 6);
+		this.verifyZeroPadOrTruncateOnStringBuilder("34", "1234", 2);
+	}
+
+	private void verifyZeroPadOrTruncateOnStringBuilder(String expected, String string, int length) {
+		StringBuilder sb = new StringBuilder();
 		StringTools.zeroPadOrTruncateOn(string, length, sb);
 		assertEquals(expected, sb.toString());
 	}
@@ -262,6 +328,18 @@ public class StringToolsTests extends TestCase {
 		assertEquals(expectedString, sb.toString());
 	}
 
+	public void testWrapOnStringBuilder() {
+		this.verifyWrapOnStringBuilder("Employee", "123", "123Employee123");
+		this.verifyWrapOnStringBuilder("123", "123", "123123123");
+		this.verifyWrapOnStringBuilder("", "123", "123123");
+	}
+
+	private void verifyWrapOnStringBuilder(String string, String wrap, String expectedString) {
+		StringBuilder sb = new StringBuilder();
+		StringTools.wrapOn(string, wrap, sb);
+		assertEquals(expectedString, sb.toString());
+	}
+
 	public void testQuote() {
 		this.verifyQuote("Employee", "\"Employee\"");
 		this.verifyQuote("123", "\"123\"");
@@ -292,6 +370,18 @@ public class StringToolsTests extends TestCase {
 
 	private void verifyQuoteOnStringBuffer(String string, String expectedString) {
 		StringBuffer sb = new StringBuffer();
+		StringTools.quoteOn(string, sb);
+		assertEquals(expectedString, sb.toString());
+	}
+
+	public void testQuoteOnStringBuilder() {
+		this.verifyQuoteOnStringBuilder("Employee", "\"Employee\"");
+		this.verifyQuoteOnStringBuilder("123", "\"123\"");
+		this.verifyQuoteOnStringBuilder("", "\"\"");
+	}
+
+	private void verifyQuoteOnStringBuilder(String string, String expectedString) {
+		StringBuilder sb = new StringBuilder();
 		StringTools.quoteOn(string, sb);
 		assertEquals(expectedString, sb.toString());
 	}
@@ -350,6 +440,20 @@ public class StringToolsTests extends TestCase {
 		assertEquals(expectedString, sb.toString());
 	}
 
+	public void testRemoveFirstOccurrenceOnStringBuilder() {
+		this.verifyRemoveFirstOccurrenceOnStringBuilder("Emplo&yee", '&', "Employee");
+		this.verifyRemoveFirstOccurrenceOnStringBuilder("Emplo&yee&", '&', "Employee&");
+		this.verifyRemoveFirstOccurrenceOnStringBuilder("Employee &Foo", '&', "Employee Foo");
+		this.verifyRemoveFirstOccurrenceOnStringBuilder("Employee&", '&', "Employee");
+		this.verifyRemoveFirstOccurrenceOnStringBuilder("&Employee", '&', "Employee");
+	}
+
+	private void verifyRemoveFirstOccurrenceOnStringBuilder(String string, char charToRemove, String expectedString) {
+		StringBuilder sb = new StringBuilder();
+		StringTools.removeFirstOccurrenceOn(string, charToRemove, sb);
+		assertEquals(expectedString, sb.toString());
+	}
+
 	public void testRemoveAllOccurrences() {
 		this.verifyRemoveAllOccurrences("Employee Fred", ' ', "EmployeeFred");
 		this.verifyRemoveAllOccurrences(" Employee ", ' ', "Employee");
@@ -394,6 +498,19 @@ public class StringToolsTests extends TestCase {
 
 	private void verifyRemoveAllOccurrencesOnStringBuffer(String string, char charToRemove, String expectedString) {
 		StringBuffer sb = new StringBuffer();
+		StringTools.removeAllOccurrencesOn(string, charToRemove, sb);
+		assertEquals(expectedString, sb.toString());
+	}
+
+	public void testRemoveAllOccurrencesOnStringBuilder() {
+		this.verifyRemoveAllOccurrencesOnStringBuilder("Employee Fred", ' ', "EmployeeFred");
+		this.verifyRemoveAllOccurrencesOnStringBuilder(" Employee ", ' ', "Employee");
+		this.verifyRemoveAllOccurrencesOnStringBuilder("Employee   Foo", ' ', "EmployeeFoo");
+		this.verifyRemoveAllOccurrencesOnStringBuilder(" Emp loyee   Foo", ' ', "EmployeeFoo");
+	}
+
+	private void verifyRemoveAllOccurrencesOnStringBuilder(String string, char charToRemove, String expectedString) {
+		StringBuilder sb = new StringBuilder();
 		StringTools.removeAllOccurrencesOn(string, charToRemove, sb);
 		assertEquals(expectedString, sb.toString());
 	}
@@ -460,6 +577,22 @@ public class StringToolsTests extends TestCase {
 		assertEquals(expected, sb.toString());
 	}
 
+	public void testCapitalizeOnCharArrayStringBuilder() {
+		this.verifyCapitalizeOnCharArrayStringBuilder("Oracle", new char[] { 'O', 'r', 'a', 'c', 'l', 'e' });
+		this.verifyCapitalizeOnCharArrayStringBuilder("Oracle", new char[] { 'o', 'r', 'a', 'c', 'l', 'e' });
+		this.verifyCapitalizeOnCharArrayStringBuilder("   ", new char[] { ' ', ' ', ' ' });
+		this.verifyCapitalizeOnCharArrayStringBuilder("ORACLE", new char[] { 'O', 'R', 'A', 'C', 'L', 'E' });
+		this.verifyCapitalizeOnCharArrayStringBuilder("", new char[0]);
+		this.verifyCapitalizeOnCharArrayStringBuilder("A", new char[] { 'a' });
+		this.verifyCapitalizeOnCharArrayStringBuilder("\u00C9cole", new char[] { '\u00E9', 'c', 'o', 'l', 'e' });
+	}
+
+	private void verifyCapitalizeOnCharArrayStringBuilder(String expected, char[] string) {
+		StringBuilder sb = new StringBuilder();
+		StringTools.capitalizeOn(string, sb);
+		assertEquals(expected, sb.toString());
+	}
+
 	public void testCapitalizeOnStringStringBuffer() {
 		this.verifyCapitalizeOnStringStringBuffer("Oracle", "Oracle");
 		this.verifyCapitalizeOnStringStringBuffer("Oracle", "oracle");
@@ -472,6 +605,22 @@ public class StringToolsTests extends TestCase {
 
 	private void verifyCapitalizeOnStringStringBuffer(String expected, String string) {
 		StringBuffer sb = new StringBuffer();
+		StringTools.capitalizeOn(string, sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testCapitalizeOnStringStringBuilder() {
+		this.verifyCapitalizeOnStringStringBuilder("Oracle", "Oracle");
+		this.verifyCapitalizeOnStringStringBuilder("Oracle", "oracle");
+		this.verifyCapitalizeOnStringStringBuilder("   ", "   ");
+		this.verifyCapitalizeOnStringStringBuilder("ORACLE", "ORACLE");
+		this.verifyCapitalizeOnStringStringBuilder("", "");
+		this.verifyCapitalizeOnStringStringBuilder("A", "a");
+		this.verifyCapitalizeOnStringStringBuilder("\u00C9cole", "\u00E9cole"); // �cole->�COLE
+	}
+
+	private void verifyCapitalizeOnStringStringBuilder(String expected, String string) {
+		StringBuilder sb = new StringBuilder();
 		StringTools.capitalizeOn(string, sb);
 		assertEquals(expected, sb.toString());
 	}
@@ -552,6 +701,22 @@ public class StringToolsTests extends TestCase {
 		assertEquals(expected, sb.toString());
 	}
 
+	public void testUncapitalizeOnCharArrayStringBuilder() {
+		this.verifyUncapitalizeOnCharArrayStringBuilder("oracle", new char[] { 'O', 'r', 'a', 'c', 'l', 'e' });
+		this.verifyUncapitalizeOnCharArrayStringBuilder("oracle", new char[] { 'o', 'r', 'a', 'c', 'l', 'e' });
+		this.verifyUncapitalizeOnCharArrayStringBuilder("   ", new char[] { ' ', ' ', ' ' });
+		this.verifyUncapitalizeOnCharArrayStringBuilder("ORACLE", new char[] { 'O', 'R', 'A', 'C', 'L', 'E' });
+		this.verifyUncapitalizeOnCharArrayStringBuilder("", new char[0]);
+		this.verifyUncapitalizeOnCharArrayStringBuilder("a", new char[] { 'A' });
+		this.verifyUncapitalizeOnCharArrayStringBuilder("\u00E9cole", new char[] { '\u00C9', 'c', 'o', 'l', 'e' });
+	}
+
+	private void verifyUncapitalizeOnCharArrayStringBuilder(String expected, char[] string) {
+		StringBuilder sb = new StringBuilder();
+		StringTools.uncapitalizeOn(string, sb);
+		assertEquals(expected, sb.toString());
+	}
+
 	public void testUncapitalizeOnStringStringBuffer() {
 		this.verifyUncapitalizeOnStringStringBuffer("oracle", "Oracle");
 		this.verifyUncapitalizeOnStringStringBuffer("oracle", "oracle");
@@ -564,6 +729,22 @@ public class StringToolsTests extends TestCase {
 
 	private void verifyUncapitalizeOnStringStringBuffer(String expected, String string) {
 		StringBuffer sb = new StringBuffer();
+		StringTools.uncapitalizeOn(string, sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testUncapitalizeOnStringStringBuilder() {
+		this.verifyUncapitalizeOnStringStringBuilder("oracle", "Oracle");
+		this.verifyUncapitalizeOnStringStringBuilder("oracle", "oracle");
+		this.verifyUncapitalizeOnStringStringBuilder("   ", "   ");
+		this.verifyUncapitalizeOnStringStringBuilder("ORACLE", "ORACLE");
+		this.verifyUncapitalizeOnStringStringBuilder("", "");
+		this.verifyUncapitalizeOnStringStringBuilder("a", "A");
+		this.verifyUncapitalizeOnStringStringBuilder("\u00E9cole", "\u00C9cole"); // �cole->�COLE
+	}
+
+	private void verifyUncapitalizeOnStringStringBuilder(String expected, String string) {
+		StringBuilder sb = new StringBuilder();
 		StringTools.uncapitalizeOn(string, sb);
 		assertEquals(expected, sb.toString());
 	}

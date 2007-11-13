@@ -31,16 +31,16 @@ public class OrmModelTests extends TestCase
 	}
 	
 	public void testModelLoad() {
-		OrmArtifactEdit artifactEdit = OrmArtifactEdit.getArtifactEditForRead(jpaProject.getProject(), "META-INF/orm.xml");
+		OrmArtifactEdit artifactEdit = OrmArtifactEdit.getArtifactEditForRead(jpaProject.getProject());
 		assertNotNull(artifactEdit);
-		OrmResourceModel resource = artifactEdit.getOrmResource();
+		OrmResourceModel resource = artifactEdit.getOrmResource("META-INF/orm.xml");
 		assertNotNull(resource);
 	}
 	
 	public void testModelLoad2() {
-		OrmArtifactEdit artifactEdit = OrmArtifactEdit.getArtifactEditForRead(jpaProject.getProject(), "META-INF/orm.xml");
+		OrmArtifactEdit artifactEdit = OrmArtifactEdit.getArtifactEditForRead(jpaProject.getProject());
 		assertNotNull(artifactEdit);
-		OrmResourceModel resource = artifactEdit.getOrmResource();
+		OrmResourceModel resource = artifactEdit.getOrmResource("META-INF/orm.xml");
 		assertNotNull(resource);
 	}
 }

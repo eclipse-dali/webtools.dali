@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 /**
  * 
  */
-public interface IJpaFile extends IJpaNodeModel
+public interface IJpaFile extends IJpaNode
 {
 	/**
 	 * Return the type of resource represented by this JPA file

@@ -35,6 +35,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 public class JpaFacetInstallDelegate 
 	implements IDelegate, IJpaFacetDataModelProperties
 {
+
 	public void execute(IProject project, IProjectFacetVersion fv, 
 				Object config, IProgressMonitor monitor) throws CoreException {
 		monitor = this.nonNullMonitor(monitor);
@@ -121,4 +122,5 @@ public class JpaFacetInstallDelegate
 	private IProgressMonitor nonNullMonitor(IProgressMonitor monitor) {
 		return (monitor != null) ? monitor : new NullProgressMonitor();
 	}
+
 }

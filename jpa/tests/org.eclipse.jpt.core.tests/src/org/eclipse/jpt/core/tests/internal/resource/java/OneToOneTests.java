@@ -34,7 +34,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ONE_TO_ONE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@OneToOne");
 			}
 		});
@@ -49,7 +49,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ONE_TO_ONE, JPA.FETCH_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@OneToOne(fetch=FetchType.EAGER)");
 			}
 		});
@@ -63,7 +63,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ONE_TO_ONE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@OneToOne(targetEntity=AnnotationTestType.class)");
 			}
 		});
@@ -77,7 +77,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ONE_TO_ONE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@OneToOne(optional=true)");
 			}
 		});
@@ -91,7 +91,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ONE_TO_ONE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@OneToOne(mappedBy=\"foo\")");
 			}
 		});
@@ -106,7 +106,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ONE_TO_ONE, JPA.CASCADE_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@OneToOne(cascade=CascadeType.ALL)");
 			}
 		});
@@ -121,7 +121,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ONE_TO_ONE, JPA.CASCADE_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@OneToOne(cascade={CascadeType.MERGE, CascadeType.REMOVE})");
 			}
 		});
@@ -136,7 +136,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ONE_TO_ONE, JPA.CASCADE_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@OneToOne(cascade={CascadeType.MERGE, CascadeType.MERGE})");
 			}
 		});

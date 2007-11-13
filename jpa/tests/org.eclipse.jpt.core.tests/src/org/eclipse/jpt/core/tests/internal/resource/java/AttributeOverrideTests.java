@@ -57,7 +57,7 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ATTRIBUTE_OVERRIDE, JPA.COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@AttributeOverride(name=\"" + ATTRIBUTE_OVERRIDE_NAME + "\")");
 			}
 		});
@@ -72,7 +72,7 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ATTRIBUTE_OVERRIDE, JPA.COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@AttributeOverride(name=\"" + ATTRIBUTE_OVERRIDE_NAME + "\", column = @Column(name=\"" + COLUMN_NAME + "\"))");
 			}
 		});

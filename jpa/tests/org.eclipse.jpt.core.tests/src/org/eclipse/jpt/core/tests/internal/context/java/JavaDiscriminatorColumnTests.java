@@ -53,7 +53,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 		});
@@ -69,7 +69,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.DISCRIMINATOR_COLUMN);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity").append(CR);
 				sb.append("@DiscriminatorColumn(name=\"" + DISCRIMINATOR_COLUMN_NAME + "\")");
 			}

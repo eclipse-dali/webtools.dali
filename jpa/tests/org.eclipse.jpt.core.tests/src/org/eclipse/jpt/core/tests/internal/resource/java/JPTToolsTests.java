@@ -30,7 +30,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
 				sb.append("    " + modifier + " String foo;").append(CR);
 				sb.append(CR);
@@ -47,7 +47,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
 				sb.append("    " + modifier + " int getFoo() {").append(CR);
 				sb.append("        return this.id;").append(CR);
@@ -65,7 +65,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
 				sb.append("    public int foo() {").append(CR);
 				sb.append("        return this.id;").append(CR);
@@ -83,7 +83,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
 				sb.append("    public " + TYPE_NAME + "() {").append(CR);
 				sb.append("        super();").append(CR);
@@ -97,7 +97,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
 				sb.append("    public void getFoo() {").append(CR);
 				sb.append("        return this.id;").append(CR);
@@ -137,7 +137,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
 				sb.append("    public boolean isFoo() {").append(CR);
 				sb.append("        return this.id;").append(CR);
@@ -155,7 +155,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
 				sb.append("    public int isFoo() {").append(CR);
 				sb.append("        return this.id;").append(CR);
@@ -173,7 +173,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
 				sb.append("    " + modifier + " boolean isFoo() {").append(CR);
 				sb.append("        return this.id;").append(CR);
@@ -195,7 +195,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
 				sb.append("    public int getFoo() {").append(CR);
 				sb.append("        return this.id;").append(CR);
@@ -212,7 +212,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 	private IType createTestTypeWithMemberTypes() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
-			public void appendMemberTypeTo(StringBuffer sb) {
+			public void appendMemberTypeTo(StringBuilder sb) {
 				sb.append("     public static class FooStatic {}").append(CR);
 				sb.append(CR);
 				sb.append("     public class FooNotStatic {}").append(CR);

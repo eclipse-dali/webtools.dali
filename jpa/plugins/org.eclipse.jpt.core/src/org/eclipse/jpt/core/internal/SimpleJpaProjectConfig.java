@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Straightforward implementation of the JPA project config.
@@ -55,6 +55,11 @@ public class SimpleJpaProjectConfig implements IJpaProject.Config {
 
 	public void setDiscoverAnnotatedClasses(boolean discoverAnnotatedClasses) {
 		this.discoverAnnotatedClasses = discoverAnnotatedClasses;
+	}
+
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this, this.project.getName());
 	}
 
 }

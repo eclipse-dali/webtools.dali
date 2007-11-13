@@ -20,6 +20,7 @@ import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 
 public class TransformationListIteratorTests extends TestCase {
+
 	public TransformationListIteratorTests(String name) {
 		super(name);
 	}
@@ -303,4 +304,18 @@ public class TransformationListIteratorTests extends TestCase {
 	private List<String> buildUnmodifiableList() {
 		return Collections.unmodifiableList(this.buildList());
 	}
+
+	public void testInvalidTransformationListIterator() {
+		// missing method override
+		Iterator<Integer> iterator = new TransformationListIterator<String, Integer>(this.buildList().listIterator());
+		boolean exCaught = false;
+		try {
+			Integer integer = iterator.next();
+			fail("invalid integer: " + integer);
+		} catch (UnsupportedOperationException ex) {
+			exCaught = true;
+		}
+		assertTrue("NoSuchElementException not thrown", exCaught);
+	}
+
 }

@@ -64,7 +64,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@SecondaryTables(@SecondaryTable)");
 			}
 		});
@@ -78,7 +78,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@SecondaryTables(@SecondaryTable(name=\"" + TABLE_NAME + "\"))");
 			}
 		});
@@ -92,7 +92,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@SecondaryTables(@SecondaryTable(schema=\"" + SCHEMA_NAME + "\"))");
 			}
 		});
@@ -105,7 +105,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@SecondaryTables(@SecondaryTable(catalog=\"" + CATALOG_NAME + "\"))");
 			}
 		});
@@ -120,7 +120,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES, JPA.UNIQUE_CONSTRAINT);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@SecondaryTables(@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint}))");
 			}
 		});
@@ -134,7 +134,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.UNIQUE_CONSTRAINT);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("@SecondaryTable(name=\"FOO\", catalog=\"BAR\", schema=\"BAZ\", uniqueConstraints=@UniqueConstraint(columnNames={\"BAR\"}))");
@@ -150,7 +150,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.SECONDARY_TABLES, JPA.SECONDARY_TABLE, JPA.PRIMARY_KEY_JOIN_COLUMN);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@SecondaryTables(@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"BAR\"), @PrimaryKeyJoinColumn}))");
 			}
 		});

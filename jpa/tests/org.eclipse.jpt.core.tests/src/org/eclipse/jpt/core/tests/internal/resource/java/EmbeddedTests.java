@@ -32,7 +32,7 @@ public class EmbeddedTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.EMBEDDED);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Embedded");
 			}
 		});

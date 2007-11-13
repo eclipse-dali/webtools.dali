@@ -67,7 +67,7 @@ public class JavaEntityTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 		});
@@ -83,7 +83,7 @@ public class JavaEntityTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity(name=\"" + ENTITY_NAME + "\")");
 			}
 		});
@@ -99,7 +99,7 @@ public class JavaEntityTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.TABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity").append(CR);
 				sb.append("@Table(name=\"" + TABLE_NAME + "\")");
 			}
@@ -113,11 +113,11 @@ public class JavaEntityTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY);
 			}
 			@Override
-			public void appendExtendsImplementsTo(StringBuffer sb) {
+			public void appendExtendsImplementsTo(StringBuilder sb) {
 				sb.append("extends " + TYPE_NAME + " ");
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 
@@ -134,7 +134,7 @@ public class JavaEntityTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.INHERITANCE, JPA.INHERITANCE_TYPE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity").append(CR);
 				sb.append("@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)").append(CR);
 			}
@@ -151,7 +151,7 @@ public class JavaEntityTests extends ContextModelTestCase
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.DISCRIMINATOR_VALUE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity").append(CR);
 				sb.append("@DiscriminatorValue(value=\"" + DISCRIMINATOR_VALUE + "\")");
 			}

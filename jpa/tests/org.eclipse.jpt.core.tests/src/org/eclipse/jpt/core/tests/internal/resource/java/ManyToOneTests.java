@@ -34,7 +34,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_ONE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToOne");
 			}
 		});
@@ -49,7 +49,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_ONE, JPA.FETCH_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToOne(fetch=FetchType.EAGER)");
 			}
 		});
@@ -63,7 +63,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_ONE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToOne(targetEntity=AnnotationTestType.class)");
 			}
 		});
@@ -77,7 +77,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_ONE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToOne(optional=true)");
 			}
 		});
@@ -92,7 +92,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_ONE, JPA.CASCADE_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToOne(cascade=CascadeType.ALL)");
 			}
 		});
@@ -107,7 +107,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_ONE, JPA.CASCADE_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToOne(cascade={CascadeType.MERGE, CascadeType.REMOVE})");
 			}
 		});
@@ -122,7 +122,7 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MANY_TO_ONE, JPA.CASCADE_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ManyToOne(cascade={CascadeType.MERGE, CascadeType.MERGE})");
 			}
 		});

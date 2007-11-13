@@ -72,30 +72,37 @@ public final class CComboViewer extends AbstractListViewer {
         hookControl(list);
     }
 
+    @Override
     protected void listAdd(String string, int index) {
         combo.add(string, index);
     }
 
+    @Override
     protected void listSetItem(int index, String string) {
         combo.setItem(index, string);
     }
 
+    @Override
     protected int[] listGetSelectionIndices() {
         return new int[] { combo.getSelectionIndex() };
     }
 
+    @Override
     protected int listGetItemCount() {
         return combo.getItemCount();
     }
 
+    @Override
     protected void listSetItems(String[] labels) {
         combo.setItems(labels);
     }
 
+    @Override
     protected void listRemoveAll() {
         combo.removeAll();
     }
 
+    @Override
     protected void listRemove(int index) {
         combo.remove(index);
     }
@@ -103,6 +110,7 @@ public final class CComboViewer extends AbstractListViewer {
     /* (non-Javadoc)
      * Method declared on Viewer.
      */
+    @Override
     public Control getControl() {
         return combo;
     }
@@ -121,31 +129,26 @@ public final class CComboViewer extends AbstractListViewer {
      * we can ensure that the given element is visible without changing the selection.
      * Method defined on StructuredViewer.
      */
+    @Override
     public void reveal(Object element) {
         return;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.AbstractListViewer#listSelectAndShow(int[])
-     */
+    @Override
     protected void listSetSelection(int[] ixs) {
         for (int idx = 0; idx < ixs.length; idx++) {
             combo.select(ixs[idx]);
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.AbstractListViewer#listDeselectAll()
-     */
+    @Override
     protected void listDeselectAll() {
         combo.deselectAll();
         combo.clearSelection();
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.AbstractListViewer#listShowSelection()
-     */
-    protected void listShowSelection() {
-
+    @Override
+	protected void listShowSelection() {
+		// do nothing
     }
 }

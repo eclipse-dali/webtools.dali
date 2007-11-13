@@ -31,7 +31,7 @@ public class OrderByTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ORDER_BY);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@OrderBy");
 			}
 		});
@@ -45,7 +45,7 @@ public class OrderByTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ORDER_BY);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@OrderBy(value=\"key\")");
 			}
 		});

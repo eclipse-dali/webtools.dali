@@ -11,12 +11,14 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.internal.IJpaProject.Config;
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
 /**
@@ -85,6 +87,10 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 		return this.jpaProjectHolders.size();
 	}
 
+	public synchronized IJpaFile jpaFile(IFile file) throws CoreException {
+		IJpaProject jpaProject = this.jpaProject(file.getProject());
+		return (jpaProject == null) ? null : jpaProject.jpaFile(file);
+	}
 
 	// ********** internal methods **********
 
@@ -106,6 +112,7 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 	 * The JPA project will only be instantiated later, on demand.
 	 */
 	synchronized void addJpaProject(IJpaProject.Config config) {
+		dumpStackTrace();  // figure out exactly when JPA projects are built
 		this.jpaProjectHolders.add(this.jpaProjectHolder(config.project()).buildJpaProjectHolder(this, config));
 	}
 
@@ -115,7 +122,11 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 	 * JPA projects can only be removed by the JPA model manager.
 	 */
 	synchronized boolean removeJpaProject(IProject project) {
-		return this.jpaProjectHolder(project).remove();
+		dumpStackTrace();  // figure out exactly when JPA projects are removed
+		if (containsJpaProject(project)) {
+			return this.jpaProjectHolder(project).remove();
+		}
+		return false;
 	}
 
 	/**
@@ -132,19 +143,25 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 	}
 
 	@Override
-	public void toString(StringBuffer sb) {
+	public void toString(StringBuilder sb) {
 		sb.append("JPA projects size: " + this.jpaProjectsSize());
 	}
 
 
 	// ********** events **********
 
+	synchronized void synchronizeFiles(IProject project, IResourceDelta delta)  throws CoreException {
+		if (containsJpaProject(project)) {
+			this.synchronizeJpaFiles(project, delta);
+		}
+	}
+
 	/**
 	 * Forward the specified resource delta to the JPA project corresponding
 	 * to the specified Eclipse project.
 	 */
-	synchronized void checkForAddedOrRemovedJpaFiles(IProject project, IResourceDelta delta) throws CoreException {
-		this.jpaProjectHolder(project).checkForAddedOrRemovedJpaFiles(delta);
+	private void synchronizeJpaFiles(IProject project, IResourceDelta delta) throws CoreException {
+		this.jpaProjectHolder(project).synchronizeJpaFiles(delta);
 	}
 
 	/**
@@ -192,7 +209,7 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 
 		IJpaProject jpaProject() throws CoreException;
 
-		void checkForAddedOrRemovedJpaFiles(IResourceDelta delta) throws CoreException;
+		void synchronizeJpaFiles(IResourceDelta delta) throws CoreException;
 
 		void javaElementChanged(ElementChangedEvent event);
 
@@ -222,7 +239,7 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 			return null;
 		}
 
-		public void checkForAddedOrRemovedJpaFiles(IResourceDelta delta) throws CoreException {
+		public void synchronizeJpaFiles(IResourceDelta delta) throws CoreException {
 			// do nothing
 		}
 
@@ -275,9 +292,9 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 			return this.config.jpaPlatform().jpaFactory().createJpaProject(this.config);
 		}
 
-		public void checkForAddedOrRemovedJpaFiles(IResourceDelta delta) throws CoreException {
+		public void synchronizeJpaFiles(IResourceDelta delta) throws CoreException {
 			if (this.jpaProject != null) {
-				this.jpaProject.checkForAddedOrRemovedJpaFiles(delta);
+				this.jpaProject.synchronizeJpaFiles(delta);
 			}
 		}
 
@@ -300,6 +317,33 @@ public class JpaModel extends AbstractModel implements IJpaModel {
 			return true;
 		}
 
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, this.config.project().getName());
+		}
+
+	}
+
+
+	// ********** debug **********
+
+	private static final boolean DEBUG = false;
+
+	private static void dumpStackTrace() {
+		if (DEBUG) {
+			// lock System.out so the stack elements are printed out contiguously
+			synchronized (System.out) {
+				StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+				// skip the first 3 elements - those are this method and 2 methods in Thread
+				for (int i = 3; i < stackTrace.length; i++) {
+					StackTraceElement element = stackTrace[i];
+					if (element.getMethodName().equals("invoke0")) {
+						break;  // skip all elements outside of the JUnit test
+					}
+					System.out.println("\t" + element);
+				}
+			}
+		}
 	}
 
 }

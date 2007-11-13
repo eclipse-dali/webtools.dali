@@ -46,7 +46,7 @@ public class QueryHintTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.NAMED_QUERY, JPA.QUERY_HINT);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@NamedQuery(hints={@QueryHint(name=\"" + QUERY_HINT_NAME + "\", value=\"" + QUERY_HINT_VALUE + "\"), @QueryHint})");
 			}
 		});

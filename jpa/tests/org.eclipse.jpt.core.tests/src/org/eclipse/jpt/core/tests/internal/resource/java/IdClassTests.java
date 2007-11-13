@@ -37,7 +37,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ID_CLASS);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@IdClass");
 			}
 		});
@@ -51,7 +51,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ID_CLASS);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@IdClass(" + ID_CLASS_VALUE + ".class)");
 			}
 		});

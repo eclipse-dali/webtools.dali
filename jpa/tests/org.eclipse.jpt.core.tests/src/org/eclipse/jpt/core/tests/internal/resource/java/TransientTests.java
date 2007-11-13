@@ -32,7 +32,7 @@ public class TransientTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.TRANSIENT);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Transient");
 			}
 		});

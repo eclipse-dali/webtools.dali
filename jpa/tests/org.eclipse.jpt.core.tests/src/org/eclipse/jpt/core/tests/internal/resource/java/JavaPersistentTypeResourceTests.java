@@ -49,7 +49,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 		});
@@ -64,12 +64,12 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>("javax.persistence.Foo");
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Foo");
 			}
 			
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Foo");
 			}
 		});
@@ -85,12 +85,12 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.EMBEDDABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			
 			@Override
-			public void appendMemberTypeTo(StringBuffer sb) {
+			public void appendMemberTypeTo(StringBuilder sb) {
 				sb.append("     @Embeddable");
 				sb.append(CR);
 				sb.append("     public static class Foo { }").append(CR);
@@ -108,7 +108,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity(name=\"FirstEntity\")").append(CR);
 				sb.append("@Entity(name=\"SecondEntity\")");
 			}
@@ -124,7 +124,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.EMBEDDABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("@Embeddable");
@@ -142,12 +142,12 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 		});
@@ -163,12 +163,12 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 		});
@@ -183,17 +183,17 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 			
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 		});
@@ -209,11 +209,11 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			@Override
-			public void appendGetNameMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetNameMethodAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 		});
@@ -230,19 +230,19 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.COLUMN);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Column");
 				sb.append("    private transient int notPersistable;").append(CR);
 				sb.append(CR);
 
 			}
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuffer sb) {
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append("@Column");
 			}
 		});
@@ -256,11 +256,11 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			@Override
-			public void appendMemberTypeTo(StringBuffer sb) {
+			public void appendMemberTypeTo(StringBuilder sb) {
 				sb.delete(sb.indexOf("private int id;"), sb.indexOf("private int id;") + "private int id;".length());
 				sb.delete(sb.indexOf("private String name;"), sb.indexOf("private String name;") + "private String name;".length());
 			}
@@ -274,7 +274,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 //				return new ArrayIterator<String>(JPA.ENTITY + i);
 //			}
 //			@Override
-//			public void appendTypeAnnotationTo(StringBuffer sb) {
+//			public void appendTypeAnnotationTo(StringBuilder sb) {
 //				sb.append("@Entity" + i);
 //				sb.append(CR);
 //			}
@@ -322,7 +322,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.TABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("@Table(name=\"FOO\", schema=\"BAR\")");
@@ -340,7 +340,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.TABLE, JPA.ID_CLASS);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("@Table");
@@ -360,7 +360,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.TABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("@Table(name=\"FOO\")");
@@ -379,7 +379,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("@SecondaryTable(name=\"FOO\")");
@@ -396,7 +396,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("@SecondaryTables()");
@@ -414,7 +414,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("@SecondaryTables(@SecondaryTable(name=\"FOO\"))");
@@ -432,7 +432,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\")})");
@@ -450,7 +450,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("@SecondaryTable(name=\"FOO\")");
@@ -469,11 +469,11 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 			@Override
-			public void appendMemberTypeTo(StringBuffer sb) {
+			public void appendMemberTypeTo(StringBuilder sb) {
 				sb.append("     static class FooStatic {}").append(CR);
 				sb.append(CR);
 				sb.append("     class FooNotStatic {}").append(CR);

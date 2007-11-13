@@ -145,6 +145,8 @@
 			<delegate class="org.eclipse.jpt.core.internal.facet.JpaFacetInstallDelegate"/>
 		</action>
 		
+		<!-- The uninstall action is only used to enable facet uninstallation
+			 through the facet UI.  The delegate has no functionality. -->
 		<action facet="jpt.jpa" type="uninstall" id="jpt.jpa.uninstall">
 			<delegate class="org.eclipse.jpt.core.internal.facet.JpaFacetUninstallDelegate"/>
 		</action>

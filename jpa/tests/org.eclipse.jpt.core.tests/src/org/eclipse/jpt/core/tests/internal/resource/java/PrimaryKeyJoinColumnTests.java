@@ -42,7 +42,7 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.PRIMARY_KEY_JOIN_COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@PrimaryKeyJoinColumn");
 			}
 		});
@@ -56,7 +56,7 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.PRIMARY_KEY_JOIN_COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@PrimaryKeyJoinColumn(name=\"" + COLUMN_NAME + "\")");
 			}
 		});
@@ -70,7 +70,7 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.PRIMARY_KEY_JOIN_COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@PrimaryKeyJoinColumn(referencedColumnName=\"" + COLUMN_REFERENCED_COLUMN_NAME + "\")");
 			}
 		});
@@ -84,7 +84,7 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.PRIMARY_KEY_JOIN_COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@PrimaryKeyJoinColumn(columnDefinition=\"" + COLUMN_COLUMN_DEFINITION + "\")");
 			}
 		});

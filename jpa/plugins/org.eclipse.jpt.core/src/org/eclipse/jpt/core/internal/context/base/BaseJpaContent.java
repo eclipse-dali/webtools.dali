@@ -76,11 +76,8 @@ public class BaseJpaContent extends JpaContextNode
 	
 	protected PersistenceResourceModel persistenceResource() {
 		PersistenceArtifactEdit pae = 
-			PersistenceArtifactEdit.getArtifactEditForRead(
-					jpaProject().project(), 
-					JptCorePlugin.persistenceXmlDeploymentURI(jpaProject().project()));
-	
-		return pae.getPersistenceResource();
+			PersistenceArtifactEdit.getArtifactEditForRead(jpaProject().project());
+		return pae.getPersistenceResource(JptCorePlugin.persistenceXmlDeploymentURI(jpaProject().project()));
 	}
 	
 	protected boolean resourceExists(PersistenceResourceModel persistenceResource) {

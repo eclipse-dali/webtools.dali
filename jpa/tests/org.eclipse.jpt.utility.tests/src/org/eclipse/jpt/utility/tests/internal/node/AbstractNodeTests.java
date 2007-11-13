@@ -13,20 +13,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.Range;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.utility.internal.node.AbstractNodeModel;
+import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.jpt.utility.internal.node.Problem;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
-public class AbstractNodeModelTests extends TestCase {
+import junit.framework.TestCase;
+
+public class AbstractNodeTests extends TestCase {
 	private TestWorkbenchModel root;
 
-	public AbstractNodeModelTests(String name) {
+	public AbstractNodeTests(String name) {
 		super(name);
 	}
 
@@ -388,7 +390,7 @@ public class AbstractNodeModelTests extends TestCase {
 
 	// ********** inner classes **********
 
-	private class TestWorkbenchModel extends AbstractNodeModel {
+	private class TestWorkbenchModel extends AbstractNode {
 		private String name;
 			public static final String NAME_PROPERTY = "name";
 		private int size;
@@ -506,7 +508,7 @@ public class AbstractNodeModelTests extends TestCase {
 			}
 		}
 		@Override
-		public void toString(StringBuffer sb) {
+		public void toString(StringBuilder sb) {
 			sb.append(this.name);
 		}
 	}

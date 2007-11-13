@@ -62,7 +62,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.JOIN_TABLE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@JoinTable");
 			}
 		});
@@ -76,7 +76,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.JOIN_TABLE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@JoinTable(name=\"" + TABLE_NAME + "\")");
 			}
 		});
@@ -91,7 +91,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 			}
 			
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@JoinTable(schema=\"" + SCHEMA_NAME + "\")");
 			}
 		});
@@ -105,7 +105,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.JOIN_TABLE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@JoinTable(catalog=\"" + CATALOG_NAME + "\")");
 			}
 		});
@@ -119,7 +119,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.JOIN_TABLE, JPA.UNIQUE_CONSTRAINT);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint})");
 			}
 		});
@@ -133,7 +133,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.JOIN_TABLE, JPA.JOIN_COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@JoinTable(joinColumns={@JoinColumn(name=\"BAR\"), @JoinColumn})");
 			}
 		});
@@ -147,7 +147,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.JOIN_TABLE, JPA.JOIN_COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@JoinTable(inverseJoinColumns={@JoinColumn(name=\"BAR\"), @JoinColumn})");
 			}
 		});

@@ -9,12 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.tests.internal.iterators.JptUtilityIteratorsTests;
 import org.eclipse.jpt.utility.tests.internal.model.JptUtilityModelTests;
 import org.eclipse.jpt.utility.tests.internal.node.JptUtilityNodeTests;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * decentralize test creation code
@@ -32,6 +33,7 @@ public class JptUtilityTests {
 		suite.addTestSuite(ClasspathTests.class);
 		suite.addTestSuite(ClassToolsTests.class);
 		suite.addTestSuite(CollectionToolsTests.class);
+		suite.addTestSuite(CounterTests.class);
 		suite.addTestSuite(FileToolsTests.class);
 		suite.addTestSuite(HashBagTests.class);
 		suite.addTestSuite(IdentityHashBagTests.class);

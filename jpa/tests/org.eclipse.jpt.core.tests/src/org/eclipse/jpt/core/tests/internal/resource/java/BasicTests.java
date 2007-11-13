@@ -32,7 +32,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.BASIC);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Basic");
 			}
 		});
@@ -46,7 +46,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.BASIC);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Basic(optional=true)");
 			}
 		});
@@ -61,7 +61,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.BASIC, JPA.FETCH_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Basic(fetch=FetchType.EAGER)");
 			}
 		});

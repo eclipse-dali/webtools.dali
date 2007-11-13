@@ -34,7 +34,7 @@ public class EntityTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 			}
 		});
@@ -48,7 +48,7 @@ public class EntityTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.ENTITY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity(name=\"" + ENTITY_NAME + "\")");
 			}
 		});
@@ -63,7 +63,7 @@ public class EntityTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS, JPA.ENTITY);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@MappedSuperclass");
 				sb.append("@Entity");
 			}

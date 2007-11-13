@@ -43,7 +43,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.DISCRIMINATOR_COLUMN);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@DiscriminatorColumn");
 			}
 		});
@@ -57,7 +57,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.DISCRIMINATOR_COLUMN);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@DiscriminatorColumn(name=\"" + COLUMN_NAME + "\")");
 			}
 		});
@@ -71,7 +71,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.DISCRIMINATOR_COLUMN);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@DiscriminatorColumn(columnDefinition=\"" + COLUMN_COLUMN_DEFINITION + "\")");
 			}
 		});
@@ -85,7 +85,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.DISCRIMINATOR_COLUMN, JPA.DISCRIMINATOR_TYPE);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@DiscriminatorColumn(discriminatorType=DiscriminatorType.CHAR)");
 			}
 		});
@@ -99,7 +99,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.DISCRIMINATOR_COLUMN);
 			}
 			@Override
-			public void appendTypeAnnotationTo(StringBuffer sb) {
+			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@DiscriminatorColumn(" + intElement + "=5)");
 			}
 		});

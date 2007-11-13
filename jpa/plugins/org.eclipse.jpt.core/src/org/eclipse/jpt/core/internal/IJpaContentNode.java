@@ -22,18 +22,15 @@ package org.eclipse.jpt.core.internal;
 public interface IJpaContentNode extends IJpaSourceObject
 {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation" required="true"
-	 * @generated
-	 */
-	IJpaFile getJpaFile();
-
-	/**
 	 * Return a unique identifier for all of this class of content nodes
 	 */
 	Object getId();
 
+	/**
+	 * Return the root content node containing this node
+	 */
+	IJpaRootContentNode getRoot();
+	
 	/**
 	 * Return the text range to be used for selection. This is the text you want selected
 	 * when selecting the object in the editor. StructureView uses this for selection

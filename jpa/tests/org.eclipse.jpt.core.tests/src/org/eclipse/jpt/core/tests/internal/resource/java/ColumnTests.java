@@ -49,7 +49,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Column");
 			}
 		});
@@ -63,7 +63,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Column(name=\"" + COLUMN_NAME + "\")");
 			}
 		});
@@ -77,7 +77,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Column(table=\"" + COLUMN_TABLE + "\")");
 			}
 		});
@@ -91,7 +91,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Column(columnDefinition=\"" + COLUMN_COLUMN_DEFINITION + "\")");
 			}
 		});
@@ -105,7 +105,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Column(" + booleanElement + "=true)");
 			}
 		});
@@ -119,7 +119,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.COLUMN);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Column(" + intElement + "=5)");
 			}
 		});

@@ -42,7 +42,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.GENERATED_VALUE, JPA.GENERATION_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@GeneratedValue");
 			}
 		});
@@ -56,7 +56,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.GENERATED_VALUE, JPA.GENERATION_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@GeneratedValue(generator=\"" + GENERATOR + "\")");
 			}
 		});
@@ -70,7 +70,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 				return new ArrayIterator<String>(JPA.GENERATED_VALUE, JPA.GENERATION_TYPE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuffer sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@GeneratedValue(strategy=GenerationType.SEQUENCE)");
 			}
 		});

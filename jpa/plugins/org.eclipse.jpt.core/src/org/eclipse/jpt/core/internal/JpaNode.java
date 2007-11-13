@@ -9,28 +9,29 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
-import org.eclipse.jpt.utility.internal.node.AbstractNodeModel;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.internal.node.AbstractNode;
+import org.eclipse.jpt.utility.internal.node.Node;
 
 /**
  * 
  */
-public abstract class JpaNodeModel
-	extends AbstractNodeModel
-	implements IJpaNodeModel
+public abstract class JpaNode
+	extends AbstractNode
+	implements IJpaNode
 {
 
 
 	// ********** constructor **********
 
-	protected JpaNodeModel(IJpaNodeModel parent) {
+	protected JpaNode(IJpaNode parent) {
 		super(parent);
 	}
 
@@ -53,14 +54,8 @@ public abstract class JpaNodeModel
 	// ********** overrides **********
 
 	@Override
-	public IJpaNodeModel parent() {
-		return (IJpaNodeModel) super.parent();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Iterator<? extends IJpaNodeModel> children() {
-		return (Iterator<? extends IJpaNodeModel>) super.children();
+	public IJpaNode parent() {
+		return (IJpaNode) super.parent();
 	}
 
 	@Override
@@ -70,6 +65,15 @@ public abstract class JpaNodeModel
 
 
 	// ********** convenience methods **********
+
+	public Iterator<IJpaNode> jpaChildren() {
+		return new TransformationIterator<Node, IJpaNode>(this.children()) {
+			@Override
+			protected IJpaNode transform(Node next) {
+				return (IJpaNode) next;
+			}
+		};
+	}
 
 	protected IJpaPlatform jpaPlatform() {
 		return this.jpaProject().jpaPlatform();
@@ -95,7 +99,7 @@ public abstract class JpaNodeModel
 	// TODO this stuff should go away when we rework "defaults"
 	// ********** recalculate defaults **********
 
-	private static final Map<Class<? extends AbstractNodeModel>, Set<String>> nonDefaultAspectNameSets = new Hashtable<Class<? extends AbstractNodeModel>, Set<String>>();
+	private static final HashMap<Class<? extends AbstractNode>, HashSet<String>> nonDefaultAspectNameSets = new HashMap<Class<? extends AbstractNode>, HashSet<String>>();
 
 	@Override
 	protected void aspectChanged(String aspectName) {
@@ -116,7 +120,7 @@ public abstract class JpaNodeModel
 
 	protected final Set<String> nonDefaultAspectNames() {
 		synchronized (nonDefaultAspectNameSets) {
-			Set<String> nonDefaultAspectNames = nonDefaultAspectNameSets.get(this.getClass());
+			HashSet<String> nonDefaultAspectNames = nonDefaultAspectNameSets.get(this.getClass());
 			if (nonDefaultAspectNames == null) {
 				nonDefaultAspectNames = new HashSet<String>();
 				this.addNonDefaultAspectNamesTo(nonDefaultAspectNames);

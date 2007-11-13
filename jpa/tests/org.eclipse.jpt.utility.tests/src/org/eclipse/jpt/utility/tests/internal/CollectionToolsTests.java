@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
@@ -1501,7 +1502,7 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(Arrays.equals(new char[] { 'e', 'a', 'c', 'b', 'd', 'b' }, result));
 	}
 
-	public void testMoveListIntInt() {
+	public void testMoveListIntIntRandomAccess() {
 		List<String> list = new ArrayList<String>();
 		CollectionTools.addAll(list, new String[] { "0", "1", "2", "3", "4", "5" });
 
@@ -1518,8 +1519,53 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result.toArray()));
 	}
 
-	public void testMoveListIntIntInt() {
+	public void testMoveListIntIntSequentialAccess() {
+		List<String> list = new LinkedList<String>();
+		CollectionTools.addAll(list, new String[] { "0", "1", "2", "3", "4", "5" });
+
+		List<String> result = CollectionTools.move(list, 4, 2);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "0", "1", "3", "4", "2", "5" }, result.toArray()));
+
+		result = CollectionTools.move(list, 0, 5);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "1", "3", "4", "2" }, result.toArray()));
+
+		result = CollectionTools.move(list, 2, 4);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result.toArray()));
+	}
+
+	public void testMoveListIntIntIntRandomAccess() {
 		List<String> list = new ArrayList<String>(Arrays.asList(new String[] { "0", "1", "2", "3", "4", "5" }));
+
+		List<String> result = CollectionTools.move(list, 4, 2, 1);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "0", "1", "3", "4", "2", "5" }, result.toArray()));
+
+		result = CollectionTools.move(list, 0, 5, 1);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "1", "3", "4", "2" }, result.toArray()));
+
+		result = CollectionTools.move(list, 2, 4, 1);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "4", "1", "3", "2" }, result.toArray()));
+
+		result = CollectionTools.move(list, 2, 4, 2);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result.toArray()));
+
+		result = CollectionTools.move(list, 0, 1, 4);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "0", "3", "2", "4", "5", "1" }, result.toArray()));
+
+		result = CollectionTools.move(list, 1, 0, 4);
+		assertSame(list, result);  // the array is modified in place and returned
+		assertTrue(Arrays.equals(new String[] { "5", "0", "3", "2", "4", "1" }, result.toArray()));
+	}
+
+	public void testMoveListIntIntIntSequentialAccess() {
+		List<String> list = new LinkedList<String>(Arrays.asList(new String[] { "0", "1", "2", "3", "4", "5" }));
 
 		List<String> result = CollectionTools.move(list, 4, 2, 1);
 		assertSame(list, result);  // the array is modified in place and returned

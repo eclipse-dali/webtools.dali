@@ -9,8 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
+
+import junit.framework.TestCase;
 
 public class SynchronizedBooleanTests extends TestCase {
 	private volatile SynchronizedBoolean sb;

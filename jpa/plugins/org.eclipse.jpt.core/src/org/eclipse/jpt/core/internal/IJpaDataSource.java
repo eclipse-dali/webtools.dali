@@ -14,7 +14,7 @@ import org.eclipse.jpt.db.internal.ConnectionProfile;
 /**
  * 
  */
-public interface IJpaDataSource extends IJpaNodeModel
+public interface IJpaDataSource extends IJpaNode
 {
 	/**
 	 * Return the data source's connection profile name.
