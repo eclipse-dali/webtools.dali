@@ -18,15 +18,12 @@ import org.eclipse.jpt.utility.internal.ClassTools;
  */
 public final class NullDatabase extends Database {
 
-	private static NullDatabase INSTANCE;
+	private static final NullDatabase INSTANCE = new NullDatabase();
 
 	/**
 	 * singleton support
 	 */
 	static synchronized Database instance() {
-		if( INSTANCE == null) {
-			INSTANCE = new NullDatabase();
-		}
 		return INSTANCE;
 	}
 

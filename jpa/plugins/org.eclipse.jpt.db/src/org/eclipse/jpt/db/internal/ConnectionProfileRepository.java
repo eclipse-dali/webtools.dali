@@ -36,12 +36,9 @@ public class ConnectionProfileRepository {
 
 	// ********** singleton **********
 
-	private static ConnectionProfileRepository INSTANCE;  // pseudo-final
+	private static final ConnectionProfileRepository INSTANCE = new ConnectionProfileRepository();
 
 	public static ConnectionProfileRepository instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new ConnectionProfileRepository();
-		}
 		return INSTANCE;
 	}
 

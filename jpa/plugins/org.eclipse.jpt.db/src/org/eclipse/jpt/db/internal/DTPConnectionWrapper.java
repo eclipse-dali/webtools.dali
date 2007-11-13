@@ -11,6 +11,7 @@ package org.eclipse.jpt.db.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.eclipse.datatools.connectivity.ConnectEvent;
 import org.eclipse.datatools.connectivity.IManagedConnection;
 import org.eclipse.datatools.connectivity.IManagedConnectionOfflineListener;

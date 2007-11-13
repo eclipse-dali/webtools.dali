@@ -18,15 +18,12 @@ import org.eclipse.jpt.utility.internal.ClassTools;
  */
 public final class NullConnectionProfile extends ConnectionProfile {
 	
-	private static NullConnectionProfile INSTANCE;
+	private static final NullConnectionProfile INSTANCE = new NullConnectionProfile();
 
 	/**
 	 * singleton support
 	 */
 	static synchronized ConnectionProfile instance() {
-		if( INSTANCE == null) {
-			INSTANCE = new NullConnectionProfile();
-		}
 		return INSTANCE;
 	}
 

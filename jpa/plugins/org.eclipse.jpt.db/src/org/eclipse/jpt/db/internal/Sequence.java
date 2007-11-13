@@ -10,6 +10,7 @@
 package org.eclipse.jpt.db.internal;
 
 import java.text.Collator;
+
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 

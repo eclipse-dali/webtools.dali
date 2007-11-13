@@ -16,15 +16,12 @@ import org.eclipse.jpt.utility.internal.ClassTools;
  */
 final class NullConnection extends Connection {
 
-	private static NullConnection INSTANCE;
+	private static final NullConnection INSTANCE = new NullConnection();
 
 	/**
 	 * singleton support
 	 */
 	static synchronized Connection instance() {
-		if( INSTANCE == null) {
-			INSTANCE = new NullConnection();
-		}
 		return INSTANCE;
 	}
 

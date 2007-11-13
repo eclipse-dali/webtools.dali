@@ -10,6 +10,7 @@
 package org.eclipse.jpt.db.internal;
 
 import java.util.Properties;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.IManagedConnection;
 import org.eclipse.datatools.connectivity.db.generic.IDBDriverDefinitionConstants;
