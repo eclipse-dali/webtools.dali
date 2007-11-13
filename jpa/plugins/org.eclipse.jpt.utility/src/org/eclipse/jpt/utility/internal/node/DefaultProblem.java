@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.internal.node;
 
 import java.util.Arrays;
+
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**

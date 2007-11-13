@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.internal.model;
 
 import java.io.Serializable;
+
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
@@ -25,11 +26,11 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  * Straightforward implementation of ChangeEventDispatcher interface:
  * Just forward the change notification directly to the listener.
  */
-public class DefaultChangeEventDispatcher
+public class SimpleChangeEventDispatcher
 	implements ChangeEventDispatcher, Serializable
 {
 	// singleton
-	private static ChangeEventDispatcher INSTANCE;
+	private static final ChangeEventDispatcher INSTANCE = new SimpleChangeEventDispatcher();
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,16 +39,13 @@ public class DefaultChangeEventDispatcher
 	 * Return the singleton.
 	 */
 	public synchronized static ChangeEventDispatcher instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new DefaultChangeEventDispatcher();
-		}
 		return INSTANCE;
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
-	private DefaultChangeEventDispatcher() {
+	private SimpleChangeEventDispatcher() {
 		super();
 	}
 

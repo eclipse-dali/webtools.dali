@@ -17,6 +17,8 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
@@ -48,26 +50,30 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  * and custom "notifiers", with more to come, I'm sure....  ~bjv
  * 
  * NB2: This class will check to see if, during the firing of events, a listener
- * on the original list of listeners has been removed from the mast list of
- * listeners *before* it is notified. If the listener has been removed
+ * on the original, cloned, list of listeners has been removed from the master
+ * list of listeners *before* it is notified. If the listener has been removed
  * "concurrently" it will *not* be notified. (See the code that uses the
  * 'stillListening' local boolean flag.)
  * 
  * NB3: This class is serializable, but it will only write out listeners that
  * are also serializable while silently leaving behind listeners that are not.
+ * 
+ * TODO support a dispatcher per listener?
+ * TODO fire a state change event with *every* change?
+ * TODO use objects (IDs?) instead of strings to identify aspects?
  */
 public class ChangeSupport
 	implements Serializable
 {
 
 	/** The object to be provided as the "source" for any generated events. */
-	protected final Object source;
+	protected final Model source;
 
-	/** Maps a listener class to a collection of "generic" listeners for that class. */
+	/** Associate a listener class to a collection of "generic" listeners for that class. */
 	transient private GenericListenerList[] genericListeners = EMPTY_GENERIC_LISTENERS;
 		private static final GenericListenerList[] EMPTY_GENERIC_LISTENERS = new GenericListenerList[0];
 
-	/** Maps aspect names to child change support objects. */
+	/** Associate aspect names to child change support objects. */
 	private AspectChild[] aspectChildren = EMPTY_ASPECT_CHILDREN;
 		private static final AspectChild[] EMPTY_ASPECT_CHILDREN = new AspectChild[0];
 
@@ -80,7 +86,7 @@ public class ChangeSupport
 	 * Construct support for the specified source of change events.
 	 * The source cannot be null.
 	 */
-	public ChangeSupport(Object source) {
+	public ChangeSupport(Model source) {
 		super();
 		if (source == null) {
 			throw new NullPointerException();
@@ -92,8 +98,8 @@ public class ChangeSupport
 	// ********** internal behavior **********
 
 	/**
-	 * Add a listener that listens to all events appropriate to that listener,
-	 * regardless of the aspect name associated with that event.
+	 * Add a "generic" listener that listens to all events appropriate to that
+	 * listener, regardless of the aspect name associated with that event.
 	 * The listener cannot be null.
 	 */
 	protected <T extends ChangeListener> void addListener(Class<T> listenerClass, T listener) {
@@ -111,7 +117,7 @@ public class ChangeSupport
 	}
 
 	/**
-	 * Return the generic listener list for the specified listener class.
+	 * Return the "generic" listener list for the specified listener class.
 	 * Return null if the list is not present.
 	 */
 	protected GenericListenerList genericListenerList(Class<? extends ChangeListener> listenerClass) {
@@ -124,7 +130,7 @@ public class ChangeSupport
 	}
 
 	/**
-	 * Add the generic listener list for the specified listener class.
+	 * Add the "generic" listener list for the specified listener class.
 	 * Return the newly-built generic listener list.
 	 */
 	protected <T extends ChangeListener> GenericListenerList addGenericListenerList(Class<T> listenerClass, T listener) {
@@ -161,7 +167,7 @@ public class ChangeSupport
 			return null;
 		}
 		for (AspectChild aspectChild : this.aspectChildren) {
-			if (aspectChild.aspectName.equals(aspectName)) {
+			if (aspectChild.aspectName == aspectName) {
 				return aspectChild.child;
 			}
 		}
@@ -186,7 +192,8 @@ public class ChangeSupport
 	}
 
 	/**
-	 * Removes a listener that has been registered for all events appropriate to that listener.
+	 * Removes a "generic" listener that has been registered for all events
+	 * appropriate to that listener.
 	 */
 	protected <T extends ChangeListener> void removeListener(Class<T> listenerClass, T listener) {
 		synchronized (this) {
@@ -221,11 +228,11 @@ public class ChangeSupport
 	 * Return a dispatcher that will forward change notifications to the listeners.
 	 */
 	protected ChangeEventDispatcher dispatcher() {
-		return DefaultChangeEventDispatcher.instance();
+		return SimpleChangeEventDispatcher.instance();
 	}
 
 	/**
-	 * Return the listeners for the specified listener class.
+	 * Return the "generic" listeners for the specified listener class.
 	 * Return null if there are no listeners.
 	 */
 	protected ChangeListener[] listeners(Class<? extends ChangeListener> listenerClass) {
@@ -243,6 +250,14 @@ public class ChangeSupport
 	}
 
 	/**
+	 * Return whether there are no "generic" listeners for the specified
+	 * listener class.
+	 */
+	protected <T extends ChangeListener> boolean hasNoListeners(Class<T> listenerClass) {
+		return ! this.hasAnyListeners(listenerClass);
+	}
+
+	/**
 	 * Return whether there are any listeners for the specified
 	 * listener class and aspect name.
 	 */
@@ -253,6 +268,14 @@ public class ChangeSupport
 		ChangeSupport child = this.child(aspectName);
 		return (child != null) &&
 			child.hasAnyListeners(listenerClass);
+	}
+
+	/**
+	 * Return whether there are no "generic" listeners for the specified
+	 * listener class and aspect name.
+	 */
+	protected <T extends ChangeListener> boolean hasNoListeners(Class<T> listenerClass, String aspectName) {
+		return ! this.hasAnyListeners(listenerClass, aspectName);
 	}
 
 
@@ -303,11 +326,10 @@ public class ChangeSupport
 	 */
 	public void fireStateChanged(StateChangeEvent event) {
 
-		StateChangeListener[] stateChangeListeners = null;
 		StateChangeListener[] targets = null;
 
 		synchronized (this) {
-			stateChangeListeners = this.stateChangeListeners();
+			StateChangeListener[] stateChangeListeners = this.stateChangeListeners();
 			if (stateChangeListeners != null) {
 				targets = stateChangeListeners.clone();
 			}
@@ -329,16 +351,16 @@ public class ChangeSupport
 	}
 
 	/**
-	 * Report a generic state change event to any registered state change listeners.
+	 * Report a generic state change event to any registered state change
+	 * listeners.
 	 */
 	public void fireStateChanged() {
 //		this.fireStateChange(new StateChangeEvent(this.source));
 
-		StateChangeListener[] stateChangeListeners = null;
 		StateChangeListener[] targets = null;
 
 		synchronized (this) {
-			stateChangeListeners = this.stateChangeListeners();
+			StateChangeListener[] stateChangeListeners = this.stateChangeListeners();
 			if (stateChangeListeners != null) {
 				targets = stateChangeListeners.clone();
 			}
@@ -453,12 +475,11 @@ public class ChangeSupport
 
 		String propertyName = event.propertyName();
 
-		PropertyChangeListener[] propertyChangeListeners = null;
 		PropertyChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			propertyChangeListeners = this.propertyChangeListeners();
+			PropertyChangeListener[] propertyChangeListeners = this.propertyChangeListeners();
 			if (propertyChangeListeners != null) {
 				targets = propertyChangeListeners.clone();
 			}
@@ -495,12 +516,11 @@ public class ChangeSupport
 			return;
 		}
 
-		PropertyChangeListener[] propertyChangeListeners = null;
 		PropertyChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			propertyChangeListeners = this.propertyChangeListeners();
+			PropertyChangeListener[] propertyChangeListeners = this.propertyChangeListeners();
 			if (propertyChangeListeners != null) {
 				targets = propertyChangeListeners.clone();
 			}
@@ -548,12 +568,11 @@ public class ChangeSupport
 			return;
 		}
 
-		PropertyChangeListener[] propertyChangeListeners = null;
 		PropertyChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			propertyChangeListeners = this.propertyChangeListeners();
+			PropertyChangeListener[] propertyChangeListeners = this.propertyChangeListeners();
 			if (propertyChangeListeners != null) {
 				targets = propertyChangeListeners.clone();
 			}
@@ -601,12 +620,11 @@ public class ChangeSupport
 			return;
 		}
 
-		PropertyChangeListener[] propertyChangeListeners = null;
 		PropertyChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			propertyChangeListeners = this.propertyChangeListeners();
+			PropertyChangeListener[] propertyChangeListeners = this.propertyChangeListeners();
 			if (propertyChangeListeners != null) {
 				targets = propertyChangeListeners.clone();
 			}
@@ -705,12 +723,11 @@ public class ChangeSupport
 
 		String collectionName = event.collectionName();
 
-		CollectionChangeListener[] collectionChangeListeners = null;
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
@@ -744,12 +761,11 @@ public class ChangeSupport
 			return;
 		}
 
-		CollectionChangeListener[] collectionChangeListeners = null;
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
@@ -790,12 +806,11 @@ public class ChangeSupport
 	public void fireItemAdded(String collectionName, Object addedItem) {
 //		this.fireItemsAdded(collectionName, Collections.singleton(addedItem));
 
-		CollectionChangeListener[] collectionChangeListeners = null;
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
@@ -840,12 +855,11 @@ public class ChangeSupport
 
 		String collectionName = event.collectionName();
 
-		CollectionChangeListener[] collectionChangeListeners = null;
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
@@ -879,12 +893,11 @@ public class ChangeSupport
 			return;
 		}
 
-		CollectionChangeListener[] collectionChangeListeners = null;
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
@@ -925,12 +938,11 @@ public class ChangeSupport
 	public void fireItemRemoved(String collectionName, Object removedItem) {
 //		this.fireItemsRemoved(collectionName, Collections.singleton(removedItem));
 
-		CollectionChangeListener[] collectionChangeListeners = null;
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
@@ -971,12 +983,11 @@ public class ChangeSupport
 	public void fireCollectionCleared(CollectionChangeEvent event) {
 		String collectionName = event.collectionName();
 
-		CollectionChangeListener[] collectionChangeListeners = null;
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
@@ -1007,12 +1018,11 @@ public class ChangeSupport
 	public void fireCollectionCleared(String collectionName) {
 //		this.fireCollectionCleared(new CollectionChangeEvent(this.source, collectionName));
 
-		CollectionChangeListener[] collectionChangeListeners = null;
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
@@ -1053,12 +1063,11 @@ public class ChangeSupport
 	public void fireCollectionChanged(CollectionChangeEvent event) {
 		String collectionName = event.collectionName();
 
-		CollectionChangeListener[] collectionChangeListeners = null;
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
@@ -1089,12 +1098,11 @@ public class ChangeSupport
 	public void fireCollectionChanged(String collectionName) {
 //		this.fireCollectionChanged(new CollectionChangeEvent(this.source, collectionName));
 
-		CollectionChangeListener[] collectionChangeListeners = null;
 		CollectionChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
@@ -1193,12 +1201,11 @@ public class ChangeSupport
 
 		String listName = event.listName();
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1232,12 +1239,11 @@ public class ChangeSupport
 			return;
 		}
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1278,12 +1284,11 @@ public class ChangeSupport
 	public void fireItemAdded(String listName, int index, Object addedItem) {
 //		this.fireItemsAdded(listName, index, Collections.singletonList(addedItem));
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1328,12 +1333,11 @@ public class ChangeSupport
 
 		String listName = event.listName();
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1367,12 +1371,11 @@ public class ChangeSupport
 			return;
 		}
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1413,12 +1416,11 @@ public class ChangeSupport
 	public void fireItemRemoved(String listName, int index, Object removedItem) {
 //		this.fireItemsRemoved(listName, index, Collections.singletonList(removedItem));
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1463,12 +1465,11 @@ public class ChangeSupport
 
 		String listName = event.listName();
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1502,12 +1503,11 @@ public class ChangeSupport
 			return;
 		}
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1548,12 +1548,11 @@ public class ChangeSupport
 	public void fireItemReplaced(String listName, int index, Object newItem, Object replacedItem) {
 //		this.fireItemsReplaced(listName, index, Collections.singletonList(newItem), Collections.singletonList(replacedItem));
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1598,12 +1597,11 @@ public class ChangeSupport
 
 		String listName = event.listName();
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1637,12 +1635,11 @@ public class ChangeSupport
 			return;
 		}
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1690,12 +1687,11 @@ public class ChangeSupport
 	public void fireListCleared(ListChangeEvent event) {
 		String listName = event.listName();
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1726,12 +1722,11 @@ public class ChangeSupport
 	public void fireListCleared(String listName) {
 //		this.fireListCleared(new ListChangeEvent(this.source, listName));
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1772,12 +1767,11 @@ public class ChangeSupport
 	public void fireListChanged(ListChangeEvent event) {
 		String listName = event.listName();
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1808,12 +1802,11 @@ public class ChangeSupport
 	public void fireListChanged(String listName) {
 //		this.fireListChanged(new ListChangeEvent(this.source, listName));
 
-		ListChangeListener[] listChangeListeners = null;
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.listChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
@@ -1909,12 +1902,11 @@ public class ChangeSupport
 	public void fireNodeAdded(TreeChangeEvent event) {
 		String treeName = event.treeName();
 
-		TreeChangeListener[] treeChangeListeners = null;
 		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
@@ -1945,12 +1937,11 @@ public class ChangeSupport
 	public void fireNodeAdded(String treeName, Object[] path) {
 //		this.fireNodeAdded(new TreeChangeEvent(this.source, treeName, path));
 
-		TreeChangeListener[] treeChangeListeners = null;
 		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
@@ -1991,12 +1982,11 @@ public class ChangeSupport
 	public void fireNodeRemoved(TreeChangeEvent event) {
 		String treeName = event.treeName();
 
-		TreeChangeListener[] treeChangeListeners = null;
 		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
@@ -2027,12 +2017,11 @@ public class ChangeSupport
 	public void fireNodeRemoved(String treeName, Object[] path) {
 //		this.fireNodeRemoved(new TreeChangeEvent(this.source, treeName, path));
 
-		TreeChangeListener[] treeChangeListeners = null;
 		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
@@ -2073,12 +2062,11 @@ public class ChangeSupport
 	public void fireTreeCleared(TreeChangeEvent event) {
 		String treeName = event.treeName();
 
-		TreeChangeListener[] treeChangeListeners = null;
 		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
@@ -2109,12 +2097,11 @@ public class ChangeSupport
 	public void fireTreeCleared(String treeName, Object[] path) {
 //		this.fireTreeCleared(new TreeChangeEvent(this.source, treeName, path));
 
-		TreeChangeListener[] treeChangeListeners = null;
 		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
@@ -2162,12 +2149,11 @@ public class ChangeSupport
 	public void fireTreeChanged(TreeChangeEvent event) {
 		String treeName = event.treeName();
 
-		TreeChangeListener[] treeChangeListeners = null;
 		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
@@ -2198,12 +2184,11 @@ public class ChangeSupport
 	public void fireTreeChanged(String treeName, Object[] path) {
 //		this.fireTreeChanged(new TreeChangeEvent(this.source, treeName, path));
 
-		TreeChangeListener[] treeChangeListeners = null;
 		TreeChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
@@ -2316,20 +2301,23 @@ public class ChangeSupport
 	// ********** member classes **********
 
 	/**
-	 * Pair a listener class with its generic listeners.
+	 * Pair a listener class with its "generic" listeners.
 	 */
 	private static class GenericListenerList {
 		final Class<? extends ChangeListener> listenerClass;
 		ChangeListener[] listeners;
+
 		<T extends ChangeListener> GenericListenerList(Class<T> listenerClass, T listener) {
 			super();
 			this.listenerClass = listenerClass;
 			this.listeners = (ChangeListener[]) Array.newInstance(listenerClass, 1);
 			this.listeners[0] = listener;
 		}
+
 		void addListener(ChangeListener listener) {
 			this.listeners = CollectionTools.add(this.listeners, listener);
 		}
+
 		boolean removeListener(ChangeListener listener) {
 			int len = this.listeners.length;
 			if (len == 0) {
@@ -2342,9 +2330,16 @@ public class ChangeSupport
 			}
 			return (this.listeners.length + 1) == len;
 		}
+
 		boolean hasListeners() {
 			return this.listeners.length > 0;
 		}
+
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, ClassTools.shortNameFor(this.listenerClass));
+		}
+
 	}
 
 	/**
@@ -2355,11 +2350,18 @@ public class ChangeSupport
 		final String aspectName;
 		final ChangeSupport child;
 		private static final long serialVersionUID = 1L;
+
 		AspectChild(String aspectName, ChangeSupport child) {
 			super();
 			this.aspectName = aspectName;
 			this.child = child;
 		}
+
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, this.aspectName);
+		}
+
 	}
 
 }

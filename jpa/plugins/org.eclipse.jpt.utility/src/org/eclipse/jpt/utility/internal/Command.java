@@ -38,4 +38,23 @@ public interface Command {
 		}
 	}
 
+	final class Disabled implements Command {
+		public static final Command INSTANCE = new Disabled();
+		public static Command instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private Disabled() {
+			super();
+		}
+		// throw an exception
+		public void execute() {
+			throw new UnsupportedOperationException();
+		}
+		@Override
+		public String toString() {
+			return "Command.Disabled";
+		}
+	}
+
 }

@@ -11,14 +11,14 @@ package org.eclipse.jpt.utility.internal.node;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -27,7 +27,7 @@ import org.eclipse.jpt.utility.internal.model.ChangeEventDispatcher;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
 /**
- * Base class for Node Model classes.
+ * Base class for Node classes.
  * Provides support for the following:
  *     initialization
  *     enforced object identity wrt #equals()/#hashCode()
@@ -52,19 +52,15 @@ import org.eclipse.jpt.utility.internal.model.ChangeSupport;
  *     #nonValidatedAspectNames()
  *         #addNonValidatedAspectNamesTo(Set nonValidatedAspectNames)
  *     #displayString()
- *     #toString(StringBuffer sb)
+ *     #toString(StringBuilder sb)
  */
-public abstract class AbstractNodeModel 
-	extends AbstractModel 
-	implements NodeModel 
+public abstract class AbstractNode 
+	extends AbstractModel
+	implements Node
 {
 
 	/** Containment hierarchy. */
-	private volatile Node parent;
-
-	/** User comment. */
-	private volatile String comment;
-		public static final String COMMENT_PROPERTY = "comment";
+	private Node parent;  // pseudo-final
 
 	/** Track whether the node has changed. */
 	private volatile boolean dirty;
@@ -75,7 +71,7 @@ public abstract class AbstractNodeModel
 	 * This list should only be modified via a ProblemSynchronizer,
 	 * allowing for asynchronous modification from another thread.
 	 */
-	private List<Problem> problems;		// pseudo-final
+	private Vector<Problem> problems;		// pseudo-final
 		private static final Object[] EMPTY_PROBLEM_MESSAGE_ARGUMENTS = new Object[0];
 
 	/**
@@ -85,21 +81,25 @@ public abstract class AbstractNodeModel
 	 * This must be recalculated every time this node or one of its
 	 * descendants changes it problems.
 	 */
-	private List<Problem> branchProblems;		// pseudo-final
+	private Vector<Problem> branchProblems;		// pseudo-final
+
+	/** User comment. */
+	private volatile String comment;
 
 
+	// ********** static fields **********
 
 	/**
 	 * Sets of transient aspect names, keyed by class.
 	 * This is built up lazily, as the objects are modified.
 	 */
-	private static final Map<Class<? extends AbstractNodeModel>, Set<String>> transientAspectNameSets = new Hashtable<Class<? extends AbstractNodeModel>, Set<String>>();
+	private static final HashMap<Class<? extends AbstractNode>, HashSet<String>> transientAspectNameSets = new HashMap<Class<? extends AbstractNode>, HashSet<String>>();
 
 	/**
 	 * Sets of non-validated aspect names, keyed by class.
 	 * This is built up lazily, as the objects are modified.
 	 */
-	private static final Map<Class<? extends AbstractNodeModel>, Set<String>> nonValidatedAspectNameSets = new Hashtable<Class<? extends AbstractNodeModel>, Set<String>>();
+	private static final HashMap<Class<? extends AbstractNode>, HashSet<String>> nonValidatedAspectNameSets = new HashMap<Class<? extends AbstractNode>, HashSet<String>>();
 
 
 	// ********** constructors **********
@@ -109,7 +109,7 @@ public abstract class AbstractNodeModel
 	 * Use this constructor to create a new node.
 	 * @see #initialize(Node)
 	 */
-	protected AbstractNodeModel(Node parent) {
+	protected AbstractNode(Node parent) {
 		super();
 		this.initialize(parent);
 	}
@@ -194,6 +194,7 @@ public abstract class AbstractNodeModel
 	 * for the node.
 	 * By default require a non-null parent. Override if other restrictions exist
 	 * or the parent should be null.
+	 * NB: Root node model implementations will need to override this method.
 	 */
 	protected void checkParent(Node parentNode) {
 		if (parentNode == null) {
@@ -209,7 +210,7 @@ public abstract class AbstractNodeModel
 	 * @see #parent()
 	 * @see #addChildrenTo(java.util.List)
 	 */
-	public Iterator<? extends Node> children() {
+	public final Iterator<Node> children() {
 		List<Node> children = new ArrayList<Node>();
 		this.addChildrenTo(children);
 		return children.iterator();
@@ -231,6 +232,7 @@ public abstract class AbstractNodeModel
 	 * Return the containment hierarchy's root node.
 	 * Most nodes must have a root.
 	 * @see #parent()
+	 * NB: Assume the root has no parent.
 	 */
 	public Node root() {
 		Node p = this.parent;
@@ -255,8 +257,8 @@ public abstract class AbstractNodeModel
 	 * objects that are "referenced" by another object, as opposed
 	 * to "owned" by another object.
 	 */
-	public Iterator<Node> branchReferences() {
-		Collection<Node> branchReferences = new ArrayList<Node>(1000);		// start big
+	public Iterator<Node.Reference> branchReferences() {
+		Collection<Node.Reference> branchReferences = new ArrayList<Node.Reference>(1000);		// start big
 		this.addBranchReferencesTo(branchReferences);
 		return branchReferences.iterator();
 	}
@@ -272,8 +274,8 @@ public abstract class AbstractNodeModel
 	 * @see Reference
 	 * @see #children()
 	 */
-	public void addBranchReferencesTo(Collection<Node> branchReferences) {
-		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
+	public void addBranchReferencesTo(Collection<Node.Reference> branchReferences) {
+		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.addBranchReferencesTo(branchReferences);
 		}
@@ -299,7 +301,7 @@ public abstract class AbstractNodeModel
 	 */
 	public void addAllNodesTo(Collection<Node> nodes) {
 		nodes.add(this);
-		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.addAllNodesTo(nodes);
 		}
@@ -318,7 +320,7 @@ public abstract class AbstractNodeModel
 	 * @see #isDescendantOf(Node)
 	 */
 	public void nodeRemoved(Node node) {
-		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.nodeRemoved(node);
 		}
@@ -345,7 +347,7 @@ public abstract class AbstractNodeModel
 	 * @see #isDescendantOf(Node)
 	 */
 	public void nodeRenamed(Node node) {
-		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.nodeRenamed(node);
 		}
@@ -380,6 +382,7 @@ public abstract class AbstractNodeModel
 	 * Return a change event dispatcher that will be used to dispatch
 	 * change notifications to listeners.
 	 * Typically only the root node directly holds a dispatcher.
+	 * NB: Root node model implementations will need to override this method.
 	 */
 	public ChangeEventDispatcher changeEventDispatcher() {
 		if (this.parent == null) {
@@ -392,6 +395,7 @@ public abstract class AbstractNodeModel
 	 * Set a change event dispatcher that will be used to dispatch
 	 * change notifications to listeners.
 	 * Typically only the root node directly holds a dispatcher.
+	 * NB: Root node model implementations will need to override this method.
 	 */
 	public void setChangeEventDispatcher(ChangeEventDispatcher changeEventDispatcher) {
 		if (this.parent == null) {
@@ -425,6 +429,7 @@ public abstract class AbstractNodeModel
 	 * Return a validator that will be invoked whenever a
 	 * "validated" aspect of the node tree changes.
 	 * Typically only the root node directly holds a validator.
+	 * NB: Root node model implementations will need to override this method.
 	 */
 	public Node.Validator validator() {
 		if (this.parent == null) {
@@ -437,6 +442,7 @@ public abstract class AbstractNodeModel
 	 * Set a validator that will be invoked whenever a
 	 * "validated" aspect of the node tree changes.
 	 * Typically only the root node directly holds a validator.
+	 * NB: Root node model implementations will need to override this method.
 	 */
 	public void setValidator(Node.Validator validator) {
 		if (this.parent == null) {
@@ -536,7 +542,7 @@ public abstract class AbstractNodeModel
 	 */
 	public final void markEntireBranchDirty() {
 		this.markDirty();
-		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.markEntireBranchDirty();
 		}
@@ -570,7 +576,7 @@ public abstract class AbstractNodeModel
 	 * Not the best of method names.... :-(
 	 */
 	public final void cascadeMarkEntireBranchClean() {
-		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.cascadeMarkEntireBranchClean();
 		}
@@ -594,7 +600,7 @@ public abstract class AbstractNodeModel
 			return;
 		}
 
-		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			if (child.isDirtyBranch()) {
 				return;
@@ -623,7 +629,7 @@ public abstract class AbstractNodeModel
 	 */
 	protected final Set<String> transientAspectNames() {
 		synchronized (transientAspectNameSets) {
-			Set<String> transientAspectNames = transientAspectNameSets.get(this.getClass());
+			HashSet<String> transientAspectNames = transientAspectNameSets.get(this.getClass());
 			if (transientAspectNames == null) {
 				transientAspectNames = new HashSet<String>();
 				this.addTransientAspectNamesTo(transientAspectNames);
@@ -658,7 +664,7 @@ public abstract class AbstractNodeModel
 		return new FilteringIterator<Node>(this.allNodes()) {
 			@Override
 			protected boolean accept(Object o) {
-				return (o instanceof AbstractNodeModel) && ((AbstractNodeModel) o).isDirty();
+				return (o instanceof AbstractNode) && ((AbstractNode) o).isDirty();
 			}
 		};
 	}
@@ -720,24 +726,12 @@ public abstract class AbstractNodeModel
 		return this.branchProblems.contains(problem);
 	}
 
-	protected final Problem buildProblem(String messageKey, Object[] messageArguments) {
+	protected final Problem buildProblem(String messageKey, Object... messageArguments) {
 		return new DefaultProblem(this, messageKey, messageArguments);
 	}
 
 	protected final Problem buildProblem(String messageKey) {
 		return this.buildProblem(messageKey, EMPTY_PROBLEM_MESSAGE_ARGUMENTS);
-	}
-
-	protected final Problem buildProblem(String messageKey, Object messageArgument) {
-		return this.buildProblem(messageKey, new Object[] {messageArgument});
-	}
-
-	protected final Problem buildProblem(String messageKey, Object messageArgument1, Object messageArgument2) {
-		return this.buildProblem(messageKey, new Object[] {messageArgument1, messageArgument2});
-	}
-
-	protected final Problem buildProblem(String messageKey, Object messageArgument1, Object messageArgument2, Object messageArgument3) {
-		return this.buildProblem(messageKey, new Object[] {messageArgument1, messageArgument2, messageArgument3});
 	}
 
 	/**
@@ -770,7 +764,7 @@ public abstract class AbstractNodeModel
 	 */
 	public boolean validateBranchInternal() {
 		// rebuild "branch" problems in children first
-		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			// ignore the return value because we are going to rebuild our "branch"
 			// problems no matter what, to see if they have changed
@@ -810,12 +804,12 @@ public abstract class AbstractNodeModel
 	 * problems were removed from our "branch" problems.
 	 */
 	private boolean checkBranchProblems() {
-		List<Problem> oldBranchProblems = new Vector<Problem>(this.branchProblems);
+		Vector<Problem> oldBranchProblems = new Vector<Problem>(this.branchProblems);
 		int oldSize = this.branchProblems.size();
 
 		this.branchProblems.clear();
 		this.branchProblems.addAll(this.problems);
-		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			child.addBranchProblemsTo(this.branchProblems);
 		}
@@ -885,7 +879,7 @@ public abstract class AbstractNodeModel
 		if (this.branchProblems.isEmpty()) {
 			return false;
 		}
-		for (Iterator<? extends Node> stream = this.children(); stream.hasNext(); ) {
+		for (Iterator<Node> stream = this.children(); stream.hasNext(); ) {
 			Node child = stream.next();		// pull out the child to ease debugging
 			// ignore the return value because we are going to clear our "branch"
 			// problems no matter what
@@ -920,7 +914,7 @@ public abstract class AbstractNodeModel
 	 */
 	protected final Set<String> nonValidatedAspectNames() {
 		synchronized (nonValidatedAspectNameSets) {
-			Set<String> nonValidatedAspectNames = nonValidatedAspectNameSets.get(this.getClass());
+			HashSet<String> nonValidatedAspectNames = nonValidatedAspectNameSets.get(this.getClass());
 			if (nonValidatedAspectNames == null) {
 				nonValidatedAspectNames = new HashSet<String>();
 				this.addNonValidatedAspectNamesTo(nonValidatedAspectNames);
@@ -961,9 +955,9 @@ public abstract class AbstractNodeModel
 	 * Return a developer-friendly String. If you want something useful for
 	 * displaying in a user interface, use #displayString().
 	 * If you want to give more information in your #toString(),
-	 * override #toString(StringBuffer sb). 
+	 * override #toString(StringBuilder sb). 
 	 * Whatever you add to that string buffer will show up between the parentheses.
-	 * @see oracle.toplink.workbench.utility.AbstractModel#toString(StringBuffer sb)
+	 * @see AbstractModel#toString(StringBuilder sb)
 	 * @see #displayString()
 	 */
 	@Override
@@ -979,17 +973,17 @@ public abstract class AbstractNodeModel
 	 *   - notify the source node when one of the node's aspects has changed
 	 *   - allow the source node to supply the change event dispatcher
 	 *   - build a custom "child" change support
-	 * @see AbstractNodeModel#aspectChanged(String)
-	 * @see AbstractNodeModel#changeEventDispatcher()
-	 * @see AbstractNodeModel.LocalChildChangeSupport
+	 * @see AbstractNode#aspectChanged(String)
+	 * @see AbstractNode#changeEventDispatcher()
+	 * @see AbstractNode.LocalChildChangeSupport
 	 */
 	protected static class LocalChangeSupport extends ChangeSupport {
 		private static final long serialVersionUID = 1L;
-		public LocalChangeSupport(AbstractNodeModel source) {
+		public LocalChangeSupport(AbstractNode source) {
 			super(source);
 		}
-		protected AbstractNodeModel sourceNode() {
-			return (AbstractNodeModel) this.source;
+		protected AbstractNode sourceNode() {
+			return (AbstractNode) this.source;
 		}
 		@Override
 		protected ChangeEventDispatcher dispatcher() {
@@ -1013,11 +1007,11 @@ public abstract class AbstractNodeModel
 	 */
 	protected static class LocalChildChangeSupport extends ChangeSupport {
 		private static final long serialVersionUID = 1L;
-		public LocalChildChangeSupport(AbstractNodeModel source) {
+		public LocalChildChangeSupport(AbstractNode source) {
 			super(source);
 		}
-		protected AbstractNodeModel sourceNode() {
-			return (AbstractNodeModel) this.source;
+		protected AbstractNode sourceNode() {
+			return (AbstractNode) this.source;
 		}
 		@Override
 		protected ChangeEventDispatcher dispatcher() {

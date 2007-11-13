@@ -45,4 +45,25 @@ public interface Transformer<T1, T2> {
 		}
 	}
 
+	final class Disabled<S1, S2> implements Transformer<S1, S2> {
+		@SuppressWarnings("unchecked")
+		public static final Transformer INSTANCE = new Disabled();
+		@SuppressWarnings("unchecked")
+		public static <R1, R2> Transformer<R1, R2> instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private Disabled() {
+			super();
+		}
+		// throw an exception
+		public S2 transform(S1 o) {
+			throw new UnsupportedOperationException();
+		}
+		@Override
+		public String toString() {
+			return "Transformer.Disabled";
+		}
+	}
+
 }

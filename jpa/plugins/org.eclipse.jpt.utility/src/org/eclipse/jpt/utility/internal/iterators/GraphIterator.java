@@ -65,8 +65,7 @@ public class GraphIterator<E>
 
 	/**
 	 * Construct an iterator with the specified collection of roots
-	 * and a mister rogers that simply returns an empty iterator
-	 * for each of the roots.
+	 * and a disabled mister rogers.
 	 * Use this constructor if you want to override the
 	 * <code>children(Object)</code> method instead of building
 	 * a <code>MisterRogers</code>.
@@ -77,26 +76,24 @@ public class GraphIterator<E>
 
 	/**
 	 * Construct an iterator with the specified collection of roots
-	 * and a mister rogers that simply returns an empty iterator
-	 * for each of the roots.
+	 * and a disabled mister rogers.
 	 * Use this constructor if you want to override the
 	 * <code>children(Object)</code> method instead of building
 	 * a <code>MisterRogers</code>.
 	 */
 	public GraphIterator(Iterator<? extends E> roots) {
-		this(roots, MisterRogers.Null.<E>instance());
+		this(roots, MisterRogers.Disabled.<E>instance());
 	}
 
 	/**
 	 * Construct an iterator with the specified root
-	 * and a mister rogers that simply returns an empty iterator
-	 * for the root.
+	 * and a disabled mister rogers.
 	 * Use this constructor if you want to override the
 	 * <code>children(Object)</code> method instead of building
 	 * a <code>MisterRogers</code>.
 	 */
 	public GraphIterator(E root) {
-		this(root, MisterRogers.Null.<E>instance());
+		this(root, MisterRogers.Disabled.<E>instance());
 	}
 
 	/**
@@ -215,6 +212,28 @@ public class GraphIterator<E>
 			@Override
 			public String toString() {
 				return "GraphIterator.MisterRogers.Null";
+			}
+		}
+
+		/** The mister rogers used when the #neighbors(Object) method is overridden. */
+		final class Disabled<S> implements MisterRogers<S> {
+			@SuppressWarnings("unchecked")
+			public static final MisterRogers INSTANCE = new Disabled();
+			@SuppressWarnings("unchecked")
+			public static <R> MisterRogers<R> instance() {
+				return INSTANCE;
+			}
+			// ensure single instance
+			private Disabled() {
+				super();
+			}
+			// throw an exception
+			public Iterator<S> neighbors(S next) {
+				throw new UnsupportedOperationException();  // GraphIterator.neighbors(Object) was not implemented
+			}
+			@Override
+			public String toString() {
+				return "GraphIterator.MisterRogers.Disabled";
 			}
 		}
 

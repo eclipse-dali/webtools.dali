@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.internal.model.listener;
 
 import java.lang.reflect.Method;
+
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.StateChangeEvent;

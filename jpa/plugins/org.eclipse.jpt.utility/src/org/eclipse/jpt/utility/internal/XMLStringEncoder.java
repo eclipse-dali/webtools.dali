@@ -74,7 +74,7 @@ public final class XMLStringEncoder {
 	public String encode(String s) {
 		int len = s.length();
 		// allow for a few encoded characters
-		StringBuffer sb = new StringBuffer(len + 20);
+		StringBuilder sb = new StringBuilder(len + 20);
 		for (int i = 0; i < len; i++) {
 			this.appendCharacterTo(s.charAt(i), sb);
 		}
@@ -86,8 +86,8 @@ public final class XMLStringEncoder {
 	 * replaced by the characters themselves.
 	 */
 	public String decode(String s) {
-		StringBuffer sb = new StringBuffer(s.length());
-		StringBuffer temp = new StringBuffer();	// performance tweak
+		StringBuilder sb = new StringBuilder(s.length());
+		StringBuilder temp = new StringBuilder();	// performance tweak
 		this.decodeTo(new StringReader(s), sb, temp);
 		return sb.toString();
 	}
@@ -99,7 +99,7 @@ public final class XMLStringEncoder {
 	 * Append the specified character to the string buffer,
 	 * converting it to an XML character reference if necessary.
 	 */
-	private void appendCharacterTo(char c, StringBuffer sb) {
+	private void appendCharacterTo(char c, StringBuilder sb) {
 		if (this.charIsToBeEncoded(c)) {
 			this.appendCharacterReferenceTo(c, sb);
 		} else {
@@ -119,13 +119,13 @@ public final class XMLStringEncoder {
 	 * Append the specified character's XML character reference to the
 	 * specified string buffer (e.g. '/' => "&#x2f;").
 	 */
-	private void appendCharacterReferenceTo(char c, StringBuffer sb) {
+	private void appendCharacterReferenceTo(char c, StringBuilder sb) {
 		sb.append("&#x");
 		sb.append(Integer.toString(c, 16));
 		sb.append(';');
 	}
 
-	private void decodeTo(Reader reader, StringBuffer sb, StringBuffer temp) {
+	private void decodeTo(Reader reader, StringBuilder sb, StringBuilder temp) {
 		try {
 			this.decodeTo_(reader, sb, temp);
 		} catch (IOException ex) {
@@ -133,7 +133,7 @@ public final class XMLStringEncoder {
 		}
 	}
 
-	private void decodeTo_(Reader reader, StringBuffer sb, StringBuffer temp) throws IOException {
+	private void decodeTo_(Reader reader, StringBuilder sb, StringBuilder temp) throws IOException {
 		int c = reader.read();
 		while (c != -1) {
 			if (c == '&') {
@@ -146,13 +146,13 @@ public final class XMLStringEncoder {
 		reader.close();
 	}
 
-	private void decodeCharacterReferenceTo(Reader reader, StringBuffer sb, StringBuffer temp) throws IOException {
+	private void decodeCharacterReferenceTo(Reader reader, StringBuilder sb, StringBuilder temp) throws IOException {
 		int c = reader.read();
 		this.checkChar(c, '#');
 		c = reader.read();
 		this.checkChar(c, 'x');
 
-		temp.setLength(0);
+		temp.setLength(0);  // re-use temp
 		c = reader.read();
 		while (c != ';') {
 			this.checkEndOfStream(c);

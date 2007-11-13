@@ -12,6 +12,7 @@ package org.eclipse.jpt.utility.internal.node;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 
 /**
@@ -32,18 +33,18 @@ public class RunnableValidation
 	implements Runnable
 {
 	/** The node whose branch this thread will validate. */
-	private Node node;
+	private final Node node;
 
 	/** When this flag is set to true, we kick off the validation routine. */
-	private SynchronizedBoolean validateFlag;
+	private final SynchronizedBoolean validateFlag;
 
 	/** When this flag is set to false, we allow this thread to die. */
-	private SynchronizedBoolean continueFlag;
+	private final SynchronizedBoolean continueFlag;
 
 	/** Log any exceptions encountered during validation with the following settings. */
-	private Logger exceptionLogger;
-	private Level exceptionLevel;
-	private String exceptionMessage;
+	private final Logger exceptionLogger;
+	private final Level exceptionLevel;
+	private final String exceptionMessage;
 
 
 	/**

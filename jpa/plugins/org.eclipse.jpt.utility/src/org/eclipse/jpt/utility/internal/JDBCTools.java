@@ -15,7 +15,7 @@ import java.util.HashMap;
 /**
  * Helper methods for dealing with the JDBC API.
  */
-public final class JDBCTools{
+public final class JDBCTools {
 
 
 	/**
@@ -280,12 +280,12 @@ public final class JDBCTools{
 
 		@Override
 		public String toString() {
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			this.appendTo(sb);
 			return sb.toString();
 		}
 
-		public void appendTo(StringBuffer sb) {
+		public void appendTo(StringBuilder sb) {
 			this.jdbcType.appendTo(sb);
 			sb.append(" => ");
 			this.javaType.appendDeclarationTo(sb);
@@ -332,12 +332,12 @@ public final class JDBCTools{
 
 		@Override
 		public String toString() {
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			this.appendTo(sb);
 			return sb.toString();
 		}
 
-		public void appendTo(StringBuffer sb) {
+		public void appendTo(StringBuilder sb) {
 			this.javaType.appendDeclarationTo(sb);
 			sb.append(" => ");
 			this.jdbcType.appendTo(sb);

@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.event;
 
+import org.eclipse.jpt.utility.internal.model.Model;
+
 /**
  * A "tree change" event gets delivered whenever a model changes a "bound"
  * or "constrained" tree. A TreeChangeEvent is sent as an
@@ -40,7 +42,7 @@ public class TreeChangeEvent extends ChangeEvent {
 	 * @param treeName The programmatic name of the tree that was changed.
 	 * @param path The path to the part of the tree that was changed.
 	 */
-	public TreeChangeEvent(Object source, String treeName, Object[] path) {
+	public TreeChangeEvent(Model source, String treeName, Object[] path) {
 		super(source);
 		if ((treeName == null) || (path == null)) {
 			throw new NullPointerException();
@@ -56,7 +58,7 @@ public class TreeChangeEvent extends ChangeEvent {
 	 * @param treeName The programmatic name of the tree that was changed.
 	 */
 	@SuppressWarnings("unchecked")
-	public TreeChangeEvent(Object source, String treeName) {
+	public TreeChangeEvent(Model source, String treeName) {
 		this(source, treeName, EMPTY_PATH);
 	}
 	
@@ -69,7 +71,7 @@ public class TreeChangeEvent extends ChangeEvent {
 
 	/**
 	 * Return the path to the part of the tree that was changed.
-	 * May be null, if not known.
+	 * May be empty, if not known.
 	 */
 	public Object[] path() {
 		return this.path;
@@ -81,7 +83,7 @@ public class TreeChangeEvent extends ChangeEvent {
 	}
 
 	@Override
-	public TreeChangeEvent cloneWithSource(Object newSource) {
+	public TreeChangeEvent cloneWithSource(Model newSource) {
 		return new TreeChangeEvent(newSource, this.treeName, this.path);
 	}
 
@@ -89,7 +91,7 @@ public class TreeChangeEvent extends ChangeEvent {
 	 * Return a copy of the event with the specified source
 	 * replacing the current source and the tree name.
 	 */
-	public TreeChangeEvent cloneWithSource(Object newSource, String newTreeName) {
+	public TreeChangeEvent cloneWithSource(Model newSource, String newTreeName) {
 		return new TreeChangeEvent(newSource, newTreeName, this.path);
 	}
 

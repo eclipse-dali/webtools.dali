@@ -7,13 +7,19 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.utility.internal.node;
-
-import org.eclipse.jpt.utility.internal.model.Model;
+package org.eclipse.jpt.utility.internal.model.value;
 
 /**
- * Some nodes are models....
+ * Extend ValueModel to allow the setting of the property's value.
  */
-public interface NodeModel extends Node, Model {
-	// no additional behavior
+public interface PropertyValueModel
+	extends ValueModel
+{
+
+	/**
+	 * Set the value and fire a property change notification.
+	 * @see ValueModel#VALUE
+	 */
+	void setValue(Object value);
+
 }

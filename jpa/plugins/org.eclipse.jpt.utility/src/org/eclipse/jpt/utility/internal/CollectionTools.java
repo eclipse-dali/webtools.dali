@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
+import java.util.RandomAccess;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -1481,7 +1482,24 @@ public final class CollectionTools {
 	 * java.util.List#move(int targetIndex, int sourceIndex)
 	 */
 	public static <E> List<E> move(List<E> list, int targetIndex, int sourceIndex) {
-		if (targetIndex != sourceIndex) {
+		if (targetIndex == sourceIndex) {
+			return list;
+		}
+		if (list instanceof RandomAccess) {
+			// move elements, leaving the list in place
+			E temp = list.get(sourceIndex);
+			if (targetIndex < sourceIndex) {
+				for (int i = sourceIndex; i-- > targetIndex; ) {
+					list.set(i + 1, list.get(i));
+				}
+			} else {
+				for (int i = sourceIndex; i < targetIndex; i++) {
+					list.set(i, list.get(i + 1));
+				}
+			}
+			list.set(targetIndex, temp);
+		} else {
+			// remove the element and re-add it at the target index
 			list.add(targetIndex, list.remove(sourceIndex));
 		}
 		return list;
@@ -1493,7 +1511,26 @@ public final class CollectionTools {
 	 * java.util.List#move(int targetIndex, int sourceIndex, int length)
 	 */
 	public static <E> List<E> move(List<E> list, int targetIndex, int sourceIndex, int length) {
-		if (targetIndex != sourceIndex) {
+		if (targetIndex == sourceIndex) {
+			return list;
+		}
+		if (list instanceof RandomAccess) {
+			// move elements, leaving the list in place
+			ArrayList<E> temp = new ArrayList<E>(list.subList(sourceIndex, sourceIndex + length));
+			if (targetIndex < sourceIndex) {
+				for (int i = sourceIndex; i-- > targetIndex; ) {
+					list.set(i + length, list.get(i));
+				}
+			} else {
+				for (int i = sourceIndex; i < targetIndex; i++) {
+					list.set(i, list.get(i + length));
+				}
+			}
+			for (int i = 0; i < length; i++) {
+				list.set(targetIndex + i, temp.get(i));
+			}
+		} else {
+			// remove the elements and re-add them at the target index
 			list.addAll(targetIndex, removeElementsAtIndex(list, sourceIndex, length));
 		}
 		return list;

@@ -41,26 +41,24 @@ public class TreeIterator<E>
 
 	/**
 	 * Construct an iterator with the specified collection of roots
-	 * and a midwife that simply returns an empty iterator
-	 * for each of the roots.
+	 * and a disabled midwife.
 	 * Use this constructor if you want to override the
 	 * <code>children(Object)</code> method instead of building
 	 * a <code>Midwife</code>.
 	 */
 	public TreeIterator(Iterator<? extends E> roots) {
-		this(roots, Midwife.Null.<E>instance());
+		this(roots, Midwife.Disabled.<E>instance());
 	}
 
 	/**
 	 * Construct an iterator with the specified root
-	 * and a midwife that simply returns an empty iterator
-	 * for the root.
+	 * and a disabled midwife.
 	 * Use this constructor if you want to override the
 	 * <code>children(Object)</code> method instead of building
 	 * a <code>Midwife</code>.
 	 */
 	public TreeIterator(E root) {
-		this(root, Midwife.Null.<E>instance());
+		this(root, Midwife.Disabled.<E>instance());
 	}
 
 	/**
@@ -167,6 +165,28 @@ public class TreeIterator<E>
 			@Override
 			public String toString() {
 				return "TreeIterator.Midwife.Null";
+			}
+		}
+
+		/** The midwife used when the #children(Object) method is overridden. */
+		final class Disabled<S> implements Midwife<S> {
+			@SuppressWarnings("unchecked")
+			public static final Midwife INSTANCE = new Disabled();
+			@SuppressWarnings("unchecked")
+			public static <R> Midwife<R> instance() {
+				return INSTANCE;
+			}
+			// ensure single instance
+			private Disabled() {
+				super();
+			}
+			// throw an exception
+			public Iterator<S> children(S next) {
+				throw new UnsupportedOperationException();  // TreeIterator.children(Object) was not implemented
+			}
+			@Override
+			public String toString() {
+				return "TreeIterator.Midwife.Disabled";
 			}
 		}
 

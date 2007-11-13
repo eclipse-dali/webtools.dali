@@ -571,7 +571,7 @@ public final class FileTools {
 	 */
 	public static String convertToValidFileName(String filename, char replacementChar) {
 		int len = filename.length();
-		StringBuffer sb = new StringBuffer(len);
+		StringBuilder sb = new StringBuilder(len);
 		for (int i = 0; i < len; i++) {
 			char filenameChar = filename.charAt(i);
 			if (CollectionTools.contains(INVALID_FILENAME_CHARACTERS, filenameChar)) {
@@ -693,7 +693,7 @@ public final class FileTools {
 			return absoluteFileName;
 		}
 
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(paths[0]);		// always add the first directory, which is usually the drive letter
 
 		// Keep the index of insertion into the string buffer

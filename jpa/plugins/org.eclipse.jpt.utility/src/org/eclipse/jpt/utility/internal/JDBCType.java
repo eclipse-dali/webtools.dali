@@ -72,13 +72,13 @@ public final class JDBCType
 
 	// ********** printing and displaying **********
 
-	public void appendTo(StringBuffer sb) {
+	public void appendTo(StringBuilder sb) {
 		sb.append(this.name);
 	}
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(ClassTools.shortClassNameForObject(this));
 		sb.append('(');
 		this.appendTo(sb);

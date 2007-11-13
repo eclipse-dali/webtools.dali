@@ -128,7 +128,7 @@ public final class NameTools {
 			return name;
 		}
 
-		StringBuffer sb = new StringBuffer(100);
+		StringBuilder sb = new StringBuilder(100);
 		if (catalog != null) {
 			sb.append(catalog);
 			sb.append('.');

@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.event;
 
+import org.eclipse.jpt.utility.internal.model.Model;
+
 /**
  * A generic "state change" event gets delivered whenever a model changes to 
  * such extent that it cannot be delineated all aspects of it that have changed. 
@@ -24,7 +26,7 @@ public class StateChangeEvent extends ChangeEvent {
 	 *
 	 * @param source The object on which the event initially occurred.
 	 */
-	public StateChangeEvent(Object source) {
+	public StateChangeEvent(Model source) {
 		super(source);
 	}
 
@@ -34,7 +36,7 @@ public class StateChangeEvent extends ChangeEvent {
 	}
 
 	@Override
-	public StateChangeEvent cloneWithSource(Object newSource) {
+	public StateChangeEvent cloneWithSource(Model newSource) {
 		return new StateChangeEvent(newSource);
 	}
 

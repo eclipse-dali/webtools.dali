@@ -172,7 +172,7 @@ public final class JavaType
 		if (this.arrayDepth == 0) {
 			return this.elementTypeNameDeclaration();
 		}
-		StringBuffer sb = new StringBuffer(this.elementTypeName.length() + (2 * this.arrayDepth));
+		StringBuilder sb = new StringBuilder(this.elementTypeName.length() + (2 * this.arrayDepth));
 		this.appendDeclarationTo(sb);
 		return sb.toString();
 	}
@@ -182,7 +182,7 @@ public final class JavaType
 	 *     "[[J" => "long[][]"
 	 *     "java.util.Map$Entry" => "java.util.Map.Entry"
 	 */
-	public void appendDeclarationTo(StringBuffer sb) {
+	public void appendDeclarationTo(StringBuilder sb) {
 		sb.append(this.elementTypeNameDeclaration());
 		for (int i = this.arrayDepth; i-- > 0; ) {
 			sb.append("[]");
@@ -212,7 +212,7 @@ public final class JavaType
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(ClassTools.shortClassNameForObject(this));
 		sb.append('(');
 		this.appendDeclarationTo(sb);

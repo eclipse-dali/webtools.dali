@@ -10,7 +10,9 @@
 package org.eclipse.jpt.utility.internal.model.event;
 
 import java.util.EventObject;
+
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.model.Model;
 
 /**
  * Abstract class for all the change events that can be fired by models.
@@ -25,8 +27,13 @@ public abstract class ChangeEvent extends EventObject {
 	 *
 	 * @param source The object on which the event initially occurred.
 	 */
-	protected ChangeEvent(Object source) {
+	protected ChangeEvent(Model source) {
 		super(source);
+	}
+
+	@Override
+	public Model getSource() {
+		return (Model) super.getSource();
 	}
 
 	/**
@@ -39,7 +46,7 @@ public abstract class ChangeEvent extends EventObject {
 	 * Return a copy of the event with the specified source
 	 * replacing the current source.
 	 */
-	public abstract ChangeEvent cloneWithSource(Object newSource);
+	public abstract ChangeEvent cloneWithSource(Model newSource);
 
 	@Override
 	public String toString() {

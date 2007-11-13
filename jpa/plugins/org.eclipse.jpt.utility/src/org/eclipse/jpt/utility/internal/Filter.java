@@ -43,4 +43,25 @@ public interface Filter<T> {
 		}
 	}
 
+	final class Disabled<S> implements Filter<S> {
+		@SuppressWarnings("unchecked")
+		public static final Filter INSTANCE = new Disabled();
+		@SuppressWarnings("unchecked")
+		public static <R> Filter<R> instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private Disabled() {
+			super();
+		}
+		// throw an exception
+		public boolean accept(S next) {
+			throw new UnsupportedOperationException();
+		}
+		@Override
+		public String toString() {
+			return "Filter.Disabled";
+		}
+	}
+
 }

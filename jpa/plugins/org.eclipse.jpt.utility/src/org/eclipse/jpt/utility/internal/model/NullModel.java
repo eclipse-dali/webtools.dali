@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.internal.model;
 
 import java.io.Serializable;
+
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;

@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.utility.internal.model.Model;
+
 /**
  * A "list change" event gets delivered whenever a model changes a "bound"
  * or "constrained" list. A ListChangeEvent is sent as an
@@ -27,7 +29,7 @@ import java.util.ListIterator;
  * 	(this is the option we implemented below and in collaborating code)
  * 	since there is no way to optimize downstream code for
  * 	single items, we take another performance hit by building
- * 	a list each time  (@see Collections.singletonList(Object))
+ * 	a list each time  (@see Collections#singletonList(Object))
  * 	and forcing downstream code to use a list iterator every time
  * 
  * - fire a separate event for each item added or removed
@@ -79,7 +81,7 @@ public class ListChangeEvent extends ChangeEvent {
 	private static final long serialVersionUID = 1L;
 
 
-	protected ListChangeEvent(Object source, String listName, int index, List<?> items, List<?> replacedItems, int sourceIndex, int moveLength) {
+	protected ListChangeEvent(Model source, String listName, int index, List<?> items, List<?> replacedItems, int sourceIndex, int moveLength) {
 		super(source);
 		if ((listName == null) || (items == null) || (replacedItems == null)) {
 			throw new NullPointerException();
@@ -101,7 +103,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * @param items The new items in the list.
 	 * @param replacedItems The items in the list that were replaced.
 	 */
-	public ListChangeEvent(Object source, String listName, int index, List<?> items, List<?> replacedItems) {
+	public ListChangeEvent(Model source, String listName, int index, List<?> items, List<?> replacedItems) {
 		this(source, listName, index, items, replacedItems, -1, -1);
 	}
 	
@@ -114,7 +116,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * @param items The items that were added to or removed from the list.
 	 */
 	@SuppressWarnings("unchecked")
-	public ListChangeEvent(Object source, String listName, int index, List<?> items) {
+	public ListChangeEvent(Model source, String listName, int index, List<?> items) {
 		this(source, listName, index, items, Collections.emptyList(), -1, -1);
 	}
 	
@@ -127,7 +129,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * @param sourceIndex The index from which the items were moved.
 	 */
 	@SuppressWarnings("unchecked")
-	public ListChangeEvent(Object source, String listName, int targetIndex, int sourceIndex, int length) {
+	public ListChangeEvent(Model source, String listName, int targetIndex, int sourceIndex, int length) {
 		this(source, listName, targetIndex, Collections.emptyList(), Collections.emptyList(), sourceIndex, length);
 	}
 	
@@ -138,7 +140,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * @param listName The programmatic name of the list that was changed.
 	 */
 	@SuppressWarnings("unchecked")
-	public ListChangeEvent(Object source, String listName) {
+	public ListChangeEvent(Model source, String listName) {
 		this(source, listName, -1, Collections.emptyList(), Collections.emptyList(), -1, -1);
 	}
 	
@@ -220,7 +222,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * replacing the current source.
 	 */
 	@Override
-	public ListChangeEvent cloneWithSource(Object newSource) {
+	public ListChangeEvent cloneWithSource(Model newSource) {
 		return new ListChangeEvent(newSource, this.listName, this.index, this.items, this.replacedItems);
 	}
 
@@ -228,7 +230,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * Return a copy of the event with the specified source
 	 * replacing the current source and list name.
 	 */
-	public ListChangeEvent cloneWithSource(Object newSource, String newListName) {
+	public ListChangeEvent cloneWithSource(Model newSource, String newListName) {
 		return new ListChangeEvent(newSource, newListName, this.index, this.items, this.replacedItems);
 	}
 
@@ -237,7 +239,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * replacing the current source and list name and displacing
 	 * the index by the specified amount.
 	 */
-	public ListChangeEvent cloneWithSource(Object newSource, String newListName, int offset) {
+	public ListChangeEvent cloneWithSource(Model newSource, String newListName, int offset) {
 		return new ListChangeEvent(newSource, newListName, this.index + offset, this.items, this.replacedItems);
 	}
 
