@@ -536,24 +536,27 @@ public class JpaProject extends JpaNode implements IJpaProject
 		return Status.OK_STATUS;
 	}
 	
-//	boolean isUpdating;
-//	boolean needsToUpdate;
+	boolean isUpdating;
+	boolean needsToUpdate;
 
+	//yeah, yeah, these 2 boolean flags aren't the greatest solution, but 
+	//a stack full of update calls is really causing problems.
+	//putting this in until we have a better solution using a Job running synchronously for tests
+	//asynchronously for the UI.
 	public void update() {
-		contextModel().update(null); //TODO put this back on a job, running synchronously for tests
-//		if (this.isUpdating) {
-//			this.needsToUpdate = true;
-//		}
-//		else {
-//			this.isUpdating = true;
-//			contextModel().update(null); //TODO put this back on a job, running synchronously for tests
-//			this.isUpdating = false;
-//			if (this.needsToUpdate) {
-//				this.needsToUpdate = false;
-//				update();
-//			}
-//		}
-		//this.updateJpaProjectJobScheduler.schedule();
+		if (this.isUpdating) {
+			this.needsToUpdate = true;
+		}
+		else {
+			this.isUpdating = true;
+			contextModel().update(null);
+			this.isUpdating = false;
+			if (this.needsToUpdate) {
+				this.needsToUpdate = false;
+				update();
+			}
+		}
+		// TODO this.updateJpaProjectJobScheduler.schedule();
 	}
 
 	protected static class UpdateJpaProjectJobScheduler {
