@@ -26,7 +26,7 @@ import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.internal.resource.common.JptEObject;
+import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
@@ -186,7 +186,7 @@ public class XmlPackageChooser extends BaseJpaController
 	}
 	
 	private IPackageFragmentRoot getPackageFragmentRoot() {
-		IProject project = ((JptEObject) this.entityMappings).getJpaProject().project();
+		IProject project = ((JpaEObject) this.entityMappings).getJpaProject().project();
 		IJavaProject root = JavaCore.create(project);
 		try {
 			return root.getAllPackageFragmentRoots()[0];

@@ -13,7 +13,7 @@ package org.eclipse.jpt.core.tests.internal.context;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 
 public class PersistenceXmlTests extends ContextModelTestCase
 {
@@ -22,7 +22,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testAddPersistence() throws Exception {
-		PersistenceResourceModel prm = persistenceResourceModel();
+		PersistenceResource prm = persistenceResourceModel();
 		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
 		IPersistenceXml persistenceXml = baseJpaContent.getPersistenceXml();
 		prm.getContents().clear();
@@ -37,7 +37,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testRemovePersistence() throws Exception {
-		PersistenceResourceModel prm = persistenceResourceModel();
+		PersistenceResource prm = persistenceResourceModel();
 		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
 		IPersistenceXml persistenceXml = baseJpaContent.getPersistenceXml();
 		

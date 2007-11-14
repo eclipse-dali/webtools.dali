@@ -11,7 +11,7 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 
 public class PersistenceXml extends JpaContextNode
@@ -24,7 +24,7 @@ public class PersistenceXml extends JpaContextNode
 		super(baseJpaContent);
 	}
 	
-	public void initializeFromResource(PersistenceResourceModel persistenceResource) {
+	public void initializeFromResource(PersistenceResource persistenceResource) {
 		if (persistenceResource.getPersistence() != null) {
 			this.persistence = createPersistence(persistenceResource.getPersistence());
 		}
@@ -50,7 +50,7 @@ public class PersistenceXml extends JpaContextNode
 	
 	// **************** updating **********************************************
 	
-	public void update(PersistenceResourceModel persistenceResource) {
+	public void update(PersistenceResource persistenceResource) {
 		if (persistenceResource.getPersistence() != null) {
 			if (this.persistence != null) {
 				this.persistence.update(persistenceResource.getPersistence());

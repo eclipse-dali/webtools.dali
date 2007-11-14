@@ -54,7 +54,6 @@ import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
-import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 {
@@ -132,17 +131,11 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	}
 	
 	protected IResourceModel buildPersistenceResourceModel(IFile file) {
-		PersistenceResourceModel resource = 
-				(PersistenceResourceModel) WorkbenchResourceHelper.getResource(file, true);
-		resource.accessForWrite();
-		return resource;
+		return new PersistenceResourceModel(file);
 	}
 	
 	protected IResourceModel buildOrmResourceModel(IFile file) {
-		OrmResourceModel resource = 
-				(OrmResourceModel) WorkbenchResourceHelper.getResource(file, true);
-		resource.accessForWrite();
-		return resource;
+		return new OrmResourceModel(file);
 	}
 	
 	// attempting to get the contentType based on the file contents.

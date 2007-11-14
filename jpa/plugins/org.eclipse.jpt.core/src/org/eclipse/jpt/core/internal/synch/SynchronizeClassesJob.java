@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
@@ -49,9 +49,9 @@ public class SynchronizeClassesJob extends Job
 		}
 		
 		IJpaFile jpaFile = JptCorePlugin.jpaFile(this.persistenceXmlFile);
-		PersistenceResourceModel resource;
+		PersistenceResource resource;
 		try {
-			resource = (PersistenceResourceModel) jpaFile.getResourceModel();
+			resource = (PersistenceResource) jpaFile.getResourceModel();
 		}
 		catch (ClassCastException cce) {
 			return new Status(IStatus.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.INVALID_PERSISTENCE_XML_CONTENT);

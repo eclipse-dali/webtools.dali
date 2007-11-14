@@ -8,35 +8,19 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.jpt.core.internal.resource.orm;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.jdt.core.ElementChangedEvent;
-import org.eclipse.jpt.core.internal.IJpaContentNode;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.core.internal.IResourceModel;
-import org.eclipse.jpt.core.internal.resource.common.JptXmlResourceModel;
-import org.eclipse.jpt.core.internal.resource.orm.translators.EntityMappingsTranslator;
-import org.eclipse.wst.common.internal.emf.resource.Renderer;
-import org.eclipse.wst.common.internal.emf.resource.Translator;
-import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
+import org.eclipse.jpt.core.internal.resource.common.JpaXmlResourceModel;
 
-public class OrmResourceModel extends JptXmlResourceModel 
+public class OrmResourceModel extends JpaXmlResourceModel
 {
-	public OrmResourceModel(Renderer aRenderer) {
-		super(aRenderer);
-	}
-
-	public OrmResourceModel(URI uri, Renderer aRenderer) {
-		super(uri, aRenderer);
+	public OrmResourceModel(IFile file) {
+		super(file);
 	}
 	
-	/**
-	 * @see TranslatorResource#getRootTranslator() 
-	 */
-	public Translator getRootTranslator() {
-		return EntityMappingsTranslator.INSTANCE;
-	}
 	
 	/**
 	 * @see IResourceModel#getResourceType()
@@ -45,22 +29,8 @@ public class OrmResourceModel extends JptXmlResourceModel
 		return IResourceModel.ORM_RESOURCE_TYPE;
 	}
 	
-	/**
-	 * @see IResourceModel#getContentNode(int)
-	 */
-	public IJpaContentNode getContentNode(int offset) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	/**
-	 * @see IResourceModel#handleJavaElementChangedEvent(ElementChangedEvent)
-	 */
-	public void handleJavaElementChangedEvent(ElementChangedEvent event) {
-		// TODO Auto-generated method stub	
-	}
-	
-	public EntityMappings getEntityMappings() {
-		return (EntityMappings) getRootObject();
+	@Override
+	protected OrmArtifactEdit buildArtifactEdit(IProject project) {
+		return OrmArtifactEdit.getArtifactEditForRead(project);
 	}
 }

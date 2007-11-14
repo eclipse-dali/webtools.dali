@@ -14,8 +14,8 @@ package org.eclipse.jpt.core.internal.resource.persistence;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.common.IJptEObject;
-import org.eclipse.jpt.core.internal.resource.common.JptEObject;
+import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
+import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,10 +31,10 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlJavaClassRef()
  * @model kind="class"
- * @extends IJptEObject
+ * @extends IJpaEObject
  * @generated
  */
-public class XmlJavaClassRef extends JptEObject implements IJptEObject
+public class XmlJavaClassRef extends JpaEObject implements IJpaEObject
 {
 	/**
 	 * The default value of the '{@link #getJavaClass() <em>Java Class</em>}' attribute.

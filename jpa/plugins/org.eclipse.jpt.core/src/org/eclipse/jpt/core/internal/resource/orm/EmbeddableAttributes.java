@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: EmbeddableAttributes.java,v 1.1.2.2 2007/10/16 17:01:40 pfullbright Exp $
+ * $Id: EmbeddableAttributes.java,v 1.1.2.3 2007/11/14 23:36:57 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
@@ -13,8 +13,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.resource.common.IJptEObject;
-import org.eclipse.jpt.core.internal.resource.common.JptEObject;
+import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
+import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,10 +31,10 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEmbeddableAttributes()
  * @model kind="class"
- * @extends IJptEObject
+ * @extends IJpaEObject
  * @generated
  */
-public class EmbeddableAttributes extends JptEObject implements IJptEObject
+public class EmbeddableAttributes extends JpaEObject implements IJpaEObject
 {
 	/**
 	 * The cached value of the '{@link #getBasics() <em>Basics</em>}' containment reference list.

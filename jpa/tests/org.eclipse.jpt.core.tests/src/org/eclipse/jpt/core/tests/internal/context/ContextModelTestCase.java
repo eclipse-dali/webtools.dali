@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
@@ -29,7 +29,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 {
 	protected static final String PROJECT_NAME = "ContextModelTestProject";
 		
-	protected PersistenceResourceModel persistenceResourceModel;
+	protected PersistenceResource persistenceResourceModel;
 	protected ContextModelTestCase(String name) {
 		super(name);
 	}
@@ -89,14 +89,14 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		}
 	}
 	
-	protected PersistenceResourceModel persistenceResourceModel() {
+	protected PersistenceResource persistenceResourceModel() {
 		if (this.persistenceResourceModel != null) {
 			return this.persistenceResourceModel;
 		}
 		String persistenceXmlUri = JptCorePlugin.persistenceXmlDeploymentURI(getJavaProject().getProject());
 		PersistenceArtifactEdit pae = 
 				PersistenceArtifactEdit.getArtifactEditForWrite(getJavaProject().getProject());
-		 this.persistenceResourceModel = pae.getPersistenceResource(persistenceXmlUri);
+		 this.persistenceResourceModel = pae.getResource(persistenceXmlUri);
 		 
 		 return this.persistenceResourceModel;
 	}

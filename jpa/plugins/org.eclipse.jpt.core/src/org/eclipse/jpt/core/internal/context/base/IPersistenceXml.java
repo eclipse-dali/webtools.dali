@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 
 public interface IPersistenceXml extends IJpaContextNode
 {
-	void initializeFromResource(PersistenceResourceModel persistenceResource);
+	void initializeFromResource(PersistenceResource persistenceResource);
 
 	// **************** persistence *******************************************
 	
@@ -27,5 +27,5 @@ public interface IPersistenceXml extends IJpaContextNode
 	
 	// **************** updating **********************************************
 	
-	void update(PersistenceResourceModel persistenceResource);
+	void update(PersistenceResource persistenceResource);
 }

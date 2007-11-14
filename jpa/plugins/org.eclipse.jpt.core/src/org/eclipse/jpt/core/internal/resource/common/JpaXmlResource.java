@@ -8,30 +8,28 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
-import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.IResourceModel;
-import org.eclipse.jpt.core.internal.JpaProject.ResourceModelListener;
+import org.eclipse.jpt.core.internal.IJpaContentNode;
+import org.eclipse.jpt.core.internal.IResourceModelListener;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
 
-public abstract class JptXmlResourceModel extends TranslatorResourceImpl
-	implements IResourceModel
+public abstract class JpaXmlResource extends TranslatorResourceImpl
 {
-	protected IJpaFile jpaFile;
-	private final Collection<ResourceModelListener> resourceModelListeners;
+	protected final Collection<IResourceModelListener> resourceModelListeners;
 	
 	
-	protected JptXmlResourceModel(Renderer aRenderer) {
+	protected JpaXmlResource(Renderer aRenderer) {
 		super(aRenderer);
-		this.resourceModelListeners = new ArrayList<ResourceModelListener>();
+		this.resourceModelListeners = new ArrayList<IResourceModelListener>();
 	}
-
-	protected JptXmlResourceModel(URI uri, Renderer aRenderer) {
+	
+	protected JpaXmlResource(URI uri, Renderer aRenderer) {
 		super(uri, aRenderer);
-		this.resourceModelListeners = new ArrayList<ResourceModelListener>();
+		this.resourceModelListeners = new ArrayList<IResourceModelListener>();
 	}
 	
 	/**
@@ -41,9 +39,7 @@ public abstract class JptXmlResourceModel extends TranslatorResourceImpl
 	public void eNotify(Notification notification) {
 		if (!notification.isTouch()) {
 			super.eNotify(notification);
-			if (jpaFile() != null) {
-				resourceChanged();
-			}
+			resourceChanged();
 		}
 	}
 
@@ -80,13 +76,6 @@ public abstract class JptXmlResourceModel extends TranslatorResourceImpl
 		// only applicable for DTD-based files
 	}
 	
-	/**
-	 * @see IResourceModel#dispose()
-	 */
-	public void dispose() {
-		releaseFromWrite();
-	}
-	
 	public IFile getFile() {
 		IFile file = null;
 		file = getFile(getURI());
@@ -115,32 +104,27 @@ public abstract class JptXmlResourceModel extends TranslatorResourceImpl
 		return null;
 	}
 	
-	public IJpaFile jpaFile() {
-		return this.jpaFile;
+	public abstract IJpaContentNode getContentNode(int offset);
+	
+	public abstract void handleJavaElementChangedEvent(ElementChangedEvent event);
+	
+	public void resourceChanged() {
+		for (IResourceModelListener listener : this.resourceModelListeners) {
+			listener.resourceModelChanged();
+		}
 	}
 	
-	// NB: To be done *once*, when constructing the jpa file
-	public void setJpaFile(IJpaFile jpaFile) {
-		this.jpaFile = jpaFile;
-	}	
-
-	public void addResourceModelChangeListener(ResourceModelListener listener) {
+	public void addResourceModelChangeListener(IResourceModelListener listener) {
 		if (listener == null) {
 			throw new IllegalArgumentException("Listener cannot be null");
 		}
 		this.resourceModelListeners.add(listener);
 	}
 	
-	public void removeResourceModelChangeListener(ResourceModelListener listener) {
+	public void removeResourceModelChangeListener(IResourceModelListener listener) {
 		if (!this.resourceModelListeners.contains(listener)) {
 			throw new IllegalArgumentException("Listener " + listener + " was never added");		
 		}
 		this.resourceModelListeners.add(listener);
-	}
-
-	public void resourceChanged() {
-		for (ResourceModelListener listener : this.resourceModelListeners) {
-			listener.resourceModelChanged();
-		}
 	}
 }

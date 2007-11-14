@@ -2,13 +2,13 @@
  * <copyright>
  * </copyright>
  *
- * $Id: Lob.java,v 1.1.2.2 2007/10/16 17:01:41 pfullbright Exp $
+ * $Id: Lob.java,v 1.1.2.3 2007/11/14 23:36:59 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.jpt.core.internal.resource.common.IJptEObject;
-import org.eclipse.jpt.core.internal.resource.common.JptEObject;
+import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
+import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -18,10 +18,10 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getLob()
  * @model kind="class"
- * @extends IJptEObject
+ * @extends IJpaEObject
  * @generated
  */
-public class Lob extends JptEObject implements IJptEObject
+public class Lob extends JpaEObject implements IJpaEObject
 {
 	/**
 	 * <!-- begin-user-doc -->

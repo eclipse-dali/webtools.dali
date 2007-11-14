@@ -15,9 +15,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.wst.common.componentcore.ArtifactEdit;
+import org.eclipse.jpt.core.internal.resource.common.JpaArtifactEdit;
 
-public class PersistenceArtifactEdit extends ArtifactEdit
+public class PersistenceArtifactEdit extends JpaArtifactEdit
 {
 	/**
 	 * @param aProject
@@ -60,15 +60,13 @@ public class PersistenceArtifactEdit extends ArtifactEdit
 	}
 	
 	
-	/**
-	 * @return a persistence resource for the given file
-	 */
-	public PersistenceResourceModel getPersistenceResource(IFile file) {
+	@Override
+	public PersistenceResource getResource(IFile file) {
 		// This *seems* to do the same basic thing as below, but circumvents the
 		// URI munging that ArtifactEditModel does (see bug 209093)
 		try {
-			PersistenceResourceModel resource = 
-					(PersistenceResourceModel) getArtifactEditModel().createResource(URI.createPlatformResourceURI(file.getFullPath().toString()));
+			PersistenceResource resource = 
+					(PersistenceResource) getArtifactEditModel().createResource(URI.createPlatformResourceURI(file.getFullPath().toString()));
 			if (! resource.isLoaded()) {
 				resource.load(getArtifactEditModel().getResourceSet().getLoadOptions());
 			}
@@ -83,14 +81,10 @@ public class PersistenceArtifactEdit extends ArtifactEdit
 		}
 	}
 	
-	/**
-	 * @param fileURI - this must be in a deployment relevant form 
-	 * 	(e.g "META-INF/persistence.xml" instead of "src/META-INF/persistence.xml")
-	 * @return a persistence resource for the given deployment file URI
-	 */
-	public PersistenceResourceModel getPersistenceResource(String fileURI) {
+	@Override
+	public PersistenceResource getResource(String fileURI) {
 		try {
-			return (PersistenceResourceModel) getArtifactEditModel().getResource(URI.createURI(fileURI));
+			return (PersistenceResource) getArtifactEditModel().getResource(URI.createURI(fileURI));
 		}
 		catch (ClassCastException cce) {
 			return null;

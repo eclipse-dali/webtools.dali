@@ -55,7 +55,7 @@ public interface IJpaPlatform
 	
 	/**
 	 * Return a factory responsible for creating core (e.g. IJpaProject), resource
-	 * (e.g. PersistenceResourceModel), and context (e.g. IPersistenceUnit) model
+	 * (e.g. PersistenceResource), and context (e.g. IPersistenceUnit) model
 	 * objects
 	 */
 	IJpaFactory jpaFactory();

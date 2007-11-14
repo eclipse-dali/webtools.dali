@@ -13,31 +13,24 @@ package org.eclipse.jpt.core.internal.resource.common;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.ITextRange;
 
-public interface IJptEObject extends EObject
+public interface IJpaEObject extends EObject
 {
-	
 	/**
 	 * Return the resource that most directly contains this object
 	 */
 	IResource platformResource();
 	
 	/**
-	 * Return the JPA file containing this object.
+	 * Return the JpaXmlResource containing this object.
 	 */
-	IJpaFile jpaFile();
-	
-	/**
-	 * Return the IResourceModel containing this object.
-	 */
-	JptXmlResourceModel resourceModel();
+	JpaXmlResource resource();
 	
 	/**
 	 * Return the root object of the model
 	 */
-	IJptEObject root();
+	IJpaEObject root();
 	
 	/**
 	 * Return the text range to be used for validation.  This is the source

@@ -20,7 +20,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -39,7 +38,7 @@ import org.w3c.dom.Node;
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class JptEObject extends EObjectImpl implements IJptEObject
+public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 {
 	protected IDOMNode node;
 	
@@ -54,30 +53,26 @@ public abstract class JptEObject extends EObjectImpl implements IJptEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected JptEObject() {
+	protected JpaEObject() {
 		super();
 	}
 	
 	
-	// **************** IJptEObject implementation *****************************
+	// **************** IJpaEObject implementation *****************************
 		
 	public IResource platformResource() {
-		return jpaFile().getFile();
+		return resource().getFile();
 	}
 	
-	public JptXmlResourceModel resourceModel() {
-		return root().resourceModel();
-	}
-	
-	public IJpaFile jpaFile() {
-		return root().jpaFile();
+	public JpaXmlResource resource() {
+		return (JpaXmlResource) eResource();
 	}
 	
 	/*
 	 * Must be overridden by actual root object to return itself
 	 */
-	public IJptEObject root() {
-		return ((IJptEObject) eContainer()).root();
+	public IJpaEObject root() {
+		return ((IJpaEObject) eContainer()).root();
 		
 	}
 	
@@ -96,11 +91,8 @@ public abstract class JptEObject extends EObjectImpl implements IJptEObject
 	}
 	
 	protected void featureChanged(int featureId) {
-		if (this.featureIsSignificant(featureId) 
-				// if jpa file is null, the resource model is still being 
-				// constructed
-				&& jpaFile() != null) {
-			resourceModel().resourceChanged();
+		if (this.featureIsSignificant(featureId)) { 
+			resource().resourceChanged();
 		}
 	}
 	
@@ -185,8 +177,8 @@ public abstract class JptEObject extends EObjectImpl implements IJptEObject
 		@Override
 		protected void didRemove(int index, Object oldObject) {
 			super.didRemove(index, oldObject);
-			if ((oldObject instanceof EMF2DOMAdapter) && (((EMF2DOMAdapter) oldObject).getNode() == JptEObject.this.node)) {
-				JptEObject.this.node = null;
+			if ((oldObject instanceof EMF2DOMAdapter) && (((EMF2DOMAdapter) oldObject).getNode() == JpaEObject.this.node)) {
+				JpaEObject.this.node = null;
 			}
 		}
 	}

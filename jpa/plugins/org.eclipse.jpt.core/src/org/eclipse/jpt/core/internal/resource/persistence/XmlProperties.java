@@ -18,8 +18,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.resource.common.IJptEObject;
-import org.eclipse.jpt.core.internal.resource.common.JptEObject;
+import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
+import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -35,10 +35,10 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlProperties()
  * @model kind="class"
- * @extends IJptEObject
+ * @extends IJpaEObject
  * @generated
  */
-public class XmlProperties extends JptEObject implements IJptEObject
+public class XmlProperties extends JpaEObject implements IJpaEObject
 {
 	/**
 	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.

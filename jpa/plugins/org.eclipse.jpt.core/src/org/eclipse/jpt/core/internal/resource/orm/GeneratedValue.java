@@ -2,15 +2,15 @@
  * <copyright>
  * </copyright>
  *
- * $Id: GeneratedValue.java,v 1.1.2.2 2007/10/16 17:01:40 pfullbright Exp $
+ * $Id: GeneratedValue.java,v 1.1.2.3 2007/11/14 23:36:59 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.common.IJptEObject;
-import org.eclipse.jpt.core.internal.resource.common.JptEObject;
+import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
+import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,10 +27,10 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGeneratedValue()
  * @model kind="class"
- * @extends IJptEObject
+ * @extends IJpaEObject
  * @generated
  */
-public class GeneratedValue extends JptEObject implements IJptEObject
+public class GeneratedValue extends JpaEObject implements IJpaEObject
 {
 	/**
 	 * The default value of the '{@link #getGenerator() <em>Generator</em>}' attribute.

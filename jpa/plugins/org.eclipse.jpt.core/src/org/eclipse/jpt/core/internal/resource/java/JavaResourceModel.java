@@ -18,9 +18,8 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
-import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IResourceModel;
-import org.eclipse.jpt.core.internal.JpaProject.ResourceModelListener;
+import org.eclipse.jpt.core.internal.IResourceModelListener;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.utility.internal.BitTools;
@@ -30,16 +29,15 @@ public class JavaResourceModel implements IResourceModel
 {
 	private final JpaCompilationUnitResource compilationUnitResource;
 	
-	protected IJpaFile jpaFile;
+	private final Collection<IResourceModelListener> resourceModelListeners;
 	
-	private final Collection<ResourceModelListener> resourceModelListeners;
 	
 	public JavaResourceModel(
 			IFile file, IJpaAnnotationProvider annotationProvider, 
 			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
 			AnnotationEditFormatter annotationEditFormatter) {
 		super();
-		this.resourceModelListeners = new ArrayList<ResourceModelListener>();
+		this.resourceModelListeners = new ArrayList<IResourceModelListener>();
 		this.compilationUnitResource = 
 			new JpaCompilationUnitResource(file, annotationProvider, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter, this);
 	}
@@ -50,15 +48,6 @@ public class JavaResourceModel implements IResourceModel
 	
 	public String getResourceType() {
 		return JAVA_RESOURCE_TYPE;
-	}
-
-	public IJpaFile jpaFile() {
-		return this.jpaFile;
-	}
-	
-	// NB: To be done *once*, when constructing the jpa file
-	public void setJpaFile(IJpaFile jpaFile) {
-		this.jpaFile = jpaFile;
 	}
 	
 	public void handleJavaElementChangedEvent(ElementChangedEvent event) {
@@ -109,7 +98,7 @@ public class JavaResourceModel implements IResourceModel
 		}
 	}
 
-	public void addResourceModelChangeListener(ResourceModelListener listener) {
+	public void addResourceModelChangeListener(IResourceModelListener listener) {
 		if (listener == null) {
 			throw new IllegalArgumentException("Listener cannot be null");
 		}
@@ -119,7 +108,7 @@ public class JavaResourceModel implements IResourceModel
 		this.resourceModelListeners.add(listener);
 	}
 	
-	public void removeResourceModelChangeListener(ResourceModelListener listener) {
+	public void removeResourceModelChangeListener(IResourceModelListener listener) {
 		if (!this.resourceModelListeners.contains(listener)) {
 			throw new IllegalArgumentException("Listener " + listener + " was never added");		
 		}
@@ -130,7 +119,7 @@ public class JavaResourceModel implements IResourceModel
 		if (this.compilationUnitResource == null) {
 			throw new IllegalStateException("Change events should not be fired during construction");
 		}
-		for (ResourceModelListener listener : this.resourceModelListeners) {
+		for (IResourceModelListener listener : this.resourceModelListeners) {
 			listener.resourceModelChanged();
 		}
 	}

@@ -2,7 +2,7 @@ package org.eclipse.jpt.core.tests.internal.resource;
 
 import junit.framework.TestCase;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 
@@ -33,14 +33,14 @@ public class PersistenceModelTests extends TestCase
 	public void testModelLoad() {
 		PersistenceArtifactEdit artifactEdit = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject.getProject());
 		assertNotNull(artifactEdit);
-		PersistenceResourceModel resource = artifactEdit.getPersistenceResource("META-INF/persistence.xml");
+		PersistenceResource resource = artifactEdit.getResource("META-INF/persistence.xml");
 		assertNotNull(resource);
 	}
 	
 	public void testModelLoad2() {
 		PersistenceArtifactEdit artifactEdit = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject.getProject());
 		assertNotNull(artifactEdit);
-		PersistenceResourceModel resource = artifactEdit.getPersistenceResource("META-INF/persistence.xml");
+		PersistenceResource resource = artifactEdit.getResource("META-INF/persistence.xml");
 		assertNotNull(resource);
 	}
 }

@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.xml.details;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.AccessType;
-import org.eclipse.jpt.core.internal.resource.common.JptEObject;
+import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata;
@@ -144,7 +144,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 			this.cascadePersistCheckBox.populate(null);			
 		}
 	}
-	private class MyAccessHolder extends JptEObject implements AccessHolder{
+	private class MyAccessHolder extends JpaEObject implements AccessHolder{
 		
 		private PersistenceUnitDefaultsInternal persistenceUnitDefaults;
 		MyAccessHolder(PersistenceUnitDefaults persistenceUnitDefaultsInternal) {
@@ -172,7 +172,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		}
 	}
 	
-	private class SchemaHolder extends JptEObject implements StringHolder {
+	private class SchemaHolder extends JpaEObject implements StringHolder {
 		private PersistenceUnitDefaults persistenceUnitDefaults;
 		SchemaHolder(PersistenceUnitDefaults persistenceUnitDefaults) {
 			super();
@@ -212,7 +212,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		}
 	}
 	
-	private class CatalogHolder extends JptEObject implements StringHolder {
+	private class CatalogHolder extends JpaEObject implements StringHolder {
 		private PersistenceUnitDefaults persistenceUnitDefaults;
 		CatalogHolder(PersistenceUnitDefaults persistenceUnitDefaults) {
 			super();

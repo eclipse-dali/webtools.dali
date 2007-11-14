@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.Table;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -99,7 +99,7 @@ public class JavaTableTests extends ContextModelTestCase
 	}
 	
 	protected XmlPersistenceUnit xmlPersistenceUnit() {
-		PersistenceResourceModel prm = persistenceResourceModel();
+		PersistenceResource prm = persistenceResourceModel();
 		return prm.getPersistence().getPersistenceUnits().get(0);
 	}
 	

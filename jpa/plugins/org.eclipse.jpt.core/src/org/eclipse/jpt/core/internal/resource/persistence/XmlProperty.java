@@ -14,8 +14,8 @@ package org.eclipse.jpt.core.internal.resource.persistence;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.common.IJptEObject;
-import org.eclipse.jpt.core.internal.resource.common.JptEObject;
+import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
+import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,10 +32,10 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage#getXmlProperty()
  * @model kind="class"
- * @extends IJptEObject
+ * @extends IJpaEObject
  * @generated
  */
-public class XmlProperty extends JptEObject implements IJptEObject
+public class XmlProperty extends JpaEObject implements IJpaEObject
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.

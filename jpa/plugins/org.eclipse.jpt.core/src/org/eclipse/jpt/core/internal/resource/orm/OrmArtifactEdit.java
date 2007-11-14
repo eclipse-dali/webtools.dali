@@ -1,3 +1,13 @@
+/*******************************************************************************
+ *  Copyright (c) 2007 Oracle. 
+ *  All rights reserved.  This program and the accompanying materials 
+ *  are made available under the terms of the Eclipse Public License v1.0 
+ *  which accompanies this distribution, and is available at 
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors: 
+ *  	Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.orm;
 
 import java.io.IOException;
@@ -5,9 +15,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.wst.common.componentcore.ArtifactEdit;
+import org.eclipse.jpt.core.internal.resource.common.JpaArtifactEdit;
 
-public class OrmArtifactEdit extends ArtifactEdit
+public class OrmArtifactEdit extends JpaArtifactEdit
 {
 	/**
 	 * @param aProject
@@ -50,15 +60,13 @@ public class OrmArtifactEdit extends ArtifactEdit
 	}
 	
 	
-	/**
-	 * @return an orm resource for the given file
-	 */
-	public OrmResourceModel getOrmResource(IFile file) {
+	@Override
+	public OrmResource getResource(IFile file) {
 		// This *seems* to do the same basic thing as below, but circumvents the
 		// URI munging that ArtifactEditModel does (see bug 209093)
 		try {
-			OrmResourceModel resource = 
-					(OrmResourceModel) getArtifactEditModel().createResource(URI.createPlatformResourceURI(file.getFullPath().toString()));
+			OrmResource resource = 
+					(OrmResource) getArtifactEditModel().createResource(URI.createPlatformResourceURI(file.getFullPath().toString()));
 			if (! resource.isLoaded()) {
 				resource.load(getArtifactEditModel().getResourceSet().getLoadOptions());
 			}
@@ -73,14 +81,10 @@ public class OrmArtifactEdit extends ArtifactEdit
 		}
 	}
 	
-	/**
-	 * @param fileURI - this must be in a deployment relevant form 
-	 * 	(e.g "META-INF/orm.xml" instead of "src/META-INF/orm.xml")
-	 * @return an orm resource for the given deployment file URI
-	 */
-	public OrmResourceModel getOrmResource(String fileURI) {
+	@Override
+	public OrmResource getResource(String fileURI) {
 		try {
-			return (OrmResourceModel) getArtifactEditModel().getResource(URI.createURI(fileURI));
+			return (OrmResource) getArtifactEditModel().getResource(URI.createURI(fileURI));
 		}
 		catch (ClassCastException cce) {
 			return null;

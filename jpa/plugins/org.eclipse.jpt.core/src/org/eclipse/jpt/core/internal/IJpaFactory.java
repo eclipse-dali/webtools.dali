@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.platform.base.BaseJpaFactory;
 
 /**
  * Use IJpaFactory to create any core (e.g. IJpaProject), resource 
- * (e.g. PersistenceResourceModel), or context (e.g. IAttributeMapping) model objects.  
+ * (e.g. PersistenceResource), or context (e.g. IAttributeMapping) model objects.  
  * @see BaseJpaFactory
  */
 public interface IJpaFactory 

@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.jdt.core.ElementChangedEvent;
-import org.eclipse.jpt.core.internal.JpaProject.ResourceModelListener;
 
 public interface IResourceModel
 {
@@ -40,17 +39,6 @@ public interface IResourceModel
 	String getResourceType();
 	
 	/**
-	 * Return the IJpaFile that contains this resource model
-	 */
-	IJpaFile jpaFile();
-	
-	/**
-	 * Set the IJpaFile on the resource model
-	 * (NB: This is only done at jpa file/resource model construction)
-	 */
-	void setJpaFile(IJpaFile jpaFile);
-	
-	/**
 	 * Return the content node corresponding to the given offset in the source.
 	 * This may (and often will) be <code>null</code>.
 	 */
@@ -61,9 +49,8 @@ public interface IResourceModel
 	void handleJavaElementChangedEvent(ElementChangedEvent event);
 	
 	
-	void addResourceModelChangeListener(ResourceModelListener listener);
+	void addResourceModelChangeListener(IResourceModelListener listener);
 
-	void removeResourceModelChangeListener(ResourceModelListener listener);
-
+	void removeResourceModelChangeListener(IResourceModelListener listener);
 }
 

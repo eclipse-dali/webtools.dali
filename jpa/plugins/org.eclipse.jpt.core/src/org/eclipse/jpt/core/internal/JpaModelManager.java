@@ -37,10 +37,10 @@ import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
 import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.resource.orm.OrmArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.utility.internal.BitTools;
@@ -529,7 +529,7 @@ public class JpaModelManager {
 	private void createPersistenceXml(IProject project) {
 		PersistenceArtifactEdit pae = 
 				PersistenceArtifactEdit.getArtifactEditForWrite(project);
-		PersistenceResourceModel resource = pae.getPersistenceResource(JptCorePlugin.persistenceXmlDeploymentURI(project));
+		PersistenceResource resource = pae.getResource(JptCorePlugin.persistenceXmlDeploymentURI(project));
 		
 		// 202811 - do not add content if it is already present
 		if (resource.getPersistence() == null) {
@@ -548,7 +548,7 @@ public class JpaModelManager {
 	private void createOrmXml(IProject project) {
 		OrmArtifactEdit oae =
 				OrmArtifactEdit.getArtifactEditForWrite(project);
-		OrmResourceModel resource = oae.getOrmResource(JptCorePlugin.ormXmlDeploymentURI(project));
+		OrmResource resource = oae.getResource(JptCorePlugin.ormXmlDeploymentURI(project));
 
 		// 202811 - do not add content if it is already present
 		if (resource.getEntityMappings() == null) {

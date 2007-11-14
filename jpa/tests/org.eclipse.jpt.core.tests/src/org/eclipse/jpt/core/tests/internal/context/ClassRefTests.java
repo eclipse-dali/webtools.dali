@@ -13,7 +13,7 @@ package org.eclipse.jpt.core.tests.internal.context;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 
@@ -24,7 +24,7 @@ public class ClassRefTests extends ContextModelTestCase
 	}
 	
 	protected XmlPersistenceUnit xmlPersistenceUnit() {
-		PersistenceResourceModel prm = persistenceResourceModel();
+		PersistenceResource prm = persistenceResourceModel();
 		return prm.getPersistence().getPersistenceUnits().get(0);
 	}
 	

@@ -42,7 +42,6 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.ChangeEventDispatcher;
 import org.eclipse.jpt.utility.internal.model.SimpleChangeEventDispatcher;
-import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.internal.node.Node;
 
 /**
@@ -109,7 +108,7 @@ public class JpaProject extends JpaNode implements IJpaProject
 	 * Resource models notify this listener when they change. a project update
 	 * should occur any time a resource model changes.
 	 */
-	protected ResourceModelListener resourceModelListener;
+	protected IResourceModelListener resourceModelListener;
 	
 
 	// ********** constructor/initialization **********
@@ -639,14 +638,14 @@ public class JpaProject extends JpaNode implements IJpaProject
 		}
 	}
 	
-	protected ResourceModelListener getResourceModelListener() {
+	protected IResourceModelListener getResourceModelListener() {
 		if (this.resourceModelListener == null) {
 			this.resourceModelListener = new ResourceModelListener();
 		}
 		return this.resourceModelListener;
 	}
 		
-	public class ResourceModelListener implements ChangeListener {
+	public class ResourceModelListener implements IResourceModelListener {
 		
 		private ResourceModelListener() {
 			super();

@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: EntityMappings.java,v 1.1.2.4 2007/11/01 16:45:10 kmoore Exp $
+ * $Id: EntityMappings.java,v 1.1.2.5 2007/11/14 23:36:59 pfullbright Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm;
 
@@ -15,9 +15,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.resource.common.IJptEObject;
-import org.eclipse.jpt.core.internal.resource.common.JptEObject;
+import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
+import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -47,10 +46,10 @@ import org.eclipse.jpt.core.internal.resource.common.JptEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntityMappings()
  * @model kind="class"
- * @extends IJptEObject
+ * @extends IJpaEObject
  * @generated
  */
-public class EntityMappings extends JptEObject implements IJptEObject
+public class EntityMappings extends JpaEObject implements IJpaEObject
 {
 	/**
 	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
@@ -1118,17 +1117,7 @@ public class EntityMappings extends JptEObject implements IJptEObject
 	}
 	
 	@Override
-	public IJptEObject root() {
+	public IJpaEObject root() {
 		return this;
-	}
-	
-	@Override
-	public IJpaFile jpaFile() {
-		return resourceModel().jpaFile();
-	}
-	
-	@Override
-	public OrmResourceModel resourceModel() {
-		return (OrmResourceModel) eResource();
 	}
 }

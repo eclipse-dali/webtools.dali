@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
@@ -31,7 +31,7 @@ public class BaseJpaContent extends JpaContextNode
 	@Override
 	protected void initialize(Node parentNode) {
 		super.initialize(parentNode);
-		PersistenceResourceModel persistenceResource = persistenceResource();
+		PersistenceResource persistenceResource = persistenceResource();
 		
 		if (resourceExists(persistenceResource)) {
 			this.persistenceXml = createPersistenceXml(persistenceResource);
@@ -59,7 +59,7 @@ public class BaseJpaContent extends JpaContextNode
 	// **************** updating **********************************************
 	
 	public void update(IProgressMonitor monitor) {
-		PersistenceResourceModel persistenceResource = persistenceResource();
+		PersistenceResource persistenceResource = persistenceResource();
 		
 		if (resourceExists(persistenceResource)) {
 			if (this.persistenceXml != null) {
@@ -74,17 +74,17 @@ public class BaseJpaContent extends JpaContextNode
 		}
 	}
 	
-	protected PersistenceResourceModel persistenceResource() {
+	protected PersistenceResource persistenceResource() {
 		PersistenceArtifactEdit pae = 
 			PersistenceArtifactEdit.getArtifactEditForRead(jpaProject().project());
-		return pae.getPersistenceResource(JptCorePlugin.persistenceXmlDeploymentURI(jpaProject().project()));
+		return pae.getResource(JptCorePlugin.persistenceXmlDeploymentURI(jpaProject().project()));
 	}
 	
-	protected boolean resourceExists(PersistenceResourceModel persistenceResource) {
+	protected boolean resourceExists(PersistenceResource persistenceResource) {
 		return WorkbenchResourceHelper.getFile(persistenceResource).exists();
 	}
 
-	protected IPersistenceXml createPersistenceXml(PersistenceResourceModel persistenceResource) {
+	protected IPersistenceXml createPersistenceXml(PersistenceResource persistenceResource) {
 		IPersistenceXml persistenceXml = jpaFactory().createPersistenceXml(this);
 		persistenceXml.initializeFromResource(persistenceResource);
 		return persistenceXml;
