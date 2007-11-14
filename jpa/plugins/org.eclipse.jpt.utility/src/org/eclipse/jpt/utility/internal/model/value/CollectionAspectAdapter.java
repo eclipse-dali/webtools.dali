@@ -121,7 +121,7 @@ public abstract class CollectionAspectAdapter
 	 * Return the value of the subject's collection aspect.
 	 * This should be an *iterator* on the collection.
 	 */
-	public Iterator values() {
+	public Iterator iterator() {
 		if (this.subject == null) {
 			return EmptyIterator.instance();
 		}
@@ -132,42 +132,10 @@ public abstract class CollectionAspectAdapter
 	 * Return the value of the subject's collection aspect.
 	 * This should be an *iterator* on the collection.
 	 * At this point we can be sure that the subject is not null.
-	 * @see #values()
+	 * @see #iterator()
 	 */
 	protected Iterator getValueFromSubject() {
 		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Add the specified item to the subject's collection aspect.
-	 */
-	public void add(Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Add the specified items to the subject's collection aspect.
-	 */
-	public void addAll(Collection items) {
-		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
-			this.add(stream.next());
-		}
-	}
-
-	/**
-	 * Remove the specified item from the subject's collection aspect.
-	 */
-	public void remove(Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Remove the specified items from the subject's collection aspect.
-	 */
-	public void removeAll(Collection items) {
-		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
-			this.remove(stream.next());
-		}
 	}
 
 	/**
@@ -183,7 +151,7 @@ public abstract class CollectionAspectAdapter
 	 * @see #size()
 	 */
 	protected int sizeFromSubject() {
-		return CollectionTools.size((Iterator) this.values());
+		return CollectionTools.size((Iterator) this.iterator());
 	}
 
 
@@ -191,7 +159,7 @@ public abstract class CollectionAspectAdapter
 
 	@Override
 	protected Object value() {
-		return this.values();
+		return this.iterator();
 	}
 
 	@Override

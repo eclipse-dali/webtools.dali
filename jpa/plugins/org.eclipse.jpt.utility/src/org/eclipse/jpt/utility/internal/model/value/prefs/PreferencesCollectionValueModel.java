@@ -87,28 +87,8 @@ public class PreferencesCollectionValueModel
 	/**
 	 * Return an iterator on the preference models.
 	 */
-	public synchronized Iterator values() {
+	public synchronized Iterator iterator() {
 		return this.preferences.values().iterator();
-	}
-
-	public void add(Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void addAll(Collection items) {
-		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
-			this.add(stream.next());
-		}
-	}
-
-	public void remove(Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void removeAll(Collection items) {
-		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
-			this.remove(stream.next());
-		}
 	}
 
 	public synchronized int size() {
@@ -120,7 +100,7 @@ public class PreferencesCollectionValueModel
 
 	@Override
 	protected Object value() {
-		return this.values();
+		return this.iterator();
 	}
 
 	@Override

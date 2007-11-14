@@ -121,7 +121,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		this.expectedValues.clear();
 		this.nodeHolder.setValue(null);
 		this.verifyEvent(this.expectedValues);
-		assertFalse(((Iterator) this.preferencesAdapter.values()).hasNext());
+		assertFalse(((Iterator) this.preferencesAdapter.iterator()).hasNext());
 		
 		this.event = null;
 		this.nodeHolder.setValue(this.testNode);
@@ -253,7 +253,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 
 	private void verifyAdapter(PreferencesCollectionValueModel cvm) {
 		assertEquals(this.expectedValues.size(), cvm.size());
-		this.verifyItems(this.expectedValues, (Iterator) cvm.values());
+		this.verifyItems(this.expectedValues, (Iterator) cvm.iterator());
 	}
 
 	private void verifyItems(Map expected, Iterator stream) {

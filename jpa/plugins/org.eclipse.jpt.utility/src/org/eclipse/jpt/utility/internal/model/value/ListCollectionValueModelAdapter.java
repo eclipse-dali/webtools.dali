@@ -108,25 +108,9 @@ public class ListCollectionValueModelAdapter
 
 	// ********** CollectionValueModel implementation **********
 
-	public Iterator values() {
+	public Iterator iterator() {
 		// try to prevent backdoor modification of the list
 		return new ReadOnlyIterator(this.collection);
-	}
-
-	public void add(Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void addAll(Collection items) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void remove(Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void removeAll(Collection items) {
-		throw new UnsupportedOperationException();
 	}
 
 	public int size() {

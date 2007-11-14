@@ -13,31 +13,36 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
-import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 
 /**
- * Implementation of CollectionValueModel that simply holds on to a
- * collection and uses it as the value.
+ * Implementation of CollectionValueModel and Collection that simply holds a
+ * collection and notifies listeners of any changes.
  */
-public class SimpleCollectionValueModel
+public class SimpleCollectionValueModel<E>
 	extends AbstractModel
-	implements CollectionValueModel
+	implements CollectionValueModel, Collection<E>
 {
 	/** The value. */
-	protected Collection value;
+	protected Collection<E> collection;
 
+
+	// ********** constructors **********
 
 	/**
-	 * Construct a CollectionValueModel for the specified value.
+	 * Construct a CollectionValueModel for the specified collection.
 	 */
-	public SimpleCollectionValueModel(Collection value) {
+	public SimpleCollectionValueModel(Collection<E> collection) {
 		super();
-		this.setValue(value);
+		if (collection == null) {
+			throw new NullPointerException();
+		}
+		this.collection = collection;
 	}
 
 	/**
@@ -45,7 +50,7 @@ public class SimpleCollectionValueModel
 	 * value of an empty collection.
 	 */
 	public SimpleCollectionValueModel() {
-		this(new HashBag());
+		this(new HashBag<E>());
 	}
 
 	@Override
@@ -56,57 +61,122 @@ public class SimpleCollectionValueModel
 
 	// ********** CollectionValueModel implementation **********
 
-	public Iterator values() {
-		// try to prevent backdoor modification of the collection
-		return new ReadOnlyIterator(this.value);
+	public Iterator<E> iterator() {
+		return new LocalIterator<E>(this.collection.iterator());
 	}
 
-	public void add(Object item) {
-		this.addItemToCollection(item, this.value, VALUES);
-	}
-
-	public void addAll(Collection items) {
-		this.addItemsToCollection(items, this.value, VALUES);
-	}
-
-	public void remove(Object item) {
-		this.removeItemFromCollection(item, this.value, VALUES);
-	}
-
-	public void removeAll(Collection items) {
-		this.removeItemsFromCollection(items, this.value, VALUES);
+	private class LocalIterator<T> implements Iterator<T> {
+		private final Iterator<T> iterator;
+		private T next;
+		LocalIterator(Iterator<T> iterator) {
+			super();
+			this.iterator = iterator;
+		}
+		public boolean hasNext() {
+			return this.iterator.hasNext();
+		}
+		public T next() {
+			return this.next = this.iterator.next();
+		}
+		@SuppressWarnings("synthetic-access")
+		public void remove() {
+			this.iterator.remove();
+			SimpleCollectionValueModel.this.fireItemRemoved(VALUES, this.next);
+		}
 	}
 
 	public int size() {
-		return this.value.size();
+		return this.collection.size();
 	}
 
 
-	// ********** behavior **********
+	// ********** Collection implementation **********
 
-	/**
-	 * Allow the value to be replaced.
-	 */
-	public void setValue(Collection value) {
-		this.value = ((value == null) ? new HashBag() : value);
-		this.fireCollectionChanged(VALUES);
+	public boolean isEmpty() {
+		return this.collection.isEmpty();
 	}
 
-	/**
-	 * Allow the value to be cleared.
-	 */
+	public boolean contains(Object o) {
+		return this.collection.contains(o);
+	}
+
+	public Object[] toArray() {
+		return this.collection.toArray();
+	}
+
+	public <T extends Object> T[] toArray(T[] a) {
+		return this.collection.toArray(a);
+	}
+
+	public boolean add(E o) {
+		return this.addItemToCollection(o, this.collection, VALUES);
+	}
+
+	public boolean remove(Object o) {
+		return this.removeItemFromCollection(o, this.collection, VALUES);
+	}
+
+	public boolean containsAll(Collection<?> c) {
+		return this.collection.containsAll(c);
+	}
+
+	public boolean addAll(Collection<? extends E> c) {
+		return this.addItemsToCollection(c, this.collection, VALUES);
+	}
+
+	public boolean removeAll(Collection<?> c) {
+		return this.removeItemsFromCollection(c, this.collection, VALUES);
+	}
+
+	public boolean retainAll(Collection<?> c) {
+		return this.retainItemsInCollection(c, this.collection, VALUES);
+	}
+
 	public void clear() {
-		if (this.value.isEmpty()) {
+		if (this.collection.isEmpty()) {
 			return;
 		}
-		Collection items = new ArrayList(this.value);
-		this.value.clear();
+		Collection<E> items = new ArrayList<E>(this.collection);
+		this.collection.clear();
 		this.fireItemsRemoved(VALUES, items);
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		if ((o instanceof Collection) && (o instanceof CollectionValueModel)) {
+			Collection<E> c1 = CollectionTools.collection(this.collection);
+			@SuppressWarnings("unchecked")
+			Collection<E> c2 = CollectionTools.collection(((Collection<E>) o).iterator());
+			return c1.equals(c2);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return CollectionTools.collection(this.collection).hashCode();
+	}
+
+
+	// ********** additional behavior **********
+
+	/**
+	 * Allow the value to be replaced.
+	 */
+	public void setCollection(Collection<E> collection) {
+		if (collection == null) {
+			throw new NullPointerException();
+		}
+		this.collection = collection;
+		this.fireCollectionChanged(VALUES);
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.value);
+		sb.append(this.collection);
 	}
 
 }

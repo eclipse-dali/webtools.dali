@@ -124,7 +124,7 @@ class SynchronizedBag<E> implements Bag<E>, CollectionChangeListener {
 
 	public void collectionChanged(CollectionChangeEvent e) {
 		this.synchBag.clear();
-		CollectionTools.addAll(this.synchBag, (Iterator) ((CollectionValueModel) e.getSource()).values());
+		CollectionTools.addAll(this.synchBag, (Iterator) ((CollectionValueModel) e.getSource()).iterator());
 	}
 
 

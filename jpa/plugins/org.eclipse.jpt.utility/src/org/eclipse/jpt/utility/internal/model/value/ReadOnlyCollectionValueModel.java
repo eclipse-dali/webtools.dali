@@ -44,7 +44,7 @@ public class ReadOnlyCollectionValueModel
 		return this.value.size();
 	}
 
-	public Iterator values() {
+	public Iterator iterator() {
 		return this.value.iterator();
 	}
 

@@ -37,7 +37,7 @@ public class ReadOnlyCollectionValueModelTests extends TestCase {
 
 	private CollectionValueModel buildCollectionHolder() {
 		return new AbstractReadOnlyCollectionValueModel() {
-			public Iterator values() {
+			public Iterator iterator() {
 				return ReadOnlyCollectionValueModelTests.collection();
 			}
 		};
@@ -67,8 +67,8 @@ public class ReadOnlyCollectionValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testValues() {
-		assertEquals(buildCollection(), CollectionTools.bag((Iterator) this.collectionHolder.values()));
+	public void testIterator() {
+		assertEquals(buildCollection(), CollectionTools.bag(this.collectionHolder.iterator()));
 	}
 
 	public void testSize() {

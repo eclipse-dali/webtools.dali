@@ -33,7 +33,7 @@ import junit.framework.TestCase;
 
 public class SortedListValueModelAdapterTests extends TestCase {
 	private SortedListValueModelAdapter adapter;
-	private CollectionValueModel wrappedCollectionHolder;
+	private SimpleCollectionValueModel wrappedCollectionHolder;
 	private Collection wrappedCollection;
 
 	

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.jpt.utility.internal.model.Model;
@@ -19,34 +18,14 @@ import org.eclipse.jpt.utility.internal.model.Model;
  * change notification and make it more pluggable.
  */
 public interface CollectionValueModel
-	extends Model
+	extends Model//, Iterable<E>
 {
 
 	/**
 	 * Return the collection's values.
 	 */
-	Iterator values();
+	Iterator iterator();
 		String VALUES = "values";
-
-	/**
-	 * Add the specified item to the collection.
-	 */
-	void add(Object item);
-
-	/**
-	 * Add the specified items to the collection.
-	 */
-	void addAll(Collection items);
-
-	/**
-	 * Remove the specified item from the collection.
-	 */
-	void remove(Object item);
-
-	/**
-	 * Remove the specified items from the collection.
-	 */
-	void removeAll(Collection items);
 
 	/**
 	 * Return the size of the collection value.

@@ -88,7 +88,7 @@ import org.eclipse.jpt.utility.tests.internal.model.value.swing.TableModelAdapte
  * list value model (the sorted people adapter)
  */
 public class TableModelAdapterUITest {
-	private CollectionValueModel eyeColorsHolder;
+	private SimpleCollectionValueModel eyeColorsHolder;
 	private PropertyValueModel crowdHolder;
 	private PropertyValueModel selectedPersonHolder;
 	private ListValueModel sortedPeopleAdapter;
@@ -116,7 +116,7 @@ public class TableModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private CollectionValueModel buildEyeColorCollectionHolder() {
+	private SimpleCollectionValueModel buildEyeColorCollectionHolder() {
 		return new SimpleCollectionValueModel(Person.getValidEyeColors());
 	}
 
@@ -443,7 +443,7 @@ public class TableModelAdapterUITest {
 			}
 			if ((eyeColor.length() == 0)) {
 				JOptionPane.showMessageDialog(null, "The eye color is required.", "Invalid Eye Color", JOptionPane.ERROR_MESSAGE);
-			} else if (CollectionTools.contains((Iterator) this.eyeColorsHolder.values(), eyeColor)) {
+			} else if (CollectionTools.contains((Iterator) this.eyeColorsHolder.iterator(), eyeColor)) {
 				JOptionPane.showMessageDialog(null, "The eye color already exists.", "Invalid Eye Color", JOptionPane.ERROR_MESSAGE);
 			} else {
 				return eyeColor;

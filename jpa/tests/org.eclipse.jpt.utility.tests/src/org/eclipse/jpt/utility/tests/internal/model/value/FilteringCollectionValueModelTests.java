@@ -24,7 +24,7 @@ import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 public class FilteringCollectionValueModelTests extends TestCase {
-	private CollectionValueModel collectionHolder;
+	private SimpleCollectionValueModel collectionHolder;
 	CollectionChangeEvent addEvent;
 	CollectionChangeEvent removeEvent;
 	CollectionChangeEvent collectionClearedEvent;
@@ -67,31 +67,31 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testValues() {
+	public void testIterator() {
 		// add a listener to "activate" the wrapper
 		this.filteredCollectionHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.buildFilteredListener());
 
-		assertEquals("foo", ((Iterator) this.collectionHolder.values()).next());
-		assertFalse(((Iterator) this.filteredCollectionHolder.values()).hasNext());
+		assertEquals("foo", ((Iterator) this.collectionHolder.iterator()).next());
+		assertFalse(((Iterator) this.filteredCollectionHolder.iterator()).hasNext());
 
 		this.collectionHolder.add("bar");
-		Iterator collectionHolderValue = (Iterator) this.collectionHolder.values();
+		Iterator collectionHolderValue = (Iterator) this.collectionHolder.iterator();
 		assertEquals("foo", collectionHolderValue.next());
 		assertEquals("bar", collectionHolderValue.next());
-		assertTrue(((Iterator) this.filteredCollectionHolder.values()).hasNext());
-		assertEquals("bar", ((Iterator) this.filteredCollectionHolder.values()).next());
+		assertTrue(((Iterator) this.filteredCollectionHolder.iterator()).hasNext());
+		assertEquals("bar", ((Iterator) this.filteredCollectionHolder.iterator()).next());
 
 		this.collectionHolder.remove("bar");
-		assertEquals("foo", ((Iterator) this.collectionHolder.values()).next());
-		assertFalse(((Iterator) this.filteredCollectionHolder.values()).hasNext());
+		assertEquals("foo", ((Iterator) this.collectionHolder.iterator()).next());
+		assertFalse(((Iterator) this.filteredCollectionHolder.iterator()).hasNext());
 
 		this.collectionHolder.remove("foo");
-		assertFalse(((Iterator) this.collectionHolder.values()).hasNext());
-		assertFalse(((Iterator) this.filteredCollectionHolder.values()).hasNext());
+		assertFalse(((Iterator) this.collectionHolder.iterator()).hasNext());
+		assertFalse(((Iterator) this.filteredCollectionHolder.iterator()).hasNext());
 
 		this.collectionHolder.add("foo");
-		assertEquals("foo", ((Iterator) this.collectionHolder.values()).next());
-		assertFalse(((Iterator) this.filteredCollectionHolder.values()).hasNext());
+		assertEquals("foo", ((Iterator) this.collectionHolder.iterator()).next());
+		assertFalse(((Iterator) this.filteredCollectionHolder.iterator()).hasNext());
 	}
 
 	public void testSetValue() {
@@ -102,12 +102,12 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		newCollection.add("fox");
 		newCollection.add("baz");
 		
-		((SimpleCollectionValueModel) this.collectionHolder).setValue(newCollection);
+		((SimpleCollectionValueModel) this.collectionHolder).setCollection(newCollection);
 
-		Iterator collectionValues = (Iterator) this.collectionHolder.values();
+		Iterator collectionValues = (Iterator) this.collectionHolder.iterator();
 		assertEquals("fox", collectionValues.next());
 		assertEquals("baz", collectionValues.next());
-		Iterator filteredCollectionValues = (Iterator) this.filteredCollectionHolder.values();
+		Iterator filteredCollectionValues = (Iterator) this.filteredCollectionHolder.iterator();
 		assertEquals("baz", filteredCollectionValues.next());
 		assertFalse(filteredCollectionValues.hasNext());
 	}		
@@ -186,7 +186,7 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		newCollection.add("fox");
 		newCollection.add("baz");
 		
-		((SimpleCollectionValueModel) this.collectionHolder).setValue(newCollection);
+		((SimpleCollectionValueModel) this.collectionHolder).setCollection(newCollection);
 
 		this.verifyEvent(this.collectionChangedEvent, this.collectionHolder, new Vector());
 		

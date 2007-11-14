@@ -114,7 +114,7 @@ public class FilteringCollectionValueModel
 
 	// ********** CollectionValueModel implementation **********
 
-	public Iterator values() {
+	public Iterator iterator() {
 		return this.filteredItems.iterator();
 	}
 
@@ -196,7 +196,7 @@ public class FilteringCollectionValueModel
 	 */
 	protected void synchFilteredItems() {
 		this.filteredItems.clear();
-		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder.values()));
+		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder.iterator()));
 	}
 
 }

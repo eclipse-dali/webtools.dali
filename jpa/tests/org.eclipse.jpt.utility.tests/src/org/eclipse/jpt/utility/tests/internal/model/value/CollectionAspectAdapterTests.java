@@ -31,7 +31,7 @@ import junit.framework.TestCase;
 public class CollectionAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
 	private PropertyValueModel subjectHolder1;
-	private CollectionAspectAdapter aa1;
+	private LocalCollectionAspectAdapter aa1;
 	private CollectionChangeEvent event1;
 	private CollectionChangeListener listener1;
 	private String event1Type;
@@ -93,40 +93,8 @@ public class CollectionAspectAdapterTests extends TestCase {
 		return result;
 	}
 
-	private CollectionAspectAdapter buildAspectAdapter(ValueModel subjectHolder) {
-		return new CollectionAspectAdapter(subjectHolder, TestSubject.NAMES_COLLECTION) {
-			// this is not a typical aspect adapter - the value is determined by the aspect name
-			@Override
-			protected Iterator<String> getValueFromSubject() {
-				if (this.collectionName == TestSubject.NAMES_COLLECTION) {
-					return ((TestSubject) this.subject).names();
-				} else if (this.collectionName == TestSubject.DESCRIPTIONS_COLLECTION) {
-					return ((TestSubject) this.subject).descriptions();
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.collectionName);
-				}
-			}
-			@Override
-			public void add(Object item) {
-				if (this.collectionName == TestSubject.NAMES_COLLECTION) {
-					((TestSubject) this.subject).addName((String) item);
-				} else if (this.collectionName == TestSubject.DESCRIPTIONS_COLLECTION) {
-					((TestSubject) this.subject).addDescription((String) item);
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.collectionName);
-				}
-			}
-			@Override
-			public void remove(Object item) {
-				if (this.collectionName == TestSubject.NAMES_COLLECTION) {
-					((TestSubject) this.subject).removeName((String) item);
-				} else if (this.collectionName == TestSubject.DESCRIPTIONS_COLLECTION) {
-					((TestSubject) this.subject).removeDescription((String) item);
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.collectionName);
-				}
-			}
-		};
+	private LocalCollectionAspectAdapter buildAspectAdapter(ValueModel subjectHolder) {
+		return new LocalCollectionAspectAdapter(subjectHolder);
 	}
 
 	private CollectionChangeListener buildValueChangeListener1() {
@@ -158,7 +126,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 	}
 
 	public void testSubjectHolder() {
-		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.iterator()));
 		assertNull(this.event1);
 
 		this.subjectHolder1.setValue(this.subject2);
@@ -167,7 +135,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.collectionName());
 		assertFalse(this.event1.items().hasNext());
-		assertEquals(this.subject2Names(), CollectionTools.bag((Iterator) this.aa1.values()));
+		assertEquals(this.subject2Names(), CollectionTools.bag((Iterator) this.aa1.iterator()));
 		
 		this.event1 = null;
 		this.event1Type = null;
@@ -177,7 +145,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.collectionName());
 		assertFalse(this.event1.items().hasNext());
-		assertFalse(((Iterator) this.aa1.values()).hasNext());
+		assertFalse(((Iterator) this.aa1.iterator()).hasNext());
 		
 		this.event1 = null;
 		this.event1Type = null;
@@ -187,11 +155,11 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.collectionName());
 		assertFalse(this.event1.items().hasNext());
-		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.iterator()));
 	}
 
 	public void testAdd() {
-		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.iterator()));
 		assertNull(this.event1);
 
 		this.subject1.addName("jam");
@@ -202,7 +170,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals("jam", this.event1.items().next());
 		Collection namesPlus = this.subject1Names();
 		namesPlus.add("jam");
-		assertEquals(namesPlus, CollectionTools.bag((Iterator) this.aa1.values()));
+		assertEquals(namesPlus, CollectionTools.bag((Iterator) this.aa1.iterator()));
 
 		this.event1 = null;
 		this.event1Type = null;
@@ -213,11 +181,11 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(CollectionValueModel.VALUES, this.event1.collectionName());
 		assertEquals("jaz", this.event1.items().next());
 		namesPlus.add("jaz");
-		assertEquals(namesPlus, CollectionTools.bag((Iterator) this.aa1.values()));
+		assertEquals(namesPlus, CollectionTools.bag((Iterator) this.aa1.iterator()));
 	}
 
 	public void testRemove() {
-		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.iterator()));
 		assertNull(this.event1);
 
 		this.subject1.removeName("foo");
@@ -228,7 +196,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals("foo", this.event1.items().next());
 		Collection namesMinus = this.subject1Names();
 		namesMinus.remove("foo");
-		assertEquals(namesMinus, CollectionTools.bag((Iterator) this.aa1.values()));
+		assertEquals(namesMinus, CollectionTools.bag((Iterator) this.aa1.iterator()));
 
 		this.event1 = null;
 		this.event1Type = null;
@@ -239,11 +207,11 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(CollectionValueModel.VALUES, this.event1.collectionName());
 		assertEquals("bar", this.event1.items().next());
 		namesMinus.remove("bar");
-		assertEquals(namesMinus, CollectionTools.bag((Iterator) this.aa1.values()));
+		assertEquals(namesMinus, CollectionTools.bag((Iterator) this.aa1.iterator()));
 	}
 
 	public void testCollectionChange() {
-		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.iterator()));
 		assertNull(this.event1);
 
 		this.subject1.addTwoNames("jam", "jaz");
@@ -255,17 +223,17 @@ public class CollectionAspectAdapterTests extends TestCase {
 		Collection namesPlus2 = this.subject1Names();
 		namesPlus2.add("jam");
 		namesPlus2.add("jaz");
-		assertEquals(namesPlus2, CollectionTools.bag((Iterator) this.aa1.values()));
+		assertEquals(namesPlus2, CollectionTools.bag((Iterator) this.aa1.iterator()));
 	}
 
-	public void testValues() {
+	public void testIterator() {
 		assertEquals(this.subject1Names(), CollectionTools.bag(this.subject1.names()));
-		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.bag((Iterator) this.aa1.iterator()));
 	}
 
 	public void testSize() {
 		assertEquals(this.subject1Names().size(), CollectionTools.size(this.subject1.names()));
-		assertEquals(this.subject1Names().size(), CollectionTools.size((Iterator) this.aa1.values()));
+		assertEquals(this.subject1Names().size(), CollectionTools.size((Iterator) this.aa1.iterator()));
 	}
 
 	public void testHasListeners() {
@@ -284,65 +252,118 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertFalse(this.aa1.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 	}
 
-// ********** inner class **********
 
-private class TestSubject extends AbstractModel {
-	private Collection<String> names;
-	public static final String NAMES_COLLECTION = "names";
-	private Collection<String> descriptions;
-	public static final String DESCRIPTIONS_COLLECTION = "descriptions";
+	// ********** inner class **********
+	
+	private class TestSubject extends AbstractModel {
+		private Collection<String> names;
+		public static final String NAMES_COLLECTION = "names";
+		private Collection<String> descriptions;
+		public static final String DESCRIPTIONS_COLLECTION = "descriptions";
+	
+		public TestSubject() {
+			this.names = new HashBag<String>();
+			this.descriptions = new HashBag<String>();
+		}
+		public Iterator<String> names() {
+			return new ReadOnlyIterator<String>(this.names);
+		}
+		public void addName(String name) {
+			if (this.names.add(name)) {
+				this.fireItemAdded(NAMES_COLLECTION, name);
+			}
+		}
+		public void addNames(Iterator<String> newNames) {
+			while (newNames.hasNext()) {
+				this.addName(newNames.next());
+			}
+		}
+		public void addNames(Collection<String> newNames) {
+			this.addNames(newNames.iterator());
+		}
+		public void addTwoNames(String name1, String name2) {
+			if (this.names.add(name1) | this.names.add(name2)) {
+				this.fireCollectionChanged(NAMES_COLLECTION);
+			}
+		}
+		public void removeName(String name) {
+			if (this.names.remove(name)) {
+				this.fireItemRemoved(NAMES_COLLECTION, name);
+			}
+		}
+		public Iterator<String> descriptions() {
+			return new ReadOnlyIterator<String>(this.descriptions);
+		}
+		public void addDescription(String description) {
+			if (this.descriptions.add(description)) {
+				this.fireItemAdded(DESCRIPTIONS_COLLECTION, description);
+			}
+		}
+		public void addDescriptions(Iterator<String> newDescriptions) {
+			while (newDescriptions.hasNext()) {
+				this.addDescription(newDescriptions.next());
+			}
+		}
+		public void addDescriptions(Collection<String> newDescriptions) {
+			this.addDescriptions(newDescriptions.iterator());
+		}
+		public void removeDescription(String description) {
+			if (this.descriptions.remove(description)) {
+				this.fireItemRemoved(DESCRIPTIONS_COLLECTION, description);
+			}
+		}
+	}
 
-	public TestSubject() {
-		this.names = new HashBag<String>();
-		this.descriptions = new HashBag<String>();
-	}
-	public Iterator<String> names() {
-		return new ReadOnlyIterator<String>(this.names);
-	}
-	public void addName(String name) {
-		if (this.names.add(name)) {
-			this.fireItemAdded(NAMES_COLLECTION, name);
+	// this is not a typical aspect adapter - the value is determined by the aspect name
+	private class LocalCollectionAspectAdapter extends CollectionAspectAdapter {
+
+		LocalCollectionAspectAdapter(ValueModel subjectHolder) {
+			super(subjectHolder, TestSubject.NAMES_COLLECTION);
 		}
-	}
-	public void addNames(Iterator<String> newNames) {
-		while (newNames.hasNext()) {
-			this.addName(newNames.next());
+
+		@Override
+		protected Iterator<String> getValueFromSubject() {
+			if (this.collectionName == TestSubject.NAMES_COLLECTION) {
+				return ((TestSubject) this.subject).names();
+			} else if (this.collectionName == TestSubject.DESCRIPTIONS_COLLECTION) {
+				return ((TestSubject) this.subject).descriptions();
+			} else {
+				throw new IllegalStateException("invalid aspect name: " + this.collectionName);
+			}
 		}
-	}
-	public void addNames(Collection<String> newNames) {
-		this.addNames(newNames.iterator());
-	}
-	public void addTwoNames(String name1, String name2) {
-		if (this.names.add(name1) | this.names.add(name2)) {
-			this.fireCollectionChanged(NAMES_COLLECTION);
+
+		public void add(Object item) {
+			if (this.collectionName == TestSubject.NAMES_COLLECTION) {
+				((TestSubject) this.subject).addName((String) item);
+			} else if (this.collectionName == TestSubject.DESCRIPTIONS_COLLECTION) {
+				((TestSubject) this.subject).addDescription((String) item);
+			} else {
+				throw new IllegalStateException("invalid aspect name: " + this.collectionName);
+			}
 		}
-	}
-	public void removeName(String name) {
-		if (this.names.remove(name)) {
-			this.fireItemRemoved(NAMES_COLLECTION, name);
+
+		public void addAll(Collection items) {
+			for (Iterator stream = items.iterator(); stream.hasNext(); ) {
+				this.add(stream.next());
+			}
 		}
-	}
-	public Iterator<String> descriptions() {
-		return new ReadOnlyIterator<String>(this.descriptions);
-	}
-	public void addDescription(String description) {
-		if (this.descriptions.add(description)) {
-			this.fireItemAdded(DESCRIPTIONS_COLLECTION, description);
+
+		public void remove(Object item) {
+			if (this.collectionName == TestSubject.NAMES_COLLECTION) {
+				((TestSubject) this.subject).removeName((String) item);
+			} else if (this.collectionName == TestSubject.DESCRIPTIONS_COLLECTION) {
+				((TestSubject) this.subject).removeDescription((String) item);
+			} else {
+				throw new IllegalStateException("invalid aspect name: " + this.collectionName);
+			}
 		}
-	}
-	public void addDescriptions(Iterator<String> newDescriptions) {
-		while (newDescriptions.hasNext()) {
-			this.addDescription(newDescriptions.next());
+
+		public void removeAll(Collection items) {
+			for (Iterator stream = items.iterator(); stream.hasNext(); ) {
+				this.remove(stream.next());
+			}
 		}
+
 	}
-	public void addDescriptions(Collection<String> newDescriptions) {
-		this.addDescriptions(newDescriptions.iterator());
-	}
-	public void removeDescription(String description) {
-		if (this.descriptions.remove(description)) {
-			this.fireItemRemoved(DESCRIPTIONS_COLLECTION, description);
-		}
-	}
-}
 
 }

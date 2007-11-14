@@ -68,7 +68,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testCollectionSynchronization() {
-		CollectionValueModel collectionHolder = this.buildCollectionHolder();
+		SimpleCollectionValueModel collectionHolder = this.buildCollectionHolder();
 		ListValueModel listValueModel = new ItemStateListValueModelAdapter(collectionHolder);
 		SynchronizedList synchList = new SynchronizedList(listValueModel);
 		assertEquals(6, synchList.size());
@@ -140,7 +140,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 	}
 
 	private void verifyCollectionSort(Comparator comparator) {
-		CollectionValueModel collectionHolder = this.buildCollectionHolder();
+		SimpleCollectionValueModel collectionHolder = this.buildCollectionHolder();
 		ListValueModel listValueModel = new ItemStateListValueModelAdapter(new SortedListValueModelAdapter(collectionHolder, comparator));
 		SynchronizedList synchList = new SynchronizedList(listValueModel);
 		assertEquals(6, synchList.size());
@@ -254,7 +254,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 		assertTrue(((AbstractModel) listValueModel).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
-	private CollectionValueModel buildCollectionHolder() {
+	private SimpleCollectionValueModel buildCollectionHolder() {
 		return new SimpleCollectionValueModel(this.buildCollection());
 	}
 

@@ -257,7 +257,7 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * Remove the specified items from the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether the collection changed.
-	 * @see java.util.Collection#remove(Object)
+	 * @see java.util.Collection#removeAll(Collection)
 	 */
 	protected boolean removeItemsFromCollection(Iterable<?> items, Collection<?> collection, String collectionName) {
 		return this.removeItemsFromCollection(items.iterator(), collection, collectionName);
@@ -268,7 +268,7 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * Remove the specified items from the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether the collection changed.
-	 * @see java.util.Collection#remove(Object)
+	 * @see java.util.Collection#removeAll(Collection)
 	 */
 	protected boolean removeItemsFromCollection(Iterator<?> items, Collection<?> collection, String collectionName) {
 		Collection<?> items2 = CollectionTools.collection(items);
@@ -277,6 +277,36 @@ public abstract class AbstractModel implements Model, Serializable {
 
 		if ( ! items2.isEmpty()) {
 			this.fireItemsRemoved(collectionName, items2);
+		}
+		return changed;
+	}
+
+	/**
+	 * Convenience method.
+	 * Retain the specified items in the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#retainAll(Collection)
+	 */
+	protected boolean retainItemsInCollection(Iterable<?> items, Collection<?> collection, String collectionName) {
+		return this.retainItemsInCollection(items.iterator(), collection, collectionName);
+	}
+
+	/**
+	 * Convenience method.
+	 * Retain the specified items in the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#retainAll(Collection)
+	 */
+	protected boolean retainItemsInCollection(Iterator<?> items, Collection<?> collection, String collectionName) {
+		Collection<?> items2 = CollectionTools.collection(items);
+		Collection<?> removedItems = CollectionTools.collection(collection);
+		removedItems.removeAll(items2);
+		boolean changed = collection.retainAll(items2);
+
+		if ( ! removedItems.isEmpty()) {
+			this.fireItemsRemoved(collectionName, removedItems);
 		}
 		return changed;
 	}

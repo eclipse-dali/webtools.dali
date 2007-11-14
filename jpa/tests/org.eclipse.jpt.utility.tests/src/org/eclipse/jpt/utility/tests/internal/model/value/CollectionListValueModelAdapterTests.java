@@ -32,7 +32,7 @@ import junit.framework.TestCase;
 
 public class CollectionListValueModelAdapterTests extends TestCase {
 	private ListValueModel adapter;
-	private CollectionValueModel wrappedCollectionHolder;
+	private SimpleCollectionValueModel wrappedCollectionHolder;
 	private Collection wrappedCollection;
 
 	public CollectionListValueModelAdapterTests(String name) {
@@ -115,6 +115,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		this.wrappedCollectionHolder.add("joo");
 		this.wrappedCollectionHolder.add("jar");
 		this.wrappedCollectionHolder.add("jaz");
+		assertTrue(this.wrappedCollection.contains("jaz"));
 		this.wrappedCollectionHolder.remove("jaz");
 		assertFalse(this.wrappedCollection.contains("jaz"));
 		this.wrappedCollectionHolder.remove("foo");
@@ -169,7 +170,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		this.wrappedCollectionHolder.add("bar");
 		this.wrappedCollectionHolder.add("baz");
 		JList jList = new JList(new ListModelAdapter(this.adapter));
-		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setValue(new HashBag());
+		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setCollection(new HashBag());
 		assertEquals(0, jList.getModel().getSize());
 	}
 	
@@ -183,7 +184,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		HashBag bag = new HashBag();
 		bag.add("foo");
 		bag.add("bar");
-		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setValue(bag);
+		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setCollection(bag);
 		assertEquals(2, jList.getModel().getSize());
 	}
 	
@@ -195,7 +196,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		
 		HashBag bag = new HashBag();
-		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setValue(bag);
+		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setCollection(bag);
 		assertEquals(0, jList.getModel().getSize());
 	}
 
