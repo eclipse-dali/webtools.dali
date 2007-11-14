@@ -703,7 +703,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		IType jdtType = createTestEntityWithSecondaryTable();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 		
-		SecondaryTable secondaryTableResource = (SecondaryTable) typeResource.addAnnotation(2, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+		SecondaryTable secondaryTableResource = (SecondaryTable) typeResource.addAnnotation(1, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		secondaryTableResource.setName("BAR");
 		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"),@SecondaryTable(name=\"BAR\")})");
 		

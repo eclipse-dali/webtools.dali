@@ -9,19 +9,31 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
+import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
+import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorValue;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.Inheritance;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaResource;
+import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
+import org.eclipse.jpt.core.internal.resource.java.SecondaryTables;
 import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 
 public class JavaEntity extends JavaTypeMapping implements IJavaEntity
@@ -34,8 +46,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 
 	protected final IJavaTable table;
 
-//	protected List<ISecondaryTable> specifiedSecondaryTables;
-//
+	protected final List<IJavaSecondaryTable> specifiedSecondaryTables;
+
 //	protected List<IPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
 //
 //	protected List<IPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns;
@@ -74,6 +86,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		super(parent);
 		this.table = jpaFactory().createJavaTable(this);
 		this.discriminatorColumn = jpaFactory().createJavaDiscriminatorColumn(this);
+		this.specifiedSecondaryTables = new ArrayList<IJavaSecondaryTable>();
 //		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
 	}
 
@@ -88,6 +101,17 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.defaultInheritanceStrategy = this.defaultInheritanceStrategy();
 		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(inheritanceResource());
 		this.discriminatorColumn.initializeFromResource(persistentTypeResource);
+		initializeSecondaryTables(persistentTypeResource);
+	}
+	
+	protected void initializeSecondaryTables(JavaPersistentTypeResource persistentTypeResource) {
+		ListIterator<JavaResource> annotations = persistentTypeResource.annotations(SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		
+		while(annotations.hasNext()) {
+			IJavaSecondaryTable secondaryTable = jpaFactory().createJavaSecondaryTable(this);
+			secondaryTable.initializeFromResource((SecondaryTable) annotations.next());
+			this.specifiedSecondaryTables.add(secondaryTable);
+		}
 	}
 	
 	//query for the table resource every time on setters.
@@ -157,17 +181,47 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return this.table;
 	}
 
-//	public EList<ISecondaryTable> getSpecifiedSecondaryTables() {
-//		if (specifiedSecondaryTables == null) {
-//			specifiedSecondaryTables = new EObjectContainmentEList<ISecondaryTable>(ISecondaryTable.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_SECONDARY_TABLES);
-//		}
-//		return specifiedSecondaryTables;
-//	}
-//
-//	public EList<ISecondaryTable> getSecondaryTables() {
-//		return getSpecifiedSecondaryTables();
-//	}
-//
+	public ListIterator<IJavaSecondaryTable> specifiedSecondaryTables() {
+		return new CloneListIterator<IJavaSecondaryTable>(this.specifiedSecondaryTables);
+	}
+	
+	public int specifiedSecondaryTablesSize() {
+		return this.specifiedSecondaryTables.size();
+	}
+	
+	public ISecondaryTable addSpecifiedSecondaryTable(int index) {
+		IJavaSecondaryTable secondaryTable = jpaFactory().createJavaSecondaryTable(this);
+		this.specifiedSecondaryTables.add(index, secondaryTable);
+		this.persistentTypeResource.addAnnotation(index, SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		fireItemAdded(IEntity.SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
+		return secondaryTable;
+	}
+	
+	protected void addSpecifiedSecondaryTable(int index, IJavaSecondaryTable secondaryTable) {
+		addItemToList(index, secondaryTable, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
+	}
+	
+	public void removeSpecifiedSecondaryTable(int index) {
+		this.persistentTypeResource.removeAnnotation(index, SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+	}
+	
+	protected void removeSpecifiedSecondaryTable(IJavaSecondaryTable secondaryTable) {
+		removeItemFromList(secondaryTable, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
+	}
+	
+	public void moveSpecifiedSecondaryTable(int oldIndex, int newIndex) {
+		this.persistentTypeResource.move(oldIndex, newIndex, SecondaryTables.ANNOTATION_NAME);
+		moveItemInList(newIndex, oldIndex, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
+	}
+	
+	public ListIterator<IJavaSecondaryTable> secondaryTables() {
+		return specifiedSecondaryTables();
+	}
+
+	public int secondaryTablesSize() {
+		return specifiedSecondaryTablesSize();
+	}
+	
 //	public boolean containsSecondaryTable(String name) {
 //		return containsSecondaryTable(name, getSecondaryTables());
 //	}
@@ -503,7 +557,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		updateTable(persistentTypeResource);
 		updateInheritance(inheritanceResource());
 		updateDiscriminatorColumn(persistentTypeResource);
-		updateDiscrininatorValue(discriminatorValueResource());
+		updateDiscriminatorValue(discriminatorValueResource());
+		updateSecondaryTables(persistentTypeResource);
 	}
 		
 	protected String specifiedName(Entity entityResource) {
@@ -538,11 +593,36 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		getDiscriminatorColumn().update(persistentTypeResource);
 	}
 	
-	protected void updateDiscrininatorValue(DiscriminatorValue discriminatorValueResource) {
+	protected void updateDiscriminatorValue(DiscriminatorValue discriminatorValueResource) {
 		this.setSpecifiedDiscriminatorValue(discriminatorValueResource.getValue());
 		this.setDefaultDiscriminatorValue(this.javaDefaultDiscriminatorValue());
 	}
 	
+	protected void updateSecondaryTables(JavaPersistentTypeResource persistentTypeResource) {
+		ListIterator<IJavaSecondaryTable> secondaryTables = specifiedSecondaryTables();
+		ListIterator<JavaResource> resourceSecondaryTables = persistentTypeResource.annotations(SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		
+		while (secondaryTables.hasNext()) {
+			IJavaSecondaryTable secondaryTable = secondaryTables.next();
+			if (resourceSecondaryTables.hasNext()) {
+				secondaryTable.update((SecondaryTable) resourceSecondaryTables.next());
+			}
+			else {
+				removeSpecifiedSecondaryTable(secondaryTable);
+			}
+		}
+		
+		while (resourceSecondaryTables.hasNext()) {
+			addSpecifiedSecondaryTable(specifiedSecondaryTablesSize(), createSecondaryTable((SecondaryTable) resourceSecondaryTables.next()));
+		}
+	}
+
+	protected IJavaSecondaryTable createSecondaryTable(SecondaryTable secondaryTableResource) {
+		IJavaSecondaryTable secondaryTable = jpaFactory().createJavaSecondaryTable(this);
+		secondaryTable.initializeFromResource(secondaryTableResource);
+		return secondaryTable;
+	}
+
 //	@Override
 //	public void updateFromJava(CompilationUnit astRoot) {
 //		this.setSpecifiedName(this.getType().annotationElementValue(NAME_ADAPTER, astRoot));
@@ -725,48 +805,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //	}
 //
 //	/**
-//	 * here we just worry about getting the secondary table lists the same size;
-//	 * then we delegate to the secondary tables to synch themselves up
-//	 */
-//	private void updateSecondaryTablesFromJava(CompilationUnit astRoot) {
-//		// synchronize the model secondary tables with the Java source
-//		List<ISecondaryTable> sTables = this.getSecondaryTables();
-//		int persSize = sTables.size();
-//		int javaSize = 0;
-//		boolean allJavaAnnotationsFound = false;
-//		for (int i = 0; i < persSize; i++) {
-//			JavaSecondaryTable secondaryTable = (JavaSecondaryTable) sTables.get(i);
-//			if (secondaryTable.annotation(astRoot) == null) {
-//				allJavaAnnotationsFound = true;
-//				break; // no need to go any further
-//			}
-//			secondaryTable.updateFromJava(astRoot);
-//			javaSize++;
-//		}
-//		if (allJavaAnnotationsFound) {
-//			// remove any model secondary tables beyond those that correspond to the Java annotations
-//			while (persSize > javaSize) {
-//				persSize--;
-//				sTables.remove(persSize);
-//			}
-//		}
-//		else {
-//			// add new model join columns until they match the Java annotations
-//			while (!allJavaAnnotationsFound) {
-//				JavaSecondaryTable secondaryTable = this.createJavaSecondaryTable(javaSize);
-//				if (secondaryTable.annotation(astRoot) == null) {
-//					allJavaAnnotationsFound = true;
-//				}
-//				else {
-//					getSecondaryTables().add(secondaryTable);
-//					secondaryTable.updateFromJava(astRoot);
-//					javaSize++;
-//				}
-//			}
-//		}
-//	}
-//
-//	/**
 //	 * here we just worry about getting the named query lists the same size;
 //	 * then we delegate to the named queries to synch themselves up
 //	 */
@@ -934,67 +972,65 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //		return !CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
 //	}
 //
-//	@Override
-//	public Iterator<ITable> associatedTables() {
-//		return new CompositeIterator<ITable>(this.getTable(), this.getSecondaryTables().iterator());
-//	}
-//
-//	@Override
-//	public Iterator<ITable> associatedTablesIncludingInherited() {
-//		return new CompositeIterator<ITable>(new TransformationIterator<ITypeMapping, Iterator<ITable>>(this.inheritanceHierarchy()) {
-//			@Override
-//			protected Iterator<ITable> transform(ITypeMapping mapping) {
-//				return new FilteringIterator<ITable>(mapping.associatedTables()) {
-//					@Override
-//					protected boolean accept(Object o) {
-//						return true;
-//						//TODO
-//						//filtering these out so as to avoid the duplicate table, root and children share the same table
-//						//return !(o instanceof SingleTableInheritanceChildTableImpl);
-//					}
-//				};
-//			}
-//		});
-//	}
-//
-//	@Override
-//	public Iterator<String> associatedTableNamesIncludingInherited() {
-//		return this.nonNullTableNames(this.associatedTablesIncludingInherited());
-//	}
-//
-//	private Iterator<String> nonNullTableNames(Iterator<ITable> tables) {
-//		return new FilteringIterator<String>(this.tableNames(tables)) {
-//			@Override
-//			protected boolean accept(Object o) {
-//				return o != null;
-//			}
-//		};
-//	}
-//
-//	private Iterator<String> tableNames(Iterator<ITable> tables) {
-//		return new TransformationIterator<ITable, String>(tables) {
-//			@Override
-//			protected String transform(ITable t) {
-//				return t.getName();
-//			}
-//		};
-//	}
-//
-//	/**
-//	 * Return an iterator of Entities, each which inherits from the one before,
-//	 * and terminates at the root entity (or at the point of cyclicity).
-//	 */
-//	private Iterator<ITypeMapping> inheritanceHierarchy() {
-//		return new TransformationIterator<IPersistentType, ITypeMapping>(getPersistentType().inheritanceHierarchy()) {
-//			@Override
-//			protected ITypeMapping transform(IPersistentType type) {
-//				return type.getMapping();
-//			}
-//		};
-//		//TODO once we support inheritance, which of these should we use??
-//		//return this.getInheritance().typeMappingLineage();
-//	}
-//
+	@Override
+	public Iterator<ITable> associatedTables() {
+		return new CompositeIterator<ITable>(this.getTable(), this.secondaryTables());
+	}
+
+	@Override
+	public Iterator<ITable> associatedTablesIncludingInherited() {
+		return new CompositeIterator<ITable>(new TransformationIterator<ITypeMapping, Iterator<ITable>>(this.inheritanceHierarchy()) {
+			@Override
+			protected Iterator<ITable> transform(ITypeMapping mapping) {
+				return new FilteringIterator<ITable>(mapping.associatedTables()) {
+					@Override
+					protected boolean accept(Object o) {
+						return true;
+						//TODO
+						//filtering these out so as to avoid the duplicate table, root and children share the same table
+						//return !(o instanceof SingleTableInheritanceChildTableImpl);
+					}
+				};
+			}
+		});
+	}
+
+	@Override
+	public Iterator<String> associatedTableNamesIncludingInherited() {
+		return this.nonNullTableNames(this.associatedTablesIncludingInherited());
+	}
+
+	protected Iterator<String> nonNullTableNames(Iterator<ITable> tables) {
+		return new FilteringIterator<String>(this.tableNames(tables)) {
+			@Override
+			protected boolean accept(Object o) {
+				return o != null;
+			}
+		};
+	}
+
+	protected Iterator<String> tableNames(Iterator<ITable> tables) {
+		return new TransformationIterator<ITable, String>(tables) {
+			@Override
+			protected String transform(ITable t) {
+				return t.getName();
+			}
+		};
+	}
+
+	/**
+	 * Return an iterator of Entities, each which inherits from the one before,
+	 * and terminates at the root entity (or at the point of cyclicity).
+	 */
+	protected Iterator<ITypeMapping> inheritanceHierarchy() {
+		return new TransformationIterator<IPersistentType, ITypeMapping>(getPersistentType().inheritanceHierarchy()) {
+			@Override
+			protected ITypeMapping transform(IPersistentType type) {
+				return type.getMapping();
+			}
+		};
+	}
+
 //	public Iterator<String> allOverridableAttributeNames() {
 //		return new CompositeIterator<String>(new TransformationIterator<ITypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
 //			@Override
@@ -1027,26 +1063,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //
 //	private JavaAssociationOverride createJavaAssociationOverride(int index) {
 //		return JavaAssociationOverride.createAssociationOverride(new AssociationOverrideOwner(this), this.getType(), index);
-//	}
-//
-//	public JavaSecondaryTable createSecondaryTable(int index) {
-//		return createJavaSecondaryTable(index);
-//	}
-//
-//	private JavaSecondaryTable createJavaSecondaryTable(int index) {
-//		return JavaSecondaryTable.createJavaSecondaryTable(buildSecondaryTableOwner(), this.getType(), index);
-//	}
-//
-//	private ITable.Owner buildSecondaryTableOwner() {
-//		return new ITable.Owner() {
-//			public ITextRange validationTextRange() {
-//				return JavaEntity.this.validationTextRange();
-//			}
-//
-//			public ITypeMapping getTypeMapping() {
-//				return JavaEntity.this;
-//			}
-//		};
 //	}
 //
 //	public boolean containsSpecifiedPrimaryKeyJoinColumns() {

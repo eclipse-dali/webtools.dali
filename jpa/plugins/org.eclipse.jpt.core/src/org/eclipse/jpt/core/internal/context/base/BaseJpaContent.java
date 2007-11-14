@@ -62,11 +62,11 @@ public class BaseJpaContent extends JpaContextNode
 		PersistenceResourceModel persistenceResource = persistenceResource();
 		
 		if (resourceExists(persistenceResource)) {
-			if (this.persistenceXml == null) {
-				setPersistenceXml(createPersistenceXml(persistenceResource));
+			if (this.persistenceXml != null) {
+				this.persistenceXml.update(persistenceResource);
 			}
 			else {
-				this.persistenceXml.update(persistenceResource);
+				setPersistenceXml(createPersistenceXml(persistenceResource));
 			}
 		}
 		else {

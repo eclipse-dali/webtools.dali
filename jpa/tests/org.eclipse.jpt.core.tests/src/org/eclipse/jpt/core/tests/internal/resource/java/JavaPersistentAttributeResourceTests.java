@@ -517,7 +517,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAR");
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"),@AttributeOverride(name=\"BAR\")})");
 		

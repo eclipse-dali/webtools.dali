@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
-
+import java.util.ListIterator;
 
 public interface IEntity extends ITypeMapping
 {
@@ -22,10 +22,15 @@ public interface IEntity extends ITypeMapping
 
 	ITable getTable();
 
-//	EList<ISecondaryTable> getSpecifiedSecondaryTables();
-//
-//	EList<ISecondaryTable> getSecondaryTables();
-
+	<T extends ISecondaryTable> ListIterator<T> secondaryTables();
+	int secondaryTablesSize();
+	
+	<T extends ISecondaryTable> ListIterator<T> specifiedSecondaryTables();
+	int specifiedSecondaryTablesSize();
+	ISecondaryTable addSpecifiedSecondaryTable(int index);
+	void removeSpecifiedSecondaryTable(int index);
+	void moveSpecifiedSecondaryTable(int oldIndex, int newIndex);
+		String SPECIFIED_SECONDARY_TABLES_LIST = "specifiedSecondaryTablesList";
 	
 	InheritanceType getInheritanceStrategy();
 	

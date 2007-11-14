@@ -40,6 +40,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.context.java.IJavaTable;
 import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaDiscriminatorColumn;
@@ -47,6 +48,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaEntity;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.internal.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.internal.context.java.JavaTable;
 import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
@@ -209,5 +211,9 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IJavaDiscriminatorColumn createJavaDiscriminatorColumn(IJavaEntity parent) {
 		return new JavaDiscriminatorColumn(parent);
+	}
+	
+	public IJavaSecondaryTable createJavaSecondaryTable(IJavaEntity parent) {
+		return new JavaSecondaryTable(parent);
 	}
 }

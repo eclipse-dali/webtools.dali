@@ -168,6 +168,15 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return (ContainerAnnotation<NestableAnnotation>) addAnnotation(containerAnnotationName);
 	}
 	
+	protected ContainerAnnotation<NestableAnnotation> addContainerAnnotationTwoNestableAnnotations(String containerAnnotationName) {
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = (ContainerAnnotation<NestableAnnotation>) buildAnnotation(containerAnnotationName);
+		this.annotations.add(containerAnnotation);
+		containerAnnotation.newAnnotation();
+		containerAnnotation.addInternal(0).newAnnotation();
+		containerAnnotation.addInternal(1).newAnnotation();
+		return containerAnnotation;
+	}
+	
 	@SuppressWarnings("unchecked")
 	protected ContainerAnnotation<NestableAnnotation> containerAnnotation(String containerAnnotationName) {
 		return (ContainerAnnotation<NestableAnnotation>) annotation(containerAnnotationName);
@@ -188,9 +197,11 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		
 		if (containerAnnotation != null) {
 			//ignore any nestableAnnotation and just add to the plural one
-			NestableAnnotation newNestableAnnotation = containerAnnotation.add(index);
-			ContainerAnnotationTools.synchAnnotationsAfterAdd(index + 1, containerAnnotation);
+			int size = containerAnnotation.nestedAnnotationsSize();
+			NestableAnnotation newNestableAnnotation = containerAnnotation.addInternal(size);
 			newNestableAnnotation.newAnnotation();
+			containerAnnotation.move(size, index);
+			ContainerAnnotationTools.synchAnnotationsAfterMove(size, index, containerAnnotation);
 			return newNestableAnnotation;
 		}
 		if (nestableAnnotation == null) {
@@ -198,12 +209,15 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 			return addNestableAnnotation(nestableAnnotationName);
 		}
 		//move the nestable to a new container annotation and add to it
+		ContainerAnnotation<NestableAnnotation> newContainerAnnotation = addContainerAnnotationTwoNestableAnnotations(containerAnnotationName);
+		if (index == 0) {
+			newContainerAnnotation.nestedAnnotationAt(1).initializeFrom(nestableAnnotation);
+		}
+		else {
+			newContainerAnnotation.nestedAnnotationAt(0).initializeFrom(nestableAnnotation);		
+		}
 		removeAnnotation(nestableAnnotation);
-		ContainerAnnotation<NestableAnnotation> newContainerAnnotation = addContainerAnnotation(containerAnnotationName);
-		NestableAnnotation newSingularAnnotation = newContainerAnnotation.add(0);
-		newSingularAnnotation.newAnnotation();
-		newSingularAnnotation.initializeFrom(nestableAnnotation);
-		return newContainerAnnotation.add(newContainerAnnotation.nestedAnnotationsSize());
+		return newContainerAnnotation.nestedAnnotationAt(index);
 	}
 	
 	public void move(int oldIndex, int newIndex, String containerAnnotationName) {

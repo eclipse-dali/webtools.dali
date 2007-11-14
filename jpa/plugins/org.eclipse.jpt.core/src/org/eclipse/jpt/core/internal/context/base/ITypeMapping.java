@@ -34,14 +34,14 @@ public interface ITypeMapping extends IJpaContextNode
 	 * Return the type mapping's "associated" tables, which includes the
 	 * primary table and the collection of secondary tables.
 	 */
-//	Iterator<ITable> associatedTables();
+	Iterator<ITable> associatedTables();
 
 	/**
 	 * Return the type mapping's "associated" tables, which includes the
 	 * primary table and the collection of secondary tables, as well as all
 	 * inherited "associated" tables.
 	 */
-//	Iterator<ITable> associatedTablesIncludingInherited();
+	Iterator<ITable> associatedTablesIncludingInherited();
 
 	/**
 	 * Return the names of the type mapping's "associated" tables,

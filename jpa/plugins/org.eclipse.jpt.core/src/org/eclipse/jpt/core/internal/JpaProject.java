@@ -535,9 +535,24 @@ public class JpaProject extends JpaNode implements IJpaProject
 		}
 		return Status.OK_STATUS;
 	}
+	
+//	boolean isUpdating;
+//	boolean needsToUpdate;
 
 	public void update() {
 		contextModel().update(null); //TODO put this back on a job, running synchronously for tests
+//		if (this.isUpdating) {
+//			this.needsToUpdate = true;
+//		}
+//		else {
+//			this.isUpdating = true;
+//			contextModel().update(null); //TODO put this back on a job, running synchronously for tests
+//			this.isUpdating = false;
+//			if (this.needsToUpdate) {
+//				this.needsToUpdate = false;
+//				update();
+//			}
+//		}
 		//this.updateJpaProjectJobScheduler.schedule();
 	}
 

@@ -11,14 +11,32 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 import org.eclipse.jpt.core.internal.resource.java.Table;
 
 
-public class JavaTable extends AbstractJavaTable
+public class JavaTable extends AbstractJavaTable implements IJavaTable
 {
+	protected JavaPersistentResource persistentResource;
 
 	public JavaTable(IJavaEntity parent) {
 		super(parent);
+	}
+	
+	public void initializeFromResource(JavaPersistentResource persistentResource) {
+		this.persistentResource = persistentResource;
+		initializeFromResource(tableResource());
+	}
+
+	
+	//query for the table resource every time on setters.
+	//call one setter and the tableResource could change. 
+	//You could call more than one setter before this object has received any notification
+	//from the java resource model
+	@Override
+	protected Table tableResource() {
+		//TODO get the NullTable from the resource model or build it here in the context model??
+		return (Table) this.persistentResource.nonNullAnnotation(annotationName());
 	}
 
 	@Override
@@ -58,4 +76,11 @@ public class JavaTable extends AbstractJavaTable
 //	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
 //		return JavaUniqueConstraint.createTableUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
 //	}
+	
+	
+	public void update(JavaPersistentResource persistentResource) {
+		this.persistentResource = persistentResource;
+		this.update(tableResource());
+	}
+
 }

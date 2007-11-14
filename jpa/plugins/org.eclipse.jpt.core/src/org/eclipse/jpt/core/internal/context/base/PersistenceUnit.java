@@ -142,7 +142,7 @@ public class PersistenceUnit extends JpaContextNode
 	// **************** updating ***********************************************
 	
 	public void update(XmlPersistenceUnit persistenceUnit) {
-		this.xmlPersistenceUnit = xmlPersistenceUnit;
+		this.xmlPersistenceUnit = persistenceUnit;
 		updateName(persistenceUnit);
 		updateMappingFileRefs(persistenceUnit);
 		updateClassRefs(persistenceUnit);

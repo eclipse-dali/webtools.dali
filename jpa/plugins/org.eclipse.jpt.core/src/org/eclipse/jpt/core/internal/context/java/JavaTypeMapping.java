@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
@@ -69,17 +70,17 @@ public abstract class JavaTypeMapping extends JavaContextModel
 		return true;
 	}
 
-//	public Iterator<ITable> associatedTables() {
-//		return EmptyIterator.instance();
-//	}
+	public Iterator<ITable> associatedTables() {
+		return EmptyIterator.instance();
+	}
 
 	public Iterator<String> associatedTableNamesIncludingInherited() {
 		return EmptyIterator.instance();
 	}
 
-//	public Iterator<ITable> associatedTablesIncludingInherited() {
-//		return EmptyIterator.instance();
-//	}
+	public Iterator<ITable> associatedTablesIncludingInherited() {
+		return EmptyIterator.instance();
+	}
 
 	public Iterator<String> overridableAssociationNames() {
 		return EmptyIterator.instance();

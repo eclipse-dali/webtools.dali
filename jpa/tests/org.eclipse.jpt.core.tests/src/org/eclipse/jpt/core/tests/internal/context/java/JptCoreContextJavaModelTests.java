@@ -27,6 +27,7 @@ public class JptCoreContextJavaModelTests extends TestCase
 		suite.addTestSuite(JavaEntityTests.class);
 		suite.addTestSuite(JavaTableTests.class);
 		suite.addTestSuite(JavaDiscriminatorColumnTests.class);
+		suite.addTestSuite(JavaSecondaryTableTests.class);
 		return suite;
 	}
 

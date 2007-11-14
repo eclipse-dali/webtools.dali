@@ -13,7 +13,6 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.ITable;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 import org.eclipse.jpt.core.internal.resource.java.Table;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.Filter;
@@ -21,7 +20,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
-public abstract class AbstractJavaTable extends JavaContextModel implements IJavaTable
+public abstract class AbstractJavaTable extends JavaContextModel
 {
 
 	protected String specifiedName;
@@ -32,8 +31,6 @@ public abstract class AbstractJavaTable extends JavaContextModel implements IJav
 
 	protected String specifiedSchema;
 	protected String defaultSchema;
-
-	protected JavaPersistentResource persistentResource;
 	
 //	protected EList<IUniqueConstraint> uniqueConstraints;
 
@@ -42,12 +39,7 @@ public abstract class AbstractJavaTable extends JavaContextModel implements IJav
 		super(parent);
 	}
 
-	public void initializeFromResource(JavaPersistentResource persistentResource) {
-		this.persistentResource = persistentResource;
-		initialize(tableResource());
-		
-	}
-	protected void initialize(Table table) {
+	protected void initializeFromResource(Table table) {
 		this.defaultName = this.defaultName();
 		this.defaultSchema = this.defaultSchema();
 		this.defaultCatalog = this.defaultCatalog();
@@ -56,14 +48,7 @@ public abstract class AbstractJavaTable extends JavaContextModel implements IJav
 		this.specifiedCatalog = table.getCatalog();
 	}
 	
-	//query for the table resource every time on setters.
-	//call one setter and the tableResource could change. 
-	//You could call more than one setter before this object has received any notification
-	//from the java resource model
-	protected Table tableResource() {
-		//TODO get the NullTable from the resource model or build it here in the context model??
-		return (Table) this.persistentResource.nonNullAnnotation(annotationName());
-	}
+	protected abstract Table tableResource();
 	
 	protected abstract String annotationName();
 	
@@ -162,19 +147,19 @@ public abstract class AbstractJavaTable extends JavaContextModel implements IJav
 	protected void setDefaultName(String newDefaultName) {
 		String oldDefaultName = this.defaultName;
 		this.defaultName = newDefaultName;
-		firePropertyChanged(DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
+		firePropertyChanged(ITable.DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
 	}
 
 	protected void setDefaultCatalog(String newDefaultCatalog) {
 		String oldDefaultCatalog = this.defaultCatalog;
 		this.defaultCatalog = newDefaultCatalog;
-		firePropertyChanged(DEFAULT_CATALOG_PROPERTY, oldDefaultCatalog, newDefaultCatalog);
+		firePropertyChanged(ITable.DEFAULT_CATALOG_PROPERTY, oldDefaultCatalog, newDefaultCatalog);
 	}
 
 	protected void setDefaultSchema(String newDefaultSchema) {
 		String oldDefaultSchema = this.defaultSchema;
 		this.defaultSchema = newDefaultSchema;
-		firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, oldDefaultSchema, newDefaultSchema);
+		firePropertyChanged(ITable.DEFAULT_SCHEMA_PROPERTY, oldDefaultSchema, newDefaultSchema);
 	}
 
 //	public IUniqueConstraint createUniqueConstraint(int index) {
@@ -184,11 +169,6 @@ public abstract class AbstractJavaTable extends JavaContextModel implements IJav
 //	protected abstract JavaUniqueConstraint createJavaUniqueConstraint(int index);
 
 
-	
-	public void update(JavaPersistentResource persistentResource) {
-		this.persistentResource = persistentResource;
-		this.update(tableResource());
-	}
 	
 	protected void update(Table table) {
 		this.setSpecifiedName(table.getName());
