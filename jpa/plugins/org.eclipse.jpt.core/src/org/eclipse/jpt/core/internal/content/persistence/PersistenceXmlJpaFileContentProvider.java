@@ -49,11 +49,11 @@ public class PersistenceXmlJpaFileContentProvider implements IJpaFileContentProv
 				PersistenceArtifactEdit.getArtifactEditForRead(resourceFile.getProject());
 		PersistenceResource resource = 
 				pae.getPersistenceResource(resourceFile);
+		pae.addListener(buildReloadListener(resource));
 		PersistenceXmlRootContentNode root = PersistenceFactory.eINSTANCE.createPersistenceXmlRootContentNode();		
-		root.setResource(resource);
+		root.setArtifactEdit(pae);
 		root.setPersistence(resource.getPersistence());
 		resource.eAdapters().add(buildRootNodeListener(resourceFile, root));
-		pae.addListener(buildReloadListener(resource));
 		return root;
 	}
 	
