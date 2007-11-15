@@ -96,6 +96,15 @@ public interface JavaPersistentResource extends JavaResource
 	JavaResource nonNullAnnotation(String annotationName);
 
 	/**
+	 * Returns the <code>JavaResource</code> with this fully qualifed annotation name. 
+	 * Return the first if there are duplicates in the source code.  Will not return null,
+	 * but a null Object instead if no annotation with this name exists in the java source.
+	 * @param annotationName
+	 * @return
+	 */
+	JavaResource nonNullMappingAnnotation(String annotationName);
+
+	/**
 	 * Add an annotation for the given fully qualified annotation name
 	 */
 	JavaResource addAnnotation(String annotationName);

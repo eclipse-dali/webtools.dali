@@ -108,6 +108,8 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 
 	protected abstract Annotation buildMappingAnnotation(String mappingAnnotationName);
 	
+	protected abstract Annotation buildNullMappingAnnotation(String annotationName);
+
 	protected abstract Iterator<String> correspondingAnnotationNames(String mappingAnnotationName);
 	
 	protected abstract ListIterator<String> possibleMappingAnnotationNames();
@@ -146,6 +148,13 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return null;
 	}
 
+	public JavaResource nonNullMappingAnnotation(String annotationName) {
+		Annotation annotation = mappingAnnotation(annotationName);
+		if (annotation == null) {
+			return buildNullMappingAnnotation(annotationName);	
+		}
+		return annotation;
+	}
 
 	public Iterator<JavaResource> annotations() {
 		return new CloneIterator<JavaResource>(this.annotations);

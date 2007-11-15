@@ -28,6 +28,8 @@ public interface IJpaAnnotationProvider
 	 */
 	Annotation buildTypeMappingAnnotation(JavaPersistentTypeResource parent, Type type, String mappingAnnotationName);
 
+	Annotation buildNullTypeMappingAnnotation(JavaPersistentTypeResource parent, Type type, String mappingAnnotationName);
+
 	/**
 	 * Build an Annotation with the given fully qualififed annotation name.
 	 * @param type
@@ -65,6 +67,8 @@ public interface IJpaAnnotationProvider
 	 */
 	Annotation buildAttributeMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String mappingAnnotationName);
 	
+	Annotation buildNullAttributeMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String mappingAnnotationName);
+
 	/**
 	 * Build an Annotation with the given fully qualififed annotation name.
 	 * @param attribute

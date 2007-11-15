@@ -133,7 +133,7 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 		}
 		
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
-			return null;
+			return new NullBasic(parent);
 		}
 
 		public Iterator<String> correspondingAnnotationNames() {

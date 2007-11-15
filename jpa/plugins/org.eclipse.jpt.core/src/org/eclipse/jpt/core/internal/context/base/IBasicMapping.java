@@ -11,10 +11,18 @@ package org.eclipse.jpt.core.internal.context.base;
 
 public interface IBasicMapping extends IAttributeMapping, IColumnMapping
 {
-//	DefaultEagerFetchType getFetch();
-//
-//	void setFetch(DefaultEagerFetchType value);
-//
+	FetchType getFetch();
+
+	FetchType getDefaultFetch();
+		String DEFAULT_FETCH_PROPERTY = "defaultFetchProperty";
+		FetchType DEFAULT_FETCH_TYPE = FetchType.EAGER;
+		
+	FetchType getSpecifiedFetch();
+	void setSpecifiedFetch(FetchType newSpecifiedFetch);
+		String SPECIFIED_FETCH_PROPERTY = "specifiedFetchProperty";
+
+
+
 //	DefaultTrueBoolean getOptional();
 //
 //	void setOptional(DefaultTrueBoolean value);

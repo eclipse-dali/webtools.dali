@@ -89,6 +89,11 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	protected Annotation buildMappingAnnotation(String mappingAnnotationName) {
 		return annotationProvider().buildTypeMappingAnnotation(this, getMember(), mappingAnnotationName);
 	}
+	
+	@Override
+	protected Annotation buildNullMappingAnnotation(String annotationName) {
+		return annotationProvider().buildNullTypeMappingAnnotation(this, getMember(), annotationName);
+	}
 
 	@Override
 	protected Annotation buildAnnotation(String annotationName) {

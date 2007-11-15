@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.context.base.FetchType;
+import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.utility.internal.Filter;
@@ -19,10 +21,9 @@ import org.eclipse.jpt.utility.internal.Filter;
 
 public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasicMapping
 {
-//	protected static final DefaultEagerFetchType FETCH_EDEFAULT = DefaultEagerFetchType.DEFAULT;
-//
-//	protected DefaultEagerFetchType fetch = FETCH_EDEFAULT;
-//
+	protected FetchType specifiedFetch;
+
+	
 //	protected static final DefaultTrueBoolean OPTIONAL_EDEFAULT = DefaultTrueBoolean.DEFAULT;
 //
 //	protected DefaultTrueBoolean optional = OPTIONAL_EDEFAULT;
@@ -51,6 +52,17 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 //		this.temporalValueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, TEMPORAL_VALUE_ADAPTER);
 //		this.enumeratedAnnotationAdapter = new MemberAnnotationAdapter(this.getAttribute(), ENUMERATED_ADAPTER);
 //		this.enumeratedValueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, ENUMERATED_VALUE_ADAPTER);
+	}
+
+	@Override
+	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
+		super.initializeFromResource(persistentAttributeResource);
+		Basic basicResource = this.basicResource();
+		this.specifiedFetch = this.fetchType(basicResource);
+	}
+	
+	protected Basic basicResource() {
+		return (Basic) this.persistentAttributeResource.nonNullMappingAnnotation(annotationName());
 	}
 
 	//************** IJavaAttributeMapping implementation ***************
@@ -82,21 +94,30 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 //		return msgs;
 //	}
 //
-//	public DefaultEagerFetchType getFetch() {
-//		return fetch;
-//	}
-//
-//	public void setFetch(DefaultEagerFetchType newFetch) {
-//		DefaultEagerFetchType oldFetch = fetch;
-//		fetch = newFetch == null ? FETCH_EDEFAULT : newFetch;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_BASIC__FETCH, oldFetch, fetch));
-//	}
-//
+	
+	public FetchType getFetch() {
+		return (this.getSpecifiedFetch() == null) ? this.getDefaultFetch() : this.getSpecifiedFetch();
+	}
+
+	public FetchType getDefaultFetch() {
+		return IBasicMapping.DEFAULT_FETCH_TYPE;
+	}
+		
+	public FetchType getSpecifiedFetch() {
+		return this.specifiedFetch;
+	}
+	
+	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
+		FetchType oldFetch = this.specifiedFetch;
+		this.specifiedFetch = newSpecifiedFetch;
+		this.basicResource().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
+		firePropertyChanged(IBasicMapping.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
+	}
+
+	
 //	public DefaultTrueBoolean getOptional() {
 //		return optional;
 //	}
-//
 //
 //	public void setOptional(DefaultTrueBoolean newOptional) {
 //		DefaultTrueBoolean oldOptional = optional;
@@ -141,9 +162,16 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	
 	@Override
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
-		// TODO Auto-generated method stub
 		super.update(persistentAttributeResource);
+		Basic basicResource = basicResource();
+		this.setSpecifiedFetch(this.fetchType(basicResource));
 	}
+	
+	
+	protected FetchType fetchType(Basic basic) {
+		return FetchType.fromJavaResourceModel(basic.getFetch());
+	}
+
 //	@Override
 //	public void updateFromJava(CompilationUnit astRoot) {
 //		super.updateFromJava(astRoot);

@@ -60,6 +60,12 @@ public class JavaPersistentAttributeResourceImpl
 	protected Annotation buildNullAnnotation(String annotationName) {
 		return annotationProvider().buildNullAttributeAnnotation(this, getMember(), annotationName);
 	}
+	
+	@Override
+	protected Annotation buildNullMappingAnnotation(String annotationName) {
+		return annotationProvider().buildNullAttributeMappingAnnotation(this, getMember(), annotationName);
+	}
+
 
 	@Override
 	protected Iterator<String> correspondingAnnotationNames(String mappingAnnotationName) {

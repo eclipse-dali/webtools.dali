@@ -214,6 +214,11 @@ public abstract class BaseJpaAnnotationProvider implements IJpaAnnotationProvide
 		return annotationDefinition.buildAnnotation(parent, type);
 	}
 	
+	public Annotation buildNullTypeMappingAnnotation(JavaPersistentTypeResource parent, Type type, String mappingAnnotationName) {
+		MappingAnnotationDefinition annotationDefinition = typeMappingAnnotationDefinition(mappingAnnotationName);
+		return annotationDefinition.buildNullAnnotation(parent, type);
+	}
+
 	public Annotation buildTypeAnnotation(JavaPersistentTypeResource parent, Type type, String annotationName) {
 		AnnotationDefinition annotationDefinition = typeAnnotationDefinition(annotationName);
 		return annotationDefinition.buildAnnotation(parent, type);
@@ -251,13 +256,18 @@ public abstract class BaseJpaAnnotationProvider implements IJpaAnnotationProvide
 		return annotationDefinition.buildAnnotation(parent, attribute);
 	}
 	
+	public Annotation buildNullAttributeMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String annotationName) {
+		MappingAnnotationDefinition annotationDefinition = attributeMappingAnnotationDefinition(annotationName);
+		return annotationDefinition.buildNullAnnotation(parent, attribute);
+	}
+	
 	public Annotation buildAttributeAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String annotationName) {
 		AnnotationDefinition annotationDefinition = attributeAnnotationDefinition(annotationName);
 		return annotationDefinition.buildAnnotation(parent, attribute);
 	}
 	
 	public Annotation buildNullAttributeAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String annotationName) {
-		AnnotationDefinition annotationDefinition = typeAnnotationDefinition(annotationName);
+		AnnotationDefinition annotationDefinition = attributeAnnotationDefinition(annotationName);
 		return annotationDefinition.buildNullAnnotation(parent, attribute);
 	}
 
