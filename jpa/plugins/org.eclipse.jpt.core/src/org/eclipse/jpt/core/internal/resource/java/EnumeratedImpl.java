@@ -95,7 +95,7 @@ public class EnumeratedImpl extends AbstractAnnotationResource<Attribute> implem
 		}
 		
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
-			return null;
+			return new NullEnumerated(parent);
 		}
 		
 		public String getAnnotationName() {

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.internal.context.base.EnumType;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
@@ -20,9 +21,11 @@ import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
+import org.eclipse.jpt.core.internal.resource.java.Enumerated;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.Lob;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
@@ -40,6 +43,12 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		this.createAnnotationAndMembers("Basic", "FetchType fetch() default EAGER; boolean optional() default true;");		
 	}
 	
+	private void createLobAnnotation() throws Exception{
+		this.createAnnotationAndMembers("Lob", "");		
+	}
+	private void createEnumeratedAnnotation() throws Exception{
+		this.createAnnotationAndMembers("Enumerated", "EnumType value() default ORDINAL;");		
+	}
 
 	private IType createTestEntity() throws Exception {
 		createEntityAnnotation();
@@ -97,7 +106,47 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		});
 	}
 
+	private IType createTestEntityWithLob() throws Exception {
+		createEntityAnnotation();
+		createLobAnnotation();
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.LOB);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Lob").append(CR);
+			}
+		});
+	}
 
+	private IType createTestEntityWithEnumerated() throws Exception {
+		createEntityAnnotation();
+		createEnumeratedAnnotation();
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ENUMERATED, JPA.ENUM_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Enumerated(EnumType.STRING)").append(CR);
+			}
+		});
+	}
 		
 	public JavaBasicMappingTests(String name) {
 		super(name);
@@ -395,5 +444,165 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		assertNull(persistentAttribute.getSpecifiedMapping());
 		assertEquals(Boolean.TRUE, ((IBasicMapping) persistentAttribute.getMapping()).getOptional());
 	}
+	
+	
+	public void testIsLob() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+
+		assertFalse(basicMapping.isLob());
+	}
+	
+	public void testIsLob2() throws Exception {
+		createTestEntityWithLob();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getMapping();
+
+		assertTrue(basicMapping.isLob());
+	}
+	
+	public void testSetLob() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+
+		basicMapping.setLob(true);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNotNull(attributeResource.annotation(Lob.ANNOTATION_NAME));
+		
+		basicMapping.setLob(false);
+		assertNull(attributeResource.annotation(Lob.ANNOTATION_NAME));
+	}
+	
+	public void testIsLobUpdatesFromResourceModelChange() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+
+		assertFalse(basicMapping.isLob());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		attributeResource.addAnnotation(Lob.ANNOTATION_NAME);
+		
+		assertTrue(basicMapping.isLob());
+	
+		attributeResource.removeAnnotation(Lob.ANNOTATION_NAME);
+		
+		assertFalse(basicMapping.isLob());
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	public void testDefaultBasicGetDefaultEnumerated() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getMapping();
+		assertEquals(EnumType.ORDINAL, basicMapping.getDefaultEnumerated());
+	}
+	
+	public void testSpecifiedBasicGetDefaultEnumerated() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+		assertEquals(EnumType.ORDINAL, basicMapping.getDefaultEnumerated());
+	}
+	
+	public void testGetEnumerated() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+
+		assertEquals(EnumType.ORDINAL, basicMapping.getEnumerated());
+		
+		basicMapping.setSpecifiedEnumerated(EnumType.STRING);
+		assertEquals(EnumType.STRING, basicMapping.getEnumerated());
+	}
+	
+	public void testGetSpecifiedEnumerated() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+
+		assertNull(basicMapping.getSpecifiedEnumerated());
+	}
+	
+	public void testGetSpecifiedEnumerated2() throws Exception {
+		createTestEntityWithEnumerated();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getMapping();
+
+		assertEquals(EnumType.STRING, basicMapping.getSpecifiedEnumerated());
+	}
+
+	public void testSetSpecifiedEnumerated() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+		assertNull(basicMapping.getSpecifiedEnumerated());
+		
+		basicMapping.setSpecifiedEnumerated(EnumType.STRING);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		Enumerated enumerated = (Enumerated) attributeResource.annotation(Enumerated.ANNOTATION_NAME);
+		
+		assertEquals(org.eclipse.jpt.core.internal.resource.java.EnumType.STRING, enumerated.getValue());
+		
+		basicMapping.setSpecifiedEnumerated(null);
+		assertNull(attributeResource.annotation(Enumerated.ANNOTATION_NAME));
+	}
+	
+	public void testGetSpecifieEnumeratedUpdatesFromResourceModelChange() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+
+		assertNull(basicMapping.getSpecifiedEnumerated());
+		
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		Enumerated enumerated = (Enumerated) attributeResource.addAnnotation(Enumerated.ANNOTATION_NAME);
+		enumerated.setValue(org.eclipse.jpt.core.internal.resource.java.EnumType.STRING);
+		
+		assertEquals(EnumType.STRING, basicMapping.getSpecifiedEnumerated());
+		
+		enumerated.setValue(null);
+		assertNull(attributeResource.annotation(Enumerated.ANNOTATION_NAME));
+		assertNull(basicMapping.getSpecifiedEnumerated());
+		assertFalse(basicMapping.isDefault());
+		assertSame(basicMapping, persistentAttribute.getSpecifiedMapping());
+	}
 }

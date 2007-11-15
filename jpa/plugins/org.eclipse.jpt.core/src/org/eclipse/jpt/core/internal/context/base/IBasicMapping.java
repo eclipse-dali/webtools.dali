@@ -33,16 +33,25 @@ public interface IBasicMapping extends IAttributeMapping, IColumnMapping
 		String SPECIFIED_OPTIONAL_PROPERTY = "specifiedOptionalProperty";
 
 //	IColumn getColumn();
-//
-//	boolean isLob();
-//
-//	void setLob(boolean value);
-//
+
+	boolean isLob();
+
+	void setLob(boolean value);
+		String LOB_PROPERTY = "lobProperty";
+
 //	TemporalType getTemporal();
 //
 //	void setTemporal(TemporalType value);
-//
-//	EnumType getEnumerated();
-//
-//	void setEnumerated(EnumType value);
+
+	
+	EnumType getEnumerated();
+	
+	EnumType getDefaultEnumerated();
+		String DEFAULT_ENUMERATED_PROPERTY = "defaultEnumeratedProperty";
+		EnumType DEFAULT_ENUMERATED = EnumType.ORDINAL;
+
+	EnumType getSpecifiedEnumerated();
+	void setSpecifiedEnumerated(EnumType newSpecifiedEnumerated);
+		String SPECIFIED_ENUMERATED_PROPERTY = "specifiedEnumeratedProperty";
+
 }

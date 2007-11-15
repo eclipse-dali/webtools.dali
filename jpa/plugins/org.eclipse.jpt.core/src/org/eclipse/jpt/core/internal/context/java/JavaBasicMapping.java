@@ -12,10 +12,13 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.context.base.EnumType;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
+import org.eclipse.jpt.core.internal.resource.java.Enumerated;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
+import org.eclipse.jpt.core.internal.resource.java.Lob;
 import org.eclipse.jpt.utility.internal.Filter;
 
 
@@ -25,19 +28,14 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 
 	protected Boolean specifiedOptional;
 	
-
+	protected EnumType specifiedEnumerated;
+	
 //	protected IColumn column;
-//
-//	protected static final boolean LOB_EDEFAULT = false;
-//
-//	protected boolean lob = LOB_EDEFAULT;
+	
+	protected boolean lob;
 //
 //	protected static final TemporalType TEMPORAL_EDEFAULT = TemporalType.NULL;
 //	protected TemporalType temporal = TEMPORAL_EDEFAULT;
-//
-//	protected static final EnumType ENUMERATED_EDEFAULT = EnumType.DEFAULT;
-//
-//	protected EnumType enumerated = ENUMERATED_EDEFAULT;
 
 	public JavaBasicMapping(IJavaPersistentAttribute parent) {
 		super(parent);
@@ -51,10 +49,16 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		Basic basicResource = this.basicResource();
 		this.specifiedFetch = this.specifiedFetchType(basicResource);
 		this.specifiedOptional = this.specifiedOptional(basicResource);
+		this.specifiedEnumerated = this.specifiedEnumerated(enumeratedResource());
+		this.lob = this.lob(persistentAttributeResource);
 	}
 	
 	protected Basic basicResource() {
 		return (Basic) this.persistentAttributeResource.nonNullMappingAnnotation(annotationName());
+	}
+	
+	protected Enumerated enumeratedResource() {
+		return (Enumerated) this.persistentAttributeResource.nonNullAnnotation(Enumerated.ANNOTATION_NAME);
 	}
 
 	//************** IJavaAttributeMapping implementation ***************
@@ -126,17 +130,26 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	}
 
 
-//	public boolean isLob() {
-//		return lob;
-//	}
-//
-//	public void setLob(boolean newLob) {
-//		boolean oldLob = lob;
-//		lob = newLob;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_BASIC__LOB, oldLob, lob));
-//	}
-//
+	public boolean isLob() {
+		return this.lob;
+	}
+
+	public void setLob(boolean newLob) {
+		boolean oldLob = this.lob;
+		this.lob = newLob;
+		if (newLob) {
+			if (lobResource(this.persistentAttributeResource) == null) {
+				this.persistentAttributeResource.addAnnotation(Lob.ANNOTATION_NAME);
+			}
+		}
+		else {
+			if (lobResource(this.persistentAttributeResource) != null) {
+				this.persistentAttributeResource.removeAnnotation(Lob.ANNOTATION_NAME);
+			}
+		}
+		firePropertyChanged(IBasicMapping.LOB_PROPERTY, oldLob, newLob);
+	}
+
 //	public TemporalType getTemporal() {
 //		return temporal;
 //	}
@@ -147,25 +160,34 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 //		if (eNotificationRequired())
 //			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_BASIC__TEMPORAL, oldTemporal, temporal));
 //	}
-//
-//
-//	public EnumType getEnumerated() {
-//		return enumerated;
-//	}
-//
-//	public void setEnumerated(EnumType newEnumerated) {
-//		EnumType oldEnumerated = enumerated;
-//		enumerated = newEnumerated == null ? ENUMERATED_EDEFAULT : newEnumerated;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_BASIC__ENUMERATED, oldEnumerated, enumerated));
-//	}
 	
+	public EnumType getEnumerated() {
+		return (this.getSpecifiedEnumerated() == null) ? this.getDefaultEnumerated() : this.getSpecifiedEnumerated();
+	}
+	
+	public EnumType getDefaultEnumerated() {
+		return IBasicMapping.DEFAULT_ENUMERATED;
+	}
+	
+	public EnumType getSpecifiedEnumerated() {
+		return this.specifiedEnumerated;
+	}
+	
+	public void setSpecifiedEnumerated(EnumType newSpecifiedEnumerated) {
+		EnumType oldEnumerated = this.specifiedEnumerated;
+		this.specifiedEnumerated = newSpecifiedEnumerated;
+		this.enumeratedResource().setValue(EnumType.toJavaResourceModel(newSpecifiedEnumerated));
+		firePropertyChanged(IBasicMapping.SPECIFIED_ENUMERATED_PROPERTY, oldEnumerated, newSpecifiedEnumerated);
+	}
+
 	@Override
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.update(persistentAttributeResource);
 		Basic basicResource = basicResource();
 		this.setSpecifiedFetch(this.specifiedFetchType(basicResource));
 		this.setSpecifiedOptional(this.specifiedOptional(basicResource));
+		this.setSpecifiedEnumerated(this.specifiedEnumerated(enumeratedResource()));
+		this.setLob(this.lob(persistentAttributeResource));
 	}
 	
 	
@@ -175,6 +197,18 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	
 	protected Boolean specifiedOptional(Basic basic) {
 		return basic.getOptional();
+	}
+	
+	protected EnumType specifiedEnumerated(Enumerated enumerated) {
+		return EnumType.fromJavaResourceModel(enumerated.getValue());
+	}
+	
+	protected boolean lob(JavaPersistentAttributeResource persistentAttributeResource) {
+		return lobResource(persistentAttributeResource) != null;
+	}
+	
+	protected Lob lobResource(JavaPersistentAttributeResource persistentAttributeResource) {
+		return (Lob) persistentAttributeResource.annotation(Lob.ANNOTATION_NAME);
 	}
 	
 //	@Override
