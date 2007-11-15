@@ -9,15 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import java.util.Iterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
+import org.eclipse.jpt.utility.internal.Filter;
 
-public interface IJavaPersistentAttribute extends IPersistentAttribute
+
+public interface IJavaAttributeMapping extends IAttributeMapping
 {
 	void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource);
 
 	void update(JavaPersistentAttributeResource persistentAttributeResource);
-	
-	JavaPersistentAttributeResource getPersistentAttributeResource();
 
+	Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot);
+	
+	String annotationName();
 }

@@ -43,7 +43,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class GeneratedValueComposite extends BaseJpaComposite
 {
-	private IId id;
+	private IIdMapping id;
 	private IGeneratedValue generatedValue;
 	private Adapter generatedValueListener;
 
@@ -192,7 +192,7 @@ public class GeneratedValueComposite extends BaseJpaComposite
 
 	@Override
 	protected void doPopulate(EObject obj) {
-		this.id = (IId) obj;
+		this.id = (IIdMapping) obj;
 		if (this.id == null) {
 			this.generatedValue= null;
 		}

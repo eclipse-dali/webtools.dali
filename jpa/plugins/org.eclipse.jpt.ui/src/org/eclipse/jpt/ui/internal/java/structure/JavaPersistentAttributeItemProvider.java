@@ -46,16 +46,16 @@ public class JavaPersistentAttributeItemProvider extends ItemProviderAdapter
 	public Object getImage(Object object) {
 		IAttributeMapping mapping = ((IPersistentAttribute) object).getMapping();
 		
-		if (mapping instanceof IBasic) {
+		if (mapping instanceof IBasicMapping) {
 			return JptUiMappingsImages.getImage(JptUiMappingsImages.BASIC);
 		}
-		else if (mapping instanceof IId) {
+		else if (mapping instanceof IIdMapping) {
 			return JptUiMappingsImages.getImage(JptUiMappingsImages.ID);
 		}
 		else if (mapping instanceof IVersion) {
 			return JptUiMappingsImages.getImage(JptUiMappingsImages.VERSION);
 		}
-		else if (mapping instanceof IEmbedded) {
+		else if (mapping instanceof IEmbeddedMapping) {
 			return JptUiMappingsImages.getImage(JptUiMappingsImages.EMBEDDED);
 		}
 		else if (mapping instanceof IEmbeddedId) {

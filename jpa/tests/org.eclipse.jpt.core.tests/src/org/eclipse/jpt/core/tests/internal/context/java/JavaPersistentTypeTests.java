@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.resource.java.Embeddable;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
@@ -459,6 +460,21 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		
 		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 	}
+	
+	public void testSetMappingKey2() throws Exception {
+		createTestEntityAnnotatedField();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+
+		javaPersistentType().setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		assertNotNull(typeResource.mappingAnnotation());
+		assertTrue(typeResource.mappingAnnotation() instanceof Embeddable);
+		
+		assertEquals(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+	}
 
 	public void testSetMappingKeyNull() throws Exception {
 		createTestEntityAnnotatedMethod();
@@ -475,6 +491,30 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		assertEquals(IMappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 	}
 	
+	public void testGetMappingKeyMappingChangeInResourceModel() throws Exception {
+		createTestEntityAnnotatedField();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		typeResource.setMappingAnnotation(Embeddable.ANNOTATION_NAME);
+				
+		assertEquals(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+	}
+	
+	public void testGetMappingKeyMappingChangeInResourceModel2() throws Exception {
+		createTestType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertEquals(IMappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		typeResource.setMappingAnnotation(Entity.ANNOTATION_NAME);
+				
+		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+	}
+
 	public void testIsMapped() throws Exception {
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

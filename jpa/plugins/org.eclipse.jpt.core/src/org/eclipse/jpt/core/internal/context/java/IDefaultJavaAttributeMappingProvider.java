@@ -9,15 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 
-public interface IJavaPersistentAttribute extends IPersistentAttribute
-{
-	void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource);
+/**
+ * Map a string key to an attribute mapping and its corresponding
+ * Java annotation adapter.  
+ */
+public interface IDefaultJavaAttributeMappingProvider extends IJavaAttributeMappingProvider {
 
-	void update(JavaPersistentAttributeResource persistentAttributeResource);
-	
-	JavaPersistentAttributeResource getPersistentAttributeResource();
+	/**
+	 * Given the IJavaPersistentAttribute return whether the default mapping applies.
+	 * This will be used to determine the default mapping in the case where no 
+	 * mapping has been specified.
+	 */
+	boolean defaultApplies(IJavaPersistentAttribute persistentAttribute);
 
 }

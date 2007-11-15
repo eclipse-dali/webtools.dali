@@ -52,7 +52,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		return sequenceGenerator;
 	}
 	
-	protected ISequenceGenerator generator(IId idMapping) {
+	protected ISequenceGenerator generator(IIdMapping idMapping) {
 		return idMapping.getSequenceGenerator();
 	}
 

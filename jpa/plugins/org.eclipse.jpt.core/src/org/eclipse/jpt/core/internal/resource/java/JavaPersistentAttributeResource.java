@@ -22,10 +22,15 @@ public interface JavaPersistentAttributeResource extends JavaPersistentResource
 	
 	boolean isForProperty();
 	
+	boolean typeIsBasic();
+		String TYPE_IS_BASIC_PROPERTY = "typeIsBasicProperty";
+	
+	String getQualifiedTypeName();
+		String QUALFIED_TYPE_NAME_PROPERTY = "qualfiedTypeNameProperty";
+	
 	/**
 	 * Return true if this attribute has any mapping or non-mapping annotations
 	 * (of course only persistence related annotations)
-	 * @return
 	 */
 	boolean hasAnyAnnotation();
 }

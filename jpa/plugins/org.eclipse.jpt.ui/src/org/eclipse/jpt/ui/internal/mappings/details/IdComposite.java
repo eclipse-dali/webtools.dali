@@ -42,7 +42,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class IdComposite extends BaseJpaComposite 
 {
-	private IId id;
+	private IIdMapping id;
 	private Adapter idListener;
 	
 	private ColumnComposite columnComposite;
@@ -75,7 +75,7 @@ public class IdComposite extends BaseJpaComposite
 		};
 	}
 	void idMappingChanged(Notification notification) {
-		switch (notification.getFeatureID(IId.class)) {
+		switch (notification.getFeatureID(IIdMapping.class)) {
 			case JpaCoreMappingsPackage.IID__TABLE_GENERATOR :
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
@@ -333,7 +333,7 @@ public class IdComposite extends BaseJpaComposite
 	
 	
 	public void doPopulate(EObject obj) {
-		this.id = (IId) obj;
+		this.id = (IIdMapping) obj;
 		if (this.id != null) {
 			this.columnComposite.populate(this.id.getColumn());
 		}
@@ -405,15 +405,15 @@ public class IdComposite extends BaseJpaComposite
 		super.dispose();
 	}
 	
-	protected IId getId() {
+	protected IIdMapping getId() {
 		return this.id;
 	}
 	
 	private class TemporalTypeHolder extends EObjectImpl implements EnumHolder {
 		
-		private IId id;
+		private IIdMapping id;
 		
-		TemporalTypeHolder(IId id) {
+		TemporalTypeHolder(IIdMapping id) {
 			super();
 			this.id = id;
 		}
@@ -427,7 +427,7 @@ public class IdComposite extends BaseJpaComposite
 		}
 		
 		public Class featureClass() {
-			return IId.class;
+			return IIdMapping.class;
 		}
 		
 		public int featureId() {

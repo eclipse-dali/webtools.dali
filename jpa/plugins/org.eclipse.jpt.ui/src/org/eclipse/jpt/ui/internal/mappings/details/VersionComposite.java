@@ -132,7 +132,7 @@ public class VersionComposite extends BaseJpaComposite
 		}
 		
 		public Class featureClass() {
-			return IBasic.class;
+			return IBasicMapping.class;
 		}
 		
 		public int featureId() {

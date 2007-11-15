@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.List;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -76,6 +78,16 @@ public interface IJpaPlatform
 	
 	IJavaTypeMapping createJavaTypeMappingFromAnnotation(String mappingAnnotationName, IJavaPersistentType parent);
 
+	// **************** Java attribute mapping support ********************************
+
+	IJavaAttributeMapping createJavaAttributeMappingFromMappingKey(String attributeMappingKey, IJavaPersistentAttribute parent);
+	
+	IJavaAttributeMapping createJavaAttributeMappingFromAnnotation(String mappingAnnotationName, IJavaPersistentAttribute parent);
+	
+	IJavaAttributeMapping createDefaultJavaAttributeMapping(IJavaPersistentAttribute parent);
+	
+	String defaultJavaAttributeMappingKey(IJavaPersistentAttribute persistentAttribute);
+	
 	// *************************************************************************
 	
 	/**

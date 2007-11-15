@@ -306,6 +306,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	protected String name(JavaPersistentTypeResource persistentTypeResource) {
 		return persistentTypeResource.getQualifiedName();
 	}
+	
 	protected void updateMapping(JavaPersistentTypeResource persistentTypeResource) {
 		String javaMappingAnnotationName = this.javaMappingAnnotationName(persistentTypeResource);
 		if (getMapping().annotationName() != javaMappingAnnotationName) {

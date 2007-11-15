@@ -28,7 +28,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class LobCheckBox extends BaseJpaController
 {
-	private IBasic basicMapping;
+	private IBasicMapping basicMapping;
 	private Adapter basicMappingListener;
 	
 	private Button button;
@@ -73,7 +73,7 @@ public class LobCheckBox extends BaseJpaController
 	}
 
 	private void bsaicMappingChanged(Notification notification) {
-		if (notification.getFeatureID(IBasic.class) == 
+		if (notification.getFeatureID(IBasicMapping.class) == 
 				JpaCoreMappingsPackage.IBASIC__LOB) {
 			Display.getDefault().asyncExec(
 				new Runnable() {
@@ -100,7 +100,7 @@ public class LobCheckBox extends BaseJpaController
 	
 	@Override
 	public void doPopulate(EObject obj) {
-		this.basicMapping = (IBasic) obj;
+		this.basicMapping = (IBasicMapping) obj;
 		populateButton();
 	}
 	

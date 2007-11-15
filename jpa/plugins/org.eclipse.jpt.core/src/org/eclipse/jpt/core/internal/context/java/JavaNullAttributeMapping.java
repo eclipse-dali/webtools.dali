@@ -9,15 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
+import org.eclipse.jpt.core.internal.IMappingKeys;
 
-public interface IJavaPersistentAttribute extends IPersistentAttribute
+
+
+public class JavaNullAttributeMapping extends JavaAttributeMapping
 {
-	void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource);
+	public JavaNullAttributeMapping(IJavaPersistentAttribute parent) {
+		super(parent);
+	}
 
-	void update(JavaPersistentAttributeResource persistentAttributeResource);
+	public String getKey() {
+		return IMappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
+	}
 	
-	JavaPersistentAttributeResource getPersistentAttributeResource();
-
+	public String annotationName() {
+		return null;
+	}
 }

@@ -46,7 +46,7 @@ public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite
 {
 	private ListViewer listViewer;
 	
-	private IEmbedded embedded;
+	private IEmbeddedMapping embedded;
 	private Adapter embeddedListener;
 	
 	private IAttributeOverride attributeOverride;
@@ -201,7 +201,7 @@ public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite
 			}
 		
 			public Object[] getElements(Object inputElement) {
-				return ((IEmbedded) inputElement).getAttributeOverrides().toArray();
+				return ((IEmbeddedMapping) inputElement).getAttributeOverrides().toArray();
 			}
 		};
 	}
@@ -212,7 +212,7 @@ public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite
 	
 	
 	public void doPopulate(EObject obj) {
-		this.embedded = (IEmbedded) obj;
+		this.embedded = (IEmbeddedMapping) obj;
 		if (this.embedded == null) {
 			this.attributeOverride = null;
 			this.columnComposite.populate(null);
@@ -266,7 +266,7 @@ public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite
 
 	
 	protected void embeddedChanged(Notification notification) {
-		switch (notification.getFeatureID(IEmbedded.class)) {
+		switch (notification.getFeatureID(IEmbeddedMapping.class)) {
 			case JpaCoreMappingsPackage.IEMBEDDED__SPECIFIED_ATTRIBUTE_OVERRIDES :
 			case JpaCoreMappingsPackage.IEMBEDDED__DEFAULT_ATTRIBUTE_OVERRIDES :
 				Display.getDefault().asyncExec(new Runnable() {

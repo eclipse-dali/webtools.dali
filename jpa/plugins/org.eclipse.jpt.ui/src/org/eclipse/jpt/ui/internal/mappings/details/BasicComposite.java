@@ -32,7 +32,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class BasicComposite extends BaseJpaComposite 
 {
-	private IBasic basic;
+	private IBasicMapping basic;
 	
 	private ColumnComposite columnComposite;
 
@@ -130,7 +130,7 @@ public class BasicComposite extends BaseJpaComposite
 	}
 	
 	public void doPopulate(EObject obj) {
-		this.basic = (IBasic) obj;
+		this.basic = (IBasicMapping) obj;
 		if (this.basic != null) {
 			this.columnComposite.populate(this.basic.getColumn());
 		}
@@ -170,15 +170,15 @@ public class BasicComposite extends BaseJpaComposite
 		super.dispose();
 	}
 	
-	protected IBasic getBasic() {
+	protected IBasicMapping getBasic() {
 		return this.basic;
 	}
 	
 	private class FetchHolder extends EObjectImpl implements EnumHolder {
 		
-		private IBasic basic;
+		private IBasicMapping basic;
 		
-		FetchHolder(IBasic basic) {
+		FetchHolder(IBasicMapping basic) {
 			super();
 			this.basic = basic;
 		}
@@ -193,7 +193,7 @@ public class BasicComposite extends BaseJpaComposite
 		}
 		
 		public Class featureClass() {
-			return IBasic.class;
+			return IBasicMapping.class;
 		}
 		
 		public int featureId() {
@@ -221,9 +221,9 @@ public class BasicComposite extends BaseJpaComposite
 	
 	private class OptionalHolder extends EObjectImpl implements EnumHolder {
 		
-		private IBasic basic;
+		private IBasicMapping basic;
 		
-		OptionalHolder(IBasic basic) {
+		OptionalHolder(IBasicMapping basic) {
 			super();
 			this.basic = basic;
 		}
@@ -237,7 +237,7 @@ public class BasicComposite extends BaseJpaComposite
 		}
 		
 		public Class featureClass() {
-			return IBasic.class;
+			return IBasicMapping.class;
 		}
 		
 		public int featureId() {
@@ -266,9 +266,9 @@ public class BasicComposite extends BaseJpaComposite
 	
 	private class TemporalTypeHolder extends EObjectImpl implements EnumHolder {
 		
-		private IBasic basic;
+		private IBasicMapping basic;
 		
-		TemporalTypeHolder(IBasic basic) {
+		TemporalTypeHolder(IBasicMapping basic) {
 			super();
 			this.basic = basic;
 		}
@@ -282,7 +282,7 @@ public class BasicComposite extends BaseJpaComposite
 		}
 		
 		public Class featureClass() {
-			return IBasic.class;
+			return IBasicMapping.class;
 		}
 		
 		public int featureId() {
@@ -314,9 +314,9 @@ public class BasicComposite extends BaseJpaComposite
 	
 	private class EnumeratedTypeHolder extends EObjectImpl implements EnumHolder {
 		
-		private IBasic basic;
+		private IBasicMapping basic;
 		
-		EnumeratedTypeHolder(IBasic basic) {
+		EnumeratedTypeHolder(IBasicMapping basic) {
 			super();
 			this.basic = basic;
 		}
@@ -330,7 +330,7 @@ public class BasicComposite extends BaseJpaComposite
 		}
 		
 		public Class featureClass() {
-			return IBasic.class;
+			return IBasicMapping.class;
 		}
 		
 		public int featureId() {

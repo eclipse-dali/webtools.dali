@@ -11,43 +11,72 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
+import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.utility.internal.Filter;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public class JavaPersistentAttribute extends JavaContextModel
 	implements IJavaPersistentAttribute
 {
 	protected String name;
 
-	
-//	protected IJavaAttributeMapping defaultMapping;
+	protected IJavaAttributeMapping defaultMapping;
 
-//	protected IJavaAttributeMapping specifiedMapping;
+	protected IJavaAttributeMapping specifiedMapping;
 
 	protected JavaPersistentAttributeResource persistentAttributeResource;
 
 	public JavaPersistentAttribute(IJavaPersistentType parent) {
 		super(parent);
-		//no access to the jpaFactory() in the constructor because the parent is not set yet
-//		this.defaultMapping = createJavaAttributeMappingFromMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
-//		this.setDefaultMapping(this.nullAttributeMappingProvider().buildMapping(this.attribute, null));
 	}
 	
 	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
 		this.persistentAttributeResource = persistentAttributeResource;
 		this.name = this.name(persistentAttributeResource);
+		initializeDefaultMapping(persistentAttributeResource);
+		initializeSpecifiedMapping(persistentAttributeResource);
+	}
+	
+	protected void initializeDefaultMapping(JavaPersistentAttributeResource persistentAttributeResource) {
+		this.defaultMapping = createDefaultJavaAttributeMapping(persistentAttributeResource);
 	}
 
+	protected void initializeSpecifiedMapping(JavaPersistentAttributeResource persistentAttributeResource) {
+		String javaMappingAnnotationName = this.javaMappingAnnotationName(persistentAttributeResource);
+		this.specifiedMapping = createJavaAttributeMappingFromAnnotation(javaMappingAnnotationName, persistentAttributeResource);
+	}
+	
+	public JavaPersistentAttributeResource getPersistentAttributeResource() {
+		return this.persistentAttributeResource;
+	}
+	
 	public IPersistentType getPersistentType() {
 		return (IPersistentType) this.parent();
 	}
 
 	public ITypeMapping typeMapping() {
 		return this.getPersistentType().getMapping();
+	}
+
+	public String primaryKeyColumnName() {
+		return this.getMapping().primaryKeyColumnName();
+	}
+
+	public boolean isOverridableAttribute() {
+		return this.getMapping().isOverridableAttributeMapping();
+	}
+
+	public boolean isOverridableAssociation() {
+		return this.getMapping().isOverridableAssociationMapping();
+	}
+
+	public boolean isIdAttribute() {
+		return this.getMapping().isIdMapping();
 	}
 	
 	public String getName() {
@@ -60,110 +89,72 @@ public class JavaPersistentAttribute extends JavaContextModel
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
-//
-//	private Iterator<IJavaAttributeMappingProvider> attributeMappingProviders() {
-//		return jpaPlatform().javaAttributeMappingProviders();
-//	}
-//
-//	private ListIterator<IDefaultJavaAttributeMappingProvider> defaultAttributeMappingProviders() {
-//		return jpaPlatform().defaultJavaAttributeMappingProviders();
-//	}
-//
-//	/**
-//	 * the "null" attribute mapping is used when the attribute is neither
-//	 * modified with a mapping annotation nor mapped by a "default" mapping
-//	 */
-//	protected IJavaAttributeMappingProvider nullAttributeMappingProvider() {
-//		return JavaNullAttributeMappingProvider.instance();
-//	}
-//
-//	public IJavaAttributeMapping getDefaultMapping() {
-//		return defaultMapping;
-//	}
-//
-//	/**
-//	 * clients do not set the "default" mapping
-//	 */
-//	private void setDefaultMapping(IJavaAttributeMapping defaultMapping) {
-//		this.setDefaultMappingGen(defaultMapping);
-//	}
-//
-//	public IJavaAttributeMapping getSpecifiedMapping() {
-//		return specifiedMapping;
-//	}
-//
-//	/**
-//	 * clients do not set the "specified" mapping;
-//	 * use #setMappingKey(String)
-//	 */
-//	private void setSpecifiedMapping(IJavaAttributeMapping specifiedMapping) {
-//		this.setSpecifiedMappingGen(specifiedMapping);
-//	}
-//
-//	
-//	public IJavaAttributeMapping getMapping() {
-//		return (this.specifiedMapping != null) ? this.specifiedMapping : this.defaultMapping;
-//	}
-//
+	public IJavaAttributeMapping getDefaultMapping() {
+		return this.defaultMapping;
+	}
 
+	/**
+	 * clients do not set the "default" mapping
+	 */
+	protected void setDefaultMapping(IJavaAttributeMapping newDefaultMapping) {
+		IJavaAttributeMapping oldMapping = this.defaultMapping;
+		this.defaultMapping = newDefaultMapping;	
+		firePropertyChanged(IPersistentAttribute.DEFAULT_MAPPING_PROPERTY, oldMapping, newDefaultMapping);
+	}
 
-//
-//	public String mappingKey() {
-//		return this.getMapping().getKey();
-//	}
-//
-//	/**
-//	 * return null if there is no "default" mapping for the attribute
-//	 */
-//	public String defaultMappingKey() {
-//		return this.defaultMapping.getKey();
-//	}
-//
-//	/**
-//	 * return null if there is no "specified" mapping for the attribute
-//	 */
-//	public String specifiedMappingKey() {
-//		return (this.specifiedMapping == null) ? null : this.specifiedMapping.getKey();
-//	}
+	public IJavaAttributeMapping getSpecifiedMapping() {
+		return this.specifiedMapping;
+	}
 
-//	// TODO support morphing mappings, i.e. copying common settings over
-//	// to the new mapping; this can't be done in the same was as XmlAttributeMapping
-//	// since we don't know all the possible mapping types
-//	public void setSpecifiedMappingKey(String newKey) {
-//		String oldKey = this.specifiedMappingKey();
-//		if (newKey == oldKey) {
-//			return;
-//		}
-//		IJavaAttributeMapping old = this.getMapping();
-//		if (newKey == null) {
-//			// remove mapping annotation
-//			this.setSpecifiedMapping(null);
-//			this.attribute.removeAnnotation(this.declarationAnnotationAdapterForAttributeMappingKey(oldKey));
-//		}
-//		else {
-//			// add or replace mapping annotation
-//			this.setSpecifiedMapping(this.attributeMappingProvider(newKey).buildMapping(this.attribute, jpaFactory()));
-//			if (oldKey != null) {
-//				this.attribute.removeAnnotation(this.declarationAnnotationAdapterForAttributeMappingKey(oldKey));
-//			}
-//			this.attribute.newMarkerAnnotation(this.declarationAnnotationAdapterForAttributeMappingKey(newKey));
-//			this.specifiedMapping.updateFromJava(getAttribute().astRoot());
-//		}
-//		if (this.eNotificationRequired()) {
-//			this.eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING, old, this.getMapping()));
-//		}
-//	}
+	/**
+	 * clients do not set the "specified" mapping;
+	 * use #setMappingKey(String)
+	 */
+	protected void setSpecifiedMapping(IJavaAttributeMapping newSpecifiedMapping) {
+		IJavaAttributeMapping oldMapping = this.specifiedMapping;
+		this.specifiedMapping = newSpecifiedMapping;	
+		firePropertyChanged(IPersistentAttribute.SPECIFIED_MAPPING_PROPERTY, oldMapping, newSpecifiedMapping);
+	}
 
-//	private DeclarationAnnotationAdapter declarationAnnotationAdapterForAttributeMappingKey(String attributeMappingKey) {
-//		return this.attributeMappingProvider(attributeMappingKey).declarationAnnotationAdapter();
-//	}
-//
-//	/**
-//	 * throw an exception if the provider is not found
-//	 */
-//	private IJavaAttributeMappingProvider attributeMappingProvider(String attributeMappingKey) {
-//		return jpaPlatform().javaAttributeMappingProvider(attributeMappingKey);
-//	}
+	
+	public IJavaAttributeMapping getMapping() {
+		return (this.specifiedMapping != null) ? this.specifiedMapping : this.defaultMapping;
+	}
+
+	public String mappingKey() {
+		return this.getMapping().getKey();
+	}
+
+	/**
+	 * return null if there is no "default" mapping for the attribute
+	 */
+	public String defaultMappingKey() {
+		return this.defaultMapping.getKey();
+	}
+
+	/**
+	 * return null if there is no "specified" mapping for the attribute
+	 */
+	public String specifiedMappingKey() {
+		return (this.specifiedMapping == null) ? null : this.specifiedMapping.getKey();
+	}
+
+	// TODO support morphing mappings, i.e. copying common settings over
+	// to the new mapping; this can't be done in the same was as XmlAttributeMapping
+	// since we don't know all the possible mapping types
+	public void setSpecifiedMappingKey(String newKey) {
+		if (newKey == specifiedMappingKey()) {
+			return;
+		}
+		IJavaAttributeMapping newMapping = createJavaAttributeMappingFromMappingKey(newKey);
+		setSpecifiedMapping(newMapping);
+		if (newMapping != null) {
+			this.persistentAttributeResource.setMappingAnnotation(newMapping.annotationName());
+		}
+		else {
+			this.persistentAttributeResource.setMappingAnnotation(null);			
+		}
+	}
 
 //	public boolean includes(int offset) {
 //		ITextRange fullTextRange = this.fullTextRange();
@@ -182,7 +173,7 @@ public class JavaPersistentAttribute extends JavaContextModel
 //	public ITextRange fullTextRange() {
 //		return this.attribute.textRange();
 //	}
-//
+
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
 		return this.selectionTextRange(astRoot);
 	}
@@ -194,60 +185,76 @@ public class JavaPersistentAttribute extends JavaContextModel
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		this.persistentAttributeResource = persistentAttributeResource;
 		this.setName(this.name(persistentAttributeResource));
+		this.updateDefaultMapping(persistentAttributeResource);
+		this.updateSpecifiedMapping(persistentAttributeResource);
 	}
 	
 	protected String name(JavaPersistentAttributeResource persistentAttributeResource) {
 		return persistentAttributeResource.getName();	
 	}
+	
+	public String specifiedMappingAnnotationName() {
+		return (this.specifiedMapping == null) ? null : this.specifiedMapping.annotationName();
+	}
+	
+	protected void updateSpecifiedMapping(JavaPersistentAttributeResource persistentAttributeResource) {
+		String javaMappingAnnotationName = this.javaMappingAnnotationName(persistentAttributeResource);
+		if (specifiedMappingAnnotationName() != javaMappingAnnotationName) {
+			setSpecifiedMapping(createJavaAttributeMappingFromAnnotation(javaMappingAnnotationName, persistentAttributeResource));
+		}
+		else {
+			if (getSpecifiedMapping() != null) {
+				getSpecifiedMapping().update(persistentAttributeResource);
+			}
+		}
+	}
+	
+	protected void updateDefaultMapping(JavaPersistentAttributeResource persistentAttributeResource) {
+		String defaultMappingKey = jpaPlatform().defaultJavaAttributeMappingKey(this);
+		if (getDefaultMapping().getKey() != defaultMappingKey) {
+			setDefaultMapping(createDefaultJavaAttributeMapping(persistentAttributeResource));
+		}
+		else {
+			getDefaultMapping().update(persistentAttributeResource);
+		}
+	}
+	
+	protected String javaMappingAnnotationName(JavaPersistentAttributeResource persistentAttributeResource) {
+		Annotation mappingAnnotation = (Annotation) persistentAttributeResource.mappingAnnotation();
+		if (mappingAnnotation != null) {
+			return mappingAnnotation.getAnnotationName();
+		}
+		return null;
+	}
+	
+	protected IJavaAttributeMapping createJavaAttributeMappingFromMappingKey(String key) {
+		if (key == IMappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
+			return null;
+		}
+		return jpaPlatform().createJavaAttributeMappingFromMappingKey(key, this);
+	}
 
-//	public void updateFromJava(CompilationUnit astRoot) {
-//		// synchronize the "specified" mapping with the Java source
-//		String jpaKey = this.specifiedMappingKey();
-//		IJavaAttributeMappingProvider javaProvider = this.javaAttributeMappingProvider(astRoot);
-//		String javaKey = ((javaProvider == null) ? null : javaProvider.key());
-//		if (javaKey != jpaKey) {
-//			IJavaAttributeMapping old = this.getMapping();
-//			if (javaKey == null) {
-//				// no mapping annotation found in Java source
-//				this.setSpecifiedMapping(null);
-//			}
-//			else {
-//				// the mapping has changed
-//				this.setSpecifiedMapping(javaProvider.buildMapping(this.attribute, jpaFactory()));
-//			}
-//			if (this.eNotificationRequired()) {
-//				this.eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING, old, this.getMapping()));
-//			}
-//		}
-//		// once the "specified" mapping is in place, update it from Java;
-//		// unless it is null, in which case we update the "default" mapping from Java
-//		this.getMapping().updateFromJava(astRoot);
-//	}
-//
-//	/**
-//	 * return null if we can't find a mapping annotation on the attribute
-//	 */
-//	private IJavaAttributeMappingProvider javaAttributeMappingProvider(CompilationUnit astRoot) {
-//		for (Iterator<IJavaAttributeMappingProvider> i = this.attributeMappingProviders(); i.hasNext();) {
-//			IJavaAttributeMappingProvider provider = i.next();
-//			if (this.attribute.containsAnnotation(provider.declarationAnnotationAdapter(), astRoot)) {
-//				return provider;
-//			}
-//		}
-//		return null;
-//	}
-//
-//	public String primaryKeyColumnName() {
-//		IJavaAttributeMapping mapping = this.getMapping();
-//		return (mapping == null) ? null : mapping.primaryKeyColumnName();
-//	}
-//
-//	/**
-//	 * the mapping might be "default", but it still might be a "null" mapping...
-//	 */
-//	public boolean mappingIsDefault() {
-//		return this.specifiedMapping == null;
-//	}
+	protected IJavaAttributeMapping createJavaAttributeMappingFromAnnotation(String annotationName, JavaPersistentAttributeResource persistentAttributeResource) {
+		if (annotationName == null) {
+			return null;
+		}
+		IJavaAttributeMapping mapping = jpaPlatform().createJavaAttributeMappingFromAnnotation(annotationName, this);
+		mapping.initializeFromResource(persistentAttributeResource);
+		return mapping;
+	}
+
+	protected IJavaAttributeMapping createDefaultJavaAttributeMapping(JavaPersistentAttributeResource persistentAttributeResource) {		
+		IJavaAttributeMapping defaultMapping = jpaPlatform().createDefaultJavaAttributeMapping(this);
+		defaultMapping.initializeFromResource(persistentAttributeResource);
+		return defaultMapping;
+	}
+
+	/**
+	 * the mapping might be "default", but it still might be a "null" mapping...
+	 */
+	public boolean mappingIsDefault() {
+		return this.specifiedMapping == null;
+	}
 
 	@Override
 	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -255,50 +262,7 @@ public class JavaPersistentAttribute extends JavaContextModel
 		if (result != null) {
 			return result;
 		}
-		return EmptyIterator.instance();
-//		return this.getMapping().candidateValuesFor(pos, filter, astRoot);
+		return this.getMapping().candidateValuesFor(pos, filter, astRoot);
 	}
 
-//	/**
-//	 * check to see whether the "default" mapping has changed
-//	 */
-//	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		IJavaAttributeMappingProvider defaultProvider = this.defaultAttributeMappingProvider(defaultsContext);
-//		if (defaultProvider.key() == this.defaultMapping.getKey()) {
-//			return;
-//		}
-//		// the "default" mapping has changed
-//		IJavaAttributeMapping old = this.getMapping();
-//		this.setDefaultMapping(defaultProvider.buildMapping(this.attribute, jpaFactory()));
-//		this.defaultMapping.updateFromJava(defaultsContext.astRoot());
-//		if (this.eNotificationRequired()) {
-//			this.eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaPackage.JAVA_PERSISTENT_ATTRIBUTE__MAPPING, old, this.getMapping()));
-//		}
-//	}
-
-//	/**
-//	 * return the first(?) provider that can supply a "default" mapping for the attribute;
-//	 * return the null provider if we can't find a provider
-//	 */
-//	private IJavaAttributeMappingProvider defaultAttributeMappingProvider(DefaultsContext defaultsContext) {
-//		for (Iterator<IDefaultJavaAttributeMappingProvider> i = this.defaultAttributeMappingProviders(); i.hasNext();) {
-//			IDefaultJavaAttributeMappingProvider provider = i.next();
-//			if (provider.defaultApplies(this.attribute, defaultsContext)) {
-//				return provider;
-//			}
-//		}
-//		return this.nullAttributeMappingProvider();
-//	}
-//
-//	public boolean isOverridableAttribute() {
-//		return this.getMapping().isOverridableAttributeMapping();
-//	}
-//
-//	public boolean isOverridableAssociation() {
-//		return this.getMapping().isOverridableAssociationMapping();
-//	}
-//
-//	public boolean isIdAttribute() {
-//		return this.getMapping().isIdMapping();
-//	}
 }

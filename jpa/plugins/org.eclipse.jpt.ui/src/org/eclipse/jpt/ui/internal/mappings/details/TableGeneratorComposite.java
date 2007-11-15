@@ -59,7 +59,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		return tableGenerator;
 	}
 	
-	protected ITableGenerator generator(IId idMapping) {
+	protected ITableGenerator generator(IIdMapping idMapping) {
 		return idMapping.getTableGenerator();
 	}
 

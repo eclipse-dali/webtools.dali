@@ -49,16 +49,16 @@ public class XmlPersistentAttributeItemProvider extends ItemProviderAdapter
 		XmlAttributeMapping mapping = ((XmlPersistentAttribute) object).getMapping();
 		
 		Image image;
-		if (mapping instanceof IBasic) {
+		if (mapping instanceof IBasicMapping) {
 			image = JptUiMappingsImages.getImage(JptUiMappingsImages.BASIC);
 		}
-		else if (mapping instanceof IId) {
+		else if (mapping instanceof IIdMapping) {
 			image = JptUiMappingsImages.getImage(JptUiMappingsImages.ID);
 		}
 		else if (mapping instanceof IVersion) {
 			image = JptUiMappingsImages.getImage(JptUiMappingsImages.VERSION);
 		}
-		else if (mapping instanceof IEmbedded) {
+		else if (mapping instanceof IEmbeddedMapping) {
 			image = JptUiMappingsImages.getImage(JptUiMappingsImages.EMBEDDED);
 		}
 		else if (mapping instanceof IEmbeddedId) {

@@ -50,6 +50,9 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	
 	@Override
 	protected void tearDown() throws Exception {
+		//at least delete the project from the workspace since, deleting from the file system doesn't work well.
+		//tests run too slow otherwise because so many projects are created in the workspace
+		getJavaProject().getProject().delete(false, true, null);
 		this.persistenceResourceModel = null;
 		super.tearDown();
 	}

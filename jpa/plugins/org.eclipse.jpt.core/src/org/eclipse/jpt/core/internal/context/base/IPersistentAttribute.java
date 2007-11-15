@@ -15,39 +15,58 @@ public interface IPersistentAttribute extends IJpaContextNode
 	String getName();
 		String NAME_PROPERTY = "nameProperty";
 
-//	IAttributeMapping getMapping();
+	/**
+	 * Return the key for the attribute's mapping.
+	 * The key may be for either the "specified" mapping or, if the "specified"
+	 * mapping is missing, the "default" mapping.
+	 */
+	String mappingKey();
 
-//	String mappingKey();
+	/**
+	 * Return the key for the attribute's "default" mapping.
+	 */
+	String defaultMappingKey();
 
-//	String defaultMappingKey();
+	/**
+	 * Return the attribute's "specified" mapping, or if it is null
+	 * return the "default" mapping.  WIll not return null.
+	 */
+	IAttributeMapping getMapping();
 
+	/**
+	 * Return the attribute's "specified" mapping, could be null
+	 */
+	IAttributeMapping getSpecifiedMapping();
+	
 	/**
 	 * Clients should call this method to set the attribute's mapping.
 	 * Passing in a null key will cause the "specified" mapping to be
 	 * cleared and the attribute's mapping to be its "default" mapping.
 	 */
-//	void setSpecifiedMappingKey(String key);
+	void setSpecifiedMappingKey(String key);
+		String SPECIFIED_MAPPING_PROPERTY = "specifiedMappingProperty";
+		String DEFAULT_MAPPING_PROPERTY = "defaultMappingProperty";
 
 	ITypeMapping typeMapping();
-//
-//	/**
-//	 * If the attribute is mapped to a primary key column, return the
-//	 * column's name, otherwise return null.
-//	 */
-//	String primaryKeyColumnName();
-//
-//	/**
-//	 * Return whether the attribute's "attribute" mapping can be overridden.
-//	 */
-//	boolean isOverridableAttribute();
-//
-//	/**
-//	 * Return whether the attribute's "association" mapping can be overridden.
-//	 */
-//	boolean isOverridableAssociation();
-//
-//	/**
-//	 * Return whether the attribute's "attribute" mapping is for an ID.
-//	 */
-//	boolean isIdAttribute();
+
+	/**
+	 * If the attribute is mapped to a primary key column, return the
+	 * column's name, otherwise return null.
+	 */
+	String primaryKeyColumnName();
+
+	/**
+	 * Return whether the attribute's "attribute" mapping can be overridden.
+	 */
+	boolean isOverridableAttribute();
+
+	/**
+	 * Return whether the attribute's "association" mapping can be overridden.
+	 */
+	boolean isOverridableAssociation();
+
+	/**
+	 * Return whether the attribute's "attribute" mapping is for an ID.
+	 */
+	boolean isIdAttribute();
 }

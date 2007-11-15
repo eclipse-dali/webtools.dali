@@ -36,15 +36,25 @@ import org.eclipse.jpt.core.internal.context.base.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.Persistence;
 import org.eclipse.jpt.core.internal.context.base.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
+import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
+import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddable;
+import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
+import org.eclipse.jpt.core.internal.context.java.IJavaIdMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.context.java.IJavaTable;
 import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
+import org.eclipse.jpt.core.internal.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaDiscriminatorColumn;
+import org.eclipse.jpt.core.internal.context.java.JavaEmbeddable;
+import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaEntity;
+import org.eclipse.jpt.core.internal.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.internal.context.java.JavaNullAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentType;
@@ -198,6 +208,10 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return new JavaEntity(parent);
 	}
 
+	public IJavaEmbeddable createJavaEmbeddable(IJavaPersistentType parent) {
+		return new JavaEmbeddable(parent);
+	}
+	
 	public IJavaTable createJavaTable(IJavaEntity parent) {
 		return new JavaTable(parent);
 	}
@@ -208,5 +222,21 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IJavaSecondaryTable createJavaSecondaryTable(IJavaEntity parent) {
 		return new JavaSecondaryTable(parent);
+	}
+	
+	public IJavaBasicMapping createJavaBasicMapping(IJavaPersistentAttribute parent) {
+		return new JavaBasicMapping(parent);
+	}
+	
+	public IJavaEmbeddedMapping createJavaEmbeddedMapping(IJavaPersistentAttribute parent) {
+		return new JavaEmbeddedMapping(parent);
+	}
+	
+	public IJavaIdMapping createJavaIdMapping(IJavaPersistentAttribute parent) {
+		return new JavaIdMapping(parent);
+	}
+	
+	public IJavaAttributeMapping createJavaNullAttributeMapping(IJavaPersistentAttribute parent) {
+		return new JavaNullAttributeMapping(parent);
 	}
 }

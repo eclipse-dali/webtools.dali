@@ -30,7 +30,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  */
 public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaComposite
 {
-	private IId id;
+	private IIdMapping id;
 	private E generator;
 	private Adapter generatorListener;
 
@@ -84,7 +84,7 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 
 	@Override
 	protected void doPopulate(EObject obj) {
-		this.id = (IId) obj;
+		this.id = (IIdMapping) obj;
 		if (this.id  == null) {
 			this.generator = null;
 			return;
@@ -115,9 +115,9 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 		}
 	}
 
-	protected abstract E generator(IId id);
+	protected abstract E generator(IIdMapping id);
 	
-	protected IId idMapping() {
+	protected IIdMapping idMapping() {
 		return this.id;
 	}
 
