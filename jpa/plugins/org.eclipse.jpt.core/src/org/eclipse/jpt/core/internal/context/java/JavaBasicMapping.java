@@ -15,10 +15,12 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.EnumType;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
 import org.eclipse.jpt.core.internal.resource.java.Enumerated;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.Lob;
+import org.eclipse.jpt.core.internal.resource.java.Temporal;
 import org.eclipse.jpt.utility.internal.Filter;
 
 
@@ -33,9 +35,8 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 //	protected IColumn column;
 	
 	protected boolean lob;
-//
-//	protected static final TemporalType TEMPORAL_EDEFAULT = TemporalType.NULL;
-//	protected TemporalType temporal = TEMPORAL_EDEFAULT;
+
+	protected TemporalType temporal;
 
 	public JavaBasicMapping(IJavaPersistentAttribute parent) {
 		super(parent);
@@ -51,6 +52,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		this.specifiedOptional = this.specifiedOptional(basicResource);
 		this.specifiedEnumerated = this.specifiedEnumerated(enumeratedResource());
 		this.lob = this.lob(persistentAttributeResource);
+		this.temporal = this.temporal(temporalResource());
 	}
 	
 	protected Basic basicResource() {
@@ -59,6 +61,10 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	
 	protected Enumerated enumeratedResource() {
 		return (Enumerated) this.persistentAttributeResource.nonNullAnnotation(Enumerated.ANNOTATION_NAME);
+	}
+	
+	protected Temporal temporalResource() {
+		return (Temporal) this.persistentAttributeResource.nonNullAnnotation(Temporal.ANNOTATION_NAME);
 	}
 
 	//************** IJavaAttributeMapping implementation ***************
@@ -150,16 +156,16 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		firePropertyChanged(IBasicMapping.LOB_PROPERTY, oldLob, newLob);
 	}
 
-//	public TemporalType getTemporal() {
-//		return temporal;
-//	}
-//
-//	public void setTemporal(TemporalType newTemporal) {
-//		TemporalType oldTemporal = temporal;
-//		temporal = newTemporal == null ? TEMPORAL_EDEFAULT : newTemporal;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_BASIC__TEMPORAL, oldTemporal, temporal));
-//	}
+	public TemporalType getTemporal() {
+		return this.temporal;
+	}
+
+	public void setTemporal(TemporalType newTemporal) {
+		TemporalType oldTemporal = this.temporal;
+		this.temporal = newTemporal;
+		this.temporalResource().setValue(TemporalType.toJavaResourceModel(newTemporal));
+		firePropertyChanged(IBasicMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+	}
 	
 	public EnumType getEnumerated() {
 		return (this.getSpecifiedEnumerated() == null) ? this.getDefaultEnumerated() : this.getSpecifiedEnumerated();
@@ -188,6 +194,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		this.setSpecifiedOptional(this.specifiedOptional(basicResource));
 		this.setSpecifiedEnumerated(this.specifiedEnumerated(enumeratedResource()));
 		this.setLob(this.lob(persistentAttributeResource));
+		this.setTemporal(this.temporal(temporalResource()));
 	}
 	
 	
@@ -211,50 +218,9 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		return (Lob) persistentAttributeResource.annotation(Lob.ANNOTATION_NAME);
 	}
 	
-//	@Override
-//	public void updateFromJava(CompilationUnit astRoot) {
-//		super.updateFromJava(astRoot);
-//		this.setOptional(DefaultTrueBoolean.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot)));
-//		this.setFetch(DefaultEagerFetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot)));
-//		this.getJavaColumn().updateFromJava(astRoot);
-//		this.setLob(this.lobAdapter.getValue(astRoot));
-//		this.updateTemporalFromJava(astRoot);
-//		this.updateEnumeratedFromJava(astRoot);
-//	}
-//
-//	private JavaColumn getJavaColumn() {
-//		return (JavaColumn) this.column;
-//	}
-//
-//	/*
-//	 * The @Temporal annotation is a bit different than most JPA annotations.
-//	 * For some indecipherable reason it has no default value (e.g. TIMESTAMP).
-//	 * Also, it is *required* for any attribute declared with a type of
-//	 * java.util.Date or java.util.Calendar; otherwise, it is *prohibited*.
-//	 * As a result we allow a Basic mapping to have a null 'temporal',
-//	 * indicating that the annotation is completely missing, as opposed
-//	 * to the annotation being present but its value is invalid (e.g.
-//	 * @Temporal(FRIDAY)).
-//	 * 
-//	 * TODO this comment is wrong now, revisit this with Brian at some point
-//	 */
-//	private void updateTemporalFromJava(CompilationUnit astRoot) {
-//		if (this.temporalAnnotationAdapter.getAnnotation(astRoot) == null) {
-//			this.setTemporal(TemporalType.NULL);
-//		}
-//		else {
-//			this.setTemporal(TemporalType.fromJavaAnnotationValue(this.temporalValueAdapter.getValue(astRoot)));
-//		}
-//	}
-//
-//	private void updateEnumeratedFromJava(CompilationUnit astRoot) {
-//		if (this.enumeratedAnnotationAdapter.getAnnotation(astRoot) == null) {
-//			this.setEnumerated(EnumType.DEFAULT);
-//		}
-//		else {
-//			this.setEnumerated(EnumType.fromJavaAnnotationValue(this.enumeratedValueAdapter.getValue(astRoot)));
-//		}
-//	}
+	protected TemporalType temporal(Temporal temporal) {
+		return TemporalType.fromJavaResourceModel(temporal.getValue());
+	}
 
 
 	@Override

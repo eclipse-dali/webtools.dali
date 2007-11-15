@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
 import org.eclipse.jpt.core.internal.resource.java.Enumerated;
@@ -26,6 +27,7 @@ import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.Lob;
+import org.eclipse.jpt.core.internal.resource.java.Temporal;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
@@ -46,8 +48,13 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 	private void createLobAnnotation() throws Exception{
 		this.createAnnotationAndMembers("Lob", "");		
 	}
+	
 	private void createEnumeratedAnnotation() throws Exception{
 		this.createAnnotationAndMembers("Enumerated", "EnumType value() default ORDINAL;");		
+	}
+	
+	private void createTemporalAnnotation() throws Exception{
+		this.createAnnotationAndMembers("Temporal", "TemporalType value();");		
 	}
 
 	private IType createTestEntity() throws Exception {
@@ -144,6 +151,27 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Enumerated(EnumType.STRING)").append(CR);
+			}
+		});
+	}
+	
+	private IType createTestEntityWithTemporal() throws Exception {
+		createEntityAnnotation();
+		createTemporalAnnotation();
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.TEMPORAL, JPA.TEMPORAL_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Temporal(TemporalType.TIMESTAMP)").append(CR);
 			}
 		});
 	}
@@ -502,14 +530,6 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		assertFalse(basicMapping.isLob());
 	}
-
-	
-	
-	
-	
-	
-	
-	
 	
 	public void testDefaultBasicGetDefaultEnumerated() throws Exception {
 		createTestEntity();
@@ -602,6 +622,71 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		enumerated.setValue(null);
 		assertNull(attributeResource.annotation(Enumerated.ANNOTATION_NAME));
 		assertNull(basicMapping.getSpecifiedEnumerated());
+		assertFalse(basicMapping.isDefault());
+		assertSame(basicMapping, persistentAttribute.getSpecifiedMapping());
+	}
+	
+	
+	public void testGetTemporal() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+
+		assertNull(basicMapping.getTemporal());
+	}
+	
+	public void testGetTemporal2() throws Exception {
+		createTestEntityWithTemporal();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getMapping();
+
+		assertEquals(TemporalType.TIMESTAMP, basicMapping.getTemporal());
+	}
+
+	public void testSetTemporal() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+		assertNull(basicMapping.getTemporal());
+		
+		basicMapping.setTemporal(TemporalType.TIME);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		Temporal temporal = (Temporal) attributeResource.annotation(Temporal.ANNOTATION_NAME);
+		
+		assertEquals(org.eclipse.jpt.core.internal.resource.java.TemporalType.TIME, temporal.getValue());
+		
+		basicMapping.setTemporal(null);
+		assertNull(attributeResource.annotation(Temporal.ANNOTATION_NAME));
+	}
+	
+	public void testGetTemporalUpdatesFromResourceModelChange() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+
+		assertNull(basicMapping.getTemporal());
+		
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		Temporal temporal = (Temporal) attributeResource.addAnnotation(Temporal.ANNOTATION_NAME);
+		temporal.setValue(org.eclipse.jpt.core.internal.resource.java.TemporalType.DATE);
+		
+		assertEquals(TemporalType.DATE, basicMapping.getTemporal());
+		
+		attributeResource.removeAnnotation(Temporal.ANNOTATION_NAME);
+		
+		assertNull(basicMapping.getTemporal());
 		assertFalse(basicMapping.isDefault());
 		assertSame(basicMapping, persistentAttribute.getSpecifiedMapping());
 	}

@@ -9,8 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.Iterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.java.Id;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
+import org.eclipse.jpt.core.internal.resource.java.Temporal;
+import org.eclipse.jpt.utility.internal.Filter;
 
 
 public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMapping
@@ -18,11 +25,9 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 //	protected IColumn column;
 //
 //	protected IGeneratedValue generatedValue;
-//
-//	protected static final TemporalType TEMPORAL_EDEFAULT = TemporalType.NULL;
-//
-//	protected TemporalType temporal = TEMPORAL_EDEFAULT;
-//
+
+	protected TemporalType temporal;
+
 //	protected ITableGenerator tableGenerator;
 //
 //	protected ISequenceGenerator sequenceGenerator;
@@ -38,6 +43,18 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 //		this.sequenceGeneratorAnnotationAdapter = this.buildAnnotationAdapter(JavaSequenceGenerator.DECLARATION_ANNOTATION_ADAPTER);
 	}
 
+	@Override
+	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
+		super.initializeFromResource(persistentAttributeResource);
+		this.temporal = this.temporal(temporalResource());
+	}
+	
+	protected Temporal temporalResource() {
+		return (Temporal) this.persistentAttributeResource.nonNullAnnotation(Temporal.ANNOTATION_NAME);
+	}
+	
+	//************** IJavaAttributeMapping implementation ***************
+
 	public String getKey() {
 		return IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
 	}
@@ -45,6 +62,8 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 	public String annotationName() {
 		return Id.ANNOTATION_NAME;
 	}
+	
+	//************** IIdMapping implementation ***************
 	
 //	public IColumn getColumn() {
 //		return column;
@@ -113,26 +132,18 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 //		return temporal;
 //	}
 //
-//	public void setTemporalGen(TemporalType newTemporal) {
-//		TemporalType oldTemporal = temporal;
-//		temporal = newTemporal == null ? TEMPORAL_EDEFAULT : newTemporal;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ID__TEMPORAL, oldTemporal, temporal));
-//	}
-//
-//	public void setTemporal(TemporalType newTemporal) {
-//		if (newTemporal != TemporalType.NULL) {
-//			if (this.temporalAnnotationAdapter.getAnnotation() == null) {
-//				this.temporalAnnotationAdapter.newMarkerAnnotation();
-//			}
-//			this.temporalValueAdapter.setValue(newTemporal.convertToJavaAnnotationValue());
-//		}
-//		else if (this.temporalAnnotationAdapter.getAnnotation() != null) {
-//			this.temporalAnnotationAdapter.removeAnnotation();
-//		}
-//		setTemporalGen(newTemporal);
-//	}
-//
+	public TemporalType getTemporal() {
+		return this.temporal;
+	}
+
+	public void setTemporal(TemporalType newTemporal) {
+		TemporalType oldTemporal = this.temporal;
+		this.temporal = newTemporal;
+		this.temporalResource().setValue(TemporalType.toJavaResourceModel(newTemporal));
+		firePropertyChanged(IBasicMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+	}
+	
+
 //	public ITableGenerator getTableGenerator() {
 //		return tableGenerator;
 //	}
@@ -194,7 +205,18 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 //		else if (eNotificationRequired())
 //			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ID__SEQUENCE_GENERATOR, newSequenceGenerator, newSequenceGenerator));
 //	}
-//
+	
+	@Override
+	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
+		super.update(persistentAttributeResource);
+		this.setTemporal(this.temporal(temporalResource()));
+	}
+	
+	protected TemporalType temporal(Temporal temporal) {
+		return TemporalType.fromJavaResourceModel(temporal.getValue());
+	}
+
+	
 //	@Override
 //	public void updateFromJava(CompilationUnit astRoot) {
 //		super.updateFromJava(astRoot);
@@ -247,43 +269,22 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 //		}
 //	}
 //
-//	/*
-//	 * The @Temporal annotation is a bit different than most JPA annotations.
-//	 * For some indecipherable reason it has no default value (e.g. TIMESTAMP).
-//	 * Also, it is *required* for any attribute declared with a type of
-//	 * java.util.Date or java.util.Calendar; otherwise, it is *prohibited*.
-//	 * As a result we allow a Basic mapping to have a null 'temporal',
-//	 * indicating that the annotation is completely missing, as opposed
-//	 * to the annotation being present but its value is invalid (e.g.
-//	 * @Temporal(FRIDAY)).
-//	 * 
-//	 * TODO this comment is wrong now, revisit this with Brian at some point
-//	 */
-//	private void updateTemporalFromJava(CompilationUnit astRoot) {
-//		if (this.temporalAnnotationAdapter.getAnnotation(astRoot) == null) {
-//			setTemporalGen(TemporalType.NULL);
-//		}
-//		else {
-//			setTemporalGen(TemporalType.fromJavaAnnotationValue(this.temporalValueAdapter.getValue(astRoot)));
-//		}
-//	}
-//
 //	private JavaColumn getJavaColumn() {
 //		return (JavaColumn) this.column;
 //	}
 //
-//	@Override
-//	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-//		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
-//		if (result != null) {
-//			return result;
-//		}
+	@Override
+	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 //		result = this.getJavaColumn().candidateValuesFor(pos, filter, astRoot);
 //		if (result != null) {
 //			return result;
 //		}
-//		return null;
-//	}
+		return null;
+	}
 //
 //	@Override
 //	public String primaryKeyColumnName() {

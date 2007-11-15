@@ -15,11 +15,11 @@ public interface IIdMapping extends IAttributeMapping, IColumnMapping
 //	IGeneratedValue getGeneratedValue();
 //
 //	void setGeneratedValue(IGeneratedValue value);
-//
-//	TemporalType getTemporal();
-//
-//	void setTemporal(TemporalType value);
-//
+
+	TemporalType getTemporal();
+
+	void setTemporal(TemporalType value);
+
 //	ITableGenerator getTableGenerator();
 //
 //	void setTableGenerator(ITableGenerator value);
