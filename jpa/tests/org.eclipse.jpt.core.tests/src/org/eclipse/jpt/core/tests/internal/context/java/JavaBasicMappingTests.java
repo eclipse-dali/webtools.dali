@@ -32,8 +32,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaBasicMappingTests extends ContextModelTestCase
 {
-	private static final String DISCRIMINATOR_COLUMN_NAME = "MY_DISCRIMINATOR_COLUMN";
-	
 	private void createEntityAnnotation() throws Exception{
 		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
 	}
@@ -41,7 +39,6 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 	private void createBasicAnnotation() throws Exception{
 		this.createAnnotationAndMembers("Basic", "FetchType fetch() default EAGER; boolean optional() default true;");		
 	}
-	
 	
 
 	private IType createTestEntity() throws Exception {
@@ -79,7 +76,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 			}
 		});
 	}
-	private IType createTestEntityWithBasicMappingFetchSpecified() throws Exception {
+	private IType createTestEntityWithBasicMappingFetchOptionalSpecified() throws Exception {
 		createEntityAnnotation();
 		createBasicAnnotation();
 	
@@ -95,7 +92,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 			
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Basic(fetch=FetchType.EAGER)").append(CR);
+				sb.append("@Basic(fetch=FetchType.EAGER, optional=false)").append(CR);
 			}
 		});
 	}
@@ -186,7 +183,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 	}
 	
 	public void testGetSpecifiedFetch2() throws Exception {
-		createTestEntityWithBasicMappingFetchSpecified();
+		createTestEntityWithBasicMappingFetchOptionalSpecified();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
@@ -194,7 +191,6 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 
 		assertEquals(FetchType.EAGER, basicMapping.getSpecifiedFetch());
 	}
-	
 
 	public void testSetSpecifiedFetch() throws Exception {
 		createTestEntityWithBasicMapping();
@@ -262,4 +258,142 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		basicMapping = (IBasicMapping) persistentAttribute.getMapping();
 		assertTrue(basicMapping.isDefault());
 	}
+	
+	public void testDefaultBasicGetDefaultOptional() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getMapping();
+		assertEquals(Boolean.TRUE, basicMapping.getDefaultOptional());
+	}
+	
+	public void testSpecifiedBasicGetDefaultOptional() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+		assertEquals(Boolean.TRUE, basicMapping.getDefaultOptional());
+	}
+	
+	public void testGetOptional() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+
+		assertEquals(Boolean.TRUE, basicMapping.getOptional());
+		
+		basicMapping.setSpecifiedOptional(basicMapping.getOptional());
+		assertEquals(Boolean.TRUE, basicMapping.getOptional());
+	}
+	
+	public void testGetSpecifiedOptional() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+
+		assertNull(basicMapping.getSpecifiedOptional());
+		
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		Basic basic = (Basic) attributeResource.mappingAnnotation(JPA.BASIC);
+		basic.setOptional(Boolean.FALSE);
+		
+		assertEquals(Boolean.FALSE, basicMapping.getSpecifiedOptional());
+	}
+	
+	public void testGetSpecifiedOptional2() throws Exception {
+		createTestEntityWithBasicMappingFetchOptionalSpecified();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+
+		assertEquals(Boolean.FALSE, basicMapping.getSpecifiedOptional());
+	}
+
+	public void testSetSpecifiedOptional() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+		assertNull(basicMapping.getSpecifiedOptional());
+		
+		basicMapping.setSpecifiedOptional(Boolean.FALSE);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		Basic basic = (Basic) attributeResource.mappingAnnotation(JPA.BASIC);
+		
+		assertEquals(Boolean.FALSE, basic.getOptional());
+		
+		basicMapping.setSpecifiedOptional(null);
+		assertNotNull(attributeResource.mappingAnnotation(JPA.BASIC));
+	}
+	
+	public void testSetSpecifiedOptional2() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getMapping();
+		assertNull(basicMapping.getSpecifiedOptional());
+		assertTrue(basicMapping.isDefault());
+		
+		basicMapping.setSpecifiedOptional(Boolean.TRUE);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		Basic basic = (Basic) attributeResource.mappingAnnotation(JPA.BASIC);
+		
+		assertEquals(Boolean.TRUE, basic.getOptional());
+		
+		basicMapping = (IBasicMapping) persistentAttribute.getMapping();
+		assertEquals(Boolean.TRUE, basicMapping.getSpecifiedOptional());
+		assertFalse(basicMapping.isDefault());
+
+		basicMapping.setSpecifiedOptional(null);
+		assertNotNull(attributeResource.mappingAnnotation(JPA.BASIC));
+		
+		basicMapping = (IBasicMapping) persistentAttribute.getMapping();
+		assertFalse(basicMapping.isDefault());
+	}
+
+	
+	public void testGetSpecifiedOptionalUpdatesFromResourceModelChange() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+
+		assertNull(basicMapping.getSpecifiedOptional());
+		
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		Basic basic = (Basic) attributeResource.mappingAnnotation(JPA.BASIC);
+		basic.setOptional(Boolean.FALSE);
+		
+		assertEquals(Boolean.FALSE, basicMapping.getSpecifiedOptional());
+		
+		basic.setOptional(null);
+		assertNull(basicMapping.getSpecifiedOptional());
+		assertFalse(basicMapping.isDefault());
+		assertSame(basicMapping, persistentAttribute.getSpecifiedMapping());
+		
+		basic.setOptional(Boolean.FALSE);
+		attributeResource.setMappingAnnotation(null);
+		
+		assertNull(persistentAttribute.getSpecifiedMapping());
+		assertEquals(Boolean.TRUE, ((IBasicMapping) persistentAttribute.getMapping()).getOptional());
+	}
+
 }

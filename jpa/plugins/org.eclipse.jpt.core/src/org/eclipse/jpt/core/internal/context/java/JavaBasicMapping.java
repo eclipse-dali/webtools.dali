@@ -23,11 +23,9 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 {
 	protected FetchType specifiedFetch;
 
+	protected Boolean specifiedOptional;
 	
-//	protected static final DefaultTrueBoolean OPTIONAL_EDEFAULT = DefaultTrueBoolean.DEFAULT;
-//
-//	protected DefaultTrueBoolean optional = OPTIONAL_EDEFAULT;
-//
+
 //	protected IColumn column;
 //
 //	protected static final boolean LOB_EDEFAULT = false;
@@ -45,20 +43,14 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		super(parent);
 //		this.column = JavaColumn.createColumnMappingColumn(buildColumnOwner(), getAttribute());
 //		((InternalEObject) this.column).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_BASIC__COLUMN, null, null);
-//		this.optionalAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, OPTIONAL_ADAPTER);
-//		this.fetchAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
-//		this.lobAdapter = new SimpleBooleanAnnotationAdapter(new MemberAnnotationAdapter(attribute, LOB_ADAPTER));
-//		this.temporalAnnotationAdapter = new MemberAnnotationAdapter(this.getAttribute(), TEMPORAL_ADAPTER);
-//		this.temporalValueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, TEMPORAL_VALUE_ADAPTER);
-//		this.enumeratedAnnotationAdapter = new MemberAnnotationAdapter(this.getAttribute(), ENUMERATED_ADAPTER);
-//		this.enumeratedValueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, ENUMERATED_VALUE_ADAPTER);
 	}
 
 	@Override
 	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.initializeFromResource(persistentAttributeResource);
 		Basic basicResource = this.basicResource();
-		this.specifiedFetch = this.fetchType(basicResource);
+		this.specifiedFetch = this.specifiedFetchType(basicResource);
+		this.specifiedOptional = this.specifiedOptional(basicResource);
 	}
 	
 	protected Basic basicResource() {
@@ -114,18 +106,26 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		firePropertyChanged(IBasicMapping.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 
+	public Boolean getOptional() {
+		return (this.getSpecifiedOptional() == null) ? this.getDefaultOptional() : this.getSpecifiedOptional();
+	}
 	
-//	public DefaultTrueBoolean getOptional() {
-//		return optional;
-//	}
-//
-//	public void setOptional(DefaultTrueBoolean newOptional) {
-//		DefaultTrueBoolean oldOptional = optional;
-//		optional = newOptional == null ? OPTIONAL_EDEFAULT : newOptional;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_BASIC__OPTIONAL, oldOptional, optional));
-//	}
-//
+	public Boolean getDefaultOptional() {
+		return IBasicMapping.DEFAULT_OPTIONAL;
+	}
+	
+	public Boolean getSpecifiedOptional() {
+		return this.specifiedOptional;
+	}
+	
+	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
+		Boolean oldOptional = this.specifiedOptional;
+		this.specifiedOptional = newSpecifiedOptional;
+		this.basicResource().setOptional(newSpecifiedOptional);
+		firePropertyChanged(IBasicMapping.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
+	}
+
+
 //	public boolean isLob() {
 //		return lob;
 //	}
@@ -164,14 +164,19 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.update(persistentAttributeResource);
 		Basic basicResource = basicResource();
-		this.setSpecifiedFetch(this.fetchType(basicResource));
+		this.setSpecifiedFetch(this.specifiedFetchType(basicResource));
+		this.setSpecifiedOptional(this.specifiedOptional(basicResource));
 	}
 	
 	
-	protected FetchType fetchType(Basic basic) {
+	protected FetchType specifiedFetchType(Basic basic) {
 		return FetchType.fromJavaResourceModel(basic.getFetch());
 	}
-
+	
+	protected Boolean specifiedOptional(Basic basic) {
+		return basic.getOptional();
+	}
+	
 //	@Override
 //	public void updateFromJava(CompilationUnit astRoot) {
 //		super.updateFromJava(astRoot);

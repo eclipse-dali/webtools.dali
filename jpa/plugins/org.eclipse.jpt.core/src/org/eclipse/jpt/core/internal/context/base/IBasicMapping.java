@@ -22,11 +22,16 @@ public interface IBasicMapping extends IAttributeMapping, IColumnMapping
 		String SPECIFIED_FETCH_PROPERTY = "specifiedFetchProperty";
 
 
+	Boolean getOptional();
+	
+	Boolean getDefaultOptional();
+		String DEFAULT_OPTIONAL_PROPERTY = "defaultOptionalProperty";
+		Boolean DEFAULT_OPTIONAL = Boolean.TRUE;
+	
+	Boolean getSpecifiedOptional();
+	void setSpecifiedOptional(Boolean newSpecifiedOptional);
+		String SPECIFIED_OPTIONAL_PROPERTY = "specifiedOptionalProperty";
 
-//	DefaultTrueBoolean getOptional();
-//
-//	void setOptional(DefaultTrueBoolean value);
-//
 //	IColumn getColumn();
 //
 //	boolean isLob();
