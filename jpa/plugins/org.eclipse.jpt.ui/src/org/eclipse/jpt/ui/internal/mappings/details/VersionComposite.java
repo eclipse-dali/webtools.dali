@@ -27,7 +27,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class VersionComposite extends BaseJpaComposite 
 {
-	private IVersion version;
+	private IVersionMapping version;
 	
 	private ColumnComposite columnComposite;
 
@@ -79,7 +79,7 @@ public class VersionComposite extends BaseJpaComposite
 	}
 	
 	public void doPopulate(EObject obj) {
-		this.version = (IVersion) obj;
+		this.version = (IVersionMapping) obj;
 		if (this.version != null) {
 			this.columnComposite.populate(this.version.getColumn());
 		}
@@ -107,7 +107,7 @@ public class VersionComposite extends BaseJpaComposite
 		super.dispose();
 	}
 	
-	protected IVersion getVersion() {
+	protected IVersionMapping getVersion() {
 		return this.version;
 	}
 	
@@ -116,9 +116,9 @@ public class VersionComposite extends BaseJpaComposite
 	
 	private class TemporalTypeHolder extends EObjectImpl implements EnumHolder {
 		
-		private IVersion version;
+		private IVersionMapping version;
 		
-		TemporalTypeHolder(IVersion version) {
+		TemporalTypeHolder(IVersionMapping version) {
 			super();
 			this.version = version;
 		}

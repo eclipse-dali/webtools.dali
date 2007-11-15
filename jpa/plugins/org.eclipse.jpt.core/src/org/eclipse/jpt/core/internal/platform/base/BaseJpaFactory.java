@@ -47,7 +47,9 @@ import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.context.java.IJavaTable;
+import org.eclipse.jpt.core.internal.context.java.IJavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaVersionMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddable;
@@ -60,6 +62,8 @@ import org.eclipse.jpt.core.internal.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.internal.context.java.JavaTable;
+import org.eclipse.jpt.core.internal.context.java.JavaTransientMapping;
+import org.eclipse.jpt.core.internal.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
@@ -234,6 +238,14 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IJavaIdMapping createJavaIdMapping(IJavaPersistentAttribute parent) {
 		return new JavaIdMapping(parent);
+	}
+	
+	public IJavaTransientMapping createJavaTransientMapping(IJavaPersistentAttribute parent) {
+		return new JavaTransientMapping(parent);
+	}
+	
+	public IJavaVersionMapping createJavaVersionMapping(IJavaPersistentAttribute parent) {
+		return new JavaVersionMapping(parent);
 	}
 	
 	public IJavaAttributeMapping createJavaNullAttributeMapping(IJavaPersistentAttribute parent) {

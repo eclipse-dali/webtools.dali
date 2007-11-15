@@ -52,7 +52,7 @@ public class JavaPersistentAttributeItemProvider extends ItemProviderAdapter
 		else if (mapping instanceof IIdMapping) {
 			return JptUiMappingsImages.getImage(JptUiMappingsImages.ID);
 		}
-		else if (mapping instanceof IVersion) {
+		else if (mapping instanceof IVersionMapping) {
 			return JptUiMappingsImages.getImage(JptUiMappingsImages.VERSION);
 		}
 		else if (mapping instanceof IEmbeddedMapping) {
@@ -73,7 +73,7 @@ public class JavaPersistentAttributeItemProvider extends ItemProviderAdapter
 		else if (mapping instanceof IManyToMany) {
 			return JptUiMappingsImages.getImage(JptUiMappingsImages.MANY_TO_MANY);
 		}
-		else if (mapping instanceof ITransient) {
+		else if (mapping instanceof ITransientMapping) {
 			return JptUiMappingsImages.getImage(JptUiMappingsImages.TRANSIENT);
 		}
 		else {

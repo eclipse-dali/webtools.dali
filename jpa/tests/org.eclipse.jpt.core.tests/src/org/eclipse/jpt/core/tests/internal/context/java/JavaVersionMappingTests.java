@@ -14,9 +14,9 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
@@ -30,14 +30,14 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaIdMappingTests extends ContextModelTestCase
+public class JavaVersionMappingTests extends ContextModelTestCase
 {
 	private void createEntityAnnotation() throws Exception{
 		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
 	}
 	
-	private void createIdAnnotation() throws Exception{
-		this.createAnnotationAndMembers("Id", "");		
+	private void createVersionAnnotation() throws Exception{
+		this.createAnnotationAndMembers("Version", "");		
 	}
 	
 	private void createTemporalAnnotation() throws Exception{
@@ -46,12 +46,12 @@ public class JavaIdMappingTests extends ContextModelTestCase
 
 	private IType createTestEntityWithIdMapping() throws Exception {
 		createEntityAnnotation();
-		createIdAnnotation();
+		createVersionAnnotation();
 	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.VERSION);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -60,7 +60,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 			
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Id").append(CR);
+				sb.append("@Version").append(CR);
 			}
 		});
 	}
@@ -72,7 +72,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.TEMPORAL, JPA.TEMPORAL_TYPE);
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.VERSION, JPA.TEMPORAL, JPA.TEMPORAL_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -81,13 +81,13 @@ public class JavaIdMappingTests extends ContextModelTestCase
 			
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Id").append(CR);
+				sb.append("@Version").append(CR);
 				sb.append("@Temporal(TemporalType.TIMESTAMP)").append(CR);
 			}
 		});
 	}
 		
-	public JavaIdMappingTests(String name) {
+	public JavaVersionMappingTests(String name) {
 		super(name);
 	}
 	
@@ -126,9 +126,9 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+		IVersionMapping versionMapping = (IVersionMapping) persistentAttribute.getSpecifiedMapping();
 
-		assertNull(idMapping.getTemporal());
+		assertNull(versionMapping.getTemporal());
 	}
 	
 	public void testGetTemporal2() throws Exception {
@@ -136,9 +136,9 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+		IVersionMapping versionMapping = (IVersionMapping) persistentAttribute.getSpecifiedMapping();
 
-		assertEquals(TemporalType.TIMESTAMP, idMapping.getTemporal());
+		assertEquals(TemporalType.TIMESTAMP, versionMapping.getTemporal());
 	}
 
 	public void testSetTemporal() throws Exception {
@@ -146,10 +146,10 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
-		assertNull(idMapping.getTemporal());
+		IVersionMapping versionMapping = (IVersionMapping) persistentAttribute.getSpecifiedMapping();
+		assertNull(versionMapping.getTemporal());
 		
-		idMapping.setTemporal(TemporalType.TIME);
+		versionMapping.setTemporal(TemporalType.TIME);
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
@@ -157,7 +157,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		
 		assertEquals(org.eclipse.jpt.core.internal.resource.java.TemporalType.TIME, temporal.getValue());
 		
-		idMapping.setTemporal(null);
+		versionMapping.setTemporal(null);
 		assertNull(attributeResource.annotation(Temporal.ANNOTATION_NAME));
 	}
 	
@@ -166,9 +166,9 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+		IVersionMapping versionMapping = (IVersionMapping) persistentAttribute.getSpecifiedMapping();
 
-		assertNull(idMapping.getTemporal());
+		assertNull(versionMapping.getTemporal());
 		
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
@@ -176,12 +176,12 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		Temporal temporal = (Temporal) attributeResource.addAnnotation(Temporal.ANNOTATION_NAME);
 		temporal.setValue(org.eclipse.jpt.core.internal.resource.java.TemporalType.DATE);
 		
-		assertEquals(TemporalType.DATE, idMapping.getTemporal());
+		assertEquals(TemporalType.DATE, versionMapping.getTemporal());
 		
 		attributeResource.removeAnnotation(Temporal.ANNOTATION_NAME);
 		
-		assertNull(idMapping.getTemporal());
-		assertFalse(idMapping.isDefault());
-		assertSame(idMapping, persistentAttribute.getSpecifiedMapping());
+		assertNull(versionMapping.getTemporal());
+		assertFalse(versionMapping.isDefault());
+		assertSame(versionMapping, persistentAttribute.getSpecifiedMapping());
 	}
 }

@@ -55,7 +55,7 @@ public class XmlPersistentAttributeItemProvider extends ItemProviderAdapter
 		else if (mapping instanceof IIdMapping) {
 			image = JptUiMappingsImages.getImage(JptUiMappingsImages.ID);
 		}
-		else if (mapping instanceof IVersion) {
+		else if (mapping instanceof IVersionMapping) {
 			image = JptUiMappingsImages.getImage(JptUiMappingsImages.VERSION);
 		}
 		else if (mapping instanceof IEmbeddedMapping) {
@@ -76,7 +76,7 @@ public class XmlPersistentAttributeItemProvider extends ItemProviderAdapter
 		else if (mapping instanceof IManyToMany) {
 			image = JptUiMappingsImages.getImage(JptUiMappingsImages.MANY_TO_MANY);
 		}
-		else if (mapping instanceof ITransient) {
+		else if (mapping instanceof ITransientMapping) {
 			image = JptUiMappingsImages.getImage(JptUiMappingsImages.TRANSIENT);
 		}
 		else {

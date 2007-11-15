@@ -35,6 +35,8 @@ import org.eclipse.jpt.core.internal.context.java.JavaEntityProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaIdMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaNullAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -188,6 +190,8 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		providers.add(JavaBasicMappingProvider.instance());
 		providers.add(JavaEmbeddedMappingProvider.instance());
 		providers.add(JavaIdMappingProvider.instance());
+		providers.add(JavaTransientMappingProvider.instance());
+		providers.add(JavaVersionMappingProvider.instance());
 	}
 
 	protected IJavaAttributeMappingProvider javaAttributeMappingProviderFromMappingKey(String attributeMappingKey) {
