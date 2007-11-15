@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import java.util.List;
+import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.model.Model;
@@ -19,56 +19,27 @@ import org.eclipse.jpt.utility.internal.model.Model;
  * change notification and make it more pluggable.
  */
 public interface ListValueModel
-	extends Model
+	extends Model//, Iterable<E>
 {
 	/**
 	 * Return the list's values.
 	 */
-	ListIterator values();
+	Iterator iterator();
 		String LIST_VALUES = "list values";
 
 	/**
-	 * Add the specified item to the list at the specified index.
+	 * Return the list's values.
 	 */
-	void add(int index, Object item);
-
-	/**
-	 * Add the specified items to the list at the specified index.
-	 */
-	void addAll(int index, List items);
-
-	/**
-	 * Remove the item at the specified index from the list
-	 * and return it.
-	 */
-	Object remove(int index);
-
-	/**
-	 * Remove the items from the list, starting at the specified index
-	 * for the specified length. Return a list containing the removed items.
-	 */
-	List remove(int index, int length);
-
-	/**
-	 * Replace the item at the specified index of the list
-	 * and return the item that was there previously.
-	 */
-	Object replace(int index, Object item);
-
-	/**
-	 * Replace the items at the specified index of the list
-	 * and return the items that were there previously.
-	 */
-	List replaceAll(int index, List items);
-
-	/**
-	 * Return the item at the specified index of the list.
-	 */
-	Object get(int index);
+	ListIterator listIterator();
 
 	/**
 	 * Return the size of the list.
 	 */
 	int size();
+
+	/**
+	 * Return the item at the specified index of the list.
+	 */
+	Object get(int index);
 
 }

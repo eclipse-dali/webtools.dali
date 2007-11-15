@@ -49,7 +49,7 @@ public final class NullListValueModel
 		return 0;
 	}
 
-	public ListIterator values() {
+	public ListIterator listIterator() {
 		return EmptyListIterator.instance();
 	}
 

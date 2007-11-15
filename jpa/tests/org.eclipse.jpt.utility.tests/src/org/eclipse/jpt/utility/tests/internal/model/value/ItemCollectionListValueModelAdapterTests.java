@@ -87,7 +87,7 @@ public class ItemCollectionListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testListSynchronization() {
-		ListValueModel listHolder = this.buildListHolder();
+		SimpleListValueModel listHolder = this.buildListHolder();
 		ListValueModel listValueModel = new ItemCollectionListValueModelAdapter(listHolder, Junk.STUFF_COLLECTION);
 		SynchronizedList synchList = new SynchronizedList(listValueModel);
 		assertEquals(6, synchList.size());

@@ -73,7 +73,7 @@ public class ListModelAdapterTests extends TestCase {
 	}
 
 	public void testListSynchronization() {
-		ListValueModel listHolder = this.buildListHolder();
+		SimpleListValueModel listHolder = this.buildListHolder();
 		ListModel listModel = new ListModelAdapter(listHolder);
 		SynchronizedList synchList = new SynchronizedList(listModel);
 		assertEquals(6, synchList.size());
@@ -169,7 +169,7 @@ public class ListModelAdapterTests extends TestCase {
 	}
 
 	private void verifyListSort(Comparator comparator) {
-		ListValueModel listHolder = this.buildListHolder();
+		SimpleListValueModel listHolder = this.buildListHolder();
 		ListModel listModel = new ListModelAdapter(new SortedListValueModelAdapter(listHolder, comparator));
 		SynchronizedList synchList = new SynchronizedList(listModel);
 		assertEquals(6, synchList.size());

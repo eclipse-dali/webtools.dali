@@ -9,8 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -127,10 +126,16 @@ public abstract class ListAspectAdapter
 	// ********** ListValueModel implementation **********
 
 	/**
-	 * Return the value of the subject's list aspect.
-	 * This should be a *list iterator* on the list.
+	 * Return the elements of the subject's list aspect.
 	 */
-	public ListIterator values() {
+	public Iterator iterator() {
+		return this.listIterator();
+	}
+
+	/**
+	 * Return the elements of the subject's list aspect.
+	 */
+	public ListIterator listIterator() {
 		if (this.subject == null) {
 			return EmptyListIterator.instance();
 		}
@@ -145,58 +150,6 @@ public abstract class ListAspectAdapter
 	 */
 	protected ListIterator getValueFromSubject() {
 		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Insert the specified item in the subject's list aspect at the specified index.
-	 */
-	public void add(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Insert the specified items in the subject's list aspect at the specified index.
-	 */
-	public void addAll(int index, List items) {
-		for (int i = 0; i < items.size(); i++) {
-			this.add(index + i, items.get(i));
-		}
-	}
-
-	/**
-	 * Remove the item at the specified index in the subject's list aspect.
-	 */
-	public Object remove(int index) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Remove the items at the specified index in the subject's list aspect.
-	 */
-	public List remove(int index, int length) {
-		List removedItems = new ArrayList(length);
-		for (int i = 0; i < length; i++) {
-			removedItems.add(this.remove(index));
-		}
-		return removedItems;
-	}
-
-	/**
-	 * Replace the item at the specified index of the subject's list aspect.
-	 */
-	public Object replace(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Replace the items at the specified index of the subject's list aspect.
-	 */
-	public List replaceAll(int index, List items) {
-		List replacedItems = new ArrayList(items.size());
-		for (int i = 0; i < items.size(); i++) {
-			replacedItems.add(this.replace(index + i, items.get(i)));
-		}
-		return replacedItems;
 	}
 
 	/**
@@ -227,7 +180,7 @@ public abstract class ListAspectAdapter
 
 	@Override
 	protected Object value() {
-		return this.values();
+		return this.iterator();
 	}
 
 	@Override

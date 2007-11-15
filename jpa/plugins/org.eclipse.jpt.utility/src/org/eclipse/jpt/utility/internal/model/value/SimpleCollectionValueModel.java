@@ -28,7 +28,7 @@ public class SimpleCollectionValueModel<E>
 	extends AbstractModel
 	implements CollectionValueModel, Collection<E>
 {
-	/** The value. */
+	/** The collection. */
 	protected Collection<E> collection;
 
 
@@ -46,8 +46,7 @@ public class SimpleCollectionValueModel<E>
 	}
 
 	/**
-	 * Construct a CollectionValueModel with an initial
-	 * value of an empty collection.
+	 * Construct a CollectionValueModel with an empty initial collection.
 	 */
 	public SimpleCollectionValueModel() {
 		this(new HashBag<E>());
@@ -63,26 +62,6 @@ public class SimpleCollectionValueModel<E>
 
 	public Iterator<E> iterator() {
 		return new LocalIterator<E>(this.collection.iterator());
-	}
-
-	private class LocalIterator<T> implements Iterator<T> {
-		private final Iterator<T> iterator;
-		private T next;
-		LocalIterator(Iterator<T> iterator) {
-			super();
-			this.iterator = iterator;
-		}
-		public boolean hasNext() {
-			return this.iterator.hasNext();
-		}
-		public T next() {
-			return this.next = this.iterator.next();
-		}
-		@SuppressWarnings("synthetic-access")
-		public void remove() {
-			this.iterator.remove();
-			SimpleCollectionValueModel.this.fireItemRemoved(VALUES, this.next);
-		}
 	}
 
 	public int size() {
@@ -164,7 +143,7 @@ public class SimpleCollectionValueModel<E>
 	// ********** additional behavior **********
 
 	/**
-	 * Allow the value to be replaced.
+	 * Allow the collection to be replaced.
 	 */
 	public void setCollection(Collection<E> collection) {
 		if (collection == null) {
@@ -177,6 +156,34 @@ public class SimpleCollectionValueModel<E>
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.collection);
+	}
+
+
+	// ********** iterator **********
+
+	private class LocalIterator<T> implements Iterator<T> {
+		private final Iterator<T> iterator;
+		private T next;
+
+		LocalIterator(Iterator<T> iterator) {
+			super();
+			this.iterator = iterator;
+		}
+
+		public boolean hasNext() {
+			return this.iterator.hasNext();
+		}
+
+		public T next() {
+			return this.next = this.iterator.next();
+		}
+
+		@SuppressWarnings("synthetic-access")
+		public void remove() {
+			this.iterator.remove();
+			SimpleCollectionValueModel.this.fireItemRemoved(VALUES, this.next);
+		}
+
 	}
 
 }

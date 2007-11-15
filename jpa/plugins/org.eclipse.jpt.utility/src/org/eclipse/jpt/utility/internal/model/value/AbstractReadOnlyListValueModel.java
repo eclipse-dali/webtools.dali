@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -51,36 +52,16 @@ public abstract class AbstractReadOnlyListValueModel
 
 	// ********** ListValueModel implementation **********
 
-	public void add(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void addAll(int index, List items) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Object remove(int index) {
-		throw new UnsupportedOperationException();
-	}
-
-	public List remove(int index, int length) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Object replace(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public List replaceAll(int index, List items) {
-		throw new UnsupportedOperationException();
+	public Iterator iterator() {
+		return this.listIterator();
 	}
 
 	public Object get(int index) {
-		return CollectionTools.get((ListIterator) this.values(), index);
+		return CollectionTools.get(this.listIterator(), index);
 	}
 
 	public int size() {
-		return CollectionTools.size((ListIterator) this.values());
+		return CollectionTools.size(this.listIterator());
 	}
 
 
@@ -88,7 +69,7 @@ public abstract class AbstractReadOnlyListValueModel
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, CollectionTools.collection((ListIterator) this.values()));
+		return StringTools.buildToStringFor(this, CollectionTools.collection(this.listIterator()));
 	}
 
 }

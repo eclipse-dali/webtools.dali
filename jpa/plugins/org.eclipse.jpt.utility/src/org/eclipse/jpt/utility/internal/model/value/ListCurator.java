@@ -84,7 +84,11 @@ public abstract class ListCurator
 
 	// ********** ListValueModel implementation **********
 
-	public ListIterator values() {
+	public Iterator iterator() {
+		return this.listIterator();
+	}
+
+	public ListIterator listIterator() {
 		return new ReadOnlyListIterator(this.record);
 	}
 
@@ -102,64 +106,12 @@ public abstract class ListCurator
 		return this.record.size();
 	}
 
-	/**
-	 * Unsupported in this implementation
-	 */
-	public void add(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Unsupported in this implementation
-	 */
-	public void addAll(int index, List items) {
-		for (int i = 0; i < items.size(); i++) {
-			this.add(index + i, items.get(i));
-		}
-	}
-
-	/**
-	 * Unsupported in this implementation
-	 */
-	public Object remove(int index) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Unsupported in this implementation
-	 */
-	public List remove(int index, int length) {
-		List removedItems = new ArrayList(length);
-		for (int i = 0; i < length; i++) {
-			removedItems.add(this.remove(index));
-		}
-		return removedItems;
-	}
-
-	/**
-	 * Unsupported in this implementation
-	 */
-	public Object replace(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Unsupported in this implementation
-	 */
-	public List replaceAll(int index, List items) {
-		List replacedItems = new ArrayList(items.size());
-		for (int i = 0; i < items.size(); i++) {
-			replacedItems.add(this.replace(index + i, items.get(i)));
-		}
-		return replacedItems;
-	}
-
 
 	// ********** AspectAdapter implementation **********
 
 	@Override
 	protected Object value() {
-		return this.values();
+		return this.iterator();
 	}
 
 	@Override

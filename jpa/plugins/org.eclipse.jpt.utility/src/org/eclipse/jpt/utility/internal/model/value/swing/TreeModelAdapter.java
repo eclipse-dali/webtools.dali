@@ -630,7 +630,7 @@ public class TreeModelAdapter
 			TreeModelAdapter.this.removeChildren(parentPath, childIndices, childArray);
 
 			childIndices = this.buildIndices(parent.childrenModel().size());
-			childArray = this.buildArray((Iterator) parent.childrenModel().values(), parent.childrenSize());
+			childArray = this.buildArray(parent.childrenModel().iterator(), parent.childrenSize());
 			TreeModelAdapter.this.addChildren(parentPath, childIndices, childArray);
 		}
 
@@ -688,7 +688,7 @@ public class TreeModelAdapter
 		 */
 		@Override
 		Iterator children() {
-			return (Iterator) this.node.childrenModel().values();
+			return this.node.childrenModel().iterator();
 		}
 
 	}

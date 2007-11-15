@@ -72,25 +72,17 @@ public class PrimitiveListTreeModelTests extends TestCase {
 			public int size() {
 				return ((TestModel) this.subject).namesSize();
 			}
-			@Override
 			public void add(int index, Object item) {
 				((TestModel) this.subject).addName(index, (String) item);
 			}
-			@Override
 			public void addAll(int index, List items) {
 				((TestModel) this.subject).addNames(index, items);
 			}
-			@Override
 			public Object remove(int index) {
 				return ((TestModel) this.subject).removeName(index);
 			}
-			@Override
 			public List remove(int index, int length) {
 				return ((TestModel) this.subject).removeNames(index, length);
-			}
-			@Override
-			public Object replace(int index, Object item) {
-				return ((TestModel) this.subject).replaceName(index, (String) item);
 			}
 		};
 	}

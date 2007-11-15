@@ -29,7 +29,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class TransformationListValueModelAdapterTests extends TestCase {
-	private ListValueModel listHolder;
+	private SimpleListValueModel listHolder;
 	private ListValueModel transformedListHolder;
 	ListChangeEvent event;
 	String eventType;
@@ -115,35 +115,35 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testValues() {
+	public void testIterator() {
 		this.transformedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
-		assertEquals(this.buildTransformedList(), CollectionTools.list((Iterator) this.transformedListHolder.values()));
+		assertEquals(this.buildTransformedList(), CollectionTools.list(this.transformedListHolder.iterator()));
 	}
 
 	public void testStaleValues() {
 		ListChangeListener listener = this.buildListener();
 		this.transformedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, listener);
-		assertEquals(this.buildTransformedList(), CollectionTools.list((Iterator) this.transformedListHolder.values()));
+		assertEquals(this.buildTransformedList(), CollectionTools.list(this.transformedListHolder.iterator()));
 
 		this.transformedListHolder.removeListChangeListener(ListValueModel.LIST_VALUES, listener);
-		assertEquals(Collections.EMPTY_LIST, CollectionTools.list((Iterator) this.transformedListHolder.values()));
+		assertEquals(Collections.EMPTY_LIST, CollectionTools.list(this.transformedListHolder.iterator()));
 	}
 
 	public void testSize() {
 		this.transformedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
-		assertEquals(this.buildTransformedList().size(), CollectionTools.size((Iterator) this.transformedListHolder.values()));
+		assertEquals(this.buildTransformedList().size(), CollectionTools.size(this.transformedListHolder.iterator()));
 	}
 
 	private boolean transformedListContains(Object item) {
-		return CollectionTools.contains((Iterator) this.transformedListHolder.values(), item);
+		return CollectionTools.contains(this.transformedListHolder.iterator(), item);
 	}
 
 	private boolean transformedListContainsAll(Collection items) {
-		return CollectionTools.containsAll((Iterator) this.transformedListHolder.values(), items);
+		return CollectionTools.containsAll(this.transformedListHolder.iterator(), items);
 	}
 
 	private boolean transformedListContainsAny(Collection items) {
-		List transformedList = CollectionTools.list((ListIterator) this.transformedListHolder.values());
+		List transformedList = CollectionTools.list(this.transformedListHolder.iterator());
 		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
 			if (transformedList.contains(stream.next())) {
 				return true;
@@ -185,14 +185,6 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 		assertFalse(this.transformedListContains(null));
 	}
 
-	public void testRemoveLength() {
-		this.transformedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
-
-		assertTrue(this.transformedListContainsAll(this.buildTransformedRemoveList()));
-		this.listHolder.remove(0, 2);
-		assertFalse(this.transformedListContainsAny(this.buildTransformedRemoveList()));
-	}
-
 	public void testListChangeGeneric() {
 		this.transformedListHolder.addListChangeListener(this.buildListener());
 		this.verifyListChange();
@@ -232,7 +224,7 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 
 		this.event = null;
 		this.eventType = null;
-		this.listHolder.replace(0, "joo");
+		this.listHolder.set(0, "joo");
 		this.verifyEvent(REPLACE);
 		assertFalse(CollectionTools.contains(this.event.items(), "FOO"));
 		assertTrue(CollectionTools.contains(this.event.items(), "JOO"));

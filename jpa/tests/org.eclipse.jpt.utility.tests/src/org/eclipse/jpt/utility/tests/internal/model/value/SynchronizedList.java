@@ -33,7 +33,7 @@ public class SynchronizedList<E> implements List<E>, ListChangeListener, ListDat
 
 	public SynchronizedList(ListValueModel listValueModel) {
 		listValueModel.addListChangeListener(ListValueModel.LIST_VALUES, this);
-		for (Iterator<E> stream = (ListIterator<E>) listValueModel.values(); stream.hasNext(); ) {
+		for (Iterator<E> stream = (Iterator<E>) listValueModel.iterator(); stream.hasNext(); ) {
 			this.add(stream.next());
 		}
 	}
@@ -175,7 +175,7 @@ public class SynchronizedList<E> implements List<E>, ListChangeListener, ListDat
 
 	public void listChanged(ListChangeEvent e) {
 		this.synchList.clear();
-		CollectionTools.addAll(this.synchList, (Iterator) ((ListValueModel) e.getSource()).values());
+		CollectionTools.addAll(this.synchList, (Iterator) ((ListValueModel) e.getSource()).iterator());
 	}
 
 

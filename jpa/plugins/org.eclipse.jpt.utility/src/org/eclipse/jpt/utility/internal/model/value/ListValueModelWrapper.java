@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import java.util.Iterator;
+
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
@@ -80,6 +82,13 @@ public abstract class ListValueModelWrapper
 				return "list change listener";
 			}
 		};
+	}
+
+
+	// ********** ListValueModel implementation **********
+
+	public Iterator iterator() {
+		return this.listIterator();
 	}
 
 

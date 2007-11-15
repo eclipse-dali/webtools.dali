@@ -30,7 +30,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 public class ListCollectionValueModelAdapterTests extends TestCase {
 	CollectionValueModel adapter;
-	private ListValueModel wrappedListHolder;
+	private SimpleListValueModel wrappedListHolder;
 	private List wrappedList;
 
 	public ListCollectionValueModelAdapterTests(String name) {
@@ -181,7 +181,7 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 				assertEquals(3, ListCollectionValueModelAdapterTests.this.adapter.size());
 			}
 		});
-		this.wrappedListHolder.replace(0, "joo");
+		this.wrappedListHolder.set(0, "joo");
 		adapterCollection = CollectionTools.collection((Iterator) this.adapter.iterator());
 		assertEquals(3, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
@@ -208,7 +208,7 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 		this.wrappedListHolder.add(1, "bar");
 		this.wrappedListHolder.add(2, "baz");
 		JList jList = new JList(new ListModelAdapter(this.adapter));
-		((SimpleListValueModel) this.wrappedListHolder).setValue(new ArrayList());
+		((SimpleListValueModel) this.wrappedListHolder).setList(new ArrayList());
 		assertEquals(0, jList.getModel().getSize());
 	}
 	
@@ -222,7 +222,7 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 		ArrayList list = new ArrayList();
 		list.add("foo");
 		list.add("bar");
-		((SimpleListValueModel) this.wrappedListHolder).setValue(list);
+		((SimpleListValueModel) this.wrappedListHolder).setList(list);
 		assertEquals(2, jList.getModel().getSize());
 	}
 	
@@ -234,7 +234,7 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		
 		ArrayList list = new ArrayList();
-		((SimpleListValueModel) this.wrappedListHolder).setValue(list);
+		((SimpleListValueModel) this.wrappedListHolder).setList(list);
 		assertEquals(0, jList.getModel().getSize());
 	}
 

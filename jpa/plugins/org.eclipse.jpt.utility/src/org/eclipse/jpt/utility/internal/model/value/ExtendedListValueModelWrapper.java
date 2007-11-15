@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -91,83 +92,19 @@ public class ExtendedListValueModelWrapper
 
 	// ********** ListValueModel implementation **********
 
-	public ListIterator values() {
+	public Iterator iterator() {
+		return this.listIterator();
+	}
+
+	public ListIterator listIterator() {
 		// try to prevent backdoor modification of the lists
 		return new ReadOnlyListIterator(
 			new CompositeListIterator(
 				this.prefix.listIterator(),
-				(ListIterator) this.listHolder.values(),
+				this.listHolder.listIterator(),
 				this.suffix.listIterator()
 			)
 		);
-	}
-
-	public void add(int index, Object item) {
-		this.addAll(index, Collections.singletonList(item));
-	}
-
-	public void addAll(int index, List items) {
-		if (items.size() == 0) {
-			return;
-		}
-		int prefixSize = this.prefix.size();
-		if (index < prefixSize) {
-			throw new IllegalArgumentException("the prefix cannot be modified");
-		}
-		if (index > prefixSize + this.listHolder.size()) {
-			throw new IllegalArgumentException("the suffix cannot be modified");
-		}
-		this.listHolder.addAll(index - prefixSize, items);
-	}
-
-	public Object remove(int index) {
-		int prefixSize = this.prefix.size();
-		if (index < prefixSize) {
-			throw new IllegalArgumentException("the prefix cannot be modified");
-		}
-		if (index >= prefixSize + this.listHolder.size()) {
-			throw new IllegalArgumentException("the suffix cannot be modified");
-		}
-		return this.listHolder.remove(index - prefixSize);
-	}
-
-	public List remove(int index, int length) {
-		if (length == 0) {
-			return Collections.EMPTY_LIST;
-		}
-		int prefixSize = this.prefix.size();
-		if (index < prefixSize) {
-			throw new IllegalArgumentException("the prefix cannot be modified");
-		}
-		if (index + length > prefixSize + this.listHolder.size()) {
-			throw new IllegalArgumentException("the suffix cannot be modified");
-		}
-		return this.listHolder.remove(index - prefixSize, length);
-	}
-
-	public Object replace(int index, Object item) {
-		int prefixSize = this.prefix.size();
-		if (index < prefixSize) {
-			throw new IllegalArgumentException("the prefix cannot be modified");
-		}
-		if (index >= prefixSize + this.listHolder.size()) {
-			throw new IllegalArgumentException("the suffix cannot be modified");
-		}
-		return this.listHolder.replace(index - prefixSize, item);
-	}
-
-	public List replaceAll(int index, List items) {
-		if (items.size() == 0) {
-			return Collections.EMPTY_LIST;
-		}
-		int prefixSize = this.prefix.size();
-		if (index < prefixSize) {
-			throw new IllegalArgumentException("the prefix cannot be modified");
-		}
-		if (index + items.size() > prefixSize + this.listHolder.size()) {
-			throw new IllegalArgumentException("the suffix cannot be modified");
-		}
-		return this.listHolder.replaceAll(index - prefixSize, items);
 	}
 
 	public Object get(int index) {

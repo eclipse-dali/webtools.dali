@@ -21,7 +21,7 @@ public class ReadOnlyListValueModel
 	extends AbstractReadOnlyListValueModel
 {
 	/** The value. */
-	protected final List value;
+	protected final List list;
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,12 +29,12 @@ public class ReadOnlyListValueModel
 	/**
 	 * Construct a ListValueModel for the specified value.
 	 */
-	public ReadOnlyListValueModel(List value) {
+	public ReadOnlyListValueModel(List list) {
 		super();
-		if (value == null) {
+		if (list == null) {
 			throw new NullPointerException();
 		}
-		this.value = value;
+		this.list = list;
 	}
 
 
@@ -42,11 +42,11 @@ public class ReadOnlyListValueModel
 
     @Override
 	public int size() {
-		return this.value.size();
+		return this.list.size();
 	}
 
-	public ListIterator values() {
-		return this.value.listIterator();
+	public ListIterator listIterator() {
+		return this.list.listIterator();
 	}
 
 }

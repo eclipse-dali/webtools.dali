@@ -200,7 +200,7 @@ public class ListCollectionValueModelAdapter
 	// ********** behavior **********
 
 	protected void buildCollection() {
-		Iterator stream = (Iterator) this.listHolder.values();
+		Iterator stream = this.listHolder.iterator();
 		// if the new list is empty, do nothing
 		if (stream.hasNext()) {
 			this.collection.ensureCapacity(this.listHolder.size());

@@ -57,7 +57,7 @@ public class ComboBoxModelAdapterUITest {
 	private TestModel testModel;
 	private PropertyValueModel testModelHolder;
 	private PropertyValueModel colorHolder;
-	private ListValueModel colorListHolder;
+	private SimpleListValueModel<String> colorListHolder;
 	protected ComboBoxModel colorComboBoxModel;
 	private int nextColorNumber = 0;
 
@@ -100,8 +100,8 @@ public class ComboBoxModelAdapterUITest {
 		return new TestModel();
 	}
 
-	protected ListValueModel buildColorListHolder() {
-		return new SimpleListValueModel(TestModel.validColors());
+	private SimpleListValueModel<String> buildColorListHolder() {
+		return new SimpleListValueModel<String>(TestModel.validColors());
 //		return new AbstractReadOnlyListValueModel() {
 //			public Object value() {
 //				return new ArrayListIterator(TestModel.VALID_COLORS);
@@ -110,6 +110,10 @@ public class ComboBoxModelAdapterUITest {
 //				return TestModel.VALID_COLORS.length;
 //			}
 //		};
+	}
+
+	protected ListValueModel uiColorListHolder() {
+		return this.colorListHolder;
 	}
 
 	private ComboBoxModel buildComboBoxModelAdapter(ListValueModel listHolder, PropertyValueModel selectionHolder) {

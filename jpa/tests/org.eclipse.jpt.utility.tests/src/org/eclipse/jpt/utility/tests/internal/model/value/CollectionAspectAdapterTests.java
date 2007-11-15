@@ -325,11 +325,11 @@ public class CollectionAspectAdapterTests extends TestCase {
 		protected Iterator<String> getValueFromSubject() {
 			if (this.collectionName == TestSubject.NAMES_COLLECTION) {
 				return ((TestSubject) this.subject).names();
-			} else if (this.collectionName == TestSubject.DESCRIPTIONS_COLLECTION) {
-				return ((TestSubject) this.subject).descriptions();
-			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.collectionName);
 			}
+			if (this.collectionName == TestSubject.DESCRIPTIONS_COLLECTION) {
+				return ((TestSubject) this.subject).descriptions();
+			}
+			throw new IllegalStateException("invalid aspect name: " + this.collectionName);
 		}
 
 		public void add(Object item) {

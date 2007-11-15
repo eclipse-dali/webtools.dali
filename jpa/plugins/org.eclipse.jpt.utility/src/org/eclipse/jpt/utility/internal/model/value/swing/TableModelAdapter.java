@@ -282,7 +282,7 @@ public class TableModelAdapter
 	 */
 	private void engageAllCells() {
 		this.rows.ensureCapacity(this.listHolder.size());
-		for (Iterator stream = (Iterator) this.listHolder.values(); stream.hasNext(); ) {
+		for (Iterator stream = this.listHolder.iterator(); stream.hasNext(); ) {
 			PropertyValueModel[] row = this.columnAdapter.cellModels(stream.next());
 			this.engageRow(row);
 			this.rows.add(row);

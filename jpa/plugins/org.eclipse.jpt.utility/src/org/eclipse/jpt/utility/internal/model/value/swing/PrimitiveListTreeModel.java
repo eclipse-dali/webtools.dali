@@ -135,7 +135,7 @@ public abstract class PrimitiveListTreeModel
 	}
 		
 	private void buildList() {
-		for (Iterator stream = (Iterator) this.listHolder.values(); stream.hasNext(); ) {
+		for (Iterator stream = this.listHolder.iterator(); stream.hasNext(); ) {
 			this.addPrimitive(stream.next());
 		}
 	}

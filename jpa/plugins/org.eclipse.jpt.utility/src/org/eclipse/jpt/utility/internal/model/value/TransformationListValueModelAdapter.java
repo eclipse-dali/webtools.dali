@@ -82,33 +82,9 @@ public class TransformationListValueModelAdapter
 
 	// ********** ListValueModel implementation **********
 
-	public ListIterator values() {
+	public ListIterator listIterator() {
 		// try to prevent backdoor modification of the list
 		return new ReadOnlyListIterator(this.transformedList);
-	}
-
-	public void add(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void addAll(int index, List items) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Object remove(int index) {
-		throw new UnsupportedOperationException();
-	}
-
-	public List remove(int index, int length) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Object replace(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public List replaceAll(int index, List items) {
-		throw new UnsupportedOperationException();
 	}
 
 	public Object get(int index) {
@@ -148,7 +124,7 @@ public class TransformationListValueModelAdapter
 	 * Transform the items in the specified list value model.
 	 */
 	protected List transformItems(ListValueModel lvm) {
-		return this.transformItems((ListIterator) lvm.values(), lvm.size());
+		return this.transformItems(lvm.listIterator(), lvm.size());
 	}
 
 	/**
