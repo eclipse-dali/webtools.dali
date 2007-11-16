@@ -13,6 +13,7 @@ package org.eclipse.jpt.core.internal.platform.base;
 import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
+import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
@@ -20,6 +21,7 @@ import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
 import org.eclipse.jpt.core.internal.context.base.IProperty;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddable;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
@@ -73,6 +75,8 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	
 	IJavaTable createJavaTable(IJavaEntity parent);
 	
+	IJavaColumn createJavaColumn(IColumnMapping parent);
+
 	IJavaDiscriminatorColumn createJavaDiscriminatorColumn(IJavaEntity parent);
 	
 	IJavaSecondaryTable createJavaSecondaryTable(IJavaEntity parent);

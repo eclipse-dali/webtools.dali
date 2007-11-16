@@ -37,11 +37,11 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 
 	private final IntAnnotationElementAdapter scaleAdapter;
 
-	private int length = -1;
+	private int length = Column.DEFAULT_LENGTH;
 	
-	private int precision = -1;
+	private int precision = Column.DEFAULT_PRECISION;
 	
-	private int scale = -1;
+	private int scale = Column.DEFAULT_SCALE;
 	
 	protected ColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
@@ -215,7 +215,7 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 		}
 		
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
-			return null;
+			return new NullColumn(parent);
 		}
 		
 		public String getAnnotationName() {

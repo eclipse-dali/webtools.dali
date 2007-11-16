@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
-public interface IColumnMapping extends IJpaContextNode
+import org.eclipse.jpt.core.internal.context.base.IColumn.Owner;
+
+public interface IColumnMapping extends IJpaContextNode, Owner
 {
-	//IColumn getColumn();
+	IColumn getColumn();
 } 

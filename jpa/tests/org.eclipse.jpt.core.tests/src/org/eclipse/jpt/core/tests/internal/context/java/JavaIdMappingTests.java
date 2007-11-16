@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
@@ -184,4 +185,25 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertFalse(idMapping.isDefault());
 		assertSame(idMapping, persistentAttribute.getSpecifiedMapping());
 	}
+	
+	public void testGetColumn() throws Exception {
+		createTestEntityWithIdMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+		
+		assertNull(idMapping.getColumn().getSpecifiedName());
+		assertEquals("id", idMapping.getColumn().getName());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		Column column = (Column) attributeResource.addAnnotation(JPA.COLUMN);
+		column.setName("foo");
+		
+		assertEquals("foo", idMapping.getColumn().getSpecifiedName());
+		assertEquals("foo", idMapping.getColumn().getName());
+		assertEquals("id", idMapping.getColumn().getDefaultName());
+	}
+
 }

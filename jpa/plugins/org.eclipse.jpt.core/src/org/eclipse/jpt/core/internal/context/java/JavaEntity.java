@@ -100,6 +100,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.table.initializeFromResource(persistentTypeResource);
 		this.defaultInheritanceStrategy = this.defaultInheritanceStrategy();
 		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(inheritanceResource());
+		this.specifiedDiscriminatorValue = this.discriminatorValueResource().getValue();
+		this.defaultDiscriminatorValue = this.javaDefaultDiscriminatorValue();
 		this.discriminatorColumn.initializeFromResource(persistentTypeResource);
 		initializeSecondaryTables(persistentTypeResource);
 	}
@@ -505,7 +507,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //		return this;
 //	}
 
-	public ITypeMapping getTypeMapping() {
+	public ITypeMapping typeMapping() {
 		return this;
 	}
 

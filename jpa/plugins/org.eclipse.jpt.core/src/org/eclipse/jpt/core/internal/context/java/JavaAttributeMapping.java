@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
+import org.eclipse.jpt.db.internal.Table;
 
 
 public abstract class JavaAttributeMapping extends JavaContextModel
@@ -45,20 +46,23 @@ public abstract class JavaAttributeMapping extends JavaContextModel
 		return this.getPersistentAttribute().typeMapping();
 	}
 
+	public String attributeName() {
+		return this.getPersistentAttribute().getName();
+	}
+	
+	public Table dbTable(String tableName) {
+		return typeMapping().dbTable(tableName);
+	}
+	
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
 		ITextRange textRange = this.persistentAttributeResource.textRange(astRoot);
 		return (textRange != null) ? textRange : this.getPersistentAttribute().validationTextRange(astRoot);
 	}
 
-
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		// do nothing - override as appropriate
 	}
 
-//	protected INamedColumn.Owner buildColumnOwner() {
-//		return new ColumnOwner();
-//	}
-//
 	public String primaryKeyColumnName() {
 		return null;
 	}
@@ -74,23 +78,4 @@ public abstract class JavaAttributeMapping extends JavaContextModel
 	public boolean isIdMapping() {
 		return false;
 	}
-
-
-//	/**
-//	 * mapping implementation of column owner
-//	 */
-//	protected class ColumnOwner implements INamedColumn.Owner
-//	{
-//		public ITypeMapping getTypeMapping() {
-//			return JavaAttributeMapping.this.typeMapping();
-//		}
-//
-//		public ITextRange validationTextRange(CompilationUnit astRoot) {
-//			return JavaAttributeMapping.this.validationTextRange(astRoot);
-//		}
-//
-//		public Table dbTable(String tableName) {
-//			return this.getTypeMapping().dbTable(tableName);
-//		}
-//	}
 }

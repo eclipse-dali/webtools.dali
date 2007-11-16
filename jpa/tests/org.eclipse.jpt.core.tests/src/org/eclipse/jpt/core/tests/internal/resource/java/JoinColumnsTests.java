@@ -161,10 +161,10 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 		JoinColumn column = (JoinColumn) attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS).next();
 		assertNotNull(column);
 		assertNull(column.getName());
-		assertNull(column.isNullable());
-		assertNull(column.isInsertable());
-		assertNull(column.isUnique());
-		assertNull(column.isUpdatable());
+		assertNull(column.getNullable());
+		assertNull(column.getInsertable());
+		assertNull(column.getUnique());
+		assertNull(column.getUpdatable());
 		assertNull(column.getTable());
 		assertNull(column.getColumnDefinition());
 	}
@@ -285,7 +285,7 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		JoinColumn column = (JoinColumn) attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS).next();
 
-		assertTrue(column.isUnique());
+		assertTrue(column.getUnique());
 	}
 	
 	public void testSetUnique() throws Exception {
@@ -295,10 +295,10 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 		JoinColumn column = (JoinColumn) attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS).next();
 
 		assertNotNull(column);
-		assertNull(column.isUnique());
+		assertNull(column.getUnique());
 
 		column.setUnique(false);
-		assertFalse(column.isUnique());
+		assertFalse(column.getUnique());
 		
 		assertSourceContains("@JoinColumns(@JoinColumn(unique=false))");
 		
@@ -312,7 +312,7 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		JoinColumn column = (JoinColumn) attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS).next();
 
-		assertTrue(column.isNullable());
+		assertTrue(column.getNullable());
 	}
 	
 	public void testSetNullable() throws Exception {
@@ -322,10 +322,10 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 		JoinColumn column = (JoinColumn) attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS).next();
 
 		assertNotNull(column);
-		assertNull(column.isNullable());
+		assertNull(column.getNullable());
 
 		column.setNullable(false);
-		assertFalse(column.isNullable());
+		assertFalse(column.getNullable());
 		
 		assertSourceContains("@JoinColumns(@JoinColumn(nullable=false))");
 		
@@ -339,7 +339,7 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		JoinColumn column = (JoinColumn) attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS).next();
 
-		assertTrue(column.isInsertable());
+		assertTrue(column.getInsertable());
 	}
 	
 	public void testSetInsertable() throws Exception {
@@ -349,10 +349,10 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 		JoinColumn column = (JoinColumn) attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS).next();
 
 		assertNotNull(column);
-		assertNull(column.isInsertable());
+		assertNull(column.getInsertable());
 
 		column.setInsertable(false);
-		assertFalse(column.isInsertable());
+		assertFalse(column.getInsertable());
 		
 		assertSourceContains("@JoinColumns(@JoinColumn(insertable=false))");
 		
@@ -366,7 +366,7 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		JoinColumn column = (JoinColumn) attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS).next();
 
-		assertTrue(column.isUpdatable());
+		assertTrue(column.getUpdatable());
 	}
 	
 	public void testSetUpdatable() throws Exception {
@@ -376,10 +376,10 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 		JoinColumn column = (JoinColumn) attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS).next();
 
 		assertNotNull(column);
-		assertNull(column.isUpdatable());
+		assertNull(column.getUpdatable());
 
 		column.setUpdatable(false);
-		assertFalse(column.isUpdatable());
+		assertFalse(column.getUpdatable());
 		
 		assertSourceContains("@JoinColumns(@JoinColumn(updatable=false))");
 		

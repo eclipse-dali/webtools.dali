@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
@@ -44,7 +45,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		this.createAnnotationAndMembers("Temporal", "TemporalType value();");		
 	}
 
-	private IType createTestEntityWithIdMapping() throws Exception {
+	private IType createTestEntityWithVersionMapping() throws Exception {
 		createEntityAnnotation();
 		createVersionAnnotation();
 	
@@ -122,7 +123,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 	
 	
 	public void testGetTemporal() throws Exception {
-		createTestEntityWithIdMapping();
+		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
@@ -142,7 +143,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 	}
 
 	public void testSetTemporal() throws Exception {
-		createTestEntityWithIdMapping();
+		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
@@ -162,7 +163,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 	}
 	
 	public void testGetTemporalUpdatesFromResourceModelChange() throws Exception {
-		createTestEntityWithIdMapping();
+		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
@@ -184,4 +185,25 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		assertFalse(versionMapping.isDefault());
 		assertSame(versionMapping, persistentAttribute.getSpecifiedMapping());
 	}
+	
+	public void testGetColumn() throws Exception {
+		createTestEntityWithVersionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IVersionMapping versionMapping = (IVersionMapping) persistentAttribute.getSpecifiedMapping();
+		
+		assertNull(versionMapping.getColumn().getSpecifiedName());
+		assertEquals("id", versionMapping.getColumn().getName());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		Column column = (Column) attributeResource.addAnnotation(JPA.COLUMN);
+		column.setName("foo");
+		
+		assertEquals("foo", versionMapping.getColumn().getSpecifiedName());
+		assertEquals("foo", versionMapping.getColumn().getName());
+		assertEquals("id", versionMapping.getColumn().getDefaultName());
+	}
+	
 }

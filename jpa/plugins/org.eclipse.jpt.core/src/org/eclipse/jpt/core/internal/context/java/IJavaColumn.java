@@ -7,12 +7,15 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.context.base;
+package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.Iterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.context.base.IColumn;
+import org.eclipse.jpt.utility.internal.Filter;
 
-public interface IVersionMapping extends IAttributeMapping, IColumnMapping
+public interface IJavaColumn extends IJavaNamedColumn, IColumn
 {
-	TemporalType getTemporal();	
-	void setTemporal(TemporalType value);
-		String TEMPORAL_PROPERTY = "temporalProperty";
+	Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot);
+
 }

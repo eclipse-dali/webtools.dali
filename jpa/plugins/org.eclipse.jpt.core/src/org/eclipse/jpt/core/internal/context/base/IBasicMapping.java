@@ -32,15 +32,12 @@ public interface IBasicMapping extends IAttributeMapping, IColumnMapping
 	void setSpecifiedOptional(Boolean newSpecifiedOptional);
 		String SPECIFIED_OPTIONAL_PROPERTY = "specifiedOptionalProperty";
 
-//	IColumn getColumn();
-
 	boolean isLob();
 
 	void setLob(boolean value);
 		String LOB_PROPERTY = "lobProperty";
 
 	TemporalType getTemporal();
-
 	void setTemporal(TemporalType value);
 		String TEMPORAL_PROPERTY = "temporalProperty";
 

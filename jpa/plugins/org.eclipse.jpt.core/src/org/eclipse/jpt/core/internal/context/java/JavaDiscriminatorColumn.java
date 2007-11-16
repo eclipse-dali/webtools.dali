@@ -13,13 +13,13 @@ import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorColumn;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
+import org.eclipse.jpt.core.internal.resource.java.NamedColumn;
 
 public class JavaDiscriminatorColumn extends JavaNamedColumn
 	implements IJavaDiscriminatorColumn
 {
 
 	protected DiscriminatorType specifiedDiscriminatorType;
-
 
 	protected int specifiedLength;
 
@@ -32,7 +32,7 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 		super.initializeFromResource(persistentResource);
 		DiscriminatorColumn discriminatorColumn = columnResource();
 		this.specifiedDiscriminatorType = this.discriminatorType(discriminatorColumn);
-		this.specifiedLength = discriminatorColumn.getLength();		
+		this.specifiedLength = this.length(discriminatorColumn);
 	}
 	
 	protected IJavaEntity javaEntity() {
@@ -95,16 +95,20 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 	
 	
 	// ********** java annotations -> persistence model **********
+	
 	@Override
-	public void update(JavaPersistentResource persistentResource) {
-		super.update(persistentResource);
-		DiscriminatorColumn discriminatorColumn = columnResource();
-		this.setSpecifiedDiscriminatorType(this.discriminatorType(discriminatorColumn));
-		this.setSpecifiedLength(discriminatorColumn.getLength());
+	protected void update(NamedColumn discriminatorColumn) {
+		super.update(discriminatorColumn);
+		this.setSpecifiedDiscriminatorType(this.discriminatorType((DiscriminatorColumn) discriminatorColumn));
+		this.setSpecifiedLength(this.length((DiscriminatorColumn) discriminatorColumn));
 	}
 	
 	protected DiscriminatorType discriminatorType(DiscriminatorColumn discriminatorColumn) {
 		return DiscriminatorType.fromJavaResourceModel(discriminatorColumn.getDiscriminatorType());
+	}
+	
+	protected int length(DiscriminatorColumn discriminatorColumn) {
+		return discriminatorColumn.getLength();
 	}
 
 	@Override

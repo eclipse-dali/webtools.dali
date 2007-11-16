@@ -32,7 +32,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	
 	protected EnumType specifiedEnumerated;
 	
-//	protected IColumn column;
+	protected IJavaColumn column;
 	
 	protected boolean lob;
 
@@ -40,13 +40,13 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 
 	public JavaBasicMapping(IJavaPersistentAttribute parent) {
 		super(parent);
-//		this.column = JavaColumn.createColumnMappingColumn(buildColumnOwner(), getAttribute());
-//		((InternalEObject) this.column).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_BASIC__COLUMN, null, null);
+		this.column = jpaFactory().createJavaColumn(this);
 	}
 
 	@Override
 	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.initializeFromResource(persistentAttributeResource);
+		this.column.initializeFromResource(persistentAttributeResource);
 		Basic basicResource = this.basicResource();
 		this.specifiedFetch = this.specifiedFetchType(basicResource);
 		this.specifiedOptional = this.specifiedOptional(basicResource);
@@ -79,23 +79,9 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 
 	//************** IBasicMapping implementation ***************
 
-//	public IColumn getColumn() {
-//		return column;
-//	}
-//
-//	public NotificationChain basicSetColumn(IColumn newColumn, NotificationChain msgs) {
-//		IColumn oldColumn = column;
-//		column = newColumn;
-//		if (eNotificationRequired()) {
-//			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_BASIC__COLUMN, oldColumn, newColumn);
-//			if (msgs == null)
-//				msgs = notification;
-//			else
-//				msgs.add(notification);
-//		}
-//		return msgs;
-//	}
-//
+	public IJavaColumn getColumn() {
+		return this.column;
+	}
 	
 	public FetchType getFetch() {
 		return (this.getSpecifiedFetch() == null) ? this.getDefaultFetch() : this.getSpecifiedFetch();
@@ -189,6 +175,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	@Override
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.update(persistentAttributeResource);
+		this.column.update(persistentAttributeResource);
 		Basic basicResource = basicResource();
 		this.setSpecifiedFetch(this.specifiedFetchType(basicResource));
 		this.setSpecifiedOptional(this.specifiedOptional(basicResource));
@@ -234,10 +221,10 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		if (result != null) {
 			return result;
 		}
-//		result = this.getJavaColumn().candidateValuesFor(pos, filter, astRoot);
-//		if (result != null) {
-//			return result;
-//		}
+		result = this.getColumn().candidateValuesFor(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
 		return null;
 	}
 }

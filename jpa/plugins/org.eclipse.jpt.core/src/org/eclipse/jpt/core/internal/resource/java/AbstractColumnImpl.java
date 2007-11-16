@@ -95,10 +95,10 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 		super.initializeFrom(oldAnnotation);
 		AbstractColumn oldColumn = (AbstractColumn) oldAnnotation;
 		setTable(oldColumn.getTable());
-		setUnique(oldColumn.isUnique());
-		setNullable(oldColumn.isNullable());
-		setInsertable(oldColumn.isInsertable());
-		setUpdatable(oldColumn.isUpdatable());
+		setUnique(oldColumn.getUnique());
+		setNullable(oldColumn.getNullable());
+		setInsertable(oldColumn.getInsertable());
+		setUpdatable(oldColumn.getUpdatable());
 	}
 
 	//************* AbstractColumn implementation *************
@@ -113,7 +113,7 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 		firePropertyChanged(TABLE_PROPERTY, oldTable, newTable);
 	}
 	
-	public Boolean isUnique() {
+	public Boolean getUnique() {
 		return this.unique;
 	}
 
@@ -124,7 +124,7 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 		firePropertyChanged(UNIQUE_PROPERTY, oldUnique, newUnique);
 	}
 
-	public Boolean isNullable() {
+	public Boolean getNullable() {
 		return this.nullable;
 	}
 
@@ -135,7 +135,7 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 		firePropertyChanged(NULLABLE_PROPERTY, oldNullable, newNullable);
 	}
 
-	public Boolean isInsertable() {
+	public Boolean getInsertable() {
 		return this.insertable;
 	}
 
@@ -146,7 +146,7 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 		firePropertyChanged(INSERTABLE_PROPERTY, oldInsertable, newInsertable);
 	}
 
-	public Boolean isUpdatable() {
+	public Boolean getUpdatable() {
 		return this.updatable;
 	}
 

@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
+import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.Enumerated;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
@@ -689,5 +690,25 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		assertNull(basicMapping.getTemporal());
 		assertFalse(basicMapping.isDefault());
 		assertSame(basicMapping, persistentAttribute.getSpecifiedMapping());
+	}
+	
+	public void testGetColumn() throws Exception {
+		createTestEntityWithBasicMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getSpecifiedMapping();
+		
+		assertNull(basicMapping.getColumn().getSpecifiedName());
+		assertEquals("id", basicMapping.getColumn().getName());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		Column column = (Column) attributeResource.addAnnotation(JPA.COLUMN);
+		column.setName("foo");
+		
+		assertEquals("foo", basicMapping.getColumn().getSpecifiedName());
+		assertEquals("foo", basicMapping.getColumn().getName());
+		assertEquals("id", basicMapping.getColumn().getDefaultName());
 	}
 }

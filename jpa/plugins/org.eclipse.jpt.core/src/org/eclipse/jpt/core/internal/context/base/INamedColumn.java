@@ -74,7 +74,7 @@ public interface INamedColumn extends IJpaContextNode
 		/**
 		 * Return the type mapping that contains the column.
 		 */
-		ITypeMapping getTypeMapping();
+		ITypeMapping typeMapping();
 
 		/**
 		 * Return the column owner's text range. This can be returned by the

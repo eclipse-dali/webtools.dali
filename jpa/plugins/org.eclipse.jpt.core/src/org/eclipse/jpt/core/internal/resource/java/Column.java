@@ -29,6 +29,7 @@ public interface Column extends AbstractColumn
 	 */
 	void setLength(int length);
 		String LENGTH_PROPERTY = "lengthProperty";
+		int DEFAULT_LENGTH = -1;
 	
 	/**
 	 * Corresponds to the precision element of the javax.persistence.Column annotation.
@@ -42,6 +43,7 @@ public interface Column extends AbstractColumn
 	 */
 	void setPrecision(int precision);
 		String PRECISION_PROPERTY = "precisionProperty";
+		int DEFAULT_PRECISION = -1;
 	
 	/**
 	 * Corresponds to the scale element of the javax.persistence.Column annotation.
@@ -55,6 +57,7 @@ public interface Column extends AbstractColumn
 	 */
 	void setScale(int scale);
 		String SCALE_PROPERTY = "scaleProperty";
+		int DEFAULT_SCALE = -1;
 
 	/**
 	 * Return the ITextRange for the length element. If length element

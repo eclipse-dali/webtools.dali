@@ -232,6 +232,24 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		assertNull(typeResource.annotation(JPA.DISCRIMINATOR_COLUMN));
 	}
 	
+	public void testGetDiscriminatorTypeUpdatesFromResourceChange() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertNull(javaEntity().getDiscriminatorColumn().getSpecifiedDiscriminatorType());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		DiscriminatorColumn column = (DiscriminatorColumn) typeResource.addAnnotation(JPA.DISCRIMINATOR_COLUMN);
+
+		column.setDiscriminatorType(org.eclipse.jpt.core.internal.resource.java.DiscriminatorType.INTEGER);
+		assertEquals(DiscriminatorType.INTEGER, javaEntity().getDiscriminatorColumn().getSpecifiedDiscriminatorType());
+		assertEquals(DiscriminatorType.INTEGER, javaEntity().getDiscriminatorColumn().getDiscriminatorType());
+		
+		column.setDiscriminatorType(null);
+		assertNull(javaEntity().getDiscriminatorColumn().getSpecifiedDiscriminatorType());
+		assertEquals(IDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE, javaEntity().getDiscriminatorColumn().getDiscriminatorType());
+	}
+
 	public void testGetLength() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -287,4 +305,23 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		javaEntity().getDiscriminatorColumn().setSpecifiedLength(-1);
 		assertNull(typeResource.annotation(JPA.DISCRIMINATOR_COLUMN));
 	}
+	
+	public void testGetLengthUpdatesFromResourceChange() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertEquals(-1, javaEntity().getDiscriminatorColumn().getSpecifiedLength());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		DiscriminatorColumn column = (DiscriminatorColumn) typeResource.addAnnotation(JPA.DISCRIMINATOR_COLUMN);
+
+		column.setLength(78);
+		assertEquals(78, javaEntity().getDiscriminatorColumn().getSpecifiedLength());
+		assertEquals(78, javaEntity().getDiscriminatorColumn().getLength());
+		
+		column.setLength(-1);
+		assertEquals(-1, javaEntity().getDiscriminatorColumn().getSpecifiedLength());
+		assertEquals(IDiscriminatorColumn.DEFAULT_LENGTH, javaEntity().getDiscriminatorColumn().getLength());
+	}
+
 }

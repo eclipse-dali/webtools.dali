@@ -20,7 +20,7 @@ public interface AbstractColumn extends NamedColumn
 	 * Corresponds to the unique element of the *Column annotation.
 	 * Returns null if the unique valuePair does not exist in the annotation
 	 */
-	Boolean isUnique();
+	Boolean getUnique();
 	
 	/**
 	 * Corresponds to the unique element of the *Column annotation.
@@ -33,7 +33,7 @@ public interface AbstractColumn extends NamedColumn
 	 * Corresponds to the nullable element of the *Column annotation.
 	 * Returns null if the nullable valuePair does not exist in the annotation
 	 */
-	Boolean isNullable();
+	Boolean getNullable();
 	
 	/**
 	 * Corresponds to the nullable element of the *Column annotation.
@@ -46,7 +46,7 @@ public interface AbstractColumn extends NamedColumn
 	 * Corresponds to the insertable element of the *Column annotation.
 	 * Returns null if the insertable valuePair does not exist in the annotation
 	 */
-	Boolean isInsertable();
+	Boolean getInsertable();
 	
 	/**
 	 * Corresponds to the insertable element of the *Column annotation.
@@ -59,7 +59,7 @@ public interface AbstractColumn extends NamedColumn
 	 * Corresponds to the updatable element of the *Column annotation.
 	 * Returns null if the updatable valuePair does not exist in the annotation
 	 */
-	Boolean isUpdatable();
+	Boolean getUpdatable();
 	
 	/**
 	 * Corresponds to the updatable element of the *Column annotation.

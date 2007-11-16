@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.ClassRef;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
+import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
@@ -40,6 +41,7 @@ import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.base.Property;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddable;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
@@ -53,6 +55,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaVersionMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaBasicMapping;
+import org.eclipse.jpt.core.internal.context.java.JavaColumn;
 import org.eclipse.jpt.core.internal.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMapping;
@@ -223,6 +226,10 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IJavaTable createJavaTable(IJavaEntity parent) {
 		return new JavaTable(parent);
+	}
+	
+	public IJavaColumn createJavaColumn(IColumnMapping parent) {
+		return new JavaColumn(parent);
 	}
 	
 	public IJavaDiscriminatorColumn createJavaDiscriminatorColumn(IJavaEntity parent) {
