@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.DEFAULT;
+import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.JTA;
+import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.RESOURCE_LOCAL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,45 +21,50 @@ import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTransactionType;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlProperties;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlProperty;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-
 
 public class PersistenceUnit extends JpaContextNode
 	implements IPersistenceUnit
 {
+	protected XmlPersistenceUnit xmlPersistenceUnit;
+	
 	protected String name;
+	
+	protected PersistenceUnitTransactionType transactionType;
+	
+	protected PersistenceUnitTransactionType defaultTransactionType = DEFAULT;
+	
+	protected String description;
+	
+	protected String provider;
+	
+	protected String jtaDataSource;
+	
+	protected String nonJtaDataSource;
 	
 	protected final List<IMappingFileRef> mappingFileRefs;
 	
 	protected final List<IClassRef> classRefs;
 	
-	protected XmlPersistenceUnit xmlPersistenceUnit;
+	protected Boolean excludeUnlistedClasses;
+	
+	protected boolean defaultExcludeUnlistedClasses = false;
+	
+	protected final List<IProperty> properties;
+	
 	
 	public PersistenceUnit(IPersistence parent) {
 		super(parent);
+		this.transactionType = PersistenceUnitTransactionType.DEFAULT;
 		this.mappingFileRefs = new ArrayList<IMappingFileRef>();
 		this.classRefs = new ArrayList<IClassRef>();
+		this.properties = new ArrayList<IProperty>();
 	}
 	
-	public void initializeFromResource(XmlPersistenceUnit xmlPersistenceUnit) {
-		this.xmlPersistenceUnit = xmlPersistenceUnit;
-		this.name = xmlPersistenceUnit.getName();
-		initializeMappingFileRefs(xmlPersistenceUnit);
-		initializeClassRefs(xmlPersistenceUnit);
-	}
-	
-	protected void initializeMappingFileRefs(XmlPersistenceUnit xmlPersistenceUnit) {
-		for (XmlMappingFileRef xmlMappingFileRef : xmlPersistenceUnit.getMappingFiles()) {
-			this.mappingFileRefs.add(createMappingFileRef(xmlMappingFileRef));
-		}
-	}
-
-	protected void initializeClassRefs(XmlPersistenceUnit xmlPersistenceUnit) {
-		for (XmlJavaClassRef xmlJavaClassRef : xmlPersistenceUnit.getClasses()) {
-			this.classRefs.add(createClassRef(xmlJavaClassRef));
-		}
-	}
 	
 	public IPersistentType persistentType(String fullyQualifiedTypeName) {
 		for (IClassRef classRef : CollectionTools.iterable(classRefs())) {
@@ -83,6 +91,90 @@ public class PersistenceUnit extends JpaContextNode
 		String oldName = name;
 		name = newName;
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+	}
+	
+	
+	// **************** transaction type ***************************************
+	
+	public PersistenceUnitTransactionType getTransactionType() {
+		return transactionType;
+	}
+	
+	public void setTransactionType(PersistenceUnitTransactionType newTransactionType) {
+		if (newTransactionType == null) {
+			throw new IllegalArgumentException("null");
+		}
+		PersistenceUnitTransactionType oldTransactionType = transactionType;
+		transactionType = newTransactionType;
+		firePropertyChanged(TRANSACTION_TYPE_PROPERTY, oldTransactionType, newTransactionType);
+	}
+	
+	public boolean isTransactionTypeDefault() {
+		return transactionType == DEFAULT;
+	}
+	
+	public PersistenceUnitTransactionType getDefaultTransactionType() {
+		// TODO - calculate default
+		//  From the JPA spec: "In a Java EE environment, if this element is not 
+		//  specified, the default is JTA. In a Java SE environment, if this element 
+		// is not specified, a default of RESOURCE_LOCAL may be assumed."
+		return defaultTransactionType;
+	}
+	
+	public void setTransactionTypeToDefault() {
+		setTransactionType(DEFAULT);
+	}
+	
+	
+	// **************** description ********************************************
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String newDescription) {
+		String oldDescription = description;
+		description = newDescription;
+		firePropertyChanged(DESCRIPTION_PROPERTY, oldDescription, newDescription);
+	}
+	
+	
+	// **************** provider ***********************************************
+	
+	public String getProvider() {
+		return provider;
+	}
+	
+	public void setProvider(String newProvider) {
+		String oldProvider = provider;
+		provider = newProvider;
+		firePropertyChanged(DESCRIPTION_PROPERTY, oldProvider, newProvider);
+	}
+	
+	
+	// **************** jta data source ****************************************
+	
+	public String getJtaDataSource() {
+		return jtaDataSource;
+	}
+	
+	public void setJtaDataSource(String newJtaDataSource) {
+		String oldJtaDataSource = jtaDataSource;
+		jtaDataSource = newJtaDataSource;
+		firePropertyChanged(DESCRIPTION_PROPERTY, oldJtaDataSource, newJtaDataSource);
+	}
+	
+	
+	// **************** non-jta data source ************************************
+	
+	public String getNonJtaDataSource() {
+		return nonJtaDataSource;
+	}
+	
+	public void setNonJtaDataSource(String newNonJtaDataSource) {
+		String oldNonJtaDataSource = nonJtaDataSource;
+		nonJtaDataSource = newNonJtaDataSource;
+		firePropertyChanged(DESCRIPTION_PROPERTY, oldNonJtaDataSource, newNonJtaDataSource);
 	}
 	
 	
@@ -139,20 +231,156 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	
+	// **************** exclude unlisted classes *******************************
+	
+	public boolean getExcludeUnlistedClasses() {
+		return (isExcludeUnlistedClassesDefault()) ? 
+				getDefaultExcludeUnlistedClasses() : excludeUnlistedClasses;
+	}
+	
+	public void setExcludeUnlistedClasses(boolean newExcludeUnlistedClasses) {
+		setExcludeUnlistedClasses((Boolean) newExcludeUnlistedClasses);
+	}
+	
+	protected void setExcludeUnlistedClasses(Boolean newExcludeUnlistedClasses) {
+		Boolean oldExcludeUnlistedClasses = excludeUnlistedClasses;
+		excludeUnlistedClasses = newExcludeUnlistedClasses;
+		firePropertyChanged(EXCLUDE_UNLISTED_CLASSED_PROPERTY, oldExcludeUnlistedClasses, newExcludeUnlistedClasses);
+	}
+	
+	public boolean isExcludeUnlistedClassesDefault() {
+		return excludeUnlistedClasses == null;
+	}
+	
+	public boolean getDefaultExcludeUnlistedClasses() {
+		return defaultExcludeUnlistedClasses;
+	}
+	
+	public void setExcludeUnlistedClassesToDefault() {
+		setExcludeUnlistedClasses(null);
+	}
+	
+	
+	// **************** properties *********************************************
+	
+	public ListIterator<IProperty> properties() {
+		return new CloneListIterator<IProperty>(properties);
+	}
+	
+	public void addProperty(IProperty property) {
+		properties.add(property);
+		fireListChanged(PROPERTIES_LIST);
+	}
+	
+	public void addProperty(int index, IProperty property) {
+		properties.add(index, property);
+		fireListChanged(PROPERTIES_LIST);
+	}
+	
+	public void removeProperty(IProperty property) {
+		properties.remove(property);
+		fireListChanged(PROPERTIES_LIST);
+	}
+	
+	public void removeProperty(int index) {
+		properties.remove(index);
+		fireListChanged(PROPERTIES_LIST);
+	}
+	
+	protected void clearProperties() {
+		// must check if properties are clear already, else another update is 
+		// launched, needed or not
+		if (! properties.isEmpty()) {
+			properties.clear();
+			fireListCleared(PROPERTIES_LIST);
+		}
+	}
+	
+	
 	// **************** updating ***********************************************
+	
+	
+	public void initialize(XmlPersistenceUnit xmlPersistenceUnit) {
+		this.xmlPersistenceUnit = xmlPersistenceUnit;
+		name = xmlPersistenceUnit.getName();
+		initializeMappingFileRefs(xmlPersistenceUnit);
+		initializeClassRefs(xmlPersistenceUnit);
+		initializeProperties(xmlPersistenceUnit);
+	}
+	
+	protected void initializeMappingFileRefs(XmlPersistenceUnit xmlPersistenceUnit) {
+		for (XmlMappingFileRef xmlMappingFileRef : xmlPersistenceUnit.getMappingFiles()) {
+			mappingFileRefs.add(createMappingFileRef(xmlMappingFileRef));
+		}
+	}
+	
+	protected void initializeClassRefs(XmlPersistenceUnit xmlPersistenceUnit) {
+		for (XmlJavaClassRef xmlJavaClassRef : xmlPersistenceUnit.getClasses()) {
+			classRefs.add(createClassRef(xmlJavaClassRef));
+		}
+	}
+	
+	protected void initializeProperties(XmlPersistenceUnit xmlPersistenceUnit) {
+		XmlProperties xmlProperties = xmlPersistenceUnit.getProperties();
+		if (xmlProperties == null) {
+			return;
+		}
+		for (XmlProperty xmlProperty : xmlProperties.getProperties()) {
+			properties.add(createProperty(xmlProperty));
+		}
+	}
 	
 	public void update(XmlPersistenceUnit persistenceUnit) {
 		this.xmlPersistenceUnit = persistenceUnit;
 		updateName(persistenceUnit);
+		updateTransactionType(persistenceUnit);
+		updateDescription(persistenceUnit);
+		updateProvider(persistenceUnit);
+		updateJtaDataSource(persistenceUnit);
+		updateNonJtaDataSource(persistenceUnit);
 		updateMappingFileRefs(persistenceUnit);
 		updateClassRefs(persistenceUnit);
+		updateExcludeUnlistedClasses(persistenceUnit);
+		updateProperties(persistenceUnit);
 	}
 	
-	public void updateName(XmlPersistenceUnit persistenceUnit) {
+	protected void updateName(XmlPersistenceUnit persistenceUnit) {
 		setName(persistenceUnit.getName());
 	}
 	
-	public void updateMappingFileRefs(XmlPersistenceUnit persistenceUnit) {
+	protected void updateTransactionType(XmlPersistenceUnit persistenceUnit) {
+		XmlPersistenceUnitTransactionType transactionType = persistenceUnit.getTransactionType();
+		if (transactionType == null) {
+			setTransactionType(DEFAULT);
+		}
+		else if (transactionType == XmlPersistenceUnitTransactionType.JTA) {
+			setTransactionType(JTA);
+		}
+		else if (transactionType == XmlPersistenceUnitTransactionType.RESOURCE_LOCAL) {
+			setTransactionType(RESOURCE_LOCAL);
+		}
+		else {
+			throw new IllegalStateException();
+		}
+	}
+	
+	protected void updateDescription(XmlPersistenceUnit persistenceUnit) {
+		setDescription(persistenceUnit.getDescription());
+	}
+	
+	protected void updateProvider(XmlPersistenceUnit persistenceUnit) {
+		setProvider(persistenceUnit.getProvider());
+	}
+	
+	protected void updateJtaDataSource(XmlPersistenceUnit persistenceUnit) {
+		setJtaDataSource(persistenceUnit.getJtaDataSource());
+	}
+	
+	protected void updateNonJtaDataSource(XmlPersistenceUnit persistenceUnit) {
+		setNonJtaDataSource(persistenceUnit.getNonJtaDataSource());
+	}
+	
+	protected void updateMappingFileRefs(XmlPersistenceUnit persistenceUnit) {
 		Iterator<IMappingFileRef> stream = mappingFileRefs();
 		Iterator<XmlMappingFileRef> stream2 = persistenceUnit.getMappingFiles().iterator();
 		
@@ -177,7 +405,7 @@ public class PersistenceUnit extends JpaContextNode
 		return mappingFileRef;
 	}
 	
-	public void updateClassRefs(XmlPersistenceUnit persistenceUnit) {
+	protected void updateClassRefs(XmlPersistenceUnit persistenceUnit) {
 		Iterator<IClassRef> stream = classRefs();
 		Iterator<XmlJavaClassRef> stream2 = persistenceUnit.getClasses().iterator();
 		
@@ -201,6 +429,50 @@ public class PersistenceUnit extends JpaContextNode
 		classRef.initializeFromResource(xmlClassRef);
 		return classRef;
 	}
+	
+	protected void updateExcludeUnlistedClasses(XmlPersistenceUnit persistenceUnit) {
+		if (persistenceUnit.isSetExcludeUnlistedClasses()) {
+			setExcludeUnlistedClasses(persistenceUnit.isExcludeUnlistedClasses());
+		}
+		else {
+			setExcludeUnlistedClassesToDefault();
+		}
+	}
+	
+	protected void updateProperties(XmlPersistenceUnit persistenceUnit) {
+		XmlProperties xmlProperties = persistenceUnit.getProperties();
+		
+		if (xmlProperties == null) {
+			clearProperties();
+			return;
+		}
+		
+		Iterator<IProperty> stream = properties();
+		Iterator<XmlProperty> stream2 = xmlProperties.getProperties().iterator();
+		
+		while (stream.hasNext()) {
+			IProperty property = stream.next();
+			if (stream2.hasNext()) {
+				property.update(stream2.next());
+			}
+			else {
+				removeProperty(property);
+			}
+		}
+		
+		while (stream2.hasNext()) {
+			addProperty(createProperty(stream2.next()));
+		}
+	}
+	
+	protected IProperty createProperty(XmlProperty xmlProperty) {
+		IProperty property = jpaFactory().createProperty(this);
+		property.initialize(xmlProperty);
+		return property;
+	}
+	
+	
+	// *************************************************************************
 	
 	public ITextRange validationTextRange() {
 		return this.xmlPersistenceUnit.validationTextRange();

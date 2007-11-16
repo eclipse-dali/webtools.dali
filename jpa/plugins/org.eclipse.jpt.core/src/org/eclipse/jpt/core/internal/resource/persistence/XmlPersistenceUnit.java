@@ -230,7 +230,7 @@ public class XmlPersistenceUnit extends JpaEObject implements IJpaEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected static final XmlPersistenceUnitTransactionType TRANSACTION_TYPE_EDEFAULT = XmlPersistenceUnitTransactionType.JTA;
+	protected static final XmlPersistenceUnitTransactionType TRANSACTION_TYPE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getTransactionType() <em>Transaction Type</em>}' attribute.

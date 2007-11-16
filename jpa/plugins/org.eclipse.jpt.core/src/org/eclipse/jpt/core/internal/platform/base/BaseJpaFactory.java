@@ -32,10 +32,12 @@ import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
+import org.eclipse.jpt.core.internal.context.base.IProperty;
 import org.eclipse.jpt.core.internal.context.base.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.Persistence;
 import org.eclipse.jpt.core.internal.context.base.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
+import org.eclipse.jpt.core.internal.context.base.Property;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
@@ -195,6 +197,9 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return new ClassRef(parent);
 	}
 	
+	public IProperty createProperty(IPersistenceUnit parent) {
+		return new Property(parent);
+	}
 	
 	public IJavaPersistentType createJavaPersistentType(IClassRef parent) {
 		return new JavaPersistentType(parent);

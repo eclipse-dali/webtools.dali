@@ -99,7 +99,7 @@ public class Persistence extends JpaContextNode
 	
 	protected IPersistenceUnit createPersistenceUnit(XmlPersistenceUnit xmlPersistenceUnit) {
 		IPersistenceUnit persistenceUnit = jpaFactory().createPersistenceUnit(this);
-		persistenceUnit.initializeFromResource(xmlPersistenceUnit);
+		persistenceUnit.initialize(xmlPersistenceUnit);
 		return persistenceUnit;
 	}
 	

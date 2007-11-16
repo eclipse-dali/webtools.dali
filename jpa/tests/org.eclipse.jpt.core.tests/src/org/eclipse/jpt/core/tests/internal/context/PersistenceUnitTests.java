@@ -11,11 +11,15 @@
 package org.eclipse.jpt.core.tests.internal.context;
 
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
+import org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTransactionType;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlProperties;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlProperty;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class PersistenceUnitTests extends ContextModelTestCase
@@ -25,7 +29,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	protected XmlPersistenceUnit xmlPersistenceUnit() {
-		PersistenceResource prm = persistenceResourceModel();
+		PersistenceResource prm = persistenceResource();
 		return prm.getPersistence().getPersistenceUnits().get(0);
 	}
 	
@@ -33,7 +37,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		return jpaContent().getPersistenceXml().getPersistence().persistenceUnits().next();
 	}
 	
-	public void testSetName() {
+	public void testUpdateName() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
 		
@@ -61,35 +65,150 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(xmlPersistenceUnit.getName(), persistenceUnit.getName());
 	}
 	
-	public void testSetTransactionType() {
+	public void testUpdateTransactionType() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// 1 - initial value is default
+		assertNull(xmlPersistenceUnit.getTransactionType());
+		assertEquals(persistenceUnit.getTransactionType(), PersistenceUnitTransactionType.DEFAULT);
+		
+		// 2 - set value, context changed
+		xmlPersistenceUnit.setTransactionType(XmlPersistenceUnitTransactionType.JTA);
+		
+		assertEquals(persistenceUnit.getTransactionType(), PersistenceUnitTransactionType.JTA);
+		
+		xmlPersistenceUnit.setTransactionType(XmlPersistenceUnitTransactionType.RESOURCE_LOCAL);
+		
+		assertEquals(persistenceUnit.getTransactionType(), PersistenceUnitTransactionType.RESOURCE_LOCAL);
+		
+		// 3 - unset value, context changed
+		xmlPersistenceUnit.setTransactionType(null);
+		
+		assertEquals(persistenceUnit.getTransactionType(), PersistenceUnitTransactionType.DEFAULT);
+	}
+	
+	public void testUpdateDescription() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// test that descriptions are initially equal
+		assertEquals(xmlPersistenceUnit.getDescription(), persistenceUnit.getDescription());
+		
+		// set description to different description, test equality
+		xmlPersistenceUnit.setDescription("newDescription");
+		
+		assertEquals(xmlPersistenceUnit.getDescription(), persistenceUnit.getDescription());
+		
+		// set description to empty string, test equality
+		xmlPersistenceUnit.setDescription("");
+		
+		assertEquals(xmlPersistenceUnit.getDescription(), persistenceUnit.getDescription());
+		
+		// set description to null, test equality
+		xmlPersistenceUnit.setDescription(null);
+		
+		assertEquals(xmlPersistenceUnit.getDescription(), persistenceUnit.getDescription());
+		
+		// set description back to non-null, test equality
+		xmlPersistenceUnit.setDescription("newDescription");
+		
+		assertEquals(xmlPersistenceUnit.getDescription(), persistenceUnit.getDescription());
+	}
+	
+	public void testUpdateProvider() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// test that providers are initially equal
+		assertEquals(xmlPersistenceUnit.getProvider(), persistenceUnit.getProvider());
+		
+		// set provider to different provider, test equality
+		xmlPersistenceUnit.setProvider("newProvider");
+		
+		assertEquals(xmlPersistenceUnit.getProvider(), persistenceUnit.getProvider());
+		
+		// set provider to empty string, test equality
+		xmlPersistenceUnit.setProvider("");
+		
+		assertEquals(xmlPersistenceUnit.getProvider(), persistenceUnit.getProvider());
+		
+		// set provider to null, test equality
+		xmlPersistenceUnit.setProvider(null);
+		
+		assertEquals(xmlPersistenceUnit.getProvider(), persistenceUnit.getProvider());
+		
+		// set provider back to non-null, test equality
+		xmlPersistenceUnit.setProvider("newProvider");
+		
+		assertEquals(xmlPersistenceUnit.getProvider(), persistenceUnit.getProvider());
+	}
+	
+	public void testUpdateJtaDataSource() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// test that jtaDataSources are initially equal
+		assertEquals(xmlPersistenceUnit.getJtaDataSource(), persistenceUnit.getJtaDataSource());
+		
+		// set jtaDataSource to different jtaDataSource, test equality
+		xmlPersistenceUnit.setJtaDataSource("newJtaDataSource");
+		
+		assertEquals(xmlPersistenceUnit.getJtaDataSource(), persistenceUnit.getJtaDataSource());
+		
+		// set jtaDataSource to empty string, test equality
+		xmlPersistenceUnit.setJtaDataSource("");
+		
+		assertEquals(xmlPersistenceUnit.getJtaDataSource(), persistenceUnit.getJtaDataSource());
+		
+		// set jtaDataSource to null, test equality
+		xmlPersistenceUnit.setJtaDataSource(null);
+		
+		assertEquals(xmlPersistenceUnit.getJtaDataSource(), persistenceUnit.getJtaDataSource());
+		
+		// set jtaDataSource back to non-null, test equality
+		xmlPersistenceUnit.setJtaDataSource("newJtaDataSource");
+		
+		assertEquals(xmlPersistenceUnit.getJtaDataSource(), persistenceUnit.getJtaDataSource());
+	}
+	
+	public void testUpdateNonJtaDataSource() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// test that nonJtaDataSources are initially equal
+		assertEquals(xmlPersistenceUnit.getNonJtaDataSource(), persistenceUnit.getNonJtaDataSource());
+		
+		// set nonJtaDataSource to different nonJtaDataSource, test equality
+		xmlPersistenceUnit.setNonJtaDataSource("newNonJtaDataSource");
+		
+		assertEquals(xmlPersistenceUnit.getNonJtaDataSource(), persistenceUnit.getNonJtaDataSource());
+		
+		// set nonJtaDataSource to empty string, test equality
+		xmlPersistenceUnit.setNonJtaDataSource("");
+		
+		assertEquals(xmlPersistenceUnit.getNonJtaDataSource(), persistenceUnit.getNonJtaDataSource());
+		
+		// set nonJtaDataSource to null, test equality
+		xmlPersistenceUnit.setNonJtaDataSource(null);
+		
+		assertEquals(xmlPersistenceUnit.getNonJtaDataSource(), persistenceUnit.getNonJtaDataSource());
+		
+		// set nonJtaDataSource back to non-null, test equality
+		xmlPersistenceUnit.setNonJtaDataSource("newNonJtaDataSource");
+		
+		assertEquals(xmlPersistenceUnit.getNonJtaDataSource(), persistenceUnit.getNonJtaDataSource());
+	}
+	
+	public void testUpdateJarFileRefs1() {
 		// TODO
 	}
 	
-	public void testSetDescription() {
+	public void testUpdateJarFileRefs2() {
 		// TODO
 	}
 	
-	public void testSetProvider() {
-		// TODO
-	}
-	
-	public void testSetJtaDataSource() {
-		// TODO
-	}
-	
-	public void testSetNonJtaDataSource() {
-		// TODO
-	}
-	
-	public void testAddJarFileRef() {
-		// TODO
-	}
-	
-	public void testRemoveJarFileRef() {
-		// TODO
-	}
-	
-	public void testAddMappingFileRef() {
+	public void testUpdateMappingFileRefs1() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
 		
@@ -112,7 +231,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 2);
 	}
 	
-	public void testRemoveMappingFileRef() {
+	public void testUpdateMappingFileRefs2() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
 		
@@ -140,7 +259,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 0);
 	}
 	
-	public void testAddClassRef() {
+	public void testUpdateClassRefs1() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
 		
@@ -163,7 +282,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(CollectionTools.size(persistenceUnit.classRefs()), 2);
 	}
 	
-	public void testRemoveClassRef() {
+	public void testUpdateClassRefs2() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
 		
@@ -189,5 +308,97 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlPersistenceUnit.getClasses().remove(xmlClassRef);
 		
 		assertEquals(CollectionTools.size(persistenceUnit.classRefs()), 0);
+	}
+	
+	public void testUpdateExcludeUnlistedClasses() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// 1 - initial value is default
+		assertFalse(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
+		assertTrue(persistenceUnit.isExcludeUnlistedClassesDefault());
+		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		
+		// 2 - set value, context changed
+		xmlPersistenceUnit.setExcludeUnlistedClasses(true);
+		
+		assertTrue(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.isExcludeUnlistedClassesDefault());
+		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		
+		xmlPersistenceUnit.setExcludeUnlistedClasses(false);
+		
+		assertTrue(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.isExcludeUnlistedClassesDefault());
+		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		
+		// 3 - unset value, context changed
+		xmlPersistenceUnit.unsetExcludeUnlistedClasses();
+		
+		assertFalse(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
+		assertTrue(persistenceUnit.isExcludeUnlistedClassesDefault());
+		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+	}
+	
+	public void testUpdateProperties1() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// test there are none initially
+		assertNull(xmlPersistenceUnit.getProperties());
+		assertEquals(CollectionTools.size(persistenceUnit.properties()), 0);
+		
+		// add "properties", test that there's no real change to context
+		XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
+		xmlPersistenceUnit.setProperties(xmlProperties);
+		assertEquals(CollectionTools.size(persistenceUnit.properties()), 0);
+		
+		// add property, test that it's added to context
+		XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
+		xmlProperty.setName("foo");
+		xmlProperty.setValue("bar");
+		xmlProperties.getProperties().add(xmlProperty);
+		
+		assertEquals(CollectionTools.size(persistenceUnit.properties()), 1);
+		
+		// add another ...
+		xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
+		xmlProperty.setName("FOO");
+		xmlProperty.setValue("BAR");
+		xmlProperties.getProperties().add(xmlProperty);
+		
+		assertEquals(CollectionTools.size(persistenceUnit.properties()), 2);
+	}
+	
+	public void testUpdateProperties2() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// add two properties and test that there are two existing in xml and context
+		XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
+		xmlPersistenceUnit.setProperties(xmlProperties);
+		XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
+		xmlProperty.setName("foo");
+		xmlProperty.setValue("bar");
+		xmlProperties.getProperties().add(xmlProperty);
+		xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
+		xmlProperty.setName("FOO");
+		xmlProperty.setValue("BAR");
+		xmlProperties.getProperties().add(xmlProperty);
+		
+		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 2);
+		assertEquals(CollectionTools.size(persistenceUnit.properties()), 2);
+		
+		// remove property from xml, test that it's removed from context
+		xmlProperty = xmlProperties.getProperties().get(0);
+		xmlProperties.getProperties().remove(xmlProperty);
+		
+		assertEquals(CollectionTools.size(persistenceUnit.properties()), 1);
+		
+		// remove another one ...
+		xmlProperty = xmlProperties.getProperties().get(0);
+		xmlProperties.getProperties().remove(xmlProperty);
+		
+		assertEquals(CollectionTools.size(persistenceUnit.properties()), 0);
 	}
 }

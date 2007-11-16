@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
+import org.eclipse.jpt.core.internal.context.base.IProperty;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
@@ -57,6 +58,8 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	IMappingFileRef createMappingFileRef(IPersistenceUnit parent);
 	
 	IClassRef createClassRef(IPersistenceUnit parent);
+	
+	IProperty createProperty(IPersistenceUnit parent);
 	
 	IJavaPersistentType createJavaPersistentType(IClassRef parent);
 	
