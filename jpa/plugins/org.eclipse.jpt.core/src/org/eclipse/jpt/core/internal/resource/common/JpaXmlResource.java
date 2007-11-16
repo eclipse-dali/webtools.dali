@@ -37,7 +37,7 @@ public abstract class JpaXmlResource extends TranslatorResourceImpl
 	 */
 	@Override
 	public void eNotify(Notification notification) {
-		if (!notification.isTouch()) {
+		if (!notification.isTouch() && isLoaded()) {
 			super.eNotify(notification);
 			resourceChanged();
 		}
