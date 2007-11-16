@@ -22,7 +22,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testAddPersistence() throws Exception {
-		PersistenceResource prm = persistenceResourceModel();
+		PersistenceResource prm = persistenceResource();
 		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
 		IPersistenceXml persistenceXml = baseJpaContent.getPersistenceXml();
 		prm.getContents().clear();
@@ -37,7 +37,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testRemovePersistence() throws Exception {
-		PersistenceResource prm = persistenceResourceModel();
+		PersistenceResource prm = persistenceResource();
 		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
 		IPersistenceXml persistenceXml = baseJpaContent.getPersistenceXml();
 		

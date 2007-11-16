@@ -29,7 +29,9 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 {
 	protected static final String PROJECT_NAME = "ContextModelTestProject";
 		
-	protected PersistenceResource persistenceResourceModel;
+	protected PersistenceResource persistenceResource;
+	
+	
 	protected ContextModelTestCase(String name) {
 		super(name);
 	}
@@ -53,7 +55,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		//at least delete the project from the workspace since, deleting from the file system doesn't work well.
 		//tests run too slow otherwise because so many projects are created in the workspace
 		getJavaProject().getProject().delete(false, true, null);
-		this.persistenceResourceModel = null;
+		this.persistenceResource = null;
 		super.tearDown();
 	}
 	
@@ -92,16 +94,16 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		}
 	}
 	
-	protected PersistenceResource persistenceResourceModel() {
-		if (this.persistenceResourceModel != null) {
-			return this.persistenceResourceModel;
+	protected PersistenceResource persistenceResource() {
+		if (this.persistenceResource != null) {
+			return this.persistenceResource;
 		}
 		String persistenceXmlUri = JptCorePlugin.persistenceXmlDeploymentURI(getJavaProject().getProject());
 		PersistenceArtifactEdit pae = 
 				PersistenceArtifactEdit.getArtifactEditForWrite(getJavaProject().getProject());
-		 this.persistenceResourceModel = pae.getResource(persistenceXmlUri);
+		 this.persistenceResource = pae.getResource(persistenceXmlUri);
 		 
-		 return this.persistenceResourceModel;
+		 return this.persistenceResource;
 	}
 	
 	protected BaseJpaContent jpaContent() {
@@ -120,6 +122,4 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected IType createEnumAndMembers(String enumName, String enumBody) throws Exception {
 		return this.javaProject.createType("javax.persistence", enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
 	}
-
-
 }

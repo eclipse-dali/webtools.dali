@@ -82,7 +82,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 	}
 	
 	protected XmlPersistenceUnit xmlPersistenceUnit() {
-		PersistenceResource prm = persistenceResourceModel();
+		PersistenceResource prm = persistenceResource();
 		return prm.getPersistence().getPersistenceUnits().get(0);
 	}
 	

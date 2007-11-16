@@ -92,8 +92,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 	}
 	
 	protected XmlPersistenceUnit xmlPersistenceUnit() {
-		PersistenceResource prm = persistenceResourceModel();
-		return prm.getPersistence().getPersistenceUnits().get(0);
+		PersistenceResource pr = persistenceResource();
+		return pr.getPersistence().getPersistenceUnits().get(0);
 	}
 	
 	protected IPersistenceUnit persistenceUnit() {
