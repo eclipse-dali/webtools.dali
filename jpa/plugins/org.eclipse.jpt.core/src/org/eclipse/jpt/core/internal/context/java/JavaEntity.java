@@ -224,7 +224,9 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 	
 	public void removeSpecifiedSecondaryTable(int index) {
+		IJavaSecondaryTable removedSecondaryTable = this.specifiedSecondaryTables.remove(index);
 		this.persistentTypeResource.removeAnnotation(index, SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		fireItemRemoved(IEntity.SPECIFIED_SECONDARY_TABLES_LIST, index, removedSecondaryTable);
 	}
 	
 	protected void removeSpecifiedSecondaryTable(IJavaSecondaryTable secondaryTable) {

@@ -568,19 +568,31 @@ public class JavaEntityTests extends ContextModelTestCase
 
 		javaEntity().removeSpecifiedSecondaryTable(1);
 		
-		Iterator<JavaResource> secondaryTables = typeResource.annotations(SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
-		assertEquals("FOO", ((SecondaryTable) secondaryTables.next()).getName());		
-		assertEquals("BAZ", ((SecondaryTable) secondaryTables.next()).getName());
-		assertFalse(secondaryTables.hasNext());
+		Iterator<JavaResource> secondaryTableResources = typeResource.annotations(SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		assertEquals("FOO", ((SecondaryTable) secondaryTableResources.next()).getName());		
+		assertEquals("BAZ", ((SecondaryTable) secondaryTableResources.next()).getName());
+		assertFalse(secondaryTableResources.hasNext());
 		
+		Iterator<ISecondaryTable> secondaryTables = javaEntity().secondaryTables();
+		assertEquals("FOO", secondaryTables.next().getName());		
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertFalse(secondaryTables.hasNext());
+	
 		
 		javaEntity().removeSpecifiedSecondaryTable(1);
-		secondaryTables = typeResource.annotations(SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
-		assertEquals("FOO", ((SecondaryTable) secondaryTables.next()).getName());		
+		secondaryTableResources = typeResource.annotations(SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		assertEquals("FOO", ((SecondaryTable) secondaryTableResources.next()).getName());		
+		assertFalse(secondaryTableResources.hasNext());
+
+		secondaryTables = javaEntity().secondaryTables();
+		assertEquals("FOO", secondaryTables.next().getName());
 		assertFalse(secondaryTables.hasNext());
 
+		
 		javaEntity().removeSpecifiedSecondaryTable(0);
-		secondaryTables = typeResource.annotations(SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		secondaryTableResources = typeResource.annotations(SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		assertFalse(secondaryTableResources.hasNext());
+		secondaryTables = javaEntity().secondaryTables();
 		assertFalse(secondaryTables.hasNext());
 
 		assertNull(typeResource.annotation(SecondaryTables.ANNOTATION_NAME));
