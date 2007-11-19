@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.resource.java.Column;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 
 public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColumn
 {
@@ -31,9 +30,8 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 	}
 
 	@Override
-	public void initializeFromResource(JavaPersistentResource persistentResource) {
-		super.initializeFromResource(persistentResource);
-		Column column = columnResource();
+	protected void initializeFromResource(Column column) {
+		super.initializeFromResource(column);
 		this.specifiedLength = this.specifiedLength(column);
 		this.specifiedPrecision = this.specifiedPrecision(column);
 		this.specifiedScale = this.specifiedScale(column);

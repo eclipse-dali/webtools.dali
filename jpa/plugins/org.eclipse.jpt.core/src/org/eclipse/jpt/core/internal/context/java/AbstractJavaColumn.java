@@ -14,7 +14,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
 import org.eclipse.jpt.core.internal.resource.java.AbstractColumn;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -41,9 +40,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 	}
 	
 	@Override
-	public void initializeFromResource(JavaPersistentResource persistentResource) {
-		super.initializeFromResource(persistentResource);
-		AbstractColumn column = columnResource();
+	protected void initializeFromResource(T column) {
 		this.defaultTable = this.defaultTable();
 		this.specifiedTable = this.specifiedTable(column);
 		this.specifiedUnique = this.specifiedUnique(column);
@@ -153,7 +150,6 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 		this.specifiedUpdatable = newSpecifiedUpdatable;
 		this.columnResource().setUpdatable(newSpecifiedUpdatable);
 		firePropertyChanged(IAbstractColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
-		
 	}
 
 

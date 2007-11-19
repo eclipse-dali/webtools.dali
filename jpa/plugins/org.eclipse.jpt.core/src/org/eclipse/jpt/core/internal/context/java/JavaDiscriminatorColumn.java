@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorColumn;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 
 public class JavaDiscriminatorColumn extends JavaNamedColumn<DiscriminatorColumn>
 	implements IJavaDiscriminatorColumn
@@ -27,11 +26,10 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn<DiscriminatorColumn
 	}
 
 	@Override
-	public void initializeFromResource(JavaPersistentResource persistentResource) {
-		super.initializeFromResource(persistentResource);
-		DiscriminatorColumn discriminatorColumn = columnResource();
-		this.specifiedDiscriminatorType = this.discriminatorType(discriminatorColumn);
-		this.specifiedLength = this.length(discriminatorColumn);
+	protected void initializeFromResource(DiscriminatorColumn column) {
+		super.initializeFromResource(column);
+		this.specifiedDiscriminatorType = this.discriminatorType(column);
+		this.specifiedLength = this.length(column);
 	}
 	
 	protected IJavaEntity javaEntity() {

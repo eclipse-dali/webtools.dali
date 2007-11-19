@@ -42,11 +42,13 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 
 	public void initializeFromResource(JavaPersistentResource persistentResource) {
 		this.persistentResource = persistentResource;
-		NamedColumn column = columnResource();
+		this.initializeFromResource(this.columnResource());
+	}
+	
+	protected void initializeFromResource(T column) {
 		this.specifiedName = column.getName();
 		this.defaultName = this.defaultName();
-		this.columnDefinition = column.getColumnDefinition();
-		
+		this.columnDefinition = column.getColumnDefinition();	
 	}
 	
 	//query for the table resource every time on setters.
@@ -117,7 +119,7 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 
 	public void update(JavaPersistentResource persistentResource) {
 		this.persistentResource = persistentResource;
-		this.update(columnResource());
+		this.update(this.columnResource());
 	}
 
 	protected void update(T column) {
