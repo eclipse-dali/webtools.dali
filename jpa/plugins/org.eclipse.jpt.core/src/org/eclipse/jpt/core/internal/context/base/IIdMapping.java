@@ -11,9 +11,10 @@ package org.eclipse.jpt.core.internal.context.base;
 
 public interface IIdMapping extends IAttributeMapping, IColumnMapping
 {
-//	IGeneratedValue getGeneratedValue();
-//
-//	void setGeneratedValue(IGeneratedValue value);
+	IGeneratedValue getGeneratedValue();
+	IGeneratedValue addGeneratedValue();
+	void removeGeneratedValue();
+		String GENERATED_VALUE_PROPERTY = "generatedValueProperty";
 
 	TemporalType getTemporal();
 	void setTemporal(TemporalType value);

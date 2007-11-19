@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddable;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
+import org.eclipse.jpt.core.internal.context.java.IJavaGeneratedValue;
 import org.eclipse.jpt.core.internal.context.java.IJavaIdMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
@@ -99,4 +100,8 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	IJavaSequenceGenerator createJavaSequenceGenerator(IJavaJpaContextNode parent);
 	
 	IJavaTableGenerator createJavaTableGenerator(IJavaJpaContextNode parent);
+	
+	IJavaGeneratedValue createJavaGeneratedValue(IJavaAttributeMapping parent);
+	
+	
 }

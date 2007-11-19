@@ -46,6 +46,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddable;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
+import org.eclipse.jpt.core.internal.context.java.IJavaGeneratedValue;
 import org.eclipse.jpt.core.internal.context.java.IJavaIdMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
@@ -63,6 +64,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaEntity;
+import org.eclipse.jpt.core.internal.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.core.internal.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaNullAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
@@ -275,5 +277,9 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IJavaTableGenerator createJavaTableGenerator(IJavaJpaContextNode parent) {
 		return new JavaTableGenerator(parent);
+	}
+	
+	public IJavaGeneratedValue createJavaGeneratedValue(IJavaAttributeMapping parent) {
+		return new JavaGeneratedValue(parent);
 	}
 }

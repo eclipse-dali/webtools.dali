@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
+import org.eclipse.jpt.core.internal.resource.java.GeneratedValue;
 import org.eclipse.jpt.core.internal.resource.java.Id;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.SequenceGenerator;
@@ -26,7 +27,7 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 {
 	protected IJavaColumn column;
 
-//	protected IGeneratedValue generatedValue;
+	protected IJavaGeneratedValue generatedValue;
 
 	protected TemporalType temporal;
 
@@ -46,6 +47,7 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		this.temporal = this.temporal(temporalResource());
 		this.initializeTableGenerator(persistentAttributeResource);
 		this.initializeSequenceGenerator(persistentAttributeResource);
+		this.initializeGeneratedValue(persistentAttributeResource);
 	}
 	
 	protected void initializeTableGenerator(JavaPersistentAttributeResource persistentAttributeResource) {
@@ -61,6 +63,14 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		if (sequenceGeneratorResource != null) {
 			this.sequenceGenerator = jpaFactory().createJavaSequenceGenerator(this);
 			this.sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
+		}
+	}
+	
+	protected void initializeGeneratedValue(JavaPersistentAttributeResource persistentAttributeResource) {
+		GeneratedValue generatedValueResource = generatedValue(persistentAttributeResource);
+		if (generatedValueResource != null) {
+			this.generatedValue = jpaFactory().createJavaGeneratedValue(this);
+			this.generatedValue.initializeFromResource(generatedValueResource);
 		}
 	}
 	
@@ -84,38 +94,6 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		return this.column;
 	}
 
-//	public IGeneratedValue getGeneratedValue() {
-//		return generatedValue;
-//	}
-//
-//	public NotificationChain basicSetGeneratedValue(IGeneratedValue newGeneratedValue, NotificationChain msgs) {
-//		IGeneratedValue oldGeneratedValue = generatedValue;
-//		generatedValue = newGeneratedValue;
-//		if (eNotificationRequired()) {
-//			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ID__GENERATED_VALUE, oldGeneratedValue, newGeneratedValue);
-//			if (msgs == null)
-//				msgs = notification;
-//			else
-//				msgs.add(notification);
-//		}
-//		return msgs;
-//	}
-//
-//	public void setGeneratedValue(IGeneratedValue newGeneratedValue) {
-//		if (newGeneratedValue != generatedValue) {
-//			NotificationChain msgs = null;
-//			if (generatedValue != null)
-//				msgs = ((InternalEObject) generatedValue).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_ID__GENERATED_VALUE, null, msgs);
-//			if (newGeneratedValue != null)
-//				msgs = ((InternalEObject) newGeneratedValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_ID__GENERATED_VALUE, null, msgs);
-//			msgs = basicSetGeneratedValue(newGeneratedValue, msgs);
-//			if (msgs != null)
-//				msgs.dispatch();
-//		}
-//		else if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ID__GENERATED_VALUE, newGeneratedValue, newGeneratedValue));
-//	}
-
 	public TemporalType getTemporal() {
 		return this.temporal;
 	}
@@ -127,6 +105,38 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		firePropertyChanged(IIdMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 	
+	public IJavaGeneratedValue addGeneratedValue() {
+		if (getGeneratedValue() != null) {
+			throw new IllegalStateException("gemeratedValue already exists");
+		}
+		IJavaGeneratedValue generatedValue = jpaFactory().createJavaGeneratedValue(this);
+		setGeneratedValue(generatedValue);
+		return generatedValue;
+	}
+	
+	public void removeGeneratedValue() {
+		if (getGeneratedValue() == null) {
+			throw new IllegalStateException("gemeratedValue does not exist, cannot be removed");
+		}
+		setGeneratedValue(null);
+	}
+	
+	public IJavaGeneratedValue getGeneratedValue() {
+		return this.generatedValue;
+	}
+	
+	protected void setGeneratedValue(IJavaGeneratedValue newGeneratedValue) {
+		IJavaGeneratedValue oldGeneratedValue = this.generatedValue;
+		this.generatedValue = newGeneratedValue;
+		if (newGeneratedValue != null) {
+			this.persistentAttributeResource.addAnnotation(GeneratedValue.ANNOTATION_NAME);
+		}
+		else {
+			this.persistentAttributeResource.removeAnnotation(GeneratedValue.ANNOTATION_NAME);
+		}
+		firePropertyChanged(GENERATED_VALUE_PROPERTY, oldGeneratedValue, newGeneratedValue);
+	}
+
 	public IJavaTableGenerator addTableGenerator() {
 		if (getTableGenerator() != null) {
 			throw new IllegalStateException("tableGenerator already exists");
@@ -199,6 +209,7 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		this.setTemporal(this.temporal(temporalResource()));
 		this.updateTableGenerator(persistentAttributeResource);
 		this.updateSequenceGenerator(persistentAttributeResource);
+		this.updateGeneratedValue(persistentAttributeResource);
 	}
 	
 	protected TemporalType temporal(Temporal temporal) {
@@ -240,13 +251,35 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 			}
 		}
 	}
-		
+	
+	protected void updateGeneratedValue(JavaPersistentAttributeResource persistentAttributeResource) {
+		GeneratedValue generatedValueResource = generatedValue(persistentAttributeResource);
+		if (generatedValueResource == null) {
+			if (getGeneratedValue() != null) {
+				setGeneratedValue(null);
+			}
+		}
+		else {
+			if (getGeneratedValue() == null) {
+				IJavaGeneratedValue generatedValue = addGeneratedValue();
+				generatedValue.initializeFromResource(generatedValueResource);
+			}
+			else {
+				getGeneratedValue().update(generatedValueResource);
+			}
+		}
+	}
+	
 	protected TableGenerator tableGenerator(JavaPersistentAttributeResource persistentAttributeResource) {
 		return (TableGenerator) persistentAttributeResource.annotation(TableGenerator.ANNOTATION_NAME);
 	}
 	
 	protected SequenceGenerator sequenceGenerator(JavaPersistentAttributeResource persistentAttributeResource) {
 		return (SequenceGenerator) persistentAttributeResource.annotation(SequenceGenerator.ANNOTATION_NAME);
+	}
+	
+	protected GeneratedValue generatedValue(JavaPersistentAttributeResource persistentAttributeResource) {
+		return (GeneratedValue) persistentAttributeResource.annotation(GeneratedValue.ANNOTATION_NAME);
 	}
 
 

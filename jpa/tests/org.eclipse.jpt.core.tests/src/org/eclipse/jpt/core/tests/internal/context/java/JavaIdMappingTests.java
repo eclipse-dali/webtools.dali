@@ -41,6 +41,10 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		this.createAnnotationAndMembers("Id", "");		
 	}
 	
+	private void createGeneratedValueAnnotation() throws Exception{
+		this.createAnnotationAndMembers("GeneratedValue", "");		
+	}
+	
 	private void createTemporalAnnotation() throws Exception{
 		this.createAnnotationAndMembers("Temporal", "TemporalType value();");		
 	}
@@ -87,7 +91,30 @@ public class JavaIdMappingTests extends ContextModelTestCase
 			}
 		});
 	}
-		
+	
+	private IType createTestEntityWithIdMappingGeneratedValue() throws Exception {
+		createEntityAnnotation();
+		createIdAnnotation();
+		createGeneratedValueAnnotation();
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.GENERATED_VALUE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Id").append(CR);
+				sb.append("@GeneratedValue").append(CR);
+			}
+		});
+	}
+	
 	public JavaIdMappingTests(String name) {
 		super(name);
 	}
@@ -336,6 +363,84 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		//try removing the table generator again, should get an IllegalStateException
 		try {
 			idMapping.removeTableGenerator();		
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testGetGeneratedValue() throws Exception {
+		createTestEntityWithIdMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+		
+		assertNull(idMapping.getGeneratedValue());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		attributeResource.addAnnotation(JPA.GENERATED_VALUE);
+		
+		assertNotNull(idMapping.getGeneratedValue());		
+	}
+	
+	public void testGetGeneratedValue2() throws Exception {
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		createTestEntityWithIdMappingGeneratedValue();
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+		
+		assertNotNull(idMapping.getGeneratedValue());
+	}
+	
+	public void testAddGeneratedValue() throws Exception {
+		createTestEntityWithIdMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+		
+		assertNull(idMapping.getGeneratedValue());
+		
+		idMapping.addGeneratedValue();
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+	
+		assertNotNull(attributeResource.annotation(JPA.GENERATED_VALUE));
+		assertNotNull(idMapping.getGeneratedValue());
+		
+		//try adding another generated value, should get an IllegalStateException
+		try {
+			idMapping.addGeneratedValue();		
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testRemoveGeneratedValue() throws Exception {
+		createTestEntityWithIdMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		attributeResource.addAnnotation(JPA.GENERATED_VALUE);
+		
+		
+		idMapping.removeGeneratedValue();
+		
+		assertNull(idMapping.getGeneratedValue());
+		assertNull(attributeResource.annotation(JPA.GENERATED_VALUE));
+		
+		//try removing the generatedValue again, should get an IllegalStateException
+		try {
+			idMapping.removeGeneratedValue();		
 		} catch (IllegalStateException e) {
 			return;
 		}
