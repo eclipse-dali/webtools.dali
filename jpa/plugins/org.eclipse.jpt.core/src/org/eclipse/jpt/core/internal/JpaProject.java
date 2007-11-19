@@ -286,8 +286,8 @@ public class JpaProject extends JpaNode implements IJpaProject
 	protected void addJpaFile(IFile file) {
 		IJpaFile jpaFile = this.jpaPlatform.buildJpaFile(this, file);
 		if (jpaFile != null) {
-			jpaFile.getResourceModel().addResourceModelChangeListener(getResourceModelListener());
 			this.addItemToCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION);
+			jpaFile.getResourceModel().addResourceModelChangeListener(getResourceModelListener());
 		}
 	}
 	
@@ -297,8 +297,8 @@ public class JpaProject extends JpaNode implements IJpaProject
 	protected void addJpaFileInternal(IFile file) {
 		IJpaFile jpaFile = this.jpaPlatform.buildJpaFile(this, file);
 		if (jpaFile != null) {
-			jpaFile.getResourceModel().addResourceModelChangeListener(getResourceModelListener());
 			this.jpaFiles.add(jpaFile);
+			jpaFile.getResourceModel().addResourceModelChangeListener(getResourceModelListener());
 		}
 	}
 
@@ -306,10 +306,10 @@ public class JpaProject extends JpaNode implements IJpaProject
 	 * Remove the specified JPA file and dispose it.
 	 */
 	protected void removeJpaFile(IJpaFile jpaFile) {
+		jpaFile.getResourceModel().removeResourceModelChangeListener(getResourceModelListener());
 		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
 			throw new IllegalArgumentException("JPA file: " + jpaFile.getFile().getName());
 		}
-		jpaFile.getResourceModel().removeResourceModelChangeListener(getResourceModelListener());
 		jpaFile.dispose();
 	}
 

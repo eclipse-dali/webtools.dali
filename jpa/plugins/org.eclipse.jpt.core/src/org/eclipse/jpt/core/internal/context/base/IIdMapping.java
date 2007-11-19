@@ -18,18 +18,16 @@ public interface IIdMapping extends IAttributeMapping, IColumnMapping
 	TemporalType getTemporal();
 	void setTemporal(TemporalType value);
 		String TEMPORAL_PROPERTY = "temporalProperty";
-		
-//	ITableGenerator getTableGenerator();
-//
-//	void setTableGenerator(ITableGenerator value);
-//
-//	ISequenceGenerator getSequenceGenerator();
-//
-//	void setSequenceGenerator(ISequenceGenerator value);
-//
+	
+	ITableGenerator getTableGenerator();
+	ITableGenerator addTableGenerator();
+	void removeTableGenerator();
+		String TABLE_GENERATOR_PROPERTY = "tableGeneratorProperty";
+
+	ISequenceGenerator getSequenceGenerator();
+	ISequenceGenerator addSequenceGenerator();
+	void removeSequenceGenerator();
+		String SEQUENCE_GENERATOR_PROPERTY = "sequenceGeneratorProperty";
+
 //	IGeneratedValue createGeneratedValue();
-//
-//	ITableGenerator createTableGenerator();
-//
-//	ISequenceGenerator createSequenceGenerator();
 }

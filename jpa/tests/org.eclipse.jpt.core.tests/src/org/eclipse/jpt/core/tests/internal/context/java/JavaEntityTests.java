@@ -707,5 +707,115 @@ public class JavaEntityTests extends ContextModelTestCase
 		secondaryTables = javaEntity().secondaryTables();
 		assertEquals(0, javaEntity().secondaryTablesSize());
 		assertFalse(secondaryTables.hasNext());
+	}	
+	
+	public void testGetSequenceGenerator() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertNull(javaEntity().getSequenceGenerator());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		typeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
+		
+		assertNotNull(javaEntity().getSequenceGenerator());
+	}
+	
+	public void testAddSequenceGenerator() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+				
+		assertNull(javaEntity().getSequenceGenerator());
+		
+		javaEntity().addSequenceGenerator();
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+	
+		assertNotNull(typeResource.annotation(JPA.SEQUENCE_GENERATOR));
+		assertNotNull(javaEntity().getSequenceGenerator());
+		
+		//try adding another sequence generator, should get an IllegalStateException
+		try {
+			javaEntity().addSequenceGenerator();
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testRemoveSequenceGenerator() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		typeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
+		
+		javaEntity().removeSequenceGenerator();
+		
+		assertNull(javaEntity().getSequenceGenerator());
+		assertNull(typeResource.annotation(JPA.SEQUENCE_GENERATOR));
+
+		//try removing the sequence generator again, should get an IllegalStateException
+		try {
+			javaEntity().removeSequenceGenerator();		
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testGetTableGenerator() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertNull(javaEntity().getTableGenerator());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		typeResource.addAnnotation(JPA.TABLE_GENERATOR);
+		
+		assertNotNull(javaEntity().getTableGenerator());		
+	}
+	
+	public void testAddTableGenerator() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertNull(javaEntity().getTableGenerator());
+		
+		javaEntity().addTableGenerator();
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+	
+		assertNotNull(typeResource.annotation(JPA.TABLE_GENERATOR));
+		assertNotNull(javaEntity().getTableGenerator());
+		
+		//try adding another table generator, should get an IllegalStateException
+		try {
+			javaEntity().addTableGenerator();		
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testRemoveTableGenerator() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		typeResource.addAnnotation(JPA.TABLE_GENERATOR);
+		
+		javaEntity().removeTableGenerator();
+		
+		assertNull(javaEntity().getTableGenerator());
+		assertNull(typeResource.annotation(JPA.TABLE_GENERATOR));
+		
+		//try removing the table generator again, should get an IllegalStateException
+		try {
+			javaEntity().removeTableGenerator();		
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
 	}
 }

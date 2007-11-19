@@ -243,7 +243,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 //	public ITextRange fullTextRange() {
 //		return this.persistentTypeResource.fullTextRange();
 //	}
-//
+
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
 		return this.selectionTextRange(astRoot);
 	}

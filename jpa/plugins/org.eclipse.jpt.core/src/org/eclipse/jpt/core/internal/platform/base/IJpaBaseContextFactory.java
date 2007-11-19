@@ -27,10 +27,13 @@ import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddable;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaIdMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
+import org.eclipse.jpt.core.internal.context.java.IJavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.java.IJavaTable;
+import org.eclipse.jpt.core.internal.context.java.IJavaTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.IJavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaVersionMapping;
@@ -92,4 +95,8 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	IJavaVersionMapping createJavaVersionMapping(IJavaPersistentAttribute parent);
 	
 	IJavaAttributeMapping createJavaNullAttributeMapping(IJavaPersistentAttribute parent);
+	
+	IJavaSequenceGenerator createJavaSequenceGenerator(IJavaJpaContextNode parent);
+	
+	IJavaTableGenerator createJavaTableGenerator(IJavaJpaContextNode parent);
 }

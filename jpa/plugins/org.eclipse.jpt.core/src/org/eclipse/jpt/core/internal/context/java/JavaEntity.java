@@ -29,6 +29,8 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTables;
+import org.eclipse.jpt.core.internal.resource.java.SequenceGenerator;
+import org.eclipse.jpt.core.internal.resource.java.TableGenerator;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -63,10 +65,10 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	
 	protected IJavaDiscriminatorColumn discriminatorColumn;
 
-//	protected ISequenceGenerator sequenceGenerator;
-//
-//	protected ITableGenerator tableGenerator;
-//
+	protected IJavaSequenceGenerator sequenceGenerator;
+
+	protected IJavaTableGenerator tableGenerator;
+
 //	protected List<IAttributeOverride> specifiedAttributeOverrides;
 //
 //	protected List<IAttributeOverride> defaultAttributeOverrides;
@@ -103,7 +105,9 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.specifiedDiscriminatorValue = this.discriminatorValueResource().getValue();
 		this.defaultDiscriminatorValue = this.javaDefaultDiscriminatorValue();
 		this.discriminatorColumn.initializeFromResource(persistentTypeResource);
-		initializeSecondaryTables(persistentTypeResource);
+		this.initializeSecondaryTables(persistentTypeResource);
+		this.initializeTableGenerator(persistentTypeResource);
+		this.initializeSequenceGenerator(persistentTypeResource);
 	}
 	
 	protected void initializeSecondaryTables(JavaPersistentTypeResource persistentTypeResource) {
@@ -113,6 +117,22 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			IJavaSecondaryTable secondaryTable = jpaFactory().createJavaSecondaryTable(this);
 			secondaryTable.initializeFromResource((SecondaryTable) annotations.next());
 			this.specifiedSecondaryTables.add(secondaryTable);
+		}
+	}
+	
+	protected void initializeTableGenerator(JavaPersistentTypeResource persistentTypeResource) {
+		TableGenerator tableGeneratorResource = tableGenerator(persistentTypeResource);
+		if (tableGeneratorResource != null) {
+			this.tableGenerator = jpaFactory().createJavaTableGenerator(this);
+			this.tableGenerator.initializeFromResource(tableGeneratorResource);
+		}
+	}
+	
+	protected void initializeSequenceGenerator(JavaPersistentTypeResource persistentTypeResource) {
+		SequenceGenerator sequenceGeneratorResource = sequenceGenerator(persistentTypeResource);
+		if (sequenceGeneratorResource != null) {
+			this.sequenceGenerator = jpaFactory().createJavaSequenceGenerator(this);
+			this.sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
 		}
 	}
 	
@@ -297,71 +317,70 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return (this.getSpecifiedDiscriminatorValue() == null) ? getDefaultDiscriminatorValue() : this.getSpecifiedDiscriminatorValue();
 	}
 
+	public IJavaTableGenerator addTableGenerator() {
+		if (getTableGenerator() != null) {
+			throw new IllegalStateException("tableGenerator already exists");
+		}
+		IJavaTableGenerator tableGenerator = jpaFactory().createJavaTableGenerator(this);
+		setTableGenerator(tableGenerator);
+		return tableGenerator;
+	}
+	
+	public void removeTableGenerator() {
+		if (getTableGenerator() == null) {
+			throw new IllegalStateException("tableGenerator does not exist, cannot be removed");
+		}
+		setTableGenerator(null);
+	}
+	
+	public IJavaTableGenerator getTableGenerator() {
+		return this.tableGenerator;
+	}
+	
+	protected void setTableGenerator(IJavaTableGenerator newTableGenerator) {
+		IJavaTableGenerator oldTableGenerator = this.tableGenerator;
+		this.tableGenerator = newTableGenerator;
+		if (newTableGenerator != null) {
+			this.persistentTypeResource.addAnnotation(TableGenerator.ANNOTATION_NAME);
+		}
+		else {
+			this.persistentTypeResource.removeAnnotation(TableGenerator.ANNOTATION_NAME);
+		}
+		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
+	}
 
+	public IJavaSequenceGenerator addSequenceGenerator() {
+		if (getSequenceGenerator() != null) {
+			throw new IllegalStateException("sequenceGenerator already exists");
+		}
+		IJavaSequenceGenerator sequenceGenerator = jpaFactory().createJavaSequenceGenerator(this);
+		setSequenceGenerator(sequenceGenerator);
+		return sequenceGenerator;
+	}
+	
+	public void removeSequenceGenerator() {
+		if (getSequenceGenerator() == null) {
+			throw new IllegalStateException("sequenceGenerator does not exist, cannot be removed");
+		}
+		this.setSequenceGenerator(null);
+	}
+	
+	public IJavaSequenceGenerator getSequenceGenerator() {
+		return this.sequenceGenerator;
+	}
 
-//	public ISequenceGenerator getSequenceGenerator() {
-//		return sequenceGenerator;
-//	}
-//
-//	public NotificationChain basicSetSequenceGenerator(ISequenceGenerator newSequenceGenerator, NotificationChain msgs) {
-//		ISequenceGenerator oldSequenceGenerator = sequenceGenerator;
-//		sequenceGenerator = newSequenceGenerator;
-//		if (eNotificationRequired()) {
-//			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ENTITY__SEQUENCE_GENERATOR, oldSequenceGenerator, newSequenceGenerator);
-//			if (msgs == null)
-//				msgs = notification;
-//			else
-//				msgs.add(notification);
-//		}
-//		return msgs;
-//	}
-//
-//	public void setSequenceGenerator(ISequenceGenerator newSequenceGenerator) {
-//		if (newSequenceGenerator != sequenceGenerator) {
-//			NotificationChain msgs = null;
-//			if (sequenceGenerator != null)
-//				msgs = ((InternalEObject) sequenceGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_ENTITY__SEQUENCE_GENERATOR, null, msgs);
-//			if (newSequenceGenerator != null)
-//				msgs = ((InternalEObject) newSequenceGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_ENTITY__SEQUENCE_GENERATOR, null, msgs);
-//			msgs = basicSetSequenceGenerator(newSequenceGenerator, msgs);
-//			if (msgs != null)
-//				msgs.dispatch();
-//		}
-//		else if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ENTITY__SEQUENCE_GENERATOR, newSequenceGenerator, newSequenceGenerator));
-//	}
-//
-//	public ITableGenerator getTableGenerator() {
-//		return tableGenerator;
-//	}
-//
-//	public NotificationChain basicSetTableGenerator(ITableGenerator newTableGenerator, NotificationChain msgs) {
-//		ITableGenerator oldTableGenerator = tableGenerator;
-//		tableGenerator = newTableGenerator;
-//		if (eNotificationRequired()) {
-//			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ENTITY__TABLE_GENERATOR, oldTableGenerator, newTableGenerator);
-//			if (msgs == null)
-//				msgs = notification;
-//			else
-//				msgs.add(notification);
-//		}
-//		return msgs;
-//	}
-//
-//	public void setTableGenerator(ITableGenerator newTableGenerator) {
-//		if (newTableGenerator != tableGenerator) {
-//			NotificationChain msgs = null;
-//			if (tableGenerator != null)
-//				msgs = ((InternalEObject) tableGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_ENTITY__TABLE_GENERATOR, null, msgs);
-//			if (newTableGenerator != null)
-//				msgs = ((InternalEObject) newTableGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - JpaJavaMappingsPackage.JAVA_ENTITY__TABLE_GENERATOR, null, msgs);
-//			msgs = basicSetTableGenerator(newTableGenerator, msgs);
-//			if (msgs != null)
-//				msgs.dispatch();
-//		}
-//		else if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ENTITY__TABLE_GENERATOR, newTableGenerator, newTableGenerator));
-//	}
+	protected void setSequenceGenerator(IJavaSequenceGenerator newSequenceGenerator) {
+		IJavaSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
+		this.sequenceGenerator = newSequenceGenerator;
+		if (newSequenceGenerator != null) {
+			this.persistentTypeResource.addAnnotation(SequenceGenerator.ANNOTATION_NAME);
+		}
+		else {
+			this.persistentTypeResource.removeAnnotation(SequenceGenerator.ANNOTATION_NAME);
+		}
+		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
+	}
+
 
 //	public EList<IPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
 //		return this.getSpecifiedPrimaryKeyJoinColumns().isEmpty() ? this.getDefaultPrimaryKeyJoinColumns() : this.getSpecifiedPrimaryKeyJoinColumns();
@@ -556,11 +575,13 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.setSpecifiedName(this.specifiedName(this.entityResource));
 		this.setDefaultName(this.defaultName(persistentTypeResource));
 		
-		updateTable(persistentTypeResource);
-		updateInheritance(inheritanceResource());
-		updateDiscriminatorColumn(persistentTypeResource);
-		updateDiscriminatorValue(discriminatorValueResource());
-		updateSecondaryTables(persistentTypeResource);
+		this.updateTable(persistentTypeResource);
+		this.updateInheritance(inheritanceResource());
+		this.updateDiscriminatorColumn(persistentTypeResource);
+		this.updateDiscriminatorValue(discriminatorValueResource());
+		this.updateSecondaryTables(persistentTypeResource);
+		this.updateTableGenerator(persistentTypeResource);
+		this.updateSequenceGenerator(persistentTypeResource);
 	}
 		
 	protected String specifiedName(Entity entityResource) {
@@ -623,6 +644,50 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		IJavaSecondaryTable secondaryTable = jpaFactory().createJavaSecondaryTable(this);
 		secondaryTable.initializeFromResource(secondaryTableResource);
 		return secondaryTable;
+	}
+
+	protected void updateTableGenerator(JavaPersistentTypeResource persistentTypeResource) {
+		TableGenerator tableGeneratorResource = tableGenerator(persistentTypeResource);
+		if (tableGeneratorResource == null) {
+			if (getTableGenerator() != null) {
+				setTableGenerator(null);
+			}
+		}
+		else {
+			if (getTableGenerator() == null) {
+				IJavaTableGenerator tableGenerator = addTableGenerator();
+				tableGenerator.initializeFromResource(tableGeneratorResource);
+			}
+			else {
+				getTableGenerator().update(tableGeneratorResource);
+			}
+		}
+	}
+	
+	protected void updateSequenceGenerator(JavaPersistentTypeResource persistentTypeResource) {
+		SequenceGenerator sequenceGeneratorResource = sequenceGenerator(persistentTypeResource);
+		if (sequenceGeneratorResource == null) {
+			if (getSequenceGenerator() != null) {
+				setSequenceGenerator(null);
+			}
+		}
+		else {
+			if (getSequenceGenerator() == null) {
+				IJavaSequenceGenerator sequenceGenerator = addSequenceGenerator();
+				sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
+			}
+			else {
+				getSequenceGenerator().update(sequenceGeneratorResource);
+			}
+		}
+	}
+		
+	protected TableGenerator tableGenerator(JavaPersistentTypeResource persistentTypeResource) {
+		return (TableGenerator) persistentTypeResource.annotation(TableGenerator.ANNOTATION_NAME);
+	}
+	
+	protected SequenceGenerator sequenceGenerator(JavaPersistentTypeResource persistentTypeResource) {
+		return (SequenceGenerator) persistentTypeResource.annotation(SequenceGenerator.ANNOTATION_NAME);
 	}
 
 //	@Override

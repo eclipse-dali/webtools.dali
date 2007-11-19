@@ -47,10 +47,13 @@ import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddable;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaIdMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
+import org.eclipse.jpt.core.internal.context.java.IJavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.java.IJavaTable;
+import org.eclipse.jpt.core.internal.context.java.IJavaTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.IJavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaVersionMapping;
@@ -66,7 +69,9 @@ import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.core.internal.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.java.JavaTable;
+import org.eclipse.jpt.core.internal.context.java.JavaTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
@@ -262,5 +267,13 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IJavaAttributeMapping createJavaNullAttributeMapping(IJavaPersistentAttribute parent) {
 		return new JavaNullAttributeMapping(parent);
+	}
+	
+	public IJavaSequenceGenerator createJavaSequenceGenerator(IJavaJpaContextNode parent) {
+		return new JavaSequenceGenerator(parent);
+	}
+	
+	public IJavaTableGenerator createJavaTableGenerator(IJavaJpaContextNode parent) {
+		return new JavaTableGenerator(parent);
 	}
 }

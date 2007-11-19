@@ -38,9 +38,9 @@ public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> i
 
 	private String name;
 	
-	private int initialValue = -1;
+	private int initialValue = DEFAULT_INITIAL_VALUE;
 	
-	private int allocationSize = -1;
+	private int allocationSize = DEFAULT_ALLOCATION_SIZE_VALUE;
 		
 	public GeneratorImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);

@@ -33,6 +33,8 @@ public class JptCoreContextJavaModelTests extends TestCase
 		suite.addTestSuite(JavaTransientMappingTests.class);
 		suite.addTestSuite(JavaVersionMappingTests.class);
 		suite.addTestSuite(JavaColumnTests.class);
+		suite.addTestSuite(JavaSequenceGeneratorTests.class);
+		suite.addTestSuite(JavaTableGeneratorTests.class);
 		return suite;
 	}
 

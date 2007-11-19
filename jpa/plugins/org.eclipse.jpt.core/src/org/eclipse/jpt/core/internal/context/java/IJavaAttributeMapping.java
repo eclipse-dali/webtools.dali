@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResour
 import org.eclipse.jpt.utility.internal.Filter;
 
 
-public interface IJavaAttributeMapping extends IAttributeMapping
+public interface IJavaAttributeMapping extends IAttributeMapping, IJavaJpaContextNode
 {
 	void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource);
 

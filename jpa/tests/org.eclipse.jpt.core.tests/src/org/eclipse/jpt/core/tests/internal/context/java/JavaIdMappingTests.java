@@ -206,4 +206,139 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertEquals("id", idMapping.getColumn().getDefaultName());
 	}
 
+	public void testGetSequenceGenerator() throws Exception {
+		createTestEntityWithIdMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+		
+		assertNull(idMapping.getSequenceGenerator());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		attributeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
+		
+		assertNotNull(idMapping.getSequenceGenerator());
+	}
+	
+	public void testAddSequenceGenerator() throws Exception {
+		createTestEntityWithIdMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+		
+		assertNull(idMapping.getSequenceGenerator());
+		
+		idMapping.addSequenceGenerator();
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+	
+		assertNotNull(attributeResource.annotation(JPA.SEQUENCE_GENERATOR));
+		assertNotNull(idMapping.getSequenceGenerator());
+		
+		//try adding another sequence generator, should get an IllegalStateException
+		try {
+				idMapping.addSequenceGenerator();
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testRemoveSequenceGenerator() throws Exception {
+		createTestEntityWithIdMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		attributeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
+		
+		
+		idMapping.removeSequenceGenerator();
+		
+		assertNull(idMapping.getSequenceGenerator());
+		assertNull(attributeResource.annotation(JPA.SEQUENCE_GENERATOR));
+
+		//try removing the sequence generator again, should get an IllegalStateException
+		try {
+			idMapping.removeSequenceGenerator();		
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testGetTableGenerator() throws Exception {
+		createTestEntityWithIdMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+		
+		assertNull(idMapping.getTableGenerator());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		attributeResource.addAnnotation(JPA.TABLE_GENERATOR);
+		
+		assertNotNull(idMapping.getTableGenerator());		
+	}
+	
+	public void testAddTableGenerator() throws Exception {
+		createTestEntityWithIdMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+		
+		assertNull(idMapping.getTableGenerator());
+		
+		idMapping.addTableGenerator();
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+	
+		assertNotNull(attributeResource.annotation(JPA.TABLE_GENERATOR));
+		assertNotNull(idMapping.getTableGenerator());
+		
+		//try adding another table generator, should get an IllegalStateException
+		try {
+			idMapping.addTableGenerator();		
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testRemoveTableGenerator() throws Exception {
+		createTestEntityWithIdMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
+
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		attributeResource.addAnnotation(JPA.TABLE_GENERATOR);
+		
+		
+		idMapping.removeTableGenerator();
+		
+		assertNull(idMapping.getTableGenerator());
+		assertNull(attributeResource.annotation(JPA.TABLE_GENERATOR));
+		
+		//try removing the table generator again, should get an IllegalStateException
+		try {
+			idMapping.removeTableGenerator();		
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
 }
