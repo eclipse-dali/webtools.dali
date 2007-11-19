@@ -13,9 +13,8 @@ import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorColumn;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
-import org.eclipse.jpt.core.internal.resource.java.NamedColumn;
 
-public class JavaDiscriminatorColumn extends JavaNamedColumn
+public class JavaDiscriminatorColumn extends JavaNamedColumn<DiscriminatorColumn>
 	implements IJavaDiscriminatorColumn
 {
 
@@ -84,11 +83,6 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 	}
 
 	@Override
-	protected DiscriminatorColumn columnResource() {
-		return (DiscriminatorColumn) super.columnResource();
-	}
-
-	@Override
 	protected String tableName() {
 		return javaEntity().getTableName();
 	}
@@ -97,10 +91,10 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn
 	// ********** java annotations -> persistence model **********
 	
 	@Override
-	protected void update(NamedColumn discriminatorColumn) {
+	protected void update(DiscriminatorColumn discriminatorColumn) {
 		super.update(discriminatorColumn);
-		this.setSpecifiedDiscriminatorType(this.discriminatorType((DiscriminatorColumn) discriminatorColumn));
-		this.setSpecifiedLength(this.length((DiscriminatorColumn) discriminatorColumn));
+		this.setSpecifiedDiscriminatorType(this.discriminatorType(discriminatorColumn));
+		this.setSpecifiedLength(this.length(discriminatorColumn));
 	}
 	
 	protected DiscriminatorType discriminatorType(DiscriminatorColumn discriminatorColumn) {

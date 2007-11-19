@@ -15,13 +15,12 @@ import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
 import org.eclipse.jpt.core.internal.resource.java.AbstractColumn;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
-import org.eclipse.jpt.core.internal.resource.java.NamedColumn;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
-public abstract class AbstractJavaColumn extends JavaNamedColumn
+public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaNamedColumn<T>
 	implements IAbstractColumn
 {
 
@@ -53,11 +52,6 @@ public abstract class AbstractJavaColumn extends JavaNamedColumn
 		this.specifiedUpdatable = this.specifiedUpdatable(column);
 	}
 	
-	@Override
-	protected AbstractColumn columnResource() {
-		return (AbstractColumn) super.columnResource();
-	}
-
 	//************** IAbstractColumn implementation *******************
 	
 	public String getTable() {
@@ -207,14 +201,14 @@ public abstract class AbstractJavaColumn extends JavaNamedColumn
 	}
 	
 	@Override
-	protected void update(NamedColumn column) {
+	protected void update(T column) {
 		super.update(column);
 		this.setDefaultTable(this.defaultTable());
-		this.setSpecifiedTable(this.specifiedTable((AbstractColumn) column));
-		this.setSpecifiedUnique(this.specifiedUnique((AbstractColumn) column));
-		this.setSpecifiedNullable(this.specifiedNullable((AbstractColumn) column));
-		this.setSpecifiedInsertable(this.specifiedInsertable((AbstractColumn) column));
-		this.setSpecifiedUpdatable(this.specifiedUpdatable((AbstractColumn) column));
+		this.setSpecifiedTable(this.specifiedTable(column));
+		this.setSpecifiedUnique(this.specifiedUnique(column));
+		this.setSpecifiedNullable(this.specifiedNullable(column));
+		this.setSpecifiedInsertable(this.specifiedInsertable(column));
+		this.setSpecifiedUpdatable(this.specifiedUpdatable(column));
 	}
 
 	protected abstract String defaultTable();

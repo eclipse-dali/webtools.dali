@@ -12,9 +12,8 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
-import org.eclipse.jpt.core.internal.resource.java.NamedColumn;
 
-public class JavaColumn extends AbstractJavaColumn implements IJavaColumn
+public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColumn
 {
 
 	protected int specifiedLength;
@@ -43,11 +42,6 @@ public class JavaColumn extends AbstractJavaColumn implements IJavaColumn
 	@Override
 	protected String annotationName() {
 		return Column.ANNOTATION_NAME;
-	}
-
-	@Override
-	protected Column columnResource() {
-		return (Column) super.columnResource();
 	}
 	
 	public int getLength() {
@@ -113,11 +107,11 @@ public class JavaColumn extends AbstractJavaColumn implements IJavaColumn
 	}
 	
 	@Override
-	protected void update(NamedColumn column) {
+	protected void update(Column column) {
 		super.update(column);
-		this.setSpecifiedLength(this.specifiedLength((Column) column));
-		this.setSpecifiedPrecision(this.specifiedPrecision((Column) column));
-		this.setSpecifiedScale(this.specifiedScale((Column) column));
+		this.setSpecifiedLength(this.specifiedLength(column));
+		this.setSpecifiedPrecision(this.specifiedPrecision(column));
+		this.setSpecifiedScale(this.specifiedScale(column));
 	}
 	
 	protected int specifiedLength(Column column) {

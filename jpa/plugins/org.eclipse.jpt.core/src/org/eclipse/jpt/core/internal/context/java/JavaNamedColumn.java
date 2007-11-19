@@ -23,7 +23,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 
-public abstract class JavaNamedColumn extends JavaContextModel
+public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContextModel
 	implements INamedColumn
 {
 
@@ -53,9 +53,10 @@ public abstract class JavaNamedColumn extends JavaContextModel
 	//call one setter and the tableResource could change. 
 	//You could call more than one setter before this object has received any notification
 	//from the java resource model
-	protected NamedColumn columnResource() {
+	@SuppressWarnings("unchecked")
+	protected T columnResource() {
 		//TODO get the NullTable from the resource model or build it here in the context model??
-		return (NamedColumn) this.persistentResource.nonNullAnnotation(annotationName());
+		return (T) this.persistentResource.nonNullAnnotation(annotationName());
 	}
 	
 	protected abstract String annotationName();
@@ -119,7 +120,7 @@ public abstract class JavaNamedColumn extends JavaContextModel
 		this.update(columnResource());
 	}
 
-	protected void update(NamedColumn column) {
+	protected void update(T column) {
 		this.setSpecifiedName(column.getName());
 		this.setDefaultName(this.defaultName());
 		this.setColumnDefinition(column.getColumnDefinition());
