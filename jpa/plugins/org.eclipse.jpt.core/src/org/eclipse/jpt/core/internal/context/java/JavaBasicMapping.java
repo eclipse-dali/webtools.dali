@@ -40,7 +40,11 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 
 	public JavaBasicMapping(IJavaPersistentAttribute parent) {
 		super(parent);
-		this.column = jpaFactory().createJavaColumn(this);
+		this.column = createJavaColumn();
+	}
+
+	protected IJavaColumn createJavaColumn() {
+		return jpaFactory().createJavaColumn(this, buildColumnOwner());
 	}
 
 	@Override

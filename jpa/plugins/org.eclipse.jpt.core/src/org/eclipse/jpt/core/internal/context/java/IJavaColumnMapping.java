@@ -7,10 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.context.base;
+package org.eclipse.jpt.core.internal.context.java;
 
+import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 
-public interface IColumnMapping extends IJpaContextNode
+public interface IJavaColumnMapping extends IJavaJpaContextNode, IColumnMapping
 {
-	IColumn getColumn();
+	IJavaColumn getColumn();
 } 

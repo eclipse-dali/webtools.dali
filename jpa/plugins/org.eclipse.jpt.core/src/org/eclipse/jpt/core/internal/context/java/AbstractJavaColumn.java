@@ -35,8 +35,8 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 	
 	protected Boolean specifiedUpdatable;
 
-	protected AbstractJavaColumn(Owner parent) {
-		super(parent);
+	protected AbstractJavaColumn(IJavaJpaContextNode parent, Owner owner) {
+		super(parent, owner);
 	}
 	
 	@Override

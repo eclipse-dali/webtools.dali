@@ -12,5 +12,5 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 
 
-public interface IJavaVersionMapping extends IJavaAttributeMapping, IVersionMapping
+public interface IJavaVersionMapping extends IJavaAttributeMapping, IVersionMapping, IJavaColumnMapping
 {}

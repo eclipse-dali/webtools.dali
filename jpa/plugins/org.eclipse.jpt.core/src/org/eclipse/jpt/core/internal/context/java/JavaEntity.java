@@ -15,8 +15,10 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
@@ -31,6 +33,7 @@ import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTables;
 import org.eclipse.jpt.core.internal.resource.java.SequenceGenerator;
 import org.eclipse.jpt.core.internal.resource.java.TableGenerator;
+import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -87,10 +90,31 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	public JavaEntity(IJavaPersistentType parent) {
 		super(parent);
 		this.table = jpaFactory().createJavaTable(this);
-		this.discriminatorColumn = jpaFactory().createJavaDiscriminatorColumn(this);
+		this.discriminatorColumn = createJavaDiscriminatorColumn();
 		this.specifiedSecondaryTables = new ArrayList<IJavaSecondaryTable>();
 //		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
 	}
+
+	protected IJavaDiscriminatorColumn createJavaDiscriminatorColumn() {
+		return jpaFactory().createJavaDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
+	}
+	
+	protected INamedColumn.Owner buildDiscriminatorColumnOwner() {
+		return new INamedColumn.Owner(){
+			public Table dbTable(String tableName) {
+				return JavaEntity.this.dbTable(tableName);
+			}
+
+			public ITextRange validationTextRange(CompilationUnit astRoot) {
+				return JavaEntity.this.validationTextRange(astRoot);
+			}
+
+			public ITypeMapping typeMapping() {
+				return JavaEntity.this;
+			}		
+		};
+	}
+
 
 	@Override
 	public void initializeFromResource(JavaPersistentTypeResource persistentTypeResource) {

@@ -12,5 +12,5 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 
 
-public interface IJavaIdMapping extends IJavaAttributeMapping, IIdMapping
+public interface IJavaIdMapping extends IJavaAttributeMapping, IIdMapping, IJavaColumnMapping
 {} 

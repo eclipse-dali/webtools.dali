@@ -37,7 +37,11 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 
 	public JavaIdMapping(IJavaPersistentAttribute parent) {
 		super(parent);
-		this.column = jpaFactory().createJavaColumn(this);
+		this.column = createJavaColumn();
+	}
+
+	protected IJavaColumn createJavaColumn() {
+		return jpaFactory().createJavaColumn(this, buildColumnOwner());
 	}
 
 	@Override

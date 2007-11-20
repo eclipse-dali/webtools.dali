@@ -11,5 +11,5 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 
-public interface IJavaBasicMapping extends IJavaAttributeMapping, IBasicMapping//, Owner
+public interface IJavaBasicMapping extends IJavaAttributeMapping, IBasicMapping, IJavaColumnMapping
 {}

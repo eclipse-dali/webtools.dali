@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.db.internal.Table;
@@ -28,6 +29,10 @@ public abstract class JavaAttributeMapping extends JavaContextModel
 
 	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
 		this.persistentAttributeResource = persistentAttributeResource;
+	}
+
+	protected IColumn.Owner buildColumnOwner() {
+		return new ColumnOwner();
 	}
 
 	public JavaPersistentAttribute getPersistentAttribute() {
@@ -77,5 +82,27 @@ public abstract class JavaAttributeMapping extends JavaContextModel
 
 	public boolean isIdMapping() {
 		return false;
+	}
+	
+	/**
+	 * mapping implementation of column owner
+	 */
+	protected class ColumnOwner implements IColumn.Owner
+	{
+		public ITypeMapping typeMapping() {
+			return JavaAttributeMapping.this.typeMapping();
+		}
+
+		public ITextRange validationTextRange(CompilationUnit astRoot) {
+			return JavaAttributeMapping.this.validationTextRange(astRoot);
+		}
+
+		public Table dbTable(String tableName) {
+			return this.typeMapping().dbTable(tableName);
+		}
+		
+		public String attributeName() {
+			return JavaAttributeMapping.this.attributeName();
+		}
 	}
 }

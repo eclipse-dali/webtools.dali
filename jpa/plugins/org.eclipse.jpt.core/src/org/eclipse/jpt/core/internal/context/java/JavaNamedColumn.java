@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 import org.eclipse.jpt.core.internal.resource.java.NamedColumn;
 import org.eclipse.jpt.db.internal.Column;
@@ -27,7 +28,8 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 	implements INamedColumn
 {
 
-
+	protected Owner owner;
+	
 	protected String specifiedName;
 
 	protected String defaultName;
@@ -36,10 +38,12 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 	
 	protected JavaPersistentResource persistentResource;
 
-	protected JavaNamedColumn(Owner parent) {
+	protected JavaNamedColumn(IJavaJpaContextNode parent, Owner owner) {
 		super(parent);
+		this.owner = owner;
 	}
 
+	// ******************* initialization from java resource model ********************
 	public void initializeFromResource(JavaPersistentResource persistentResource) {
 		this.persistentResource = persistentResource;
 		this.initializeFromResource(this.columnResource());
@@ -51,18 +55,21 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 		this.columnDefinition = column.getColumnDefinition();	
 	}
 	
-	//query for the table resource every time on setters.
-	//call one setter and the tableResource could change. 
-	//You could call more than one setter before this object has received any notification
-	//from the java resource model
+	//query for the column resource every time on setters since more than one setter 
+	//could be called before this object receives notification from the java resource model.
 	@SuppressWarnings("unchecked")
 	protected T columnResource() {
-		//TODO get the NullTable from the resource model or build it here in the context model??
 		return (T) this.persistentResource.nonNullAnnotation(annotationName());
 	}
 	
+	/**
+	 * Return the fully qualfied java annotation name that corresponds to this column.
+	 * @see JPA
+	 */
 	protected abstract String annotationName();
 
+	
+	//************** INamedColumn implementation *****************
 	public String getName() {
 		return (this.getSpecifiedName() == null) ? getDefaultName() : this.getSpecifiedName();
 	}
@@ -100,14 +107,13 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 	}
 
 	protected Owner owner() {
-		return (Owner) super.parent();
+		return this.owner;
 	}
 	
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
 		ITextRange textRange = this.persistentResource.textRange(astRoot);
 		return (textRange != null) ? textRange : this.owner().validationTextRange(astRoot);
 	}
-
 
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
 		return this.columnResource().nameTextRange(astRoot);
@@ -116,20 +122,6 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {
 		return this.columnResource().nameTouches(pos, astRoot);
 	}
-
-	public void update(JavaPersistentResource persistentResource) {
-		this.persistentResource = persistentResource;
-		this.update(this.columnResource());
-	}
-
-	protected void update(T column) {
-		this.setSpecifiedName(column.getName());
-		this.setDefaultName(this.defaultName());
-		this.setColumnDefinition(column.getColumnDefinition());
-	}
-	
-	protected abstract String defaultName();
-
 	
 	public Column dbColumn() {
 		Table table = this.dbTable();
@@ -162,10 +154,8 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 	}
 
 	private Iterator<String> candidateNames() {
-		return EmptyIterator.instance();
-		//TODO
-//		Table dbTable = this.dbTable();
-//		return (dbTable != null) ? dbTable.columnNames() : EmptyIterator.<String> instance();
+		Table dbTable = this.dbTable();
+		return (dbTable != null) ? dbTable.columnNames() : EmptyIterator.<String> instance();
 	}
 
 	private Iterator<String> candidateNames(Filter<String> filter) {
@@ -175,4 +165,24 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 	private Iterator<String> quotedCandidateNames(Filter<String> filter) {
 		return StringTools.quote(this.candidateNames(filter));
 	}
+	
+	
+	// ******************* update from java resource model ********************
+
+	public void update(JavaPersistentResource persistentResource) {
+		this.persistentResource = persistentResource;
+		this.update(this.columnResource());
+	}
+
+	protected void update(T column) {
+		this.setSpecifiedName(column.getName());
+		this.setDefaultName(this.defaultName());
+		this.setColumnDefinition(column.getColumnDefinition());
+	}
+	
+	/**
+	 * Return the default column name.
+	 */
+	protected abstract String defaultName();
+
 }

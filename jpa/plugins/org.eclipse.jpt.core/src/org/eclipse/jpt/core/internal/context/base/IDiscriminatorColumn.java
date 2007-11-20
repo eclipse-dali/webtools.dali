@@ -36,26 +36,4 @@ public interface IDiscriminatorColumn extends INamedColumn
 	void setSpecifiedLength(int value);
 		String SPECIFIED_LENGTH_PROPERTY = "spcifiedLengthProperty";
 
-//
-//	class Owner implements INamedColumn.Owner
-//	{
-//		private IEntity entity;
-//
-//		public Owner(IEntity entity) {
-//			super();
-//			this.entity = entity;
-//		}
-//
-//		public Table dbTable(String tableName) {
-//			return this.entity.dbTable(tableName);
-//		}
-//
-//		public ITextRange validationTextRange() {
-//			return this.entity.getDiscriminatorColumn().validationTextRange();
-//		}
-//
-//		public ITypeMapping getTypeMapping() {
-//			return this.entity;
-//		}
-//	}
 }

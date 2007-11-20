@@ -28,9 +28,13 @@ public class JavaVersionMapping extends JavaAttributeMapping implements IJavaVer
 
 	public JavaVersionMapping(IJavaPersistentAttribute parent) {
 		super(parent);
-		this.column = jpaFactory().createJavaColumn(this);
+		this.column = createJavaColumn();
 	}
 
+	protected IJavaColumn createJavaColumn() {
+		return jpaFactory().createJavaColumn(this, buildColumnOwner());
+	}
+	
 	@Override
 	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.initializeFromResource(persistentAttributeResource);

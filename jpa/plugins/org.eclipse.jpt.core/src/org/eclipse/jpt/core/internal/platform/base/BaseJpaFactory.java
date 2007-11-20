@@ -28,8 +28,9 @@ import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.ClassRef;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
-import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
+import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
+import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
@@ -42,6 +43,7 @@ import org.eclipse.jpt.core.internal.context.base.Property;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaColumn;
+import org.eclipse.jpt.core.internal.context.java.IJavaColumnMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddable;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
@@ -235,12 +237,12 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return new JavaTable(parent);
 	}
 	
-	public IJavaColumn createJavaColumn(IColumnMapping parent) {
-		return new JavaColumn(parent);
+	public IJavaColumn createJavaColumn(IJavaColumnMapping parent, IColumn.Owner owner) {
+		return new JavaColumn(parent, owner);
 	}
 	
-	public IJavaDiscriminatorColumn createJavaDiscriminatorColumn(IJavaEntity parent) {
-		return new JavaDiscriminatorColumn(parent);
+	public IJavaDiscriminatorColumn createJavaDiscriminatorColumn(IJavaEntity parent, INamedColumn.Owner owner) {
+		return new JavaDiscriminatorColumn(parent, owner);
 	}
 	
 	public IJavaSecondaryTable createJavaSecondaryTable(IJavaEntity parent) {

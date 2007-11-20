@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
+import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorColumn;
 
 public class JavaDiscriminatorColumn extends JavaNamedColumn<DiscriminatorColumn>
@@ -21,8 +22,8 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn<DiscriminatorColumn
 
 	protected int specifiedLength;
 
-	public JavaDiscriminatorColumn(IJavaEntity parent) {
-		super(parent);
+	public JavaDiscriminatorColumn(IJavaEntity parent, INamedColumn.Owner owner) {
+		super(parent, owner);
 	}
 
 	@Override

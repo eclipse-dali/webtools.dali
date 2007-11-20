@@ -25,8 +25,8 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 	protected static final int DEFAULT_SPECIFIED_SCALE = -1;
 
 
-	public JavaColumn(IColumn.Owner parent) {
-		super(parent);
+	public JavaColumn(IJavaColumnMapping parent, IColumn.Owner owner) {
+		super(parent, owner);
 	}
 
 	@Override

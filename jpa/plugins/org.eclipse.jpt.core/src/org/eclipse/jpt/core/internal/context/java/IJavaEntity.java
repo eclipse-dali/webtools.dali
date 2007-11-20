@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.INamedColumn.Owner;
 
-public interface IJavaEntity extends IJavaTypeMapping, IEntity, Owner
+public interface IJavaEntity extends IJavaTypeMapping, IEntity
 {}

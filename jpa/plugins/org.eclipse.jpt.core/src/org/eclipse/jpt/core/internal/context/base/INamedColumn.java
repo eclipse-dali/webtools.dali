@@ -52,24 +52,13 @@ public interface INamedColumn extends IJpaContextNode
 	 * Return the (best guess) text location of the column's name.
 	 */
 	ITextRange nameTextRange(CompilationUnit astRoot);
-//
-//	/**
-//	 * Return whether the column's datasource is connected
-//	 */
-//	boolean isConnected();
-//
-//	/**
-//	 * Return the column's "owner" - the object that contains the column
-//	 * and provides its context.
-//	 */
-//	Owner getOwner();
-//
-//
+
+	
 	/**
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
-	interface Owner extends IJpaContextNode
+	interface Owner
 	{
 		/**
 		 * Return the type mapping that contains the column.
