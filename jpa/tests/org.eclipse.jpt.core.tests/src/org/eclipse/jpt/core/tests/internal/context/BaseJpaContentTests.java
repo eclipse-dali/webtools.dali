@@ -23,16 +23,26 @@ public class BaseJpaContentTests extends ContextModelTestCase
 	
 	public void testAddPersistenceXml() throws Exception {
 		PersistenceResource prm = persistenceResource();
-		WorkbenchResourceHelper.deleteResource(prm); // throws CoreException, possibly
+		prm.getFile().delete(true, null);
 		
-		assertTrue(! prm.getFile().exists());
+		assertFalse(prm.exists());
 		
 		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
 		assertNull(baseJpaContent.getPersistenceXml());
 		
-		prm.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
-		prm.save(null);
+		baseJpaContent.addPersistenceXml();
+		
 		assertNotNull(baseJpaContent.getPersistenceXml());
+		
+		boolean exceptionThrown = false;
+		try {
+			baseJpaContent.addPersistenceXml();
+		}
+		catch (IllegalStateException ise) {
+			exceptionThrown = true;
+		}
+		
+		assertTrue(exceptionThrown);
 	}
 	
 	public void testRemovePersistenceXml() throws Exception {
@@ -41,7 +51,42 @@ public class BaseJpaContentTests extends ContextModelTestCase
 		
 		assertNotNull(baseJpaContent.getPersistenceXml());
 		
-		WorkbenchResourceHelper.deleteResource(prm); // throws CoreException, possibly
+		baseJpaContent.removePersistenceXml();
+		
+		assertNull(baseJpaContent.getPersistenceXml());
+		
+		boolean exceptionThrown = false;
+		try {
+			baseJpaContent.removePersistenceXml();
+		}
+		catch (IllegalStateException ise) {
+			exceptionThrown = true;
+		}
+		
+		assertTrue(exceptionThrown);
+	}
+	
+	public void testUpdateAddPersistenceXml() throws Exception {
+		PersistenceResource pr = persistenceResource();
+		WorkbenchResourceHelper.deleteResource(pr);
+		
+		assertFalse(pr.exists());
+		
+		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
+		assertNull(baseJpaContent.getPersistenceXml());
+		
+		pr.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
+		pr.save(null);
+		assertNotNull(baseJpaContent.getPersistenceXml());
+	}
+	
+	public void testUpdateRemovePersistenceXml() throws Exception {
+		PersistenceResource pr = persistenceResource();
+		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
+		
+		assertNotNull(baseJpaContent.getPersistenceXml());
+		
+		WorkbenchResourceHelper.deleteResource(pr);
 		
 		assertNull(baseJpaContent.getPersistenceXml());
 	}

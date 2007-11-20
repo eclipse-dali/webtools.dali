@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
@@ -29,7 +28,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 {
 	protected static final String PROJECT_NAME = "ContextModelTestProject";
 		
-	protected PersistenceResource persistenceResource;
+	protected PersistenceArtifactEdit persistenceArtifactEdit;
 	
 	
 	protected ContextModelTestCase(String name) {
@@ -39,6 +38,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		persistenceArtifactEdit = PersistenceArtifactEdit.getArtifactEditForWrite(getJavaProject().getProject());
 		waitForWorkspaceJobs();
 	}
 	
@@ -54,8 +54,9 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected void tearDown() throws Exception {
 		//at least delete the project from the workspace since, deleting from the file system doesn't work well.
 		//tests run too slow otherwise because so many projects are created in the workspace
+		persistenceArtifactEdit.dispose();
+		persistenceArtifactEdit = null;
 		getJavaProject().getProject().delete(false, true, null);
-		this.persistenceResource = null;
 		super.tearDown();
 	}
 	
@@ -95,15 +96,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected PersistenceResource persistenceResource() {
-		if (this.persistenceResource != null) {
-			return this.persistenceResource;
-		}
-		String persistenceXmlUri = JptCorePlugin.persistenceXmlDeploymentURI(getJavaProject().getProject());
-		PersistenceArtifactEdit pae = 
-				PersistenceArtifactEdit.getArtifactEditForWrite(getJavaProject().getProject());
-		 this.persistenceResource = pae.getResource(persistenceXmlUri);
-		 
-		 return this.persistenceResource;
+		return persistenceArtifactEdit.getResource();
 	}
 	
 	protected BaseJpaContent jpaContent() {

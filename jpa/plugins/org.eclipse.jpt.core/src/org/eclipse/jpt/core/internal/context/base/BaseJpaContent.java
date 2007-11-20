@@ -10,12 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import java.io.IOException;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.utility.internal.node.Node;
+import org.eclipse.wst.common.componentcore.internal.ArtifactEditModel;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 public class BaseJpaContent extends JpaContextNode 
@@ -31,11 +35,14 @@ public class BaseJpaContent extends JpaContextNode
 	@Override
 	protected void initialize(Node parentNode) {
 		super.initialize(parentNode);
-		PersistenceResource persistenceResource = persistenceResource();
+		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject().project());
+		PersistenceResource persistenceResource = pae.getResource();
 		
-		if (resourceExists(persistenceResource)) {
+		if (persistenceResource.exists()) {
 			this.persistenceXml = createPersistenceXml(persistenceResource);
 		}
+		
+		pae.dispose();
 	}
 	
 	@Override
@@ -49,19 +56,50 @@ public class BaseJpaContent extends JpaContextNode
 		return persistenceXml;
 	}
 	
-	public void setPersistenceXml(IPersistenceXml newPersistenceXml) {
+	protected void setPersistenceXml(IPersistenceXml newPersistenceXml) {
 		IPersistenceXml oldPersistenceXml = persistenceXml;
 		persistenceXml = newPersistenceXml;
 		firePropertyChanged(PERSISTENCE_XML_PROPERTY, oldPersistenceXml, newPersistenceXml);
+	}
+	
+	public IPersistenceXml addPersistenceXml() {
+		if (persistenceXml != null) {
+			throw new IllegalStateException();
+		}
+		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(jpaProject().project());
+		PersistenceResource pr = pae.createDefaultResource();
+		pae.dispose();
+		persistenceXml = createPersistenceXml(pr);
+		return persistenceXml;
+	}
+	
+	public void removePersistenceXml() {
+		if (persistenceXml == null) {
+			throw new IllegalStateException();
+		}
+		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(jpaProject().project());
+		PersistenceResource pr = pae.getResource();
+		try {
+			WorkbenchResourceHelper.deleteResource(pr);
+		}
+		catch (CoreException ce) {
+			JptCorePlugin.log(ce);
+		}
+		pae.dispose();
+		
+		if (! pr.exists()) {
+			persistenceXml = null;
+		}
 	}
 	
 	
 	// **************** updating **********************************************
 	
 	public void update(IProgressMonitor monitor) {
-		PersistenceResource persistenceResource = persistenceResource();
+		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject().project());
+		PersistenceResource persistenceResource = pae.getResource();
 		
-		if (resourceExists(persistenceResource)) {
+		if (persistenceResource.exists()) {
 			if (this.persistenceXml != null) {
 				this.persistenceXml.update(persistenceResource);
 			}
@@ -72,16 +110,8 @@ public class BaseJpaContent extends JpaContextNode
 		else {
 			setPersistenceXml(null);
 		}
-	}
-	
-	protected PersistenceResource persistenceResource() {
-		PersistenceArtifactEdit pae = 
-			PersistenceArtifactEdit.getArtifactEditForRead(jpaProject().project());
-		return pae.getResource(JptCorePlugin.persistenceXmlDeploymentURI(jpaProject().project()));
-	}
-	
-	protected boolean resourceExists(PersistenceResource persistenceResource) {
-		return WorkbenchResourceHelper.getFile(persistenceResource).exists();
+		
+		pae.dispose();
 	}
 
 	protected IPersistenceXml createPersistenceXml(PersistenceResource persistenceResource) {
