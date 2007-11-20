@@ -39,10 +39,7 @@ import org.eclipse.jpt.core.internal.resource.orm.OrmArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -529,17 +526,11 @@ public class JpaModelManager {
 	private void createPersistenceXml(IProject project) {
 		PersistenceArtifactEdit pae = 
 				PersistenceArtifactEdit.getArtifactEditForWrite(project);
-		PersistenceResource resource = pae.getResource(JptCorePlugin.persistenceXmlDeploymentURI(project));
 		
 		// 202811 - do not add content if it is already present
-		if (resource.getPersistence() == null) {
-			XmlPersistence persistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
-			persistence.setVersion("1.0");
-			XmlPersistenceUnit pUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
-			pUnit.setName(project.getName());
-			persistence.getPersistenceUnits().add(pUnit);
-			resource.getContents().add(persistence);
-			pae.save(null);
+		PersistenceResource resource = pae.getResource();
+		if (! resource.getFile().exists()) {
+			pae.createDefaultResource();
 		}
 		
 		pae.dispose();

@@ -90,4 +90,26 @@ public class PersistenceArtifactEdit extends JpaArtifactEdit
 			return null;
 		}
 	}
+	
+	/**
+	 * Return a persistence resource for the default deploy location
+	 */
+	public PersistenceResource getResource() {
+		return getResource(JptCorePlugin.persistenceXmlDeploymentURI(getProject()));
+	}
+	
+	/**
+	 * Create a persistence resource with base defaults
+	 */
+	public PersistenceResource createDefaultResource() {
+		PersistenceResource resource = getResource();
+		XmlPersistence persistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
+		persistence.setVersion("1.0");
+		XmlPersistenceUnit pUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
+		pUnit.setName(getProject().getName());
+		persistence.getPersistenceUnits().add(pUnit);
+		resource.getContents().add(persistence);
+		save(null);
+		return resource;
+	}
 }
