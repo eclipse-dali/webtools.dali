@@ -104,6 +104,10 @@ public abstract class JpaXmlResource extends TranslatorResourceImpl
 		return null;
 	}
 	
+	public boolean exists() {
+		return getFile().exists();
+	}
+	
 	public abstract IJpaContentNode getContentNode(int offset);
 	
 	public abstract void handleJavaElementChangedEvent(ElementChangedEvent event);
