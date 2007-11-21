@@ -16,12 +16,15 @@ public interface IBaseJpaContent extends IJpaContextNode, IContextModel
 {
 	// **************** persistence xml ***************************************
 	
+	/**
+	 * String constant associated with changes to the persistenceXml property
+	 */
 	public final static String PERSISTENCE_XML_PROPERTY = "persistenceXml";
 	
 	/** 
 	 * Return the content represented by the persistence.xml file associated with 
 	 * this project.
-	 * This may be null 
+	 * This may be null. 
 	 */
 	IPersistenceXml getPersistenceXml();
 	

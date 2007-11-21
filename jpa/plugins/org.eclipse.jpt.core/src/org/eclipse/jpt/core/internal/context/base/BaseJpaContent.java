@@ -42,12 +42,8 @@ public class BaseJpaContent extends JpaContextNode
 		pae.dispose();
 	}
 	
-	@Override
-	public IPersistenceUnit persistenceUnit() {
-		throw new UnsupportedOperationException("No PersistenceUnit in this context");
-	}	
 	
-	// **************** persistence xml ***************************************
+	// **************** persistence xml ****************************************
 	
 	public IPersistenceXml getPersistenceXml() {
 		return persistenceXml;
@@ -90,7 +86,7 @@ public class BaseJpaContent extends JpaContextNode
 	}
 	
 	
-	// **************** updating **********************************************
+	// **************** updating ***********************************************
 	
 	public void update(IProgressMonitor monitor) {
 		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject().project());
@@ -113,7 +109,15 @@ public class BaseJpaContent extends JpaContextNode
 
 	protected IPersistenceXml createPersistenceXml(PersistenceResource persistenceResource) {
 		IPersistenceXml persistenceXml = jpaFactory().createPersistenceXml(this);
-		persistenceXml.initializeFromResource(persistenceResource);
+		persistenceXml.initialize(persistenceResource);
 		return persistenceXml;
+	}
+	
+	
+	// *************************************************************************
+	
+	@Override
+	public IPersistenceUnit persistenceUnit() {
+		throw new UnsupportedOperationException("No PersistenceUnit in this context");
 	}
 }

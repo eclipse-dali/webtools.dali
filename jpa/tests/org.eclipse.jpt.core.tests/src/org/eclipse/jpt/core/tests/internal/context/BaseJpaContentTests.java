@@ -23,7 +23,8 @@ public class BaseJpaContentTests extends ContextModelTestCase
 	
 	public void testAddPersistenceXml() throws Exception {
 		PersistenceResource prm = persistenceResource();
-		prm.getFile().delete(true, null);
+		WorkbenchResourceHelper.deleteResource(prm);
+		waitForWorkspaceJobs();
 		
 		assertFalse(prm.exists());
 		
@@ -52,6 +53,7 @@ public class BaseJpaContentTests extends ContextModelTestCase
 		assertNotNull(baseJpaContent.getPersistenceXml());
 		
 		baseJpaContent.removePersistenceXml();
+		waitForWorkspaceJobs();
 		
 		assertNull(baseJpaContent.getPersistenceXml());
 		
@@ -69,6 +71,7 @@ public class BaseJpaContentTests extends ContextModelTestCase
 	public void testUpdateAddPersistenceXml() throws Exception {
 		PersistenceResource pr = persistenceResource();
 		WorkbenchResourceHelper.deleteResource(pr);
+		waitForWorkspaceJobs();
 		
 		assertFalse(pr.exists());
 		
@@ -87,6 +90,7 @@ public class BaseJpaContentTests extends ContextModelTestCase
 		assertNotNull(baseJpaContent.getPersistenceXml());
 		
 		WorkbenchResourceHelper.deleteResource(pr);
+		waitForWorkspaceJobs();
 		
 		assertNull(baseJpaContent.getPersistenceXml());
 	}

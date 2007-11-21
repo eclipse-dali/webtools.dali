@@ -14,18 +14,36 @@ import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 
 public interface IPersistenceXml extends IJpaContextNode
 {
-	void initializeFromResource(PersistenceResource persistenceResource);
-
 	// **************** persistence *******************************************
 	
+	/**
+	 * String constant associated with changes to the persistence property
+	 */
+	public final static String PERSISTENCE_PROPERTY = "persistence";
+	
+	/** 
+	 * Return the content represented by the root of the persistence.xml file.
+	 * This may be null.
+	 */
 	IPersistence getPersistence();
 	
-	void setPersistence(IPersistence persistence);
+	/**
+	 * Add a persistence node to the persistence.xml file and return the object 
+	 * representing it.
+	 * Throws {@link IllegalStateException} if a persistence node already exists.
+	 */
+	IPersistence addPersistence();
 	
-	public final static String PERSISTENCE_PROPERTY = "persistence";
+	/**
+	 * Remove the persistence node from the persistence.xml file.
+	 * Throws {@link IllegalStateException} if a persistence node does not exist.
+	 */
+	void removePersistence();
 	
 	
 	// **************** updating **********************************************
+	
+	void initialize(PersistenceResource persistenceResource);
 	
 	void update(PersistenceResource persistenceResource);
 }

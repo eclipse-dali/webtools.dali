@@ -21,30 +21,76 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		super(name);
 	}
 	
-	public void testAddPersistence() throws Exception {
+	public void testAddPersistence() {
 		PersistenceResource prm = persistenceResource();
-		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
-		IPersistenceXml persistenceXml = baseJpaContent.getPersistenceXml();
+		prm.getContents().remove(prm.getPersistence());
+		assertNull(prm.getPersistence());
+		
+		IPersistenceXml persistenceXml = persistenceXml();
+		
+		persistenceXml.addPersistence();
+		
+		assertNotNull(persistenceXml.getPersistence());
+		
+		boolean exceptionThrown = false;
+		try {
+			persistenceXml.addPersistence();
+		}
+		catch (IllegalStateException ise) {
+			exceptionThrown = true;
+		}
+		
+		assertTrue(exceptionThrown);
+	}
+	
+	public void testRemovePersistence() {
+		IPersistenceXml persistenceXml = persistenceXml();
+		
+		assertNotNull(persistenceXml.getPersistence());
+		
+		persistenceXml.removePersistence();
+		
+		assertNull(persistenceXml.getPersistence());
+		
+		boolean exceptionThrown = false;
+		try {
+			persistenceXml.removePersistence();
+		}
+		catch (IllegalStateException ise) {
+			exceptionThrown = true;
+		}
+		
+		assertTrue(exceptionThrown);
+	}
+	
+	public void testUpdateAddPersistence() throws Exception {
+		PersistenceResource prm = persistenceResource();
 		prm.getContents().clear();
 		prm.save(null);
 		
-		assertNull(persistenceXml.getPersistence());
+		assertNull(persistenceXml().getPersistence());
 		
 		prm.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
 		
-		assertNotNull(persistenceXml.getPersistence());
+		assertNotNull(persistenceXml().getPersistence());
 		
 	}
 	
-	public void testRemovePersistence() throws Exception {
+	public void testUpdateRemovePersistence() throws Exception {
 		PersistenceResource prm = persistenceResource();
-		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
-		IPersistenceXml persistenceXml = baseJpaContent.getPersistenceXml();
 		
-		assertNotNull(persistenceXml.getPersistence());
+		assertNotNull(persistenceXml().getPersistence());
 		
 		prm.getContents().clear();
 		
-		assertNull(persistenceXml.getPersistence());
+		assertNull(persistenceXml().getPersistence());
+	}
+	
+	protected IBaseJpaContent baseJpaContent() {
+		return (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
+	}
+	
+	protected IPersistenceXml persistenceXml() {
+		return baseJpaContent().getPersistenceXml();
 	}
 }
