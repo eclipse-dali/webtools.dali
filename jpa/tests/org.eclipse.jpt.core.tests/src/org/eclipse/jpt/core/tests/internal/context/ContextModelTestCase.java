@@ -11,18 +11,21 @@
 package org.eclipse.jpt.core.tests.internal.context;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
+import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 public abstract class ContextModelTestCase extends AnnotationTestCase
 {
@@ -99,13 +102,19 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		return persistenceArtifactEdit.getResource();
 	}
 	
-	protected BaseJpaContent jpaContent() {
-		return (BaseJpaContent) getJavaProject().getJpaProject().contextModel();
+	protected IBaseJpaContent jpaContent() {
+		return (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
 	}
 	
 	@Override
 	protected TestJpaProject getJavaProject() {
 		return (TestJpaProject) super.getJavaProject();
+	}
+	
+	protected void deleteResource(Resource resource) throws CoreException {
+		System.gc();
+		WorkbenchResourceHelper.deleteResource(resource);
+		waitForWorkspaceJobs();
 	}
 	
 	protected IType createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {

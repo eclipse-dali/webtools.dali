@@ -13,7 +13,6 @@ package org.eclipse.jpt.core.tests.internal.context;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
-import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 public class BaseJpaContentTests extends ContextModelTestCase
 {
@@ -21,12 +20,11 @@ public class BaseJpaContentTests extends ContextModelTestCase
 		super(name);
 	}
 	
-	public void testAddPersistenceXml() throws Exception {
-		PersistenceResource prm = persistenceResource();
-		WorkbenchResourceHelper.deleteResource(prm);
-		waitForWorkspaceJobs();
+	public void testModifyAddPersistenceXml() throws Exception {
+		PersistenceResource pr = persistenceResource();
+		deleteResource(pr);
 		
-		assertFalse(prm.exists());
+		assertFalse(pr.exists());
 		
 		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
 		assertNull(baseJpaContent.getPersistenceXml());
@@ -46,7 +44,7 @@ public class BaseJpaContentTests extends ContextModelTestCase
 		assertTrue(exceptionThrown);
 	}
 	
-	public void testRemovePersistenceXml() throws Exception {
+	public void testModifyRemovePersistenceXml() throws Exception {
 		PersistenceResource prm = persistenceResource();
 		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
 		
@@ -70,8 +68,7 @@ public class BaseJpaContentTests extends ContextModelTestCase
 	
 	public void testUpdateAddPersistenceXml() throws Exception {
 		PersistenceResource pr = persistenceResource();
-		WorkbenchResourceHelper.deleteResource(pr);
-		waitForWorkspaceJobs();
+		deleteResource(pr);
 		
 		assertFalse(pr.exists());
 		
@@ -89,8 +86,7 @@ public class BaseJpaContentTests extends ContextModelTestCase
 		
 		assertNotNull(baseJpaContent.getPersistenceXml());
 		
-		WorkbenchResourceHelper.deleteResource(pr);
-		waitForWorkspaceJobs();
+		deleteResource(pr);
 		
 		assertNull(baseJpaContent.getPersistenceXml());
 	}

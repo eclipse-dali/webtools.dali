@@ -34,21 +34,16 @@ public class PersistenceXml extends JpaContextNode
 		return persistence;
 	}
 	
-	protected void setPersistence(IPersistence newPersistence) {
-		IPersistence oldPersistence = persistence;
-		persistence = newPersistence;
-		firePropertyChanged(PERSISTENCE_PROPERTY, oldPersistence, newPersistence);
-	}
-	
 	public IPersistence addPersistence() {
 		if (persistence != null) {
 			throw new IllegalStateException();
 		}
 		
 		XmlPersistence xmlPersistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
+		persistence = createPersistence(xmlPersistence);
 		persistenceResource.getContents().add(xmlPersistence);
-		setPersistence(createPersistence(xmlPersistence));
-		return getPersistence();
+		firePropertyChanged(PERSISTENCE_PROPERTY, null, persistence);
+		return persistence;
 	}
 	
 	public void removePersistence() {
@@ -56,10 +51,17 @@ public class PersistenceXml extends JpaContextNode
 			throw new IllegalStateException();
 		}
 		
+		IPersistence oldPersistence = persistence;
+		persistence = null;
 		XmlPersistence xmlPersistence = persistenceResource.getPersistence();
 		persistenceResource.getContents().remove(xmlPersistence);
-		
-		setPersistence(null);
+		firePropertyChanged(PERSISTENCE_PROPERTY, oldPersistence, null);
+	}
+	
+	protected void setPersistence_(IPersistence newPersistence) {
+		IPersistence oldPersistence = persistence;
+		persistence = newPersistence;
+		firePropertyChanged(PERSISTENCE_PROPERTY, oldPersistence, newPersistence);
 	}
 	
 	
@@ -81,17 +83,17 @@ public class PersistenceXml extends JpaContextNode
 				this.persistence.update(persistenceResource.getPersistence());
 			}
 			else {
-				setPersistence(createPersistence(persistenceResource.getPersistence()));
+				setPersistence_(createPersistence(persistenceResource.getPersistence()));
 			}
 		}
 		else {
-			setPersistence(null);
+			setPersistence_(null);
 		}
 	}
 	
 	protected IPersistence createPersistence(XmlPersistence xmlPersistence) {
 		IPersistence persistence = jpaFactory().createPersistence(this);
-		persistence.initializeFromResource(xmlPersistence);
+		persistence.initialize(xmlPersistence);
 		return persistence;
 	}
 	
