@@ -206,15 +206,13 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 		return this.uniqueConstraints.indexOf(uniqueConstraint);
 	}
 	
-	public UniqueConstraint addUniqueConstraint(int index) {
-		NestableUniqueConstraint uniqueConstraint = createUniqueConstraint(index);
-		addUniqueConstraint(index, uniqueConstraint);
-		ContainerAnnotationTools.synchAnnotationsAfterAdd(index+1, this.uniqueConstraintsContainerAnnotation);
-		uniqueConstraint.newAnnotation();
+	public NestableUniqueConstraint addUniqueConstraint(int index) {
+		NestableUniqueConstraint uniqueConstraint = (NestableUniqueConstraint) ContainerAnnotationTools.addNestedAnnotation(index, this.uniqueConstraintsContainerAnnotation);
+		fireItemAdded(TableGenerator.UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
 		return uniqueConstraint;
 	}
 	
-	protected void addUniqueConstraint(int index, NestableUniqueConstraint uniqueConstraint) {
+	private void addUniqueConstraint(int index, NestableUniqueConstraint uniqueConstraint) {
 		addItemToList(index, uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 	
@@ -230,8 +228,13 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 	}
 
 	public void moveUniqueConstraint(int oldIndex, int newIndex) {
-		moveItemInList(newIndex, oldIndex, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+		moveUniqueConstraintInternal(oldIndex, newIndex);
 		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.uniqueConstraintsContainerAnnotation);
+		fireItemMoved(Table.UNIQUE_CONSTRAINTS_LIST, newIndex, oldIndex);
+	}
+	
+	protected void moveUniqueConstraintInternal(int oldIndex, int newIndex) {
+		this.uniqueConstraints.add(newIndex, this.uniqueConstraints.remove(oldIndex));
 	}
 
 	/**
@@ -357,6 +360,10 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 
 		public void move(int oldIndex, int newIndex) {
 			TableGeneratorImpl.this.moveUniqueConstraint(oldIndex, newIndex);
+		}
+
+		public void moveInternal(int oldIndex, int newIndex) {
+			TableGeneratorImpl.this.moveUniqueConstraintInternal(oldIndex, newIndex);
 		}
 
 		public NestableUniqueConstraint nestedAnnotationAt(int index) {

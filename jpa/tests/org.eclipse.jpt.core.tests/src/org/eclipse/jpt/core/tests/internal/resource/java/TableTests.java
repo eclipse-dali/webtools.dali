@@ -263,10 +263,27 @@ public class TableTests extends JavaResourceModelTestCase {
 		table.addUniqueConstraint(0).addColumnName("FOO");
 		table.addUniqueConstraint(1);
 		table.addUniqueConstraint(0).addColumnName("BAR");
-
+		
+		assertEquals("BAR", table.uniqueConstraintAt(0).columnNames().next());
+		assertEquals("FOO", table.uniqueConstraintAt(1).columnNames().next());
+		assertEquals(0, table.uniqueConstraintAt(2).columnNamesSize());
+		
 		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames=\"BAR\"),@UniqueConstraint(columnNames=\"FOO\"), @UniqueConstraint})");
 	}
 	
+	public void testAddUniqueConstraint2() throws Exception {
+		IType testType = this.createTestTable();
+		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		Table table = (Table) typeResource.annotation(JPA.TABLE);
+		
+		table.addUniqueConstraint(0).addColumnName("FOO");
+		table.addUniqueConstraint(0);
+		table.addUniqueConstraint(1).addColumnName("BAR");
+		table.uniqueConstraintAt(1).addColumnName("BAZ");
+		
+		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint,@UniqueConstraint(columnNames={ \"BAR\", \"BAZ\" }), @UniqueConstraint(columnNames=\"FOO\")})");
+	}	
 	public void testRemoveUniqueConstraint() throws Exception {
 		IType testType = this.createTestTableWithUniqueConstraints();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
@@ -274,6 +291,44 @@ public class TableTests extends JavaResourceModelTestCase {
 		
 		table.removeUniqueConstraint(1);
 		assertSourceContains("@Table(uniqueConstraints=@UniqueConstraint(columnNames={\"BAR\"}))");
+		
+		table.removeUniqueConstraint(0);
+		assertSourceDoesNotContain("@Table");
+	}
+	
+	public void testRemoveUniqueConstraint2() throws Exception {
+		IType testType = this.createTestTable();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		Table table = (Table) typeResource.annotation(JPA.TABLE);
+		table.addUniqueConstraint(0).addColumnName("FOO");
+		table.addUniqueConstraint(1).addColumnName("BAR");
+		table.addUniqueConstraint(2).addColumnName("BAZ");
+		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames=\"FOO\"),@UniqueConstraint(columnNames=\"BAR\"), @UniqueConstraint(columnNames=\"BAZ\")})");
+		
+		table.removeUniqueConstraint(0);
+		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames=\"BAR\"),@UniqueConstraint(columnNames=\"BAZ\")})");
+		
+		table.removeUniqueConstraint(0);
+		assertSourceContains("@Table(uniqueConstraints=@UniqueConstraint(columnNames=\"BAZ\"))");
+		
+		table.removeUniqueConstraint(0);
+		assertSourceDoesNotContain("@Table");
+	}
+	
+	public void testRemoveUniqueConstraint3() throws Exception {
+		IType testType = this.createTestTable();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		Table table = (Table) typeResource.annotation(JPA.TABLE);
+		table.addUniqueConstraint(0).addColumnName("FOO");
+		table.addUniqueConstraint(1).addColumnName("BAR");
+		table.addUniqueConstraint(2).addColumnName("BAZ");
+		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames=\"FOO\"),@UniqueConstraint(columnNames=\"BAR\"), @UniqueConstraint(columnNames=\"BAZ\")})");
+		
+		table.removeUniqueConstraint(2);
+		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames=\"FOO\"),@UniqueConstraint(columnNames=\"BAR\")})");
+		
+		table.removeUniqueConstraint(1);
+		assertSourceContains("@Table(uniqueConstraints=@UniqueConstraint(columnNames=\"FOO\"))");
 		
 		table.removeUniqueConstraint(0);
 		assertSourceDoesNotContain("@Table");

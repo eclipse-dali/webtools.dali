@@ -93,6 +93,16 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 	public void move(int oldIndex, int newIndex) {
 		moveItemInList(newIndex, oldIndex,  this.secondaryTables, SecondaryTables.SECONDARY_TABLES_LIST);
 	}
+	//TODO this move is different than how we handle SecondarTable.pkJoinColumns
+//	public void movePkJoinColumn(int oldIndex, int newIndex) {
+//		movePkJoinColumnInternal(oldIndex, newIndex);
+//		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.pkJoinColumnsContainerAnnotation);
+//		fireItemMoved(SecondaryTable.PK_JOIN_COLUMNS_LIST, newIndex, oldIndex);
+//	}
+	
+	public void moveInternal(int oldIndex, int newIndex) {
+		this.secondaryTables.add(newIndex, this.secondaryTables.remove(oldIndex));
+	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);

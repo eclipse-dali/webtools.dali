@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -106,7 +107,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@PrimaryKeyJoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\")");
+				sb.append("@PrimaryKeyJoinColumn(name=\"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\")");
 			}
 		});
 	}
@@ -227,6 +228,28 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 		assertNull(attributeResource.annotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNotNull(attributeResource.annotation(JPA.PRIMARY_KEY_JOIN_COLUMNS));
 		assertEquals(2, CollectionTools.size(attributeResource.annotations(JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS)));
+	}
+	public void testAddPrimaryKeyJoinColumnToBeginningOfList() throws Exception {
+		IType jdtType = createTestPrimaryKeyJoinColumn();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		PrimaryKeyJoinColumn joinColumn = (PrimaryKeyJoinColumn) attributeResource.addAnnotation(1, JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
+		joinColumn.setName("FOO");
+		assertSourceContains("@PrimaryKeyJoinColumns({@PrimaryKeyJoinColumn(name=\"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\"),@PrimaryKeyJoinColumn(name=\"FOO\")})");
+		
+		joinColumn = (PrimaryKeyJoinColumn) attributeResource.addAnnotation(0, JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
+		joinColumn.setName("BAZ");
+		assertSourceContains("@PrimaryKeyJoinColumns({@PrimaryKeyJoinColumn(name=\"BAZ\"),@PrimaryKeyJoinColumn(name=\"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\"), @PrimaryKeyJoinColumn(name=\"FOO\")})");
+
+		Iterator<JavaResource> pkJoinColumns = attributeResource.annotations(JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
+		assertEquals("BAZ", ((PrimaryKeyJoinColumn) pkJoinColumns.next()).getName());
+		assertEquals("BAR", ((PrimaryKeyJoinColumn) pkJoinColumns.next()).getName());
+		assertEquals("FOO", ((PrimaryKeyJoinColumn) pkJoinColumns.next()).getName());
+
+		assertNull(attributeResource.annotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
+		assertNotNull(attributeResource.annotation(JPA.PRIMARY_KEY_JOIN_COLUMNS));
+		assertEquals(3, CollectionTools.size(attributeResource.annotations(JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS)));
 	}
 
 	public void testRemovePrimaryKeyJoinColumnCopyExisting() throws Exception {

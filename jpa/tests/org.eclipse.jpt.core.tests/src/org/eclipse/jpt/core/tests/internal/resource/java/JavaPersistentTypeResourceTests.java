@@ -743,7 +743,26 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
 		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
 	}
-	
+
+	public void testAddJavaTypeAnnotationNestableContainer6() throws Exception {
+		IType jdtType = createTestEntityWithSecondaryTables();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		
+		SecondaryTable secondaryTableResource = (SecondaryTable) typeResource.addAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+		secondaryTableResource.setName("BAR");
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"),@SecondaryTable(name=\"FOO\")})");
+		
+		assertNull(typeResource.annotation(JPA.SECONDARY_TABLE));
+		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
+		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
+
+		secondaryTableResource = (SecondaryTable) typeResource.addAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+		secondaryTableResource.setName("BAZ");
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAZ\"),@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"FOO\")})");
+
+		assertEquals(3, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
+	}
+
 	//  @Entity     				
 	//	@SecondaryTable(name=\"FOO\")
 	//  @SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\")})

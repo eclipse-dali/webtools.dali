@@ -200,8 +200,12 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		
 		namedQuery.addHint(0).setName("FOO");
 		namedQuery.addHint(1);
-		namedQuery.addHint(0).setName("BAR");
+		QueryHint queryHint = namedQuery.addHint(0);
+		queryHint.setName("BAR");
 
+		assertEquals("BAR", namedQuery.hintAt(0).getName());
+		assertEquals("FOO", namedQuery.hintAt(1).getName());
+		assertNull(namedQuery.hintAt(2).getName());
 		assertSourceContains("@NamedQuery(hints={@QueryHint(name=\"BAR\"),@QueryHint(name=\"FOO\"), @QueryHint})");
 	}
 	

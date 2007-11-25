@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -108,6 +109,10 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 		return this.elementTouches(this.referencedColumnNameDeclarationAdapter, pos, astRoot);
 	}
 
+	public ITextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
+		return this.elementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
+	}
+	
 	// ********** static methods **********
 
 	static PrimaryKeyJoinColumnImpl createPrimaryKeyJoinColumn(JavaResource parent, Member member) {
@@ -158,7 +163,7 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 		}
 		
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
-			return null;
+			return new NullPrimaryKeyJoinColumn(parent);
 		}
 
 		public String getAnnotationName() {

@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -197,6 +198,28 @@ public class AttributeOverridesTests extends JavaResourceModelTestCase {
 		assertNull(typeResource.annotation(JPA.ATTRIBUTE_OVERRIDE));
 		assertNotNull(typeResource.annotation(JPA.ATTRIBUTE_OVERRIDES));
 		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
+	}
+	
+	public void testAddAttributeOverrideToBeginningOfList() throws Exception {
+		IType jdtType = createTestAttributeOverride();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		
+		AttributeOverride attributeOverride = (AttributeOverride) typeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("BAR");
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\", column = @Column(name=\"FOO\", columnDefinition = \"BAR\", table = \"BAZ\", unique = false, nullable = false, insertable = false, updatable = false, length = 1, precision = 1, scale = 1)),@AttributeOverride(name=\"BAR\")})");
+		
+		attributeOverride = (AttributeOverride) typeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("BAZ");
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAZ\"),@AttributeOverride(name=\"FOO\", column = @Column(name=\"FOO\", columnDefinition = \"BAR\", table = \"BAZ\", unique = false, nullable = false, insertable = false, updatable = false, length = 1, precision = 1, scale = 1)), @AttributeOverride(name=\"BAR\")})");
+
+		Iterator<JavaResource> attributeOverrides = typeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		assertEquals("BAZ", ((AttributeOverride) attributeOverrides.next()).getName());
+		assertEquals("FOO", ((AttributeOverride) attributeOverrides.next()).getName());
+		assertEquals("BAR", ((AttributeOverride) attributeOverrides.next()).getName());
+
+		assertNull(typeResource.annotation(JPA.ATTRIBUTE_OVERRIDE));
+		assertNotNull(typeResource.annotation(JPA.ATTRIBUTE_OVERRIDES));
+		assertEquals(3, CollectionTools.size(typeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
 	}
 
 	public void testRemoveAttributeOverrideCopyExisting() throws Exception {

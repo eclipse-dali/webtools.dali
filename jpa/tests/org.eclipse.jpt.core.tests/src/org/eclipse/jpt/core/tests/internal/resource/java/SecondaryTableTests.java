@@ -296,6 +296,10 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		table.addUniqueConstraint(1);
 		table.addUniqueConstraint(0).addColumnName("BAR");
 
+		assertEquals("BAR", table.uniqueConstraintAt(0).columnNames().next());
+		assertEquals("FOO", table.uniqueConstraintAt(1).columnNames().next());
+		assertEquals(0, table.uniqueConstraintAt(2).columnNamesSize());
+
 		assertSourceContains("@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames=\"BAR\"),@UniqueConstraint(columnNames=\"FOO\"), @UniqueConstraint})");
 	}
 	
@@ -371,10 +375,15 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 
 		
 		table.addPkJoinColumn(0).setName("FOO");
-		table.addPkJoinColumn(1);
-		table.addPkJoinColumn(0).setName("BAR");
+		table.addPkJoinColumn(0);
+		table.addPkJoinColumn(0).setName("BAR");//test adding a pkJoinColumn in front of 2 other joinColumns
 
-		assertSourceContains("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"BAR\"),@PrimaryKeyJoinColumn(name=\"FOO\"), @PrimaryKeyJoinColumn})");
+		assertEquals("BAR", table.pkJoinColumnAt(0).getName());
+		assertNull(table.pkJoinColumnAt(1).getName());
+		assertEquals("FOO", table.pkJoinColumnAt(2).getName());
+
+		assertEquals(3, table.pkJoinColumnsSize());
+		assertSourceContains("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"BAR\"),@PrimaryKeyJoinColumn, @PrimaryKeyJoinColumn(name=\"FOO\")})");
 	}
 	
 	public void testRemovePkJoinColumn() throws Exception {

@@ -110,17 +110,16 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	public int indexOfPkJoinColumn(PrimaryKeyJoinColumn joinColumn) {
 		return this.pkJoinColumns.indexOf(joinColumn);
 	}
+
 	
 	public PrimaryKeyJoinColumn addPkJoinColumn(int index) {
-		NestablePrimaryKeyJoinColumn pkJoinColumn = createPrimaryKeyJoinColumn(index);
-		addPkJoinColumn(index, pkJoinColumn);
-		ContainerAnnotationTools.synchAnnotationsAfterAdd(index+1, this.pkJoinColumnsContainerAnnotation);
-		pkJoinColumn.newAnnotation();
+		NestablePrimaryKeyJoinColumn pkJoinColumn = (NestablePrimaryKeyJoinColumn) ContainerAnnotationTools.addNestedAnnotation(index, this.pkJoinColumnsContainerAnnotation);
+		fireItemAdded(SecondaryTable.PK_JOIN_COLUMNS_LIST, index, pkJoinColumn);
 		return pkJoinColumn;
 	}
 	
 	protected void addPkJoinColumn(int index, NestablePrimaryKeyJoinColumn pkJoinColumn) {
-		addItemToList(index, pkJoinColumn, this.pkJoinColumns,PK_JOIN_COLUMNS_LIST);
+		addItemToList(index, pkJoinColumn, this.pkJoinColumns, PK_JOIN_COLUMNS_LIST);
 	}
 	
 	public void removePkJoinColumn(int index) {
@@ -131,13 +130,17 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	}
 	
 	protected void removePkJoinColumn(NestablePrimaryKeyJoinColumn pkJoinColumn) {
-		removeItemFromList(pkJoinColumn, this.pkJoinColumns,PK_JOIN_COLUMNS_LIST);
+		removeItemFromList(pkJoinColumn, this.pkJoinColumns, SecondaryTable.PK_JOIN_COLUMNS_LIST);
 	}
-	
 
 	public void movePkJoinColumn(int oldIndex, int newIndex) {
-		this.pkJoinColumns.add(newIndex, this.pkJoinColumns.remove(oldIndex));
+		movePkJoinColumnInternal(oldIndex, newIndex);
 		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.pkJoinColumnsContainerAnnotation);
+		fireItemMoved(SecondaryTable.PK_JOIN_COLUMNS_LIST, newIndex, oldIndex);
+	}
+	
+	protected void movePkJoinColumnInternal(int oldIndex, int newIndex) {
+		this.pkJoinColumns.add(newIndex, this.pkJoinColumns.remove(oldIndex));
 	}
 
 
@@ -200,6 +203,10 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 
 		public void move(int oldIndex, int newIndex) {
 			SecondaryTableImpl.this.movePkJoinColumn(oldIndex, newIndex);
+		}
+		
+		public void moveInternal(int oldIndex, int newIndex) {
+			SecondaryTableImpl.this.movePkJoinColumnInternal(oldIndex, newIndex);
 		}
 
 		public NestablePrimaryKeyJoinColumn nestedAnnotationAt(int index) {

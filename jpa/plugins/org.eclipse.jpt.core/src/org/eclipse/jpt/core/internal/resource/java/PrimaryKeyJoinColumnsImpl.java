@@ -96,6 +96,10 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractAnnotationResource<Member
 		moveItemInList(newIndex, oldIndex, this.pkJoinColumns, PK_JOIN_COLUMNS_LIST);
 	}
 	
+	public void moveInternal(int oldIndex, int newIndex) {
+		this.pkJoinColumns.add(newIndex, this.pkJoinColumns.remove(oldIndex));
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}

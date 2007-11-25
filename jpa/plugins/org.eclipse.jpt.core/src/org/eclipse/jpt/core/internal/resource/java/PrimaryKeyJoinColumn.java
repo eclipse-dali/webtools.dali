@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 
 public interface PrimaryKeyJoinColumn extends NamedColumn
 {
@@ -25,5 +26,11 @@ public interface PrimaryKeyJoinColumn extends NamedColumn
 	 * Return false if the referencedColumnName element does not exist.
 	 */
 	boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot);
+
+	/**
+	 * Return the ITextRange for the referencedColumnName element. If the referencedColumnName 
+	 * element does not exist return the ITextRange for the PrimaryKeyJoinColumn annotation.
+	 */
+	ITextRange referencedColumnNameTextRange(CompilationUnit astRoot);
 
 }

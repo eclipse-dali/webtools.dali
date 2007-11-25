@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTables;
@@ -332,6 +333,10 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		secondaryTable.addUniqueConstraint(1);
 		secondaryTable.addUniqueConstraint(0).addColumnName("BAR");
 
+		assertEquals("BAR", secondaryTable.uniqueConstraintAt(0).columnNames().next());
+		assertEquals("FOO", secondaryTable.uniqueConstraintAt(1).columnNames().next());
+		assertEquals(0, secondaryTable.uniqueConstraintAt(2).columnNamesSize());
+
 		assertSourceContains("@SecondaryTables(@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames=\"BAR\"),@UniqueConstraint(columnNames=\"FOO\"), @UniqueConstraint}))");
 	}
 	
@@ -382,6 +387,28 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		assertNull(typeResource.annotation(JPA.SECONDARY_TABLE));
 		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
 		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
+	}
+	
+	public void testAddSecondaryTable() throws Exception {
+		IType jdtType = createTestSecondaryTable();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		
+		SecondaryTable secondaryTable = (SecondaryTable) typeResource.addAnnotation(1, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+		secondaryTable.setName("BAR");
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\", catalog = \"BAR\", schema = \"BAZ\", uniqueConstraints = @UniqueConstraint(columnNames=\"BAR\")),@SecondaryTable(name=\"BAR\")})");
+		
+		secondaryTable = (SecondaryTable) typeResource.addAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+		secondaryTable.setName("BAZ");
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAZ\"),@SecondaryTable(name=\"FOO\", catalog = \"BAR\", schema = \"BAZ\", uniqueConstraints = @UniqueConstraint(columnNames=\"BAR\")), @SecondaryTable(name=\"BAR\")})");
+
+		Iterator<JavaResource> secondaryTables = typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+		assertEquals("BAZ", ((SecondaryTable) secondaryTables.next()).getName());
+		assertEquals("FOO", ((SecondaryTable) secondaryTables.next()).getName());
+		assertEquals("BAR", ((SecondaryTable) secondaryTables.next()).getName());
+
+		assertNull(typeResource.annotation(JPA.SECONDARY_TABLE));
+		assertNotNull(typeResource.annotation(JPA.SECONDARY_TABLES));
+		assertEquals(3, CollectionTools.size(typeResource.annotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
 	}
 
 	public void testRemoveSecondaryTableCopyExisting() throws Exception {

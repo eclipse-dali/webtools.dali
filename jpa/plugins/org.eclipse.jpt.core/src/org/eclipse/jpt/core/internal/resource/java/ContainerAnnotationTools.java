@@ -20,6 +20,16 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class ContainerAnnotationTools
 {
+	
+	public static NestableAnnotation addNestedAnnotation( int index, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
+		int size = containerAnnotation.nestedAnnotationsSize();
+		NestableAnnotation nestedAnnotation = containerAnnotation.addInternal(size);
+		nestedAnnotation.newAnnotation();
+		containerAnnotation.moveInternal(size, index);
+		synchAnnotationsAfterMove(size, index, containerAnnotation);
+		return nestedAnnotation;
+	}
+
 	/**
 	 * synchronize the source annotations with the model nestableAnnotations,
 	 * starting at the end of the list to prevent overlap

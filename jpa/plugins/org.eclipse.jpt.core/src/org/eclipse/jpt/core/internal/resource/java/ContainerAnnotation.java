@@ -29,13 +29,17 @@ public interface ContainerAnnotation<T extends NestableAnnotation> extends Annot
 	
 	/**
 	 * Add directly to the List without firing change notification.
-	 * This is only done during construction
 	 */
 	T addInternal(int index);
 	
 	void remove(T nestedAnnotation);
 	
 	void remove(int index);
+	
+	/**
+	 * Move in the List without firing change notification.
+	 */
+	void moveInternal(int oldIndex, int newIndex);
 	
 	void move(int oldIndex, int newIndex);
 }

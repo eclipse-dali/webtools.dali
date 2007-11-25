@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueries;
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQuery;
 import org.eclipse.jpt.core.internal.resource.java.QueryHint;
@@ -320,6 +321,9 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		namedQuery.addHint(1);
 		namedQuery.addHint(0).setName("BAR");
 
+		assertEquals("BAR", namedQuery.hintAt(0).getName());
+		assertEquals("FOO", namedQuery.hintAt(1).getName());
+		assertNull(namedQuery.hintAt(2).getName());
 		assertSourceContains("@NamedNativeQuery(hints={@QueryHint(name=\"BAR\"),@QueryHint(name=\"FOO\"), @QueryHint})");
 	}
 	
@@ -371,7 +375,29 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		assertNotNull(typeResource.annotation(JPA.NAMED_NATIVE_QUERIES));
 		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.NAMED_NATIVE_QUERY, JPA.NAMED_NATIVE_QUERIES)));
 	}
+	
+	public void testAddNamedNativeQueryToBeginningOfList() throws Exception {
+		IType jdtType = createTestNamedNativeQuery();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		
+		NamedNativeQuery namedQuery = (NamedNativeQuery) typeResource.addAnnotation(1, JPA.NAMED_NATIVE_QUERY, JPA.NAMED_NATIVE_QUERIES);
+		namedQuery.setName("BAR");
+		assertSourceContains("@NamedNativeQueries({@NamedNativeQuery(name=\"foo\", query = \"bar\", hints = @QueryHint(name=\"BAR\", value = \"FOO\"), resultClass = Foo.class, resultSetMapping = \"mapping\"),@NamedNativeQuery(name=\"BAR\")})");		
+		
+		namedQuery = (NamedNativeQuery) typeResource.addAnnotation(0, JPA.NAMED_NATIVE_QUERY, JPA.NAMED_NATIVE_QUERIES);
+		namedQuery.setName("BAZ");
+		assertSourceContains("@NamedNativeQueries({@NamedNativeQuery(name=\"BAZ\"),@NamedNativeQuery(name=\"foo\", query = \"bar\", hints = @QueryHint(name=\"BAR\", value = \"FOO\"), resultClass = Foo.class, resultSetMapping = \"mapping\"), @NamedNativeQuery(name=\"BAR\")})");		
 
+		Iterator<JavaResource> namedQueries = typeResource.annotations(JPA.NAMED_NATIVE_QUERY, JPA.NAMED_NATIVE_QUERIES);
+		assertEquals("BAZ", ((NamedNativeQuery) namedQueries.next()).getName());
+		assertEquals("foo", ((NamedNativeQuery) namedQueries.next()).getName());
+		assertEquals("BAR", ((NamedNativeQuery) namedQueries.next()).getName());
+
+		assertNull(typeResource.annotation(JPA.NAMED_NATIVE_QUERY));
+		assertNotNull(typeResource.annotation(JPA.NAMED_NATIVE_QUERIES));
+		assertEquals(3, CollectionTools.size(typeResource.annotations(JPA.NAMED_NATIVE_QUERY, JPA.NAMED_NATIVE_QUERIES)));
+	}
+	
 	public void testRemoveNamedNativeQueryCopyExisting() throws Exception {
 		IType jdtType = createTestNamedNativeQuery();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);

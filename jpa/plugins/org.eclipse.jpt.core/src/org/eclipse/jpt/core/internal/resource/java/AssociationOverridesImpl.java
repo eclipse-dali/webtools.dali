@@ -95,6 +95,10 @@ public class AssociationOverridesImpl extends AbstractAnnotationResource<Member>
 		moveItemInList(newIndex, oldIndex, this.associationOverrides, ASSOCIATION_OVERRIDES_LIST);
 	}
 	
+	public void moveInternal(int oldIndex, int newIndex) {
+		this.associationOverrides.add(newIndex, this.associationOverrides.remove(oldIndex));		
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}

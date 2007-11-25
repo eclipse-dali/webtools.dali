@@ -236,10 +236,10 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	protected JavaPersistentAttributeResource createJavaPersistentAttribute(IMember member, CompilationUnit astRoot) {
 		Attribute attribute = null;
 		if (member instanceof IField) {
-			attribute = new FieldAttribute((IField) member, this.modifySharedDocumentCommandExecutorProvider());
+			attribute = new FieldAttribute((IField) member, this.modifySharedDocumentCommandExecutorProvider(), this.annotationEditFormatter());
 		}
 		else if (member instanceof IMethod) {
-			attribute = new MethodAttribute((IMethod) member, this.modifySharedDocumentCommandExecutorProvider());
+			attribute = new MethodAttribute((IMethod) member, this.modifySharedDocumentCommandExecutorProvider(), this.annotationEditFormatter());
 		}
 		else {
 			throw new IllegalArgumentException();

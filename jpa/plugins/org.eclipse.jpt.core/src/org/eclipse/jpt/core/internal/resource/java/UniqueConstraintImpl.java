@@ -87,6 +87,10 @@ public class UniqueConstraintImpl extends AbstractAnnotationResource<Member> imp
 		return new CloneListIterator<String>(this.columnNames);
 	}
 
+	public int columnNamesSize() {
+		return this.columnNames.size();
+	}
+	
 	public void addColumnName(String columnName) {
 		addItemToList(columnName, this.columnNames, COLUMN_NAMES_LIST);
 		this.columnNamesAdapter.setValue(this.columnNames.toArray(new String[this.columnNames.size()]));
@@ -107,6 +111,7 @@ public class UniqueConstraintImpl extends AbstractAnnotationResource<Member> imp
 
 	protected void updateColumnNamesFromJava(CompilationUnit astRoot) {
 		String[] javaColumnNames = this.columnNamesAdapter.getValue(astRoot);
+		//TODO hmm, seems we need change notification for this
 		CollectionTools.retainAll(this.columnNames, javaColumnNames);
 		for (int i = 0; i < javaColumnNames.length; i++) {
 			String columnName = javaColumnNames[i];

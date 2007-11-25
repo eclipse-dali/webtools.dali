@@ -95,6 +95,10 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 		moveItemInList(newIndex, oldIndex, this.attributesOverrides, ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
+	public void moveInternal(int oldIndex, int newIndex) {
+		this.attributesOverrides.add(newIndex, this.attributesOverrides.remove(oldIndex));		
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}

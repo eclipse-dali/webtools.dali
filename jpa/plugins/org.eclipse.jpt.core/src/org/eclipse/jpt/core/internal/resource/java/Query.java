@@ -36,7 +36,7 @@ public interface Query extends JavaResource
 	void removeHint(int index);
 	
 	void moveHint(int oldIndex, int newIndex);
-		String QUERY_HINTS_LIST = "queryHintsList";
+		String HINTS_LIST = "hintsList";
 
 	/**
 	 * Return the ITextRange for the name element. If name element

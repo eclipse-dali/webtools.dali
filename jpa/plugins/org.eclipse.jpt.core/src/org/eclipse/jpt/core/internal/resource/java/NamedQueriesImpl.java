@@ -97,6 +97,10 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 		moveItemInList(newIndex, oldIndex, this.namedQueries, NAMED_QUERIES_LIST);
 	}
 	
+	public void moveInternal(int oldIndex, int newIndex) {
+		this.namedQueries.add(newIndex, this.namedQueries.remove(oldIndex));
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}

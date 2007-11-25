@@ -334,6 +334,10 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		table.addUniqueConstraint(1);
 		table.addUniqueConstraint(0).addColumnName("BAR");
 
+		assertEquals("BAR", table.uniqueConstraintAt(0).columnNames().next());
+		assertEquals("FOO", table.uniqueConstraintAt(1).columnNames().next());
+		assertEquals(0, table.uniqueConstraintAt(2).columnNamesSize());
+
 		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames=\"BAR\"),@UniqueConstraint(columnNames=\"FOO\"), @UniqueConstraint})");
 	}
 	
@@ -425,6 +429,9 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		table.addJoinColumn(1);
 		table.addJoinColumn(0).setName("BAR");
 
+		assertEquals("BAR", table.joinColumnAt(0).getName());
+		assertEquals("FOO", table.joinColumnAt(1).getName());
+		assertNull(table.joinColumnAt(2).getName());
 		assertSourceContains("@JoinTable(joinColumns={@JoinColumn(name=\"BAR\"),@JoinColumn(name=\"FOO\"), @JoinColumn})");
 	}
 	
@@ -551,6 +558,9 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		table.addInverseJoinColumn(1);
 		table.addInverseJoinColumn(0).setName("BAR");
 
+		assertEquals("BAR", table.inverseJoinColumnAt(0).getName());
+		assertEquals("FOO", table.inverseJoinColumnAt(1).getName());
+		assertNull(table.inverseJoinColumnAt(2).getName());
 		assertSourceContains("@JoinTable(inverseJoinColumns={@JoinColumn(name=\"BAR\"),@JoinColumn(name=\"FOO\"), @JoinColumn})");
 	}
 	

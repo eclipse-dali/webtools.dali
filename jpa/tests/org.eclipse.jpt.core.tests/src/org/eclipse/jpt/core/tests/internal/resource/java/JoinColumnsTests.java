@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumn;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -402,6 +403,30 @@ public class JoinColumnsTests extends JavaResourceModelTestCase {
 		assertNotNull(attributeResource.annotation(JPA.JOIN_COLUMNS));
 		assertEquals(2, CollectionTools.size(attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS)));
 	}
+	
+	public void testAddJoinColumnToBeginningOfList() throws Exception {
+		IType jdtType = createTestJoinColumn();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		
+		JoinColumn joinColumn = (JoinColumn) attributeResource.addAnnotation(1, JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS);
+		joinColumn.setName("FOO");
+		assertSourceContains("@JoinColumns({@JoinColumn(name=\"BAR\", columnDefinition = \"COLUMN_DEF\", table = \"TABLE\", unique = false, nullable = false, insertable = false, updatable = false, referencedColumnName = \"REF_NAME\"),@JoinColumn(name=\"FOO\")})");
+				
+		joinColumn = (JoinColumn) attributeResource.addAnnotation(0, JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS);
+		joinColumn.setName("BAZ");
+		assertSourceContains("@JoinColumns({@JoinColumn(name=\"BAZ\"),@JoinColumn(name=\"BAR\", columnDefinition = \"COLUMN_DEF\", table = \"TABLE\", unique = false, nullable = false, insertable = false, updatable = false, referencedColumnName = \"REF_NAME\"), @JoinColumn(name=\"FOO\")})");
+
+		Iterator<JavaResource> joinColumns = attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS);
+		assertEquals("BAZ", ((JoinColumn) joinColumns.next()).getName());
+		assertEquals("BAR", ((JoinColumn) joinColumns.next()).getName());
+		assertEquals("FOO", ((JoinColumn) joinColumns.next()).getName());
+		
+		assertNull(attributeResource.annotation(JPA.JOIN_COLUMN));
+		assertNotNull(attributeResource.annotation(JPA.JOIN_COLUMNS));
+		assertEquals(3, CollectionTools.size(attributeResource.annotations(JPA.JOIN_COLUMN, JPA.JOIN_COLUMNS)));
+	}
+
 
 	public void testRemoveJoinColumnCopyExisting() throws Exception {
 		IType jdtType = createTestJoinColumn();

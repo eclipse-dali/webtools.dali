@@ -119,15 +119,13 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 	}
 	
 	public NestableQueryHint addHint(int index) {
-		NestableQueryHint queryHint = createQueryHint(index);
-		addHint(index, queryHint);
-		ContainerAnnotationTools.synchAnnotationsAfterAdd(index + 1, this.hintsContainerAnnotation);
-		queryHint.newAnnotation();
+		NestableQueryHint queryHint = (NestableQueryHint) ContainerAnnotationTools.addNestedAnnotation(index, this.hintsContainerAnnotation);
+		fireItemAdded(Query.HINTS_LIST, index, queryHint);
 		return queryHint;
 	}
 	
 	private void addHint(int index, NestableQueryHint queryHint) {
-		addItemToList(index, queryHint, this.hints, QUERY_HINTS_LIST);
+		addItemToList(index, queryHint, this.hints, HINTS_LIST);
 	}
 	
 	public void removeHint(int index) {
@@ -138,12 +136,17 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 	}
 	
 	private void removeHint(NestableQueryHint queryHint) {
-		removeItemFromList(queryHint, this.hints, QUERY_HINTS_LIST);
+		removeItemFromList(queryHint, this.hints, HINTS_LIST);
 	}
 
 	public void moveHint(int oldIndex, int newIndex) {
-		moveItemInList(newIndex, oldIndex, this.hints, QUERY_HINTS_LIST);
+		moveHintInternal(oldIndex, newIndex);
 		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.hintsContainerAnnotation);
+		fireItemMoved(Query.HINTS_LIST, newIndex, oldIndex);
+	}
+	
+	protected void moveHintInternal(int oldIndex, int newIndex) {
+		this.hints.add(newIndex, this.hints.remove(oldIndex));
 	}
 	
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
@@ -229,7 +232,11 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 		}
 
 		public void move(int oldIndex, int newIndex) {
-			moveHint(oldIndex, newIndex);
+			AbstractNamedQuery.this.moveHint(oldIndex, newIndex);
+		}
+		
+		public void moveInternal(int oldIndex, int newIndex) {
+			AbstractNamedQuery.this.moveHintInternal(oldIndex, newIndex);
 		}
 
 		public NestableQueryHint nestedAnnotationAt(int index) {

@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.NamedQueries;
 import org.eclipse.jpt.core.internal.resource.java.NamedQuery;
 import org.eclipse.jpt.core.internal.resource.java.QueryHint;
@@ -229,6 +230,10 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		namedQuery.addHint(1);
 		namedQuery.addHint(0).setName("BAR");
 
+		assertEquals("BAR", namedQuery.hintAt(0).getName());
+		assertEquals("FOO", namedQuery.hintAt(1).getName());
+		assertNull(namedQuery.hintAt(2).getName());
+
 		assertSourceContains("@NamedQuery(hints={@QueryHint(name=\"BAR\"),@QueryHint(name=\"FOO\"), @QueryHint})");
 	}
 	
@@ -279,6 +284,29 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		assertNull(typeResource.annotation(JPA.NAMED_QUERY));
 		assertNotNull(typeResource.annotation(JPA.NAMED_QUERIES));
 		assertEquals(2, CollectionTools.size(typeResource.annotations(JPA.NAMED_QUERY, JPA.NAMED_QUERIES)));
+	}
+	
+	public void testAddNamedQueryToBeginningOfList() throws Exception {
+		IType jdtType = createTestNamedQuery();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		
+		NamedQuery namedQuery = (NamedQuery) typeResource.addAnnotation(1, JPA.NAMED_QUERY, JPA.NAMED_QUERIES);
+		namedQuery.setName("BAR");
+		assertSourceContains("@NamedQueries({@NamedQuery(name=\"foo\", query = \"bar\", hints = @QueryHint(name=\"BAR\", value = \"FOO\")),@NamedQuery(name=\"BAR\")})");
+		
+		
+		namedQuery = (NamedQuery) typeResource.addAnnotation(0, JPA.NAMED_QUERY, JPA.NAMED_QUERIES);
+		namedQuery.setName("BAZ");
+		assertSourceContains("@NamedQueries({@NamedQuery(name=\"BAZ\"),@NamedQuery(name=\"foo\", query = \"bar\", hints = @QueryHint(name=\"BAR\", value = \"FOO\")), @NamedQuery(name=\"BAR\")})");
+
+		Iterator<JavaResource> namedQueries = typeResource.annotations(JPA.NAMED_QUERY, JPA.NAMED_QUERIES);
+		assertEquals("BAZ", ((NamedQuery) namedQueries.next()).getName());
+		assertEquals("foo", ((NamedQuery) namedQueries.next()).getName());
+		assertEquals("BAR", ((NamedQuery) namedQueries.next()).getName());
+
+		assertNull(typeResource.annotation(JPA.NAMED_QUERY));
+		assertNotNull(typeResource.annotation(JPA.NAMED_QUERIES));
+		assertEquals(3, CollectionTools.size(typeResource.annotations(JPA.NAMED_QUERY, JPA.NAMED_QUERIES)));
 	}
 
 	public void testRemoveNamedQueryCopyExisting() throws Exception {

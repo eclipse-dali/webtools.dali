@@ -199,33 +199,31 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return (NestableAnnotation) addAnnotation(nestableAnnotationName);
 	}
 	
+	//TODO it seems we should be firing one change notification here, that a new nestable annotation was added.
 	public NestableAnnotation addAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
-		NestableAnnotation nestableAnnotation = (NestableAnnotation) annotation(nestableAnnotationName);
+		NestableAnnotation nestedAnnotation = (NestableAnnotation) annotation(nestableAnnotationName);
 		
 		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
 		
 		if (containerAnnotation != null) {
 			//ignore any nestableAnnotation and just add to the plural one
-			int size = containerAnnotation.nestedAnnotationsSize();
-			NestableAnnotation newNestableAnnotation = containerAnnotation.addInternal(size);
-			newNestableAnnotation.newAnnotation();
-			containerAnnotation.move(size, index);
-			ContainerAnnotationTools.synchAnnotationsAfterMove(size, index, containerAnnotation);
-			return newNestableAnnotation;
+			NestableAnnotation newNestedAnnotation = ContainerAnnotationTools.addNestedAnnotation(index, containerAnnotation);
+			//TODO any event notification being fired for the add???
+			return newNestedAnnotation;
 		}
-		if (nestableAnnotation == null) {
+		if (nestedAnnotation == null) {
 			//add the nestable since neither nestable or container exists
 			return addNestableAnnotation(nestableAnnotationName);
 		}
 		//move the nestable to a new container annotation and add to it
 		ContainerAnnotation<NestableAnnotation> newContainerAnnotation = addContainerAnnotationTwoNestableAnnotations(containerAnnotationName);
 		if (index == 0) {
-			newContainerAnnotation.nestedAnnotationAt(1).initializeFrom(nestableAnnotation);
+			newContainerAnnotation.nestedAnnotationAt(1).initializeFrom(nestedAnnotation);
 		}
 		else {
-			newContainerAnnotation.nestedAnnotationAt(0).initializeFrom(nestableAnnotation);		
+			newContainerAnnotation.nestedAnnotationAt(0).initializeFrom(nestedAnnotation);		
 		}
-		removeAnnotation(nestableAnnotation);
+		removeAnnotation(nestedAnnotation);
 		return newContainerAnnotation.nestedAnnotationAt(index);
 	}
 	

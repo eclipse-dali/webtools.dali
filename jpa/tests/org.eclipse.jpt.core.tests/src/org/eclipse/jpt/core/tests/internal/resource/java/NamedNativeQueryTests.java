@@ -275,6 +275,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		assertEquals(2, CollectionTools.size(iterator));
 	}
 	
+	
 	public void testAddHint() throws Exception {
 		IType testType = this.createTestNamedNativeQuery();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
@@ -285,6 +286,9 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		namedQuery.addHint(1);
 		namedQuery.addHint(0).setName("BAR");
 
+		assertEquals("BAR", namedQuery.hintAt(0).getName());
+		assertEquals("FOO", namedQuery.hintAt(1).getName());
+		assertNull(namedQuery.hintAt(2).getName());
 		assertSourceContains("@NamedNativeQuery(hints={@QueryHint(name=\"BAR\"),@QueryHint(name=\"FOO\"), @QueryHint})");
 	}
 	

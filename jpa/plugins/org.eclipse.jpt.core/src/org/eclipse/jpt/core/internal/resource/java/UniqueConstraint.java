@@ -21,6 +21,8 @@ public interface UniqueConstraint extends JavaResource
 
 	ListIterator<String> columnNames();
 
+	int columnNamesSize();
+	
 	void addColumnName(String columnName);
 	
 	void removeColumnName(String columnName);
