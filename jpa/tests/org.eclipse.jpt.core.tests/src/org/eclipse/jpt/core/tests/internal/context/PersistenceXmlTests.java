@@ -24,6 +24,19 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		return jpaContent().getPersistenceXml();
 	}
 	
+	public void testUpdateAddPersistence() throws Exception {
+		PersistenceResource prm = persistenceResource();
+		prm.getContents().clear();
+		prm.save(null);
+		
+		assertNull(persistenceXml().getPersistence());
+		
+		prm.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
+		
+		assertNotNull(persistenceXml().getPersistence());
+		
+	}
+	
 	public void testModifyAddPersistence() {
 		PersistenceResource prm = persistenceResource();
 		prm.getContents().remove(prm.getPersistence());
@@ -46,6 +59,16 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		assertTrue(exceptionThrown);
 	}
 	
+	public void testUpdateRemovePersistence() throws Exception {
+		PersistenceResource prm = persistenceResource();
+		
+		assertNotNull(persistenceXml().getPersistence());
+		
+		prm.getContents().clear();
+		
+		assertNull(persistenceXml().getPersistence());
+	}
+	
 	public void testModifyRemovePersistence() {
 		IPersistenceXml persistenceXml = persistenceXml();
 		
@@ -64,28 +87,5 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		}
 		
 		assertTrue(exceptionThrown);
-	}
-	
-	public void testUpdateAddPersistence() throws Exception {
-		PersistenceResource prm = persistenceResource();
-		prm.getContents().clear();
-		prm.save(null);
-		
-		assertNull(persistenceXml().getPersistence());
-		
-		prm.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
-		
-		assertNotNull(persistenceXml().getPersistence());
-		
-	}
-	
-	public void testUpdateRemovePersistence() throws Exception {
-		PersistenceResource prm = persistenceResource();
-		
-		assertNotNull(persistenceXml().getPersistence());
-		
-		prm.getContents().clear();
-		
-		assertNull(persistenceXml().getPersistence());
 	}
 }

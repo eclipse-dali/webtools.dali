@@ -45,7 +45,7 @@ public class PersistenceUnitTranslator extends Translator
 	}
 	
 	private Translator createTransactionTypeTranslator() {
-		return new Translator(TRANSACTION_TYPE, PERSISTENCE_PKG.getXmlPersistenceUnit_TransactionType(), DOM_ATTRIBUTE);
+		return new Translator(TRANSACTION_TYPE, PERSISTENCE_PKG.getXmlPersistenceUnit_TransactionType(), DOM_ATTRIBUTE | UNSET_IF_NULL);
 	}
 	
 	private Translator createDescriptionTranslator() {

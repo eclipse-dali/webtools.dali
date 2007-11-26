@@ -90,6 +90,7 @@ public class PersistenceUnit extends JpaContextNode
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
+		xmlPersistenceUnit.setName(newName);
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
@@ -106,11 +107,29 @@ public class PersistenceUnit extends JpaContextNode
 		}
 		PersistenceUnitTransactionType oldTransactionType = transactionType;
 		transactionType = newTransactionType;
+		
+		if (transactionType == JTA) {
+			xmlPersistenceUnit.setTransactionType(XmlPersistenceUnitTransactionType.JTA);
+		}
+		else if (transactionType == RESOURCE_LOCAL) {
+			xmlPersistenceUnit.setTransactionType(XmlPersistenceUnitTransactionType.RESOURCE_LOCAL);
+		}
+		else if (transactionType == DEFAULT) {
+			xmlPersistenceUnit.unsetTransactionType();
+		}
+		else {
+			throw new IllegalArgumentException();
+		}
+		
 		firePropertyChanged(TRANSACTION_TYPE_PROPERTY, oldTransactionType, newTransactionType);
 	}
 	
 	public boolean isTransactionTypeDefault() {
 		return transactionType == DEFAULT;
+	}
+	
+	public void setTransactionTypeToDefault() {
+		setTransactionType(DEFAULT);
 	}
 	
 	public PersistenceUnitTransactionType getDefaultTransactionType() {
@@ -119,10 +138,6 @@ public class PersistenceUnit extends JpaContextNode
 		//  specified, the default is JTA. In a Java SE environment, if this element 
 		// is not specified, a default of RESOURCE_LOCAL may be assumed."
 		return defaultTransactionType;
-	}
-	
-	public void setTransactionTypeToDefault() {
-		setTransactionType(DEFAULT);
 	}
 	
 	
@@ -135,6 +150,7 @@ public class PersistenceUnit extends JpaContextNode
 	public void setDescription(String newDescription) {
 		String oldDescription = description;
 		description = newDescription;
+		xmlPersistenceUnit.setDescription(newDescription);
 		firePropertyChanged(DESCRIPTION_PROPERTY, oldDescription, newDescription);
 	}
 	
@@ -148,6 +164,7 @@ public class PersistenceUnit extends JpaContextNode
 	public void setProvider(String newProvider) {
 		String oldProvider = provider;
 		provider = newProvider;
+		xmlPersistenceUnit.setProvider(newProvider);
 		firePropertyChanged(DESCRIPTION_PROPERTY, oldProvider, newProvider);
 	}
 	
@@ -161,6 +178,7 @@ public class PersistenceUnit extends JpaContextNode
 	public void setJtaDataSource(String newJtaDataSource) {
 		String oldJtaDataSource = jtaDataSource;
 		jtaDataSource = newJtaDataSource;
+		xmlPersistenceUnit.setJtaDataSource(newJtaDataSource);
 		firePropertyChanged(DESCRIPTION_PROPERTY, oldJtaDataSource, newJtaDataSource);
 	}
 	
@@ -174,6 +192,7 @@ public class PersistenceUnit extends JpaContextNode
 	public void setNonJtaDataSource(String newNonJtaDataSource) {
 		String oldNonJtaDataSource = nonJtaDataSource;
 		nonJtaDataSource = newNonJtaDataSource;
+		xmlPersistenceUnit.setNonJtaDataSource(newNonJtaDataSource);
 		firePropertyChanged(DESCRIPTION_PROPERTY, oldNonJtaDataSource, newNonJtaDataSource);
 	}
 	
@@ -349,14 +368,13 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	protected void updateTransactionType(XmlPersistenceUnit persistenceUnit) {
-		XmlPersistenceUnitTransactionType transactionType = persistenceUnit.getTransactionType();
-		if (transactionType == null) {
+		if (! persistenceUnit.isSetTransactionType()) {
 			setTransactionType(DEFAULT);
 		}
-		else if (transactionType == XmlPersistenceUnitTransactionType.JTA) {
+		else if (persistenceUnit.getTransactionType() == XmlPersistenceUnitTransactionType.JTA) {
 			setTransactionType(JTA);
 		}
-		else if (transactionType == XmlPersistenceUnitTransactionType.RESOURCE_LOCAL) {
+		else if (persistenceUnit.getTransactionType() == XmlPersistenceUnitTransactionType.RESOURCE_LOCAL) {
 			setTransactionType(RESOURCE_LOCAL);
 		}
 		else {

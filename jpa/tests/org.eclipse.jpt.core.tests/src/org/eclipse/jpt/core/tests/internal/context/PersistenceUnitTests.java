@@ -66,6 +66,34 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(xmlPersistenceUnit.getName(), persistenceUnit.getName());
 	}
 	
+	public void testModifyName() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// test that names are initially equal
+		assertEquals(xmlPersistenceUnit.getName(), persistenceUnit.getName());
+		
+		// set name to different name, test equality
+		persistenceUnit.setName("newName");
+		
+		assertEquals(xmlPersistenceUnit.getName(), persistenceUnit.getName());
+		
+		// set name to empty string, test equality
+		persistenceUnit.setName("");
+		
+		assertEquals(xmlPersistenceUnit.getName(), persistenceUnit.getName());
+		
+		// set name to null, test equality
+		persistenceUnit.setName(null);
+		
+		assertEquals(xmlPersistenceUnit.getName(), persistenceUnit.getName());
+		
+		// set name back to non-null, test equality
+		persistenceUnit.setName("newName");
+		
+		assertEquals(xmlPersistenceUnit.getName(), persistenceUnit.getName());
+	}
+	
 	public void testUpdateTransactionType() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
@@ -84,9 +112,33 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(persistenceUnit.getTransactionType(), PersistenceUnitTransactionType.RESOURCE_LOCAL);
 		
 		// 3 - unset value, context changed
-		xmlPersistenceUnit.setTransactionType(null);
+		xmlPersistenceUnit.unsetTransactionType();
 		
 		assertEquals(persistenceUnit.getTransactionType(), PersistenceUnitTransactionType.DEFAULT);
+	}
+	
+	public void testModifyTransactionType() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// 1 - initial value is default
+		assertNull(xmlPersistenceUnit.getTransactionType());
+		assertEquals(persistenceUnit.getTransactionType(), PersistenceUnitTransactionType.DEFAULT);
+		
+		// 2 - set context value, resource changed
+		persistenceUnit.setTransactionType(PersistenceUnitTransactionType.JTA);
+		
+		assertEquals(xmlPersistenceUnit.getTransactionType(), XmlPersistenceUnitTransactionType.JTA);
+		
+		persistenceUnit.setTransactionType(PersistenceUnitTransactionType.RESOURCE_LOCAL);
+		
+		assertEquals(xmlPersistenceUnit.getTransactionType(), XmlPersistenceUnitTransactionType.RESOURCE_LOCAL);
+		
+		// 3 - set context value to default, resource unset
+		persistenceUnit.setTransactionTypeToDefault();
+		
+		assertTrue(persistenceUnit.isTransactionTypeDefault());
+		assertFalse(xmlPersistenceUnit.isSetTransactionType());
 	}
 	
 	public void testUpdateDescription() {
@@ -113,6 +165,34 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		// set description back to non-null, test equality
 		xmlPersistenceUnit.setDescription("newDescription");
+		
+		assertEquals(xmlPersistenceUnit.getDescription(), persistenceUnit.getDescription());
+	}
+	
+	public void testModifyDescription() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// test that descriptions are initially equal
+		assertEquals(xmlPersistenceUnit.getDescription(), persistenceUnit.getDescription());
+		
+		// set description to different description, test equality
+		persistenceUnit.setDescription("newDescription");
+		
+		assertEquals(xmlPersistenceUnit.getDescription(), persistenceUnit.getDescription());
+		
+		// set description to empty string, test equality
+		persistenceUnit.setDescription("");
+		
+		assertEquals(xmlPersistenceUnit.getDescription(), persistenceUnit.getDescription());
+		
+		// set description to null, test equality
+		persistenceUnit.setDescription(null);
+		
+		assertEquals(xmlPersistenceUnit.getDescription(), persistenceUnit.getDescription());
+		
+		// set description back to non-null, test equality
+		persistenceUnit.setDescription("newDescription");
 		
 		assertEquals(xmlPersistenceUnit.getDescription(), persistenceUnit.getDescription());
 	}
@@ -145,6 +225,34 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(xmlPersistenceUnit.getProvider(), persistenceUnit.getProvider());
 	}
 	
+	public void testModifyProvider() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// test that providers are initially equal
+		assertEquals(xmlPersistenceUnit.getProvider(), persistenceUnit.getProvider());
+		
+		// set provider to different provider, test equality
+		persistenceUnit.setProvider("newProvider");
+		
+		assertEquals(xmlPersistenceUnit.getProvider(), persistenceUnit.getProvider());
+		
+		// set provider to empty string, test equality
+		persistenceUnit.setProvider("");
+		
+		assertEquals(xmlPersistenceUnit.getProvider(), persistenceUnit.getProvider());
+		
+		// set provider to null, test equality
+		persistenceUnit.setProvider(null);
+		
+		assertEquals(xmlPersistenceUnit.getProvider(), persistenceUnit.getProvider());
+		
+		// set provider back to non-null, test equality
+		persistenceUnit.setProvider("newProvider");
+		
+		assertEquals(xmlPersistenceUnit.getProvider(), persistenceUnit.getProvider());
+	}
+	
 	public void testUpdateJtaDataSource() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
@@ -173,6 +281,34 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(xmlPersistenceUnit.getJtaDataSource(), persistenceUnit.getJtaDataSource());
 	}
 	
+	public void testModifyJtaDataSource() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// test that jtaDataSources are initially equal
+		assertEquals(xmlPersistenceUnit.getJtaDataSource(), persistenceUnit.getJtaDataSource());
+		
+		// set jtaDataSource to different jtaDataSource, test equality
+		persistenceUnit.setJtaDataSource("newJtaDataSource");
+		
+		assertEquals(xmlPersistenceUnit.getJtaDataSource(), persistenceUnit.getJtaDataSource());
+		
+		// set jtaDataSource to empty string, test equality
+		persistenceUnit.setJtaDataSource("");
+		
+		assertEquals(xmlPersistenceUnit.getJtaDataSource(), persistenceUnit.getJtaDataSource());
+		
+		// set jtaDataSource to null, test equality
+		persistenceUnit.setJtaDataSource(null);
+		
+		assertEquals(xmlPersistenceUnit.getJtaDataSource(), persistenceUnit.getJtaDataSource());
+		
+		// set jtaDataSource back to non-null, test equality
+		persistenceUnit.setJtaDataSource("newJtaDataSource");
+		
+		assertEquals(xmlPersistenceUnit.getJtaDataSource(), persistenceUnit.getJtaDataSource());
+	}
+	
 	public void testUpdateNonJtaDataSource() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
@@ -197,6 +333,34 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		// set nonJtaDataSource back to non-null, test equality
 		xmlPersistenceUnit.setNonJtaDataSource("newNonJtaDataSource");
+		
+		assertEquals(xmlPersistenceUnit.getNonJtaDataSource(), persistenceUnit.getNonJtaDataSource());
+	}
+	
+	public void testModifyNonJtaDataSource() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// test that nonJtaDataSources are initially equal
+		assertEquals(xmlPersistenceUnit.getNonJtaDataSource(), persistenceUnit.getNonJtaDataSource());
+		
+		// set nonJtaDataSource to different nonJtaDataSource, test equality
+		persistenceUnit.setNonJtaDataSource("newNonJtaDataSource");
+		
+		assertEquals(xmlPersistenceUnit.getNonJtaDataSource(), persistenceUnit.getNonJtaDataSource());
+		
+		// set nonJtaDataSource to empty string, test equality
+		persistenceUnit.setNonJtaDataSource("");
+		
+		assertEquals(xmlPersistenceUnit.getNonJtaDataSource(), persistenceUnit.getNonJtaDataSource());
+		
+		// set nonJtaDataSource to null, test equality
+		persistenceUnit.setNonJtaDataSource(null);
+		
+		assertEquals(xmlPersistenceUnit.getNonJtaDataSource(), persistenceUnit.getNonJtaDataSource());
+		
+		// set nonJtaDataSource back to non-null, test equality
+		persistenceUnit.setNonJtaDataSource("newNonJtaDataSource");
 		
 		assertEquals(xmlPersistenceUnit.getNonJtaDataSource(), persistenceUnit.getNonJtaDataSource());
 	}

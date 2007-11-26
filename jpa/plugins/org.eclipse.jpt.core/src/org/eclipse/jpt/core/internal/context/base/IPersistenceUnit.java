@@ -23,33 +23,65 @@ public interface IPersistenceUnit extends IJpaContextNode
 
 	// **************** name ***************************************************
 	
+	
+	/**
+	 * String constant associated with changes to the persistence unit's name
+	 */
 	final static String NAME_PROPERTY = "name";
 	
+	/**
+	 * Return the name of the persistence unit.
+	 */
 	String getName();
 	
+	/**
+	 * Set the name of the persistence unit.
+	 */
 	void setName(String name);
 	
 	
 	// **************** transaction type ***************************************
 	
+	/**
+	 * String constant associated with changes to the persistence unit's 
+	 * transaction type
+	 */
 	final static String TRANSACTION_TYPE_PROPERTY = "transactionType";
 	
-	final static String DEFAULT_TRANSACTION_TYPE_PROPERTY = "defaultTransactionType";
-	
-	/** Return the transaction type, one of the values of {@link PersistenceUnitTransactionType} */
+	/** 
+	 * Return the transaction type of the persistence unit, one of the values of 
+	 * {@link PersistenceUnitTransactionType} 
+	 */
 	PersistenceUnitTransactionType getTransactionType();
 	
-	/** Set the transaction type, one of the values of {@link PersistenceUnitTransactionType} */
+	/** 
+	 * Set the transaction type of the persistence unit, one of the values of 
+	 * {@link PersistenceUnitTransactionType} 
+	 */
 	void setTransactionType(PersistenceUnitTransactionType transactionType);
 	
-	/** Return true if the transaction type is default rather than specified */
+	/** 
+	 * Return true if the transaction type is default rather than overridden
+	 * (corresponds to empty tag in persistence.xml)
+	 */
 	boolean isTransactionTypeDefault();
 	
-	/** Return the default transaction type */
+	/** 
+	 * Set the transaction type of the persistence unit to the default 
+	 */
+	void setTransactionTypeToDefault();
+	
+	/**
+	 * String constant associated with changes to the persistence unit's 
+	 * default transaction type (not typically changed)
+	 */
+	final static String DEFAULT_TRANSACTION_TYPE_PROPERTY = "defaultTransactionType";
+	
+	/** 
+	 * Return the default transaction type 
+	 */
 	PersistenceUnitTransactionType getDefaultTransactionType();
 	
-	/** Sets the transaction type to the default */
-	void setTransactionTypeToDefault();
 	
 	
 	// **************** description ********************************************

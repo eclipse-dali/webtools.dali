@@ -32,48 +32,6 @@ public class PersistenceTests extends ContextModelTestCase
 		return jpaContent().getPersistenceXml().getPersistence();
 	}
 	
-	public void testModifyAddPersistencUnit() {
-		XmlPersistence xmlPersistence = xmlPersistence();
-		IPersistence persistence = persistence();
-		
-		// clear xml persistence units, test that it's clear in context
-		xmlPersistence.getPersistenceUnits().clear();
-		assertEquals(CollectionTools.size(persistence.persistenceUnits()), 0);
-		
-		// add persistence unit, test that it's added to resource
-		persistence.addPersistenceUnit();
-		
-		assertEquals(CollectionTools.size(persistence.persistenceUnits()), 1);
-		
-		// add another ...
-		persistence.addPersistenceUnit();
-		
-		assertEquals(CollectionTools.size(persistence.persistenceUnits()), 2);
-	}
-	
-	public void testModifyRemovePersistenceUnit() {
-		XmlPersistence xmlPersistence = xmlPersistence();
-		IPersistence persistence = persistence();
-		
-		// add a persistence unit and test that there are two existing xml and context persistence unit
-		XmlPersistenceUnit xmlPersistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
-		xmlPersistenceUnit.setName("test");
-		xmlPersistence.getPersistenceUnits().add(xmlPersistenceUnit);
-		
-		assertEquals(xmlPersistence.getPersistenceUnits().size(), 2);
-		assertEquals(CollectionTools.size(persistence.persistenceUnits()), 2);
-		
-		// remove persistence unit, test that it's removed from resource
-		persistence.removePersistenceUnit(0);
-		
-		assertEquals(CollectionTools.size(persistence.persistenceUnits()), 1);
-		
-		// remove another one ...
-		persistence.removePersistenceUnit(0);
-		
-		assertEquals(CollectionTools.size(persistence.persistenceUnits()), 0);
-	}
-	
 	public void testUpdateAddPersistenceUnit() throws Exception {
 		PersistenceResource prm = persistenceResource();
 		XmlPersistence xmlPersistence = prm.getPersistence();
@@ -97,6 +55,25 @@ public class PersistenceTests extends ContextModelTestCase
 		xmlPersistence.getPersistenceUnits().add(xmlPersistenceUnit);
 		
 		assertTrue(CollectionTools.size(persistence.persistenceUnits()) == 2);
+	}
+	
+	public void testModifyAddPersistencUnit() {
+		XmlPersistence xmlPersistence = xmlPersistence();
+		IPersistence persistence = persistence();
+		
+		// clear xml persistence units, test that it's clear in context
+		xmlPersistence.getPersistenceUnits().clear();
+		assertEquals(CollectionTools.size(persistence.persistenceUnits()), 0);
+		
+		// add persistence unit, test that it's added to resource
+		persistence.addPersistenceUnit();
+		
+		assertEquals(CollectionTools.size(persistence.persistenceUnits()), 1);
+		
+		// add another ...
+		persistence.addPersistenceUnit();
+		
+		assertEquals(CollectionTools.size(persistence.persistenceUnits()), 2);
 	}
 	
 	public void testUpdateRemovePersistenceUnit() throws Exception {
@@ -123,5 +100,28 @@ public class PersistenceTests extends ContextModelTestCase
 		xmlPersistence.getPersistenceUnits().remove(xmlPersistenceUnit);
 		
 		assertTrue(CollectionTools.size(persistence.persistenceUnits()) == 0);
+	}
+	
+	public void testModifyRemovePersistenceUnit() {
+		XmlPersistence xmlPersistence = xmlPersistence();
+		IPersistence persistence = persistence();
+		
+		// add a persistence unit and test that there are two existing xml and context persistence unit
+		XmlPersistenceUnit xmlPersistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
+		xmlPersistenceUnit.setName("test");
+		xmlPersistence.getPersistenceUnits().add(xmlPersistenceUnit);
+		
+		assertEquals(xmlPersistence.getPersistenceUnits().size(), 2);
+		assertEquals(CollectionTools.size(persistence.persistenceUnits()), 2);
+		
+		// remove persistence unit, test that it's removed from resource
+		persistence.removePersistenceUnit(0);
+		
+		assertEquals(CollectionTools.size(persistence.persistenceUnits()), 1);
+		
+		// remove another one ...
+		persistence.removePersistenceUnit(0);
+		
+		assertEquals(CollectionTools.size(persistence.persistenceUnits()), 0);
 	}
 }
