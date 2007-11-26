@@ -10,28 +10,14 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
 
 /**
  * Corresponds to the javax.persistence.AssociationOverride annotation
  */
-public interface AssociationOverride extends JavaResource
+public interface AssociationOverride extends OverrideResource
 {
 	String ANNOTATION_NAME = JPA.ASSOCIATION_OVERRIDE;
 
-	/**
-	 * Corresponds to the name element of the AssociationOverride annotation.
-	 * Returns null if the name element does not exist in java.
-	 */
-	String getName();
-	
-	/**
-	 * Corresponds to the name element of the AssociationOverride annotation.
-	 * Set to null to remove the name element.
-	 */
-	void setName(String name);
-		String NAME_PROPERTY = "nameProperty";
 	
 	/**
 	 * Corresponds to the joinColumns element of the AssociationOverride annotation.
@@ -52,17 +38,4 @@ public interface AssociationOverride extends JavaResource
 	void moveJoinColumn(int oldIndex, int newIndex);
 	
 		String JOIN_COLUMNS_LIST = "joinColumnsList";
-
-	/**
-	 * Return the ITextRange for the name element. If name element
-	 * does not exist return the ITextRange for the AssociationOverride annotation.
-	 */
-	ITextRange nameTextRange(CompilationUnit astRoot);
-	
-	/**
-	 * Return whether the specified postition touches the name element.
-	 * Return falamese if the n element does not exist.
-	 */
-	boolean nameTouches(int pos, CompilationUnit astRoot);
-
 }

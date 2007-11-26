@@ -9,28 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
 
 /**
  * Corresponds to the javax.persistence.AttributeOverride annotation
  */
-public interface AttributeOverride extends JavaResource
+public interface AttributeOverride extends OverrideResource
 {
 	String ANNOTATION_NAME = JPA.ATTRIBUTE_OVERRIDE;
-
-	/**
-	 * Corresponds to the name element of the AttributeOverride annotation.
-	 * Returns null if the name element does not exist in java.
-	 */
-	String getName();
-	
-	/**
-	 * Corresponds to the name element of the AttributeOverride annotation.
-	 * Set to null to remove the name element.
-	 */
-	void setName(String name);
-		String NAME_PROPERTY = "nameProperty";
 		
 	/**
 	 * Corresponds to the column element of the AttributeOverride annotation.
@@ -49,17 +34,5 @@ public interface AttributeOverride extends JavaResource
 	void removeColumn();
 	
 	String COLUMN_PROPERTY = "columnProperty";
-
-	/**
-	 * Return the ITextRange for the name element. If name element
-	 * does not exist return the ITextRange for the AttributeOverride annotation.
-	 */
-	ITextRange nameTextRange(CompilationUnit astRoot);
-
-	/**
-	 * Return whether the specified postition touches the table element.
-	 * Return false if the table element does not exist.
-	 */
-	boolean nameTouches(int pos, CompilationUnit astRoot);
 
 }
