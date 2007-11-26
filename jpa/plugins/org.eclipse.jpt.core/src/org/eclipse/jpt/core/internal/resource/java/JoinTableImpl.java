@@ -137,7 +137,7 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 	
 	public void moveJoinColumn(int oldIndex, int newIndex) {
 		moveJoinColumnInternal(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.joinColumnsContainerAnnotation);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, this.joinColumnsContainerAnnotation);
 		fireItemMoved(JoinTable.JOIN_COLUMNS_LIST, newIndex, oldIndex);
 	}
 	
@@ -184,7 +184,7 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 	
 	public void moveInverseJoinColumn(int oldIndex, int newIndex) {
 		moveInverseJoinColumnInternal(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.inverseJoinColumnsContainerAnnotation);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, this.inverseJoinColumnsContainerAnnotation);
 		fireItemMoved(JoinTable.INVERSE_JOIN_COLUMNS_LIST, newIndex, oldIndex);
 	}
 	

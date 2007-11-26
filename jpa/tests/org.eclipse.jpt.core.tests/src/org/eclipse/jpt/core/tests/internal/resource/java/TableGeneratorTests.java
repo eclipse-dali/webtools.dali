@@ -151,7 +151,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint})");
+				sb.append("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"})})");
 			}
 		});
 	}
@@ -469,7 +469,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 				
 		ListIterator<UniqueConstraint> iterator = tableGenerator.uniqueConstraints();
 		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(3, CollectionTools.size(iterator));
 	}
 	
 	public void testAddUniqueConstraint() throws Exception {
@@ -500,7 +500,10 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		
 		tableGenerator.removeUniqueConstraint(1);
-		assertSourceContains("@TableGenerator(uniqueConstraints=@UniqueConstraint(columnNames={\"BAR\"}))");
+		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"BAZ\"})})");
+		
+		tableGenerator.removeUniqueConstraint(0);
+		assertSourceContains("@TableGenerator(uniqueConstraints=@UniqueConstraint(columnNames={\"BAZ\"}))");
 		
 		tableGenerator.removeUniqueConstraint(0);
 		assertSourceDoesNotContain("@TableGenerator");
@@ -513,8 +516,8 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		
 		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		
-		tableGenerator.moveUniqueConstraint(0, 1);
-		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint, @UniqueConstraint(columnNames={\"BAR\"})})");
+		tableGenerator.moveUniqueConstraint(0, 2);
+		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"})})");
 	}
 	
 	public void testMoveUniqueConstraint2() throws Exception {
@@ -524,8 +527,8 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		
 		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		
-		tableGenerator.moveUniqueConstraint(1, 0);
-		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint, @UniqueConstraint(columnNames={\"BAR\"})})");
+		tableGenerator.moveUniqueConstraint(2, 0);
+		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"})})");
 	}
 	
 }

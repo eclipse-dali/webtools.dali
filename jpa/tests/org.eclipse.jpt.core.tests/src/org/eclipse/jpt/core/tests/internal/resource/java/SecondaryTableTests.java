@@ -114,7 +114,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint})");
+				sb.append("@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"})})");
 			}
 		});
 	}
@@ -128,7 +128,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"BAR\"), @PrimaryKeyJoinColumn})");
+				sb.append("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"BAR\"), @PrimaryKeyJoinColumn(name=\"FOO\"), @PrimaryKeyJoinColumn(name=\"BAZ\")})");
 			}
 		});
 	}
@@ -284,7 +284,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 				
 		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
 		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(3, CollectionTools.size(iterator));
 	}
 	
 	public void testAddUniqueConstraint() throws Exception {
@@ -309,28 +309,58 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
 		
 		table.removeUniqueConstraint(1);
-		assertSourceContains("@SecondaryTable(uniqueConstraints=@UniqueConstraint(columnNames={\"BAR\"}))");	
+		Iterator<UniqueConstraint> uniqueConstraints = table.uniqueConstraints();
+		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+		assertSourceContains("@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"BAZ\"})})");
 		
 		table.removeUniqueConstraint(0);
+		uniqueConstraints = table.uniqueConstraints();
+		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertFalse(uniqueConstraints.hasNext());
+		assertSourceContains("@SecondaryTable(uniqueConstraints=@UniqueConstraint(columnNames={\"BAZ\"}))");
+		
+		table.removeUniqueConstraint(0);
+		uniqueConstraints = table.uniqueConstraints();
+		assertFalse(uniqueConstraints.hasNext());
 		assertSourceDoesNotContain("@SecondaryTable");
 	}
 	
 	public void testMoveUniqueConstraint() throws Exception {
 		IType testType = this.createTestSecondaryTableWithUniqueConstraints();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
+		SecondaryTable secondaryTable = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
 		
-		table.moveUniqueConstraint(0, 1);
-		assertSourceContains("@SecondaryTable(uniqueConstraints={@UniqueConstraint, @UniqueConstraint(columnNames={\"BAR\"})})");
+		assertEquals("BAR", secondaryTable.uniqueConstraintAt(0).columnNames().next());
+		assertEquals("FOO", secondaryTable.uniqueConstraintAt(1).columnNames().next());
+		assertEquals("BAZ", secondaryTable.uniqueConstraintAt(2).columnNames().next());
+		assertEquals(3, secondaryTable.uniqueConstraintsSize());
+		
+		secondaryTable.moveUniqueConstraint(0, 2);
+		assertEquals("FOO", secondaryTable.uniqueConstraintAt(0).columnNames().next());
+		assertEquals("BAZ", secondaryTable.uniqueConstraintAt(1).columnNames().next());
+		assertEquals("BAR", secondaryTable.uniqueConstraintAt(2).columnNames().next());
+		assertEquals(3, secondaryTable.uniqueConstraintsSize());
+		assertSourceContains("@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"})})");	
 	}
 	
 	public void testMoveUniqueConstraint2() throws Exception {
 		IType testType = this.createTestSecondaryTableWithUniqueConstraints();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
+		SecondaryTable secondaryTable = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
 		
-		table.moveUniqueConstraint(1, 0);
-		assertSourceContains("@SecondaryTable(uniqueConstraints={@UniqueConstraint, @UniqueConstraint(columnNames={\"BAR\"})})");
+		assertEquals("BAR", secondaryTable.uniqueConstraintAt(0).columnNames().next());
+		assertEquals("FOO", secondaryTable.uniqueConstraintAt(1).columnNames().next());
+		assertEquals("BAZ", secondaryTable.uniqueConstraintAt(2).columnNames().next());
+		assertEquals(3, secondaryTable.uniqueConstraintsSize());
+		
+		secondaryTable.moveUniqueConstraint(2, 0);
+		assertEquals("BAZ", secondaryTable.uniqueConstraintAt(0).columnNames().next());
+		assertEquals("BAR", secondaryTable.uniqueConstraintAt(1).columnNames().next());
+		assertEquals("FOO", secondaryTable.uniqueConstraintAt(2).columnNames().next());
+		assertEquals(3, secondaryTable.uniqueConstraintsSize());
+		assertSourceContains("@SecondaryTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"})})");	
 	}
 	
 	
@@ -365,7 +395,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 				
 		ListIterator<PrimaryKeyJoinColumn> iterator = table.pkJoinColumns();
 		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(3, CollectionTools.size(iterator));
 	}
 	
 	public void testAddPkJoinColumn() throws Exception {
@@ -392,8 +422,12 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
 		
 		table.removePkJoinColumn(1);
-		assertSourceContains("@SecondaryTable(pkJoinColumns=@PrimaryKeyJoinColumn(name=\"BAR\"))");	
+		assertSourceContains("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"BAR\"), @PrimaryKeyJoinColumn(name=\"BAZ\")})");	
 
+		table.removePkJoinColumn(0);
+		assertSourceContains("@SecondaryTable(pkJoinColumns=@PrimaryKeyJoinColumn(name=\"BAZ\"))");	
+
+		
 		table.removePkJoinColumn(0);
 		assertSourceDoesNotContain("@SecondaryTable");
 	}
@@ -405,8 +439,8 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		PrimaryKeyJoinColumn joinColumn = table.pkJoinColumnAt(0);
 		joinColumn.setReferencedColumnName("REF_NAME");
 		joinColumn.setColumnDefinition("COLUMN_DEF");
-		table.movePkJoinColumn(0, 1);
-		assertSourceContains("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn, @PrimaryKeyJoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", columnDefinition = \"COLUMN_DEF\")})");
+		table.movePkJoinColumn(0, 2);
+		assertSourceContains("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"FOO\"), @PrimaryKeyJoinColumn(name=\"BAZ\"), @PrimaryKeyJoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", columnDefinition = \"COLUMN_DEF\")})");
 	}
 	
 	public void testMovePkJoinColumn2() throws Exception {
@@ -418,8 +452,8 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		PrimaryKeyJoinColumn joinColumn = table.pkJoinColumnAt(0);
 		joinColumn.setReferencedColumnName("REF_NAME");
 		joinColumn.setColumnDefinition("COLUMN_DEF");
-		table.movePkJoinColumn(1, 0);
-		assertSourceContains("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn, @PrimaryKeyJoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", columnDefinition = \"COLUMN_DEF\")})");
+		table.movePkJoinColumn(2, 0);
+		assertSourceContains("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"BAZ\"), @PrimaryKeyJoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", columnDefinition = \"COLUMN_DEF\"), @PrimaryKeyJoinColumn(name=\"FOO\")})");
 	}
 	
 	public void testSetPkJoinColumnName() throws Exception {
@@ -428,7 +462,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
 				
 		ListIterator<PrimaryKeyJoinColumn> iterator = table.pkJoinColumns();
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(3, CollectionTools.size(iterator));
 		
 		PrimaryKeyJoinColumn joinColumn = table.pkJoinColumns().next();
 		
@@ -437,7 +471,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		joinColumn.setName("foo");
 		assertEquals("foo", joinColumn.getName());
 		
-		assertSourceContains("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"foo\"), @PrimaryKeyJoinColumn})");
+		assertSourceContains("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"foo\"), @PrimaryKeyJoinColumn(name=\"FOO\"), @PrimaryKeyJoinColumn(name=\"BAZ\")})");
 	}
 
 }

@@ -865,8 +865,8 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		newAnnotation.setName("BAZ");
 		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\")})");
 		
-		typeResource.move(0, 1, JPA.SECONDARY_TABLES);
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAZ\")})");
+		typeResource.move(0, 2, JPA.SECONDARY_TABLES);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\"), @SecondaryTable(name=\"FOO\")})");
 	}
 	
 	public void testNestedTypes() throws Exception {

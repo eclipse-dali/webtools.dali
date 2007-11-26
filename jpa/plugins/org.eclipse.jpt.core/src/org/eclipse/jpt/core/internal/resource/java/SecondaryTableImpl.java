@@ -135,7 +135,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 
 	public void movePkJoinColumn(int oldIndex, int newIndex) {
 		movePkJoinColumnInternal(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.pkJoinColumnsContainerAnnotation);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, this.pkJoinColumnsContainerAnnotation);
 		fireItemMoved(SecondaryTable.PK_JOIN_COLUMNS_LIST, newIndex, oldIndex);
 	}
 	

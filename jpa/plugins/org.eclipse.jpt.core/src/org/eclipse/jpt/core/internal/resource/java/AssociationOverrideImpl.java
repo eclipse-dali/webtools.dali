@@ -134,7 +134,7 @@ public class AssociationOverrideImpl
 
 	public void moveJoinColumn(int oldIndex, int newIndex) {
 		moveJoinColumnInternal(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.joinColumnsContainerAnnotation);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, this.joinColumnsContainerAnnotation);
 		fireItemMoved(AssociationOverride.JOIN_COLUMNS_LIST, newIndex, oldIndex);
 	}
 	

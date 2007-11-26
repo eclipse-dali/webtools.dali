@@ -95,7 +95,7 @@ public class TableTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint})");
+				sb.append("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"})})");
 			}
 		});
 	}
@@ -251,7 +251,7 @@ public class TableTests extends JavaResourceModelTestCase {
 				
 		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
 		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(3, CollectionTools.size(iterator));
 	}
 	
 	public void testAddUniqueConstraint() throws Exception {
@@ -290,7 +290,10 @@ public class TableTests extends JavaResourceModelTestCase {
 		Table table = (Table) typeResource.annotation(JPA.TABLE);
 		
 		table.removeUniqueConstraint(1);
-		assertSourceContains("@Table(uniqueConstraints=@UniqueConstraint(columnNames={\"BAR\"}))");
+		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"BAZ\"})})");
+		
+		table.removeUniqueConstraint(0);
+		assertSourceContains("@Table(uniqueConstraints=@UniqueConstraint(columnNames={\"BAZ\"}))");
 		
 		table.removeUniqueConstraint(0);
 		assertSourceDoesNotContain("@Table");
@@ -339,8 +342,8 @@ public class TableTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		Table table = (Table) typeResource.annotation(JPA.TABLE);
 		
-		table.moveUniqueConstraint(0, 1);
-		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint, @UniqueConstraint(columnNames={\"BAR\"})})");
+		table.moveUniqueConstraint(0, 2);
+		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"})})");
 	}
 	
 	public void testMoveUniqueConstraint2() throws Exception {
@@ -348,8 +351,8 @@ public class TableTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		Table table = (Table) typeResource.annotation(JPA.TABLE);
 		
-		table.moveUniqueConstraint(1, 0);
-		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint, @UniqueConstraint(columnNames={\"BAR\"})})");
+		table.moveUniqueConstraint(2, 0);
+		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"})})");
 	}
 	
 }

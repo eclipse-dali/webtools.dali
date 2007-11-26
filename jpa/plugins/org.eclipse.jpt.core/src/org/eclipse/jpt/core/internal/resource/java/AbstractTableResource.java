@@ -162,7 +162,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	
 	public void moveUniqueConstraint(int oldIndex, int newIndex) {
 		moveUniqueConstraintInternal(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.uniqueConstraintsContainerAnnotation);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, this.uniqueConstraintsContainerAnnotation);
 		fireItemMoved(Table.UNIQUE_CONSTRAINTS_LIST, newIndex, oldIndex);
 	}
 	

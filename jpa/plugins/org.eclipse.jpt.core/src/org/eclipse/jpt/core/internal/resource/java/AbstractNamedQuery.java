@@ -141,7 +141,7 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 
 	public void moveHint(int oldIndex, int newIndex) {
 		moveHintInternal(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(newIndex, oldIndex, this.hintsContainerAnnotation);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, this.hintsContainerAnnotation);
 		fireItemMoved(Query.HINTS_LIST, newIndex, oldIndex);
 	}
 	
