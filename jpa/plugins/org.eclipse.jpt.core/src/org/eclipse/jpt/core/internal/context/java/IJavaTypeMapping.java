@@ -9,23 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.Iterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.utility.internal.Filter;
 
 public interface IJavaTypeMapping extends ITypeMapping, IJavaJpaContextNode
 {
 	void initializeFromResource(JavaPersistentTypeResource persistentTypeResource);
 	
 	void update(JavaPersistentTypeResource persistentTypeResource);
-
-	/**
-	 * Return the candidate code-completion values for the specified position
-	 * in the source code.
-	 */
-	Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot);
 	
 	String annotationName();
 }

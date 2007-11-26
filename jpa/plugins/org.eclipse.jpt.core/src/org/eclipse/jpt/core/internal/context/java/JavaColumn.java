@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.resource.java.Column;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 
 public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColumn
 {
@@ -24,11 +27,17 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 	protected int specifiedScale;
 	protected static final int DEFAULT_SPECIFIED_SCALE = -1;
 
-
+	protected JavaPersistentResource javaPersistentResource;
+	
 	public JavaColumn(IJavaColumnMapping parent, IColumn.Owner owner) {
 		super(parent, owner);
 	}
 
+	public void initializeFromResource(JavaPersistentResource persistentResource) {
+		this.javaPersistentResource = persistentResource;
+		this.initializeFromResource(this.columnResource());
+	}
+	
 	@Override
 	protected void initializeFromResource(Column column) {
 		super.initializeFromResource(column);
@@ -38,8 +47,8 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 	}
 	
 	@Override
-	protected String annotationName() {
-		return Column.ANNOTATION_NAME;
+	protected Column columnResource() {
+		return (Column) this.javaPersistentResource.nonNullAnnotation(Column.ANNOTATION_NAME);
 	}
 	
 	public int getLength() {
@@ -102,6 +111,16 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 	@Override
 	public boolean tableIsAllowed() {
 		return true;
+	}
+	
+	public ITextRange validationTextRange(CompilationUnit astRoot) {
+		ITextRange textRange = columnResource().textRange(astRoot);
+		return (textRange != null) ? textRange : this.owner().validationTextRange(astRoot);	
+	}
+	
+	public void update(JavaPersistentResource persistentResource) {
+		this.javaPersistentResource = persistentResource;
+		this.update(this.columnResource());
 	}
 	
 	@Override

@@ -31,6 +31,7 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 {
 	private static final String DISCRIMINATOR_COLUMN_NAME = "MY_DISCRIMINATOR_COLUMN";
+	private static final String COLUMN_DEFINITION = "MY_COLUMN_DEFINITION";
 	
 	private void createEntityAnnotation() throws Exception{
 		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
@@ -322,6 +323,42 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		column.setLength(-1);
 		assertEquals(-1, javaEntity().getDiscriminatorColumn().getSpecifiedLength());
 		assertEquals(IDiscriminatorColumn.DEFAULT_LENGTH, javaEntity().getDiscriminatorColumn().getLength());
+	}
+
+	
+	public void testGetColumnDefinition() throws Exception {
+		createTestEntityWithDiscriminatorColumn();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertNull(javaEntity().getDiscriminatorColumn().getColumnDefinition());
+
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		DiscriminatorColumn column = (DiscriminatorColumn) typeResource.annotation(JPA.DISCRIMINATOR_COLUMN);
+		column.setColumnDefinition(COLUMN_DEFINITION);
+		
+		assertEquals(COLUMN_DEFINITION, javaEntity().getDiscriminatorColumn().getColumnDefinition());
+		
+		column.setColumnDefinition(null);
+		
+		assertNull(javaEntity().getDiscriminatorColumn().getColumnDefinition());
+
+		typeResource.removeAnnotation(JPA.DISCRIMINATOR_COLUMN);
+	}
+	
+	public void testSetColumnDefinition() throws Exception {
+		createTestEntityWithDiscriminatorColumn();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		javaEntity().getDiscriminatorColumn().setColumnDefinition("foo");
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		DiscriminatorColumn column = (DiscriminatorColumn) typeResource.annotation(JPA.DISCRIMINATOR_COLUMN);
+		
+		assertEquals("foo", column.getColumnDefinition());
+		
+		javaEntity().getDiscriminatorColumn().setColumnDefinition(null);
+		column = (DiscriminatorColumn) typeResource.annotation(JPA.DISCRIMINATOR_COLUMN);
+		assertNull(column.getColumnDefinition());
 	}
 
 }

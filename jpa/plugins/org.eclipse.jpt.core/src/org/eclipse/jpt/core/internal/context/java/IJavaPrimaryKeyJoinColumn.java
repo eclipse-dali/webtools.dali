@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.internal.context.base.IColumn;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
+import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumn;
 
-public interface IJavaColumn extends IJavaNamedColumn, IColumn
+public interface IJavaPrimaryKeyJoinColumn extends IPrimaryKeyJoinColumn, IJavaNamedColumn
 {
-	void initializeFromResource(JavaPersistentResource persistentResource);
+	void initializeFromResource(PrimaryKeyJoinColumn primaryKeyJoinColumn);
 	
-	void update(JavaPersistentResource persistentResource);
+	void update(PrimaryKeyJoinColumn primaryKeyJoinColumn);
 
 }

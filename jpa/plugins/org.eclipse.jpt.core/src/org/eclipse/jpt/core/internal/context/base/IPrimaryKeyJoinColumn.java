@@ -7,15 +7,8 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.context.java;
+package org.eclipse.jpt.core.internal.context.base;
 
-import org.eclipse.jpt.core.internal.context.base.IColumn;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 
-public interface IJavaColumn extends IJavaNamedColumn, IColumn
-{
-	void initializeFromResource(JavaPersistentResource persistentResource);
-	
-	void update(JavaPersistentResource persistentResource);
-
-}
+public interface IPrimaryKeyJoinColumn extends IAbstractJoinColumn
+{}

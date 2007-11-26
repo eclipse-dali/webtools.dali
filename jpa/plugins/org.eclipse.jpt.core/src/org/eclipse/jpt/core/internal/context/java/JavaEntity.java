@@ -17,9 +17,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
+import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
+import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
@@ -29,15 +32,21 @@ import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.Inheritance;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
+import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumns;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTables;
 import org.eclipse.jpt.core.internal.resource.java.SequenceGenerator;
 import org.eclipse.jpt.core.internal.resource.java.TableGenerator;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 
@@ -53,10 +62,9 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 
 	protected final List<IJavaSecondaryTable> specifiedSecondaryTables;
 
-//	protected List<IPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
-//
-//	protected List<IPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns;
+	protected final List<IJavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
 
+	protected IJavaPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
 	protected InheritanceType specifiedInheritanceStrategy;
 	
@@ -92,9 +100,14 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.table = jpaFactory().createJavaTable(this);
 		this.discriminatorColumn = createJavaDiscriminatorColumn();
 		this.specifiedSecondaryTables = new ArrayList<IJavaSecondaryTable>();
-//		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
+		this.specifiedPrimaryKeyJoinColumns = new ArrayList<IJavaPrimaryKeyJoinColumn>();
+		this.defaultPrimaryKeyJoinColumn = this.jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 	}
-
+	
+	protected IAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
+		return new PrimaryKeyJoinColumnOwner();
+	}
+	
 	protected IJavaDiscriminatorColumn createJavaDiscriminatorColumn() {
 		return jpaFactory().createJavaDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
 	}
@@ -115,7 +128,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		};
 	}
 
-
 	@Override
 	public void initializeFromResource(JavaPersistentTypeResource persistentTypeResource) {
 		super.initializeFromResource(persistentTypeResource);
@@ -132,6 +144,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.initializeSecondaryTables(persistentTypeResource);
 		this.initializeTableGenerator(persistentTypeResource);
 		this.initializeSequenceGenerator(persistentTypeResource);
+		this.initializePrimaryKeyJoinColumns(persistentTypeResource);
 	}
 	
 	protected void initializeSecondaryTables(JavaPersistentTypeResource persistentTypeResource) {
@@ -160,6 +173,16 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 	}
 	
+	protected void initializePrimaryKeyJoinColumns(JavaPersistentTypeResource persistentTypeResource) {
+		ListIterator<JavaResource> annotations = persistentTypeResource.annotations(PrimaryKeyJoinColumn.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
+		
+		while(annotations.hasNext()) {
+			IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+			primaryKeyJoinColumn.initializeFromResource((PrimaryKeyJoinColumn) annotations.next());
+			this.specifiedPrimaryKeyJoinColumns.add(primaryKeyJoinColumn);
+		}
+	}
+	
 	//query for the table resource every time on setters.
 	//call one setter and the tableResource could change. 
 	//You could call more than one setter before this object has received any notification
@@ -172,7 +195,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	protected DiscriminatorValue discriminatorValueResource() {
 		return (DiscriminatorValue) this.persistentTypeResource.nonNullAnnotation(DiscriminatorValue.ANNOTATION_NAME);
 	}
-
+	
 //	private ITable.Owner buildTableOwner() {
 //		return new ITable.Owner() {
 //			public ITextRange validationTextRange() {
@@ -317,7 +340,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return this.discriminatorColumn;
 	}
 
-
 	public String getDefaultDiscriminatorValue() {
 		return this.defaultDiscriminatorValue;
 	}
@@ -407,25 +429,49 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
 	}
 
+	public ListIterator<IJavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
+		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ? this.defaultPrimaryKeyJoinColumns() : this.specifiedPrimaryKeyJoinColumns();
+	}
+	
+	public ListIterator<IJavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns() {
+		return new CloneListIterator<IJavaPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
+	}
+	
+	public ListIterator<IJavaPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
+		return new SingleElementListIterator<IJavaPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumn);
+	}
 
-//	public EList<IPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
-//		return this.getSpecifiedPrimaryKeyJoinColumns().isEmpty() ? this.getDefaultPrimaryKeyJoinColumns() : this.getSpecifiedPrimaryKeyJoinColumns();
-//	}
-//
-//	public EList<IPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
-//		if (specifiedPrimaryKeyJoinColumns == null) {
-//			specifiedPrimaryKeyJoinColumns = new EObjectContainmentEList<IPrimaryKeyJoinColumn>(IPrimaryKeyJoinColumn.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS);
-//		}
-//		return specifiedPrimaryKeyJoinColumns;
-//	}
-//
-//	public EList<IPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns() {
-//		if (defaultPrimaryKeyJoinColumns == null) {
-//			defaultPrimaryKeyJoinColumns = new EObjectContainmentEList<IPrimaryKeyJoinColumn>(IPrimaryKeyJoinColumn.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS);
-//		}
-//		return defaultPrimaryKeyJoinColumns;
-//	}
-//
+	public IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
+		IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
+		this.persistentTypeResource.addAnnotation(index, PrimaryKeyJoinColumn.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
+		this.firePropertyChanged(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
+		return primaryKeyJoinColumn;
+	}
+
+	protected void addSpecifiedPrimaryKeyJoinColumn(int index, IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+	}
+	
+	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
+		IJavaPrimaryKeyJoinColumn removedPrimaryKeyJoinColumn = this.specifiedPrimaryKeyJoinColumns.remove(index);
+		this.persistentTypeResource.removeAnnotation(index, PrimaryKeyJoinColumn.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
+		fireItemRemoved(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
+	}
+
+	protected void removeSpecifiedPrimaryKeyJoinColumn(IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+	}
+	
+	public void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex) {
+		this.persistentTypeResource.move(oldIndex, newIndex, PrimaryKeyJoinColumns.ANNOTATION_NAME);
+		moveItemInList(newIndex, oldIndex, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
+	}
+	
+	public int specifiedPrimaryKeyJoinColumnsSize() {
+		return this.specifiedPrimaryKeyJoinColumns.size();
+	}
+
 //	public EList<IAttributeOverride> getAttributeOverrides() {
 //		EList<IAttributeOverride> list = new EObjectEList<IAttributeOverride>(IAttributeOverride.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__ATTRIBUTE_OVERRIDES);
 //		list.addAll(getSpecifiedAttributeOverrides());
@@ -542,15 +588,15 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //		return !getType().isAbstract();
 //	}
 //
-//	public IEntity parentEntity() {
-//		for (Iterator<IPersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
-//			ITypeMapping typeMapping = i.next().getMapping();
-//			if (typeMapping != this && typeMapping instanceof IEntity) {
-//				return (IEntity) typeMapping;
-//			}
-//		}
-//		return this;
-//	}
+	public IEntity parentEntity() {
+		for (Iterator<IPersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
+			ITypeMapping typeMapping = i.next().getMapping();
+			if (typeMapping != this && typeMapping instanceof IEntity) {
+				return (IEntity) typeMapping;
+			}
+		}
+		return this;
+	}
 
 	public ITypeMapping typeMapping() {
 		return this;
@@ -571,27 +617,27 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	public String getTableName() {
 		return getTable().getName();
 	}
-//
-//	@Override
-//	public Table primaryDbTable() {
-//		return getTable().dbTable();
-//	}
-//
-//	@Override
-//	public Table dbTable(String tableName) {
-//		for (Iterator<ITable> stream = this.associatedTablesIncludingInherited(); stream.hasNext();) {
-//			Table dbTable = stream.next().dbTable();
-//			if (dbTable != null && dbTable.matchesShortJavaClassName(tableName)) {
-//				return dbTable;
-//			}
-//		}
-//		return null;
-//	}
-//
-//	@Override
-//	public Schema dbSchema() {
-//		return getTable().dbSchema();
-//	}
+
+	@Override
+	public Table primaryDbTable() {
+		return getTable().dbTable();
+	}
+
+	@Override
+	public Table dbTable(String tableName) {
+		for (Iterator<ITable> stream = this.associatedTablesIncludingInherited(); stream.hasNext();) {
+			Table dbTable = stream.next().dbTable();
+			if (dbTable != null && dbTable.matchesShortJavaClassName(tableName)) {
+				return dbTable;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Schema dbSchema() {
+		return getTable().dbSchema();
+	}
 
 	@Override
 	public void update(JavaPersistentTypeResource persistentTypeResource) {
@@ -608,6 +654,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.updateSecondaryTables(persistentTypeResource);
 		this.updateTableGenerator(persistentTypeResource);
 		this.updateSequenceGenerator(persistentTypeResource);
+		this.updateSpecifiedPrimaryKeyJoinColumns(persistentTypeResource);
+		this.updateDefaultPrimaryKeyJoinColumns(persistentTypeResource);
 	}
 		
 	protected String specifiedName(Entity entityResource) {
@@ -716,6 +764,37 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return (SequenceGenerator) persistentTypeResource.annotation(SequenceGenerator.ANNOTATION_NAME);
 	}
 
+	
+	protected void updateSpecifiedPrimaryKeyJoinColumns(JavaPersistentTypeResource persistentTypeResource) {
+		ListIterator<IJavaPrimaryKeyJoinColumn> primaryKeyJoinColumns = specifiedPrimaryKeyJoinColumns();
+		ListIterator<JavaResource> resourcePrimaryKeyJoinColumns = persistentTypeResource.annotations(PrimaryKeyJoinColumn.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
+		
+		while (primaryKeyJoinColumns.hasNext()) {
+			IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = primaryKeyJoinColumns.next();
+			if (resourcePrimaryKeyJoinColumns.hasNext()) {
+				primaryKeyJoinColumn.update((PrimaryKeyJoinColumn) resourcePrimaryKeyJoinColumns.next());
+			}
+			else {
+				removeSpecifiedPrimaryKeyJoinColumn(primaryKeyJoinColumn);
+			}
+		}
+		
+		while (resourcePrimaryKeyJoinColumns.hasNext()) {
+			addSpecifiedPrimaryKeyJoinColumn(specifiedPrimaryKeyJoinColumnsSize(), createPrimaryKeyJoinColumn((PrimaryKeyJoinColumn) resourcePrimaryKeyJoinColumns.next()));
+		}
+	}
+	
+	protected IJavaPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(PrimaryKeyJoinColumn primaryKeyJoinColumnResource) {
+		IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		primaryKeyJoinColumn.initializeFromResource(primaryKeyJoinColumnResource);
+		return primaryKeyJoinColumn;
+	}
+
+	protected void updateDefaultPrimaryKeyJoinColumns(JavaPersistentTypeResource persistentTypeResource) {
+		this.defaultPrimaryKeyJoinColumn.update(new NullPrimaryKeyJoinColumn(persistentTypeResource));
+	}
+	
+	
 //	@Override
 //	public void updateFromJava(CompilationUnit astRoot) {
 //		this.setSpecifiedName(this.getType().annotationElementValue(NAME_ADAPTER, astRoot));
@@ -745,50 +824,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //		}
 //	}
 //
-	private JavaTable getJavaTable() {
-		return (JavaTable) this.table;
-	}
 
-	private JavaDiscriminatorColumn getJavaDiscriminatorColumn() {
-		return (JavaDiscriminatorColumn) this.discriminatorColumn;
-	}
-//
-//	private void updateTableGeneratorFromJava(CompilationUnit astRoot) {
-//		if (this.tableGeneratorAnnotationAdapter.getAnnotation(astRoot) == null) {
-//			if (this.tableGenerator != null) {
-//				setTableGenerator(null);
-//			}
-//		}
-//		else {
-//			if (this.tableGenerator == null) {
-//				setTableGenerator(createTableGenerator());
-//			}
-//			this.getJavaTableGenerator().updateFromJava(astRoot);
-//		}
-//	}
-//
-//	private JavaTableGenerator getJavaTableGenerator() {
-//		return (JavaTableGenerator) this.tableGenerator;
-//	}
-//
-//	private void updateSequenceGeneratorFromJava(CompilationUnit astRoot) {
-//		if (this.sequenceGeneratorAnnotationAdapter.getAnnotation(astRoot) == null) {
-//			if (this.sequenceGenerator != null) {
-//				setSequenceGenerator(null);
-//			}
-//		}
-//		else {
-//			if (this.sequenceGenerator == null) {
-//				setSequenceGenerator(createSequenceGenerator());
-//			}
-//			this.getJavaSequenceGenerator().updateFromJava(astRoot);
-//		}
-//	}
-//
-//	private JavaSequenceGenerator getJavaSequenceGenerator() {
-//		return (JavaSequenceGenerator) this.sequenceGenerator;
-//	}
-//
 	/**
 	 * From the Spec:
 	 * If the DiscriminatorValue annotation is not specified, a
@@ -813,234 +849,23 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return this.getDiscriminatorColumn().getDiscriminatorType();
 	}
 
-//	/**
-//	 * here we just worry about getting the attribute override lists the same size;
-//	 * then we delegate to the attribute overrides to synch themselves up
-//	 */
-//	private void updateAttributeOverridesFromJava(CompilationUnit astRoot) {
-//		// synchronize the model attribute overrides with the Java source
-//		List<IAttributeOverride> attributeOverrides = getSpecifiedAttributeOverrides();
-//		int persSize = attributeOverrides.size();
-//		int javaSize = 0;
-//		boolean allJavaAnnotationsFound = false;
-//		for (int i = 0; i < persSize; i++) {
-//			JavaAttributeOverride attributeOverride = (JavaAttributeOverride) attributeOverrides.get(i);
-//			if (attributeOverride.annotation(astRoot) == null) {
-//				allJavaAnnotationsFound = true;
-//				break; // no need to go any further
-//			}
-//			attributeOverride.updateFromJava(astRoot);
-//			javaSize++;
-//		}
-//		if (allJavaAnnotationsFound) {
-//			// remove any model attribute overrides beyond those that correspond to the Java annotations
-//			while (persSize > javaSize) {
-//				persSize--;
-//				attributeOverrides.remove(persSize);
-//			}
-//		}
-//		else {
-//			// add new model attribute overrides until they match the Java annotations
-//			while (!allJavaAnnotationsFound) {
-//				JavaAttributeOverride attributeOverride = this.createJavaAttributeOverride(javaSize);
-//				if (attributeOverride.annotation(astRoot) == null) {
-//					allJavaAnnotationsFound = true;
-//				}
-//				else {
-//					getSpecifiedAttributeOverrides().add(attributeOverride);
-//					attributeOverride.updateFromJava(astRoot);
-//					javaSize++;
-//				}
-//			}
-//		}
-//	}
-//
-//	/**
-//	 * here we just worry about getting the attribute override lists the same size;
-//	 * then we delegate to the attribute overrides to synch themselves up
-//	 */
-//	private void updateAssociationOverridesFromJava(CompilationUnit astRoot) {
-//		// synchronize the model attribute overrides with the Java source
-//		List<IAssociationOverride> associationOverrides = getSpecifiedAssociationOverrides();
-//		int persSize = associationOverrides.size();
-//		int javaSize = 0;
-//		boolean allJavaAnnotationsFound = false;
-//		for (int i = 0; i < persSize; i++) {
-//			JavaAssociationOverride associationOverride = (JavaAssociationOverride) associationOverrides.get(i);
-//			if (associationOverride.annotation(astRoot) == null) {
-//				allJavaAnnotationsFound = true;
-//				break; // no need to go any further
-//			}
-//			associationOverride.updateFromJava(astRoot);
-//			javaSize++;
-//		}
-//		if (allJavaAnnotationsFound) {
-//			// remove any model attribute overrides beyond those that correspond to the Java annotations
-//			while (persSize > javaSize) {
-//				persSize--;
-//				associationOverrides.remove(persSize);
-//			}
-//		}
-//		else {
-//			// add new model attribute overrides until they match the Java annotations
-//			while (!allJavaAnnotationsFound) {
-//				JavaAssociationOverride associationOverride = this.createJavaAssociationOverride(javaSize);
-//				if (associationOverride.annotation(astRoot) == null) {
-//					allJavaAnnotationsFound = true;
-//				}
-//				else {
-//					getSpecifiedAssociationOverrides().add(associationOverride);
-//					associationOverride.updateFromJava(astRoot);
-//					javaSize++;
-//				}
-//			}
-//		}
-//	}
-//
-//	/**
-//	 * here we just worry about getting the named query lists the same size;
-//	 * then we delegate to the named queries to synch themselves up
-//	 */
-//	private void updateNamedQueriesFromJava(CompilationUnit astRoot) {
-//		// synchronize the model named queries with the Java source
-//		List<INamedQuery> queries = this.getNamedQueries();
-//		int persSize = queries.size();
-//		int javaSize = 0;
-//		boolean allJavaAnnotationsFound = false;
-//		for (int i = 0; i < persSize; i++) {
-//			JavaNamedQuery namedQuery = (JavaNamedQuery) queries.get(i);
-//			if (namedQuery.annotation(astRoot) == null) {
-//				allJavaAnnotationsFound = true;
-//				break; // no need to go any further
-//			}
-//			namedQuery.updateFromJava(astRoot);
-//			javaSize++;
-//		}
-//		if (allJavaAnnotationsFound) {
-//			// remove any model named queries beyond those that correspond to the Java annotations
-//			while (persSize > javaSize) {
-//				persSize--;
-//				queries.remove(persSize);
-//			}
-//		}
-//		else {
-//			// add new model join columns until they match the Java annotations
-//			while (!allJavaAnnotationsFound) {
-//				JavaNamedQuery javaNamedQuery = this.createJavaNamedQuery(javaSize);
-//				if (javaNamedQuery.annotation(astRoot) == null) {
-//					allJavaAnnotationsFound = true;
-//				}
-//				else {
-//					getNamedQueries().add(javaNamedQuery);
-//					javaNamedQuery.updateFromJava(astRoot);
-//					javaSize++;
-//				}
-//			}
-//		}
-//	}
-//
-//	/**
-//	 * here we just worry about getting the named native query lists the same size;
-//	 * then we delegate to the named native queries to synch themselves up
-//	 */
-//	private void updateNamedNativeQueriesFromJava(CompilationUnit astRoot) {
-//		// synchronize the model named queries with the Java source
-//		List<INamedNativeQuery> queries = this.getNamedNativeQueries();
-//		int persSize = queries.size();
-//		int javaSize = 0;
-//		boolean allJavaAnnotationsFound = false;
-//		for (int i = 0; i < persSize; i++) {
-//			JavaNamedNativeQuery namedQuery = (JavaNamedNativeQuery) queries.get(i);
-//			if (namedQuery.annotation(astRoot) == null) {
-//				allJavaAnnotationsFound = true;
-//				break; // no need to go any further
-//			}
-//			namedQuery.updateFromJava(astRoot);
-//			javaSize++;
-//		}
-//		if (allJavaAnnotationsFound) {
-//			// remove any model named queries beyond those that correspond to the Java annotations
-//			while (persSize > javaSize) {
-//				persSize--;
-//				queries.remove(persSize);
-//			}
-//		}
-//		else {
-//			// add new model join columns until they match the Java annotations
-//			while (!allJavaAnnotationsFound) {
-//				JavaNamedNativeQuery javaNamedQuery = this.createJavaNamedNativeQuery(javaSize);
-//				if (javaNamedQuery.annotation(astRoot) == null) {
-//					allJavaAnnotationsFound = true;
-//				}
-//				else {
-//					getNamedNativeQueries().add(javaNamedQuery);
-//					javaNamedQuery.updateFromJava(astRoot);
-//					javaSize++;
-//				}
-//			}
-//		}
-//	}
-//
-//	/**
-//	 * here we just worry about getting the primary key join column lists
-//	 * the same size; then we delegate to the join columns to synch
-//	 * themselves up
-//	 */
-//	private void updateSpecifiedPrimaryKeyJoinColumnsFromJava(CompilationUnit astRoot) {
-//		// synchronize the model primary key join columns with the Java source
-//		List<IPrimaryKeyJoinColumn> pkJoinColumns = getSpecifiedPrimaryKeyJoinColumns();
-//		int persSize = pkJoinColumns.size();
-//		int javaSize = 0;
-//		boolean allJavaAnnotationsFound = false;
-//		for (int i = 0; i < persSize; i++) {
-//			JavaPrimaryKeyJoinColumn pkJoinColumn = (JavaPrimaryKeyJoinColumn) pkJoinColumns.get(i);
-//			if (pkJoinColumn.annotation(astRoot) == null) {
-//				allJavaAnnotationsFound = true;
-//				break; // no need to go any further
-//			}
-//			pkJoinColumn.updateFromJava(astRoot);
-//			javaSize++;
-//		}
-//		if (allJavaAnnotationsFound) {
-//			// remove any model primary key join columns beyond those that correspond to the Java annotations
-//			while (persSize > javaSize) {
-//				persSize--;
-//				pkJoinColumns.remove(persSize);
-//			}
-//		}
-//		else {
-//			// add new model join columns until they match the Java annotations
-//			while (!allJavaAnnotationsFound) {
-//				JavaPrimaryKeyJoinColumn jpkjc = this.createJavaPrimaryKeyJoinColumn(javaSize);
-//				if (jpkjc.annotation(astRoot) == null) {
-//					allJavaAnnotationsFound = true;
-//				}
-//				else {
-//					getSpecifiedPrimaryKeyJoinColumns().add(jpkjc);
-//					jpkjc.updateFromJava(astRoot);
-//					javaSize++;
-//				}
-//			}
-//		}
-//	}
-//
-//	public String primaryKeyColumnName() {
-//		String pkColumnName = null;
-//		for (Iterator<IPersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
-//			IPersistentAttribute attribute = stream.next();
-//			String name = attribute.primaryKeyColumnName();
-//			if (pkColumnName == null) {
-//				pkColumnName = name;
-//			}
-//			else if (name != null) {
-//				// if we encounter a composite primary key, return null
-//				return null;
-//			}
-//		}
-//		// if we encounter only a single primary key column name, return it
-//		return pkColumnName;
-//	}
-//
+	public String primaryKeyColumnName() {
+		String pkColumnName = null;
+		for (Iterator<IPersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
+			IPersistentAttribute attribute = stream.next();
+			String name = attribute.primaryKeyColumnName();
+			if (pkColumnName == null) {
+				pkColumnName = name;
+			}
+			else if (name != null) {
+				// if we encounter a composite primary key, return null
+				return null;
+			}
+		}
+		// if we encounter only a single primary key column name, return it
+		return pkColumnName;
+	}
+
 //	public String primaryKeyAttributeName() {
 //		String pkColumnName = null;
 //		String pkAttributeName = null;
@@ -1219,22 +1044,22 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		if (result != null) {
 			return result;
 		}
-		result = this.getJavaTable().candidateValuesFor(pos, filter, astRoot);
+		result = this.getTable().candidateValuesFor(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-//		for (ISecondaryTable sTable : this.getSecondaryTables()) {
-//			result = ((JavaSecondaryTable) sTable).candidateValuesFor(pos, filter, astRoot);
-//			if (result != null) {
-//				return result;
-//			}
-//		}
-//		for (IPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
-//			result = ((JavaPrimaryKeyJoinColumn) column).candidateValuesFor(pos, filter, astRoot);
-//			if (result != null) {
-//				return result;
-//			}
-//		}
+		for (IJavaSecondaryTable sTable : CollectionTools.iterable(this.secondaryTables())) {
+			result = sTable.candidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		for (IJavaPrimaryKeyJoinColumn column : CollectionTools.iterable(this.primaryKeyJoinColumns())) {
+			result = column.candidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
 //		for (IAttributeOverride override : this.getAttributeOverrides()) {
 //			result = ((JavaAttributeOverride) override).candidateValuesFor(pos, filter, astRoot);
 //			if (result != null) {
@@ -1247,24 +1072,57 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //				return result;
 //			}
 //		}
-		result = this.getJavaDiscriminatorColumn().candidateValuesFor(pos, filter, astRoot);
+		result = this.getDiscriminatorColumn().candidateValuesFor(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-//		JavaTableGenerator jtg = this.getJavaTableGenerator();
-//		if (jtg != null) {
-//			result = jtg.candidateValuesFor(pos, filter, astRoot);
-//			if (result != null) {
-//				return result;
-//			}
-//		}
-//		JavaSequenceGenerator jsg = this.getJavaSequenceGenerator();
-//		if (jsg != null) {
-//			result = jsg.candidateValuesFor(pos, filter, astRoot);
-//			if (result != null) {
-//				return result;
-//			}
-//		}
+		IJavaTableGenerator jtg = this.getTableGenerator();
+		if (jtg != null) {
+			result = jtg.candidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		IJavaSequenceGenerator jsg = this.getSequenceGenerator();
+		if (jsg != null) {
+			result = jsg.candidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
 		return null;
+	}
+	
+	
+	class PrimaryKeyJoinColumnOwner implements IAbstractJoinColumn.Owner
+	{
+		public ITextRange validationTextRange(CompilationUnit astRoot) {
+			return JavaEntity.this.validationTextRange(astRoot);
+		}
+
+		public ITypeMapping typeMapping() {
+			return JavaEntity.this;
+		}
+
+		public Table dbTable(String tableName) {
+			return JavaEntity.this.dbTable(tableName);
+		}
+
+		public Table dbReferencedColumnTable() {
+			IEntity parentEntity = JavaEntity.this.parentEntity();
+			return (parentEntity == null) ? null : parentEntity.primaryDbTable();
+		}
+
+		public int joinColumnsSize() {
+			return CollectionTools.size(JavaEntity.this.primaryKeyJoinColumns());
+		}
+		
+		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
+			return JavaEntity.this.defaultPrimaryKeyJoinColumn == joinColumn;
+		}
+		
+		public int indexOf(IAbstractJoinColumn joinColumn) {
+			return CollectionTools.indexOf(JavaEntity.this.primaryKeyJoinColumns(), joinColumn);
+		}
 	}
 }

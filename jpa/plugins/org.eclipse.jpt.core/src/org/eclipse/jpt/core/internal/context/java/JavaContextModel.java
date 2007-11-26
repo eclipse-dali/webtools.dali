@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.utility.internal.Filter;
 
-public abstract class JavaContextModel extends JpaContextNode
+public abstract class JavaContextModel extends JpaContextNode implements IJavaJpaContextNode
 {
 	// ********** constructor **********
 

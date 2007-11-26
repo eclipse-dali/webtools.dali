@@ -64,13 +64,16 @@ public interface IEntity extends ITypeMapping
 	void removeSequenceGenerator();
 		String SEQUENCE_GENERATOR_PROPERTY = "sequenceGeneratorProperty";
 
+	<T extends IPrimaryKeyJoinColumn> ListIterator<T> primaryKeyJoinColumns();
+	<T extends IPrimaryKeyJoinColumn> ListIterator<T> specifiedPrimaryKeyJoinColumns();
+	<T extends IPrimaryKeyJoinColumn> ListIterator<T> defaultPrimaryKeyJoinColumns();
+	int specifiedPrimaryKeyJoinColumnsSize();
+	IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
+	void removeSpecifiedPrimaryKeyJoinColumn(int index);
+	void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex);
+		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumnsList";
 
-//	EList<IPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
-//
-//	EList<IPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
-//
-//	EList<IPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns();
-//
+
 //	EList<IAttributeOverride> getAttributeOverrides();
 //
 //	EList<IAttributeOverride> getSpecifiedAttributeOverrides();
@@ -103,23 +106,21 @@ public interface IEntity extends ITypeMapping
 	 * over them in the search for the root. 
 	 */
 	IEntity rootEntity();
-//
-//	/**
-//	 * <!-- begin-user-doc -->
-//	 * The first parent in the class hierarchy that is an entity. 
-//	 * This is the parent in the entity (persistent) inheritance hierarchy
-//	 * (vs class inheritance hierarchy)
-//	 * <!-- end-user-doc -->
-//	 */
-//	IEntity parentEntity();
-//
-//	/**
-//	 * Return the name of the entity's primary key column.
-//	 * Return null if the entity's primary key is "compound"
-//	 * (i.e. the primary key is composed of multiple columns).
-//	 */
-//	String primaryKeyColumnName();
-//
+
+	/**
+	 * The first parent in the class hierarchy that is an entity. 
+	 * This is the parent in the entity (persistent) inheritance hierarchy
+	 * (vs class inheritance hierarchy)
+	 */
+	IEntity parentEntity();
+
+	/**
+	 * Return the name of the entity's primary key column.
+	 * Return null if the entity's primary key is "compound"
+	 * (i.e. the primary key is composed of multiple columns).
+	 */
+	String primaryKeyColumnName();
+
 //	/**
 //	 * Return the name of the entity's primary key attribute.
 //	 * Return null if the entity's primary key is "compound"
@@ -227,41 +228,5 @@ public interface IEntity extends ITypeMapping
 //	}
 //
 //
-//	class PrimaryKeyJoinColumnOwner implements IAbstractJoinColumn.Owner
-//	{
-//		private IEntity entity;
-//
-//		public PrimaryKeyJoinColumnOwner(IEntity entity) {
-//			this.entity = entity;
-//		}
-//
-//		public ITextRange validationTextRange() {
-//			return this.entity.validationTextRange();
-//		}
-//
-//		public ITypeMapping getTypeMapping() {
-//			return this.entity;
-//		}
-//
-//		public Table dbTable(String tableName) {
-//			return this.entity.dbTable(tableName);
-//		}
-//
-//		public Table dbReferencedColumnTable() {
-//			IEntity parentEntity = this.entity.parentEntity();
-//			return (parentEntity == null) ? null : parentEntity.primaryDbTable();
-//		}
-//
-//		public List<IPrimaryKeyJoinColumn> joinColumns() {
-//			return this.entity.getPrimaryKeyJoinColumns();
-//		}
-//
-//		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
-//			return this.entity.getDefaultPrimaryKeyJoinColumns().contains(joinColumn);
-//		}
-//
-//		public int indexOf(IAbstractJoinColumn joinColumn) {
-//			return joinColumns().indexOf(joinColumn);
-//		}
-//	}
+
 }

@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.internal.JpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.ClassRef;
+import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
@@ -53,6 +54,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaIdMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.context.java.IJavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.context.java.IJavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.java.IJavaTable;
@@ -72,6 +74,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaNullAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.internal.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.internal.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.java.JavaTable;
@@ -283,5 +286,9 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IJavaGeneratedValue createJavaGeneratedValue(IJavaAttributeMapping parent) {
 		return new JavaGeneratedValue(parent);
+	}
+	
+	public IJavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(IJavaJpaContextNode parent, IAbstractJoinColumn.Owner owner) {
+		return new JavaPrimaryKeyJoinColumn(parent, owner);
 	}
 }

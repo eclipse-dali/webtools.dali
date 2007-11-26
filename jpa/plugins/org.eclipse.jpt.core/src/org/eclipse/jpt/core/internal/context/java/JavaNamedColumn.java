@@ -12,9 +12,6 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.INamedColumn;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 import org.eclipse.jpt.core.internal.resource.java.NamedColumn;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
@@ -25,7 +22,7 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 
 public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContextModel
-	implements INamedColumn
+	implements IJavaNamedColumn
 {
 
 	protected Owner owner;
@@ -35,8 +32,6 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 	protected String defaultName;
 
 	protected String columnDefinition;
-	
-	protected JavaPersistentResource persistentResource;
 
 	protected JavaNamedColumn(IJavaJpaContextNode parent, Owner owner) {
 		super(parent);
@@ -44,10 +39,6 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 	}
 
 	// ******************* initialization from java resource model ********************
-	public void initializeFromResource(JavaPersistentResource persistentResource) {
-		this.persistentResource = persistentResource;
-		this.initializeFromResource(this.columnResource());
-	}
 	
 	protected void initializeFromResource(T column) {
 		this.specifiedName = column.getName();
@@ -55,18 +46,8 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 		this.columnDefinition = column.getColumnDefinition();	
 	}
 	
-	//query for the column resource every time on setters since more than one setter 
-	//could be called before this object receives notification from the java resource model.
-	@SuppressWarnings("unchecked")
-	protected T columnResource() {
-		return (T) this.persistentResource.nonNullAnnotation(annotationName());
-	}
-	
-	/**
-	 * Return the fully qualfied java annotation name that corresponds to this column.
-	 * @see JPA
-	 */
-	protected abstract String annotationName();
+
+	protected abstract T columnResource();
 
 	
 	//************** INamedColumn implementation *****************
@@ -108,11 +89,6 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 
 	protected Owner owner() {
 		return this.owner;
-	}
-	
-	public ITextRange validationTextRange(CompilationUnit astRoot) {
-		ITextRange textRange = this.persistentResource.textRange(astRoot);
-		return (textRange != null) ? textRange : this.owner().validationTextRange(astRoot);
 	}
 
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
@@ -168,11 +144,6 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 	
 	
 	// ******************* update from java resource model ********************
-
-	public void update(JavaPersistentResource persistentResource) {
-		this.persistentResource = persistentResource;
-		this.update(this.columnResource());
-	}
 
 	protected void update(T column) {
 		this.setSpecifiedName(column.getName());

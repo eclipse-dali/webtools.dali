@@ -9,15 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import java.util.ListIterator;
+
 
 public interface ISecondaryTable extends ITable
 {
-//	EList<IPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
-//
-//	EList<IPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
-//
-//	EList<IPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns();
-//
+
+	<T extends IPrimaryKeyJoinColumn> ListIterator<T> primaryKeyJoinColumns();
+	<T extends IPrimaryKeyJoinColumn> ListIterator<T> specifiedPrimaryKeyJoinColumns();
+	<T extends IPrimaryKeyJoinColumn> ListIterator<T> defaultPrimaryKeyJoinColumns();
+	int specifiedPrimaryKeyJoinColumnsSize();
+	IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
+	void removeSpecifiedPrimaryKeyJoinColumn(int index);
+	void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex);
+		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumnsList";
+
+	
+	
 //	ITypeMapping typeMapping();
 //
 //	/**

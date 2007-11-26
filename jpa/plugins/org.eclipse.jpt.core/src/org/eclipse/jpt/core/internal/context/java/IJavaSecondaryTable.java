@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
 
 
-public interface IJavaSecondaryTable extends ISecondaryTable
+public interface IJavaSecondaryTable extends ISecondaryTable, IJavaJpaContextNode
 {
 	void initializeFromResource(SecondaryTable secondaryTable);
 	

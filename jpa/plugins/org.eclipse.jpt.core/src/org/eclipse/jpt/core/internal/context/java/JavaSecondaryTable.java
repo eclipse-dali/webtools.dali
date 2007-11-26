@@ -9,30 +9,60 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
+import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
+import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
 public class JavaSecondaryTable extends AbstractJavaTable
 	implements IJavaSecondaryTable
 {
-//	protected EList<IPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
-//
-//	protected EList<IPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns;
+	protected final List<IJavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
+
+	protected IJavaPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
 	protected SecondaryTable secondaryTableResource;
 	
 	public JavaSecondaryTable(IJavaEntity parent) {
 		super(parent);
-		//this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
+		this.specifiedPrimaryKeyJoinColumns = new ArrayList<IJavaPrimaryKeyJoinColumn>();
+		this.defaultPrimaryKeyJoinColumn = this.jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+	}
+	
+	protected IAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
+		return new PrimaryKeyJoinColumnOwner();
 	}
 	
 	public void initializeFromResource(SecondaryTable secondaryTable) {
 		super.initializeFromResource(secondaryTable);
 		this.secondaryTableResource = secondaryTable;
+		this.initializePrimaryKeyJoinColumns(secondaryTable);
 	}
 	
+	protected void initializePrimaryKeyJoinColumns(SecondaryTable secondaryTable) {
+		ListIterator<PrimaryKeyJoinColumn> annotations = secondaryTable.pkJoinColumns();
+		
+		while(annotations.hasNext()) {
+			IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+			primaryKeyJoinColumn.initializeFromResource(annotations.next());
+			this.specifiedPrimaryKeyJoinColumns.add(primaryKeyJoinColumn);
+		}
+	}
+
 	//***************** AbstractJavaTable implementation ********************
 	
 	@Override
@@ -52,23 +82,58 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	
 	//***************** ISecondaryTable implementation ********************
 	
-//	public EList<IPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
-//		if (specifiedPrimaryKeyJoinColumns == null) {
-//			specifiedPrimaryKeyJoinColumns = new EObjectContainmentEList<IPrimaryKeyJoinColumn>(IPrimaryKeyJoinColumn.class, this, JpaJavaMappingsPackage.JAVA_SECONDARY_TABLE__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS);
-//		}
-//		return specifiedPrimaryKeyJoinColumns;
-//	}
-//
-//	public EList<IPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns() {
-//		if (defaultPrimaryKeyJoinColumns == null) {
-//			defaultPrimaryKeyJoinColumns = new EObjectContainmentEList<IPrimaryKeyJoinColumn>(IPrimaryKeyJoinColumn.class, this, JpaJavaMappingsPackage.JAVA_SECONDARY_TABLE__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS);
-//		}
-//		return defaultPrimaryKeyJoinColumns;
-//	}
-//
-//	public ITypeMapping typeMapping() {
-//		return (ITypeMapping) parent();
-//	}
+
+	public ListIterator<IJavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
+		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ? this.defaultPrimaryKeyJoinColumns() : this.specifiedPrimaryKeyJoinColumns();
+	}
+	
+	public ListIterator<IJavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns() {
+		return new CloneListIterator<IJavaPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
+	}
+	
+	public ListIterator<IJavaPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
+		return new SingleElementListIterator<IJavaPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumn);
+	}
+
+	public IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
+		IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
+		this.secondaryTableResource.addPkJoinColumn(index);
+		this.firePropertyChanged(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
+		return primaryKeyJoinColumn;
+	}
+
+	protected void addSpecifiedPrimaryKeyJoinColumn(int index, IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+	}
+	
+	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
+		IJavaPrimaryKeyJoinColumn removedPrimaryKeyJoinColumn = this.specifiedPrimaryKeyJoinColumns.remove(index);
+		this.secondaryTableResource.removePkJoinColumn(index);
+		fireItemRemoved(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
+	}
+
+	protected void removeSpecifiedPrimaryKeyJoinColumn(IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+	}
+	
+	public void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex) {
+		this.specifiedPrimaryKeyJoinColumns.add(newIndex, this.specifiedPrimaryKeyJoinColumns.remove(oldIndex));
+		this.secondaryTableResource.movePkJoinColumn(oldIndex, newIndex);
+		fireItemMoved(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, newIndex, oldIndex);		
+	}
+	
+	public int specifiedPrimaryKeyJoinColumnsSize() {
+		return this.specifiedPrimaryKeyJoinColumns.size();
+	}
+	
+	public int primaryKeyJoinColumnsSize() {
+		return CollectionTools.size(primaryKeyJoinColumns());
+	}
+	
+	public ITypeMapping typeMapping() {
+		return (ITypeMapping) parent();
+	}
 	
 	
 	//********************* updating ************************
@@ -76,55 +141,38 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	public void update(SecondaryTable secondaryTableResource) {
 		this.secondaryTableResource = secondaryTableResource;
 		super.update(secondaryTableResource);
+		this.updateSpecifiedPrimaryKeyJoinColumns(secondaryTableResource);
+		this.updateDefaultPrimaryKeyJoinColumns(secondaryTableResource);
+	}
+	
+	protected void updateSpecifiedPrimaryKeyJoinColumns(SecondaryTable secondaryTableResource) {
+		ListIterator<IJavaPrimaryKeyJoinColumn> primaryKeyJoinColumns = specifiedPrimaryKeyJoinColumns();
+		ListIterator<PrimaryKeyJoinColumn> resourcePrimaryKeyJoinColumns = secondaryTableResource.pkJoinColumns();
+		
+		while (primaryKeyJoinColumns.hasNext()) {
+			IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = primaryKeyJoinColumns.next();
+			if (resourcePrimaryKeyJoinColumns.hasNext()) {
+				primaryKeyJoinColumn.update(resourcePrimaryKeyJoinColumns.next());
+			}
+			else {
+				removeSpecifiedPrimaryKeyJoinColumn(primaryKeyJoinColumn);
+			}
+		}
+		
+		while (resourcePrimaryKeyJoinColumns.hasNext()) {
+			addSpecifiedPrimaryKeyJoinColumn(specifiedPrimaryKeyJoinColumnsSize(), createPrimaryKeyJoinColumn(resourcePrimaryKeyJoinColumns.next()));
+		}
+	}
+	
+	protected IJavaPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(PrimaryKeyJoinColumn primaryKeyJoinColumnResource) {
+		IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		primaryKeyJoinColumn.initializeFromResource(primaryKeyJoinColumnResource);
+		return primaryKeyJoinColumn;
 	}
 
-//	@Override
-//	protected void updateFromJava(CompilationUnit astRoot) {
-//		super.updateFromJava(astRoot);
-//		this.updateSpecifiedPrimaryKeyJoinColumnsFromJava(astRoot);
-//	}
-
-//	/**
-//	 * here we just worry about getting the join column lists the same size;
-//	 * then we delegate to the join columns to synch themselves up
-//	 */
-//	private void updateSpecifiedPrimaryKeyJoinColumnsFromJava(CompilationUnit astRoot) {
-//		// synchronize the model join columns with the Java source
-//		List<IPrimaryKeyJoinColumn> joinColumns = getSpecifiedPrimaryKeyJoinColumns();
-//		int persSize = joinColumns.size();
-//		int javaSize = 0;
-//		boolean allJavaAnnotationsFound = false;
-//		for (int i = 0; i < persSize; i++) {
-//			JavaPrimaryKeyJoinColumn joinColumn = (JavaPrimaryKeyJoinColumn) joinColumns.get(i);
-//			if (joinColumn.annotation(astRoot) == null) {
-//				allJavaAnnotationsFound = true;
-//				break; // no need to go any further
-//			}
-//			joinColumn.updateFromJava(astRoot);
-//			javaSize++;
-//		}
-//		if (allJavaAnnotationsFound) {
-//			// remove any model join columns beyond those that correspond to the Java annotations
-//			while (persSize > javaSize) {
-//				persSize--;
-//				joinColumns.remove(persSize);
-//			}
-//		}
-//		else {
-//			// add new model join columns until they match the Java annotations
-//			while (!allJavaAnnotationsFound) {
-//				JavaPrimaryKeyJoinColumn joinColumn = this.createJavaPrimaryKeyJoinColumn(javaSize);
-//				if (joinColumn.annotation(astRoot) == null) {
-//					allJavaAnnotationsFound = true;
-//				}
-//				else {
-//					getSpecifiedPrimaryKeyJoinColumns().add(joinColumn);
-//					joinColumn.updateFromJava(astRoot);
-//					javaSize++;
-//				}
-//			}
-//		}
-//	}
+	protected void updateDefaultPrimaryKeyJoinColumns(SecondaryTable secondaryTableResource) {
+		this.defaultPrimaryKeyJoinColumn.update(new NullPrimaryKeyJoinColumn(secondaryTableResource));
+	}
 	
 	// ********** AbstractJavaTable implementation **********
 //
@@ -157,16 +205,48 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		if (result != null) {
 			return result;
 		}
-//		for (IPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
-//			result = ((JavaPrimaryKeyJoinColumn) column).candidateValuesFor(pos, filter, astRoot);
-//			if (result != null) {
-//				return result;
-//			}
-//		}
+		for (IJavaPrimaryKeyJoinColumn column : CollectionTools.iterable(this.primaryKeyJoinColumns())) {
+			result = column.candidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
 		return null;
 	}
 
 	public boolean isVirtual() {
 		return false;
 	}
+	
+	class PrimaryKeyJoinColumnOwner implements IAbstractJoinColumn.Owner
+	{
+		public ITextRange validationTextRange(CompilationUnit astRoot) {
+			return JavaSecondaryTable.this.validationTextRange(astRoot);
+		}
+
+		public ITypeMapping typeMapping() {
+			return JavaSecondaryTable.this.typeMapping();
+		}
+
+		public Table dbTable(String tableName) {
+			return JavaSecondaryTable.this.dbTable();
+		}
+
+		public Table dbReferencedColumnTable() {
+			return typeMapping().primaryDbTable();
+		}
+
+		public int joinColumnsSize() {
+			return JavaSecondaryTable.this.primaryKeyJoinColumnsSize();
+		}
+		
+		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
+			return JavaSecondaryTable.this.defaultPrimaryKeyJoinColumn == joinColumn;
+		}
+		
+		public int indexOf(IAbstractJoinColumn joinColumn) {
+			return CollectionTools.indexOf(JavaSecondaryTable.this.primaryKeyJoinColumns(), joinColumn);
+		}
+	}
+
 }

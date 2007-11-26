@@ -12,8 +12,9 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 
-public interface IJavaTable extends ITable
+public interface IJavaTable extends ITable, IJavaJpaContextNode
 {
 	void initializeFromResource(JavaPersistentResource persistentResource);
+	
 	void update(JavaPersistentResource persistentResource);
 }

@@ -10,12 +10,9 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 
 
 public interface IJavaNamedColumn extends INamedColumn, IJavaJpaContextNode
 {
-	void initializeFromResource(JavaPersistentResource persistentResource);
-	
-	void update(JavaPersistentResource persistentResource);
+
 }
