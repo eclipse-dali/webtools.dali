@@ -498,7 +498,7 @@ public class PersistenceUnit extends JpaContextNode
 	
 	protected IMappingFileRef createMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {
 		IMappingFileRef mappingFileRef = jpaFactory().createMappingFileRef(this);
-		mappingFileRef.initializeFromResource(xmlMappingFileRef);
+		mappingFileRef.initialize(xmlMappingFileRef);
 		return mappingFileRef;
 	}
 	
@@ -523,7 +523,7 @@ public class PersistenceUnit extends JpaContextNode
 	
 	protected IClassRef createClassRef(XmlJavaClassRef xmlClassRef) {
 		IClassRef classRef = jpaFactory().createClassRef(this);
-		classRef.initializeFromResource(xmlClassRef);
+		classRef.initialize(xmlClassRef);
 		return classRef;
 	}
 	

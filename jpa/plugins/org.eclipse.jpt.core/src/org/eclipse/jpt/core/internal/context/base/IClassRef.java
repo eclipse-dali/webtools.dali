@@ -15,20 +15,48 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 
 public interface IClassRef extends IJpaContextNode
 {
-	void initializeFromResource(XmlJavaClassRef classRef);
-
-	void update(XmlJavaClassRef classRef);
-	
-	/**
-	 * Return the JavaPersistentType that corresponds to this IClassRef.  
-	 * This can be null.
-	 */
-	IJavaPersistentType getJavaPersistentType();
-		String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentTypeProperty";
-	
 	/**
 	 * Return true if the IClassRef matches the fullyQualfiedTypeName
 	 */
 	boolean isFor(String fullyQualifiedTypeName);
 	
+	
+	// **************** class name *********************************************
+	
+	/**
+	 * String constant associated with changes to the class name
+	 */
+	final static String CLASS_NAME_PROPERTY = "className";
+	
+	/**
+	 * Return the class name of the class ref.
+	 */
+	String getClassName();
+	
+	/**
+	 * Set the class name of the class ref.
+	 */
+	void setClassName(String className);
+	
+	
+	// **************** java persistent type ***********************************
+	
+	/**
+	 * String constant associated with changes to the java persistent type
+	 */
+	final static String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentType";
+	
+	/**
+	 * Return the JavaPersistentType that corresponds to this IClassRef.
+	 * This can be null.
+	 * This is not settable by users of this API.
+	 */
+	IJavaPersistentType getJavaPersistentType();
+	
+	
+	// **************** updating ***********************************************
+	
+	void initialize(XmlJavaClassRef classRef);
+	
+	void update(XmlJavaClassRef classRef);
 }

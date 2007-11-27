@@ -37,6 +37,75 @@ public class ClassRefTests extends ContextModelTestCase
 		return persistenceUnit().classRefs().next();
 	}
 	
+	public void testUpdateClassName() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// add class ref
+		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
+		xmlClassRef.setJavaClass("com.foo.Bar");
+		xmlPersistenceUnit.getClasses().add(xmlClassRef);
+		IClassRef classRef = persistenceUnit.classRefs().next();
+		
+		// test that class names are initially equal
+		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
+		
+		// set xml class name to different name, test equality
+		xmlClassRef.setJavaClass("com.bar.Foo");
+		
+		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
+		
+		// set class name to empty string, test equality
+		xmlClassRef.setJavaClass("");
+		
+		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
+		
+		// set class name to null, test equality
+		xmlClassRef.setJavaClass(null);
+		
+		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
+		
+		// set name back to non-null, test equality
+		xmlClassRef.setJavaClass("com.foo.Bar");
+		
+		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
+	}
+	
+	public void testModifyClassName() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// add class ref
+		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
+		xmlClassRef.setJavaClass("com.foo.Bar");
+		xmlPersistenceUnit.getClasses().add(xmlClassRef);
+		IClassRef classRef = persistenceUnit.classRefs().next();
+		
+		// test that class names are initially equal
+		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
+		
+		// set context class name to different name, test equality
+		classRef.setClassName("com.bar.Foo");
+		
+		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
+		
+		// set class name to empty string, test equality
+		classRef.setClassName("");
+		
+		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
+		
+		// set class name to null, test equality
+		classRef.setClassName(null);
+		
+		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
+		
+		// set name back to non-null, test equality
+		classRef.setClassName("com.foo.Bar");
+		
+		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
+	}
+	
+	
 	public void testGetPersistentType() throws Exception {
 		createTestType();
 		

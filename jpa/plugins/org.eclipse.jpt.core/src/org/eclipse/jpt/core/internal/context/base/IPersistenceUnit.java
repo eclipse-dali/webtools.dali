@@ -20,9 +20,9 @@ public interface IPersistenceUnit extends IJpaContextNode
 	 * fully qualified type name
 	 */
 	IPersistentType persistentType(String fullyQualifiedTypeName);
-
-	// **************** name ***************************************************
 	
+	
+	// **************** name ***************************************************
 	
 	/**
 	 * String constant associated with changes to the persistence unit's name

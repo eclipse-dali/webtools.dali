@@ -17,29 +17,38 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 
 public class ClassRef extends JpaContextNode implements IClassRef
 {
+	protected XmlJavaClassRef xmlJavaClassRef;
+	
+	protected String className;
 	
 	protected IJavaPersistentType javaPersistentType;
 	
-	protected String javaClassName = "";
-	
-	protected XmlJavaClassRef xmlJavaClassRef;
 	
 	public ClassRef(IPersistenceUnit parent) {
 		super(parent);
 	}
 	
-	public void initializeFromResource(XmlJavaClassRef classRef) {
-		this.xmlJavaClassRef = classRef;
-		this.javaClassName = classRef.getJavaClass();
-		JavaPersistentTypeResource persistentTypeResource = jpaProject().javaPersistentTypeResource(this.javaClassName);
-		if (persistentTypeResource != null) {
-			this.javaPersistentType = createJavaPersistentType(persistentTypeResource);
-		}		
-	}
 	
 	public boolean isFor(String fullyQualifiedTypeName) {
-		return this.javaClassName.equals(fullyQualifiedTypeName);
+		return getClassName().equals(fullyQualifiedTypeName);
 	}
+	
+	
+	// **************** class name *********************************************
+	
+	public String getClassName() {
+		return className;
+	}
+	
+	public void setClassName(String newClassName) {
+		String oldClassName = className;
+		className = newClassName;
+		xmlJavaClassRef.setJavaClass(newClassName);
+		firePropertyChanged(CLASS_NAME_PROPERTY, oldClassName, newClassName);
+	}
+	
+	
+	// **************** java persistent type ***********************************
 	
 	public IJavaPersistentType getJavaPersistentType() {
 		return this.javaPersistentType;
@@ -51,17 +60,22 @@ public class ClassRef extends JpaContextNode implements IClassRef
 		firePropertyChanged(IClassRef.JAVA_PERSISTENT_TYPE_PROPERTY, oldJavaPersistentType, newJavaPersistentType);
 	}
 	
-	public ITextRange validationTextRange() {
-		return this.xmlJavaClassRef.validationTextRange();
-	}
-	
 	
 	// **************** updating ***********************************************
 	
+	public void initialize(XmlJavaClassRef classRef) {
+		xmlJavaClassRef = classRef;
+		className = classRef.getJavaClass();
+		JavaPersistentTypeResource persistentTypeResource = jpaProject().javaPersistentTypeResource(getClassName());
+		if (persistentTypeResource != null) {
+			javaPersistentType = createJavaPersistentType(persistentTypeResource);
+		}		
+	}
+	
 	public void update(XmlJavaClassRef classRef) {
-		this.xmlJavaClassRef = classRef;
-		this.javaClassName = classRef.getJavaClass();
-		JavaPersistentTypeResource persistentTypeResource = jpaProject().javaPersistentTypeResource(this.javaClassName);
+		xmlJavaClassRef = classRef;
+		setClassName(classRef.getJavaClass());
+		JavaPersistentTypeResource persistentTypeResource = jpaProject().javaPersistentTypeResource(getClassName());
 		if (persistentTypeResource == null) {
 			setJavaPersistentType(null);
 		}
@@ -79,5 +93,12 @@ public class ClassRef extends JpaContextNode implements IClassRef
 		IJavaPersistentType javaPersistentType = jpaFactory().createJavaPersistentType(this);
 		javaPersistentType.initializeFromResource(persistentTypeResource);
 		return javaPersistentType;
+	}
+	
+	
+	// *************************************************************************
+	
+	public ITextRange validationTextRange() {
+		return this.xmlJavaClassRef.validationTextRange();
 	}
 }
