@@ -26,6 +26,7 @@ public class JptCorePersistenceContextModelTests extends TestCase
 		suite.addTestSuite(PersistenceXmlTests.class);
 		suite.addTestSuite(PersistenceTests.class);
 		suite.addTestSuite(PersistenceUnitTests.class);
+		suite.addTestSuite(MappingFileRefTests.class);
 		suite.addTestSuite(ClassRefTests.class);
 		return suite;
 	}

@@ -13,9 +13,12 @@ package org.eclipse.jpt.core.internal.context.base;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 
-public class MappingFileRef extends JpaContextNode implements IMappingFileRef
+public class MappingFileRef extends JpaContextNode 
+	implements IMappingFileRef
 {
 	protected XmlMappingFileRef xmlMappingFileRef;
+	
+	protected String fileName;
 	
 	
 	public MappingFileRef(IPersistenceUnit parent) {
@@ -23,14 +26,30 @@ public class MappingFileRef extends JpaContextNode implements IMappingFileRef
 	}
 	
 	
+	// **************** file name **********************************************
+	
+	public String getFileName() {
+		return fileName;
+	}
+	
+	public void setFileName(String newFileName) {
+		String oldFileName = fileName;
+		fileName = newFileName;
+		xmlMappingFileRef.setFileName(newFileName);
+		firePropertyChanged(FILE_NAME_PROPERTY, oldFileName, newFileName);
+	}
+	
+	
 	// **************** updating ***********************************************
 	
 	public void initialize(XmlMappingFileRef mappingFileRef) {
-		this.xmlMappingFileRef = mappingFileRef;		
+		xmlMappingFileRef = mappingFileRef;
+		fileName = mappingFileRef.getFileName();
 	}
 	
 	public void update(XmlMappingFileRef mappingFileRef) {
 		this.xmlMappingFileRef = mappingFileRef;
+		setFileName(mappingFileRef.getFileName());
 	}
 	
 	

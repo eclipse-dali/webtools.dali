@@ -125,5 +125,4 @@ public class ClassRefTests extends ContextModelTestCase
 		classRef = classRef();		
 		assertNull(classRef.getJavaPersistentType());		
 	}
-
 }
