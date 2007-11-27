@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlProperties;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlProperty;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public class PersistenceUnit extends JpaContextNode
 	implements IPersistenceUnit
@@ -99,7 +100,8 @@ public class PersistenceUnit extends JpaContextNode
 	// **************** transaction type ***************************************
 	
 	public PersistenceUnitTransactionType getTransactionType() {
-		return transactionType;
+		return (isTransactionTypeDefault()) ?
+			getDefaultTransactionType() : transactionType;
 	}
 	
 	public void setTransactionType(PersistenceUnitTransactionType newTransactionType) {
@@ -305,22 +307,32 @@ public class PersistenceUnit extends JpaContextNode
 		setExcludeUnlistedClasses((Boolean) newExcludeUnlistedClasses);
 	}
 	
-	protected void setExcludeUnlistedClasses(Boolean newExcludeUnlistedClasses) {
-		Boolean oldExcludeUnlistedClasses = excludeUnlistedClasses;
-		excludeUnlistedClasses = newExcludeUnlistedClasses;
-		firePropertyChanged(EXCLUDE_UNLISTED_CLASSED_PROPERTY, oldExcludeUnlistedClasses, newExcludeUnlistedClasses);
-	}
-	
 	public boolean isExcludeUnlistedClassesDefault() {
 		return excludeUnlistedClasses == null;
 	}
 	
 	public boolean getDefaultExcludeUnlistedClasses() {
+		// TODO - calculate default
+		//  This is determined from the project
 		return defaultExcludeUnlistedClasses;
 	}
 	
 	public void setExcludeUnlistedClassesToDefault() {
 		setExcludeUnlistedClasses(null);
+	}
+	
+	protected void setExcludeUnlistedClasses(Boolean newExcludeUnlistedClasses) {
+		Boolean oldExcludeUnlistedClasses = excludeUnlistedClasses;
+		excludeUnlistedClasses = newExcludeUnlistedClasses;
+		
+		if (excludeUnlistedClasses != null) {
+			xmlPersistenceUnit.setExcludeUnlistedClasses(excludeUnlistedClasses);
+		}
+		else {
+			xmlPersistenceUnit.unsetExcludeUnlistedClasses();
+		}
+		
+		firePropertyChanged(EXCLUDE_UNLISTED_CLASSED_PROPERTY, oldExcludeUnlistedClasses, newExcludeUnlistedClasses);
 	}
 	
 	
@@ -330,33 +342,56 @@ public class PersistenceUnit extends JpaContextNode
 		return new CloneListIterator<IProperty>(properties);
 	}
 	
-	public void addProperty(IProperty property) {
-		properties.add(property);
-		fireListChanged(PROPERTIES_LIST);
+	public IProperty addProperty() {
+		return addProperty(properties.size());
 	}
 	
-	public void addProperty(int index, IProperty property) {
+	public IProperty addProperty(int index) {
+		XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
+		IProperty property = createProperty(xmlProperty);
 		properties.add(index, property);
+		
+		if (xmlPersistenceUnit.getProperties() == null) {
+			XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
+			xmlPersistenceUnit.setProperties(xmlProperties);
+		}
+		
+		xmlPersistenceUnit.getProperties().getProperties().add(xmlProperty);
 		fireListChanged(PROPERTIES_LIST);
+		return property;
 	}
 	
 	public void removeProperty(IProperty property) {
-		properties.remove(property);
-		fireListChanged(PROPERTIES_LIST);
+		removeProperty(properties.indexOf(property));
 	}
 	
 	public void removeProperty(int index) {
 		properties.remove(index);
+		xmlPersistenceUnit.getProperties().getProperties().remove(index);
+		
+		if (xmlPersistenceUnit.getProperties().getProperties().isEmpty()) {
+			xmlPersistenceUnit.setProperties(null);
+		}
+		
 		fireListChanged(PROPERTIES_LIST);
 	}
 	
-	protected void clearProperties() {
-		// must check if properties are clear already, else another update is 
-		// launched, needed or not
-		if (! properties.isEmpty()) {
-			properties.clear();
-			fireListCleared(PROPERTIES_LIST);
-		}
+	protected void addProperty_(IProperty property) {
+		addProperty_(properties.size(), property);
+	}
+	
+	protected void addProperty_(int index, IProperty property) {
+		properties.add(index, property);
+		fireListChanged(PROPERTIES_LIST);
+	}
+	
+	protected void removeProperty_(IProperty property) {
+		removeProperty_(properties.indexOf(property));
+	}
+	
+	protected void removeProperty_(int index) {
+		properties.remove(index);
+		fireListChanged(PROPERTIES_LIST);
 	}
 	
 	
@@ -504,13 +539,15 @@ public class PersistenceUnit extends JpaContextNode
 	protected void updateProperties(XmlPersistenceUnit persistenceUnit) {
 		XmlProperties xmlProperties = persistenceUnit.getProperties();
 		
-		if (xmlProperties == null) {
-			clearProperties();
-			return;
-		}
-		
 		Iterator<IProperty> stream = properties();
-		Iterator<XmlProperty> stream2 = xmlProperties.getProperties().iterator();
+		Iterator<XmlProperty> stream2;
+		
+		if (xmlProperties == null) {
+			stream2 = EmptyIterator.instance();
+		}
+		else {
+			stream2 = xmlProperties.getProperties().iterator();
+		}
 		
 		while (stream.hasNext()) {
 			IProperty property = stream.next();
@@ -518,12 +555,12 @@ public class PersistenceUnit extends JpaContextNode
 				property.update(stream2.next());
 			}
 			else {
-				removeProperty(property);
+				removeProperty_(property);
 			}
 		}
 		
 		while (stream2.hasNext()) {
-			addProperty(createProperty(stream2.next()));
+			addProperty_(createProperty(stream2.next()));
 		}
 	}
 	

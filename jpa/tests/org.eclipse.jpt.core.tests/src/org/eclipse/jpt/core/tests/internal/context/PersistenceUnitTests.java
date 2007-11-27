@@ -595,6 +595,36 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
 	}
 	
+	public void testModifyExcludeUnlistedClasses() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// 1 - initial value is default
+		assertFalse(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
+		assertTrue(persistenceUnit.isExcludeUnlistedClassesDefault());
+		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		
+		// 2 - set value, resource changed
+		persistenceUnit.setExcludeUnlistedClasses(true);
+		
+		assertTrue(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.isExcludeUnlistedClassesDefault());
+		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		
+		persistenceUnit.setExcludeUnlistedClasses(false);
+		
+		assertTrue(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.isExcludeUnlistedClassesDefault());
+		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		
+		// 3 - set context to default, resource unset
+		persistenceUnit.setExcludeUnlistedClassesToDefault();
+		
+		assertFalse(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
+		assertTrue(persistenceUnit.isExcludeUnlistedClassesDefault());
+		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+	}
+	
 	public void testUpdateProperties1() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
@@ -655,6 +685,56 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlProperties.getProperties().remove(xmlProperty);
 		
 		assertEquals(CollectionTools.size(persistenceUnit.properties()), 0);
+	}
+	
+	public void testModifyProperties1() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// test there are none initially
+		assertNull(xmlPersistenceUnit.getProperties());
+		assertEquals(CollectionTools.size(persistenceUnit.properties()), 0);
+		
+		// add property, test that it's added to resource
+		persistenceUnit.addProperty();
+		
+		assertNotNull(xmlPersistenceUnit.getProperties());
+		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 1);
+		
+		// add another ...
+		persistenceUnit.addProperty();
+		
+		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 2);
+	}
+	
+	public void testModifyProperties2() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// add two properties and test that there are two existing in xml and context
+		XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
+		xmlPersistenceUnit.setProperties(xmlProperties);
+		XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
+		xmlProperty.setName("foo");
+		xmlProperty.setValue("bar");
+		xmlProperties.getProperties().add(xmlProperty);
+		xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
+		xmlProperty.setName("FOO");
+		xmlProperty.setValue("BAR");
+		xmlProperties.getProperties().add(xmlProperty);
+		
+		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 2);
+		assertEquals(CollectionTools.size(persistenceUnit.properties()), 2);
+		
+		// remove property from context, test that it's removed from resource
+		persistenceUnit.removeProperty(0);
+		
+		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 1);
+		
+		// remove another one.  test that properties object is nulled
+		persistenceUnit.removeProperty(0);
+		
+		assertNull(xmlPersistenceUnit.getProperties());
 	}
 	
 	public void testUpdatePropertyName() {

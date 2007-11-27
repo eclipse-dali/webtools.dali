@@ -62,7 +62,7 @@ public interface IPersistenceUnit extends IJpaContextNode
 	
 	/** 
 	 * Return true if the transaction type is default rather than overridden
-	 * (corresponds to empty tag in persistence.xml)
+	 * (corresponds to missing tag in persistence.xml)
 	 */
 	boolean isTransactionTypeDefault();
 	
@@ -230,36 +230,80 @@ public interface IPersistenceUnit extends IJpaContextNode
 	
 	// **************** exclude unlisted classes *******************************
 	
+	/**
+	 * String constant associated with changes to the persistence unit's 
+	 * "exclude unlisted classes" setting
+	 */
 	final static String EXCLUDE_UNLISTED_CLASSED_PROPERTY = "excludeUnlistedClasses";
 	
-	final static String DEFAULT_EXCLUDE_UNLISTED_CLASSED_PROPERTY = "defaultExcludeUnlistedClasses";
-	
+	/** 
+	 * Return the "exclude unlisted classes" setting of the persistence unit.
+	 */
 	boolean getExcludeUnlistedClasses();
 	
+	/** 
+	 * Set the "exclude unlisted classes" setting of the persistence unit.
+	 */
 	void setExcludeUnlistedClasses(boolean excludeUnlistedClasses);
 	
-	/** Return true if exclude unlisted classes is default rather than specified */
+	/** 
+	 * Return true if the "exclude unlisted classes" setting is default rather 
+	 * than overridden
+	 * (corresponds to missing tag in persistence.xml)
+	 */
 	boolean isExcludeUnlistedClassesDefault();
 	
-	/** Return the default exclude unlisted classes */
-	boolean getDefaultExcludeUnlistedClasses();
-	
-	/** Sets exclude unlisted classes to the default */
+	/** 
+	 * Set the "exclude unlisted classes" setting of the persistence unit to the 
+	 * default 
+	 */
 	void setExcludeUnlistedClassesToDefault();
+	
+	/**
+	 * String constant associated with changes to the persistence unit's 
+	 * default "exclude unlisted classes" setting (not typically changed)
+	 */
+	final static String DEFAULT_EXCLUDE_UNLISTED_CLASSED_PROPERTY = "defaultExcludeUnlistedClasses";
+	
+	/** 
+	 * Return the default "exclude unlisted classes" setting
+	 */
+	boolean getDefaultExcludeUnlistedClasses();
 	
 	
 	// **************** properties *********************************************
 	
+	/**
+	 * String constant associated with changes to the properties list
+	 */
 	final static String PROPERTIES_LIST = "properties";
 	
+	/**
+	 * Return an iterator on the list of properties.
+	 * This will not be null.
+	 */
 	ListIterator<IProperty> properties();
 	
-	void addProperty(IProperty property);
+	/**
+	 * Add a property to the persistence unit and return the object 
+	 * representing it.
+	 */
+	IProperty addProperty();
 	
-	void addProperty(int index, IProperty property);
+	/**
+	 * Add a property to the persistence unit at the specified index and 
+	 * return the object representing it.
+	 */
+	IProperty addProperty(int index);
 	
+	/**
+	 * Remove the property from the persistence unit.
+	 */
 	void removeProperty(IProperty property);
 	
+	/**
+	 * Remove the property at the specified index from the persistence unit.
+	 */
 	void removeProperty(int index);
 	
 	
