@@ -9,14 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import java.util.ArrayList;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceProxy;
-import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -31,21 +29,9 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.core.internal.IJpaProject.Config;
-import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
-import org.eclipse.jpt.core.internal.content.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.content.orm.OrmResource;
-import org.eclipse.jpt.core.internal.content.orm.resource.OrmArtifactEdit;
-import org.eclipse.jpt.core.internal.content.persistence.Persistence;
-import org.eclipse.jpt.core.internal.content.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceArtifactEdit;
-import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceResource;
-import org.eclipse.jpt.core.internal.facet.IJpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
@@ -55,10 +41,8 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
  * "Internal" global stuff.
  * Provide access via a singleton.
  * Hold and manage the JPA model (which holds all the JPA projects)
- * and the various global listeners.
- * All the methods that handle the events from the listeners are 'synchronized',
- * effectively single-threading them and forcing the events to be queued up
- * and handled one at a time. Hopefully we don't cause any deadlocks.
+ * and the various global listeners. We attempt to determine whether events
+ * are relevant before forwarding them to the JPA model.
  * 
  * Various things that cause us to add or remove a JPA project:
  * - Startup of the Dali plug-in will trigger all the JPA projects to be added
@@ -120,7 +104,7 @@ public class JpaModelManager {
 	/**
 	 * Return the singleton JPA model manager.
 	 */
-	public static final synchronized JpaModelManager instance() {
+	public static JpaModelManager instance() {
 		return INSTANCE;
 	}
 
@@ -139,7 +123,7 @@ public class JpaModelManager {
 	}
 
 
-	// ********** life-cycle controlled by the plug-in **********
+	// ********** plug-in controlled life-cycle **********
 
 	/**
 	 * internal - called by JptCorePlugin
@@ -147,7 +131,7 @@ public class JpaModelManager {
 	public synchronized void start() throws Exception {
 		debug("*** START JPA model manager ***");
 		try {
-			this.jpaModel = this.buildJpaModel();
+			this.jpaModel = new JpaModel();
 			ResourcesPlugin.getWorkspace().addResourceChangeListener(this.resourceChangeListener);
 			FacetedProjectFramework.addListener(this.facetedProjectListener, IFacetedProjectEvent.Type.values());
 			JavaCore.addElementChangedListener(this.javaElementChangeListener);
@@ -156,12 +140,6 @@ public class JpaModelManager {
 			this.log(ex);
 			this.stop();
 		}
-	}
-
-	private JpaModel buildJpaModel() throws CoreException {
-		ResourceProxyVisitor visitor = new ResourceProxyVisitor(this.buildJpaProjectConfigBuilder());
-		ResourcesPlugin.getWorkspace().getRoot().accept(visitor, IResource.NONE);
-		return new JpaModel(visitor.jpaProjectConfigs());
 	}
 
 	/**
@@ -197,13 +175,21 @@ public class JpaModelManager {
 	}
 
 	/**
+	 * Return the JPA file corresponding to the specified Eclipse file,
+	 * or null if unable to associate the specified file with a JPA file.
+	 */
+	public IJpaFile jpaFile(IFile file) throws CoreException {
+		return this.jpaModel.jpaFile(file);
+	}
+
+	/**
 	 * The JPA settings associated with the specified Eclipse project
 	 * have changed in such a way as to require the associated
-	 * JPA project to be completely rebuilt.
+	 * JPA project to be completely rebuilt
+	 * (e.g. when the user changes a project's JPA platform).
 	 */
-	public synchronized void rebuildJpaProject(IProject project) {
-		this.removeJpaProject(project);
-		this.addJpaProject(project);
+	public void rebuildJpaProject(IProject project) {
+		this.jpaModel.rebuildJpaProject(project);
 	}
 
 	/**
@@ -228,121 +214,6 @@ public class JpaModelManager {
 	}
 
 
-	// ********** JPA project configs **********
-
-	private ResourceProxyVisitor.JpaProjectConfigBuilder buildJpaProjectConfigBuilder() {
-		return new ResourceProxyVisitor.JpaProjectConfigBuilder() {
-			public Iterable<Config> buildJpaProjectConfigs(Iterable<IProject> jpaFacetedProjects) {
-				return JpaModelManager.this.buildJpaProjectConfigs(jpaFacetedProjects);
-			}
-		};
-	}
-
-	/* private */ Iterable<IJpaProject.Config> buildJpaProjectConfigs(Iterable<IProject> jpaFacetedProjects) {
-		ArrayList<IJpaProject.Config> configs = new ArrayList<IJpaProject.Config>();
-		for (IProject project : jpaFacetedProjects) {
-			configs.add(buildJpaProjectConfig(project));
-		}
-		return configs;
-	}
-
-	private IJpaProject.Config buildJpaProjectConfig(IProject project) {
-		SimpleJpaProjectConfig config = new SimpleJpaProjectConfig();
-		config.setProject(project);
-		config.setJpaPlatform(JptCorePlugin.jpaPlatform(project));
-		config.setConnectionProfileName(JptCorePlugin.connectionProfileName(project));
-		config.setDiscoverAnnotatedClasses(JptCorePlugin.discoverAnnotatedClasses(project));
-		return config;
-	}
-
-
-	// ********** resource proxy visitor **********
-
-	/**
-	 * Visit the workspace resource tree, collecting open Eclipse projects
-	 * that have a JPA facet.
-	 */
-	private static class ResourceProxyVisitor implements IResourceProxyVisitor {
-		private final JpaProjectConfigBuilder builder;
-		private final ArrayList<IProject> jpaFacetedProjects = new ArrayList<IProject>();
-
-		ResourceProxyVisitor(JpaProjectConfigBuilder builder) {
-			super();
-			this.builder = builder;
-		}
-
-		public boolean visit(IResourceProxy resourceProxy) throws CoreException {
-			switch (resourceProxy.getType()) {
-				case IResource.ROOT :
-					return true;  // all projects are in the "root"
-				case IResource.PROJECT :
-					this.checkProject(resourceProxy);
-					return false;  // no nested projects
-				default :
-					return false;
-			}
-		}
-
-		private void checkProject(IResourceProxy resourceProxy) {
-			if (resourceProxy.isAccessible()) {  // the project exists and is open
-				IProject project = (IProject) resourceProxy.requestResource();
-				if (JptCorePlugin.projectHasJpaFacet(project)) {
-					this.jpaFacetedProjects.add(project);
-				}
-			}
-		}
-
-		Iterable<IJpaProject.Config> jpaProjectConfigs() {
-			return this.builder.buildJpaProjectConfigs(this.jpaFacetedProjects);
-		}
-
-		@Override
-		public String toString() {
-			return StringTools.buildToStringFor(this);
-		}
-
-		// ********** member interface **********
-		interface JpaProjectConfigBuilder {
-			Iterable<IJpaProject.Config> buildJpaProjectConfigs(Iterable<IProject> jpaFacetedProjects);
-		}
-
-	}
-
-
-	// ********** internal **********
-
-	/**
-	 * Check whether the JPA facet has been added or removed.
-	 */
-	private void checkForTransition(IProject project) {
-		boolean jpaFacet = JptCorePlugin.projectHasJpaFacet(project);
-		boolean jpaProject = this.jpaModel.containsJpaProject(project);
-
-		if (jpaFacet) {
-			if ( ! jpaProject) {  // JPA facet added
-				this.addJpaProject(project);
-			}
-		} else {
-			if (jpaProject) {  // JPA facet removed
-				this.removeJpaProject(project);
-			}
-		}
-	}
-
-	private void addJpaProject(IProject project) {
-		this.jpaModel.addJpaProject(this.buildJpaProjectConfig(project));
-	}
-
-	/**
-	 * Remove the JPA project corresponding to the specified Eclipse project.
-	 * Do nothing if there is no corresponding JPA project.
-	 */
-	// TODO remove classpath items? persistence.xml? orm.xml?
-	private void removeJpaProject(IProject project) {
-		this.jpaModel.removeJpaProject(project);
-	}
-
-
 	// ********** resource changed **********
 
 	/**
@@ -350,7 +221,6 @@ public class JpaModelManager {
 	 *   - project close/delete
 	 *   - file add/remove
 	 */
-	//not synchronized, synchronizing once we know we are going to access JpaModel
 	/* private */ void resourceChanged(IResourceChangeEvent event) {
 		if (! (event.getSource() instanceof IWorkspace)) {
 			return;  // this probably shouldn't happen...
@@ -376,7 +246,7 @@ public class JpaModelManager {
 	 */
 	private void resourcePreDelete(IResourceChangeEvent event) {
 		debug("Resource (Project) PRE_DELETE: " + event.getResource());
-		this.removeJpaProject((IProject) event.getResource());
+		this.jpaModel.projectPreDelete((IProject) event.getResource());
 	}
 
 	/**
@@ -454,7 +324,7 @@ public class JpaModelManager {
 	private void checkForOpenedProject(IProject project, IResourceDelta delta) {
 		switch (delta.getKind()) {
 			case IResourceDelta.CHANGED : 
-				this.checkForOpenedProject2(project, delta);
+				this.checkDeltaFlagsForOpenedProject(project, delta);
 				break;
 			case IResourceDelta.REMOVED :  // already handled with the PRE_DELETE event
 			case IResourceDelta.ADDED :  // already handled with the facet POST_INSTALL event
@@ -473,10 +343,10 @@ public class JpaModelManager {
 	 * also triggers a Facet PROJECT_MODIFIED event and that is where we add
 	 * the JPA project, not here
 	 */
-	private synchronized void checkForOpenedProject2(IProject project, IResourceDelta delta) {
+	private void checkDeltaFlagsForOpenedProject(IProject project, IResourceDelta delta) {
 		if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.OPEN) && project.isOpen()) {
 			debug("\tProject CHANGED - OPEN: " + project.getName());
-			this.checkForTransition(project);
+			this.jpaModel.checkForTransition(project);
 		}
 	}
 
@@ -489,7 +359,7 @@ public class JpaModelManager {
 	 *   - un-install of JPA facet
 	 *   - any other appearance or disappearance of the JPA facet
 	 */
-	/* private */ synchronized void facetedProjectChanged(IFacetedProjectEvent event) {
+	/* private */ void facetedProjectChanged(IFacetedProjectEvent event) {
 		switch (event.getType()) {
 			case POST_INSTALL :
 				this.facetedProjectPostInstall((IProjectFacetActionEvent) event);
@@ -508,69 +378,15 @@ public class JpaModelManager {
 	private void facetedProjectPostInstall(IProjectFacetActionEvent event) {
 		debug("Facet POST_INSTALL: " + event.getProjectFacet());
 		if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
-			this.jpaFacetedProjectPostInstall(event);
+			this.jpaModel.jpaFacetedProjectPostInstall(event);
 		}
-	}
-
-	private void jpaFacetedProjectPostInstall(IProjectFacetActionEvent event) {
-		IProject project = event.getProject().getProject();
-		IDataModel dataModel = (IDataModel) event.getActionConfig();
-
-		this.createPersistenceXml(project);
-
-		if (dataModel.getBooleanProperty(IJpaFacetDataModelProperties.CREATE_ORM_XML)) {
-			this.createOrmXml(project);
-		}
-
-		// assume(?) this is the first event to indicate we need to add the JPA project to the JPA model
-		this.addJpaProject(project);
-	}
-
-	private void createPersistenceXml(IProject project) {
-		PersistenceArtifactEdit pae = 
-				PersistenceArtifactEdit.getArtifactEditForWrite(project);
-		PersistenceResource resource = pae.getPersistenceResource(JptCorePlugin.persistenceXmlDeploymentURI(project));
-		
-		// 202811 - do not add content if it is already present
-		if (resource.getPersistence() == null) {
-			Persistence persistence = PersistenceFactory.eINSTANCE.createPersistence();
-			persistence.setVersion("1.0");
-			PersistenceUnit pUnit = PersistenceFactory.eINSTANCE.createPersistenceUnit();
-			pUnit.setName(project.getName());
-			persistence.getPersistenceUnits().add(pUnit);
-			resource.getContents().add(persistence);
-			pae.save(null);
-		}
-		
-		pae.dispose();
-	}
-
-	private void createOrmXml(IProject project) {
-		OrmArtifactEdit oae =
-				OrmArtifactEdit.getArtifactEditForWrite(project);
-		OrmResource resource = oae.getOrmResource(JptCorePlugin.ormXmlDeploymentURI(project));
-
-		// 202811 - do not add content if it is already present
-		if (resource.getEntityMappings() == null) {
-			EntityMappingsInternal entityMappings = OrmFactory.eINSTANCE.createEntityMappingsInternal();
-			entityMappings.setVersion("1.0");
-			resource.getContents().add(entityMappings);
-			oae.save(null);
-		}
-		
-		oae.dispose();
 	}
 
 	private void facetedProjectPreUninstall(IProjectFacetActionEvent event) {
 		debug("Facet PRE_UNINSTALL: " + event.getProjectFacet());
 		if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
-			this.jpaFacetedProjectPreUninstall(event);
+			this.jpaModel.jpaFacetedProjectPreUninstall(event);
 		}
-	}
-
-	private void jpaFacetedProjectPreUninstall(IProjectFacetActionEvent event) {
-		// assume(?) this is the first event to indicate we need to remove the JPA project to the JPA model
-		this.removeJpaProject(event.getProject().getProject());
 	}
 
 	/**
@@ -582,7 +398,7 @@ public class JpaModelManager {
 	 */
 	private void facetedProjectModified(IProject project) {
 		debug("Facet PROJECT_MODIFIED: " + project.getName());
-		this.checkForTransition(project);
+		this.jpaModel.checkForTransition(project);
 	}
 
 
@@ -591,28 +407,28 @@ public class JpaModelManager {
 	/**
 	 * Forward the event to the JPA model.
 	 */
-	// not synchronized because of a conflict between facet install and 
-	// java element change notifiation.  synchronize on JpaModel instead.
 	/* private */ void javaElementChanged(ElementChangedEvent event) {
-		if (isAddProjectNotOpenEvent(event)) {
+		if (this.eventIndicatesProjectAddedButNotOpen(event)) {
 			return;
 		}
 		this.jpaModel.javaElementChanged(event);
 	}
 
 	//209275 - This particular event only causes problems in a clean workspace the first time a JPA project
-	//is created through the JPA wizard.  The second time a JPA project is created, this event occurs, but 
+	//is created through the JPA wizard. The second time a JPA project is created, this event occurs, but 
 	//it occurs as the wizard is closing so it does not cause a deadlock.
-	private boolean isAddProjectNotOpenEvent(ElementChangedEvent event) {
+	private boolean eventIndicatesProjectAddedButNotOpen(ElementChangedEvent event) {
 		IJavaElementDelta delta = event.getDelta();
 		if (delta.getKind() == IJavaElementDelta.CHANGED) {
 			if (delta.getElement().getElementType() == IJavaElement.JAVA_MODEL) {
-				if (delta.getAffectedChildren().length == 1) {
-					IJavaElementDelta childDelta = delta.getAffectedChildren()[0];
+				IJavaElementDelta[] children = delta.getAffectedChildren();
+				if (children.length == 1) {
+					IJavaElementDelta childDelta = children[0];
 					if (childDelta.getKind() == IJavaElementDelta.ADDED) {
-						if (childDelta.getElement().getElementType() == IJavaElement.JAVA_PROJECT) {
+						IJavaElement childElement = childDelta.getElement();
+						if (childElement.getElementType() == IJavaElement.JAVA_PROJECT) {
 							if (childDelta.getAffectedChildren().length == 0) {
-								if (!((IOpenable) childDelta.getElement()).isOpen()) {
+								if (!((IOpenable) childElement).isOpen()) {
 									return true;
 								}
 							}
@@ -630,7 +446,7 @@ public class JpaModelManager {
 	 * When the "Default JPA Lib" preference changes,
 	 * update the appropriate JDT Core classpath variable.
 	 */
-	/* private */ synchronized void preferenceChanged(PropertyChangeEvent event) {
+	/* private */ void preferenceChanged(PropertyChangeEvent event) {
 		if (event.getProperty() == JpaPreferenceConstants.PREF_DEFAULT_JPA_LIB) {
 			try {
 				JavaCore.setClasspathVariable("DEFAULT_JPA_LIB", new Path((String) event.getNewValue()), null);
@@ -719,6 +535,7 @@ public class JpaModelManager {
 
 	// ********** debug **********
 
+	// @see JpaModelTests#testDEBUG()
 	private static final boolean DEBUG = false;
 
 	private static void debug(String message) {
