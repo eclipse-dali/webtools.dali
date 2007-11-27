@@ -20,8 +20,15 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
+import org.eclipse.jpt.core.internal.context.base.IClassRef;
+import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
@@ -41,7 +48,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		persistenceArtifactEdit = PersistenceArtifactEdit.getArtifactEditForWrite(getJavaProject().getProject());
+		this.persistenceArtifactEdit = PersistenceArtifactEdit.getArtifactEditForWrite(getJavaProject().getProject());
 		waitForWorkspaceJobs();
 	}
 	
@@ -57,8 +64,8 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected void tearDown() throws Exception {
 		//at least delete the project from the workspace since, deleting from the file system doesn't work well.
 		//tests run too slow otherwise because so many projects are created in the workspace
-		persistenceArtifactEdit.dispose();
-		persistenceArtifactEdit = null;
+		this.persistenceArtifactEdit.dispose();
+		this.persistenceArtifactEdit = null;
 		getJavaProject().getProject().delete(false, true, null);
 		super.tearDown();
 	}
@@ -99,9 +106,38 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected PersistenceResource persistenceResource() {
-		return persistenceArtifactEdit.getResource();
+		return this.persistenceArtifactEdit.getResource();
 	}
 	
+	protected XmlPersistenceUnit xmlPersistenceUnit() {
+		PersistenceResource prm = persistenceResource();
+		return prm.getPersistence().getPersistenceUnits().get(0);
+	}
+	
+	protected IPersistenceUnit persistenceUnit() {
+		return jpaContent().getPersistenceXml().getPersistence().persistenceUnits().next();
+	}
+	
+	protected IClassRef classRef() {
+		return persistenceUnit().classRefs().next();
+	}
+	
+	protected IJavaPersistentType javaPersistentType() {
+		return classRef().getJavaPersistentType();
+	}
+	
+	protected IEntity javaEntity() {
+		return (IEntity) javaPersistentType().getMapping();
+	}
+	
+	protected void addXmlClassRef(String className) {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		
+		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
+		xmlClassRef.setJavaClass(className);
+		xmlPersistenceUnit.getClasses().add(xmlClassRef);
+	}
+
 	protected IBaseJpaContent jpaContent() {
 		return (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
 	}

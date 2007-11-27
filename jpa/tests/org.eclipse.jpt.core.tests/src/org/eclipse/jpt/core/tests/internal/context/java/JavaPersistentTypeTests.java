@@ -16,7 +16,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
-import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
@@ -24,10 +23,6 @@ import org.eclipse.jpt.core.internal.resource.java.Embeddable;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -200,31 +195,6 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		
 	public JavaPersistentTypeTests(String name) {
 		super(name);
-	}
-	
-	protected XmlPersistenceUnit xmlPersistenceUnit() {
-		PersistenceResource prm = persistenceResource();
-		return prm.getPersistence().getPersistenceUnits().get(0);
-	}
-	
-	protected IPersistenceUnit persistenceUnit() {
-		return jpaContent().getPersistenceXml().getPersistence().persistenceUnits().next();
-	}
-	
-	protected IClassRef classRef() {
-		return persistenceUnit().classRefs().next();
-	}
-	
-	protected IJavaPersistentType javaPersistentType() {
-		return classRef().getJavaPersistentType();
-	}
-	
-	protected void addXmlClassRef(String className) {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		
-		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
-		xmlClassRef.setJavaClass(className);
-		xmlPersistenceUnit.getClasses().add(xmlClassRef);
 	}
 	
 	public void testGetName() throws Exception {

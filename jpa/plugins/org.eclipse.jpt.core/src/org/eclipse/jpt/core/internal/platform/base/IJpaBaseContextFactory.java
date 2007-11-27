@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaGeneratedValue;
 import org.eclipse.jpt.core.internal.context.java.IJavaIdMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
+import org.eclipse.jpt.core.internal.context.java.IJavaMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPrimaryKeyJoinColumn;
@@ -78,6 +79,8 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	IJavaTypeMapping createJavaNullTypeMapping(IJavaPersistentType parent);
 
 	IJavaEntity createJavaEntity(IJavaPersistentType parent);
+	
+	IJavaMappedSuperclass createJavaMappedSuperclass(IJavaPersistentType parent);
 	
 	IJavaEmbeddable createJavaEmbeddable(IJavaPersistentType parent);
 	

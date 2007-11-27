@@ -13,15 +13,13 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
-import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorColumn;
@@ -35,10 +33,6 @@ import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumns;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTables;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -251,36 +245,7 @@ public class JavaEntityTests extends ContextModelTestCase
 	public JavaEntityTests(String name) {
 		super(name);
 	}
-	
-	protected XmlPersistenceUnit xmlPersistenceUnit() {
-		PersistenceResource prm = persistenceResource();
-		return prm.getPersistence().getPersistenceUnits().get(0);
-	}
-	
-	protected IPersistenceUnit persistenceUnit() {
-		return jpaContent().getPersistenceXml().getPersistence().persistenceUnits().next();
-	}
-	
-	protected IClassRef classRef() {
-		return persistenceUnit().classRefs().next();
-	}
-	
-	protected IJavaPersistentType javaPersistentType() {
-		return classRef().getJavaPersistentType();
-	}
-	
-	protected IEntity javaEntity() {
-		return (IEntity) javaPersistentType().getMapping();
-	}
-	
-	protected void addXmlClassRef(String className) {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		
-		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
-		xmlClassRef.setJavaClass(className);
-		xmlPersistenceUnit.getClasses().add(xmlClassRef);
-	}
-	
 	public void testGetSpecifiedNameNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -677,7 +642,25 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 	
 	public void testAssociatedTableNamesIncludingInherited() throws Exception {
+		createTestEntityWithSecondaryTables();
+		createTestSubType();
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IEntity parentEntity = javaEntity().rootEntity();
+		assertEquals(3, CollectionTools.size(parentEntity.associatedTableNamesIncludingInherited()));
+		Iterator<String> associatedTables = parentEntity.associatedTableNamesIncludingInherited();
+		String table1 = associatedTables.next();
+		String table2 = associatedTables.next();
+		String table3 = associatedTables.next();
+		assertEquals(TYPE_NAME, table1);
+		assertEquals("foo", table2);
+		assertEquals("bar", table3);
 
+		IEntity childEntity = javaEntity();
+		//TODO probably want this to be 3, since in this case the child descriptor really uses the
+		//parent table because it is single table inheritance strategy.  Not sure yet how to deal with this.
+		assertEquals(4, CollectionTools.size(childEntity.associatedTableNamesIncludingInherited()));
 	}
 	
 	public void testAddSecondaryTableToResourceModel() throws Exception {
@@ -1047,5 +1030,54 @@ public class JavaEntityTests extends ContextModelTestCase
 		IPrimaryKeyJoinColumn defaultPkJoinColumn = javaEntity().defaultPrimaryKeyJoinColumns().next();
 		assertTrue(defaultPkJoinColumn.isVirtual());
 	}
+
+	public void testOverridableAttributeNames() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+	
+		Iterator<String> overridableAttributeNames = javaEntity().overridableAttributeNames();
+		assertFalse(overridableAttributeNames.hasNext());
+	}
+	
+	public void testOverridableAssociationNames() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		Iterator<String> overridableAssociationNames = javaEntity().overridableAssociationNames();
+		assertFalse(overridableAssociationNames.hasNext());
+	}
+	
+	public void testTableNameIsInvalid() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		assertFalse(javaEntity().tableNameIsInvalid(TYPE_NAME));
+		assertTrue(javaEntity().tableNameIsInvalid("FOO"));
+		
+		javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("BAR");
+		
+		assertFalse(javaEntity().tableNameIsInvalid("BAR"));
+	}
+	
+	public void testAttributeMappingKeyAllowed() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		IEntity entity = (IEntity) javaPersistentType().getMapping();
+		assertTrue(entity.attributeMappingKeyAllowed(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(entity.attributeMappingKeyAllowed(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(entity.attributeMappingKeyAllowed(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(entity.attributeMappingKeyAllowed(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(entity.attributeMappingKeyAllowed(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(entity.attributeMappingKeyAllowed(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(entity.attributeMappingKeyAllowed(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(entity.attributeMappingKeyAllowed(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(entity.attributeMappingKeyAllowed(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(entity.attributeMappingKeyAllowed(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY));
+	}
+	
+//	Iterator<String> allOverridableAttributeNames();
+//
+//	Iterator<String> allOverridableAssociationNames();
 
 }

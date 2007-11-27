@@ -52,6 +52,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaGeneratedValue;
 import org.eclipse.jpt.core.internal.context.java.IJavaIdMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
+import org.eclipse.jpt.core.internal.context.java.IJavaMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPrimaryKeyJoinColumn;
@@ -70,6 +71,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaEntity;
 import org.eclipse.jpt.core.internal.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.core.internal.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.java.JavaNullAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentAttribute;
@@ -230,6 +232,10 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IJavaEntity createJavaEntity(IJavaPersistentType parent) {
 		return new JavaEntity(parent);
+	}
+
+	public IJavaMappedSuperclass createJavaMappedSuperclass(IJavaPersistentType parent) {
+		return new JavaMappedSuperclass(parent);
 	}
 
 	public IJavaEmbeddable createJavaEmbeddable(IJavaPersistentType parent) {

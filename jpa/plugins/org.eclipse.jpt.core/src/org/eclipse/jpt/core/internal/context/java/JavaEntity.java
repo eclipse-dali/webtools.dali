@@ -884,12 +884,12 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //		// if we encounter only a single primary key column name, return it
 //		return pkAttributeName;
 //	}
-//
-//	@Override
-//	public boolean tableNameIsInvalid(String tableName) {
-//		return !CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
-//	}
-//
+
+	@Override
+	public boolean tableNameIsInvalid(String tableName) {
+		return !CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
+	}
+
 	@Override
 	public Iterator<ITable> associatedTables() {
 		return new CompositeIterator<ITable>(this.getTable(), this.secondaryTables());

@@ -33,6 +33,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaEmbeddableProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaEntityProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaIdMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclassProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaNullAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
@@ -148,7 +149,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 */
 	protected void addJavaTypeMappingProvidersTo(Collection<IJavaTypeMappingProvider> providers) {
 		providers.add(JavaEntityProvider.instance());
-		//providers.add(JavaMappedSuperclassProvider.instance());
+		providers.add(JavaMappedSuperclassProvider.instance());
 		providers.add(JavaEmbeddableProvider.instance());
 		providers.add(JavaNullTypeMappingProvider.instance());
 	}

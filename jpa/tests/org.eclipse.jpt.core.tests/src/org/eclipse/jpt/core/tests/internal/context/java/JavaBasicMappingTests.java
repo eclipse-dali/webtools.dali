@@ -15,12 +15,8 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.context.base.EnumType;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
-import org.eclipse.jpt.core.internal.context.base.IClassRef;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
 import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.Enumerated;
@@ -29,10 +25,6 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResour
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.Lob;
 import org.eclipse.jpt.core.internal.resource.java.Temporal;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -180,36 +172,6 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 	public JavaBasicMappingTests(String name) {
 		super(name);
 	}
-	
-	protected XmlPersistenceUnit xmlPersistenceUnit() {
-		PersistenceResource pr = persistenceResource();
-		return pr.getPersistence().getPersistenceUnits().get(0);
-	}
-	
-	protected IPersistenceUnit persistenceUnit() {
-		return jpaContent().getPersistenceXml().getPersistence().persistenceUnits().next();
-	}
-	
-	protected IClassRef classRef() {
-		return persistenceUnit().classRefs().next();
-	}
-	
-	protected IJavaPersistentType javaPersistentType() {
-		return classRef().getJavaPersistentType();
-	}
-	
-	protected IEntity javaEntity() {
-		return (IEntity) javaPersistentType().getMapping();
-	}
-	
-	protected void addXmlClassRef(String className) {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		
-		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
-		xmlClassRef.setJavaClass(className);
-		xmlPersistenceUnit.getClasses().add(xmlClassRef);
-	}
-
 	
 	public void testDefaultBasicGetDefaultFetch() throws Exception {
 		createTestEntity();
