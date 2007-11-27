@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
@@ -203,25 +204,47 @@ public class PersistenceUnit extends JpaContextNode
 		return new CloneListIterator<IMappingFileRef>(mappingFileRefs);
 	}
 	
-	public void addMappingFileRef(IMappingFileRef mappingFileRef) {
-		mappingFileRefs.add(mappingFileRef);
-		fireListChanged(MAPPING_FILE_REF_LIST);
+	public IMappingFileRef addMappingFileRef() {
+		return addMappingFileRef(mappingFileRefs.size());
 	}
 	
-	public void addMappingFileRef(int index, IMappingFileRef mappingFileRef) {
+	public IMappingFileRef addMappingFileRef(int index) {
+		XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
+		IMappingFileRef mappingFileRef = createMappingFileRef(xmlMappingFileRef);
 		mappingFileRefs.add(index, mappingFileRef);
+		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 		fireListChanged(MAPPING_FILE_REF_LIST);
+		return mappingFileRef;
 	}
 	
 	public void removeMappingFileRef(IMappingFileRef mappingFileRef) {
-		mappingFileRefs.remove(mappingFileRef);
-		fireListChanged(MAPPING_FILE_REF_LIST);
+		removeMappingFileRef(mappingFileRefs.indexOf(mappingFileRef));
 	}
 	
 	public void removeMappingFileRef(int index) {
 		mappingFileRefs.remove(index);
+		xmlPersistenceUnit.getMappingFiles().remove(index);
 		fireListChanged(MAPPING_FILE_REF_LIST);
 	}
+	
+	protected void addMappingFileRef_(IMappingFileRef mappingFileRef) {
+		addMappingFileRef_(mappingFileRefs.size(), mappingFileRef);
+	}
+	
+	protected void addMappingFileRef_(int index, IMappingFileRef mappingFileRef) {
+		mappingFileRefs.add(index, mappingFileRef);
+		fireListChanged(MAPPING_FILE_REF_LIST);
+	}
+	
+	protected void removeMappingFileRef_(IMappingFileRef mappingFileRef) {
+		removeMappingFileRef_(mappingFileRefs.indexOf(mappingFileRef));
+	}
+	
+	protected void removeMappingFileRef_(int index) {
+		mappingFileRefs.remove(index);
+		fireListChanged(MAPPING_FILE_REF_LIST);
+	}
+	
 	
 	// **************** class refs *********************************************
 	
@@ -229,22 +252,43 @@ public class PersistenceUnit extends JpaContextNode
 		return new CloneListIterator<IClassRef>(classRefs);
 	}
 	
-	public void addClassRef(IClassRef classRef) {
-		classRefs.add(classRef);
+	public IClassRef addClassRef() {
+		return addClassRef(classRefs.size());
+	}
+	
+	public IClassRef addClassRef(int index) {
+		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
+		IClassRef classRef = createClassRef(xmlClassRef);
+		classRefs.add(index, classRef);
+		xmlPersistenceUnit.getClasses().add(xmlClassRef);
+		fireListChanged(CLASS_REF_LIST);
+		return classRef;
+	}
+	
+	public void removeClassRef(IClassRef classRef) {
+		removeClassRef(classRefs.indexOf(classRef));
+	}
+	
+	public void removeClassRef(int index) {
+		classRefs.remove(index);
+		xmlPersistenceUnit.getClasses().remove(index);
 		fireListChanged(CLASS_REF_LIST);
 	}
 	
-	public void addClassRef(int index, IClassRef classRef) {
+	protected void addClassRef_(IClassRef classRef) {
+		addClassRef_(classRefs.size(), classRef);
+	}
+	
+	protected void addClassRef_(int index, IClassRef classRef) {
 		classRefs.add(index, classRef);
 		fireListChanged(CLASS_REF_LIST);
 	}
 	
-	public void removeClassRef(IClassRef classRef) {
-		classRefs.remove(classRef);
-		fireListChanged(CLASS_REF_LIST);
+	protected void removeClassRef_(IClassRef classRef) {
+		removeClassRef_(classRefs.indexOf(classRef));
 	}
 	
-	public void removeClassRef(int index) {
+	protected void removeClassRef_(int index) {
 		classRefs.remove(index);
 		fireListChanged(CLASS_REF_LIST);
 	}
@@ -408,12 +452,12 @@ public class PersistenceUnit extends JpaContextNode
 				mappingFileRef.update(stream2.next());
 			}
 			else {
-				removeMappingFileRef(mappingFileRef);
+				removeMappingFileRef_(mappingFileRef);
 			}
 		}
 		
 		while (stream2.hasNext()) {
-			addMappingFileRef(createMappingFileRef(stream2.next()));
+			addMappingFileRef_(createMappingFileRef(stream2.next()));
 		}
 	}
 	
@@ -433,12 +477,12 @@ public class PersistenceUnit extends JpaContextNode
 				classRef.update(stream2.next());
 			}
 			else {
-				removeClassRef(classRef);
+				removeClassRef_(classRef);
 			}
 		}
 		
 		while (stream2.hasNext()) {
-			addClassRef(createClassRef(stream2.next()));
+			addClassRef_(createClassRef(stream2.next()));
 		}
 	}
 	

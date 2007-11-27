@@ -86,67 +86,145 @@ public interface IPersistenceUnit extends IJpaContextNode
 	
 	// **************** description ********************************************
 	
+	/**
+	 * String constant associated with changes to the persistence unit's description
+	 */
 	final static String DESCRIPTION_PROPERTY = "description";
 	
+	/**
+	 * Return the description of the persistence unit.
+	 */
 	String getDescription();
 	
+	/**
+	 * Set the description of the persistence unit.
+	 */
 	void setDescription(String description);
 	
 	
 	// **************** provider ********************************************
 	
+	/**
+	 * String constant associated with changes to the persistence unit's provider
+	 */
 	final static String PROVIDER_PROPERTY = "provider";
 	
+	/**
+	 * Return the provider of the persistence unit.
+	 */
 	String getProvider();
 	
+	/**
+	 * Set the provider of the persistence unit.
+	 */
 	void setProvider(String provider);
 	
 	
 	// **************** jta data source ****************************************
 	
+	/**
+	 * String constant associated with changes to the persistence unit's JTA data source
+	 */
 	final static String JTA_DATA_SOURCE_PROPERTY = "jtaDataSource";
 	
+	/**
+	 * Return the JTA data source of the persistence unit.
+	 */
 	String getJtaDataSource();
 	
+	/**
+	 * Set the JTA data source of the persistence unit.
+	 */
 	void setJtaDataSource(String jtaDataSource);
 	
 	
 	// **************** non-jta data source ************************************
 	
+	/**
+	 * String constant associated with changes to the persistence unit's non-JTA data source
+	 */
 	final static String NON_JTA_DATA_SOURCE_PROPERTY = "nonJtaDataSource";
 	
+	/**
+	 * Return the non-JTA data source of the persistence unit.
+	 */
 	String getNonJtaDataSource();
 	
+	/**
+	 * Set the non-JTA data source of the persistence unit.
+	 */
 	void setNonJtaDataSource(String nonJtaDataSource);
 	
 	
 	// **************** mapping file refs **************************************
 	
+	/**
+	 * String constant associated with changes to the mapping file refs list
+	 */
 	final static String MAPPING_FILE_REF_LIST = "mappingFileRefs";
 	
+	/**
+	 * Return an iterator on the list of mapping file refs.
+	 * This will not be null.
+	 */
 	ListIterator<IMappingFileRef> mappingFileRefs();
 	
-	void addMappingFileRef(IMappingFileRef mappingFileRef);
+	/**
+	 * Add a mapping file ref to the persistence unit and return the object 
+	 * representing it.
+	 */
+	IMappingFileRef addMappingFileRef();
 	
-	void addMappingFileRef(int index, IMappingFileRef mappingFileRef);
+	/**
+	 * Add a mapping file ref to the persistence unit at the specified index and 
+	 * return the object representing it.
+	 */
+	IMappingFileRef addMappingFileRef(int index);
 	
+	/**
+	 * Remove the mapping file ref from the persistence unit.
+	 */
 	void removeMappingFileRef(IMappingFileRef mappingFileRef);
 	
+	/**
+	 * Remove the mapping file ref at the specified index from the persistence unit.
+	 */
 	void removeMappingFileRef(int index);
 	
 	
 	// **************** class refs *********************************************
 	
+	/**
+	 * String constant associated with changes to the class refs list
+	 */
 	final static String CLASS_REF_LIST = "classRefs";
 	
+	/**
+	 * Return an iterator on the list of class refs.
+	 * This will not be null.
+	 */
 	ListIterator<IClassRef> classRefs();
 	
-	void addClassRef(IClassRef classRef);
+	/**
+	 * Add a class ref to the persistence unit and return the object 
+	 * representing it.
+	 */
+	IClassRef addClassRef();
 	
-	void addClassRef(int index, IClassRef classRef);
+	/**
+	 * Add a class ref to the persistence unit at the specified index and 
+	 * return the object representing it.
+	 */
+	IClassRef addClassRef(int index);
 	
+	/**
+	 * Remove the class ref from the persistence unit.
+	 */
 	void removeClassRef(IClassRef classRef);
 	
+	/**
+	 * Remove the class ref at the specified index from the persistence unit.
+	 */
 	void removeClassRef(int index);
 	
 	
