@@ -8,29 +8,29 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.tests.internal.context;
+package org.eclipse.jpt.core.tests.internal.context.persistence;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.core.tests.internal.context.java.JptCoreContextJavaModelTests;
-import org.eclipse.jpt.core.tests.internal.context.persistence.JptCorePersistenceContextModelTests;
 
-public class JptCoreContextModelTests extends TestCase
+public class JptCorePersistenceContextModelTests extends TestCase
 {
 	public static Test suite() {
 		return suite(true);
 	}
 	
 	public static Test suite(boolean all) {
-		TestSuite suite = new TestSuite(JptCoreContextModelTests.class.getName());
-		suite.addTest(JptCorePersistenceContextModelTests.suite(all));
-		suite.addTest(JptCoreContextJavaModelTests.suite(all));
+		TestSuite suite = new TestSuite(JptCorePersistenceContextModelTests.class.getName());
+		suite.addTestSuite(BaseJpaContentTests.class);
+		suite.addTestSuite(PersistenceXmlTests.class);
+		suite.addTestSuite(PersistenceTests.class);
+		suite.addTestSuite(PersistenceUnitTests.class);
+		suite.addTestSuite(ClassRefTests.class);
 		return suite;
 	}
-
-	private JptCoreContextModelTests() {
-		super();
+	
+	private JptCorePersistenceContextModelTests() {
 		throw new UnsupportedOperationException();
 	}
 }

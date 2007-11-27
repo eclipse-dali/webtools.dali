@@ -8,7 +8,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.tests.internal.context;
+package org.eclipse.jpt.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IProperty;
@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTransactionType;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlProperties;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlProperty;
+import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class PersistenceUnitTests extends ContextModelTestCase

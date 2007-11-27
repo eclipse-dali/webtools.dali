@@ -8,7 +8,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.tests.internal.context;
+package org.eclipse.jpt.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class ClassRefTests extends ContextModelTestCase
 {
