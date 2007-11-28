@@ -131,8 +131,8 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		return CollectionTools.size(primaryKeyJoinColumns());
 	}
 	
-	public ITypeMapping typeMapping() {
-		return (ITypeMapping) parent();
+	public IJavaEntity javaEntity() {
+		return (IJavaEntity) parent();
 	}
 	
 	
@@ -225,7 +225,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		}
 
 		public ITypeMapping typeMapping() {
-			return JavaSecondaryTable.this.typeMapping();
+			return JavaSecondaryTable.this.javaEntity();
 		}
 
 		public Table dbTable(String tableName) {
@@ -246,6 +246,14 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		
 		public int indexOf(IAbstractJoinColumn joinColumn) {
 			return CollectionTools.indexOf(JavaSecondaryTable.this.primaryKeyJoinColumns(), joinColumn);
+		}
+		
+		public String defaultColumnName() {
+			if (joinColumnsSize() != 1) {
+				return null;
+			}
+			return javaEntity().parentEntity().primaryKeyColumnName();
+
 		}
 	}
 

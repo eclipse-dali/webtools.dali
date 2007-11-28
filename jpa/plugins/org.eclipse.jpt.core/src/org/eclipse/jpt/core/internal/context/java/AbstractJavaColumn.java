@@ -35,12 +35,13 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 	
 	protected Boolean specifiedUpdatable;
 
-	protected AbstractJavaColumn(IJavaJpaContextNode parent, Owner owner) {
+	protected AbstractJavaColumn(IJavaJpaContextNode parent, IAbstractColumn.Owner owner) {
 		super(parent, owner);
 	}
 	
 	@Override
 	protected void initializeFromResource(T column) {
+		super.initializeFromResource(column);
 		this.defaultTable = this.defaultTable();
 		this.specifiedTable = this.specifiedTable(column);
 		this.specifiedUnique = this.specifiedUnique(column);
@@ -49,8 +50,14 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 		this.specifiedUpdatable = this.specifiedUpdatable(column);
 	}
 	
+	@Override
+	protected IAbstractColumn.Owner owner() {
+		return (IAbstractColumn.Owner) super.owner();
+	}
+
 	//************** IAbstractColumn implementation *******************
 	
+
 	public String getTable() {
 		return (this.getSpecifiedTable() == null) ? getDefaultTable() : this.getSpecifiedTable();
 	}
@@ -207,7 +214,9 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 		this.setSpecifiedUpdatable(this.specifiedUpdatable(column));
 	}
 
-	protected abstract String defaultTable();
+	protected String defaultTable() {
+		return this.owner().defaultTableName();
+	}
 	
 	protected String specifiedTable(AbstractColumn column) {
 		return column.getTable();

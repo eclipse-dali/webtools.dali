@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
+import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.Enumerated;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.Lob;
@@ -32,7 +33,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	
 	protected EnumType specifiedEnumerated;
 	
-	protected IJavaColumn column;
+	protected final IJavaColumn column;
 	
 	protected boolean lob;
 
@@ -44,19 +45,19 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	}
 
 	protected IJavaColumn createJavaColumn() {
-		return jpaFactory().createJavaColumn(this, buildColumnOwner());
+		return jpaFactory().createJavaColumn(this, this);
 	}
 
 	@Override
 	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.initializeFromResource(persistentAttributeResource);
-		this.column.initializeFromResource(persistentAttributeResource);
+		this.column.initializeFromResource(this.columnResource());
 		Basic basicResource = this.basicResource();
 		this.specifiedFetch = this.specifiedFetchType(basicResource);
 		this.specifiedOptional = this.specifiedOptional(basicResource);
-		this.specifiedEnumerated = this.specifiedEnumerated(enumeratedResource());
+		this.specifiedEnumerated = this.specifiedEnumerated(this.enumeratedResource());
 		this.lob = this.lob(persistentAttributeResource);
-		this.temporal = this.temporal(temporalResource());
+		this.temporal = this.temporal(this.temporalResource());
 	}
 	
 	protected Basic basicResource() {
@@ -71,6 +72,10 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		return (Temporal) this.persistentAttributeResource.nonNullAnnotation(Temporal.ANNOTATION_NAME);
 	}
 
+	public Column columnResource() {
+		return (Column) this.persistentAttributeResource.nonNullAnnotation(Column.ANNOTATION_NAME);
+	}
+	
 	//************** IJavaAttributeMapping implementation ***************
 	public String getKey() {
 		return IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
@@ -80,7 +85,15 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	public String annotationName() {
 		return Basic.ANNOTATION_NAME;
 	}
+	
+	public String defaultColumnName() {
+		return attributeName();
+	}
 
+	public String defaultTableName() {
+		return typeMapping().getTableName();
+	}
+	
 	//************** IBasicMapping implementation ***************
 
 	public IJavaColumn getColumn() {
@@ -179,13 +192,13 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	@Override
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.update(persistentAttributeResource);
-		this.column.update(persistentAttributeResource);
-		Basic basicResource = basicResource();
+		this.column.update(this.columnResource());
+		Basic basicResource = this.basicResource();
 		this.setSpecifiedFetch(this.specifiedFetchType(basicResource));
 		this.setSpecifiedOptional(this.specifiedOptional(basicResource));
-		this.setSpecifiedEnumerated(this.specifiedEnumerated(enumeratedResource()));
+		this.setSpecifiedEnumerated(this.specifiedEnumerated(this.enumeratedResource()));
 		this.setLob(this.lob(persistentAttributeResource));
-		this.setTemporal(this.temporal(temporalResource()));
+		this.setTemporal(this.temporal(this.temporalResource()));
 	}
 	
 	

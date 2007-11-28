@@ -49,6 +49,7 @@ public class AttributeOverrideImpl
 		return AttributeOverride.ANNOTATION_NAME;
 	}
 	
+	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
 		AttributeOverride oldAttributeOverride = (AttributeOverride) oldAnnotation;
@@ -59,6 +60,11 @@ public class AttributeOverrideImpl
 	}
 	
 	//************ AttriubteOverride implementation ****************
+	
+	public Column getNonNullColumn() {
+		return (getColumn() != null) ? getColumn() : new NullColumn(this);
+	}
+	
 	public Column getColumn() {
 		return this.column;
 	}

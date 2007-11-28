@@ -33,6 +33,8 @@ public interface AttributeOverride extends OverrideResource
 	 */
 	void removeColumn();
 	
+	Column getNonNullColumn();
+	
 	String COLUMN_PROPERTY = "columnProperty";
 
 }

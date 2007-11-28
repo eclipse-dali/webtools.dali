@@ -41,7 +41,9 @@ import org.eclipse.jpt.core.internal.context.base.Persistence;
 import org.eclipse.jpt.core.internal.context.base.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.base.Property;
+import org.eclipse.jpt.core.internal.context.base.IOverride.Owner;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaColumnMapping;
@@ -63,6 +65,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.IJavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaVersionMapping;
+import org.eclipse.jpt.core.internal.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaColumn;
 import org.eclipse.jpt.core.internal.context.java.JavaDiscriminatorColumn;
@@ -296,5 +299,9 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IJavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(IJavaJpaContextNode parent, IAbstractJoinColumn.Owner owner) {
 		return new JavaPrimaryKeyJoinColumn(parent, owner);
+	}
+	
+	public IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, Owner owner) {
+		return new JavaAttributeOverride(parent, owner);
 	}
 }

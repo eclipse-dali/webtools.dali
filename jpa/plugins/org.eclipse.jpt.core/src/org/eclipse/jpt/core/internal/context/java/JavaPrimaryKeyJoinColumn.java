@@ -13,7 +13,6 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
@@ -152,17 +151,6 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn<PrimaryKeyJoinColu
 	
 	protected String specifiedReferencedColumnName(PrimaryKeyJoinColumn column) {
 		return column.getReferencedColumnName();
-	}
-	
-	//TODO This default is different for oneToOne mappings, we don't yet support pkJoinColumns there
-	@Override
-	protected String defaultName() {
-		if (owner().joinColumnsSize() != 1) {
-			return null;
-		}
-		//ClassCastException as soon as we support primaryKeyJoinColumns anywhere other than Entity
-		IEntity entity = (IEntity) owner().typeMapping();
-		return entity.parentEntity().primaryKeyColumnName();
 	}
 	
 	protected String defaultReferencedColumnName() {

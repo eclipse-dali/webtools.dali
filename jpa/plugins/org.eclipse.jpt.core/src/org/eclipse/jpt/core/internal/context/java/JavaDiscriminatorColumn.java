@@ -122,10 +122,4 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn<DiscriminatorColumn
 	protected int length(DiscriminatorColumn discriminatorColumn) {
 		return discriminatorColumn.getLength();
 	}
-
-	@Override
-	protected String defaultName() {
-		return IDiscriminatorColumn.DEFAULT_NAME;
-	}
-
 }

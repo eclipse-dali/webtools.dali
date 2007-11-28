@@ -154,6 +154,8 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 	/**
 	 * Return the default column name.
 	 */
-	protected abstract String defaultName();
+	protected String defaultName() {
+		return this.owner().defaultColumnName();
+	}
 
 }

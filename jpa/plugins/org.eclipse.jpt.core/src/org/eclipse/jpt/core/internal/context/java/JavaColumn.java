@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.resource.java.Column;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentResource;
 
 public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColumn
 {
@@ -26,20 +26,13 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 
 	protected int specifiedScale;
 	protected static final int DEFAULT_SPECIFIED_SCALE = -1;
-
-	protected JavaPersistentResource javaPersistentResource;
 	
-	public JavaColumn(IJavaColumnMapping parent, IColumn.Owner owner) {
+	public JavaColumn(IJavaColumnMapping parent, IAbstractColumn.Owner owner) {
 		super(parent, owner);
-	}
-
-	public void initializeFromResource(JavaPersistentResource persistentResource) {
-		this.javaPersistentResource = persistentResource;
-		this.initializeFromResource(this.columnResource());
 	}
 	
 	@Override
-	protected void initializeFromResource(Column column) {
+	public void initializeFromResource(Column column) {
 		super.initializeFromResource(column);
 		this.specifiedLength = this.specifiedLength(column);
 		this.specifiedPrecision = this.specifiedPrecision(column);
@@ -48,7 +41,7 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 	
 	@Override
 	protected Column columnResource() {
-		return (Column) this.javaPersistentResource.nonNullAnnotation(Column.ANNOTATION_NAME);
+		return this.owner().columnResource();
 	}
 	
 	public int getLength() {
@@ -118,13 +111,8 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 		return (textRange != null) ? textRange : this.owner().validationTextRange(astRoot);	
 	}
 	
-	public void update(JavaPersistentResource persistentResource) {
-		this.javaPersistentResource = persistentResource;
-		this.update(this.columnResource());
-	}
-	
 	@Override
-	protected void update(Column column) {
+	public void update(Column column) {
 		super.update(column);
 		this.setSpecifiedLength(this.specifiedLength(column));
 		this.setSpecifiedPrecision(this.specifiedPrecision(column));
@@ -141,20 +129,5 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 	
 	protected int specifiedScale(Column column) {
 		return column.getScale();
-	}
-
-	@Override
-	protected IColumn.Owner owner() {
-		return (IColumn.Owner) super.owner();
-	}
-
-	@Override
-	protected String defaultName() {
-		return owner().attributeName();
-	}
-	
-	@Override
-	protected String defaultTable() {
-		return owner().typeMapping().getTableName();
 	}
 }

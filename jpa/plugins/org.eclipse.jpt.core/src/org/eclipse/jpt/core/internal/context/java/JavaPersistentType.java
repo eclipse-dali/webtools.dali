@@ -72,7 +72,8 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	}
 	
 	protected void initializeMapping(JavaPersistentTypeResource persistentTypeResource) {
-		this.mapping = createJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(persistentTypeResource), persistentTypeResource);
+		this.mapping  = jpaPlatform().createJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(persistentTypeResource), this);
+		this.mapping.initializeFromResource(persistentTypeResource);
 	}
 	
 	protected void initializePersistentAttributes(JavaPersistentTypeResource persistentTypeResource) {

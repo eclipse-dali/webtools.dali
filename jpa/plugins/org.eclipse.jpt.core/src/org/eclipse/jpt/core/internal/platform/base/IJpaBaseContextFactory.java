@@ -17,11 +17,13 @@ import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
+import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
 import org.eclipse.jpt.core.internal.context.base.IProperty;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaColumnMapping;
@@ -111,5 +113,7 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	IJavaGeneratedValue createJavaGeneratedValue(IJavaAttributeMapping parent);
 	
 	IJavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(IJavaJpaContextNode parent, IAbstractJoinColumn.Owner owner);
+	
+	IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, IOverride.Owner owner);
 	
 }

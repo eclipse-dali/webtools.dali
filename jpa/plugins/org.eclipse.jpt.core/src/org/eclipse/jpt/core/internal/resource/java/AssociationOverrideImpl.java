@@ -52,6 +52,7 @@ public class AssociationOverrideImpl
 		return AssociationOverride.ANNOTATION_NAME;
 	}
 	
+	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
 		AssociationOverride oldAssociationOverride = (AssociationOverride) oldAnnotation;

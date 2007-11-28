@@ -75,5 +75,10 @@ public interface INamedColumn extends IJpaContextNode
 		 * Return the wrapper for the datasource table for the given table name
 		 */
 		Table dbTable(String tableName);
+		
+		/**
+		 * Return the default column name
+		 */
+		String defaultColumnName();
 	}
 }

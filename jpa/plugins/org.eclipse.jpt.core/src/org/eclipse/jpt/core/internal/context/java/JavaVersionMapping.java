@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
+import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.Temporal;
 import org.eclipse.jpt.core.internal.resource.java.Version;
@@ -22,7 +23,7 @@ import org.eclipse.jpt.utility.internal.Filter;
 
 public class JavaVersionMapping extends JavaAttributeMapping implements IJavaVersionMapping
 {
-	protected IJavaColumn column;
+	protected final IJavaColumn column;
 	
 	protected TemporalType temporal;
 
@@ -32,20 +33,24 @@ public class JavaVersionMapping extends JavaAttributeMapping implements IJavaVer
 	}
 
 	protected IJavaColumn createJavaColumn() {
-		return jpaFactory().createJavaColumn(this, buildColumnOwner());
+		return jpaFactory().createJavaColumn(this, this);
 	}
 	
 	@Override
 	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.initializeFromResource(persistentAttributeResource);
-		this.column.initializeFromResource(persistentAttributeResource);
-		this.temporal = this.temporal(temporalResource());
+		this.column.initializeFromResource(this.columnResource());
+		this.temporal = this.temporal(this.temporalResource());
 	}
 	
 	protected Temporal temporalResource() {
 		return (Temporal) this.persistentAttributeResource.nonNullAnnotation(Temporal.ANNOTATION_NAME);
 	}
 	
+	public Column columnResource() {
+		return (Column) this.persistentAttributeResource.nonNullAnnotation(Column.ANNOTATION_NAME);
+	}
+
 	//************** IJavaAttributeMapping implementation ***************
 
 	public String getKey() {
@@ -56,6 +61,16 @@ public class JavaVersionMapping extends JavaAttributeMapping implements IJavaVer
 		return Version.ANNOTATION_NAME;
 	}
 	
+	//************** INamedColumn.Owner implementation ***************
+
+	public String defaultColumnName() {
+		return attributeName();
+	}
+	
+	public String defaultTableName() {
+		return typeMapping().getTableName();
+	}
+
 	//************** IVersionMapping implementation ***************
 	
 	public IJavaColumn getColumn() {
@@ -76,8 +91,8 @@ public class JavaVersionMapping extends JavaAttributeMapping implements IJavaVer
 	@Override
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.update(persistentAttributeResource);
-		this.column.update(persistentAttributeResource);
-		this.setTemporal(this.temporal(temporalResource()));
+		this.column.update(this.columnResource());
+		this.setTemporal(this.temporal(this.temporalResource()));
 	}
 	
 	protected TemporalType temporal(Temporal temporal) {

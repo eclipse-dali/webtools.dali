@@ -47,15 +47,4 @@ public interface IColumn extends IAbstractColumn
 	 */
 	boolean isResolved();
 	
-	/**
-	 * interface allowing columns to be used in multiple places
-	 * (e.g. basic mappings and attribute overrides)
-	 */
-	interface Owner extends INamedColumn.Owner
-	{
-		/**
-		 * Return the name of the persistent attribute that contains the column.
-		 */
-		String attributeName();
-	}
 }

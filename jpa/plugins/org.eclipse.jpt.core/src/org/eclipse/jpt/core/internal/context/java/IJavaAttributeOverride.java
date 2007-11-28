@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.internal.context.base.IColumn;
-import org.eclipse.jpt.core.internal.resource.java.Column;
+import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
+import org.eclipse.jpt.core.internal.resource.java.AttributeOverride;
 
-public interface IJavaColumn extends IJavaNamedColumn, IColumn
+public interface IJavaAttributeOverride extends IAttributeOverride, IJavaColumnMapping
 {
-	void initializeFromResource(Column columnResource);
+	void initializeFromResource(AttributeOverride attributeOverride);
 	
-	void update(Column columnResource);
-
+	void update(AttributeOverride attributeOverride);
+	
 }

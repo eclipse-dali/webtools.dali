@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import java.util.ListIterator;
 
-public interface IEntity extends ITypeMapping
+public interface IEntity extends ITypeMapping, IOverride.Owner
 {
 	String getSpecifiedName();
 	void setSpecifiedName(String value);
@@ -73,13 +73,16 @@ public interface IEntity extends ITypeMapping
 	void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex);
 		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumnsList";
 
+	<T extends IAttributeOverride> ListIterator<T> attributeOverrides();
+	<T extends IAttributeOverride> ListIterator<T> specifiedAttributeOverrides();
+	<T extends IAttributeOverride> ListIterator<T> defaultAttributeOverrides();
+	int specifiedAttributeOverridesSize();
+	IAttributeOverride addSpecifiedAttributeOverride(int index);
+	void removeSpecifiedAttributeOverride(int index);
+	void moveSpecifiedAttributeOverride(int oldIndex, int newIndex);
+		String SPECIFIED_ATTRIBUTE_OVERRIDES_LIST = "specifiedAttributeOverridesList";
+		String DEFAULT_ATTRIBUTE_OVERRIDES_LIST = "defaultAttributeOverridesList";
 
-//	EList<IAttributeOverride> getAttributeOverrides();
-//
-//	EList<IAttributeOverride> getSpecifiedAttributeOverrides();
-//
-//	EList<IAttributeOverride> getDefaultAttributeOverrides();
-//
 //	EList<IAssociationOverride> getAssociationOverrides();
 //
 //	EList<IAssociationOverride> getSpecifiedAssociationOverrides();
@@ -157,53 +160,7 @@ public interface IEntity extends ITypeMapping
 //	INamedNativeQuery createNamedNativeQuery(int index);
 //
 //
-//	abstract class OverrideOwner implements IOverride.Owner
-//	{
-//		protected IEntity entity;
-//
-//		public OverrideOwner(IEntity entity) {
-//			this.entity = entity;
-//		}
-//
-//		public ITypeMapping getTypeMapping() {
-//			return this.entity;
-//		}
-//
-//		public ITextRange validationTextRange() {
-//			return entity.validationTextRange();
-//		}
-//	}
-//
-//
-//	class AttributeOverrideOwner extends OverrideOwner
-//	{
-//		public AttributeOverrideOwner(IEntity entity) {
-//			super(entity);
-//		}
-//
-//		public IAttributeMapping attributeMapping(String attributeName) {
-//			return (IAttributeMapping) columnMapping(attributeName);
-//		}
-//
-//		private IColumnMapping columnMapping(String attributeName) {
-//			if (attributeName == null) {
-//				return null;
-//			}
-//			for (Iterator<IPersistentAttribute> stream = this.entity.getPersistentType().allAttributes(); stream.hasNext();) {
-//				IPersistentAttribute persAttribute = stream.next();
-//				if (attributeName.equals(persAttribute.getName())) {
-//					if (persAttribute.getMapping() instanceof IColumnMapping) {
-//						return (IColumnMapping) persAttribute.getMapping();
-//					}
-//				}
-//			}
-//			return null;
-//		}
-//
-//		public boolean isVirtual(IOverride override) {
-//			return entity.getDefaultAttributeOverrides().contains(override);
-//		}
-//	}
+
 //
 //
 //	class AssociationOverrideOwner extends OverrideOwner
