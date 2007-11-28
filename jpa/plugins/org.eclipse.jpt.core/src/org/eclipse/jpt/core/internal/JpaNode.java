@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IAdapterManager;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -33,6 +35,14 @@ public abstract class JpaNode
 
 	protected JpaNode(IJpaNode parent) {
 		super(parent);
+	}
+	
+	
+	// ********** IAdaptable implementation **********
+	
+	public Object getAdapter(Class adapter) {
+		IAdapterManager manager = Platform.getAdapterManager();
+		return manager.getAdapter(this, adapter);
 	}
 
 

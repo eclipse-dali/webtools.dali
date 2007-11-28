@@ -10,12 +10,14 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.utility.internal.node.Node;
 
 /**
  * Tweak the node interface with JPA-specific protocol.
  */
-public interface IJpaNode extends Node {
+public interface IJpaNode extends Node, IAdaptable
+{
 
 	/**
 	 * Return the JPA project the object belongs to.
@@ -27,8 +29,8 @@ public interface IJpaNode extends Node {
 	 * This is used by JpaHelper.
 	 */
 	IResource resource();
-
-
+	
+	
 	// ********** covariant overrides **********
 
 	IJpaNode parent();
