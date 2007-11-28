@@ -44,6 +44,8 @@ import org.eclipse.jpt.ui.internal.xml.details.XmlDetailsProvider;
 import org.eclipse.jpt.ui.internal.xml.structure.XmlStructureProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.ui.navigator.ICommonContentProvider;
+import org.eclipse.ui.navigator.ICommonLabelProvider;
 
 public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 {
@@ -56,11 +58,24 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 	
 	private IJpaUiFactory jpaUiFactory;
 	
+	
 	protected BaseJpaPlatformUi() {
 		super();
 		this.jpaUiFactory = createJpaUiFactory();
 	}
-
+	
+	
+	// **************** navigator content **************************************
+	
+	public ICommonContentProvider buildNavigatorContentProvider() {
+		return new BaseJpaNavigatorContentProvider();
+	}
+	
+	public ICommonLabelProvider buildNavigatorLabelProvider() {
+		return new BaseJpaNavigatorLabelProvider();
+	}
+	
+	
 	// ********** behavior **********
 	
 	protected abstract IJpaUiFactory createJpaUiFactory();
