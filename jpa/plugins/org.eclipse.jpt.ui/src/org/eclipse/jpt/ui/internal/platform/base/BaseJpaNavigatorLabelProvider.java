@@ -11,54 +11,88 @@
 package org.eclipse.jpt.ui.internal.platform.base;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jpt.core.internal.IContextModel;
+import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
+import org.eclipse.jpt.ui.internal.JptUiIcons;
+import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonLabelProvider;
 
-public class BaseJpaNavigatorLabelProvider implements ICommonLabelProvider
+public class BaseJpaNavigatorLabelProvider extends LabelProvider 
+	implements ICommonLabelProvider
 {
-	public void init(ICommonContentExtensionSite config) {
-	// TODO Auto-generated method stub
-	}
-
-	public Image getImage(Object element) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getText(Object element) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
+	// **************** IBaseLabelProvider implementation **********************
+	
 	public void addListener(ILabelProviderListener listener) {
-	// TODO Auto-generated method stub
+		super.addListener(listener);
 	}
-
-	public void dispose() {
-	// TODO Auto-generated method stub
-	}
-
-	public boolean isLabelProperty(Object element, String property) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	
 	public void removeListener(ILabelProviderListener listener) {
-	// TODO Auto-generated method stub
+		super.addListener(listener);
 	}
-
-	public void restoreState(IMemento memento) {
-	// TODO Auto-generated method stub
+	
+	public boolean isLabelProperty(Object element, String property) {
+		return super.isLabelProperty(element, property);
 	}
-
+	
+	public void dispose() {
+		super.dispose();
+	}
+	
+	
+	// **************** ILabelProvider implementation **************************
+	
+	public Image getImage(Object element) {
+		if (element instanceof IContextModel) {
+			return JptUiPlugin.getPlugin().getImage(JptUiIcons.JPA_CONTENT);
+		}
+		
+		if (element instanceof PersistenceXml) {
+			return JptUiPlugin.getPlugin().getImage(JptUiIcons.JPA_FILE);
+		}
+		
+		return super.getImage(element);
+	}
+	
+	public String getText(Object element) {		
+		if (element instanceof IContextModel) {
+			return "JPA Content";
+		}
+		
+		if (element instanceof PersistenceXml) {
+			return "persistence.xml";
+		}
+		
+		return null;
+	}
+	
+	
+	// **************** IDescriptionProvider implementation ********************
+	
+	public String getDescription(Object anElement) {
+		// TODO Auto-generated method stub
+		return getText(anElement);
+	}
+	
+	
+	// **************** IMementoAware implementation ***************************
+	
 	public void saveState(IMemento memento) {
 	// TODO Auto-generated method stub
 	}
-
-	public String getDescription(Object anElement) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void restoreState(IMemento memento) {
+	// TODO Auto-generated method stub
+	}
+	
+	
+	// **************** ICommonLabelProvider implementation ********************
+	
+	public void init(ICommonContentExtensionSite config) {
+	// TODO Auto-generated method stub
 	}
 }

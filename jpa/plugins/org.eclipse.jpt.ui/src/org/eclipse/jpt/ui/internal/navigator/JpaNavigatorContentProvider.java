@@ -45,7 +45,7 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
  * sub-node), this provider will delegate to the content provider returned by the 
  * platform UI implementation.
  */
-public class JpaContentProvider
+public class JpaNavigatorContentProvider
 	implements ICommonContentProvider
 {
 	private IFacetedProjectListener facetListener;
@@ -63,7 +63,7 @@ public class JpaContentProvider
 	private Map<String, ICommonContentProvider> delegateContentProviders;
 	
 	
-	public JpaContentProvider() {
+	public JpaNavigatorContentProvider() {
 		super();
 		delegateContentProviders = new HashMap<String, ICommonContentProvider>();
 		facetListener = new FacetListener();

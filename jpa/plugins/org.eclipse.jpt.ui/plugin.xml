@@ -66,8 +66,8 @@
 			priority="higher"
 			icon="icons/full/obj16/jpa_content.gif"
 			activeByDefault="true"
-			contentProvider="org.eclipse.jpt.ui.internal.navigator.JpaContentProvider"
-			labelProvider="org.eclipse.jpt.ui.internal.navigator.JpaLabelProvider">
+			contentProvider="org.eclipse.jpt.ui.internal.navigator.JpaNavigatorContentProvider"
+			labelProvider="org.eclipse.jpt.ui.internal.navigator.JpaNavigatorLabelProvider">
 			
 			<triggerPoints>
 				<and>
