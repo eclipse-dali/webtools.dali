@@ -9,17 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import java.util.ListIterator;
 
-
-public interface IEmbeddedMapping extends IAttributeMapping
+public interface IEmbeddedMapping extends IAttributeMapping, IOverride.Owner
 {
-//	EList<IAttributeOverride> getAttributeOverrides();
-//
-//	EList<IAttributeOverride> getSpecifiedAttributeOverrides();
-//
-//	EList<IAttributeOverride> getDefaultAttributeOverrides();
-//
-//
+	<T extends IAttributeOverride> ListIterator<T> attributeOverrides();
+	<T extends IAttributeOverride> ListIterator<T> specifiedAttributeOverrides();
+	<T extends IAttributeOverride> ListIterator<T> defaultAttributeOverrides();
+	int specifiedAttributeOverridesSize();
+	IAttributeOverride addSpecifiedAttributeOverride(int index);
+	void removeSpecifiedAttributeOverride(int index);
+	void moveSpecifiedAttributeOverride(int oldIndex, int newIndex);
+		String SPECIFIED_ATTRIBUTE_OVERRIDES_LIST = "specifiedAttributeOverridesList";
+		String DEFAULT_ATTRIBUTE_OVERRIDES_LIST = "defaultAttributeOverridesList";
+
+		
 //	IEmbeddable embeddable();
 //
 //	IAttributeOverride createAttributeOverride(int index);

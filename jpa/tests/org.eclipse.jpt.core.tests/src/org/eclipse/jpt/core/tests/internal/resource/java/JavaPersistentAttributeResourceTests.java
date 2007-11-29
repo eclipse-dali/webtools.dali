@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
+import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IType;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.OneToMany;
 import org.eclipse.jpt.core.internal.resource.java.OneToOneImpl;
+import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -49,6 +51,60 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		});
 	}
 	
+	private IType createTestEntityWithNonResolvingField() throws Exception {
+		this.createAnnotationAndMembers("Entity", "String name();");
+
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("private Foo foo;").append(CR);
+				sb.append(CR);
+			}
+		});
+	}
+	private IType createTestEntityWithNonResolvingMethod() throws Exception {
+		this.createAnnotationAndMembers("Entity", "String name();");
+
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("private Foo foo;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id");
+				sb.append(CR);
+				sb.append("    public Foo getFoo() {").append(CR);
+				sb.append("        return this.foo;").append(CR);
+				sb.append("    }").append(CR);
+				sb.append(CR);
+				sb.append("    ");
+				sb.append(CR);
+				sb.append("    public void setFoo(Foo foo) {").append(CR);
+				sb.append("        this.foo = foo;").append(CR);
+				sb.append("    }").append(CR);
+				sb.append(CR);
+				sb.append("    ");
+			}
+		});
+	}
+
 	private IType createTestEntityMultipleVariableDeclarationsPerLine() throws Exception {
 		this.createAnnotationAndMembers("Entity", "String name();");
 		this.createAnnotationAndMembers("Column", "String name();");
@@ -690,6 +746,38 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		assertTrue(attributeResource.isPersistable());
 	}
 	
+	public void testIsPersistableField2() throws Exception {
+		IType jdtType = createTestEntityWithNonResolvingField();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		Collection<JavaPersistentAttributeResource> attributes = (Collection<JavaPersistentAttributeResource>) ClassTools.getFieldValue(typeResource, "attributes");
+		JavaPersistentAttributeResource attributeResource = attributes.iterator().next();
+		
+		assertEquals("foo", attributeResource.getName());
+		assertTrue(attributeResource.isForField());
+		assertFalse(attributeResource.isPersistable());
+
+		this.javaProject.createType("test", "Foo.java", "public class Foo {}");
+		this.javaResourceModel.resolveTypes();
+		
+		assertTrue(attributeResource.isPersistable());
+	}
+	
+	public void testGetQualifiedTypeName() throws Exception {
+		IType jdtType = createTestEntityWithNonResolvingField();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		Collection<JavaPersistentAttributeResource> attributes = (Collection<JavaPersistentAttributeResource>) ClassTools.getFieldValue(typeResource, "attributes");
+		JavaPersistentAttributeResource attributeResource = attributes.iterator().next();
+		
+		assertEquals("foo", attributeResource.getName());
+		assertNull(attributeResource.getQualifiedTypeName());
+
+		this.javaProject.createType("test", "Foo.java", "public class Foo {}");
+		this.javaResourceModel.resolveTypes();
+		
+		assertEquals("test.Foo", attributeResource.getQualifiedTypeName());
+	}
+	
+	
 	//more detailed tests in JPTToolsTests
 	public void testIsPersistableMethod() throws Exception {
 		IType jdtType = createTestEntity();
@@ -697,6 +785,22 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		JavaPersistentAttributeResource attributeResource = typeResource.properties().next();
 		
 		assertTrue(attributeResource.isPersistable());		
+	}
+	
+	public void testIsPersistableMethod2() throws Exception {
+		IType jdtType = createTestEntityWithNonResolvingMethod();
+		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		Collection<JavaPersistentAttributeResource> attributes = (Collection<JavaPersistentAttributeResource>) ClassTools.getFieldValue(typeResource, "attributes");
+		JavaPersistentAttributeResource attributeResource = (JavaPersistentAttributeResource) attributes.toArray()[3];
+		
+		assertEquals("foo", attributeResource.getName());
+		assertTrue(attributeResource.isForProperty());
+		assertFalse(attributeResource.isPersistable());
+
+		this.javaProject.createType("test", "Foo.java", "public class Foo {}");
+		this.javaResourceModel.resolveTypes();
+		
+		assertTrue(attributeResource.isPersistable());
 	}
 	
 	//this tests that we handle mutliple variable declarations in one line.

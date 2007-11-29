@@ -329,7 +329,18 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		this.setSuperClassQualifiedName(this.superClassQualifiedName(astRoot));
 		this.setAbstract(isAbstract(astRoot));
 	}
-
+	
+	@Override
+	public void resolveTypes(CompilationUnit astRoot) {
+		super.resolveTypes(astRoot);
+		for (JavaPersistentAttributeResource attribute : this.attributes) {
+			attribute.resolveTypes(astRoot);
+		}
+		for (JavaPersistentTypeResource persistentType : this.nestedTypes) {
+			persistentType.resolveTypes(astRoot);
+		}
+	}
+	
 	protected boolean isAbstract(CompilationUnit astRoot) {
 		return JPTTools.typeIsAbstract(getMember().binding(astRoot));
 	}
@@ -438,5 +449,9 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		return superClassTypeBinding.getQualifiedName();
 	}
 	
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(getName());
+	}
 
 }

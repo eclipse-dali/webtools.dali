@@ -1143,11 +1143,11 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
-		attributeOverride = (AttributeOverride) typeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverride) typeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAR");
 		specifiedAttributeOverrides = javaEntity().specifiedAttributeOverrides();		
-		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
+		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 
@@ -1155,27 +1155,27 @@ public class JavaEntityTests extends ContextModelTestCase
 		attributeOverride.setName("BAZ");
 		specifiedAttributeOverrides = javaEntity().specifiedAttributeOverrides();		
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
-		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
+		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 	
 		//move an annotation to the resource model and verify the context model is updated
 		typeResource.move(0, 1, JPA.ATTRIBUTE_OVERRIDES);
 		specifiedAttributeOverrides = javaEntity().specifiedAttributeOverrides();		
-		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
-		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
+		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
+		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 		typeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		specifiedAttributeOverrides = javaEntity().specifiedAttributeOverrides();		
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
-		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
+		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 	
 		typeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		specifiedAttributeOverrides = javaEntity().specifiedAttributeOverrides();		
-		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
+		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 		

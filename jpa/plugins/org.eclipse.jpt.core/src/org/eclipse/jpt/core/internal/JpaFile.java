@@ -63,6 +63,14 @@ public class JpaFile extends JpaNode implements IJpaFile
 		getResourceModel().handleJavaElementChangedEvent(event);
 	}
 	
+	public void fileAdded(IJpaFile jpaFile) {
+		getResourceModel().resolveTypes();
+	}
+	
+	public void fileRemoved(IJpaFile jpaFile) {
+		getResourceModel().resolveTypes();		
+	}
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(getFile().toString());

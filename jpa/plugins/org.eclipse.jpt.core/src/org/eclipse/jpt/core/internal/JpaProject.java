@@ -287,6 +287,9 @@ public class JpaProject extends JpaNode implements IJpaProject
 		IJpaFile jpaFile = this.jpaPlatform.buildJpaFile(this, file);
 		if (jpaFile != null) {
 			this.addItemToCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION);
+			for (IJpaFile jpaFile2 : CollectionTools.iterable(jpaFiles())) {
+				jpaFile2.fileAdded(jpaFile);
+			}
 			jpaFile.getResourceModel().addResourceModelChangeListener(getResourceModelListener());
 		}
 	}
@@ -310,6 +313,9 @@ public class JpaProject extends JpaNode implements IJpaProject
 		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
 			throw new IllegalArgumentException("JPA file: " + jpaFile.getFile().getName());
 		}
+		for (IJpaFile jpaFile2 : CollectionTools.iterable(jpaFiles())) {
+			jpaFile2.fileRemoved(jpaFile);
+		}
 		jpaFile.dispose();
 	}
 
@@ -324,7 +330,7 @@ public class JpaProject extends JpaNode implements IJpaProject
 	 * @see IJpaProject#getContextModel()
 	 */
 	public IContextModel contextModel() {
-		return contextModel;
+		return this.contextModel;
 	}
 	
 	void setContextModel(IContextModel contextModel) {

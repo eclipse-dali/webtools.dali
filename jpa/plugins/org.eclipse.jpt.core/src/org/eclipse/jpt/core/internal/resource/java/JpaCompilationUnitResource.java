@@ -179,4 +179,10 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 		this.javaResourceModel.resourceChanged();
 	}
 
+	@Override
+	public void resolveTypes(CompilationUnit astRoot) {
+		if (getPersistentType() != null) {
+			getPersistentType().resolveTypes(astRoot);
+		}
+	}
 }

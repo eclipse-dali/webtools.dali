@@ -49,4 +49,16 @@ public interface IJpaFile extends IJpaNode
 	 * hooks to external resources etc.
 	 */
 	void dispose();
+	
+	/**
+	 * jpaFile was added to the JpaProject
+	 * @param jpaFile
+	 */
+	void fileAdded(IJpaFile jpaFile);
+	
+	/**
+	 * jpaFile was removed from the JpaProject
+	 * @param jpaFile
+	 */
+	void fileRemoved(IJpaFile jpaFile);
 }

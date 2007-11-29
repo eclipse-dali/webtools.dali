@@ -63,7 +63,7 @@ public class JavaAttributeOverride extends JavaOverride<AttributeOverride>
 	}
 	
 	protected IColumnMapping columnMapping() {
-		return (IColumnMapping) owner().attributeMapping(getName());
+		return owner().columnMapping(getName());
 	}
 
 	//************* IColumn.Owner implementation **************

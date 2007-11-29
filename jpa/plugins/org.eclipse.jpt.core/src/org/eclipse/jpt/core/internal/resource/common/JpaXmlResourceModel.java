@@ -66,6 +66,9 @@ public abstract class JpaXmlResourceModel implements IResourceModel
 		resource().removeResourceModelChangeListener(listener);
 	}
 	
+	public void resolveTypes() {
+		//nothing to do here, JavaResourceModel needs this
+	}
 	
 	private class ReloadListener implements EditModelListener
 	{

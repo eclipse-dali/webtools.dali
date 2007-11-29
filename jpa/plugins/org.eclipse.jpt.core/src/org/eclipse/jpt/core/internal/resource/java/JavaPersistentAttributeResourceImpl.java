@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
@@ -89,10 +90,14 @@ public class JavaPersistentAttributeResourceImpl
 
 	@Override
 	protected boolean calculatePersistability(CompilationUnit astRoot) {
-		if (isForField()) {
-			return JPTTools.fieldIsPersistable((IVariableBinding) getMember().binding(astRoot));
+		IBinding binding = getMember().binding(astRoot);
+		if (binding == null) {
+			return false;
 		}
-		return JPTTools.methodIsPersistablePropertyGetter((IMethodBinding) getMember().binding(astRoot));
+		if (isForField()) {
+			return JPTTools.fieldIsPersistable((IVariableBinding) binding);
+		}
+		return JPTTools.methodIsPersistablePropertyGetter((IMethodBinding) binding);
 	}
 
 	// ******** JavaPersistentAttributeResource implementation ********
@@ -144,8 +149,11 @@ public class JavaPersistentAttributeResourceImpl
 //TODO		updateTypeName(astRoot);
 	}
 
-	
-	protected void updateTypeIsBasic(CompilationUnit astRoot) {
+	@Override
+	public void resolveTypes(CompilationUnit astRoot) {
+		super.resolveTypes(astRoot);
+		this.setTypeIsBasic(this.typeIsBasic(astRoot));
+		this.setQualifiedTypeName(this.qualifiedTypeName(astRoot));
 	}
 
 	protected boolean typeIsBasic(CompilationUnit astRoot) {
@@ -153,7 +161,11 @@ public class JavaPersistentAttributeResourceImpl
 	}
 	
 	protected String qualifiedTypeName(CompilationUnit astRoot) {
-		return getMember().typeBinding(astRoot).getQualifiedName();
+		ITypeBinding typeBinding = getMember().typeBinding(astRoot);
+		if (typeBinding == null) {
+			return null;
+		}
+		return typeBinding.getQualifiedName();
 	}
 
 	
@@ -376,4 +388,10 @@ public class JavaPersistentAttributeResourceImpl
 //		java.util.Map.class.getName()
 //	};
 	
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(getName());
+	}
+
+
 }

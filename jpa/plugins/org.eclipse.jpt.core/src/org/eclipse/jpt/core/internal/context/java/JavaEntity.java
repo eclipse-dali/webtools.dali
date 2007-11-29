@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
@@ -211,6 +210,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			this.specifiedAttributeOverrides.add(attributeOverride);
 		}
 	}
+	
 	protected void initializeDefaultAttributeOverrides(JavaPersistentTypeResource persistentTypeResource) {
 		for (Iterator<String> i = allOverridableAttributeNames(); i.hasNext(); ) {
 			String attributeName = i.next();
@@ -238,11 +238,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 
 	
 	//****************** IOverride.Owner implemenation *******************
-	public IAttributeMapping attributeMapping(String attributeName) {
-		return (IAttributeMapping) columnMapping(attributeName);
-	}
-
-	private IColumnMapping columnMapping(String attributeName) {
+	public IColumnMapping columnMapping(String attributeName) {
 		if (attributeName == null) {
 			return null;
 		}
@@ -914,7 +910,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 		
 		while (resourceAttributeOverrides.hasNext()) {
-			addSpecifiedAttributeOverride(specifiedPrimaryKeyJoinColumnsSize(), createAttributeOverride((AttributeOverride) resourceAttributeOverrides.next()));
+			addSpecifiedAttributeOverride(specifiedAttributeOverridesSize(), createAttributeOverride((AttributeOverride) resourceAttributeOverrides.next()));
 		}	
 	}
 	

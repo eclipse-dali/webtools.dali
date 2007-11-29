@@ -52,5 +52,10 @@ public interface IResourceModel
 	void addResourceModelChangeListener(IResourceModelListener listener);
 
 	void removeResourceModelChangeListener(IResourceModelListener listener);
+	
+	/**
+	 * Use to resolve type information that could be dependent on other files being added/removed
+	 */
+	void resolveTypes();
 }
 

@@ -379,7 +379,13 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	
 	public void updateFromJava(CompilationUnit astRoot) {
 		updateAnnotations(astRoot);
-		setPersistable(calculatePersistability(astRoot));
+		setPersistable(calculatePersistability(astRoot));		
+	}
+	
+	@Override
+	public void resolveTypes(CompilationUnit astRoot) {
+		super.resolveTypes(astRoot);
+		setPersistable(calculatePersistability(astRoot));		
 	}
 	
 	protected void updateAnnotations(CompilationUnit astRoot) {

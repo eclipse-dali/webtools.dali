@@ -28,6 +28,11 @@ public interface JavaResource extends Node
 	void updateFromJava(CompilationUnit astRoot);
 	
 	/**
+	 * Use to resolve type information that could be dependent on other files being added/removed
+	 */
+	void resolveTypes(CompilationUnit astRoot);
+	
+	/**
 	 * Return the ITextRange 
 	 */
 	ITextRange textRange(CompilationUnit astRoot);

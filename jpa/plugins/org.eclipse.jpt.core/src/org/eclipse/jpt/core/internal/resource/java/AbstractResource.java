@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
@@ -50,6 +51,9 @@ public abstract class AbstractResource extends AbstractNode
 		return root().annotationEditFormatter();
 	}
 
+	public void resolveTypes(CompilationUnit astRoot) {	
+	}
+	
 	/**
 	 * @see Node#displayString()
 	 * 

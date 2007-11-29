@@ -123,4 +123,8 @@ public class JavaResourceModel implements IResourceModel
 			listener.resourceModelChanged();
 		}
 	}
+	
+	public void resolveTypes() {
+		this.compilationUnitResource.resolveTypes(JDTTools.buildASTRoot(this.compilationUnitResource.getCompilationUnit()));
+	}
 }

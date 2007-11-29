@@ -30,7 +30,7 @@ public interface IOverride extends IJpaContextNode
 	{
 		ITypeMapping typeMapping();
 
-		IAttributeMapping attributeMapping(String attributeName);
+		IColumnMapping columnMapping(String attributeName);
 
 		boolean isVirtual(IOverride override);
 
