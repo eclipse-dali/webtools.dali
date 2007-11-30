@@ -20,6 +20,10 @@ import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.ElementChangedEvent;
@@ -207,23 +211,38 @@ public class JpaModel
 
 	// ********** Facet events **********
 
+	// create persistence.xml and orm.xml in jobs so we don't deadlock
+	// with the Resource Change Event that comes in from another
+	// thread after the Eclipse project is created by the project facet
+	// wizard (which happens before the wizard notifies us); the Artifact
+	// Edits will hang during #save(), waiting for the workspace lock held
+	// by the Resource Change Notification loop
 	synchronized void jpaFacetedProjectPostInstall(IProjectFacetActionEvent event) {
 		IProject project = event.getProject().getProject();
 		IDataModel dataModel = (IDataModel) event.getActionConfig();
 
-		this.createPersistenceXml(project);
+		this.buildPersistenceXmlJob(project).schedule();
 
 		if (dataModel.getBooleanProperty(IJpaFacetDataModelProperties.CREATE_ORM_XML)) {
-			this.createOrmXml(project);
+			this.buildOrmXmlJob(project).schedule();
 		}
 
 		// assume(?) this is the first event to indicate we need to add the JPA project to the JPA model
 		this.addJpaProject(project);
 	}
 
-	private void createPersistenceXml(IProject project) {
-		PersistenceArtifactEdit pae = 
-				PersistenceArtifactEdit.getArtifactEditForWrite(project);
+	private Job buildPersistenceXmlJob(final IProject project) {
+		return new Job("Create persistence.xml") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				JpaModel.this.createPersistenceXml(project);
+				return Status.OK_STATUS;
+			}
+		};
+	}
+
+	/* private */ void createPersistenceXml(IProject project) {
+		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(project);
 		PersistenceResource resource = pae.getPersistenceResource(JptCorePlugin.persistenceXmlDeploymentURI(project));
 		
 		// 202811 - do not add content if it is already present
@@ -245,9 +264,18 @@ public class JpaModel
 		return resource.getContents();
 	}
 
-	private void createOrmXml(IProject project) {
-		OrmArtifactEdit oae =
-				OrmArtifactEdit.getArtifactEditForWrite(project);
+	private Job buildOrmXmlJob(final IProject project) {
+		return new Job("Create orm.xml") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				JpaModel.this.createOrmXml(project);
+				return Status.OK_STATUS;
+			}
+		};
+	}
+
+	/* private */ void createOrmXml(IProject project) {
+		OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForWrite(project);
 		OrmResource resource = oae.getOrmResource(JptCorePlugin.ormXmlDeploymentURI(project));
 
 		// 202811 - do not add content if it is already present
