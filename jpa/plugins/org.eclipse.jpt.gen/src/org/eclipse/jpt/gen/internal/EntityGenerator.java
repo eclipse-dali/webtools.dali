@@ -232,16 +232,22 @@ public class EntityGenerator {
 	}
 
 	private void printEntityReadOnlyPrimaryKeyFieldsOn(EntitySourceWriter pw) {
+		this.printReadOnlyPrimaryKeyFieldsOn(pw, true);  // true=print ID annotation on fields
+	}
+
+	private void printReadOnlyPrimaryKeyFieldsOn(EntitySourceWriter pw, boolean printIdAnnotation) {
 		for (Iterator<Column> stream = this.genTable.readOnlyPrimaryKeyColumns(); stream.hasNext(); ) {
-			this.printEntityReadOnlyPrimaryKeyFieldOn(stream.next(), pw);
+			this.printReadOnlyPrimaryKeyFieldOn(stream.next(), pw, printIdAnnotation);
 		}
 	}
 
-	private void printEntityReadOnlyPrimaryKeyFieldOn(Column column, EntitySourceWriter pw) {
+	private void printReadOnlyPrimaryKeyFieldOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String fieldName = this.genTable.fieldNameFor(column);
 		if (this.config.fieldAccessType()) {
-			pw.printAnnotation(JPA.ID);
-			pw.println();
+			if (printIdAnnotation) {
+				pw.printAnnotation(JPA.ID);
+				pw.println();
+			}
 			if (column.matchesJavaFieldName(fieldName)) {
 				this.printReadOnlyColumnAnnotationOn(pw);  // no Column name needed
 			} else {
@@ -272,16 +278,22 @@ public class EntityGenerator {
 	}
 
 	private void printEntityWritablePrimaryKeyFieldsOn(EntitySourceWriter pw) {
+		this.printWritablePrimaryKeyFieldsOn(pw, true);  // true=print ID annotation on fields
+	}
+
+	private void printWritablePrimaryKeyFieldsOn(EntitySourceWriter pw, boolean printIdAnnotation) {
 		for (Iterator<Column> stream = this.genTable.writablePrimaryKeyColumns(); stream.hasNext(); ) {
-			this.printEntityWritablePrimaryKeyFieldOn(stream.next(), pw);
+			this.printWritablePrimaryKeyFieldOn(stream.next(), pw, printIdAnnotation);
 		}
 	}
 
-	private void printEntityWritablePrimaryKeyFieldOn(Column column, EntitySourceWriter pw) {
+	private void printWritablePrimaryKeyFieldOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String fieldName = this.genTable.fieldNameFor(column);
 		if (this.config.fieldAccessType()) {
-			pw.printAnnotation(JPA.ID);
-			pw.println();
+			if (printIdAnnotation) {
+				pw.printAnnotation(JPA.ID);
+				pw.println();
+			}
 			if ( ! column.matchesJavaFieldName(fieldName)) {
 				this.printColumnAnnotationOn(column.getName(), pw);
 			}
@@ -643,16 +655,22 @@ public class EntityGenerator {
 	}
 
 	private void printEntityReadOnlyPrimaryKeyGettersAndSettersOn(EntitySourceWriter pw) {
+		this.printReadOnlyPrimaryKeyGettersAndSettersOn(pw, true);  // true=print ID annotation on fields
+	}
+
+	private void printReadOnlyPrimaryKeyGettersAndSettersOn(EntitySourceWriter pw, boolean printIdAnnotation) {
 		for (Iterator<Column> stream = this.genTable.readOnlyPrimaryKeyColumns(); stream.hasNext(); ) {
-			this.printEntityReadOnlyPrimaryKeyGetterAndSetterOn(stream.next(), pw);
+			this.printReadOnlyPrimaryKeyGetterAndSetterOn(stream.next(), pw, printIdAnnotation);
 		}
 	}
 
-	private void printEntityReadOnlyPrimaryKeyGetterAndSetterOn(Column column, EntitySourceWriter pw) {
+	private void printReadOnlyPrimaryKeyGetterAndSetterOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String propertyName = this.genTable.fieldNameFor(column);
 		if (this.config.propertyAccessType()) {
-			pw.printAnnotation(JPA.ID);
-			pw.println();
+			if (printIdAnnotation) {
+				pw.printAnnotation(JPA.ID);
+				pw.println();
+			}
 			if (column.matchesJavaFieldName(propertyName)) {
 				this.printReadOnlyColumnAnnotationOn(pw);  // no Column name needed
 			} else {
@@ -664,16 +682,22 @@ public class EntityGenerator {
 	}
 
 	private void printEntityWritablePrimaryKeyGettersAndSettersOn(EntitySourceWriter pw) {
+		this.printWritablePrimaryKeyGettersAndSettersOn(pw, true);  // true=print ID annotation on fields
+	}
+
+	private void printWritablePrimaryKeyGettersAndSettersOn(EntitySourceWriter pw, boolean printIdAnnotation) {
 		for (Iterator<Column> stream = this.genTable.writablePrimaryKeyColumns(); stream.hasNext(); ) {
-			this.printEntityWritablePrimaryKeyGetterAndSetterOn(stream.next(), pw);
+			this.printWritablePrimaryKeyGetterAndSetterOn(stream.next(), pw, printIdAnnotation);
 		}
 	}
 
-	private void printEntityWritablePrimaryKeyGetterAndSetterOn(Column column, EntitySourceWriter pw) {
+	private void printWritablePrimaryKeyGetterAndSetterOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String propertyName = this.genTable.fieldNameFor(column);
 		if (this.config.propertyAccessType()) {
-			pw.printAnnotation(JPA.ID);
-			pw.println();
+			if (printIdAnnotation) {
+				pw.printAnnotation(JPA.ID);
+				pw.println();
+			}
 			if ( ! column.matchesJavaFieldName(propertyName)) {
 				this.printColumnAnnotationOn(column.getName(), pw);
 			}
@@ -776,13 +800,23 @@ public class EntityGenerator {
 		pw.println();
 
 		pw.indent();
-			this.printIdFieldsOn(pw);
+			if (this.config.generateEmbeddedIdForCompoundPK()) {
+				this.printEmbeddableReadOnlyPrimaryKeyFieldsOn(pw);
+				this.printEmbeddableWritablePrimaryKeyFieldsOn(pw);
+			} else {
+				this.printIdFieldsOn(pw);
+			}
 			this.printSerialVersionUID(pw);
 			pw.println();
 			this.printZeroArgumentConstructorOn(this.pkName(), "public", pw);
 
 			if (this.config.propertyAccessType() || this.config.generateGettersAndSetters()) {
-				this.printIdGettersAndSettersOn(pw);
+				if (this.config.generateEmbeddedIdForCompoundPK()) {
+					this.printEmbeddableReadOnlyPrimaryKeyGettersAndSettersOn(pw);
+					this.printEmbeddableWritablePrimaryKeyGettersAndSettersOn(pw);
+				} else {
+					this.printIdGettersAndSettersOn(pw);
+				}
 			}
 
 			this.printEqualsMethodOn(this.pkName(), this.table().primaryKeyColumns(), pw);
@@ -791,6 +825,14 @@ public class EntityGenerator {
 
 		pw.print('}');
 		pw.println();
+	}
+
+	private void printEmbeddableReadOnlyPrimaryKeyFieldsOn(EntitySourceWriter pw) {
+		this.printReadOnlyPrimaryKeyFieldsOn(pw, false);  // false=do not print ID annotation on fields
+	}
+
+	private void printEmbeddableWritablePrimaryKeyFieldsOn(EntitySourceWriter pw) {
+		this.printWritablePrimaryKeyFieldsOn(pw, false);  // false=do not print ID annotation on fields
 	}
 
 	private void printIdFieldsOn(EntitySourceWriter pw) {
@@ -807,6 +849,14 @@ public class EntityGenerator {
 		pw.print(fieldName);
 		pw.print(';');
 		pw.println();
+	}
+
+	private void printEmbeddableReadOnlyPrimaryKeyGettersAndSettersOn(EntitySourceWriter pw) {
+		this.printReadOnlyPrimaryKeyGettersAndSettersOn(pw, false);  // false=do not print ID annotation on fields
+	}
+
+	private void printEmbeddableWritablePrimaryKeyGettersAndSettersOn(EntitySourceWriter pw) {
+		this.printWritablePrimaryKeyGettersAndSettersOn(pw, false);  // false=do not print ID annotation on fields
 	}
 
 	private void printIdGettersAndSettersOn(EntitySourceWriter pw) {
