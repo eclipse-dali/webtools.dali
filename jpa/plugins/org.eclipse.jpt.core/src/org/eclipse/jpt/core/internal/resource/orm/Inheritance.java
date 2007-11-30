@@ -35,14 +35,10 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 public class Inheritance extends JpaEObject implements IJpaEObject
 {
 	/**
-	 * The default value of the '{@link #getStrategy() <em>Strategy</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStrategy()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final InheritanceType STRATEGY_EDEFAULT = InheritanceType.SINGLETABLE;
+	protected static final InheritanceType STRATEGY_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getStrategy() <em>Strategy</em>}' attribute.
@@ -53,15 +49,6 @@ public class Inheritance extends JpaEObject implements IJpaEObject
 	 * @ordered
 	 */
 	protected InheritanceType strategy = STRATEGY_EDEFAULT;
-
-	/**
-	 * This is true if the Strategy attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean strategyESet;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -96,11 +83,9 @@ public class Inheritance extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Strategy</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.InheritanceType
-	 * @see #isSetStrategy()
-	 * @see #unsetStrategy()
 	 * @see #setStrategy(InheritanceType)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getInheritance_Strategy()
-	 * @model default="SINGLE_TABLE" unsettable="true"
+	 * @model default="SINGLE_TABLE"
 	 * @generated
 	 */
 	public InheritanceType getStrategy()
@@ -114,8 +99,6 @@ public class Inheritance extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Strategy</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.InheritanceType
-	 * @see #isSetStrategy()
-	 * @see #unsetStrategy()
 	 * @see #getStrategy()
 	 * @generated
 	 */
@@ -123,44 +106,8 @@ public class Inheritance extends JpaEObject implements IJpaEObject
 	{
 		InheritanceType oldStrategy = strategy;
 		strategy = newStrategy == null ? STRATEGY_EDEFAULT : newStrategy;
-		boolean oldStrategyESet = strategyESet;
-		strategyESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.INHERITANCE__STRATEGY, oldStrategy, strategy, !oldStrategyESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Inheritance#getStrategy <em>Strategy</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetStrategy()
-	 * @see #getStrategy()
-	 * @see #setStrategy(InheritanceType)
-	 * @generated
-	 */
-	public void unsetStrategy()
-	{
-		InheritanceType oldStrategy = strategy;
-		boolean oldStrategyESet = strategyESet;
-		strategy = STRATEGY_EDEFAULT;
-		strategyESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.INHERITANCE__STRATEGY, oldStrategy, STRATEGY_EDEFAULT, oldStrategyESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Inheritance#getStrategy <em>Strategy</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Strategy</em>' attribute is set.
-	 * @see #unsetStrategy()
-	 * @see #getStrategy()
-	 * @see #setStrategy(InheritanceType)
-	 * @generated
-	 */
-	public boolean isSetStrategy()
-	{
-		return strategyESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.INHERITANCE__STRATEGY, oldStrategy, strategy));
 	}
 
 	/**
@@ -207,7 +154,7 @@ public class Inheritance extends JpaEObject implements IJpaEObject
 		switch (featureID)
 		{
 			case OrmPackage.INHERITANCE__STRATEGY:
-				unsetStrategy();
+				setStrategy(STRATEGY_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -224,7 +171,7 @@ public class Inheritance extends JpaEObject implements IJpaEObject
 		switch (featureID)
 		{
 			case OrmPackage.INHERITANCE__STRATEGY:
-				return isSetStrategy();
+				return strategy != STRATEGY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -241,7 +188,7 @@ public class Inheritance extends JpaEObject implements IJpaEObject
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (strategy: ");
-		if (strategyESet) result.append(strategy); else result.append("<unset>");
+		result.append(strategy);
 		result.append(')');
 		return result.toString();
 	}

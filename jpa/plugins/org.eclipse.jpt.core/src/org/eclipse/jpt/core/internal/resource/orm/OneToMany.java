@@ -89,14 +89,10 @@ public class OneToMany extends JpaEObject implements IJpaEObject
 	protected String targetEntity = TARGET_ENTITY_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getFetch() <em>Fetch</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFetch()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final FetchType FETCH_EDEFAULT = FetchType.LAZY;
+	protected static final FetchType FETCH_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getFetch() <em>Fetch</em>}' attribute.
@@ -107,15 +103,6 @@ public class OneToMany extends JpaEObject implements IJpaEObject
 	 * @ordered
 	 */
 	protected FetchType fetch = FETCH_EDEFAULT;
-
-	/**
-	 * This is true if the Fetch attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean fetchESet;
 
 	/**
 	 * The default value of the '{@link #getMappedBy() <em>Mapped By</em>}' attribute.
@@ -300,11 +287,9 @@ public class OneToMany extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Fetch</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.FetchType
-	 * @see #isSetFetch()
-	 * @see #unsetFetch()
 	 * @see #setFetch(FetchType)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToMany_Fetch()
-	 * @model default="LAZY" unsettable="true"
+	 * @model default="LAZY"
 	 * @generated
 	 */
 	public FetchType getFetch()
@@ -318,8 +303,6 @@ public class OneToMany extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Fetch</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.FetchType
-	 * @see #isSetFetch()
-	 * @see #unsetFetch()
 	 * @see #getFetch()
 	 * @generated
 	 */
@@ -327,44 +310,8 @@ public class OneToMany extends JpaEObject implements IJpaEObject
 	{
 		FetchType oldFetch = fetch;
 		fetch = newFetch == null ? FETCH_EDEFAULT : newFetch;
-		boolean oldFetchESet = fetchESet;
-		fetchESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ONE_TO_MANY__FETCH, oldFetch, fetch, !oldFetchESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany#getFetch <em>Fetch</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetFetch()
-	 * @see #getFetch()
-	 * @see #setFetch(FetchType)
-	 * @generated
-	 */
-	public void unsetFetch()
-	{
-		FetchType oldFetch = fetch;
-		boolean oldFetchESet = fetchESet;
-		fetch = FETCH_EDEFAULT;
-		fetchESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.ONE_TO_MANY__FETCH, oldFetch, FETCH_EDEFAULT, oldFetchESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany#getFetch <em>Fetch</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Fetch</em>' attribute is set.
-	 * @see #unsetFetch()
-	 * @see #getFetch()
-	 * @see #setFetch(FetchType)
-	 * @generated
-	 */
-	public boolean isSetFetch()
-	{
-		return fetchESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ONE_TO_MANY__FETCH, oldFetch, fetch));
 	}
 
 	/**
@@ -754,7 +701,7 @@ public class OneToMany extends JpaEObject implements IJpaEObject
 				setTargetEntity(TARGET_ENTITY_EDEFAULT);
 				return;
 			case OrmPackage.ONE_TO_MANY__FETCH:
-				unsetFetch();
+				setFetch(FETCH_EDEFAULT);
 				return;
 			case OrmPackage.ONE_TO_MANY__MAPPED_BY:
 				setMappedBy(MAPPED_BY_EDEFAULT);
@@ -793,7 +740,7 @@ public class OneToMany extends JpaEObject implements IJpaEObject
 			case OrmPackage.ONE_TO_MANY__TARGET_ENTITY:
 				return TARGET_ENTITY_EDEFAULT == null ? targetEntity != null : !TARGET_ENTITY_EDEFAULT.equals(targetEntity);
 			case OrmPackage.ONE_TO_MANY__FETCH:
-				return isSetFetch();
+				return fetch != FETCH_EDEFAULT;
 			case OrmPackage.ONE_TO_MANY__MAPPED_BY:
 				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
 			case OrmPackage.ONE_TO_MANY__ORDER_BY:
@@ -826,7 +773,7 @@ public class OneToMany extends JpaEObject implements IJpaEObject
 		result.append(", targetEntity: ");
 		result.append(targetEntity);
 		result.append(", fetch: ");
-		if (fetchESet) result.append(fetch); else result.append("<unset>");
+		result.append(fetch);
 		result.append(", mappedBy: ");
 		result.append(mappedBy);
 		result.append(", orderBy: ");

@@ -72,14 +72,10 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 	protected String className = CLASS_NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getAccess() <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAccess()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final AccessType ACCESS_EDEFAULT = AccessType.PROPERTY;
+	protected static final AccessType ACCESS_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
@@ -90,15 +86,6 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 	 * @ordered
 	 */
 	protected AccessType access = ACCESS_EDEFAULT;
-
-	/**
-	 * This is true if the Access attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean accessESet;
 
 	/**
 	 * The default value of the '{@link #isMetadataComplete() <em>Metadata Complete</em>}' attribute.
@@ -357,11 +344,9 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Access</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.AccessType
-	 * @see #isSetAccess()
-	 * @see #unsetAccess()
 	 * @see #setAccess(AccessType)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getMappedSuperclass_Access()
-	 * @model default="PROPERTY" unsettable="true"
+	 * @model default="PROPERTY"
 	 * @generated
 	 */
 	public AccessType getAccess()
@@ -375,8 +360,6 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Access</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.AccessType
-	 * @see #isSetAccess()
-	 * @see #unsetAccess()
 	 * @see #getAccess()
 	 * @generated
 	 */
@@ -384,44 +367,8 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 	{
 		AccessType oldAccess = access;
 		access = newAccess == null ? ACCESS_EDEFAULT : newAccess;
-		boolean oldAccessESet = accessESet;
-		accessESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MAPPED_SUPERCLASS__ACCESS, oldAccess, access, !oldAccessESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getAccess <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetAccess()
-	 * @see #getAccess()
-	 * @see #setAccess(AccessType)
-	 * @generated
-	 */
-	public void unsetAccess()
-	{
-		AccessType oldAccess = access;
-		boolean oldAccessESet = accessESet;
-		access = ACCESS_EDEFAULT;
-		accessESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.MAPPED_SUPERCLASS__ACCESS, oldAccess, ACCESS_EDEFAULT, oldAccessESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getAccess <em>Access</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Access</em>' attribute is set.
-	 * @see #unsetAccess()
-	 * @see #getAccess()
-	 * @see #setAccess(AccessType)
-	 * @generated
-	 */
-	public boolean isSetAccess()
-	{
-		return accessESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MAPPED_SUPERCLASS__ACCESS, oldAccess, access));
 	}
 
 	/**
@@ -1360,7 +1307,7 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 				setClassName(CLASS_NAME_EDEFAULT);
 				return;
 			case OrmPackage.MAPPED_SUPERCLASS__ACCESS:
-				unsetAccess();
+				setAccess(ACCESS_EDEFAULT);
 				return;
 			case OrmPackage.MAPPED_SUPERCLASS__METADATA_COMPLETE:
 				unsetMetadataComplete();
@@ -1421,7 +1368,7 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 			case OrmPackage.MAPPED_SUPERCLASS__CLASS_NAME:
 				return CLASS_NAME_EDEFAULT == null ? className != null : !CLASS_NAME_EDEFAULT.equals(className);
 			case OrmPackage.MAPPED_SUPERCLASS__ACCESS:
-				return isSetAccess();
+				return access != ACCESS_EDEFAULT;
 			case OrmPackage.MAPPED_SUPERCLASS__METADATA_COMPLETE:
 				return isSetMetadataComplete();
 			case OrmPackage.MAPPED_SUPERCLASS__DESCRIPTION:
@@ -1468,7 +1415,7 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 		result.append(" (className: ");
 		result.append(className);
 		result.append(", access: ");
-		if (accessESet) result.append(access); else result.append("<unset>");
+		result.append(access);
 		result.append(", metadataComplete: ");
 		if (metadataCompleteESet) result.append(metadataComplete); else result.append("<unset>");
 		result.append(", description: ");

@@ -58,14 +58,10 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 	protected String columnDefinition = COLUMN_DEFINITION_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getDiscriminatorType() <em>Discriminator Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDiscriminatorType()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final DiscriminatorType DISCRIMINATOR_TYPE_EDEFAULT = DiscriminatorType.STRING;
+	protected static final DiscriminatorType DISCRIMINATOR_TYPE_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getDiscriminatorType() <em>Discriminator Type</em>}' attribute.
@@ -76,15 +72,6 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 	 * @ordered
 	 */
 	protected DiscriminatorType discriminatorType = DISCRIMINATOR_TYPE_EDEFAULT;
-
-	/**
-	 * This is true if the Discriminator Type attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean discriminatorTypeESet;
 
 	/**
 	 * The default value of the '{@link #getLength() <em>Length</em>}' attribute.
@@ -203,11 +190,9 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Discriminator Type</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.DiscriminatorType
-	 * @see #isSetDiscriminatorType()
-	 * @see #unsetDiscriminatorType()
 	 * @see #setDiscriminatorType(DiscriminatorType)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorColumn_DiscriminatorType()
-	 * @model default="STRING" unsettable="true"
+	 * @model default="STRING"
 	 * @generated
 	 */
 	public DiscriminatorType getDiscriminatorType()
@@ -221,8 +206,6 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Discriminator Type</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.DiscriminatorType
-	 * @see #isSetDiscriminatorType()
-	 * @see #unsetDiscriminatorType()
 	 * @see #getDiscriminatorType()
 	 * @generated
 	 */
@@ -230,44 +213,8 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 	{
 		DiscriminatorType oldDiscriminatorType = discriminatorType;
 		discriminatorType = newDiscriminatorType == null ? DISCRIMINATOR_TYPE_EDEFAULT : newDiscriminatorType;
-		boolean oldDiscriminatorTypeESet = discriminatorTypeESet;
-		discriminatorTypeESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE, oldDiscriminatorType, discriminatorType, !oldDiscriminatorTypeESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.DiscriminatorColumn#getDiscriminatorType <em>Discriminator Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetDiscriminatorType()
-	 * @see #getDiscriminatorType()
-	 * @see #setDiscriminatorType(DiscriminatorType)
-	 * @generated
-	 */
-	public void unsetDiscriminatorType()
-	{
-		DiscriminatorType oldDiscriminatorType = discriminatorType;
-		boolean oldDiscriminatorTypeESet = discriminatorTypeESet;
-		discriminatorType = DISCRIMINATOR_TYPE_EDEFAULT;
-		discriminatorTypeESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE, oldDiscriminatorType, DISCRIMINATOR_TYPE_EDEFAULT, oldDiscriminatorTypeESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.DiscriminatorColumn#getDiscriminatorType <em>Discriminator Type</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Discriminator Type</em>' attribute is set.
-	 * @see #unsetDiscriminatorType()
-	 * @see #getDiscriminatorType()
-	 * @see #setDiscriminatorType(DiscriminatorType)
-	 * @generated
-	 */
-	public boolean isSetDiscriminatorType()
-	{
-		return discriminatorTypeESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE, oldDiscriminatorType, discriminatorType));
 	}
 
 	/**
@@ -442,7 +389,7 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 				setColumnDefinition(COLUMN_DEFINITION_EDEFAULT);
 				return;
 			case OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
-				unsetDiscriminatorType();
+				setDiscriminatorType(DISCRIMINATOR_TYPE_EDEFAULT);
 				return;
 			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
 				unsetLength();
@@ -467,7 +414,7 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 			case OrmPackage.DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
 				return COLUMN_DEFINITION_EDEFAULT == null ? columnDefinition != null : !COLUMN_DEFINITION_EDEFAULT.equals(columnDefinition);
 			case OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
-				return isSetDiscriminatorType();
+				return discriminatorType != DISCRIMINATOR_TYPE_EDEFAULT;
 			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
 				return isSetLength();
 			case OrmPackage.DISCRIMINATOR_COLUMN__NAME:
@@ -490,7 +437,7 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 		result.append(" (columnDefinition: ");
 		result.append(columnDefinition);
 		result.append(", discriminatorType: ");
-		if (discriminatorTypeESet) result.append(discriminatorType); else result.append("<unset>");
+		result.append(discriminatorType);
 		result.append(", length: ");
 		if (lengthESet) result.append(length); else result.append("<unset>");
 		result.append(", name: ");

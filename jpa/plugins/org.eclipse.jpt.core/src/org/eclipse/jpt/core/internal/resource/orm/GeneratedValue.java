@@ -56,14 +56,10 @@ public class GeneratedValue extends JpaEObject implements IJpaEObject
 	protected String generator = GENERATOR_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getStrategy() <em>Strategy</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStrategy()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final GenerationType STRATEGY_EDEFAULT = GenerationType.TABLE;
+	protected static final GenerationType STRATEGY_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getStrategy() <em>Strategy</em>}' attribute.
@@ -74,15 +70,6 @@ public class GeneratedValue extends JpaEObject implements IJpaEObject
 	 * @ordered
 	 */
 	protected GenerationType strategy = STRATEGY_EDEFAULT;
-
-	/**
-	 * This is true if the Strategy attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean strategyESet;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -152,11 +139,9 @@ public class GeneratedValue extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Strategy</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.GenerationType
-	 * @see #isSetStrategy()
-	 * @see #unsetStrategy()
 	 * @see #setStrategy(GenerationType)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGeneratedValue_Strategy()
-	 * @model default="TABLE" unsettable="true"
+	 * @model default="TABLE"
 	 * @generated
 	 */
 	public GenerationType getStrategy()
@@ -170,8 +155,6 @@ public class GeneratedValue extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Strategy</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.GenerationType
-	 * @see #isSetStrategy()
-	 * @see #unsetStrategy()
 	 * @see #getStrategy()
 	 * @generated
 	 */
@@ -179,44 +162,8 @@ public class GeneratedValue extends JpaEObject implements IJpaEObject
 	{
 		GenerationType oldStrategy = strategy;
 		strategy = newStrategy == null ? STRATEGY_EDEFAULT : newStrategy;
-		boolean oldStrategyESet = strategyESet;
-		strategyESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.GENERATED_VALUE__STRATEGY, oldStrategy, strategy, !oldStrategyESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.GeneratedValue#getStrategy <em>Strategy</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetStrategy()
-	 * @see #getStrategy()
-	 * @see #setStrategy(GenerationType)
-	 * @generated
-	 */
-	public void unsetStrategy()
-	{
-		GenerationType oldStrategy = strategy;
-		boolean oldStrategyESet = strategyESet;
-		strategy = STRATEGY_EDEFAULT;
-		strategyESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.GENERATED_VALUE__STRATEGY, oldStrategy, STRATEGY_EDEFAULT, oldStrategyESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.GeneratedValue#getStrategy <em>Strategy</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Strategy</em>' attribute is set.
-	 * @see #unsetStrategy()
-	 * @see #getStrategy()
-	 * @see #setStrategy(GenerationType)
-	 * @generated
-	 */
-	public boolean isSetStrategy()
-	{
-		return strategyESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.GENERATED_VALUE__STRATEGY, oldStrategy, strategy));
 	}
 
 	/**
@@ -271,7 +218,7 @@ public class GeneratedValue extends JpaEObject implements IJpaEObject
 				setGenerator(GENERATOR_EDEFAULT);
 				return;
 			case OrmPackage.GENERATED_VALUE__STRATEGY:
-				unsetStrategy();
+				setStrategy(STRATEGY_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -290,7 +237,7 @@ public class GeneratedValue extends JpaEObject implements IJpaEObject
 			case OrmPackage.GENERATED_VALUE__GENERATOR:
 				return GENERATOR_EDEFAULT == null ? generator != null : !GENERATOR_EDEFAULT.equals(generator);
 			case OrmPackage.GENERATED_VALUE__STRATEGY:
-				return isSetStrategy();
+				return strategy != STRATEGY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -309,7 +256,7 @@ public class GeneratedValue extends JpaEObject implements IJpaEObject
 		result.append(" (generator: ");
 		result.append(generator);
 		result.append(", strategy: ");
-		if (strategyESet) result.append(strategy); else result.append("<unset>");
+		result.append(strategy);
 		result.append(')');
 		return result.toString();
 	}

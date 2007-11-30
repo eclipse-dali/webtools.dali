@@ -223,12 +223,8 @@ public class XmlPersistenceUnit extends JpaEObject implements IJpaEObject
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getTransactionType() <em>Transaction Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTransactionType()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
 	protected static final XmlPersistenceUnitTransactionType TRANSACTION_TYPE_EDEFAULT = null;
 

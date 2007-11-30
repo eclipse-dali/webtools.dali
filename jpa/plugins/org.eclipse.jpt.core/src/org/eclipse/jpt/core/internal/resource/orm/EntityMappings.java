@@ -174,14 +174,10 @@ public class EntityMappings extends JpaEObject implements IJpaEObject
 	protected String catalog = CATALOG_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getAccess() <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAccess()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final AccessType ACCESS_EDEFAULT = AccessType.PROPERTY;
+	protected static final AccessType ACCESS_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
@@ -192,15 +188,6 @@ public class EntityMappings extends JpaEObject implements IJpaEObject
 	 * @ordered
 	 */
 	protected AccessType access = ACCESS_EDEFAULT;
-
-	/**
-	 * This is true if the Access attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean accessESet;
 
 	/**
 	 * The cached value of the '{@link #getSequenceGenerators() <em>Sequence Generators</em>}' containment reference list.
@@ -591,11 +578,9 @@ public class EntityMappings extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Access</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.AccessType
-	 * @see #isSetAccess()
-	 * @see #unsetAccess()
 	 * @see #setAccess(AccessType)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntityMappings_Access()
-	 * @model default="PROPERTY" unsettable="true"
+	 * @model default="PROPERTY"
 	 * @generated
 	 */
 	public AccessType getAccess()
@@ -609,8 +594,6 @@ public class EntityMappings extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Access</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.AccessType
-	 * @see #isSetAccess()
-	 * @see #unsetAccess()
 	 * @see #getAccess()
 	 * @generated
 	 */
@@ -618,44 +601,8 @@ public class EntityMappings extends JpaEObject implements IJpaEObject
 	{
 		AccessType oldAccess = access;
 		access = newAccess == null ? ACCESS_EDEFAULT : newAccess;
-		boolean oldAccessESet = accessESet;
-		accessESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS__ACCESS, oldAccess, access, !oldAccessESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getAccess <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetAccess()
-	 * @see #getAccess()
-	 * @see #setAccess(AccessType)
-	 * @generated
-	 */
-	public void unsetAccess()
-	{
-		AccessType oldAccess = access;
-		boolean oldAccessESet = accessESet;
-		access = ACCESS_EDEFAULT;
-		accessESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.ENTITY_MAPPINGS__ACCESS, oldAccess, ACCESS_EDEFAULT, oldAccessESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getAccess <em>Access</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Access</em>' attribute is set.
-	 * @see #unsetAccess()
-	 * @see #getAccess()
-	 * @see #setAccess(AccessType)
-	 * @generated
-	 */
-	public boolean isSetAccess()
-	{
-		return accessESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS__ACCESS, oldAccess, access));
 	}
 
 	/**
@@ -1015,7 +962,7 @@ public class EntityMappings extends JpaEObject implements IJpaEObject
 				setCatalog(CATALOG_EDEFAULT);
 				return;
 			case OrmPackage.ENTITY_MAPPINGS__ACCESS:
-				unsetAccess();
+				setAccess(ACCESS_EDEFAULT);
 				return;
 			case OrmPackage.ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
 				getSequenceGenerators().clear();
@@ -1068,7 +1015,7 @@ public class EntityMappings extends JpaEObject implements IJpaEObject
 			case OrmPackage.ENTITY_MAPPINGS__CATALOG:
 				return CATALOG_EDEFAULT == null ? catalog != null : !CATALOG_EDEFAULT.equals(catalog);
 			case OrmPackage.ENTITY_MAPPINGS__ACCESS:
-				return isSetAccess();
+				return access != ACCESS_EDEFAULT;
 			case OrmPackage.ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
 				return sequenceGenerators != null && !sequenceGenerators.isEmpty();
 			case OrmPackage.ENTITY_MAPPINGS__TABLE_GENERATORS:
@@ -1114,7 +1061,7 @@ public class EntityMappings extends JpaEObject implements IJpaEObject
 		result.append(", catalog: ");
 		result.append(catalog);
 		result.append(", access: ");
-		if (accessESet) result.append(access); else result.append("<unset>");
+		result.append(access);
 		result.append(')');
 		return result.toString();
 	}

@@ -64,14 +64,10 @@ public class Basic extends JpaEObject implements IJpaEObject
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getFetch() <em>Fetch</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFetch()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final FetchType FETCH_EDEFAULT = FetchType.LAZY;
+	protected static final FetchType FETCH_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getFetch() <em>Fetch</em>}' attribute.
@@ -82,15 +78,6 @@ public class Basic extends JpaEObject implements IJpaEObject
 	 * @ordered
 	 */
 	protected FetchType fetch = FETCH_EDEFAULT;
-
-	/**
-	 * This is true if the Fetch attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean fetchESet;
 
 	/**
 	 * The default value of the '{@link #isOptional() <em>Optional</em>}' attribute.
@@ -249,11 +236,9 @@ public class Basic extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Fetch</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.FetchType
-	 * @see #isSetFetch()
-	 * @see #unsetFetch()
 	 * @see #setFetch(FetchType)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getBasic_Fetch()
-	 * @model default="LAZY" unsettable="true"
+	 * @model default="LAZY"
 	 * @generated
 	 */
 	public FetchType getFetch()
@@ -267,8 +252,6 @@ public class Basic extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Fetch</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.FetchType
-	 * @see #isSetFetch()
-	 * @see #unsetFetch()
 	 * @see #getFetch()
 	 * @generated
 	 */
@@ -276,44 +259,8 @@ public class Basic extends JpaEObject implements IJpaEObject
 	{
 		FetchType oldFetch = fetch;
 		fetch = newFetch == null ? FETCH_EDEFAULT : newFetch;
-		boolean oldFetchESet = fetchESet;
-		fetchESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC__FETCH, oldFetch, fetch, !oldFetchESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getFetch <em>Fetch</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetFetch()
-	 * @see #getFetch()
-	 * @see #setFetch(FetchType)
-	 * @generated
-	 */
-	public void unsetFetch()
-	{
-		FetchType oldFetch = fetch;
-		boolean oldFetchESet = fetchESet;
-		fetch = FETCH_EDEFAULT;
-		fetchESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.BASIC__FETCH, oldFetch, FETCH_EDEFAULT, oldFetchESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getFetch <em>Fetch</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Fetch</em>' attribute is set.
-	 * @see #unsetFetch()
-	 * @see #getFetch()
-	 * @see #setFetch(FetchType)
-	 * @generated
-	 */
-	public boolean isSetFetch()
-	{
-		return fetchESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC__FETCH, oldFetch, fetch));
 	}
 
 	/**
@@ -676,7 +623,7 @@ public class Basic extends JpaEObject implements IJpaEObject
 				setName(NAME_EDEFAULT);
 				return;
 			case OrmPackage.BASIC__FETCH:
-				unsetFetch();
+				setFetch(FETCH_EDEFAULT);
 				return;
 			case OrmPackage.BASIC__OPTIONAL:
 				unsetOptional();
@@ -710,7 +657,7 @@ public class Basic extends JpaEObject implements IJpaEObject
 			case OrmPackage.BASIC__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.BASIC__FETCH:
-				return isSetFetch();
+				return fetch != FETCH_EDEFAULT;
 			case OrmPackage.BASIC__OPTIONAL:
 				return isSetOptional();
 			case OrmPackage.BASIC__COLUMN:
@@ -739,7 +686,7 @@ public class Basic extends JpaEObject implements IJpaEObject
 		result.append(" (name: ");
 		result.append(name);
 		result.append(", fetch: ");
-		if (fetchESet) result.append(fetch); else result.append("<unset>");
+		result.append(fetch);
 		result.append(", optional: ");
 		if (optionalESet) result.append(optional); else result.append("<unset>");
 		result.append(", temporal: ");
