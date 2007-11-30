@@ -31,7 +31,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getVersion <em>Version</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getDescription <em>Description</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPackage <em>Package</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getSchema <em>Schema</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getCatalog <em>Catalog</em>}</li>
@@ -104,7 +104,7 @@ public class EntityMappings extends JpaEObject implements IJpaEObject
 	protected String description = DESCRIPTION_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getPersistenceUnitMetadata() <em>XmlPersistence Unit Metadata</em>}' containment reference.
+	 * The cached value of the '{@link #getPersistenceUnitMetadata() <em>Persistence Unit Metadata</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getPersistenceUnitMetadata()
@@ -415,14 +415,14 @@ public class EntityMappings extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>XmlPersistence Unit Metadata</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Persistence Unit Metadata</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>XmlPersistence Unit Metadata</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>XmlPersistence Unit Metadata</em>' containment reference.
+	 * @return the value of the '<em>Persistence Unit Metadata</em>' containment reference.
 	 * @see #setPersistenceUnitMetadata(PersistenceUnitMetadata)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntityMappings_PersistenceUnitMetadata()
 	 * @model containment="true"
@@ -451,10 +451,10 @@ public class EntityMappings extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>XmlPersistence Unit Metadata</em>' containment reference.
+	 * @param value the new value of the '<em>Persistence Unit Metadata</em>' containment reference.
 	 * @see #getPersistenceUnitMetadata()
 	 * @generated
 	 */

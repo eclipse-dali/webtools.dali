@@ -28,7 +28,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults#getSchema <em>Schema</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults#getCatalog <em>Catalog</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults#getAccess <em>Access</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults#getCascadePersist <em>Cascade Persist</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults#isCascadePersist <em>Cascade Persist</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults#getEntityListeners <em>Entity Listeners</em>}</li>
  * </ul>
  * </p>
@@ -110,14 +110,24 @@ public class PersistenceUnitDefaults extends JpaEObject implements IJpaEObject
 	protected boolean accessESet;
 
 	/**
-	 * The cached value of the '{@link #getCascadePersist() <em>Cascade Persist</em>}' containment reference.
+	 * The default value of the '{@link #isCascadePersist() <em>Cascade Persist</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCascadePersist()
+	 * @see #isCascadePersist()
 	 * @generated
 	 * @ordered
 	 */
-	protected EmptyType cascadePersist;
+	protected static final boolean CASCADE_PERSIST_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isCascadePersist() <em>Cascade Persist</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isCascadePersist()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean cascadePersist = CASCADE_PERSIST_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getEntityListeners() <em>Entity Listeners</em>}' containment reference.
@@ -300,63 +310,38 @@ public class PersistenceUnitDefaults extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Cascade Persist</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Cascade Persist</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Cascade Persist</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Cascade Persist</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Cascade Persist</em>' containment reference.
-	 * @see #setCascadePersist(EmptyType)
+	 * @return the value of the '<em>Cascade Persist</em>' attribute.
+	 * @see #setCascadePersist(boolean)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getPersistenceUnitDefaults_CascadePersist()
-	 * @model containment="true"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
-	public EmptyType getCascadePersist()
+	public boolean isCascadePersist()
 	{
 		return cascadePersist;
 	}
 
 	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults#isCascadePersist <em>Cascade Persist</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade Persist</em>' attribute.
+	 * @see #isCascadePersist()
 	 * @generated
 	 */
-	public NotificationChain basicSetCascadePersist(EmptyType newCascadePersist, NotificationChain msgs)
+	public void setCascadePersist(boolean newCascadePersist)
 	{
-		EmptyType oldCascadePersist = cascadePersist;
+		boolean oldCascadePersist = cascadePersist;
 		cascadePersist = newCascadePersist;
 		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST, oldCascadePersist, newCascadePersist);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults#getCascadePersist <em>Cascade Persist</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Cascade Persist</em>' containment reference.
-	 * @see #getCascadePersist()
-	 * @generated
-	 */
-	public void setCascadePersist(EmptyType newCascadePersist)
-	{
-		if (newCascadePersist != cascadePersist)
-		{
-			NotificationChain msgs = null;
-			if (cascadePersist != null)
-				msgs = ((InternalEObject)cascadePersist).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST, null, msgs);
-			if (newCascadePersist != null)
-				msgs = ((InternalEObject)newCascadePersist).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST, null, msgs);
-			msgs = basicSetCascadePersist(newCascadePersist, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST, newCascadePersist, newCascadePersist));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST, oldCascadePersist, cascadePersist));
 	}
 
 	/**
@@ -429,8 +414,6 @@ public class PersistenceUnitDefaults extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
-				return basicSetCascadePersist(null, msgs);
 			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
 				return basicSetEntityListeners(null, msgs);
 		}
@@ -454,7 +437,7 @@ public class PersistenceUnitDefaults extends JpaEObject implements IJpaEObject
 			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ACCESS:
 				return getAccess();
 			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
-				return getCascadePersist();
+				return isCascadePersist() ? Boolean.TRUE : Boolean.FALSE;
 			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
 				return getEntityListeners();
 		}
@@ -481,7 +464,7 @@ public class PersistenceUnitDefaults extends JpaEObject implements IJpaEObject
 				setAccess((AccessType)newValue);
 				return;
 			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
-				setCascadePersist((EmptyType)newValue);
+				setCascadePersist(((Boolean)newValue).booleanValue());
 				return;
 			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)newValue);
@@ -510,7 +493,7 @@ public class PersistenceUnitDefaults extends JpaEObject implements IJpaEObject
 				unsetAccess();
 				return;
 			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
-				setCascadePersist((EmptyType)null);
+				setCascadePersist(CASCADE_PERSIST_EDEFAULT);
 				return;
 			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)null);
@@ -536,7 +519,7 @@ public class PersistenceUnitDefaults extends JpaEObject implements IJpaEObject
 			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ACCESS:
 				return isSetAccess();
 			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
-				return cascadePersist != null;
+				return cascadePersist != CASCADE_PERSIST_EDEFAULT;
 			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
 				return entityListeners != null;
 		}
@@ -560,6 +543,8 @@ public class PersistenceUnitDefaults extends JpaEObject implements IJpaEObject
 		result.append(catalog);
 		result.append(", access: ");
 		if (accessESet) result.append(access); else result.append("<unset>");
+		result.append(", cascadePersist: ");
+		result.append(cascadePersist);
 		result.append(')');
 		return result.toString();
 	}

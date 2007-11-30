@@ -99,7 +99,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int ENTITY_MAPPINGS__DESCRIPTION = 1;
 
 	/**
-	 * The feature id for the '<em><b>XmlPersistence Unit Metadata</b></em>' containment reference.
+	 * The feature id for the '<em><b>Persistence Unit Metadata</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -225,7 +225,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int ENTITY_MAPPINGS_FEATURE_COUNT = 15;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata
@@ -235,7 +235,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_METADATA = 1;
 
 	/**
-	 * The feature id for the '<em><b>Xml Mapping Metadata Complete</b></em>' containment reference.
+	 * The feature id for the '<em><b>Xml Mapping Metadata Complete</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -244,7 +244,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE = 0;
 
 	/**
-	 * The feature id for the '<em><b>XmlPersistence Unit Defaults</b></em>' containment reference.
+	 * The feature id for the '<em><b>Persistence Unit Defaults</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -253,7 +253,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS = 1;
 
 	/**
-	 * The number of structural features of the '<em>XmlPersistence Unit Metadata</em>' class.
+	 * The number of structural features of the '<em>Persistence Unit Metadata</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -262,7 +262,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_METADATA_FEATURE_COUNT = 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults
@@ -299,7 +299,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_DEFAULTS__ACCESS = 2;
 
 	/**
-	 * The feature id for the '<em><b>Cascade Persist</b></em>' containment reference.
+	 * The feature id for the '<em><b>Cascade Persist</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -317,7 +317,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS = 4;
 
 	/**
-	 * The number of structural features of the '<em>XmlPersistence Unit Defaults</em>' class.
+	 * The number of structural features of the '<em>Persistence Unit Defaults</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -381,7 +381,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int MAPPED_SUPERCLASS__ID_CLASS = 4;
 
 	/**
-	 * The feature id for the '<em><b>Exclude Default Listeners</b></em>' containment reference.
+	 * The feature id for the '<em><b>Exclude Default Listeners</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -390,7 +390,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS = 5;
 
 	/**
-	 * The feature id for the '<em><b>Exclude Superclass Listeners</b></em>' containment reference.
+	 * The feature id for the '<em><b>Exclude Superclass Listeners</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -652,7 +652,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int ENTITY__SQL_RESULT_SET_MAPPINGS = 16;
 
 	/**
-	 * The feature id for the '<em><b>Exclude Default Listeners</b></em>' containment reference.
+	 * The feature id for the '<em><b>Exclude Default Listeners</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -661,7 +661,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int ENTITY__EXCLUDE_DEFAULT_LISTENERS = 17;
 
 	/**
-	 * The feature id for the '<em><b>Exclude Superclass Listeners</b></em>' containment reference.
+	 * The feature id for the '<em><b>Exclude Superclass Listeners</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1748,7 +1748,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int CASCADE_TYPE = 20;
 
 	/**
-	 * The feature id for the '<em><b>Cascade All</b></em>' containment reference.
+	 * The feature id for the '<em><b>Cascade All</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1757,7 +1757,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int CASCADE_TYPE__CASCADE_ALL = 0;
 
 	/**
-	 * The feature id for the '<em><b>Cascade Persist</b></em>' containment reference.
+	 * The feature id for the '<em><b>Cascade Persist</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1766,7 +1766,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int CASCADE_TYPE__CASCADE_PERSIST = 1;
 
 	/**
-	 * The feature id for the '<em><b>Cascade Merge</b></em>' containment reference.
+	 * The feature id for the '<em><b>Cascade Merge</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1775,7 +1775,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int CASCADE_TYPE__CASCADE_MERGE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Cascade Remove</b></em>' containment reference.
+	 * The feature id for the '<em><b>Cascade Remove</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1784,7 +1784,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int CASCADE_TYPE__CASCADE_REMOVE = 3;
 
 	/**
-	 * The feature id for the '<em><b>Cascade Refresh</b></em>' containment reference.
+	 * The feature id for the '<em><b>Cascade Refresh</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -3274,25 +3274,6 @@ public class OrmPackage extends EPackageImpl
 	public static final int UNIQUE_CONSTRAINT_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.EmptyType <em>Empty Type</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.resource.orm.EmptyType
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEmptyType()
-	 * @generated
-	 */
-	public static final int EMPTY_TYPE = 53;
-
-	/**
-	 * The number of structural features of the '<em>Empty Type</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int EMPTY_TYPE_FEATURE_COUNT = 0;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.AccessType <em>Access Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3300,7 +3281,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAccessType()
 	 * @generated
 	 */
-	public static final int ACCESS_TYPE = 54;
+	public static final int ACCESS_TYPE = 53;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.DiscriminatorType <em>Discriminator Type</em>}' enum.
@@ -3310,7 +3291,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 55;
+	public static final int DISCRIMINATOR_TYPE = 54;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.EnumType <em>Enum Type</em>}' enum.
@@ -3320,7 +3301,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 56;
+	public static final int ENUM_TYPE = 55;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.FetchType <em>Fetch Type</em>}' enum.
@@ -3330,7 +3311,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getFetchType()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE = 57;
+	public static final int FETCH_TYPE = 56;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.GenerationType <em>Generation Type</em>}' enum.
@@ -3340,7 +3321,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 58;
+	public static final int GENERATION_TYPE = 57;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -3350,7 +3331,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 59;
+	public static final int INHERITANCE_TYPE = 58;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.TemporalType <em>Temporal Type</em>}' enum.
@@ -3360,7 +3341,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 60;
+	public static final int TEMPORAL_TYPE = 59;
 
 	/**
 	 * The meta object id for the '<em>Access Type Object</em>' data type.
@@ -3370,7 +3351,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAccessTypeObject()
 	 * @generated
 	 */
-	public static final int ACCESS_TYPE_OBJECT = 61;
+	public static final int ACCESS_TYPE_OBJECT = 60;
 
 	/**
 	 * The meta object id for the '<em>Discriminator Type Object</em>' data type.
@@ -3380,7 +3361,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorTypeObject()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE_OBJECT = 62;
+	public static final int DISCRIMINATOR_TYPE_OBJECT = 61;
 
 	/**
 	 * The meta object id for the '<em>Discriminator Value</em>' data type.
@@ -3390,7 +3371,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorValue()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_VALUE = 63;
+	public static final int DISCRIMINATOR_VALUE = 62;
 
 	/**
 	 * The meta object id for the '<em>Enumerated</em>' data type.
@@ -3400,7 +3381,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumerated()
 	 * @generated
 	 */
-	public static final int ENUMERATED = 64;
+	public static final int ENUMERATED = 63;
 
 	/**
 	 * The meta object id for the '<em>Enum Type Object</em>' data type.
@@ -3410,7 +3391,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumTypeObject()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE_OBJECT = 65;
+	public static final int ENUM_TYPE_OBJECT = 64;
 
 	/**
 	 * The meta object id for the '<em>Fetch Type Object</em>' data type.
@@ -3420,7 +3401,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getFetchTypeObject()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE_OBJECT = 66;
+	public static final int FETCH_TYPE_OBJECT = 65;
 
 	/**
 	 * The meta object id for the '<em>Generation Type Object</em>' data type.
@@ -3430,7 +3411,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerationTypeObject()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE_OBJECT = 67;
+	public static final int GENERATION_TYPE_OBJECT = 66;
 
 	/**
 	 * The meta object id for the '<em>Inheritance Type Object</em>' data type.
@@ -3440,7 +3421,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getInheritanceTypeObject()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE_OBJECT = 68;
+	public static final int INHERITANCE_TYPE_OBJECT = 67;
 
 	/**
 	 * The meta object id for the '<em>Order By</em>' data type.
@@ -3450,7 +3431,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOrderBy()
 	 * @generated
 	 */
-	public static final int ORDER_BY = 69;
+	public static final int ORDER_BY = 68;
 
 	/**
 	 * The meta object id for the '<em>Temporal</em>' data type.
@@ -3460,7 +3441,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporal()
 	 * @generated
 	 */
-	public static final int TEMPORAL = 70;
+	public static final int TEMPORAL = 69;
 
 	/**
 	 * The meta object id for the '<em>Temporal Type Object</em>' data type.
@@ -3470,7 +3451,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporalTypeObject()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE_OBJECT = 71;
+	public static final int TEMPORAL_TYPE_OBJECT = 70;
 
 	/**
 	 * The meta object id for the '<em>Version Type</em>' data type.
@@ -3480,7 +3461,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getVersionType()
 	 * @generated
 	 */
-	public static final int VERSION_TYPE = 72;
+	public static final int VERSION_TYPE = 71;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -3858,13 +3839,6 @@ public class OrmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass emptyTypeEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EEnum accessTypeEEnum = null;
 
 	/**
@@ -4115,10 +4089,10 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>XmlPersistence Unit Metadata</em>'.
+	 * @return the meta object for the containment reference '<em>Persistence Unit Metadata</em>'.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.EntityMappings#getPersistenceUnitMetadata()
 	 * @see #getEntityMappings()
 	 * @generated
@@ -4297,10 +4271,10 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>Persistence Unit Metadata</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>XmlPersistence Unit Metadata</em>'.
+	 * @return the meta object for class '<em>Persistence Unit Metadata</em>'.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata
 	 * @generated
 	 */
@@ -4310,24 +4284,24 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#isXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Xml Mapping Metadata Complete</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getXmlMappingMetadataComplete()
+	 * @return the meta object for the attribute '<em>Xml Mapping Metadata Complete</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#isXmlMappingMetadataComplete()
 	 * @see #getPersistenceUnitMetadata()
 	 * @generated
 	 */
-	public EReference getPersistenceUnitMetadata_XmlMappingMetadataComplete()
+	public EAttribute getPersistenceUnitMetadata_XmlMappingMetadataComplete()
 	{
-		return (EReference)persistenceUnitMetadataEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)persistenceUnitMetadataEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>XmlPersistence Unit Defaults</em>'.
+	 * @return the meta object for the containment reference '<em>Persistence Unit Defaults</em>'.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults()
 	 * @see #getPersistenceUnitMetadata()
 	 * @generated
@@ -4338,10 +4312,10 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>Persistence Unit Defaults</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>XmlPersistence Unit Defaults</em>'.
+	 * @return the meta object for class '<em>Persistence Unit Defaults</em>'.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults
 	 * @generated
 	 */
@@ -4393,17 +4367,17 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults#getCascadePersist <em>Cascade Persist</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults#isCascadePersist <em>Cascade Persist</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Cascade Persist</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults#getCascadePersist()
+	 * @return the meta object for the attribute '<em>Cascade Persist</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults#isCascadePersist()
 	 * @see #getPersistenceUnitDefaults()
 	 * @generated
 	 */
-	public EReference getPersistenceUnitDefaults_CascadePersist()
+	public EAttribute getPersistenceUnitDefaults_CascadePersist()
 	{
-		return (EReference)persistenceUnitDefaultsEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)persistenceUnitDefaultsEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -4504,31 +4478,31 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getExcludeDefaultListeners <em>Exclude Default Listeners</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#isExcludeDefaultListeners <em>Exclude Default Listeners</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Exclude Default Listeners</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getExcludeDefaultListeners()
+	 * @return the meta object for the attribute '<em>Exclude Default Listeners</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#isExcludeDefaultListeners()
 	 * @see #getMappedSuperclass()
 	 * @generated
 	 */
-	public EReference getMappedSuperclass_ExcludeDefaultListeners()
+	public EAttribute getMappedSuperclass_ExcludeDefaultListeners()
 	{
-		return (EReference)mappedSuperclassEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)mappedSuperclassEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#isExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Exclude Superclass Listeners</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getExcludeSuperclassListeners()
+	 * @return the meta object for the attribute '<em>Exclude Superclass Listeners</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#isExcludeSuperclassListeners()
 	 * @see #getMappedSuperclass()
 	 * @generated
 	 */
-	public EReference getMappedSuperclass_ExcludeSuperclassListeners()
+	public EAttribute getMappedSuperclass_ExcludeSuperclassListeners()
 	{
-		return (EReference)mappedSuperclassEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)mappedSuperclassEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -4909,31 +4883,31 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getExcludeDefaultListeners <em>Exclude Default Listeners</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#isExcludeDefaultListeners <em>Exclude Default Listeners</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Exclude Default Listeners</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Entity#getExcludeDefaultListeners()
+	 * @return the meta object for the attribute '<em>Exclude Default Listeners</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Entity#isExcludeDefaultListeners()
 	 * @see #getEntity()
 	 * @generated
 	 */
-	public EReference getEntity_ExcludeDefaultListeners()
+	public EAttribute getEntity_ExcludeDefaultListeners()
 	{
-		return (EReference)entityEClass.getEStructuralFeatures().get(17);
+		return (EAttribute)entityEClass.getEStructuralFeatures().get(17);
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#isExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Exclude Superclass Listeners</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Entity#getExcludeSuperclassListeners()
+	 * @return the meta object for the attribute '<em>Exclude Superclass Listeners</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Entity#isExcludeSuperclassListeners()
 	 * @see #getEntity()
 	 * @generated
 	 */
-	public EReference getEntity_ExcludeSuperclassListeners()
+	public EAttribute getEntity_ExcludeSuperclassListeners()
 	{
-		return (EReference)entityEClass.getEStructuralFeatures().get(18);
+		return (EAttribute)entityEClass.getEStructuralFeatures().get(18);
 	}
 
 	/**
@@ -6350,73 +6324,73 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeAll <em>Cascade All</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeAll <em>Cascade All</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Cascade All</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeAll()
+	 * @return the meta object for the attribute '<em>Cascade All</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeAll()
 	 * @see #getCascadeType()
 	 * @generated
 	 */
-	public EReference getCascadeType_CascadeAll()
+	public EAttribute getCascadeType_CascadeAll()
 	{
-		return (EReference)cascadeTypeEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)cascadeTypeEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadePersist <em>Cascade Persist</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadePersist <em>Cascade Persist</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Cascade Persist</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadePersist()
+	 * @return the meta object for the attribute '<em>Cascade Persist</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadePersist()
 	 * @see #getCascadeType()
 	 * @generated
 	 */
-	public EReference getCascadeType_CascadePersist()
+	public EAttribute getCascadeType_CascadePersist()
 	{
-		return (EReference)cascadeTypeEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)cascadeTypeEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeMerge <em>Cascade Merge</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeMerge <em>Cascade Merge</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Cascade Merge</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeMerge()
+	 * @return the meta object for the attribute '<em>Cascade Merge</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeMerge()
 	 * @see #getCascadeType()
 	 * @generated
 	 */
-	public EReference getCascadeType_CascadeMerge()
+	public EAttribute getCascadeType_CascadeMerge()
 	{
-		return (EReference)cascadeTypeEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)cascadeTypeEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeRemove <em>Cascade Remove</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeRemove <em>Cascade Remove</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Cascade Remove</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeRemove()
+	 * @return the meta object for the attribute '<em>Cascade Remove</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeRemove()
 	 * @see #getCascadeType()
 	 * @generated
 	 */
-	public EReference getCascadeType_CascadeRemove()
+	public EAttribute getCascadeType_CascadeRemove()
 	{
-		return (EReference)cascadeTypeEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)cascadeTypeEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeRefresh <em>Cascade Refresh</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeRefresh <em>Cascade Refresh</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Cascade Refresh</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeRefresh()
+	 * @return the meta object for the attribute '<em>Cascade Refresh</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeRefresh()
 	 * @see #getCascadeType()
 	 * @generated
 	 */
-	public EReference getCascadeType_CascadeRefresh()
+	public EAttribute getCascadeType_CascadeRefresh()
 	{
-		return (EReference)cascadeTypeEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)cascadeTypeEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -8084,19 +8058,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.EmptyType <em>Empty Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Empty Type</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.EmptyType
-	 * @generated
-	 */
-	public EClass getEmptyType()
-	{
-		return emptyTypeEClass;
-	}
-
-	/**
 	 * Returns the meta object for enum '{@link org.eclipse.jpt.core.internal.resource.orm.AccessType <em>Access Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -8405,14 +8366,14 @@ public class OrmPackage extends EPackageImpl
 		createEReference(entityMappingsEClass, ENTITY_MAPPINGS__EMBEDDABLES);
 
 		persistenceUnitMetadataEClass = createEClass(PERSISTENCE_UNIT_METADATA);
-		createEReference(persistenceUnitMetadataEClass, PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE);
+		createEAttribute(persistenceUnitMetadataEClass, PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE);
 		createEReference(persistenceUnitMetadataEClass, PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS);
 
 		persistenceUnitDefaultsEClass = createEClass(PERSISTENCE_UNIT_DEFAULTS);
 		createEAttribute(persistenceUnitDefaultsEClass, PERSISTENCE_UNIT_DEFAULTS__SCHEMA);
 		createEAttribute(persistenceUnitDefaultsEClass, PERSISTENCE_UNIT_DEFAULTS__CATALOG);
 		createEAttribute(persistenceUnitDefaultsEClass, PERSISTENCE_UNIT_DEFAULTS__ACCESS);
-		createEReference(persistenceUnitDefaultsEClass, PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST);
+		createEAttribute(persistenceUnitDefaultsEClass, PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST);
 		createEReference(persistenceUnitDefaultsEClass, PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS);
 
 		mappedSuperclassEClass = createEClass(MAPPED_SUPERCLASS);
@@ -8421,8 +8382,8 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(mappedSuperclassEClass, MAPPED_SUPERCLASS__METADATA_COMPLETE);
 		createEAttribute(mappedSuperclassEClass, MAPPED_SUPERCLASS__DESCRIPTION);
 		createEReference(mappedSuperclassEClass, MAPPED_SUPERCLASS__ID_CLASS);
-		createEReference(mappedSuperclassEClass, MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS);
-		createEReference(mappedSuperclassEClass, MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS);
+		createEAttribute(mappedSuperclassEClass, MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS);
+		createEAttribute(mappedSuperclassEClass, MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS);
 		createEReference(mappedSuperclassEClass, MAPPED_SUPERCLASS__ENTITY_LISTENERS);
 		createEReference(mappedSuperclassEClass, MAPPED_SUPERCLASS__PRE_PERSIST);
 		createEReference(mappedSuperclassEClass, MAPPED_SUPERCLASS__POST_PERSIST);
@@ -8451,8 +8412,8 @@ public class OrmPackage extends EPackageImpl
 		createEReference(entityEClass, ENTITY__NAMED_QUERIES);
 		createEReference(entityEClass, ENTITY__NAMED_NATIVE_QUERIES);
 		createEReference(entityEClass, ENTITY__SQL_RESULT_SET_MAPPINGS);
-		createEReference(entityEClass, ENTITY__EXCLUDE_DEFAULT_LISTENERS);
-		createEReference(entityEClass, ENTITY__EXCLUDE_SUPERCLASS_LISTENERS);
+		createEAttribute(entityEClass, ENTITY__EXCLUDE_DEFAULT_LISTENERS);
+		createEAttribute(entityEClass, ENTITY__EXCLUDE_SUPERCLASS_LISTENERS);
 		createEReference(entityEClass, ENTITY__ENTITY_LISTENERS);
 		createEReference(entityEClass, ENTITY__PRE_PERSIST);
 		createEReference(entityEClass, ENTITY__POST_PERSIST);
@@ -8571,11 +8532,11 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(attributeOverrideEClass, ATTRIBUTE_OVERRIDE__NAME);
 
 		cascadeTypeEClass = createEClass(CASCADE_TYPE);
-		createEReference(cascadeTypeEClass, CASCADE_TYPE__CASCADE_ALL);
-		createEReference(cascadeTypeEClass, CASCADE_TYPE__CASCADE_PERSIST);
-		createEReference(cascadeTypeEClass, CASCADE_TYPE__CASCADE_MERGE);
-		createEReference(cascadeTypeEClass, CASCADE_TYPE__CASCADE_REMOVE);
-		createEReference(cascadeTypeEClass, CASCADE_TYPE__CASCADE_REFRESH);
+		createEAttribute(cascadeTypeEClass, CASCADE_TYPE__CASCADE_ALL);
+		createEAttribute(cascadeTypeEClass, CASCADE_TYPE__CASCADE_PERSIST);
+		createEAttribute(cascadeTypeEClass, CASCADE_TYPE__CASCADE_MERGE);
+		createEAttribute(cascadeTypeEClass, CASCADE_TYPE__CASCADE_REMOVE);
+		createEAttribute(cascadeTypeEClass, CASCADE_TYPE__CASCADE_REFRESH);
 
 		columnEClass = createEClass(COLUMN);
 		createEAttribute(columnEClass, COLUMN__COLUMN_DEFINITION);
@@ -8730,8 +8691,6 @@ public class OrmPackage extends EPackageImpl
 		uniqueConstraintEClass = createEClass(UNIQUE_CONSTRAINT);
 		createEAttribute(uniqueConstraintEClass, UNIQUE_CONSTRAINT__COLUMN_NAMES);
 
-		emptyTypeEClass = createEClass(EMPTY_TYPE);
-
 		// Create enums
 		accessTypeEEnum = createEEnum(ACCESS_TYPE);
 		discriminatorTypeEEnum = createEEnum(DISCRIMINATOR_TYPE);
@@ -8815,14 +8774,14 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getEntityMappings_Embeddables(), this.getEmbeddable(), null, "embeddables", null, 0, -1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(persistenceUnitMetadataEClass, PersistenceUnitMetadata.class, "PersistenceUnitMetadata", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getPersistenceUnitMetadata_XmlMappingMetadataComplete(), this.getEmptyType(), null, "xmlMappingMetadataComplete", null, 0, 1, PersistenceUnitMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPersistenceUnitMetadata_XmlMappingMetadataComplete(), theXMLTypePackage.getBoolean(), "xmlMappingMetadataComplete", null, 0, 1, PersistenceUnitMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPersistenceUnitMetadata_PersistenceUnitDefaults(), this.getPersistenceUnitDefaults(), null, "persistenceUnitDefaults", null, 0, 1, PersistenceUnitMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(persistenceUnitDefaultsEClass, PersistenceUnitDefaults.class, "PersistenceUnitDefaults", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPersistenceUnitDefaults_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, PersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPersistenceUnitDefaults_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, PersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPersistenceUnitDefaults_Access(), this.getAccessType(), "access", "PROPERTY", 0, 1, PersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPersistenceUnitDefaults_CascadePersist(), this.getEmptyType(), null, "cascadePersist", null, 0, 1, PersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPersistenceUnitDefaults_CascadePersist(), theXMLTypePackage.getBoolean(), "cascadePersist", null, 0, 1, PersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPersistenceUnitDefaults_EntityListeners(), this.getEntityListeners(), null, "entityListeners", null, 0, 1, PersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(mappedSuperclassEClass, MappedSuperclass.class, "MappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -8831,8 +8790,8 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getMappedSuperclass_MetadataComplete(), theXMLTypePackage.getBoolean(), "metadataComplete", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMappedSuperclass_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMappedSuperclass_IdClass(), this.getIdClass(), null, "idClass", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getMappedSuperclass_ExcludeDefaultListeners(), this.getEmptyType(), null, "excludeDefaultListeners", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getMappedSuperclass_ExcludeSuperclassListeners(), this.getEmptyType(), null, "excludeSuperclassListeners", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMappedSuperclass_ExcludeDefaultListeners(), theXMLTypePackage.getBoolean(), "excludeDefaultListeners", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMappedSuperclass_ExcludeSuperclassListeners(), theXMLTypePackage.getBoolean(), "excludeSuperclassListeners", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMappedSuperclass_EntityListeners(), this.getEntityListeners(), null, "entityListeners", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMappedSuperclass_PrePersist(), this.getPrePersist(), null, "prePersist", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMappedSuperclass_PostPersist(), this.getPostPersist(), null, "postPersist", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8861,8 +8820,8 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getEntity_NamedQueries(), this.getNamedQuery(), null, "namedQueries", null, 0, -1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEntity_NamedNativeQueries(), this.getNamedNativeQuery(), null, "namedNativeQueries", null, 0, -1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEntity_SqlResultSetMappings(), this.getSqlResultSetMapping(), null, "sqlResultSetMappings", null, 0, -1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntity_ExcludeDefaultListeners(), this.getEmptyType(), null, "excludeDefaultListeners", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntity_ExcludeSuperclassListeners(), this.getEmptyType(), null, "excludeSuperclassListeners", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEntity_ExcludeDefaultListeners(), theXMLTypePackage.getBoolean(), "excludeDefaultListeners", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEntity_ExcludeSuperclassListeners(), theXMLTypePackage.getBoolean(), "excludeSuperclassListeners", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEntity_EntityListeners(), this.getEntityListeners(), null, "entityListeners", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEntity_PrePersist(), this.getPrePersist(), null, "prePersist", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEntity_PostPersist(), this.getPostPersist(), null, "postPersist", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8981,11 +8940,11 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getAttributeOverride_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, AttributeOverride.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(cascadeTypeEClass, CascadeType.class, "CascadeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getCascadeType_CascadeAll(), this.getEmptyType(), null, "cascadeAll", null, 0, 1, CascadeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCascadeType_CascadePersist(), this.getEmptyType(), null, "cascadePersist", null, 0, 1, CascadeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCascadeType_CascadeMerge(), this.getEmptyType(), null, "cascadeMerge", null, 0, 1, CascadeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCascadeType_CascadeRemove(), this.getEmptyType(), null, "cascadeRemove", null, 0, 1, CascadeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCascadeType_CascadeRefresh(), this.getEmptyType(), null, "cascadeRefresh", null, 0, 1, CascadeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCascadeType_CascadeAll(), theXMLTypePackage.getBoolean(), "cascadeAll", null, 0, 1, CascadeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCascadeType_CascadePersist(), theXMLTypePackage.getBoolean(), "cascadePersist", null, 0, 1, CascadeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCascadeType_CascadeMerge(), theXMLTypePackage.getBoolean(), "cascadeMerge", null, 0, 1, CascadeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCascadeType_CascadeRemove(), theXMLTypePackage.getBoolean(), "cascadeRemove", null, 0, 1, CascadeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCascadeType_CascadeRefresh(), theXMLTypePackage.getBoolean(), "cascadeRefresh", null, 0, 1, CascadeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(columnEClass, Column.class, "Column", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getColumn_ColumnDefinition(), theXMLTypePackage.getString(), "columnDefinition", null, 0, 1, Column.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -9140,8 +9099,6 @@ public class OrmPackage extends EPackageImpl
 		initEClass(uniqueConstraintEClass, UniqueConstraint.class, "UniqueConstraint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getUniqueConstraint_ColumnNames(), theXMLTypePackage.getString(), "columnNames", null, 1, -1, UniqueConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(emptyTypeEClass, EmptyType.class, "EmptyType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
 		// Initialize enums and add enum literals
 		initEEnum(accessTypeEEnum, AccessType.class, "AccessType");
 		addEEnumLiteral(accessTypeEEnum, AccessType.PROPERTY);
@@ -9235,7 +9192,7 @@ public class OrmPackage extends EPackageImpl
 		public static final EAttribute ENTITY_MAPPINGS__DESCRIPTION = eINSTANCE.getEntityMappings_Description();
 
 		/**
-		 * The meta object literal for the '<em><b>XmlPersistence Unit Metadata</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Persistence Unit Metadata</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -9339,7 +9296,7 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference ENTITY_MAPPINGS__EMBEDDABLES = eINSTANCE.getEntityMappings_Embeddables();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata
@@ -9349,15 +9306,15 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass PERSISTENCE_UNIT_METADATA = eINSTANCE.getPersistenceUnitMetadata();
 
 		/**
-		 * The meta object literal for the '<em><b>Xml Mapping Metadata Complete</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Xml Mapping Metadata Complete</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE = eINSTANCE.getPersistenceUnitMetadata_XmlMappingMetadataComplete();
+		public static final EAttribute PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE = eINSTANCE.getPersistenceUnitMetadata_XmlMappingMetadataComplete();
 
 		/**
-		 * The meta object literal for the '<em><b>XmlPersistence Unit Defaults</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Persistence Unit Defaults</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -9365,7 +9322,7 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS = eINSTANCE.getPersistenceUnitMetadata_PersistenceUnitDefaults();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @see org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults
@@ -9399,12 +9356,12 @@ public class OrmPackage extends EPackageImpl
 		public static final EAttribute PERSISTENCE_UNIT_DEFAULTS__ACCESS = eINSTANCE.getPersistenceUnitDefaults_Access();
 
 		/**
-		 * The meta object literal for the '<em><b>Cascade Persist</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Cascade Persist</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST = eINSTANCE.getPersistenceUnitDefaults_CascadePersist();
+		public static final EAttribute PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST = eINSTANCE.getPersistenceUnitDefaults_CascadePersist();
 
 		/**
 		 * The meta object literal for the '<em><b>Entity Listeners</b></em>' containment reference feature.
@@ -9465,20 +9422,20 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference MAPPED_SUPERCLASS__ID_CLASS = eINSTANCE.getMappedSuperclass_IdClass();
 
 		/**
-		 * The meta object literal for the '<em><b>Exclude Default Listeners</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Exclude Default Listeners</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS = eINSTANCE.getMappedSuperclass_ExcludeDefaultListeners();
+		public static final EAttribute MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS = eINSTANCE.getMappedSuperclass_ExcludeDefaultListeners();
 
 		/**
-		 * The meta object literal for the '<em><b>Exclude Superclass Listeners</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Exclude Superclass Listeners</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS = eINSTANCE.getMappedSuperclass_ExcludeSuperclassListeners();
+		public static final EAttribute MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS = eINSTANCE.getMappedSuperclass_ExcludeSuperclassListeners();
 
 		/**
 		 * The meta object literal for the '<em><b>Entity Listeners</b></em>' containment reference feature.
@@ -9699,20 +9656,20 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference ENTITY__SQL_RESULT_SET_MAPPINGS = eINSTANCE.getEntity_SqlResultSetMappings();
 
 		/**
-		 * The meta object literal for the '<em><b>Exclude Default Listeners</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Exclude Default Listeners</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference ENTITY__EXCLUDE_DEFAULT_LISTENERS = eINSTANCE.getEntity_ExcludeDefaultListeners();
+		public static final EAttribute ENTITY__EXCLUDE_DEFAULT_LISTENERS = eINSTANCE.getEntity_ExcludeDefaultListeners();
 
 		/**
-		 * The meta object literal for the '<em><b>Exclude Superclass Listeners</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Exclude Superclass Listeners</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference ENTITY__EXCLUDE_SUPERCLASS_LISTENERS = eINSTANCE.getEntity_ExcludeSuperclassListeners();
+		public static final EAttribute ENTITY__EXCLUDE_SUPERCLASS_LISTENERS = eINSTANCE.getEntity_ExcludeSuperclassListeners();
 
 		/**
 		 * The meta object literal for the '<em><b>Entity Listeners</b></em>' containment reference feature.
@@ -10563,44 +10520,44 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass CASCADE_TYPE = eINSTANCE.getCascadeType();
 
 		/**
-		 * The meta object literal for the '<em><b>Cascade All</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Cascade All</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference CASCADE_TYPE__CASCADE_ALL = eINSTANCE.getCascadeType_CascadeAll();
+		public static final EAttribute CASCADE_TYPE__CASCADE_ALL = eINSTANCE.getCascadeType_CascadeAll();
 
 		/**
-		 * The meta object literal for the '<em><b>Cascade Persist</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Cascade Persist</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference CASCADE_TYPE__CASCADE_PERSIST = eINSTANCE.getCascadeType_CascadePersist();
+		public static final EAttribute CASCADE_TYPE__CASCADE_PERSIST = eINSTANCE.getCascadeType_CascadePersist();
 
 		/**
-		 * The meta object literal for the '<em><b>Cascade Merge</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Cascade Merge</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference CASCADE_TYPE__CASCADE_MERGE = eINSTANCE.getCascadeType_CascadeMerge();
+		public static final EAttribute CASCADE_TYPE__CASCADE_MERGE = eINSTANCE.getCascadeType_CascadeMerge();
 
 		/**
-		 * The meta object literal for the '<em><b>Cascade Remove</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Cascade Remove</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference CASCADE_TYPE__CASCADE_REMOVE = eINSTANCE.getCascadeType_CascadeRemove();
+		public static final EAttribute CASCADE_TYPE__CASCADE_REMOVE = eINSTANCE.getCascadeType_CascadeRemove();
 
 		/**
-		 * The meta object literal for the '<em><b>Cascade Refresh</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Cascade Refresh</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference CASCADE_TYPE__CASCADE_REFRESH = eINSTANCE.getCascadeType_CascadeRefresh();
+		public static final EAttribute CASCADE_TYPE__CASCADE_REFRESH = eINSTANCE.getCascadeType_CascadeRefresh();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.Column <em>Column</em>}' class.
@@ -11633,16 +11590,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute UNIQUE_CONSTRAINT__COLUMN_NAMES = eINSTANCE.getUniqueConstraint_ColumnNames();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.EmptyType <em>Empty Type</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.resource.orm.EmptyType
-		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEmptyType()
-		 * @generated
-		 */
-		public static final EClass EMPTY_TYPE = eINSTANCE.getEmptyType();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.AccessType <em>Access Type</em>}' enum.

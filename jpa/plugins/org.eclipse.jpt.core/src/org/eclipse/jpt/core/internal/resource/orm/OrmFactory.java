@@ -132,7 +132,6 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.TABLE: return (EObject)createTable();
 			case OrmPackage.TABLE_GENERATOR: return (EObject)createTableGenerator();
 			case OrmPackage.UNIQUE_CONSTRAINT: return (EObject)createUniqueConstraint();
-			case OrmPackage.EMPTY_TYPE: return (EObject)createEmptyType();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -825,17 +824,6 @@ public class OrmFactory extends EFactoryImpl
 	{
 		UniqueConstraint uniqueConstraint = new UniqueConstraint();
 		return uniqueConstraint;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EmptyType createEmptyType()
-	{
-		EmptyType emptyType = new EmptyType();
-		return emptyType;
 	}
 
 	/**

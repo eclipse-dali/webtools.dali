@@ -32,8 +32,8 @@
         eType="#//Embeddable" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnitMetadata">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="xmlMappingMetadataComplete"
-        eType="#//EmptyType" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlMappingMetadataComplete"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceUnitDefaults"
         eType="#//PersistenceUnitDefaults" containment="true" resolveProxies="false"/>
   </eClassifiers>
@@ -42,8 +42,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="catalog" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="#//AccessType"
         defaultValueLiteral="PROPERTY" unsettable="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="cascadePersist" eType="#//EmptyType"
-        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadePersist" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" eType="#//EntityListeners"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
@@ -57,10 +56,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//IdClass"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="excludeDefaultListeners"
-        eType="#//EmptyType" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="excludeSuperclassListeners"
-        eType="#//EmptyType" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultListeners"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeSuperclassListeners"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" eType="#//EntityListeners"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="prePersist" eType="#//PrePersist"
@@ -112,10 +111,10 @@
         eType="#//NamedNativeQuery" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sqlResultSetMappings" upperBound="-1"
         eType="#//SqlResultSetMapping" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="excludeDefaultListeners"
-        eType="#//EmptyType" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="excludeSuperclassListeners"
-        eType="#//EmptyType" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultListeners"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeSuperclassListeners"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" eType="#//EntityListeners"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="prePersist" eType="#//PrePersist"
@@ -294,16 +293,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CascadeType">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="cascadeAll" eType="#//EmptyType"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="cascadePersist" eType="#//EmptyType"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="cascadeMerge" eType="#//EmptyType"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="cascadeRemove" eType="#//EmptyType"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="cascadeRefresh" eType="#//EmptyType"
-        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeAll" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadePersist" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeMerge" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeRemove" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeRefresh" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Column">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnDefinition" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -495,7 +489,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnNames" unique="false"
         lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EmptyType"/>
   <eClassifiers xsi:type="ecore:EDataType" name="AccessTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
   <eClassifiers xsi:type="ecore:EDataType" name="DiscriminatorTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
   <eClassifiers xsi:type="ecore:EDataType" name="DiscriminatorValue" instanceClassName="java.lang.String"/>

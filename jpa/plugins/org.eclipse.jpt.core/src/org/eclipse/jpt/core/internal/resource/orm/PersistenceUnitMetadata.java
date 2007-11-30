@@ -25,8 +25,8 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#isXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}</li>
  * </ul>
  * </p>
  *
@@ -38,17 +38,27 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 public class PersistenceUnitMetadata extends JpaEObject implements IJpaEObject
 {
 	/**
-	 * The cached value of the '{@link #getXmlMappingMetadataComplete() <em>Xml Mapping Metadata Complete</em>}' containment reference.
+	 * The default value of the '{@link #isXmlMappingMetadataComplete() <em>Xml Mapping Metadata Complete</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getXmlMappingMetadataComplete()
+	 * @see #isXmlMappingMetadataComplete()
 	 * @generated
 	 * @ordered
 	 */
-	protected EmptyType xmlMappingMetadataComplete;
+	protected static final boolean XML_MAPPING_METADATA_COMPLETE_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #getPersistenceUnitDefaults() <em>XmlPersistence Unit Defaults</em>}' containment reference.
+	 * The cached value of the '{@link #isXmlMappingMetadataComplete() <em>Xml Mapping Metadata Complete</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isXmlMappingMetadataComplete()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean xmlMappingMetadataComplete = XML_MAPPING_METADATA_COMPLETE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getPersistenceUnitDefaults() <em>Persistence Unit Defaults</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getPersistenceUnitDefaults()
@@ -79,74 +89,49 @@ public class PersistenceUnitMetadata extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Xml Mapping Metadata Complete</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Xml Mapping Metadata Complete</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Xml Mapping Metadata Complete</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Xml Mapping Metadata Complete</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Xml Mapping Metadata Complete</em>' containment reference.
-	 * @see #setXmlMappingMetadataComplete(EmptyType)
+	 * @return the value of the '<em>Xml Mapping Metadata Complete</em>' attribute.
+	 * @see #setXmlMappingMetadataComplete(boolean)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getPersistenceUnitMetadata_XmlMappingMetadataComplete()
-	 * @model containment="true"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
-	public EmptyType getXmlMappingMetadataComplete()
+	public boolean isXmlMappingMetadataComplete()
 	{
 		return xmlMappingMetadataComplete;
 	}
 
 	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#isXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Xml Mapping Metadata Complete</em>' attribute.
+	 * @see #isXmlMappingMetadataComplete()
 	 * @generated
 	 */
-	public NotificationChain basicSetXmlMappingMetadataComplete(EmptyType newXmlMappingMetadataComplete, NotificationChain msgs)
+	public void setXmlMappingMetadataComplete(boolean newXmlMappingMetadataComplete)
 	{
-		EmptyType oldXmlMappingMetadataComplete = xmlMappingMetadataComplete;
+		boolean oldXmlMappingMetadataComplete = xmlMappingMetadataComplete;
 		xmlMappingMetadataComplete = newXmlMappingMetadataComplete;
 		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE, oldXmlMappingMetadataComplete, newXmlMappingMetadataComplete);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE, oldXmlMappingMetadataComplete, xmlMappingMetadataComplete));
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Xml Mapping Metadata Complete</em>' containment reference.
-	 * @see #getXmlMappingMetadataComplete()
-	 * @generated
-	 */
-	public void setXmlMappingMetadataComplete(EmptyType newXmlMappingMetadataComplete)
-	{
-		if (newXmlMappingMetadataComplete != xmlMappingMetadataComplete)
-		{
-			NotificationChain msgs = null;
-			if (xmlMappingMetadataComplete != null)
-				msgs = ((InternalEObject)xmlMappingMetadataComplete).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE, null, msgs);
-			if (newXmlMappingMetadataComplete != null)
-				msgs = ((InternalEObject)newXmlMappingMetadataComplete).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE, null, msgs);
-			msgs = basicSetXmlMappingMetadataComplete(newXmlMappingMetadataComplete, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE, newXmlMappingMetadataComplete, newXmlMappingMetadataComplete));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>XmlPersistence Unit Defaults</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Persistence Unit Defaults</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>XmlPersistence Unit Defaults</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>XmlPersistence Unit Defaults</em>' containment reference.
+	 * @return the value of the '<em>Persistence Unit Defaults</em>' containment reference.
 	 * @see #setPersistenceUnitDefaults(PersistenceUnitDefaults)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getPersistenceUnitMetadata_PersistenceUnitDefaults()
 	 * @model containment="true"
@@ -175,10 +160,10 @@ public class PersistenceUnitMetadata extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>XmlPersistence Unit Defaults</em>' containment reference.
+	 * @param value the new value of the '<em>Persistence Unit Defaults</em>' containment reference.
 	 * @see #getPersistenceUnitDefaults()
 	 * @generated
 	 */
@@ -208,8 +193,6 @@ public class PersistenceUnitMetadata extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
-				return basicSetXmlMappingMetadataComplete(null, msgs);
 			case OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
 				return basicSetPersistenceUnitDefaults(null, msgs);
 		}
@@ -227,7 +210,7 @@ public class PersistenceUnitMetadata extends JpaEObject implements IJpaEObject
 		switch (featureID)
 		{
 			case OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
-				return getXmlMappingMetadataComplete();
+				return isXmlMappingMetadataComplete() ? Boolean.TRUE : Boolean.FALSE;
 			case OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
 				return getPersistenceUnitDefaults();
 		}
@@ -245,7 +228,7 @@ public class PersistenceUnitMetadata extends JpaEObject implements IJpaEObject
 		switch (featureID)
 		{
 			case OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
-				setXmlMappingMetadataComplete((EmptyType)newValue);
+				setXmlMappingMetadataComplete(((Boolean)newValue).booleanValue());
 				return;
 			case OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
 				setPersistenceUnitDefaults((PersistenceUnitDefaults)newValue);
@@ -265,7 +248,7 @@ public class PersistenceUnitMetadata extends JpaEObject implements IJpaEObject
 		switch (featureID)
 		{
 			case OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
-				setXmlMappingMetadataComplete((EmptyType)null);
+				setXmlMappingMetadataComplete(XML_MAPPING_METADATA_COMPLETE_EDEFAULT);
 				return;
 			case OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
 				setPersistenceUnitDefaults((PersistenceUnitDefaults)null);
@@ -285,11 +268,28 @@ public class PersistenceUnitMetadata extends JpaEObject implements IJpaEObject
 		switch (featureID)
 		{
 			case OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
-				return xmlMappingMetadataComplete != null;
+				return xmlMappingMetadataComplete != XML_MAPPING_METADATA_COMPLETE_EDEFAULT;
 			case OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
 				return persistenceUnitDefaults != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (xmlMappingMetadataComplete: ");
+		result.append(xmlMappingMetadataComplete);
+		result.append(')');
+		return result.toString();
 	}
 
 } // PersistenceUnitMetadata

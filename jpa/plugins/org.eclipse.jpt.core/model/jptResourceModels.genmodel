@@ -4,14 +4,14 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.jpt.core/src"
     creationCommands="false" creationIcons="false" editDirectory="" editorDirectory=""
     modelPluginID="org.eclipse.jpt.core" modelName="Core" editPluginClass="" editorPluginClass=""
-    rootExtendsInterface="org.eclipse.jpt.core.internal.resource.common.IJptEObject"
-    rootExtendsClass="org.eclipse.jpt.core.internal.resource.common.JptEObject" suppressInterfaces="true"
+    rootExtendsInterface="org.eclipse.jpt.core.internal.resource.common.IJpaEObject"
+    rootExtendsClass="org.eclipse.jpt.core.internal.resource.common.JpaEObject" suppressInterfaces="true"
     testsDirectory="" testSuiteClass="" importerID="org.eclipse.emf.importer.ecore"
     complianceLevel="5.0" copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
   <foreignModel>orm.ecore</foreignModel>
   <foreignModel>persistence.ecore</foreignModel>
-  <genPackages prefix="Orm" basePackage="org.eclipse.jpt.core.internal.resource" resource="XML"
-      disposableProviderFactory="true" ecorePackage="orm.ecore#/">
+  <genPackages prefix="Orm" basePackage="org.eclipse.jpt.core.internal.resource" disposableProviderFactory="true"
+      ecorePackage="orm.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="orm.ecore#//AccessType">
       <genEnumLiterals ecoreEnumLiteral="orm.ecore#//AccessType/PROPERTY"/>
       <genEnumLiterals ecoreEnumLiteral="orm.ecore#//AccessType/FIELD"/>
@@ -75,14 +75,14 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//EntityMappings/embeddables"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//PersistenceUnitMetadata">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//PersistenceUnitMetadata/xmlMappingMetadataComplete"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//PersistenceUnitMetadata/xmlMappingMetadataComplete"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//PersistenceUnitMetadata/persistenceUnitDefaults"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//PersistenceUnitDefaults">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//PersistenceUnitDefaults/schema"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//PersistenceUnitDefaults/catalog"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//PersistenceUnitDefaults/access"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//PersistenceUnitDefaults/cascadePersist"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//PersistenceUnitDefaults/cascadePersist"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//PersistenceUnitDefaults/entityListeners"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//MappedSuperclass">
@@ -91,8 +91,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//MappedSuperclass/metadataComplete"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//MappedSuperclass/description"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//MappedSuperclass/idClass"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//MappedSuperclass/excludeDefaultListeners"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//MappedSuperclass/excludeSuperclassListeners"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//MappedSuperclass/excludeDefaultListeners"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//MappedSuperclass/excludeSuperclassListeners"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//MappedSuperclass/entityListeners"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//MappedSuperclass/prePersist"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//MappedSuperclass/postPersist"/>
@@ -121,8 +121,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/namedQueries"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/namedNativeQueries"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/sqlResultSetMappings"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/excludeDefaultListeners"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/excludeSuperclassListeners"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//Entity/excludeDefaultListeners"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//Entity/excludeSuperclassListeners"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/entityListeners"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/prePersist"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/postPersist"/>
@@ -241,11 +241,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AttributeOverride/name"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//CascadeType">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//CascadeType/cascadeAll"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//CascadeType/cascadePersist"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//CascadeType/cascadeMerge"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//CascadeType/cascadeRemove"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//CascadeType/cascadeRefresh"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeAll"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadePersist"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeMerge"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeRemove"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeRefresh"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//Column">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Column/columnDefinition"/>
@@ -392,10 +392,9 @@
     <genClasses ecoreClass="orm.ecore#//UniqueConstraint">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//UniqueConstraint/columnNames"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//EmptyType"/>
   </genPackages>
   <genPackages prefix="Persistence" basePackage="org.eclipse.jpt.core.internal.resource"
-      resource="XML" disposableProviderFactory="true" ecorePackage="persistence.ecore#/">
+      disposableProviderFactory="true" ecorePackage="persistence.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="persistence.ecore#//XmlPersistenceUnitTransactionType">
       <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/JTA"/>
       <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/RESOURCE_LOCAL"/>

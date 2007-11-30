@@ -10,9 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
@@ -25,11 +23,11 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeAll <em>Cascade All</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadePersist <em>Cascade Persist</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeMerge <em>Cascade Merge</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeRemove <em>Cascade Remove</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeRefresh <em>Cascade Refresh</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeAll <em>Cascade All</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadePersist <em>Cascade Persist</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeMerge <em>Cascade Merge</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeRemove <em>Cascade Remove</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeRefresh <em>Cascade Refresh</em>}</li>
  * </ul>
  * </p>
  *
@@ -41,54 +39,104 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 public class CascadeType extends JpaEObject implements IJpaEObject
 {
 	/**
-	 * The cached value of the '{@link #getCascadeAll() <em>Cascade All</em>}' containment reference.
+	 * The default value of the '{@link #isCascadeAll() <em>Cascade All</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCascadeAll()
+	 * @see #isCascadeAll()
 	 * @generated
 	 * @ordered
 	 */
-	protected EmptyType cascadeAll;
+	protected static final boolean CASCADE_ALL_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #getCascadePersist() <em>Cascade Persist</em>}' containment reference.
+	 * The cached value of the '{@link #isCascadeAll() <em>Cascade All</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCascadePersist()
+	 * @see #isCascadeAll()
 	 * @generated
 	 * @ordered
 	 */
-	protected EmptyType cascadePersist;
+	protected boolean cascadeAll = CASCADE_ALL_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getCascadeMerge() <em>Cascade Merge</em>}' containment reference.
+	 * The default value of the '{@link #isCascadePersist() <em>Cascade Persist</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCascadeMerge()
+	 * @see #isCascadePersist()
 	 * @generated
 	 * @ordered
 	 */
-	protected EmptyType cascadeMerge;
+	protected static final boolean CASCADE_PERSIST_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #getCascadeRemove() <em>Cascade Remove</em>}' containment reference.
+	 * The cached value of the '{@link #isCascadePersist() <em>Cascade Persist</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCascadeRemove()
+	 * @see #isCascadePersist()
 	 * @generated
 	 * @ordered
 	 */
-	protected EmptyType cascadeRemove;
+	protected boolean cascadePersist = CASCADE_PERSIST_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getCascadeRefresh() <em>Cascade Refresh</em>}' containment reference.
+	 * The default value of the '{@link #isCascadeMerge() <em>Cascade Merge</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCascadeRefresh()
+	 * @see #isCascadeMerge()
 	 * @generated
 	 * @ordered
 	 */
-	protected EmptyType cascadeRefresh;
+	protected static final boolean CASCADE_MERGE_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isCascadeMerge() <em>Cascade Merge</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isCascadeMerge()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean cascadeMerge = CASCADE_MERGE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isCascadeRemove() <em>Cascade Remove</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isCascadeRemove()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean CASCADE_REMOVE_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isCascadeRemove() <em>Cascade Remove</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isCascadeRemove()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean cascadeRemove = CASCADE_REMOVE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isCascadeRefresh() <em>Cascade Refresh</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isCascadeRefresh()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean CASCADE_REFRESH_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isCascadeRefresh() <em>Cascade Refresh</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isCascadeRefresh()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean cascadeRefresh = CASCADE_REFRESH_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -112,327 +160,178 @@ public class CascadeType extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Cascade All</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Cascade All</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Cascade All</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Cascade All</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Cascade All</em>' containment reference.
-	 * @see #setCascadeAll(EmptyType)
+	 * @return the value of the '<em>Cascade All</em>' attribute.
+	 * @see #setCascadeAll(boolean)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getCascadeType_CascadeAll()
-	 * @model containment="true"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
-	public EmptyType getCascadeAll()
+	public boolean isCascadeAll()
 	{
 		return cascadeAll;
 	}
 
 	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeAll <em>Cascade All</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade All</em>' attribute.
+	 * @see #isCascadeAll()
 	 * @generated
 	 */
-	public NotificationChain basicSetCascadeAll(EmptyType newCascadeAll, NotificationChain msgs)
+	public void setCascadeAll(boolean newCascadeAll)
 	{
-		EmptyType oldCascadeAll = cascadeAll;
+		boolean oldCascadeAll = cascadeAll;
 		cascadeAll = newCascadeAll;
 		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_ALL, oldCascadeAll, newCascadeAll);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_ALL, oldCascadeAll, cascadeAll));
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeAll <em>Cascade All</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Cascade All</em>' containment reference.
-	 * @see #getCascadeAll()
-	 * @generated
-	 */
-	public void setCascadeAll(EmptyType newCascadeAll)
-	{
-		if (newCascadeAll != cascadeAll)
-		{
-			NotificationChain msgs = null;
-			if (cascadeAll != null)
-				msgs = ((InternalEObject)cascadeAll).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.CASCADE_TYPE__CASCADE_ALL, null, msgs);
-			if (newCascadeAll != null)
-				msgs = ((InternalEObject)newCascadeAll).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.CASCADE_TYPE__CASCADE_ALL, null, msgs);
-			msgs = basicSetCascadeAll(newCascadeAll, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_ALL, newCascadeAll, newCascadeAll));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Cascade Persist</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Cascade Persist</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Cascade Persist</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Cascade Persist</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Cascade Persist</em>' containment reference.
-	 * @see #setCascadePersist(EmptyType)
+	 * @return the value of the '<em>Cascade Persist</em>' attribute.
+	 * @see #setCascadePersist(boolean)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getCascadeType_CascadePersist()
-	 * @model containment="true"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
-	public EmptyType getCascadePersist()
+	public boolean isCascadePersist()
 	{
 		return cascadePersist;
 	}
 
 	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadePersist <em>Cascade Persist</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade Persist</em>' attribute.
+	 * @see #isCascadePersist()
 	 * @generated
 	 */
-	public NotificationChain basicSetCascadePersist(EmptyType newCascadePersist, NotificationChain msgs)
+	public void setCascadePersist(boolean newCascadePersist)
 	{
-		EmptyType oldCascadePersist = cascadePersist;
+		boolean oldCascadePersist = cascadePersist;
 		cascadePersist = newCascadePersist;
 		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_PERSIST, oldCascadePersist, newCascadePersist);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_PERSIST, oldCascadePersist, cascadePersist));
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadePersist <em>Cascade Persist</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Cascade Persist</em>' containment reference.
-	 * @see #getCascadePersist()
-	 * @generated
-	 */
-	public void setCascadePersist(EmptyType newCascadePersist)
-	{
-		if (newCascadePersist != cascadePersist)
-		{
-			NotificationChain msgs = null;
-			if (cascadePersist != null)
-				msgs = ((InternalEObject)cascadePersist).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.CASCADE_TYPE__CASCADE_PERSIST, null, msgs);
-			if (newCascadePersist != null)
-				msgs = ((InternalEObject)newCascadePersist).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.CASCADE_TYPE__CASCADE_PERSIST, null, msgs);
-			msgs = basicSetCascadePersist(newCascadePersist, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_PERSIST, newCascadePersist, newCascadePersist));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Cascade Merge</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Cascade Merge</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Cascade Merge</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Cascade Merge</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Cascade Merge</em>' containment reference.
-	 * @see #setCascadeMerge(EmptyType)
+	 * @return the value of the '<em>Cascade Merge</em>' attribute.
+	 * @see #setCascadeMerge(boolean)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getCascadeType_CascadeMerge()
-	 * @model containment="true"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
-	public EmptyType getCascadeMerge()
+	public boolean isCascadeMerge()
 	{
 		return cascadeMerge;
 	}
 
 	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeMerge <em>Cascade Merge</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade Merge</em>' attribute.
+	 * @see #isCascadeMerge()
 	 * @generated
 	 */
-	public NotificationChain basicSetCascadeMerge(EmptyType newCascadeMerge, NotificationChain msgs)
+	public void setCascadeMerge(boolean newCascadeMerge)
 	{
-		EmptyType oldCascadeMerge = cascadeMerge;
+		boolean oldCascadeMerge = cascadeMerge;
 		cascadeMerge = newCascadeMerge;
 		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_MERGE, oldCascadeMerge, newCascadeMerge);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_MERGE, oldCascadeMerge, cascadeMerge));
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeMerge <em>Cascade Merge</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Cascade Merge</em>' containment reference.
-	 * @see #getCascadeMerge()
-	 * @generated
-	 */
-	public void setCascadeMerge(EmptyType newCascadeMerge)
-	{
-		if (newCascadeMerge != cascadeMerge)
-		{
-			NotificationChain msgs = null;
-			if (cascadeMerge != null)
-				msgs = ((InternalEObject)cascadeMerge).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.CASCADE_TYPE__CASCADE_MERGE, null, msgs);
-			if (newCascadeMerge != null)
-				msgs = ((InternalEObject)newCascadeMerge).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.CASCADE_TYPE__CASCADE_MERGE, null, msgs);
-			msgs = basicSetCascadeMerge(newCascadeMerge, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_MERGE, newCascadeMerge, newCascadeMerge));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Cascade Remove</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Cascade Remove</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Cascade Remove</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Cascade Remove</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Cascade Remove</em>' containment reference.
-	 * @see #setCascadeRemove(EmptyType)
+	 * @return the value of the '<em>Cascade Remove</em>' attribute.
+	 * @see #setCascadeRemove(boolean)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getCascadeType_CascadeRemove()
-	 * @model containment="true"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
-	public EmptyType getCascadeRemove()
+	public boolean isCascadeRemove()
 	{
 		return cascadeRemove;
 	}
 
 	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeRemove <em>Cascade Remove</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade Remove</em>' attribute.
+	 * @see #isCascadeRemove()
 	 * @generated
 	 */
-	public NotificationChain basicSetCascadeRemove(EmptyType newCascadeRemove, NotificationChain msgs)
+	public void setCascadeRemove(boolean newCascadeRemove)
 	{
-		EmptyType oldCascadeRemove = cascadeRemove;
+		boolean oldCascadeRemove = cascadeRemove;
 		cascadeRemove = newCascadeRemove;
 		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_REMOVE, oldCascadeRemove, newCascadeRemove);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_REMOVE, oldCascadeRemove, cascadeRemove));
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeRemove <em>Cascade Remove</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Cascade Remove</em>' containment reference.
-	 * @see #getCascadeRemove()
-	 * @generated
-	 */
-	public void setCascadeRemove(EmptyType newCascadeRemove)
-	{
-		if (newCascadeRemove != cascadeRemove)
-		{
-			NotificationChain msgs = null;
-			if (cascadeRemove != null)
-				msgs = ((InternalEObject)cascadeRemove).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.CASCADE_TYPE__CASCADE_REMOVE, null, msgs);
-			if (newCascadeRemove != null)
-				msgs = ((InternalEObject)newCascadeRemove).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.CASCADE_TYPE__CASCADE_REMOVE, null, msgs);
-			msgs = basicSetCascadeRemove(newCascadeRemove, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_REMOVE, newCascadeRemove, newCascadeRemove));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Cascade Refresh</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Cascade Refresh</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Cascade Refresh</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Cascade Refresh</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Cascade Refresh</em>' containment reference.
-	 * @see #setCascadeRefresh(EmptyType)
+	 * @return the value of the '<em>Cascade Refresh</em>' attribute.
+	 * @see #setCascadeRefresh(boolean)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getCascadeType_CascadeRefresh()
-	 * @model containment="true"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
-	public EmptyType getCascadeRefresh()
+	public boolean isCascadeRefresh()
 	{
 		return cascadeRefresh;
 	}
 
 	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#isCascadeRefresh <em>Cascade Refresh</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade Refresh</em>' attribute.
+	 * @see #isCascadeRefresh()
 	 * @generated
 	 */
-	public NotificationChain basicSetCascadeRefresh(EmptyType newCascadeRefresh, NotificationChain msgs)
+	public void setCascadeRefresh(boolean newCascadeRefresh)
 	{
-		EmptyType oldCascadeRefresh = cascadeRefresh;
+		boolean oldCascadeRefresh = cascadeRefresh;
 		cascadeRefresh = newCascadeRefresh;
 		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_REFRESH, oldCascadeRefresh, newCascadeRefresh);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType#getCascadeRefresh <em>Cascade Refresh</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Cascade Refresh</em>' containment reference.
-	 * @see #getCascadeRefresh()
-	 * @generated
-	 */
-	public void setCascadeRefresh(EmptyType newCascadeRefresh)
-	{
-		if (newCascadeRefresh != cascadeRefresh)
-		{
-			NotificationChain msgs = null;
-			if (cascadeRefresh != null)
-				msgs = ((InternalEObject)cascadeRefresh).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.CASCADE_TYPE__CASCADE_REFRESH, null, msgs);
-			if (newCascadeRefresh != null)
-				msgs = ((InternalEObject)newCascadeRefresh).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.CASCADE_TYPE__CASCADE_REFRESH, null, msgs);
-			msgs = basicSetCascadeRefresh(newCascadeRefresh, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_REFRESH, newCascadeRefresh, newCascadeRefresh));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.CASCADE_TYPE__CASCADE_ALL:
-				return basicSetCascadeAll(null, msgs);
-			case OrmPackage.CASCADE_TYPE__CASCADE_PERSIST:
-				return basicSetCascadePersist(null, msgs);
-			case OrmPackage.CASCADE_TYPE__CASCADE_MERGE:
-				return basicSetCascadeMerge(null, msgs);
-			case OrmPackage.CASCADE_TYPE__CASCADE_REMOVE:
-				return basicSetCascadeRemove(null, msgs);
-			case OrmPackage.CASCADE_TYPE__CASCADE_REFRESH:
-				return basicSetCascadeRefresh(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.CASCADE_TYPE__CASCADE_REFRESH, oldCascadeRefresh, cascadeRefresh));
 	}
 
 	/**
@@ -446,15 +345,15 @@ public class CascadeType extends JpaEObject implements IJpaEObject
 		switch (featureID)
 		{
 			case OrmPackage.CASCADE_TYPE__CASCADE_ALL:
-				return getCascadeAll();
+				return isCascadeAll() ? Boolean.TRUE : Boolean.FALSE;
 			case OrmPackage.CASCADE_TYPE__CASCADE_PERSIST:
-				return getCascadePersist();
+				return isCascadePersist() ? Boolean.TRUE : Boolean.FALSE;
 			case OrmPackage.CASCADE_TYPE__CASCADE_MERGE:
-				return getCascadeMerge();
+				return isCascadeMerge() ? Boolean.TRUE : Boolean.FALSE;
 			case OrmPackage.CASCADE_TYPE__CASCADE_REMOVE:
-				return getCascadeRemove();
+				return isCascadeRemove() ? Boolean.TRUE : Boolean.FALSE;
 			case OrmPackage.CASCADE_TYPE__CASCADE_REFRESH:
-				return getCascadeRefresh();
+				return isCascadeRefresh() ? Boolean.TRUE : Boolean.FALSE;
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -470,19 +369,19 @@ public class CascadeType extends JpaEObject implements IJpaEObject
 		switch (featureID)
 		{
 			case OrmPackage.CASCADE_TYPE__CASCADE_ALL:
-				setCascadeAll((EmptyType)newValue);
+				setCascadeAll(((Boolean)newValue).booleanValue());
 				return;
 			case OrmPackage.CASCADE_TYPE__CASCADE_PERSIST:
-				setCascadePersist((EmptyType)newValue);
+				setCascadePersist(((Boolean)newValue).booleanValue());
 				return;
 			case OrmPackage.CASCADE_TYPE__CASCADE_MERGE:
-				setCascadeMerge((EmptyType)newValue);
+				setCascadeMerge(((Boolean)newValue).booleanValue());
 				return;
 			case OrmPackage.CASCADE_TYPE__CASCADE_REMOVE:
-				setCascadeRemove((EmptyType)newValue);
+				setCascadeRemove(((Boolean)newValue).booleanValue());
 				return;
 			case OrmPackage.CASCADE_TYPE__CASCADE_REFRESH:
-				setCascadeRefresh((EmptyType)newValue);
+				setCascadeRefresh(((Boolean)newValue).booleanValue());
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -499,19 +398,19 @@ public class CascadeType extends JpaEObject implements IJpaEObject
 		switch (featureID)
 		{
 			case OrmPackage.CASCADE_TYPE__CASCADE_ALL:
-				setCascadeAll((EmptyType)null);
+				setCascadeAll(CASCADE_ALL_EDEFAULT);
 				return;
 			case OrmPackage.CASCADE_TYPE__CASCADE_PERSIST:
-				setCascadePersist((EmptyType)null);
+				setCascadePersist(CASCADE_PERSIST_EDEFAULT);
 				return;
 			case OrmPackage.CASCADE_TYPE__CASCADE_MERGE:
-				setCascadeMerge((EmptyType)null);
+				setCascadeMerge(CASCADE_MERGE_EDEFAULT);
 				return;
 			case OrmPackage.CASCADE_TYPE__CASCADE_REMOVE:
-				setCascadeRemove((EmptyType)null);
+				setCascadeRemove(CASCADE_REMOVE_EDEFAULT);
 				return;
 			case OrmPackage.CASCADE_TYPE__CASCADE_REFRESH:
-				setCascadeRefresh((EmptyType)null);
+				setCascadeRefresh(CASCADE_REFRESH_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -528,17 +427,42 @@ public class CascadeType extends JpaEObject implements IJpaEObject
 		switch (featureID)
 		{
 			case OrmPackage.CASCADE_TYPE__CASCADE_ALL:
-				return cascadeAll != null;
+				return cascadeAll != CASCADE_ALL_EDEFAULT;
 			case OrmPackage.CASCADE_TYPE__CASCADE_PERSIST:
-				return cascadePersist != null;
+				return cascadePersist != CASCADE_PERSIST_EDEFAULT;
 			case OrmPackage.CASCADE_TYPE__CASCADE_MERGE:
-				return cascadeMerge != null;
+				return cascadeMerge != CASCADE_MERGE_EDEFAULT;
 			case OrmPackage.CASCADE_TYPE__CASCADE_REMOVE:
-				return cascadeRemove != null;
+				return cascadeRemove != CASCADE_REMOVE_EDEFAULT;
 			case OrmPackage.CASCADE_TYPE__CASCADE_REFRESH:
-				return cascadeRefresh != null;
+				return cascadeRefresh != CASCADE_REFRESH_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (cascadeAll: ");
+		result.append(cascadeAll);
+		result.append(", cascadePersist: ");
+		result.append(cascadePersist);
+		result.append(", cascadeMerge: ");
+		result.append(cascadeMerge);
+		result.append(", cascadeRemove: ");
+		result.append(cascadeRemove);
+		result.append(", cascadeRefresh: ");
+		result.append(cascadeRefresh);
+		result.append(')');
+		return result.toString();
 	}
 
 } // CascadeType

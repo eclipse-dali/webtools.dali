@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmAdapterFactory.java,v 1.1.2.2 2007/10/23 23:36:43 pfullbright Exp $
+ * $Id: OrmAdapterFactory.java,v 1.1.2.3 2007/11/30 15:35:53 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
 import org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes;
 import org.eclipse.jpt.core.internal.resource.orm.Embedded;
 import org.eclipse.jpt.core.internal.resource.orm.EmbeddedId;
-import org.eclipse.jpt.core.internal.resource.orm.EmptyType;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.EntityListener;
 import org.eclipse.jpt.core.internal.resource.orm.EntityListeners;
@@ -395,11 +394,6 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 				return createUniqueConstraintAdapter();
 			}
 			@Override
-			public Adapter caseEmptyType(EmptyType object)
-			{
-				return createEmptyTypeAdapter();
-			}
-			@Override
 			public Adapter defaultCase(EObject object)
 			{
 				return createEObjectAdapter();
@@ -437,7 +431,7 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>XmlPersistence Unit Metadata</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata <em>Persistence Unit Metadata</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -452,7 +446,7 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>XmlPersistence Unit Defaults</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults <em>Persistence Unit Defaults</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -1212,21 +1206,6 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createUniqueConstraintAdapter()
-	{
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.EmptyType <em>Empty Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.EmptyType
-	 * @generated
-	 */
-	public Adapter createEmptyTypeAdapter()
 	{
 		return null;
 	}

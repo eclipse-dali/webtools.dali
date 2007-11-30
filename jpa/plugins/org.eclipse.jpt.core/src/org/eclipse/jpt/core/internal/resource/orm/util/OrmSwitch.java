@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmSwitch.java,v 1.1.2.2 2007/10/23 23:36:43 pfullbright Exp $
+ * $Id: OrmSwitch.java,v 1.1.2.3 2007/11/30 15:35:53 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -21,7 +21,6 @@ import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
 import org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes;
 import org.eclipse.jpt.core.internal.resource.orm.Embedded;
 import org.eclipse.jpt.core.internal.resource.orm.EmbeddedId;
-import org.eclipse.jpt.core.internal.resource.orm.EmptyType;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.EntityListener;
 import org.eclipse.jpt.core.internal.resource.orm.EntityListeners;
@@ -526,13 +525,6 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case OrmPackage.EMPTY_TYPE:
-			{
-				EmptyType emptyType = (EmptyType)theEObject;
-				T result = caseEmptyType(emptyType);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -554,13 +546,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>XmlPersistence Unit Metadata</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Persistence Unit Metadata</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>XmlPersistence Unit Metadata</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Persistence Unit Metadata</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -570,13 +562,13 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>XmlPersistence Unit Defaults</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Persistence Unit Defaults</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>XmlPersistence Unit Defaults</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Persistence Unit Defaults</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1381,22 +1373,6 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseUniqueConstraint(UniqueConstraint object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Empty Type</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Empty Type</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseEmptyType(EmptyType object)
 	{
 		return null;
 	}

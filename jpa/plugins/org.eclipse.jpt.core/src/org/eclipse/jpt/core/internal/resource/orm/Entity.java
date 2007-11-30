@@ -46,8 +46,8 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getNamedQueries <em>Named Queries</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getNamedNativeQueries <em>Named Native Queries</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getSqlResultSetMappings <em>Sql Result Set Mappings</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getExcludeDefaultListeners <em>Exclude Default Listeners</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#isExcludeDefaultListeners <em>Exclude Default Listeners</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#isExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getEntityListeners <em>Entity Listeners</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getPrePersist <em>Pre Persist</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getPostPersist <em>Post Persist</em>}</li>
@@ -318,24 +318,44 @@ public class Entity extends JpaEObject implements IJpaEObject
 	protected EList<SqlResultSetMapping> sqlResultSetMappings;
 
 	/**
-	 * The cached value of the '{@link #getExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' containment reference.
+	 * The default value of the '{@link #isExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getExcludeDefaultListeners()
+	 * @see #isExcludeDefaultListeners()
 	 * @generated
 	 * @ordered
 	 */
-	protected EmptyType excludeDefaultListeners;
+	protected static final boolean EXCLUDE_DEFAULT_LISTENERS_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #getExcludeSuperclassListeners() <em>Exclude Superclass Listeners</em>}' containment reference.
+	 * The cached value of the '{@link #isExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getExcludeSuperclassListeners()
+	 * @see #isExcludeDefaultListeners()
 	 * @generated
 	 * @ordered
 	 */
-	protected EmptyType excludeSuperclassListeners;
+	protected boolean excludeDefaultListeners = EXCLUDE_DEFAULT_LISTENERS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isExcludeSuperclassListeners() <em>Exclude Superclass Listeners</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isExcludeSuperclassListeners()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isExcludeSuperclassListeners() <em>Exclude Superclass Listeners</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isExcludeSuperclassListeners()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean excludeSuperclassListeners = EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getEntityListeners() <em>Entity Listeners</em>}' containment reference.
@@ -1238,123 +1258,73 @@ public class Entity extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Exclude Default Listeners</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Exclude Default Listeners</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Exclude Default Listeners</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Exclude Default Listeners</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Exclude Default Listeners</em>' containment reference.
-	 * @see #setExcludeDefaultListeners(EmptyType)
+	 * @return the value of the '<em>Exclude Default Listeners</em>' attribute.
+	 * @see #setExcludeDefaultListeners(boolean)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntity_ExcludeDefaultListeners()
-	 * @model containment="true"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
-	public EmptyType getExcludeDefaultListeners()
+	public boolean isExcludeDefaultListeners()
 	{
 		return excludeDefaultListeners;
 	}
 
 	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#isExcludeDefaultListeners <em>Exclude Default Listeners</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Exclude Default Listeners</em>' attribute.
+	 * @see #isExcludeDefaultListeners()
 	 * @generated
 	 */
-	public NotificationChain basicSetExcludeDefaultListeners(EmptyType newExcludeDefaultListeners, NotificationChain msgs)
+	public void setExcludeDefaultListeners(boolean newExcludeDefaultListeners)
 	{
-		EmptyType oldExcludeDefaultListeners = excludeDefaultListeners;
+		boolean oldExcludeDefaultListeners = excludeDefaultListeners;
 		excludeDefaultListeners = newExcludeDefaultListeners;
 		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS, oldExcludeDefaultListeners, newExcludeDefaultListeners);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS, oldExcludeDefaultListeners, excludeDefaultListeners));
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getExcludeDefaultListeners <em>Exclude Default Listeners</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Exclude Default Listeners</em>' containment reference.
-	 * @see #getExcludeDefaultListeners()
-	 * @generated
-	 */
-	public void setExcludeDefaultListeners(EmptyType newExcludeDefaultListeners)
-	{
-		if (newExcludeDefaultListeners != excludeDefaultListeners)
-		{
-			NotificationChain msgs = null;
-			if (excludeDefaultListeners != null)
-				msgs = ((InternalEObject)excludeDefaultListeners).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS, null, msgs);
-			if (newExcludeDefaultListeners != null)
-				msgs = ((InternalEObject)newExcludeDefaultListeners).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS, null, msgs);
-			msgs = basicSetExcludeDefaultListeners(newExcludeDefaultListeners, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS, newExcludeDefaultListeners, newExcludeDefaultListeners));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Exclude Superclass Listeners</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Exclude Superclass Listeners</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Exclude Superclass Listeners</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Exclude Superclass Listeners</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Exclude Superclass Listeners</em>' containment reference.
-	 * @see #setExcludeSuperclassListeners(EmptyType)
+	 * @return the value of the '<em>Exclude Superclass Listeners</em>' attribute.
+	 * @see #setExcludeSuperclassListeners(boolean)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntity_ExcludeSuperclassListeners()
-	 * @model containment="true"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
-	public EmptyType getExcludeSuperclassListeners()
+	public boolean isExcludeSuperclassListeners()
 	{
 		return excludeSuperclassListeners;
 	}
 
 	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#isExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Exclude Superclass Listeners</em>' attribute.
+	 * @see #isExcludeSuperclassListeners()
 	 * @generated
 	 */
-	public NotificationChain basicSetExcludeSuperclassListeners(EmptyType newExcludeSuperclassListeners, NotificationChain msgs)
+	public void setExcludeSuperclassListeners(boolean newExcludeSuperclassListeners)
 	{
-		EmptyType oldExcludeSuperclassListeners = excludeSuperclassListeners;
+		boolean oldExcludeSuperclassListeners = excludeSuperclassListeners;
 		excludeSuperclassListeners = newExcludeSuperclassListeners;
 		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS, oldExcludeSuperclassListeners, newExcludeSuperclassListeners);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Exclude Superclass Listeners</em>' containment reference.
-	 * @see #getExcludeSuperclassListeners()
-	 * @generated
-	 */
-	public void setExcludeSuperclassListeners(EmptyType newExcludeSuperclassListeners)
-	{
-		if (newExcludeSuperclassListeners != excludeSuperclassListeners)
-		{
-			NotificationChain msgs = null;
-			if (excludeSuperclassListeners != null)
-				msgs = ((InternalEObject)excludeSuperclassListeners).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS, null, msgs);
-			if (newExcludeSuperclassListeners != null)
-				msgs = ((InternalEObject)newExcludeSuperclassListeners).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS, null, msgs);
-			msgs = basicSetExcludeSuperclassListeners(newExcludeSuperclassListeners, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS, newExcludeSuperclassListeners, newExcludeSuperclassListeners));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS, oldExcludeSuperclassListeners, excludeSuperclassListeners));
 	}
 
 	/**
@@ -1975,10 +1945,6 @@ public class Entity extends JpaEObject implements IJpaEObject
 				return ((InternalEList<?>)getNamedNativeQueries()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return ((InternalEList<?>)getSqlResultSetMappings()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS:
-				return basicSetExcludeDefaultListeners(null, msgs);
-			case OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
-				return basicSetExcludeSuperclassListeners(null, msgs);
 			case OrmPackage.ENTITY__ENTITY_LISTENERS:
 				return basicSetEntityListeners(null, msgs);
 			case OrmPackage.ENTITY__PRE_PERSIST:
@@ -2050,9 +2016,9 @@ public class Entity extends JpaEObject implements IJpaEObject
 			case OrmPackage.ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return getSqlResultSetMappings();
 			case OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS:
-				return getExcludeDefaultListeners();
+				return isExcludeDefaultListeners() ? Boolean.TRUE : Boolean.FALSE;
 			case OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
-				return getExcludeSuperclassListeners();
+				return isExcludeSuperclassListeners() ? Boolean.TRUE : Boolean.FALSE;
 			case OrmPackage.ENTITY__ENTITY_LISTENERS:
 				return getEntityListeners();
 			case OrmPackage.ENTITY__PRE_PERSIST:
@@ -2147,10 +2113,10 @@ public class Entity extends JpaEObject implements IJpaEObject
 				getSqlResultSetMappings().addAll((Collection<? extends SqlResultSetMapping>)newValue);
 				return;
 			case OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS:
-				setExcludeDefaultListeners((EmptyType)newValue);
+				setExcludeDefaultListeners(((Boolean)newValue).booleanValue());
 				return;
 			case OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
-				setExcludeSuperclassListeners((EmptyType)newValue);
+				setExcludeSuperclassListeners(((Boolean)newValue).booleanValue());
 				return;
 			case OrmPackage.ENTITY__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)newValue);
@@ -2253,10 +2219,10 @@ public class Entity extends JpaEObject implements IJpaEObject
 				getSqlResultSetMappings().clear();
 				return;
 			case OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS:
-				setExcludeDefaultListeners((EmptyType)null);
+				setExcludeDefaultListeners(EXCLUDE_DEFAULT_LISTENERS_EDEFAULT);
 				return;
 			case OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
-				setExcludeSuperclassListeners((EmptyType)null);
+				setExcludeSuperclassListeners(EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT);
 				return;
 			case OrmPackage.ENTITY__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)null);
@@ -2340,9 +2306,9 @@ public class Entity extends JpaEObject implements IJpaEObject
 			case OrmPackage.ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return sqlResultSetMappings != null && !sqlResultSetMappings.isEmpty();
 			case OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS:
-				return excludeDefaultListeners != null;
+				return excludeDefaultListeners != EXCLUDE_DEFAULT_LISTENERS_EDEFAULT;
 			case OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
-				return excludeSuperclassListeners != null;
+				return excludeSuperclassListeners != EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT;
 			case OrmPackage.ENTITY__ENTITY_LISTENERS:
 				return entityListeners != null;
 			case OrmPackage.ENTITY__PRE_PERSIST:
@@ -2392,6 +2358,10 @@ public class Entity extends JpaEObject implements IJpaEObject
 		result.append(description);
 		result.append(", discriminatorValue: ");
 		result.append(discriminatorValue);
+		result.append(", excludeDefaultListeners: ");
+		result.append(excludeDefaultListeners);
+		result.append(", excludeSuperclassListeners: ");
+		result.append(excludeSuperclassListeners);
 		result.append(')');
 		return result.toString();
 	}
