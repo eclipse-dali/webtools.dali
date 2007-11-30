@@ -65,11 +65,19 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
 	public T getValue(ModifiedDeclaration declaration) {
-		return this.converter.convert(this.adapter.getValue(declaration));
+		Expression expression = this.adapter.getValue(declaration);
+		return this.converter.convert(expression);
 	}
 
 	public void setValue(T value, ModifiedDeclaration declaration) {
-		this.adapter.setValue(this.converter.convert(value, declaration.getAST()), declaration);
+		Expression expression;
+		try {
+			expression = this.converter.convert(value, declaration.getAST());
+		} catch (IllegalArgumentException ex) {
+			// if there is a problem converting the 'value' to an Expression we get this exception
+			return;  // don't set the value if it is "illegal"
+		}
+		this.adapter.setValue(expression, declaration);
 	}
 
 	public Expression expression(ModifiedDeclaration declaration) {
