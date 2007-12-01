@@ -42,22 +42,22 @@ public class CascadeTypeTranslator extends Translator
 	}
 	
 	private Translator createCascadeAllTranslator() {
-		return new Translator(CASCADE_ALL, ORM_PKG.getCascadeType_CascadeAll());
+		return new EmptyTagBooleanTranslator(CASCADE_ALL, ORM_PKG.getCascadeType_CascadeAll());
 	}
 	
 	private Translator createCascadePersistTranslator() {
-		return new Translator(CASCADE_PERSIST, ORM_PKG.getCascadeType_CascadePersist());
+		return new EmptyTagBooleanTranslator(CASCADE_PERSIST, ORM_PKG.getCascadeType_CascadePersist());
 	}
 	
 	private Translator createCascadeMergeTranslator() {
-		return new Translator(CASCADE_MERGE, ORM_PKG.getCascadeType_CascadeMerge());
+		return new EmptyTagBooleanTranslator(CASCADE_MERGE, ORM_PKG.getCascadeType_CascadeMerge());
 	}
 	
 	private Translator createCascadeRemoveTranslator() {
-		return new Translator(CASCADE_REMOVE, ORM_PKG.getCascadeType_CascadeRemove());
+		return new EmptyTagBooleanTranslator(CASCADE_REMOVE, ORM_PKG.getCascadeType_CascadeRemove());
 	}
 
 	private Translator createCascadeRefreshTranslator() {
-		return new Translator(CASCADE_REFRESH, ORM_PKG.getCascadeType_CascadeRefresh());
+		return new EmptyTagBooleanTranslator(CASCADE_REFRESH, ORM_PKG.getCascadeType_CascadeRefresh());
 	}
 }

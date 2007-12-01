@@ -135,11 +135,11 @@ public class EntityTranslator extends Translator
 	}
 	
 	private Translator createExcludeDefaultListenersTranslator() {
-		return new Translator(EXCLUDE_DEFAULT_LISTENERS, ORM_PKG.getEntity_ExcludeDefaultListeners());
+		return new EmptyTagBooleanTranslator(EXCLUDE_DEFAULT_LISTENERS, ORM_PKG.getEntity_ExcludeDefaultListeners());
 	}
 	
 	private Translator createExcludeSuperclassListenersTranslator() {
-		return new Translator(EXCLUDE_SUPERCLASS_LISTENERS, ORM_PKG.getEntity_ExcludeSuperclassListeners());
+		return new EmptyTagBooleanTranslator(EXCLUDE_SUPERCLASS_LISTENERS, ORM_PKG.getEntity_ExcludeSuperclassListeners());
 	}
 	
 	private Translator createEntityListenersTranslator() {

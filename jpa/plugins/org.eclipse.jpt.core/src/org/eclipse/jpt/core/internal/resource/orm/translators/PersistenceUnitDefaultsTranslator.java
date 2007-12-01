@@ -54,7 +54,7 @@ public class PersistenceUnitDefaultsTranslator extends Translator
 	}
 	
 	private Translator createCascadePersistTranslator() {
-		return new Translator(CASCADE_PERSIST, ORM_PKG.getPersistenceUnitDefaults_CascadePersist());
+		return new EmptyTagBooleanTranslator(CASCADE_PERSIST, ORM_PKG.getPersistenceUnitDefaults_CascadePersist());
 	}
 	
 	private Translator createEntityListenersTranslator() {

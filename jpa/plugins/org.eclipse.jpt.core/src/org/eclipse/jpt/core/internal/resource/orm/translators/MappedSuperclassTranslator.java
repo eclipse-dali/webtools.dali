@@ -73,11 +73,11 @@ public class MappedSuperclassTranslator extends Translator
 	}
 	
 	private Translator createExcludeDefaultListenersTranslator() {
-		return new Translator(EXCLUDE_DEFAULT_LISTENERS, ORM_PKG.getMappedSuperclass_ExcludeDefaultListeners());
+		return new EmptyTagBooleanTranslator(EXCLUDE_DEFAULT_LISTENERS, ORM_PKG.getMappedSuperclass_ExcludeDefaultListeners());
 	}
 	
 	private Translator createExcludeSuperclassListenersTranslator() {
-		return new Translator(EXCLUDE_SUPERCLASS_LISTENERS, ORM_PKG.getMappedSuperclass_ExcludeSuperclassListeners());
+		return new EmptyTagBooleanTranslator(EXCLUDE_SUPERCLASS_LISTENERS, ORM_PKG.getMappedSuperclass_ExcludeSuperclassListeners());
 	}
 	
 	private Translator createEntityListenersTranslator() {

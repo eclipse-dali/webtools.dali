@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
+import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 
 public class PersistenceUnitDefaultsImpl extends JpaContextNode
 	implements PersistenceUnitDefaults
@@ -36,7 +37,30 @@ public class PersistenceUnitDefaultsImpl extends JpaContextNode
 	public void setAccess(AccessType newAccess) {
 		AccessType oldAccess = this.access;
 		this.access = newAccess;
-		this.persistenceUnitDefaults().setAccess(AccessType.toXmlResourceModel(newAccess));
+		if (oldAccess != newAccess) {
+			if (this.persistenceUnitDefaults() != null) {
+				this.persistenceUnitDefaults().setAccess(AccessType.toXmlResourceModel(newAccess));
+				if (this.persistenceUnitDefaults().isAllFeaturesUnset()) {
+					this.persistenceUnitMetadata().setPersistenceUnitDefaults(null);
+					if (this.persistenceUnitMetadata().isAllFeaturesUnset()) {
+						this.entityMappings.setPersistenceUnitMetadata(null);
+					}
+				}
+			}
+			else {
+				if (persistenceUnitMetadata() == null) {
+					this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+				}
+				persistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createPersistenceUnitDefaults());
+				persistenceUnitDefaults().setAccess(AccessType.toXmlResourceModel(newAccess));
+			}
+		}
+		firePropertyChanged(PersistenceUnitDefaults.ACCESS_PROPERTY, oldAccess, newAccess);
+	}
+	
+	protected void setAccess_(AccessType newAccess) {
+		AccessType oldAccess = this.access;
+		this.access = newAccess;
 		firePropertyChanged(PersistenceUnitDefaults.ACCESS_PROPERTY, oldAccess, newAccess);
 	}
 
@@ -47,7 +71,30 @@ public class PersistenceUnitDefaultsImpl extends JpaContextNode
 	public void setCatalog(String newCatalog) {
 		String oldCatalog = this.catalog;
 		this.catalog = newCatalog;
-		this.persistenceUnitDefaults().setCatalog(newCatalog);
+		if (oldCatalog != newCatalog) {
+			if (this.persistenceUnitDefaults() != null) {
+				this.persistenceUnitDefaults().setCatalog(newCatalog);
+				if (this.persistenceUnitDefaults().isAllFeaturesUnset()) {
+					this.persistenceUnitMetadata().setPersistenceUnitDefaults(null);
+					if (this.persistenceUnitMetadata().isAllFeaturesUnset()) {
+						this.entityMappings.setPersistenceUnitMetadata(null);
+					}
+				}
+			}
+			else {
+				if (persistenceUnitMetadata() == null) {
+					this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+				}
+				persistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createPersistenceUnitDefaults());
+				persistenceUnitDefaults().setCatalog(newCatalog);
+			}
+		}
+		firePropertyChanged(PersistenceUnitDefaults.CATALOG_PROPERTY, oldCatalog, newCatalog);
+	}
+	
+	protected void setCatalog_(String newCatalog) {
+		String oldCatalog = this.catalog;
+		this.catalog = newCatalog;
 		firePropertyChanged(PersistenceUnitDefaults.CATALOG_PROPERTY, oldCatalog, newCatalog);
 	}
 
@@ -58,7 +105,30 @@ public class PersistenceUnitDefaultsImpl extends JpaContextNode
 	public void setSchema(String newSchema) {
 		String oldSchema = this.schema;
 		this.schema = newSchema;
-		this.persistenceUnitDefaults().setSchema(newSchema);
+		if (oldSchema != newSchema) {
+			if (this.persistenceUnitDefaults() != null) {
+				this.persistenceUnitDefaults().setSchema(newSchema);
+				if (this.persistenceUnitDefaults().isAllFeaturesUnset()) {
+					this.persistenceUnitMetadata().setPersistenceUnitDefaults(null);
+					if (this.persistenceUnitMetadata().isAllFeaturesUnset()) {
+						this.entityMappings.setPersistenceUnitMetadata(null);
+					}
+				}
+			}
+			else {
+				if (persistenceUnitMetadata() == null) {
+					this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+				}
+				persistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createPersistenceUnitDefaults());
+				persistenceUnitDefaults().setSchema(newSchema);
+			}
+		}
+		firePropertyChanged(PersistenceUnitDefaults.SCHEMA_PROPERTY, oldSchema, newSchema);
+	}
+	
+	protected void setSchema_(String newSchema) {
+		String oldSchema = this.schema;
+		this.schema = newSchema;
 		firePropertyChanged(PersistenceUnitDefaults.SCHEMA_PROPERTY, oldSchema, newSchema);
 	}
 	
@@ -69,7 +139,30 @@ public class PersistenceUnitDefaultsImpl extends JpaContextNode
 	public void setCascadePersist(boolean newCascadePersist) {
 		boolean oldCascadePersist = this.cascadePersist;
 		this.cascadePersist = newCascadePersist;
-		this.persistenceUnitDefaults().setCascadePersist(newCascadePersist);
+		if (oldCascadePersist != newCascadePersist) {
+			if (this.persistenceUnitDefaults() != null) {
+				this.persistenceUnitDefaults().setCascadePersist(newCascadePersist);
+				if (this.persistenceUnitDefaults().isAllFeaturesUnset()) {
+					this.persistenceUnitMetadata().setPersistenceUnitDefaults(null);
+					if (this.persistenceUnitMetadata().isAllFeaturesUnset()) {
+						this.entityMappings.setPersistenceUnitMetadata(null);
+					}
+				}
+			}
+			else if (newCascadePersist) {
+				if (persistenceUnitMetadata() == null) {
+					this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+				}
+				persistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createPersistenceUnitDefaults());
+				persistenceUnitDefaults().setCascadePersist(newCascadePersist);
+			}
+		}
+		firePropertyChanged(PersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY, oldCascadePersist, newCascadePersist);
+	}
+
+	protected void setCascadePersist_(boolean newCascadePersist) {
+		boolean oldCascadePersist = this.cascadePersist;
+		this.cascadePersist = newCascadePersist;
 		firePropertyChanged(PersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY, oldCascadePersist, newCascadePersist);
 	}
 	
@@ -87,24 +180,28 @@ public class PersistenceUnitDefaultsImpl extends JpaContextNode
 	public void update(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
 		this.entityMappings = entityMappings;
 		if (this.persistenceUnitDefaults() != null) {
-			this.setAccess(AccessType.fromXmlResourceModel(this.persistenceUnitDefaults().getAccess()));
-			this.setCascadePersist(this.persistenceUnitDefaults().isCascadePersist());
-			this.setCatalog(this.persistenceUnitDefaults().getCatalog());
-			this.setSchema(this.persistenceUnitDefaults().getSchema());
+			this.setAccess_(AccessType.fromXmlResourceModel(this.persistenceUnitDefaults().getAccess()));
+			this.setCascadePersist_(this.persistenceUnitDefaults().isCascadePersist());
+			this.setCatalog_(this.persistenceUnitDefaults().getCatalog());
+			this.setSchema_(this.persistenceUnitDefaults().getSchema());
 		}
-//		else {
-//			this.setAccess(null);
-//			this.setCascadePersist(false);
-//			this.setCatalog(null);
-//			this.setSchema(null);
-//		}
+		else {
+			this.setAccess_(null);
+			this.setCascadePersist_(false);
+			this.setCatalog_(null);
+			this.setSchema_(null);
+		}
 	}
 	
 	protected org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults persistenceUnitDefaults() {
-		if (this.entityMappings.getPersistenceUnitMetadata() != null) {
-			return this.entityMappings.getPersistenceUnitMetadata().getPersistenceUnitDefaults();
+		if (persistenceUnitMetadata() != null) {
+			return persistenceUnitMetadata().getPersistenceUnitDefaults();
 		}
 		return null;
+	}
+
+	protected org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata persistenceUnitMetadata() {
+		return this.entityMappings.getPersistenceUnitMetadata();
 	}
 
 }

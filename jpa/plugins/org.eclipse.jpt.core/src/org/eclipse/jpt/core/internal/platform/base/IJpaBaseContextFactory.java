@@ -47,8 +47,8 @@ import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaVersionMapping;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.OrmXml;
-import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
 
 /**
  * An IJpaFactory that also assumes a base JPA project context structure 
