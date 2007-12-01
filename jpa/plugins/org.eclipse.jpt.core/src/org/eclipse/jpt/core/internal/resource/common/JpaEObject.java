@@ -19,6 +19,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.utility.internal.ClassTools;
@@ -144,6 +145,15 @@ public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 	
 	// *************************************************************************
 	
+	public boolean isAllFeaturesUnset() {
+		for (EStructuralFeature feature : eClass().getEAllStructuralFeatures()) {
+			if (eIsSet(feature)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	@Override
 	public EList<Adapter> eAdapters() {
 		if (this.eAdapters == null) {

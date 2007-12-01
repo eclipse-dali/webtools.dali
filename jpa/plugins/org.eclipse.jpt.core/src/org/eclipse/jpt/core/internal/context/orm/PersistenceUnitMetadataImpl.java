@@ -36,10 +36,8 @@ public class PersistenceUnitMetadataImpl extends JpaContextNode
 		if (oldXmlMappingMetadataComplete != newXmlMappingMetadataComplete) {
 			if (this.persistenceUnitMetadata() != null) {
 				this.persistenceUnitMetadata().setXmlMappingMetadataComplete(newXmlMappingMetadataComplete);						
-				if (!newXmlMappingMetadataComplete) {
-					if (persistenceUnitMetadata().getPersistenceUnitDefaults() == null) {
-						this.entityMappings.setPersistenceUnitMetadata(null);
-					}
+				if (this.persistenceUnitMetadata().isAllFeaturesUnset()) {
+					this.entityMappings.setPersistenceUnitMetadata(null);
 				}
 			}
 			else if (newXmlMappingMetadataComplete) {

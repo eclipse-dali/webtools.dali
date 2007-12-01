@@ -71,13 +71,11 @@ public class PersistenceUnitMetadataTests extends ContextModelTestCase
 		
 		//set xmlMappingMetadataComplete in the context model, verify resource model modified
 		persistenceUnitMetadata.setXmlMappingMetadataComplete(true);
-		ormResource().save(null);
 		assertTrue(persistenceUnitMetadata.isXmlMappingMetadataComplete());
 		assertTrue(ormResource().getEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
 		
 		//set xmlMappingMetadataComplete to null in the context model
 		persistenceUnitMetadata.setXmlMappingMetadataComplete(false);
-		ormResource().save(null);
 		assertFalse(persistenceUnitMetadata.isXmlMappingMetadataComplete());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 	}
@@ -89,7 +87,6 @@ public class PersistenceUnitMetadataTests extends ContextModelTestCase
 		
 		//set xmlMappingMetadataComplete in the context model, verify resource model modified
 		persistenceUnitMetadata.setXmlMappingMetadataComplete(true);
-		ormResource().save(null);
 		assertTrue(persistenceUnitMetadata.isXmlMappingMetadataComplete());
 		assertTrue(ormResource().getEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
 		
@@ -97,7 +94,6 @@ public class PersistenceUnitMetadataTests extends ContextModelTestCase
 		//set another element on the persistence-unit-metadata element so it doesn't get removed
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createPersistenceUnitDefaults());
 		persistenceUnitMetadata.setXmlMappingMetadataComplete(false);
-		ormResource().save(null);
 		assertFalse(persistenceUnitMetadata.isXmlMappingMetadataComplete());
 		assertFalse(ormResource().getEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
 	}
