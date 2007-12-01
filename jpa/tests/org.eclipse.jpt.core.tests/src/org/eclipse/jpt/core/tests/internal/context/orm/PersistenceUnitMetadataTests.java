@@ -42,6 +42,24 @@ public class PersistenceUnitMetadataTests extends ContextModelTestCase
 	protected EntityMappings entityMappings() {
 		return persistenceUnit().mappingFileRefs().next().getOrmXml().getEntityMappings();
 	}
+	protected PersistenceUnitMetadata persistenceUnitMetadata() {
+		return entityMappings().getPersistenceUnitMetadata();
+	}
+	
+	public void testIsAllFeaturesUnset() throws Exception {
+		org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata persistenceUnitMetadata = OrmFactory.eINSTANCE.createPersistenceUnitMetadata();
+		ormResource().getEntityMappings().setPersistenceUnitMetadata(persistenceUnitMetadata);
+		assertTrue(persistenceUnitMetadata.isAllFeaturesUnset());
+		
+		persistenceUnitMetadata.setXmlMappingMetadataComplete(true);
+		assertFalse(persistenceUnitMetadata.isAllFeaturesUnset());
+		
+		persistenceUnitMetadata.setXmlMappingMetadataComplete(false);
+		assertTrue(persistenceUnitMetadata.isAllFeaturesUnset());
+		
+		persistenceUnitMetadata.setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createPersistenceUnitDefaults());
+		assertFalse(persistenceUnitMetadata.isAllFeaturesUnset());		
+	}
 	
 	public void testUpdateXmlMappingMetadataComplete() throws Exception {
 		PersistenceUnitMetadata persistenceUnitMetadata = entityMappings().getPersistenceUnitMetadata();
