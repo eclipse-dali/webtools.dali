@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import org.eclipse.jpt.core.internal.context.orm.OrmXml;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 
 public interface IMappingFileRef extends IJpaContextNode
@@ -19,7 +20,7 @@ public interface IMappingFileRef extends IJpaContextNode
 	/**
 	 * String constant associated with changes to the file name
 	 */
-	final static String FILE_NAME_PROPERTY = "fileName";
+	String FILE_NAME_PROPERTY = "fileNameProperty";
 	
 	/**
 	 * Return the file name of the mapping file ref.
@@ -31,6 +32,8 @@ public interface IMappingFileRef extends IJpaContextNode
 	 */
 	void setFileName(String fileName);
 	
+	OrmXml getOrmXml();	
+		String ORM_XML_PROPERTY = "ormXmlProperty";
 	
 	// **************** udpating ***********************************************
 	

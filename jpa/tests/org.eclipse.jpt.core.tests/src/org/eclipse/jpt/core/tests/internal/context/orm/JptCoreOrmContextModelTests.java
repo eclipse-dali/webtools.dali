@@ -8,31 +8,28 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.tests.internal.context;
+package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.core.tests.internal.context.java.JptCoreContextJavaModelTests;
-import org.eclipse.jpt.core.tests.internal.context.orm.JptCoreOrmContextModelTests;
-import org.eclipse.jpt.core.tests.internal.context.persistence.JptCorePersistenceContextModelTests;
 
-public class JptCoreContextModelTests extends TestCase
+public class JptCoreOrmContextModelTests extends TestCase
 {
 	public static Test suite() {
 		return suite(true);
 	}
 	
 	public static Test suite(boolean all) {
-		TestSuite suite = new TestSuite(JptCoreContextModelTests.class.getName());
-		suite.addTest(JptCorePersistenceContextModelTests.suite(all));
-		suite.addTest(JptCoreOrmContextModelTests.suite(all));
-		suite.addTest(JptCoreContextJavaModelTests.suite(all));
+		TestSuite suite = new TestSuite(JptCoreOrmContextModelTests.class.getName());
+		suite.addTestSuite(OrmXmlTests.class);
+		suite.addTestSuite(EntityMappingsTests.class);
+		suite.addTestSuite(PersistenceUnitMetadataTests.class);
+		suite.addTestSuite(PersistenceUnitDefaultsTests.class);
 		return suite;
 	}
-
-	private JptCoreContextModelTests() {
-		super();
+	
+	private JptCoreOrmContextModelTests() {
 		throw new UnsupportedOperationException();
 	}
 }

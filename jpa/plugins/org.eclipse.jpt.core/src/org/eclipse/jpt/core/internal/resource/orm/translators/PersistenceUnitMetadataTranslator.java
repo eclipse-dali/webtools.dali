@@ -38,7 +38,7 @@ public class PersistenceUnitMetadataTranslator extends Translator implements Orm
 	}
 
 	private Translator createXmlMappingMetadataCompleteTranslator() {
-		return new Translator(XML_MAPPING_METADATA_COMPLETE, ORM_PKG.getPersistenceUnitMetadata_XmlMappingMetadataComplete());
+		return new EmptyTagBooleanTranslator(XML_MAPPING_METADATA_COMPLETE, ORM_PKG.getPersistenceUnitMetadata_XmlMappingMetadataComplete());
 	}
 	
 	private Translator createPersistenceUnitDefaultsTranslator() {

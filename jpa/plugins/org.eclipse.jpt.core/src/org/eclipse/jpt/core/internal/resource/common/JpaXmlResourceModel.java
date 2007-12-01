@@ -42,7 +42,7 @@ public abstract class JpaXmlResourceModel implements IResourceModel
 		return new ReloadListener(resource);
 	}
 	
-	protected JpaXmlResource resource() {
+	public JpaXmlResource resource() {
 		return resource;
 	}
 	

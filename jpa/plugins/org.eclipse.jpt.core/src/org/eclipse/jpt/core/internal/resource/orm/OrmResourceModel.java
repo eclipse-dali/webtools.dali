@@ -33,4 +33,9 @@ public class OrmResourceModel extends JpaXmlResourceModel
 	protected OrmArtifactEdit buildArtifactEdit(IProject project) {
 		return OrmArtifactEdit.getArtifactEditForRead(project);
 	}
+	
+	@Override
+	public OrmResource resource() {
+		return (OrmResource) super.resource();
+	}
 }

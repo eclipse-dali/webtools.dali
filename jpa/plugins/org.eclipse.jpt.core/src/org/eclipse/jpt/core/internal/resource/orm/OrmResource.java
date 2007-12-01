@@ -40,6 +40,7 @@ public class OrmResource extends JpaXmlResource
 	/**
 	 * @see JpaXmlResource#getContentNode(int)
 	 */
+	@Override
 	public IJpaContentNode getContentNode(int offset) {
 		// TODO Auto-generated method stub
 		return null;
@@ -48,6 +49,7 @@ public class OrmResource extends JpaXmlResource
 	/**
 	 * @see JpaXmlResource#handleJavaElementChangedEvent(ElementChangedEvent)
 	 */
+	@Override
 	public void handleJavaElementChangedEvent(ElementChangedEvent event) {
 		// TODO Auto-generated method stub	
 	}

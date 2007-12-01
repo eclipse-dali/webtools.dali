@@ -45,6 +45,10 @@ import org.eclipse.jpt.core.internal.context.java.IJavaTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.IJavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaVersionMapping;
+import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.context.orm.OrmXml;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 
 /**
  * An IJpaFactory that also assumes a base JPA project context structure 
@@ -65,6 +69,14 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	IPersistenceXml createPersistenceXml(IBaseJpaContent parent);
 	
 	IPersistence createPersistence(IPersistenceXml parent);
+	
+	OrmXml createOrmXml(IMappingFileRef parent);
+
+	EntityMappings createEntityMappings(OrmXml parent);
+	
+	PersistenceUnitMetadata createPersistenceUnitMetadata(EntityMappings parent);
+	
+	PersistenceUnitDefaults createPersistenceUnitDefaults(PersistenceUnitMetadata parent);
 	
 	IPersistenceUnit createPersistenceUnit(IPersistence parent);
 	

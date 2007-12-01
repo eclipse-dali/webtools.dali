@@ -86,6 +86,14 @@ import org.eclipse.jpt.core.internal.context.java.JavaTable;
 import org.eclipse.jpt.core.internal.context.java.JavaTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.context.orm.EntityMappingsImpl;
+import org.eclipse.jpt.core.internal.context.orm.OrmXml;
+import org.eclipse.jpt.core.internal.context.orm.OrmXmlImpl;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaultsImpl;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadataImpl;
 import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
@@ -199,6 +207,22 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IPersistenceXml createPersistenceXml(IBaseJpaContent parent) {
 		return new PersistenceXml(parent);
+	}
+	
+	public OrmXml createOrmXml(IMappingFileRef parent) {
+		return new OrmXmlImpl(parent);
+	}
+	
+	public EntityMappings createEntityMappings(OrmXml parent) {
+		return new EntityMappingsImpl(parent);
+	}
+	
+	public PersistenceUnitMetadata createPersistenceUnitMetadata(EntityMappings parent) {
+		return new PersistenceUnitMetadataImpl(parent);
+	}
+	
+	public PersistenceUnitDefaults createPersistenceUnitDefaults(PersistenceUnitMetadata parent) {
+		return new PersistenceUnitDefaultsImpl(parent);
 	}
 	
 	public IPersistence createPersistence(IPersistenceXml parent) {

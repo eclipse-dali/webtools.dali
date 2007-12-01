@@ -13,7 +13,6 @@ package org.eclipse.jpt.core.tests.internal.context.persistence;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -22,15 +21,6 @@ public class MappingFileRefTests extends ContextModelTestCase
 {
 	public MappingFileRefTests(String name) {
 		super(name);
-	}
-	
-	protected XmlPersistenceUnit xmlPersistenceUnit() {
-		PersistenceResource prm = persistenceResource();
-		return prm.getPersistence().getPersistenceUnits().get(0);
-	}
-	
-	protected IPersistenceUnit persistenceUnit() {
-		return jpaContent().getPersistenceXml().getPersistence().persistenceUnits().next();
 	}
 	
 	protected IMappingFileRef mappingFileRef() {
