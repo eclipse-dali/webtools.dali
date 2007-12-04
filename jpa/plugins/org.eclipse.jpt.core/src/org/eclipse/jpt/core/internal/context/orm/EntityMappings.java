@@ -69,7 +69,7 @@ public interface EntityMappings extends IJpaContextNode
 		String PERSISTENT_TYPES_LIST = "persistentTypes";
 	
 
-	void changeMapping(XmlPersistentType xmlPersistentType, XmlTypeMapping oldMapping);
+	void changeMapping(XmlPersistentType xmlPersistentType, XmlTypeMapping oldMapping, XmlTypeMapping newMapping);
 	
 	// **************** updating ***********************************************
 	

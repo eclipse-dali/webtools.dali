@@ -133,7 +133,7 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, IOverride.Owner owner);
 	
 	//TODO need an interface??
-	XmlPersistentType createXmlPersistentType(EntityMappings parent, String mappingKey);
+	XmlPersistentType createXmlPersistentType(EntityMappings parent, String mappingKey, org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappingResource);
 	
 	XmlEntity createXmlEntity(XmlPersistentType parent);
 	

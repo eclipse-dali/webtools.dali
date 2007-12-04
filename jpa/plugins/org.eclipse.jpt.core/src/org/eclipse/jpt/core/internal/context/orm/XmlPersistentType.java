@@ -33,7 +33,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 //
 //	protected EList<XmlPersistentAttribute> virtualPersistentAttributes;
 
-	protected Collection<IXmlTypeMappingProvider> typeMappingProviders;
+	protected final Collection<IXmlTypeMappingProvider> typeMappingProviders;
 
 	protected XmlTypeMapping xmlTypeMapping;
 	
@@ -41,18 +41,24 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 
 	protected org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings;
 	
-	public XmlPersistentType(EntityMappings parent, String mappingKey) {
+	public XmlPersistentType(EntityMappings parent, String mappingKey, org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappingsResource) {
 		super(parent);
 		this.typeMappingProviders = buildTypeMappingProviders();
 		this.mappingKey = mappingKey;
+		this.entityMappings = entityMappingsResource;
 		this.xmlTypeMapping = buildXmlTypeMapping(mappingKey);
 	}
+
+//	/* @see IJpaContentNode#getId() */
+//	public Object getId() {
+//		return IXmlContentNodes.PERSISTENT_TYPE_ID;
+//	}
 	
-	public void initialize(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
-		this.entityMappings = entityMappings;
+	public EntityMappings entityMappings() {
+		return (EntityMappings) parent();
 	}
 	
-	private XmlTypeMapping buildXmlTypeMapping(String key) {
+	protected XmlTypeMapping buildXmlTypeMapping(String key) {
 		for (IXmlTypeMappingProvider provider : this.typeMappingProviders) {
 			if (provider.key().equals(key)) {
 				return provider.buildTypeMapping(jpaFactory(), this);
@@ -60,19 +66,6 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		}
 		throw new IllegalArgumentException();
 	}
-
-	public EntityMappings entityMappings() {
-		return (EntityMappings) parent();
-	}
-//
-//	@Override
-//	protected void addInsignificantFeatureIdsTo(Set<Integer> insignificantFeatureIds) {
-//		super.addInsignificantFeatureIdsTo(insignificantFeatureIds);
-//		insignificantFeatureIds.add(OrmPackage.XML_PERSISTENT_TYPE__ATTRIBUTE_MAPPINGS);
-//		insignificantFeatureIds.add(OrmPackage.XML_PERSISTENT_TYPE__PERSISTENT_ATTRIBUTES);
-//		insignificantFeatureIds.add(OrmPackage.XML_PERSISTENT_TYPE__SPECIFIED_PERSISTENT_ATTRIBUTES);
-//		insignificantFeatureIds.add(OrmPackage.XML_PERSISTENT_TYPE__VIRTUAL_PERSISTENT_ATTRIBUTES);
-//	}
 
 	protected Collection<IXmlTypeMappingProvider> buildTypeMappingProviders() {
 		Collection<IXmlTypeMappingProvider> collection = new ArrayList<IXmlTypeMappingProvider>();
@@ -82,14 +75,23 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		return collection;
 	}
 
+	protected IXmlTypeMappingProvider typeMappingProvider(String key) {
+		for (IXmlTypeMappingProvider provider : this.typeMappingProviders) {
+			if (provider.key().equals(key)) {
+				return provider;
+			}
+		}
+		throw new IllegalArgumentException();
+	}
+	
+	protected void createAndAddOrmResourceMapping(String mappingKey, String className) {
+		IXmlTypeMappingProvider xmlTypeMappingProvider = typeMappingProvider(mappingKey);
+		xmlTypeMappingProvider.createAndAddOrmResourceMapping(this.entityMappings, className);
+	}
+
 	public XmlTypeMapping getMapping() {
 		return this.xmlTypeMapping;
 	}
-
-//	/* @see IJpaContentNode#getId() */
-//	public Object getId() {
-//		return IXmlContentNodes.PERSISTENT_TYPE_ID;
-//	}
 
 	public String getMappingKey() {
 		return this.mappingKey;
@@ -102,10 +104,8 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		this.mappingKey = newMappingKey;
 		XmlTypeMapping oldMapping = getMapping();
 		this.xmlTypeMapping = buildXmlTypeMapping(newMappingKey);
-		entityMappings().changeMapping(this, oldMapping);
+		entityMappings().changeMapping(this, oldMapping, this.xmlTypeMapping);
 		
-		this.xmlTypeMapping.addToResourceModel(this.entityMappings);
-		this.xmlTypeMapping.initializeFrom(oldMapping);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.xmlTypeMapping);
 	}
 	
@@ -117,9 +117,6 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		XmlTypeMapping oldMapping = getMapping();
 		this.xmlTypeMapping = buildXmlTypeMapping(newMappingKey);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.xmlTypeMapping);
-//		EntityMappings entityMappings = oldMapping.getEntityMappings();
-//		entityMappings.changeMapping(oldMapping, newMappingKey);
-//		setMappingKeyGen(newMappingKey);
 	}
 
 //	public EList<XmlAttributeMapping> getAttributeMappings() {

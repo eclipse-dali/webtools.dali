@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
@@ -92,12 +93,13 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
 		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
 		
-		entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-		entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
-		entityMappings().addXmlPersistentType("model.Foo3", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		XmlPersistentType embeddablePersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType mappedSuperclassPersistentType = entityMappings().addXmlPersistentType("model.Foo3", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 	
 		XmlPersistentType xmlPersistentType = entityMappings().xmlPersistentTypes().next();
+		assertEquals(mappedSuperclassPersistentType, xmlPersistentType);
 		assertEquals(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, xmlPersistentType.getMapping().getKey());
 	
 		xmlPersistentType.setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
@@ -105,6 +107,12 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		assertEquals(0, ormResource().getEntityMappings().getMappedSuperclasses().size());
 		assertEquals(1, ormResource().getEntityMappings().getEntities().size());
 		assertEquals(2, ormResource().getEntityMappings().getEmbeddables().size());
+		
+		Iterator<XmlPersistentType> xmlPersistentTypes = entityMappings().xmlPersistentTypes();
+		//the same XmlPersistentTypes should still be in the context model
+		assertEquals(xmlPersistentTypes.next(), entityPersistentType);
+		assertEquals(xmlPersistentTypes.next(), embeddablePersistentType);
+		assertEquals(xmlPersistentTypes.next(), mappedSuperclassPersistentType);
 		
 		assertEquals("model.Foo", ormResource().getEntityMappings().getEmbeddables().get(0).getClassName());
 		assertEquals("model.Foo3", ormResource().getEntityMappings().getEmbeddables().get(1).getClassName());

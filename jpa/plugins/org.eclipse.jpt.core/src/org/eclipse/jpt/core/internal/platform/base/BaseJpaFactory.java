@@ -333,8 +333,8 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return new JavaAttributeOverride(parent, owner);
 	}
 	
-	public XmlPersistentType createXmlPersistentType(EntityMappings parent, String mappingKey) {
-		return new XmlPersistentType(parent, mappingKey);
+	public XmlPersistentType createXmlPersistentType(EntityMappings parent, String mappingKey, org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappingsResource) {
+		return new XmlPersistentType(parent, mappingKey, entityMappingsResource);
 	}
 	
 	public XmlEntity createXmlEntity(XmlPersistentType parent) {

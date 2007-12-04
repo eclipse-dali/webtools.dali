@@ -11,6 +11,9 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
+import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 
 
 public class XmlMappedSuperclassProvider implements IXmlTypeMappingProvider
@@ -21,5 +24,11 @@ public class XmlMappedSuperclassProvider implements IXmlTypeMappingProvider
 
 	public String key() {
 		return IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
+	}
+	
+	public void createAndAddOrmResourceMapping(EntityMappings entityMappings, String className) {
+		MappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createMappedSuperclass();
+		entityMappings.getMappedSuperclasses().add(mappedSuperclass);
+		mappedSuperclass.setClassName(className);
 	}
 }

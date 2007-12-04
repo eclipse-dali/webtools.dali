@@ -11,6 +11,9 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
+import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
+import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 
 
 public class XmlEmbeddableProvider implements IXmlTypeMappingProvider
@@ -22,5 +25,11 @@ public class XmlEmbeddableProvider implements IXmlTypeMappingProvider
 
 	public String key() {
 		return IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
+	}
+	
+	public void createAndAddOrmResourceMapping(EntityMappings entityMappings, String className) {
+		Embeddable embeddable = OrmFactory.eINSTANCE.createEmbeddable();
+		entityMappings.getEmbeddables().add(embeddable);
+		embeddable.setClassName(className);
 	}
 }
