@@ -86,11 +86,11 @@ public class ComboBoxModelAdapterUITest {
 	private PropertyValueModel buildColorHolder(ValueModel vm) {
 		return new PropertyAspectAdapter(vm, TestModel.COLOR_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return ((TestModel) this.subject).getColor();
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((TestModel) this.subject).setColor((String) value);
 			}
 		};

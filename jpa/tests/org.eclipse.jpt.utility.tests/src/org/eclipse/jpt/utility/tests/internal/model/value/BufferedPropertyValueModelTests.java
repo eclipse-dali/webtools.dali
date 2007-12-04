@@ -65,11 +65,11 @@ public class BufferedPropertyValueModelTests extends TestCase {
 	private PropertyValueModel buildIDAdapter(ValueModel eHolder) {
 		return new PropertyAspectAdapter(eHolder, Employee.ID_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return new Integer(((Employee) this.subject).getID());
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((Employee) this.subject).setID(((Integer) value).intValue());
 			}
 		};
@@ -78,11 +78,11 @@ public class BufferedPropertyValueModelTests extends TestCase {
 	private PropertyValueModel buildNameAdapter(ValueModel eHolder) {
 		return new PropertyAspectAdapter(eHolder, Employee.NAME_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return ((Employee) this.subject).getName();
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((Employee) this.subject).setName((String) value);
 			}
 		};
@@ -91,11 +91,11 @@ public class BufferedPropertyValueModelTests extends TestCase {
 	private PropertyValueModel buildHireDateAdapter(ValueModel eHolder) {
 		return new PropertyAspectAdapter(eHolder, Employee.HIRE_DATE_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return ((Employee) this.subject).getHireDate();
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((Employee) this.subject).setHireDate((Date) value);
 			}
 		};

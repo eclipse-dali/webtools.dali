@@ -95,7 +95,7 @@ public class TreeAspectAdapterTests extends TestCase {
 		return new TreeAspectAdapter(subjectHolder, TestSubject.NAMES_TREE) {
 			// this is not a typical aspect adapter - the value is determined by the aspect name
 			@Override
-			protected Iterator getValueFromSubject() {
+			protected Iterator nodes_() {
 				if (this.treeName == TestSubject.NAMES_TREE) {
 					return ((TestSubject) this.subject).namePaths();
 				}
@@ -103,28 +103,6 @@ public class TreeAspectAdapterTests extends TestCase {
 					return ((TestSubject) this.subject).descriptionPaths();
 				}
 				throw new IllegalStateException("invalid aspect name: " + this.treeName);
-			}
-			@Override
-			public void add(Object[] parentPath, Object node) {
-				TestNode parent = (TestNode) parentPath[parentPath.length - 1];
-				if (this.treeName == TestSubject.NAMES_TREE) {
-					((TestSubject) this.subject).addName(parent, (String) node);
-				} else if (this.treeName == TestSubject.DESCRIPTIONS_TREE) {
-					((TestSubject) this.subject).addDescription(parent, (String) node);
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.treeName);
-				}
-			}
-			@Override
-			public void remove(Object[] path) {
-				TestNode node = (TestNode) path[path.length - 1];
-				if (this.treeName == TestSubject.NAMES_TREE) {
-					((TestSubject) this.subject).removeNameNode(node);
-				} else if (this.treeName == TestSubject.DESCRIPTIONS_TREE) {
-					((TestSubject) this.subject).removeDescriptionNode(node);
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.treeName);
-				}
 			}
 		};
 	}
@@ -191,47 +169,6 @@ public class TreeAspectAdapterTests extends TestCase {
 		assertEquals(this.subject1.getRootNameNode(), path[path.length - 1]);
 		assertTrue(this.subject1.containsNameNode("jam"));
 		assertTrue(this.subject1.containsNameNode("jaz"));
-	}
-
-	public void testAdd() {
-		assertNull(this.event1);
-
-		TestNode node = this.subject1.nameNode("name 1.1.2");
-		this.subject1.addName(node, "jam");
-		assertNotNull(this.event1);
-		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(TreeValueModel.NODES, this.event1.treeName());
-		Object[] path = this.event1.path();
-		assertEquals("jam", ((TestNode) path[path.length - 1]).getText());
-
-		this.event1 = null;
-		this.aa1.add(node.path(), "jaz");
-		assertNotNull(this.event1);
-		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(TreeValueModel.NODES, this.event1.treeName());
-		path = this.event1.path();
-		assertEquals("jaz", ((TestNode) path[path.length - 1]).getText());
-	}
-
-	public void testRemove() {
-		assertNull(this.event1);
-
-		TestNode node = this.subject1.nameNode("name 1.1.2");
-		this.subject1.removeNameNode(node);
-		assertNotNull(this.event1);
-		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(TreeValueModel.NODES, this.event1.treeName());
-		Object[] path = this.event1.path();
-		assertEquals("name 1.1.2", ((TestNode) path[path.length - 1]).getText());
-
-		this.event1 = null;
-		node = this.subject1.nameNode("name 1.3");
-		this.aa1.remove(node.path());
-		assertNotNull(this.event1);
-		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(TreeValueModel.NODES, this.event1.treeName());
-		path = this.event1.path();
-		assertEquals("name 1.3", ((TestNode) path[path.length - 1]).getText());
 	}
 
 	public void testNodes() {

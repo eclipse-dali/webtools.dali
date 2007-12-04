@@ -83,11 +83,11 @@ public class SpinnerModelAdapterUITest {
 	private PropertyValueModel buildBirthDateHolder(ValueModel vm) {
 		return new PropertyAspectAdapter(vm, TestModel.BIRTH_DATE_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return ((TestModel) this.subject).getBirthDate();
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((TestModel) this.subject).setBirthDate((Date) value);
 			}
 		};
@@ -100,11 +100,11 @@ public class SpinnerModelAdapterUITest {
 	private PropertyValueModel buildAgeHolder(ValueModel vm) {
 		return new PropertyAspectAdapter(vm, TestModel.AGE_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return new Integer(((TestModel) this.subject).getAge());
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((TestModel) this.subject).setAge(((Number) value).intValue());
 			}
 		};
@@ -117,11 +117,11 @@ public class SpinnerModelAdapterUITest {
 	private PropertyValueModel buildEyeColorHolder(ValueModel vm) {
 		return new PropertyAspectAdapter(vm, TestModel.EYE_COLOR_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return ((TestModel) this.subject).getEyeColor();
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((TestModel) this.subject).setEyeColor((String) value);
 			}
 		};

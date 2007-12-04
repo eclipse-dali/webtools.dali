@@ -73,11 +73,11 @@ public class CheckBoxModelAdapterUITest {
 	private PropertyValueModel buildFlag1Holder(ValueModel vm) {
 		return new PropertyAspectAdapter(vm, TestModel.FLAG1_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return Boolean.valueOf(((TestModel) this.subject).isFlag1());
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((TestModel) this.subject).setFlag1(((Boolean) value).booleanValue());
 			}
 		};
@@ -86,11 +86,11 @@ public class CheckBoxModelAdapterUITest {
 	private PropertyValueModel buildFlag2Holder(ValueModel vm) {
 		return new PropertyAspectAdapter(vm, TestModel.FLAG2_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return Boolean.valueOf(((TestModel) this.subject).isFlag2());
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((TestModel) this.subject).setFlag2(((Boolean) value).booleanValue());
 			}
 		};
@@ -99,11 +99,11 @@ public class CheckBoxModelAdapterUITest {
 	private PropertyValueModel buildNotFlag2Holder(ValueModel vm) {
 		return new PropertyAspectAdapter(vm, TestModel.NOT_FLAG2_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return Boolean.valueOf(((TestModel) this.subject).isNotFlag2());
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((TestModel) this.subject).setNotFlag2(((Boolean) value).booleanValue());
 			}
 		};

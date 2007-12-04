@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -23,20 +22,14 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
  * This extension of AspectAdapter provides CollectionChange support.
  * 
  * The typical subclass will override the following methods:
- * #getValueFromSubject()
+ * #iterator_()
  *     at the very minimum, override this method to return an iterator on the
  *     subject's collection aspect; it does not need to be overridden if
- *     #value() is overridden and its behavior changed
- * #sizeFromSubject()
+ *     #iterator() is overridden and its behavior changed
+ * #size_()
  *     override this method to improve performance; it does not need to be overridden if
  *     #size() is overridden and its behavior changed
- * #addItem(Object) and #removeItem(Object)
- *     override these methods if the client code needs to *change* the contents of
- *     the subject's collection aspect; oftentimes, though, the client code
- *     (e.g. UI) will need only to *get* the value
- * #addItems(Collection) and #removeItems(Collection)
- *     override these methods to improve performance, if necessary
- * #values()
+ * #iterator()
  *     override this method only if returning an empty iterator when the
  *     subject is null is unacceptable
  * #size()
@@ -118,31 +111,26 @@ public abstract class CollectionAspectAdapter
 	// ********** CollectionValueModel implementation **********
 
 	/**
-	 * Return the value of the subject's collection aspect.
-	 * This should be an *iterator* on the collection.
+	 * Return the elements of the subject's collection aspect.
 	 */
 	public Iterator iterator() {
-		if (this.subject == null) {
-			return EmptyIterator.instance();
-		}
-		return this.getValueFromSubject();
+		return (this.subject == null) ? EmptyIterator.instance() : this.iterator_();
 	}
 
 	/**
-	 * Return the value of the subject's collection aspect.
-	 * This should be an *iterator* on the collection.
+	 * Return the elements of the subject's collection aspect.
 	 * At this point we can be sure that the subject is not null.
 	 * @see #iterator()
 	 */
-	protected Iterator getValueFromSubject() {
+	protected Iterator iterator_() {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * Return the size of the collection value.
+	 * Return the size of the subject's collection aspect.
 	 */
 	public int size() {
-		return this.subject == null ? 0 : this.sizeFromSubject();
+		return (this.subject == null) ? 0 : this.size_();
 	}
 
 	/**
@@ -150,8 +138,8 @@ public abstract class CollectionAspectAdapter
 	 * At this point we can be sure that the subject is not null.
 	 * @see #size()
 	 */
-	protected int sizeFromSubject() {
-		return CollectionTools.size((Iterator) this.iterator());
+	protected int size_() {
+		return CollectionTools.size(this.iterator());
 	}
 
 
@@ -213,11 +201,11 @@ public abstract class CollectionAspectAdapter
 	}
 
 	protected void collectionCleared(CollectionChangeEvent e) {
-		this.fireCollectionCleared(VALUES);
+		this.fireCollectionCleared(VALUES);  // nothing from original event to forward
 	}
 
 	protected void collectionChanged(CollectionChangeEvent e) {
-		this.fireCollectionChanged(VALUES);
+		this.fireCollectionChanged(VALUES);  // nothing from original event to forward
 	}
 
 }

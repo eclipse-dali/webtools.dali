@@ -418,7 +418,7 @@ public class ListAspectAdapterTests extends TestCase {
 		}
 
 		@Override
-		protected ListIterator getValueFromSubject() {
+		protected ListIterator listIterator_() {
 			if (this.listName == TestSubject.NAMES_LIST) {
 				return ((TestSubject) this.subject).names();
 			} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {

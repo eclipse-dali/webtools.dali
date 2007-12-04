@@ -322,7 +322,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		}
 
 		@Override
-		protected Iterator<String> getValueFromSubject() {
+		protected Iterator<String> iterator_() {
 			if (this.collectionName == TestSubject.NAMES_COLLECTION) {
 				return ((TestSubject) this.subject).names();
 			}

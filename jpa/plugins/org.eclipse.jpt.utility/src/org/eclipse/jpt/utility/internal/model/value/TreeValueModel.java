@@ -26,14 +26,4 @@ public interface TreeValueModel
 	Iterator nodes();
 		String NODES = "nodes";
 
-	/**
-	 * Add the specified node to the tree.
-	 */
-	void add(Object[] parentPath, Object node);
-
-	/**
-	 * Remove the specified node from the tree.
-	 */
-	void remove(Object[] path);
-
 }

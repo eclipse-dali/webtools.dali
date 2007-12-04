@@ -21,14 +21,10 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  * This extension of PropertyAdapter provides TreeChange support.
  * 
  * The typical subclass will override the following methods:
- * #getValueFromSubject()
+ * #nodes_()
  *     at the very minimum, override this method to return an iterator
  *     on the subject's tree aspect; it does not need to be overridden if
- *     #value() is overridden and its behavior changed
- * #add(Object[], Object) and #remove(Object[])
- *     override these methods if the client code needs to *change* the contents of
- *     the subject's tree aspect; oftentimes, though, the client code
- *     (e.g. UI) will need only to *get* the nodes
+ *     #nodes() is overridden and its behavior changed
  * #nodes()
  *     override this method only if returning an empty iterator when the
  *     subject is null is unacceptable
@@ -98,37 +94,18 @@ public abstract class TreeAspectAdapter
 	// ********** TreeValueModel implementation **********
 
 	/**
-	 * Return the value of the subject's tree aspect.
-	 * This should be an *iterator* on the tree.
+	 * Return the nodes of the subject's tree aspect.
 	 */
 	public Iterator nodes() {
-		if (this.subject == null) {
-			return EmptyIterator.instance();
-		}
-		return this.getValueFromSubject();
+		return (this.subject == null) ? EmptyIterator.instance() : this.nodes_();
 	}
 
 	/**
-	 * Return the value of the subject's tree aspect.
-	 * This should be an *iterator* on the tree.
+	 * Return the nodes of the subject's tree aspect.
 	 * At this point we can be sure that the subject is not null.
-	 * @see #value()
+	 * @see #nodes()
 	 */
-	protected Iterator getValueFromSubject() {	// private-protected
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Insert the specified node in the subject's tree aspect.
-	 */
-	public void add(Object[] parentPath, Object node) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Remove the specified node from the subject's tree aspect.
-	 */
-	public void remove(Object[] path) {
+	protected Iterator nodes_() {
 		throw new UnsupportedOperationException();
 	}
 

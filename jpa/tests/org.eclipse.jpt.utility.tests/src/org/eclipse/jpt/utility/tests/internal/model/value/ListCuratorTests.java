@@ -77,7 +77,7 @@ public final class ListCuratorTests
 	
 	private ListCurator buildListCurator(ValueModel subjectHolder) {
 		return new ListCurator(subjectHolder) {
-			public Iterator getValueForRecord() {
+			public Iterator iteratorForRecord() {
 				return ((TestSubject) this.subject).strings();
 			}
 		};

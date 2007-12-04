@@ -195,7 +195,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 
 	private CollectionValueModel buildFamiliesAspectAdapter(ValueModel communeHolder) {
 		return new CollectionAspectAdapter(communeHolder, Neighborhood.FAMILIES_COLLECTION) {
-			protected Iterator getValueFromSubject() {
+			protected Iterator iterator_() {
 				return ((Neighborhood) this.subject).families();
 			}
 		};
@@ -203,7 +203,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 
 	CollectionValueModel buildMembersAdapter(Family family) {
 		return new CollectionAspectAdapter(Family.MEMBERS_COLLECTION, family) {
-			protected Iterator getValueFromSubject() {
+			protected Iterator iterator_() {
 				return ((Family) this.subject).members();
 			}
 		};

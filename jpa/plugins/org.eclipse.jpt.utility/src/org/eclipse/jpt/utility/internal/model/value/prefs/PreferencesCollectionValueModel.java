@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value.prefs;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
@@ -38,7 +36,7 @@ public class PreferencesCollectionValueModel
 {
 
 	/** Cache the current preferences, stored in models and keyed by name. */
-	protected final Map preferences;
+	protected final HashMap<String, PreferencePropertyValueModel> preferences;
 
 	/** A listener that listens to the preferences node for added or removed preferences. */
 	protected final PreferenceChangeListener preferenceChangeListener;
@@ -58,7 +56,7 @@ public class PreferencesCollectionValueModel
 	 */
 	public PreferencesCollectionValueModel(ValueModel preferencesHolder) {
 		super(preferencesHolder);
-		this.preferences = new HashMap();
+		this.preferences = new HashMap<String, PreferencePropertyValueModel>();
 		this.preferenceChangeListener = this.buildPreferenceChangeListener();
 	}
 
@@ -87,7 +85,7 @@ public class PreferencesCollectionValueModel
 	/**
 	 * Return an iterator on the preference models.
 	 */
-	public synchronized Iterator iterator() {
+	public synchronized Iterator<PreferencePropertyValueModel> iterator() {
 		return this.preferences.values().iterator();
 	}
 
@@ -126,8 +124,8 @@ public class PreferencesCollectionValueModel
     @Override
 	protected void engageNonNullSubject() {
 		((Preferences) this.subject).addPreferenceChangeListener(this.preferenceChangeListener);
-		for (Iterator stream = this.preferenceModels(); stream.hasNext(); ) {
-			PreferencePropertyValueModel preferenceModel = (PreferencePropertyValueModel) stream.next();
+		for (Iterator<PreferencePropertyValueModel> stream = this.preferenceModels(); stream.hasNext(); ) {
+			PreferencePropertyValueModel preferenceModel = stream.next();
 			this.preferences.put(preferenceModel.getKey(), preferenceModel);
 		}
 	}
@@ -162,16 +160,17 @@ public class PreferencesCollectionValueModel
 	 * Return an iterator on the preference models.
 	 * At this point we can be sure that the subject is not null.
 	 */
-	protected Iterator preferenceModels() {
+	protected Iterator<PreferencePropertyValueModel> preferenceModels() {
 		String[] keys;
 		try {
 			keys = ((Preferences) this.subject).keys();
 		} catch (BackingStoreException ex) {
 			throw new RuntimeException(ex);
 		}
-		return new TransformationIterator(new ArrayIterator(keys)) {
-			protected Object transform(Object next) {
-				return PreferencesCollectionValueModel.this.buildPreferenceModel((String) next);
+		return new TransformationIterator<String, PreferencePropertyValueModel>(new ArrayIterator<String>(keys)) {
+			@Override
+			protected PreferencePropertyValueModel transform(String key) {
+				return PreferencesCollectionValueModel.this.buildPreferenceModel(key);
 			}
 		};
 	}
@@ -187,7 +186,7 @@ public class PreferencesCollectionValueModel
 	protected synchronized void preferenceChanged(String key, String newValue) {
 		if (newValue == null) {
 			// a preference was removed
-			PreferencePropertyValueModel preferenceModel = (PreferencePropertyValueModel) this.preferences.remove(key);
+			PreferencePropertyValueModel preferenceModel = this.preferences.remove(key);
 			this.fireItemRemoved(VALUES, preferenceModel);
 		} else if ( ! this.preferences.containsKey(key)) {
 			// a preference was added
