@@ -71,10 +71,6 @@ public class PersistenceUnitMetadataTests extends ContextModelTestCase
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);		
 		assertTrue(persistenceUnitMetadata.isXmlMappingMetadataComplete());
 		assertTrue(ormResource().getEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
-	
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-		assertFalse(persistenceUnitMetadata.isXmlMappingMetadataComplete());
-		assertFalse(ormResource().getEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
 
 		//set xmlMappingMetadataComplete to null in the resource model
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);

@@ -22,12 +22,10 @@ public interface ITypeMapping extends IJpaContextNode
 	 */
 	String getKey();
 
-	IPersistentType getPersistentType();
+	IPersistentType persistentType();
 
 	boolean isMapped();
 	
-	String getName();
-
 	String getTableName();
 
 	/**

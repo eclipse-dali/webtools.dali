@@ -49,6 +49,10 @@ import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.OrmXml;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.internal.context.orm.XmlEmbeddable;
+import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
+import org.eclipse.jpt.core.internal.context.orm.XmlMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 
 /**
  * An IJpaFactory that also assumes a base JPA project context structure 
@@ -128,4 +132,12 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	
 	IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, IOverride.Owner owner);
 	
+	//TODO need an interface??
+	XmlPersistentType createXmlPersistentType(EntityMappings parent, String mappingKey);
+	
+	XmlEntity createXmlEntity(XmlPersistentType parent);
+	
+	XmlMappedSuperclass createXmlMappedSuperclass(XmlPersistentType parent);
+	
+	XmlEmbeddable createXmlEmbeddable(XmlPersistentType parent);
 }

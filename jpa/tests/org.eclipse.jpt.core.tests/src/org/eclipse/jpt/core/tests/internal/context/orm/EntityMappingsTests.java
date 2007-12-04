@@ -10,9 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
+import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
+import org.eclipse.jpt.core.internal.resource.orm.Entity;
+import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
@@ -200,4 +205,116 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(entityMappings().getSpecifiedAccess());
 		assertNull(ormResource().getEntityMappings().getAccess());
 	}
+	
+	
+	
+	public void testUpdateXmlPersistentTypes() throws Exception {
+		assertFalse(entityMappings().xmlPersistentTypes().hasNext());
+		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
+		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		
+		//add embeddable in the resource model, verify context model updated
+		Embeddable embeddable = OrmFactory.eINSTANCE.createEmbeddable();
+		ormResource().getEntityMappings().getEmbeddables().add(embeddable);
+		embeddable.setClassName("model.Foo");
+		assertTrue(entityMappings().xmlPersistentTypes().hasNext());
+		assertEquals("model.Foo", entityMappings().xmlPersistentTypes().next().getMapping().getClass_());
+		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertEquals("model.Foo", ormResource().getEntityMappings().getEmbeddables().get(0).getClassName());
+		
+		//add entity in the resource model, verify context model updated
+		Entity entity = OrmFactory.eINSTANCE.createEntity();
+		ormResource().getEntityMappings().getEntities().add(entity);
+		entity.setClassName("model.Foo2");
+		assertTrue(entityMappings().xmlPersistentTypes().hasNext());
+		assertEquals("model.Foo2", entityMappings().xmlPersistentTypes().next().getMapping().getClass_());
+		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertFalse(ormResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertEquals("model.Foo2", ormResource().getEntityMappings().getEntities().get(0).getClassName());
+
+		//add mapped-superclass in the resource model, verify context model updated
+		MappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createMappedSuperclass();
+		ormResource().getEntityMappings().getMappedSuperclasses().add(mappedSuperclass);
+		mappedSuperclass.setClassName("model.Foo3");
+		assertTrue(entityMappings().xmlPersistentTypes().hasNext());
+		assertEquals("model.Foo3", entityMappings().xmlPersistentTypes().next().getMapping().getClass_());
+		assertFalse(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertFalse(ormResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertEquals("model.Foo3", ormResource().getEntityMappings().getMappedSuperclasses().get(0).getClassName());
+	}
+	
+	
+	public void testAddXmlPersistentType() throws Exception {
+		assertFalse(entityMappings().xmlPersistentTypes().hasNext());
+		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
+		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		
+		//add embeddable in the context model, verify resource model modified
+		entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		assertTrue(entityMappings().xmlPersistentTypes().hasNext());
+		assertEquals("model.Foo", entityMappings().xmlPersistentTypes().next().getMapping().getClass_());
+		assertEquals(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, entityMappings().xmlPersistentTypes().next().getMapping().getKey());
+		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertEquals("model.Foo", ormResource().getEntityMappings().getEmbeddables().get(0).getClassName());
+
+		//add entity in the context model, verify resource model modified
+		entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		assertTrue(entityMappings().xmlPersistentTypes().hasNext());
+		assertEquals("model.Foo2", entityMappings().xmlPersistentTypes().next().getMapping().getClass_());
+		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, entityMappings().xmlPersistentTypes().next().getMapping().getKey());
+		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertFalse(ormResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertEquals("model.Foo2", ormResource().getEntityMappings().getEntities().get(0).getClassName());
+
+		//add mapped-superclass in the context model, verify resource model modified
+		entityMappings().addXmlPersistentType("model.Foo3", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		assertTrue(entityMappings().xmlPersistentTypes().hasNext());
+		assertEquals("model.Foo3", entityMappings().xmlPersistentTypes().next().getMapping().getClass_());
+		assertEquals(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, entityMappings().xmlPersistentTypes().next().getMapping().getKey());
+		assertFalse(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertFalse(ormResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertEquals("model.Foo3", ormResource().getEntityMappings().getMappedSuperclasses().get(0).getClassName());
+	}
+	
+	public void testRemoveXmlPersistentType() throws Exception {
+		assertFalse(entityMappings().xmlPersistentTypes().hasNext());
+		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
+		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		
+		entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		entityMappings().addXmlPersistentType("model.Foo3", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		
+		ormResource().save(null);
+		//remove xmlPersistentType from the context model, verify resource model modified
+		entityMappings().removeXmlPersistentType(1);
+		ormResource().save(null);
+		assertFalse(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		
+		entityMappings().removeXmlPersistentType(1);
+		ormResource().save(null);
+		assertFalse(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
+		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		
+		entityMappings().removeXmlPersistentType(0);
+		ormResource().save(null);
+		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
+		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+	}
+
 }

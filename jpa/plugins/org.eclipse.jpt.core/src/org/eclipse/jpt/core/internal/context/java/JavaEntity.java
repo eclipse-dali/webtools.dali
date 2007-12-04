@@ -242,7 +242,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		if (attributeName == null) {
 			return null;
 		}
-		for (Iterator<IPersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
+		for (Iterator<IPersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
 			IPersistentAttribute persAttribute = stream.next();
 			if (attributeName.equals(persAttribute.getName())) {
 				if (persAttribute.getMapping() instanceof IColumnMapping) {
@@ -271,7 +271,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return true;
 	}
 	
-	@Override
 	public String getName() {
 		return (this.getSpecifiedName() == null) ? this.getDefaultName() : this.getSpecifiedName();
 	}
@@ -687,7 +686,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //	}
 //
 	public IEntity parentEntity() {
-		for (Iterator<IPersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
+		for (Iterator<IPersistentType> i = persistentType().inheritanceHierarchy(); i.hasNext();) {
 			ITypeMapping typeMapping = i.next().getMapping();
 			if (typeMapping != this && typeMapping instanceof IEntity) {
 				return (IEntity) typeMapping;
@@ -702,7 +701,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 
 	public IEntity rootEntity() {
 		IEntity rootEntity = this;
-		for (Iterator<IPersistentType> i = getPersistentType().inheritanceHierarchy(); i.hasNext();) {
+		for (Iterator<IPersistentType> i = persistentType().inheritanceHierarchy(); i.hasNext();) {
 			IPersistentType persistentType = i.next();
 			if (persistentType.getMapping() instanceof IEntity) {
 				rootEntity = (IEntity) persistentType.getMapping();
@@ -1002,7 +1001,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 
 	public String primaryKeyColumnName() {
 		String pkColumnName = null;
-		for (Iterator<IPersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
+		for (Iterator<IPersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
 			IPersistentAttribute attribute = stream.next();
 			String name = attribute.primaryKeyColumnName();
 			if (pkColumnName == null) {
@@ -1092,7 +1091,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	 * and terminates at the root entity (or at the point of cyclicity).
 	 */
 	protected Iterator<ITypeMapping> inheritanceHierarchy() {
-		return new TransformationIterator<IPersistentType, ITypeMapping>(getPersistentType().inheritanceHierarchy()) {
+		return new TransformationIterator<IPersistentType, ITypeMapping>(persistentType().inheritanceHierarchy()) {
 			@Override
 			protected ITypeMapping transform(IPersistentType type) {
 				return type.getMapping();

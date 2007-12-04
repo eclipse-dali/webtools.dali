@@ -13,6 +13,7 @@ import java.util.ListIterator;
 
 public interface IEntity extends ITypeMapping, IOverride.Owner
 {
+	String getName();
 	String getSpecifiedName();
 	void setSpecifiedName(String value);
 		String SPECIFIED_NAME_PROPERTY = "specifiedNameProperty";

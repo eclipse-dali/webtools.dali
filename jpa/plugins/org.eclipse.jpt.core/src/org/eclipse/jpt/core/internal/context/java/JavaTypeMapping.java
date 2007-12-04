@@ -36,22 +36,18 @@ public abstract class JavaTypeMapping extends JavaContextModel
 	public void initializeFromResource(JavaPersistentTypeResource persistentTypeResource) {
 		this.persistentTypeResource = persistentTypeResource;
 	}
-	
-	public String getName() {
-		return this.getPersistentType().getName();
-	}
 
 	public String getTableName() {
 		return null;
 	}
 	
-	public IJavaPersistentType getPersistentType() {
+	public IJavaPersistentType persistentType() {
 		return (IJavaPersistentType) parent();
 	}
 
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
 		ITextRange textRange = this.persistentTypeResource.textRange(astRoot);
-		return (textRange != null) ? textRange : this.getPersistentType().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.persistentType().validationTextRange(astRoot);
 	}
 
 	public Table primaryDbTable() {

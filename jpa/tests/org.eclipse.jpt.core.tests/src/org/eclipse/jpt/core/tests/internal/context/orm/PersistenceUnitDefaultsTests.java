@@ -233,7 +233,6 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults());
 	}
 	
-	
 	public void testUpdateCascadePersist() throws Exception {
 		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
@@ -266,8 +265,6 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		persistenceUnitDefaults.setCascadePersist(false);
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
-		
-		
 	}
 	
 	public void testModifyCascadePersist2() throws Exception {
@@ -277,16 +274,13 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		
 		//set cascadePersist in the context model, verify resource model modified
 		persistenceUnitDefaults.setCascadePersist(true);
-		ormResource().save(null);
 		assertTrue(persistenceUnitDefaults.isCascadePersist());
 		assertTrue(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
 		
 		//set another element on the persistence-unit-defaults element so it doesn't get removed
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("MY_CATALOG");
-		ormResource().save(null);
 		//set cascadePersist to null in the context model
 		persistenceUnitDefaults.setCascadePersist(false);
-		ormResource().save(null);
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
 		assertFalse(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
 	}
@@ -319,15 +313,12 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		//set access in the resource model, verify context model updated
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createPersistenceUnitDefaults());
-		ormResource().save(null);
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(org.eclipse.jpt.core.internal.resource.orm.AccessType.FIELD);
-		ormResource().save(null);
 		assertEquals(AccessType.FIELD, persistenceUnitDefaults.getAccess());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.FIELD, ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 	
 		//set access to null in the resource model
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
-		ormResource().save(null);
 		assertNull(persistenceUnitDefaults.getAccess());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 	}
@@ -339,13 +330,11 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		
 		//set access in the context model, verify resource model modified
 		persistenceUnitDefaults.setAccess(AccessType.PROPERTY);
-		ormResource().save(null);
 		assertEquals(AccessType.PROPERTY, persistenceUnitDefaults.getAccess());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 		
 		//set access to null in the context model
 		persistenceUnitDefaults.setAccess(null);
-		ormResource().save(null);
 		assertNull(persistenceUnitDefaults.getAccess());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 	}
@@ -357,16 +346,13 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		
 		//set access in the context model, verify resource model modified
 		persistenceUnitDefaults.setAccess(AccessType.FIELD);
-		ormResource().save(null);
 		assertEquals(AccessType.FIELD, persistenceUnitDefaults.getAccess());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.FIELD, ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 		
 		//set another element on the persistence-unit-defaults element so it doesn't get removed
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCascadePersist(true);
-		ormResource().save(null);
 		//set access to null in the context model
 		persistenceUnitDefaults.setAccess(null);
-		ormResource().save(null);
 		assertNull(persistenceUnitDefaults.getAccess());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 	}
@@ -378,17 +364,14 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		//set another element on the persistence-unit-metadata element so only persistence-unit-defaults element gets removed
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		ormResource().save(null);
 		
 		//set access in the context model, verify resource model modified
 		persistenceUnitDefaults.setAccess(AccessType.FIELD);
-		ormResource().save(null);
 		assertEquals(AccessType.FIELD, persistenceUnitDefaults.getAccess());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.FIELD, ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 		
 		//set access to null in the context model
 		persistenceUnitDefaults.setAccess(null);
-		ormResource().save(null);
 		assertNull(persistenceUnitDefaults.getAccess());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults());
 	}

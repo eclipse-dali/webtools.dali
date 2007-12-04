@@ -87,7 +87,7 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 		if (attributeName == null || embeddable() == null) {
 			return null;
 		}
-		for (Iterator<IPersistentAttribute> stream = embeddable().getPersistentType().allAttributes(); stream.hasNext();) {
+		for (Iterator<IPersistentAttribute> stream = embeddable().persistentType().allAttributes(); stream.hasNext();) {
 			IPersistentAttribute persAttribute = stream.next();
 			if (attributeName.equals(persAttribute.getName())) {
 				if (persAttribute.getMapping() instanceof IColumnMapping) {
@@ -303,7 +303,7 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 		if (this.embeddable() == null) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<IPersistentAttribute>(this.embeddable().getPersistentType().attributes()) {
+		return new FilteringIterator<IPersistentAttribute>(this.embeddable().persistentType().attributes()) {
 			@Override
 			protected boolean accept(Object o) {
 				return ((IPersistentAttribute) o).isOverridableAttribute();

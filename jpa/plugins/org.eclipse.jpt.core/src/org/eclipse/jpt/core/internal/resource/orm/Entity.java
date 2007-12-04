@@ -32,7 +32,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getClassName <em>Class Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getAccess <em>Access</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#isMetadataComplete <em>Metadata Complete</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getMetadataComplete <em>Metadata Complete</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getDescription <em>Description</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getTables <em>Tables</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getSecondaryTables <em>Secondary Tables</em>}</li>
@@ -126,33 +126,24 @@ public class Entity extends JpaEObject implements IJpaEObject
 	protected AccessType access = ACCESS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMetadataComplete() <em>Metadata Complete</em>}' attribute.
+	 * The default value of the '{@link #getMetadataComplete() <em>Metadata Complete</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMetadataComplete()
+	 * @see #getMetadataComplete()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean METADATA_COMPLETE_EDEFAULT = false;
+	protected static final Boolean METADATA_COMPLETE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #isMetadataComplete() <em>Metadata Complete</em>}' attribute.
+	 * The cached value of the '{@link #getMetadataComplete() <em>Metadata Complete</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMetadataComplete()
+	 * @see #getMetadataComplete()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean metadataComplete = METADATA_COMPLETE_EDEFAULT;
-
-	/**
-	 * This is true if the Metadata Complete attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean metadataCompleteESet;
+	protected Boolean metadataComplete = METADATA_COMPLETE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
@@ -464,6 +455,10 @@ public class Entity extends JpaEObject implements IJpaEObject
 		super();
 	}
 
+	public EntityMappings entityMappings() {
+		return (EntityMappings) eContainer();
+	}
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -593,70 +588,30 @@ public class Entity extends JpaEObject implements IJpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Metadata Complete</em>' attribute.
-	 * @see #isSetMetadataComplete()
-	 * @see #unsetMetadataComplete()
-	 * @see #setMetadataComplete(boolean)
+	 * @see #setMetadataComplete(Boolean)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntity_MetadataComplete()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	public boolean isMetadataComplete()
+	public Boolean getMetadataComplete()
 	{
 		return metadataComplete;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#isMetadataComplete <em>Metadata Complete</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getMetadataComplete <em>Metadata Complete</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Metadata Complete</em>' attribute.
-	 * @see #isSetMetadataComplete()
-	 * @see #unsetMetadataComplete()
-	 * @see #isMetadataComplete()
+	 * @see #getMetadataComplete()
 	 * @generated
 	 */
-	public void setMetadataComplete(boolean newMetadataComplete)
+	public void setMetadataComplete(Boolean newMetadataComplete)
 	{
-		boolean oldMetadataComplete = metadataComplete;
+		Boolean oldMetadataComplete = metadataComplete;
 		metadataComplete = newMetadataComplete;
-		boolean oldMetadataCompleteESet = metadataCompleteESet;
-		metadataCompleteESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__METADATA_COMPLETE, oldMetadataComplete, metadataComplete, !oldMetadataCompleteESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#isMetadataComplete <em>Metadata Complete</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetMetadataComplete()
-	 * @see #isMetadataComplete()
-	 * @see #setMetadataComplete(boolean)
-	 * @generated
-	 */
-	public void unsetMetadataComplete()
-	{
-		boolean oldMetadataComplete = metadataComplete;
-		boolean oldMetadataCompleteESet = metadataCompleteESet;
-		metadataComplete = METADATA_COMPLETE_EDEFAULT;
-		metadataCompleteESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.ENTITY__METADATA_COMPLETE, oldMetadataComplete, METADATA_COMPLETE_EDEFAULT, oldMetadataCompleteESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#isMetadataComplete <em>Metadata Complete</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Metadata Complete</em>' attribute is set.
-	 * @see #unsetMetadataComplete()
-	 * @see #isMetadataComplete()
-	 * @see #setMetadataComplete(boolean)
-	 * @generated
-	 */
-	public boolean isSetMetadataComplete()
-	{
-		return metadataCompleteESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__METADATA_COMPLETE, oldMetadataComplete, metadataComplete));
 	}
 
 	/**
@@ -1935,7 +1890,7 @@ public class Entity extends JpaEObject implements IJpaEObject
 			case OrmPackage.ENTITY__ACCESS:
 				return getAccess();
 			case OrmPackage.ENTITY__METADATA_COMPLETE:
-				return isMetadataComplete() ? Boolean.TRUE : Boolean.FALSE;
+				return getMetadataComplete();
 			case OrmPackage.ENTITY__DESCRIPTION:
 				return getDescription();
 			case OrmPackage.ENTITY__TABLES:
@@ -2013,7 +1968,7 @@ public class Entity extends JpaEObject implements IJpaEObject
 				setAccess((AccessType)newValue);
 				return;
 			case OrmPackage.ENTITY__METADATA_COMPLETE:
-				setMetadataComplete(((Boolean)newValue).booleanValue());
+				setMetadataComplete((Boolean)newValue);
 				return;
 			case OrmPackage.ENTITY__DESCRIPTION:
 				setDescription((String)newValue);
@@ -2124,7 +2079,7 @@ public class Entity extends JpaEObject implements IJpaEObject
 				setAccess(ACCESS_EDEFAULT);
 				return;
 			case OrmPackage.ENTITY__METADATA_COMPLETE:
-				unsetMetadataComplete();
+				setMetadataComplete(METADATA_COMPLETE_EDEFAULT);
 				return;
 			case OrmPackage.ENTITY__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
@@ -2225,7 +2180,7 @@ public class Entity extends JpaEObject implements IJpaEObject
 			case OrmPackage.ENTITY__ACCESS:
 				return access != ACCESS_EDEFAULT;
 			case OrmPackage.ENTITY__METADATA_COMPLETE:
-				return isSetMetadataComplete();
+				return METADATA_COMPLETE_EDEFAULT == null ? metadataComplete != null : !METADATA_COMPLETE_EDEFAULT.equals(metadataComplete);
 			case OrmPackage.ENTITY__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.ENTITY__TABLES:
@@ -2300,7 +2255,7 @@ public class Entity extends JpaEObject implements IJpaEObject
 		result.append(", access: ");
 		result.append(access);
 		result.append(", metadataComplete: ");
-		if (metadataCompleteESet) result.append(metadataComplete); else result.append("<unset>");
+		result.append(metadataComplete);
 		result.append(", description: ");
 		result.append(description);
 		result.append(", discriminatorValue: ");

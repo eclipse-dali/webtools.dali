@@ -51,8 +51,7 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="#//AccessType"
         defaultValueLiteral="PROPERTY"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metadataComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
-        unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metadataComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//IdClass"
         containment="true" resolveProxies="false"/>
@@ -85,8 +84,7 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="#//AccessType"
         defaultValueLiteral="PROPERTY"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metadataComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
-        unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metadataComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tables" eType="#//Table"
         containment="true" resolveProxies="false"/>
@@ -143,8 +141,7 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="#//AccessType"
         defaultValueLiteral="PROPERTY"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metadataComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
-        unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metadataComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" eType="#//EmbeddableAttributes"
         containment="true" resolveProxies="false"/>

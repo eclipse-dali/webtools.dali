@@ -62,7 +62,7 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 	}
 
 	protected Iterator<IPersistentAttribute> overridableAttributes() {
-		return new FilteringIterator<IPersistentAttribute>(this.getPersistentType().attributes()) {
+		return new FilteringIterator<IPersistentAttribute>(this.persistentType().attributes()) {
 			@Override
 			protected boolean accept(Object o) {
 				return ((IPersistentAttribute) o).isOverridableAttribute();
@@ -76,7 +76,7 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 	}
 
 	protected Iterator<IPersistentAttribute> overridableAssociations() {
-		return new FilteringIterator<IPersistentAttribute>(this.getPersistentType().attributes()) {
+		return new FilteringIterator<IPersistentAttribute>(this.persistentType().attributes()) {
 			@Override
 			protected boolean accept(Object o) {
 				return ((IPersistentAttribute) o).isOverridableAssociation();

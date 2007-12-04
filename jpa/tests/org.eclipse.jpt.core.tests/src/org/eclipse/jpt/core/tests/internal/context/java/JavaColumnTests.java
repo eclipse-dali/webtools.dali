@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
+import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
@@ -274,7 +275,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 		
-		assertEquals(basicMapping.typeMapping().getName(), basicMapping.getColumn().getDefaultTable());
+		assertEquals(((IEntity) basicMapping.typeMapping()).getName(), basicMapping.getColumn().getDefaultTable());
 		assertEquals(TYPE_NAME, basicMapping.getColumn().getDefaultTable());
 	}
 

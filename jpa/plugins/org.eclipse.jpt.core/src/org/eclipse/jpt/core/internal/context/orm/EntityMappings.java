@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 
@@ -58,6 +59,17 @@ public interface EntityMappings extends IJpaContextNode
 
 		
 	PersistenceUnitMetadata getPersistenceUnitMetadata();
+	
+	
+	ListIterator<XmlPersistentType> xmlPersistentTypes();
+	int xmlPersistentTypesSize();
+	XmlPersistentType addXmlPersistentType(String className, String mappingKey);
+	void removeXmlPersistentType(int index);
+	//void moveXmlPersistentType(int oldIndex, int newIndex);
+		String PERSISTENT_TYPES_LIST = "persistentTypes";
+	
+
+	void changeMapping(XmlPersistentType xmlPersistentType, XmlTypeMapping oldMapping);
 	
 	// **************** updating ***********************************************
 	
