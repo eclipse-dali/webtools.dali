@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
@@ -22,7 +23,7 @@ import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 /**
  * This wrapper extends a ListValueModel (or CollectionValueModel)
  * with fixed collections of items on either end.
- * 
+ * <p>
  * NB: Be careful using or wrapping this list value model, since the
  * "extended" items may be unexpected by the client code or wrapper.
  */
@@ -30,10 +31,10 @@ public class ExtendedListValueModelWrapper
 	extends ListValueModelWrapper
 {
 	/** the items "prepended" to the wrapped list */
-	protected final List prefix;
+	protected List prefix;
 
 	/** the items "appended" to the wrapped list */
-	protected final List suffix;
+	protected List suffix;
 
 
 	// ********** lots o' constructors **********
@@ -51,42 +52,54 @@ public class ExtendedListValueModelWrapper
 	 * Extend the specified list with a prefix and suffix.
 	 */
 	public ExtendedListValueModelWrapper(Object prefix, ListValueModel listHolder, Object suffix) {
-		this(Collections.singletonList(prefix), listHolder, Collections.singletonList(suffix));
+		super(listHolder);
+		this.prefix = Collections.singletonList(prefix);
+		this.suffix = Collections.singletonList(suffix);
 	}
 
 	/**
 	 * Extend the specified list with a prefix.
 	 */
 	public ExtendedListValueModelWrapper(List prefix, ListValueModel listHolder) {
-		this(prefix, listHolder, Collections.EMPTY_LIST);
+		super(listHolder);
+		this.prefix = new ArrayList(prefix);
+		this.suffix = Collections.EMPTY_LIST;
 	}
 
 	/**
 	 * Extend the specified list with a prefix.
 	 */
 	public ExtendedListValueModelWrapper(Object prefix, ListValueModel listHolder) {
-		this(Collections.singletonList(prefix), listHolder, Collections.EMPTY_LIST);
+		super(listHolder);
+		this.prefix = Collections.singletonList(prefix);
+		this.suffix = Collections.EMPTY_LIST;
 	}
 
 	/**
 	 * Extend the specified list with a suffix.
 	 */
 	public ExtendedListValueModelWrapper(ListValueModel listHolder, List suffix) {
-		this(Collections.EMPTY_LIST, listHolder, suffix);
+		super(listHolder);
+		this.prefix = Collections.EMPTY_LIST;
+		this.suffix = new ArrayList(suffix);
 	}
 
 	/**
 	 * Extend the specified list with a suffix.
 	 */
 	public ExtendedListValueModelWrapper(ListValueModel listHolder, Object suffix) {
-		this(Collections.EMPTY_LIST, listHolder, Collections.singletonList(suffix));
+		super(listHolder);
+		this.prefix = Collections.EMPTY_LIST;
+		this.suffix = Collections.singletonList(suffix);
 	}
 
 	/**
 	 * Extend the specified list with a prefix containing a single null item.
 	 */
 	public ExtendedListValueModelWrapper(ListValueModel listHolder) {
-		this(Collections.singletonList(null), listHolder, Collections.EMPTY_LIST);
+		super(listHolder);
+		this.prefix = Collections.singletonList(null);
+		this.suffix = Collections.EMPTY_LIST;
 	}
 
 
@@ -107,6 +120,7 @@ public class ExtendedListValueModelWrapper
 		);
 	}
 
+	@Override
 	public Object get(int index) {
 		int prefixSize = this.prefix.size();
 		if (index < prefixSize) {
@@ -118,12 +132,22 @@ public class ExtendedListValueModelWrapper
 		}
 	}
 
+	@Override
 	public int size() {
 		return this.prefix.size() + this.listHolder.size() + this.suffix.size();
 	}
 
+	@Override
+	public Object[] toArray() {
+		ArrayList list = new ArrayList(this.size());
+		list.addAll(this.prefix);
+		CollectionTools.addAll(list, this.listHolder.iterator());
+		list.addAll(this.suffix);
+		return list.toArray();
+	}
 
-	// ********** ListValueModelWrapper implementation **********
+
+	// ********** ListValueModelWrapper implementation/overrides **********
 
 	@Override
 	protected void itemsAdded(ListChangeEvent e) {
@@ -155,9 +179,6 @@ public class ExtendedListValueModelWrapper
 		this.fireListChanged(LIST_VALUES);
 	}
 
-
-	// ********** AbstractModel implementation **********
-
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.prefix);
@@ -165,6 +186,19 @@ public class ExtendedListValueModelWrapper
 		super.toString(sb);
 		sb.append(" ");
 		sb.append(this.suffix);
+	}
+
+
+	// ********** miscellaneous **********
+
+	public void setPrefix(List prefix) {
+		this.prefix = prefix;
+		this.fireListChanged(LIST_VALUES);
+	}
+
+	public void setSuffix(List suffix) {
+		this.suffix = suffix;
+		this.fireListChanged(LIST_VALUES);
 	}
 
 }
