@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.orm.OrmXml;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.resource.orm.OrmArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
@@ -42,6 +43,7 @@ public class MappingFileRef extends JpaContextNode
 		this.xmlMappingFileRef.setFileName(newFileName);
 		firePropertyChanged(FILE_NAME_PROPERTY, oldFileName, newFileName);
 	}
+	
 	public OrmXml getOrmXml() {
 		return this.ormXml;
 	}
@@ -52,6 +54,12 @@ public class MappingFileRef extends JpaContextNode
 		firePropertyChanged(ORM_XML_PROPERTY, oldOrmXml, newOrmXml);
 	}
 
+	public PersistenceUnitDefaults persistenceUnitDefaults() {
+		if (getOrmXml() != null) {
+			return getOrmXml().persistenceUnitDefaults();
+		}
+		return null;
+	}
 	
 	// **************** updating ***********************************************
 	

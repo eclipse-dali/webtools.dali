@@ -65,7 +65,12 @@ public class OrmXmlImpl extends JpaContextNode
 		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, oldEntityMappings, null);
 	}
 	
-	
+	public PersistenceUnitDefaults persistenceUnitDefaults() {
+		if (getEntityMappings() != null) {
+			return getEntityMappings().persistenceUnitDefaults();
+		}
+		return null;
+	}
 	// **************** updating ***********************************************
 	
 	public void initialize(OrmResource ormResource) {

@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
@@ -58,6 +59,10 @@ public class PersistenceUnit extends JpaContextNode
 	
 	protected final List<IProperty> properties;
 	
+	protected String defaultSchema;
+	protected String defaultCatalog;
+	protected AccessType defaultAccess;
+	protected boolean defaultCascadePersist;
 	
 	public PersistenceUnit(IPersistence parent) {
 		super(parent);
@@ -394,6 +399,61 @@ public class PersistenceUnit extends JpaContextNode
 		fireListChanged(PROPERTIES_LIST);
 	}
 	
+	// **************** Persistence Unit Defaults *********************************************
+	
+	//TODO validation for multiple persistenceUnitDefaults.
+	
+	//Take the first PersistenceUnitDefaults found in an orm.xml file and use
+	//this for the defaults of the PersistenceUnit.
+	protected PersistenceUnitDefaults persistenceUnitDefaults() {
+		for (IMappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
+			PersistenceUnitDefaults persistenceUnitDefaults = mappingFileRef.persistenceUnitDefaults();
+			if (persistenceUnitDefaults != null) {
+				return persistenceUnitDefaults;
+			}
+		}
+		return null;
+	}
+
+	public String getDefaultSchema() {
+		return this.defaultSchema;
+	}
+	
+	protected void setDefaultSchema(String newDefaultSchema) {
+		String oldDefaultSchema = this.defaultSchema;
+		this.defaultSchema = newDefaultSchema;
+		firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, oldDefaultSchema, newDefaultSchema);
+	}
+	
+	public String getDefaultCatalog() {
+		return this.defaultCatalog;
+	}
+	
+	protected void setDefaultCatalog(String newDefaultCatalog) {
+		String oldDefaultCatalog = this.defaultCatalog;
+		this.defaultCatalog = newDefaultCatalog;
+		firePropertyChanged(DEFAULT_CATALOG_PROPERTY, oldDefaultCatalog, newDefaultCatalog);
+	}
+	
+	public AccessType getDefaultAccess() {
+		return this.defaultAccess;
+	}
+	
+	protected void setDefaultAccess(AccessType newDefaultAccess) {
+		AccessType oldDefaultAccess = this.defaultAccess;
+		this.defaultAccess = newDefaultAccess;
+		firePropertyChanged(DEFAULT_ACCESS_PROPERTY, oldDefaultAccess, newDefaultAccess);
+	}	
+	
+	public boolean getDefaultCascadePersist() {
+		return this.defaultCascadePersist;
+	}
+	
+	protected void setDefaultCascadePersist(boolean newDefaultCascadePersist) {
+		boolean oldDefaultCascadePersist = this.defaultCascadePersist;
+		this.defaultCascadePersist = newDefaultCascadePersist;
+		firePropertyChanged(DEFAULT_CASCADE_PERSIST_PROPERTY, oldDefaultCascadePersist, newDefaultCascadePersist);
+	}
 	
 	// **************** updating ***********************************************
 	
@@ -428,6 +488,22 @@ public class PersistenceUnit extends JpaContextNode
 		}
 	}
 	
+	protected void initializePersistenceUnitDefaults() {
+		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		if (persistenceUnitDefaults != null) {
+			this.defaultSchema = persistenceUnitDefaults.getSchema();
+			this.defaultCatalog = persistenceUnitDefaults.getCatalog();
+			this.defaultAccess = persistenceUnitDefaults.getAccess();
+			this.defaultCascadePersist = persistenceUnitDefaults.isCascadePersist();
+		}
+		else {
+			this.defaultSchema = null;
+			this.defaultCatalog = null;
+			this.defaultAccess = null;
+			this.defaultCascadePersist = false;		
+		}
+	}
+
 	public void update(XmlPersistenceUnit persistenceUnit) {
 		this.xmlPersistenceUnit = persistenceUnit;
 		updateName(persistenceUnit);
@@ -440,6 +516,7 @@ public class PersistenceUnit extends JpaContextNode
 		updateClassRefs(persistenceUnit);
 		updateExcludeUnlistedClasses(persistenceUnit);
 		updateProperties(persistenceUnit);
+		updatePersistenceUnitDefaults();
 	}
 	
 	protected void updateName(XmlPersistenceUnit persistenceUnit) {
@@ -569,8 +646,24 @@ public class PersistenceUnit extends JpaContextNode
 		property.initialize(xmlProperty);
 		return property;
 	}
-	
-	
+		
+	protected void updatePersistenceUnitDefaults() {
+		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
+		if (persistenceUnitDefaults != null) {
+			setDefaultSchema(persistenceUnitDefaults.getSchema());
+			setDefaultCatalog(persistenceUnitDefaults.getCatalog());
+			setDefaultAccess(persistenceUnitDefaults.getAccess());
+			setDefaultCascadePersist(persistenceUnitDefaults.isCascadePersist());
+		}
+		else {
+			setDefaultSchema(null);
+			setDefaultCatalog(null);
+			setDefaultAccess(null);
+			setDefaultCascadePersist(false);		
+		}
+	}
+
+
 	// *************************************************************************
 	
 	public ITextRange validationTextRange() {

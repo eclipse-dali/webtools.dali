@@ -27,8 +27,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 {
 	public EntityMappingsTests(String name) {
 		super(name);
-	}
-	
+	}	
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -74,7 +73,6 @@ public class EntityMappingsTests extends ContextModelTestCase
 		entityMappings().setDescription("newDescription");
 		assertEquals("newDescription", entityMappings().getDescription());
 		assertEquals("newDescription", ormResource().getEntityMappings().getDescription());
-		//TODO should we verify the tag is correct in the orm.xml??
 		
 		//set description to null in the context model
 		entityMappings().setDescription(null);
@@ -127,8 +125,6 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(ormResource().getEntityMappings().getSchema());
 	}
 	
-	//TODO test schema
-	//TODO test default schema
 	public void testModifySpecifiedSchema() throws Exception {
 		assertNull(entityMappings().getSpecifiedSchema());
 		assertNull(ormResource().getEntityMappings().getSchema());
@@ -143,7 +139,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(entityMappings().getSpecifiedSchema());
 		assertNull(ormResource().getEntityMappings().getSchema());
 	}
-	
+
 	public void testUpdateSpecifiedCatalog() throws Exception {
 		assertNull(entityMappings().getSpecifiedCatalog());
 		assertNull(ormResource().getEntityMappings().getCatalog());
@@ -159,6 +155,59 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(ormResource().getEntityMappings().getCatalog());
 	}
 	
+	public void testUpdateDefaultSchema() throws Exception {
+		assertNull(entityMappings().getDefaultSchema());
+		assertNull(entityMappings().getSpecifiedSchema());
+		assertNull(ormResource().getEntityMappings().getSchema());
+	
+		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+		org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
+		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
+		persistenceUnitDefaults.setSchema("MY_SCHEMA");
+		assertEquals("MY_SCHEMA", entityMappings().getDefaultSchema());
+		assertNull(entityMappings().getSpecifiedSchema());
+		assertNull(ormResource().getEntityMappings().getSchema());
+		assertEquals("MY_SCHEMA", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
+	
+		persistenceUnitDefaults.setSchema(null);
+		ormResource().save(null);
+		assertNull(entityMappings().getDefaultSchema());
+		assertNull(entityMappings().getSpecifiedSchema());
+		assertNull(ormResource().getEntityMappings().getSchema());
+		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
+	}
+	
+	public void testUpdateSchema() throws Exception {
+		assertNull(entityMappings().getDefaultSchema());
+		assertNull(entityMappings().getSchema());
+		assertNull(entityMappings().getSpecifiedSchema());
+		assertNull(ormResource().getEntityMappings().getSchema());
+	
+		ormResource().getEntityMappings().setSchema("MY_SCHEMA");
+		assertNull(entityMappings().getDefaultSchema());
+		assertEquals("MY_SCHEMA", entityMappings().getSchema());
+		assertEquals("MY_SCHEMA", entityMappings().getSpecifiedSchema());
+		assertEquals("MY_SCHEMA", ormResource().getEntityMappings().getSchema());
+		
+		ormResource().getEntityMappings().setSchema(null);
+		assertNull(entityMappings().getDefaultSchema());
+		assertNull(entityMappings().getSchema());
+		assertNull(entityMappings().getSpecifiedSchema());
+		assertNull(ormResource().getEntityMappings().getSchema());
+
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("DEFAULT_SCHEMA");
+		assertEquals("DEFAULT_SCHEMA", entityMappings().getDefaultSchema());
+		assertEquals("DEFAULT_SCHEMA", entityMappings().getSchema());
+		assertNull(entityMappings().getSpecifiedSchema());
+		assertNull(ormResource().getEntityMappings().getSchema());
+		
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema(null);
+		assertNull(entityMappings().getDefaultSchema());
+		assertNull(entityMappings().getSchema());
+		assertNull(entityMappings().getSpecifiedSchema());
+		assertNull(ormResource().getEntityMappings().getSchema());
+	}	
+	
 	public void testModifySpecifiedCatalog() throws Exception {
 		assertNull(entityMappings().getSpecifiedCatalog());
 		assertNull(ormResource().getEntityMappings().getCatalog());
@@ -173,8 +222,58 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(entityMappings().getSpecifiedCatalog());
 		assertNull(ormResource().getEntityMappings().getCatalog());
 	}
-	//TODO test catalog
-	//TODO test default catalog
+	
+	public void testUpdateDefaultCatalog() throws Exception {
+		assertNull(entityMappings().getDefaultCatalog());
+		assertNull(entityMappings().getSpecifiedCatalog());
+		assertNull(ormResource().getEntityMappings().getCatalog());
+	
+		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+		org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
+		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
+		persistenceUnitDefaults.setCatalog("MY_CATALOG");
+		assertEquals("MY_CATALOG", entityMappings().getDefaultCatalog());
+		assertNull(entityMappings().getSpecifiedCatalog());
+		assertNull(ormResource().getEntityMappings().getCatalog());
+		assertEquals("MY_CATALOG", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
+	
+		persistenceUnitDefaults.setCatalog(null);
+		assertNull(entityMappings().getDefaultCatalog());
+		assertNull(entityMappings().getSpecifiedCatalog());
+		assertNull(ormResource().getEntityMappings().getCatalog());
+		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
+	}
+	
+	public void testUpdateCatalog() throws Exception {
+		assertNull(entityMappings().getDefaultCatalog());
+		assertNull(entityMappings().getCatalog());
+		assertNull(entityMappings().getSpecifiedCatalog());
+		assertNull(ormResource().getEntityMappings().getCatalog());
+	
+		ormResource().getEntityMappings().setCatalog("MY_CATALOG");
+		assertNull(entityMappings().getDefaultCatalog());
+		assertEquals("MY_CATALOG", entityMappings().getCatalog());
+		assertEquals("MY_CATALOG", entityMappings().getSpecifiedCatalog());
+		assertEquals("MY_CATALOG", ormResource().getEntityMappings().getCatalog());
+		
+		ormResource().getEntityMappings().setCatalog(null);
+		assertNull(entityMappings().getDefaultCatalog());
+		assertNull(entityMappings().getCatalog());
+		assertNull(entityMappings().getSpecifiedCatalog());
+		assertNull(ormResource().getEntityMappings().getCatalog());
+
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("DEFAULT_CATALOG");
+		assertEquals("DEFAULT_CATALOG", entityMappings().getDefaultCatalog());
+		assertEquals("DEFAULT_CATALOG", entityMappings().getCatalog());
+		assertNull(entityMappings().getSpecifiedCatalog());
+		assertNull(ormResource().getEntityMappings().getCatalog());
+		
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog(null);
+		assertNull(entityMappings().getDefaultCatalog());
+		assertNull(entityMappings().getCatalog());
+		assertNull(entityMappings().getSpecifiedCatalog());
+		assertNull(ormResource().getEntityMappings().getCatalog());
+	}	
 
 	public void testUpdateSpecifiedAccess() throws Exception {
 		assertNull(entityMappings().getSpecifiedAccess());
@@ -206,7 +305,61 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(ormResource().getEntityMappings().getAccess());
 	}
 	
+	public void testUpdateDefaultAccess() throws Exception {
+		assertNull(entityMappings().getDefaultAccess());
+		assertNull(entityMappings().getSpecifiedAccess());
+		assertNull(ormResource().getEntityMappings().getAccess());
 	
+		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+		org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
+		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
+		persistenceUnitDefaults.setAccess(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY);
+		assertEquals(AccessType.PROPERTY, entityMappings().getDefaultAccess());
+		assertNull(entityMappings().getSpecifiedAccess());
+		assertNull(ormResource().getEntityMappings().getAccess());
+		
+		persistenceUnitDefaults.setAccess(org.eclipse.jpt.core.internal.resource.orm.AccessType.FIELD);
+		assertEquals(AccessType.FIELD, entityMappings().getDefaultAccess());
+		assertNull(entityMappings().getSpecifiedAccess());
+		assertNull(ormResource().getEntityMappings().getAccess());
+		
+		persistenceUnitDefaults.setAccess(null);
+		assertNull(entityMappings().getDefaultAccess());
+		assertNull(entityMappings().getSpecifiedAccess());
+		assertNull(ormResource().getEntityMappings().getAccess());
+	}
+
+	public void testUpdateAccess() throws Exception {
+		assertNull(entityMappings().getAccess());
+		assertNull(entityMappings().getDefaultAccess());
+		assertNull(entityMappings().getSpecifiedAccess());
+		assertNull(ormResource().getEntityMappings().getAccess());
+	
+		ormResource().getEntityMappings().setAccess(org.eclipse.jpt.core.internal.resource.orm.AccessType.FIELD);
+		assertNull(entityMappings().getDefaultAccess());
+		assertEquals(AccessType.FIELD, entityMappings().getAccess());
+		assertEquals(AccessType.FIELD, entityMappings().getSpecifiedAccess());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.FIELD, ormResource().getEntityMappings().getAccess());
+		
+		ormResource().getEntityMappings().setAccess(null);
+		assertNull(entityMappings().getAccess());
+		assertNull(entityMappings().getDefaultAccess());
+		assertNull(entityMappings().getSpecifiedAccess());
+		assertNull(ormResource().getEntityMappings().getAccess());
+
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
+		assertEquals(AccessType.FIELD, entityMappings().getDefaultAccess());
+		assertEquals(AccessType.FIELD, entityMappings().getAccess());
+		assertNull(entityMappings().getSpecifiedAccess());
+		assertNull(ormResource().getEntityMappings().getAccess());
+		
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
+		assertNull(entityMappings().getDefaultAccess());
+		assertNull(entityMappings().getAccess());
+		assertNull(entityMappings().getSpecifiedAccess());
+		assertNull(ormResource().getEntityMappings().getAccess());
+	}	
+
 	
 	public void testUpdateXmlPersistentTypes() throws Exception {
 		assertFalse(entityMappings().xmlPersistentTypes().hasNext());

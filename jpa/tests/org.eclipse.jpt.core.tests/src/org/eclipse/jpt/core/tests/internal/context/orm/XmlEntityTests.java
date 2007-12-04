@@ -266,7 +266,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertFalse(xmlEntity.getDefaultMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 	}
-	
+
 	public void testUpdateMetadataComplete() throws Exception {
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();

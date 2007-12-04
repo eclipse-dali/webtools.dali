@@ -306,6 +306,19 @@ public interface IPersistenceUnit extends IJpaContextNode
 	 */
 	void removeProperty(int index);
 	
+	// **************** PersistenceUnitDefaults *********************************************
+	
+	String getDefaultSchema();
+		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema";
+		
+	String getDefaultCatalog();
+		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog";
+	
+	AccessType getDefaultAccess();
+		String DEFAULT_ACCESS_PROPERTY = "defaultAccess";
+	
+	boolean getDefaultCascadePersist();
+		String DEFAULT_CASCADE_PERSIST_PROPERTY = "defaultCascadePersist";
 	
 	// **************** updating ***********************************************
 	

@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.context.orm.OrmXml;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 
 public interface IMappingFileRef extends IJpaContextNode
@@ -34,6 +35,8 @@ public interface IMappingFileRef extends IJpaContextNode
 	
 	OrmXml getOrmXml();	
 		String ORM_XML_PROPERTY = "ormXmlProperty";
+	
+	PersistenceUnitDefaults persistenceUnitDefaults();
 	
 	// **************** udpating ***********************************************
 	

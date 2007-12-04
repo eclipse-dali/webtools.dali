@@ -295,6 +295,9 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 //	public void javaElementChanged(ElementChangedEvent event) {
 //	}
 
+	public PersistenceUnitDefaults persistenceUnitDefaults() {
+		return getPersistenceUnitMetadata().getPersistenceUnitDefaults();
+	}
 	
 	public void initialize(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
 		this.entityMappings = entityMappings;
@@ -305,10 +308,9 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		this.specifiedCatalog = entityMappings.getCatalog();
 		this.specifiedAccess = this.specifiedAccess(entityMappings);
 		this.persistenceUnitMetadata.initialize(entityMappings);
-		//TODO once we support persistenceUnitDefaults
-		//this.defaultAccess = persistenceUnit().persistenceUnitDefaults().getAccess();
-		//this.defaultCatalog = persistenceUnit().persistenceUnitDefaults().getAccess();
-		//this.defaultSchema = persistenceUnit().persistenceUnitDefaults().getAccess();
+		this.defaultAccess = persistenceUnit().getDefaultAccess();
+		this.defaultCatalog = persistenceUnit().getDefaultCatalog();
+		this.defaultSchema = persistenceUnit().getDefaultSchema();
 		this.initializePersistentTypes(entityMappings);
 	}
 	
@@ -350,10 +352,9 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		this.setSpecifiedCatalog(entityMappings.getCatalog());
 		this.setSpecifiedAccess(this.specifiedAccess(entityMappings));
 		this.persistenceUnitMetadata.update(entityMappings);
-		//TODO one we support persistenceUnitDefaults
-		//this.setDefaultAccess(persistenceUnit().persistenceUnitDefaults().getAccess());
-		//this.setDefaultCatalog(persistenceUnit().persistenceUnitDefaults().getAccess());
-		//this.setDefaultSchema(persistenceUnit().persistenceUnitDefaults().getAccess());
+		this.setDefaultAccess(persistenceUnit().getDefaultAccess());
+		this.setDefaultCatalog(persistenceUnit().getDefaultCatalog());
+		this.setDefaultSchema(persistenceUnit().getDefaultSchema());
 		this.updatePersistentTypes(entityMappings);
 	}
 	

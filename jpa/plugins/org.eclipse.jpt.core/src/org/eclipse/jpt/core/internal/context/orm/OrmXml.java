@@ -41,6 +41,7 @@ public interface OrmXml extends IJpaContextNode
 	 */
 	void removeEntityMappings();
 	
+	PersistenceUnitDefaults persistenceUnitDefaults();
 	
 	// **************** updating **********************************************
 	
