@@ -19,7 +19,7 @@ import junit.framework.TestSuite;
 public class JptUiTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JptUiTests.class.getName());
+		TestSuite suite = new TestSuite(JptUiTests.class.getPackage().getName());
 		suite.addTest(JptUiPlatformTests.suite());
 		return suite;
 	}

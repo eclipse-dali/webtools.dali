@@ -19,7 +19,7 @@ public class JptCoreContentJavaMappingsTests {
 	}
 	
 	public static Test suite(boolean all) {
-		TestSuite suite = new TestSuite(JptCoreContentJavaMappingsTests.class.getName());
+		TestSuite suite = new TestSuite(JptCoreContentJavaMappingsTests.class.getPackage().getName());
 		if (all) {
 			suite.addTestSuite(JavaEntityTests.class);
 		}

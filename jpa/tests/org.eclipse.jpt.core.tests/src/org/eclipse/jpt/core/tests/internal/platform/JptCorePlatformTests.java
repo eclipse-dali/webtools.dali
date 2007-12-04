@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ public class JptCorePlatformTests {
 	}
 
 	public static Test suite(boolean all) {
-		TestSuite suite = new TestSuite(JptCorePlatformTests.class.getName());
+		TestSuite suite = new TestSuite(JptCorePlatformTests.class.getPackage().getName());
 		suite.addTestSuite(JpaPlatformExtensionTests.class);
 		if (all) {
 			suite.addTestSuite(BaseJpaPlatformTests.class);

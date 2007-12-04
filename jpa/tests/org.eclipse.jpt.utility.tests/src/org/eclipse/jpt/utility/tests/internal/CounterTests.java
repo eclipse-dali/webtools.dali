@@ -11,21 +11,10 @@ package org.eclipse.jpt.utility.tests.internal;
 
 import org.eclipse.jpt.utility.internal.Counter;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.swingui.TestRunner;
 
 public class CounterTests extends TestCase {
 
-	public static void main(String[] args) {
-		TestRunner.main(new String[] {"-c", CounterTests.class.getName()});
-	}
-	
-	public static Test suite() {
-		return new TestSuite(CounterTests.class);
-	}
-	
 	public CounterTests(String name) {
 		super(name);
 	}
