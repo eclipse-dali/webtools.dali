@@ -4,11 +4,15 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.ui.tests
 Bundle-Version: 1.0.0
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: org.junit,
+ org.eclipse.core.runtime,
+ org.eclipse.jface,
  org.eclipse.jpt.core.tests,
  org.eclipse.jpt.core.tests.extension.resource,
- org.eclipse.jpt.core,
- org.junit,
  org.eclipse.jpt.utility,
+ org.eclipse.jpt.core,
  org.eclipse.jpt.ui
 Eclipse-LazyStart: true
+Export-Package: org.eclipse.jpt.ui.tests;x-internal:=true,
+ org.eclipse.jpt.ui.tests.internal.jface;x-internal:=true,
+ org.eclipse.jpt.ui.tests.internal.platform;x-internal:=true
