@@ -15,6 +15,7 @@ import javax.swing.event.ListDataListener;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
@@ -75,6 +76,10 @@ public class ListModelAdapter
 	// ********** initialization **********
 
 	protected ListChangeListener buildListChangeListener() {
+		return new AWTListChangeListenerWrapper(this.buildListChangeListener_());
+	}
+
+	protected ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListChangeEvent e) {
 				ListModelAdapter.this.itemsAdded(e);
@@ -267,11 +272,6 @@ public class ListModelAdapter
 		this.listSize = this.listHolder.size();
 		if (this.listSize != 0) {
 			this.fireIntervalAdded(this, 0, this.listSize - 1);
-		} else {
-			// this can happen when the "context" of the list changes;
-			// even though there are no items in the list,
-			// listeners might want to know that the list has "changed"
-			this.fireContentsChanged(this, 0, -1);
 		}
 	}
 

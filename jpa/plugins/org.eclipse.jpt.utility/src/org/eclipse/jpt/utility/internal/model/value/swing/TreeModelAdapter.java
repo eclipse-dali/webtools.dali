@@ -24,6 +24,9 @@ import org.eclipse.jpt.utility.internal.model.event.StateChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
+import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.utility.internal.model.listener.awt.AWTStateChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
@@ -132,7 +135,11 @@ public class TreeModelAdapter
 
 	// ********** initialization **********
 
-	private PropertyChangeListener buildRootListener() {
+	protected PropertyChangeListener buildRootListener() {
+		return new AWTPropertyChangeListenerWrapper(this.buildRootListener_());
+	}
+
+	protected PropertyChangeListener buildRootListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				TreeModelAdapter.this.rootChanged();
@@ -144,7 +151,11 @@ public class TreeModelAdapter
 		};
 	}
 
-	private PropertyChangeListener buildNodeValueListener() {
+	protected PropertyChangeListener buildNodeValueListener() {
+		return new AWTPropertyChangeListenerWrapper(this.buildNodeValueListener_());
+	}
+
+	protected PropertyChangeListener buildNodeValueListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				TreeModelAdapter.this.nodeChanged((TreeNodeValueModel) e.getSource());
@@ -156,7 +167,11 @@ public class TreeModelAdapter
 		};
 	}
 
-	private StateChangeListener buildNodeStateListener() {
+	protected StateChangeListener buildNodeStateListener() {
+		return new AWTStateChangeListenerWrapper(this.buildNodeStateListener_());
+	}
+
+	protected StateChangeListener buildNodeStateListener_() {
 		return new StateChangeListener() {
 			public void stateChanged(StateChangeEvent e) {
 				TreeModelAdapter.this.nodeChanged((TreeNodeValueModel) e.getSource());
@@ -168,7 +183,11 @@ public class TreeModelAdapter
 		};
 	}
 
-	private ListChangeListener buildChildrenListener() {
+	protected ListChangeListener buildChildrenListener() {
+		return new AWTListChangeListenerWrapper(this.buildChildrenListener_());
+	}
+
+	protected ListChangeListener buildChildrenListener_() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListChangeEvent e) {
 				new EventChangePolicy(e).addChildren();

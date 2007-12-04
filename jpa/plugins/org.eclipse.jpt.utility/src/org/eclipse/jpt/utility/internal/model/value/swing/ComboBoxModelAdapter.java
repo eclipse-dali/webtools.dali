@@ -14,6 +14,7 @@ import javax.swing.ComboBoxModel;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -76,6 +77,10 @@ public class ComboBoxModelAdapter
 	// ********** initialization **********
 
 	protected PropertyChangeListener buildSelectionListener() {
+		return new AWTPropertyChangeListenerWrapper(this.buildSelectionListener_());
+	}
+
+	protected PropertyChangeListener buildSelectionListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				// notify listeners that the selection has changed

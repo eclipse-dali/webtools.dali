@@ -22,6 +22,7 @@ import javax.swing.ListModel;
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.HashBag;
+import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
@@ -50,9 +51,27 @@ public class ListModelAdapterTests extends TestCase {
 		super.tearDown();
 	}
 
+	private ListModelAdapter buildListModel(ListValueModel listHolder) {
+		return new ListModelAdapter(listHolder) {
+			@Override
+			protected ListChangeListener buildListChangeListener() {
+				return this.buildListChangeListener_();
+			}
+		};
+	}
+
+	private ListModel buildListModel(CollectionValueModel collectionHolder) {
+		return new ListModelAdapter(collectionHolder) {
+			@Override
+			protected ListChangeListener buildListChangeListener() {
+				return this.buildListChangeListener_();
+			}
+		};
+	}
+
 	public void testCollectionSynchronization() {
 		SimpleCollectionValueModel collectionHolder = this.buildCollectionHolder();
-		ListModel listModel = new ListModelAdapter(collectionHolder);
+		ListModel listModel = this.buildListModel(collectionHolder);
 		SynchronizedList synchList = new SynchronizedList(listModel);
 		assertEquals(6, synchList.size());
 		this.compare(listModel, synchList);
@@ -74,7 +93,7 @@ public class ListModelAdapterTests extends TestCase {
 
 	public void testListSynchronization() {
 		SimpleListValueModel listHolder = this.buildListHolder();
-		ListModel listModel = new ListModelAdapter(listHolder);
+		ListModel listModel = this.buildListModel(listHolder);
 		SynchronizedList synchList = new SynchronizedList(listModel);
 		assertEquals(6, synchList.size());
 		this.compare(listModel, synchList);
@@ -96,7 +115,7 @@ public class ListModelAdapterTests extends TestCase {
 
 	public void testSetModel() {
 		SimpleListValueModel listHolder1 = this.buildListHolder();
-		ListModelAdapter listModel = new ListModelAdapter(listHolder1);
+		ListModelAdapter listModel = this.buildListModel(listHolder1);
 		SynchronizedList synchList = new SynchronizedList(listModel);
 		assertTrue(listHolder1.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertEquals(6, synchList.size());
@@ -150,7 +169,7 @@ public class ListModelAdapterTests extends TestCase {
 
 	private void verifyCollectionSort(Comparator comparator) {
 		SimpleCollectionValueModel collectionHolder = this.buildCollectionHolder();
-		ListModel listModel = new ListModelAdapter(new SortedListValueModelAdapter(collectionHolder, comparator));
+		ListModel listModel = this.buildListModel(new SortedListValueModelAdapter(collectionHolder, comparator));
 		SynchronizedList synchList = new SynchronizedList(listModel);
 		assertEquals(6, synchList.size());
 		this.compareSort(listModel, synchList, comparator);
@@ -170,7 +189,7 @@ public class ListModelAdapterTests extends TestCase {
 
 	private void verifyListSort(Comparator comparator) {
 		SimpleListValueModel listHolder = this.buildListHolder();
-		ListModel listModel = new ListModelAdapter(new SortedListValueModelAdapter(listHolder, comparator));
+		ListModel listModel = this.buildListModel(new SortedListValueModelAdapter(listHolder, comparator));
 		SynchronizedList synchList = new SynchronizedList(listModel);
 		assertEquals(6, synchList.size());
 		this.compareSort(listModel, synchList, comparator);
@@ -204,7 +223,7 @@ public class ListModelAdapterTests extends TestCase {
 		SimpleListValueModel listHolder = this.buildListHolder();
 		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
-		ListModel listModel = new ListModelAdapter(listHolder);
+		ListModel listModel = this.buildListModel(listHolder);
 		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		this.verifyHasNoListeners(listModel);
 
@@ -219,7 +238,7 @@ public class ListModelAdapterTests extends TestCase {
 
 	public void testGetSize() throws Exception {
 		SimpleListValueModel listHolder = this.buildListHolder();
-		ListModel listModel = new ListModelAdapter(listHolder);
+		ListModel listModel = this.buildListModel(listHolder);
 		this.verifyHasNoListeners(listModel);
 		assertEquals(6, listModel.getSize());
 
@@ -234,7 +253,7 @@ public class ListModelAdapterTests extends TestCase {
 
 	public void testGetElementAt() throws Exception {
 		SimpleListValueModel listHolder = this.buildListHolder();
-		ListModel listModel = new ListModelAdapter(new SortedListValueModelAdapter(listHolder));
+		ListModel listModel = this.buildListModel(new SortedListValueModelAdapter(listHolder));
 		SynchronizedList synchList = new SynchronizedList(listModel);
 		this.verifyHasListeners(listModel);
 		assertEquals("bar", listModel.getElementAt(0));

@@ -42,8 +42,6 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-import org.eclipse.jpt.utility.internal.model.ChangeEventDispatcher;
-import org.eclipse.jpt.utility.internal.model.SimpleChangeEventDispatcher;
 import org.eclipse.jpt.utility.internal.node.Node;
 
 /**
@@ -85,11 +83,6 @@ public class JpaProject extends JpaNode implements IJpaProject {
 	protected final IResourceDeltaVisitor resourceDeltaVisitor;
 
 	/**
-	 * The dispatcher can be changed so it is UI-aware.
-	 */
-	protected volatile ChangeEventDispatcher changeEventDispatcher;
-
-	/**
 	 * Support for modifying documents shared with the UI.
 	 */
 	protected final ThreadLocal<CommandExecutor> threadLocalModifySharedDocumentCommandExecutor;
@@ -120,7 +113,6 @@ public class JpaProject extends JpaNode implements IJpaProject {
 		this.jpaFiles = this.buildJpaFiles();
 
 		this.resourceDeltaVisitor = this.buildResourceDeltaVisitor();
-		this.changeEventDispatcher = this.buildChangeEventDispatcher();
 		this.threadLocalModifySharedDocumentCommandExecutor = this.buildThreadLocalModifySharedDocumentCommandExecutor();
 		this.modifySharedDocumentCommandExecutorProvider = this.buildModifySharedDocumentCommandExecutorProvider();
 
@@ -144,10 +136,6 @@ public class JpaProject extends JpaNode implements IJpaProject {
 
 	protected IResourceDeltaVisitor buildResourceDeltaVisitor() {
 		return new ResourceDeltaVisitor();
-	}
-
-	protected ChangeEventDispatcher buildChangeEventDispatcher() {
-		return SimpleChangeEventDispatcher.instance();
 	}
 
 	protected ThreadLocal<CommandExecutor> buildThreadLocalModifySharedDocumentCommandExecutor() {
@@ -288,19 +276,6 @@ public class JpaProject extends JpaNode implements IJpaProject {
 
 	protected boolean containsJpaFile(IFile file) {
 		return (this.jpaFile(file) != null);
-	}
-
-
-	// ********** change event dispatcher **********
-
-	@Override
-	public ChangeEventDispatcher changeEventDispatcher() {
-		return this.changeEventDispatcher;
-	}
-
-	@Override
-	public void setChangeEventDispatcher(ChangeEventDispatcher changeEventDispatcher) {
-		this.changeEventDispatcher = changeEventDispatcher;
 	}
 
 

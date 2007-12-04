@@ -18,6 +18,7 @@ import javax.swing.event.ChangeListener;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
@@ -111,7 +112,11 @@ public class ListSpinnerModelAdapter
 
 	// ********** initialization **********
 
-	private PropertyChangeListener buildValueChangeListener() {
+	protected PropertyChangeListener buildValueChangeListener() {
+		return new AWTPropertyChangeListenerWrapper(this.buildValueChangeListener_());
+	}
+
+	protected PropertyChangeListener buildValueChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				ListSpinnerModelAdapter.this.synchronize(e.newValue());

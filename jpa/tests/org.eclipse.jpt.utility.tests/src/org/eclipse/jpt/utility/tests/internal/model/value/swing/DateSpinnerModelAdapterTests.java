@@ -15,6 +15,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
@@ -36,7 +37,12 @@ public class DateSpinnerModelAdapterTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.valueHolder = new SimplePropertyValueModel(new Date());
-		this.spinnerModelAdapter = new DateSpinnerModelAdapter(this.valueHolder);
+		this.spinnerModelAdapter = new DateSpinnerModelAdapter(this.valueHolder) {
+			@Override
+			protected PropertyChangeListener buildDateChangeListener() {
+				return this.buildDateChangeListener_();
+			}
+		};
 	}
 
 	@Override
@@ -118,7 +124,12 @@ public class DateSpinnerModelAdapterTests extends TestCase {
 	public void testNullInitialValue() {
 		Date today = new Date();
 		this.valueHolder = new SimplePropertyValueModel();
-		this.spinnerModelAdapter = new DateSpinnerModelAdapter(this.valueHolder, today);
+		this.spinnerModelAdapter = new DateSpinnerModelAdapter(this.valueHolder, today) {
+			@Override
+			protected PropertyChangeListener buildDateChangeListener() {
+				return this.buildDateChangeListener_();
+			}
+		};
 
 		this.eventFired = false;
 		this.spinnerModelAdapter.addChangeListener(new TestChangeListener() {

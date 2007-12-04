@@ -25,6 +25,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
@@ -182,7 +184,16 @@ public class TableModelAdapterTests extends TestCase {
 	}
 
 	private TableModelAdapter buildTableModelAdapter() {
-		return new TableModelAdapter(this.buildSortedPeopleAdapter(), this.buildColumnAdapter());
+		return new TableModelAdapter(this.buildSortedPeopleAdapter(), this.buildColumnAdapter()) {
+			@Override
+			protected PropertyChangeListener buildCellListener() {
+				return this.buildCellListener_();
+			}
+			@Override
+			protected ListChangeListener buildListChangeListener() {
+				return this.buildListChangeListener_();
+			}
+		};
 	}
 
 	private ListValueModel buildSortedPeopleAdapter() {
@@ -192,11 +203,11 @@ public class TableModelAdapterTests extends TestCase {
 	private CollectionValueModel buildPeopleAdapter() {
 		return new CollectionAspectAdapter(Crowd.PEOPLE_COLLECTION, this.crowd) {
 			@Override
-			protected Iterator<Person> getValueFromSubject() {
+			protected Iterator<Person> iterator_() {
 				return ((Crowd) this.subject).people();
 			}
 			@Override
-			protected int sizeFromSubject() {
+			protected int size_() {
 				return ((Crowd) this.subject).peopleSize();
 			}
 		};
@@ -305,11 +316,11 @@ public class TableModelAdapterTests extends TestCase {
 		private PropertyValueModel buildNameAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.NAME_PROPERTY, person) {
 				@Override
-				protected Object getValueFromSubject() {
+				protected Object buildValue_() {
 					return ((Person) this.subject).getName();
 				}
 				@Override
-				protected void setValueOnSubject(Object value) {
+				protected void setValue_(Object value) {
 					((Person) this.subject).setName((String) value);
 				}
 			};
@@ -318,11 +329,11 @@ public class TableModelAdapterTests extends TestCase {
 		private PropertyValueModel buildBirthDateAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.BIRTH_DATE_PROPERTY, person) {
 				@Override
-				protected Object getValueFromSubject() {
+				protected Object buildValue_() {
 					return ((Person) this.subject).getBirthDate();
 				}
 				@Override
-				protected void setValueOnSubject(Object value) {
+				protected void setValue_(Object value) {
 					((Person) this.subject).setBirthDate((Date) value);
 				}
 			};
@@ -331,11 +342,11 @@ public class TableModelAdapterTests extends TestCase {
 		private PropertyValueModel buildGoneWestDateAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.GONE_WEST_DATE_PROPERTY, person) {
 				@Override
-				protected Object getValueFromSubject() {
+				protected Object buildValue_() {
 					return ((Person) this.subject).getGoneWestDate();
 				}
 				@Override
-				protected void setValueOnSubject(Object value) {
+				protected void setValue_(Object value) {
 					((Person) this.subject).setGoneWestDate((Date) value);
 				}
 			};
@@ -344,11 +355,11 @@ public class TableModelAdapterTests extends TestCase {
 		private PropertyValueModel buildEyeColorAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.EYE_COLOR_PROPERTY, person) {
 				@Override
-				protected Object getValueFromSubject() {
+				protected Object buildValue_() {
 					return ((Person) this.subject).getEyeColor();
 				}
 				@Override
-				protected void setValueOnSubject(Object value) {
+				protected void setValue_(Object value) {
 					((Person) this.subject).setEyeColor((String) value);
 				}
 			};
@@ -357,11 +368,11 @@ public class TableModelAdapterTests extends TestCase {
 		private PropertyValueModel buildEvilAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.EVIL_PROPERTY, person) {
 				@Override
-				protected Object getValueFromSubject() {
+				protected Object buildValue_() {
 					return Boolean.valueOf(((Person) this.subject).isEvil());
 				}
 				@Override
-				protected void setValueOnSubject(Object value) {
+				protected void setValue_(Object value) {
 					((Person) this.subject).setEvil(((Boolean) value).booleanValue());
 				}
 			};
@@ -370,11 +381,11 @@ public class TableModelAdapterTests extends TestCase {
 		private PropertyValueModel buildRankAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.RANK_PROPERTY, person) {
 				@Override
-				protected Object getValueFromSubject() {
+				protected Object buildValue_() {
 					return new Integer(((Person) this.subject).getRank());
 				}
 				@Override
-				protected void setValueOnSubject(Object value) {
+				protected void setValue_(Object value) {
 					((Person) this.subject).setRank(((Integer) value).intValue());
 				}
 			};
@@ -383,11 +394,11 @@ public class TableModelAdapterTests extends TestCase {
 		private PropertyValueModel buildAdventureCountAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.ADVENTURE_COUNT_PROPERTY, person) {
 				@Override
-				protected Object getValueFromSubject() {
+				protected Object buildValue_() {
 					return new Integer(((Person) this.subject).getAdventureCount());
 				}
 				@Override
-				protected void setValueOnSubject(Object value) {
+				protected void setValue_(Object value) {
 					((Person) this.subject).setAdventureCount(((Integer) value).intValue());
 				}
 			};

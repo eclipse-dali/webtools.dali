@@ -13,6 +13,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
@@ -36,7 +37,12 @@ public class ListSpinnerModelAdapterTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.valueHolder = new SimplePropertyValueModel(DEFAULT_VALUE);
-		this.spinnerModelAdapter = new ListSpinnerModelAdapter(this.valueHolder, VALUE_LIST);
+		this.spinnerModelAdapter = new ListSpinnerModelAdapter(this.valueHolder, VALUE_LIST) {
+			@Override
+			protected PropertyChangeListener buildValueChangeListener() {
+				return this.buildValueChangeListener_();
+			}
+		};
 	}
 
 	@Override

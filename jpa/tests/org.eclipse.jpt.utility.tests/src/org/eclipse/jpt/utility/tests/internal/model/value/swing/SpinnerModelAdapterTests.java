@@ -14,6 +14,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
@@ -35,7 +36,12 @@ public class SpinnerModelAdapterTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.valueHolder = new SimplePropertyValueModel(new Integer(0));
-		this.spinnerModelAdapter = new SpinnerModelAdapter(this.valueHolder);
+		this.spinnerModelAdapter = new SpinnerModelAdapter(this.valueHolder) {
+			@Override
+			protected PropertyChangeListener buildValueListener() {
+				return this.buildValueListener_();
+			}
+		};
 	}
 
 	@Override

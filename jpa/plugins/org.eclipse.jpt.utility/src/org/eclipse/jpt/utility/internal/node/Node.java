@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.model.ChangeEventDispatcher;
 import org.eclipse.jpt.utility.internal.model.Model;
 
 /**
@@ -158,24 +157,6 @@ public interface Node extends Model, Comparable<Node> {
 	 * Not the best of method names.... :-(
 	 */
 	void cascadeMarkEntireBranchClean();
-
-
-	// ********** change support **********
-
-	/**
-	 * INTRA-TREE API
-	 * Return a change event dispatcher that will be used to dispatch
-	 * change notifications to listeners.
-	 * Typically only the root node directly holds a dispatcher.
-	 */
-	ChangeEventDispatcher changeEventDispatcher();
-
-	/**
-	 * Set a change event dispatcher that will be used to dispatch
-	 * change notifications to listeners.
-	 * Typically only the root node directly holds a dispatcher.
-	 */
-	void setChangeEventDispatcher(ChangeEventDispatcher changeEventDispatcher);
 
 
 	// ********** problems **********

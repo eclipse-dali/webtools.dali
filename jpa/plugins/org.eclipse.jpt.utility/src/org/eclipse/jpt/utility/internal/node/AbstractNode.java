@@ -23,7 +23,6 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.ChangeEventDispatcher;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
 /**
@@ -376,33 +375,6 @@ public abstract class AbstractNode
 
 
 	// ********** change support **********
-
-	/**
-	 * INTRA-TREE API
-	 * Return a change event dispatcher that will be used to dispatch
-	 * change notifications to listeners.
-	 * Typically only the root node directly holds a dispatcher.
-	 * NB: Root node model implementations will need to override this method.
-	 */
-	public ChangeEventDispatcher changeEventDispatcher() {
-		if (this.parent == null) {
-			throw new IllegalStateException("This node should not be firing change events during its construction.");
-		}
-		return this.parent.changeEventDispatcher();
-	}
-
-	/**
-	 * Set a change event dispatcher that will be used to dispatch
-	 * change notifications to listeners.
-	 * Typically only the root node directly holds a dispatcher.
-	 * NB: Root node model implementations will need to override this method.
-	 */
-	public void setChangeEventDispatcher(ChangeEventDispatcher changeEventDispatcher) {
-		if (this.parent == null) {
-			throw new IllegalStateException("This root node should implement #setChangeEventDispatcher(ChangeEventDispatcher).");
-		}
-		throw new UnsupportedOperationException("Only root nodes implement #setChangeEventDispatcher(ChangeEventDispatcher).");
-	}
 
 	/**
 	 * An aspect of the node has changed:
@@ -986,10 +958,6 @@ public abstract class AbstractNode
 			return (AbstractNode) this.source;
 		}
 		@Override
-		protected ChangeEventDispatcher dispatcher() {
-			return this.sourceNode().changeEventDispatcher();
-		}
-		@Override
 		protected ChangeSupport buildChildChangeSupport() {
 			return new LocalChildChangeSupport(this.sourceNode());
 		}
@@ -1012,10 +980,6 @@ public abstract class AbstractNode
 		}
 		protected AbstractNode sourceNode() {
 			return (AbstractNode) this.source;
-		}
-		@Override
-		protected ChangeEventDispatcher dispatcher() {
-			return this.sourceNode().changeEventDispatcher();
 		}
 		@Override
 		protected ChangeSupport buildChildChangeSupport() {

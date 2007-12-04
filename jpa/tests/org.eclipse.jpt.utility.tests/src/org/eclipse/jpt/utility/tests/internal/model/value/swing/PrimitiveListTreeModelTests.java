@@ -21,6 +21,7 @@ import javax.swing.tree.TreeModel;
 
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.PrimitiveListTreeModel;
@@ -55,13 +56,17 @@ public class PrimitiveListTreeModelTests extends TestCase {
 					PrimitiveListTreeModelTests.this.testModel.replaceName(index, (String) newValue);
 				}
 			}
+			@Override
+			protected ListChangeListener buildListChangeListener() {
+				return this.buildListChangeListener_();
+			}
 		};
 	}
 
 	private ListValueModel buildListValueModel() {
 		return new ListAspectAdapter(TestModel.NAMES_LIST, this.testModel) {
 			@Override
-			protected ListIterator getValueFromSubject() {
+			protected ListIterator listIterator_() {
 				return ((TestModel) this.subject).names();
 			}
 			@Override
