@@ -12,10 +12,12 @@ package org.eclipse.jpt.ui.internal.details;
 import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
+
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -33,7 +35,6 @@ import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -51,7 +52,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 	
 	private String currentMappingKey;
 	
-	private CComboViewer mappingCombo;
+	private ComboViewer mappingCombo;
 	
 	private Map<String, IJpaComposite<IAttributeMapping>> mappingComposites;
 	protected PageBook mappingPageBook;	
@@ -114,9 +115,9 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage
 		return getWidgetFactory().createLabel(parent, JptUiMessages.PersistentAttributePage_mapAs);
 	}
 	
-	protected CComboViewer buildMappingCombo(Composite parent) {
+	protected ComboViewer buildMappingCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
-		this.mappingCombo = new CComboViewer(combo);
+		this.mappingCombo = new ComboViewer(combo);
 		this.mappingCombo.setContentProvider(buildContentProvider());
 		this.mappingCombo.setLabelProvider(buildLabelProvider());
 		this.mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {

@@ -13,9 +13,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.IPersistentType;
@@ -35,7 +37,6 @@ import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToManyMappingUiPr
 import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.TransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.VersionMappingUiProvider;
-import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -143,7 +144,7 @@ public class XmlPersistentAttributeDetailsPage
 		
 		buildMappingLabel(composite);
 		
-		CComboViewer mappingCombo = buildMappingCombo(composite);
+		ComboViewer mappingCombo = buildMappingCombo(composite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;

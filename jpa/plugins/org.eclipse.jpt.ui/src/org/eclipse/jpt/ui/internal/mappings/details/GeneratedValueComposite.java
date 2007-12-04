@@ -10,11 +10,13 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
+
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -29,7 +31,6 @@ import org.eclipse.jpt.core.internal.platform.NullGeneratorRepository;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -49,7 +50,7 @@ public class GeneratedValueComposite extends BaseJpaComposite
 	private IGeneratedValue generatedValue;
 	private Adapter generatedValueListener;
 
-	private CComboViewer strategyComboViewer;
+	private ComboViewer strategyComboViewer;
 
 	private CCombo generatorNameCombo;
 
@@ -97,9 +98,9 @@ public class GeneratedValueComposite extends BaseJpaComposite
 		// buildGeneratorNameSelectionButton( this);
 	}
 
-	private CComboViewer buildStrategyComboViewer(Composite parent) {
+	private ComboViewer buildStrategyComboViewer(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
-		CComboViewer viewer = new CComboViewer(combo);
+		ComboViewer viewer = new ComboViewer(combo);
 		viewer.setLabelProvider(buildStrategyLabelProvider());
 		viewer.add(GenerationType.VALUES.toArray());
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {

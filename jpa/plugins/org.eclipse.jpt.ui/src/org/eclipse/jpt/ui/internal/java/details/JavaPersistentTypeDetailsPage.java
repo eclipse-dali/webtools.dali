@@ -10,10 +10,11 @@
 package org.eclipse.jpt.ui.internal.java.details;
 
 import java.util.ListIterator;
+
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.PlatformRegistry;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
-import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -47,7 +48,7 @@ public class JavaPersistentTypeDetailsPage extends
 		
 	    buildTypeMappingLabel(composite);
 	    
-		CComboViewer typeMappingCombo = buildTypeMappingCombo(composite);
+		ComboViewer typeMappingCombo = buildTypeMappingCombo(composite);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 	    gridData.grabExcessHorizontalSpace = true;

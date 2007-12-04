@@ -13,6 +13,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -25,7 +26,6 @@ import org.eclipse.jpt.core.internal.content.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.internal.mappings.DefaultFalseBoolean;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
@@ -38,7 +38,7 @@ public class MetaDataCompleteComboViewer extends BaseJpaController
 	private XmlTypeMapping mapping;
 	private Adapter typeMappingListener;
 	
-	private CComboViewer comboViewer;
+	private ComboViewer comboViewer;
 
 
 	public MetaDataCompleteComboViewer(Composite parent, CommandStack theCommandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -58,7 +58,7 @@ public class MetaDataCompleteComboViewer extends BaseJpaController
 	@Override
 	protected void buildWidget(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
-		this.comboViewer = new CComboViewer(combo);
+		this.comboViewer = new ComboViewer(combo);
 		this.comboViewer.setLabelProvider(buildLabelProvider());
 		this.comboViewer.add(DefaultFalseBoolean.VALUES.toArray());
 		this.comboViewer.addSelectionChangedListener(new ISelectionChangedListener() {

@@ -10,10 +10,11 @@
 package org.eclipse.jpt.ui.internal.java.details;
 
 import java.util.ListIterator;
+
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jpt.core.internal.IPersistentAttribute;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.NullAttributeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -82,7 +83,7 @@ public class JavaPersistentAttributeDetailsPage
 		
 		buildMappingLabel(composite);
 		
-		CComboViewer mappingCombo = buildMappingCombo(composite);
+		ComboViewer mappingCombo = buildMappingCombo(composite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
