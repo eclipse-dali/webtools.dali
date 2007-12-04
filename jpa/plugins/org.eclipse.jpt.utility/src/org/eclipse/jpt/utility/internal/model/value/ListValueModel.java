@@ -42,4 +42,9 @@ public interface ListValueModel
 	 */
 	Object get(int index);
 
+	/**
+	 * Return the list's values.
+	 */
+	Object[] toArray();
+
 }

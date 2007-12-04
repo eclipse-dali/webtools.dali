@@ -22,6 +22,7 @@ public final class NullListValueModel
 	extends AbstractReadOnlyListValueModel
 {
 
+	private static final Object[] EMPTY_ARRAY = new Object[0];
 	private static final long serialVersionUID = 1L;
 
 	// singleton
@@ -51,6 +52,11 @@ public final class NullListValueModel
 
 	public ListIterator listIterator() {
 		return EmptyListIterator.instance();
+	}
+
+	@Override
+	public Object[] toArray() {
+		return EMPTY_ARRAY;
 	}
 
 

@@ -49,4 +49,9 @@ public class ReadOnlyListValueModel
 		return this.list.listIterator();
 	}
 
+	@Override
+	public Object[] toArray() {
+		return this.list.toArray();
+	}
+
 }

@@ -299,6 +299,15 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return an array corresponding to the specified iterable.
+	 * @see java.util.Collection#toArray()
+	 * java.lang.Iterable#toArray()
+	 */
+	public static Object[] array(Iterable<?> iterable, int size) {
+		return array(iterable.iterator(), size);
+	}
+
+	/**
 	 * Return an array corresponding to the specified iterable;
 	 * the runtime type of the returned array is that of the specified array.
 	 * If the collection fits in the specified array, it is returned therein.
@@ -312,12 +321,34 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return an array corresponding to the specified iterable;
+	 * the runtime type of the returned array is that of the specified array.
+	 * If the collection fits in the specified array, it is returned therein.
+	 * Otherwise, a new array is allocated with the runtime type of the
+	 * specified array and the size of this collection.
+	 * @see java.util.Collection#toArray(java.lang.Object[])
+	 * java.lang.Iterable#toArray(Object[])
+	 */
+	public static <E> E[] array(Iterable<? extends E> iterable, int size, E[] array) {
+		return array(iterable.iterator(), size, array);
+	}
+
+	/**
 	 * Return an array corresponding to the specified iterator.
 	 * @see java.util.Collection#toArray()
 	 * java.util.Iterator#toArray()
 	 */
 	public static Object[] array(Iterator<?> iterator) {
 		return list(iterator).toArray();
+	}
+
+	/**
+	 * Return an array corresponding to the specified iterator.
+	 * @see java.util.Collection#toArray()
+	 * java.util.Iterator#toArray()
+	 */
+	public static Object[] array(Iterator<?> iterator, int size) {
+		return list(iterator, size).toArray();
 	}
 
 	/**
@@ -334,11 +365,35 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return an array corresponding to the specified iterator;
+	 * the runtime type of the returned array is that of the specified array.
+	 * If the collection fits in the specified array, it is returned therein.
+	 * Otherwise, a new array is allocated with the runtime type of the
+	 * specified array and the size of this collection.
+	 * @see java.util.Collection#toArray(java.lang.Object[])
+	 * java.util.Iterator#toArray(Object[])
+	 */
+	public static <E> E[] array(Iterator<? extends E> iterator, int size, E[] array) {
+		return list(iterator, size).toArray(array);
+	}
+
+	/**
 	 * Return a bag corresponding to the specified enumeration.
 	 * HashBag(java.util.Enumeration enumeration)
 	 */
 	public static <E> Bag<E> bag(Enumeration<? extends E> enumeration) {
-		Bag<E> bag = new HashBag<E>();
+		return bag(enumeration, new HashBag<E>());
+	}
+
+	/**
+	 * Return a bag corresponding to the specified enumeration.
+	 * HashBag(java.util.Enumeration enumeration)
+	 */
+	public static <E> Bag<E> bag(Enumeration<? extends E> enumeration, int size) {
+		return bag(enumeration, new HashBag<E>(size));
+	}
+
+	private static <E> Bag<E> bag(Enumeration<? extends E> enumeration, HashBag<E> bag) {
 		while (enumeration.hasMoreElements()) {
 			bag.add(enumeration.nextElement());
 		}
@@ -354,11 +409,30 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a bag corresponding to the specified iterable.
+	 * HashBag(java.lang.Iterable iterable)
+	 */
+	public static <E> Bag<E> bag(Iterable<? extends E> iterable, int size) {
+		return bag(iterable.iterator(), size);
+	}
+
+	/**
 	 * Return a bag corresponding to the specified iterator.
 	 * HashBag(java.util.Iterator iterator)
 	 */
 	public static <E> Bag<E> bag(Iterator<? extends E> iterator) {
-		Bag<E> bag = new HashBag<E>();
+		return bag(iterator, new HashBag<E>());
+	}
+
+	/**
+	 * Return a bag corresponding to the specified iterator.
+	 * HashBag(java.util.Iterator iterator)
+	 */
+	public static <E> Bag<E> bag(Iterator<? extends E> iterator, int size) {
+		return bag(iterator, new HashBag<E>(size));
+	}
+
+	private static <E> Bag<E> bag(Iterator<? extends E> iterator, HashBag<E> bag) {
 		while (iterator.hasNext()) {
 			bag.add(iterator.next());
 		}
@@ -385,6 +459,13 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a collection corresponding to the specified enumeration.
+	 */
+	public static <E> Collection<E> collection(Enumeration<? extends E> enumeration, int size) {
+		return bag(enumeration, size);
+	}
+
+	/**
 	 * Return a collection corresponding to the specified iterable.
 	 */
 	public static <E> Collection<E> collection(Iterable<? extends E> iterable) {
@@ -392,10 +473,24 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a collection corresponding to the specified iterable.
+	 */
+	public static <E> Collection<E> collection(Iterable<? extends E> iterable, int size) {
+		return collection(iterable.iterator(), size);
+	}
+
+	/**
 	 * Return a collection corresponding to the specified iterator.
 	 */
 	public static <E> Collection<E> collection(Iterator<? extends E> iterator) {
 		return bag(iterator);
+	}
+
+	/**
+	 * Return a collection corresponding to the specified iterator.
+	 */
+	public static <E> Collection<E> collection(Iterator<? extends E> iterator, int size) {
+		return bag(iterator, size);
 	}
 
 	/**
@@ -1237,11 +1332,30 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a list corresponding to the specified iterable.
+	 * java.lang.Iterable#toList()
+	 */
+	public static <E> List<E> list(Iterable<? extends E> iterable, int size) {
+		return list(iterable.iterator(), size);
+	}
+
+	/**
 	 * Return a list corresponding to the specified iterator.
 	 * java.util.Iterator#toList()
 	 */
 	public static <E> List<E> list(Iterator<? extends E> iterator) {
-		List<E> list = new ArrayList<E>();
+		return list(iterator, new ArrayList<E>());
+	}
+
+	/**
+	 * Return a list corresponding to the specified iterator.
+	 * java.util.Iterator#toList()
+	 */
+	public static <E> List<E> list(Iterator<? extends E> iterator, int size) {
+		return list(iterator, new ArrayList<E>(size));
+	}
+
+	private static <E> List<E> list(Iterator<? extends E> iterator, ArrayList<E> list) {
 		while (iterator.hasNext()) {
 			list.add(iterator.next());
 		}
@@ -2186,11 +2300,30 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a set corresponding to the specified iterable.
+	 * java.util.HashSet(java.lang.Iterable iterable)
+	 */
+	public static <E> Set<E> set(Iterable<? extends E> iterable, int size) {
+		return set(iterable.iterator(), size);
+	}
+
+	/**
 	 * Return a set corresponding to the specified iterator.
 	 * java.util.HashSet(java.util.Iterator iterator)
 	 */
 	public static <E> Set<E> set(Iterator<? extends E> iterator) {
-		Set<E> set = new HashSet<E>();
+		return set(iterator, new HashSet<E>());
+	}
+
+	/**
+	 * Return a set corresponding to the specified iterator.
+	 * java.util.HashSet(java.util.Iterator iterator)
+	 */
+	public static <E> Set<E> set(Iterator<? extends E> iterator, int size) {
+		return set(iterator, new HashSet<E>(size));
+	}
+
+	private static <E> Set<E> set(Iterator<? extends E> iterator, HashSet<E> set) {
 		while (iterator.hasNext()) {
 			set.add(iterator.next());
 		}
@@ -2310,12 +2443,29 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a sorted set corresponding to the specified iterable.
+	 * java.util.TreeSet(java.lang.Iterable iterable)
+	 */
+	public static <E extends Comparable<? super E>> SortedSet<E> sortedSet(Iterable<? extends E> iterable, int size) {
+		return sortedSet(iterable, size, null);
+	}
+
+	/**
 	 * Return a sorted set corresponding to the specified iterable
 	 * and comparator.
 	 * java.util.TreeSet(java.lang.Iterable iterable, java.util.Comparator c)
 	 */
 	public static <E> SortedSet<E> sortedSet(Iterable<? extends E> iterable, Comparator<? super E> comparator) {
 		return sortedSet(iterable.iterator(), comparator);
+	}
+
+	/**
+	 * Return a sorted set corresponding to the specified iterable
+	 * and comparator.
+	 * java.util.TreeSet(java.lang.Iterable iterable, java.util.Comparator c)
+	 */
+	public static <E> SortedSet<E> sortedSet(Iterable<? extends E> iterable, int size, Comparator<? super E> comparator) {
+		return sortedSet(iterable.iterator(), size, comparator);
 	}
 
 	/**
@@ -2327,13 +2477,34 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a sorted set corresponding to the specified iterator.
+	 * java.util.TreeSet(java.util.Iterator iterator)
+	 */
+	public static <E extends Comparable<? super E>> SortedSet<E> sortedSet(Iterator<? extends E> iterator, int size) {
+		return sortedSet(iterator, size, null);
+	}
+
+	/**
 	 * Return a sorted set corresponding to the specified iterator
 	 * and comparator.
 	 * java.util.TreeSet(java.util.Iterator iterator, java.util.Comparator c)
 	 */
 	public static <E> SortedSet<E> sortedSet(Iterator<? extends E> iterator, Comparator<? super E> comparator) {
+		return sortedSet(list(iterator), comparator);
+	}
+
+	/**
+	 * Return a sorted set corresponding to the specified iterator
+	 * and comparator.
+	 * java.util.TreeSet(java.util.Iterator iterator, java.util.Comparator c)
+	 */
+	public static <E> SortedSet<E> sortedSet(Iterator<? extends E> iterator, int size, Comparator<? super E> comparator) {
+		return sortedSet(list(iterator, size), comparator);
+	}
+
+	private static <E> SortedSet<E> sortedSet(List<E> list, Comparator<? super E> comparator) {
 		SortedSet<E> sortedSet = new TreeSet<E>(comparator);
-		sortedSet.addAll(list(iterator));
+		sortedSet.addAll(list);
 		return sortedSet;
 	}
 
@@ -2433,12 +2604,33 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a vector corresponding to the specified iterable.
+	 * This is useful for legacy code that requires a java.util.Vector.
+	 * java.util.Vector(java.lang.Iterable iterable)
+	 */
+	public static <E> Vector<E> vector(Iterable<? extends E> iterable, int size) {
+		return vector(iterable.iterator(), size);
+	}
+
+	/**
 	 * Return a vector corresponding to the specified iterator.
 	 * This is useful for legacy code that requires a java.util.Vector.
 	 * java.util.Vector(java.util.Iterator iterator)
 	 */
 	public static <E> Vector<E> vector(Iterator<? extends E> iterator) {
-		Vector<E> v = new Vector<E>();
+		return vector(iterator, new Vector<E>());
+	}
+
+	/**
+	 * Return a vector corresponding to the specified iterator.
+	 * This is useful for legacy code that requires a java.util.Vector.
+	 * java.util.Vector(java.util.Iterator iterator)
+	 */
+	public static <E> Vector<E> vector(Iterator<? extends E> iterator, int size) {
+		return vector(iterator, new Vector<E>(size));
+	}
+
+	private static <E> Vector<E> vector(Iterator<? extends E> iterator, Vector<E> v) {
 		while (iterator.hasNext()) {
 			v.addElement(iterator.next());
 		}
@@ -2451,8 +2643,7 @@ public final class CollectionTools {
 	 * java.util.Vector(Object[] array)
 	 */
 	public static <E> Vector<E> vector(E... array) {
-		int len = array.length;
-		Vector<E> v = new Vector<E>(len);
+		Vector<E> v = new Vector<E>(array.length);
 		for (E item : array) {
 			v.addElement(item);
 		}

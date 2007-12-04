@@ -125,6 +125,10 @@ public class CollectionListValueModelAdapter
 		return this.list.size();
 	}
 
+	public Object[] toArray() {
+		return this.list.toArray();
+	}
+
 
 	// ********** extend change support **********
 

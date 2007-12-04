@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Iterator;
 
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
@@ -89,6 +90,18 @@ public abstract class ListValueModelWrapper
 
 	public Iterator iterator() {
 		return this.listIterator();
+	}
+
+	public Object get(int index) {
+		return CollectionTools.get(this.listIterator(), index);
+	}
+
+	public int size() {
+		return CollectionTools.size(this.listIterator());
+	}
+
+	public Object[] toArray() {
+		return CollectionTools.array(this.listIterator());
 	}
 
 

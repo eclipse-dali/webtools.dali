@@ -74,12 +74,19 @@ public abstract class ItemAspectListValueModelAdapter
 		return this.listHolder.listIterator();
 	}
 
+	@Override
 	public Object get(int index) {
 		return this.listHolder.get(index);
 	}
 
+	@Override
 	public int size() {
 		return this.listHolder.size();
+	}
+
+	@Override
+	public Object[] toArray() {
+		return this.listHolder.toArray();
 	}
 
 

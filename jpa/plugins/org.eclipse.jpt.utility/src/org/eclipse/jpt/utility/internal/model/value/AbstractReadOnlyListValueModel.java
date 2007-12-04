@@ -10,8 +10,6 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -21,7 +19,7 @@ import org.eclipse.jpt.utility.internal.model.NullModel;
  * Implementation of ListValueModel that can be subclassed and used for
  * returning a list iterator on a static list, but still allows listeners to be added.
  * Listeners will NEVER be notified of any changes, because there should be none.
- * Subclasses need only implement the #value() method to
+ * Subclasses need only implement the #listIterator() method to
  * return a list iterator on the static values required by the client code. This class is
  * really only useful for simplifying the building of anonymous inner
  * classes that implement the ListValueModel interface:
@@ -62,6 +60,10 @@ public abstract class AbstractReadOnlyListValueModel
 
 	public int size() {
 		return CollectionTools.size(this.listIterator());
+	}
+
+	public Object[] toArray() {
+		return CollectionTools.array(this.listIterator(), this.size());
 	}
 
 
