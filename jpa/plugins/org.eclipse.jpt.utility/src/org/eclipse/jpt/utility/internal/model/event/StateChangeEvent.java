@@ -21,6 +21,8 @@ public class StateChangeEvent extends ChangeEvent {
 	private static final long serialVersionUID = 1L;
 
 
+	// ********** constructors **********
+
 	/**
 	 * Construct a new state change event.
 	 *
@@ -30,10 +32,16 @@ public class StateChangeEvent extends ChangeEvent {
 		super(source);
 	}
 
+
+	// ********** standard state **********
+
 	@Override
 	public String aspectName() {
 		return null;  // the point of the event is that the name is unknown...
 	}
+
+
+	// ********** cloning **********
 
 	@Override
 	public StateChangeEvent cloneWithSource(Model newSource) {

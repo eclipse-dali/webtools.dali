@@ -46,7 +46,7 @@ public class ListChangeEvent extends ChangeEvent {
 	private final String listName;
 
 	/**
-	 * The index at which the items were added or removed.
+	 * The index at which the items were added, removed, or replaced.
 	 * In the case of "moved" items, this will be the "target" index.
 	 * May be -1, if not known.
 	 */
@@ -81,6 +81,8 @@ public class ListChangeEvent extends ChangeEvent {
 	private static final long serialVersionUID = 1L;
 
 
+	// ********** constructors **********
+
 	protected ListChangeEvent(Model source, String listName, int index, List<?> items, List<?> replacedItems, int sourceIndex, int moveLength) {
 		super(source);
 		if ((listName == null) || (items == null) || (replacedItems == null)) {
@@ -93,7 +95,7 @@ public class ListChangeEvent extends ChangeEvent {
 		this.sourceIndex = sourceIndex;
 		this.moveLength = moveLength;
 	}
-	
+
 	/**
 	 * Construct a new list change event for a list of replaced items.
 	 *
@@ -106,7 +108,7 @@ public class ListChangeEvent extends ChangeEvent {
 	public ListChangeEvent(Model source, String listName, int index, List<?> items, List<?> replacedItems) {
 		this(source, listName, index, items, replacedItems, -1, -1);
 	}
-	
+
 	/**
 	 * Construct a new list change event for a list of added or removed items.
 	 *
@@ -119,7 +121,7 @@ public class ListChangeEvent extends ChangeEvent {
 	public ListChangeEvent(Model source, String listName, int index, List<?> items) {
 		this(source, listName, index, items, Collections.emptyList(), -1, -1);
 	}
-	
+
 	/**
 	 * Construct a new list change event for a list of moved items.
 	 *
@@ -132,7 +134,7 @@ public class ListChangeEvent extends ChangeEvent {
 	public ListChangeEvent(Model source, String listName, int targetIndex, int sourceIndex, int length) {
 		this(source, listName, targetIndex, Collections.emptyList(), Collections.emptyList(), sourceIndex, length);
 	}
-	
+
 	/**
 	 * Construct a new list change event.
 	 *
@@ -143,7 +145,10 @@ public class ListChangeEvent extends ChangeEvent {
 	public ListChangeEvent(Model source, String listName) {
 		this(source, listName, -1, Collections.emptyList(), Collections.emptyList(), -1, -1);
 	}
-	
+
+
+	// ********** standard state **********
+
 	/**
 	 * Return the programmatic name of the list that was changed.
 	 */
@@ -151,21 +156,18 @@ public class ListChangeEvent extends ChangeEvent {
 		return this.listName;
 	}
 
+	@Override
+	public String aspectName() {
+		return this.listName;
+	}
+
 	/**
-	 * Return the index at which the items were added to or removed from the list.
+	 * Return the index at which the items were added to, removed from,
+	 * or replaced in the list.
 	 * In the case of "moved" items, this will be the "target" index.
 	 * May be -1 if inappropriate or unknown.
 	 */
 	public int index() {
-		return this.index;
-	}
-
-	/**
-	 * Return the index at which the items were added to or removed from the list.
-	 * In the case of "moved" items, this will be the "target" index.
-	 * May be -1 if inappropriate or unknown.
-	 */
-	public int targetIndex() {
 		return this.index;
 	}
 
@@ -180,13 +182,16 @@ public class ListChangeEvent extends ChangeEvent {
 	}
 
 	/**
-	 * Return the number of items that were added to or
-	 * removed from the list.
+	 * Return the number of items that were added to,
+	 * removed from, or replaced in the list.
 	 * May be 0 if inappropriate or unknown.
 	 */
 	public int itemsSize() {
 		return this.items.size();
 	}
+
+
+	// ********** replace **********
 
 	/**
 	 * Return a list iterator on the items in the list that were replaced.
@@ -194,6 +199,17 @@ public class ListChangeEvent extends ChangeEvent {
 	 */
 	public ListIterator<?> replacedItems() {
 		return this.replacedItems.listIterator();
+	}
+
+
+	// ********** move **********
+
+	/**
+	 * In the case of "moved" items, this will be the "target" index.
+	 * May be -1 if inappropriate or unknown.
+	 */
+	public int targetIndex() {
+		return this.index;
 	}
 
 	/**
@@ -212,10 +228,8 @@ public class ListChangeEvent extends ChangeEvent {
 		return this.moveLength;
 	}
 
-	@Override
-	public String aspectName() {
-		return this.listName;
-	}
+
+	// ********** cloning **********
 
 	/**
 	 * Return a copy of the event with the specified source
@@ -227,7 +241,7 @@ public class ListChangeEvent extends ChangeEvent {
 	}
 
 	/**
-	 * Return a copy of the event with the specified source
+	 * Return a copy of the event with the specified source and list name
 	 * replacing the current source and list name.
 	 */
 	public ListChangeEvent cloneWithSource(Model newSource, String newListName) {
@@ -235,7 +249,7 @@ public class ListChangeEvent extends ChangeEvent {
 	}
 
 	/**
-	 * Return a copy of the event with the specified source
+	 * Return a copy of the event with the specified source and list name
 	 * replacing the current source and list name and displacing
 	 * the index by the specified amount.
 	 */

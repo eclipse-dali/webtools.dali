@@ -35,6 +35,8 @@ public class TreeChangeEvent extends ChangeEvent {
 	private static final long serialVersionUID = 1L;
 
 
+	// ********** constructors **********
+
 	/**
 	 * Construct a new tree change event.
 	 *
@@ -62,10 +64,18 @@ public class TreeChangeEvent extends ChangeEvent {
 		this(source, treeName, EMPTY_PATH);
 	}
 	
+
+	// ********** standard state **********
+
 	/**
 	 * Return the programmatic name of the tree that was changed.
 	 */
 	public String treeName() {
+		return this.treeName;
+	}
+
+	@Override
+	public String aspectName() {
 		return this.treeName;
 	}
 
@@ -77,10 +87,8 @@ public class TreeChangeEvent extends ChangeEvent {
 		return this.path;
 	}
 
-	@Override
-	public String aspectName() {
-		return this.treeName;
-	}
+
+	// ********** cloning **********
 
 	@Override
 	public TreeChangeEvent cloneWithSource(Model newSource) {
