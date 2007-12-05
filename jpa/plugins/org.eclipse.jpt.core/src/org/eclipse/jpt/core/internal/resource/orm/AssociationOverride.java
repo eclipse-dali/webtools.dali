@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.AssociationOverride#getJoinColumn <em>Join Column</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.AssociationOverride#getJoinColumns <em>Join Columns</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.AssociationOverride#getName <em>Name</em>}</li>
  * </ul>
  * </p>
@@ -42,14 +42,14 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 public class AssociationOverride extends JpaEObject implements IJpaEObject
 {
 	/**
-	 * The cached value of the '{@link #getJoinColumn() <em>Join Column</em>}' containment reference list.
+	 * The cached value of the '{@link #getJoinColumns() <em>Join Columns</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getJoinColumn()
+	 * @see #getJoinColumns()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<JoinColumn> joinColumn;
+	protected EList<JoinColumn> joinColumns;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -93,26 +93,26 @@ public class AssociationOverride extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Join Column</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Join Columns</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Join Column</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>Join Columns</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Join Column</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAssociationOverride_JoinColumn()
+	 * @return the value of the '<em>Join Columns</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAssociationOverride_JoinColumns()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
-	public EList<JoinColumn> getJoinColumn()
+	public EList<JoinColumn> getJoinColumns()
 	{
-		if (joinColumn == null)
+		if (joinColumns == null)
 		{
-			joinColumn = new EObjectContainmentEList<JoinColumn>(JoinColumn.class, this, OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMN);
+			joinColumns = new EObjectContainmentEList<JoinColumn>(JoinColumn.class, this, OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMNS);
 		}
-		return joinColumn;
+		return joinColumns;
 	}
 
 	/**
@@ -160,8 +160,8 @@ public class AssociationOverride extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMN:
-				return ((InternalEList<?>)getJoinColumn()).basicRemove(otherEnd, msgs);
+			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
+				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -176,8 +176,8 @@ public class AssociationOverride extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMN:
-				return getJoinColumn();
+			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
+				return getJoinColumns();
 			case OrmPackage.ASSOCIATION_OVERRIDE__NAME:
 				return getName();
 		}
@@ -195,9 +195,9 @@ public class AssociationOverride extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMN:
-				getJoinColumn().clear();
-				getJoinColumn().addAll((Collection<? extends JoinColumn>)newValue);
+			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
+				getJoinColumns().clear();
+				getJoinColumns().addAll((Collection<? extends JoinColumn>)newValue);
 				return;
 			case OrmPackage.ASSOCIATION_OVERRIDE__NAME:
 				setName((String)newValue);
@@ -216,8 +216,8 @@ public class AssociationOverride extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMN:
-				getJoinColumn().clear();
+			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
+				getJoinColumns().clear();
 				return;
 			case OrmPackage.ASSOCIATION_OVERRIDE__NAME:
 				setName(NAME_EDEFAULT);
@@ -236,8 +236,8 @@ public class AssociationOverride extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMN:
-				return joinColumn != null && !joinColumn.isEmpty();
+			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
+				return joinColumns != null && !joinColumns.isEmpty();
 			case OrmPackage.ASSOCIATION_OVERRIDE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}

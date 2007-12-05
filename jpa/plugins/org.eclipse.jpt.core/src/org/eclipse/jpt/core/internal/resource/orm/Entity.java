@@ -34,7 +34,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getAccess <em>Access</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getMetadataComplete <em>Metadata Complete</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getDescription <em>Description</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getTables <em>Tables</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getTable <em>Table</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getSecondaryTables <em>Secondary Tables</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getPrimaryKeyJoinColumns <em>Primary Key Join Columns</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getIdClass <em>Id Class</em>}</li>
@@ -166,14 +166,14 @@ public class Entity extends JpaEObject implements IJpaEObject
 	protected String description = DESCRIPTION_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getTables() <em>Tables</em>}' containment reference.
+	 * The cached value of the '{@link #getTable() <em>Table</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getTables()
+	 * @see #getTable()
 	 * @generated
 	 * @ordered
 	 */
-	protected Table tables;
+	protected Table table;
 
 	/**
 	 * The cached value of the '{@link #getSecondaryTables() <em>Secondary Tables</em>}' containment reference list.
@@ -650,22 +650,22 @@ public class Entity extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Tables</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Table</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Tables</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Table</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Tables</em>' containment reference.
-	 * @see #setTables(Table)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntity_Tables()
+	 * @return the value of the '<em>Table</em>' containment reference.
+	 * @see #setTable(Table)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntity_Table()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public Table getTables()
+	public Table getTable()
 	{
-		return tables;
+		return table;
 	}
 
 	/**
@@ -673,40 +673,40 @@ public class Entity extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetTables(Table newTables, NotificationChain msgs)
+	public NotificationChain basicSetTable(Table newTable, NotificationChain msgs)
 	{
-		Table oldTables = tables;
-		tables = newTables;
+		Table oldTable = table;
+		table = newTable;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__TABLES, oldTables, newTables);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__TABLE, oldTable, newTable);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getTables <em>Tables</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getTable <em>Table</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Tables</em>' containment reference.
-	 * @see #getTables()
+	 * @param value the new value of the '<em>Table</em>' containment reference.
+	 * @see #getTable()
 	 * @generated
 	 */
-	public void setTables(Table newTables)
+	public void setTable(Table newTable)
 	{
-		if (newTables != tables)
+		if (newTable != table)
 		{
 			NotificationChain msgs = null;
-			if (tables != null)
-				msgs = ((InternalEObject)tables).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__TABLES, null, msgs);
-			if (newTables != null)
-				msgs = ((InternalEObject)newTables).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__TABLES, null, msgs);
-			msgs = basicSetTables(newTables, msgs);
+			if (table != null)
+				msgs = ((InternalEObject)table).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__TABLE, null, msgs);
+			if (newTable != null)
+				msgs = ((InternalEObject)newTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__TABLE, null, msgs);
+			msgs = basicSetTable(newTable, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__TABLES, newTables, newTables));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__TABLE, newTable, newTable));
 	}
 
 	/**
@@ -1825,8 +1825,8 @@ public class Entity extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY__TABLES:
-				return basicSetTables(null, msgs);
+			case OrmPackage.ENTITY__TABLE:
+				return basicSetTable(null, msgs);
 			case OrmPackage.ENTITY__SECONDARY_TABLES:
 				return ((InternalEList<?>)getSecondaryTables()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
@@ -1893,8 +1893,8 @@ public class Entity extends JpaEObject implements IJpaEObject
 				return getMetadataComplete();
 			case OrmPackage.ENTITY__DESCRIPTION:
 				return getDescription();
-			case OrmPackage.ENTITY__TABLES:
-				return getTables();
+			case OrmPackage.ENTITY__TABLE:
+				return getTable();
 			case OrmPackage.ENTITY__SECONDARY_TABLES:
 				return getSecondaryTables();
 			case OrmPackage.ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
@@ -1973,8 +1973,8 @@ public class Entity extends JpaEObject implements IJpaEObject
 			case OrmPackage.ENTITY__DESCRIPTION:
 				setDescription((String)newValue);
 				return;
-			case OrmPackage.ENTITY__TABLES:
-				setTables((Table)newValue);
+			case OrmPackage.ENTITY__TABLE:
+				setTable((Table)newValue);
 				return;
 			case OrmPackage.ENTITY__SECONDARY_TABLES:
 				getSecondaryTables().clear();
@@ -2084,8 +2084,8 @@ public class Entity extends JpaEObject implements IJpaEObject
 			case OrmPackage.ENTITY__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
-			case OrmPackage.ENTITY__TABLES:
-				setTables((Table)null);
+			case OrmPackage.ENTITY__TABLE:
+				setTable((Table)null);
 				return;
 			case OrmPackage.ENTITY__SECONDARY_TABLES:
 				getSecondaryTables().clear();
@@ -2183,8 +2183,8 @@ public class Entity extends JpaEObject implements IJpaEObject
 				return METADATA_COMPLETE_EDEFAULT == null ? metadataComplete != null : !METADATA_COMPLETE_EDEFAULT.equals(metadataComplete);
 			case OrmPackage.ENTITY__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
-			case OrmPackage.ENTITY__TABLES:
-				return tables != null;
+			case OrmPackage.ENTITY__TABLE:
+				return table != null;
 			case OrmPackage.ENTITY__SECONDARY_TABLES:
 				return secondaryTables != null && !secondaryTables.isEmpty();
 			case OrmPackage.ENTITY__PRIMARY_KEY_JOIN_COLUMNS:

@@ -43,6 +43,6 @@ public class AssociationOverrideTranslator extends Translator
 	}
 	
 	private Translator createJoinColumnTranslator() {
-		return new JoinColumnTranslator(JOIN_COLUMN, ORM_PKG.getAssociationOverride_JoinColumn());
+		return new JoinColumnTranslator(JOIN_COLUMN, ORM_PKG.getAssociationOverride_JoinColumns());
 	}
 }

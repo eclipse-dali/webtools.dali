@@ -43,7 +43,7 @@ public class AttributesTranslator extends Translator
 	}
 	
 	private Translator createEmbeddedIdTranslator() {
-		return new EmbeddedIdTranslator(EMBEDDED_ID, ORM_PKG.getAttributes_EmbeddedIds());
+		return new EmbeddedIdTranslator(EMBEDDED_ID, ORM_PKG.getAttributes_EmbeddedId());
 	}
 	
 	private Translator createBasicTranslator() {
@@ -59,7 +59,7 @@ public class AttributesTranslator extends Translator
 	}
 	
 	private Translator createOneToManyTranslator() {
-		return new OneToManyTranslator(ONE_TO_MANY, ORM_PKG.getAttributes_OneToManies());
+		return new OneToManyTranslator(ONE_TO_MANY, ORM_PKG.getAttributes_OneToManys());
 	}
 	
 	private Translator createOneToOneTranslator() {
@@ -67,7 +67,7 @@ public class AttributesTranslator extends Translator
 	}
 	
 	private Translator createManyToManyTranslator() {
-		return new ManyToManyTranslator(MANY_TO_MANY, ORM_PKG.getAttributes_ManyToManies());
+		return new ManyToManyTranslator(MANY_TO_MANY, ORM_PKG.getAttributes_ManyToManys());
 	}
 	
 	private Translator createEmbeddedTranslator() {

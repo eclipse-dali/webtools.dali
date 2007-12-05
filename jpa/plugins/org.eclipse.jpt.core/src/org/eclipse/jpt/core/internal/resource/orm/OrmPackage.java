@@ -544,13 +544,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int ENTITY__DESCRIPTION = 4;
 
 	/**
-	 * The feature id for the '<em><b>Tables</b></em>' containment reference.
+	 * The feature id for the '<em><b>Table</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ENTITY__TABLES = 5;
+	public static final int ENTITY__TABLE = 5;
 
 	/**
 	 * The feature id for the '<em><b>Secondary Tables</b></em>' containment reference list.
@@ -861,13 +861,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int ATTRIBUTES__IDS = 0;
 
 	/**
-	 * The feature id for the '<em><b>Embedded Ids</b></em>' containment reference.
+	 * The feature id for the '<em><b>Embedded Id</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ATTRIBUTES__EMBEDDED_IDS = 1;
+	public static final int ATTRIBUTES__EMBEDDED_ID = 1;
 
 	/**
 	 * The feature id for the '<em><b>Basics</b></em>' containment reference list.
@@ -897,13 +897,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int ATTRIBUTES__MANY_TO_ONES = 4;
 
 	/**
-	 * The feature id for the '<em><b>One To Manies</b></em>' containment reference list.
+	 * The feature id for the '<em><b>One To Manys</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ATTRIBUTES__ONE_TO_MANIES = 5;
+	public static final int ATTRIBUTES__ONE_TO_MANYS = 5;
 
 	/**
 	 * The feature id for the '<em><b>One To Ones</b></em>' containment reference list.
@@ -915,13 +915,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int ATTRIBUTES__ONE_TO_ONES = 6;
 
 	/**
-	 * The feature id for the '<em><b>Many To Manies</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Many To Manys</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ATTRIBUTES__MANY_TO_MANIES = 7;
+	public static final int ATTRIBUTES__MANY_TO_MANYS = 7;
 
 	/**
 	 * The feature id for the '<em><b>Embeddeds</b></em>' containment reference list.
@@ -1674,13 +1674,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int ASSOCIATION_OVERRIDE = 18;
 
 	/**
-	 * The feature id for the '<em><b>Join Column</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ASSOCIATION_OVERRIDE__JOIN_COLUMN = 0;
+	public static final int ASSOCIATION_OVERRIDE__JOIN_COLUMNS = 0;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4715,18 +4715,19 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getTables <em>Tables</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getTable <em>Table</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Tables</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Entity#getTables()
+	 * @return the meta object for the containment reference '<em>Table</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Entity#getTable()
 	 * @see #getEntity()
 	 * @generated
 	 */
-	public EReference getEntity_Tables()
+	public EReference getEntity_Table()
 	{
 		return (EReference)entityEClass.getEStructuralFeatures().get(5);
 	}
+
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getSecondaryTables <em>Secondary Tables</em>}'.
@@ -5175,15 +5176,15 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedIds <em>Embedded Ids</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedId <em>Embedded Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Embedded Ids</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedIds()
+	 * @return the meta object for the containment reference '<em>Embedded Id</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedId()
 	 * @see #getAttributes()
 	 * @generated
 	 */
-	public EReference getAttributes_EmbeddedIds()
+	public EReference getAttributes_EmbeddedId()
 	{
 		return (EReference)attributesEClass.getEStructuralFeatures().get(1);
 	}
@@ -5232,18 +5233,19 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getOneToManies <em>One To Manies</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getOneToManys <em>One To Manys</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>One To Manies</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Attributes#getOneToManies()
+	 * @return the meta object for the containment reference list '<em>One To Manys</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Attributes#getOneToManys()
 	 * @see #getAttributes()
 	 * @generated
 	 */
-	public EReference getAttributes_OneToManies()
+	public EReference getAttributes_OneToManys()
 	{
 		return (EReference)attributesEClass.getEStructuralFeatures().get(5);
 	}
+
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getOneToOnes <em>One To Ones</em>}'.
@@ -5260,18 +5262,19 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getManyToManies <em>Many To Manies</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getManyToManys <em>Many To Manys</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Many To Manies</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Attributes#getManyToManies()
+	 * @return the meta object for the containment reference list '<em>Many To Manys</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Attributes#getManyToManys()
 	 * @see #getAttributes()
 	 * @generated
 	 */
-	public EReference getAttributes_ManyToManies()
+	public EReference getAttributes_ManyToManys()
 	{
 		return (EReference)attributesEClass.getEStructuralFeatures().get(7);
 	}
+
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddeds <em>Embeddeds</em>}'.
@@ -6242,18 +6245,19 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.AssociationOverride#getJoinColumn <em>Join Column</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.AssociationOverride#getJoinColumns <em>Join Columns</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Join Column</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.AssociationOverride#getJoinColumn()
+	 * @return the meta object for the containment reference list '<em>Join Columns</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AssociationOverride#getJoinColumns()
 	 * @see #getAssociationOverride()
 	 * @generated
 	 */
-	public EReference getAssociationOverride_JoinColumn()
+	public EReference getAssociationOverride_JoinColumns()
 	{
 		return (EReference)associationOverrideEClass.getEStructuralFeatures().get(0);
 	}
+
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.AssociationOverride#getName <em>Name</em>}'.
@@ -8400,7 +8404,7 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(entityEClass, ENTITY__ACCESS);
 		createEAttribute(entityEClass, ENTITY__METADATA_COMPLETE);
 		createEAttribute(entityEClass, ENTITY__DESCRIPTION);
-		createEReference(entityEClass, ENTITY__TABLES);
+		createEReference(entityEClass, ENTITY__TABLE);
 		createEReference(entityEClass, ENTITY__SECONDARY_TABLES);
 		createEReference(entityEClass, ENTITY__PRIMARY_KEY_JOIN_COLUMNS);
 		createEReference(entityEClass, ENTITY__ID_CLASS);
@@ -8435,13 +8439,13 @@ public class OrmPackage extends EPackageImpl
 
 		attributesEClass = createEClass(ATTRIBUTES);
 		createEReference(attributesEClass, ATTRIBUTES__IDS);
-		createEReference(attributesEClass, ATTRIBUTES__EMBEDDED_IDS);
+		createEReference(attributesEClass, ATTRIBUTES__EMBEDDED_ID);
 		createEReference(attributesEClass, ATTRIBUTES__BASICS);
 		createEReference(attributesEClass, ATTRIBUTES__VERSIONS);
 		createEReference(attributesEClass, ATTRIBUTES__MANY_TO_ONES);
-		createEReference(attributesEClass, ATTRIBUTES__ONE_TO_MANIES);
+		createEReference(attributesEClass, ATTRIBUTES__ONE_TO_MANYS);
 		createEReference(attributesEClass, ATTRIBUTES__ONE_TO_ONES);
-		createEReference(attributesEClass, ATTRIBUTES__MANY_TO_MANIES);
+		createEReference(attributesEClass, ATTRIBUTES__MANY_TO_MANYS);
 		createEReference(attributesEClass, ATTRIBUTES__EMBEDDEDS);
 		createEReference(attributesEClass, ATTRIBUTES__TRANSIENTS);
 
@@ -8524,7 +8528,7 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(transientEClass, TRANSIENT__NAME);
 
 		associationOverrideEClass = createEClass(ASSOCIATION_OVERRIDE);
-		createEReference(associationOverrideEClass, ASSOCIATION_OVERRIDE__JOIN_COLUMN);
+		createEReference(associationOverrideEClass, ASSOCIATION_OVERRIDE__JOIN_COLUMNS);
 		createEAttribute(associationOverrideEClass, ASSOCIATION_OVERRIDE__NAME);
 
 		attributeOverrideEClass = createEClass(ATTRIBUTE_OVERRIDE);
@@ -8808,7 +8812,7 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getEntity_Access(), this.getAccessType(), "access", "PROPERTY", 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEntity_MetadataComplete(), theXMLTypePackage.getBooleanObject(), "metadataComplete", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEntity_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntity_Tables(), this.getTable(), null, "tables", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEntity_Table(), this.getTable(), null, "table", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEntity_SecondaryTables(), this.getSecondaryTable(), null, "secondaryTables", null, 0, -1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEntity_PrimaryKeyJoinColumns(), this.getPrimaryKeyJoinColumn(), null, "primaryKeyJoinColumns", null, 0, -1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEntity_IdClass(), this.getIdClass(), null, "idClass", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8843,13 +8847,13 @@ public class OrmPackage extends EPackageImpl
 
 		initEClass(attributesEClass, Attributes.class, "Attributes", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAttributes_Ids(), this.getId(), null, "ids", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAttributes_EmbeddedIds(), this.getEmbeddedId(), null, "embeddedIds", null, 0, 1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAttributes_EmbeddedId(), this.getEmbeddedId(), null, "embeddedId", null, 0, 1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAttributes_Basics(), this.getBasic(), null, "basics", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAttributes_Versions(), this.getVersion(), null, "versions", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAttributes_ManyToOnes(), this.getManyToOne(), null, "manyToOnes", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAttributes_OneToManies(), this.getOneToMany(), null, "oneToManies", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAttributes_OneToManys(), this.getOneToMany(), null, "oneToManys", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAttributes_OneToOnes(), this.getOneToOne(), null, "oneToOnes", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAttributes_ManyToManies(), this.getManyToMany(), null, "manyToManies", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAttributes_ManyToManys(), this.getManyToMany(), null, "manyToManys", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAttributes_Embeddeds(), this.getEmbedded(), null, "embeddeds", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAttributes_Transients(), this.getTransient(), null, "transients", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -8932,7 +8936,7 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getTransient_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, Transient.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(associationOverrideEClass, AssociationOverride.class, "AssociationOverride", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getAssociationOverride_JoinColumn(), this.getJoinColumn(), null, "joinColumn", null, 1, -1, AssociationOverride.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAssociationOverride_JoinColumns(), this.getJoinColumn(), null, "joinColumns", null, 1, -1, AssociationOverride.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAssociationOverride_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, AssociationOverride.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(attributeOverrideEClass, AttributeOverride.class, "AttributeOverride", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -9560,12 +9564,12 @@ public class OrmPackage extends EPackageImpl
 		public static final EAttribute ENTITY__DESCRIPTION = eINSTANCE.getEntity_Description();
 
 		/**
-		 * The meta object literal for the '<em><b>Tables</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Table</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference ENTITY__TABLES = eINSTANCE.getEntity_Tables();
+		public static final EReference ENTITY__TABLE = eINSTANCE.getEntity_Table();
 
 		/**
 		 * The meta object literal for the '<em><b>Secondary Tables</b></em>' containment reference list feature.
@@ -9828,12 +9832,12 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference ATTRIBUTES__IDS = eINSTANCE.getAttributes_Ids();
 
 		/**
-		 * The meta object literal for the '<em><b>Embedded Ids</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Embedded Id</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference ATTRIBUTES__EMBEDDED_IDS = eINSTANCE.getAttributes_EmbeddedIds();
+		public static final EReference ATTRIBUTES__EMBEDDED_ID = eINSTANCE.getAttributes_EmbeddedId();
 
 		/**
 		 * The meta object literal for the '<em><b>Basics</b></em>' containment reference list feature.
@@ -9860,12 +9864,12 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference ATTRIBUTES__MANY_TO_ONES = eINSTANCE.getAttributes_ManyToOnes();
 
 		/**
-		 * The meta object literal for the '<em><b>One To Manies</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>One To Manys</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference ATTRIBUTES__ONE_TO_MANIES = eINSTANCE.getAttributes_OneToManies();
+		public static final EReference ATTRIBUTES__ONE_TO_MANYS = eINSTANCE.getAttributes_OneToManys();
 
 		/**
 		 * The meta object literal for the '<em><b>One To Ones</b></em>' containment reference list feature.
@@ -9876,12 +9880,12 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference ATTRIBUTES__ONE_TO_ONES = eINSTANCE.getAttributes_OneToOnes();
 
 		/**
-		 * The meta object literal for the '<em><b>Many To Manies</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Many To Manys</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference ATTRIBUTES__MANY_TO_MANIES = eINSTANCE.getAttributes_ManyToManies();
+		public static final EReference ATTRIBUTES__MANY_TO_MANYS = eINSTANCE.getAttributes_ManyToManys();
 
 		/**
 		 * The meta object literal for the '<em><b>Embeddeds</b></em>' containment reference list feature.
@@ -10468,12 +10472,12 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass ASSOCIATION_OVERRIDE = eINSTANCE.getAssociationOverride();
 
 		/**
-		 * The meta object literal for the '<em><b>Join Column</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Join Columns</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference ASSOCIATION_OVERRIDE__JOIN_COLUMN = eINSTANCE.getAssociationOverride_JoinColumn();
+		public static final EReference ASSOCIATION_OVERRIDE__JOIN_COLUMNS = eINSTANCE.getAssociationOverride_JoinColumns();
 
 		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.

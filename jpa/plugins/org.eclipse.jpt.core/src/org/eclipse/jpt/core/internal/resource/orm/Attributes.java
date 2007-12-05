@@ -30,13 +30,13 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getIds <em>Ids</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedIds <em>Embedded Ids</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedId <em>Embedded Id</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getBasics <em>Basics</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getVersions <em>Versions</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getManyToOnes <em>Many To Ones</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getOneToManies <em>One To Manies</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getOneToManys <em>One To Manys</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getOneToOnes <em>One To Ones</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getManyToManies <em>Many To Manies</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getManyToManys <em>Many To Manys</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddeds <em>Embeddeds</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getTransients <em>Transients</em>}</li>
  * </ul>
@@ -60,14 +60,14 @@ public class Attributes extends JpaEObject implements IJpaEObject
 	protected EList<Id> ids;
 
 	/**
-	 * The cached value of the '{@link #getEmbeddedIds() <em>Embedded Ids</em>}' containment reference.
+	 * The cached value of the '{@link #getEmbeddedId() <em>Embedded Id</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getEmbeddedIds()
+	 * @see #getEmbeddedId()
 	 * @generated
 	 * @ordered
 	 */
-	protected EmbeddedId embeddedIds;
+	protected EmbeddedId embeddedId;
 
 	/**
 	 * The cached value of the '{@link #getBasics() <em>Basics</em>}' containment reference list.
@@ -100,14 +100,14 @@ public class Attributes extends JpaEObject implements IJpaEObject
 	protected EList<ManyToOne> manyToOnes;
 
 	/**
-	 * The cached value of the '{@link #getOneToManies() <em>One To Manies</em>}' containment reference list.
+	 * The cached value of the '{@link #getOneToManys() <em>One To Manys</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getOneToManies()
+	 * @see #getOneToManys()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<OneToMany> oneToManies;
+	protected EList<OneToMany> oneToManys;
 
 	/**
 	 * The cached value of the '{@link #getOneToOnes() <em>One To Ones</em>}' containment reference list.
@@ -120,14 +120,14 @@ public class Attributes extends JpaEObject implements IJpaEObject
 	protected EList<OneToOne> oneToOnes;
 
 	/**
-	 * The cached value of the '{@link #getManyToManies() <em>Many To Manies</em>}' containment reference list.
+	 * The cached value of the '{@link #getManyToManys() <em>Many To Manys</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getManyToManies()
+	 * @see #getManyToManys()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ManyToMany> manyToManies;
+	protected EList<ManyToMany> manyToManys;
 
 	/**
 	 * The cached value of the '{@link #getEmbeddeds() <em>Embeddeds</em>}' containment reference list.
@@ -194,22 +194,22 @@ public class Attributes extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Embedded Ids</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Embedded Id</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Embedded Ids</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Embedded Id</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Embedded Ids</em>' containment reference.
-	 * @see #setEmbeddedIds(EmbeddedId)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAttributes_EmbeddedIds()
+	 * @return the value of the '<em>Embedded Id</em>' containment reference.
+	 * @see #setEmbeddedId(EmbeddedId)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAttributes_EmbeddedId()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EmbeddedId getEmbeddedIds()
+	public EmbeddedId getEmbeddedId()
 	{
-		return embeddedIds;
+		return embeddedId;
 	}
 
 	/**
@@ -217,40 +217,40 @@ public class Attributes extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetEmbeddedIds(EmbeddedId newEmbeddedIds, NotificationChain msgs)
+	public NotificationChain basicSetEmbeddedId(EmbeddedId newEmbeddedId, NotificationChain msgs)
 	{
-		EmbeddedId oldEmbeddedIds = embeddedIds;
-		embeddedIds = newEmbeddedIds;
+		EmbeddedId oldEmbeddedId = embeddedId;
+		embeddedId = newEmbeddedId;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ATTRIBUTES__EMBEDDED_IDS, oldEmbeddedIds, newEmbeddedIds);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ATTRIBUTES__EMBEDDED_ID, oldEmbeddedId, newEmbeddedId);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedIds <em>Embedded Ids</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedId <em>Embedded Id</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Embedded Ids</em>' containment reference.
-	 * @see #getEmbeddedIds()
+	 * @param value the new value of the '<em>Embedded Id</em>' containment reference.
+	 * @see #getEmbeddedId()
 	 * @generated
 	 */
-	public void setEmbeddedIds(EmbeddedId newEmbeddedIds)
+	public void setEmbeddedId(EmbeddedId newEmbeddedId)
 	{
-		if (newEmbeddedIds != embeddedIds)
+		if (newEmbeddedId != embeddedId)
 		{
 			NotificationChain msgs = null;
-			if (embeddedIds != null)
-				msgs = ((InternalEObject)embeddedIds).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ATTRIBUTES__EMBEDDED_IDS, null, msgs);
-			if (newEmbeddedIds != null)
-				msgs = ((InternalEObject)newEmbeddedIds).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ATTRIBUTES__EMBEDDED_IDS, null, msgs);
-			msgs = basicSetEmbeddedIds(newEmbeddedIds, msgs);
+			if (embeddedId != null)
+				msgs = ((InternalEObject)embeddedId).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ATTRIBUTES__EMBEDDED_ID, null, msgs);
+			if (newEmbeddedId != null)
+				msgs = ((InternalEObject)newEmbeddedId).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ATTRIBUTES__EMBEDDED_ID, null, msgs);
+			msgs = basicSetEmbeddedId(newEmbeddedId, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ATTRIBUTES__EMBEDDED_IDS, newEmbeddedIds, newEmbeddedIds));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ATTRIBUTES__EMBEDDED_ID, newEmbeddedId, newEmbeddedId));
 	}
 
 	/**
@@ -323,26 +323,26 @@ public class Attributes extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>One To Manies</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>One To Manys</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.core.internal.resource.orm.OneToMany}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>One To Manies</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>One To Manys</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>One To Manies</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAttributes_OneToManies()
+	 * @return the value of the '<em>One To Manys</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAttributes_OneToManys()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<OneToMany> getOneToManies()
+	public EList<OneToMany> getOneToManys()
 	{
-		if (oneToManies == null)
+		if (oneToManys == null)
 		{
-			oneToManies = new EObjectContainmentEList<OneToMany>(OneToMany.class, this, OrmPackage.ATTRIBUTES__ONE_TO_MANIES);
+			oneToManys = new EObjectContainmentEList<OneToMany>(OneToMany.class, this, OrmPackage.ATTRIBUTES__ONE_TO_MANYS);
 		}
-		return oneToManies;
+		return oneToManys;
 	}
 
 	/**
@@ -369,26 +369,26 @@ public class Attributes extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Many To Manies</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Many To Manys</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.core.internal.resource.orm.ManyToMany}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Many To Manies</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>Many To Manys</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Many To Manies</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAttributes_ManyToManies()
+	 * @return the value of the '<em>Many To Manys</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAttributes_ManyToManys()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<ManyToMany> getManyToManies()
+	public EList<ManyToMany> getManyToManys()
 	{
-		if (manyToManies == null)
+		if (manyToManys == null)
 		{
-			manyToManies = new EObjectContainmentEList<ManyToMany>(ManyToMany.class, this, OrmPackage.ATTRIBUTES__MANY_TO_MANIES);
+			manyToManys = new EObjectContainmentEList<ManyToMany>(ManyToMany.class, this, OrmPackage.ATTRIBUTES__MANY_TO_MANYS);
 		}
-		return manyToManies;
+		return manyToManys;
 	}
 
 	/**
@@ -449,20 +449,20 @@ public class Attributes extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.ATTRIBUTES__IDS:
 				return ((InternalEList<?>)getIds()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ATTRIBUTES__EMBEDDED_IDS:
-				return basicSetEmbeddedIds(null, msgs);
+			case OrmPackage.ATTRIBUTES__EMBEDDED_ID:
+				return basicSetEmbeddedId(null, msgs);
 			case OrmPackage.ATTRIBUTES__BASICS:
 				return ((InternalEList<?>)getBasics()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ATTRIBUTES__VERSIONS:
 				return ((InternalEList<?>)getVersions()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ATTRIBUTES__MANY_TO_ONES:
 				return ((InternalEList<?>)getManyToOnes()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ATTRIBUTES__ONE_TO_MANIES:
-				return ((InternalEList<?>)getOneToManies()).basicRemove(otherEnd, msgs);
+			case OrmPackage.ATTRIBUTES__ONE_TO_MANYS:
+				return ((InternalEList<?>)getOneToManys()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ATTRIBUTES__ONE_TO_ONES:
 				return ((InternalEList<?>)getOneToOnes()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ATTRIBUTES__MANY_TO_MANIES:
-				return ((InternalEList<?>)getManyToManies()).basicRemove(otherEnd, msgs);
+			case OrmPackage.ATTRIBUTES__MANY_TO_MANYS:
+				return ((InternalEList<?>)getManyToManys()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ATTRIBUTES__EMBEDDEDS:
 				return ((InternalEList<?>)getEmbeddeds()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ATTRIBUTES__TRANSIENTS:
@@ -483,20 +483,20 @@ public class Attributes extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.ATTRIBUTES__IDS:
 				return getIds();
-			case OrmPackage.ATTRIBUTES__EMBEDDED_IDS:
-				return getEmbeddedIds();
+			case OrmPackage.ATTRIBUTES__EMBEDDED_ID:
+				return getEmbeddedId();
 			case OrmPackage.ATTRIBUTES__BASICS:
 				return getBasics();
 			case OrmPackage.ATTRIBUTES__VERSIONS:
 				return getVersions();
 			case OrmPackage.ATTRIBUTES__MANY_TO_ONES:
 				return getManyToOnes();
-			case OrmPackage.ATTRIBUTES__ONE_TO_MANIES:
-				return getOneToManies();
+			case OrmPackage.ATTRIBUTES__ONE_TO_MANYS:
+				return getOneToManys();
 			case OrmPackage.ATTRIBUTES__ONE_TO_ONES:
 				return getOneToOnes();
-			case OrmPackage.ATTRIBUTES__MANY_TO_MANIES:
-				return getManyToManies();
+			case OrmPackage.ATTRIBUTES__MANY_TO_MANYS:
+				return getManyToManys();
 			case OrmPackage.ATTRIBUTES__EMBEDDEDS:
 				return getEmbeddeds();
 			case OrmPackage.ATTRIBUTES__TRANSIENTS:
@@ -520,8 +520,8 @@ public class Attributes extends JpaEObject implements IJpaEObject
 				getIds().clear();
 				getIds().addAll((Collection<? extends Id>)newValue);
 				return;
-			case OrmPackage.ATTRIBUTES__EMBEDDED_IDS:
-				setEmbeddedIds((EmbeddedId)newValue);
+			case OrmPackage.ATTRIBUTES__EMBEDDED_ID:
+				setEmbeddedId((EmbeddedId)newValue);
 				return;
 			case OrmPackage.ATTRIBUTES__BASICS:
 				getBasics().clear();
@@ -535,17 +535,17 @@ public class Attributes extends JpaEObject implements IJpaEObject
 				getManyToOnes().clear();
 				getManyToOnes().addAll((Collection<? extends ManyToOne>)newValue);
 				return;
-			case OrmPackage.ATTRIBUTES__ONE_TO_MANIES:
-				getOneToManies().clear();
-				getOneToManies().addAll((Collection<? extends OneToMany>)newValue);
+			case OrmPackage.ATTRIBUTES__ONE_TO_MANYS:
+				getOneToManys().clear();
+				getOneToManys().addAll((Collection<? extends OneToMany>)newValue);
 				return;
 			case OrmPackage.ATTRIBUTES__ONE_TO_ONES:
 				getOneToOnes().clear();
 				getOneToOnes().addAll((Collection<? extends OneToOne>)newValue);
 				return;
-			case OrmPackage.ATTRIBUTES__MANY_TO_MANIES:
-				getManyToManies().clear();
-				getManyToManies().addAll((Collection<? extends ManyToMany>)newValue);
+			case OrmPackage.ATTRIBUTES__MANY_TO_MANYS:
+				getManyToManys().clear();
+				getManyToManys().addAll((Collection<? extends ManyToMany>)newValue);
 				return;
 			case OrmPackage.ATTRIBUTES__EMBEDDEDS:
 				getEmbeddeds().clear();
@@ -572,8 +572,8 @@ public class Attributes extends JpaEObject implements IJpaEObject
 			case OrmPackage.ATTRIBUTES__IDS:
 				getIds().clear();
 				return;
-			case OrmPackage.ATTRIBUTES__EMBEDDED_IDS:
-				setEmbeddedIds((EmbeddedId)null);
+			case OrmPackage.ATTRIBUTES__EMBEDDED_ID:
+				setEmbeddedId((EmbeddedId)null);
 				return;
 			case OrmPackage.ATTRIBUTES__BASICS:
 				getBasics().clear();
@@ -584,14 +584,14 @@ public class Attributes extends JpaEObject implements IJpaEObject
 			case OrmPackage.ATTRIBUTES__MANY_TO_ONES:
 				getManyToOnes().clear();
 				return;
-			case OrmPackage.ATTRIBUTES__ONE_TO_MANIES:
-				getOneToManies().clear();
+			case OrmPackage.ATTRIBUTES__ONE_TO_MANYS:
+				getOneToManys().clear();
 				return;
 			case OrmPackage.ATTRIBUTES__ONE_TO_ONES:
 				getOneToOnes().clear();
 				return;
-			case OrmPackage.ATTRIBUTES__MANY_TO_MANIES:
-				getManyToManies().clear();
+			case OrmPackage.ATTRIBUTES__MANY_TO_MANYS:
+				getManyToManys().clear();
 				return;
 			case OrmPackage.ATTRIBUTES__EMBEDDEDS:
 				getEmbeddeds().clear();
@@ -615,20 +615,20 @@ public class Attributes extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.ATTRIBUTES__IDS:
 				return ids != null && !ids.isEmpty();
-			case OrmPackage.ATTRIBUTES__EMBEDDED_IDS:
-				return embeddedIds != null;
+			case OrmPackage.ATTRIBUTES__EMBEDDED_ID:
+				return embeddedId != null;
 			case OrmPackage.ATTRIBUTES__BASICS:
 				return basics != null && !basics.isEmpty();
 			case OrmPackage.ATTRIBUTES__VERSIONS:
 				return versions != null && !versions.isEmpty();
 			case OrmPackage.ATTRIBUTES__MANY_TO_ONES:
 				return manyToOnes != null && !manyToOnes.isEmpty();
-			case OrmPackage.ATTRIBUTES__ONE_TO_MANIES:
-				return oneToManies != null && !oneToManies.isEmpty();
+			case OrmPackage.ATTRIBUTES__ONE_TO_MANYS:
+				return oneToManys != null && !oneToManys.isEmpty();
 			case OrmPackage.ATTRIBUTES__ONE_TO_ONES:
 				return oneToOnes != null && !oneToOnes.isEmpty();
-			case OrmPackage.ATTRIBUTES__MANY_TO_MANIES:
-				return manyToManies != null && !manyToManies.isEmpty();
+			case OrmPackage.ATTRIBUTES__MANY_TO_MANYS:
+				return manyToManys != null && !manyToManys.isEmpty();
 			case OrmPackage.ATTRIBUTES__EMBEDDEDS:
 				return embeddeds != null && !embeddeds.isEmpty();
 			case OrmPackage.ATTRIBUTES__TRANSIENTS:

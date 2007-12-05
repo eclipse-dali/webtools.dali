@@ -86,7 +86,7 @@
         defaultValueLiteral="PROPERTY"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="metadataComplete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="tables" eType="#//Table"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="table" eType="#//Table"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="secondaryTables" upperBound="-1"
         eType="#//SecondaryTable" containment="true" resolveProxies="false"/>
@@ -149,7 +149,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Attributes">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ids" upperBound="-1" eType="#//Id"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="embeddedIds" eType="#//EmbeddedId"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="embeddedId" eType="#//EmbeddedId"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="basics" upperBound="-1"
         eType="#//Basic" containment="true" resolveProxies="false"/>
@@ -157,11 +157,11 @@
         eType="#//Version" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="manyToOnes" upperBound="-1"
         eType="#//ManyToOne" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="oneToManies" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="oneToManys" upperBound="-1"
         eType="#//OneToMany" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="oneToOnes" upperBound="-1"
         eType="#//OneToOne" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="manyToManies" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="manyToManys" upperBound="-1"
         eType="#//ManyToMany" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="embeddeds" upperBound="-1"
         eType="#//Embedded" containment="true" resolveProxies="false"/>
@@ -280,7 +280,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AssociationOverride">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumn" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" lowerBound="1"
         upperBound="-1" eType="#//JoinColumn" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>

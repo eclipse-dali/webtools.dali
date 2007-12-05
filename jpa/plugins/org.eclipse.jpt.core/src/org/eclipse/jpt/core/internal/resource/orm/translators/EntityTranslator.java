@@ -87,7 +87,7 @@ public class EntityTranslator extends Translator
 	}
 	
 	private Translator createTableTranslator() {
-		return new TableTranslator(TABLE, ORM_PKG.getEntity_Tables());
+		return new TableTranslator(TABLE, ORM_PKG.getEntity_Table());
 	}
 	
 	private Translator createSecondaryTableTranslator() {
