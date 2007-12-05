@@ -9,13 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class EmbeddedImpl extends AbstractAnnotationResource<Attribute> implements Embedded
@@ -38,7 +36,7 @@ public class EmbeddedImpl extends AbstractAnnotationResource<Attribute> implemen
 		//no annotation members
 	}
 	
-	public static class EmbeddedAnnotationDefinition implements MappingAnnotationDefinition
+	public static class EmbeddedAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
 		private static final EmbeddedAnnotationDefinition INSTANCE = new EmbeddedAnnotationDefinition();
@@ -63,12 +61,6 @@ public class EmbeddedImpl extends AbstractAnnotationResource<Attribute> implemen
 		
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
 			return null;
-		}
-
-		public Iterator<String> correspondingAnnotationNames() {
-			return new ArrayIterator<String>(
-				JPA.ATTRIBUTE_OVERRIDE,
-				JPA.ATTRIBUTE_OVERRIDES);
 		}
 
 		public String getAnnotationName() {

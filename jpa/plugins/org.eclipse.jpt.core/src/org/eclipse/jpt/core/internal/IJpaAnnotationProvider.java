@@ -39,15 +39,6 @@ public interface IJpaAnnotationProvider
 	Annotation buildTypeAnnotation(JavaPersistentTypeResource parent, Type type, String annotationName);
 	
 	Annotation buildNullTypeAnnotation(JavaPersistentTypeResource parent, Type type, String annotationName);
-
-	/**
-	 * Return the fully qualified names of the annotations that can exist
-	 * with the given mapping annotation on a Type.  This will be all the JPA 
-	 * annotations that can apply in the same context as the given mapping annotation. 
-	 * @param mappingAnnotationName
-	 * @return
-	 */
-	Iterator<String> correspondingTypeAnnotationNames(String mappingAnnotationName);
 	
 	/**
 	 * Ordered iterator of fully qualified annotation names that can apply to a Type
@@ -79,14 +70,6 @@ public interface IJpaAnnotationProvider
 	
 	Annotation buildNullAttributeAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String annotationName);
 
-	/**
-	 * Return the fully qualified names of the annotations that can exist
-	 * with the given mapping annotation on an attribute.  This will be all the JPA 
-	 * annotations that can apply in the same context as the given mapping annotation. 
-	 * @param mappingAnnotationName
-	 * @return
-	 */
-	Iterator<String> correspondingAttributeAnnotationNames(String mappingAnnotationName);
 	
 	/**
 	 * Ordered iterator of fully qualified annotation names that can apply to an Attribute

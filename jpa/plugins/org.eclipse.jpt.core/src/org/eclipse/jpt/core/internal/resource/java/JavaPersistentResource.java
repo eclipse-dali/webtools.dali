@@ -48,11 +48,9 @@ public interface JavaPersistentResource extends JavaResource
 	JavaResource mappingAnnotation(String annotationName);
 
 	/**
-	 * Use this to change the type mapping annotation.  This will
-	 * remove all annotations that applied to the previous type mapping annotation
-	 * but do not apply to the new mapping annotation.  Will also remove
-	 * all other type mapping annotations in case there were multiple before.
-	 * @see MappingAnnotationDefinition#correspondingAnnotationNames()
+	 * Use this to change the type mapping annotation.  This will only remove
+	 * other mapping annotations in case there were multiple before.  It
+	 * will not remove any non-mapping annotations
 	 * @param annotationName - fully qualified annotation name
 	 */
 	void setMappingAnnotation(String annotationName);

@@ -37,6 +37,7 @@ import org.eclipse.jpt.core.internal.resource.java.AttributeOverrides;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorValue;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.Inheritance;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.NullAttributeOverride;
@@ -52,6 +53,7 @@ import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
@@ -265,6 +267,40 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	
 	public String getKey() {
 		return IMappingKeys.ENTITY_TYPE_MAPPING_KEY;
+	}
+
+	public Iterator<String> correspondingAnnotationNames() {
+		return new ArrayIterator<String>(
+			JPA.TABLE,
+			JPA.SECONDARY_TABLE,
+			JPA.SECONDARY_TABLES,
+			JPA.PRIMARY_KEY_JOIN_COLUMN,
+			JPA.PRIMARY_KEY_JOIN_COLUMNS,
+			JPA.ID_CLASS,
+			JPA.INHERITANCE,
+			JPA.DISCRIMINATOR_VALUE,
+			JPA.DISCRIMINATOR_COLUMN,
+			JPA.SEQUENCE_GENERATOR,
+			JPA.TABLE_GENERATOR,
+			JPA.NAMED_QUERY,
+			JPA.NAMED_QUERIES,
+			JPA.NAMED_NATIVE_QUERY,
+			JPA.NAMED_NATIVE_QUERIES,
+			JPA.SQL_RESULT_SET_MAPPING,
+			JPA.EXCLUDE_DEFAULT_LISTENERS,
+			JPA.EXCLUDE_SUPERCLASS_LISTENERS,
+			JPA.ENTITY_LISTENERS,
+			JPA.PRE_PERSIST,
+			JPA.POST_PERSIST,
+			JPA.PRE_REMOVE,
+			JPA.POST_REMOVE,
+			JPA.PRE_UPDATE,
+			JPA.POST_UPDATE,
+			JPA.POST_LOAD,
+			JPA.ATTRIBUTE_OVERRIDE,
+			JPA.ATTRIBUTE_OVERRIDES,
+			JPA.ASSOCIATION_OVERRIDE,
+			JPA.ASSOCIATION_OVERRIDES);
 	}
 
 	public boolean isMapped() {

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
@@ -18,6 +19,7 @@ import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
 
 public class JavaPersistentAttribute extends JavaContextModel
@@ -146,6 +148,7 @@ public class JavaPersistentAttribute extends JavaContextModel
 		if (newKey == specifiedMappingKey()) {
 			return;
 		}
+		IJavaAttributeMapping oldMapping = getMapping();
 		IJavaAttributeMapping newMapping = createJavaAttributeMappingFromMappingKey(newKey);
 		setSpecifiedMapping(newMapping);
 		if (newMapping != null) {
@@ -153,6 +156,17 @@ public class JavaPersistentAttribute extends JavaContextModel
 		}
 		else {
 			this.persistentAttributeResource.setMappingAnnotation(null);			
+		}
+		
+		if (oldMapping != null) {
+			Collection<String> annotationsToRemove = CollectionTools.collection(oldMapping.correspondingAnnotationNames());
+			if (getMapping() != null) {
+				CollectionTools.removeAll(annotationsToRemove, getMapping().correspondingAnnotationNames());
+			}
+			
+			for (String annotationName : annotationsToRemove) {
+				this.persistentAttributeResource.removeAnnotation(annotationName);
+			}
 		}
 	}
 

@@ -17,11 +17,13 @@ import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.GeneratedValue;
 import org.eclipse.jpt.core.internal.resource.java.Id;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.SequenceGenerator;
 import org.eclipse.jpt.core.internal.resource.java.TableGenerator;
 import org.eclipse.jpt.core.internal.resource.java.Temporal;
 import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMapping
@@ -97,6 +99,15 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		return Id.ANNOTATION_NAME;
 	}
 	
+	public Iterator<String> correspondingAnnotationNames() {
+		return new ArrayIterator<String>(
+			JPA.COLUMN,
+			JPA.GENERATED_VALUE,
+			JPA.TEMPORAL,
+			JPA.TABLE_GENERATOR,
+			JPA.SEQUENCE_GENERATOR);
+	}
+
 	public String defaultColumnName() {
 		return attributeName();
 	}

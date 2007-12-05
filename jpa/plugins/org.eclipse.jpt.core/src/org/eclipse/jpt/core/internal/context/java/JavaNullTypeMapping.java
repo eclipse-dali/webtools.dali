@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
 public class JavaNullTypeMapping extends JavaTypeMapping
@@ -28,5 +30,9 @@ public class JavaNullTypeMapping extends JavaTypeMapping
 	
 	public boolean isMapped() {
 		return false;
+	}
+	
+	public Iterator<String> correspondingAnnotationNames() {
+		return EmptyIterator.instance();
 	}
 }

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -19,7 +18,6 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class OneToManyImpl extends AbstractRelationshipMappingAnnotation implements OneToMany
 {	
@@ -119,7 +117,7 @@ public class OneToManyImpl extends AbstractRelationshipMappingAnnotation impleme
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_MANY__MAPPED_BY, false); // false = do not remove annotation when empty
 	}
 
-	public static class OneToManyAnnotationDefinition implements MappingAnnotationDefinition
+	public static class OneToManyAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
 		private static final OneToManyAnnotationDefinition INSTANCE = new OneToManyAnnotationDefinition();
@@ -146,14 +144,15 @@ public class OneToManyImpl extends AbstractRelationshipMappingAnnotation impleme
 			return null;
 		}
 
-		public Iterator<String> correspondingAnnotationNames() {
-			return new ArrayIterator<String>(
-				JPA.ORDER_BY,
-				JPA.MAP_KEY,
-				JPA.JOIN_TABLE,
-				JPA.JOIN_COLUMN,
-				JPA.JOIN_COLUMNS);
-		}
+		//TODO put this in the java context model when JavaOneToOneMapping exists
+//		public Iterator<String> correspondingAnnotationNames() {
+//			return new ArrayIterator<String>(
+//				JPA.ORDER_BY,
+//				JPA.MAP_KEY,
+//				JPA.JOIN_TABLE,
+//				JPA.JOIN_COLUMN,
+//				JPA.JOIN_COLUMNS);
+//		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

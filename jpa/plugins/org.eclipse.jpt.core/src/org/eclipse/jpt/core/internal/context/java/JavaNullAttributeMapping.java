@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
 
@@ -25,5 +27,9 @@ public class JavaNullAttributeMapping extends JavaAttributeMapping
 	
 	public String annotationName() {
 		return null;
+	}
+	
+	public Iterator<String> correspondingAnnotationNames() {
+		return EmptyIterator.instance();
 	}
 }

@@ -455,7 +455,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		assertTrue(attributeResource.mappingAnnotation() instanceof Basic);
 		
 		assertSourceDoesNotContain("@Id");
-		assertSourceDoesNotContain("@GeneratedValue"); //not supported by Basic
+		assertSourceContains("@GeneratedValue"); //not supported by Basic
 		assertSourceContains("@Column"); //common between Id and Basic
 	}
 	
@@ -469,8 +469,8 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		assertNull(attributeResource.mappingAnnotation());
 		
 		assertSourceDoesNotContain("@Id");
-		assertSourceDoesNotContain("@GeneratedValue"); //not supported by Basic
-		assertSourceDoesNotContain("@Column"); //common between Id and Basic
+		assertSourceContains("@GeneratedValue"); //not supported by Basic
+		assertSourceContains("@Column"); //common between Id and Basic
 	}
 
 	public void testAddJavaAttributeAnnotation() throws Exception {

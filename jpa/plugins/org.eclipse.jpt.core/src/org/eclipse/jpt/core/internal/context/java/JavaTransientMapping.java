@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.resource.java.Transient;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
 public class JavaTransientMapping extends JavaAttributeMapping
@@ -27,4 +29,9 @@ public class JavaTransientMapping extends JavaAttributeMapping
 	public String annotationName() {
 		return Transient.ANNOTATION_NAME;
 	}
+	
+	public Iterator<String> correspondingAnnotationNames() {
+		return EmptyIterator.instance();
+	}
+
 }

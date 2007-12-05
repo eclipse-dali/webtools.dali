@@ -9,13 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public class TransientImpl extends AbstractAnnotationResource<Attribute> implements Transient
 {
@@ -37,7 +35,7 @@ public class TransientImpl extends AbstractAnnotationResource<Attribute> impleme
 		//no annotation members
 	}
 	
-	public static class TransientAnnotationDefinition implements MappingAnnotationDefinition
+	public static class TransientAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
 		private static final TransientAnnotationDefinition INSTANCE = new TransientAnnotationDefinition();
@@ -64,10 +62,6 @@ public class TransientImpl extends AbstractAnnotationResource<Attribute> impleme
 			return null;
 		}
 		
-		public Iterator<String> correspondingAnnotationNames() {
-			return EmptyIterator.instance();
-		}
-
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

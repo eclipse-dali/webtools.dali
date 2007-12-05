@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -19,7 +18,6 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implements ManyToMany
@@ -123,7 +121,7 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 	}
 
 	
-	public static class ManyToManyAnnotationDefinition implements MappingAnnotationDefinition
+	public static class ManyToManyAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
 		private static final ManyToManyAnnotationDefinition INSTANCE = new ManyToManyAnnotationDefinition();
@@ -150,12 +148,13 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 			return null;
 		}
 
-		public Iterator<String> correspondingAnnotationNames() {
-			return new ArrayIterator<String>(
-				JPA.ORDER_BY,
-				JPA.MAP_KEY,
-				JPA.JOIN_TABLE);
-		}
+		//TODO put this in the java context model when JavaOneToOneMapping exists
+//		public Iterator<String> correspondingAnnotationNames() {
+//			return new ArrayIterator<String>(
+//				JPA.ORDER_BY,
+//				JPA.MAP_KEY,
+//				JPA.JOIN_TABLE);
+//		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

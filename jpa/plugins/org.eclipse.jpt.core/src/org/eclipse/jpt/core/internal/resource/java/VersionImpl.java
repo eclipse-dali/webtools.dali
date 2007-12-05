@@ -9,13 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class VersionImpl extends AbstractAnnotationResource<Attribute> implements Version
 {
@@ -37,7 +35,7 @@ public class VersionImpl extends AbstractAnnotationResource<Attribute> implement
 		//no annotation members
 	}
 	
-	public static class VersionAnnotationDefinition implements MappingAnnotationDefinition
+	public static class VersionAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
 		private static final VersionAnnotationDefinition INSTANCE = new VersionAnnotationDefinition();
@@ -62,12 +60,6 @@ public class VersionImpl extends AbstractAnnotationResource<Attribute> implement
 		
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
 			return null;
-		}
-
-		public Iterator<String> correspondingAnnotationNames() {
-			return new ArrayIterator<String>(
-				JPA.COLUMN,
-				JPA.TEMPORAL);
 		}
 
 		public String getAnnotationName() {

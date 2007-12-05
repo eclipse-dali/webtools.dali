@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 
@@ -19,4 +20,7 @@ public interface IJavaTypeMapping extends ITypeMapping, IJavaJpaContextNode
 	void update(JavaPersistentTypeResource persistentTypeResource);
 	
 	String annotationName();
+	
+	Iterator<String> correspondingAnnotationNames();
+
 }

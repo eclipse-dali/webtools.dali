@@ -13,16 +13,14 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
+import org.eclipse.jpt.core.internal.resource.java.Embeddable;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -53,33 +51,45 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		super(name);
 	}
 	
-	protected XmlPersistenceUnit xmlPersistenceUnit() {
-		PersistenceResource prm = persistenceResource();
-		return prm.getPersistence().getPersistenceUnits().get(0);
-	}
-	
-	protected IPersistenceUnit persistenceUnit() {
-		return jpaContent().getPersistenceXml().getPersistence().persistenceUnits().next();
-	}
-	
-	protected IClassRef classRef() {
-		return persistenceUnit().classRefs().next();
-	}
-	
-	protected IJavaPersistentType javaPersistentType() {
-		return classRef().getJavaPersistentType();
-	}
-	
-	protected IEntity javaEntity() {
-		return (IEntity) javaPersistentType().getMapping();
-	}
-	
-	protected void addXmlClassRef(String className) {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+	public void testMorphToEntity() throws Exception {
+		createTestEmbeddable();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
-		xmlClassRef.setJavaClass(className);
-		xmlPersistenceUnit.getClasses().add(xmlClassRef);
+		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
+		
+		javaPersistentType().setMappingKey(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		assertTrue(javaPersistentType().getMapping() instanceof IEntity);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(Embeddable.ANNOTATION_NAME));
+	}
+
+	public void testMorphToMappedSuperclass() throws Exception {
+		createTestEmbeddable();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
+		
+		javaPersistentType().setMappingKey(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		assertTrue(javaPersistentType().getMapping() instanceof IMappedSuperclass);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(Embeddable.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToNull() throws Exception {
+		createTestEmbeddable();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
+		
+		javaPersistentType().setMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
+		assertTrue(javaPersistentType().getMapping() instanceof JavaNullTypeMapping);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		assertNull(typeResource.mappingAnnotation(Embeddable.ANNOTATION_NAME));
 	}
 	
 	public void testEmbeddable() throws Exception {

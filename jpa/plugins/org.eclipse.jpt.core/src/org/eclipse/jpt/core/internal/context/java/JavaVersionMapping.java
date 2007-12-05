@@ -15,10 +15,12 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.java.Column;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.Temporal;
 import org.eclipse.jpt.core.internal.resource.java.Version;
 import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class JavaVersionMapping extends JavaAttributeMapping implements IJavaVersionMapping
@@ -61,6 +63,12 @@ public class JavaVersionMapping extends JavaAttributeMapping implements IJavaVer
 		return Version.ANNOTATION_NAME;
 	}
 	
+	public Iterator<String> correspondingAnnotationNames() {
+		return new ArrayIterator<String>(
+			JPA.COLUMN,
+			JPA.TEMPORAL);
+	}
+
 	//************** INamedColumn.Owner implementation ***************
 
 	public String defaultColumnName() {

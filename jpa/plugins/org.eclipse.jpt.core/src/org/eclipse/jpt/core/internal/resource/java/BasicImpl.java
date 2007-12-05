@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -22,7 +21,6 @@ import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElement
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class BasicImpl extends AbstractAnnotationResource<Attribute> implements Basic
@@ -109,7 +107,7 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__FETCH, false);
 	}
 	
-	public static class BasicAnnotationDefinition implements MappingAnnotationDefinition
+	public static class BasicAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
 		private static final BasicAnnotationDefinition INSTANCE = new BasicAnnotationDefinition();
@@ -134,14 +132,6 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 		
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
 			return new NullBasic(parent);
-		}
-
-		public Iterator<String> correspondingAnnotationNames() {
-			return new ArrayIterator<String>(
-				JPA.COLUMN,
-				JPA.LOB,
-				JPA.TEMPORAL,
-				JPA.ENUMERATED);
 		}
 
 		public String getAnnotationName() {

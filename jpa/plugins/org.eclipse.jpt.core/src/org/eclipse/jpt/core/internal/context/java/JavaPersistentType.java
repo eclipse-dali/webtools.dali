@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -109,9 +111,21 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		if (key == getMapping().getKey()) {
 			return;
 		}
+		IJavaTypeMapping oldMapping = getMapping();
 		IJavaTypeMapping newMapping = createJavaTypeMappingFromMappingKey(key);
 		setMapping(newMapping);		
 		this.persistentTypeResource.setMappingAnnotation(newMapping.annotationName());
+		
+		if (oldMapping != null) {
+			Collection<String> annotationsToRemove = CollectionTools.collection(oldMapping.correspondingAnnotationNames());
+			if (getMapping() != null) {
+				CollectionTools.removeAll(annotationsToRemove, getMapping().correspondingAnnotationNames());
+			}
+			
+			for (String annotationName : annotationsToRemove) {
+				this.persistentTypeResource.removeAnnotation(annotationName);
+			}
+		}
 	}
 	
 	protected void setMapping(IJavaTypeMapping newMapping) {

@@ -16,7 +16,9 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
@@ -24,6 +26,7 @@ import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
+import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrides;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorColumn;
@@ -31,12 +34,16 @@ import org.eclipse.jpt.core.internal.resource.java.DiscriminatorValue;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.Inheritance;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumns;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTables;
+import org.eclipse.jpt.core.internal.resource.java.SequenceGenerator;
+import org.eclipse.jpt.core.internal.resource.java.Table;
+import org.eclipse.jpt.core.internal.resource.java.TableGenerator;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -270,6 +277,94 @@ public class JavaEntityTests extends ContextModelTestCase
 		super(name);
 	}
 	
+	public void testMorphToMappedSuperclass() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IEntity entity = (IEntity) javaPersistentType().getMapping();
+		entity.getTable().setSpecifiedName("FOO");
+		entity.addSpecifiedSecondaryTable(0);
+		entity.addSpecifiedPrimaryKeyJoinColumn(0);
+		entity.addSpecifiedAttributeOverride(0);
+		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		entity.setSpecifiedDiscriminatorValue("asdf");
+		entity.addTableGenerator();
+		entity.addSequenceGenerator();
+		
+		javaPersistentType().setMappingKey(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		assertTrue(javaPersistentType().getMapping() instanceof IMappedSuperclass);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(Entity.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(Table.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(SecondaryTable.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(PrimaryKeyJoinColumn.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(Inheritance.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(DiscriminatorValue.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(TableGenerator.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
+	}
+
+	public void testMorphToEmbeddable() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IEntity entity = (IEntity) javaPersistentType().getMapping();
+		entity.getTable().setSpecifiedName("FOO");
+		entity.addSpecifiedSecondaryTable(0);
+		entity.addSpecifiedPrimaryKeyJoinColumn(0);
+		entity.addSpecifiedAttributeOverride(0);
+		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		entity.setSpecifiedDiscriminatorValue("asdf");
+		entity.addTableGenerator();
+		entity.addSequenceGenerator();
+		
+		javaPersistentType().setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		assertTrue(javaPersistentType().getMapping() instanceof IEmbeddable);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		assertNull(typeResource.mappingAnnotation(Entity.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(Table.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(SecondaryTable.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(PrimaryKeyJoinColumn.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(Inheritance.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(DiscriminatorValue.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(TableGenerator.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToNull() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IEntity entity = (IEntity) javaPersistentType().getMapping();
+		entity.getTable().setSpecifiedName("FOO");
+		entity.addSpecifiedSecondaryTable(0);
+		entity.addSpecifiedPrimaryKeyJoinColumn(0);
+		entity.addSpecifiedAttributeOverride(0);
+		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		entity.setSpecifiedDiscriminatorValue("asdf");
+		entity.addTableGenerator();
+		entity.addSequenceGenerator();
+		
+		javaPersistentType().setMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
+		assertTrue(javaPersistentType().getMapping() instanceof JavaNullTypeMapping);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		assertNull(typeResource.mappingAnnotation(Entity.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(Table.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(SecondaryTable.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(PrimaryKeyJoinColumn.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(Inheritance.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(DiscriminatorValue.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(TableGenerator.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
+	}
+
 	public void testGetSpecifiedNameNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

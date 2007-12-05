@@ -581,33 +581,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		assertTrue(typeResource.mappingAnnotation() instanceof Embeddable);
 		
 		assertSourceDoesNotContain("@Entity");
-		assertSourceDoesNotContain("@Table");
-	}
-	
-	public void testSetJavaTypeMappingAnnotation3() throws Exception {
-		IType testType = createTestEntityWithTableAndIdClass();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		assertTrue(typeResource.mappingAnnotation() instanceof Entity);
-		
-		typeResource.setMappingAnnotation(JPA.MAPPED_SUPERCLASS);
-		assertTrue(typeResource.mappingAnnotation() instanceof MappedSuperclass);
-		
-		assertSourceDoesNotContain("@Entity");
-		assertSourceDoesNotContain("@Table"); //not supported by MappedSuperclass
-		assertSourceContains("@IdClass"); //common between Entity and MappedSuperclass
-	}
-	
-	public void testSetJavaTypeMappingAnnotationNull() throws Exception {
-		IType testType = createTestEntityWithTableAndIdClass();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		assertTrue(typeResource.mappingAnnotation() instanceof Entity);
-		
-		typeResource.setMappingAnnotation(null);
-		assertNull(typeResource.mappingAnnotation());
-		
-		assertSourceDoesNotContain("@Entity");
-		assertSourceDoesNotContain("@Table"); //not supported by MappedSuperclass
-		assertSourceDoesNotContain("@IdClass"); //common between Entity and MappedSuperclass
+		assertSourceContains("@Table");
 	}
 
 	public void testAddJavaTypeAnnotation() throws Exception {

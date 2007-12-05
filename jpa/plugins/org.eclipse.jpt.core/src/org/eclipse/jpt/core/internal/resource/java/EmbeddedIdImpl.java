@@ -9,13 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class EmbeddedIdImpl extends AbstractAnnotationResource<Attribute> implements EmbeddedId
 {
@@ -38,7 +36,7 @@ public class EmbeddedIdImpl extends AbstractAnnotationResource<Attribute> implem
 	}
 
 	
-	public static class EmbeddedIdAnnotationDefinition implements MappingAnnotationDefinition
+	public static class EmbeddedIdAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
 		private static final EmbeddedIdAnnotationDefinition INSTANCE = new EmbeddedIdAnnotationDefinition();
@@ -65,11 +63,12 @@ public class EmbeddedIdImpl extends AbstractAnnotationResource<Attribute> implem
 			return null;
 		}
 		
-		public Iterator<String> correspondingAnnotationNames() {
-			return new ArrayIterator<String>(
-				JPA.ATTRIBUTE_OVERRIDE,
-				JPA.ATTRIBUTE_OVERRIDES);
-		}
+		//TODO put this in the java context model when JavaOneToOneMapping exists
+//		public Iterator<String> correspondingAnnotationNames() {
+//			return new ArrayIterator<String>(
+//				JPA.ATTRIBUTE_OVERRIDE,
+//				JPA.ATTRIBUTE_OVERRIDES);
+//		}
 		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

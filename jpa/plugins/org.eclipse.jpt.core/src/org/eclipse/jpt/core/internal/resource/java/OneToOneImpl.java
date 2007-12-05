@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -20,7 +19,6 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implements OneToOne
 {
@@ -158,7 +156,7 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__MAPPED_BY, false); // false = do not remove annotation when empty
 	}
 	
-	public static class OneToOneAnnotationDefinition implements MappingAnnotationDefinition
+	public static class OneToOneAnnotationDefinition implements AnnotationDefinition
 	{
 
 		// singleton
@@ -185,15 +183,15 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
 			return null;
 		}
-
-		public Iterator<String> correspondingAnnotationNames() {
-			return new ArrayIterator<String>(
-				JPA.PRIMARY_KEY_JOIN_COLUMN,
-				JPA.PRIMARY_KEY_JOIN_COLUMNS,
-				JPA.JOIN_COLUMN,
-				JPA.JOIN_COLUMNS,
-				JPA.JOIN_TABLE);
-		}
+//TODO put this in the java context model when JavaOneToOneMapping exists
+//		public Iterator<String> correspondingAnnotationNames() {
+//			return new ArrayIterator<String>(
+//				JPA.PRIMARY_KEY_JOIN_COLUMN,
+//				JPA.PRIMARY_KEY_JOIN_COLUMNS,
+//				JPA.JOIN_COLUMN,
+//				JPA.JOIN_COLUMNS,
+//				JPA.JOIN_TABLE);
+//		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

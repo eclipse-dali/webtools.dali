@@ -26,12 +26,14 @@ import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrides;
 import org.eclipse.jpt.core.internal.resource.java.Embedded;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.NullAttributeOverride;
 import org.eclipse.jpt.core.internal.resource.java.NullColumn;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -102,7 +104,7 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 		return this.defaultAttributeOverrides.contains(override);
 	}
 
-	//****************** IAttributeMapping implemenation *******************
+	//****************** IJavaAttributeMapping implemenation *******************
 
 	public String getKey() {
 		return IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
@@ -110,6 +112,12 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 	
 	public String annotationName() {
 		return Embedded.ANNOTATION_NAME;
+	}
+	
+	public Iterator<String> correspondingAnnotationNames() {
+		return new ArrayIterator<String>(
+			JPA.ATTRIBUTE_OVERRIDE,
+			JPA.ATTRIBUTE_OVERRIDES);
 	}
 	
 	//****************** IEmbeddedMapping implemenation *******************

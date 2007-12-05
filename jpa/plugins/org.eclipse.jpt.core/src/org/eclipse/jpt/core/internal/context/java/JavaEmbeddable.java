@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.resource.java.Embeddable;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
 public class JavaEmbeddable extends JavaTypeMapping implements IJavaEmbeddable
@@ -27,6 +29,10 @@ public class JavaEmbeddable extends JavaTypeMapping implements IJavaEmbeddable
 		return Embeddable.ANNOTATION_NAME;
 	}
 
+	public Iterator<String> correspondingAnnotationNames() {
+		return EmptyIterator.instance();
+	}
+	
 	public boolean isMapped() {
 		return true;
 	}

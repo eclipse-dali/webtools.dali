@@ -19,10 +19,12 @@ import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
 import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.Enumerated;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.Lob;
 import org.eclipse.jpt.core.internal.resource.java.Temporal;
 import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasicMapping
@@ -81,9 +83,16 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		return IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 
-
 	public String annotationName() {
 		return Basic.ANNOTATION_NAME;
+	}
+	
+	public Iterator<String> correspondingAnnotationNames() {
+		return new ArrayIterator<String>(
+			JPA.COLUMN,
+			JPA.LOB,
+			JPA.TEMPORAL,
+			JPA.ENUMERATED);
 	}
 	
 	public String defaultColumnName() {

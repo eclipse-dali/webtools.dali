@@ -12,8 +12,10 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclass;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -44,7 +46,22 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 	public String annotationName() {
 		return MappedSuperclass.ANNOTATION_NAME;
 	}
-	
+	public Iterator<String> correspondingAnnotationNames() {
+		return new ArrayIterator<String>(
+			JPA.ID_CLASS,
+			JPA.EXCLUDE_DEFAULT_LISTENERS,
+			JPA.EXCLUDE_SUPERCLASS_LISTENERS,
+			JPA.ENTITY_LISTENERS,
+			JPA.PRE_PERSIST,
+			JPA.POST_PERSIST,
+			JPA.PRE_REMOVE,
+			JPA.POST_REMOVE,
+			JPA.PRE_UPDATE,
+			JPA.POST_UPDATE,
+			JPA.POST_LOAD);
+	}
+
+
 //	public String getIdClass() {
 //		return this.idClass;
 //	}

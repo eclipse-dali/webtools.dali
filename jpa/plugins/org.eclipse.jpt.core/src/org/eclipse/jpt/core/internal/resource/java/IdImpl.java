@@ -9,13 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class IdImpl extends AbstractAnnotationResource<Attribute> implements Id
@@ -38,7 +36,7 @@ public class IdImpl extends AbstractAnnotationResource<Attribute> implements Id
 		//no annotation members
 	}
 	
-	public static class IdAnnotationDefinition implements MappingAnnotationDefinition
+	public static class IdAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
 		private static final IdAnnotationDefinition INSTANCE = new IdAnnotationDefinition();
@@ -65,14 +63,6 @@ public class IdImpl extends AbstractAnnotationResource<Attribute> implements Id
 			return null;
 		}
 		
-		public Iterator<String> correspondingAnnotationNames() {
-			return new ArrayIterator<String>(
-				JPA.COLUMN,
-				JPA.GENERATED_VALUE,
-				JPA.TEMPORAL,
-				JPA.TABLE_GENERATOR,
-				JPA.SEQUENCE_GENERATOR);
-		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

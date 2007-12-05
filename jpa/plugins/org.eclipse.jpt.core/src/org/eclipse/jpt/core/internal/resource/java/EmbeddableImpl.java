@@ -9,13 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
 public class EmbeddableImpl extends AbstractAnnotationResource<Type> implements Embeddable
@@ -39,7 +37,7 @@ public class EmbeddableImpl extends AbstractAnnotationResource<Type> implements 
 	}
 
 	
-	public static class EmbeddableAnnotationDefinition implements MappingAnnotationDefinition
+	public static class EmbeddableAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
 		private static final EmbeddableAnnotationDefinition INSTANCE = new EmbeddableAnnotationDefinition();
@@ -64,10 +62,6 @@ public class EmbeddableImpl extends AbstractAnnotationResource<Type> implements 
 		
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
 			return null;
-		}
-
-		public Iterator<String> correspondingAnnotationNames() {
-			return EmptyIterator.instance();
 		}
 		
 		public String getAnnotationName() {

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -65,12 +64,6 @@ public class JavaPersistentAttributeResourceImpl
 	@Override
 	protected Annotation buildNullMappingAnnotation(String annotationName) {
 		return annotationProvider().buildNullAttributeMappingAnnotation(this, getMember(), annotationName);
-	}
-
-
-	@Override
-	protected Iterator<String> correspondingAnnotationNames(String mappingAnnotationName) {
-		return annotationProvider().correspondingAttributeAnnotationNames(mappingAnnotationName);
 	}
 	
 	@Override

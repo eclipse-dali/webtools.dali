@@ -110,8 +110,6 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	
 	protected abstract Annotation buildNullMappingAnnotation(String annotationName);
 
-	protected abstract Iterator<String> correspondingAnnotationNames(String mappingAnnotationName);
-	
 	protected abstract ListIterator<String> possibleMappingAnnotationNames();
 
 	protected abstract boolean isPossibleAnnotation(String annotationName);
@@ -322,19 +320,9 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 	
 	/**
-	 * removes annotations that applied to the old mapping annotation, but not to the new mapping annotation.
-	 * also remove all mapping annotations that already exist
+	 * Remove all mapping annotations that already exist
 	 */
 	protected void removeUnnecessaryAnnotations(String oldMappingAnnotationName, String newMappingAnnotationName) {		
-		//TODO what about corresponding annotations for all other mapping types, those will stay??
-		Collection<String> annotationsToRemove = CollectionTools.collection(correspondingAnnotationNames(oldMappingAnnotationName));
-		if (newMappingAnnotationName != null) {
-			CollectionTools.removeAll(annotationsToRemove, correspondingAnnotationNames(newMappingAnnotationName));
-		}
-		
-		for (String annotationName : annotationsToRemove) {
-			removeAnnotation(annotationName);
-		}
 		
 		for (ListIterator<String> i = possibleMappingAnnotationNames(); i.hasNext(); ) {
 			String mappingAnnotationName = i.next();

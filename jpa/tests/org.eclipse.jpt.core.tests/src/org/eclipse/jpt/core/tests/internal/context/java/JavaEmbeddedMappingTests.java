@@ -13,18 +13,30 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
+import org.eclipse.jpt.core.internal.context.base.IIdMapping;
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.base.ITransientMapping;
+import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
+import org.eclipse.jpt.core.internal.context.java.JavaNullAttributeMapping;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrides;
+import org.eclipse.jpt.core.internal.resource.java.Column;
+import org.eclipse.jpt.core.internal.resource.java.Embedded;
+import org.eclipse.jpt.core.internal.resource.java.GeneratedValue;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
+import org.eclipse.jpt.core.internal.resource.java.SequenceGenerator;
+import org.eclipse.jpt.core.internal.resource.java.TableGenerator;
+import org.eclipse.jpt.core.internal.resource.java.Temporal;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -100,6 +112,126 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 	public JavaEmbeddedMappingTests(String name) {
 		super(name);
 	}
+	
+	public void testMorphToBasic() throws Exception {
+		createTestEntityWithEmbeddedMapping();
+		createEmbeddableType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) persistentAttribute.getMapping();
+		assertFalse(embeddedMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof IBasicMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(Column.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(Temporal.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(TableGenerator.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(GeneratedValue.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToDefault() throws Exception {
+		createTestEntityWithEmbeddedMapping();
+		createEmbeddableType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) persistentAttribute.getMapping();
+		embeddedMapping.addSpecifiedAttributeOverride(0);
+		assertFalse(embeddedMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(((IEmbeddedMapping) persistentAttribute.getMapping()).attributeOverrides().hasNext());
+		assertTrue(persistentAttribute.getMapping().isDefault());
+	
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNotNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+	}
+	
+	public void testDefaultEmbedded() throws Exception {
+		createTestEntityWithEmbeddedMapping();
+		createEmbeddableType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) persistentAttribute.getMapping();
+		assertFalse(embeddedMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof JavaNullAttributeMapping);
+		assertTrue(persistentAttribute.getMapping().isDefault());
+		
+		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
+		assertTrue(persistentAttribute.getMapping() instanceof IEmbeddedMapping);
+		assertTrue(persistentAttribute.getMapping().isDefault());
+	}
+	
+	public void testMorphToVersion() throws Exception {
+		createTestEntityWithEmbeddedMapping();
+		createEmbeddableType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) persistentAttribute.getMapping();
+		embeddedMapping.addSpecifiedAttributeOverride(0);
+		assertFalse(embeddedMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof IVersionMapping);
+	
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToTransient() throws Exception {
+		createTestEntityWithEmbeddedMapping();
+		createEmbeddableType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) persistentAttribute.getMapping();
+		embeddedMapping.addSpecifiedAttributeOverride(0);
+		assertFalse(embeddedMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof ITransientMapping);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToId() throws Exception {
+		createTestEntityWithEmbeddedMapping();
+		createEmbeddableType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) persistentAttribute.getMapping();
+		embeddedMapping.addSpecifiedAttributeOverride(0);
+		assertFalse(embeddedMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof IIdMapping);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+	}
+
 	
 	public void testSpecifiedAttributeOverrides() throws Exception {
 		createTestEntityWithEmbeddedMapping();

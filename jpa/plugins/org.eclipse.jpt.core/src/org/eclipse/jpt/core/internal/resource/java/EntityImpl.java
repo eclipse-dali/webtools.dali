@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
@@ -20,7 +19,6 @@ import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class EntityImpl extends AbstractAnnotationResource<Type> implements Entity
@@ -78,7 +76,7 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 	}
 
 	
-	public static class EntityAnnotationDefinition implements MappingAnnotationDefinition
+	public static class EntityAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton
 		private static final EntityAnnotationDefinition INSTANCE = new EntityAnnotationDefinition();
@@ -86,7 +84,7 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 		/**
 		 * Return the singleton.
 		 */
-		public static MappingAnnotationDefinition instance() {
+		public static EntityAnnotationDefinition instance() {
 			return INSTANCE;
 		}
 
@@ -105,39 +103,6 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 			return null;
 		}
 
-		public Iterator<String> correspondingAnnotationNames() {
-			return new ArrayIterator<String>(
-				JPA.TABLE,
-				JPA.SECONDARY_TABLE,
-				JPA.SECONDARY_TABLES,
-				JPA.PRIMARY_KEY_JOIN_COLUMN,
-				JPA.PRIMARY_KEY_JOIN_COLUMNS,
-				JPA.ID_CLASS,
-				JPA.INHERITANCE,
-				JPA.DISCRIMINATOR_VALUE,
-				JPA.DISCRIMINATOR_COLUMN,
-				JPA.SEQUENCE_GENERATOR,
-				JPA.TABLE_GENERATOR,
-				JPA.NAMED_QUERY,
-				JPA.NAMED_QUERIES,
-				JPA.NAMED_NATIVE_QUERY,
-				JPA.NAMED_NATIVE_QUERIES,
-				JPA.SQL_RESULT_SET_MAPPING,
-				JPA.EXCLUDE_DEFAULT_LISTENERS,
-				JPA.EXCLUDE_SUPERCLASS_LISTENERS,
-				JPA.ENTITY_LISTENERS,
-				JPA.PRE_PERSIST,
-				JPA.POST_PERSIST,
-				JPA.PRE_REMOVE,
-				JPA.POST_REMOVE,
-				JPA.PRE_UPDATE,
-				JPA.POST_UPDATE,
-				JPA.POST_LOAD,
-				JPA.ATTRIBUTE_OVERRIDE,
-				JPA.ATTRIBUTE_OVERRIDES,
-				JPA.ASSOCIATION_OVERRIDE,
-				JPA.ASSOCIATION_OVERRIDES);
-		}
 
 		public String getAnnotationName() {
 			return Entity.ANNOTATION_NAME;

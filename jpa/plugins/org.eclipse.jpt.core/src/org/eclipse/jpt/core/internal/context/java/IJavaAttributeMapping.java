@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 
@@ -20,4 +21,11 @@ public interface IJavaAttributeMapping extends IAttributeMapping, IJavaJpaContex
 	void update(JavaPersistentAttributeResource persistentAttributeResource);
 	
 	String annotationName();
+	
+	/**
+	 * Return all fully qualfied annotation names that are supported with this mapping type.
+	 * This includes all possible annotations, not just the ones that currently exist on the attribute.
+	 */
+	Iterator<String> correspondingAnnotationNames();
+
 }

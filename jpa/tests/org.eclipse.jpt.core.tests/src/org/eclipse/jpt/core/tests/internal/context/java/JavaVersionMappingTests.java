@@ -12,14 +12,24 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
+import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.base.ITransientMapping;
 import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
+import org.eclipse.jpt.core.internal.resource.java.Basic;
 import org.eclipse.jpt.core.internal.resource.java.Column;
+import org.eclipse.jpt.core.internal.resource.java.GeneratedValue;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.SequenceGenerator;
+import org.eclipse.jpt.core.internal.resource.java.TableGenerator;
 import org.eclipse.jpt.core.internal.resource.java.Temporal;
+import org.eclipse.jpt.core.internal.resource.java.Version;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -84,6 +94,131 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		super(name);
 	}
 		
+	public void testMorphToBasic() throws Exception {
+		createTestEntityWithVersionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IVersionMapping versionMapping = (IVersionMapping) persistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		assertEquals("FOO", ((IBasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
+		assertEquals(TemporalType.TIME, ((IBasicMapping) persistentAttribute.getMapping()).getTemporal());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(Version.ANNOTATION_NAME));
+		assertNotNull(attributeResource.annotation(Column.ANNOTATION_NAME));
+		assertNotNull(attributeResource.annotation(Temporal.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(TableGenerator.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(GeneratedValue.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToDefault() throws Exception {
+		createTestEntityWithVersionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IVersionMapping versionMapping = (IVersionMapping) persistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
+		assertEquals("FOO", ((IBasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
+		assertEquals(TemporalType.TIME, ((IBasicMapping) persistentAttribute.getMapping()).getTemporal());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(Version.ANNOTATION_NAME));
+		assertNull(attributeResource.mappingAnnotation(Basic.ANNOTATION_NAME));
+		assertNotNull(attributeResource.annotation(Column.ANNOTATION_NAME));
+		assertNotNull(attributeResource.annotation(Temporal.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(TableGenerator.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(GeneratedValue.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToId() throws Exception {
+		createTestEntityWithVersionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IVersionMapping versionMapping = (IVersionMapping) persistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertEquals("FOO", ((IIdMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
+		assertEquals(TemporalType.TIME, ((IIdMapping) persistentAttribute.getMapping()).getTemporal());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(Version.ANNOTATION_NAME));
+		assertNotNull(attributeResource.annotation(Column.ANNOTATION_NAME));
+		assertNotNull(attributeResource.annotation(Temporal.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(TableGenerator.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(GeneratedValue.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToEmbedded() throws Exception {
+		createTestEntityWithVersionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IVersionMapping versionMapping = (IVersionMapping) persistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof IEmbeddedMapping);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(Version.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(Column.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(Temporal.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(TableGenerator.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(GeneratedValue.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToTransient() throws Exception {
+		createTestEntityWithVersionMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IVersionMapping versionMapping = (IVersionMapping) persistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof ITransientMapping);
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(Version.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(Column.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(Temporal.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(TableGenerator.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(GeneratedValue.ANNOTATION_NAME));
+	}
+
+	
 	public void testGetTemporal() throws Exception {
 		createTestEntityWithVersionMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
