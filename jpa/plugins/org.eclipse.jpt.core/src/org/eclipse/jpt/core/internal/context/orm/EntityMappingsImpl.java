@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -217,7 +218,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	public void removeXmlPersistentType(int index) {
 		XmlPersistentType xmlPersistentType = this.persistentTypes.get(index);		
 		this.persistentTypes.remove(index);
-		xmlPersistentType.getMapping().removeFromResourceModel();
+		xmlPersistentType.getMapping().removeFromResourceModel(this.entityMappings);
 		fireItemRemoved(PERSISTENT_TYPES_LIST, index, xmlPersistentType);		
 	}
 	
@@ -225,10 +226,10 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		removeItemFromList(xmlPersistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
 	}
 
-	public void changeMapping(XmlPersistentType xmlPersistentType, XmlTypeMapping oldMapping, XmlTypeMapping newMapping) {
+	public void changeMapping(XmlPersistentType xmlPersistentType, XmlTypeMapping<? extends TypeMapping> oldMapping, XmlTypeMapping<? extends TypeMapping> newMapping) {
 		int sourceIndex = this.persistentTypes.indexOf(xmlPersistentType);
 		this.persistentTypes.remove(sourceIndex);
-		oldMapping.removeFromResourceModel();
+		oldMapping.removeFromResourceModel(this.entityMappings);
 		int targetIndex = insertionIndex(xmlPersistentType);
 		this.persistentTypes.add(targetIndex, xmlPersistentType);
 		newMapping.addToResourceModel(this.entityMappings);

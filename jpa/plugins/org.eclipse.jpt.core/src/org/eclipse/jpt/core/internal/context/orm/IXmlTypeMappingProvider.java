@@ -11,13 +11,14 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
 import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 
 
 public interface IXmlTypeMappingProvider
 {
 	String key();
 	
-	XmlTypeMapping buildTypeMapping(IJpaBaseContextFactory factory, XmlPersistentType parent);
+	XmlTypeMapping<? extends TypeMapping> buildTypeMapping(IJpaBaseContextFactory factory, XmlPersistentType parent);
 	
 	/**
 	 * create and orm resource mapping and add it to the entityMappings.  Also

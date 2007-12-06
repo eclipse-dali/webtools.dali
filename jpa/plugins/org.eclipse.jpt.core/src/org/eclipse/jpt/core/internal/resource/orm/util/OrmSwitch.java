@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmSwitch.java,v 1.1.2.3 2007/11/30 15:35:53 kmoore Exp $
+ * $Id: OrmSwitch.java,v 1.1.2.4 2007/12/06 15:56:01 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -61,6 +61,7 @@ import org.eclipse.jpt.core.internal.resource.orm.SqlResultSetMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Table;
 import org.eclipse.jpt.core.internal.resource.orm.TableGenerator;
 import org.eclipse.jpt.core.internal.resource.orm.Transient;
+import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.UniqueConstraint;
 import org.eclipse.jpt.core.internal.resource.orm.Version;
 
@@ -168,10 +169,18 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.TYPE_MAPPING:
+			{
+				TypeMapping typeMapping = (TypeMapping)theEObject;
+				T result = caseTypeMapping(typeMapping);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.MAPPED_SUPERCLASS:
 			{
 				MappedSuperclass mappedSuperclass = (MappedSuperclass)theEObject;
 				T result = caseMappedSuperclass(mappedSuperclass);
+				if (result == null) result = caseTypeMapping(mappedSuperclass);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -179,6 +188,7 @@ public class OrmSwitch<T>
 			{
 				Entity entity = (Entity)theEObject;
 				T result = caseEntity(entity);
+				if (result == null) result = caseTypeMapping(entity);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -186,6 +196,7 @@ public class OrmSwitch<T>
 			{
 				Embeddable embeddable = (Embeddable)theEObject;
 				T result = caseEmbeddable(embeddable);
+				if (result == null) result = caseTypeMapping(embeddable);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -573,6 +584,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T casePersistenceUnitDefaults(PersistenceUnitDefaults object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Type Mapping</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Type Mapping</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTypeMapping(TypeMapping object)
 	{
 		return null;
 	}

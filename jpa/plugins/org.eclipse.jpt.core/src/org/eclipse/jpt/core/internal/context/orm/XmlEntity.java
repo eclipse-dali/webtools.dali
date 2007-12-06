@@ -14,7 +14,6 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
@@ -34,9 +33,8 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
-public class XmlEntity extends XmlTypeMapping implements IEntity
+public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 {
-	protected Entity entity;
 	
 	protected String specifiedName;
 
@@ -179,7 +177,7 @@ public class XmlEntity extends XmlTypeMapping implements IEntity
 	public void setSpecifiedName(String newSpecifiedName) {
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
-		this.entity.setName(newSpecifiedName);
+		this.typeMappingResource().setName(newSpecifiedName);
 		firePropertyChanged(SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
 
@@ -856,43 +854,18 @@ public class XmlEntity extends XmlTypeMapping implements IEntity
 //	}
 	
 	
-	
 	@Override
-	protected void setAccessOnResource(AccessType newAccess) {
-		this.entity.setAccess(AccessType.toXmlResourceModel(newAccess));
-	}
-	
-	@Override
-	protected void setClassOnResource(String newClass) {
-		this.entity.setClassName(newClass);
-	}
-	
-	@Override
-	protected void setMetadataCompleteOnResource(Boolean newMetadataComplete) {
-		this.entity.setMetadataComplete(newMetadataComplete);
-	}
-
-	
 	public void initialize(Entity entity) {
-		this.entity = entity;
+		super.initialize(entity);
 		this.specifiedName = entity.getName();
 		this.defaultName = defaultName();
-		this.class_ = entity.getClassName();
-		this.specifiedMetadataComplete = this.metadataComplete(entity);
-		this.defaultMetadataComplete = this.defaultMetadataComplete();
-		this.specifiedAccess = AccessType.fromXmlResourceModel(entity.getAccess());
-		this.defaultAccess = this.defaultAccess();
 	}
 	
+	@Override
 	public void update(Entity entity) {
-		this.entity = entity;
+		super.update(entity);
 		this.setSpecifiedName(entity.getName());
 		this.setDefaultName(this.defaultName());
-		this.setClass(entity.getClassName());
-		this.setSpecifiedMetadataComplete(this.metadataComplete(entity));
-		this.setDefaultMetadataComplete(this.defaultMetadataComplete());
-		this.setSpecifiedAccess(AccessType.fromXmlResourceModel(entity.getAccess()));
-		this.setDefaultAccess(this.defaultAccess());
 	}
 
 	protected String defaultName() {
@@ -902,11 +875,7 @@ public class XmlEntity extends XmlTypeMapping implements IEntity
 		}
 		return null;
 	}
-	
-	protected Boolean metadataComplete(Entity entity) {
-		return entity.getMetadataComplete();
-	}
-	
+		
 	public ISequenceGenerator addSequenceGenerator() {
 		// TODO Auto-generated method stub
 		return null;
@@ -1127,24 +1096,24 @@ public class XmlEntity extends XmlTypeMapping implements IEntity
 		return false;
 	}
 
-	public ITypeMapping typeMapping() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	@Override
-	public void removeFromResourceModel() {
-		this.entity.entityMappings().getEntities().remove(this.entity);
+	public ITypeMapping typeMapping() {
+		return this;
 	}
 	
 	@Override
-	public void addToResourceModel(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
-		this.entity = OrmFactory.eINSTANCE.createEntity();
-		entityMappings.getEntities().add(this.entity);
+	public void removeFromResourceModel(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
+		entityMappings.getEntities().remove(this.typeMappingResource());
+	}
+	
+	@Override
+	public Entity addToResourceModel(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
+		Entity entity = OrmFactory.eINSTANCE.createEntity();
+		entityMappings.getEntities().add(entity);
+		return entity;
 	}
 }

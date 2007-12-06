@@ -14,8 +14,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
-import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,10 +23,6 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getClassName <em>Class Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getAccess <em>Access</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getMetadataComplete <em>Metadata Complete</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getDescription <em>Description</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getIdClass <em>Id Class</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#isExcludeDefaultListeners <em>Exclude Default Listeners</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#isExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}</li>
@@ -46,86 +40,15 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getMappedSuperclass()
  * @model kind="class"
- * @extends IJpaEObject
  * @generated
  */
-public class MappedSuperclass extends JpaEObject implements IJpaEObject
+public class MappedSuperclass extends TypeMapping
 {
-	/**
-	 * The default value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getClassName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CLASS_NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getClassName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String className = CLASS_NAME_EDEFAULT;
-
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
 	 * we don't want a default for enums, just null if the tag does not exist
 	 */
 	protected static final AccessType ACCESS_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAccess()
-	 * @generated
-	 * @ordered
-	 */
-	protected AccessType access = ACCESS_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getMetadataComplete() <em>Metadata Complete</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMetadataComplete()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Boolean METADATA_COMPLETE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getMetadataComplete() <em>Metadata Complete</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMetadataComplete()
-	 * @generated
-	 * @ordered
-	 */
-	protected Boolean metadataComplete = METADATA_COMPLETE_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDescription()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String DESCRIPTION_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDescription()
-	 * @generated
-	 * @ordered
-	 */
-	protected String description = DESCRIPTION_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getIdClass() <em>Id Class</em>}' containment reference.
@@ -290,150 +213,6 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.MAPPED_SUPERCLASS;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Class Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Class Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Class Name</em>' attribute.
-	 * @see #setClassName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getMappedSuperclass_ClassName()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
-	 * @generated
-	 */
-	public String getClassName()
-	{
-		return className;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getClassName <em>Class Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Class Name</em>' attribute.
-	 * @see #getClassName()
-	 * @generated
-	 */
-	public void setClassName(String newClassName)
-	{
-		String oldClassName = className;
-		className = newClassName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MAPPED_SUPERCLASS__CLASS_NAME, oldClassName, className));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Access</b></em>' attribute.
-	 * The default value is <code>"PROPERTY"</code>.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.resource.orm.AccessType}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Access</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Access</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.AccessType
-	 * @see #setAccess(AccessType)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getMappedSuperclass_Access()
-	 * @model default="PROPERTY"
-	 * @generated
-	 */
-	public AccessType getAccess()
-	{
-		return access;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getAccess <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Access</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.AccessType
-	 * @see #getAccess()
-	 * @generated
-	 */
-	public void setAccess(AccessType newAccess)
-	{
-		AccessType oldAccess = access;
-		access = newAccess == null ? ACCESS_EDEFAULT : newAccess;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MAPPED_SUPERCLASS__ACCESS, oldAccess, access));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Metadata Complete</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Metadata Complete</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Metadata Complete</em>' attribute.
-	 * @see #setMetadataComplete(Boolean)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getMappedSuperclass_MetadataComplete()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
-	 * @generated
-	 */
-	public Boolean getMetadataComplete()
-	{
-		return metadataComplete;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getMetadataComplete <em>Metadata Complete</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Metadata Complete</em>' attribute.
-	 * @see #getMetadataComplete()
-	 * @generated
-	 */
-	public void setMetadataComplete(Boolean newMetadataComplete)
-	{
-		Boolean oldMetadataComplete = metadataComplete;
-		metadataComplete = newMetadataComplete;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MAPPED_SUPERCLASS__METADATA_COMPLETE, oldMetadataComplete, metadataComplete));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Description</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Description</em>' attribute.
-	 * @see #setDescription(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getMappedSuperclass_Description()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getDescription()
-	{
-		return description;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getDescription <em>Description</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Description</em>' attribute.
-	 * @see #getDescription()
-	 * @generated
-	 */
-	public void setDescription(String newDescription)
-	{
-		String oldDescription = description;
-		description = newDescription;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MAPPED_SUPERCLASS__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -1150,14 +929,6 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.MAPPED_SUPERCLASS__CLASS_NAME:
-				return getClassName();
-			case OrmPackage.MAPPED_SUPERCLASS__ACCESS:
-				return getAccess();
-			case OrmPackage.MAPPED_SUPERCLASS__METADATA_COMPLETE:
-				return getMetadataComplete();
-			case OrmPackage.MAPPED_SUPERCLASS__DESCRIPTION:
-				return getDescription();
 			case OrmPackage.MAPPED_SUPERCLASS__ID_CLASS:
 				return getIdClass();
 			case OrmPackage.MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
@@ -1196,18 +967,6 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.MAPPED_SUPERCLASS__CLASS_NAME:
-				setClassName((String)newValue);
-				return;
-			case OrmPackage.MAPPED_SUPERCLASS__ACCESS:
-				setAccess((AccessType)newValue);
-				return;
-			case OrmPackage.MAPPED_SUPERCLASS__METADATA_COMPLETE:
-				setMetadataComplete((Boolean)newValue);
-				return;
-			case OrmPackage.MAPPED_SUPERCLASS__DESCRIPTION:
-				setDescription((String)newValue);
-				return;
 			case OrmPackage.MAPPED_SUPERCLASS__ID_CLASS:
 				setIdClass((IdClass)newValue);
 				return;
@@ -1258,18 +1017,6 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.MAPPED_SUPERCLASS__CLASS_NAME:
-				setClassName(CLASS_NAME_EDEFAULT);
-				return;
-			case OrmPackage.MAPPED_SUPERCLASS__ACCESS:
-				setAccess(ACCESS_EDEFAULT);
-				return;
-			case OrmPackage.MAPPED_SUPERCLASS__METADATA_COMPLETE:
-				setMetadataComplete(METADATA_COMPLETE_EDEFAULT);
-				return;
-			case OrmPackage.MAPPED_SUPERCLASS__DESCRIPTION:
-				setDescription(DESCRIPTION_EDEFAULT);
-				return;
 			case OrmPackage.MAPPED_SUPERCLASS__ID_CLASS:
 				setIdClass((IdClass)null);
 				return;
@@ -1320,14 +1067,6 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.MAPPED_SUPERCLASS__CLASS_NAME:
-				return CLASS_NAME_EDEFAULT == null ? className != null : !CLASS_NAME_EDEFAULT.equals(className);
-			case OrmPackage.MAPPED_SUPERCLASS__ACCESS:
-				return access != ACCESS_EDEFAULT;
-			case OrmPackage.MAPPED_SUPERCLASS__METADATA_COMPLETE:
-				return METADATA_COMPLETE_EDEFAULT == null ? metadataComplete != null : !METADATA_COMPLETE_EDEFAULT.equals(metadataComplete);
-			case OrmPackage.MAPPED_SUPERCLASS__DESCRIPTION:
-				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.MAPPED_SUPERCLASS__ID_CLASS:
 				return idClass != null;
 			case OrmPackage.MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
@@ -1367,15 +1106,7 @@ public class MappedSuperclass extends JpaEObject implements IJpaEObject
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (className: ");
-		result.append(className);
-		result.append(", access: ");
-		result.append(access);
-		result.append(", metadataComplete: ");
-		result.append(metadataComplete);
-		result.append(", description: ");
-		result.append(description);
-		result.append(", excludeDefaultListeners: ");
+		result.append(" (excludeDefaultListeners: ");
 		result.append(excludeDefaultListeners);
 		result.append(", excludeSuperclassListeners: ");
 		result.append(excludeSuperclassListeners);

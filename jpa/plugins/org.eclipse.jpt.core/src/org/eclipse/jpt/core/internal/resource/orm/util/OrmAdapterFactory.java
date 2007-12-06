@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmAdapterFactory.java,v 1.1.2.3 2007/11/30 15:35:53 kmoore Exp $
+ * $Id: OrmAdapterFactory.java,v 1.1.2.4 2007/12/06 15:56:01 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -62,6 +62,7 @@ import org.eclipse.jpt.core.internal.resource.orm.SqlResultSetMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Table;
 import org.eclipse.jpt.core.internal.resource.orm.TableGenerator;
 import org.eclipse.jpt.core.internal.resource.orm.Transient;
+import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.UniqueConstraint;
 import org.eclipse.jpt.core.internal.resource.orm.Version;
 
@@ -142,6 +143,11 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 			public Adapter casePersistenceUnitDefaults(PersistenceUnitDefaults object)
 			{
 				return createPersistenceUnitDefaultsAdapter();
+			}
+			@Override
+			public Adapter caseTypeMapping(TypeMapping object)
+			{
+				return createTypeMappingAdapter();
 			}
 			@Override
 			public Adapter caseMappedSuperclass(MappedSuperclass object)
@@ -456,6 +462,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createPersistenceUnitDefaultsAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.TypeMapping <em>Type Mapping</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.TypeMapping
+	 * @generated
+	 */
+	public Adapter createTypeMappingAdapter()
 	{
 		return null;
 	}

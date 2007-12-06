@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 
 public class XmlMappedSuperclassProvider implements IXmlTypeMappingProvider
 {	
-	public XmlTypeMapping buildTypeMapping(IJpaBaseContextFactory factory, XmlPersistentType parent) {
+	public XmlTypeMapping<MappedSuperclass> buildTypeMapping(IJpaBaseContextFactory factory, XmlPersistentType parent) {
 		return factory.createXmlMappedSuperclass(parent);
 	}
 

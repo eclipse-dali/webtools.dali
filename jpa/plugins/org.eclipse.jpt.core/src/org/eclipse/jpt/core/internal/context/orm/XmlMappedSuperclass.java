@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.ITable;
@@ -23,14 +22,13 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 
-public class XmlMappedSuperclass extends XmlTypeMapping
+public class XmlMappedSuperclass extends XmlTypeMapping<MappedSuperclass>
 	implements IMappedSuperclass
 {
 //	protected String idClass;
 //
 //	protected XmlIdClass idClassForXml;
-
-	protected MappedSuperclass mappedSuperclass;
+	
 	
 	public XmlMappedSuperclass(XmlPersistentType parent) {
 		super(parent);
@@ -148,41 +146,14 @@ public class XmlMappedSuperclass extends XmlTypeMapping
 		return 0;
 	}
 	
-	
-	
 	@Override
-	protected void setAccessOnResource(AccessType newAccess) {
-		this.mappedSuperclass.setAccess(AccessType.toXmlResourceModel(newAccess));
-	}
-	
-	@Override
-	protected void setClassOnResource(String newClass) {
-		this.mappedSuperclass.setClassName(newClass);
-	}
-	
-	@Override
-	protected void setMetadataCompleteOnResource(Boolean newMetadataComplete) {
-		this.mappedSuperclass.setMetadataComplete(newMetadataComplete);
-	}
-	
 	public void initialize(MappedSuperclass mappedSuperclass) {
-		this.mappedSuperclass = mappedSuperclass;
-		this.class_ = mappedSuperclass.getClassName();
-		this.specifiedMetadataComplete = this.metadataComplete(mappedSuperclass);
-		this.specifiedAccess = AccessType.fromXmlResourceModel(mappedSuperclass.getAccess());
+		super.initialize(mappedSuperclass);
 	}
 	
+	@Override
 	public void update(MappedSuperclass mappedSuperclass) {
-		this.mappedSuperclass = mappedSuperclass;
-		this.setClass(mappedSuperclass.getClassName());
-		this.setSpecifiedMetadataComplete(this.metadataComplete(mappedSuperclass));
-		this.setSpecifiedAccess(AccessType.fromXmlResourceModel(mappedSuperclass.getAccess()));
-
-		//this.setDefaultName(defaultName());
-		this.setDefaultMetadataComplete(this.defaultMetadataComplete());
-		this.setDefaultAccess(this.defaultAccess());
-		this.defaultMetadataComplete = this.defaultMetadataComplete();
-		this.defaultAccess = this.defaultAccess();
+		super.update(mappedSuperclass);
 	}
 
 	protected Boolean metadataComplete(MappedSuperclass mappedSuperclass) {
@@ -190,13 +161,14 @@ public class XmlMappedSuperclass extends XmlTypeMapping
 	}
 	
 	@Override
-	public void removeFromResourceModel() {
-		this.mappedSuperclass.entityMappings().getMappedSuperclasses().remove(this.mappedSuperclass);
+	public void removeFromResourceModel(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
+		entityMappings.getMappedSuperclasses().remove(this.typeMappingResource());
 	}
 	
 	@Override
-	public void addToResourceModel(EntityMappings entityMappings) {
-		this.mappedSuperclass = OrmFactory.eINSTANCE.createMappedSuperclass();
-		entityMappings.getMappedSuperclasses().add(this.mappedSuperclass);
+	public MappedSuperclass addToResourceModel(EntityMappings entityMappings) {
+		MappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createMappedSuperclass();
+		entityMappings.getMappedSuperclasses().add(mappedSuperclass);
+		return mappedSuperclass;
 	}
 }

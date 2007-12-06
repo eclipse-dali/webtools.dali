@@ -13,6 +13,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 
 public interface EntityMappings extends IJpaContextNode
 {
@@ -71,7 +72,7 @@ public interface EntityMappings extends IJpaContextNode
 
 	PersistenceUnitDefaults persistenceUnitDefaults();
 	
-	void changeMapping(XmlPersistentType xmlPersistentType, XmlTypeMapping oldMapping, XmlTypeMapping newMapping);
+	void changeMapping(XmlPersistentType xmlPersistentType, XmlTypeMapping<? extends TypeMapping> oldMapping, XmlTypeMapping<? extends TypeMapping> newMapping);
 	
 	// **************** updating ***********************************************
 	

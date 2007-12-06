@@ -18,8 +18,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
-import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,10 +28,6 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getClassName <em>Class Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getAccess <em>Access</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getMetadataComplete <em>Metadata Complete</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getDescription <em>Description</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getTable <em>Table</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getSecondaryTables <em>Secondary Tables</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getPrimaryKeyJoinColumns <em>Primary Key Join Columns</em>}</li>
@@ -64,11 +58,16 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntity()
  * @model kind="class"
- * @extends IJpaEObject
  * @generated
  */
-public class Entity extends JpaEObject implements IJpaEObject
+public class Entity extends TypeMapping
 {
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final AccessType ACCESS_EDEFAULT = null;
+
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -88,82 +87,6 @@ public class Entity extends JpaEObject implements IJpaEObject
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getClassName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CLASS_NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getClassName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String className = CLASS_NAME_EDEFAULT;
-
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final AccessType ACCESS_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAccess()
-	 * @generated
-	 * @ordered
-	 */
-	protected AccessType access = ACCESS_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getMetadataComplete() <em>Metadata Complete</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMetadataComplete()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Boolean METADATA_COMPLETE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getMetadataComplete() <em>Metadata Complete</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMetadataComplete()
-	 * @generated
-	 * @ordered
-	 */
-	protected Boolean metadataComplete = METADATA_COMPLETE_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDescription()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String DESCRIPTION_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDescription()
-	 * @generated
-	 * @ordered
-	 */
-	protected String description = DESCRIPTION_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getTable() <em>Table</em>}' containment reference.
@@ -503,150 +426,6 @@ public class Entity extends JpaEObject implements IJpaEObject
 		name = newName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__NAME, oldName, name));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Class Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Class Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Class Name</em>' attribute.
-	 * @see #setClassName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntity_ClassName()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
-	 * @generated
-	 */
-	public String getClassName()
-	{
-		return className;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getClassName <em>Class Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Class Name</em>' attribute.
-	 * @see #getClassName()
-	 * @generated
-	 */
-	public void setClassName(String newClassName)
-	{
-		String oldClassName = className;
-		className = newClassName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__CLASS_NAME, oldClassName, className));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Access</b></em>' attribute.
-	 * The default value is <code>"PROPERTY"</code>.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.resource.orm.AccessType}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Access</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Access</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.AccessType
-	 * @see #setAccess(AccessType)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntity_Access()
-	 * @model default="PROPERTY"
-	 * @generated
-	 */
-	public AccessType getAccess()
-	{
-		return access;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getAccess <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Access</em>' attribute.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.AccessType
-	 * @see #getAccess()
-	 * @generated
-	 */
-	public void setAccess(AccessType newAccess)
-	{
-		AccessType oldAccess = access;
-		access = newAccess == null ? ACCESS_EDEFAULT : newAccess;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__ACCESS, oldAccess, access));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Metadata Complete</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Metadata Complete</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Metadata Complete</em>' attribute.
-	 * @see #setMetadataComplete(Boolean)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntity_MetadataComplete()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
-	 * @generated
-	 */
-	public Boolean getMetadataComplete()
-	{
-		return metadataComplete;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getMetadataComplete <em>Metadata Complete</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Metadata Complete</em>' attribute.
-	 * @see #getMetadataComplete()
-	 * @generated
-	 */
-	public void setMetadataComplete(Boolean newMetadataComplete)
-	{
-		Boolean oldMetadataComplete = metadataComplete;
-		metadataComplete = newMetadataComplete;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__METADATA_COMPLETE, oldMetadataComplete, metadataComplete));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Description</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Description</em>' attribute.
-	 * @see #setDescription(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntity_Description()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getDescription()
-	{
-		return description;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getDescription <em>Description</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Description</em>' attribute.
-	 * @see #getDescription()
-	 * @generated
-	 */
-	public void setDescription(String newDescription)
-	{
-		String oldDescription = description;
-		description = newDescription;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -1885,14 +1664,6 @@ public class Entity extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.ENTITY__NAME:
 				return getName();
-			case OrmPackage.ENTITY__CLASS_NAME:
-				return getClassName();
-			case OrmPackage.ENTITY__ACCESS:
-				return getAccess();
-			case OrmPackage.ENTITY__METADATA_COMPLETE:
-				return getMetadataComplete();
-			case OrmPackage.ENTITY__DESCRIPTION:
-				return getDescription();
 			case OrmPackage.ENTITY__TABLE:
 				return getTable();
 			case OrmPackage.ENTITY__SECONDARY_TABLES:
@@ -1960,18 +1731,6 @@ public class Entity extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.ENTITY__NAME:
 				setName((String)newValue);
-				return;
-			case OrmPackage.ENTITY__CLASS_NAME:
-				setClassName((String)newValue);
-				return;
-			case OrmPackage.ENTITY__ACCESS:
-				setAccess((AccessType)newValue);
-				return;
-			case OrmPackage.ENTITY__METADATA_COMPLETE:
-				setMetadataComplete((Boolean)newValue);
-				return;
-			case OrmPackage.ENTITY__DESCRIPTION:
-				setDescription((String)newValue);
 				return;
 			case OrmPackage.ENTITY__TABLE:
 				setTable((Table)newValue);
@@ -2072,18 +1831,6 @@ public class Entity extends JpaEObject implements IJpaEObject
 			case OrmPackage.ENTITY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case OrmPackage.ENTITY__CLASS_NAME:
-				setClassName(CLASS_NAME_EDEFAULT);
-				return;
-			case OrmPackage.ENTITY__ACCESS:
-				setAccess(ACCESS_EDEFAULT);
-				return;
-			case OrmPackage.ENTITY__METADATA_COMPLETE:
-				setMetadataComplete(METADATA_COMPLETE_EDEFAULT);
-				return;
-			case OrmPackage.ENTITY__DESCRIPTION:
-				setDescription(DESCRIPTION_EDEFAULT);
-				return;
 			case OrmPackage.ENTITY__TABLE:
 				setTable((Table)null);
 				return;
@@ -2175,14 +1922,6 @@ public class Entity extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.ENTITY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case OrmPackage.ENTITY__CLASS_NAME:
-				return CLASS_NAME_EDEFAULT == null ? className != null : !CLASS_NAME_EDEFAULT.equals(className);
-			case OrmPackage.ENTITY__ACCESS:
-				return access != ACCESS_EDEFAULT;
-			case OrmPackage.ENTITY__METADATA_COMPLETE:
-				return METADATA_COMPLETE_EDEFAULT == null ? metadataComplete != null : !METADATA_COMPLETE_EDEFAULT.equals(metadataComplete);
-			case OrmPackage.ENTITY__DESCRIPTION:
-				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.ENTITY__TABLE:
 				return table != null;
 			case OrmPackage.ENTITY__SECONDARY_TABLES:
@@ -2250,14 +1989,6 @@ public class Entity extends JpaEObject implements IJpaEObject
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
-		result.append(", className: ");
-		result.append(className);
-		result.append(", access: ");
-		result.append(access);
-		result.append(", metadataComplete: ");
-		result.append(metadataComplete);
-		result.append(", description: ");
-		result.append(description);
 		result.append(", discriminatorValue: ");
 		result.append(discriminatorValue);
 		result.append(", excludeDefaultListeners: ");

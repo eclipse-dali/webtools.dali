@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
+import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 
 
@@ -35,7 +36,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 
 	protected final Collection<IXmlTypeMappingProvider> typeMappingProviders;
 
-	protected XmlTypeMapping xmlTypeMapping;
+	protected XmlTypeMapping<? extends TypeMapping> xmlTypeMapping;
 	
 	protected IPersistentType parentPersistentType;
 
@@ -58,7 +59,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		return (EntityMappings) parent();
 	}
 	
-	protected XmlTypeMapping buildXmlTypeMapping(String key) {
+	protected XmlTypeMapping<? extends TypeMapping> buildXmlTypeMapping(String key) {
 		for (IXmlTypeMappingProvider provider : this.typeMappingProviders) {
 			if (provider.key().equals(key)) {
 				return provider.buildTypeMapping(jpaFactory(), this);
@@ -89,7 +90,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		xmlTypeMappingProvider.createAndAddOrmResourceMapping(this.entityMappings, className);
 	}
 
-	public XmlTypeMapping getMapping() {
+	public XmlTypeMapping<? extends TypeMapping> getMapping() {
 		return this.xmlTypeMapping;
 	}
 
@@ -102,7 +103,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 			return;
 		}
 		this.mappingKey = newMappingKey;
-		XmlTypeMapping oldMapping = getMapping();
+		XmlTypeMapping<? extends TypeMapping> oldMapping = getMapping();
 		this.xmlTypeMapping = buildXmlTypeMapping(newMappingKey);
 		entityMappings().changeMapping(this, oldMapping, this.xmlTypeMapping);
 		
@@ -114,7 +115,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 			return;
 		}
 		this.mappingKey = newMappingKey;
-		XmlTypeMapping oldMapping = getMapping();
+		XmlTypeMapping<? extends TypeMapping> oldMapping = getMapping();
 		this.xmlTypeMapping = buildXmlTypeMapping(newMappingKey);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.xmlTypeMapping);
 	}

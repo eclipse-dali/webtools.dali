@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 
 public class XmlEntityProvider implements IXmlTypeMappingProvider
 {	
-	public XmlTypeMapping buildTypeMapping(IJpaBaseContextFactory factory, XmlPersistentType parent) {
+	public XmlTypeMapping<Entity> buildTypeMapping(IJpaBaseContextFactory factory, XmlPersistentType parent) {
 		return factory.createXmlEntity(parent);
 	}
 

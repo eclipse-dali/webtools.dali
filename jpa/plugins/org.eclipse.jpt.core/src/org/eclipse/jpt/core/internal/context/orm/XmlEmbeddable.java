@@ -10,7 +10,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
@@ -19,10 +18,8 @@ import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
-public class XmlEmbeddable extends XmlTypeMapping implements IEmbeddable
+public class XmlEmbeddable extends XmlTypeMapping<Embeddable> implements IEmbeddable
 {
-	protected Embeddable embeddable;
-	
 	public XmlEmbeddable(XmlPersistentType parent) {
 		super(parent);
 	}
@@ -56,54 +53,20 @@ public class XmlEmbeddable extends XmlTypeMapping implements IEmbeddable
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
 		return attributeMappingKey == IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY || attributeMappingKey == IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}
-	
-	@Override
-	protected void setAccessOnResource(AccessType newAccess) {
-		this.embeddable.setAccess(AccessType.toXmlResourceModel(newAccess));
-	}
-	
-	@Override
-	protected void setClassOnResource(String newClass) {
-		this.embeddable.setClassName(newClass);
-	}
-	
-	@Override
-	protected void setMetadataCompleteOnResource(Boolean newMetadataComplete) {
-		this.embeddable.setMetadataComplete(newMetadataComplete);
-	}
-	
-	public void initialize(Embeddable embeddable) {
-		this.embeddable = embeddable;
-		this.class_ = embeddable.getClassName();
-		this.specifiedMetadataComplete = this.metadataComplete(embeddable);
-		this.specifiedAccess = AccessType.fromXmlResourceModel(embeddable.getAccess());
-		this.defaultMetadataComplete = this.defaultMetadataComplete();
-		this.defaultAccess = this.defaultAccess();
-	}
-	
-	public void update(Embeddable embeddable) {
-		this.embeddable = embeddable;
-		this.setClass(embeddable.getClassName());
-		this.setSpecifiedMetadataComplete(this.metadataComplete(embeddable));
-		this.setSpecifiedAccess(AccessType.fromXmlResourceModel(embeddable.getAccess()));
-
-		//this.setDefaultName(defaultName());
-		this.setDefaultMetadataComplete(this.defaultMetadataComplete());
-		this.setDefaultAccess(this.defaultAccess());
-	}
 
 	protected Boolean metadataComplete(Embeddable embeddable) {
 		return embeddable.getMetadataComplete();
 	}
 	
 	@Override
-	public void removeFromResourceModel() {
-		this.embeddable.entityMappings().getEmbeddables().remove(this.embeddable);
+	public void removeFromResourceModel(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
+		entityMappings.getEmbeddables().remove(this.typeMappingResource());
 	}
 
 	@Override
-	public void addToResourceModel(EntityMappings entityMappings) {
-		this.embeddable = OrmFactory.eINSTANCE.createEmbeddable();
-		entityMappings.getEmbeddables().add(this.embeddable);
+	public Embeddable addToResourceModel(EntityMappings entityMappings) {
+		Embeddable embeddable = OrmFactory.eINSTANCE.createEmbeddable();
+		entityMappings.getEmbeddables().add(embeddable);
+		return embeddable;
 	}
 }

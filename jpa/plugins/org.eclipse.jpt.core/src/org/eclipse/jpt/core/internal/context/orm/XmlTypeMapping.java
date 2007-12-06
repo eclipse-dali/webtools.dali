@@ -13,12 +13,13 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
+import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
-public abstract class XmlTypeMapping extends JpaContextNode implements ITypeMapping
+public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNode implements ITypeMapping
 {
 
 	protected String class_;
@@ -36,6 +37,8 @@ public abstract class XmlTypeMapping extends JpaContextNode implements ITypeMapp
 	protected Boolean specifiedMetadataComplete;
 		public static final String SPECIFIED_METADATA_COMPLETE_PROPERTY = "specifiedMetadataCompleteProperty";
 
+	protected E typeMapping;
+	
 	protected XmlTypeMapping(XmlPersistentType parent) {
 		super(parent);
 	}
@@ -55,11 +58,9 @@ public abstract class XmlTypeMapping extends JpaContextNode implements ITypeMapp
 	public void setClass(String newClass) {
 		String oldClass = this.class_;
 		this.class_ = newClass;
-		setClassOnResource(newClass);
+		this.typeMappingResource().setClassName(newClass);
 		firePropertyChanged(CLASS_PROPERTY, oldClass, newClass);
 	}
-
-	protected abstract void setClassOnResource(String newClass);
 	
 	public AccessType getDefaultAccess() {
 		return this.defaultAccess;
@@ -78,11 +79,9 @@ public abstract class XmlTypeMapping extends JpaContextNode implements ITypeMapp
 	public void setSpecifiedAccess(AccessType newSpecifiedAccess) {
 		AccessType oldSpecifiedAccess = this.specifiedAccess;
 		this.specifiedAccess = newSpecifiedAccess;
-		setAccessOnResource(newSpecifiedAccess);
-		firePropertyChanged(DEFAULT_ACCESS_PROPERTY, oldSpecifiedAccess, newSpecifiedAccess);
+		this.typeMappingResource().setAccess(AccessType.toXmlResourceModel(newSpecifiedAccess));
+		firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, oldSpecifiedAccess, newSpecifiedAccess);
 	}
-	
-	protected abstract void setAccessOnResource(AccessType newAccess);
 
 	public AccessType getAccess() {
 		return (this.getSpecifiedAccess() == null) ? this.getDefaultAccess() : this.getSpecifiedAccess();
@@ -109,27 +108,13 @@ public abstract class XmlTypeMapping extends JpaContextNode implements ITypeMapp
 	public void setSpecifiedMetadataComplete(Boolean newSpecifiedMetadataComplete) {
 		Boolean oldMetadataComplete = this.specifiedMetadataComplete;
 		this.specifiedMetadataComplete = newSpecifiedMetadataComplete;
-		setMetadataCompleteOnResource(newSpecifiedMetadataComplete);
+		this.typeMappingResource().setMetadataComplete(newSpecifiedMetadataComplete);
 		firePropertyChanged(SPECIFIED_METADATA_COMPLETE_PROPERTY, oldMetadataComplete, newSpecifiedMetadataComplete);
 	}
-	
-	protected abstract void setMetadataCompleteOnResource(Boolean newMetadataComplete);
-
-//	public boolean isXmlMetadataComplete() {
-//		return isPersistenceUnitXmlMetadataComplete() || (getMetadataComplete() == DefaultFalseBoolean.TRUE);
-//	}
-//
-//	protected boolean isPersistenceUnitXmlMetadataComplete() {
-//		return ((XmlRootContentNode) getRoot()).entityMappings.getPersistenceUnitMetadata().isXmlMappingMetadataComplete();
-//	}
 
 	public XmlPersistentType persistentType() {
 		return (XmlPersistentType) parent();
 	}
-
-//	public IPersistentType javaPersistentType() {
-//		return persistentType().findJavaPersistentType();
-//	}
 
 	/**
 	 * ITypeMapping is changed and various ITypeMappings may have
@@ -137,7 +122,7 @@ public abstract class XmlTypeMapping extends JpaContextNode implements ITypeMapp
 	 * fromthe old ITypeMapping (oldMapping)
 	 * @param oldMapping
 	 */
-	public void initializeFrom(XmlTypeMapping oldMapping) {
+	public void initializeFrom(XmlTypeMapping<? extends TypeMapping> oldMapping) {
 		this.setClass(oldMapping.getClass_());
 		this.setSpecifiedAccess(oldMapping.getSpecifiedAccess());
 		this.setSpecifiedMetadataComplete(oldMapping.getSpecifiedMetadataComplete());
@@ -161,8 +146,6 @@ public abstract class XmlTypeMapping extends JpaContextNode implements ITypeMapp
 		return null;
 	}
 
-//	public void refreshDefaults(DefaultsContext defaultsContext) {}
-//
 //	public ITextRange classTextRange() {
 //		IDOMNode classNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.CLASS);
 //		if (classNode != null) {
@@ -220,6 +203,10 @@ public abstract class XmlTypeMapping extends JpaContextNode implements ITypeMapp
 		return persistentType().entityMappings();
 	}
 	
+	protected E typeMappingResource() {
+		return this.typeMapping;
+	}
+	
 	protected PersistenceUnitMetadata persistenceUnitMetadata() {
 		return entityMappings().getPersistenceUnitMetadata();
 	}
@@ -232,8 +219,29 @@ public abstract class XmlTypeMapping extends JpaContextNode implements ITypeMapp
 		return entityMappings().getAccess();
 	}
 
+	public void initialize(E typeMapping) {
+		this.typeMapping = typeMapping;
+		this.class_ = typeMapping.getClassName();
+		this.specifiedMetadataComplete = this.metadataComplete(typeMapping);
+		this.defaultMetadataComplete = this.defaultMetadataComplete();
+		this.specifiedAccess = AccessType.fromXmlResourceModel(typeMapping.getAccess());
+		this.defaultAccess = this.defaultAccess();
+	}
 	
-	public abstract void removeFromResourceModel();
+	public void update(E typeMapping) {
+		this.typeMapping = typeMapping;
+		this.setClass(typeMapping.getClassName());
+		this.setSpecifiedMetadataComplete(this.metadataComplete(typeMapping));
+		this.setDefaultMetadataComplete(this.defaultMetadataComplete());
+		this.setSpecifiedAccess(AccessType.fromXmlResourceModel(typeMapping.getAccess()));
+		this.setDefaultAccess(this.defaultAccess());
+	}
 	
-	public abstract void addToResourceModel(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings);
+	protected Boolean metadataComplete(TypeMapping typeMapping) {
+		return typeMapping.getMetadataComplete();
+	}
+
+	public abstract void removeFromResourceModel(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings);
+	
+	public abstract E addToResourceModel(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings);
 }

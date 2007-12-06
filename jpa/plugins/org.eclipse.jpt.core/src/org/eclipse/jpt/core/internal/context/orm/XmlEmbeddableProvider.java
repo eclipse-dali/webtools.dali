@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 public class XmlEmbeddableProvider implements IXmlTypeMappingProvider
 {
 
-	public XmlTypeMapping buildTypeMapping(IJpaBaseContextFactory factory, XmlPersistentType parent) {
+	public XmlTypeMapping<Embeddable> buildTypeMapping(IJpaBaseContextFactory factory, XmlPersistentType parent) {
 		return factory.createXmlEmbeddable(parent);
 	}
 

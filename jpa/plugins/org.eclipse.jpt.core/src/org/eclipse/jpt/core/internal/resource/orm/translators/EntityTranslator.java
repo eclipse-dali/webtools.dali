@@ -71,19 +71,19 @@ public class EntityTranslator extends Translator
 	}
 	
 	private Translator createClassTranslator() {
-		return new Translator(CLASS, ORM_PKG.getEntity_ClassName(), DOM_ATTRIBUTE);
+		return new Translator(CLASS, ORM_PKG.getTypeMapping_ClassName(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createAccessTranslator() {
-		return new Translator(ACCESS, ORM_PKG.getEntity_Access(), DOM_ATTRIBUTE);
+		return new Translator(ACCESS, ORM_PKG.getTypeMapping_Access(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createMetadataCompleteTranslator() {
-		return new Translator(METADATA_COMPLETE, ORM_PKG.getEntity_MetadataComplete(), DOM_ATTRIBUTE);
+		return new Translator(METADATA_COMPLETE, ORM_PKG.getTypeMapping_MetadataComplete(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createDescriptionTranslator() {
-		return new Translator(DESCRIPTION, ORM_PKG.getEntity_Description());
+		return new Translator(DESCRIPTION, ORM_PKG.getTypeMapping_Description());
 	}
 	
 	private Translator createTableTranslator() {

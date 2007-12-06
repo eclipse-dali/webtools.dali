@@ -85,11 +85,13 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//PersistenceUnitDefaults/cascadePersist"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//PersistenceUnitDefaults/entityListeners"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//TypeMapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TypeMapping/className"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TypeMapping/access"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TypeMapping/metadataComplete"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TypeMapping/description"/>
+    </genClasses>
     <genClasses ecoreClass="orm.ecore#//MappedSuperclass">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//MappedSuperclass/className"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//MappedSuperclass/access"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//MappedSuperclass/metadataComplete"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//MappedSuperclass/description"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//MappedSuperclass/idClass"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//MappedSuperclass/excludeDefaultListeners"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//MappedSuperclass/excludeSuperclassListeners"/>
@@ -105,10 +107,6 @@
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//Entity">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Entity/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Entity/className"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Entity/access"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Entity/metadataComplete"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Entity/description"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/table"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/secondaryTables"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/primaryKeyJoinColumns"/>
@@ -136,10 +134,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/attributes"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//Embeddable">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Embeddable/className"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Embeddable/access"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Embeddable/metadataComplete"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Embeddable/description"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Embeddable/attributes"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//Attributes">
