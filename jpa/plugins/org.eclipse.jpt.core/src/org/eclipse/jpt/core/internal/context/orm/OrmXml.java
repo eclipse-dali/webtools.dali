@@ -43,6 +43,12 @@ public interface OrmXml extends IJpaContextNode
 	
 	PersistenceUnitDefaults persistenceUnitDefaults();
 	
+	/**
+	 * Return the XmlPersistentType listed in this mapping file
+	 * with the given fullyQualifiedTypeName.  Return null if non exists.
+	 */
+	XmlPersistentType persistentTypeFor(String fullyQualifiedTypeName);
+
 	// **************** updating **********************************************
 	
 	void initialize(OrmResource ormResource);

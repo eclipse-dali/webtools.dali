@@ -11,8 +11,16 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.IJpaNode;
+import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 
 public interface IJpaContextNode extends IJpaNode
 {
 	IPersistenceUnit persistenceUnit();
+	
+	/**
+	 * Return the EntityMappings if this contextNode is within an orm.xml context
+	 * Return null otherwise.
+	 */
+	EntityMappings entityMappings();
+
 }

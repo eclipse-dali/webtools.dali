@@ -13,6 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
@@ -36,6 +38,9 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 
 	protected Boolean specifiedMetadataComplete;
 		public static final String SPECIFIED_METADATA_COMPLETE_PROPERTY = "specifiedMetadataCompleteProperty";
+
+	protected IJavaPersistentType javaPersistentType;
+		public static final String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentTypeProperty";
 
 	protected E typeMapping;
 	
@@ -91,6 +96,13 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 		return (this.getSpecifiedMetadataComplete() == null) ? this.getDefaultMetadataComplete() : this.getSpecifiedMetadataComplete();
 	}
 
+	public boolean isMetadataComplete() {
+		if (getMetadataComplete() == null) {
+			return false;
+		}
+		return getMetadataComplete();
+	}
+	
 	public Boolean getDefaultMetadataComplete() {
 		return this.defaultMetadataComplete;
 	}
@@ -198,11 +210,7 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 	public Iterator<String> allOverridableAttributeNames() {
 		return EmptyIterator.instance();
 	}
-	
-	protected EntityMappings entityMappings() {
-		return persistentType().entityMappings();
-	}
-	
+
 	protected E typeMappingResource() {
 		return this.typeMapping;
 	}
@@ -216,12 +224,61 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 	}
 
 	protected AccessType defaultAccess() {
+		if (!isMetadataComplete()) {
+			if (getJavaPersistentType() != null) {
+				if (getJavaPersistentType().hasAnyAttributeMappingAnnotations()) {
+					return getJavaPersistentType().access();
+				}
+				if (persistentType().parentPersistentType() != null) {
+					return persistentType().parentPersistentType().access();
+				}
+			}
+		}
 		return entityMappings().getAccess();
+	}
+	
+	protected IJavaPersistentType getJavaPersistentType() {
+		return this.javaPersistentType;
+	}
+	
+	protected void setJavaPersistentType(IJavaPersistentType newJavaPersistentType) {
+		IJavaPersistentType oldJavaPersistentType = this.javaPersistentType;
+		this.javaPersistentType = newJavaPersistentType;
+		firePropertyChanged(JAVA_PERSISTENT_TYPE_PROPERTY, oldJavaPersistentType, newJavaPersistentType);
+	}
+	
+	protected void initializeJavaPersistentType() {
+		JavaPersistentTypeResource persistentTypeResource = jpaProject().javaPersistentTypeResource(getClass_());
+		if (persistentTypeResource != null) {
+			this.javaPersistentType = createJavaPersistentType(persistentTypeResource);
+		}	
+	}
+
+	protected void updateJavaPersistentType() {
+		JavaPersistentTypeResource persistentTypeResource = jpaProject().javaPersistentTypeResource(getClass_());
+		if (persistentTypeResource == null) {
+			setJavaPersistentType(null);
+		}
+		else { 
+			if (getJavaPersistentType() != null) {
+				getJavaPersistentType().update(persistentTypeResource);
+			}
+			else {
+				setJavaPersistentType(createJavaPersistentType(persistentTypeResource));
+			}
+		}		
+	}
+	
+	protected IJavaPersistentType createJavaPersistentType(JavaPersistentTypeResource persistentTypeResource) {
+		IJavaPersistentType javaPersistentType = jpaFactory().createJavaPersistentType(this);
+		javaPersistentType.initializeFromResource(persistentTypeResource);
+		return javaPersistentType;
 	}
 
 	public void initialize(E typeMapping) {
 		this.typeMapping = typeMapping;
 		this.class_ = typeMapping.getClassName();
+		this.initializeJavaPersistentType();
 		this.specifiedMetadataComplete = this.metadataComplete(typeMapping);
 		this.defaultMetadataComplete = this.defaultMetadataComplete();
 		this.specifiedAccess = AccessType.fromXmlResourceModel(typeMapping.getAccess());
@@ -231,6 +288,7 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 	public void update(E typeMapping) {
 		this.typeMapping = typeMapping;
 		this.setClass(typeMapping.getClassName());
+		this.updateJavaPersistentType();
 		this.setSpecifiedMetadataComplete(this.metadataComplete(typeMapping));
 		this.setDefaultMetadataComplete(this.defaultMetadataComplete());
 		this.setSpecifiedAccess(AccessType.fromXmlResourceModel(typeMapping.getAccess()));

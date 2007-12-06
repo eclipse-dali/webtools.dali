@@ -397,6 +397,15 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		}
 	}
 	
+	public boolean hasAnyAttributeAnnotations() {
+		for (JavaPersistentAttributeResource attribute : CollectionTools.iterable(attributes())) {
+			if (attribute.hasAnyAnnotation()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Return the AccessType currently implied by the Java source code:
 	 *     - if only Fields are annotated => FIELD

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.core.internal.JpaNode;
+import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
 
 public abstract class JpaContextNode extends JpaNode
@@ -32,9 +33,19 @@ public abstract class JpaContextNode extends JpaNode
 	}
 	
 	//TODO casting to IJpaContextNode here(possible CCE).
-	//Overriding in BaseJpaContext, Persistence, PersitsenceXml throws UnsupportedOperationException
-	//Overriding in PersistenceUnit to return it.
+	/**
+	 * Overidden in BaseJpaContext, Persistence, PersitsenceXml to throw UnsupportedOperationException
+	 * Overidden in PersistenceUnit to return it.
+	 */
 	public IPersistenceUnit persistenceUnit() {
 		return ((IJpaContextNode) parent()).persistenceUnit();
+	}
+	
+	/**
+	 * Overidden in BaseJpaContext to return null
+	 * Overidden in EntityMappings to return it.
+	 */
+	public EntityMappings entityMappings() {
+		return ((IJpaContextNode) parent()).entityMappings();
 	}
 }

@@ -66,4 +66,10 @@ public interface JavaPersistentTypeResource extends JavaPersistentResource
 		
 	boolean isAbstract();
 		String ABSTRACT_PROPERTY = "abstractProperty";
+	
+	/**
+	 * Return whether any attributes in this persistentType have
+	 * JPA annotations on them.
+	 */
+	boolean hasAnyAttributeAnnotations();
 }

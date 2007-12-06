@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
@@ -90,7 +91,7 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	
 	IProperty createProperty(IPersistenceUnit parent);
 	
-	IJavaPersistentType createJavaPersistentType(IClassRef parent);
+	IJavaPersistentType createJavaPersistentType(IJpaContextNode parent);
 	
 	IJavaPersistentAttribute createJavaPersistentAttribute(IJavaPersistentType parent);
 

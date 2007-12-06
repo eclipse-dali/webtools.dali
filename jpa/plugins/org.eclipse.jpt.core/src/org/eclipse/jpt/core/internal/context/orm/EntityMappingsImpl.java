@@ -69,6 +69,20 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		this.persistentTypes = new ArrayList<XmlPersistentType>();
 	}
 	
+	@Override
+	public EntityMappings entityMappings() {
+		return this;
+	}
+	
+	public XmlPersistentType persistentTypeFor(String fullyQualifiedTypeName) {
+		for (XmlPersistentType xmlPersistentType : CollectionTools.iterable(xmlPersistentTypes())) {
+			if (xmlPersistentType.isFor(fullyQualifiedTypeName)) {
+				return xmlPersistentType;
+			}
+		}
+		return null;
+	}
+
 	public PersistenceUnitMetadata getPersistenceUnitMetadata() {
 		return this.persistenceUnitMetadata;
 	}
@@ -382,7 +396,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		for (MappedSuperclass mappedSuperclass : entityMappings.getMappedSuperclasses()) {
 			if (xmlPersistentTypes.hasNext()) {
 				XmlPersistentType xmlPersistentType = xmlPersistentTypes.next();
-				if (xmlPersistentType.getMappingKey() == IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY) {
+				if (xmlPersistentType.mappingKey() == IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY) {
 					((XmlMappedSuperclass) xmlPersistentType.getMapping()).update(mappedSuperclass);
 				}
 				else {
@@ -402,7 +416,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		for (Entity entity : entityMappings.getEntities()) {
 			if (xmlPersistentTypes.hasNext()) {
 				XmlPersistentType xmlPersistentType = xmlPersistentTypes.next();
-				if (xmlPersistentType.getMappingKey() == IMappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+				if (xmlPersistentType.mappingKey() == IMappingKeys.ENTITY_TYPE_MAPPING_KEY) {
 					((XmlEntity) xmlPersistentType.getMapping()).update(entity);
 				}
 				else {
@@ -422,7 +436,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		for (Embeddable embeddable : entityMappings.getEmbeddables()) {
 			if (xmlPersistentTypes.hasNext()) {
 				XmlPersistentType xmlPersistentType = xmlPersistentTypes.next();
-				if (xmlPersistentType.getMappingKey() == IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
+				if (xmlPersistentType.mappingKey() == IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
 					((XmlEmbeddable) xmlPersistentType.getMapping()).update(embeddable);
 				}
 				else {

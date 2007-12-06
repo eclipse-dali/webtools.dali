@@ -25,12 +25,14 @@ import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.resource.orm.OrmArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
@@ -120,9 +122,16 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		return this.ormArtifactEdit.getResource(JptCorePlugin.ormXmlDeploymentURI(jpaProject().project()));
 	}
 	
+	protected XmlPersistence xmlPersistence() {
+		return persistenceResource().getPersistence();
+	}
+	
+	protected EntityMappings entityMappings() {
+		return persistenceUnit().mappingFileRefs().next().getOrmXml().getEntityMappings();
+	}
+	
 	protected XmlPersistenceUnit xmlPersistenceUnit() {
-		PersistenceResource prm = persistenceResource();
-		return prm.getPersistence().getPersistenceUnits().get(0);
+		return persistenceResource().getPersistence().getPersistenceUnits().get(0);
 	}
 	
 	protected IPersistenceUnit persistenceUnit() {
@@ -147,6 +156,20 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass(className);
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
+	}
+	
+	protected void removeXmlClassRef(String className) {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		XmlJavaClassRef xmlJavaClassRefToRemove  = null;
+		for (XmlJavaClassRef xmlJavaClassRef : xmlPersistenceUnit.getClasses()) {
+			if (xmlJavaClassRef.getJavaClass().equals(className)) {
+				xmlJavaClassRefToRemove = xmlJavaClassRef;
+			}
+		}
+		if (xmlJavaClassRefToRemove == null) {
+			throw new IllegalArgumentException();
+		}
+		xmlPersistenceUnit.getClasses().remove(xmlJavaClassRefToRemove);
 	}
 
 	protected IBaseJpaContent jpaContent() {

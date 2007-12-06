@@ -37,13 +37,13 @@ public class ClassRef extends JpaContextNode implements IClassRef
 	// **************** class name *********************************************
 	
 	public String getClassName() {
-		return className;
+		return this.className;
 	}
 	
 	public void setClassName(String newClassName) {
-		String oldClassName = className;
-		className = newClassName;
-		xmlJavaClassRef.setJavaClass(newClassName);
+		String oldClassName = this.className;
+		this.className = newClassName;
+		this.xmlJavaClassRef.setJavaClass(newClassName);
 		firePropertyChanged(CLASS_NAME_PROPERTY, oldClassName, newClassName);
 	}
 	
@@ -64,17 +64,25 @@ public class ClassRef extends JpaContextNode implements IClassRef
 	// **************** updating ***********************************************
 	
 	public void initialize(XmlJavaClassRef classRef) {
-		xmlJavaClassRef = classRef;
-		className = classRef.getJavaClass();
+		this.xmlJavaClassRef = classRef;
+		this.className = classRef.getJavaClass();
+		this.initializeJavaPersistentType();
+	}
+	
+	protected void initializeJavaPersistentType() {
 		JavaPersistentTypeResource persistentTypeResource = jpaProject().javaPersistentTypeResource(getClassName());
 		if (persistentTypeResource != null) {
-			javaPersistentType = createJavaPersistentType(persistentTypeResource);
-		}		
+			this.javaPersistentType = createJavaPersistentType(persistentTypeResource);
+		}				
 	}
 	
 	public void update(XmlJavaClassRef classRef) {
-		xmlJavaClassRef = classRef;
-		setClassName(classRef.getJavaClass());
+		this.xmlJavaClassRef = classRef;
+		this.setClassName(classRef.getJavaClass());
+		this.updateJavaPersistentType();
+	}
+	
+	protected void updateJavaPersistentType() {
 		JavaPersistentTypeResource persistentTypeResource = jpaProject().javaPersistentTypeResource(getClassName());
 		if (persistentTypeResource == null) {
 			setJavaPersistentType(null);
@@ -100,5 +108,10 @@ public class ClassRef extends JpaContextNode implements IClassRef
 	
 	public ITextRange validationTextRange() {
 		return this.xmlJavaClassRef.validationTextRange();
+	}
+	
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(getClassName());
 	}
 }

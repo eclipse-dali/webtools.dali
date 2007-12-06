@@ -17,5 +17,11 @@ public interface IJavaPersistentType extends IPersistentType, IJavaJpaContextNod
 	void initializeFromResource(JavaPersistentTypeResource persistentTypeResource);
 
 	void update(JavaPersistentTypeResource persistentTypeResource);
+	
+	/**
+	 * Return whether any attribute in this persistent type contains a mapping annotation
+	 * @return
+	 */
+	boolean hasAnyAttributeMappingAnnotations();
 
 }

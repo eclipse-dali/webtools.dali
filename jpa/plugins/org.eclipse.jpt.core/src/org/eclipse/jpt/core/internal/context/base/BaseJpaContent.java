@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.utility.internal.node.Node;
@@ -42,6 +43,10 @@ public class BaseJpaContent extends JpaContextNode
 		pae.dispose();
 	}
 	
+	@Override
+	public EntityMappings entityMappings() {
+		return null;
+	}
 	
 	// **************** persistence xml ****************************************
 	

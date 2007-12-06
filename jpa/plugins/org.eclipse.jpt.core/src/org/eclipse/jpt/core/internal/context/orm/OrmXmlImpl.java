@@ -28,6 +28,12 @@ public class OrmXmlImpl extends JpaContextNode
 		super(parent);
 	}
 	
+	public XmlPersistentType persistentTypeFor(String fullyQualifiedTypeName) {
+		if (getEntityMappings() != null) {
+			return getEntityMappings().persistentTypeFor(fullyQualifiedTypeName);
+		}
+		return null;
+	}
 	
 	// **************** persistence ********************************************
 	

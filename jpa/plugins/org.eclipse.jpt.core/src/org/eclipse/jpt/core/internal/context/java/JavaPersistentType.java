@@ -17,7 +17,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
-import org.eclipse.jpt.core.internal.context.base.IClassRef;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
@@ -60,12 +60,13 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 
 	protected JavaPersistentTypeResource persistentTypeResource;
 
-	public JavaPersistentType(IClassRef parent) {
+	public JavaPersistentType(IJpaContextNode parent) {
 		super(parent);
 		this.attributes = new ArrayList<IJavaPersistentAttribute>();
 	}
 	
 	public void initializeFromResource(JavaPersistentTypeResource persistentTypeResource) {
+		this.persistentTypeResource = persistentTypeResource;
 		this.parentPersistentType = this.parentPersistentType(persistentTypeResource);
 		this.access = this.access(persistentTypeResource);
 		this.name = this.name(persistentTypeResource);
@@ -281,7 +282,14 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		return this.parentPersistentType;
 	}
 
-	// ******************** Uupdating **********************
+	public boolean hasAnyAttributeMappingAnnotations() {
+		if (this.persistentTypeResource.hasAnyAttributeAnnotations()) {
+			return true;
+		}
+		return false;
+	}
+	
+	// ******************** Updating **********************
 	public void update(JavaPersistentTypeResource persistentTypeResource) {
 		this.persistentTypeResource = persistentTypeResource;
 		updateParentPersistentType(persistentTypeResource);
@@ -306,6 +314,16 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		if (javaAccess == null) {
 			if (parentPersistentType() != null) {
 				javaAccess = parentPersistentType().access();
+			}
+			if (javaAccess == null) {
+				if (entityMappings() != null) {
+					javaAccess = entityMappings().getAccess();
+				}
+			}
+			if (javaAccess == null) {
+				if (persistenceUnit() != null) {
+					javaAccess = persistenceUnit().getDefaultAccess();
+				}
 			}
 			if (javaAccess == null) {
 				javaAccess = AccessType.FIELD;
@@ -417,6 +435,12 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	
 	protected IPersistentType persistentType(String fullyQualifiedTypeName) {
 		return persistenceUnit().persistentType(fullyQualifiedTypeName);
+	}
+	
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(getName());
 	}
 
 }

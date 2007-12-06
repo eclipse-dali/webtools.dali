@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 
@@ -55,8 +56,18 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 //		return IXmlContentNodes.PERSISTENT_TYPE_ID;
 //	}
 	
-	public EntityMappings entityMappings() {
-		return (EntityMappings) parent();
+	public boolean isFor(String fullyQualifiedTypeName) {
+		String className = getMapping().getClass_();
+		if (className == null) {
+			return false;
+		}
+		if (className.equals(fullyQualifiedTypeName)) {
+			return true;
+		}
+		if ((entityMappings().getPackage() + className).equals(fullyQualifiedTypeName)) {
+			return true;
+		}
+		return false;
 	}
 	
 	protected XmlTypeMapping<? extends TypeMapping> buildXmlTypeMapping(String key) {
@@ -92,10 +103,6 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 
 	public XmlTypeMapping<? extends TypeMapping> getMapping() {
 		return this.xmlTypeMapping;
-	}
-
-	public String getMappingKey() {
-		return this.mappingKey;
 	}
 
 	public void setMappingKey(String newMappingKey) {
@@ -422,10 +429,12 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		return false;
 	}
 
-
 	public String mappingKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.mappingKey;
+	}
+	
+	public IJavaPersistentType javaPersistentType() {
+		return getMapping().getJavaPersistentType();
 	}
 
 //	public IJpaContentNode getContentNode(int offset) {

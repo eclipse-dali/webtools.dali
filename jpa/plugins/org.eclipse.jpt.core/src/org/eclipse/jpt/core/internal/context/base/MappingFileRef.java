@@ -13,6 +13,7 @@ package org.eclipse.jpt.core.internal.context.base;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.orm.OrmXml;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.resource.orm.OrmArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
@@ -30,6 +31,12 @@ public class MappingFileRef extends JpaContextNode
 		super(parent);
 	}
 	
+	public XmlPersistentType persistentTypeFor(String fullyQualifiedTypeName) {
+		if (getOrmXml() != null) {
+			return getOrmXml().persistentTypeFor(fullyQualifiedTypeName);
+		}
+		return null;
+	}
 	
 	// **************** file name **********************************************
 	
@@ -112,5 +119,11 @@ public class MappingFileRef extends JpaContextNode
 	
 	public ITextRange validationTextRange() {
 		return this.xmlMappingFileRef.validationTextRange();
+	}
+	
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(getFileName());
 	}
 }

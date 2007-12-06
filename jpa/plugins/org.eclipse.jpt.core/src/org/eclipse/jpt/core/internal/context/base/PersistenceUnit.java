@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
@@ -74,12 +75,17 @@ public class PersistenceUnit extends JpaContextNode
 	
 	
 	public IPersistentType persistentType(String fullyQualifiedTypeName) {
+		for (IMappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
+			XmlPersistentType xmlPersistentType = mappingFileRef.persistentTypeFor(fullyQualifiedTypeName);
+			if (xmlPersistentType != null) {
+				return xmlPersistentType.javaPersistentType();
+			}
+		}
 		for (IClassRef classRef : CollectionTools.iterable(classRefs())) {
 			if (classRef.isFor(fullyQualifiedTypeName)) {
 				return classRef.getJavaPersistentType();
 			}
 		}
-		//TODO check mappingFileRefs (probably check these first??)
 		return null;
 	}
 	
@@ -91,13 +97,13 @@ public class PersistenceUnit extends JpaContextNode
 	// **************** name ***************************************************
 	
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	
 	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
-		xmlPersistenceUnit.setName(newName);
+		String oldName = this.name;
+		this.name = newName;
+		this.xmlPersistenceUnit.setName(newName);
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
@@ -106,24 +112,24 @@ public class PersistenceUnit extends JpaContextNode
 	
 	public PersistenceUnitTransactionType getTransactionType() {
 		return (isTransactionTypeDefault()) ?
-			getDefaultTransactionType() : transactionType;
+			getDefaultTransactionType() : this.transactionType;
 	}
 	
 	public void setTransactionType(PersistenceUnitTransactionType newTransactionType) {
 		if (newTransactionType == null) {
 			throw new IllegalArgumentException("null");
 		}
-		PersistenceUnitTransactionType oldTransactionType = transactionType;
-		transactionType = newTransactionType;
+		PersistenceUnitTransactionType oldTransactionType = this.transactionType;
+		this.transactionType = newTransactionType;
 		
-		if (transactionType == JTA) {
-			xmlPersistenceUnit.setTransactionType(XmlPersistenceUnitTransactionType.JTA);
+		if (this.transactionType == JTA) {
+			this.xmlPersistenceUnit.setTransactionType(XmlPersistenceUnitTransactionType.JTA);
 		}
-		else if (transactionType == RESOURCE_LOCAL) {
-			xmlPersistenceUnit.setTransactionType(XmlPersistenceUnitTransactionType.RESOURCE_LOCAL);
+		else if (this.transactionType == RESOURCE_LOCAL) {
+			this.xmlPersistenceUnit.setTransactionType(XmlPersistenceUnitTransactionType.RESOURCE_LOCAL);
 		}
-		else if (transactionType == DEFAULT) {
-			xmlPersistenceUnit.unsetTransactionType();
+		else if (this.transactionType == DEFAULT) {
+			this.xmlPersistenceUnit.unsetTransactionType();
 		}
 		else {
 			throw new IllegalArgumentException();
@@ -133,7 +139,7 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	public boolean isTransactionTypeDefault() {
-		return transactionType == DEFAULT;
+		return this.transactionType == DEFAULT;
 	}
 	
 	public void setTransactionTypeToDefault() {
@@ -145,20 +151,20 @@ public class PersistenceUnit extends JpaContextNode
 		//  From the JPA spec: "In a Java EE environment, if this element is not 
 		//  specified, the default is JTA. In a Java SE environment, if this element 
 		// is not specified, a default of RESOURCE_LOCAL may be assumed."
-		return defaultTransactionType;
+		return this.defaultTransactionType;
 	}
 	
 	
 	// **************** description ********************************************
 	
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 	
 	public void setDescription(String newDescription) {
-		String oldDescription = description;
-		description = newDescription;
-		xmlPersistenceUnit.setDescription(newDescription);
+		String oldDescription = this.description;
+		this.description = newDescription;
+		this.xmlPersistenceUnit.setDescription(newDescription);
 		firePropertyChanged(DESCRIPTION_PROPERTY, oldDescription, newDescription);
 	}
 	
@@ -166,13 +172,13 @@ public class PersistenceUnit extends JpaContextNode
 	// **************** provider ***********************************************
 	
 	public String getProvider() {
-		return provider;
+		return this.provider;
 	}
 	
 	public void setProvider(String newProvider) {
-		String oldProvider = provider;
-		provider = newProvider;
-		xmlPersistenceUnit.setProvider(newProvider);
+		String oldProvider = this.provider;
+		this.provider = newProvider;
+		this.xmlPersistenceUnit.setProvider(newProvider);
 		firePropertyChanged(DESCRIPTION_PROPERTY, oldProvider, newProvider);
 	}
 	
@@ -180,13 +186,13 @@ public class PersistenceUnit extends JpaContextNode
 	// **************** jta data source ****************************************
 	
 	public String getJtaDataSource() {
-		return jtaDataSource;
+		return this.jtaDataSource;
 	}
 	
 	public void setJtaDataSource(String newJtaDataSource) {
-		String oldJtaDataSource = jtaDataSource;
-		jtaDataSource = newJtaDataSource;
-		xmlPersistenceUnit.setJtaDataSource(newJtaDataSource);
+		String oldJtaDataSource = this.jtaDataSource;
+		this.jtaDataSource = newJtaDataSource;
+		this.xmlPersistenceUnit.setJtaDataSource(newJtaDataSource);
 		firePropertyChanged(DESCRIPTION_PROPERTY, oldJtaDataSource, newJtaDataSource);
 	}
 	
@@ -194,13 +200,13 @@ public class PersistenceUnit extends JpaContextNode
 	// **************** non-jta data source ************************************
 	
 	public String getNonJtaDataSource() {
-		return nonJtaDataSource;
+		return this.nonJtaDataSource;
 	}
 	
 	public void setNonJtaDataSource(String newNonJtaDataSource) {
-		String oldNonJtaDataSource = nonJtaDataSource;
-		nonJtaDataSource = newNonJtaDataSource;
-		xmlPersistenceUnit.setNonJtaDataSource(newNonJtaDataSource);
+		String oldNonJtaDataSource = this.nonJtaDataSource;
+		this.nonJtaDataSource = newNonJtaDataSource;
+		this.xmlPersistenceUnit.setNonJtaDataSource(newNonJtaDataSource);
 		firePropertyChanged(DESCRIPTION_PROPERTY, oldNonJtaDataSource, newNonJtaDataSource);
 	}
 	
@@ -208,96 +214,92 @@ public class PersistenceUnit extends JpaContextNode
 	// **************** mapping file refs **************************************
 	
 	public ListIterator<IMappingFileRef> mappingFileRefs() {
-		return new CloneListIterator<IMappingFileRef>(mappingFileRefs);
+		return new CloneListIterator<IMappingFileRef>(this.mappingFileRefs);
 	}
 	
 	public IMappingFileRef addMappingFileRef() {
-		return addMappingFileRef(mappingFileRefs.size());
+		return addMappingFileRef(this.mappingFileRefs.size());
 	}
 	
 	public IMappingFileRef addMappingFileRef(int index) {
 		XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		IMappingFileRef mappingFileRef = createMappingFileRef(xmlMappingFileRef);
-		mappingFileRefs.add(index, mappingFileRef);
-		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
-		fireListChanged(MAPPING_FILE_REF_LIST);
+		this.mappingFileRefs.add(index, mappingFileRef);
+		this.xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
+		fireItemAdded(MAPPING_FILE_REF_LIST, index, mappingFileRef);
 		return mappingFileRef;
 	}
 	
 	public void removeMappingFileRef(IMappingFileRef mappingFileRef) {
-		removeMappingFileRef(mappingFileRefs.indexOf(mappingFileRef));
+		removeMappingFileRef(this.mappingFileRefs.indexOf(mappingFileRef));
 	}
 	
 	public void removeMappingFileRef(int index) {
-		mappingFileRefs.remove(index);
-		xmlPersistenceUnit.getMappingFiles().remove(index);
-		fireListChanged(MAPPING_FILE_REF_LIST);
+		IMappingFileRef mappingFileRefRemoved = this.mappingFileRefs.remove(index);
+		this.xmlPersistenceUnit.getMappingFiles().remove(index);
+		fireItemRemoved(MAPPING_FILE_REF_LIST, index, mappingFileRefRemoved);
 	}
 	
 	protected void addMappingFileRef_(IMappingFileRef mappingFileRef) {
-		addMappingFileRef_(mappingFileRefs.size(), mappingFileRef);
+		addMappingFileRef_(this.mappingFileRefs.size(), mappingFileRef);
 	}
 	
 	protected void addMappingFileRef_(int index, IMappingFileRef mappingFileRef) {
-		mappingFileRefs.add(index, mappingFileRef);
-		fireListChanged(MAPPING_FILE_REF_LIST);
+		addItemToList(index, mappingFileRef, this.mappingFileRefs, MAPPING_FILE_REF_LIST);
 	}
 	
 	protected void removeMappingFileRef_(IMappingFileRef mappingFileRef) {
-		removeMappingFileRef_(mappingFileRefs.indexOf(mappingFileRef));
+		removeMappingFileRef_(this.mappingFileRefs.indexOf(mappingFileRef));
 	}
 	
 	protected void removeMappingFileRef_(int index) {
-		mappingFileRefs.remove(index);
-		fireListChanged(MAPPING_FILE_REF_LIST);
+		removeItemFromList(index, this.mappingFileRefs, MAPPING_FILE_REF_LIST);
 	}
 	
 	
 	// **************** class refs *********************************************
 	
 	public ListIterator<IClassRef> classRefs() {
-		return new CloneListIterator<IClassRef>(classRefs);
+		return new CloneListIterator<IClassRef>(this.classRefs);
 	}
 	
 	public IClassRef addClassRef() {
-		return addClassRef(classRefs.size());
+		return addClassRef(this.classRefs.size());
 	}
 	
 	public IClassRef addClassRef(int index) {
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		IClassRef classRef = createClassRef(xmlClassRef);
-		classRefs.add(index, classRef);
-		xmlPersistenceUnit.getClasses().add(xmlClassRef);
-		fireListChanged(CLASS_REF_LIST);
+		this.classRefs.add(index, classRef);
+		this.xmlPersistenceUnit.getClasses().add(xmlClassRef);
+		fireItemAdded(CLASS_REF_LIST, index, classRef);
 		return classRef;
 	}
 	
 	public void removeClassRef(IClassRef classRef) {
-		removeClassRef(classRefs.indexOf(classRef));
+		removeClassRef(this.classRefs.indexOf(classRef));
 	}
 	
 	public void removeClassRef(int index) {
-		classRefs.remove(index);
-		xmlPersistenceUnit.getClasses().remove(index);
-		fireListChanged(CLASS_REF_LIST);
+		IClassRef classRefRemoved = this.classRefs.remove(index);
+		this.xmlPersistenceUnit.getClasses().remove(index);
+		fireItemRemoved(CLASS_REF_LIST, index, classRefRemoved);
 	}
 	
 	protected void addClassRef_(IClassRef classRef) {
-		addClassRef_(classRefs.size(), classRef);
+		addClassRef_(this.classRefs.size(), classRef);
 	}
 	
 	protected void addClassRef_(int index, IClassRef classRef) {
-		classRefs.add(index, classRef);
-		fireListChanged(CLASS_REF_LIST);
+		addItemToList(index, classRef, this.classRefs, CLASS_REF_LIST);
 	}
 	
 	protected void removeClassRef_(IClassRef classRef) {
-		removeClassRef_(classRefs.indexOf(classRef));
+		removeClassRef_(this.classRefs.indexOf(classRef));
 	}
 	
 	protected void removeClassRef_(int index) {
-		classRefs.remove(index);
-		fireListChanged(CLASS_REF_LIST);
+		removeItemFromList(index, this.classRefs, CLASS_REF_LIST);
 	}
 	
 	
@@ -305,7 +307,7 @@ public class PersistenceUnit extends JpaContextNode
 	
 	public boolean getExcludeUnlistedClasses() {
 		return (isExcludeUnlistedClassesDefault()) ? 
-				getDefaultExcludeUnlistedClasses() : excludeUnlistedClasses;
+				getDefaultExcludeUnlistedClasses() : this.excludeUnlistedClasses;
 	}
 	
 	public void setExcludeUnlistedClasses(boolean newExcludeUnlistedClasses) {
@@ -313,13 +315,13 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	public boolean isExcludeUnlistedClassesDefault() {
-		return excludeUnlistedClasses == null;
+		return this.excludeUnlistedClasses == null;
 	}
 	
 	public boolean getDefaultExcludeUnlistedClasses() {
 		// TODO - calculate default
 		//  This is determined from the project
-		return defaultExcludeUnlistedClasses;
+		return this.defaultExcludeUnlistedClasses;
 	}
 	
 	public void setExcludeUnlistedClassesToDefault() {
@@ -327,14 +329,14 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	protected void setExcludeUnlistedClasses(Boolean newExcludeUnlistedClasses) {
-		Boolean oldExcludeUnlistedClasses = excludeUnlistedClasses;
-		excludeUnlistedClasses = newExcludeUnlistedClasses;
+		Boolean oldExcludeUnlistedClasses = this.excludeUnlistedClasses;
+		this.excludeUnlistedClasses = newExcludeUnlistedClasses;
 		
-		if (excludeUnlistedClasses != null) {
-			xmlPersistenceUnit.setExcludeUnlistedClasses(excludeUnlistedClasses);
+		if (this.excludeUnlistedClasses != null) {
+			this.xmlPersistenceUnit.setExcludeUnlistedClasses(this.excludeUnlistedClasses);
 		}
 		else {
-			xmlPersistenceUnit.unsetExcludeUnlistedClasses();
+			this.xmlPersistenceUnit.unsetExcludeUnlistedClasses();
 		}
 		
 		firePropertyChanged(EXCLUDE_UNLISTED_CLASSED_PROPERTY, oldExcludeUnlistedClasses, newExcludeUnlistedClasses);
@@ -344,59 +346,57 @@ public class PersistenceUnit extends JpaContextNode
 	// **************** properties *********************************************
 	
 	public ListIterator<IProperty> properties() {
-		return new CloneListIterator<IProperty>(properties);
+		return new CloneListIterator<IProperty>(this.properties);
 	}
 	
 	public IProperty addProperty() {
-		return addProperty(properties.size());
+		return addProperty(this.properties.size());
 	}
 	
 	public IProperty addProperty(int index) {
 		XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
 		IProperty property = createProperty(xmlProperty);
-		properties.add(index, property);
+		this.properties.add(index, property);
 		
-		if (xmlPersistenceUnit.getProperties() == null) {
+		if (this.xmlPersistenceUnit.getProperties() == null) {
 			XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
-			xmlPersistenceUnit.setProperties(xmlProperties);
+			this.xmlPersistenceUnit.setProperties(xmlProperties);
 		}
 		
-		xmlPersistenceUnit.getProperties().getProperties().add(xmlProperty);
-		fireListChanged(PROPERTIES_LIST);
+		this.xmlPersistenceUnit.getProperties().getProperties().add(xmlProperty);
+		fireItemAdded(PROPERTIES_LIST, index, property);
 		return property;
 	}
 	
 	public void removeProperty(IProperty property) {
-		removeProperty(properties.indexOf(property));
+		removeProperty(this.properties.indexOf(property));
 	}
 	
 	public void removeProperty(int index) {
-		properties.remove(index);
-		xmlPersistenceUnit.getProperties().getProperties().remove(index);
+		IProperty propertyRemoved = this.properties.remove(index);
+		this.xmlPersistenceUnit.getProperties().getProperties().remove(index);
 		
-		if (xmlPersistenceUnit.getProperties().getProperties().isEmpty()) {
-			xmlPersistenceUnit.setProperties(null);
+		if (this.xmlPersistenceUnit.getProperties().getProperties().isEmpty()) {
+			this.xmlPersistenceUnit.setProperties(null);
 		}
 		
-		fireListChanged(PROPERTIES_LIST);
+		fireItemRemoved(PROPERTIES_LIST, index, propertyRemoved);
 	}
 	
 	protected void addProperty_(IProperty property) {
-		addProperty_(properties.size(), property);
+		addProperty_(this.properties.size(), property);
 	}
 	
 	protected void addProperty_(int index, IProperty property) {
-		properties.add(index, property);
-		fireListChanged(PROPERTIES_LIST);
+		addItemToList(index, property, this.properties, PROPERTIES_LIST);
 	}
 	
 	protected void removeProperty_(IProperty property) {
-		removeProperty_(properties.indexOf(property));
+		removeProperty_(this.properties.indexOf(property));
 	}
 	
 	protected void removeProperty_(int index) {
-		properties.remove(index);
-		fireListChanged(PROPERTIES_LIST);
+		removeItemFromList(index, this.properties, PROPERTIES_LIST);
 	}
 	
 	// **************** Persistence Unit Defaults *********************************************
@@ -460,7 +460,7 @@ public class PersistenceUnit extends JpaContextNode
 	
 	public void initialize(XmlPersistenceUnit xmlPersistenceUnit) {
 		this.xmlPersistenceUnit = xmlPersistenceUnit;
-		name = xmlPersistenceUnit.getName();
+		this.name = xmlPersistenceUnit.getName();
 		initializeMappingFileRefs(xmlPersistenceUnit);
 		initializeClassRefs(xmlPersistenceUnit);
 		initializeProperties(xmlPersistenceUnit);
@@ -468,13 +468,13 @@ public class PersistenceUnit extends JpaContextNode
 	
 	protected void initializeMappingFileRefs(XmlPersistenceUnit xmlPersistenceUnit) {
 		for (XmlMappingFileRef xmlMappingFileRef : xmlPersistenceUnit.getMappingFiles()) {
-			mappingFileRefs.add(createMappingFileRef(xmlMappingFileRef));
+			this.mappingFileRefs.add(createMappingFileRef(xmlMappingFileRef));
 		}
 	}
 	
 	protected void initializeClassRefs(XmlPersistenceUnit xmlPersistenceUnit) {
 		for (XmlJavaClassRef xmlJavaClassRef : xmlPersistenceUnit.getClasses()) {
-			classRefs.add(createClassRef(xmlJavaClassRef));
+			this.classRefs.add(createClassRef(xmlJavaClassRef));
 		}
 	}
 	
@@ -484,7 +484,7 @@ public class PersistenceUnit extends JpaContextNode
 			return;
 		}
 		for (XmlProperty xmlProperty : xmlProperties.getProperties()) {
-			properties.add(createProperty(xmlProperty));
+			this.properties.add(createProperty(xmlProperty));
 		}
 	}
 	
@@ -668,5 +668,11 @@ public class PersistenceUnit extends JpaContextNode
 	
 	public ITextRange validationTextRange() {
 		return this.xmlPersistenceUnit.validationTextRange();
+	}
+	
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(getName());
 	}
 }
