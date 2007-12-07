@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmAdapterFactory.java,v 1.1.2.4 2007/12/06 15:56:01 kmoore Exp $
+ * $Id: OrmAdapterFactory.java,v 1.1.2.5 2007/12/07 17:26:52 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -10,6 +10,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
 import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.Attributes;
@@ -370,6 +371,16 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 				return createQueryHintAdapter();
 			}
 			@Override
+			public Adapter caseAbstractTable(AbstractTable object)
+			{
+				return createAbstractTableAdapter();
+			}
+			@Override
+			public Adapter caseTable(Table object)
+			{
+				return createTableAdapter();
+			}
+			@Override
 			public Adapter caseSecondaryTable(SecondaryTable object)
 			{
 				return createSecondaryTableAdapter();
@@ -383,11 +394,6 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseSqlResultSetMapping(SqlResultSetMapping object)
 			{
 				return createSqlResultSetMappingAdapter();
-			}
-			@Override
-			public Adapter caseTable(Table object)
-			{
-				return createTableAdapter();
 			}
 			@Override
 			public Adapter caseTableGenerator(TableGenerator object)
@@ -1122,6 +1128,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createQueryHintAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.AbstractTable <em>Abstract Table</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AbstractTable
+	 * @generated
+	 */
+	public Adapter createAbstractTableAdapter()
 	{
 		return null;
 	}

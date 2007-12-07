@@ -173,18 +173,18 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) xmlPersistentType.getMapping();
 		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
 		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
-		assertFalse(xmlMappedSuperclass.getDefaultMetadataComplete());
+		assertFalse(xmlMappedSuperclass.isDefaultMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertTrue(xmlMappedSuperclass.getDefaultMetadataComplete());
+		assertTrue(xmlMappedSuperclass.isDefaultMetadataComplete());
 		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
-		assertFalse(xmlMappedSuperclass.getDefaultMetadataComplete());
+		assertFalse(xmlMappedSuperclass.isDefaultMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 	}
 	
@@ -193,17 +193,17 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) xmlPersistentType.getMapping();
 		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
 		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
-		assertFalse(xmlMappedSuperclass.getMetadataComplete());
+		assertFalse(xmlMappedSuperclass.isMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertTrue(xmlMappedSuperclass.getMetadataComplete());
+		assertTrue(xmlMappedSuperclass.isMetadataComplete());
 		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-		assertFalse(xmlMappedSuperclass.getMetadataComplete());
+		assertFalse(xmlMappedSuperclass.isMetadataComplete());
 		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 	}

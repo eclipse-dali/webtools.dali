@@ -12,10 +12,17 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.ITable;
+import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
+import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.Table;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -138,6 +145,35 @@ public class JavaTableTests extends ContextModelTestCase
 		assertEquals("foo", javaEntity().getTable().getDefaultName());
 	}
 
+	public void testUpdateDefaultSchemaFromPersistenceUnitDefaults() throws Exception {
+		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
+		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+
+		createTestEntity();
+		
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		IJavaEntity javaEntity = xmlEntity.javaEntity();
+		
+		assertNull(javaEntity.getTable().getDefaultSchema());
+		
+		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("FOO");
+		assertEquals("FOO", javaEntity.getTable().getDefaultSchema());
+		
+		xmlEntity.entityMappings().setSpecifiedSchema("BAR");
+		assertEquals("BAR", javaEntity.getTable().getDefaultSchema());
+		
+		xmlEntity.getTable().setSpecifiedSchema("XML_SCHEMA");
+		assertEquals("BAR", javaEntity.getTable().getDefaultSchema());
+
+		entityMappings().removeXmlPersistentType(0);
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		//default schema taken from persistence-unite-defaults not entity-mappings since the entity is not in an orm.xml file
+		assertEquals("FOO", javaEntity().getTable().getDefaultSchema());
+	}
+
+	
 	public void testGetNameSpecifiedNameNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -218,6 +254,34 @@ public class JavaTableTests extends ContextModelTestCase
 		assertNull(javaEntity().getTable().getDefaultCatalog());
 	}
 	
+	public void testUpdateDefaultCatalogFromPersistenceUnitDefaults() throws Exception {
+		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
+		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+
+		createTestEntity();
+		
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		IJavaEntity javaEntity = xmlEntity.javaEntity();
+		
+		assertNull(javaEntity.getTable().getDefaultCatalog());
+		
+		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("FOO");
+		assertEquals("FOO", javaEntity.getTable().getDefaultCatalog());
+		
+		xmlEntity.entityMappings().setSpecifiedCatalog("BAR");
+		assertEquals("BAR", javaEntity.getTable().getDefaultCatalog());
+		
+		xmlEntity.getTable().setSpecifiedCatalog("XML_CATALOG");
+		assertEquals("BAR", javaEntity.getTable().getDefaultCatalog());
+
+		entityMappings().removeXmlPersistentType(0);
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		//default catalog taken from persistence-unite-defaults not entity-mappings since the entity is not in an orm.xml file
+		assertEquals("FOO", javaEntity().getTable().getDefaultCatalog());
+	}
+
 	public void testSetSpecifiedCatalog() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

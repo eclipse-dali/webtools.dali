@@ -198,6 +198,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	
 	public XmlPersistentType addXmlPersistentType(String className, String mappingKey) {
 		XmlPersistentType persistentType = jpaFactory().createXmlPersistentType(this, mappingKey, this.entityMappings);
+		persistentType.initialize(null);
 		int index = insertionIndex(persistentType);
 		this.persistentTypes.add(index, persistentType);
 		if (className.startsWith(getPackage() + ".")) {
@@ -396,6 +397,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		for (MappedSuperclass mappedSuperclass : entityMappings.getMappedSuperclasses()) {
 			if (xmlPersistentTypes.hasNext()) {
 				XmlPersistentType xmlPersistentType = xmlPersistentTypes.next();
+				xmlPersistentType.update(mappedSuperclass);
 				if (xmlPersistentType.mappingKey() == IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY) {
 					((XmlMappedSuperclass) xmlPersistentType.getMapping()).update(mappedSuperclass);
 				}
@@ -406,6 +408,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 			}
 			else {
 				XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, entityMappings);
+				xmlPersistentType.initialize(mappedSuperclass);
 				((XmlMappedSuperclass) xmlPersistentType.getMapping()).initialize(mappedSuperclass);
 				this.persistentTypes.add(xmlPersistentType);
 			}
@@ -416,6 +419,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		for (Entity entity : entityMappings.getEntities()) {
 			if (xmlPersistentTypes.hasNext()) {
 				XmlPersistentType xmlPersistentType = xmlPersistentTypes.next();
+				xmlPersistentType.update(entity);
 				if (xmlPersistentType.mappingKey() == IMappingKeys.ENTITY_TYPE_MAPPING_KEY) {
 					((XmlEntity) xmlPersistentType.getMapping()).update(entity);
 				}
@@ -426,6 +430,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 			}
 			else {
 				XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.ENTITY_TYPE_MAPPING_KEY, entityMappings);
+				xmlPersistentType.initialize(entity);
 				((XmlEntity) xmlPersistentType.getMapping()).initialize(entity);
 				this.persistentTypes.add(xmlPersistentType);
 			}
@@ -436,6 +441,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		for (Embeddable embeddable : entityMappings.getEmbeddables()) {
 			if (xmlPersistentTypes.hasNext()) {
 				XmlPersistentType xmlPersistentType = xmlPersistentTypes.next();
+				xmlPersistentType.update(embeddable);
 				if (xmlPersistentType.mappingKey() == IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
 					((XmlEmbeddable) xmlPersistentType.getMapping()).update(embeddable);
 				}
@@ -446,6 +452,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 			}
 			else {
 				XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, entityMappings);
+				xmlPersistentType.initialize(embeddable);
 				((XmlEmbeddable) xmlPersistentType.getMapping()).initialize(embeddable);
 				this.persistentTypes.add(xmlPersistentType);
 			}

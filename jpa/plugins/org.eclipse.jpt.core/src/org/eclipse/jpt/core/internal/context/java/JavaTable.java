@@ -72,6 +72,26 @@ public class JavaTable extends AbstractJavaTable implements IJavaTable
 		return javaEntity().getName();
 	}
 	
+	@Override
+	protected String defaultSchema() {
+		if (javaEntity().getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
+			if (rootEntity() != javaEntity()) {
+				return rootEntity().getTable().getSchema();
+			}
+		}
+		return super.defaultSchema();
+	}
+	
+	@Override
+	protected String defaultCatalog() {
+		if (javaEntity().getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
+			if (rootEntity() != javaEntity()) {
+				return rootEntity().getTable().getCatalog();
+			}
+		}
+		return super.defaultCatalog();
+	}
+	
 //	@Override
 //	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
 //		return JavaUniqueConstraint.createTableUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);

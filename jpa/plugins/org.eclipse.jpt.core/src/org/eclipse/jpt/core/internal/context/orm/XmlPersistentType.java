@@ -425,8 +425,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 
 
 	public boolean isMapped() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	public String mappingKey() {
@@ -436,6 +435,32 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	public IJavaPersistentType javaPersistentType() {
 		return getMapping().getJavaPersistentType();
 	}
+	
+	public void initialize(TypeMapping typeMapping) {
+		this.initializeParentPersistentType();
+	}
+	
+	public void initializeParentPersistentType() {
+		IJavaPersistentType javaPersistentType = javaPersistentType();
+		if (javaPersistentType != null) {
+			this.parentPersistentType = javaPersistentType.parentPersistentType();
+		}
+	}
+
+	public void update(TypeMapping typeMapping) {
+		this.updateParentPersistentType();
+	}
+	
+	public void updateParentPersistentType() {
+		IJavaPersistentType javaPersistentType = javaPersistentType();
+		if (javaPersistentType == null) {
+			//TODO change notification for this?
+			this.parentPersistentType = null;
+			return;
+		}
+		this.parentPersistentType = javaPersistentType.parentPersistentType();
+	}
+
 
 //	public IJpaContentNode getContentNode(int offset) {
 //		for (XmlAttributeMapping mapping : this.getSpecifiedAttributeMappings()) {

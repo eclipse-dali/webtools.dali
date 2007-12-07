@@ -182,17 +182,18 @@ public abstract class AbstractJavaTable extends JavaContextModel
 	
 	protected abstract String defaultName();
 
-	//if listed in a mapping file, then check the default schema there
-	//otherwise check the persistence unit default schema
-	//otherwise the project level default schema which for us will usually be the username
 	protected String defaultSchema() {
-		//should i calculate this here or should someone else set this on me???
-		//getOwner().defaultSchema()?
-		return null;
+		if (entityMappings() != null) {
+			return entityMappings().getSchema();
+		}
+		return persistenceUnit().getDefaultSchema();
 	}
 	
 	protected String defaultCatalog() {
-		return null;
+		if (entityMappings() != null) {
+			return entityMappings().getCatalog();
+		}
+		return persistenceUnit().getDefaultCatalog();
 	}
 	
 	

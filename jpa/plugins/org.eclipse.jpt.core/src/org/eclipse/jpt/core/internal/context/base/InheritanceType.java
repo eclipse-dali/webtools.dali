@@ -46,13 +46,13 @@ public enum InheritanceType {
 	
 
 	public static InheritanceType fromXmlResourceModel(org.eclipse.jpt.core.internal.resource.orm.InheritanceType ormInheritanceType) {
-		if (ormInheritanceType == org.eclipse.jpt.core.internal.resource.orm.InheritanceType.SINGLETABLE) {
+		if (ormInheritanceType == org.eclipse.jpt.core.internal.resource.orm.InheritanceType.SINGLE_TABLE) {
 			return SINGLE_TABLE;
 		}
 		else if (ormInheritanceType == org.eclipse.jpt.core.internal.resource.orm.InheritanceType.JOINED) {
 			return JOINED;
 		}
-		else if (ormInheritanceType == org.eclipse.jpt.core.internal.resource.orm.InheritanceType.TABLEPERCLASS) {
+		else if (ormInheritanceType == org.eclipse.jpt.core.internal.resource.orm.InheritanceType.TABLE_PER_CLASS) {
 			return TABLE_PER_CLASS;
 		}
 		return null;
@@ -60,13 +60,13 @@ public enum InheritanceType {
 	
 	public static org.eclipse.jpt.core.internal.resource.orm.InheritanceType toXmlResourceModel(InheritanceType inheritanceType) {
 		if (inheritanceType == SINGLE_TABLE)  {
-			return org.eclipse.jpt.core.internal.resource.orm.InheritanceType.SINGLETABLE;
+			return org.eclipse.jpt.core.internal.resource.orm.InheritanceType.SINGLE_TABLE;
 		}
 		else if (inheritanceType == JOINED) {
 			return org.eclipse.jpt.core.internal.resource.orm.InheritanceType.JOINED;
 		}
 		else if (inheritanceType == TABLE_PER_CLASS) {
-			return org.eclipse.jpt.core.internal.resource.orm.InheritanceType.TABLEPERCLASS;
+			return org.eclipse.jpt.core.internal.resource.orm.InheritanceType.TABLE_PER_CLASS;
 		}
 		return null;
 	}

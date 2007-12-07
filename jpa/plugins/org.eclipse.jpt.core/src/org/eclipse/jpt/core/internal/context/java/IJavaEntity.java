@@ -12,4 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 
 public interface IJavaEntity extends IJavaTypeMapping, IEntity
-{}
+{
+	IJavaTable getTable();
+
+}

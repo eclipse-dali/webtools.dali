@@ -172,18 +172,18 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 		XmlEmbeddable xmlEmbeddable = (XmlEmbeddable) xmlPersistentType.getMapping();
 		Embeddable embeddableResource = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertNull(xmlEmbeddable.getSpecifiedMetadataComplete());
-		assertFalse(xmlEmbeddable.getDefaultMetadataComplete());
+		assertFalse(xmlEmbeddable.isDefaultMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertTrue(xmlEmbeddable.getDefaultMetadataComplete());
+		assertTrue(xmlEmbeddable.isDefaultMetadataComplete());
 		assertNull(xmlEmbeddable.getSpecifiedMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertNull(xmlEmbeddable.getSpecifiedMetadataComplete());
-		assertFalse(xmlEmbeddable.getDefaultMetadataComplete());
+		assertFalse(xmlEmbeddable.isDefaultMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 	}
 	
@@ -192,17 +192,17 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 		XmlEmbeddable xmlEmbeddable = (XmlEmbeddable) xmlPersistentType.getMapping();
 		Embeddable embeddableResource = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertNull(xmlEmbeddable.getSpecifiedMetadataComplete());
-		assertFalse(xmlEmbeddable.getMetadataComplete());
+		assertFalse(xmlEmbeddable.isMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertTrue(xmlEmbeddable.getMetadataComplete());
+		assertTrue(xmlEmbeddable.isMetadataComplete());
 		assertNull(xmlEmbeddable.getSpecifiedMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-		assertFalse(xmlEmbeddable.getMetadataComplete());
+		assertFalse(xmlEmbeddable.isMetadataComplete());
 		assertNull(xmlEmbeddable.getSpecifiedMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 	}

@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
@@ -21,16 +23,28 @@ import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
+import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
+import org.eclipse.jpt.core.internal.resource.orm.Inheritance;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.internal.resource.orm.SecondaryTable;
+import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
@@ -44,18 +58,21 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 //
 //	protected XmlInheritance inheritanceForXml;
 //
-//	protected ITable table;
-//
-//	protected EList<ISecondaryTable> specifiedSecondaryTables;
-//
+	protected final XmlTable table;
+
+	protected final List<XmlSecondaryTable> specifiedSecondaryTables;
+	
+	protected final List<XmlSecondaryTable> virtualSecondaryTables;
+		public static final String VIRTUAL_SECONDARY_TABLES_LIST = "virtualSecondaryTablesList";
+
 //	protected EList<IPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
 //
 //	protected EList<IPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns;
-//
-//	protected static final InheritanceType INHERITANCE_STRATEGY_EDEFAULT = InheritanceType.DEFAULT;
-//
-//	protected InheritanceType inheritanceStrategy = INHERITANCE_STRATEGY_EDEFAULT;
-//
+
+	protected InheritanceType specifiedInheritanceStrategy;
+	
+	protected InheritanceType defaultInheritanceStrategy;
+
 //	protected String defaultDiscriminatorValue;
 //
 //	protected String specifiedDiscriminatorValue;
@@ -80,20 +97,51 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 //
 //	protected String idClass;
 //
-//	protected EList<ISecondaryTable> virtualSecondaryTables;
 
 	public XmlEntity(XmlPersistentType parent) {
 		super(parent);
-//		this.table = OrmFactory.eINSTANCE.createXmlTable(buildTableOwner());
-//		((InternalEObject) this.table).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__TABLE, null, null);
-//		this.discriminatorColumn = OrmFactory.eINSTANCE.createXmlDiscriminatorColumn(new IDiscriminatorColumn.Owner(this));
-//		((InternalEObject) this.discriminatorColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__DISCRIMINATOR_COLUMN, null, null);
-//		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
-//		this.eAdapters().add(this.buildListener());
+		this.table = new XmlTable(this);
+		this.specifiedSecondaryTables = new ArrayList<XmlSecondaryTable>();
+		this.virtualSecondaryTables = new ArrayList<XmlSecondaryTable>();
 	}
+	
+	// ******************* ITypeMapping implementation ********************
 
 	public String getKey() {
 		return IMappingKeys.ENTITY_TYPE_MAPPING_KEY;
+	}	
+
+	@Override
+	public String getTableName() {
+		return getTable().getName();
+	}
+	@Override
+	public Table primaryDbTable() {
+		return getTable().dbTable();
+	}
+
+	@Override
+	public Table dbTable(String tableName) {
+		for (Iterator<ITable> stream = this.associatedTablesIncludingInherited(); stream.hasNext();) {
+			Table dbTable = stream.next().dbTable();
+			if (dbTable != null && dbTable.matchesShortJavaClassName(tableName)) {
+				return dbTable;
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public Schema dbSchema() {
+		return getTable().dbSchema();
+	}
+	
+	public IJavaEntity javaEntity() {
+		IJavaPersistentType javaPersistentType = getJavaPersistentType();
+		if (javaPersistentType != null && javaPersistentType.mappingKey() == IMappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+			return (IJavaEntity) javaPersistentType.getMapping();
+		}
+		return null;
 	}
 
 //	protected Adapter buildListener() {
@@ -128,43 +176,6 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 //		}
 //	}
 //
-//	protected void inheritanceStrategyChanged() {
-//		if (getInheritanceStrategy() == InheritanceType.DEFAULT) {
-//			setInheritanceForXml(null);
-//		}
-//		else {
-//			if (getInheritanceForXml() == null) {
-//				setInheritanceForXml(OrmFactory.eINSTANCE.createXmlInheritance());
-//			}
-//			getInheritanceForXml().setStrategy(getInheritanceStrategy());
-//		}
-//	}
-//
-//	protected void xmlInheritanceChanged() {
-//		if (getInheritanceForXml() == null) {
-//			setInheritanceStrategy(null);
-//		}
-//	}
-//
-//	@Override
-//	protected void addInsignificantFeatureIdsTo(Set<Integer> insignificantFeatureIds) {
-//		super.addInsignificantFeatureIdsTo(insignificantFeatureIds);
-//		insignificantFeatureIds.add(OrmPackage.XML_ENTITY_INTERNAL__SECONDARY_TABLES);
-//		insignificantFeatureIds.add(OrmPackage.XML_ENTITY_INTERNAL__ATTRIBUTE_OVERRIDES);
-//		insignificantFeatureIds.add(OrmPackage.XML_ENTITY_INTERNAL__ASSOCIATION_OVERRIDES);
-//	}
-//
-//	private ITable.Owner buildTableOwner() {
-//		return new ITable.Owner() {
-//			public ITextRange validationTextRange() {
-//				return XmlEntityInternal.this.validationTextRange();
-//			}
-//
-//			public ITypeMapping getTypeMapping() {
-//				return XmlEntityInternal.this;
-//			}
-//		};
-//	}
 
 	public String getName() {
 		return (this.getSpecifiedName() == null) ? getDefaultName() : this.getSpecifiedName();
@@ -191,81 +202,203 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		firePropertyChanged(DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
 	}
 
-//	public ITable getTable() {
-//		return table;
-//	}
-//
-//	private XmlTable getTableInternal() {
-//		return (XmlTable) getTable();
-//	}
-//
-//	public EList<ISecondaryTable> getSecondaryTables() {
-//		EList<ISecondaryTable> list = new EObjectEList<ISecondaryTable>(ISecondaryTable.class, this, OrmPackage.XML_ENTITY_INTERNAL__SECONDARY_TABLES);
-//		list.addAll(getSpecifiedSecondaryTables());
-//		list.addAll(getVirtualSecondaryTables());
-//		return list;
-//	}
-//
-//	public EList<ISecondaryTable> getVirtualSecondaryTables() {
-//		if (virtualSecondaryTables == null) {
-//			virtualSecondaryTables = new EObjectContainmentEList<ISecondaryTable>(ISecondaryTable.class, this, OrmPackage.XML_ENTITY_INTERNAL__VIRTUAL_SECONDARY_TABLES);
-//		}
-//		return virtualSecondaryTables;
-//	}
-//
+	public XmlTable getTable() {
+		return this.table;
+	}
+
+	public ListIterator<XmlSecondaryTable> secondaryTables() {
+		return new CompositeListIterator<XmlSecondaryTable>(specifiedSecondaryTables(), virtualSecondaryTables());
+	}
+
+	public int secondaryTablesSize() {
+		return virtualSecondaryTablesSize() + specifiedSecondaryTablesSize();
+	}
+	
+	public ListIterator<XmlSecondaryTable> virtualSecondaryTables() {
+		return new CloneListIterator<XmlSecondaryTable>(this.virtualSecondaryTables);
+	}
+
+	public int virtualSecondaryTablesSize() {
+		return this.virtualSecondaryTables.size();
+	}
+	
+	protected void addVirtualSecondaryTable(XmlSecondaryTable secondaryTable) {
+		addItemToList(secondaryTable, this.virtualSecondaryTables, XmlEntity.VIRTUAL_SECONDARY_TABLES_LIST);
+	}
+	
+	protected void removeVirtualSecondaryTable(XmlSecondaryTable secondaryTable) {
+		removeItemFromList(secondaryTable, this.virtualSecondaryTables, XmlEntity.VIRTUAL_SECONDARY_TABLES_LIST);
+	}
+
+	public ListIterator<XmlSecondaryTable> specifiedSecondaryTables() {
+		return new CloneListIterator<XmlSecondaryTable>(this.specifiedSecondaryTables);
+	}
+
+	public int specifiedSecondaryTablesSize() {
+		return this.specifiedSecondaryTables.size();
+	}
+	
+	public XmlSecondaryTable addSpecifiedSecondaryTable(int index) {
+		XmlSecondaryTable secondaryTable = new XmlSecondaryTable(this);
+		this.specifiedSecondaryTables.add(index, secondaryTable);
+		typeMappingResource().getSecondaryTables().add(index, OrmFactory.eINSTANCE.createSecondaryTable());
+		fireItemAdded(IEntity.SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
+		return secondaryTable;
+	}
+	
+	protected void addSpecifiedSecondaryTable(int index, XmlSecondaryTable secondaryTable) {
+		addItemToList(index, secondaryTable, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
+	}
+	
+	public void removeSpecifiedSecondaryTable(int index) {
+		XmlSecondaryTable removedSecondaryTable = this.specifiedSecondaryTables.remove(index);
+		typeMappingResource().getSecondaryTables().remove(index);
+		fireItemRemoved(IEntity.SPECIFIED_SECONDARY_TABLES_LIST, index, removedSecondaryTable);
+	}
+	
+	protected void removeSpecifiedSecondaryTable(XmlSecondaryTable secondaryTable) {
+		removeItemFromList(secondaryTable, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
+	}
+	
+	public void moveSpecifiedSecondaryTable(int oldIndex, int newIndex) {
+		typeMappingResource().getSecondaryTables().move(newIndex, oldIndex);
+		moveItemInList(newIndex, oldIndex, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
+	}
+	
+	public boolean containsSecondaryTable(String name) {
+		return containsSecondaryTable(name, secondaryTables());
+	}
+	
+	public boolean containsSpecifiedSecondaryTable(String name) {
+		return containsSecondaryTable(name, specifiedSecondaryTables());
+	}
+	
+	public boolean containsVirtualSecondaryTable(String name) {
+		return containsSecondaryTable(name, virtualSecondaryTables());
+	}
+	
+	public boolean containsVirtualSecondaryTable(XmlSecondaryTable secondaryTable) {
+		return this.virtualSecondaryTables.contains(secondaryTable);
+	}
+
+	protected boolean containsSecondaryTable(String name, ListIterator<XmlSecondaryTable> secondaryTables) {
+		for (XmlSecondaryTable secondaryTable : CollectionTools.iterable(secondaryTables)) {
+			String secondaryTableName = secondaryTable.getName();
+			if (secondaryTableName != null && secondaryTableName.equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected Iterator<String> tableNames(Iterator<ITable> tables) {
+		return new TransformationIterator<ITable, String>(tables) {
+			@Override
+			protected String transform(ITable t) {
+				return t.getName();
+			}
+		};
+	}
+
+	public Iterator<String> associatedTableNamesIncludingInherited() {
+		return this.nonNullTableNames(this.associatedTablesIncludingInherited());
+	}
+
+	protected Iterator<String> nonNullTableNames(Iterator<ITable> tables) {
+		return new FilteringIterator<String>(this.tableNames(tables)) {
+			@Override
+			protected boolean accept(Object o) {
+				return o != null;
+			}
+		};
+	}
+
+	public Iterator<ITable> associatedTables() {
+		return new SingleElementIterator<ITable>(getTable());
+		//TODO return new CompositeIterator(this.getTable(), this.getSecondaryTables().iterator());
+	}
+
+	public Iterator<ITable> associatedTablesIncludingInherited() {
+		return new CompositeIterator<ITable>(new TransformationIterator<ITypeMapping, Iterator<ITable>>(this.inheritanceHierarchy()) {
+			@Override
+			protected Iterator<ITable> transform(ITypeMapping mapping) {
+				return new FilteringIterator<ITable>(mapping.associatedTables()) {
+					@Override
+					protected boolean accept(Object o) {
+						return true;
+						//TODO
+						//filtering these out so as to avoid the duplicate table, root and children share the same table
+						//return !(o instanceof SingleTableInheritanceChildTableImpl);
+					}
+				};
+			}
+		});
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		return !CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
+	}
+	
 //	protected void xmlIdClassChanged() {
 //		if (getIdClassForXml() == null) {
 //			setIdClass(null);
 //		}
 //	}
-//
-//	public boolean containsSecondaryTable(String name) {
-//		return containsSecondaryTable(name, getSecondaryTables());
-//	}
-//
-//	public boolean containsSpecifiedSecondaryTable(String name) {
-//		return containsSecondaryTable(name, getSpecifiedSecondaryTables());
-//	}
-//
-//	private boolean containsSecondaryTable(String name, List<ISecondaryTable> secondaryTables) {
-//		for (ISecondaryTable secondaryTable : secondaryTables) {
-//			String secondaryTableName = secondaryTable.getName();
-//			if (secondaryTableName != null && secondaryTableName.equals(name)) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//
-//	public EList<ISecondaryTable> getSpecifiedSecondaryTables() {
-//		if (specifiedSecondaryTables == null) {
-//			specifiedSecondaryTables = new EObjectContainmentEList<ISecondaryTable>(ISecondaryTable.class, this, OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_SECONDARY_TABLES);
-//		}
-//		return specifiedSecondaryTables;
-//	}
-//
-//	public InheritanceType getInheritanceStrategy() {
-//		return inheritanceStrategy;
-//	}
-//
-//	public void setInheritanceStrategy(InheritanceType newInheritanceStrategy) {
-//		InheritanceType oldInheritanceStrategy = inheritanceStrategy;
-//		inheritanceStrategy = newInheritanceStrategy == null ? INHERITANCE_STRATEGY_EDEFAULT : newInheritanceStrategy;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_STRATEGY, oldInheritanceStrategy, inheritanceStrategy));
-//	}
-//
-//	//	public void setInheritanceStrategy(InheritanceType newInheritanceStrategy) {
-//	//		setInheritanceStrategyGen(newInheritanceStrategy);
-//	//		if (newInheritanceStrategy != INHERITANCE_STRATEGY_EDEFAULT) {
-//	//			//makeInheritanceForXmlNonNull();
-//	//		}
-//	//		setInheritanceStrategyForXml(newInheritanceStrategy);
-//	//		if (isAllFeaturesUnset()) {
-//	//			//makeInheritanceForXmlNull();
-//	//		}
-//	//	}
-//
+
+	public InheritanceType getInheritanceStrategy() {
+		return (this.getSpecifiedInheritanceStrategy() == null) ? this.getDefaultInheritanceStrategy() : this.getSpecifiedInheritanceStrategy();
+	}
+	
+	public InheritanceType getDefaultInheritanceStrategy() {
+		return this.defaultInheritanceStrategy;
+	}
+	
+	protected void setDefaultInheritanceStrategy(InheritanceType newInheritanceType) {
+		InheritanceType oldInheritanceType = this.defaultInheritanceStrategy;
+		this.defaultInheritanceStrategy = newInheritanceType;
+		firePropertyChanged(DEFAULT_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
+	}
+	
+	public InheritanceType getSpecifiedInheritanceStrategy() {
+		return this.specifiedInheritanceStrategy;
+	}
+	
+	public void setSpecifiedInheritanceStrategy(InheritanceType newInheritanceType) {
+		InheritanceType oldInheritanceType = this.specifiedInheritanceStrategy;
+		this.specifiedInheritanceStrategy = newInheritanceType;
+		if (oldInheritanceType != newInheritanceType) {
+			if (this.inheritanceResource() != null) {
+				this.inheritanceResource().setStrategy(InheritanceType.toXmlResourceModel(newInheritanceType));						
+				if (this.inheritanceResource().isAllFeaturesUnset()) {
+					removeInheritanceResource();
+				}
+			}
+			else if (newInheritanceType != null) {
+				addInheritanceResource();
+				inheritanceResource().setStrategy(InheritanceType.toXmlResourceModel(newInheritanceType));
+			}
+		}
+		firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
+	}
+	
+	protected void setSpecifiedInheritanceStrategy_(InheritanceType newInheritanceType) {
+		InheritanceType oldInheritanceType = this.specifiedInheritanceStrategy;
+		this.specifiedInheritanceStrategy = newInheritanceType;
+		firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
+	}
+
+	protected Inheritance inheritanceResource() {
+		return typeMappingResource().getInheritance();
+	}
+	
+	protected void addInheritanceResource() {
+		typeMappingResource().setInheritance(OrmFactory.eINSTANCE.createInheritance());		
+	}
+	
+	protected void removeInheritanceResource() {
+		typeMappingResource().setInheritance(null);
+	}
+
 //	public IDiscriminatorColumn getDiscriminatorColumn() {
 //		return discriminatorColumn;
 //	}
@@ -500,26 +633,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		}
 		return rootEntity;
 	}
-//
-//	public XmlTable getTableForXml() {
-//		if (getTableInternal().isAllFeaturesUnset()) {
-//			return null;
-//		}
-//		return getTableInternal();
-//	}
-//	public void setTableForXmlGen(XmlTable newTableForXml) {
-//		XmlTable oldValue = newTableForXml == null ? (XmlTable) getTable() : null;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__TABLE_FOR_XML, oldValue, newTableForXml));
-//	}
-//
-//	public void setTableForXml(XmlTable newTableForXml) {
-//		setTableForXmlGen(newTableForXml);
-//		if (newTableForXml == null) {
-//			getTableInternal().unsetAllAttributes();
-//		}
-//	}
-//
+
 //	public XmlDiscriminatorColumn getDiscriminatorColumnForXml() {
 //		if (getDiscriminatorColumnInternal().isAllFeaturesUnset()) {
 //			return null;
@@ -607,26 +721,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 //		else if (eNotificationRequired())
 //			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML, newInheritanceForXml, newInheritanceForXml));
 //	}
-//
-//	@Override
-//	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		super.refreshDefaults(defaultsContext);
-//		setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_ENTITY_NAME_KEY));
-//	}
-//
-//	@Override
-//	public String getTableName() {
-//		return getTable().getName();
-//	}
-//
-//	public void makeTableForXmlNull() {
-//		setTableForXmlGen(null);
-//	}
-//
-//	public void makeTableForXmlNonNull() {
-//		setTableForXmlGen(getTableForXml());
-//	}
-//
+
+
 //	public void makeDiscriminatorColumnForXmlNull() {
 //		setDiscriminatorColumnForXmlGen(null);
 //	}
@@ -672,74 +768,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 //		return pkAttributeName;
 //	}
 //
-//	public boolean tableNameIsInvalid(String tableName) {
-//		return !CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
-//	}
-//
-//	private Iterator<String> tableNames(Iterator<ITable> tables) {
-//		return new TransformationIterator(tables) {
-//			@Override
-//			protected Object transform(Object next) {
-//				return ((ITable) next).getName();
-//			}
-//		};
-//	}
-//
-//	public Iterator<String> associatedTableNamesIncludingInherited() {
-//		return this.nonNullTableNames(this.associatedTablesIncludingInherited());
-//	}
-//
-//	private Iterator<String> nonNullTableNames(Iterator<ITable> tables) {
-//		return new FilteringIterator(this.tableNames(tables)) {
-//			@Override
-//			protected boolean accept(Object o) {
-//				return o != null;
-//			}
-//		};
-//	}
-//
-//	public Iterator<ITable> associatedTables() {
-//		return new CompositeIterator(this.getTable(), this.getSecondaryTables().iterator());
-//	}
-//
-//	public Iterator<ITable> associatedTablesIncludingInherited() {
-//		return new CompositeIterator(new TransformationIterator(this.inheritanceHierarchy()) {
-//			@Override
-//			protected Object transform(Object next) {
-//				return new FilteringIterator(((ITypeMapping) next).associatedTables()) {
-//					@Override
-//					protected boolean accept(Object o) {
-//						return true;
-//						//TODO
-//						//filtering these out so as to avoid the duplicate table, root and children share the same table
-//						//return !(o instanceof SingleTableInheritanceChildTableImpl);
-//					}
-//				};
-//			}
-//		});
-//	}
-//
-//	@Override
-//	public Table primaryDbTable() {
-//		return getTable().dbTable();
-//	}
-//
-//	@Override
-//	public Table dbTable(String tableName) {
-//		for (Iterator<ITable> stream = this.associatedTablesIncludingInherited(); stream.hasNext();) {
-//			Table dbTable = stream.next().dbTable();
-//			if (dbTable != null && dbTable.matchesShortJavaClassName(tableName)) {
-//				return dbTable;
-//			}
-//		}
-//		return null;
-//	}
-//
-//	@Override
-//	public Schema dbSchema() {
-//		return getTable().dbSchema();
-//	}
-//
+
+
 	@Override
 	public int xmlSequence() {
 		return 1;
@@ -749,32 +779,35 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	 * Return an iterator of Entities, each which inherits from the one before,
 	 * and terminates at the root entity (or at the point of cyclicity).
 	 */
-	private Iterator<ITypeMapping> inheritanceHierarchy() {
-		return new TransformationIterator(persistentType().inheritanceHierarchy()) {
+	protected Iterator<ITypeMapping> inheritanceHierarchy() {
+		return new TransformationIterator<IPersistentType, ITypeMapping>(persistentType().inheritanceHierarchy()) {
 			@Override
-			protected Object transform(Object next) {
-				return ((IPersistentType) next).getMapping();
+			protected ITypeMapping transform(IPersistentType type) {
+				return type.getMapping();
 			}
 		};
-		//TODO once we support inheritance, which of these should we use??
-		//return this.getInheritance().typeMappingLineage();
 	}
-
+	
+	@Override
 	public Iterator<String> allOverridableAttributeNames() {
-		return new CompositeIterator(new TransformationIterator(this.inheritanceHierarchy()) {
-			protected Object transform(Object next) {
-				return ((ITypeMapping) next).overridableAttributeNames();
+		return new CompositeIterator<String>(new TransformationIterator<ITypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
+			@Override
+			protected Iterator<String> transform(ITypeMapping mapping) {
+				return mapping.overridableAttributeNames();
 			}
 		});
 	}
 
+	@Override
 	public Iterator<String> allOverridableAssociationNames() {
-		return new CompositeIterator(new TransformationIterator(this.inheritanceHierarchy()) {
-			protected Object transform(Object next) {
-				return ((ITypeMapping) next).overridableAssociationNames();
+		return new CompositeIterator<String>(new TransformationIterator<ITypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
+			@Override
+			protected Iterator<String> transform(ITypeMapping mapping) {
+				return mapping.overridableAssociationNames();
 			}
 		});
 	}
+
 //
 //	public IAttributeOverride createAttributeOverride(int index) {
 //		return OrmFactory.eINSTANCE.createXmlAttributeOverride(new IEntity.AttributeOverrideOwner(this));
@@ -859,23 +892,155 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		super.initialize(entity);
 		this.specifiedName = entity.getName();
 		this.defaultName = defaultName();
+		this.initializeInheritance(this.inheritanceResource());
+		this.table.initialize(entity);
+		this.initializeSpecifiedSecondaryTables(entity);
+		this.initializeVirtualSecondaryTables();
 	}
 	
+	protected void initializeInheritance(Inheritance inheritanceResource) {
+		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(inheritanceResource);
+		this.defaultInheritanceStrategy = this.defaultInheritanceStrategy();
+	}
+	
+	protected void initializeSpecifiedSecondaryTables(Entity entity) {
+		for (SecondaryTable secondaryTable : entity.getSecondaryTables()) {
+			this.specifiedSecondaryTables.add(createSecondaryTable(secondaryTable));
+		}
+	}
+	
+	protected void initializeVirtualSecondaryTables() {
+		if (isMetadataComplete()) {
+			return;
+		}
+		if (javaEntity() == null) {
+			return;
+		}
+		ListIterator<IJavaSecondaryTable> javaSecondaryTables = javaEntity().secondaryTables();
+		while(javaSecondaryTables.hasNext()) {
+			IJavaSecondaryTable javaSecondaryTable = javaSecondaryTables.next();
+			if (javaSecondaryTable.getName() != null) {
+				if (!containsSpecifiedSecondaryTable(javaSecondaryTable.getName())) {
+					//TODO calling setters during initialize in createVirtualSecondaryTable
+					//I think this is going to be a problem
+					this.virtualSecondaryTables.add(createVirtualSecondaryTable(javaSecondaryTable));
+				}
+			}
+		}
+	}
+	
+
 	@Override
 	public void update(Entity entity) {
 		super.update(entity);
 		this.setSpecifiedName(entity.getName());
 		this.setDefaultName(this.defaultName());
+		this.updateInheritance(this.inheritanceResource());
+		this.table.update(entity);
+		this.updateSpecifiedSecondaryTables(entity);
+		this.updateVirtualSecondaryTables();
 	}
 
 	protected String defaultName() {
+		//TODO add a test where the underyling java has a name set @Entity(name="foo")
+		//just by having the entity specified in xml we are overriding that name setting
 		String className = getClass_();
 		if (className != null) {
 			return ClassTools.shortNameForClassNamed(className);
 		}
 		return null;
 	}
+	
+	protected void updateInheritance(Inheritance inheritanceResource) {
+		this.setSpecifiedInheritanceStrategy_(this.specifiedInheritanceStrategy(inheritanceResource));
+		this.setDefaultInheritanceStrategy(this.defaultInheritanceStrategy());
+	}
+	
+	protected void updateSpecifiedSecondaryTables(Entity entity) {
+		ListIterator<XmlSecondaryTable> secondaryTables = specifiedSecondaryTables();
+		ListIterator<SecondaryTable> resourceSecondaryTables = entity.getSecondaryTables().listIterator();
 		
+		while (secondaryTables.hasNext()) {
+			XmlSecondaryTable secondaryTable = secondaryTables.next();
+			if (resourceSecondaryTables.hasNext()) {
+				secondaryTable.update((SecondaryTable) resourceSecondaryTables.next());
+			}
+			else {
+				removeSpecifiedSecondaryTable(secondaryTable);
+			}
+		}
+		
+		while (resourceSecondaryTables.hasNext()) {
+			addSpecifiedSecondaryTable(specifiedSecondaryTablesSize(), createSecondaryTable((SecondaryTable) resourceSecondaryTables.next()));
+		}
+	}
+	
+	protected void updateVirtualSecondaryTables() {
+		ListIterator<XmlSecondaryTable> secondaryTables = virtualSecondaryTables();
+		ListIterator<IJavaSecondaryTable> javaSecondaryTables = EmptyListIterator.instance();
+		
+		if (javaEntity() != null && !isMetadataComplete()) {
+			javaSecondaryTables = javaEntity().secondaryTables();
+		}
+		while (secondaryTables.hasNext()) {
+			XmlSecondaryTable virtualSecondaryTable = secondaryTables.next();
+			if (javaSecondaryTables.hasNext()) {
+				IJavaSecondaryTable javaSecondaryTable = javaSecondaryTables.next();
+				if (!containsSpecifiedSecondaryTable(javaSecondaryTable.getName())) {
+					virtualSecondaryTable.setDefaultName(javaSecondaryTable.getName());
+					virtualSecondaryTable.setDefaultCatalog(javaSecondaryTable.getCatalog());
+					virtualSecondaryTable.setDefaultSchema(javaSecondaryTable.getSchema());
+					//TODO what about pkJoinColumns?
+				}
+				else {
+					removeVirtualSecondaryTable(virtualSecondaryTable);
+				}
+			}
+			else {
+				removeVirtualSecondaryTable(virtualSecondaryTable);
+			}
+		}
+		
+		while (javaSecondaryTables.hasNext()) {
+			addVirtualSecondaryTable(createVirtualSecondaryTable(javaSecondaryTables.next()));
+		}
+	}
+
+	protected XmlSecondaryTable createSecondaryTable(SecondaryTable secondaryTable) {
+		XmlSecondaryTable xmlSecondaryTable = new XmlSecondaryTable(this);
+		xmlSecondaryTable.initialize(secondaryTable);
+		return xmlSecondaryTable;
+	}
+	
+	protected XmlSecondaryTable createVirtualSecondaryTable(IJavaSecondaryTable javaSecondaryTable) {
+		XmlSecondaryTable virutalSecondaryTable = new XmlSecondaryTable(this);
+		virutalSecondaryTable.setDefaultName(javaSecondaryTable.getName());
+		virutalSecondaryTable.setDefaultCatalog(javaSecondaryTable.getCatalog());
+		virutalSecondaryTable.setDefaultSchema(javaSecondaryTable.getSchema());		
+		//TODO what about primaryKeyJoinColumns, would you want to see those in the orm.xml ui??
+		return virutalSecondaryTable;
+	}
+	
+	protected InheritanceType specifiedInheritanceStrategy(Inheritance inheritanceResource) {
+		if (inheritanceResource == null) {
+			return null;
+		}
+		return InheritanceType.fromXmlResourceModel(inheritanceResource.getStrategy());
+	}
+	
+	protected InheritanceType defaultInheritanceStrategy() {
+		if (inheritanceResource() == null && !isMetadataComplete()) {
+			if (javaEntity() != null) {
+				return javaEntity().getInheritanceStrategy();
+			}
+		}
+		if (rootEntity() == this) {
+			return InheritanceType.SINGLE_TABLE;
+		}
+		return rootEntity().getInheritanceStrategy();
+	}
+
+	
 	public ISequenceGenerator addSequenceGenerator() {
 		// TODO Auto-generated method stub
 		return null;
@@ -891,10 +1056,6 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return null;
 	}
 
-	public ISecondaryTable addSpecifiedSecondaryTable(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public ITableGenerator addTableGenerator() {
 		// TODO Auto-generated method stub
@@ -921,11 +1082,6 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return null;
 	}
 
-	public InheritanceType getDefaultInheritanceStrategy() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public IDiscriminatorColumn getDiscriminatorColumn() {
 		// TODO Auto-generated method stub
 		return null;
@@ -936,27 +1092,12 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return null;
 	}
 
-	public InheritanceType getInheritanceStrategy() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public ISequenceGenerator getSequenceGenerator() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String getSpecifiedDiscriminatorValue() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public InheritanceType getSpecifiedInheritanceStrategy() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ITable getTable() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -972,11 +1113,6 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	}
 
 	public void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void moveSpecifiedSecondaryTable(int oldIndex, int newIndex) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -1006,32 +1142,12 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		
 	}
 
-	public void removeSpecifiedSecondaryTable(int index) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void removeTableGenerator() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public <T extends ISecondaryTable> ListIterator<T> secondaryTables() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int secondaryTablesSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public void setSpecifiedDiscriminatorValue(String value) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setSpecifiedInheritanceStrategy(InheritanceType newInheritanceType) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -1054,36 +1170,6 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	public int specifiedPrimaryKeyJoinColumnsSize() {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	public <T extends ISecondaryTable> ListIterator<T> specifiedSecondaryTables() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int specifiedSecondaryTablesSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public Iterator<String> associatedTableNamesIncludingInherited() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Iterator<ITable> associatedTables() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Iterator<ITable> associatedTablesIncludingInherited() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean tableNameIsInvalid(String tableName) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public IColumnMapping columnMapping(String attributeName) {
@@ -1115,5 +1201,11 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		Entity entity = OrmFactory.eINSTANCE.createEntity();
 		entityMappings.getEntities().add(entity);
 		return entity;
+	}
+	
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(getName());
 	}
 }

@@ -2,13 +2,14 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmSwitch.java,v 1.1.2.4 2007/12/06 15:56:01 kmoore Exp $
+ * $Id: OrmSwitch.java,v 1.1.2.5 2007/12/07 17:26:52 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
 import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
 import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.Attributes;
@@ -393,6 +394,7 @@ public class OrmSwitch<T>
 			{
 				JoinTable joinTable = (JoinTable)theEObject;
 				T result = caseJoinTable(joinTable);
+				if (result == null) result = caseAbstractTable(joinTable);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -494,10 +496,26 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.ABSTRACT_TABLE:
+			{
+				AbstractTable abstractTable = (AbstractTable)theEObject;
+				T result = caseAbstractTable(abstractTable);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.TABLE:
+			{
+				Table table = (Table)theEObject;
+				T result = caseTable(table);
+				if (result == null) result = caseAbstractTable(table);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.SECONDARY_TABLE:
 			{
 				SecondaryTable secondaryTable = (SecondaryTable)theEObject;
 				T result = caseSecondaryTable(secondaryTable);
+				if (result == null) result = caseAbstractTable(secondaryTable);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -512,13 +530,6 @@ public class OrmSwitch<T>
 			{
 				SqlResultSetMapping sqlResultSetMapping = (SqlResultSetMapping)theEObject;
 				T result = caseSqlResultSetMapping(sqlResultSetMapping);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case OrmPackage.TABLE:
-			{
-				Table table = (Table)theEObject;
-				T result = caseTable(table);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -1288,6 +1299,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseQueryHint(QueryHint object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Abstract Table</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Abstract Table</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAbstractTable(AbstractTable object)
 	{
 		return null;
 	}

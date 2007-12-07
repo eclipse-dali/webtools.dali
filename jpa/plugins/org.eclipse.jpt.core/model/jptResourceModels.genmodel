@@ -36,9 +36,9 @@
       <genEnumLiterals ecoreEnumLiteral="orm.ecore#//GenerationType/AUTO"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="orm.ecore#//InheritanceType">
-      <genEnumLiterals ecoreEnumLiteral="orm.ecore#//InheritanceType/SINGLETABLE"/>
+      <genEnumLiterals ecoreEnumLiteral="orm.ecore#//InheritanceType/SINGLE_TABLE"/>
       <genEnumLiterals ecoreEnumLiteral="orm.ecore#//InheritanceType/JOINED"/>
-      <genEnumLiterals ecoreEnumLiteral="orm.ecore#//InheritanceType/TABLEPERCLASS"/>
+      <genEnumLiterals ecoreEnumLiteral="orm.ecore#//InheritanceType/TABLE_PER_CLASS"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="orm.ecore#//TemporalType">
       <genEnumLiterals ecoreEnumLiteral="orm.ecore#//TemporalType/DATE"/>
@@ -308,12 +308,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//JoinColumn/table"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//JoinTable">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//JoinTable/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//JoinTable/catalog"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//JoinTable/schema"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//JoinTable/joinColumns"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//JoinTable/inverseJoinColumns"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//JoinTable/uniqueConstraints"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//Lob"/>
     <genClasses ecoreClass="orm.ecore#//MapKey">
@@ -347,12 +343,15 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//QueryHint/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//QueryHint/value"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//AbstractTable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractTable/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractTable/catalog"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractTable/schema"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//AbstractTable/uniqueConstraints"/>
+    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//Table"/>
     <genClasses ecoreClass="orm.ecore#//SecondaryTable">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SecondaryTable/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SecondaryTable/catalog"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SecondaryTable/schema"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//SecondaryTable/primaryKeyJoinColumns"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//SecondaryTable/uniqueConstraints"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//SequenceGenerator">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SequenceGenerator/name"/>
@@ -364,12 +363,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SqlResultSetMapping/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//SqlResultSetMapping/entityResults"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//SqlResultSetMapping/columnResults"/>
-    </genClasses>
-    <genClasses ecoreClass="orm.ecore#//Table">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Table/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Table/catalog"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Table/schema"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Table/uniqueConstraints"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//TableGenerator">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TableGenerator/name"/>

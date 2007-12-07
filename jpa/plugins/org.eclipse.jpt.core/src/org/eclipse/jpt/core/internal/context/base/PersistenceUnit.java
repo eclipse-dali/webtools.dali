@@ -78,7 +78,7 @@ public class PersistenceUnit extends JpaContextNode
 		for (IMappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
 			XmlPersistentType xmlPersistentType = mappingFileRef.persistentTypeFor(fullyQualifiedTypeName);
 			if (xmlPersistentType != null) {
-				return xmlPersistentType.javaPersistentType();
+				return xmlPersistentType;
 			}
 		}
 		for (IClassRef classRef : CollectionTools.iterable(classRefs())) {

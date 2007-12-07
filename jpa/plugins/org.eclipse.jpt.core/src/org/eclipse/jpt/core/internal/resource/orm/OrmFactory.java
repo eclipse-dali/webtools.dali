@@ -126,10 +126,10 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.PRE_UPDATE: return (EObject)createPreUpdate();
 			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN: return (EObject)createPrimaryKeyJoinColumn();
 			case OrmPackage.QUERY_HINT: return (EObject)createQueryHint();
+			case OrmPackage.TABLE: return (EObject)createTable();
 			case OrmPackage.SECONDARY_TABLE: return (EObject)createSecondaryTable();
 			case OrmPackage.SEQUENCE_GENERATOR: return (EObject)createSequenceGenerator();
 			case OrmPackage.SQL_RESULT_SET_MAPPING: return (EObject)createSqlResultSetMapping();
-			case OrmPackage.TABLE: return (EObject)createTable();
 			case OrmPackage.TABLE_GENERATOR: return (EObject)createTableGenerator();
 			case OrmPackage.UNIQUE_CONSTRAINT: return (EObject)createUniqueConstraint();
 			default:

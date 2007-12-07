@@ -26,16 +26,14 @@ import org.eclipse.emf.common.util.Enumerator;
 public enum InheritanceType implements Enumerator
 {
 	/**
-	 * The '<em><b>SINGLETABLE</b></em>' literal object.
+	 * The '<em><b>SINGLE TABLE</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #SINGLETABLE_VALUE
+	 * @see #SINGLE_TABLE_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	SINGLETABLE(0, "SINGLETABLE", "SINGLE_TABLE"),
-
-	/**
+	SINGLE_TABLE(0, "SINGLE_TABLE", "SINGLE_TABLE"), /**
 	 * The '<em><b>JOINED</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -46,29 +44,29 @@ public enum InheritanceType implements Enumerator
 	JOINED(1, "JOINED", "JOINED"),
 
 	/**
-	 * The '<em><b>TABLEPERCLASS</b></em>' literal object.
+	 * The '<em><b>TABLE PER CLASS</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #TABLEPERCLASS_VALUE
+	 * @see #TABLE_PER_CLASS_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	TABLEPERCLASS(2, "TABLEPERCLASS", "TABLE_PER_CLASS");
+	TABLE_PER_CLASS(2, "TABLE_PER_CLASS", "TABLE_PER_CLASS");
 
 	/**
-	 * The '<em><b>SINGLETABLE</b></em>' literal value.
+	 * The '<em><b>SINGLE TABLE</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>SINGLETABLE</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>SINGLE TABLE</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #SINGLETABLE
-	 * @model literal="SINGLE_TABLE"
+	 * @see #SINGLE_TABLE
+	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int SINGLETABLE_VALUE = 0;
+	public static final int SINGLE_TABLE_VALUE = 0;
 
 	/**
 	 * The '<em><b>JOINED</b></em>' literal value.
@@ -86,19 +84,19 @@ public enum InheritanceType implements Enumerator
 	public static final int JOINED_VALUE = 1;
 
 	/**
-	 * The '<em><b>TABLEPERCLASS</b></em>' literal value.
+	 * The '<em><b>TABLE PER CLASS</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>TABLEPERCLASS</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>TABLE PER CLASS</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #TABLEPERCLASS
-	 * @model literal="TABLE_PER_CLASS"
+	 * @see #TABLE_PER_CLASS
+	 * @model
 	 * @generated
 	 * @ordered
 	 */
-	public static final int TABLEPERCLASS_VALUE = 2;
+	public static final int TABLE_PER_CLASS_VALUE = 2;
 
 	/**
 	 * An array of all the '<em><b>Inheritance Type</b></em>' enumerators.
@@ -109,9 +107,9 @@ public enum InheritanceType implements Enumerator
 	private static final InheritanceType[] VALUES_ARRAY =
 		new InheritanceType[]
 		{
-			SINGLETABLE,
+			SINGLE_TABLE,
 			JOINED,
-			TABLEPERCLASS,
+			TABLE_PER_CLASS,
 		};
 
 	/**
@@ -170,9 +168,9 @@ public enum InheritanceType implements Enumerator
 	{
 		switch (value)
 		{
-			case SINGLETABLE_VALUE: return SINGLETABLE;
+			case SINGLE_TABLE_VALUE: return SINGLE_TABLE;
 			case JOINED_VALUE: return JOINED;
-			case TABLEPERCLASS_VALUE: return TABLEPERCLASS;
+			case TABLE_PER_CLASS_VALUE: return TABLE_PER_CLASS;
 		}
 		return null;
 	}

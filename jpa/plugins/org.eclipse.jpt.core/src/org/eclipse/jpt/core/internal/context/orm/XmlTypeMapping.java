@@ -33,7 +33,7 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 	protected AccessType specifiedAccess;
 		public static final String SPECIFIED_ACCESS_PROPERTY = "specifiedAccessProperty";
 
-	protected Boolean defaultMetadataComplete;
+	protected boolean defaultMetadataComplete;
 		public static final String DEFAULT_METADATA_COMPLETE_PROPERTY = "defaultMetadataCompleteProperty";
 
 	protected Boolean specifiedMetadataComplete;
@@ -92,23 +92,21 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 		return (this.getSpecifiedAccess() == null) ? this.getDefaultAccess() : this.getSpecifiedAccess();
 	}
 
-	public Boolean getMetadataComplete() {
-		return (this.getSpecifiedMetadataComplete() == null) ? this.getDefaultMetadataComplete() : this.getSpecifiedMetadataComplete();
+	public boolean isMetadataComplete() {
+		if (isDefaultMetadataComplete()) {
+			//entity-mappings/persistence-unit-metadata/xml-mapping-metadata-complete is specified, then it overrides
+			//anything set here
+			return Boolean.TRUE;
+		}
+		return (this.getSpecifiedMetadataComplete() == null) ? this.isDefaultMetadataComplete() : this.getSpecifiedMetadataComplete();
 	}
 
-	public boolean isMetadataComplete() {
-		if (getMetadataComplete() == null) {
-			return false;
-		}
-		return getMetadataComplete();
-	}
-	
-	public Boolean getDefaultMetadataComplete() {
+	public boolean isDefaultMetadataComplete() {
 		return this.defaultMetadataComplete;
 	}
 	
-	protected void setDefaultMetadataComplete(Boolean newDefaultMetadataComplete) {
-		Boolean oldMetadataComplete = this.defaultMetadataComplete;
+	protected void setDefaultMetadataComplete(boolean newDefaultMetadataComplete) {
+		boolean oldMetadataComplete = this.defaultMetadataComplete;
 		this.defaultMetadataComplete = newDefaultMetadataComplete;
 		firePropertyChanged(DEFAULT_METADATA_COMPLETE_PROPERTY, oldMetadataComplete, newDefaultMetadataComplete);
 	}
@@ -139,7 +137,7 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 		this.setSpecifiedAccess(oldMapping.getSpecifiedAccess());
 		this.setSpecifiedMetadataComplete(oldMapping.getSpecifiedMetadataComplete());
 		this.setDefaultAccess(oldMapping.getDefaultAccess());
-		this.setDefaultMetadataComplete(oldMapping.getDefaultMetadataComplete());
+		this.setDefaultMetadataComplete(oldMapping.isDefaultMetadataComplete());
 	}
 
 //	public IJpaContentNode getContentNode(int offset) {
@@ -219,7 +217,7 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 		return entityMappings().getPersistenceUnitMetadata();
 	}
 
-	protected Boolean defaultMetadataComplete() {
+	protected boolean defaultMetadataComplete() {
 		return persistenceUnitMetadata().isXmlMappingMetadataComplete();
 	}
 

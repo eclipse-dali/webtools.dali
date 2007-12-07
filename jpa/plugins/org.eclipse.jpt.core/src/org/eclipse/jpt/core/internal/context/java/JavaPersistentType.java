@@ -307,7 +307,9 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	 * Check the access "specified" by the java resource model.
 	 * 		If this is not null then use that as the access. (validation will handle where this doesn't match inheritance)
 	 * 		If null then set to parentPersistentType access.
-	 * 		Default to FIELD if no parentPersistentType.
+	 * 		If still null check entity-mappings if this persistent-type is listed in an orm.xml file
+	 * 		If still null check the persistence-unit default Access
+	 * 		Default to FIELD if all else fails.
 	 */
 	protected AccessType access(JavaPersistentTypeResource persistentTypeResource) {
 		AccessType javaAccess = AccessType.fromJavaResourceModel(persistentTypeResource.getAccess());

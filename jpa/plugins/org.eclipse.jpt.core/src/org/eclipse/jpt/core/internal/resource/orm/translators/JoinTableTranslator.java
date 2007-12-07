@@ -43,15 +43,15 @@ public class JoinTableTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getJoinTable_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getAbstractTable_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createCatalogTranslator() {
-		return new Translator(CATALOG, ORM_PKG.getJoinTable_Catalog(), DOM_ATTRIBUTE);
+		return new Translator(CATALOG, ORM_PKG.getAbstractTable_Catalog(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createSchemaTranslator() {
-		return new Translator(SCHEMA, ORM_PKG.getJoinTable_Schema(), DOM_ATTRIBUTE);
+		return new Translator(SCHEMA, ORM_PKG.getAbstractTable_Schema(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createJoinColumnTranslator() {
@@ -63,6 +63,6 @@ public class JoinTableTranslator extends Translator
 	}
 	
 	private Translator createUniqueConstraintTranslator() {
-		return new UniqueConstraintTranslator(UNIQUE_CONSTRAINT, ORM_PKG.getJoinTable_UniqueConstraints());
+		return new UniqueConstraintTranslator(UNIQUE_CONSTRAINT, ORM_PKG.getAbstractTable_UniqueConstraints());
 	}
 }

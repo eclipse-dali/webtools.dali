@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
+import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
@@ -23,6 +24,7 @@ import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class XmlEntityTests extends ContextModelTestCase
@@ -30,7 +32,6 @@ public class XmlEntityTests extends ContextModelTestCase
 	public XmlEntityTests(String name) {
 		super(name);
 	}
-	
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -103,6 +104,25 @@ public class XmlEntityTests extends ContextModelTestCase
 			}
 		});
 	}
+
+	private IType createTestSubType() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("AnnotationTestTypeChild").append(" ");
+				sb.append("extends " + TYPE_NAME + " ");
+				sb.append("{}").append(CR);
+			}
+		};
+		return this.javaProject.createType(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+	}
+
 	
 	public void testUpdateSpecifiedName() throws Exception {
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
@@ -141,10 +161,16 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 
 	public void testUpdateDefaultName() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		createTestEntityFieldAccess();
+		
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertEquals("Foo", xmlEntity.getDefaultName());
+		assertEquals(TYPE_NAME, xmlEntity.getDefaultName());
+		
+		xmlEntity.javaEntity().setSpecifiedName("Foo");
+		//xml default name is not affect by what is specified in java
+		assertEquals(TYPE_NAME, xmlEntity.getDefaultName());
 		
 		//set class in the resource model, verify context model updated
 		entityResource.setClassName("com.Bar");
@@ -286,11 +312,11 @@ public class XmlEntityTests extends ContextModelTestCase
 		
 		entityMappings().setSpecifiedAccess(AccessType.FIELD);
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
-		//entityMappings access wins over perssitence-unit-defaults access
+		//entityMappings access wins over persistence-unit-defaults access
 		assertEquals(AccessType.FIELD, xmlEntity.getDefaultAccess());
 		
 		entityMappings().setSpecifiedAccess(null);		
-		//perssitence-unit-defaults access used now
+		//persistence-unit-defaults access used now
 		assertEquals(AccessType.PROPERTY, xmlEntity.getDefaultAccess());
 		
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
@@ -322,7 +348,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals(AccessType.FIELD, xmlEntity.getDefaultAccess());
 
 		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertEquals(AccessType.FIELD, xmlEntity.getDefaultAccess());
+		assertNull(xmlEntity.getDefaultAccess());
 		
 		xmlEntity.setSpecifiedMetadataComplete(null);
 		assertNull(xmlEntity.getDefaultAccess());
@@ -345,7 +371,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals(AccessType.PROPERTY, xmlEntity.getDefaultAccess());
 
 		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertEquals(AccessType.PROPERTY, xmlEntity.getDefaultAccess());
+		assertNull(xmlEntity.getDefaultAccess());
 		
 		xmlEntity.setSpecifiedMetadataComplete(null);
 		assertNull(xmlEntity.getDefaultAccess());
@@ -412,19 +438,25 @@ public class XmlEntityTests extends ContextModelTestCase
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertNull(xmlEntity.getSpecifiedMetadataComplete());
-		assertFalse(xmlEntity.getDefaultMetadataComplete());
+		assertFalse(xmlEntity.isDefaultMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertTrue(xmlEntity.getDefaultMetadataComplete());
+		assertTrue(xmlEntity.isDefaultMetadataComplete());
 		assertNull(xmlEntity.getSpecifiedMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertNull(xmlEntity.getSpecifiedMetadataComplete());
-		assertFalse(xmlEntity.getDefaultMetadataComplete());
+		assertFalse(xmlEntity.isDefaultMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
+		
+		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		xmlEntity.setSpecifiedMetadataComplete(false);
+		assertFalse(xmlEntity.getSpecifiedMetadataComplete());
+		assertTrue(xmlEntity.isDefaultMetadataComplete());
+		assertTrue(xmlEntity.isMetadataComplete());
 	}
 
 	public void testUpdateMetadataComplete() throws Exception {
@@ -432,18 +464,143 @@ public class XmlEntityTests extends ContextModelTestCase
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertNull(xmlEntity.getSpecifiedMetadataComplete());
-		assertFalse(xmlEntity.getMetadataComplete());
+		assertFalse(xmlEntity.isMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertTrue(xmlEntity.getMetadataComplete());
+		assertTrue(xmlEntity.isMetadataComplete());
 		assertNull(xmlEntity.getSpecifiedMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-		assertFalse(xmlEntity.getMetadataComplete());
+		assertFalse(xmlEntity.isMetadataComplete());
 		assertNull(xmlEntity.getSpecifiedMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 	}
+	
+	
+	public void testUpdateInheritanceStrategy() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getInheritanceStrategy());
+		assertNull(entityResource.getInheritance());
+
+		//set inheritance strategy in the resource model, verify context model updated
+		entityResource.setInheritance(OrmFactory.eINSTANCE.createInheritance());
+		entityResource.getInheritance().setStrategy(org.eclipse.jpt.core.internal.resource.orm.InheritanceType.TABLE_PER_CLASS);
+		
+		assertEquals(InheritanceType.TABLE_PER_CLASS, xmlEntity.getInheritanceStrategy());		
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.InheritanceType.TABLE_PER_CLASS, entityResource.getInheritance().getStrategy());		
+	}
+	
+	public void testUpdateDefaultInheritanceStrategyFromJava() throws Exception {
+		createTestEntityDefaultFieldAccess();
+
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		//no inheritance strategy specified in java so single-table is default
+		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getDefaultInheritanceStrategy());
+		
+		xmlEntity.javaEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		assertEquals(InheritanceType.JOINED, xmlEntity.getDefaultInheritanceStrategy());
+			
+		xmlEntity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		ormResource().save(null);
+		//inheritance tag exists in xml, so it overrides anything in java
+		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getDefaultInheritanceStrategy());
+
+		xmlEntity.setSpecifiedInheritanceStrategy(null);		
+		ormResource().save(null);
+		assertEquals(InheritanceType.JOINED, xmlEntity.getDefaultInheritanceStrategy());
+
+		xmlEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		ormResource().save(null);
+		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getDefaultInheritanceStrategy());
+		
+		xmlEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
+		assertEquals(InheritanceType.JOINED, xmlEntity.getDefaultInheritanceStrategy());
+		
+		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		//this setting overrides the false meta-data complete found on xmlEntity
+		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getDefaultInheritanceStrategy());
+	}
+	
+	public void testUpdateDefaultInheritanceStrategyFromParent() throws Exception {
+		createTestEntityDefaultFieldAccess();
+		createTestSubType();
+	
+		XmlPersistentType parentPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType childPersistentType = entityMappings().addXmlPersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity parentXmlEntity = (XmlEntity) parentPersistentType.getMapping();
+		XmlEntity childXmlEntity = (XmlEntity) childPersistentType.getMapping();
+		
+		assertEquals(parentXmlEntity, childXmlEntity.parentEntity());
+		assertEquals(InheritanceType.SINGLE_TABLE, childXmlEntity.getDefaultInheritanceStrategy());
+		
+		//change root inheritance strategy, verify default is changed for child entity
+		parentXmlEntity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		assertEquals(InheritanceType.SINGLE_TABLE, parentXmlEntity.getDefaultInheritanceStrategy());
+		assertEquals(InheritanceType.TABLE_PER_CLASS, childXmlEntity.getDefaultInheritanceStrategy());
+		assertNull(childXmlEntity.getSpecifiedInheritanceStrategy());
+
+		//set specified inheritance strategy in java and verify defaults in xml are correct
+		parentXmlEntity.setSpecifiedInheritanceStrategy(null);
+		parentXmlEntity.javaEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		assertEquals(InheritanceType.JOINED, parentXmlEntity.getDefaultInheritanceStrategy());
+		assertEquals(InheritanceType.JOINED, childXmlEntity.getDefaultInheritanceStrategy());
+		assertNull(parentXmlEntity.getSpecifiedInheritanceStrategy());
+		assertNull(childXmlEntity.getSpecifiedInheritanceStrategy());
+		
+		parentPersistentType.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		assertEquals(InheritanceType.SINGLE_TABLE, parentXmlEntity.getDefaultInheritanceStrategy());
+		assertEquals(InheritanceType.SINGLE_TABLE, childXmlEntity.getDefaultInheritanceStrategy());
+	}
+
+	public void testUpdateSpecifiedInheritanceStrategy() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		assertNull(xmlEntity.getSpecifiedInheritanceStrategy());
+		assertNull(entityResource.getInheritance());
+		
+		//set strategy in the resource model, verify context model updated
+		entityResource.setInheritance(OrmFactory.eINSTANCE.createInheritance());
+		entityResource.getInheritance().setStrategy(org.eclipse.jpt.core.internal.resource.orm.InheritanceType.JOINED);
+		assertEquals(InheritanceType.JOINED, xmlEntity.getSpecifiedInheritanceStrategy());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.InheritanceType.JOINED, entityResource.getInheritance().getStrategy());
+	
+		//set strategy to null in the resource model
+		entityResource.getInheritance().setStrategy(null);
+		assertNull(xmlEntity.getSpecifiedInheritanceStrategy());
+		assertNull(entityResource.getInheritance().getStrategy());
+		
+		entityResource.getInheritance().setStrategy(org.eclipse.jpt.core.internal.resource.orm.InheritanceType.SINGLE_TABLE);
+		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getSpecifiedInheritanceStrategy());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.InheritanceType.SINGLE_TABLE, entityResource.getInheritance().getStrategy());
+
+		entityResource.setInheritance(null);
+		assertNull(xmlEntity.getSpecifiedInheritanceStrategy());
+		assertNull(entityResource.getInheritance());
+	}
+	
+	public void testModifySpecifiedInheritanceStrategy() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		assertNull(xmlEntity.getSpecifiedInheritanceStrategy());
+		assertNull(entityResource.getInheritance());
+		
+		//set strategy in the context model, verify resource model modified
+		xmlEntity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		assertEquals(InheritanceType.TABLE_PER_CLASS, xmlEntity.getSpecifiedInheritanceStrategy());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.InheritanceType.TABLE_PER_CLASS, entityResource.getInheritance().getStrategy());
+		
+		//set strategy to null in the context model
+		xmlEntity.setSpecifiedInheritanceStrategy(null);
+		assertNull(xmlEntity.getSpecifiedInheritanceStrategy());
+		assertNull(entityResource.getInheritance());	
+	}
+
 }

@@ -2493,13 +2493,23 @@ public class OrmPackage extends EPackageImpl
 	public static final int JOIN_COLUMN_FEATURE_COUNT = 8;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.AbstractTable <em>Abstract Table</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AbstractTable
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAbstractTable()
+	 * @generated
+	 */
+	public static final int ABSTRACT_TABLE = 48;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JOIN_TABLE__NAME = 0;
+	public static final int ABSTRACT_TABLE__NAME = 0;
 
 	/**
 	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
@@ -2508,7 +2518,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JOIN_TABLE__CATALOG = 1;
+	public static final int ABSTRACT_TABLE__CATALOG = 1;
 
 	/**
 	 * The feature id for the '<em><b>Schema</b></em>' attribute.
@@ -2517,25 +2527,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JOIN_TABLE__SCHEMA = 2;
-
-	/**
-	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JOIN_TABLE__JOIN_COLUMNS = 3;
-
-	/**
-	 * The feature id for the '<em><b>Inverse Join Columns</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int JOIN_TABLE__INVERSE_JOIN_COLUMNS = 4;
+	public static final int ABSTRACT_TABLE__SCHEMA = 2;
 
 	/**
 	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
@@ -2544,7 +2536,70 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JOIN_TABLE__UNIQUE_CONSTRAINTS = 5;
+	public static final int ABSTRACT_TABLE__UNIQUE_CONSTRAINTS = 3;
+
+	/**
+	 * The number of structural features of the '<em>Abstract Table</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_TABLE_FEATURE_COUNT = 4;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JOIN_TABLE__NAME = ABSTRACT_TABLE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JOIN_TABLE__CATALOG = ABSTRACT_TABLE__CATALOG;
+
+	/**
+	 * The feature id for the '<em><b>Schema</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JOIN_TABLE__SCHEMA = ABSTRACT_TABLE__SCHEMA;
+
+	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JOIN_TABLE__UNIQUE_CONSTRAINTS = ABSTRACT_TABLE__UNIQUE_CONSTRAINTS;
+
+	/**
+	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JOIN_TABLE__JOIN_COLUMNS = ABSTRACT_TABLE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Inverse Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int JOIN_TABLE__INVERSE_JOIN_COLUMNS = ABSTRACT_TABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Join Table</em>' class.
@@ -2553,7 +2608,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JOIN_TABLE_FEATURE_COUNT = 6;
+	public static final int JOIN_TABLE_FEATURE_COUNT = ABSTRACT_TABLE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Lob</em>' class.
@@ -2906,7 +2961,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSqlResultSetMapping()
 	 * @generated
 	 */
-	public static final int SQL_RESULT_SET_MAPPING = 50;
+	public static final int SQL_RESULT_SET_MAPPING = 52;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.PrimaryKeyJoinColumn <em>Primary Key Join Column</em>}' class.
@@ -2989,61 +3044,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSecondaryTable()
 	 * @generated
 	 */
-	public static final int SECONDARY_TABLE = 48;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int SECONDARY_TABLE__NAME = 0;
-
-	/**
-	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int SECONDARY_TABLE__CATALOG = 1;
-
-	/**
-	 * The feature id for the '<em><b>Schema</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int SECONDARY_TABLE__SCHEMA = 2;
-
-	/**
-	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS = 3;
-
-	/**
-	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int SECONDARY_TABLE__UNIQUE_CONSTRAINTS = 4;
-
-	/**
-	 * The number of structural features of the '<em>Secondary Table</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int SECONDARY_TABLE_FEATURE_COUNT = 5;
+	public static final int SECONDARY_TABLE = 50;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator <em>Sequence Generator</em>}' class.
@@ -3053,7 +3054,116 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSequenceGenerator()
 	 * @generated
 	 */
-	public static final int SEQUENCE_GENERATOR = 49;
+	public static final int SEQUENCE_GENERATOR = 51;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Table <em>Table</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Table
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTable()
+	 * @generated
+	 */
+	public static final int TABLE = 49;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TABLE__NAME = ABSTRACT_TABLE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TABLE__CATALOG = ABSTRACT_TABLE__CATALOG;
+
+	/**
+	 * The feature id for the '<em><b>Schema</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TABLE__SCHEMA = ABSTRACT_TABLE__SCHEMA;
+
+	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TABLE__UNIQUE_CONSTRAINTS = ABSTRACT_TABLE__UNIQUE_CONSTRAINTS;
+
+	/**
+	 * The number of structural features of the '<em>Table</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TABLE_FEATURE_COUNT = ABSTRACT_TABLE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int SECONDARY_TABLE__NAME = ABSTRACT_TABLE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int SECONDARY_TABLE__CATALOG = ABSTRACT_TABLE__CATALOG;
+
+	/**
+	 * The feature id for the '<em><b>Schema</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int SECONDARY_TABLE__SCHEMA = ABSTRACT_TABLE__SCHEMA;
+
+	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int SECONDARY_TABLE__UNIQUE_CONSTRAINTS = ABSTRACT_TABLE__UNIQUE_CONSTRAINTS;
+
+	/**
+	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS = ABSTRACT_TABLE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Secondary Table</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int SECONDARY_TABLE_FEATURE_COUNT = ABSTRACT_TABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3137,61 +3247,6 @@ public class OrmPackage extends EPackageImpl
 	public static final int SQL_RESULT_SET_MAPPING_FEATURE_COUNT = 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Table <em>Table</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Table
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTable()
-	 * @generated
-	 */
-	public static final int TABLE = 51;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int TABLE__NAME = 0;
-
-	/**
-	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int TABLE__CATALOG = 1;
-
-	/**
-	 * The feature id for the '<em><b>Schema</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int TABLE__SCHEMA = 2;
-
-	/**
-	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int TABLE__UNIQUE_CONSTRAINTS = 3;
-
-	/**
-	 * The number of structural features of the '<em>Table</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int TABLE_FEATURE_COUNT = 4;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.TableGenerator <em>Table Generator</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3199,7 +3254,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTableGenerator()
 	 * @generated
 	 */
-	public static final int TABLE_GENERATOR = 52;
+	public static final int TABLE_GENERATOR = 53;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3308,7 +3363,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getUniqueConstraint()
 	 * @generated
 	 */
-	public static final int UNIQUE_CONSTRAINT = 53;
+	public static final int UNIQUE_CONSTRAINT = 54;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -3336,7 +3391,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAccessType()
 	 * @generated
 	 */
-	public static final int ACCESS_TYPE = 54;
+	public static final int ACCESS_TYPE = 55;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.DiscriminatorType <em>Discriminator Type</em>}' enum.
@@ -3346,7 +3401,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 55;
+	public static final int DISCRIMINATOR_TYPE = 56;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.EnumType <em>Enum Type</em>}' enum.
@@ -3356,7 +3411,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 56;
+	public static final int ENUM_TYPE = 57;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.FetchType <em>Fetch Type</em>}' enum.
@@ -3366,7 +3421,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getFetchType()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE = 57;
+	public static final int FETCH_TYPE = 58;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.GenerationType <em>Generation Type</em>}' enum.
@@ -3376,7 +3431,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 58;
+	public static final int GENERATION_TYPE = 59;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -3386,7 +3441,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 59;
+	public static final int INHERITANCE_TYPE = 60;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.TemporalType <em>Temporal Type</em>}' enum.
@@ -3396,7 +3451,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 60;
+	public static final int TEMPORAL_TYPE = 61;
 
 	/**
 	 * The meta object id for the '<em>Access Type Object</em>' data type.
@@ -3406,7 +3461,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAccessTypeObject()
 	 * @generated
 	 */
-	public static final int ACCESS_TYPE_OBJECT = 61;
+	public static final int ACCESS_TYPE_OBJECT = 62;
 
 	/**
 	 * The meta object id for the '<em>Discriminator Type Object</em>' data type.
@@ -3416,7 +3471,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorTypeObject()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE_OBJECT = 62;
+	public static final int DISCRIMINATOR_TYPE_OBJECT = 63;
 
 	/**
 	 * The meta object id for the '<em>Discriminator Value</em>' data type.
@@ -3426,7 +3481,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorValue()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_VALUE = 63;
+	public static final int DISCRIMINATOR_VALUE = 64;
 
 	/**
 	 * The meta object id for the '<em>Enumerated</em>' data type.
@@ -3436,7 +3491,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumerated()
 	 * @generated
 	 */
-	public static final int ENUMERATED = 64;
+	public static final int ENUMERATED = 65;
 
 	/**
 	 * The meta object id for the '<em>Enum Type Object</em>' data type.
@@ -3446,7 +3501,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumTypeObject()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE_OBJECT = 65;
+	public static final int ENUM_TYPE_OBJECT = 66;
 
 	/**
 	 * The meta object id for the '<em>Fetch Type Object</em>' data type.
@@ -3456,7 +3511,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getFetchTypeObject()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE_OBJECT = 66;
+	public static final int FETCH_TYPE_OBJECT = 67;
 
 	/**
 	 * The meta object id for the '<em>Generation Type Object</em>' data type.
@@ -3466,7 +3521,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerationTypeObject()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE_OBJECT = 67;
+	public static final int GENERATION_TYPE_OBJECT = 68;
 
 	/**
 	 * The meta object id for the '<em>Inheritance Type Object</em>' data type.
@@ -3476,7 +3531,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getInheritanceTypeObject()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE_OBJECT = 68;
+	public static final int INHERITANCE_TYPE_OBJECT = 69;
 
 	/**
 	 * The meta object id for the '<em>Order By</em>' data type.
@@ -3486,7 +3541,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOrderBy()
 	 * @generated
 	 */
-	public static final int ORDER_BY = 69;
+	public static final int ORDER_BY = 70;
 
 	/**
 	 * The meta object id for the '<em>Temporal</em>' data type.
@@ -3496,7 +3551,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporal()
 	 * @generated
 	 */
-	public static final int TEMPORAL = 70;
+	public static final int TEMPORAL = 71;
 
 	/**
 	 * The meta object id for the '<em>Temporal Type Object</em>' data type.
@@ -3506,7 +3561,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporalTypeObject()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE_OBJECT = 71;
+	public static final int TEMPORAL_TYPE_OBJECT = 72;
 
 	/**
 	 * The meta object id for the '<em>Version Type</em>' data type.
@@ -3516,7 +3571,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getVersionType()
 	 * @generated
 	 */
-	public static final int VERSION_TYPE = 72;
+	public static final int VERSION_TYPE = 73;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -3846,6 +3901,13 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass queryHintEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass abstractTableEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -7096,48 +7158,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.JoinTable#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.JoinTable#getName()
-	 * @see #getJoinTable()
-	 * @generated
-	 */
-	public EAttribute getJoinTable_Name()
-	{
-		return (EAttribute)joinTableEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.JoinTable#getCatalog <em>Catalog</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Catalog</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.JoinTable#getCatalog()
-	 * @see #getJoinTable()
-	 * @generated
-	 */
-	public EAttribute getJoinTable_Catalog()
-	{
-		return (EAttribute)joinTableEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.JoinTable#getSchema <em>Schema</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Schema</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.JoinTable#getSchema()
-	 * @see #getJoinTable()
-	 * @generated
-	 */
-	public EAttribute getJoinTable_Schema()
-	{
-		return (EAttribute)joinTableEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.JoinTable#getJoinColumns <em>Join Columns</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7148,7 +7168,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getJoinTable_JoinColumns()
 	{
-		return (EReference)joinTableEClass.getEStructuralFeatures().get(3);
+		return (EReference)joinTableEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -7162,21 +7182,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getJoinTable_InverseJoinColumns()
 	{
-		return (EReference)joinTableEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.JoinTable#getUniqueConstraints <em>Unique Constraints</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Unique Constraints</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.JoinTable#getUniqueConstraints()
-	 * @see #getJoinTable()
-	 * @generated
-	 */
-	public EReference getJoinTable_UniqueConstraints()
-	{
-		return (EReference)joinTableEClass.getEStructuralFeatures().get(5);
+		return (EReference)joinTableEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -7519,6 +7525,80 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.AbstractTable <em>Abstract Table</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Abstract Table</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AbstractTable
+	 * @generated
+	 */
+	public EClass getAbstractTable()
+	{
+		return abstractTableEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.AbstractTable#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AbstractTable#getName()
+	 * @see #getAbstractTable()
+	 * @generated
+	 */
+	public EAttribute getAbstractTable_Name()
+	{
+		return (EAttribute)abstractTableEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.AbstractTable#getCatalog <em>Catalog</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Catalog</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AbstractTable#getCatalog()
+	 * @see #getAbstractTable()
+	 * @generated
+	 */
+	public EAttribute getAbstractTable_Catalog()
+	{
+		return (EAttribute)abstractTableEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.AbstractTable#getSchema <em>Schema</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Schema</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AbstractTable#getSchema()
+	 * @see #getAbstractTable()
+	 * @generated
+	 */
+	public EAttribute getAbstractTable_Schema()
+	{
+		return (EAttribute)abstractTableEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.AbstractTable#getUniqueConstraints <em>Unique Constraints</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Unique Constraints</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AbstractTable#getUniqueConstraints()
+	 * @see #getAbstractTable()
+	 * @generated
+	 */
+	public EReference getAbstractTable_UniqueConstraints()
+	{
+		return (EReference)abstractTableEClass.getEStructuralFeatures().get(3);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.SqlResultSetMapping <em>Sql Result Set Mapping</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7642,48 +7722,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.SecondaryTable#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.SecondaryTable#getName()
-	 * @see #getSecondaryTable()
-	 * @generated
-	 */
-	public EAttribute getSecondaryTable_Name()
-	{
-		return (EAttribute)secondaryTableEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.SecondaryTable#getCatalog <em>Catalog</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Catalog</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.SecondaryTable#getCatalog()
-	 * @see #getSecondaryTable()
-	 * @generated
-	 */
-	public EAttribute getSecondaryTable_Catalog()
-	{
-		return (EAttribute)secondaryTableEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.SecondaryTable#getSchema <em>Schema</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Schema</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.SecondaryTable#getSchema()
-	 * @see #getSecondaryTable()
-	 * @generated
-	 */
-	public EAttribute getSecondaryTable_Schema()
-	{
-		return (EAttribute)secondaryTableEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.SecondaryTable#getPrimaryKeyJoinColumns <em>Primary Key Join Columns</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7694,21 +7732,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getSecondaryTable_PrimaryKeyJoinColumns()
 	{
-		return (EReference)secondaryTableEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.SecondaryTable#getUniqueConstraints <em>Unique Constraints</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Unique Constraints</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.SecondaryTable#getUniqueConstraints()
-	 * @see #getSecondaryTable()
-	 * @generated
-	 */
-	public EReference getSecondaryTable_UniqueConstraints()
-	{
-		return (EReference)secondaryTableEClass.getEStructuralFeatures().get(4);
+		return (EReference)secondaryTableEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -7791,62 +7815,6 @@ public class OrmPackage extends EPackageImpl
 	public EClass getTable()
 	{
 		return tableEClass;
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Table#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Table#getName()
-	 * @see #getTable()
-	 * @generated
-	 */
-	public EAttribute getTable_Name()
-	{
-		return (EAttribute)tableEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Table#getCatalog <em>Catalog</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Catalog</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Table#getCatalog()
-	 * @see #getTable()
-	 * @generated
-	 */
-	public EAttribute getTable_Catalog()
-	{
-		return (EAttribute)tableEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Table#getSchema <em>Schema</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Schema</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Table#getSchema()
-	 * @see #getTable()
-	 * @generated
-	 */
-	public EAttribute getTable_Schema()
-	{
-		return (EAttribute)tableEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.Table#getUniqueConstraints <em>Unique Constraints</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Unique Constraints</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Table#getUniqueConstraints()
-	 * @see #getTable()
-	 * @generated
-	 */
-	public EReference getTable_UniqueConstraints()
-	{
-		return (EReference)tableEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -8571,12 +8539,8 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(joinColumnEClass, JOIN_COLUMN__TABLE);
 
 		joinTableEClass = createEClass(JOIN_TABLE);
-		createEAttribute(joinTableEClass, JOIN_TABLE__NAME);
-		createEAttribute(joinTableEClass, JOIN_TABLE__CATALOG);
-		createEAttribute(joinTableEClass, JOIN_TABLE__SCHEMA);
 		createEReference(joinTableEClass, JOIN_TABLE__JOIN_COLUMNS);
 		createEReference(joinTableEClass, JOIN_TABLE__INVERSE_JOIN_COLUMNS);
-		createEReference(joinTableEClass, JOIN_TABLE__UNIQUE_CONSTRAINTS);
 
 		lobEClass = createEClass(LOB);
 
@@ -8618,12 +8582,16 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(queryHintEClass, QUERY_HINT__NAME);
 		createEAttribute(queryHintEClass, QUERY_HINT__VALUE);
 
+		abstractTableEClass = createEClass(ABSTRACT_TABLE);
+		createEAttribute(abstractTableEClass, ABSTRACT_TABLE__NAME);
+		createEAttribute(abstractTableEClass, ABSTRACT_TABLE__CATALOG);
+		createEAttribute(abstractTableEClass, ABSTRACT_TABLE__SCHEMA);
+		createEReference(abstractTableEClass, ABSTRACT_TABLE__UNIQUE_CONSTRAINTS);
+
+		tableEClass = createEClass(TABLE);
+
 		secondaryTableEClass = createEClass(SECONDARY_TABLE);
-		createEAttribute(secondaryTableEClass, SECONDARY_TABLE__NAME);
-		createEAttribute(secondaryTableEClass, SECONDARY_TABLE__CATALOG);
-		createEAttribute(secondaryTableEClass, SECONDARY_TABLE__SCHEMA);
 		createEReference(secondaryTableEClass, SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS);
-		createEReference(secondaryTableEClass, SECONDARY_TABLE__UNIQUE_CONSTRAINTS);
 
 		sequenceGeneratorEClass = createEClass(SEQUENCE_GENERATOR);
 		createEAttribute(sequenceGeneratorEClass, SEQUENCE_GENERATOR__NAME);
@@ -8635,12 +8603,6 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(sqlResultSetMappingEClass, SQL_RESULT_SET_MAPPING__NAME);
 		createEReference(sqlResultSetMappingEClass, SQL_RESULT_SET_MAPPING__ENTITY_RESULTS);
 		createEReference(sqlResultSetMappingEClass, SQL_RESULT_SET_MAPPING__COLUMN_RESULTS);
-
-		tableEClass = createEClass(TABLE);
-		createEAttribute(tableEClass, TABLE__NAME);
-		createEAttribute(tableEClass, TABLE__CATALOG);
-		createEAttribute(tableEClass, TABLE__SCHEMA);
-		createEReference(tableEClass, TABLE__UNIQUE_CONSTRAINTS);
 
 		tableGeneratorEClass = createEClass(TABLE_GENERATOR);
 		createEAttribute(tableGeneratorEClass, TABLE_GENERATOR__NAME);
@@ -8716,6 +8678,7 @@ public class OrmPackage extends EPackageImpl
 		mappedSuperclassEClass.getESuperTypes().add(this.getTypeMapping());
 		entityEClass.getESuperTypes().add(this.getTypeMapping());
 		embeddableEClass.getESuperTypes().add(this.getTypeMapping());
+		joinTableEClass.getESuperTypes().add(this.getAbstractTable());
 		postLoadEClass.getESuperTypes().add(this.getEventMethod());
 		postPersistEClass.getESuperTypes().add(this.getEventMethod());
 		postRemoveEClass.getESuperTypes().add(this.getEventMethod());
@@ -8723,6 +8686,8 @@ public class OrmPackage extends EPackageImpl
 		prePersistEClass.getESuperTypes().add(this.getEventMethod());
 		preRemoveEClass.getESuperTypes().add(this.getEventMethod());
 		preUpdateEClass.getESuperTypes().add(this.getEventMethod());
+		tableEClass.getESuperTypes().add(this.getAbstractTable());
+		secondaryTableEClass.getESuperTypes().add(this.getAbstractTable());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(entityMappingsEClass, EntityMappings.class, "EntityMappings", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -8976,12 +8941,8 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getJoinColumn_Table(), theXMLTypePackage.getString(), "table", null, 0, 1, JoinColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(joinTableEClass, JoinTable.class, "JoinTable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getJoinTable_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, JoinTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getJoinTable_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, JoinTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getJoinTable_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, JoinTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getJoinTable_JoinColumns(), this.getJoinColumn(), null, "joinColumns", null, 0, -1, JoinTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getJoinTable_InverseJoinColumns(), this.getJoinColumn(), null, "inverseJoinColumns", null, 0, -1, JoinTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getJoinTable_UniqueConstraints(), this.getUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, JoinTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(lobEClass, Lob.class, "Lob", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -9023,12 +8984,16 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getQueryHint_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, QueryHint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getQueryHint_Value(), theXMLTypePackage.getString(), "value", null, 1, 1, QueryHint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(abstractTableEClass, AbstractTable.class, "AbstractTable", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getAbstractTable_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, AbstractTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAbstractTable_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, AbstractTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAbstractTable_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, AbstractTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAbstractTable_UniqueConstraints(), this.getUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, AbstractTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(tableEClass, Table.class, "Table", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
 		initEClass(secondaryTableEClass, SecondaryTable.class, "SecondaryTable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getSecondaryTable_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, SecondaryTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getSecondaryTable_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, SecondaryTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getSecondaryTable_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, SecondaryTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getSecondaryTable_PrimaryKeyJoinColumns(), this.getPrimaryKeyJoinColumn(), null, "primaryKeyJoinColumns", null, 0, -1, SecondaryTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getSecondaryTable_UniqueConstraints(), this.getUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, SecondaryTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sequenceGeneratorEClass, SequenceGenerator.class, "SequenceGenerator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getSequenceGenerator_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, SequenceGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -9040,12 +9005,6 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getSqlResultSetMapping_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, SqlResultSetMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getSqlResultSetMapping_EntityResults(), this.getEntityResult(), null, "entityResults", null, 0, -1, SqlResultSetMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getSqlResultSetMapping_ColumnResults(), this.getColumnResult(), null, "columnResults", null, 0, -1, SqlResultSetMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(tableEClass, Table.class, "Table", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getTable_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, Table.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTable_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, Table.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTable_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, Table.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getTable_UniqueConstraints(), this.getUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, Table.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(tableGeneratorEClass, TableGenerator.class, "TableGenerator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getTableGenerator_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, TableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -9087,9 +9046,9 @@ public class OrmPackage extends EPackageImpl
 		addEEnumLiteral(generationTypeEEnum, GenerationType.AUTO);
 
 		initEEnum(inheritanceTypeEEnum, InheritanceType.class, "InheritanceType");
-		addEEnumLiteral(inheritanceTypeEEnum, InheritanceType.SINGLETABLE);
+		addEEnumLiteral(inheritanceTypeEEnum, InheritanceType.SINGLE_TABLE);
 		addEEnumLiteral(inheritanceTypeEEnum, InheritanceType.JOINED);
-		addEEnumLiteral(inheritanceTypeEEnum, InheritanceType.TABLEPERCLASS);
+		addEEnumLiteral(inheritanceTypeEEnum, InheritanceType.TABLE_PER_CLASS);
 
 		initEEnum(temporalTypeEEnum, TemporalType.class, "TemporalType");
 		addEEnumLiteral(temporalTypeEEnum, TemporalType.DATE);
@@ -10917,30 +10876,6 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass JOIN_TABLE = eINSTANCE.getJoinTable();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute JOIN_TABLE__NAME = eINSTANCE.getJoinTable_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Catalog</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute JOIN_TABLE__CATALOG = eINSTANCE.getJoinTable_Catalog();
-
-		/**
-		 * The meta object literal for the '<em><b>Schema</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute JOIN_TABLE__SCHEMA = eINSTANCE.getJoinTable_Schema();
-
-		/**
 		 * The meta object literal for the '<em><b>Join Columns</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -10955,14 +10890,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference JOIN_TABLE__INVERSE_JOIN_COLUMNS = eINSTANCE.getJoinTable_InverseJoinColumns();
-
-		/**
-		 * The meta object literal for the '<em><b>Unique Constraints</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference JOIN_TABLE__UNIQUE_CONSTRAINTS = eINSTANCE.getJoinTable_UniqueConstraints();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.Lob <em>Lob</em>}' class.
@@ -11191,6 +11118,48 @@ public class OrmPackage extends EPackageImpl
 		public static final EAttribute QUERY_HINT__VALUE = eINSTANCE.getQueryHint_Value();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.AbstractTable <em>Abstract Table</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.resource.orm.AbstractTable
+		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAbstractTable()
+		 * @generated
+		 */
+		public static final EClass ABSTRACT_TABLE = eINSTANCE.getAbstractTable();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute ABSTRACT_TABLE__NAME = eINSTANCE.getAbstractTable_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Catalog</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute ABSTRACT_TABLE__CATALOG = eINSTANCE.getAbstractTable_Catalog();
+
+		/**
+		 * The meta object literal for the '<em><b>Schema</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute ABSTRACT_TABLE__SCHEMA = eINSTANCE.getAbstractTable_Schema();
+
+		/**
+		 * The meta object literal for the '<em><b>Unique Constraints</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference ABSTRACT_TABLE__UNIQUE_CONSTRAINTS = eINSTANCE.getAbstractTable_UniqueConstraints();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.SqlResultSetMapping <em>Sql Result Set Mapping</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -11269,44 +11238,12 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass SECONDARY_TABLE = eINSTANCE.getSecondaryTable();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute SECONDARY_TABLE__NAME = eINSTANCE.getSecondaryTable_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Catalog</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute SECONDARY_TABLE__CATALOG = eINSTANCE.getSecondaryTable_Catalog();
-
-		/**
-		 * The meta object literal for the '<em><b>Schema</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute SECONDARY_TABLE__SCHEMA = eINSTANCE.getSecondaryTable_Schema();
-
-		/**
 		 * The meta object literal for the '<em><b>Primary Key Join Columns</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		public static final EReference SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS = eINSTANCE.getSecondaryTable_PrimaryKeyJoinColumns();
-
-		/**
-		 * The meta object literal for the '<em><b>Unique Constraints</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference SECONDARY_TABLE__UNIQUE_CONSTRAINTS = eINSTANCE.getSecondaryTable_UniqueConstraints();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator <em>Sequence Generator</em>}' class.
@@ -11359,38 +11296,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass TABLE = eINSTANCE.getTable();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute TABLE__NAME = eINSTANCE.getTable_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Catalog</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute TABLE__CATALOG = eINSTANCE.getTable_Catalog();
-
-		/**
-		 * The meta object literal for the '<em><b>Schema</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute TABLE__SCHEMA = eINSTANCE.getTable_Schema();
-
-		/**
-		 * The meta object literal for the '<em><b>Unique Constraints</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference TABLE__UNIQUE_CONSTRAINTS = eINSTANCE.getTable_UniqueConstraints();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.TableGenerator <em>Table Generator</em>}' class.
