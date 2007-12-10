@@ -95,8 +95,10 @@ public class OrmXmlImpl extends JpaContextNode
 			else {
 				setEntityMappings(createEntityMappings(ormResource.getEntityMappings()));
 			}
+			ormResource.resourceModel().addRootContextNode(getEntityMappings());
 		}
 		else {
+			ormResource.resourceModel().removeRootContextNode(getEntityMappings());
 			setEntityMappings(null);
 		}
 	}

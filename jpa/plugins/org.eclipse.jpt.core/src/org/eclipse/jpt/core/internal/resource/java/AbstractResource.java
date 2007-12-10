@@ -51,6 +51,10 @@ public abstract class AbstractResource extends AbstractNode
 		return root().annotationEditFormatter();
 	}
 
+	public JavaResourceModel resourceModel() {
+		return root().resourceModel();
+	}
+	
 	public void resolveTypes(CompilationUnit astRoot) {	
 	}
 	

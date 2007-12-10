@@ -104,12 +104,36 @@ public class JpaNavigatorContentProvider
 	// **************** ITreeContentProvider implementation ********************
 	
 	public Object getParent(Object element) {
-		// TODO Auto-generated method stub
+		ICommonContentProvider delegate = getDelegate(element);
+		
+		if (delegate != null) {
+			return delegate.getParent(element);
+		}
+		
 		return null;
 	}
 	
 	public boolean hasChildren(Object element) {
-		return true;
+		if (element instanceof IAdaptable) {
+			IProject project = (IProject) ((IAdaptable) element).getAdapter(IProject.class);
+			
+			if (project != null) {
+				IJpaProject jpaProject = JptCorePlugin.jpaProject(project);
+				if (jpaProject != null) {
+					IJpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaProject.jpaPlatform());
+					
+					return platformUi != null;
+				}	
+			}
+		}
+		
+		ICommonContentProvider delegate = getDelegate(element);
+		
+		if (delegate != null) {
+			return delegate.hasChildren(element);
+		}
+		
+		return false;
 	}
 	
 	public Object[] getChildren(Object parentElement) {
@@ -126,18 +150,14 @@ public class JpaNavigatorContentProvider
 					}
 				}	
 			}
-			
-			IJpaContextNode contextNode = (IJpaContextNode) ((IAdaptable) parentElement).getAdapter(IJpaContextNode.class);
-			
-			if (contextNode != null) {
-				ICommonContentProvider delegate = getDelegate(contextNode);
-				
-				if (delegate != null) {
-					return delegate.getChildren(parentElement);
-				}
-			}
 		}
 		
+		ICommonContentProvider delegate = getDelegate(parentElement);
+		
+		if (delegate != null) {
+			return delegate.getChildren(parentElement);
+		}
+			
 		return new Object[0];
 	}
 	
@@ -168,7 +188,17 @@ public class JpaNavigatorContentProvider
 	
 	// *************** internal ************************************************
 	
-	private ICommonContentProvider getDelegate(IJpaContextNode contextNode) {
+	private ICommonContentProvider getDelegate(Object element) {
+		if (! (element instanceof IAdaptable)) {
+			return null;
+		}
+		
+		IJpaContextNode contextNode = (IJpaContextNode) ((IAdaptable) element).getAdapter(IJpaContextNode.class);
+		
+		if (contextNode == null) {
+			return null;
+		}
+		
 		IJpaPlatform platform = contextNode.jpaProject().jpaPlatform();
 		IJpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(platform);
 		

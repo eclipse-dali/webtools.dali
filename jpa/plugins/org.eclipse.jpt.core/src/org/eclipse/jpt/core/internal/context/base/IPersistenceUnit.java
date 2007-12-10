@@ -15,11 +15,9 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 
 public interface IPersistenceUnit extends IJpaContextNode
 {
-	/**
-	 * Return the IPersistentType specified in this PersistenceUnit with the given
-	 * fully qualified type name
-	 */
-	IPersistentType persistentType(String fullyQualifiedTypeName);
+	// **************** parent *************************************************
+	
+	IPersistence persistence();
 	
 	
 	// **************** name ***************************************************
@@ -306,7 +304,8 @@ public interface IPersistenceUnit extends IJpaContextNode
 	 */
 	void removeProperty(int index);
 	
-	// **************** PersistenceUnitDefaults *********************************************
+	
+	// **************** PersistenceUnitDefaults ********************************
 	
 	String getDefaultSchema();
 		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema";
@@ -320,9 +319,20 @@ public interface IPersistenceUnit extends IJpaContextNode
 	boolean getDefaultCascadePersist();
 		String DEFAULT_CASCADE_PERSIST_PROPERTY = "defaultCascadePersist";
 	
+	
 	// **************** updating ***********************************************
 	
 	void initialize(XmlPersistenceUnit persistenceUnit);
 	
 	void update(XmlPersistenceUnit persistenceUnit);
+	
+	
+	// *************************************************************************
+	
+	/**
+	 * Return the IPersistentType specified in this PersistenceUnit with the given
+	 * fully qualified type name
+	 */
+	IPersistentType persistentType(String fullyQualifiedTypeName);
+	
 }

@@ -11,13 +11,17 @@
 package org.eclipse.jpt.core.internal.resource.common;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.ElementChangedEvent;
-import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IResourceModel;
 import org.eclipse.jpt.core.internal.IResourceModelListener;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.wst.common.internal.emfworkbench.integration.EditModelEvent;
 import org.eclipse.wst.common.internal.emfworkbench.integration.EditModelListener;
 
@@ -27,12 +31,16 @@ public abstract class JpaXmlResourceModel implements IResourceModel
 	
 	protected JpaXmlResource resource;
 	
+	private final Collection<IJpaContextNode> rootContextNodes;
+	
 	
 	protected JpaXmlResourceModel(IFile file) {
 		super();
 		artifactEdit = buildArtifactEdit(file.getProject());
 		resource = artifactEdit.getResource(file);
+		resource.setResourceModel(this);
 		artifactEdit.addListener(buildReloadListener(resource));
+		rootContextNodes = new ArrayList<IJpaContextNode>();
 	}
 	
 	
@@ -49,11 +57,21 @@ public abstract class JpaXmlResourceModel implements IResourceModel
 	public void dispose() {
 		artifactEdit.dispose();
 	}
-
-	public IJpaContentNode getContentNode(int offset) {
-		return resource().getContentNode(offset);
+	
+	public Iterator<IJpaContextNode> rootContextNodes() {
+		return new CloneIterator<IJpaContextNode>(rootContextNodes);
 	}
 	
+	public void addRootContextNode(IJpaContextNode contextNode) {
+		if (! rootContextNodes.contains(contextNode)) {
+			rootContextNodes.add(contextNode);
+		}
+	}
+	
+	public void removeRootContextNode(IJpaContextNode contextNode) {
+		rootContextNodes.remove(contextNode);
+	}
+
 	public void handleJavaElementChangedEvent(ElementChangedEvent event) {
 		resource().handleJavaElementChangedEvent(event);
 	}

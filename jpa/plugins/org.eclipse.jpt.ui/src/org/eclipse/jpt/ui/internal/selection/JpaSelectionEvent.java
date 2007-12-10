@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.selection;
 
 import java.util.EventObject;
 
-public class SelectionEvent extends EventObject 
+public class JpaSelectionEvent extends EventObject 
 {
 	/**
 	 * Serializable uid
@@ -34,7 +34,7 @@ public class SelectionEvent extends EventObject
 	/**
 	 * The selection object whose selection status has changed
 	 */
-	private Selection selection;
+	private IJpaSelection selection;
 	
 	/**
 	 * The type of the selection event, either a SELECTION or a DESELECTION
@@ -42,7 +42,7 @@ public class SelectionEvent extends EventObject
 	private int type;
 	
 	
-	public SelectionEvent(Selection theSelection, int theType, Object source) {
+	public JpaSelectionEvent(IJpaSelection theSelection, int theType, Object source) {
 		super(source);
 		selection = theSelection;
 		type = theType;
@@ -51,7 +51,7 @@ public class SelectionEvent extends EventObject
 	/**
 	 * Return the selection object whose selection status has changed
 	 */
-	public Selection getSelection() {
+	public IJpaSelection getSelection() {
 		return selection;
 	}
 	

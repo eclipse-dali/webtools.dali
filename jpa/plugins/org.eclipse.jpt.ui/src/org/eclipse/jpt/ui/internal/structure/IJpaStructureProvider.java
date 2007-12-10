@@ -13,8 +13,8 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 
 public interface IJpaStructureProvider 
 {
-
-	String fileContentType();
+	// TODO - change this
+	Object getInput();
 	
 	/**
 	 * Build an outline content provider.
@@ -27,5 +27,4 @@ public interface IJpaStructureProvider
 	ILabelProvider buildLabelProvider();
 	
 	void dispose();
-	
 }

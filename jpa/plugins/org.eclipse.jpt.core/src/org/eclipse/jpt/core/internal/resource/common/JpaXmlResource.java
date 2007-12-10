@@ -19,6 +19,8 @@ import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
 
 public abstract class JpaXmlResource extends TranslatorResourceImpl
 {
+	protected JpaXmlResourceModel resourceModel;
+	
 	protected final Collection<IResourceModelListener> resourceModelListeners;
 	
 	
@@ -111,6 +113,14 @@ public abstract class JpaXmlResource extends TranslatorResourceImpl
 	public abstract IJpaContentNode getContentNode(int offset);
 	
 	public abstract void handleJavaElementChangedEvent(ElementChangedEvent event);
+	
+	public JpaXmlResourceModel resourceModel() {
+		return resourceModel;
+	}
+	
+	public void setResourceModel(JpaXmlResourceModel resourceModel) {
+		this.resourceModel = resourceModel;
+	}
 	
 	public void resourceChanged() {
 		for (IResourceModelListener listener : this.resourceModelListeners) {

@@ -11,27 +11,27 @@ package org.eclipse.jpt.ui.internal.selection;
 
 import org.eclipse.ui.IWorkbenchPart;
 
-public interface ISelectionManager 
+public interface IJpaSelectionManager 
 {	
 	/**
 	 * Return the current selection.  
-	 * This will never be null, but it may be <code>Selection.NULL_SELECTION</code>.
+	 * This will never be null, but it may be <code>JpaSelection.NULL_SELECTION</code>.
 	 */
-	public Selection getCurrentSelection();
+	public IJpaSelection getCurrentSelection();
 	
 	/**
 	 * Not to be called lightly, this will affect the selection for all interested
 	 * objects in a window.
 	 * The newSelection will be selected.
 	 */
-	public void select(Selection newSelection);
+	public void select(IJpaSelection newSelection);
 	
 	/**
 	 * Not to be called lightly, this will affect the selection for all interested
 	 * objects in a window.
 	 * The oldSelection will be deselected, iff it matches the current selection.
 	 */
-	public void deselect(Selection oldSelection);
+	public void deselect(IJpaSelection oldSelection);
 	
 	/**
 	 * This may be used to register a part with the selection manager if the part

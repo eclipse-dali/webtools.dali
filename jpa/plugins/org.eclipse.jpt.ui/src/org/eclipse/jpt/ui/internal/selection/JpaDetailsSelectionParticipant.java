@@ -13,7 +13,7 @@ import org.eclipse.jpt.ui.internal.views.JpaDetailsView;
 
 
 public class JpaDetailsSelectionParticipant
-	implements ISelectionParticipant 
+	implements IJpaSelectionParticipant 
 {
 	private final JpaDetailsView detailsView;
 	
@@ -23,11 +23,11 @@ public class JpaDetailsSelectionParticipant
 		this.detailsView = detailsView;
 	}
 
-	public Selection getSelection() {
+	public JpaSelection getSelection() {
 		return this.detailsView.getSelection();
 	}
 
-	public void selectionChanged(SelectionEvent evt) {
+	public void selectionChanged(JpaSelectionEvent evt) {
 		this.detailsView.select(evt.getSelection());
 	}
 

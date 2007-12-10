@@ -74,24 +74,16 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	
-	public IPersistentType persistentType(String fullyQualifiedTypeName) {
-		for (IMappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
-			XmlPersistentType xmlPersistentType = mappingFileRef.persistentTypeFor(fullyQualifiedTypeName);
-			if (xmlPersistentType != null) {
-				return xmlPersistentType;
-			}
-		}
-		for (IClassRef classRef : CollectionTools.iterable(classRefs())) {
-			if (classRef.isFor(fullyQualifiedTypeName)) {
-				return classRef.getJavaPersistentType();
-			}
-		}
-		return null;
-	}
-	
 	@Override
 	public IPersistenceUnit persistenceUnit() {
 		return this;
+	}
+	
+	
+	// **************** parent *************************************************
+	
+	public IPersistence persistence() {
+		return (IPersistence) parent();
 	}
 
 	// **************** name ***************************************************
@@ -665,6 +657,21 @@ public class PersistenceUnit extends JpaContextNode
 
 
 	// *************************************************************************
+	
+	public IPersistentType persistentType(String fullyQualifiedTypeName) {
+		for (IMappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
+			XmlPersistentType xmlPersistentType = mappingFileRef.persistentTypeFor(fullyQualifiedTypeName);
+			if (xmlPersistentType != null) {
+				return xmlPersistentType;
+			}
+		}
+		for (IClassRef classRef : CollectionTools.iterable(classRefs())) {
+			if (classRef.isFor(fullyQualifiedTypeName)) {
+				return classRef.getJavaPersistentType();
+			}
+		}
+		return null;
+	}
 	
 	public ITextRange validationTextRange() {
 		return this.xmlPersistenceUnit.validationTextRange();

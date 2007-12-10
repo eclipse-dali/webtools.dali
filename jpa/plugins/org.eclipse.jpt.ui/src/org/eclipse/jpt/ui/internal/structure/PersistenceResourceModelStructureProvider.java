@@ -8,31 +8,24 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.ui.internal.java.structure;
+package org.eclipse.jpt.ui.internal.structure;
 
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 
-public class JavaStructureProvider implements IJpaStructureProvider
+public class PersistenceResourceModelStructureProvider
+	extends ResourceModelStructureProvider
 {
-	public String fileContentType() {
-		return JavaCore.JAVA_SOURCE_CONTENT_TYPE;
+	public PersistenceResourceModelStructureProvider(PersistenceResourceModel resourceModel) {
+		super(resourceModel);
 	}
-
+	
 	public ITreeContentProvider buildContentProvider() {
-		return new AdapterFactoryContentProvider(new JpaCoreJavaItemProviderAdapterFactory());
+		return new PersistenceStructureContentProvider();
 	}
 	
 	public ILabelProvider buildLabelProvider() {
-		return new AdapterFactoryLabelProvider(new JpaCoreJavaItemProviderAdapterFactory());
-	}
-	
-	public void dispose() {
-		// TODO Auto-generated method stub
-		
+		return new PersistenceStructureLabelProvider();
 	}
 }

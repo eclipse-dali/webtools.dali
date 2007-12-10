@@ -8,8 +8,8 @@
  ********************************************************************************/
 package org.eclipse.jpt.ui.internal.views;
 
-import org.eclipse.jpt.ui.internal.selection.ISelectionManager;
-import org.eclipse.jpt.ui.internal.selection.Selection;
+import org.eclipse.jpt.ui.internal.selection.IJpaSelection;
+import org.eclipse.jpt.ui.internal.selection.IJpaSelectionManager;
 import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -47,7 +47,7 @@ public abstract class AbstractJpaView extends ViewPart
 		
 		subcreatePartControl(parent);
 		
-		ISelectionManager selectionManager = 
+		IJpaSelectionManager selectionManager = 
 			SelectionManagerFactory.getSelectionManager(getViewSite().getWorkbenchWindow());
 		selectionManager.register(this);
 		select(selectionManager.getCurrentSelection());
@@ -64,7 +64,7 @@ public abstract class AbstractJpaView extends ViewPart
 		return composite;
 	}
 	
-	public abstract void select(Selection aSelection);
+	public abstract void select(IJpaSelection aSelection);
 	
 	protected void showDefaultPage() {
 		pageBook.showPage(defaultComposite);

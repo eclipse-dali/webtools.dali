@@ -77,6 +77,7 @@ public class PersistenceXml extends JpaContextNode
 	public void update(PersistenceResource persistenceResource) {
 		if (! persistenceResource.equals(this.persistenceResource)) {
 			this.persistenceResource = persistenceResource;
+			this.persistenceResource.resourceModel().removeRootContextNode(this);
 		}
 		if (persistenceResource.getPersistence() != null) {
 			if (this.persistence != null) {
@@ -85,6 +86,7 @@ public class PersistenceXml extends JpaContextNode
 			else {
 				setPersistence_(createPersistence(persistenceResource.getPersistence()));
 			}
+			persistenceResource.resourceModel().addRootContextNode(getPersistence());
 		}
 		else {
 			setPersistence_(null);

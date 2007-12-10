@@ -92,7 +92,7 @@ public class JptUiMessages extends NLS
 	
 	public static String JpaPreferencePage_invalidJpaLib;
 	
-	public static String JpaStructureView_viewNotAvailable;
+	public static String JpaStructureView_structureNotAvailable;
 	
 	public static String JpaStructureView_linkWithEditorText;
 	

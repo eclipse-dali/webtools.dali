@@ -57,12 +57,12 @@ public class JavaPersistentAttribute extends JavaContextModel
 		return this.persistentAttributeResource;
 	}
 	
-	public IPersistentType getPersistentType() {
+	public IPersistentType type() {
 		return (IPersistentType) this.parent();
 	}
 
 	public ITypeMapping typeMapping() {
-		return this.getPersistentType().getMapping();
+		return this.type().getMapping();
 	}
 
 	public String primaryKeyColumnName() {

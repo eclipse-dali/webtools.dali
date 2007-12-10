@@ -292,6 +292,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	// ******************** Updating **********************
 	public void update(JavaPersistentTypeResource persistentTypeResource) {
 		this.persistentTypeResource = persistentTypeResource;
+		this.persistentTypeResource.resourceModel().addRootContextNode(this);
 		updateParentPersistentType(persistentTypeResource);
 		updateAccess(persistentTypeResource);
 		updateName(persistentTypeResource);

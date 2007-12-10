@@ -14,7 +14,13 @@
 		<factory
 			adaptableType="org.eclipse.ui.IWorkbenchPart"
 			class="org.eclipse.jpt.ui.internal.selection.SelectionParticipantFactory">
-			<adapter type="org.eclipse.jpt.ui.internal.selection.ISelectionParticipant"/>
+			<adapter type="org.eclipse.jpt.ui.internal.selection.IJpaSelectionParticipant"/>
+		</factory>
+		
+		<factory
+			adaptableType="org.eclipse.ui.IEditorPart"
+			class="org.eclipse.jpt.ui.internal.structure.JpaStructureProviderFactory">
+			<adapter type="org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider"/>
 		</factory>
 		
 		<factory
@@ -308,7 +314,7 @@
 		
 		<view
 	        category="org.eclipse.jpt.ui"
-	        class="org.eclipse.jpt.ui.internal.views.JpaStructureView"
+	        class="org.eclipse.jpt.ui.internal.views.structure.JpaStructureView"
 	        icon="icons/full/eview16/jpa_structure.gif"
 	        id="org.eclipse.jpt.ui.jpaStructureView"
 	        name="%jpaStructure"/>

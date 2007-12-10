@@ -11,25 +11,25 @@ package org.eclipse.jpt.ui.internal.selection;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jpt.ui.internal.views.JpaStructureView;
+import org.eclipse.jpt.ui.internal.views.structure.JpaStructureView;
 
 public class JpaStructureSelectionParticipant
-	implements ISelectionParticipant 
+	implements IJpaSelectionParticipant 
 {
 	final JpaStructureView structureView;
 	
 	
-	public JpaStructureSelectionParticipant(ISelectionManager selectionManager, JpaStructureView structureView) {
+	public JpaStructureSelectionParticipant(IJpaSelectionManager selectionManager, JpaStructureView structureView) {
 		super();
 		this.structureView = structureView;
 		structureView.addSelectionChangedListener(new StructureViewSelectionListener(selectionManager, structureView));
 	}
 
-	public Selection getSelection() {
+	public IJpaSelection getSelection() {
 		return this.structureView.getSelection();
 	}
 	
-	public void selectionChanged(SelectionEvent evt) {
+	public void selectionChanged(JpaSelectionEvent evt) {
 		this.structureView.select(evt.getSelection());
 	}
 
@@ -47,9 +47,9 @@ public class JpaStructureSelectionParticipant
 	private class StructureViewSelectionListener 
 		implements ISelectionChangedListener
 	{
-		private final ISelectionManager selectionManager;
+		private final IJpaSelectionManager selectionManager;
 
-		StructureViewSelectionListener(ISelectionManager selectionManager, JpaStructureView structureView) {
+		StructureViewSelectionListener(IJpaSelectionManager selectionManager, JpaStructureView structureView) {
 			super();
 			this.selectionManager = selectionManager;
 		}
@@ -58,10 +58,8 @@ public class JpaStructureSelectionParticipant
 			this.selectionManager.select(this.structureViewSelection());
 		}
 
-		private Selection structureViewSelection() {
+		private IJpaSelection structureViewSelection() {
 			return JpaStructureSelectionParticipant.this.structureView.getSelection();
 		}
-
 	}
-
 }

@@ -11,14 +11,14 @@ package org.eclipse.jpt.ui.internal.selection;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.ui.internal.views.JpaDetailsView;
-import org.eclipse.jpt.ui.internal.views.JpaStructureView;
+import org.eclipse.jpt.ui.internal.views.structure.JpaStructureView;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 public class SelectionParticipantFactory 
 	implements IAdapterFactory
 {
-	private static final Class[] ADAPTER_LIST = new Class[] { ISelectionParticipant.class };
+	private static final Class[] ADAPTER_LIST = new Class[] { IJpaSelectionParticipant.class };
 
 	public Class[] getAdapterList() {
 		return ADAPTER_LIST;
@@ -29,7 +29,7 @@ public class SelectionParticipantFactory
 			return null;
 		}
 		
-		ISelectionManager selectionManager = 
+		IJpaSelectionManager selectionManager = 
 			SelectionManagerFactory.getSelectionManager(((IWorkbenchPart) adaptableObject).getSite().getWorkbenchWindow());
 		// TODO turn this into extension point
 		if (adaptableObject instanceof ITextEditor) {

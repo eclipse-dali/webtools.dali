@@ -107,6 +107,12 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 		return this.annotationEditFormatter;
 	}
 	
+	@Override
+	public JavaResourceModel resourceModel() {
+		return javaResourceModel;
+	}
+	
+	
 	// *************************************************************************
 	
 	public ICompilationUnit getCompilationUnit() {

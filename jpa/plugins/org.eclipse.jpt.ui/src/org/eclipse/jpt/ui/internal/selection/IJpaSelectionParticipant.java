@@ -9,18 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.selection;
 
-public interface ISelectionParticipant 
+public interface IJpaSelectionParticipant 
 {
 	/**
 	 * Return the current selection of the participant
 	 */
-	Selection getSelection();
+	IJpaSelection getSelection();
 	
 	/**
 	 * The selection has changed in the central selection manager.
 	 * Update this participant accordingly.
 	 */
-	void selectionChanged(SelectionEvent evt);
+	void selectionChanged(JpaSelectionEvent evt);
 	
 	/**
 	 * Return whether this selection participant should disconnect itself from

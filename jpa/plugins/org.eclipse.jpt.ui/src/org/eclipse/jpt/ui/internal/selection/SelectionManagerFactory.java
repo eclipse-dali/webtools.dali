@@ -24,15 +24,15 @@ public class SelectionManagerFactory
 	
 	
 	/**
-	 * Each <code>IWorkbenchWindow</code> has its own <code>SelectionManager</code> 
+	 * Each <code>IWorkbenchWindow</code> has its own <code>JpaSelectionManager</code> 
 	 * to track the selection events in the <code>IWorkbenchWindow</code>. All 
 	 * <code>ISelectionListener</code>s in the same <code>IWorkbenchWindow</code> 
-	 * share the same <code>SelectionManager</code>.
+	 * share the same <code>JpaSelectionManager</code>.
 	 * 
-	 * @return The <code>SelectionManager</code> associated with the current 
+	 * @return The <code>JpaSelectionManager</code> associated with the current 
 	 * <code>IWorkbenchWindow</code>
 	 */
-	public static ISelectionManager getSelectionManager(IWorkbenchWindow window) {
+	public static IJpaSelectionManager getSelectionManager(IWorkbenchWindow window) {
 		if (INSTANCE == null) {
 			// this is thread safe for now. you never know whats comming
 			synchronized (MUTEX) {
@@ -64,21 +64,21 @@ public class SelectionManagerFactory
 	}
 	
 	/**
-	 * Returns the SelectionManager for the IWorkbenchWindow.
+	 * Returns the JpaSelectionManager for the IWorkbenchWindow.
 	 * Creates a new one if none exists yet.
 	 */
-	private SelectionManager internalGetSelectionManager(IWorkbenchWindow window) {
+	private JpaSelectionManager internalGetSelectionManager(IWorkbenchWindow window) {
 		if (window == null) {
 			throw new IllegalArgumentException(window.toString());
 		}
 		
 		if (! managers.containsKey(window)) {
-			SelectionManager manager = new SelectionManager();
+			JpaSelectionManager manager = new JpaSelectionManager();
 			this.managers.put(window, manager);
 			manager.init(window);
 		}
 		
-		return (SelectionManager) managers.get(window);
+		return (JpaSelectionManager) managers.get(window);
 	}
 	
 	
@@ -89,7 +89,7 @@ public class SelectionManagerFactory
 		
 		/* @see IWindowListener#windowClosed(IWorkbenchWindow) */
 		public void windowClosed(IWorkbenchWindow aWindow) {
-			SelectionManager manager = internalGetSelectionManager(aWindow);
+			JpaSelectionManager manager = internalGetSelectionManager(aWindow);
 			manager.dispose();
 			managers.remove(aWindow);
 		}

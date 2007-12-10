@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
+import java.util.Iterator;
 import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 
 public interface IResourceModel
 {
@@ -38,11 +40,7 @@ public interface IResourceModel
 	 */
 	String getResourceType();
 	
-	/**
-	 * Return the content node corresponding to the given offset in the source.
-	 * This may (and often will) be <code>null</code>.
-	 */
-	IJpaContentNode getContentNode(int offset);
+	Iterator<IJpaContextNode> rootContextNodes();
 	
 	void dispose();
 	

@@ -39,8 +39,7 @@ public class BaseJpaNavigatorContentProvider implements ICommonContentProvider
 	}
 
 	public boolean hasChildren(Object element) {
-		// TODO Auto-generated method stub
-		return false;
+		return element instanceof IBaseJpaContent;
 	}
 
 	public Object[] getElements(Object inputElement) {

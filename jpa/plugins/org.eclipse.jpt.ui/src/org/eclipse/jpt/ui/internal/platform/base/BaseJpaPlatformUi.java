@@ -38,10 +38,8 @@ import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToManyMappingUiPr
 import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.TransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.VersionMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.structure.JavaStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
 import org.eclipse.jpt.ui.internal.xml.details.XmlDetailsProvider;
-import org.eclipse.jpt.ui.internal.xml.structure.XmlStructureProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.ui.navigator.ICommonContentProvider;
@@ -104,33 +102,6 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 	public IJpaDetailsProvider detailsProvider(String fileContentType) {
 		for (Iterator<IJpaDetailsProvider> i = this.detailsProviders(); i.hasNext(); ) {
 			IJpaDetailsProvider provider = i.next();
-			if (provider.fileContentType().equals(fileContentType)) {
-				return provider;
-			}
-		}
-		return null;
-	}
-	
-	public Iterator<IJpaStructureProvider> structureProviders() {
-		if (this.structureProviders == null) {
-			this.structureProviders = new ArrayList<IJpaStructureProvider>();
-			this.addStructureProvidersTo(this.structureProviders);
-		}
-		return new CloneIterator<IJpaStructureProvider>(this.structureProviders);
-	}
-	
-	/**
-	 * Override this to specify more or different structure providers.
-	 * The default includes the JPA spec-defined java and orm.xml
-	 */
-	protected void addStructureProvidersTo(Collection<IJpaStructureProvider> providers) {
-		providers.add(new JavaStructureProvider());
-		providers.add(new XmlStructureProvider());
-	}
-
-	public IJpaStructureProvider structureProvider(String fileContentType) {
-		for (Iterator<IJpaStructureProvider> i = this.structureProviders(); i.hasNext(); ) {
-			IJpaStructureProvider provider = i.next();
 			if (provider.fileContentType().equals(fileContentType)) {
 				return provider;
 			}

@@ -32,12 +32,6 @@ public interface IJpaFile extends IJpaNode
 	 * Return the resource model represented by this JPA file
 	 */
 	IResourceModel getResourceModel();
-	
-	/**
-	 * Return the content node corresponding to the given offset in the source.
-	 * This may (and often will) be <code>null</code>.
-	 */
-	IJpaContentNode getContentNode(int offset);
 
 	/**
 	 * Forward the Java element changed event to the JPA file's content.

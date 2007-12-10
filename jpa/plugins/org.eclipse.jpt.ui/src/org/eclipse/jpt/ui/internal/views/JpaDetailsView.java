@@ -11,21 +11,16 @@ package org.eclipse.jpt.ui.internal.views;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.eclipse.jpt.core.internal.IJpaContentNode;
-import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
-import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
-import org.eclipse.jpt.ui.internal.selection.Selection;
+import org.eclipse.jpt.ui.internal.selection.IJpaSelection;
+import org.eclipse.jpt.ui.internal.selection.JpaSelection;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Composite;
 
 public class JpaDetailsView extends AbstractJpaView 
 {	
-	private Selection currentSelection;
+	private JpaSelection currentSelection;
 	
 	private IJpaDetailsPage currentPage;
 	
@@ -37,87 +32,87 @@ public class JpaDetailsView extends AbstractJpaView
 	
 	public JpaDetailsView() {
 		super(JptUiMessages.JpaDetailsView_viewNotAvailable);
-		this.currentSelection = Selection.NULL_SELECTION;
+		this.currentSelection = JpaSelection.NULL_SELECTION;
 		this.detailsProviders = new HashMap<String, IJpaDetailsProvider>();
 		this.detailsPages = new HashMap<Object, IJpaDetailsPage>();
 	}
 	
 	
-	public Selection getSelection() {
+	public JpaSelection getSelection() {
 		return currentSelection;
 	}
 	
-	public void select(Selection newSelection) {
-		if (newSelection.equals(currentSelection)) {
-			return;
-		}
-		
-		currentSelection = newSelection;
-		
-		if (newSelection != Selection.NULL_SELECTION) {
-			IJpaContentNode newNode = newSelection.getSelectedNode();
-			IJpaDetailsPage newPage = getDetailsPage(newNode);
-			setCurrentPage(newPage);
-		}
-		else if (currentSelection != Selection.NULL_SELECTION) {
-			setCurrentPage(null);
-		}
+	public void select(IJpaSelection newSelection) {
+//		if (newSelection.equals(currentSelection)) {
+//			return;
+//		}
+//		
+//		currentSelection = newSelection;
+//		
+//		if (newSelection != IJpaSelection.NULL_SELECTION) {
+//			IJpaContentNode newNode = newSelection.getSelectedNode();
+//			IJpaDetailsPage newPage = getDetailsPage(newNode);
+//			setCurrentPage(newPage);
+//		}
+//		else if (currentSelection != JpaSelection.NULL_SELECTION) {
+//			setCurrentPage(null);
+//		}
 	}
 	
-	private IJpaDetailsPage getDetailsPage(IJpaContentNode contentNode) {
-		if (detailsPages.containsKey(contentNode.getId())) {
-			IJpaDetailsPage page =  detailsPages.get(contentNode.getId());
-			
-			if ((page != null) &&
-					(page.getControl().isDisposed())) {
-				detailsPages.remove(contentNode.getId());
-			}
-			else {
-				return page;
-			}
-		}
-		
-		return buildDetailsPage(contentNode);
-	}
+//	private IJpaDetailsPage getDetailsPage(IJpaContentNode contentNode) {
+//		if (detailsPages.containsKey(contentNode.getId())) {
+//			IJpaDetailsPage page =  detailsPages.get(contentNode.getId());
+//			
+//			if ((page != null) &&
+//					(page.getControl().isDisposed())) {
+//				detailsPages.remove(contentNode.getId());
+//			}
+//			else {
+//				return page;
+//			}
+//		}
+//		
+//		return buildDetailsPage(contentNode);
+//	}
 	
-	private IJpaDetailsPage buildDetailsPage(IJpaContentNode contentNode) {
-		IJpaDetailsProvider detailsProvider =
-					getDetailsProvider(contentNode);
-			
-		if (detailsProvider == null) {
-			return null;
-		}
-		Composite parentComposite = getWidgetFactory().createComposite(pageBook, SWT.NONE);
-		parentComposite.setLayout(new FillLayout(SWT.VERTICAL));
-		IJpaDetailsPage page = 
-			detailsProvider.buildDetailsPage(parentComposite, contentNode.getId(), getWidgetFactory());
-		
-		if (page != null) {
-			detailsPages.put(contentNode.getId(), page);
-		}
-		
-		return page;
-	}
+//	private IJpaDetailsPage buildDetailsPage(IJpaContentNode contentNode) {
+//		IJpaDetailsProvider detailsProvider =
+//					getDetailsProvider(contentNode);
+//			
+//		if (detailsProvider == null) {
+//			return null;
+//		}
+//		Composite parentComposite = getWidgetFactory().createComposite(pageBook, SWT.NONE);
+//		parentComposite.setLayout(new FillLayout(SWT.VERTICAL));
+//		IJpaDetailsPage page = 
+//			detailsProvider.buildDetailsPage(parentComposite, contentNode.getId(), getWidgetFactory());
+//		
+//		if (page != null) {
+//			detailsPages.put(contentNode.getId(), page);
+//		}
+//		
+//		return page;
+//	}
 	
-	private IJpaDetailsProvider getDetailsProvider(IJpaContentNode contentNode) {
-		String contentId = contentNode.getJpaFile().getContentId();
-		IJpaDetailsProvider provider = detailsProviders.get(contentId);
-		
-		if (provider == null) {
-			String platformId = contentNode.jpaPlatform().getId();
-			IJpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
-			provider = jpaPlatformUI.detailsProvider(contentId);
-			
-			//TODO this view and the detailsProviders Map is not created on a per project basis.
-			//the detailsProviders and their fileContentTypes could overlap across project, this would cause problems with storing this map.
-			
-			if (provider != null) {
-				detailsProviders.put(contentId, provider);
-			}
-		}
-		
-		return provider;	
-	}
+//	private IJpaDetailsProvider getDetailsProvider(IJpaContentNode contentNode) {
+//		String contentId = contentNode.getJpaFile().getContentId();
+//		IJpaDetailsProvider provider = detailsProviders.get(contentId);
+//		
+//		if (provider == null) {
+//			String platformId = contentNode.jpaPlatform().getId();
+//			IJpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
+//			provider = jpaPlatformUI.detailsProvider(contentId);
+//			
+//			//TODO this view and the detailsProviders Map is not created on a per project basis.
+//			//the detailsProviders and their fileContentTypes could overlap across project, this would cause problems with storing this map.
+//			
+//			if (provider != null) {
+//				detailsProviders.put(contentId, provider);
+//			}
+//		}
+//		
+//		return provider;	
+//	}
 	
 	private void setCurrentPage(IJpaDetailsPage newPage) {
 		// depopulate old page
@@ -154,7 +149,7 @@ public class JpaDetailsView extends AbstractJpaView
 			detailsPage.dispose();
 		}
 		
-		currentSelection = Selection.NULL_SELECTION;
+		currentSelection = JpaSelection.NULL_SELECTION;
 		currentPage = null;
 
 		super.dispose();

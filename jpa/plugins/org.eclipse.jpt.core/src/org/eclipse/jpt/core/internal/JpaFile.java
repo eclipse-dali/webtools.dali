@@ -78,8 +78,4 @@ public class JpaFile extends JpaNode implements IJpaFile
 		sb.append(getResourceType());
 		sb.append(")");
 	}
-	
-	public IJpaContentNode getContentNode(int offset) {
-		return getResourceModel().getContentNode(offset);
-	}
 }

@@ -19,6 +19,8 @@ public interface JavaResource extends Node
 {
 	void initialize(CompilationUnit astRoot);
 	
+	JavaResourceModel resourceModel();
+	
 	JpaCompilationUnitResource root();
 	
 	IJpaAnnotationProvider annotationProvider();

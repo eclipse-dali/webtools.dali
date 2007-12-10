@@ -26,9 +26,9 @@ import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 public class TextEditorSelectionParticipant 
-	implements ISelectionParticipant 
+	implements IJpaSelectionParticipant 
 {
-	private final ISelectionManager selectionManager;
+	private final IJpaSelectionManager selectionManager;
 
 	final ITextEditor textEditor;
 	
@@ -36,12 +36,12 @@ public class TextEditorSelectionParticipant
 	
 	private final ISelectionChangedListener editorSelectionListener;
 	
-	private Selection currentSelection;
+	private JpaSelection currentSelection;
 	
 	private boolean forwardSelection = true;  // TODO this just smells wrong  ~bjv
 	
 	
-	public TextEditorSelectionParticipant(ISelectionManager selectionManager, ITextEditor textEditor) {
+	public TextEditorSelectionParticipant(IJpaSelectionManager selectionManager, ITextEditor textEditor) {
 		super();
 		this.selectionManager = selectionManager;
 		this.textEditor = textEditor;
@@ -52,16 +52,16 @@ public class TextEditorSelectionParticipant
 		this.currentSelection = this.calculateSelection();
 	}
 
-	// ********** ISelectionParticipant implementation **********
+	// ********** IJpaSelectionParticipant implementation **********
 
-	public Selection getSelection() {
+	public JpaSelection getSelection() {
 		return this.currentSelection;
 	}
 	
-	public void selectionChanged(SelectionEvent evt) {
-		Selection newSelection = evt.getSelection();
+	public void selectionChanged(JpaSelectionEvent evt) {
+		IJpaSelection newSelection = evt.getSelection();
 		
-		if ((newSelection == Selection.NULL_SELECTION)
+		if ((newSelection == IJpaSelection.NULL_SELECTION)
 			|| newSelection.equals(this.currentSelection)) {
 			return;
 		}
@@ -86,23 +86,23 @@ public class TextEditorSelectionParticipant
 
 	// ********** internal methods **********
 
-	private Selection calculateSelection() {
+	private JpaSelection calculateSelection() {
 		ISelection selection = this.textEditor.getSelectionProvider().getSelection();
 		if (! (selection instanceof ITextSelection)) {
-			return Selection.NULL_SELECTION;
+			return JpaSelection.NULL_SELECTION;
 		}
 
 		IJpaFile jpaFile = this.jpaFile();
 		if (jpaFile == null) {
-			return Selection.NULL_SELECTION;
+			return JpaSelection.NULL_SELECTION;
 		}
 
 		IJpaContentNode selectedNode = jpaFile.getContentNode(((ITextSelection) selection).getOffset());
 		if (selectedNode == null) {
-			return Selection.NULL_SELECTION;
+			return JpaSelection.NULL_SELECTION;
 		}
 
-		return new Selection(selectedNode);
+		return new JpaSelection(selectedNode);
 	}
 	
 	private IJpaFile jpaFile() {
@@ -121,7 +121,7 @@ public class TextEditorSelectionParticipant
 	// ********** listener callbacks **********
 
 	void editorInputChanged() {
-		Selection newSelection = this.calculateSelection();
+		JpaSelection newSelection = this.calculateSelection();
 		if (newSelection.equals(this.currentSelection)) {
 			return;
 		}
@@ -132,7 +132,7 @@ public class TextEditorSelectionParticipant
 	}
 	
 	void editorSelectionChanged(SelectionChangedEvent event) {
-		Selection newSelection = this.calculateSelection();
+		JpaSelection newSelection = this.calculateSelection();
 		if (newSelection.equals(this.currentSelection)) {
 			return;
 		}

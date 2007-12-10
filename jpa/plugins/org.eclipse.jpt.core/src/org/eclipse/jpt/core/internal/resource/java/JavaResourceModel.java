@@ -12,22 +12,26 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IResourceModel;
 import org.eclipse.jpt.core.internal.IResourceModelListener;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 
 public class JavaResourceModel implements IResourceModel
 {
 	private final JpaCompilationUnitResource compilationUnitResource;
+	
+	private final Collection<IJpaContextNode> rootContextNodes;
 	
 	private final Collection<IResourceModelListener> resourceModelListeners;
 	
@@ -37,6 +41,7 @@ public class JavaResourceModel implements IResourceModel
 			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
 			AnnotationEditFormatter annotationEditFormatter) {
 		super();
+		this.rootContextNodes = new ArrayList<IJpaContextNode>();
 		this.resourceModelListeners = new ArrayList<IResourceModelListener>();
 		this.compilationUnitResource = 
 			new JpaCompilationUnitResource(file, annotationProvider, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter, this);
@@ -58,9 +63,18 @@ public class JavaResourceModel implements IResourceModel
 		// TODO Auto-generated method stub
 	}
 	
-	public IJpaContentNode getContentNode(int offset) {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterator<IJpaContextNode> rootContextNodes() {
+		return new CloneIterator<IJpaContextNode>(rootContextNodes);
+	}
+	
+	public void addRootContextNode(IJpaContextNode contextNode) {
+		if (! rootContextNodes.contains(contextNode)) {
+			rootContextNodes.add(contextNode);
+		}
+	}
+	
+	public void removeRootContextNode(IJpaContextNode contextNode) {
+		rootContextNodes.remove(contextNode);
 	}
 	
 	private void synchWithJavaDelta(IJavaElementDelta delta) {

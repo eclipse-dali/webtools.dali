@@ -25,66 +25,82 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 
 /**
- * A <code>SelectionManager</code> stores the current <code>Selection</code> and 
+ * A <code>JpaSelectionManager</code> stores the current <code>JpaSelection</code> and 
  * notifies <code>ISelectionListener</code>s when the selection changes.
  */
-public class SelectionManager
-	implements ISelectionManager
+public class JpaSelectionManager
+	implements IJpaSelectionManager
 {
+	/* The window for which this object manages selections */
+	private IWorkbenchWindow window;
+	
 	/* The set of pages for which this object is managing selections */
 	private Set<IWorkbenchPage> pages;
 	
-	/* The map of <code>ISelectionParticipant</code>s (keyed by part) this object
-	   is using to manage selections */
-	private Map<IWorkbenchPart, ISelectionParticipant> selectionParticipants;
+	/* The active editor part */
+	private IEditorPart activeEditor;
+	
+	private IJpaSelection currentSelection;
+	
+	/* The map of <code>IJpaSelectionParticipant</code>s (keyed by part) */
+	private Map<IWorkbenchPart, IJpaSelectionParticipant> selectionParticipants;
 	
 	private IPageListener pageListener;
 	
 	private IPartListener2 partListener;
 	
-	/* The window for which this object manages selections */
-	private IWorkbenchWindow window;
 	
-	private Selection currentSelection;
-	
-	
-	public SelectionManager() {
+	public JpaSelectionManager() {
 		super();
 		pages = Collections.synchronizedSet(new HashSet<IWorkbenchPage>());
-		selectionParticipants = Collections.synchronizedMap(new HashMap<IWorkbenchPart, ISelectionParticipant>());
+		selectionParticipants = Collections.synchronizedMap(new HashMap<IWorkbenchPart, IJpaSelectionParticipant>());
 		pageListener = new PageListener();
 		partListener = new PartListener();
-		currentSelection = Selection.NULL_SELECTION;
+		currentSelection = JpaSelection.NULL_SELECTION;
 	}
 	
-	public void init(IWorkbenchWindow aWindow) {
+	void init(IWorkbenchWindow aWindow) {
 		window = aWindow;
 		aWindow.addPageListener(pageListener);
 		initPage(aWindow.getActivePage());
 	}
 	
-	void initPage(IWorkbenchPage page) {
+	private void initPage(IWorkbenchPage page) {
 		if ((page != null) && (! pages.contains(page))) {
 			page.addPartListener(partListener);
 			pages.add(page);
-			IEditorPart activeEditor = page.getActiveEditor();
-			initPart(activeEditor);
-			selectPart(activeEditor);
+			activateEditor(page.getActiveEditor());
 		}
 	}
 	
-	void disposePage(IWorkbenchPage page) {
+	private void disposePage(IWorkbenchPage page) {
 		if ((page != null) && (pages.contains(page))) {
 			page.removePartListener(partListener);
 			pages.remove(page);
 		}
 	}
 	
+	private void activateEditor(IEditorPart editor) {
+		if (editor == activeEditor) {
+			return;
+		}
+		if (activeEditor != null) {
+			inactivateEditor(activeEditor);
+		}
+		initPart(editor);
+		activeEditor = editor;
+		selectEditor(activeEditor);
+	}
+	
+	private void inactivateEditor(IEditorPart editor) {
+		
+	}
+	
 	void initPart(IWorkbenchPart part) {
 		if (part != null) {
 			if (selectionParticipants.get(part) == null) {
-				ISelectionParticipant selectionParticipant = 
-					(ISelectionParticipant) part.getAdapter(ISelectionParticipant.class);
+				IJpaSelectionParticipant selectionParticipant = 
+					(IJpaSelectionParticipant) part.getAdapter(IJpaSelectionParticipant.class);
 				if (selectionParticipant != null) {
 					selectionParticipants.put(part, selectionParticipant);
 				}
@@ -92,22 +108,26 @@ public class SelectionManager
 		}
 	}
 	
+	private void selectEditor(IEditorPart editor) {
+		
+	}
+	
 	void selectPart(IWorkbenchPart part) {
-		ISelectionParticipant selectionParticipant = getSelectionParticipant(part);
+		IJpaSelectionParticipant selectionParticipant = getSelectionParticipant(part);
 		if (selectionParticipant != null) {
 			select(selectionParticipant.getSelection());
 		}
 	}
 	
 	void hidePart(IWorkbenchPart part) {
-		ISelectionParticipant selectionParticipant = getSelectionParticipant(part);
+		IJpaSelectionParticipant selectionParticipant = getSelectionParticipant(part);
 		if ((selectionParticipant != null) && (selectionParticipant.disposeOnHide())) {
 			closePart(part);
 		}
 	}
 	
 	void closePart(IWorkbenchPart part) {
-		ISelectionParticipant selectionParticipant = getSelectionParticipant(part);
+		IJpaSelectionParticipant selectionParticipant = getSelectionParticipant(part);
 		if (selectionParticipant != null) {
 			disposePart(part);
 			checkForNoEditors();
@@ -124,7 +144,7 @@ public class SelectionManager
 		IWorkbenchPage activePage = window.getActivePage();
 		if ((activePage == null)
 				|| (activePage.getActiveEditor() == null)) {
-			select(Selection.NULL_SELECTION);
+			select(JpaSelection.NULL_SELECTION);
 		}
 	}
 	
@@ -146,14 +166,14 @@ public class SelectionManager
 	 * objects in a window.
 	 * The newSelection will be selected.
 	 */
-	public void select(Selection newSelection) {
+	public void select(IJpaSelection newSelection) {
 		if (currentSelection.equals(newSelection)) {
 			return;
 		}
 		
 		currentSelection = newSelection;
 		fireSelectionChange(
-			new SelectionEvent(newSelection, SelectionEvent.SELECTION, this)
+			new JpaSelectionEvent(newSelection, JpaSelectionEvent.SELECTION, this)
 		);
 	}
 	
@@ -162,26 +182,26 @@ public class SelectionManager
 	 * objects in a window.
 	 * The oldSelection will be deselected, iff it matches the current selection.
 	 */
-	public void deselect(Selection oldSelection) {
+	public void deselect(IJpaSelection oldSelection) {
 		if (currentSelection.equals(oldSelection)) {
-			currentSelection = Selection.NULL_SELECTION;
+			currentSelection = JpaSelection.NULL_SELECTION;
 			fireSelectionChange(
-				new SelectionEvent(oldSelection, SelectionEvent.DESELECTION, this)
+				new JpaSelectionEvent(oldSelection, JpaSelectionEvent.DESELECTION, this)
 			);
 		}
 	}
 	
-	private void fireSelectionChange(SelectionEvent event) {
-		for (ISelectionParticipant sp : selectionParticipants.values()) {
+	private void fireSelectionChange(JpaSelectionEvent event) {
+		for (IJpaSelectionParticipant sp : selectionParticipants.values()) {
 			sp.selectionChanged(event);
 		}
 	}
 	
-	private ISelectionParticipant getSelectionParticipant(IWorkbenchPart part) {
+	private IJpaSelectionParticipant getSelectionParticipant(IWorkbenchPart part) {
 		return selectionParticipants.get(part);
 	}
 		
-	public Selection getCurrentSelection() {
+	public IJpaSelection getCurrentSelection() {
 		return currentSelection;
 	}
 	
@@ -210,11 +230,11 @@ public class SelectionManager
 		}
 		
 		public void pageClosed(IWorkbenchPage page) {
-			SelectionManager.this.disposePage(page);
+			JpaSelectionManager.this.disposePage(page);
 		}
 		
 		public void pageOpened(IWorkbenchPage page) {
-			SelectionManager.this.initPage(page);
+			JpaSelectionManager.this.initPage(page);
 		}
 	}
 	
@@ -228,8 +248,8 @@ public class SelectionManager
 		public void partActivated(IWorkbenchPartReference partRef) {
 			IWorkbenchPart part = partRef.getPart(false);
 			if (part != null) {
-				SelectionManager.this.initPart(part);
-				SelectionManager.this.selectPart(part);
+				JpaSelectionManager.this.initPart(part);
+				JpaSelectionManager.this.selectPart(part);
 			}
 		}
 		
@@ -240,9 +260,9 @@ public class SelectionManager
 		public void partClosed(IWorkbenchPartReference partRef) {
 			IWorkbenchPart part = partRef.getPart(false);
 			if (part != null) {
-				SelectionManager.this.closePart(part);
-				SelectionManager.this.disposePart(part);
-				SelectionManager.this.checkForNoEditors();
+				JpaSelectionManager.this.closePart(part);
+				JpaSelectionManager.this.disposePart(part);
+				JpaSelectionManager.this.checkForNoEditors();
 			}
 		}
 		
@@ -253,7 +273,7 @@ public class SelectionManager
 		public void partHidden(IWorkbenchPartReference partRef) {
 			IWorkbenchPart part = partRef.getPart(false);
 			if (part != null) {
-				SelectionManager.this.hidePart(part);
+				JpaSelectionManager.this.hidePart(part);
 			}
 		}
 		
