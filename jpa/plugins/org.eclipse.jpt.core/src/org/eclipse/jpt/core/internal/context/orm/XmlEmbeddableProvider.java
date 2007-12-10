@@ -27,8 +27,9 @@ public class XmlEmbeddableProvider implements IXmlTypeMappingProvider
 		return IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
 	}
 	
-	public void createAndAddOrmResourceMapping(EntityMappings entityMappings, String className) {
+	public void createAndAddOrmResourceMapping(XmlPersistentType xmlPersistentType, EntityMappings entityMappings, String className) {
 		Embeddable embeddable = OrmFactory.eINSTANCE.createEmbeddable();
+		xmlPersistentType.initialize(embeddable);
 		entityMappings.getEmbeddables().add(embeddable);
 		embeddable.setClassName(className);
 	}

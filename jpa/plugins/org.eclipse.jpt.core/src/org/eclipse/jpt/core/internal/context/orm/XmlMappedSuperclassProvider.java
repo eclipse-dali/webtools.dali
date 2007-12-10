@@ -26,8 +26,9 @@ public class XmlMappedSuperclassProvider implements IXmlTypeMappingProvider
 		return IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
 	}
 	
-	public void createAndAddOrmResourceMapping(EntityMappings entityMappings, String className) {
+	public void createAndAddOrmResourceMapping(XmlPersistentType xmlPersistentType, EntityMappings entityMappings, String className) {
 		MappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createMappedSuperclass();
+		xmlPersistentType.initialize(mappedSuperclass);
 		entityMappings.getMappedSuperclasses().add(mappedSuperclass);
 		mappedSuperclass.setClassName(className);
 	}

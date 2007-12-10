@@ -26,8 +26,9 @@ public class XmlEntityProvider implements IXmlTypeMappingProvider
 		return IMappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 	
-	public void createAndAddOrmResourceMapping(EntityMappings entityMappings, String className) {
+	public void createAndAddOrmResourceMapping(XmlPersistentType xmlPersistentType, EntityMappings entityMappings, String className) {
 		Entity entity = OrmFactory.eINSTANCE.createEntity();
+		xmlPersistentType.initialize(entity);
 		entityMappings.getEntities().add(entity);
 		entity.setClassName(className);
 	}

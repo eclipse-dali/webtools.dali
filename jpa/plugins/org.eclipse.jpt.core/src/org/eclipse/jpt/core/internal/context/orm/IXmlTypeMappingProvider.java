@@ -24,6 +24,6 @@ public interface IXmlTypeMappingProvider
 	 * create and orm resource mapping and add it to the entityMappings.  Also
 	 * set the className on the new resource mapping.
 	 */
-	void createAndAddOrmResourceMapping(EntityMappings entityMappings, String className);
+	void createAndAddOrmResourceMapping(XmlPersistentType xmlPersistentType, EntityMappings entityMappings, String className);
 
 }

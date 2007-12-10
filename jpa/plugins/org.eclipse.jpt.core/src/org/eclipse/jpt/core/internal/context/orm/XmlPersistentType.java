@@ -13,20 +13,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
+import org.eclipse.jpt.core.internal.resource.orm.Entity;
+import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 
 
 public class XmlPersistentType extends JpaContextNode implements IPersistentType
 {
-	protected String mappingKey;
-
-//
 //	protected EList<XmlAttributeMapping> specifiedAttributeMappings;
 //
 //	protected EList<XmlAttributeMapping> virtualAttributeMappings;
@@ -46,7 +47,6 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	public XmlPersistentType(EntityMappings parent, String mappingKey, org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappingsResource) {
 		super(parent);
 		this.typeMappingProviders = buildTypeMappingProviders();
-		this.mappingKey = mappingKey;
 		this.entityMappings = entityMappingsResource;
 		this.xmlTypeMapping = buildXmlTypeMapping(mappingKey);
 	}
@@ -98,7 +98,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	
 	protected void createAndAddOrmResourceMapping(String mappingKey, String className) {
 		IXmlTypeMappingProvider xmlTypeMappingProvider = typeMappingProvider(mappingKey);
-		xmlTypeMappingProvider.createAndAddOrmResourceMapping(this.entityMappings, className);
+		xmlTypeMappingProvider.createAndAddOrmResourceMapping(this, this.entityMappings, className);
 	}
 
 	public XmlTypeMapping<? extends TypeMapping> getMapping() {
@@ -106,22 +106,19 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	}
 
 	public void setMappingKey(String newMappingKey) {
-		if (this.mappingKey.equals(newMappingKey)) {
+		if (this.mappingKey() == newMappingKey) {
 			return;
 		}
-		this.mappingKey = newMappingKey;
 		XmlTypeMapping<? extends TypeMapping> oldMapping = getMapping();
 		this.xmlTypeMapping = buildXmlTypeMapping(newMappingKey);
 		entityMappings().changeMapping(this, oldMapping, this.xmlTypeMapping);
-		
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.xmlTypeMapping);
 	}
 	
 	protected void setMappingKey_(String newMappingKey) {
-		if (this.mappingKey.equals(newMappingKey)) {
+		if (this.mappingKey() == newMappingKey) {
 			return;
 		}
-		this.mappingKey = newMappingKey;
 		XmlTypeMapping<? extends TypeMapping> oldMapping = getMapping();
 		this.xmlTypeMapping = buildXmlTypeMapping(newMappingKey);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.xmlTypeMapping);
@@ -257,78 +254,6 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 //			}
 //		};
 //	}
-
-//	public IType findJdtType() {
-//		String fqName = getClass_();
-//		if (StringTools.stringIsEmpty(fqName)) {
-//			return null;
-//		}
-//		// try to resolve by only the locally specified name
-//		IType type = resolveJdtType(fqName);
-//		if (type == null) {
-//			// try to resolve by prepending the global package name
-//			fqName = getMapping().getEntityMappings().getPackage() + "." + getClass_();
-//			type = resolveJdtType(fqName);
-//		}
-//		return type;
-//	}
-//
-//	private IType resolveJdtType(String fullyQualifiedName) {
-//		// this name could be of the form "package.name.ClassName"
-//		// or the form "package.name.ClassName.MemberClassName"
-//		// so we must try multiple package and class names here
-//		String[] name = new String[] {
-//			fullyQualifiedName, ""
-//		};
-//		while (name[0].length() != 0) {
-//			name = moveDot(name);
-//			IType type = JDTTools.findType(name[0], name[1], getJpaProject().javaProject());
-//			if (type != null)
-//				return type;
-//		}
-//		return null;
-//	}
-//
-//	/**
-//	 * Returns a String array based on the given string array by 
-//	 * moving a package segment from the end of the first to the
-//	 * beginning of the second
-//	 * 
-//	 * e.g. ["foo.bar", "Baz"] -> ["foo", "bar.Baz"]
-//	 */
-//	private String[] moveDot(String[] packageAndClassName) {
-//		if (packageAndClassName[0].length() == 0) {
-//			throw new IllegalArgumentException();
-//		}
-//		String segmentToMove;
-//		String packageName = packageAndClassName[0];
-//		String className = packageAndClassName[1];
-//		if (packageName.indexOf('.') == -1) {
-//			segmentToMove = packageName;
-//			packageAndClassName[0] = "";
-//		}
-//		else {
-//			int dotIndex = packageName.lastIndexOf('.');
-//			segmentToMove = packageName.substring(dotIndex + 1, packageName.length());
-//			packageAndClassName[0] = packageName.substring(0, dotIndex);
-//		}
-//		if (className.length() == 0) {
-//			packageAndClassName[1] = segmentToMove;
-//		}
-//		else {
-//			packageAndClassName[1] = segmentToMove + '.' + className;
-//		}
-//		return packageAndClassName;
-//	}
-//
-//	public JavaPersistentType findJavaPersistentType() {
-//		return this.jpaProject().javaPersistentType(this.findJdtType());
-//	}
-//
-//	public Type findType() {
-//		JavaPersistentType javaPersistentType = findJavaPersistentType();
-//		return (javaPersistentType == null) ? null : javaPersistentType.getType();
-//	}
 //
 //	public Iterator<XmlPersistentAttribute> attributes() {
 //		return new ReadOnlyIterator<XmlPersistentAttribute>(getPersistentAttributes());
@@ -377,8 +302,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 
 
 	public AccessType access() {
-		// TODO Auto-generated method stub
-		return null;
+		return getMapping().getAccess();
 	}
 
 
@@ -429,29 +353,69 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	}
 
 	public String mappingKey() {
-		return this.mappingKey;
+		return getMapping().getKey();
 	}
 	
 	public IJavaPersistentType javaPersistentType() {
 		return getMapping().getJavaPersistentType();
 	}
 	
-	public void initialize(TypeMapping typeMapping) {
-		this.initializeParentPersistentType();
+	public void initialize(Entity entity) {
+		((XmlEntity) getMapping()).initialize(entity);
+		this.initializeParentPersistentType();	
 	}
 	
-	public void initializeParentPersistentType() {
+	public void initialize(MappedSuperclass mappedSuperclass) {
+		((XmlMappedSuperclass) getMapping()).initialize(mappedSuperclass);
+		this.initializeParentPersistentType();		
+	}
+	
+	public void initialize(Embeddable embeddable) {
+		((XmlEmbeddable) getMapping()).initialize(embeddable);
+		this.initializeParentPersistentType();		
+	}
+	
+	protected void initializeParentPersistentType() {
 		IJavaPersistentType javaPersistentType = javaPersistentType();
 		if (javaPersistentType != null) {
 			this.parentPersistentType = javaPersistentType.parentPersistentType();
 		}
 	}
 
-	public void update(TypeMapping typeMapping) {
+	public void update(Entity entity) {
+		if (mappingKey() == IMappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+			((XmlEntity) getMapping()).update(entity);
+		}
+		else {
+			setMappingKey_(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+			((XmlEntity) getMapping()).initialize(entity);					
+		}
 		this.updateParentPersistentType();
 	}
 	
-	public void updateParentPersistentType() {
+	public void update(MappedSuperclass mappedSuperclass) {
+		if (mappingKey() == IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY) {
+			((XmlMappedSuperclass) getMapping()).update(mappedSuperclass);
+		}
+		else {
+			setMappingKey_(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+			((XmlMappedSuperclass) getMapping()).initialize(mappedSuperclass);
+		}
+		this.updateParentPersistentType();
+	}
+	
+	public void update(Embeddable embeddable) {
+		if (mappingKey() == IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
+			((XmlEmbeddable) getMapping()).update(embeddable);
+		}
+		else {
+			setMappingKey_(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+			((XmlEmbeddable) getMapping()).initialize(embeddable);				
+		}
+		this.updateParentPersistentType();
+	}
+	
+	protected void updateParentPersistentType() {
 		IJavaPersistentType javaPersistentType = javaPersistentType();
 		if (javaPersistentType == null) {
 			//TODO change notification for this?
