@@ -29,6 +29,12 @@ public class JpaSelection
 		return selectedNode;
 	}
 	
+	public boolean isEmpty() {
+		// by definition, this selection is never empty
+		// use IJpaSelection.NULL_SELECTION for empty selections
+		return false;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (! (obj instanceof JpaSelection)) {

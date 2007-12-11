@@ -10,14 +10,19 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.selection;
 
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 
-public interface IJpaSelection
+public interface IJpaSelection extends ISelection
 {
 	static IJpaSelection NULL_SELECTION = 
 		new IJpaSelection() {
 			public IJpaContextNode getSelectedNode() {
 				return null;
+			}
+			
+			public boolean isEmpty() {
+				return true;
 			}
 			
 			@Override
