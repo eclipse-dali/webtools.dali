@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 
 public class XmlPersistentType extends JpaContextNode implements IPersistentType
@@ -326,13 +327,13 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 
 	public Iterator<String> attributeNames() {
 		// TODO Auto-generated method stub
-		return null;
+		return EmptyListIterator.instance();
 	}
 
 
 	public <T extends IPersistentAttribute> ListIterator<T> attributes() {
 		// TODO Auto-generated method stub
-		return null;
+		return EmptyListIterator.instance();
 	}
 
 
