@@ -20,7 +20,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 
 public class JpaDetailsView extends AbstractJpaView 
 {	
-	private JpaSelection currentSelection;
+	private IJpaSelection currentSelection;
 	
 	private IJpaDetailsPage currentPage;
 	
@@ -32,13 +32,13 @@ public class JpaDetailsView extends AbstractJpaView
 	
 	public JpaDetailsView() {
 		super(JptUiMessages.JpaDetailsView_viewNotAvailable);
-		this.currentSelection = JpaSelection.NULL_SELECTION;
+		this.currentSelection = IJpaSelection.NULL_SELECTION;
 		this.detailsProviders = new HashMap<String, IJpaDetailsProvider>();
 		this.detailsPages = new HashMap<Object, IJpaDetailsPage>();
 	}
 	
 	
-	public JpaSelection getSelection() {
+	public IJpaSelection getSelection() {
 		return currentSelection;
 	}
 	
@@ -115,25 +115,25 @@ public class JpaDetailsView extends AbstractJpaView
 //	}
 	
 	private void setCurrentPage(IJpaDetailsPage newPage) {
-		// depopulate old page
-		if ((currentPage != null) && (currentPage != newPage)) {
-			currentPage.populate(null);
-		}
-		
-		// populate new page
-		if (newPage != null) {
-			newPage.populate(currentSelection.getSelectedNode());
-		}
-		
-		currentPage = newPage;
-		
-		// show new page
-		if (newPage == null) {
-			showDefaultPage();
-		}
-		else {
-			pageBook.showPage(newPage.getControl().getParent());
-		}
+//		// depopulate old page
+//		if ((currentPage != null) && (currentPage != newPage)) {
+//			currentPage.populate(null);
+//		}
+//		
+//		// populate new page
+//		if (newPage != null) {
+//			newPage.populate(currentSelection.getSelectedNode());
+//		}
+//		
+//		currentPage = newPage;
+//		
+//		// show new page
+//		if (newPage == null) {
+//			showDefaultPage();
+//		}
+//		else {
+//			pageBook.showPage(newPage.getControl().getParent());
+//		}
 	}
 	
 	public void dispose() {

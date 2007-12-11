@@ -23,7 +23,7 @@ public class JpaDetailsSelectionParticipant
 		this.detailsView = detailsView;
 	}
 
-	public JpaSelection getSelection() {
+	public IJpaSelection getSelection() {
 		return this.detailsView.getSelection();
 	}
 
