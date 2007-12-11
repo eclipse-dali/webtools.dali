@@ -47,8 +47,6 @@ public interface IPersistentAttribute extends IJpaContextNode
 		String SPECIFIED_MAPPING_PROPERTY = "specifiedMappingProperty";
 		String DEFAULT_MAPPING_PROPERTY = "defaultMappingProperty";
 	
-	IPersistentType type();
-	
 	ITypeMapping typeMapping();
 
 	/**
