@@ -10,9 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.views.structure;
 
+import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.util.SafeRunnable;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.ui.internal.jface.NullLabelProvider;
@@ -25,21 +32,32 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
 public class JpaStructurePage extends Page
+	implements ISelectionProvider, ISelectionChangedListener
 {
 	private IJpaStructureProvider structureProvider;
+	
+	private ListenerList selectionChangedListeners;
 	
 	private Composite control;
 	
 	private TreeViewer viewer;
 	
 	
+	
 	public JpaStructurePage(IJpaStructureProvider structureProvider) {
 		this.structureProvider = structureProvider;
+		this.selectionChangedListeners = new ListenerList();
 	}
 	
+	@Override
+	public void init(IPageSite pageSite) {
+		super.init(pageSite);
+		pageSite.setSelectionProvider(this);
+	}
 	
 	@Override
 	public void createControl(Composite parent) {
@@ -50,7 +68,15 @@ public class JpaStructurePage extends Page
 		viewer.setContentProvider(structureProvider.buildContentProvider());
 		viewer.setLabelProvider(structureProvider.buildLabelProvider());
 		viewer.setInput(structureProvider.getInput());
+		viewer.addSelectionChangedListener(this);
 		initContextMenu();
+	}
+	
+	@Override
+	public void dispose() {
+		viewer.removeSelectionChangedListener(this);
+		structureProvider.dispose();
+		super.dispose();
 	}
 	
 	protected void initContextMenu() {
@@ -90,16 +116,7 @@ public class JpaStructurePage extends Page
 		control.setFocus();
 	}
 	
-	IJpaSelection getSelection() {
-		ITreeSelection viewerSelection = (ITreeSelection) viewer.getSelection();
-		
-		if (viewerSelection.isEmpty() || viewerSelection.size() > 1) {
-			return IJpaSelection.NULL_SELECTION;
-		}
-		else {
-			return new JpaSelection((IJpaContextNode) viewerSelection.getFirstElement());
-		}
-	}
+	
 	
 	void select(IJpaSelection selection) {
 		// TODO
@@ -148,4 +165,58 @@ public class JpaStructurePage extends Page
 		viewer.setLabelProvider(NullLabelProvider.INSTANCE);
 		viewer.setInput(null);
 	}
+	
+	
+	// **************** ISelectionProvider impl ********************************
+	
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		selectionChangedListeners.add(listener);
+	}
+	
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+		selectionChangedListeners.remove(listener);
+	}
+	
+	public IJpaSelection getSelection() {
+		ITreeSelection viewerSelection = (ITreeSelection) viewer.getSelection();
+		
+		if (viewerSelection.isEmpty() || viewerSelection.size() > 1) {
+			return IJpaSelection.NULL_SELECTION;
+		}
+		else {
+			return new JpaSelection((IJpaContextNode) viewerSelection.getFirstElement());
+		}
+	}
+	
+	public void setSelection(ISelection selection) {
+		if (viewer != null) {
+			viewer.setSelection(selection);
+		}
+	}
+	
+	
+	
+	// **************** ISelectionChangedListener impl *************************
+	
+	public void selectionChanged(SelectionChangedEvent event) {
+		fireSelectionChanged(event.getSelection());
+	}
+	
+	protected void fireSelectionChanged(ISelection selection) {
+		// create an event
+		final SelectionChangedEvent event = 
+				new SelectionChangedEvent(this, selection);
+		
+		// fire the event
+		Object[] listeners = selectionChangedListeners.getListeners();
+		for (int i = 0; i < listeners.length; ++i) {
+			final ISelectionChangedListener l = (ISelectionChangedListener) listeners[i];
+			SafeRunner.run(
+					new SafeRunnable() {
+						public void run() {
+							l.selectionChanged(event);
+						}
+					});
+        }
+    }
 }

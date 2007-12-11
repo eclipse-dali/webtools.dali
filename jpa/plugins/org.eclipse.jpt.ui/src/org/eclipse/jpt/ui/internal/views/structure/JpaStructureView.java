@@ -62,6 +62,7 @@ public class JpaStructureView extends PageBookView
 				(IJpaStructureProvider) part.getAdapter(IJpaStructureProvider.class);
 		if (structureProvider != null) {
 			JpaStructurePage page = new JpaStructurePage(structureProvider);
+			initPage(page);
 			page.createControl(getPageBook());
 			return new PageRec(part, page);
 		}
@@ -71,6 +72,7 @@ public class JpaStructureView extends PageBookView
 	@Override
 	protected void doDestroyPage(IWorkbenchPart part, PageRec pageRecord) {
 		JpaStructurePage page = (JpaStructurePage) pageRecord.page;
+		removeSelectionChangedListener(page);
         page.dispose();
         pageRecord.dispose();
 	}
