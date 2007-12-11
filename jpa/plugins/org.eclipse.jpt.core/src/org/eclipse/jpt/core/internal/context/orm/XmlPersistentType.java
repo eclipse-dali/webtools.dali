@@ -344,8 +344,8 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 
 
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		//TODO need to have propertychange notification for this or move class_ back to XmlPersistentType
+		return getMapping().getClass_();
 	}
 
 

@@ -293,4 +293,10 @@ public abstract class AbstractXmlTable extends JpaContextNode implements ITable
 	protected abstract String defaultSchema();
 	
 	protected abstract String defaultCatalog();
+	
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(getName());
+	}
 }

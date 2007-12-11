@@ -303,7 +303,7 @@ public class XmlTableTests extends ContextModelTestCase
 		
 		xmlEntity.getTable().setSpecifiedName(null);
 		assertEquals("JAVA_SCHEMA", xmlEntity.getTable().getDefaultSchema());
-}
+	}
 
 	public void testModifySpecifiedSchema() throws Exception {
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
@@ -370,6 +370,93 @@ public class XmlTableTests extends ContextModelTestCase
 		assertNull(xmlTable.getSpecifiedCatalog());
 		assertNull(entityResource.getTable());
 	}
+	
+	public void testUpdateDefaultCatalogFromJavaTable() throws Exception {
+		createTestEntity();
+		
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		assertNull(xmlEntity.getTable().getDefaultCatalog());
+		
+		xmlEntity.javaEntity().getTable().setSpecifiedCatalog("Foo");
+		assertEquals("Foo", xmlEntity.getTable().getDefaultCatalog());
+		
+		xmlEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertNull(xmlEntity.getTable().getDefaultCatalog());
+
+		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		xmlEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
+		assertNull(xmlEntity.getTable().getDefaultCatalog());
+	
+		xmlEntity.setSpecifiedMetadataComplete(null);
+		assertNull(xmlEntity.getTable().getDefaultCatalog());
+		
+		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
+		assertEquals("Foo", xmlEntity.getTable().getDefaultCatalog());
+		
+		xmlEntity.getTable().setSpecifiedName("Bar");
+		assertNull(xmlEntity.getTable().getDefaultCatalog());
+	}
+	
+	public void testUpdateDefaultCatalogNoJava() throws Exception {
+		createTestEntity();
+		
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		assertNull(xmlEntity.getTable().getDefaultCatalog());
+	}
+	
+	public void testUpdateDefaultCatalogFromParent() throws Exception {
+		createTestEntity();
+		createTestSubType();
+		
+		XmlPersistentType parentXmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType childXmlPersistentType = entityMappings().addXmlPersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity parentXmlEntity = (XmlEntity) parentXmlPersistentType.getMapping();
+		XmlEntity childXmlEntity = (XmlEntity) childXmlPersistentType.getMapping();
+		
+		assertNull(parentXmlEntity.getTable().getDefaultCatalog());
+		assertNull(childXmlEntity.getTable().getDefaultCatalog());
+		
+		parentXmlEntity.getTable().setSpecifiedCatalog("FOO");
+		assertNull(parentXmlEntity.getTable().getDefaultCatalog());
+		assertEquals("FOO", childXmlEntity.getTable().getDefaultCatalog());
+
+		parentXmlEntity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		assertNull(parentXmlEntity.getTable().getDefaultCatalog());
+		assertNull(childXmlEntity.getTable().getDefaultCatalog());
+	}
+	
+	public void testUpdateDefaultCatalogFromPersistenceUnitDefaults() throws Exception {
+		createTestEntity();
+		
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		assertNull(xmlEntity.getTable().getDefaultCatalog());
+		
+		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("FOO");
+		assertEquals("FOO", xmlEntity.getTable().getDefaultCatalog());
+		
+		xmlEntity.entityMappings().setSpecifiedCatalog("BAR");
+		assertEquals("BAR", xmlEntity.getTable().getDefaultCatalog());
+		
+		xmlEntity.javaEntity().getTable().setSpecifiedCatalog("JAVA_CATALOG");
+		assertEquals("JAVA_CATALOG", xmlEntity.getTable().getDefaultCatalog());
+		
+		xmlEntity.getTable().setSpecifiedName("BLAH");
+		//xml entity now has a table element so default schema is not taken from java
+		assertEquals("BAR", xmlEntity.getTable().getDefaultCatalog());
+
+		
+		xmlEntity.entityMappings().setSpecifiedCatalog(null);
+		assertEquals("FOO", xmlEntity.getTable().getDefaultCatalog());
+
+		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog(null);
+		assertNull(xmlEntity.getTable().getDefaultCatalog());
+		
+		xmlEntity.getTable().setSpecifiedName(null);
+		assertEquals("JAVA_CATALOG", xmlEntity.getTable().getDefaultCatalog());
+}
 
 //	
 //	public void testUpdateName() throws Exception {

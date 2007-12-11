@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
@@ -18,6 +19,7 @@ import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.XmlSecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
@@ -601,6 +603,243 @@ public class XmlEntityTests extends ContextModelTestCase
 		xmlEntity.setSpecifiedInheritanceStrategy(null);
 		assertNull(xmlEntity.getSpecifiedInheritanceStrategy());
 		assertNull(entityResource.getInheritance());	
+	}
+	
+	public void testAddSpecifiedSecondaryTable() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+
+		XmlSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		ormResource().save(null);
+		secondaryTable.setSpecifiedName("FOO");
+		ormResource().save(null);
+				
+		assertEquals("FOO", entityResource.getSecondaryTables().get(0).getName());
+		
+		XmlSecondaryTable secondaryTable2 = xmlEntity.addSpecifiedSecondaryTable(0);
+		ormResource().save(null);
+		secondaryTable2.setSpecifiedName("BAR");
+		ormResource().save(null);
+		
+		assertEquals("BAR", entityResource.getSecondaryTables().get(0).getName());
+		assertEquals("FOO", entityResource.getSecondaryTables().get(1).getName());
+		
+		XmlSecondaryTable secondaryTable3 = xmlEntity.addSpecifiedSecondaryTable(1);
+		ormResource().save(null);
+		secondaryTable3.setSpecifiedName("BAZ");
+		ormResource().save(null);
+		
+		assertEquals("BAR", entityResource.getSecondaryTables().get(0).getName());
+		assertEquals("BAZ", entityResource.getSecondaryTables().get(1).getName());
+		assertEquals("FOO", entityResource.getSecondaryTables().get(2).getName());
+		
+		ListIterator<XmlSecondaryTable> secondaryTables = xmlEntity.specifiedSecondaryTables();
+		assertEquals(secondaryTable2, secondaryTables.next());
+		assertEquals(secondaryTable3, secondaryTables.next());
+		assertEquals(secondaryTable, secondaryTables.next());
+		
+		secondaryTables = xmlEntity.specifiedSecondaryTables();
+		assertEquals("BAR", secondaryTables.next().getName());
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertEquals("FOO", secondaryTables.next().getName());
+	}
+	
+	public void testRemoveSpecifiedSecondaryTable() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+
+		xmlEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
+		xmlEntity.addSpecifiedSecondaryTable(1).setSpecifiedName("BAR");
+		xmlEntity.addSpecifiedSecondaryTable(2).setSpecifiedName("BAZ");
+		
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		assertEquals(3, entityResource.getSecondaryTables().size());
+		
+		xmlEntity.removeSpecifiedSecondaryTable(0);
+		assertEquals(2, entityResource.getSecondaryTables().size());
+		assertEquals("BAR", entityResource.getSecondaryTables().get(0).getName());
+		assertEquals("BAZ", entityResource.getSecondaryTables().get(1).getName());
+
+		xmlEntity.removeSpecifiedSecondaryTable(0);
+		assertEquals(1, entityResource.getSecondaryTables().size());
+		assertEquals("BAZ", entityResource.getSecondaryTables().get(0).getName());
+		
+		xmlEntity.removeSpecifiedSecondaryTable(0);
+		assertEquals(0, entityResource.getSecondaryTables().size());
+	}
+	
+	public void testMoveSpecifiedSecondaryTable() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+
+		xmlEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
+		xmlEntity.addSpecifiedSecondaryTable(1).setSpecifiedName("BAR");
+		xmlEntity.addSpecifiedSecondaryTable(2).setSpecifiedName("BAZ");
+		
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		assertEquals(3, entityResource.getSecondaryTables().size());
+		
+		
+		xmlEntity.moveSpecifiedSecondaryTable(0, 2);
+		ListIterator<XmlSecondaryTable> secondaryTables = xmlEntity.specifiedSecondaryTables();
+		assertEquals("BAR", secondaryTables.next().getName());
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertEquals("FOO", secondaryTables.next().getName());
+
+		assertEquals("BAR", entityResource.getSecondaryTables().get(0).getName());
+		assertEquals("BAZ", entityResource.getSecondaryTables().get(1).getName());
+		assertEquals("FOO", entityResource.getSecondaryTables().get(2).getName());
+
+
+		xmlEntity.moveSpecifiedSecondaryTable(1, 0);
+		secondaryTables = xmlEntity.specifiedSecondaryTables();
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertEquals("BAR", secondaryTables.next().getName());
+		assertEquals("FOO", secondaryTables.next().getName());
+
+		assertEquals("BAZ", entityResource.getSecondaryTables().get(0).getName());
+		assertEquals("BAR", entityResource.getSecondaryTables().get(1).getName());
+		assertEquals("FOO", entityResource.getSecondaryTables().get(2).getName());
+	}
+	
+	public void testUpdateSecondaryTables() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+		
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createSecondaryTable());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createSecondaryTable());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createSecondaryTable());
+		
+		entityResource.getSecondaryTables().get(0).setName("FOO");
+		entityResource.getSecondaryTables().get(1).setName("BAR");
+		entityResource.getSecondaryTables().get(2).setName("BAZ");
+
+		ListIterator<XmlSecondaryTable> secondaryTables = xmlEntity.specifiedSecondaryTables();
+		assertEquals("FOO", secondaryTables.next().getName());
+		assertEquals("BAR", secondaryTables.next().getName());
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertFalse(secondaryTables.hasNext());
+		
+		entityResource.getSecondaryTables().move(2, 0);
+		secondaryTables = xmlEntity.specifiedSecondaryTables();
+		assertEquals("BAR", secondaryTables.next().getName());
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertEquals("FOO", secondaryTables.next().getName());
+		assertFalse(secondaryTables.hasNext());
+
+		entityResource.getSecondaryTables().move(0, 1);
+		secondaryTables = xmlEntity.specifiedSecondaryTables();
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertEquals("BAR", secondaryTables.next().getName());
+		assertEquals("FOO", secondaryTables.next().getName());
+		assertFalse(secondaryTables.hasNext());
+
+		entityResource.getSecondaryTables().remove(1);
+		secondaryTables = xmlEntity.specifiedSecondaryTables();
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertEquals("FOO", secondaryTables.next().getName());
+		assertFalse(secondaryTables.hasNext());
+
+		entityResource.getSecondaryTables().remove(1);
+		secondaryTables = xmlEntity.specifiedSecondaryTables();
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertFalse(secondaryTables.hasNext());
+		
+		entityResource.getSecondaryTables().remove(0);
+		assertFalse(xmlEntity.specifiedSecondaryTables().hasNext());
+	}
+	
+	//test adding 2 secondary tables to java entity
+	//override one in xmlEntity, verify other one still exists as a default
+	//change xml-mapping-metadata complete setting in both locations and verify defaults from java are gone
+	public void testDefaultSecondaryTables() throws Exception {
+		createTestEntityDefaultFieldAccess();
+		createTestSubType();
+	
+		XmlPersistentType parentPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType childPersistentType = entityMappings().addXmlPersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity parentXmlEntity = (XmlEntity) parentPersistentType.getMapping();
+		XmlEntity childXmlEntity = (XmlEntity) childPersistentType.getMapping();
+		
+		childXmlEntity.javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
+		
+		assertEquals("FOO", childXmlEntity.virtualSecondaryTables().next().getName());
+		assertEquals("FOO", childXmlEntity.secondaryTables().next().getName());
+		assertEquals(0, childXmlEntity.specifiedSecondaryTablesSize());
+		assertEquals(1, childXmlEntity.virtualSecondaryTablesSize());
+		assertEquals(1, childXmlEntity.secondaryTablesSize());
+	
+		childXmlEntity.javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("BAR");
+		ListIterator<XmlSecondaryTable> virtualSecondaryTables = childXmlEntity.virtualSecondaryTables();
+		ListIterator<XmlSecondaryTable> secondaryTables = childXmlEntity.secondaryTables();
+		assertEquals("BAR", virtualSecondaryTables.next().getName());
+		assertEquals("FOO", virtualSecondaryTables.next().getName());
+		assertEquals("BAR", secondaryTables.next().getName());
+		assertEquals("FOO", secondaryTables.next().getName());
+		assertEquals(0, childXmlEntity.specifiedSecondaryTablesSize());
+		assertEquals(2, childXmlEntity.virtualSecondaryTablesSize());
+		assertEquals(2, childXmlEntity.secondaryTablesSize());
+		
+		childXmlEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("BAZ");
+		virtualSecondaryTables = childXmlEntity.virtualSecondaryTables();
+		secondaryTables = childXmlEntity.secondaryTables();
+		assertFalse(virtualSecondaryTables.hasNext());
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertEquals(1, childXmlEntity.specifiedSecondaryTablesSize());
+		assertEquals(0, childXmlEntity.virtualSecondaryTablesSize());
+		assertEquals(1, childXmlEntity.secondaryTablesSize());
+		
+		childXmlEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
+		virtualSecondaryTables = childXmlEntity.virtualSecondaryTables();
+		secondaryTables = childXmlEntity.secondaryTables();
+		assertFalse(virtualSecondaryTables.hasNext());
+		assertEquals("FOO", secondaryTables.next().getName());
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertFalse(secondaryTables.hasNext());
+		assertEquals(2, childXmlEntity.specifiedSecondaryTablesSize());
+		assertEquals(0, childXmlEntity.virtualSecondaryTablesSize());
+		assertEquals(2, childXmlEntity.secondaryTablesSize());
+		
+		//add a specified secondary table to the parent, this will not affect virtual secondaryTables in child
+		parentXmlEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("PARENT_TABLE");
+		virtualSecondaryTables = childXmlEntity.virtualSecondaryTables();
+		secondaryTables = childXmlEntity.secondaryTables();
+		assertFalse(virtualSecondaryTables.hasNext());
+		assertEquals("FOO", secondaryTables.next().getName());
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertFalse(secondaryTables.hasNext());
+		assertEquals(2, childXmlEntity.specifiedSecondaryTablesSize());
+		assertEquals(0, childXmlEntity.virtualSecondaryTablesSize());
+		assertEquals(2, childXmlEntity.secondaryTablesSize());
+		
+		childXmlEntity.removeSpecifiedSecondaryTable(0);
+		childXmlEntity.removeSpecifiedSecondaryTable(0);
+		virtualSecondaryTables = childXmlEntity.virtualSecondaryTables();
+		secondaryTables = childXmlEntity.secondaryTables();
+		assertEquals("BAR", virtualSecondaryTables.next().getName());
+		assertEquals("FOO", virtualSecondaryTables.next().getName());
+		assertFalse(virtualSecondaryTables.hasNext());
+		assertEquals("BAR", secondaryTables.next().getName());
+		assertEquals("FOO", secondaryTables.next().getName());
+		assertFalse(secondaryTables.hasNext());
+		assertEquals(0, childXmlEntity.specifiedSecondaryTablesSize());
+		assertEquals(2, childXmlEntity.virtualSecondaryTablesSize());
+		assertEquals(2, childXmlEntity.secondaryTablesSize());
+	}
+
+	//test that inherited tables don't show up in this list
+	public void testAssociatedTables() throws Exception {
+		
+	}
+	
+	public void testAssociatedTableNamesIncludingInherited() throws Exception {
+		
+	}
+	
+	public void testTableNameIsInvalid() throws Exception {
+		
 	}
 
 }

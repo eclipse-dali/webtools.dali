@@ -81,17 +81,19 @@ public class XmlSecondaryTable extends AbstractXmlTable
 		//when the XmlSecondaryTable is removed/added to the XmlEntity collection
 	}
 
-
+	@Override
 	protected AbstractTable table() {
 		return this.secondaryTable;
 	}
 
-	public void initialize(SecondaryTable table) {
-		super.initialize(table);
+	public void initialize(SecondaryTable secondaryTable) {
+		this.secondaryTable = secondaryTable;
+		super.initialize(secondaryTable);
 	}
 	
-	public void update(SecondaryTable table) {
-		super.update(table);
+	public void update(SecondaryTable secondaryTable) {
+		this.secondaryTable = secondaryTable;
+		super.update(secondaryTable);
 	}
 		
 	@Override

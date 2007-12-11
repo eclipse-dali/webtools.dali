@@ -41,7 +41,6 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
@@ -207,11 +206,14 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	}
 
 	public ListIterator<XmlSecondaryTable> secondaryTables() {
-		return new CompositeListIterator<XmlSecondaryTable>(specifiedSecondaryTables(), virtualSecondaryTables());
+		if (specifiedSecondaryTablesSize() > 0) {
+			return specifiedSecondaryTables();
+		}
+		return virtualSecondaryTables();
 	}
 
 	public int secondaryTablesSize() {
-		return virtualSecondaryTablesSize() + specifiedSecondaryTablesSize();
+		return CollectionTools.size(secondaryTables());
 	}
 	
 	public ListIterator<XmlSecondaryTable> virtualSecondaryTables() {
@@ -241,7 +243,9 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	public XmlSecondaryTable addSpecifiedSecondaryTable(int index) {
 		XmlSecondaryTable secondaryTable = new XmlSecondaryTable(this);
 		this.specifiedSecondaryTables.add(index, secondaryTable);
-		typeMappingResource().getSecondaryTables().add(index, OrmFactory.eINSTANCE.createSecondaryTable());
+		SecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createSecondaryTable();
+		secondaryTable.initialize(secondaryTableResource);
+		typeMappingResource().getSecondaryTables().add(index, secondaryTableResource);
 		fireItemAdded(IEntity.SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
 		return secondaryTable;
 	}
@@ -916,15 +920,16 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		if (javaEntity() == null) {
 			return;
 		}
+		if (specifiedSecondaryTablesSize() > 0) {
+			return;
+		}
 		ListIterator<IJavaSecondaryTable> javaSecondaryTables = javaEntity().secondaryTables();
 		while(javaSecondaryTables.hasNext()) {
 			IJavaSecondaryTable javaSecondaryTable = javaSecondaryTables.next();
 			if (javaSecondaryTable.getName() != null) {
-				if (!containsSpecifiedSecondaryTable(javaSecondaryTable.getName())) {
-					//TODO calling setters during initialize in createVirtualSecondaryTable
-					//I think this is going to be a problem
-					this.virtualSecondaryTables.add(createVirtualSecondaryTable(javaSecondaryTable));
-				}
+				//TODO calling setters during initialize in createVirtualSecondaryTable
+				//I think this is going to be a problem
+				this.virtualSecondaryTables.add(createVirtualSecondaryTable(javaSecondaryTable));
 			}
 		}
 	}
@@ -963,7 +968,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		while (secondaryTables.hasNext()) {
 			XmlSecondaryTable secondaryTable = secondaryTables.next();
 			if (resourceSecondaryTables.hasNext()) {
-				secondaryTable.update((SecondaryTable) resourceSecondaryTables.next());
+				secondaryTable.update(resourceSecondaryTables.next());
 			}
 			else {
 				removeSpecifiedSecondaryTable(secondaryTable);
@@ -971,30 +976,26 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		}
 		
 		while (resourceSecondaryTables.hasNext()) {
-			addSpecifiedSecondaryTable(specifiedSecondaryTablesSize(), createSecondaryTable((SecondaryTable) resourceSecondaryTables.next()));
+			addSpecifiedSecondaryTable(specifiedSecondaryTablesSize(), createSecondaryTable(resourceSecondaryTables.next()));
 		}
 	}
 	
+	//if any secondary-tables are specified in the xml file, then all of the java secondaryTables are overriden
 	protected void updateVirtualSecondaryTables() {
 		ListIterator<XmlSecondaryTable> secondaryTables = virtualSecondaryTables();
 		ListIterator<IJavaSecondaryTable> javaSecondaryTables = EmptyListIterator.instance();
 		
-		if (javaEntity() != null && !isMetadataComplete()) {
+		if (javaEntity() != null && !isMetadataComplete() && specifiedSecondaryTablesSize() == 0) {
 			javaSecondaryTables = javaEntity().secondaryTables();
 		}
 		while (secondaryTables.hasNext()) {
 			XmlSecondaryTable virtualSecondaryTable = secondaryTables.next();
 			if (javaSecondaryTables.hasNext()) {
 				IJavaSecondaryTable javaSecondaryTable = javaSecondaryTables.next();
-				if (!containsSpecifiedSecondaryTable(javaSecondaryTable.getName())) {
-					virtualSecondaryTable.setDefaultName(javaSecondaryTable.getName());
-					virtualSecondaryTable.setDefaultCatalog(javaSecondaryTable.getCatalog());
-					virtualSecondaryTable.setDefaultSchema(javaSecondaryTable.getSchema());
-					//TODO what about pkJoinColumns?
-				}
-				else {
-					removeVirtualSecondaryTable(virtualSecondaryTable);
-				}
+				virtualSecondaryTable.setDefaultName(javaSecondaryTable.getName());
+				virtualSecondaryTable.setDefaultCatalog(javaSecondaryTable.getCatalog());
+				virtualSecondaryTable.setDefaultSchema(javaSecondaryTable.getSchema());
+				//TODO what about pkJoinColumns?
 			}
 			else {
 				removeVirtualSecondaryTable(virtualSecondaryTable);
@@ -1002,7 +1003,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		}
 		
 		while (javaSecondaryTables.hasNext()) {
-			addVirtualSecondaryTable(createVirtualSecondaryTable(javaSecondaryTables.next()));
+			IJavaSecondaryTable javaSecondaryTable = javaSecondaryTables.next();
+			addVirtualSecondaryTable(createVirtualSecondaryTable(javaSecondaryTable));
 		}
 	}
 
