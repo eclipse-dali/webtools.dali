@@ -13,7 +13,6 @@ import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.ui.internal.views.JpaDetailsView;
 import org.eclipse.jpt.ui.internal.views.structure.JpaStructureView;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.texteditor.ITextEditor;
 
 public class SelectionParticipantFactory 
 	implements IAdapterFactory
@@ -32,10 +31,10 @@ public class SelectionParticipantFactory
 		IJpaSelectionManager selectionManager = 
 			SelectionManagerFactory.getSelectionManager(((IWorkbenchPart) adaptableObject).getSite().getWorkbenchWindow());
 		// TODO turn this into extension point
-		if (adaptableObject instanceof ITextEditor) {
-			return new TextEditorSelectionParticipant(selectionManager, (ITextEditor) adaptableObject);
-		}
-		else if (adaptableObject instanceof JpaStructureView) {
+//		if (adaptableObject instanceof ITextEditor) {
+//			return new TextEditorSelectionParticipant(selectionManager, (ITextEditor) adaptableObject);
+//		}
+		if (adaptableObject instanceof JpaStructureView) {
 			return new JpaStructureSelectionParticipant(selectionManager, (JpaStructureView) adaptableObject);
 		}
 		else if (adaptableObject instanceof JpaDetailsView) {
