@@ -30,7 +30,7 @@ public abstract class JavaAttributeMapping extends JavaContextModel
 		this.persistentAttributeResource = persistentAttributeResource;
 	}
 
-	public JavaPersistentAttribute getPersistentAttribute() {
+	public JavaPersistentAttribute persistentAttribute() {
 		return (JavaPersistentAttribute) this.parent();
 	}
 
@@ -39,15 +39,15 @@ public abstract class JavaAttributeMapping extends JavaContextModel
 	 * or a "default" one
 	 */
 	public boolean isDefault() {
-		return this.getPersistentAttribute().mappingIsDefault();
+		return this.persistentAttribute().mappingIsDefault();
 	}
 
 	public ITypeMapping typeMapping() {
-		return this.getPersistentAttribute().typeMapping();
+		return this.persistentAttribute().typeMapping();
 	}
 
 	public String attributeName() {
-		return this.getPersistentAttribute().getName();
+		return this.persistentAttribute().getName();
 	}
 	
 	public Table dbTable(String tableName) {
@@ -56,7 +56,7 @@ public abstract class JavaAttributeMapping extends JavaContextModel
 	
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
 		ITextRange textRange = this.persistentAttributeResource.textRange(astRoot);
-		return (textRange != null) ? textRange : this.getPersistentAttribute().validationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.persistentAttribute().validationTextRange(astRoot);
 	}
 
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {

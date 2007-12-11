@@ -159,7 +159,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 		
-		assertEquals(basicMapping.getPersistentAttribute().getName(), basicMapping.getColumn().getDefaultName());
+		assertEquals(basicMapping.persistentAttribute().getName(), basicMapping.getColumn().getDefaultName());
 		assertEquals("id", basicMapping.getColumn().getDefaultName());
 	}
 

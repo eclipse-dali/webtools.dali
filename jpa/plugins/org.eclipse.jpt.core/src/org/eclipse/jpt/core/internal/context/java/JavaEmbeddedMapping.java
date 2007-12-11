@@ -60,7 +60,7 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 		super.initializeFromResource(persistentAttributeResource);
 		this.initializeAttributeOverrides(persistentAttributeResource);
 		this.initializeDefaultAttributeOverrides(persistentAttributeResource);
-		this.embeddable = embeddableFor(getPersistentAttribute());
+		this.embeddable = embeddableFor(persistentAttribute());
 	}
 	
 	protected void initializeAttributeOverrides(JavaPersistentAttributeResource persistentAttributeResource) {
@@ -213,7 +213,7 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 	@Override
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.update(persistentAttributeResource);
-		this.embeddable = embeddableFor(getPersistentAttribute());
+		this.embeddable = embeddableFor(persistentAttribute());
 		this.updateSpecifiedAttributeOverrides(persistentAttributeResource);
 		this.updateDefaultAttributeOverrides(persistentAttributeResource);
 		

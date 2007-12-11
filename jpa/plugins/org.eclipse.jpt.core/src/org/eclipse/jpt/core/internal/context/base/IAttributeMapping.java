@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.context.base;
 
 public interface IAttributeMapping extends IJpaContextNode
 {
-	IPersistentAttribute getPersistentAttribute();
+	IPersistentAttribute persistentAttribute();
 
 	boolean isDefault();
 
