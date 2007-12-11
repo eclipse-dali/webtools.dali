@@ -106,6 +106,7 @@ public class XmlMappedSuperclass extends XmlTypeMapping<MappedSuperclass>
 		return EmptyIterator.instance();
 	}
 
+	@Override
 	public Iterator<String> overridableAttributeNames() {
 		return this.namesOf(this.overridableAttributes());
 	}
@@ -119,6 +120,7 @@ public class XmlMappedSuperclass extends XmlTypeMapping<MappedSuperclass>
 		};
 	}
 
+	@Override
 	public Iterator<String> overridableAssociationNames() {
 		return this.namesOf(this.overridableAssociations());
 	}
