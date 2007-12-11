@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 
-public interface IJavaPersistentAttribute extends IPersistentAttribute
+public interface IJavaPersistentAttribute extends IPersistentAttribute, IJavaJpaContextNode
 {
 	void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource);
 

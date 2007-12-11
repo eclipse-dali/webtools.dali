@@ -114,6 +114,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	public String getTableName() {
 		return getTable().getName();
 	}
+	
 	@Override
 	public Table primaryDbTable() {
 		return getTable().dbTable();
@@ -205,6 +206,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return this.table;
 	}
 
+	@SuppressWarnings("unchecked")
 	public ListIterator<XmlSecondaryTable> secondaryTables() {
 		if (specifiedSecondaryTablesSize() > 0) {
 			return specifiedSecondaryTables();
@@ -232,6 +234,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		removeItemFromList(secondaryTable, this.virtualSecondaryTables, XmlEntity.VIRTUAL_SECONDARY_TABLES_LIST);
 	}
 
+	@SuppressWarnings("unchecked")
 	public ListIterator<XmlSecondaryTable> specifiedSecondaryTables() {
 		return new CloneListIterator<XmlSecondaryTable>(this.specifiedSecondaryTables);
 	}

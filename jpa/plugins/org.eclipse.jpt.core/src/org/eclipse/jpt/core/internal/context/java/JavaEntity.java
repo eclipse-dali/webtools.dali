@@ -338,6 +338,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return this.table;
 	}
 
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaSecondaryTable> specifiedSecondaryTables() {
 		return new CloneListIterator<IJavaSecondaryTable>(this.specifiedSecondaryTables);
 	}
@@ -373,6 +374,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		moveItemInList(newIndex, oldIndex, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaSecondaryTable> secondaryTables() {
 		return specifiedSecondaryTables();
 	}
@@ -517,14 +519,17 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
 	}
 
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
 		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ? this.defaultPrimaryKeyJoinColumns() : this.specifiedPrimaryKeyJoinColumns();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns() {
 		return new CloneListIterator<IJavaPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
 		return new SingleElementListIterator<IJavaPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumn);
 	}
@@ -561,14 +566,17 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaAttributeOverride> attributeOverrides() {
 		return new CompositeListIterator<IJavaAttributeOverride>(specifiedAttributeOverrides(), defaultAttributeOverrides());
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaAttributeOverride> defaultAttributeOverrides() {
 		return new CloneListIterator<IJavaAttributeOverride>(this.defaultAttributeOverrides);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaAttributeOverride> specifiedAttributeOverrides() {
 		return new CloneListIterator<IJavaAttributeOverride>(this.specifiedAttributeOverrides);
 	}

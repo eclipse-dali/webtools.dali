@@ -122,14 +122,17 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 	
 	//****************** IEmbeddedMapping implemenation *******************
 
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaAttributeOverride> attributeOverrides() {
 		return new CompositeListIterator<IJavaAttributeOverride>(specifiedAttributeOverrides(), defaultAttributeOverrides());
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaAttributeOverride> defaultAttributeOverrides() {
 		return new CloneListIterator<IJavaAttributeOverride>(this.defaultAttributeOverrides);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaAttributeOverride> specifiedAttributeOverrides() {
 		return new CloneListIterator<IJavaAttributeOverride>(this.specifiedAttributeOverrides);
 	}

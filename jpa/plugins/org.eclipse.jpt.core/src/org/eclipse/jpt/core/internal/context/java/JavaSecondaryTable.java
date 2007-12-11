@@ -83,14 +83,17 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	//***************** ISecondaryTable implementation ********************
 	
 
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
 		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ? this.defaultPrimaryKeyJoinColumns() : this.specifiedPrimaryKeyJoinColumns();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns() {
 		return new CloneListIterator<IJavaPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
 		return new SingleElementListIterator<IJavaPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumn);
 	}

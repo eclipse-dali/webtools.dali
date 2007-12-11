@@ -172,6 +172,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 //		return (parentPersistentType() == null) ? null : parentPersistentType().resolveAttribute(attributeName);
 //	}
 	
+	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPersistentAttribute> attributes() {
 		return new CloneListIterator<IJavaPersistentAttribute>(this.attributes);
 	}
@@ -192,7 +193,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		return this.attributeNames(this.attributes());
 	}
 	
-	private Iterator<String> attributeNames(Iterator<? extends IPersistentAttribute> attrs) {
+	protected Iterator<String> attributeNames(Iterator<? extends IPersistentAttribute> attrs) {
 		return new TransformationIterator<IPersistentAttribute, String>(attrs) {
 			@Override
 			protected String transform(IPersistentAttribute attribute) {
@@ -225,12 +226,12 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		if (values != null) {
 			return values;
 		}
-//		for (Iterator<JavaPersistentAttribute> stream = attributes(); stream.hasNext();) {
-//			values = stream.next().candidateValuesFor(pos, filter, astRoot);
-//			if (values != null) {
-//				return values;
-//			}
-//		}
+		for (Iterator<IJavaPersistentAttribute> stream = attributes(); stream.hasNext();) {
+			values = stream.next().candidateValuesFor(pos, filter, astRoot);
+			if (values != null) {
+				return values;
+			}
+		}
 		return null;
 	}
 //
