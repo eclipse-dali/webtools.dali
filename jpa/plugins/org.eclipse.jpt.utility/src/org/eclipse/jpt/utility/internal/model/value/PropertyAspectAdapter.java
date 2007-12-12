@@ -41,7 +41,7 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  */
 public abstract class PropertyAspectAdapter 
 	extends AspectAdapter
-	implements PropertyValueModel
+	implements WritablePropertyValueModel
 {
 	/**
 	 * Cache the current value of the aspect so we
@@ -82,7 +82,7 @@ public abstract class PropertyAspectAdapter
 	 * Construct a PropertyAspectAdapter for the specified subject holder
 	 * and properties.
 	 */
-	protected PropertyAspectAdapter(ValueModel subjectHolder, String... propertyNames) {
+	protected PropertyAspectAdapter(PropertyValueModel subjectHolder, String... propertyNames) {
 		super(subjectHolder);
 		this.propertyNames = propertyNames;
 		this.propertyChangeListener = this.buildPropertyChangeListener();
@@ -94,7 +94,7 @@ public abstract class PropertyAspectAdapter
 	 * Construct a PropertyAspectAdapter for the specified subject holder
 	 * and properties.
 	 */
-	protected PropertyAspectAdapter(ValueModel subjectHolder, Collection<String> propertyNames) {
+	protected PropertyAspectAdapter(PropertyValueModel subjectHolder, Collection<String> propertyNames) {
 		this(subjectHolder, propertyNames.toArray(new String[propertyNames.size()]));
 	}
 
@@ -104,7 +104,7 @@ public abstract class PropertyAspectAdapter
 	 * change for a particular subject; but the subject will change, resulting in
 	 * a new property.
 	 */
-	protected PropertyAspectAdapter(ValueModel subjectHolder) {
+	protected PropertyAspectAdapter(PropertyValueModel subjectHolder) {
 		this(subjectHolder, EMPTY_PROPERTY_NAMES);
 	}
 

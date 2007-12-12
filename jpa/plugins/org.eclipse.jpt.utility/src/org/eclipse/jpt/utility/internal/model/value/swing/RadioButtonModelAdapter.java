@@ -12,7 +12,7 @@ package org.eclipse.jpt.utility.internal.model.value.swing;
 import org.eclipse.jpt.utility.internal.BidiFilter;
 import org.eclipse.jpt.utility.internal.BidiTransformer;
 import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 
 /**
@@ -35,7 +35,7 @@ public class RadioButtonModelAdapter
 	/**
 	 * Constructor - the value holder is required.
 	 */
-	public RadioButtonModelAdapter(PropertyValueModel valueHolder, Object buttonValue, boolean defaultValue) {
+	public RadioButtonModelAdapter(WritablePropertyValueModel valueHolder, Object buttonValue, boolean defaultValue) {
 		super(buildBooleanHolder(valueHolder, buttonValue), defaultValue);
 	}
 
@@ -43,7 +43,7 @@ public class RadioButtonModelAdapter
 	 * Constructor - the value holder is required.
 	 * The default value will be false.
 	 */
-	public RadioButtonModelAdapter(PropertyValueModel valueHolder, Object buttonValue) {
+	public RadioButtonModelAdapter(WritablePropertyValueModel valueHolder, Object buttonValue) {
 		super(buildBooleanHolder(valueHolder, buttonValue));
 	}
 
@@ -59,8 +59,8 @@ public class RadioButtonModelAdapter
 	 * value is set to true, the wrapper will set the value holder's
 	 * value to the button value.
 	 */
-	public static PropertyValueModel buildBooleanHolder(PropertyValueModel valueHolder, Object buttonValue) {
-		PropertyValueModel filteringPVM = new FilteringPropertyValueModel(valueHolder, new RadioButtonFilter(buttonValue));
+	public static WritablePropertyValueModel buildBooleanHolder(WritablePropertyValueModel valueHolder, Object buttonValue) {
+		WritablePropertyValueModel filteringPVM = new FilteringPropertyValueModel(valueHolder, new RadioButtonFilter(buttonValue));
 		return new TransformationPropertyValueModel(filteringPVM, new RadioButtonTransformer(buttonValue));
 	}
 

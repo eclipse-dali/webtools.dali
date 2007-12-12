@@ -29,9 +29,9 @@ import javax.swing.WindowConstants;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.RadioButtonModelAdapter;
 
 
@@ -41,8 +41,8 @@ import org.eclipse.jpt.utility.internal.model.value.swing.RadioButtonModelAdapte
 public class RadioButtonModelAdapterUITest {
 
 	private TestModel testModel;
-	private PropertyValueModel testModelHolder;
-	private PropertyValueModel colorHolder;
+	private WritablePropertyValueModel testModelHolder;
+	private WritablePropertyValueModel colorHolder;
 	private ButtonModel redButtonModel;
 	private ButtonModel greenButtonModel;
 	private ButtonModel blueButtonModel;
@@ -65,7 +65,7 @@ public class RadioButtonModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private PropertyValueModel buildColorHolder(ValueModel subjectHolder) {
+	private WritablePropertyValueModel buildColorHolder(PropertyValueModel subjectHolder) {
 		return new PropertyAspectAdapter(subjectHolder, TestModel.COLOR_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -78,7 +78,7 @@ public class RadioButtonModelAdapterUITest {
 		};
 	}
 
-	private ButtonModel buildRadioButtonModelAdapter(PropertyValueModel colorPVM, String color) {
+	private ButtonModel buildRadioButtonModelAdapter(WritablePropertyValueModel colorPVM, String color) {
 		return new RadioButtonModelAdapter(colorPVM, color);
 	}
 

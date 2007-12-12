@@ -38,7 +38,7 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  * @see PropertyAspectAdapter
  */
 public class BufferedPropertyValueModel
-	extends PropertyValueModelWrapper
+	extends WritablePropertyValueModelWrapper
 {
 
 	/**
@@ -62,7 +62,7 @@ public class BufferedPropertyValueModel
 	 * This is the trigger that indicates whether the buffered value
 	 * should be accepted or reset.
 	 */
-	protected final ValueModel triggerHolder;
+	protected final PropertyValueModel triggerHolder;
 
 	/** This listens to the trigger holder. */
 	protected final PropertyChangeListener triggerChangeListener;
@@ -80,7 +80,7 @@ public class BufferedPropertyValueModel
 	 * Construct a buffered property value model with the specified wrapped
 	 * property value model and trigger holder.
 	 */
-	public BufferedPropertyValueModel(PropertyValueModel valueHolder, ValueModel triggerHolder) {
+	public BufferedPropertyValueModel(WritablePropertyValueModel valueHolder, PropertyValueModel triggerHolder) {
 		super(valueHolder);
 		if (triggerHolder == null) {
 			throw new NullPointerException();

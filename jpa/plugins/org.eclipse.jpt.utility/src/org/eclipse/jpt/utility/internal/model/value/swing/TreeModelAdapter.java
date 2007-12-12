@@ -31,7 +31,7 @@ import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TreeNodeValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 
 /**
  * This javax.swing.tree.TreeModel can be used to keep a TreeModelListener
@@ -271,7 +271,7 @@ public class TreeModelAdapter
 	 * in the underlying tree model.
 	 */
 	private void engageModel() {
-		this.rootHolder.addPropertyChangeListener(ValueModel.VALUE, this.rootListener);
+		this.rootHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.rootListener);
 		this.root = (TreeNodeValueModel) this.rootHolder.value();
 		if (this.root == null) {
 			throw new NullPointerException();	// the root cannot be null while we have listeners
@@ -295,7 +295,7 @@ public class TreeModelAdapter
 		this.removeRoot();
 		this.disengageNode(this.root);
 		this.root = null;
-		this.rootHolder.removePropertyChangeListener(ValueModel.VALUE, this.rootListener);
+		this.rootHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.rootListener);
 	}
 
 	/**
@@ -371,7 +371,7 @@ public class TreeModelAdapter
 	 */
 	private void engageNode(TreeNodeValueModel node) {
 		node.addStateChangeListener(this.nodeStateListener);
-		node.addPropertyChangeListener(ValueModel.VALUE, this.nodeValueListener);
+		node.addPropertyChangeListener(PropertyValueModel.VALUE, this.nodeValueListener);
 		node.childrenModel().addListChangeListener(ListValueModel.LIST_VALUES, this.childrenListener);
 	}
 
@@ -445,7 +445,7 @@ public class TreeModelAdapter
 	 */
 	private void disengageNode(TreeNodeValueModel node) {
 		node.childrenModel().removeListChangeListener(ListValueModel.LIST_VALUES, this.childrenListener);
-		node.removePropertyChangeListener(ValueModel.VALUE, this.nodeValueListener);
+		node.removePropertyChangeListener(PropertyValueModel.VALUE, this.nodeValueListener);
 		node.removeStateChangeListener(this.nodeStateListener);
 	}
 

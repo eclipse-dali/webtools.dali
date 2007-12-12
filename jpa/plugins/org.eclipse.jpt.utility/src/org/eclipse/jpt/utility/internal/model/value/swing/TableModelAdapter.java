@@ -25,8 +25,8 @@ import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeList
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
 /**
  * This TableModel can be used to keep a TableModelListener (e.g. a JTable)
@@ -73,7 +73,7 @@ public class TableModelAdapter
 	 * each row is an array of cell models
 	 */
 	// declare as ArrayList so we can use #ensureCapacity(int)
-	private final ArrayList<PropertyValueModel[]> rows;
+	private final ArrayList<WritablePropertyValueModel[]> rows;
 
 	/**
 	 * client-supplied adapter that provides with the various column
@@ -102,7 +102,7 @@ public class TableModelAdapter
 		this.listHolder = listHolder;
 		this.columnAdapter = columnAdapter;
 		this.listChangeListener = this.buildListChangeListener();
-		this.rows = new ArrayList<PropertyValueModel[]>();
+		this.rows = new ArrayList<WritablePropertyValueModel[]>();
 		this.cellListener = this.buildCellListener();
 	}
 
@@ -155,7 +155,7 @@ public class TableModelAdapter
 	protected PropertyChangeListener buildCellListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent evt) {
-				TableModelAdapter.this.cellChanged((PropertyValueModel) evt.getSource());
+				TableModelAdapter.this.cellChanged((WritablePropertyValueModel) evt.getSource());
 			}
 			@Override
 			public String toString() {
@@ -191,13 +191,13 @@ public class TableModelAdapter
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		PropertyValueModel[] row = this.rows.get(rowIndex);
+		WritablePropertyValueModel[] row = this.rows.get(rowIndex);
 		return row[columnIndex].value();
 	}
 
 	@Override
 	public void setValueAt(Object value, int rowIndex, int columnIndex) {
-		PropertyValueModel[] row = this.rows.get(rowIndex);
+		WritablePropertyValueModel[] row = this.rows.get(rowIndex);
 		row[columnIndex].setValue(value);
 	}
 
@@ -293,7 +293,7 @@ public class TableModelAdapter
 	private void engageAllCells() {
 		this.rows.ensureCapacity(this.listHolder.size());
 		for (Iterator stream = this.listHolder.iterator(); stream.hasNext(); ) {
-			PropertyValueModel[] row = this.columnAdapter.cellModels(stream.next());
+			WritablePropertyValueModel[] row = this.columnAdapter.cellModels(stream.next());
 			this.engageRow(row);
 			this.rows.add(row);
 		}
@@ -302,9 +302,9 @@ public class TableModelAdapter
 	/**
 	 * Listen to the cells in the specified row.
 	 */
-	private void engageRow(PropertyValueModel[] row) {
+	private void engageRow(WritablePropertyValueModel[] row) {
 		for (int i = row.length; i-- > 0; ) {
-			row[i].addPropertyChangeListener(ValueModel.VALUE, this.cellListener);
+			row[i].addPropertyChangeListener(PropertyValueModel.VALUE, this.cellListener);
 		}
 	}
 
@@ -317,24 +317,24 @@ public class TableModelAdapter
 	}
 
 	private void disengageAllCells() {
-		for (PropertyValueModel[] row : this.rows) {
+		for (WritablePropertyValueModel[] row : this.rows) {
 			this.disengageRow(row);
 		}
 		this.rows.clear();
 	}
 
-	private void disengageRow(PropertyValueModel[] row) {
+	private void disengageRow(WritablePropertyValueModel[] row) {
 		for (int i = row.length; i-- > 0; ) {
-			row[i].removePropertyChangeListener(ValueModel.VALUE, this.cellListener);
+			row[i].removePropertyChangeListener(PropertyValueModel.VALUE, this.cellListener);
 		}
 	}
 
 	/**
 	 * brute-force search for the cell(s) that changed...
 	 */
-	void cellChanged(PropertyValueModel cellHolder) {
+	void cellChanged(WritablePropertyValueModel cellHolder) {
 		for (int i = this.rows.size(); i-- > 0; ) {
-			PropertyValueModel[] row = this.rows.get(i);
+			WritablePropertyValueModel[] row = this.rows.get(i);
 			for (int j = row.length; j-- > 0; ) {
 				if (row[j] == cellHolder) {
 					this.fireTableCellUpdated(i, j);
@@ -347,9 +347,9 @@ public class TableModelAdapter
 	 * convert the items to rows
 	 */
 	void addRows(int index, int size, Iterator items) {
-		List<PropertyValueModel[]> newRows = new ArrayList<PropertyValueModel[]>(size);
+		List<WritablePropertyValueModel[]> newRows = new ArrayList<WritablePropertyValueModel[]>(size);
 		while (items.hasNext()) {
-			PropertyValueModel[] row = this.columnAdapter.cellModels(items.next());
+			WritablePropertyValueModel[] row = this.columnAdapter.cellModels(items.next());
 			this.engageRow(row);
 			newRows.add(row);
 		}
@@ -367,7 +367,7 @@ public class TableModelAdapter
 	void replaceRows(int index, Iterator items) {
 		int i = index;
 		while (items.hasNext()) {
-			PropertyValueModel[] row = this.rows.get(i);
+			WritablePropertyValueModel[] row = this.rows.get(i);
 			this.disengageRow(row);
 			row = this.columnAdapter.cellModels(items.next());
 			this.engageRow(row);
@@ -378,7 +378,7 @@ public class TableModelAdapter
 	}
 
 	void moveRows(int targetIndex, int sourceIndex, int length) {
-		ArrayList<PropertyValueModel[]> temp = new ArrayList<PropertyValueModel[]>(length);
+		ArrayList<WritablePropertyValueModel[]> temp = new ArrayList<WritablePropertyValueModel[]>(length);
 		for (int i = 0; i < length; i++) {
 			temp.add(this.rows.remove(sourceIndex));
 		}

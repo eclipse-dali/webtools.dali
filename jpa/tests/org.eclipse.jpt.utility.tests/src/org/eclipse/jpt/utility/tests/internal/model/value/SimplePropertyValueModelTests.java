@@ -11,15 +11,15 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class SimplePropertyValueModelTests extends TestCase {
-	private PropertyValueModel objectHolder;
+	private WritablePropertyValueModel objectHolder;
 	PropertyChangeEvent event;
 
 	
@@ -58,7 +58,7 @@ public class SimplePropertyValueModelTests extends TestCase {
 	}
 
 	public void testPropertyChange2() {
-		this.objectHolder.addPropertyChangeListener(ValueModel.VALUE, this.buildListener());
+		this.objectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.buildListener());
 		this.verifyPropertyChange();
 	}
 
@@ -86,7 +86,7 @@ public class SimplePropertyValueModelTests extends TestCase {
 
 	private void verifyEvent(Object oldValue, Object newValue) {
 		assertEquals(this.objectHolder, this.event.getSource());
-		assertEquals(ValueModel.VALUE, this.event.propertyName());
+		assertEquals(PropertyValueModel.VALUE, this.event.propertyName());
 		assertEquals(oldValue, this.event.oldValue());
 		assertEquals(newValue, this.event.newValue());
 	}

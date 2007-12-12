@@ -56,7 +56,7 @@ public abstract class TreeAspectAdapter
 	 * Construct a TreeAspectAdapter for the specified subject holder
 	 * and tree.
 	 */
-	protected TreeAspectAdapter(ValueModel subjectHolder, String treeName) {
+	protected TreeAspectAdapter(PropertyValueModel subjectHolder, String treeName) {
 		super(subjectHolder);
 		this.treeName = treeName;
 		this.treeChangeListener = this.buildTreeChangeListener();

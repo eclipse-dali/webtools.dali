@@ -154,14 +154,14 @@ public class PropertyCollectionValueModelAdapter
 	// ********** behavior **********
 
 	protected void engageModel() {
-		this.valueHolder.addPropertyChangeListener(ValueModel.VALUE, this.propertyChangeListener);
+		this.valueHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.propertyChangeListener);
 		// synch our value *after* we start listening to the value holder,
 		// since its value might change when a listener is added
 		this.value = this.valueHolder.value();
 	}
 
 	protected void disengageModel() {
-		this.valueHolder.removePropertyChangeListener(ValueModel.VALUE, this.propertyChangeListener);
+		this.valueHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.propertyChangeListener);
 		// clear out the value when we are not listening to the value holder
 		this.value = null;
 	}

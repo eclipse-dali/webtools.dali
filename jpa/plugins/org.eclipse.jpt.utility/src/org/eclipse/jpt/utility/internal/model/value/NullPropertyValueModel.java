@@ -9,12 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.model.NullModel;
+
 /**
  * A read-only property value model for when you
  * don't need to support a value.
  */
 public final class NullPropertyValueModel
-	extends AbstractReadOnlyPropertyValueModel
+	extends NullModel
+	implements PropertyValueModel
 {
 
 	private static final long serialVersionUID = 1L;
@@ -30,7 +34,7 @@ public final class NullPropertyValueModel
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private NullPropertyValueModel() {
 		super();
@@ -48,7 +52,7 @@ public final class NullPropertyValueModel
 
     @Override
 	public String toString() {
-		return "NullPropertyValueModel";
+		return ClassTools.shortClassNameForObject(this);
 	}
 
 	/**

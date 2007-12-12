@@ -21,16 +21,16 @@ import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class CollectionAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
-	private PropertyValueModel subjectHolder1;
+	private WritablePropertyValueModel subjectHolder1;
 	private LocalCollectionAspectAdapter aa1;
 	private CollectionChangeEvent event1;
 	private CollectionChangeListener listener1;
@@ -93,7 +93,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		return result;
 	}
 
-	private LocalCollectionAspectAdapter buildAspectAdapter(ValueModel subjectHolder) {
+	private LocalCollectionAspectAdapter buildAspectAdapter(PropertyValueModel subjectHolder) {
 		return new LocalCollectionAspectAdapter(subjectHolder);
 	}
 
@@ -317,7 +317,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 	// this is not a typical aspect adapter - the value is determined by the aspect name
 	private class LocalCollectionAspectAdapter extends CollectionAspectAdapter {
 
-		LocalCollectionAspectAdapter(ValueModel subjectHolder) {
+		LocalCollectionAspectAdapter(PropertyValueModel subjectHolder) {
 			super(subjectHolder, TestSubject.NAMES_COLLECTION);
 		}
 

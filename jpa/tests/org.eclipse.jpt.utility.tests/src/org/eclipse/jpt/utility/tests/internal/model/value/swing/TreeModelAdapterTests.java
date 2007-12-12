@@ -45,7 +45,7 @@ import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TreeNodeValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.TreeModelAdapter;
 import org.eclipse.jpt.utility.internal.swing.Displayable;
 
@@ -194,7 +194,7 @@ public class TreeModelAdapterTests extends TestCase {
 	}
 
 	public void testTreeStructureChanged() {
-		PropertyValueModel nodeHolder = new SimplePropertyValueModel(this.buildSortedRootNode());
+		WritablePropertyValueModel nodeHolder = new SimplePropertyValueModel(this.buildSortedRootNode());
 		TreeModel treeModel = this.buildTreeModel(nodeHolder);
 		this.eventFired = false;
 		treeModel.addTreeModelListener(new TestTreeModelListener() {
@@ -717,9 +717,9 @@ public class TreeModelAdapterTests extends TestCase {
 			return super.buildChildrenModel(testModel);
 		}
 		protected ListValueModel buildSpecialChildrenModel(TestModel testModel) {
-			Object[] children = new Object[1];
+			NameTestNode[] children = new NameTestNode[1];
 			children[0] = new NameTestNode(this);
-			return new SimpleListValueModel(Arrays.asList(children));
+			return new SimpleListValueModel<NameTestNode>(Arrays.asList(children));
 		}
 		/** children are also special nodes */
 		@Override
@@ -731,7 +731,7 @@ public class TreeModelAdapterTests extends TestCase {
 
 
 	public static class NameTestNode extends AbstractTreeNodeValueModel {
-		private PropertyValueModel nameAdapter;
+		private WritablePropertyValueModel nameAdapter;
 		private SpecialTestNode specialNode;		// parent node
 		private PropertyChangeListener nameListener;
 
@@ -758,7 +758,7 @@ public class TreeModelAdapterTests extends TestCase {
 			this.nameAdapter = this.buildNameAdapter();
 		}
 
-		protected PropertyValueModel buildNameAdapter() {
+		protected WritablePropertyValueModel buildNameAdapter() {
 			return new PropertyAspectAdapter(TestModel.NAME_PROPERTY, this.getTestModel()) {
 				@Override
 				protected Object buildValue_() {
@@ -795,11 +795,11 @@ public class TreeModelAdapterTests extends TestCase {
 
 		@Override
 		protected void engageValue() {
-			this.nameAdapter.addPropertyChangeListener(ValueModel.VALUE, this.nameListener);
+			this.nameAdapter.addPropertyChangeListener(PropertyValueModel.VALUE, this.nameListener);
 		}
 		@Override
 		protected void disengageValue() {
-			this.nameAdapter.removePropertyChangeListener(ValueModel.VALUE, this.nameListener);
+			this.nameAdapter.removePropertyChangeListener(PropertyValueModel.VALUE, this.nameListener);
 		}
 
 		// ********** behavior **********

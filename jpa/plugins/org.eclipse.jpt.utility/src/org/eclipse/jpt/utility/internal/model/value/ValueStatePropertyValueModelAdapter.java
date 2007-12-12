@@ -29,7 +29,7 @@ public class ValueStatePropertyValueModelAdapter
 	/**
 	 * Construct an adapter for the value state.
 	 */
-	public ValueStatePropertyValueModelAdapter(PropertyValueModel valueHolder) {
+	public ValueStatePropertyValueModelAdapter(WritablePropertyValueModel valueHolder) {
 		super(valueHolder);
 		this.valueStateListener = this.buildValueStateListener();
 	}

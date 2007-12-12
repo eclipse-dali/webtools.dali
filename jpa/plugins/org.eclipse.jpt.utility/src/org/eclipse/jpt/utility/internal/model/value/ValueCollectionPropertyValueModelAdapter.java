@@ -35,28 +35,28 @@ public class ValueCollectionPropertyValueModelAdapter
 	/**
 	 * Construct an adapter for the specified value collection.
 	 */
-	public ValueCollectionPropertyValueModelAdapter(PropertyValueModel valueHolder, String collectionName) {
+	public ValueCollectionPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String collectionName) {
 		this(valueHolder, new String[] {collectionName});
 	}
 
 	/**
 	 * Construct an adapter for the specified value collections.
 	 */
-	public ValueCollectionPropertyValueModelAdapter(PropertyValueModel valueHolder, String collectionName1, String collectionName2) {
+	public ValueCollectionPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String collectionName1, String collectionName2) {
 		this(valueHolder, new String[] {collectionName1, collectionName2});
 	}
 
 	/**
 	 * Construct an adapter for the specified value collections.
 	 */
-	public ValueCollectionPropertyValueModelAdapter(PropertyValueModel valueHolder, String collectionName1, String collectionName2, String collectionName3) {
+	public ValueCollectionPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String collectionName1, String collectionName2, String collectionName3) {
 		this(valueHolder, new String[] {collectionName1, collectionName2, collectionName3});
 	}
 
 	/**
 	 * Construct an adapter for the specified value collections.
 	 */
-	public ValueCollectionPropertyValueModelAdapter(PropertyValueModel valueHolder, String[] collectionNames) {
+	public ValueCollectionPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String[] collectionNames) {
 		super(valueHolder);
 		this.collectionNames = collectionNames;
 		this.valueCollectionListener = this.buildValueCollectionListener();

@@ -31,7 +31,7 @@ import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.swing.ColumnAdapter;
 import org.eclipse.jpt.utility.internal.model.value.swing.TableModelAdapter;
@@ -298,9 +298,9 @@ public class TableModelAdapterTests extends TestCase {
 			return index != NAME_COLUMN;
 		}
 	
-		public PropertyValueModel[] cellModels(Object subject) {
+		public WritablePropertyValueModel[] cellModels(Object subject) {
 			Person person = (Person) subject;
-			PropertyValueModel[] result = new PropertyValueModel[COLUMN_COUNT];
+			WritablePropertyValueModel[] result = new WritablePropertyValueModel[COLUMN_COUNT];
 	
 			result[NAME_COLUMN]						= this.buildNameAdapter(person);
 			result[BIRTH_DATE_COLUMN]				= this.buildBirthDateAdapter(person);
@@ -313,7 +313,7 @@ public class TableModelAdapterTests extends TestCase {
 			return result;
 		}
 	
-		private PropertyValueModel buildNameAdapter(Person person) {
+		private WritablePropertyValueModel buildNameAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.NAME_PROPERTY, person) {
 				@Override
 				protected Object buildValue_() {
@@ -326,7 +326,7 @@ public class TableModelAdapterTests extends TestCase {
 			};
 		}
 	
-		private PropertyValueModel buildBirthDateAdapter(Person person) {
+		private WritablePropertyValueModel buildBirthDateAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.BIRTH_DATE_PROPERTY, person) {
 				@Override
 				protected Object buildValue_() {
@@ -339,7 +339,7 @@ public class TableModelAdapterTests extends TestCase {
 			};
 		}
 	
-		private PropertyValueModel buildGoneWestDateAdapter(Person person) {
+		private WritablePropertyValueModel buildGoneWestDateAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.GONE_WEST_DATE_PROPERTY, person) {
 				@Override
 				protected Object buildValue_() {
@@ -352,7 +352,7 @@ public class TableModelAdapterTests extends TestCase {
 			};
 		}
 	
-		private PropertyValueModel buildEyeColorAdapter(Person person) {
+		private WritablePropertyValueModel buildEyeColorAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.EYE_COLOR_PROPERTY, person) {
 				@Override
 				protected Object buildValue_() {
@@ -365,7 +365,7 @@ public class TableModelAdapterTests extends TestCase {
 			};
 		}
 	
-		private PropertyValueModel buildEvilAdapter(Person person) {
+		private WritablePropertyValueModel buildEvilAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.EVIL_PROPERTY, person) {
 				@Override
 				protected Object buildValue_() {
@@ -378,7 +378,7 @@ public class TableModelAdapterTests extends TestCase {
 			};
 		}
 	
-		private PropertyValueModel buildRankAdapter(Person person) {
+		private WritablePropertyValueModel buildRankAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.RANK_PROPERTY, person) {
 				@Override
 				protected Object buildValue_() {
@@ -391,7 +391,7 @@ public class TableModelAdapterTests extends TestCase {
 			};
 		}
 	
-		private PropertyValueModel buildAdventureCountAdapter(Person person) {
+		private WritablePropertyValueModel buildAdventureCountAdapter(Person person) {
 			return new PropertyAspectAdapter(Person.ADVENTURE_COUNT_PROPERTY, person) {
 				@Override
 				protected Object buildValue_() {

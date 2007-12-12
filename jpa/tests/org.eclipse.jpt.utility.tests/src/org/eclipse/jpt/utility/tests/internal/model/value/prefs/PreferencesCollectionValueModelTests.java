@@ -24,15 +24,15 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.prefs.PreferencePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.prefs.PreferencesCollectionValueModel;
 
 public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 	private Map expectedValues;
-	private PropertyValueModel nodeHolder;
+	private WritablePropertyValueModel nodeHolder;
 	PreferencesCollectionValueModel preferencesAdapter;
 	CollectionChangeEvent event;
 	CollectionChangeListener listener;
@@ -259,9 +259,9 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 	private void verifyItems(Map expected, Iterator stream) {
 		while (stream.hasNext()) {
 			PreferencePropertyValueModel model = (PreferencePropertyValueModel) stream.next();
-			model.addPropertyChangeListener(ValueModel.VALUE, this.itemListener);
+			model.addPropertyChangeListener(PropertyValueModel.VALUE, this.itemListener);
 			assertEquals(expected.get(model.getKey()), model.value());
-			model.removePropertyChangeListener(ValueModel.VALUE, this.itemListener);
+			model.removePropertyChangeListener(PropertyValueModel.VALUE, this.itemListener);
 		}
 	}
 

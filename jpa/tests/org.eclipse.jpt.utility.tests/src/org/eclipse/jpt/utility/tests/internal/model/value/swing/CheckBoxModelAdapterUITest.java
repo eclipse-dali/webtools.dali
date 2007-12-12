@@ -30,9 +30,9 @@ import javax.swing.WindowConstants;
 
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.CheckBoxModelAdapter;
 
 
@@ -42,10 +42,10 @@ import org.eclipse.jpt.utility.internal.model.value.swing.CheckBoxModelAdapter;
 public class CheckBoxModelAdapterUITest {
 
 	private TestModel testModel;
-	private PropertyValueModel testModelHolder;
-	private PropertyValueModel flag1Holder;
-	private PropertyValueModel flag2Holder;
-	private PropertyValueModel notFlag2Holder;
+	private WritablePropertyValueModel testModelHolder;
+	private WritablePropertyValueModel flag1Holder;
+	private WritablePropertyValueModel flag2Holder;
+	private WritablePropertyValueModel notFlag2Holder;
 	private ButtonModel flag1ButtonModel;
 	private ButtonModel flag2ButtonModel;
 	private ButtonModel notFlag2ButtonModel;
@@ -70,7 +70,7 @@ public class CheckBoxModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private PropertyValueModel buildFlag1Holder(ValueModel vm) {
+	private WritablePropertyValueModel buildFlag1Holder(PropertyValueModel vm) {
 		return new PropertyAspectAdapter(vm, TestModel.FLAG1_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -83,7 +83,7 @@ public class CheckBoxModelAdapterUITest {
 		};
 	}
 
-	private PropertyValueModel buildFlag2Holder(ValueModel vm) {
+	private WritablePropertyValueModel buildFlag2Holder(PropertyValueModel vm) {
 		return new PropertyAspectAdapter(vm, TestModel.FLAG2_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -96,7 +96,7 @@ public class CheckBoxModelAdapterUITest {
 		};
 	}
 
-	private PropertyValueModel buildNotFlag2Holder(ValueModel vm) {
+	private WritablePropertyValueModel buildNotFlag2Holder(PropertyValueModel vm) {
 		return new PropertyAspectAdapter(vm, TestModel.NOT_FLAG2_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -109,7 +109,7 @@ public class CheckBoxModelAdapterUITest {
 		};
 	}
 
-	private ButtonModel buildCheckBoxModelAdapter(PropertyValueModel booleanHolder) {
+	private ButtonModel buildCheckBoxModelAdapter(WritablePropertyValueModel booleanHolder) {
 		return new CheckBoxModelAdapter(booleanHolder);
 	}
 

@@ -29,8 +29,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
 /**
  * This javax.swing.text.Document can be used to keep a DocumentListener
@@ -51,7 +51,7 @@ public class DocumentAdapter
 	protected final CombinedListener delegateListener;
 
 	/** A value model on the underlying model string. */
-	protected final PropertyValueModel stringHolder;
+	protected final WritablePropertyValueModel stringHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying model string. */
 	protected final PropertyChangeListener stringListener;
@@ -66,7 +66,7 @@ public class DocumentAdapter
 	 * Constructor - the string holder is required.
 	 * Wrap the specified document.
 	 */
-	public DocumentAdapter(PropertyValueModel stringHolder, Document delegate) {
+	public DocumentAdapter(WritablePropertyValueModel stringHolder, Document delegate) {
 		super();
 		if (stringHolder == null || delegate == null) {
 			throw new NullPointerException();
@@ -83,7 +83,7 @@ public class DocumentAdapter
 	 * Constructor - the string holder is required.
 	 * Wrap a plain document.
 	 */
-	public DocumentAdapter(PropertyValueModel stringHolder) {
+	public DocumentAdapter(WritablePropertyValueModel stringHolder) {
 		this(stringHolder, new PlainDocument());
 	}
 
@@ -257,12 +257,12 @@ public class DocumentAdapter
 	}
 
 	protected void engageStringHolder() {
-		this.stringHolder.addPropertyChangeListener(ValueModel.VALUE, this.stringListener);
+		this.stringHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.stringListener);
 		this.synchronizeDelegate((String) this.stringHolder.value());
 	}
 
 	protected void disengageStringHolder() {
-		this.stringHolder.removePropertyChangeListener(ValueModel.VALUE, this.stringListener);
+		this.stringHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.stringListener);
 	}
 
 	protected void delegateChangedUpdate(DocumentEvent e) {

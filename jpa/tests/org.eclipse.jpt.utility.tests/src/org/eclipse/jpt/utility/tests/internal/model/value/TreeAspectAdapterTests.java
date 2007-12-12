@@ -21,18 +21,18 @@ import org.eclipse.jpt.utility.internal.iterators.TreeIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.event.TreeChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TreeAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TreeValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class TreeAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
-	private PropertyValueModel subjectHolder1;
+	private WritablePropertyValueModel subjectHolder1;
 	private TreeAspectAdapter aa1;
 	private TreeChangeEvent event1;
 	private TreeChangeListener listener1;
@@ -91,7 +91,7 @@ public class TreeAspectAdapterTests extends TestCase {
 		node = this.subject2.addDescription(root, "description 2.3");
 	}
 
-	private TreeAspectAdapter buildAspectAdapter(ValueModel subjectHolder) {
+	private TreeAspectAdapter buildAspectAdapter(PropertyValueModel subjectHolder) {
 		return new TreeAspectAdapter(subjectHolder, TestSubject.NAMES_TREE) {
 			// this is not a typical aspect adapter - the value is determined by the aspect name
 			@Override

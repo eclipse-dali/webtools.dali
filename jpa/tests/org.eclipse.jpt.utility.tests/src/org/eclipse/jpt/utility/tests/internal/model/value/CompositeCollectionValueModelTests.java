@@ -22,16 +22,16 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class CompositeCollectionValueModelTests extends TestCase {
 	private Neighborhood neighborhood;
-	private PropertyValueModel neighborhoodHolder;
+	private WritablePropertyValueModel neighborhoodHolder;
 
 	public CompositeCollectionValueModelTests(String name) {
 		super(name);
@@ -193,7 +193,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 			family3.addMember("Astro");
 	}
 
-	private CollectionValueModel buildFamiliesAspectAdapter(ValueModel communeHolder) {
+	private CollectionValueModel buildFamiliesAspectAdapter(PropertyValueModel communeHolder) {
 		return new CollectionAspectAdapter(communeHolder, Neighborhood.FAMILIES_COLLECTION) {
 			protected Iterator iterator_() {
 				return ((Neighborhood) this.subject).families();
@@ -209,7 +209,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		};
 	}
 
-	private CompositeCollectionValueModel buildAllMembersComposite(ValueModel communeHolder) {
+	private CompositeCollectionValueModel buildAllMembersComposite(PropertyValueModel communeHolder) {
 		// override #transform(Object)
 		return new CompositeCollectionValueModel(this.buildFamiliesAspectAdapter(communeHolder)) {
 			protected CollectionValueModel transform(Object value) {
@@ -218,12 +218,12 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		};
 	}
 
-	private CollectionValueModel buildAllMembersComposite2(ValueModel communeHolder) {
+	private CollectionValueModel buildAllMembersComposite2(PropertyValueModel communeHolder) {
 		// build a custom Transformer
 		return new CompositeCollectionValueModel(this.buildFamiliesAspectAdapter(communeHolder), this.buildTransformer());
 	}
 
-	private CollectionValueModel buildBogusAllMembersComposite(ValueModel communeHolder) {
+	private CollectionValueModel buildBogusAllMembersComposite(PropertyValueModel communeHolder) {
 		// DISABLED Transformer
 		return new CompositeCollectionValueModel(this.buildFamiliesAspectAdapter(communeHolder));
 	}

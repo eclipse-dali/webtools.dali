@@ -16,27 +16,27 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.BufferedPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class BufferedPropertyValueModelTests extends TestCase {
 	private Employee employee;
-	private PropertyValueModel employeeHolder;
+	private WritablePropertyValueModel employeeHolder;
 	PropertyChangeEvent employeeEvent;
 
-	private PropertyValueModel idAdapter;
-	private PropertyValueModel nameAdapter;
-	private PropertyValueModel hireDateAdapter;
+	private WritablePropertyValueModel idAdapter;
+	private WritablePropertyValueModel nameAdapter;
+	private WritablePropertyValueModel hireDateAdapter;
 	PropertyChangeEvent adapterEvent;
 
 	private BufferedPropertyValueModel.Trigger trigger;
-	private PropertyValueModel bufferedIDHolder;
-	private PropertyValueModel bufferedNameHolder;
-	private PropertyValueModel bufferedHireDateHolder;
+	private WritablePropertyValueModel bufferedIDHolder;
+	private WritablePropertyValueModel bufferedNameHolder;
+	private WritablePropertyValueModel bufferedHireDateHolder;
 	PropertyChangeEvent bufferedEvent;
 
 	public BufferedPropertyValueModelTests(String name) {
@@ -62,7 +62,7 @@ public class BufferedPropertyValueModelTests extends TestCase {
 		this.bufferedHireDateHolder = new BufferedPropertyValueModel(this.hireDateAdapter, this.trigger);
 	}
 
-	private PropertyValueModel buildIDAdapter(ValueModel eHolder) {
+	private WritablePropertyValueModel buildIDAdapter(PropertyValueModel eHolder) {
 		return new PropertyAspectAdapter(eHolder, Employee.ID_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -75,7 +75,7 @@ public class BufferedPropertyValueModelTests extends TestCase {
 		};
 	}
 
-	private PropertyValueModel buildNameAdapter(ValueModel eHolder) {
+	private WritablePropertyValueModel buildNameAdapter(PropertyValueModel eHolder) {
 		return new PropertyAspectAdapter(eHolder, Employee.NAME_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -88,7 +88,7 @@ public class BufferedPropertyValueModelTests extends TestCase {
 		};
 	}
 
-	private PropertyValueModel buildHireDateAdapter(ValueModel eHolder) {
+	private WritablePropertyValueModel buildHireDateAdapter(PropertyValueModel eHolder) {
 		return new PropertyAspectAdapter(eHolder, Employee.HIRE_DATE_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -109,9 +109,9 @@ public class BufferedPropertyValueModelTests extends TestCase {
 
 	public void testValue() {
 		PropertyChangeListener bufferedListener = this.buildBufferedListener();
-		this.bufferedIDHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
-		this.bufferedNameHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
-		this.bufferedHireDateHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
+		this.bufferedIDHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+		this.bufferedNameHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+		this.bufferedHireDateHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
 
 		assertEquals(new Integer(17), this.idAdapter.value());
 		assertEquals(new Integer(17), this.bufferedIDHolder.value());
@@ -143,9 +143,9 @@ public class BufferedPropertyValueModelTests extends TestCase {
 
 	public void testAccept() {
 		PropertyChangeListener bufferedListener = this.buildBufferedListener();
-		this.bufferedIDHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
-		this.bufferedNameHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
-		this.bufferedHireDateHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
+		this.bufferedIDHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+		this.bufferedNameHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+		this.bufferedHireDateHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
 
 		this.bufferedIDHolder.setValue(new Integer(323));
 		assertEquals(17, this.employee.getID());
@@ -180,9 +180,9 @@ public class BufferedPropertyValueModelTests extends TestCase {
 
 	public void testReset() {
 		PropertyChangeListener bufferedListener = this.buildBufferedListener();
-		this.bufferedIDHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
-		this.bufferedNameHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
-		this.bufferedHireDateHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
+		this.bufferedIDHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+		this.bufferedNameHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+		this.bufferedHireDateHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
 
 		this.bufferedIDHolder.setValue(new Integer(323));
 		assertEquals(17, this.employee.getID());
@@ -216,46 +216,46 @@ public class BufferedPropertyValueModelTests extends TestCase {
 	}
 
 	public void testLazyListening() {
-		assertTrue(((AbstractModel) this.bufferedIDHolder).hasNoPropertyChangeListeners(ValueModel.VALUE));
-		assertTrue(((AbstractModel) this.bufferedNameHolder).hasNoPropertyChangeListeners(ValueModel.VALUE));
-		assertTrue(((AbstractModel) this.bufferedHireDateHolder).hasNoPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.bufferedIDHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.bufferedNameHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.bufferedHireDateHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 
-		assertTrue(((AbstractModel) this.idAdapter).hasNoPropertyChangeListeners(ValueModel.VALUE));
-		assertTrue(((AbstractModel) this.nameAdapter).hasNoPropertyChangeListeners(ValueModel.VALUE));
-		assertTrue(((AbstractModel) this.hireDateAdapter).hasNoPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.idAdapter).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.nameAdapter).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.hireDateAdapter).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		assertTrue(this.employee.hasNoPropertyChangeListeners(Employee.ID_PROPERTY));
 		assertTrue(this.employee.hasNoPropertyChangeListeners(Employee.NAME_PROPERTY));
 		assertTrue(this.employee.hasNoPropertyChangeListeners(Employee.HIRE_DATE_PROPERTY));
 
 		PropertyChangeListener bufferedListener = this.buildBufferedListener();
-		this.bufferedIDHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
-		this.bufferedNameHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
-		this.bufferedHireDateHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
+		this.bufferedIDHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+		this.bufferedNameHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+		this.bufferedHireDateHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
 
-		assertTrue(((AbstractModel) this.bufferedIDHolder).hasAnyPropertyChangeListeners(ValueModel.VALUE));
-		assertTrue(((AbstractModel) this.bufferedNameHolder).hasAnyPropertyChangeListeners(ValueModel.VALUE));
-		assertTrue(((AbstractModel) this.bufferedHireDateHolder).hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.bufferedIDHolder).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.bufferedNameHolder).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.bufferedHireDateHolder).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 
-		assertTrue(((AbstractModel) this.idAdapter).hasAnyPropertyChangeListeners(ValueModel.VALUE));
-		assertTrue(((AbstractModel) this.nameAdapter).hasAnyPropertyChangeListeners(ValueModel.VALUE));
-		assertTrue(((AbstractModel) this.hireDateAdapter).hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.idAdapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.nameAdapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.hireDateAdapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		assertTrue(this.employee.hasAnyPropertyChangeListeners(Employee.ID_PROPERTY));
 		assertTrue(this.employee.hasAnyPropertyChangeListeners(Employee.NAME_PROPERTY));
 		assertTrue(this.employee.hasAnyPropertyChangeListeners(Employee.HIRE_DATE_PROPERTY));
 
-		this.bufferedIDHolder.removePropertyChangeListener(ValueModel.VALUE, bufferedListener);
-		this.bufferedNameHolder.removePropertyChangeListener(ValueModel.VALUE, bufferedListener);
-		this.bufferedHireDateHolder.removePropertyChangeListener(ValueModel.VALUE, bufferedListener);
+		this.bufferedIDHolder.removePropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+		this.bufferedNameHolder.removePropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
+		this.bufferedHireDateHolder.removePropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
 
-		assertTrue(((AbstractModel) this.bufferedIDHolder).hasNoPropertyChangeListeners(ValueModel.VALUE));
-		assertTrue(((AbstractModel) this.bufferedNameHolder).hasNoPropertyChangeListeners(ValueModel.VALUE));
-		assertTrue(((AbstractModel) this.bufferedHireDateHolder).hasNoPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.bufferedIDHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.bufferedNameHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.bufferedHireDateHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 
-		assertTrue(((AbstractModel) this.idAdapter).hasNoPropertyChangeListeners(ValueModel.VALUE));
-		assertTrue(((AbstractModel) this.nameAdapter).hasNoPropertyChangeListeners(ValueModel.VALUE));
-		assertTrue(((AbstractModel) this.hireDateAdapter).hasNoPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.idAdapter).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.nameAdapter).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(((AbstractModel) this.hireDateAdapter).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		assertTrue(this.employee.hasNoPropertyChangeListeners(Employee.ID_PROPERTY));
 		assertTrue(this.employee.hasNoPropertyChangeListeners(Employee.NAME_PROPERTY));
@@ -264,10 +264,10 @@ public class BufferedPropertyValueModelTests extends TestCase {
 
 	public void testPropertyChange1() {
 		PropertyChangeListener bufferedListener = this.buildBufferedListener();
-		this.bufferedNameHolder.addPropertyChangeListener(ValueModel.VALUE, bufferedListener);
+		this.bufferedNameHolder.addPropertyChangeListener(PropertyValueModel.VALUE, bufferedListener);
 
 		PropertyChangeListener adapterListener = this.buildAdapterListener();
-		this.nameAdapter.addPropertyChangeListener(ValueModel.VALUE, adapterListener);
+		this.nameAdapter.addPropertyChangeListener(PropertyValueModel.VALUE, adapterListener);
 
 		PropertyChangeListener employeeListener = this.buildEmployeeListener();
 		this.employee.addPropertyChangeListener(Employee.NAME_PROPERTY, employeeListener);
@@ -293,7 +293,7 @@ public class BufferedPropertyValueModelTests extends TestCase {
 		this.adapterEvent = null;
 		this.employeeEvent = null;
 		this.bufferedNameHolder.setValue("Ripley");
-		this.verifyEvent(this.bufferedEvent, this.bufferedNameHolder, ValueModel.VALUE, "Freddy", "Ripley");
+		this.verifyEvent(this.bufferedEvent, this.bufferedNameHolder, PropertyValueModel.VALUE, "Freddy", "Ripley");
 		assertNull(this.adapterEvent);
 		assertNull(this.employeeEvent);
 
@@ -301,7 +301,7 @@ public class BufferedPropertyValueModelTests extends TestCase {
 		this.adapterEvent = null;
 		this.employeeEvent = null;
 		this.bufferedNameHolder.setValue("Charlie");
-		this.verifyEvent(this.bufferedEvent, this.bufferedNameHolder, ValueModel.VALUE, "Ripley", "Charlie");
+		this.verifyEvent(this.bufferedEvent, this.bufferedNameHolder, PropertyValueModel.VALUE, "Ripley", "Charlie");
 		assertNull(this.adapterEvent);
 		assertNull(this.employeeEvent);
 
@@ -310,14 +310,14 @@ public class BufferedPropertyValueModelTests extends TestCase {
 		this.employeeEvent = null;
 		this.trigger.accept();
 		assertNull(this.bufferedEvent);
-		this.verifyEvent(this.adapterEvent, this.nameAdapter, ValueModel.VALUE, "Freddy", "Charlie");
+		this.verifyEvent(this.adapterEvent, this.nameAdapter, PropertyValueModel.VALUE, "Freddy", "Charlie");
 		this.verifyEvent(this.employeeEvent, this.employee, Employee.NAME_PROPERTY, "Freddy", "Charlie");
 
 		this.bufferedEvent = null;
 		this.adapterEvent = null;
 		this.employeeEvent = null;
 		this.bufferedNameHolder.setValue("Jason");
-		this.verifyEvent(this.bufferedEvent, this.bufferedNameHolder, ValueModel.VALUE, "Charlie", "Jason");
+		this.verifyEvent(this.bufferedEvent, this.bufferedNameHolder, PropertyValueModel.VALUE, "Charlie", "Jason");
 		assertNull(this.adapterEvent);
 		assertNull(this.employeeEvent);
 
@@ -325,7 +325,7 @@ public class BufferedPropertyValueModelTests extends TestCase {
 		this.adapterEvent = null;
 		this.employeeEvent = null;
 		this.trigger.reset();
-		this.verifyEvent(this.bufferedEvent, this.bufferedNameHolder, ValueModel.VALUE, "Jason", "Charlie");
+		this.verifyEvent(this.bufferedEvent, this.bufferedNameHolder, PropertyValueModel.VALUE, "Jason", "Charlie");
 		assertNull(this.adapterEvent);
 		assertNull(this.employeeEvent);
 	}

@@ -34,28 +34,28 @@ public class ValuePropertyPropertyValueModelAdapter
 	/**
 	 * Construct an adapter for the specified value property.
 	 */
-	public ValuePropertyPropertyValueModelAdapter(PropertyValueModel valueHolder, String propertyName) {
+	public ValuePropertyPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String propertyName) {
 		this(valueHolder, new String[] {propertyName});
 	}
 
 	/**
 	 * Construct an adapter for the specified value properties.
 	 */
-	public ValuePropertyPropertyValueModelAdapter(PropertyValueModel valueHolder, String propertyName1, String propertyName2) {
+	public ValuePropertyPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String propertyName1, String propertyName2) {
 		this(valueHolder, new String[] {propertyName1, propertyName2});
 	}
 
 	/**
 	 * Construct an adapter for the specified value properties.
 	 */
-	public ValuePropertyPropertyValueModelAdapter(PropertyValueModel valueHolder, String propertyName1, String propertyName2, String propertyName3) {
+	public ValuePropertyPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String propertyName1, String propertyName2, String propertyName3) {
 		this(valueHolder, new String[] {propertyName1, propertyName2, propertyName3});
 	}
 
 	/**
 	 * Construct an adapter for the specified value properties.
 	 */
-	public ValuePropertyPropertyValueModelAdapter(PropertyValueModel valueHolder, String[] propertyNames) {
+	public ValuePropertyPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String[] propertyNames) {
 		super(valueHolder);
 		this.propertyNames = propertyNames;
 		this.valuePropertyListener = this.buildValuePropertyListener();

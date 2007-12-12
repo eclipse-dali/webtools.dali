@@ -35,28 +35,28 @@ public class ValueListPropertyValueModelAdapter
 	/**
 	 * Construct an adapter for the specified value list.
 	 */
-	public ValueListPropertyValueModelAdapter(PropertyValueModel valueHolder, String listName) {
+	public ValueListPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String listName) {
 		this(valueHolder, new String[] {listName});
 	}
 
 	/**
 	 * Construct an adapter for the specified value lists.
 	 */
-	public ValueListPropertyValueModelAdapter(PropertyValueModel valueHolder, String listName1, String listName2) {
+	public ValueListPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String listName1, String listName2) {
 		this(valueHolder, new String[] {listName1, listName2});
 	}
 
 	/**
 	 * Construct an adapter for the specified value lists.
 	 */
-	public ValueListPropertyValueModelAdapter(PropertyValueModel valueHolder, String listName1, String listName2, String listName3) {
+	public ValueListPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String listName1, String listName2, String listName3) {
 		this(valueHolder, new String[] {listName1, listName2, listName3});
 	}
 
 	/**
 	 * Construct an adapter for the specified value lists.
 	 */
-	public ValueListPropertyValueModelAdapter(PropertyValueModel valueHolder, String[] listNames) {
+	public ValueListPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String[] listNames) {
 		super(valueHolder);
 		this.listNames = listNames;
 		this.valueListListener = this.buildValueListListener();

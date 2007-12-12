@@ -9,13 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.model.NullModel;
+
 /**
  * Implementation of ValueModel that can be used for
  * returning a static value, but still allows listeners to be added.
  * Listeners will NEVER be notified of any changes, because there should be none.
  */
 public class ReadOnlyPropertyValueModel
-	extends AbstractReadOnlyPropertyValueModel
+	extends NullModel
+	implements PropertyValueModel
 {
 	/** The value. */
 	protected final Object value;
@@ -36,6 +40,11 @@ public class ReadOnlyPropertyValueModel
 
 	public Object value() {
 		return this.value;
+	}
+
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this, this.value);
 	}
 
 }

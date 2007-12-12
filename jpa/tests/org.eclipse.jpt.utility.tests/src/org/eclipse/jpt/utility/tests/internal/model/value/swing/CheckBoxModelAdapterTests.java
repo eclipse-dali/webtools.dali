@@ -16,16 +16,16 @@ import javax.swing.event.EventListenerList;
 
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.CheckBoxModelAdapter;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class CheckBoxModelAdapterTests extends TestCase {
-	private PropertyValueModel booleanHolder;
+	private WritablePropertyValueModel booleanHolder;
 	private ButtonModel buttonModelAdapter;
 	boolean eventFired;
 
@@ -99,16 +99,16 @@ public class CheckBoxModelAdapterTests extends TestCase {
 
 	public void testHasListeners() throws Exception {
 		SimplePropertyValueModel localBooleanHolder = (SimplePropertyValueModel) this.booleanHolder;
-		assertFalse(localBooleanHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertFalse(localBooleanHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.buttonModelAdapter);
 
 		ChangeListener listener = new TestChangeListener();
 		this.buttonModelAdapter.addChangeListener(listener);
-		assertTrue(localBooleanHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(localBooleanHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasListeners(this.buttonModelAdapter);
 
 		this.buttonModelAdapter.removeChangeListener(listener);
-		assertFalse(localBooleanHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertFalse(localBooleanHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.buttonModelAdapter);
 	}
 

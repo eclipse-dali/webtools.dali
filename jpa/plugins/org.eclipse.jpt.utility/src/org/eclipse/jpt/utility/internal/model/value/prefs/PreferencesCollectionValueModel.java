@@ -23,7 +23,7 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 
 /**
  * This adapter wraps a Preferences node and converts its preferences into a
@@ -54,7 +54,7 @@ public class PreferencesCollectionValueModel
 	/**
 	 * Construct an adapter for the specified preferences node.
 	 */
-	public PreferencesCollectionValueModel(ValueModel preferencesHolder) {
+	public PreferencesCollectionValueModel(PropertyValueModel preferencesHolder) {
 		super(preferencesHolder);
 		this.preferences = new HashMap<String, PreferencePropertyValueModel>();
 		this.preferenceChangeListener = this.buildPreferenceChangeListener();

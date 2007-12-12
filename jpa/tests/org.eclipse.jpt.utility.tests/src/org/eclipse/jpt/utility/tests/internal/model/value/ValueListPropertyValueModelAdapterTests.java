@@ -17,7 +17,7 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueListPropertyValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
@@ -56,17 +56,17 @@ public class ValueListPropertyValueModelAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		assertFalse(this.junkHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
-		assertFalse(this.junkHolder2.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertFalse(this.junkHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertFalse(this.junkHolder2.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		PropertyChangeListener l = new LocalListener(this.junkHolder2, null, this.junk);
 		this.junkHolder2.addPropertyChangeListener(l);
-		assertTrue(this.junkHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
-		assertTrue(this.junkHolder2.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(this.junkHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertTrue(this.junkHolder2.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		this.junkHolder2.removePropertyChangeListener(l);
-		assertFalse(this.junkHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
-		assertFalse(this.junkHolder2.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertFalse(this.junkHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		assertFalse(this.junkHolder2.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
 
 	public void testListAdd() {
@@ -107,7 +107,7 @@ public class ValueListPropertyValueModelAdapterTests extends TestCase {
 			assertEquals(this.source, e.getSource());
 			assertEquals(this.oldValue, e.oldValue());
 			assertEquals(this.newValue, e.newValue());
-			assertEquals(ValueModel.VALUE, e.propertyName());
+			assertEquals(PropertyValueModel.VALUE, e.propertyName());
 		}
 		boolean eventReceived() {
 			return this.eventReceived;

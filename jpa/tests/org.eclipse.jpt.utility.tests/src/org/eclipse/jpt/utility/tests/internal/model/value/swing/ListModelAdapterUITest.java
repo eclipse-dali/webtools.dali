@@ -38,7 +38,7 @@ import javax.swing.WindowConstants;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
@@ -49,7 +49,7 @@ import org.eclipse.jpt.utility.internal.swing.Displayable;
  */
 public class ListModelAdapterUITest {
 
-	private PropertyValueModel taskListHolder;
+	private WritablePropertyValueModel taskListHolder;
 	private TextField taskTextField;
 
 	public static void main(String[] args) throws Exception {

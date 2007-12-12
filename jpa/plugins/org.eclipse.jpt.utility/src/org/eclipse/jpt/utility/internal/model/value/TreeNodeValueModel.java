@@ -23,7 +23,7 @@ package org.eclipse.jpt.utility.internal.model.value;
  * @see AbstractTreeNodeValueModel
  */
 public interface TreeNodeValueModel
-	extends PropertyValueModel
+	extends WritablePropertyValueModel
 {
 
 	/**

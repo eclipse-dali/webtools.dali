@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value.swing;
 
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 
 /**
  * This javax.swing.ButtonModel can be used to keep a listener
@@ -28,7 +28,7 @@ public class CheckBoxModelAdapter
 	/**
 	 * Constructor - the boolean holder is required.
 	 */
-	public CheckBoxModelAdapter(PropertyValueModel booleanHolder, boolean defaultValue) {
+	public CheckBoxModelAdapter(WritablePropertyValueModel booleanHolder, boolean defaultValue) {
 		super(booleanHolder, defaultValue);
 	}
 
@@ -36,7 +36,7 @@ public class CheckBoxModelAdapter
 	 * Constructor - the boolean holder is required.
 	 * The default value will be false.
 	 */
-	public CheckBoxModelAdapter(PropertyValueModel booleanHolder) {
+	public CheckBoxModelAdapter(WritablePropertyValueModel booleanHolder) {
 		super(booleanHolder);
 	}
 

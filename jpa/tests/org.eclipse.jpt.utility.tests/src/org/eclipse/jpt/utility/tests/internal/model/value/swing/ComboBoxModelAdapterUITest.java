@@ -35,10 +35,10 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ComboBoxModelAdapter;
 import org.eclipse.jpt.utility.internal.swing.FilteringListBrowser;
 import org.eclipse.jpt.utility.internal.swing.ListChooser;
@@ -55,8 +55,8 @@ public class ComboBoxModelAdapterUITest {
 
 	protected JFrame window;
 	private TestModel testModel;
-	private PropertyValueModel testModelHolder;
-	private PropertyValueModel colorHolder;
+	private WritablePropertyValueModel testModelHolder;
+	private WritablePropertyValueModel colorHolder;
 	private SimpleListValueModel<String> colorListHolder;
 	protected ComboBoxModel colorComboBoxModel;
 	private int nextColorNumber = 0;
@@ -83,7 +83,7 @@ public class ComboBoxModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private PropertyValueModel buildColorHolder(ValueModel vm) {
+	private WritablePropertyValueModel buildColorHolder(PropertyValueModel vm) {
 		return new PropertyAspectAdapter(vm, TestModel.COLOR_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -116,7 +116,7 @@ public class ComboBoxModelAdapterUITest {
 		return this.colorListHolder;
 	}
 
-	private ComboBoxModel buildComboBoxModelAdapter(ListValueModel listHolder, PropertyValueModel selectionHolder) {
+	private ComboBoxModel buildComboBoxModelAdapter(ListValueModel listHolder, WritablePropertyValueModel selectionHolder) {
 		return new ComboBoxModelAdapter(listHolder, selectionHolder);
 	}
 

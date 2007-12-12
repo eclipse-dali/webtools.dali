@@ -22,14 +22,14 @@ import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class ListAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
-	private PropertyValueModel subjectHolder1;
+	private WritablePropertyValueModel subjectHolder1;
 	private LocalListAspectAdapter aa1;
 	private ListChangeEvent event1;
 	private ListChangeListener listener1;
@@ -89,7 +89,7 @@ public class ListAspectAdapterTests extends TestCase {
 		return result;
 	}
 
-	private LocalListAspectAdapter buildAspectAdapter(ValueModel subjectHolder) {
+	private LocalListAspectAdapter buildAspectAdapter(PropertyValueModel subjectHolder) {
 		return new LocalListAspectAdapter(subjectHolder);
 	}
 
@@ -412,7 +412,7 @@ public class ListAspectAdapterTests extends TestCase {
 	// this is not a typical aspect adapter - the value is determined by the aspect name
 	private class LocalListAspectAdapter extends ListAspectAdapter {
 
-		LocalListAspectAdapter(ValueModel subjectHolder) {
+		LocalListAspectAdapter(PropertyValueModel subjectHolder) {
 			super(subjectHolder, TestSubject.NAMES_LIST);
 		}
 

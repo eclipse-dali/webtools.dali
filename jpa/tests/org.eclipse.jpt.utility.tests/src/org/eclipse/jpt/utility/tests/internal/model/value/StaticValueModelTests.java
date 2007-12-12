@@ -9,14 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
-import org.eclipse.jpt.utility.internal.model.value.AbstractReadOnlyPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class StaticValueModelTests extends TestCase {
-	private ValueModel objectHolder;
+	private PropertyValueModel objectHolder;
+	private static final PropertyValueModel OBJECT_HOLDER = new ReadOnlyPropertyValueModel("foo");
 
 	
 	public StaticValueModelTests(String name) {
@@ -26,15 +27,7 @@ public class StaticValueModelTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.objectHolder = this.buildObjectHolder();
-	}
-
-	private ValueModel buildObjectHolder() {
-		return new AbstractReadOnlyPropertyValueModel() {
-			public Object value() {
-				return "foo";
-			}
-		};
+		this.objectHolder = OBJECT_HOLDER;
 	}
 
 	@Override

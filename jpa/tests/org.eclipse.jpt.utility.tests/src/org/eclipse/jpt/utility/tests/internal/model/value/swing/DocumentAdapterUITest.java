@@ -32,9 +32,9 @@ import javax.swing.text.PlainDocument;
 
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.DocumentAdapter;
 
 /**
@@ -44,8 +44,8 @@ public class DocumentAdapterUITest {
 
 	private TestModel testModel;
 		private static final String DEFAULT_NAME = "Scooby Doo";
-	private PropertyValueModel testModelHolder;
-	private PropertyValueModel nameHolder;
+	private WritablePropertyValueModel testModelHolder;
+	private WritablePropertyValueModel nameHolder;
 	private Document nameDocument;
 	private Document upperCaseNameDocument;
 
@@ -66,7 +66,7 @@ public class DocumentAdapterUITest {
 		this.openWindow();
 	}
 
-	private PropertyValueModel buildNameHolder(ValueModel vm) {
+	private WritablePropertyValueModel buildNameHolder(PropertyValueModel vm) {
 		return new PropertyAspectAdapter(vm, TestModel.NAME_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -79,11 +79,11 @@ public class DocumentAdapterUITest {
 		};
 	}
 
-	private Document buildNameDocument(PropertyValueModel stringHolder) {
+	private Document buildNameDocument(WritablePropertyValueModel stringHolder) {
 		return new DocumentAdapter(stringHolder);
 	}
 
-	private Document buildUpperCaseNameDocument(PropertyValueModel stringHolder) {
+	private Document buildUpperCaseNameDocument(WritablePropertyValueModel stringHolder) {
 		return new DocumentAdapter(stringHolder, this.buildUpperCaseNameDocumentDelegate());
 	}
 

@@ -19,8 +19,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
 /**
  * This javax.swing.SpinnerModel can be used to keep a ChangeListener
@@ -46,7 +46,7 @@ public class SpinnerModelAdapter
 	protected final ChangeListener delegateListener;
 
 	/** A value model on the underlying value. */
-	protected final PropertyValueModel valueHolder;
+	protected final WritablePropertyValueModel valueHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying value. */
 	protected final PropertyChangeListener valueListener;
@@ -57,7 +57,7 @@ public class SpinnerModelAdapter
 	/**
 	 * Constructor - the value holder and delegate are required.
 	 */
-	public SpinnerModelAdapter(PropertyValueModel valueHolder, SpinnerModel delegate) {
+	public SpinnerModelAdapter(WritablePropertyValueModel valueHolder, SpinnerModel delegate) {
 		super();
 		if (valueHolder == null || delegate == null) {
 			throw new NullPointerException();
@@ -74,7 +74,7 @@ public class SpinnerModelAdapter
 	 * Constructor - the value holder is required.
 	 * This will wrap a simple number spinner model.
 	 */
-	public SpinnerModelAdapter(PropertyValueModel valueHolder) {
+	public SpinnerModelAdapter(WritablePropertyValueModel valueHolder) {
 		this(valueHolder, new SpinnerNumberModel());
 	}
 
@@ -189,12 +189,12 @@ public class SpinnerModelAdapter
 	}
 
 	protected void engageValueHolder() {
-		this.valueHolder.addPropertyChangeListener(ValueModel.VALUE, this.valueListener);
+		this.valueHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.valueListener);
 		this.synchronizeDelegate(this.valueHolder.value());
 	}
 
 	protected void disengageValueHolder() {
-		this.valueHolder.removePropertyChangeListener(ValueModel.VALUE, this.valueListener);
+		this.valueHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.valueListener);
 	}
 
 

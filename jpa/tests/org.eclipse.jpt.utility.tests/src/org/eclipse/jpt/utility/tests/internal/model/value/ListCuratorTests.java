@@ -21,9 +21,9 @@ import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.ListCurator;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
@@ -32,7 +32,7 @@ public final class ListCuratorTests
 	extends TestCase 
 {
 	private TestSubject subject1;
-	private PropertyValueModel subjectHolder1;
+	private WritablePropertyValueModel subjectHolder1;
 	
 	private ListCurator curator;
 	private ListChangeListener listener1;
@@ -75,7 +75,7 @@ public final class ListCuratorTests
 		return list;
 	}
 	
-	private ListCurator buildListCurator(ValueModel subjectHolder) {
+	private ListCurator buildListCurator(PropertyValueModel subjectHolder) {
 		return new ListCurator(subjectHolder) {
 			public Iterator iteratorForRecord() {
 				return ((TestSubject) this.subject).strings();

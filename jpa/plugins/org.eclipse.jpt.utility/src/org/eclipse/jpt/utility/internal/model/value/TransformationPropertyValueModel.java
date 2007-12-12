@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
  * <code>reverseTransform(Object)</code> methods.
  */
 public class TransformationPropertyValueModel
-	extends PropertyValueModelWrapper
+	extends WritablePropertyValueModelWrapper
 {
 	private final BidiTransformer transformer;
 
@@ -40,7 +40,7 @@ public class TransformationPropertyValueModel
 	 * <code>transform(Object)</code> and <code>reverseTransform(Object)</code>
 	 * methods instead of building a <code>BidiTransformer</code>.
 	 */
-	public TransformationPropertyValueModel(PropertyValueModel valueHolder) {
+	public TransformationPropertyValueModel(WritablePropertyValueModel valueHolder) {
 		this(valueHolder, BidiTransformer.Disabled.instance());
 	}
 
@@ -48,13 +48,13 @@ public class TransformationPropertyValueModel
 	 * Construct an property value model with the specified nested
 	 * property value model and transformer.
 	 */
-	public TransformationPropertyValueModel(PropertyValueModel valueHolder, BidiTransformer transformer) {
+	public TransformationPropertyValueModel(WritablePropertyValueModel valueHolder, BidiTransformer transformer) {
 		super(valueHolder);
 		this.transformer = transformer;
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** PropertyValueModel implementation **********
 
 	public Object value() {
 		// transform the object returned by the nested value model before returning it
@@ -62,7 +62,7 @@ public class TransformationPropertyValueModel
 	}
 
 
-	// ********** PropertyValueModel implementation **********
+	// ********** WritablePropertyValueModel implementation **********
 
 	public void setValue(Object value) {
 		// "reverse-transform" the object before passing it to the the nested value model

@@ -14,18 +14,18 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class FilteringPropertyValueModelTests extends TestCase {
-	private PropertyValueModel objectHolder;
+	private WritablePropertyValueModel objectHolder;
 	PropertyChangeEvent event;
 
-	private PropertyValueModel filteredObjectHolder;
+	private WritablePropertyValueModel filteredObjectHolder;
 	PropertyChangeEvent filteredEvent;
 
 	public FilteringPropertyValueModelTests(String name) {
@@ -98,17 +98,17 @@ public class FilteringPropertyValueModelTests extends TestCase {
 	}
 
 	public void testLazyListening() {
-		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 		PropertyChangeListener listener = this.buildFilteredListener();
 		this.filteredObjectHolder.addPropertyChangeListener(listener);
-		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.filteredObjectHolder.removePropertyChangeListener(listener);
-		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 
-		this.filteredObjectHolder.addPropertyChangeListener(ValueModel.VALUE, listener);
-		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(ValueModel.VALUE));
-		this.filteredObjectHolder.removePropertyChangeListener(ValueModel.VALUE, listener);
-		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(ValueModel.VALUE));
+		this.filteredObjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
+		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.filteredObjectHolder.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
+		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
 
 	public void testPropertyChange1() {
@@ -118,8 +118,8 @@ public class FilteringPropertyValueModelTests extends TestCase {
 	}
 
 	public void testPropertyChange2() {
-		this.objectHolder.addPropertyChangeListener(ValueModel.VALUE, this.buildListener());
-		this.filteredObjectHolder.addPropertyChangeListener(ValueModel.VALUE, this.buildFilteredListener());
+		this.objectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.buildListener());
+		this.filteredObjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.buildFilteredListener());
 		this.verifyPropertyChanges();
 	}
 
@@ -179,7 +179,7 @@ public class FilteringPropertyValueModelTests extends TestCase {
 
 	private void verifyEvent(PropertyChangeEvent e, Object source, Object oldValue, Object newValue) {
 		assertEquals(source, e.getSource());
-		assertEquals(ValueModel.VALUE, e.propertyName());
+		assertEquals(PropertyValueModel.VALUE, e.propertyName());
 		assertEquals(oldValue, e.oldValue());
 		assertEquals(newValue, e.newValue());
 	}

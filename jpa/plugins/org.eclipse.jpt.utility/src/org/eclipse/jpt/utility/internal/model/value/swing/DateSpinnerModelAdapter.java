@@ -19,8 +19,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
 /**
  * This javax.swing.SpinnerDateModel can be used to keep a ChangeListener
@@ -46,7 +46,7 @@ public class DateSpinnerModelAdapter
 	private final Date defaultValue;
 
 	/** A value model on the underlying date. */
-	private final PropertyValueModel dateHolder;
+	private final WritablePropertyValueModel dateHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying date. */
 	private final PropertyChangeListener dateChangeListener;
@@ -58,14 +58,14 @@ public class DateSpinnerModelAdapter
 	 * Constructor - the date holder is required.
 	 * The default spinner value is the current date.
 	 */
-	public DateSpinnerModelAdapter(PropertyValueModel dateHolder) {
+	public DateSpinnerModelAdapter(WritablePropertyValueModel dateHolder) {
 		this(dateHolder, new Date());
 	}
 
 	/**
 	 * Constructor - the date holder and default value are required.
 	 */
-	public DateSpinnerModelAdapter(PropertyValueModel dateHolder, Date defaultValue) {
+	public DateSpinnerModelAdapter(WritablePropertyValueModel dateHolder, Date defaultValue) {
 		this(dateHolder, null, null, Calendar.DAY_OF_MONTH, defaultValue);
 	}
 
@@ -73,14 +73,14 @@ public class DateSpinnerModelAdapter
 	 * Constructor - the date holder is required.
 	 * The default spinner value is the current date.
 	 */
-	public DateSpinnerModelAdapter(PropertyValueModel dateHolder, Comparable start, Comparable end, int calendarField) {
+	public DateSpinnerModelAdapter(WritablePropertyValueModel dateHolder, Comparable start, Comparable end, int calendarField) {
 		this(dateHolder, start, end, calendarField, new Date());
 	}
 
 	/**
 	 * Constructor - the date holder is required.
 	 */
-	public DateSpinnerModelAdapter(PropertyValueModel dateHolder, Comparable start, Comparable end, int calendarField, Date defaultValue) {
+	public DateSpinnerModelAdapter(WritablePropertyValueModel dateHolder, Comparable start, Comparable end, int calendarField, Date defaultValue) {
 		super(dateHolder.value() == null ? defaultValue : (Date) dateHolder.value(), start, end, calendarField);
 		this.dateHolder = dateHolder;
 		this.dateChangeListener = this.buildDateChangeListener();
@@ -143,7 +143,7 @@ public class DateSpinnerModelAdapter
 	@Override
 	public void addChangeListener(ChangeListener listener) {
 		if (this.getChangeListeners().length == 0) {
-			this.dateHolder.addPropertyChangeListener(ValueModel.VALUE, this.dateChangeListener);
+			this.dateHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.dateChangeListener);
 			this.synchronize(this.dateHolder.value());
 		}
 		super.addChangeListener(listener);
@@ -156,7 +156,7 @@ public class DateSpinnerModelAdapter
 	public void removeChangeListener(ChangeListener listener) {
 		super.removeChangeListener(listener);
 		if (this.getChangeListeners().length == 0) {
-			this.dateHolder.removePropertyChangeListener(ValueModel.VALUE, this.dateChangeListener);
+			this.dateHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.dateChangeListener);
 		}
 	}
 

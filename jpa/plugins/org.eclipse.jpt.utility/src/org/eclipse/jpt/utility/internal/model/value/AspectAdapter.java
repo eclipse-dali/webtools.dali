@@ -46,7 +46,7 @@ public abstract class AspectAdapter
 	 * For now, this is can only be set upon construction and is
 	 * immutable.
 	 */
-	protected final ValueModel subjectHolder;
+	protected final PropertyValueModel subjectHolder;
 
 	/** A listener that keeps us in synch with the subjectHolder. */
 	protected final PropertyChangeListener subjectChangeListener;
@@ -65,7 +65,7 @@ public abstract class AspectAdapter
 	 * Construct an AspectAdapter for the specified subject holder.
 	 * The subject holder cannot be null.
 	 */
-	protected AspectAdapter(ValueModel subjectHolder) {
+	protected AspectAdapter(PropertyValueModel subjectHolder) {
 		super();
 		if (subjectHolder == null) {
 			throw new NullPointerException();
@@ -179,14 +179,14 @@ public abstract class AspectAdapter
 	}
 
 	protected void engageSubjectHolder() {
-		this.subjectHolder.addPropertyChangeListener(ValueModel.VALUE, this.subjectChangeListener);
+		this.subjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 		// synch our subject *after* we start listening to the subject holder,
 		// since its value might change when a listener is added
 		this.subject = this.subjectHolder.value();
 	}
 
 	protected void disengageSubjectHolder() {
-		this.subjectHolder.removePropertyChangeListener(ValueModel.VALUE, this.subjectChangeListener);
+		this.subjectHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 		// clear out the subject when we are not listening to its holder
 		this.subject = null;
 	}

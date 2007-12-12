@@ -65,7 +65,7 @@ public abstract class CollectionAspectAdapter
 	 * change for a particular subject; but the subject will change, resulting in
 	 * a new collection.
 	 */
-	protected CollectionAspectAdapter(ValueModel subjectHolder) {
+	protected CollectionAspectAdapter(PropertyValueModel subjectHolder) {
 		this(subjectHolder, null);
 	}
 
@@ -73,7 +73,7 @@ public abstract class CollectionAspectAdapter
 	 * Construct a CollectionAspectAdapter for the specified subject holder
 	 * and collection.
 	 */
-	protected CollectionAspectAdapter(ValueModel subjectHolder, String collectionName) {
+	protected CollectionAspectAdapter(PropertyValueModel subjectHolder, String collectionName) {
 		super(subjectHolder);
 		this.collectionName = collectionName;
 		this.collectionChangeListener = this.buildCollectionChangeListener();

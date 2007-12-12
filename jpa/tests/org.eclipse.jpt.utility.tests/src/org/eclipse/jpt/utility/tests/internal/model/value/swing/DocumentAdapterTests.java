@@ -16,16 +16,16 @@ import javax.swing.text.Document;
 
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.DocumentAdapter;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class DocumentAdapterTests extends TestCase {
-	private PropertyValueModel stringHolder;
+	private WritablePropertyValueModel stringHolder;
 	Document documentAdapter;
 	boolean eventFired;
 
@@ -116,16 +116,16 @@ public class DocumentAdapterTests extends TestCase {
 
 	public void testHasListeners() throws Exception {
 		SimplePropertyValueModel localStringHolder = (SimplePropertyValueModel) this.stringHolder;
-		assertFalse(localStringHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertFalse(localStringHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.documentAdapter);
 
 		DocumentListener listener = new TestDocumentListener();
 		this.documentAdapter.addDocumentListener(listener);
-		assertTrue(localStringHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(localStringHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasListeners(this.documentAdapter);
 
 		this.documentAdapter.removeDocumentListener(listener);
-		assertFalse(localStringHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertFalse(localStringHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.documentAdapter);
 	}
 

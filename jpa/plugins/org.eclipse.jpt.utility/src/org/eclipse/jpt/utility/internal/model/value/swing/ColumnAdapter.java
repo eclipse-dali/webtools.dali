@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value.swing;
 
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 
 
 /**
@@ -44,6 +44,6 @@ public interface ColumnAdapter {
 	 * Return the cell models for the specified subject
 	 * that corresponds to a single row in the table.
 	 */
-	PropertyValueModel[] cellModels(Object subject);
+	WritablePropertyValueModel[] cellModels(Object subject);
 
 }

@@ -20,13 +20,13 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  * another property value model, "lazily" listen to it, and propagate
  * its change notifications.
  */
-public abstract class PropertyValueModelWrapper
+public abstract class WritablePropertyValueModelWrapper
 	extends AbstractModel
-	implements PropertyValueModel
+	implements WritablePropertyValueModel
 {
 
 	/** The wrapped property value model. */
-	protected final PropertyValueModel valueHolder;
+	protected final WritablePropertyValueModel valueHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped value holder. */
 	protected final PropertyChangeListener valueChangeListener;
@@ -38,7 +38,7 @@ public abstract class PropertyValueModelWrapper
 	 * Construct a property value model with the specified wrapped
 	 * property value model. The value holder is required.
 	 */
-	protected PropertyValueModelWrapper(PropertyValueModel valueHolder) {
+	protected WritablePropertyValueModelWrapper(WritablePropertyValueModel valueHolder) {
 		super();
 		if (valueHolder == null) {
 			throw new NullPointerException();
@@ -58,7 +58,7 @@ public abstract class PropertyValueModelWrapper
 	protected PropertyChangeListener buildValueChangeListener() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				PropertyValueModelWrapper.this.valueChanged(e);
+				WritablePropertyValueModelWrapper.this.valueChanged(e);
 			}
 		    @Override
 			public String toString() {

@@ -9,17 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import org.eclipse.jpt.utility.internal.model.Model;
+
 /**
- * Extend ValueModel to allow the setting of the property's value.
+ * Interface used to abstract property accessing and
+ * change notification and make it more pluggable.
  */
 public interface PropertyValueModel
-	extends ValueModel
+	extends Model
 {
 
 	/**
-	 * Set the value and fire a property change notification.
-	 * @see ValueModel#VALUE
+	 * Return the property's value.
 	 */
-	void setValue(Object value);
+	Object value();
+		String VALUE = "value";
 
 }

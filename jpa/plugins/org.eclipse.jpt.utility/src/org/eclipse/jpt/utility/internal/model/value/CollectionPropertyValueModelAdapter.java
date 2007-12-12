@@ -96,20 +96,13 @@ public abstract class CollectionPropertyValueModelAdapter
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** PropertyValueModel implementation **********
 
 	/**
 	 * Return the cached value.
 	 */
 	public Object value() {
 		return this.value;
-	}
-
-
-	// ********** PropertyValueModel implementation **********
-
-	public void setValue(Object value) {
-		throw new UnsupportedOperationException();
 	}
 
 

@@ -33,7 +33,7 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
  * through to the wrapped value holder, not even <code>null</code>.
  */
 public class FilteringPropertyValueModel
-	extends PropertyValueModelWrapper
+	extends WritablePropertyValueModelWrapper
 {
 	private final BidiFilter filter;
 	private final Object defaultValue;
@@ -49,7 +49,7 @@ public class FilteringPropertyValueModel
 	 * methods instead of building a <code>BidiFilter</code>.
 	 * The default value will be <code>null</code>.
 	 */
-	public FilteringPropertyValueModel(PropertyValueModel valueHolder) {
+	public FilteringPropertyValueModel(WritablePropertyValueModel valueHolder) {
 		this(valueHolder, BidiFilter.Disabled.instance(), null);
 	}
 
@@ -62,7 +62,7 @@ public class FilteringPropertyValueModel
 	 * <em>and</em> you need to specify
 	 * a default value other than <code>null</code>.
 	 */
-	public FilteringPropertyValueModel(PropertyValueModel valueHolder, Object defaultValue) {
+	public FilteringPropertyValueModel(WritablePropertyValueModel valueHolder, Object defaultValue) {
 		this(valueHolder, BidiFilter.Disabled.instance(), defaultValue);
 	}
 
@@ -71,7 +71,7 @@ public class FilteringPropertyValueModel
 	 * property value model and filter.
 	 * The default value will be <code>null</code>.
 	 */
-	public FilteringPropertyValueModel(PropertyValueModel valueHolder, BidiFilter filter) {
+	public FilteringPropertyValueModel(WritablePropertyValueModel valueHolder, BidiFilter filter) {
 		this(valueHolder, filter, null);
 	}
 
@@ -79,21 +79,21 @@ public class FilteringPropertyValueModel
 	 * Construct an property value model with the specified nested
 	 * property value model, filter, and default value.
 	 */
-	public FilteringPropertyValueModel(PropertyValueModel valueHolder, BidiFilter filter, Object defaultValue) {
+	public FilteringPropertyValueModel(WritablePropertyValueModel valueHolder, BidiFilter filter, Object defaultValue) {
 		super(valueHolder);
 		this.filter = filter;
 		this.defaultValue = defaultValue;
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** PropertyValueModel implementation **********
 
 	public Object value() {
 		return this.filterValue(this.valueHolder.value());
 	}
 
 
-	// ********** PropertyValueModel implementation **********
+	// ********** WritablePropertyValueModel implementation **********
 
 	public void setValue(Object value) {
 		if (this.reverseAccept(value)) {

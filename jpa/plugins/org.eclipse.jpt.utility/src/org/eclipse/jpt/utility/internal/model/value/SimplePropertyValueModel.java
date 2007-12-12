@@ -20,7 +20,7 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  */
 public class SimplePropertyValueModel
 	extends AbstractModel
-	implements PropertyValueModel
+	implements WritablePropertyValueModel
 {
 	/** The value. */
 	protected Object value;

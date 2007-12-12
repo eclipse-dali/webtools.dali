@@ -34,16 +34,6 @@ public class NullPropertyValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testSetValue() {
-		boolean exCaught = false;
-		try {
-			this.valueHolder.setValue("foo");
-		} catch (UnsupportedOperationException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
 	public void testValue() {
 		assertNull(this.valueHolder.value());
 	}

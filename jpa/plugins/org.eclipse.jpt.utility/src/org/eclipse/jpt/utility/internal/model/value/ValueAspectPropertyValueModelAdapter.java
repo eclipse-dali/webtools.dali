@@ -29,7 +29,7 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
  *     stop listening to the appropriate aspect of the specified value
  */
 public abstract class ValueAspectPropertyValueModelAdapter
-	extends PropertyValueModelWrapper
+	extends WritablePropertyValueModelWrapper
 {
 	/** Cache the value so we can disengage. */
 	protected Object value;
@@ -40,7 +40,7 @@ public abstract class ValueAspectPropertyValueModelAdapter
 	/**
 	 * Constructor - the value holder is required.
 	 */
-	protected ValueAspectPropertyValueModelAdapter(PropertyValueModel valueHolder) {
+	protected ValueAspectPropertyValueModelAdapter(WritablePropertyValueModel valueHolder) {
 		super(valueHolder);
 	}
 
@@ -54,14 +54,14 @@ public abstract class ValueAspectPropertyValueModelAdapter
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** PropertyValueModel implementation **********
 
 	public Object value() {
 		return this.value;
 	}
 
 
-	// ********** PropertyValueModel implementation **********
+	// ********** WritablePropertyValueModel implementation **********
 
 	public void setValue(Object value) {
 		this.valueHolder.setValue(value);
@@ -74,7 +74,7 @@ public abstract class ValueAspectPropertyValueModelAdapter
 	protected void valueChanged(PropertyChangeEvent e) {
 		this.disengageValue();
 		this.engageValue();
-		this.firePropertyChanged(e.propertyName(), e.oldValue(), e.newValue());
+		this.firePropertyChanged(e.cloneWithSource(this));
 	}
 
 

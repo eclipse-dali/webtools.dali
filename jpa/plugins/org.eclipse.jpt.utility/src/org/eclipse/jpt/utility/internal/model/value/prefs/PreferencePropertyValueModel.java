@@ -17,9 +17,9 @@ import org.eclipse.jpt.utility.internal.BidiStringConverter;
 import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.AspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 
 /**
  * This adapter wraps a Preference and converts it into a PropertyValueModel.
@@ -45,7 +45,7 @@ import org.eclipse.jpt.utility.internal.model.value.ValueModel;
  */
 public class PreferencePropertyValueModel<P>
 	extends AspectAdapter
-	implements PropertyValueModel
+	implements WritablePropertyValueModel
 {
 	/** The key to the preference we use for the value. */
 	protected final String key;
@@ -128,7 +128,7 @@ public class PreferencePropertyValueModel<P>
 	 * Construct an adapter for the specified preference.
 	 * The default value of the preference will be null.
 	 */
-	public PreferencePropertyValueModel(ValueModel preferencesHolder, String key) {
+	public PreferencePropertyValueModel(PropertyValueModel preferencesHolder, String key) {
 		this(preferencesHolder, key, null);
 	}
 
@@ -136,7 +136,7 @@ public class PreferencePropertyValueModel<P>
 	 * Construct an adapter for the specified preference with
 	 * the specified default value for the preference.
 	 */
-	public PreferencePropertyValueModel(ValueModel preferencesHolder, String key, P defaultValue) {
+	public PreferencePropertyValueModel(PropertyValueModel preferencesHolder, String key, P defaultValue) {
 		this(preferencesHolder, key, defaultValue, BidiStringConverter.Default.<P>instance());
 	}
 
@@ -144,7 +144,7 @@ public class PreferencePropertyValueModel<P>
 	 * Construct an adapter for the specified preference with
 	 * the specified default value for the preference.
 	 */
-	public PreferencePropertyValueModel(ValueModel preferencesHolder, String key, P defaultValue, BidiStringConverter<P> converter) {
+	public PreferencePropertyValueModel(PropertyValueModel preferencesHolder, String key, P defaultValue, BidiStringConverter<P> converter) {
 		super(preferencesHolder);
 		this.key = key;
 		this.defaultValue = defaultValue;

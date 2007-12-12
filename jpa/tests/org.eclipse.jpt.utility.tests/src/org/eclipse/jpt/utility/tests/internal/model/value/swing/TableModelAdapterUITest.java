@@ -53,7 +53,7 @@ import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
@@ -89,8 +89,8 @@ import org.eclipse.jpt.utility.tests.internal.model.value.swing.TableModelAdapte
  */
 public class TableModelAdapterUITest {
 	private SimpleCollectionValueModel eyeColorsHolder;
-	private PropertyValueModel crowdHolder;
-	private PropertyValueModel selectedPersonHolder;
+	private WritablePropertyValueModel crowdHolder;
+	private WritablePropertyValueModel selectedPersonHolder;
 	private ListValueModel sortedPeopleAdapter;
 	private TableModel tableModel;
 	private ObjectListSelectionModel rowSelectionModel;
@@ -120,7 +120,7 @@ public class TableModelAdapterUITest {
 		return new SimpleCollectionValueModel(Person.getValidEyeColors());
 	}
 
-	private PropertyValueModel buildCrowdHolder() {
+	private WritablePropertyValueModel buildCrowdHolder() {
 		return new SimplePropertyValueModel(this.buildCrowd());
 	}
 
@@ -151,7 +151,7 @@ public class TableModelAdapterUITest {
 		return crowd;
 	}
 
-	private PropertyValueModel buildSelectedPersonHolder() {
+	private WritablePropertyValueModel buildSelectedPersonHolder() {
 		return new SimplePropertyValueModel();
 	}
 
@@ -532,7 +532,7 @@ public class TableModelAdapterUITest {
 		return new DocumentAdapter(this.buildNameAdapter());
 	}
 
-	private PropertyValueModel buildNameAdapter() {
+	private WritablePropertyValueModel buildNameAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.NAME_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -556,7 +556,7 @@ public class TableModelAdapterUITest {
 		return new DateSpinnerModelAdapter(this.buildBirthDateAdapter());
 	}
 
-	private PropertyValueModel buildBirthDateAdapter() {
+	private WritablePropertyValueModel buildBirthDateAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.BIRTH_DATE_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -580,7 +580,7 @@ public class TableModelAdapterUITest {
 		return new DateSpinnerModelAdapter(this.buildGoneWestDateAdapter());
 	}
 
-	private PropertyValueModel buildGoneWestDateAdapter() {
+	private WritablePropertyValueModel buildGoneWestDateAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.GONE_WEST_DATE_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -604,7 +604,7 @@ public class TableModelAdapterUITest {
 		return new ComboBoxModelAdapter(this.eyeColorsHolder, this.buildEyeColorAdapter());
 	}
 
-	private PropertyValueModel buildEyeColorAdapter() {
+	private WritablePropertyValueModel buildEyeColorAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.EYE_COLOR_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -631,7 +631,7 @@ public class TableModelAdapterUITest {
 		return new CheckBoxModelAdapter(this.buildEvilAdapter());
 	}
 
-	private PropertyValueModel buildEvilAdapter() {
+	private WritablePropertyValueModel buildEvilAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.EVIL_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -655,7 +655,7 @@ public class TableModelAdapterUITest {
 		return new NumberSpinnerModelAdapter(this.buildRankAdapter());
 	}
 
-	private PropertyValueModel buildRankAdapter() {
+	private WritablePropertyValueModel buildRankAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.RANK_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
@@ -679,7 +679,7 @@ public class TableModelAdapterUITest {
 		return new NumberSpinnerModelAdapter(this.buildAdventureCountAdapter());
 	}
 
-	private PropertyValueModel buildAdventureCountAdapter() {
+	private WritablePropertyValueModel buildAdventureCountAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.ADVENTURE_COUNT_PROPERTY) {
 			@Override
 			protected Object buildValue_() {

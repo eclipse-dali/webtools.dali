@@ -70,7 +70,7 @@ public abstract class ListAspectAdapter
 	 * change for a particular subject; but the subject will change, resulting in
 	 * a new list.
 	 */
-	protected ListAspectAdapter(ValueModel subjectHolder) {
+	protected ListAspectAdapter(PropertyValueModel subjectHolder) {
 		this(subjectHolder, null);
 	}
 
@@ -78,7 +78,7 @@ public abstract class ListAspectAdapter
 	 * Construct a ListAspectAdapter for the specified subject holder
 	 * and list.
 	 */
-	protected ListAspectAdapter(ValueModel subjectHolder, String listName) {
+	protected ListAspectAdapter(PropertyValueModel subjectHolder, String listName) {
 		super(subjectHolder);
 		this.listName = listName;
 		this.listChangeListener = this.buildListChangeListener();

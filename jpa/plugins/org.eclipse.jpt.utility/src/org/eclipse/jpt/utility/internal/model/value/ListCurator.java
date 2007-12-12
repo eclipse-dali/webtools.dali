@@ -51,7 +51,7 @@ public abstract class ListCurator
 	 * Construct a curator for the specified subject holder.
 	 * The subject holder cannot be null.
 	 */
-	protected ListCurator(ValueModel subjectHolder) {
+	protected ListCurator(PropertyValueModel subjectHolder) {
 		super(subjectHolder);
 		this.record = new ArrayList();
 		this.stateChangeListener = this.buildStateChangeListener();
