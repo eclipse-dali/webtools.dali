@@ -65,6 +65,7 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 		this.class_ = newClass;
 		this.typeMappingResource().setClassName(newClass);
 		firePropertyChanged(CLASS_PROPERTY, oldClass, newClass);
+		persistentType().classChanged(oldClass, newClass);
 	}
 	
 	public AccessType getDefaultAccess() {

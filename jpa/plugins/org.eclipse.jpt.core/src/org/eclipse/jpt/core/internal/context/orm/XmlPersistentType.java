@@ -344,10 +344,12 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 
 
 	public String getName() {
-		//TODO need to have propertychange notification for this or move class_ back to XmlPersistentType
 		return getMapping().getClass_();
 	}
 
+	protected void classChanged(String oldClass, String newClass) {
+		firePropertyChanged(NAME_PROPERTY, oldClass, newClass);
+	}
 
 	public boolean isMapped() {
 		return true;
