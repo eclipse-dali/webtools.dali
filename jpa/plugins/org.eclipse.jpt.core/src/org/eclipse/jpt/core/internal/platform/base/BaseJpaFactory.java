@@ -98,6 +98,7 @@ import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadataImpl;
 import org.eclipse.jpt.core.internal.context.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
 import org.eclipse.jpt.core.internal.context.orm.XmlMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
@@ -334,8 +335,8 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return new JavaAttributeOverride(parent, owner);
 	}
 	
-	public XmlPersistentType createXmlPersistentType(EntityMappings parent, String mappingKey, org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappingsResource) {
-		return new XmlPersistentType(parent, mappingKey, entityMappingsResource);
+	public XmlPersistentType createXmlPersistentType(EntityMappings parent, String mappingKey) {
+		return new XmlPersistentType(parent, mappingKey);
 	}
 	
 	public XmlEntity createXmlEntity(XmlPersistentType parent) {
@@ -348,5 +349,9 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public XmlEmbeddable createXmlEmbeddable(XmlPersistentType parent) {
 		return new XmlEmbeddable(parent);
+	}
+	
+	public XmlPersistentAttribute createXmlPersistentAttribute(XmlPersistentType parent, String mappingKey) {
+		return new XmlPersistentAttribute(parent, mappingKey);
 	}
 }

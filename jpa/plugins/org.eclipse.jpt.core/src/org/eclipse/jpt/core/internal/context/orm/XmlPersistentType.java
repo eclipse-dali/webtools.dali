@@ -11,7 +11,9 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
@@ -19,37 +21,44 @@ import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
+import org.eclipse.jpt.core.internal.resource.orm.Attributes;
+import org.eclipse.jpt.core.internal.resource.orm.Basic;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
+import org.eclipse.jpt.core.internal.resource.orm.Embedded;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
+import org.eclipse.jpt.core.internal.resource.orm.Id;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.orm.Transient;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
+import org.eclipse.jpt.core.internal.resource.orm.Version;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 
 public class XmlPersistentType extends JpaContextNode implements IPersistentType
 {
-//	protected EList<XmlAttributeMapping> specifiedAttributeMappings;
-//
-//	protected EList<XmlAttributeMapping> virtualAttributeMappings;
-//
-//	protected EList<XmlPersistentAttribute> specifiedPersistentAttributes;
-//
-//	protected EList<XmlPersistentAttribute> virtualPersistentAttributes;
+	protected final List<XmlPersistentAttribute> specifiedPersistentAttributes;
+
+	protected final List<XmlPersistentAttribute> virtualPersistentAttributes;
 
 	protected final Collection<IXmlTypeMappingProvider> typeMappingProviders;
 
 	protected XmlTypeMapping<? extends TypeMapping> xmlTypeMapping;
 	
 	protected IPersistentType parentPersistentType;
-
-	protected org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings;
 	
-	public XmlPersistentType(EntityMappings parent, String mappingKey, org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappingsResource) {
+	public XmlPersistentType(EntityMappings parent, String mappingKey) {
 		super(parent);
 		this.typeMappingProviders = buildTypeMappingProviders();
-		this.entityMappings = entityMappingsResource;
 		this.xmlTypeMapping = buildXmlTypeMapping(mappingKey);
+		this.specifiedPersistentAttributes = new ArrayList<XmlPersistentAttribute>();
+		this.virtualPersistentAttributes = new ArrayList<XmlPersistentAttribute>();
 	}
 
 //	/* @see IJpaContentNode#getId() */
@@ -72,12 +81,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	}
 	
 	protected XmlTypeMapping<? extends TypeMapping> buildXmlTypeMapping(String key) {
-		for (IXmlTypeMappingProvider provider : this.typeMappingProviders) {
-			if (provider.key().equals(key)) {
-				return provider.buildTypeMapping(jpaFactory(), this);
-			}
-		}
-		throw new IllegalArgumentException();
+		return typeMappingProvider(key).buildTypeMapping(jpaFactory(), this);
 	}
 
 	protected Collection<IXmlTypeMappingProvider> buildTypeMappingProviders() {
@@ -95,11 +99,6 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 			}
 		}
 		throw new IllegalArgumentException();
-	}
-	
-	protected void createAndAddOrmResourceMapping(String mappingKey, String className) {
-		IXmlTypeMappingProvider xmlTypeMappingProvider = typeMappingProvider(mappingKey);
-		xmlTypeMappingProvider.createAndAddOrmResourceMapping(this, this.entityMappings, className);
 	}
 
 	public XmlTypeMapping<? extends TypeMapping> getMapping() {
@@ -125,62 +124,24 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.xmlTypeMapping);
 	}
 
-//	public EList<XmlAttributeMapping> getAttributeMappings() {
-//		EList<XmlAttributeMapping> list = new EObjectEList<XmlAttributeMapping>(XmlAttributeMapping.class, this, OrmPackage.XML_PERSISTENT_TYPE__ATTRIBUTE_MAPPINGS);
-//		list.addAll(getSpecifiedAttributeMappings());
-//		list.addAll(getVirtualAttributeMappings());
-//		return list;
-//	}
-//
-//	public EList<XmlAttributeMapping> getSpecifiedAttributeMappingsGen() {
-//		if (specifiedAttributeMappings == null) {
-//			specifiedAttributeMappings = new EObjectContainmentEList<XmlAttributeMapping>(XmlAttributeMapping.class, this, OrmPackage.XML_PERSISTENT_TYPE__SPECIFIED_ATTRIBUTE_MAPPINGS);
-//		}
-//		return specifiedAttributeMappings;
-//	}
-//
-//	public EList<XmlAttributeMapping> getSpecifiedAttributeMappings() {
-//		if (specifiedAttributeMappings == null) {
-//			specifiedAttributeMappings = new SpecifiedAttributeMappingsList<XmlAttributeMapping>();
-//		}
-//		return getSpecifiedAttributeMappingsGen();
-//	}
-//
-//	public EList<XmlAttributeMapping> getVirtualAttributeMappingsGen() {
-//		if (virtualAttributeMappings == null) {
-//			virtualAttributeMappings = new EObjectContainmentEList<XmlAttributeMapping>(XmlAttributeMapping.class, this, OrmPackage.XML_PERSISTENT_TYPE__VIRTUAL_ATTRIBUTE_MAPPINGS);
-//		}
-//		return virtualAttributeMappings;
-//	}
-//
-//	public EList<XmlAttributeMapping> getVirtualAttributeMappings() {
-//		if (virtualAttributeMappings == null) {
-//			virtualAttributeMappings = new VirtualAttributeMappingsList<XmlAttributeMapping>();
-//		}
-//		return getVirtualAttributeMappingsGen();
-//	}
-//
-//	public EList<XmlPersistentAttribute> getPersistentAttributes() {
-//		EList<XmlPersistentAttribute> list = new EObjectEList<XmlPersistentAttribute>(XmlPersistentAttribute.class, this, OrmPackage.XML_PERSISTENT_TYPE__PERSISTENT_ATTRIBUTES);
-//		list.addAll(getSpecifiedPersistentAttributes());
-//		list.addAll(getVirtualPersistentAttributes());
-//		return list;
-//	}
-//
-//	public EList<XmlPersistentAttribute> getSpecifiedPersistentAttributes() {
-//		if (specifiedPersistentAttributes == null) {
-//			specifiedPersistentAttributes = new EObjectEList<XmlPersistentAttribute>(XmlPersistentAttribute.class, this, OrmPackage.XML_PERSISTENT_TYPE__SPECIFIED_PERSISTENT_ATTRIBUTES);
-//		}
-//		return specifiedPersistentAttributes;
-//	}
-//
-//	public EList<XmlPersistentAttribute> getVirtualPersistentAttributes() {
-//		if (virtualPersistentAttributes == null) {
-//			virtualPersistentAttributes = new EObjectEList<XmlPersistentAttribute>(XmlPersistentAttribute.class, this, OrmPackage.XML_PERSISTENT_TYPE__VIRTUAL_PERSISTENT_ATTRIBUTES);
-//		}
-//		return virtualPersistentAttributes;
-//	}
-//
+	public Iterator<IPersistentType> inheritanceHierarchy() {
+		// using a chain iterator to traverse up the inheritance tree
+		return new ChainIterator<IPersistentType>(this) {
+			@Override
+			protected IPersistentType nextLink(IPersistentType pt) {
+				return pt.parentPersistentType();
+			}
+		};
+	}
+
+	public IPersistentType parentPersistentType() {
+		return this.parentPersistentType;
+	}
+
+	public AccessType access() {
+		return getMapping().getAccess();
+	}
+
 //	protected void changeMapping(XmlAttributeMapping oldMapping, String newMappingKey) {
 //		boolean virtual = oldMapping.isVirtual();
 //		XmlAttributeMapping newAttributeMapping = buildAttributeMapping(oldMapping.getPersistentAttribute().attributeMappingProviders(), newMappingKey);
@@ -207,19 +168,6 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 //		}
 //	}
 //
-//	private XmlAttributeMapping buildAttributeMapping(Collection<IXmlAttributeMappingProvider> providers, String key) {
-//		for (IXmlAttributeMappingProvider provider : providers) {
-//			if (provider.key().equals(key)) {
-//				return provider.buildAttributeMapping();
-//			}
-//		}
-//		return OrmFactory.eINSTANCE.createXmlNullAttributeMapping();
-//	}
-//
-//	public Collection<IXmlTypeMappingProvider> typeMappingProviders() {
-//		return this.typeMappingProviders;
-//	}
-//
 //	protected void setMappingVirtual(XmlAttributeMapping attributeMapping, boolean virtual) {
 //		boolean oldVirtual = attributeMapping.isVirtual();
 //		if (oldVirtual == virtual) {
@@ -234,114 +182,112 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 //			insertAttributeMapping(attributeMapping, getSpecifiedAttributeMappings());
 //		}
 //	}
-//
-//	private void insertAttributeMapping(XmlAttributeMapping newMapping, List<XmlAttributeMapping> attributeMappings) {
-//		int newIndex = CollectionTools.insertionIndexOf(attributeMappings, newMapping, buildMappingComparator());
-//		attributeMappings.add(newIndex, newMapping);
-//	}
-//
-//	private Comparator<XmlAttributeMapping> buildMappingComparator() {
-//		return new Comparator<XmlAttributeMapping>() {
-//			public int compare(XmlAttributeMapping o1, XmlAttributeMapping o2) {
-//				int o1Sequence = o1.xmlSequence();
-//				int o2Sequence = o2.xmlSequence();
-//				if (o1Sequence < o2Sequence) {
-//					return -1;
-//				}
-//				if (o1Sequence == o2Sequence) {
-//					return 0;
-//				}
-//				return 1;
-//			}
-//		};
-//	}
-//
-//	public Iterator<XmlPersistentAttribute> attributes() {
-//		return new ReadOnlyIterator<XmlPersistentAttribute>(getPersistentAttributes());
-//	}
-//
-//	public Iterator<String> attributeNames() {
-//		return this.attributeNames(this.attributes());
-//	}
-//
-//	private Iterator<String> attributeNames(Iterator<? extends IPersistentAttribute> attrs) {
-//		return new TransformationIterator<IPersistentAttribute, String>(attrs) {
-//			@Override
-//			protected String transform(IPersistentAttribute attribute) {
-//				return attribute.getName();
-//			}
-//		};
-//	}
-//
-//	public Iterator<IPersistentAttribute> allAttributes() {
-//		return new CompositeIterator<IPersistentAttribute>(new TransformationIterator<IPersistentType, Iterator<IPersistentAttribute>>(this.inheritanceHierarchy()) {
-//			@Override
-//			protected Iterator<IPersistentAttribute> transform(IPersistentType pt) {
-//				//TODO how to remove this warning?
-//				return (Iterator<IPersistentAttribute>) pt.attributes();
-//			}
-//		});
-//	}
-//
-//	public Iterator<String> allAttributeNames() {
-//		return this.attributeNames(this.allAttributes());
-//	}
 
-	public Iterator<IPersistentType> inheritanceHierarchy() {
-		// using a chain iterator to traverse up the inheritance tree
-		return new ChainIterator<IPersistentType>(this) {
+
+
+	public Iterator<String> allAttributeNames() {
+		return this.attributeNames(this.allAttributes());
+	}
+
+	public Iterator<IPersistentAttribute> allAttributes() {
+		return new CompositeIterator<IPersistentAttribute>(new TransformationIterator<IPersistentType, Iterator<IPersistentAttribute>>(this.inheritanceHierarchy()) {
 			@Override
-			protected IPersistentType nextLink(IPersistentType pt) {
-				return pt.parentPersistentType();
+			protected Iterator<IPersistentAttribute> transform(IPersistentType pt) {
+				return pt.attributes();
+			}
+		});
+	}
+
+	protected Iterator<XmlPersistentAttribute> attributesNamed(final String attributeName) {
+		return new FilteringIterator<XmlPersistentAttribute>(attributes()) {
+			@Override
+			protected boolean accept(Object o) {
+				return attributeName.equals(((XmlPersistentAttribute) o).getName());
 			}
 		};
 	}
 
-	public IPersistentType parentPersistentType() {
-		return this.parentPersistentType;
+	public XmlPersistentAttribute attributeNamed(String attributeName) {
+		Iterator<XmlPersistentAttribute> stream = attributesNamed(attributeName);
+		return (stream.hasNext()) ? stream.next() : null;
 	}
-
-
-	public AccessType access() {
-		return getMapping().getAccess();
-	}
-
-
-	public Iterator<String> allAttributeNames() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	public Iterator<IPersistentAttribute> allAttributes() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	public IPersistentAttribute attributeNamed(String attributeName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	public Iterator<String> attributeNames() {
-		// TODO Auto-generated method stub
-		return EmptyListIterator.instance();
+		return this.attributeNames(this.attributes());
+	}
+	
+	protected Iterator<String> attributeNames(Iterator<? extends IPersistentAttribute> attrs) {
+		return new TransformationIterator<IPersistentAttribute, String>(attrs) {
+			@Override
+			protected String transform(IPersistentAttribute attribute) {
+				return attribute.getName();
+			}
+		};
 	}
 
-
-	public <T extends IPersistentAttribute> ListIterator<T> attributes() {
-		// TODO Auto-generated method stub
-		return EmptyListIterator.instance();
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlPersistentAttribute> attributes() {
+		return new CompositeListIterator<XmlPersistentAttribute>(specifiedAttributes(), virtualAttributes());
 	}
-
 
 	public int attributesSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return CollectionTools.size(attributes());
+	}
+	
+	public ListIterator<XmlPersistentAttribute> specifiedAttributes() {
+		return new CloneListIterator<XmlPersistentAttribute>(this.specifiedPersistentAttributes);
+	}
+	
+	public ListIterator<XmlPersistentAttribute> virtualAttributes() {
+		return new CloneListIterator<XmlPersistentAttribute>(this.virtualPersistentAttributes);		
+	}
+	
+	public XmlPersistentAttribute addSpecifiedPersistentAttribute(String mappingKey, String attributeName) {
+		XmlPersistentAttribute persistentAttribute = jpaFactory().createXmlPersistentAttribute(this, mappingKey);
+		int index = insertionIndex(persistentAttribute);
+		this.specifiedPersistentAttributes.add(index, persistentAttribute);
+		AttributeMapping attributeMapping = getMapping().createAndAddOrmResourceAttributeMapping(persistentAttribute, mappingKey);
+		attributeMapping.setName(attributeName);
+		fireItemAdded(ATTRIBUTES_LIST, index, persistentAttribute);
+		return persistentAttribute;
 	}
 
+	protected int insertionIndex(XmlPersistentAttribute persistentAttribute) {
+		return CollectionTools.insertionIndexOf(this.specifiedPersistentAttributes, persistentAttribute, buildMappingComparator());
+	}
+
+	protected Comparator<XmlPersistentAttribute> buildMappingComparator() {
+		return new Comparator<XmlPersistentAttribute>() {
+			public int compare(XmlPersistentAttribute o1, XmlPersistentAttribute o2) {
+				int o1Sequence = o1.getMapping().xmlSequence();
+				int o2Sequence = o2.getMapping().xmlSequence();
+				if (o1Sequence < o2Sequence) {
+					return -1;
+				}
+				if (o1Sequence == o2Sequence) {
+					return 0;
+				}
+				return 1;
+			}
+		};
+	}
+
+	
+	protected void addSpecifiedPersistentAttribute_(XmlPersistentAttribute xmlPersistentAttribute) {
+		//TODO SPECIFIED_ATTRIBUTES_LIST and VIRTUAL_ATTRIBUTES_LIST ???
+		addItemToList(xmlPersistentAttribute, this.specifiedPersistentAttributes, ATTRIBUTES_LIST);
+	}
+
+	protected void removeSpecifiedPersistentAttribute_(XmlPersistentAttribute xmlPersistentAttribute) {
+		removeItemFromList(xmlPersistentAttribute, this.specifiedPersistentAttributes, ATTRIBUTES_LIST);
+	}
+
+	public void removeSpecifiedXmlPersistentAttribute(XmlPersistentAttribute xmlPersistentAttribute) {
+		int index = this.specifiedPersistentAttributes.indexOf(xmlPersistentAttribute);
+		this.specifiedPersistentAttributes.remove(xmlPersistentAttribute);
+		xmlPersistentAttribute.getMapping().removeFromResourceModel(this.xmlTypeMapping.typeMappingResource());
+		fireItemRemoved(ATTRIBUTES_LIST, index, xmlPersistentAttribute);		
+	}
 
 	public String getName() {
 		return getMapping().getClass_();
@@ -366,16 +312,55 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	public void initialize(Entity entity) {
 		((XmlEntity) getMapping()).initialize(entity);
 		this.initializeParentPersistentType();	
+		this.initializeSpecifiedPersistentAttributes(entity);
 	}
 	
 	public void initialize(MappedSuperclass mappedSuperclass) {
 		((XmlMappedSuperclass) getMapping()).initialize(mappedSuperclass);
-		this.initializeParentPersistentType();		
+		this.initializeParentPersistentType();
+		this.initializeSpecifiedPersistentAttributes(mappedSuperclass);
 	}
-	
+		
 	public void initialize(Embeddable embeddable) {
 		((XmlEmbeddable) getMapping()).initialize(embeddable);
 		this.initializeParentPersistentType();		
+		this.initializeSpecifiedPersistentAttributes(embeddable);
+	}
+	
+	protected void initializeSpecifiedPersistentAttributes(TypeMapping typeMapping) {
+		Attributes attributes = typeMapping.getAttributes();
+		if (attributes == null) {
+			return;
+		}
+		initializeSpecifiedPersistentAttributes(attributes);
+	}
+	
+	protected void initializeSpecifiedPersistentAttributes(Attributes attributes) {
+		for (Id id : attributes.getIds()) {
+			XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+			xmlPersistentAttribute.initialize(id);
+			this.specifiedPersistentAttributes.add(xmlPersistentAttribute);
+		}
+		for (Basic basic : attributes.getBasics()) {
+			XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+			xmlPersistentAttribute.initialize(basic);
+			this.specifiedPersistentAttributes.add(xmlPersistentAttribute);
+		}
+		for (Version version : attributes.getVersions()) {
+			XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+			xmlPersistentAttribute.initialize(version);
+			this.specifiedPersistentAttributes.add(xmlPersistentAttribute);
+		}
+		for (Embedded embedded : attributes.getEmbeddeds()) {
+			XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+			xmlPersistentAttribute.initialize(embedded);
+			this.specifiedPersistentAttributes.add(xmlPersistentAttribute);
+		}
+		for (Transient transientResource : attributes.getTransients()) {
+			XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+			xmlPersistentAttribute.initialize(transientResource);
+			this.specifiedPersistentAttributes.add(xmlPersistentAttribute);
+		}
 	}
 	
 	protected void initializeParentPersistentType() {
@@ -394,6 +379,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 			((XmlEntity) getMapping()).initialize(entity);					
 		}
 		this.updateParentPersistentType();
+		this.updatePersistentAttributes(entity);
 	}
 	
 	public void update(MappedSuperclass mappedSuperclass) {
@@ -405,6 +391,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 			((XmlMappedSuperclass) getMapping()).initialize(mappedSuperclass);
 		}
 		this.updateParentPersistentType();
+		this.updatePersistentAttributes(mappedSuperclass);
 	}
 	
 	public void update(Embeddable embeddable) {
@@ -416,6 +403,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 			((XmlEmbeddable) getMapping()).initialize(embeddable);				
 		}
 		this.updateParentPersistentType();
+		this.updatePersistentAttributes(embeddable);
 	}
 	
 	protected void updateParentPersistentType() {
@@ -428,7 +416,85 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		this.parentPersistentType = javaPersistentType.parentPersistentType();
 	}
 
+	protected void updatePersistentAttributes(org.eclipse.jpt.core.internal.resource.orm.TypeMapping typeMapping) {
+		ListIterator<XmlPersistentAttribute> xmlPersistentAttributes = this.specifiedAttributes();
+		if (typeMapping.getAttributes() != null) {
+			this.updateIds(typeMapping.getAttributes(), xmlPersistentAttributes);
+			this.updateBasics(typeMapping.getAttributes(), xmlPersistentAttributes);
+			this.updateVersions(typeMapping.getAttributes(), xmlPersistentAttributes);
+			this.updateEmbeddeds(typeMapping.getAttributes(), xmlPersistentAttributes);		
+			this.updateTransients(typeMapping.getAttributes(), xmlPersistentAttributes);		
+		}
+		while (xmlPersistentAttributes.hasNext()) {
+			this.removeSpecifiedPersistentAttribute_(xmlPersistentAttributes.next());
+		}		
+	}
+	
+	protected void updateIds(org.eclipse.jpt.core.internal.resource.orm.Attributes attributes, ListIterator<XmlPersistentAttribute> xmlPersistentAttributes) {
+		for (Id id : attributes.getIds()) {
+			if (xmlPersistentAttributes.hasNext()) {
+				xmlPersistentAttributes.next().update(id);
+			}
+			else {
+				XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+				xmlPersistentAttribute.initialize(id);
+				addSpecifiedPersistentAttribute_(xmlPersistentAttribute);
+			}
+		}
+	}
+	
+	protected void updateBasics(org.eclipse.jpt.core.internal.resource.orm.Attributes attributes, ListIterator<XmlPersistentAttribute> xmlPersistentAttributes) {
+		for (Basic basic : attributes.getBasics()) {
+			if (xmlPersistentAttributes.hasNext()) {
+				xmlPersistentAttributes.next().update(basic);
+			}
+			else {
+				XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+				xmlPersistentAttribute.initialize(basic);
+				addSpecifiedPersistentAttribute_(xmlPersistentAttribute);
+			}
+		}
+	}
+	
+	protected void updateVersions(org.eclipse.jpt.core.internal.resource.orm.Attributes attributes, ListIterator<XmlPersistentAttribute> xmlPersistentAttributes) {
+		for (Version version : attributes.getVersions()) {
+			if (xmlPersistentAttributes.hasNext()) {
+				xmlPersistentAttributes.next().update(version);
+			}
+			else {
+				XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+				xmlPersistentAttribute.initialize(version);
+				addSpecifiedPersistentAttribute_(xmlPersistentAttribute);
+			}
+		}
+	}
 
+	protected void updateEmbeddeds(org.eclipse.jpt.core.internal.resource.orm.Attributes attributes, ListIterator<XmlPersistentAttribute> xmlPersistentAttributes) {
+		for (Embedded embedded : attributes.getEmbeddeds()) {
+			if (xmlPersistentAttributes.hasNext()) {
+				xmlPersistentAttributes.next().update(embedded);
+			}
+			else {
+				XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+				xmlPersistentAttribute.initialize(embedded);
+				addSpecifiedPersistentAttribute_(xmlPersistentAttribute);
+			}
+		}
+	}
+	
+	protected void updateTransients(org.eclipse.jpt.core.internal.resource.orm.Attributes attributes, ListIterator<XmlPersistentAttribute> xmlPersistentAttributes) {
+		for (Transient transientResource : attributes.getTransients()) {
+			if (xmlPersistentAttributes.hasNext()) {
+				xmlPersistentAttributes.next().update(transientResource);
+			}
+			else {
+				XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+				xmlPersistentAttribute.initialize(transientResource);
+				addSpecifiedPersistentAttribute_(xmlPersistentAttribute);
+			}
+		}
+	}
+	
 //	public IJpaContentNode getContentNode(int offset) {
 //		for (XmlAttributeMapping mapping : this.getSpecifiedAttributeMappings()) {
 //			if (mapping.getNode().contains(offset)) {
@@ -436,38 +502,6 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 //			}
 //		}
 //		return this;
-//	}
-//
-//	public void refreshDefaults(DefaultsContext context) {
-//		refreshParentPersistentType(context);
-//	}
-//
-//	private void refreshParentPersistentType(DefaultsContext context) {
-//		JavaPersistentType javaPersistentType = findJavaPersistentType();
-//		if (javaPersistentType == null) {
-//			this.parentPersistentType = null;
-//			return;
-//		}
-//		//TODO need to fix the performance issue that results here
-//		//setting this back for now because of bug 200957 in the M1 release
-//		ITypeBinding typeBinding = javaPersistentType.getType().typeBinding(javaPersistentType.getType().astRoot());
-//		IPersistentType parentPersistentType = JavaPersistentType.parentPersistentType(context, typeBinding);
-//		this.parentPersistentType = parentPersistentType;
-//		return;
-//	}
-//
-//	protected Iterator<XmlPersistentAttribute> attributesNamed(final String attributeName) {
-//		return new FilteringIterator<XmlPersistentAttribute>(getPersistentAttributes().iterator()) {
-//			@Override
-//			protected boolean accept(Object o) {
-//				return attributeName.equals(((XmlPersistentAttribute) o).getName());
-//			}
-//		};
-//	}
-//
-//	public XmlPersistentAttribute attributeNamed(String attributeName) {
-//		Iterator<XmlPersistentAttribute> attributes = attributesNamed(attributeName);
-//		return attributes.hasNext() ? attributes.next() : null;
 //	}
 //
 //	public IPersistentAttribute resolveAttribute(String attributeName) {
@@ -500,72 +534,5 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 //
 //	public ITextRange attributesTextRange() {
 //		return getMapping().attributesTextRange();
-//	}
-//	private abstract class AttributeMappingsList<E>
-//		extends EObjectContainmentEList<XmlAttributeMapping>
-//	{
-//		AttributeMappingsList(int feature) {
-//			super(XmlAttributeMapping.class, XmlPersistentType.this, feature);
-//		}
-//
-//		protected abstract EList<XmlPersistentAttribute> persistentAttributes();
-//
-//		@Override
-//		protected void didAdd(int index, XmlAttributeMapping newObject) {
-//			if (newObject.getPersistentAttribute() == null) {
-//				throw new IllegalStateException("Must set the PersistentAttribute during creation");
-//			}
-//			persistentAttributes().add(index, newObject.getPersistentAttribute());
-//		}
-//
-//		@Override
-//		protected void didChange() {
-//			// TODO Auto-generated method stub
-//			super.didChange();
-//		}
-//
-//		@Override
-//		protected void didClear(int len, Object[] oldObjects) {
-//			persistentAttributes().clear();
-//		}
-//
-//		@Override
-//		protected void didMove(int index, XmlAttributeMapping movedObject, int oldIndex) {
-//			persistentAttributes().move(index, movedObject.getPersistentAttribute());
-//		}
-//
-//		@Override
-//		protected void didRemove(int index, XmlAttributeMapping oldObject) {
-//			persistentAttributes().remove(oldObject.getPersistentAttribute());
-//		}
-//
-//		@Override
-//		protected void didSet(int index, XmlAttributeMapping newObject, XmlAttributeMapping oldObject) {
-//			persistentAttributes().set(index, newObject.getPersistentAttribute());
-//		}
-//	}
-//	private class SpecifiedAttributeMappingsList<E>
-//		extends AttributeMappingsList<XmlAttributeMapping>
-//	{
-//		SpecifiedAttributeMappingsList() {
-//			super(OrmPackage.XML_PERSISTENT_TYPE__SPECIFIED_ATTRIBUTE_MAPPINGS);
-//		}
-//
-//		@Override
-//		protected EList<XmlPersistentAttribute> persistentAttributes() {
-//			return getSpecifiedPersistentAttributes();
-//		}
-//	}
-//	private class VirtualAttributeMappingsList<E>
-//		extends AttributeMappingsList<XmlAttributeMapping>
-//	{
-//		VirtualAttributeMappingsList() {
-//			super(OrmPackage.XML_PERSISTENT_TYPE__VIRTUAL_ATTRIBUTE_MAPPINGS);
-//		}
-//
-//		@Override
-//		protected EList<XmlPersistentAttribute> persistentAttributes() {
-//			return getVirtualPersistentAttributes();
-//		}
 //	}
 }

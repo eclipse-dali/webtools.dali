@@ -53,6 +53,7 @@ import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
 import org.eclipse.jpt.core.internal.context.orm.XmlMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 
 /**
@@ -134,11 +135,14 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, IOverride.Owner owner);
 	
 	//TODO need an interface??
-	XmlPersistentType createXmlPersistentType(EntityMappings parent, String mappingKey, org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappingResource);
+	XmlPersistentType createXmlPersistentType(EntityMappings parent, String mappingKey);
 	
 	XmlEntity createXmlEntity(XmlPersistentType parent);
 	
 	XmlMappedSuperclass createXmlMappedSuperclass(XmlPersistentType parent);
 	
 	XmlEmbeddable createXmlEmbeddable(XmlPersistentType parent);
+	
+	XmlPersistentAttribute createXmlPersistentAttribute(XmlPersistentType parent, String mappingKey);
+
 }

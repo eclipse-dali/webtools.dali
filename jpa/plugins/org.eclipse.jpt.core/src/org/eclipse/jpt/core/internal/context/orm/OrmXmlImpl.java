@@ -66,8 +66,8 @@ public class OrmXmlImpl extends JpaContextNode
 		
 		EntityMappings oldEntityMappings = this.entityMappings;
 		this.entityMappings = null;
-		org.eclipse.jpt.core.internal.resource.orm.EntityMappings ormEntityMappings = ormResource.getEntityMappings(); //TODO helper removeEntityMappings method on ormResource??
-		ormResource.getContents().remove(ormEntityMappings);
+		org.eclipse.jpt.core.internal.resource.orm.EntityMappings ormEntityMappings = this.ormResource.getEntityMappings(); //TODO helper removeEntityMappings method on ormResource??
+		this.ormResource.getContents().remove(ormEntityMappings);
 		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, oldEntityMappings, null);
 	}
 	

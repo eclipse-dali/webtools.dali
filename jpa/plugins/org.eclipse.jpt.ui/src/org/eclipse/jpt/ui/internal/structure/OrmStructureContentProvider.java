@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.structure;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
@@ -49,10 +50,9 @@ public class OrmStructureContentProvider
 	}
 	
 	public Object getParent(Object element) {
-		// TODO - persistent attribute parent
-//		if (element instanceof XmlPersistentAttribute) {
-//			return ((XmlPersistentAttribute) element).type();
-//		}
+		if (element instanceof XmlPersistentAttribute) {
+			return ((XmlPersistentAttribute) element).persistentType();
+		}
 		
 		if (element instanceof XmlPersistentType) {
 			return ((XmlPersistentType) element).entityMappings();
