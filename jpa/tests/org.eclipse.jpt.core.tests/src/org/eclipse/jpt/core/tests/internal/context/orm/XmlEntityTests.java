@@ -17,11 +17,15 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
+import org.eclipse.jpt.core.internal.context.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
+import org.eclipse.jpt.core.internal.context.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.XmlSecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
+import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
+import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
@@ -840,6 +844,104 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testTableNameIsInvalid() throws Exception {
 		
+	}
+	
+	public void testMakeEntityEmbeddable() throws Exception {
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity entity = (XmlEntity) entityPersistentType.getMapping();
+		entity.setSpecifiedAccess(AccessType.PROPERTY);
+		entity.setSpecifiedDiscriminatorValue("DISC_VALUE");
+		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		entity.setSpecifiedName("ENTITY_NAME");
+		ormResource().save(null);
+	
+		entityPersistentType.setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		ormResource().save(null);
+		
+		Embeddable embeddable = (Embeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		assertEquals("model.Foo", embeddable.getClassName());
+		assertEquals(Boolean.TRUE, embeddable.getMetadataComplete());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, embeddable.getAccess());
+		
+		XmlEmbeddable xmlEmbeddable = (XmlEmbeddable) entityPersistentType.getMapping();
+		assertEquals("model.Foo", xmlEmbeddable.getClass_());
+		assertEquals(Boolean.TRUE, xmlEmbeddable.getSpecifiedMetadataComplete());
+		assertEquals(AccessType.PROPERTY, xmlEmbeddable.getSpecifiedAccess());
+	}
+	
+	public void testMakeEntityEmbeddable2() throws Exception {
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType entityPersistentType2 = entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity entity = (XmlEntity) entityPersistentType.getMapping();
+		entity.setSpecifiedAccess(AccessType.PROPERTY);
+		entity.setSpecifiedDiscriminatorValue("DISC_VALUE");
+		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		entity.setSpecifiedName("ENTITY_NAME");
+		ormResource().save(null);
+	
+		entityPersistentType.setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		ormResource().save(null);
+		
+		Embeddable embeddable = (Embeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		assertEquals("model.Foo", embeddable.getClassName());
+		assertEquals(Boolean.TRUE, embeddable.getMetadataComplete());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, embeddable.getAccess());
+		
+		XmlEmbeddable xmlEmbeddable = (XmlEmbeddable) entityPersistentType.getMapping();
+		assertEquals("model.Foo", xmlEmbeddable.getClass_());
+		assertEquals(Boolean.TRUE, xmlEmbeddable.getSpecifiedMetadataComplete());
+		assertEquals(AccessType.PROPERTY, xmlEmbeddable.getSpecifiedAccess());
+	}
+	
+	public void testMakeEntityMappedSuperclass() throws Exception {
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity entity = (XmlEntity) entityPersistentType.getMapping();
+		entity.setSpecifiedAccess(AccessType.PROPERTY);
+		entity.setSpecifiedDiscriminatorValue("DISC_VALUE");
+		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		entity.setSpecifiedName("ENTITY_NAME");
+		ormResource().save(null);
+	
+		entityPersistentType.setMappingKey(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		ormResource().save(null);
+		
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+		assertEquals("model.Foo", mappedSuperclass.getClassName());
+		assertEquals(Boolean.TRUE, mappedSuperclass.getMetadataComplete());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, mappedSuperclass.getAccess());
+		
+		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) entityPersistentType.getMapping();
+		assertEquals("model.Foo", xmlMappedSuperclass.getClass_());
+		assertEquals(Boolean.TRUE, xmlMappedSuperclass.getSpecifiedMetadataComplete());
+		assertEquals(AccessType.PROPERTY, xmlMappedSuperclass.getSpecifiedAccess());
+	}
+	
+	public void testMakeEntityMappedSuperclass2() throws Exception {
+		entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlEntity entity = (XmlEntity) entityPersistentType.getMapping();
+		entity.setSpecifiedAccess(AccessType.PROPERTY);
+		entity.setSpecifiedDiscriminatorValue("DISC_VALUE");
+		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		entity.setSpecifiedName("ENTITY_NAME");
+		ormResource().save(null);
+	
+		entityPersistentType.setMappingKey(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		ormResource().save(null);
+		
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+		assertEquals("model.Foo", mappedSuperclass.getClassName());
+		assertEquals(Boolean.TRUE, mappedSuperclass.getMetadataComplete());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, mappedSuperclass.getAccess());
+		
+		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) entityPersistentType.getMapping();
+		assertEquals("model.Foo", xmlMappedSuperclass.getClass_());
+		assertEquals(Boolean.TRUE, xmlMappedSuperclass.getSpecifiedMetadataComplete());
+		assertEquals(AccessType.PROPERTY, xmlMappedSuperclass.getSpecifiedAccess());
 	}
 
 }
