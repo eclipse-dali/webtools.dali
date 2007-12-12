@@ -226,26 +226,28 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeRemove"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeRefresh"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//NamedColumn">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//NamedColumn/columnDefinition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//NamedColumn/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//AbstractColumn">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractColumn/insertable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractColumn/nullable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractColumn/table"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractColumn/unique"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractColumn/updatable"/>
+    </genClasses>
     <genClasses ecoreClass="orm.ecore#//Column">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Column/columnDefinition"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Column/insertable"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Column/length"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Column/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Column/nullable"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Column/precision"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Column/scale"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Column/table"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Column/unique"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Column/updatable"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//ColumnResult">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ColumnResult/name"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//DiscriminatorColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//DiscriminatorColumn/columnDefinition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//DiscriminatorColumn/discriminatorType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//DiscriminatorColumn/length"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//DiscriminatorColumn/name"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//EntityListeners">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//EntityListeners/entityListeners"/>
@@ -283,14 +285,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Inheritance/strategy"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//JoinColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//JoinColumn/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//JoinColumn/referencedColumnName"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//JoinColumn/unique"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//JoinColumn/nullable"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//JoinColumn/insertable"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//JoinColumn/updatable"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//JoinColumn/columnDefinition"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//JoinColumn/table"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//JoinTable">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//JoinTable/joinColumns"/>
@@ -320,9 +315,7 @@
     <genClasses ecoreClass="orm.ecore#//PreRemove"/>
     <genClasses ecoreClass="orm.ecore#//PreUpdate"/>
     <genClasses ecoreClass="orm.ecore#//PrimaryKeyJoinColumn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//PrimaryKeyJoinColumn/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//PrimaryKeyJoinColumn/referencedColumnName"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//PrimaryKeyJoinColumn/columnDefinition"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//QueryHint">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//QueryHint/name"/>
