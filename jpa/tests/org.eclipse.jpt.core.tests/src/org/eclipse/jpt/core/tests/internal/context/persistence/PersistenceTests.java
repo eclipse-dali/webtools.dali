@@ -24,11 +24,6 @@ public class PersistenceTests extends ContextModelTestCase
 		super(name);
 	}
 	
-	
-	protected XmlPersistence xmlPersistence() {
-		return persistenceResource().getPersistence();
-	}
-	
 	protected IPersistence persistence() {
 		return jpaContent().getPersistenceXml().getPersistence();
 	}

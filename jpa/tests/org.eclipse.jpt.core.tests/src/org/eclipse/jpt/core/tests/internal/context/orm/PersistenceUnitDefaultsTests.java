@@ -12,13 +12,11 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
-import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class PersistenceUnitDefaultsTests extends ContextModelTestCase
@@ -35,14 +33,6 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		persistenceResource().save(null);
-	}
-		
-	protected XmlPersistence xmlPersistence() {
-		return persistenceResource().getPersistence();
-	}
-	
-	protected EntityMappings entityMappings() {
-		return persistenceUnit().mappingFileRefs().next().getOrmXml().getEntityMappings();
 	}
 	
 	protected PersistenceUnitDefaults persistenceUnitDefaults() {

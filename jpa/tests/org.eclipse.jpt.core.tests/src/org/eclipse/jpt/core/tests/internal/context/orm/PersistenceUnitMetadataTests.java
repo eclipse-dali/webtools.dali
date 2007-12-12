@@ -11,12 +11,10 @@
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class PersistenceUnitMetadataTests extends ContextModelTestCase
@@ -34,14 +32,7 @@ public class PersistenceUnitMetadataTests extends ContextModelTestCase
 		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		persistenceResource().save(null);
 	}
-		
-	protected XmlPersistence xmlPersistence() {
-		return persistenceResource().getPersistence();
-	}
-	
-	protected EntityMappings entityMappings() {
-		return persistenceUnit().mappingFileRefs().next().getOrmXml().getEntityMappings();
-	}
+
 	protected PersistenceUnitMetadata persistenceUnitMetadata() {
 		return entityMappings().getPersistenceUnitMetadata();
 	}

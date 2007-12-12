@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IProperty;
 import org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
@@ -29,16 +28,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	public PersistenceUnitTests(String name) {
 		super(name);
 	}
-	
-	protected XmlPersistenceUnit xmlPersistenceUnit() {
-		PersistenceResource prm = persistenceResource();
-		return prm.getPersistence().getPersistenceUnits().get(0);
-	}
-	
-	protected IPersistenceUnit persistenceUnit() {
-		return jpaContent().getPersistenceXml().getPersistence().persistenceUnits().next();
-	}
-	
+		
 	public void testUpdateName() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
