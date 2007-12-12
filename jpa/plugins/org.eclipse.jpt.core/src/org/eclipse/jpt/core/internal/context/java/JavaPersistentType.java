@@ -206,8 +206,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		return new CompositeIterator<IPersistentAttribute>(new TransformationIterator<IPersistentType, Iterator<IPersistentAttribute>>(this.inheritanceHierarchy()) {
 			@Override
 			protected Iterator<IPersistentAttribute> transform(IPersistentType pt) {
-				//TODO how to remove this warning?
-				return (Iterator<IPersistentAttribute>) pt.attributes();
+				return pt.attributes();
 			}
 		});
 	}
