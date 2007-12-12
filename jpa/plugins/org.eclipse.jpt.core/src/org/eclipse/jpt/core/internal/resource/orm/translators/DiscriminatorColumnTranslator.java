@@ -22,12 +22,12 @@ public class DiscriminatorColumnTranslator extends Translator
 		super(domNameAndPath, aFeature, END_TAG_NO_INDENT);
 	}
 	
-	
+	@Override
 	public Translator[] getChildren(Object target, int versionID) {
-		if (children == null) {
-			children = createChildren();
+		if (this.children == null) {
+			this.children = createChildren();
 		}
-		return children;
+		return this.children;
 	}
 		
 	protected Translator[] createChildren() {
@@ -41,7 +41,7 @@ public class DiscriminatorColumnTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getDiscriminatorColumn_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getNamedColumn_Name(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createDiscrminiatorTypeTranslator() {
@@ -49,7 +49,7 @@ public class DiscriminatorColumnTranslator extends Translator
 	}
 	
 	private Translator createColumnDefinitionTranslator() {
-		return new Translator(COLUMN_DEFINITION, ORM_PKG.getDiscriminatorColumn_ColumnDefinition(), DOM_ATTRIBUTE);
+		return new Translator(COLUMN_DEFINITION, ORM_PKG.getNamedColumn_ColumnDefinition(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createLengthTranslator() {

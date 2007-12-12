@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmAdapterFactory.java,v 1.1.2.6 2007/12/12 01:47:24 kmoore Exp $
+ * $Id: OrmAdapterFactory.java,v 1.1.2.7 2007/12/12 20:44:54 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -10,6 +10,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.internal.resource.orm.*;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
 import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
@@ -239,6 +240,16 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseCascadeType(CascadeType object)
 			{
 				return createCascadeTypeAdapter();
+			}
+			@Override
+			public Adapter caseNamedColumn(NamedColumn object)
+			{
+				return createNamedColumnAdapter();
+			}
+			@Override
+			public Adapter caseAbstractColumn(AbstractColumn object)
+			{
+				return createAbstractColumnAdapter();
 			}
 			@Override
 			public Adapter caseColumn(Column object)
@@ -753,6 +764,36 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createCascadeTypeAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.NamedColumn <em>Named Column</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.NamedColumn
+	 * @generated
+	 */
+	public Adapter createNamedColumnAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.AbstractColumn <em>Abstract Column</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AbstractColumn
+	 * @generated
+	 */
+	public Adapter createAbstractColumnAdapter()
 	{
 		return null;
 	}

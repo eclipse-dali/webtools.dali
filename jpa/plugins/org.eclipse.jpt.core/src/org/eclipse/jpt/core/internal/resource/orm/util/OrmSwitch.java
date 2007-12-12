@@ -2,13 +2,14 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmSwitch.java,v 1.1.2.6 2007/12/12 01:47:24 kmoore Exp $
+ * $Id: OrmSwitch.java,v 1.1.2.7 2007/12/12 20:44:54 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
 import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.internal.resource.orm.*;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
 import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
@@ -316,10 +317,27 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.NAMED_COLUMN:
+			{
+				NamedColumn namedColumn = (NamedColumn)theEObject;
+				T result = caseNamedColumn(namedColumn);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.ABSTRACT_COLUMN:
+			{
+				AbstractColumn abstractColumn = (AbstractColumn)theEObject;
+				T result = caseAbstractColumn(abstractColumn);
+				if (result == null) result = caseNamedColumn(abstractColumn);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.COLUMN:
 			{
 				Column column = (Column)theEObject;
 				T result = caseColumn(column);
+				if (result == null) result = caseAbstractColumn(column);
+				if (result == null) result = caseNamedColumn(column);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -334,6 +352,7 @@ public class OrmSwitch<T>
 			{
 				DiscriminatorColumn discriminatorColumn = (DiscriminatorColumn)theEObject;
 				T result = caseDiscriminatorColumn(discriminatorColumn);
+				if (result == null) result = caseNamedColumn(discriminatorColumn);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -397,6 +416,8 @@ public class OrmSwitch<T>
 			{
 				JoinColumn joinColumn = (JoinColumn)theEObject;
 				T result = caseJoinColumn(joinColumn);
+				if (result == null) result = caseAbstractColumn(joinColumn);
+				if (result == null) result = caseNamedColumn(joinColumn);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -496,6 +517,7 @@ public class OrmSwitch<T>
 			{
 				PrimaryKeyJoinColumn primaryKeyJoinColumn = (PrimaryKeyJoinColumn)theEObject;
 				T result = casePrimaryKeyJoinColumn(primaryKeyJoinColumn);
+				if (result == null) result = caseNamedColumn(primaryKeyJoinColumn);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -909,6 +931,38 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseCascadeType(CascadeType object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Named Column</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Named Column</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseNamedColumn(NamedColumn object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Abstract Column</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Abstract Column</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAbstractColumn(AbstractColumn object)
 	{
 		return null;
 	}
