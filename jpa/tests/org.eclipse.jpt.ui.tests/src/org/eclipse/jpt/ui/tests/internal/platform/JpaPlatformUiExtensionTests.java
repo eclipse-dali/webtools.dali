@@ -6,7 +6,6 @@ import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformUi;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
-import org.eclipse.jpt.ui.internal.PlatformRegistry;
 
 import junit.framework.TestCase;
 
