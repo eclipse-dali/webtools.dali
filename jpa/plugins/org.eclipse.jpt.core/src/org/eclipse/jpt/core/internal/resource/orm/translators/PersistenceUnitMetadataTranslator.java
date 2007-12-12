@@ -21,12 +21,12 @@ public class PersistenceUnitMetadataTranslator extends Translator implements Orm
 		super(domNameAndPath, aFeature);
 	}
 	
-	
+	@Override
 	public Translator[] getChildren(Object target, int versionID) {
-		if (children == null) {
-			children = createChildren();
+		if (this.children == null) {
+			this.children = createChildren();
 		}
-		return children;
+		return this.children;
 	}
 	
 	private Translator[] createChildren() {

@@ -26,12 +26,12 @@ public class EntityMappingsTranslator extends RootTranslator
 		super(ENTITY_MAPPINGS, ORM_PKG.getEntityMappings());
 	}
 	
-	
+	@Override
 	public Translator[] getChildren(Object target, int versionID) {
-		if (children == null) {
-			children = createChildren();
+		if (this.children == null) {
+			this.children = createChildren();
 		}
-		return children;
+		return this.children;
 	}
 	
 	private Translator[] createChildren() {

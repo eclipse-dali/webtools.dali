@@ -23,12 +23,12 @@ public class MapKeyTranslator extends Translator
 		super(domNameAndPath, aFeature, END_TAG_NO_INDENT);
 	}
 	
-	
+	@Override
 	public Translator[] getChildren(Object target, int versionID) {
-		if (children == null) {
-			children = createChildren();
+		if (this.children == null) {
+			this.children = createChildren();
 		}
-		return children;
+		return this.children;
 	}
 		
 	protected Translator[] createChildren() {
