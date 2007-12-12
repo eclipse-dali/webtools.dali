@@ -47,7 +47,7 @@ public class JavaStructureContentProvider extends ResourceModelStructureContentP
 	
 	public Object getParent(Object element) {
 		if (element instanceof IJavaPersistentAttribute) {
-			return ((IJavaPersistentAttribute) element).type();
+			return ((IJavaPersistentAttribute) element).persistentType();
 		}
 		
 		return super.getParent(element);

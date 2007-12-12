@@ -49,6 +49,8 @@ public interface IPersistentAttribute extends IJpaContextNode
 	
 	ITypeMapping typeMapping();
 
+	IPersistentType persistentType();
+	
 	/**
 	 * If the attribute is mapped to a primary key column, return the
 	 * column's name, otherwise return null.
