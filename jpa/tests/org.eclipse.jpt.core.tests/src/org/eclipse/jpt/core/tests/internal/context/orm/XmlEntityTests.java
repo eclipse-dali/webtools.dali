@@ -870,6 +870,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals(AccessType.PROPERTY, xmlEmbeddable.getSpecifiedAccess());
 	}
 	
+	//TODO test that attribute mappings are not removed when changing type mapping.
 	public void testMakeEntityEmbeddable2() throws Exception {
 		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
