@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmAdapterFactory.java,v 1.1.2.5 2007/12/07 17:26:52 kmoore Exp $
+ * $Id: OrmAdapterFactory.java,v 1.1.2.6 2007/12/12 01:47:24 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -12,6 +12,7 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
 import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
+import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.Attributes;
 import org.eclipse.jpt.core.internal.resource.orm.Basic;
@@ -20,7 +21,6 @@ import org.eclipse.jpt.core.internal.resource.orm.Column;
 import org.eclipse.jpt.core.internal.resource.orm.ColumnResult;
 import org.eclipse.jpt.core.internal.resource.orm.DiscriminatorColumn;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
-import org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes;
 import org.eclipse.jpt.core.internal.resource.orm.Embedded;
 import org.eclipse.jpt.core.internal.resource.orm.EmbeddedId;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
@@ -171,9 +171,9 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 				return createAttributesAdapter();
 			}
 			@Override
-			public Adapter caseEmbeddableAttributes(EmbeddableAttributes object)
+			public Adapter caseAttributeMapping(AttributeMapping object)
 			{
-				return createEmbeddableAttributesAdapter();
+				return createAttributeMappingAdapter();
 			}
 			@Override
 			public Adapter caseId(Id object)
@@ -548,16 +548,16 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes <em>Embeddable Attributes</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.AttributeMapping <em>Attribute Mapping</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AttributeMapping
 	 * @generated
 	 */
-	public Adapter createEmbeddableAttributesAdapter()
+	public Adapter createAttributeMappingAdapter()
 	{
 		return null;
 	}

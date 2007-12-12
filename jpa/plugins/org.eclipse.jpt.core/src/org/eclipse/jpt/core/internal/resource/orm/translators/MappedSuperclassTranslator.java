@@ -113,6 +113,6 @@ public class MappedSuperclassTranslator extends Translator
 	}
 	
 	private Translator createAttributesTranslator() {
-		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getMappedSuperclass_Attributes());
+		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getTypeMapping_Attributes());
 	}
 }

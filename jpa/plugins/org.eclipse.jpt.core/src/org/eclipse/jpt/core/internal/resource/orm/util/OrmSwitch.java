@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmSwitch.java,v 1.1.2.5 2007/12/07 17:26:52 kmoore Exp $
+ * $Id: OrmSwitch.java,v 1.1.2.6 2007/12/12 01:47:24 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
 import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
+import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.Attributes;
 import org.eclipse.jpt.core.internal.resource.orm.Basic;
@@ -19,7 +20,6 @@ import org.eclipse.jpt.core.internal.resource.orm.Column;
 import org.eclipse.jpt.core.internal.resource.orm.ColumnResult;
 import org.eclipse.jpt.core.internal.resource.orm.DiscriminatorColumn;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
-import org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes;
 import org.eclipse.jpt.core.internal.resource.orm.Embedded;
 import org.eclipse.jpt.core.internal.resource.orm.EmbeddedId;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
@@ -208,10 +208,10 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case OrmPackage.EMBEDDABLE_ATTRIBUTES:
+			case OrmPackage.ATTRIBUTE_MAPPING:
 			{
-				EmbeddableAttributes embeddableAttributes = (EmbeddableAttributes)theEObject;
-				T result = caseEmbeddableAttributes(embeddableAttributes);
+				AttributeMapping attributeMapping = (AttributeMapping)theEObject;
+				T result = caseAttributeMapping(attributeMapping);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -219,6 +219,7 @@ public class OrmSwitch<T>
 			{
 				Id id = (Id)theEObject;
 				T result = caseId(id);
+				if (result == null) result = caseAttributeMapping(id);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -226,6 +227,7 @@ public class OrmSwitch<T>
 			{
 				EmbeddedId embeddedId = (EmbeddedId)theEObject;
 				T result = caseEmbeddedId(embeddedId);
+				if (result == null) result = caseAttributeMapping(embeddedId);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -233,6 +235,7 @@ public class OrmSwitch<T>
 			{
 				Basic basic = (Basic)theEObject;
 				T result = caseBasic(basic);
+				if (result == null) result = caseAttributeMapping(basic);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -240,6 +243,7 @@ public class OrmSwitch<T>
 			{
 				Version version = (Version)theEObject;
 				T result = caseVersion(version);
+				if (result == null) result = caseAttributeMapping(version);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -247,6 +251,7 @@ public class OrmSwitch<T>
 			{
 				ManyToOne manyToOne = (ManyToOne)theEObject;
 				T result = caseManyToOne(manyToOne);
+				if (result == null) result = caseAttributeMapping(manyToOne);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -254,6 +259,7 @@ public class OrmSwitch<T>
 			{
 				OneToMany oneToMany = (OneToMany)theEObject;
 				T result = caseOneToMany(oneToMany);
+				if (result == null) result = caseAttributeMapping(oneToMany);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -261,6 +267,7 @@ public class OrmSwitch<T>
 			{
 				OneToOne oneToOne = (OneToOne)theEObject;
 				T result = caseOneToOne(oneToOne);
+				if (result == null) result = caseAttributeMapping(oneToOne);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -268,6 +275,7 @@ public class OrmSwitch<T>
 			{
 				ManyToMany manyToMany = (ManyToMany)theEObject;
 				T result = caseManyToMany(manyToMany);
+				if (result == null) result = caseAttributeMapping(manyToMany);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -275,6 +283,7 @@ public class OrmSwitch<T>
 			{
 				Embedded embedded = (Embedded)theEObject;
 				T result = caseEmbedded(embedded);
+				if (result == null) result = caseAttributeMapping(embedded);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -282,6 +291,7 @@ public class OrmSwitch<T>
 			{
 				Transient transient_ = (Transient)theEObject;
 				T result = caseTransient(transient_);
+				if (result == null) result = caseAttributeMapping(transient_);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -680,17 +690,17 @@ public class OrmSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Embeddable Attributes</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Attribute Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Embeddable Attributes</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Attribute Mapping</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseEmbeddableAttributes(EmbeddableAttributes object)
+	public T caseAttributeMapping(AttributeMapping object)
 	{
 		return null;
 	}

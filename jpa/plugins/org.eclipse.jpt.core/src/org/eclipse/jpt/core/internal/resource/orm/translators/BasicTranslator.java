@@ -45,7 +45,7 @@ public class BasicTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getBasic_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createFetchTranslator() {

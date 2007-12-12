@@ -372,13 +372,22 @@ public class OrmPackage extends EPackageImpl
 	public static final int TYPE_MAPPING__DESCRIPTION = 3;
 
 	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TYPE_MAPPING__ATTRIBUTES = 4;
+
+	/**
 	 * The number of structural features of the '<em>Type Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int TYPE_MAPPING_FEATURE_COUNT = 4;
+	public static final int TYPE_MAPPING_FEATURE_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass <em>Mapped Superclass</em>}' class.
@@ -425,6 +434,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int MAPPED_SUPERCLASS__DESCRIPTION = TYPE_MAPPING__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int MAPPED_SUPERCLASS__ATTRIBUTES = TYPE_MAPPING__ATTRIBUTES;
 
 	/**
 	 * The feature id for the '<em><b>Id Class</b></em>' containment reference.
@@ -526,22 +544,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int MAPPED_SUPERCLASS__POST_LOAD = TYPE_MAPPING_FEATURE_COUNT + 10;
 
 	/**
-	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int MAPPED_SUPERCLASS__ATTRIBUTES = TYPE_MAPPING_FEATURE_COUNT + 11;
-
-	/**
 	 * The number of structural features of the '<em>Mapped Superclass</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MAPPED_SUPERCLASS_FEATURE_COUNT = TYPE_MAPPING_FEATURE_COUNT + 12;
+	public static final int MAPPED_SUPERCLASS_FEATURE_COUNT = TYPE_MAPPING_FEATURE_COUNT + 11;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity <em>Entity</em>}' class.
@@ -588,6 +597,15 @@ public class OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int ENTITY__DESCRIPTION = TYPE_MAPPING__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ENTITY__ATTRIBUTES = TYPE_MAPPING__ATTRIBUTES;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -815,22 +833,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int ENTITY__ASSOCIATION_OVERRIDES = TYPE_MAPPING_FEATURE_COUNT + 24;
 
 	/**
-	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int ENTITY__ATTRIBUTES = TYPE_MAPPING_FEATURE_COUNT + 25;
-
-	/**
 	 * The number of structural features of the '<em>Entity</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ENTITY_FEATURE_COUNT = TYPE_MAPPING_FEATURE_COUNT + 26;
+	public static final int ENTITY_FEATURE_COUNT = TYPE_MAPPING_FEATURE_COUNT + 25;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Embeddable <em>Embeddable</em>}' class.
@@ -885,7 +894,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EMBEDDABLE__ATTRIBUTES = TYPE_MAPPING_FEATURE_COUNT + 0;
+	public static final int EMBEDDABLE__ATTRIBUTES = TYPE_MAPPING__ATTRIBUTES;
 
 	/**
 	 * The number of structural features of the '<em>Embeddable</em>' class.
@@ -894,7 +903,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EMBEDDABLE_FEATURE_COUNT = TYPE_MAPPING_FEATURE_COUNT + 1;
+	public static final int EMBEDDABLE_FEATURE_COUNT = TYPE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes <em>Attributes</em>}' class.
@@ -1006,41 +1015,32 @@ public class OrmPackage extends EPackageImpl
 	public static final int ATTRIBUTES_FEATURE_COUNT = 10;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes <em>Embeddable Attributes</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.AttributeMapping <em>Attribute Mapping</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEmbeddableAttributes()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AttributeMapping
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAttributeMapping()
 	 * @generated
 	 */
-	public static final int EMBEDDABLE_ATTRIBUTES = 8;
+	public static final int ATTRIBUTE_MAPPING = 8;
 
 	/**
-	 * The feature id for the '<em><b>Basics</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EMBEDDABLE_ATTRIBUTES__BASICS = 0;
+	public static final int ATTRIBUTE_MAPPING__NAME = 0;
 
 	/**
-	 * The feature id for the '<em><b>Transients</b></em>' containment reference list.
+	 * The number of structural features of the '<em>Attribute Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EMBEDDABLE_ATTRIBUTES__TRANSIENTS = 1;
-
-	/**
-	 * The number of structural features of the '<em>Embeddable Attributes</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int EMBEDDABLE_ATTRIBUTES_FEATURE_COUNT = 2;
+	public static final int ATTRIBUTE_MAPPING_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Id <em>Id</em>}' class.
@@ -1059,7 +1059,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ID__NAME = 0;
+	public static final int ID__NAME = ATTRIBUTE_MAPPING__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
@@ -1068,7 +1068,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ID__COLUMN = 1;
+	public static final int ID__COLUMN = ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Generated Value</b></em>' containment reference.
@@ -1077,7 +1077,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ID__GENERATED_VALUE = 2;
+	public static final int ID__GENERATED_VALUE = ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Temporal</b></em>' attribute.
@@ -1086,7 +1086,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ID__TEMPORAL = 3;
+	public static final int ID__TEMPORAL = ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
@@ -1095,7 +1095,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ID__TABLE_GENERATOR = 4;
+	public static final int ID__TABLE_GENERATOR = ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
@@ -1104,7 +1104,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ID__SEQUENCE_GENERATOR = 5;
+	public static final int ID__SEQUENCE_GENERATOR = ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Id</em>' class.
@@ -1113,7 +1113,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ID_FEATURE_COUNT = 6;
+	public static final int ID_FEATURE_COUNT = ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.EmbeddedId <em>Embedded Id</em>}' class.
@@ -1132,7 +1132,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EMBEDDED_ID__NAME = 0;
+	public static final int EMBEDDED_ID__NAME = ATTRIBUTE_MAPPING__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
@@ -1141,7 +1141,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EMBEDDED_ID__ATTRIBUTE_OVERRIDES = 1;
+	public static final int EMBEDDED_ID__ATTRIBUTE_OVERRIDES = ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Embedded Id</em>' class.
@@ -1150,7 +1150,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EMBEDDED_ID_FEATURE_COUNT = 2;
+	public static final int EMBEDDED_ID_FEATURE_COUNT = ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Basic <em>Basic</em>}' class.
@@ -1169,7 +1169,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int BASIC__NAME = 0;
+	public static final int BASIC__NAME = ATTRIBUTE_MAPPING__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
@@ -1178,7 +1178,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int BASIC__FETCH = 1;
+	public static final int BASIC__FETCH = ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Optional</b></em>' attribute.
@@ -1187,7 +1187,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int BASIC__OPTIONAL = 2;
+	public static final int BASIC__OPTIONAL = ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
@@ -1196,7 +1196,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int BASIC__COLUMN = 3;
+	public static final int BASIC__COLUMN = ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Lob</b></em>' containment reference.
@@ -1205,7 +1205,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int BASIC__LOB = 4;
+	public static final int BASIC__LOB = ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Temporal</b></em>' attribute.
@@ -1214,7 +1214,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int BASIC__TEMPORAL = 5;
+	public static final int BASIC__TEMPORAL = ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Enumerated</b></em>' attribute.
@@ -1223,7 +1223,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int BASIC__ENUMERATED = 6;
+	public static final int BASIC__ENUMERATED = ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Basic</em>' class.
@@ -1232,7 +1232,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int BASIC_FEATURE_COUNT = 7;
+	public static final int BASIC_FEATURE_COUNT = ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Version <em>Version</em>}' class.
@@ -1251,7 +1251,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int VERSION__NAME = 0;
+	public static final int VERSION__NAME = ATTRIBUTE_MAPPING__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
@@ -1260,7 +1260,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int VERSION__COLUMN = 1;
+	public static final int VERSION__COLUMN = ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Temporal</b></em>' attribute.
@@ -1269,7 +1269,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int VERSION__TEMPORAL = 2;
+	public static final int VERSION__TEMPORAL = ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Version</em>' class.
@@ -1278,7 +1278,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int VERSION_FEATURE_COUNT = 3;
+	public static final int VERSION_FEATURE_COUNT = ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne <em>Many To One</em>}' class.
@@ -1297,7 +1297,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_ONE__NAME = 0;
+	public static final int MANY_TO_ONE__NAME = ATTRIBUTE_MAPPING__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1306,7 +1306,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_ONE__TARGET_ENTITY = 1;
+	public static final int MANY_TO_ONE__TARGET_ENTITY = ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
@@ -1315,7 +1315,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_ONE__FETCH = 2;
+	public static final int MANY_TO_ONE__FETCH = ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Optional</b></em>' attribute.
@@ -1324,7 +1324,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_ONE__OPTIONAL = 3;
+	public static final int MANY_TO_ONE__OPTIONAL = ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -1333,7 +1333,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_ONE__JOIN_COLUMNS = 4;
+	public static final int MANY_TO_ONE__JOIN_COLUMNS = ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
@@ -1342,7 +1342,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_ONE__JOIN_TABLE = 5;
+	public static final int MANY_TO_ONE__JOIN_TABLE = ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
@@ -1351,7 +1351,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_ONE__CASCADE = 6;
+	public static final int MANY_TO_ONE__CASCADE = ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Many To One</em>' class.
@@ -1360,7 +1360,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_ONE_FEATURE_COUNT = 7;
+	public static final int MANY_TO_ONE_FEATURE_COUNT = ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany <em>One To Many</em>}' class.
@@ -1379,7 +1379,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_MANY__NAME = 0;
+	public static final int ONE_TO_MANY__NAME = ATTRIBUTE_MAPPING__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1388,7 +1388,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_MANY__TARGET_ENTITY = 1;
+	public static final int ONE_TO_MANY__TARGET_ENTITY = ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
@@ -1397,7 +1397,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_MANY__FETCH = 2;
+	public static final int ONE_TO_MANY__FETCH = ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
@@ -1406,7 +1406,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_MANY__MAPPED_BY = 3;
+	public static final int ONE_TO_MANY__MAPPED_BY = ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Order By</b></em>' attribute.
@@ -1415,7 +1415,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_MANY__ORDER_BY = 4;
+	public static final int ONE_TO_MANY__ORDER_BY = ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' containment reference.
@@ -1424,7 +1424,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_MANY__MAP_KEY = 5;
+	public static final int ONE_TO_MANY__MAP_KEY = ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
@@ -1433,7 +1433,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_MANY__JOIN_TABLE = 6;
+	public static final int ONE_TO_MANY__JOIN_TABLE = ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -1442,7 +1442,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_MANY__JOIN_COLUMNS = 7;
+	public static final int ONE_TO_MANY__JOIN_COLUMNS = ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
@@ -1451,7 +1451,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_MANY__CASCADE = 8;
+	public static final int ONE_TO_MANY__CASCADE = ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>One To Many</em>' class.
@@ -1460,7 +1460,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_MANY_FEATURE_COUNT = 9;
+	public static final int ONE_TO_MANY_FEATURE_COUNT = ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne <em>One To One</em>}' class.
@@ -1479,7 +1479,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_ONE__NAME = 0;
+	public static final int ONE_TO_ONE__NAME = ATTRIBUTE_MAPPING__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1488,7 +1488,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_ONE__TARGET_ENTITY = 1;
+	public static final int ONE_TO_ONE__TARGET_ENTITY = ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
@@ -1497,7 +1497,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_ONE__FETCH = 2;
+	public static final int ONE_TO_ONE__FETCH = ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Optional</b></em>' attribute.
@@ -1506,7 +1506,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_ONE__OPTIONAL = 3;
+	public static final int ONE_TO_ONE__OPTIONAL = ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
@@ -1515,7 +1515,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_ONE__MAPPED_BY = 4;
+	public static final int ONE_TO_ONE__MAPPED_BY = ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
@@ -1524,7 +1524,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS = 5;
+	public static final int ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS = ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -1533,7 +1533,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_ONE__JOIN_COLUMNS = 6;
+	public static final int ONE_TO_ONE__JOIN_COLUMNS = ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
@@ -1542,7 +1542,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_ONE__JOIN_TABLE = 7;
+	public static final int ONE_TO_ONE__JOIN_TABLE = ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
@@ -1551,7 +1551,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_ONE__CASCADE = 8;
+	public static final int ONE_TO_ONE__CASCADE = ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>One To One</em>' class.
@@ -1560,7 +1560,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ONE_TO_ONE_FEATURE_COUNT = 9;
+	public static final int ONE_TO_ONE_FEATURE_COUNT = ATTRIBUTE_MAPPING_FEATURE_COUNT + 8;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToMany <em>Many To Many</em>}' class.
@@ -1579,7 +1579,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_MANY__NAME = 0;
+	public static final int MANY_TO_MANY__NAME = ATTRIBUTE_MAPPING__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Target Entity</b></em>' attribute.
@@ -1588,7 +1588,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_MANY__TARGET_ENTITY = 1;
+	public static final int MANY_TO_MANY__TARGET_ENTITY = ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Fetch</b></em>' attribute.
@@ -1597,7 +1597,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_MANY__FETCH = 2;
+	public static final int MANY_TO_MANY__FETCH = ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
@@ -1606,7 +1606,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_MANY__MAPPED_BY = 3;
+	public static final int MANY_TO_MANY__MAPPED_BY = ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Order By</b></em>' attribute.
@@ -1615,7 +1615,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_MANY__ORDER_BY = 4;
+	public static final int MANY_TO_MANY__ORDER_BY = ATTRIBUTE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Map Key</b></em>' containment reference.
@@ -1624,7 +1624,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_MANY__MAP_KEY = 5;
+	public static final int MANY_TO_MANY__MAP_KEY = ATTRIBUTE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
@@ -1633,7 +1633,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_MANY__JOIN_TABLE = 6;
+	public static final int MANY_TO_MANY__JOIN_TABLE = ATTRIBUTE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
@@ -1642,7 +1642,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_MANY__CASCADE = 7;
+	public static final int MANY_TO_MANY__CASCADE = ATTRIBUTE_MAPPING_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Many To Many</em>' class.
@@ -1651,7 +1651,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int MANY_TO_MANY_FEATURE_COUNT = 8;
+	public static final int MANY_TO_MANY_FEATURE_COUNT = ATTRIBUTE_MAPPING_FEATURE_COUNT + 7;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Embedded <em>Embedded</em>}' class.
@@ -1670,7 +1670,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EMBEDDED__NAME = 0;
+	public static final int EMBEDDED__NAME = ATTRIBUTE_MAPPING__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
@@ -1679,7 +1679,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EMBEDDED__ATTRIBUTE_OVERRIDES = 1;
+	public static final int EMBEDDED__ATTRIBUTE_OVERRIDES = ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Embedded</em>' class.
@@ -1688,7 +1688,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EMBEDDED_FEATURE_COUNT = 2;
+	public static final int EMBEDDED_FEATURE_COUNT = ATTRIBUTE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Transient <em>Transient</em>}' class.
@@ -1707,7 +1707,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int TRANSIENT__NAME = 0;
+	public static final int TRANSIENT__NAME = ATTRIBUTE_MAPPING__NAME;
 
 	/**
 	 * The number of structural features of the '<em>Transient</em>' class.
@@ -1716,7 +1716,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int TRANSIENT_FEATURE_COUNT = 1;
+	public static final int TRANSIENT_FEATURE_COUNT = ATTRIBUTE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.AssociationOverride <em>Association Override</em>}' class.
@@ -3634,7 +3634,7 @@ public class OrmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass embeddableAttributesEClass = null;
+	private EClass attributeMappingEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -4593,6 +4593,21 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.TypeMapping#getAttributes <em>Attributes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Attributes</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.TypeMapping#getAttributes()
+	 * @see #getTypeMapping()
+	 * @generated
+	 */
+	public EReference getTypeMapping_Attributes()
+	{
+		return (EReference)typeMappingEClass.getEStructuralFeatures().get(4);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass <em>Mapped Superclass</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4757,20 +4772,6 @@ public class OrmPackage extends EPackageImpl
 	public EReference getMappedSuperclass_PostLoad()
 	{
 		return (EReference)mappedSuperclassEClass.getEStructuralFeatures().get(10);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getAttributes <em>Attributes</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Attributes</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass#getAttributes()
-	 * @see #getMappedSuperclass()
-	 * @generated
-	 */
-	public EReference getMappedSuperclass_Attributes()
-	{
-		return (EReference)mappedSuperclassEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
@@ -5138,20 +5139,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getAttributes <em>Attributes</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Attributes</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Entity#getAttributes()
-	 * @see #getEntity()
-	 * @generated
-	 */
-	public EReference getEntity_Attributes()
-	{
-		return (EReference)entityEClass.getEStructuralFeatures().get(25);
-	}
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.Embeddable <em>Embeddable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5162,20 +5149,6 @@ public class OrmPackage extends EPackageImpl
 	public EClass getEmbeddable()
 	{
 		return embeddableEClass;
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.Embeddable#getAttributes <em>Attributes</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Attributes</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Embeddable#getAttributes()
-	 * @see #getEmbeddable()
-	 * @generated
-	 */
-	public EReference getEmbeddable_Attributes()
-	{
-		return (EReference)embeddableEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -5335,45 +5308,33 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes <em>Embeddable Attributes</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.AttributeMapping <em>Attribute Mapping</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Embeddable Attributes</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes
+	 * @return the meta object for class '<em>Attribute Mapping</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AttributeMapping
 	 * @generated
 	 */
-	public EClass getEmbeddableAttributes()
+	public EClass getAttributeMapping()
 	{
-		return embeddableAttributesEClass;
+		return attributeMappingEClass;
 	}
 
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes#getBasics <em>Basics</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Basics</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes#getBasics()
-	 * @see #getEmbeddableAttributes()
-	 * @generated
-	 */
-	public EReference getEmbeddableAttributes_Basics()
-	{
-		return (EReference)embeddableAttributesEClass.getEStructuralFeatures().get(0);
-	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes#getTransients <em>Transients</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.AttributeMapping#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Transients</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes#getTransients()
-	 * @see #getEmbeddableAttributes()
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AttributeMapping#getName()
+	 * @see #getAttributeMapping()
 	 * @generated
 	 */
-	public EReference getEmbeddableAttributes_Transients()
+	public EAttribute getAttributeMapping_Name()
 	{
-		return (EReference)embeddableAttributesEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)attributeMappingEClass.getEStructuralFeatures().get(0);
 	}
+
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.Id <em>Id</em>}'.
@@ -5389,20 +5350,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Id#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Id#getName()
-	 * @see #getId()
-	 * @generated
-	 */
-	public EAttribute getId_Name()
-	{
-		return (EAttribute)idEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.Id#getColumn <em>Column</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5413,7 +5360,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getId_Column()
 	{
-		return (EReference)idEClass.getEStructuralFeatures().get(1);
+		return (EReference)idEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -5427,7 +5374,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getId_GeneratedValue()
 	{
-		return (EReference)idEClass.getEStructuralFeatures().get(2);
+		return (EReference)idEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -5441,7 +5388,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getId_Temporal()
 	{
-		return (EAttribute)idEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)idEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -5455,7 +5402,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getId_TableGenerator()
 	{
-		return (EReference)idEClass.getEStructuralFeatures().get(4);
+		return (EReference)idEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -5469,7 +5416,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getId_SequenceGenerator()
 	{
-		return (EReference)idEClass.getEStructuralFeatures().get(5);
+		return (EReference)idEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -5486,20 +5433,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.EmbeddedId#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.EmbeddedId#getName()
-	 * @see #getEmbeddedId()
-	 * @generated
-	 */
-	public EAttribute getEmbeddedId_Name()
-	{
-		return (EAttribute)embeddedIdEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.EmbeddedId#getAttributeOverrides <em>Attribute Overrides</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5510,7 +5443,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getEmbeddedId_AttributeOverrides()
 	{
-		return (EReference)embeddedIdEClass.getEStructuralFeatures().get(1);
+		return (EReference)embeddedIdEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -5527,20 +5460,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Basic#getName()
-	 * @see #getBasic()
-	 * @generated
-	 */
-	public EAttribute getBasic_Name()
-	{
-		return (EAttribute)basicEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getFetch <em>Fetch</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5551,7 +5470,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getBasic_Fetch()
 	{
-		return (EAttribute)basicEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)basicEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -5565,7 +5484,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getBasic_Optional()
 	{
-		return (EAttribute)basicEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)basicEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -5579,7 +5498,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getBasic_Column()
 	{
-		return (EReference)basicEClass.getEStructuralFeatures().get(3);
+		return (EReference)basicEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -5593,7 +5512,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getBasic_Lob()
 	{
-		return (EReference)basicEClass.getEStructuralFeatures().get(4);
+		return (EReference)basicEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -5607,7 +5526,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getBasic_Temporal()
 	{
-		return (EAttribute)basicEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)basicEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -5621,7 +5540,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getBasic_Enumerated()
 	{
-		return (EAttribute)basicEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)basicEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -5638,20 +5557,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Version#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Version#getName()
-	 * @see #getVersion()
-	 * @generated
-	 */
-	public EAttribute getVersion_Name()
-	{
-		return (EAttribute)versionEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.Version#getColumn <em>Column</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5662,7 +5567,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getVersion_Column()
 	{
-		return (EReference)versionEClass.getEStructuralFeatures().get(1);
+		return (EReference)versionEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -5676,7 +5581,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getVersion_Temporal()
 	{
-		return (EAttribute)versionEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)versionEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -5693,20 +5598,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.ManyToOne#getName()
-	 * @see #getManyToOne()
-	 * @generated
-	 */
-	public EAttribute getManyToOne_Name()
-	{
-		return (EAttribute)manyToOneEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#getTargetEntity <em>Target Entity</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5717,7 +5608,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getManyToOne_TargetEntity()
 	{
-		return (EAttribute)manyToOneEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)manyToOneEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -5731,7 +5622,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getManyToOne_Fetch()
 	{
-		return (EAttribute)manyToOneEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)manyToOneEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -5745,7 +5636,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getManyToOne_Optional()
 	{
-		return (EAttribute)manyToOneEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)manyToOneEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -5759,7 +5650,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getManyToOne_JoinColumns()
 	{
-		return (EReference)manyToOneEClass.getEStructuralFeatures().get(4);
+		return (EReference)manyToOneEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -5773,7 +5664,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getManyToOne_JoinTable()
 	{
-		return (EReference)manyToOneEClass.getEStructuralFeatures().get(5);
+		return (EReference)manyToOneEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -5787,7 +5678,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getManyToOne_Cascade()
 	{
-		return (EReference)manyToOneEClass.getEStructuralFeatures().get(6);
+		return (EReference)manyToOneEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -5804,20 +5695,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OneToMany#getName()
-	 * @see #getOneToMany()
-	 * @generated
-	 */
-	public EAttribute getOneToMany_Name()
-	{
-		return (EAttribute)oneToManyEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany#getTargetEntity <em>Target Entity</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5828,7 +5705,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getOneToMany_TargetEntity()
 	{
-		return (EAttribute)oneToManyEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)oneToManyEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -5842,7 +5719,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getOneToMany_Fetch()
 	{
-		return (EAttribute)oneToManyEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)oneToManyEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -5856,7 +5733,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getOneToMany_MappedBy()
 	{
-		return (EAttribute)oneToManyEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)oneToManyEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -5870,7 +5747,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getOneToMany_OrderBy()
 	{
-		return (EAttribute)oneToManyEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)oneToManyEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -5884,7 +5761,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getOneToMany_MapKey()
 	{
-		return (EReference)oneToManyEClass.getEStructuralFeatures().get(5);
+		return (EReference)oneToManyEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -5898,7 +5775,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getOneToMany_JoinTable()
 	{
-		return (EReference)oneToManyEClass.getEStructuralFeatures().get(6);
+		return (EReference)oneToManyEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -5912,7 +5789,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getOneToMany_JoinColumns()
 	{
-		return (EReference)oneToManyEClass.getEStructuralFeatures().get(7);
+		return (EReference)oneToManyEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -5926,7 +5803,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getOneToMany_Cascade()
 	{
-		return (EReference)oneToManyEClass.getEStructuralFeatures().get(8);
+		return (EReference)oneToManyEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -5943,20 +5820,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OneToOne#getName()
-	 * @see #getOneToOne()
-	 * @generated
-	 */
-	public EAttribute getOneToOne_Name()
-	{
-		return (EAttribute)oneToOneEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getTargetEntity <em>Target Entity</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5967,7 +5830,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getOneToOne_TargetEntity()
 	{
-		return (EAttribute)oneToOneEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)oneToOneEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -5981,7 +5844,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getOneToOne_Fetch()
 	{
-		return (EAttribute)oneToOneEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)oneToOneEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -5995,7 +5858,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getOneToOne_Optional()
 	{
-		return (EAttribute)oneToOneEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)oneToOneEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -6009,7 +5872,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getOneToOne_MappedBy()
 	{
-		return (EAttribute)oneToOneEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)oneToOneEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -6023,7 +5886,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getOneToOne_PrimaryKeyJoinColumns()
 	{
-		return (EReference)oneToOneEClass.getEStructuralFeatures().get(5);
+		return (EReference)oneToOneEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -6037,7 +5900,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getOneToOne_JoinColumns()
 	{
-		return (EReference)oneToOneEClass.getEStructuralFeatures().get(6);
+		return (EReference)oneToOneEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -6051,7 +5914,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getOneToOne_JoinTable()
 	{
-		return (EReference)oneToOneEClass.getEStructuralFeatures().get(7);
+		return (EReference)oneToOneEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -6065,7 +5928,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getOneToOne_Cascade()
 	{
-		return (EReference)oneToOneEClass.getEStructuralFeatures().get(8);
+		return (EReference)oneToOneEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -6082,20 +5945,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToMany#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.ManyToMany#getName()
-	 * @see #getManyToMany()
-	 * @generated
-	 */
-	public EAttribute getManyToMany_Name()
-	{
-		return (EAttribute)manyToManyEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToMany#getTargetEntity <em>Target Entity</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6106,7 +5955,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getManyToMany_TargetEntity()
 	{
-		return (EAttribute)manyToManyEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)manyToManyEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -6120,7 +5969,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getManyToMany_Fetch()
 	{
-		return (EAttribute)manyToManyEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)manyToManyEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -6134,7 +5983,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getManyToMany_MappedBy()
 	{
-		return (EAttribute)manyToManyEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)manyToManyEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -6148,7 +5997,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getManyToMany_OrderBy()
 	{
-		return (EAttribute)manyToManyEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)manyToManyEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -6162,7 +6011,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getManyToMany_MapKey()
 	{
-		return (EReference)manyToManyEClass.getEStructuralFeatures().get(5);
+		return (EReference)manyToManyEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -6176,7 +6025,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getManyToMany_JoinTable()
 	{
-		return (EReference)manyToManyEClass.getEStructuralFeatures().get(6);
+		return (EReference)manyToManyEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -6190,7 +6039,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getManyToMany_Cascade()
 	{
-		return (EReference)manyToManyEClass.getEStructuralFeatures().get(7);
+		return (EReference)manyToManyEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -6207,20 +6056,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Embedded#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Embedded#getName()
-	 * @see #getEmbedded()
-	 * @generated
-	 */
-	public EAttribute getEmbedded_Name()
-	{
-		return (EAttribute)embeddedEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.Embedded#getAttributeOverrides <em>Attribute Overrides</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6231,7 +6066,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getEmbedded_AttributeOverrides()
 	{
-		return (EReference)embeddedEClass.getEStructuralFeatures().get(1);
+		return (EReference)embeddedEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -6245,20 +6080,6 @@ public class OrmPackage extends EPackageImpl
 	public EClass getTransient()
 	{
 		return transientEClass;
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Transient#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Transient#getName()
-	 * @see #getTransient()
-	 * @generated
-	 */
-	public EAttribute getTransient_Name()
-	{
-		return (EAttribute)transientEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -8321,6 +8142,7 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(typeMappingEClass, TYPE_MAPPING__ACCESS);
 		createEAttribute(typeMappingEClass, TYPE_MAPPING__METADATA_COMPLETE);
 		createEAttribute(typeMappingEClass, TYPE_MAPPING__DESCRIPTION);
+		createEReference(typeMappingEClass, TYPE_MAPPING__ATTRIBUTES);
 
 		mappedSuperclassEClass = createEClass(MAPPED_SUPERCLASS);
 		createEReference(mappedSuperclassEClass, MAPPED_SUPERCLASS__ID_CLASS);
@@ -8334,7 +8156,6 @@ public class OrmPackage extends EPackageImpl
 		createEReference(mappedSuperclassEClass, MAPPED_SUPERCLASS__PRE_UPDATE);
 		createEReference(mappedSuperclassEClass, MAPPED_SUPERCLASS__POST_UPDATE);
 		createEReference(mappedSuperclassEClass, MAPPED_SUPERCLASS__POST_LOAD);
-		createEReference(mappedSuperclassEClass, MAPPED_SUPERCLASS__ATTRIBUTES);
 
 		entityEClass = createEClass(ENTITY);
 		createEAttribute(entityEClass, ENTITY__NAME);
@@ -8362,10 +8183,8 @@ public class OrmPackage extends EPackageImpl
 		createEReference(entityEClass, ENTITY__POST_LOAD);
 		createEReference(entityEClass, ENTITY__ATTRIBUTE_OVERRIDES);
 		createEReference(entityEClass, ENTITY__ASSOCIATION_OVERRIDES);
-		createEReference(entityEClass, ENTITY__ATTRIBUTES);
 
 		embeddableEClass = createEClass(EMBEDDABLE);
-		createEReference(embeddableEClass, EMBEDDABLE__ATTRIBUTES);
 
 		attributesEClass = createEClass(ATTRIBUTES);
 		createEReference(attributesEClass, ATTRIBUTES__IDS);
@@ -8379,12 +8198,10 @@ public class OrmPackage extends EPackageImpl
 		createEReference(attributesEClass, ATTRIBUTES__EMBEDDEDS);
 		createEReference(attributesEClass, ATTRIBUTES__TRANSIENTS);
 
-		embeddableAttributesEClass = createEClass(EMBEDDABLE_ATTRIBUTES);
-		createEReference(embeddableAttributesEClass, EMBEDDABLE_ATTRIBUTES__BASICS);
-		createEReference(embeddableAttributesEClass, EMBEDDABLE_ATTRIBUTES__TRANSIENTS);
+		attributeMappingEClass = createEClass(ATTRIBUTE_MAPPING);
+		createEAttribute(attributeMappingEClass, ATTRIBUTE_MAPPING__NAME);
 
 		idEClass = createEClass(ID);
-		createEAttribute(idEClass, ID__NAME);
 		createEReference(idEClass, ID__COLUMN);
 		createEReference(idEClass, ID__GENERATED_VALUE);
 		createEAttribute(idEClass, ID__TEMPORAL);
@@ -8392,11 +8209,9 @@ public class OrmPackage extends EPackageImpl
 		createEReference(idEClass, ID__SEQUENCE_GENERATOR);
 
 		embeddedIdEClass = createEClass(EMBEDDED_ID);
-		createEAttribute(embeddedIdEClass, EMBEDDED_ID__NAME);
 		createEReference(embeddedIdEClass, EMBEDDED_ID__ATTRIBUTE_OVERRIDES);
 
 		basicEClass = createEClass(BASIC);
-		createEAttribute(basicEClass, BASIC__NAME);
 		createEAttribute(basicEClass, BASIC__FETCH);
 		createEAttribute(basicEClass, BASIC__OPTIONAL);
 		createEReference(basicEClass, BASIC__COLUMN);
@@ -8405,12 +8220,10 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(basicEClass, BASIC__ENUMERATED);
 
 		versionEClass = createEClass(VERSION);
-		createEAttribute(versionEClass, VERSION__NAME);
 		createEReference(versionEClass, VERSION__COLUMN);
 		createEAttribute(versionEClass, VERSION__TEMPORAL);
 
 		manyToOneEClass = createEClass(MANY_TO_ONE);
-		createEAttribute(manyToOneEClass, MANY_TO_ONE__NAME);
 		createEAttribute(manyToOneEClass, MANY_TO_ONE__TARGET_ENTITY);
 		createEAttribute(manyToOneEClass, MANY_TO_ONE__FETCH);
 		createEAttribute(manyToOneEClass, MANY_TO_ONE__OPTIONAL);
@@ -8419,7 +8232,6 @@ public class OrmPackage extends EPackageImpl
 		createEReference(manyToOneEClass, MANY_TO_ONE__CASCADE);
 
 		oneToManyEClass = createEClass(ONE_TO_MANY);
-		createEAttribute(oneToManyEClass, ONE_TO_MANY__NAME);
 		createEAttribute(oneToManyEClass, ONE_TO_MANY__TARGET_ENTITY);
 		createEAttribute(oneToManyEClass, ONE_TO_MANY__FETCH);
 		createEAttribute(oneToManyEClass, ONE_TO_MANY__MAPPED_BY);
@@ -8430,7 +8242,6 @@ public class OrmPackage extends EPackageImpl
 		createEReference(oneToManyEClass, ONE_TO_MANY__CASCADE);
 
 		oneToOneEClass = createEClass(ONE_TO_ONE);
-		createEAttribute(oneToOneEClass, ONE_TO_ONE__NAME);
 		createEAttribute(oneToOneEClass, ONE_TO_ONE__TARGET_ENTITY);
 		createEAttribute(oneToOneEClass, ONE_TO_ONE__FETCH);
 		createEAttribute(oneToOneEClass, ONE_TO_ONE__OPTIONAL);
@@ -8441,7 +8252,6 @@ public class OrmPackage extends EPackageImpl
 		createEReference(oneToOneEClass, ONE_TO_ONE__CASCADE);
 
 		manyToManyEClass = createEClass(MANY_TO_MANY);
-		createEAttribute(manyToManyEClass, MANY_TO_MANY__NAME);
 		createEAttribute(manyToManyEClass, MANY_TO_MANY__TARGET_ENTITY);
 		createEAttribute(manyToManyEClass, MANY_TO_MANY__FETCH);
 		createEAttribute(manyToManyEClass, MANY_TO_MANY__MAPPED_BY);
@@ -8451,11 +8261,9 @@ public class OrmPackage extends EPackageImpl
 		createEReference(manyToManyEClass, MANY_TO_MANY__CASCADE);
 
 		embeddedEClass = createEClass(EMBEDDED);
-		createEAttribute(embeddedEClass, EMBEDDED__NAME);
 		createEReference(embeddedEClass, EMBEDDED__ATTRIBUTE_OVERRIDES);
 
 		transientEClass = createEClass(TRANSIENT);
-		createEAttribute(transientEClass, TRANSIENT__NAME);
 
 		associationOverrideEClass = createEClass(ASSOCIATION_OVERRIDE);
 		createEReference(associationOverrideEClass, ASSOCIATION_OVERRIDE__JOIN_COLUMNS);
@@ -8678,6 +8486,16 @@ public class OrmPackage extends EPackageImpl
 		mappedSuperclassEClass.getESuperTypes().add(this.getTypeMapping());
 		entityEClass.getESuperTypes().add(this.getTypeMapping());
 		embeddableEClass.getESuperTypes().add(this.getTypeMapping());
+		idEClass.getESuperTypes().add(this.getAttributeMapping());
+		embeddedIdEClass.getESuperTypes().add(this.getAttributeMapping());
+		basicEClass.getESuperTypes().add(this.getAttributeMapping());
+		versionEClass.getESuperTypes().add(this.getAttributeMapping());
+		manyToOneEClass.getESuperTypes().add(this.getAttributeMapping());
+		oneToManyEClass.getESuperTypes().add(this.getAttributeMapping());
+		oneToOneEClass.getESuperTypes().add(this.getAttributeMapping());
+		manyToManyEClass.getESuperTypes().add(this.getAttributeMapping());
+		embeddedEClass.getESuperTypes().add(this.getAttributeMapping());
+		transientEClass.getESuperTypes().add(this.getAttributeMapping());
 		joinTableEClass.getESuperTypes().add(this.getAbstractTable());
 		postLoadEClass.getESuperTypes().add(this.getEventMethod());
 		postPersistEClass.getESuperTypes().add(this.getEventMethod());
@@ -8723,6 +8541,7 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getTypeMapping_Access(), this.getAccessType(), "access", "PROPERTY", 0, 1, TypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTypeMapping_MetadataComplete(), theXMLTypePackage.getBooleanObject(), "metadataComplete", null, 0, 1, TypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTypeMapping_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, TypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTypeMapping_Attributes(), this.getAttributes(), null, "attributes", null, 0, 1, TypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(mappedSuperclassEClass, MappedSuperclass.class, "MappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getMappedSuperclass_IdClass(), this.getIdClass(), null, "idClass", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8736,7 +8555,6 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getMappedSuperclass_PreUpdate(), this.getPreUpdate(), null, "preUpdate", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMappedSuperclass_PostUpdate(), this.getPostUpdate(), null, "postUpdate", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMappedSuperclass_PostLoad(), this.getPostLoad(), null, "postLoad", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getMappedSuperclass_Attributes(), this.getAttributes(), null, "attributes", null, 0, 1, MappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(entityEClass, Entity.class, "Entity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getEntity_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8764,10 +8582,8 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getEntity_PostLoad(), this.getPostLoad(), null, "postLoad", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEntity_AttributeOverrides(), this.getAttributeOverride(), null, "attributeOverrides", null, 0, -1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEntity_AssociationOverrides(), this.getAssociationOverride(), null, "associationOverrides", null, 0, -1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntity_Attributes(), this.getAttributes(), null, "attributes", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(embeddableEClass, Embeddable.class, "Embeddable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEmbeddable_Attributes(), this.getEmbeddableAttributes(), null, "attributes", null, 0, 1, Embeddable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(attributesEClass, Attributes.class, "Attributes", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAttributes_Ids(), this.getId(), null, "ids", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8781,12 +8597,10 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getAttributes_Embeddeds(), this.getEmbedded(), null, "embeddeds", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAttributes_Transients(), this.getTransient(), null, "transients", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(embeddableAttributesEClass, EmbeddableAttributes.class, "EmbeddableAttributes", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEmbeddableAttributes_Basics(), this.getBasic(), null, "basics", null, 0, -1, EmbeddableAttributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEmbeddableAttributes_Transients(), this.getTransient(), null, "transients", null, 0, -1, EmbeddableAttributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(attributeMappingEClass, AttributeMapping.class, "AttributeMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getAttributeMapping_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, AttributeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(idEClass, Id.class, "Id", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getId_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, Id.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getId_Column(), this.getColumn(), null, "column", null, 0, 1, Id.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getId_GeneratedValue(), this.getGeneratedValue(), null, "generatedValue", null, 0, 1, Id.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getId_Temporal(), this.getTemporal(), "temporal", null, 0, 1, Id.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8794,11 +8608,9 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getId_SequenceGenerator(), this.getSequenceGenerator(), null, "sequenceGenerator", null, 0, 1, Id.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(embeddedIdEClass, EmbeddedId.class, "EmbeddedId", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getEmbeddedId_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, EmbeddedId.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEmbeddedId_AttributeOverrides(), this.getAttributeOverride(), null, "attributeOverrides", null, 0, -1, EmbeddedId.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(basicEClass, Basic.class, "Basic", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getBasic_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBasic_Fetch(), this.getFetchType(), "fetch", "LAZY", 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBasic_Optional(), theXMLTypePackage.getBoolean(), "optional", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBasic_Column(), this.getColumn(), null, "column", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8807,12 +8619,10 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getBasic_Enumerated(), this.getEnumerated(), "enumerated", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(versionEClass, Version.class, "Version", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getVersion_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, Version.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVersion_Column(), this.getColumn(), null, "column", null, 0, 1, Version.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getVersion_Temporal(), this.getTemporal(), "temporal", null, 0, 1, Version.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(manyToOneEClass, ManyToOne.class, "ManyToOne", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getManyToOne_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, ManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getManyToOne_TargetEntity(), theXMLTypePackage.getString(), "targetEntity", null, 0, 1, ManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getManyToOne_Fetch(), this.getFetchType(), "fetch", "LAZY", 0, 1, ManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getManyToOne_Optional(), theXMLTypePackage.getBoolean(), "optional", null, 0, 1, ManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8821,7 +8631,6 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getManyToOne_Cascade(), this.getCascadeType(), null, "cascade", null, 0, 1, ManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(oneToManyEClass, OneToMany.class, "OneToMany", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getOneToMany_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, OneToMany.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getOneToMany_TargetEntity(), theXMLTypePackage.getString(), "targetEntity", null, 0, 1, OneToMany.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getOneToMany_Fetch(), this.getFetchType(), "fetch", "LAZY", 0, 1, OneToMany.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getOneToMany_MappedBy(), theXMLTypePackage.getString(), "mappedBy", null, 0, 1, OneToMany.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8832,7 +8641,6 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getOneToMany_Cascade(), this.getCascadeType(), null, "cascade", null, 0, 1, OneToMany.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(oneToOneEClass, OneToOne.class, "OneToOne", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getOneToOne_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, OneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getOneToOne_TargetEntity(), theXMLTypePackage.getString(), "targetEntity", null, 0, 1, OneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getOneToOne_Fetch(), this.getFetchType(), "fetch", "LAZY", 0, 1, OneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getOneToOne_Optional(), theXMLTypePackage.getBoolean(), "optional", null, 0, 1, OneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8843,7 +8651,6 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getOneToOne_Cascade(), this.getCascadeType(), null, "cascade", null, 0, 1, OneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(manyToManyEClass, ManyToMany.class, "ManyToMany", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getManyToMany_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, ManyToMany.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getManyToMany_TargetEntity(), theXMLTypePackage.getString(), "targetEntity", null, 0, 1, ManyToMany.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getManyToMany_Fetch(), this.getFetchType(), "fetch", "LAZY", 0, 1, ManyToMany.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getManyToMany_MappedBy(), theXMLTypePackage.getString(), "mappedBy", null, 0, 1, ManyToMany.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8853,11 +8660,9 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getManyToMany_Cascade(), this.getCascadeType(), null, "cascade", null, 0, 1, ManyToMany.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(embeddedEClass, Embedded.class, "Embedded", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getEmbedded_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, Embedded.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEmbedded_AttributeOverrides(), this.getAttributeOverride(), null, "attributeOverrides", null, 0, -1, Embedded.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(transientEClass, Transient.class, "Transient", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getTransient_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, Transient.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(associationOverrideEClass, AssociationOverride.class, "AssociationOverride", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAssociationOverride_JoinColumns(), this.getJoinColumn(), null, "joinColumns", null, 1, -1, AssociationOverride.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -9336,6 +9141,14 @@ public class OrmPackage extends EPackageImpl
 		public static final EAttribute TYPE_MAPPING__DESCRIPTION = eINSTANCE.getTypeMapping_Description();
 
 		/**
+		 * The meta object literal for the '<em><b>Attributes</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference TYPE_MAPPING__ATTRIBUTES = eINSTANCE.getTypeMapping_Attributes();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass <em>Mapped Superclass</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -9432,14 +9245,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference MAPPED_SUPERCLASS__POST_LOAD = eINSTANCE.getMappedSuperclass_PostLoad();
-
-		/**
-		 * The meta object literal for the '<em><b>Attributes</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference MAPPED_SUPERCLASS__ATTRIBUTES = eINSTANCE.getMappedSuperclass_Attributes();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity <em>Entity</em>}' class.
@@ -9652,14 +9457,6 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference ENTITY__ASSOCIATION_OVERRIDES = eINSTANCE.getEntity_AssociationOverrides();
 
 		/**
-		 * The meta object literal for the '<em><b>Attributes</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference ENTITY__ATTRIBUTES = eINSTANCE.getEntity_Attributes();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.Embeddable <em>Embeddable</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -9668,14 +9465,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass EMBEDDABLE = eINSTANCE.getEmbeddable();
-
-		/**
-		 * The meta object literal for the '<em><b>Attributes</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference EMBEDDABLE__ATTRIBUTES = eINSTANCE.getEmbeddable_Attributes();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes <em>Attributes</em>}' class.
@@ -9768,30 +9557,22 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference ATTRIBUTES__TRANSIENTS = eINSTANCE.getAttributes_Transients();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes <em>Embeddable Attributes</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.AttributeMapping <em>Attribute Mapping</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.internal.resource.orm.EmbeddableAttributes
-		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEmbeddableAttributes()
+		 * @see org.eclipse.jpt.core.internal.resource.orm.AttributeMapping
+		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAttributeMapping()
 		 * @generated
 		 */
-		public static final EClass EMBEDDABLE_ATTRIBUTES = eINSTANCE.getEmbeddableAttributes();
+		public static final EClass ATTRIBUTE_MAPPING = eINSTANCE.getAttributeMapping();
 
 		/**
-		 * The meta object literal for the '<em><b>Basics</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference EMBEDDABLE_ATTRIBUTES__BASICS = eINSTANCE.getEmbeddableAttributes_Basics();
-
-		/**
-		 * The meta object literal for the '<em><b>Transients</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference EMBEDDABLE_ATTRIBUTES__TRANSIENTS = eINSTANCE.getEmbeddableAttributes_Transients();
+		public static final EAttribute ATTRIBUTE_MAPPING__NAME = eINSTANCE.getAttributeMapping_Name();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.Id <em>Id</em>}' class.
@@ -9802,14 +9583,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass ID = eINSTANCE.getId();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute ID__NAME = eINSTANCE.getId_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Column</b></em>' containment reference feature.
@@ -9862,14 +9635,6 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass EMBEDDED_ID = eINSTANCE.getEmbeddedId();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute EMBEDDED_ID__NAME = eINSTANCE.getEmbeddedId_Name();
-
-		/**
 		 * The meta object literal for the '<em><b>Attribute Overrides</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -9886,14 +9651,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass BASIC = eINSTANCE.getBasic();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute BASIC__NAME = eINSTANCE.getBasic_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Fetch</b></em>' attribute feature.
@@ -9954,14 +9711,6 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass VERSION = eINSTANCE.getVersion();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute VERSION__NAME = eINSTANCE.getVersion_Name();
-
-		/**
 		 * The meta object literal for the '<em><b>Column</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -9986,14 +9735,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass MANY_TO_ONE = eINSTANCE.getManyToOne();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute MANY_TO_ONE__NAME = eINSTANCE.getManyToOne_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Target Entity</b></em>' attribute feature.
@@ -10052,14 +9793,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass ONE_TO_MANY = eINSTANCE.getOneToMany();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute ONE_TO_MANY__NAME = eINSTANCE.getOneToMany_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Target Entity</b></em>' attribute feature.
@@ -10136,14 +9869,6 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass ONE_TO_ONE = eINSTANCE.getOneToOne();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute ONE_TO_ONE__NAME = eINSTANCE.getOneToOne_Name();
-
-		/**
 		 * The meta object literal for the '<em><b>Target Entity</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -10218,14 +9943,6 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass MANY_TO_MANY = eINSTANCE.getManyToMany();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute MANY_TO_MANY__NAME = eINSTANCE.getManyToMany_Name();
-
-		/**
 		 * The meta object literal for the '<em><b>Target Entity</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -10292,14 +10009,6 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass EMBEDDED = eINSTANCE.getEmbedded();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute EMBEDDED__NAME = eINSTANCE.getEmbedded_Name();
-
-		/**
 		 * The meta object literal for the '<em><b>Attribute Overrides</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -10316,14 +10025,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass TRANSIENT = eINSTANCE.getTransient();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute TRANSIENT__NAME = eINSTANCE.getTransient_Name();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.AssociationOverride <em>Association Override</em>}' class.

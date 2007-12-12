@@ -43,7 +43,7 @@ public class IdTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getId_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createColumnTranslator() {

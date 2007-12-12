@@ -52,7 +52,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getPostLoad <em>Post Load</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getAttributeOverrides <em>Attribute Overrides</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getAssociationOverrides <em>Association Overrides</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getAttributes <em>Attributes</em>}</li>
  * </ul>
  * </p>
  *
@@ -357,16 +356,6 @@ public class Entity extends TypeMapping
 	 * @ordered
 	 */
 	protected EList<AssociationOverride> associationOverrides;
-
-	/**
-	 * The cached value of the '{@link #getAttributes() <em>Attributes</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttributes()
-	 * @generated
-	 * @ordered
-	 */
-	protected Attributes attributes;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1535,66 +1524,6 @@ public class Entity extends TypeMapping
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Attributes</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Attributes</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Attributes</em>' containment reference.
-	 * @see #setAttributes(Attributes)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEntity_Attributes()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public Attributes getAttributes()
-	{
-		return attributes;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetAttributes(Attributes newAttributes, NotificationChain msgs)
-	{
-		Attributes oldAttributes = attributes;
-		attributes = newAttributes;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__ATTRIBUTES, oldAttributes, newAttributes);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Entity#getAttributes <em>Attributes</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Attributes</em>' containment reference.
-	 * @see #getAttributes()
-	 * @generated
-	 */
-	public void setAttributes(Attributes newAttributes)
-	{
-		if (newAttributes != attributes)
-		{
-			NotificationChain msgs = null;
-			if (attributes != null)
-				msgs = ((InternalEObject)attributes).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__ATTRIBUTES, null, msgs);
-			if (newAttributes != null)
-				msgs = ((InternalEObject)newAttributes).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__ATTRIBUTES, null, msgs);
-			msgs = basicSetAttributes(newAttributes, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__ATTRIBUTES, newAttributes, newAttributes));
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1646,8 +1575,6 @@ public class Entity extends TypeMapping
 				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ENTITY__ASSOCIATION_OVERRIDES:
 				return ((InternalEList<?>)getAssociationOverrides()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY__ATTRIBUTES:
-				return basicSetAttributes(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1712,8 +1639,6 @@ public class Entity extends TypeMapping
 				return getAttributeOverrides();
 			case OrmPackage.ENTITY__ASSOCIATION_OVERRIDES:
 				return getAssociationOverrides();
-			case OrmPackage.ENTITY__ATTRIBUTES:
-				return getAttributes();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1811,9 +1736,6 @@ public class Entity extends TypeMapping
 				getAssociationOverrides().clear();
 				getAssociationOverrides().addAll((Collection<? extends AssociationOverride>)newValue);
 				return;
-			case OrmPackage.ENTITY__ATTRIBUTES:
-				setAttributes((Attributes)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1903,9 +1825,6 @@ public class Entity extends TypeMapping
 			case OrmPackage.ENTITY__ASSOCIATION_OVERRIDES:
 				getAssociationOverrides().clear();
 				return;
-			case OrmPackage.ENTITY__ATTRIBUTES:
-				setAttributes((Attributes)null);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1970,8 +1889,6 @@ public class Entity extends TypeMapping
 				return attributeOverrides != null && !attributeOverrides.isEmpty();
 			case OrmPackage.ENTITY__ASSOCIATION_OVERRIDES:
 				return associationOverrides != null && !associationOverrides.isEmpty();
-			case OrmPackage.ENTITY__ATTRIBUTES:
-				return attributes != null;
 		}
 		return super.eIsSet(featureID);
 	}

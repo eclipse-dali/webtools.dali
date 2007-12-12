@@ -183,6 +183,6 @@ public class EntityTranslator extends Translator
 	}
 	
 	private Translator createAttributesTranslator() {
-		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getEntity_Attributes());
+		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getTypeMapping_Attributes());
 	}
 }

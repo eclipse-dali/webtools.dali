@@ -15,7 +15,6 @@ import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -26,7 +25,6 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Id#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Id#getColumn <em>Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Id#getGeneratedValue <em>Generated Value</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Id#getTemporal <em>Temporal</em>}</li>
@@ -37,10 +35,9 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getId()
  * @model kind="class"
- * @extends IJpaEObject
  * @generated
  */
-public class Id extends JpaEObject implements IJpaEObject
+public class Id extends JpaEObject implements AttributeMapping
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -153,7 +150,7 @@ public class Id extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getId_Name()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAttributeMapping_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */

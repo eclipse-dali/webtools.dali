@@ -86,7 +86,6 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.ENTITY: return (EObject)createEntity();
 			case OrmPackage.EMBEDDABLE: return (EObject)createEmbeddable();
 			case OrmPackage.ATTRIBUTES: return (EObject)createAttributes();
-			case OrmPackage.EMBEDDABLE_ATTRIBUTES: return (EObject)createEmbeddableAttributes();
 			case OrmPackage.ID: return (EObject)createId();
 			case OrmPackage.EMBEDDED_ID: return (EObject)createEmbeddedId();
 			case OrmPackage.BASIC: return (EObject)createBasic();
@@ -318,17 +317,6 @@ public class OrmFactory extends EFactoryImpl
 	{
 		Attributes attributes = new Attributes();
 		return attributes;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EmbeddableAttributes createEmbeddableAttributes()
-	{
-		EmbeddableAttributes embeddableAttributes = new EmbeddableAttributes();
-		return embeddableAttributes;
 	}
 
 	/**

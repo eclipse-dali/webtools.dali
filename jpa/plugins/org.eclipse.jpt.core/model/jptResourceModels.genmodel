@@ -90,6 +90,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TypeMapping/access"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TypeMapping/metadataComplete"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TypeMapping/description"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//TypeMapping/attributes"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//MappedSuperclass">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//MappedSuperclass/idClass"/>
@@ -103,7 +104,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//MappedSuperclass/preUpdate"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//MappedSuperclass/postUpdate"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//MappedSuperclass/postLoad"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//MappedSuperclass/attributes"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//Entity">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Entity/name"/>
@@ -131,11 +131,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/postLoad"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/attributeOverrides"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/associationOverrides"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Entity/attributes"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//Embeddable">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Embeddable/attributes"/>
-    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//Embeddable"/>
     <genClasses ecoreClass="orm.ecore#//Attributes">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Attributes/ids"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Attributes/embeddedId"/>
@@ -148,12 +145,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Attributes/embeddeds"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Attributes/transients"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//EmbeddableAttributes">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//EmbeddableAttributes/basics"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//EmbeddableAttributes/transients"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//AttributeMapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AttributeMapping/name"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//Id">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Id/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Id/column"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Id/generatedValue"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Id/temporal"/>
@@ -161,11 +156,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Id/sequenceGenerator"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//EmbeddedId">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//EmbeddedId/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//EmbeddedId/attributeOverrides"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//Basic">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/fetch"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/optional"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Basic/column"/>
@@ -174,12 +167,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/enumerated"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//Version">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Version/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Version/column"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Version/temporal"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//ManyToOne">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToOne/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToOne/targetEntity"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToOne/fetch"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToOne/optional"/>
@@ -188,7 +179,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//ManyToOne/cascade"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//OneToMany">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToMany/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToMany/targetEntity"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToMany/fetch"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToMany/mappedBy"/>
@@ -199,7 +189,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//OneToMany/cascade"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//OneToOne">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToOne/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToOne/targetEntity"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToOne/fetch"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToOne/optional"/>
@@ -210,7 +199,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//OneToOne/cascade"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//ManyToMany">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToMany/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToMany/targetEntity"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToMany/fetch"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToMany/mappedBy"/>
@@ -220,12 +208,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//ManyToMany/cascade"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//Embedded">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Embedded/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Embedded/attributeOverrides"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//Transient">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Transient/name"/>
-    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//Transient"/>
     <genClasses ecoreClass="orm.ecore#//AssociationOverride">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//AssociationOverride/joinColumns"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AssociationOverride/name"/>

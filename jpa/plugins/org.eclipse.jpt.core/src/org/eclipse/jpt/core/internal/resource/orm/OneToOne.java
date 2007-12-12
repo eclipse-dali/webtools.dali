@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -29,7 +28,6 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getTargetEntity <em>Target Entity</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getFetch <em>Fetch</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#isOptional <em>Optional</em>}</li>
@@ -43,10 +41,9 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToOne()
  * @model kind="class"
- * @extends IJpaEObject
  * @generated
  */
-public class OneToOne extends JpaEObject implements IJpaEObject
+public class OneToOne extends JpaEObject implements AttributeMapping
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -224,7 +221,7 @@ public class OneToOne extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToOne_Name()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAttributeMapping_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */

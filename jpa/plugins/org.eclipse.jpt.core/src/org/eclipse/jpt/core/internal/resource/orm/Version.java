@@ -15,7 +15,6 @@ import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -26,7 +25,6 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Version#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Version#getColumn <em>Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Version#getTemporal <em>Temporal</em>}</li>
  * </ul>
@@ -34,10 +32,9 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getVersion()
  * @model kind="class"
- * @extends IJpaEObject
  * @generated
  */
-public class Version extends JpaEObject implements IJpaEObject
+public class Version extends JpaEObject implements AttributeMapping
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -120,7 +117,7 @@ public class Version extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getVersion_Name()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAttributeMapping_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
