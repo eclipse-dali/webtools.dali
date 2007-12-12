@@ -54,9 +54,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 	public void testMorphToEntity() throws Exception {
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
-		
+				
 		javaPersistentType().setMappingKey(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof IEntity);
 		
@@ -68,9 +66,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 	public void testMorphToEmbeddable() throws Exception {
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
-		
+				
 		javaPersistentType().setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof IEmbeddable);
 		
@@ -82,9 +78,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 	public void testMorphToNull() throws Exception {
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
-		
+				
 		javaPersistentType().setMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof JavaNullTypeMapping);
 		

@@ -54,9 +54,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 	public void testMorphToEntity() throws Exception {
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
-		
+				
 		javaPersistentType().setMappingKey(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof IEntity);
 		
@@ -68,9 +66,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 	public void testMorphToMappedSuperclass() throws Exception {
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
-		
+				
 		javaPersistentType().setMappingKey(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof IMappedSuperclass);
 		
@@ -82,8 +78,6 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 	public void testMorphToNull() throws Exception {
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
 		
 		javaPersistentType().setMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof JavaNullTypeMapping);
