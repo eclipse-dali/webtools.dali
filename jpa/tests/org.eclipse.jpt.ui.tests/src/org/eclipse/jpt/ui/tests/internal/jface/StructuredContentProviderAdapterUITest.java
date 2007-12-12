@@ -28,7 +28,7 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.swt.SWT;
@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Text;
 public class StructuredContentProviderAdapterUITest
 	extends ApplicationWindow
 {
-	private PropertyValueModel taskListHolder;
+	private WritablePropertyValueModel taskListHolder;
 	private Text taskTextField;
 
 	public static void main(String[] args) throws Exception {
