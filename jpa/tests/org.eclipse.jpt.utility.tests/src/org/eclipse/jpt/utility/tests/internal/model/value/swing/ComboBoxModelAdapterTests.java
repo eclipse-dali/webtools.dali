@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.tests.internal.model.value.swing;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ListIterator;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.ListModel;
@@ -50,9 +49,9 @@ public class ComboBoxModelAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		SimpleListValueModel listHolder = this.buildListHolder();
+		SimpleListValueModel<Displayable> listHolder = this.buildListHolder();
 		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		SimplePropertyValueModel selectionHolder = new SimplePropertyValueModel(((ListIterator) listHolder.values()).next());
+		SimplePropertyValueModel selectionHolder = new SimplePropertyValueModel(listHolder.iterator().next());
 		assertFalse(selectionHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
 
 		ComboBoxModel comboBoxModel = new ComboBoxModelAdapter(listHolder, selectionHolder);
@@ -60,7 +59,7 @@ public class ComboBoxModelAdapterTests extends TestCase {
 		assertFalse(selectionHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
 		this.verifyHasNoListeners(comboBoxModel);
 
-		SynchronizedList synchList = new SynchronizedList(comboBoxModel);
+		SynchronizedList<Displayable> synchList = new SynchronizedList<Displayable>(comboBoxModel);
 		PropertyChangeListener selectionListener = this.buildSelectionListener();
 		selectionHolder.addPropertyChangeListener(ValueModel.VALUE, selectionListener);
 		assertTrue(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
@@ -92,8 +91,8 @@ public class ComboBoxModelAdapterTests extends TestCase {
 		assertTrue(hasListeners);
 	}
 
-	private SimpleListValueModel buildListHolder() {
-		return new SimpleListValueModel(this.buildList());
+	private SimpleListValueModel<Displayable> buildListHolder() {
+		return new SimpleListValueModel<Displayable>(this.buildList());
 	}
 
 	private List<Displayable> buildList() {

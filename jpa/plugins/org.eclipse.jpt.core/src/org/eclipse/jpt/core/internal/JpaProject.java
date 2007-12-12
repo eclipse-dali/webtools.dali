@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -40,15 +41,16 @@ import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-import org.eclipse.jpt.utility.internal.model.ChangeEventDispatcher;
-import org.eclipse.jpt.utility.internal.model.SimpleChangeEventDispatcher;
 import org.eclipse.jpt.utility.internal.node.Node;
+import org.eclipse.jst.j2ee.internal.J2EEConstants;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * 
  */
-public class JpaProject extends JpaNode implements IJpaProject 
-{
+public class JpaProject extends JpaNode implements IJpaProject {
+
 	/**
 	 * The Eclipse project corresponding to the JPA project.
 	 */
@@ -76,9 +78,10 @@ public class JpaProject extends JpaNode implements IJpaProject
 	 * listed in persistence.xml.
 	 */
 	protected boolean discoversAnnotatedClasses;
-	
+
 	/**
-	 * The model representing the collated resources associated with this JPA project.
+	 * The model representing the collated resources associated
+	 * with the JPA project.
 	 */
 	protected IContextModel contextModel;
 
@@ -86,11 +89,6 @@ public class JpaProject extends JpaNode implements IJpaProject
 	 * The visitor passed to resource deltas.
 	 */
 	protected final IResourceDeltaVisitor resourceDeltaVisitor;
-
-	/**
-	 * The dispatcher can be changed so it is UI-aware.
-	 */
-	protected volatile ChangeEventDispatcher changeEventDispatcher;
 
 	/**
 	 * Support for modifying documents shared with the UI.
@@ -105,11 +103,11 @@ public class JpaProject extends JpaNode implements IJpaProject
 	protected final UpdateJpaProjectJobScheduler updateJpaProjectJobScheduler;
 
 	/**
-	 * Resource models notify this listener when they change. a project update
+	 * Resource models notify this listener when they change. A project update
 	 * should occur any time a resource model changes.
 	 */
 	protected IResourceModelListener resourceModelListener;
-	
+
 
 	// ********** constructor/initialization **********
 
@@ -125,26 +123,22 @@ public class JpaProject extends JpaNode implements IJpaProject
 		this.jpaPlatform = config.jpaPlatform();
 		this.dataSource = this.jpaFactory().createJpaDataSource(this, config.connectionProfileName());
 		this.discoversAnnotatedClasses = config.discoverAnnotatedClasses();
-		this.jpaFiles = this.buildJpaFiles();
+		this.jpaFiles = this.buildEmptyJpaFiles();
 
 		this.resourceDeltaVisitor = this.buildResourceDeltaVisitor();
-		this.changeEventDispatcher = this.buildChangeEventDispatcher();
 		this.threadLocalModifySharedDocumentCommandExecutor = this.buildThreadLocalModifySharedDocumentCommandExecutor();
 		this.modifySharedDocumentCommandExecutorProvider = this.buildModifySharedDocumentCommandExecutorProvider();
 
 		this.updateJpaProjectJobScheduler = this.buildUpdateJpaProjectJobScheduler();
+		this.resourceModelListener = this.buildResourceModelListener();
 		// build the JPA files corresponding to the Eclipse project's files
 		this.project.accept(this.buildInitialResourceProxyVisitor(), IResource.NONE);
 
-		this.contextModel = buildContextModel();
-		
+		this.contextModel = this.buildContextModel();
+
 		this.update();
 	}
 
-	protected IContextModel buildContextModel() {
-		return jpaFactory().buildContextModel(this);
-	}
-	
 	@Override
 	protected void checkParent(Node parentNode) {
 		if (parentNode != null) {
@@ -152,16 +146,12 @@ public class JpaProject extends JpaNode implements IJpaProject
 		}
 	}
 
-	protected Vector<IJpaFile> buildJpaFiles() {
+	protected Vector<IJpaFile> buildEmptyJpaFiles() {
 		return new Vector<IJpaFile>();
 	}
 
 	protected IResourceDeltaVisitor buildResourceDeltaVisitor() {
 		return new ResourceDeltaVisitor();
-	}
-
-	protected ChangeEventDispatcher buildChangeEventDispatcher() {
-		return SimpleChangeEventDispatcher.instance();
 	}
 
 	protected ThreadLocal<CommandExecutor> buildThreadLocalModifySharedDocumentCommandExecutor() {
@@ -172,12 +162,20 @@ public class JpaProject extends JpaNode implements IJpaProject
 		return new ModifySharedDocumentCommandExecutorProvider();
 	}
 
+	protected UpdateJpaProjectJobScheduler buildUpdateJpaProjectJobScheduler() {
+		return new UpdateJpaProjectJobScheduler(this, this.project);
+	}
+
+	protected IResourceModelListener buildResourceModelListener() {
+		return new ResourceModelListener();
+	}
+
 	protected IResourceProxyVisitor buildInitialResourceProxyVisitor() {
 		return new InitialResourceProxyVisitor();
 	}
 
-	protected UpdateJpaProjectJobScheduler buildUpdateJpaProjectJobScheduler() {
-		return new UpdateJpaProjectJobScheduler(this, this.project);
+	protected IContextModel buildContextModel() {
+		return this.jpaFactory().buildContextModel(this);
 	}
 
 	// ***** inner class
@@ -284,37 +282,40 @@ public class JpaProject extends JpaNode implements IJpaProject
 	 * Add a JPA file for the specified file, if appropriate.
 	 */
 	protected void addJpaFile(IFile file) {
-		IJpaFile jpaFile = this.jpaPlatform.buildJpaFile(this, file);
+		IJpaFile jpaFile = this.addJpaFileInternal(file);
 		if (jpaFile != null) {
-			this.addItemToCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION);
-			for (IJpaFile jpaFile2 : CollectionTools.iterable(jpaFiles())) {
-				jpaFile2.fileAdded(jpaFile);
+			this.fireItemAdded(JPA_FILES_COLLECTION, jpaFile);
+			for (Iterator<IJpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
+				stream.next().fileAdded(jpaFile);
 			}
-			jpaFile.getResourceModel().addResourceModelChangeListener(getResourceModelListener());
 		}
 	}
-	
+
 	/**
-	 * Add directly to the collection so that we don't fire change events during construction
+	 * Add a JPA file for the specified file, if appropriate, without firing
+	 * an event; useful during construction.
+	 * Return the new JPA file, null if it was not created.
 	 */
-	protected void addJpaFileInternal(IFile file) {
+	protected IJpaFile addJpaFileInternal(IFile file) {
 		IJpaFile jpaFile = this.jpaPlatform.buildJpaFile(this, file);
-		if (jpaFile != null) {
-			this.jpaFiles.add(jpaFile);
-			jpaFile.getResourceModel().addResourceModelChangeListener(getResourceModelListener());
+		if (jpaFile == null) {
+			return null;
 		}
+		this.jpaFiles.add(jpaFile);
+		jpaFile.getResourceModel().addResourceModelChangeListener(this.resourceModelListener);
+		return jpaFile;
 	}
 
 	/**
 	 * Remove the specified JPA file and dispose it.
 	 */
 	protected void removeJpaFile(IJpaFile jpaFile) {
-		jpaFile.getResourceModel().removeResourceModelChangeListener(getResourceModelListener());
+		jpaFile.getResourceModel().removeResourceModelChangeListener(this.resourceModelListener);
 		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
 			throw new IllegalArgumentException("JPA file: " + jpaFile.getFile().getName());
 		}
-		for (IJpaFile jpaFile2 : CollectionTools.iterable(jpaFiles())) {
-			jpaFile2.fileRemoved(jpaFile);
+		for (Iterator<IJpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
+			stream.next().fileRemoved(jpaFile);
 		}
 		jpaFile.dispose();
 	}
@@ -322,32 +323,12 @@ public class JpaProject extends JpaNode implements IJpaProject
 	protected boolean containsJpaFile(IFile file) {
 		return (this.jpaFile(file) != null);
 	}
-	
-	
-	// **************** context model *****************************************
-	
-	/**
-	 * @see IJpaProject#getContextModel()
-	 */
+
+
+	// ********** context model **********
+
 	public IContextModel contextModel() {
 		return this.contextModel;
-	}
-	
-	void setContextModel(IContextModel contextModel) {
-		this.contextModel = contextModel;
-	}
-	
-	
-	// ********** change event dispatcher **********
-
-	@Override
-	public ChangeEventDispatcher changeEventDispatcher() {
-		return this.changeEventDispatcher;
-	}
-
-	@Override
-	public void setChangeEventDispatcher(ChangeEventDispatcher changeEventDispatcher) {
-		this.changeEventDispatcher = changeEventDispatcher;
 	}
 
 
@@ -362,9 +343,9 @@ public class JpaProject extends JpaNode implements IJpaProject
 		};
 	}
 
-	public JavaPersistentTypeResource javaPersistentTypeResource(String fullyQualifiedTypeName) {
+	public JavaPersistentTypeResource javaPersistentTypeResource(String typeName) {
 		for (JpaCompilationUnitResource jpCompilationUnitResource : CollectionTools.iterable(this.jpaCompilationUnitResources())) {
-			JavaPersistentTypeResource jptr =  jpCompilationUnitResource.javaPersistentTypeResource(fullyQualifiedTypeName);
+			JavaPersistentTypeResource jptr =  jpCompilationUnitResource.javaPersistentTypeResource(typeName);
 			if (jptr != null) {
 				return jptr;
 			}
@@ -384,9 +365,8 @@ public class JpaProject extends JpaNode implements IJpaProject
 
 	// ********** validation **********
 
-	@SuppressWarnings("restriction")
-	public Iterator<org.eclipse.wst.validation.internal.provisional.core.IMessage> validationMessages() {
-		List<org.eclipse.wst.validation.internal.provisional.core.IMessage> messages = new ArrayList<org.eclipse.wst.validation.internal.provisional.core.IMessage>();
+	public Iterator<IMessage> validationMessages() {
+		List<IMessage> messages = new ArrayList<IMessage>();
 		this.jpaPlatform.addToMessages(messages);
 		return messages.iterator();
 	}
@@ -394,15 +374,13 @@ public class JpaProject extends JpaNode implements IJpaProject
 
 	// ********** root deploy location **********
 
-	@SuppressWarnings("restriction")
-	protected static final String WEB_PROJECT_ROOT_DEPLOY_LOCATION = org.eclipse.jst.j2ee.internal.J2EEConstants.WEB_INF_CLASSES;
+	protected static final String WEB_PROJECT_ROOT_DEPLOY_LOCATION = J2EEConstants.WEB_INF_CLASSES;
 
 	public String rootDeployLocation() {
 		return this.isWebProject() ? WEB_PROJECT_ROOT_DEPLOY_LOCATION : "";
 	}
 
-	@SuppressWarnings("restriction")
-	protected static final String JST_WEB_MODULE = org.eclipse.wst.common.componentcore.internal.util.IModuleConstants.JST_WEB_MODULE;
+	protected static final String JST_WEB_MODULE = IModuleConstants.JST_WEB_MODULE;
 
 	protected boolean isWebProject() {
 		return JptCorePlugin.projectHasWebFacet(this.project);
@@ -434,6 +412,18 @@ public class JpaProject extends JpaNode implements IJpaProject
 	}
 
 
+	// ********** resource model listener **********
+
+	protected class ResourceModelListener implements IResourceModelListener {
+		protected ResourceModelListener() {
+			super();
+		}
+		public void resourceModelChanged() {
+			JpaProject.this.update();
+		}
+	}
+
+
 	// ********** handling resource deltas **********
 
 	public void synchronizeJpaFiles(IResourceDelta delta) throws CoreException {
@@ -443,7 +433,7 @@ public class JpaProject extends JpaNode implements IJpaProject
 	/**
 	 * resource delta visitor callback
 	 */
-	protected void synchronizeJpaFile(IFile file, int deltaKind) {
+	protected void synchronizeJpaFiles(IFile file, int deltaKind) {
 		switch (deltaKind) {
 			case IResourceDelta.ADDED :
 				if ( ! this.containsJpaFile(file)) {
@@ -480,7 +470,7 @@ public class JpaProject extends JpaNode implements IJpaProject
 				case IResource.FOLDER :
 					return true;  // visit children
 				case IResource.FILE :
-					JpaProject.this.synchronizeJpaFile((IFile) res, delta.getKind());
+					JpaProject.this.synchronizeJpaFiles((IFile) res, delta.getKind());
 					return false;  // no children
 				default :
 					return false;  // no children
@@ -519,7 +509,6 @@ public class JpaProject extends JpaNode implements IJpaProject
 	}
 
 
-
 	// ********** update project **********
 
 	public IStatus update(IProgressMonitor monitor) {
@@ -528,7 +517,7 @@ public class JpaProject extends JpaNode implements IJpaProject
 		}
 
 		try {
-			contextModel().update(monitor);
+			this.contextModel.update(monitor);
 		} catch (OperationCanceledException ex) {
 			return Status.CANCEL_STATUS;
 		} catch (Throwable ex) {
@@ -540,7 +529,7 @@ public class JpaProject extends JpaNode implements IJpaProject
 		}
 		return Status.OK_STATUS;
 	}
-	
+
 	boolean isUpdating;
 	boolean needsToUpdate;
 
@@ -554,7 +543,7 @@ public class JpaProject extends JpaNode implements IJpaProject
 		}
 		else {
 			this.isUpdating = true;
-			contextModel().update(null);
+			this.contextModel.update(null);
 			this.isUpdating = false;
 			if (this.needsToUpdate) {
 				this.needsToUpdate = false;
@@ -641,23 +630,6 @@ public class JpaProject extends JpaNode implements IJpaProject
 			protected IStatus run(IProgressMonitor monitor) {
 				return this.jpaProject.update(monitor);
 			}
-		}
-	}
-	
-	protected IResourceModelListener getResourceModelListener() {
-		if (this.resourceModelListener == null) {
-			this.resourceModelListener = new ResourceModelListener();
-		}
-		return this.resourceModelListener;
-	}
-		
-	public class ResourceModelListener implements IResourceModelListener {
-		
-		private ResourceModelListener() {
-			super();
-		}
-		public void resourceModelChanged() {
-			JpaProject.this.update();
 		}
 	}
 

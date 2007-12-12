@@ -60,7 +60,7 @@ public class PropertyCollectionValueModelAdapter
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUES);
+		return new SingleAspectChangeSupport(this, CollectionChangeListener.class, VALUES);
 	}
 
 	/**
@@ -82,27 +82,11 @@ public class PropertyCollectionValueModelAdapter
 
 	// ********** CollectionValueModel implementation **********
 
-	public Iterator values() {
+	public Iterator iterator() {
 		return (this.value == null) ?
 					EmptyIterator.instance()
 				:
 					new SingleElementIterator(this.value);
-	}
-
-	public void add(Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void addAll(Collection items) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void remove(Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void removeAll(Collection items) {
-		throw new UnsupportedOperationException();
 	}
 
 	public int size() {

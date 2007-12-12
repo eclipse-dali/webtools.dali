@@ -24,11 +24,11 @@ import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 public class SimpleCollectionValueModelTests extends TestCase {
-	private CollectionValueModel bagHolder;
+	private SimpleCollectionValueModel bagHolder;
 	CollectionChangeEvent bagEvent;
 	String bagEventType;
 
-	private CollectionValueModel setHolder;
+	private SimpleCollectionValueModel setHolder;
 	CollectionChangeEvent setEvent;
 	String setEventType;
 
@@ -88,34 +88,34 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testValues() {
-		assertEquals(this.buildBag(), CollectionTools.bag((Iterator) this.bagHolder.values()));
-		assertEquals(this.buildSet(), CollectionTools.set((Iterator) this.setHolder.values()));
+	public void testIterator() {
+		assertEquals(this.buildBag(), CollectionTools.bag(this.bagHolder.iterator()));
+		assertEquals(this.buildSet(), CollectionTools.set(this.setHolder.iterator()));
 	}
 
 	public void testSize() {
-		assertEquals(this.buildBag().size(), CollectionTools.size((Iterator) this.bagHolder.values()));
-		assertEquals(this.buildSet().size(), CollectionTools.size((Iterator) this.setHolder.values()));
+		assertEquals(this.buildBag().size(), CollectionTools.size((Iterator) this.bagHolder.iterator()));
+		assertEquals(this.buildSet().size(), CollectionTools.size((Iterator) this.setHolder.iterator()));
 	}
 
 	private boolean bagHolderContains(Object item) {
-		return CollectionTools.contains((Iterator) this.bagHolder.values(), item);
+		return CollectionTools.contains((Iterator) this.bagHolder.iterator(), item);
 	}
 
 	private boolean setHolderContains(Object item) {
-		return CollectionTools.contains((Iterator) this.setHolder.values(), item);
+		return CollectionTools.contains((Iterator) this.setHolder.iterator(), item);
 	}
 
 	private boolean bagHolderContainsAll(Collection<String> items) {
-		return CollectionTools.containsAll((Iterator) this.bagHolder.values(), items);
+		return CollectionTools.containsAll((Iterator) this.bagHolder.iterator(), items);
 	}
 
 	private boolean setHolderContainsAll(Collection<String> items) {
-		return CollectionTools.containsAll((Iterator) this.setHolder.values(), items);
+		return CollectionTools.containsAll((Iterator) this.setHolder.iterator(), items);
 	}
 
 	private boolean bagHolderContainsAny(Collection<String> items) {
-		Bag bag = CollectionTools.bag((Iterator) this.bagHolder.values());
+		Bag bag = CollectionTools.bag((Iterator) this.bagHolder.iterator());
 		for (String string : items) {
 			if (bag.contains(string)) {
 				return true;
@@ -125,7 +125,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	}
 
 	private boolean setHolderContainsAny(Collection<String> items) {
-		Set set = CollectionTools.set((Iterator) this.setHolder.values());
+		Set set = CollectionTools.set((Iterator) this.setHolder.iterator());
 		for (String string : items) {
 			if (set.contains(string)) {
 				return true;
@@ -192,10 +192,10 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		assertFalse(this.setHolderContainsAny(this.buildRemoveItems()));
 	}
 
-	public void testSetValue() {
+	public void testSetCollection() {
 		assertTrue(this.bagHolderContains("bar"));
 		assertFalse(this.bagHolderContains("jar"));
-		((SimpleCollectionValueModel) this.bagHolder).setValue(this.buildAddItems());
+		((SimpleCollectionValueModel) this.bagHolder).setCollection(this.buildAddItems());
 		assertFalse(this.bagHolderContains("bar"));
 		assertTrue(this.bagHolderContains("jar"));
 
@@ -204,12 +204,12 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		this.bagHolder.remove(null);
 		assertFalse(this.bagHolderContains(null));
 
-		((SimpleCollectionValueModel) this.bagHolder).setValue(null);
+		((SimpleCollectionValueModel) this.bagHolder).setCollection(new HashBag());
 		assertFalse(this.bagHolderContains("jar"));
 
 		assertTrue(this.setHolderContains("bar"));
 		assertFalse(this.setHolderContains("jar"));
-		((SimpleCollectionValueModel) this.setHolder).setValue(this.buildAddItems());
+		((SimpleCollectionValueModel) this.setHolder).setCollection(this.buildAddItems());
 		assertFalse(this.setHolderContains("bar"));
 		assertTrue(this.setHolderContains("jar"));
 
@@ -218,7 +218,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		this.setHolder.remove(null);
 		assertFalse(this.setHolderContains(null));
 
-		((SimpleCollectionValueModel) this.setHolder).setValue(null);
+		((SimpleCollectionValueModel) this.setHolder).setCollection(new HashBag());
 		assertFalse(this.setHolderContains("jar"));
 	}
 
@@ -276,7 +276,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 		this.bagEvent = null;
 		this.bagEventType = null;
-		((SimpleCollectionValueModel) this.bagHolder).setValue(this.buildBag());
+		((SimpleCollectionValueModel) this.bagHolder).setCollection(this.buildBag());
 		this.verifyBagEvent(CHANGE);
 
 		this.bagEvent = null;
@@ -333,7 +333,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 		this.setEvent = null;
 		this.setEventType = null;
-		((SimpleCollectionValueModel) this.setHolder).setValue(this.buildSet());
+		((SimpleCollectionValueModel) this.setHolder).setCollection(this.buildSet());
 		this.verifySetEvent(CHANGE);
 
 		this.setEvent = null;

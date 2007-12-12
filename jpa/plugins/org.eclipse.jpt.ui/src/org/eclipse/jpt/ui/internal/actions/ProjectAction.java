@@ -35,16 +35,10 @@ public abstract class ProjectAction implements IObjectActionDelegate {
 		super();
 	}
 
-	/**
-	 * @see IObjectActionDelegate#setActivePart(IAction, IWorkbenchPart)
-	 */
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 		// do nothing
 	}
 
-	/**
-	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
-	 */
 	public void selectionChanged(IAction action, ISelection selection) {
         this.currentSelection = selection;
 	}
@@ -56,9 +50,6 @@ public abstract class ProjectAction implements IObjectActionDelegate {
 		return null;
 	}
 	
-	/**
-	 * @see IActionDelegate#run(IAction)
-	 */
 	public void run(IAction action) {
 		if (this.currentSelection instanceof IStructuredSelection) {
 			for (Iterator stream = ((IStructuredSelection) this.currentSelection).iterator(); stream.hasNext(); ) {

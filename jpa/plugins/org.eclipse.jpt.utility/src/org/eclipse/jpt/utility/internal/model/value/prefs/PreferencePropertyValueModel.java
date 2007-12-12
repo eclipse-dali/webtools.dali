@@ -43,7 +43,7 @@ import org.eclipse.jpt.utility.internal.model.value.ValueModel;
  * the Preferences node that *it* has changed. This means we cannot
  * rely on that event to keep our internally cached value in synch.
  */
-public class PreferencePropertyValueModel
+public class PreferencePropertyValueModel<P>
 	extends AspectAdapter
 	implements PropertyValueModel
 {
@@ -54,19 +54,19 @@ public class PreferencePropertyValueModel
 	 * Cache the current (object) value of the preference so we
 	 * can pass an "old value" when we fire a property change event.
 	 */
-	protected Object value;
+	protected P value;
 
 	/**
 	 * The default (object) value returned if there is no value
 	 * associated with the preference.
 	 */
-	protected final Object defaultValue;
+	protected final P defaultValue;
 
 	/**
 	 * This converter is used to convert the preference's
 	 * string value to and from an object.
 	 */
-	protected BidiStringConverter converter;
+	protected final BidiStringConverter<P> converter;
 
 	/** A listener that listens to the appropriate preference. */
 	protected final PreferenceChangeListener preferenceChangeListener;
@@ -86,24 +86,42 @@ public class PreferencePropertyValueModel
 	 * Construct an adapter for the specified preference with
 	 * the specified default value for the preference.
 	 */
-	public PreferencePropertyValueModel(Preferences preferences, String key, Object defaultValue) {
-		this(new ReadOnlyPropertyValueModel(preferences), key, defaultValue);
+	public PreferencePropertyValueModel(Preferences preferences, String key, P defaultValue) {
+		this(preferences, key, defaultValue, BidiStringConverter.Default.<P>instance());
 	}
 
 	/**
 	 * Construct an adapter for the specified preference with
 	 * the specified default value for the preference.
 	 */
-	public PreferencePropertyValueModel(Preferences preferences, String key, boolean defaultValue) {
-		this(preferences, key, defaultValue ? Boolean.TRUE : Boolean.FALSE);
+	public PreferencePropertyValueModel(Preferences preferences, String key, P defaultValue, BidiStringConverter<P> converter) {
+		this(new ReadOnlyPropertyValueModel(preferences), key, defaultValue, converter);
 	}
 
 	/**
 	 * Construct an adapter for the specified preference with
 	 * the specified default value for the preference.
 	 */
-	public PreferencePropertyValueModel(Preferences preferences, String key, int defaultValue) {
-		this(preferences, key, new Integer(defaultValue));
+	public static PreferencePropertyValueModel<Boolean> forBoolean(Preferences preferences, String key, boolean defaultValue) {
+		return new PreferencePropertyValueModel<Boolean>(
+				preferences,
+				key,
+				defaultValue ? Boolean.TRUE : Boolean.FALSE,
+				BidiStringConverter.BooleanConverter.instance()
+			);
+	}
+
+	/**
+	 * Construct an adapter for the specified preference with
+	 * the specified default value for the preference.
+	 */
+	public static PreferencePropertyValueModel<Integer> forInteger(Preferences preferences, String key, int defaultValue) {
+		return new PreferencePropertyValueModel<Integer>(
+				preferences,
+				key,
+				new Integer(defaultValue),
+				BidiStringConverter.IntegerConverter.instance()
+			);
 	}
 
 	/**
@@ -118,11 +136,19 @@ public class PreferencePropertyValueModel
 	 * Construct an adapter for the specified preference with
 	 * the specified default value for the preference.
 	 */
-	public PreferencePropertyValueModel(ValueModel preferencesHolder, String key, Object defaultValue) {
+	public PreferencePropertyValueModel(ValueModel preferencesHolder, String key, P defaultValue) {
+		this(preferencesHolder, key, defaultValue, BidiStringConverter.Default.<P>instance());
+	}
+
+	/**
+	 * Construct an adapter for the specified preference with
+	 * the specified default value for the preference.
+	 */
+	public PreferencePropertyValueModel(ValueModel preferencesHolder, String key, P defaultValue, BidiStringConverter<P> converter) {
 		super(preferencesHolder);
 		this.key = key;
 		this.defaultValue = defaultValue;
-		this.converter = BidiStringConverter.Default.instance();
+		this.converter = converter;
 		this.preferenceChangeListener = this.buildPreferenceChangeListener();
 		// our value is null when we are not listening to the preference
 		this.value = null;
@@ -161,10 +187,16 @@ public class PreferencePropertyValueModel
 
 	// ********** PropertyValueModel implementation **********
 
+	// TODO combine these methods when PropertyValueModel is parameterized
+	@SuppressWarnings("unchecked")
+	public synchronized void setValue(Object value) {
+		this.setValue2((P) value);
+	}
+	
 	/**
 	 * Set the cached value, then set the appropriate preference value.
 	 */
-	public synchronized void setValue(Object value) {
+	protected void setValue2(P value) {
 		if (this.hasNoListeners()) {
 			return;		// no changes allowed when we have no listeners
 		}
@@ -174,7 +206,7 @@ public class PreferencePropertyValueModel
 		this.fireAspectChange(old, value);
 
 		if ((this.subject != null) && this.shouldSetPreference(old, value)) {
-			this.setValueOnSubject(value);
+			this.setValue_(value);
 		}
 	}
 
@@ -242,24 +274,6 @@ public class PreferencePropertyValueModel
 		return this.key;
 	}
 
-	/**
-	 * Return the converter used to convert the
-	 * preference's value to and from a string.
-	 * The default is to use the unconverted string.
-	 */
-	public synchronized BidiStringConverter getConverter() {
-		return this.converter;
-	}
-
-	/**
-	 * Set the converter used to convert the
-	 * preference's value to and from a string.
-	 * The default is to use the unconverted string.
-	 */
-	public synchronized void setConverter(BidiStringConverter converter) {
-		this.converter = converter;
-	}
-
 
 	// ********** internal methods **********
 
@@ -267,18 +281,15 @@ public class PreferencePropertyValueModel
 	 * Return the preference's value.
 	 * At this point the subject may be null.
 	 */
-	protected Object buildValue() {
-		if (this.subject == null) {
-			return null;
-		}
-		return this.getValueFromSubject();
+	protected P buildValue() {
+		return (this.subject == null) ? null : this.buildValue_();
 	}
 
 	/**
 	 * Return the appropriate preference, converted to the appropriate object.
 	 * At this point we can be sure that the subject is not null.
 	 */
-	protected Object getValueFromSubject() {
+	protected P buildValue_() {
 		return this.convertToObject(((Preferences) this.subject).get(this.key, this.convertToString(this.defaultValue)));
 	}
 
@@ -286,7 +297,7 @@ public class PreferencePropertyValueModel
 	 * Set the appropriate preference after converting the value to a string.
 	 * At this point we can be sure that the subject is not null.
 	 */
-	protected void setValueOnSubject(Object value) {
+	protected void setValue_(P value) {
 		((Preferences) this.subject).put(this.key, this.convertToString(value));
 	}
 
@@ -308,7 +319,7 @@ public class PreferencePropertyValueModel
 	 * Convert the specified object to a string that can be stored as
 	 * the value of the preference.
 	 */
-	protected String convertToString(Object o) {
+	protected String convertToString(P o) {
 		return this.converter.convertToString(o);
 	}
 
@@ -316,7 +327,7 @@ public class PreferencePropertyValueModel
 	 * Convert the specified preference value string to an
 	 * appropriately-typed object to be returned to the client.
 	 */
-	protected Object convertToObject(String s) {
+	protected P convertToObject(String s) {
 		return this.converter.convertToObject(s);
 	}
 
@@ -328,7 +339,7 @@ public class PreferencePropertyValueModel
 
 	/**
 	 * The underlying preference changed; either because we changed it
-	 * in #setValueOnSubject(Object) or a third-party changed it.
+	 * in #setValue_(Object) or a third-party changed it.
 	 * If this is called because of our own change, the event will be
 	 * swallowed because the old and new values are the same.
 	 */

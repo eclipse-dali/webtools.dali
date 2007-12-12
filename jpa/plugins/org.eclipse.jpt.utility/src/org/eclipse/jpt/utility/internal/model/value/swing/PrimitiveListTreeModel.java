@@ -22,6 +22,7 @@ import javax.swing.tree.TreePath;
 
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 
 /**
@@ -65,8 +66,16 @@ public abstract class PrimitiveListTreeModel
 			throw new NullPointerException();
 		}
 		this.listHolder = listHolder;
-		this.listChangeListener = new PrimitiveListChangeListener();
+		this.listChangeListener = this.buildListChangeListener();
 		// postpone listening to the model until we have listeners ourselves
+	}
+
+	protected ListChangeListener buildListChangeListener() {
+		return new AWTListChangeListenerWrapper(this.buildListChangeListener_());
+	}
+
+	protected ListChangeListener buildListChangeListener_() {
+		return new PrimitiveListChangeListener();
 	}
 
 
@@ -135,7 +144,7 @@ public abstract class PrimitiveListTreeModel
 	}
 		
 	private void buildList() {
-		for (Iterator stream = (Iterator) this.listHolder.values(); stream.hasNext(); ) {
+		for (Iterator stream = this.listHolder.iterator(); stream.hasNext(); ) {
 			this.addPrimitive(stream.next());
 		}
 	}

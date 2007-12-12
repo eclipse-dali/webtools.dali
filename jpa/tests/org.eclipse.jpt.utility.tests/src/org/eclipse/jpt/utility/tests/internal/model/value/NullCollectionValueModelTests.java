@@ -9,10 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.NullCollectionValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
@@ -38,60 +34,12 @@ public class NullCollectionValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testAdd() {
-		boolean exCaught = false;
-		try {
-			this.collectionHolder.add("foo");
-		} catch (UnsupportedOperationException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
-	public void testAddAll() {
-		boolean exCaught = false;
-		Collection<String> items = new ArrayList<String>();
-		items.add("foo");
-		items.add("bar");
-		items.add("baz");
-		try {
-			this.collectionHolder.addAll(items);
-		} catch (UnsupportedOperationException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
-	public void testRemove() {
-		boolean exCaught = false;
-		try {
-			this.collectionHolder.remove("foo");
-		} catch (UnsupportedOperationException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
-	public void testRemoveAll() {
-		boolean exCaught = false;
-		Collection<String> items = new ArrayList<String>();
-		items.add("foo");
-		items.add("bar");
-		items.add("baz");
-		try {
-			this.collectionHolder.removeAll(items);
-		} catch (UnsupportedOperationException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
 	public void testSize() {
 		assertEquals(0, this.collectionHolder.size());
 	}
 
-	public void testValues() {
-		assertFalse(((Iterator) this.collectionHolder.values()).hasNext());
+	public void testIterator() {
+		assertFalse(this.collectionHolder.iterator().hasNext());
 	}
 
 }

@@ -1259,9 +1259,9 @@ public class CollectionToolsTests extends TestCase {
 		
 		boolean exceptionThrown = false;
 		try {
-			emptyIterable.iterator();
-		}
-		catch (IllegalStateException ise) {
+			emptyIterator = emptyIterable.iterator();
+			fail("invalid iterator: " + emptyIterator);
+		} catch (IllegalStateException ise) {
 			exceptionThrown = true;
 		}
 		assertTrue("IllegalStateException not thrown.", exceptionThrown);

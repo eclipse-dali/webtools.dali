@@ -21,15 +21,11 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  * This extension of PropertyAdapter provides TreeChange support.
  * 
  * The typical subclass will override the following methods:
- * #getValueFromSubject()
+ * #nodes_()
  *     at the very minimum, override this method to return an iterator
  *     on the subject's tree aspect; it does not need to be overridden if
- *     #value() is overridden and its behavior changed
- * #addNode(Object[], Object) and #removeNode(Object[])
- *     override these methods if the client code needs to *change* the contents of
- *     the subject's tree aspect; oftentimes, though, the client code
- *     (e.g. UI) will need only to *get* the value
- * #value()
+ *     #nodes() is overridden and its behavior changed
+ * #nodes()
  *     override this method only if returning an empty iterator when the
  *     subject is null is unacceptable
  */
@@ -95,48 +91,31 @@ public abstract class TreeAspectAdapter
 	}
 
 
-	// ********** ValueModel implementation **********
-
-	/**
-	 * Return the value of the subject's tree aspect.
-	 * This should be an *iterator* on the tree.
-	 */
-	public Object value() {
-		if (this.subject == null) {
-			return EmptyIterator.instance();
-		}
-		return this.getValueFromSubject();
-	}
-
-	/**
-	 * Return the value of the subject's tree aspect.
-	 * This should be an *iterator* on the tree.
-	 * At this point we can be sure that the subject is not null.
-	 * @see #value()
-	 */
-	protected Iterator getValueFromSubject() {	// private-protected
-		throw new UnsupportedOperationException();
-	}
-
-
 	// ********** TreeValueModel implementation **********
 
 	/**
-	 * Insert the specified node in the subject's tree aspect.
+	 * Return the nodes of the subject's tree aspect.
 	 */
-	public void addNode(Object[] parentPath, Object node) {
-		throw new UnsupportedOperationException();
+	public Iterator nodes() {
+		return (this.subject == null) ? EmptyIterator.instance() : this.nodes_();
 	}
 
 	/**
-	 * Remove the specified node from the subject's tree aspect.
+	 * Return the nodes of the subject's tree aspect.
+	 * At this point we can be sure that the subject is not null.
+	 * @see #nodes()
 	 */
-	public void removeNode(Object[] path) {
+	protected Iterator nodes_() {
 		throw new UnsupportedOperationException();
 	}
 
 
 	// ********** AspectAdapter implementation **********
+
+	@Override
+	protected Object value() {
+		return this.nodes();
+	}
 
 	@Override
 	protected Class<? extends ChangeListener> listenerClass() {
@@ -145,17 +124,17 @@ public abstract class TreeAspectAdapter
 
 	@Override
 	protected String listenerAspectName() {
-		return VALUE;
+		return NODES;
 	}
 
     @Override
 	protected boolean hasListeners() {
-		return this.hasAnyTreeChangeListeners(VALUE);
+		return this.hasAnyTreeChangeListeners(NODES);
 	}
 
     @Override
 	protected void fireAspectChange(Object oldValue, Object newValue) {
-		this.fireTreeChanged(VALUE);
+		this.fireTreeChanged(NODES);
 	}
 
     @Override
@@ -177,19 +156,19 @@ public abstract class TreeAspectAdapter
 	// ********** behavior **********
 
 	protected void nodeAdded(TreeChangeEvent e) {
-		this.fireNodeAdded(VALUE, e.path());
+		this.fireNodeAdded(NODES, e.path());
 	}
 
 	protected void nodeRemoved(TreeChangeEvent e) {
-		this.fireNodeRemoved(VALUE, e.path());
+		this.fireNodeRemoved(NODES, e.path());
 	}
 
 	protected void treeCleared(TreeChangeEvent e) {
-		this.fireTreeCleared(VALUE);
+		this.fireTreeCleared(NODES);
 	}
 
 	protected void treeChanged(TreeChangeEvent e) {
-		this.fireTreeChanged(VALUE, e.path());
+		this.fireTreeChanged(NODES, e.path());
 	}
 
 }

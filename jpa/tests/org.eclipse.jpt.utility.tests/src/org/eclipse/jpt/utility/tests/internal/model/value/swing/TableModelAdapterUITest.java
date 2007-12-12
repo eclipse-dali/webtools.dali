@@ -88,7 +88,7 @@ import org.eclipse.jpt.utility.tests.internal.model.value.swing.TableModelAdapte
  * list value model (the sorted people adapter)
  */
 public class TableModelAdapterUITest {
-	private CollectionValueModel eyeColorsHolder;
+	private SimpleCollectionValueModel eyeColorsHolder;
 	private PropertyValueModel crowdHolder;
 	private PropertyValueModel selectedPersonHolder;
 	private ListValueModel sortedPeopleAdapter;
@@ -116,7 +116,7 @@ public class TableModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private CollectionValueModel buildEyeColorCollectionHolder() {
+	private SimpleCollectionValueModel buildEyeColorCollectionHolder() {
 		return new SimpleCollectionValueModel(Person.getValidEyeColors());
 	}
 
@@ -167,11 +167,11 @@ public class TableModelAdapterUITest {
 	private CollectionValueModel buildPeopleAdapter() {
 		return new CollectionAspectAdapter(this.crowdHolder, Crowd.PEOPLE_COLLECTION) {
 			@Override
-			protected Iterator getValueFromSubject() {
+			protected Iterator iterator_() {
 				return ((Crowd) this.subject).people();
 			}
 			@Override
-			protected int sizeFromSubject() {
+			protected int size_() {
 				return ((Crowd) this.subject).peopleSize();
 			}
 		};
@@ -443,7 +443,7 @@ public class TableModelAdapterUITest {
 			}
 			if ((eyeColor.length() == 0)) {
 				JOptionPane.showMessageDialog(null, "The eye color is required.", "Invalid Eye Color", JOptionPane.ERROR_MESSAGE);
-			} else if (CollectionTools.contains((Iterator) this.eyeColorsHolder.values(), eyeColor)) {
+			} else if (CollectionTools.contains((Iterator) this.eyeColorsHolder.iterator(), eyeColor)) {
 				JOptionPane.showMessageDialog(null, "The eye color already exists.", "Invalid Eye Color", JOptionPane.ERROR_MESSAGE);
 			} else {
 				return eyeColor;
@@ -535,11 +535,11 @@ public class TableModelAdapterUITest {
 	private PropertyValueModel buildNameAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.NAME_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return ((Person) this.subject).getName();
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((Person) this.subject).setName((String) value);
 			}
 		};
@@ -559,11 +559,11 @@ public class TableModelAdapterUITest {
 	private PropertyValueModel buildBirthDateAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.BIRTH_DATE_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return ((Person) this.subject).getBirthDate();
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((Person) this.subject).setBirthDate((Date) value);
 			}
 		};
@@ -583,11 +583,11 @@ public class TableModelAdapterUITest {
 	private PropertyValueModel buildGoneWestDateAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.GONE_WEST_DATE_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return ((Person) this.subject).getGoneWestDate();
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((Person) this.subject).setGoneWestDate((Date) value);
 			}
 		};
@@ -607,11 +607,11 @@ public class TableModelAdapterUITest {
 	private PropertyValueModel buildEyeColorAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.EYE_COLOR_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return ((Person) this.subject).getEyeColor();
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((Person) this.subject).setEyeColor((String) value);
 			}
 		};
@@ -634,11 +634,11 @@ public class TableModelAdapterUITest {
 	private PropertyValueModel buildEvilAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.EVIL_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return Boolean.valueOf(((Person) this.subject).isEvil());
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((Person) this.subject).setEvil(((Boolean) value).booleanValue());
 			}
 		};
@@ -658,11 +658,11 @@ public class TableModelAdapterUITest {
 	private PropertyValueModel buildRankAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.RANK_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return new Integer(((Person) this.subject).getRank());
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((Person) this.subject).setRank(((Integer) value).intValue());
 			}
 		};
@@ -682,11 +682,11 @@ public class TableModelAdapterUITest {
 	private PropertyValueModel buildAdventureCountAdapter() {
 		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.ADVENTURE_COUNT_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return new Integer(((Person) this.subject).getAdventureCount());
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((Person) this.subject).setAdventureCount(((Integer) value).intValue());
 			}
 		};

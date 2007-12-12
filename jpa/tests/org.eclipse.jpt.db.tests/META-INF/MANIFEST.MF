@@ -13,4 +13,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.datatools.connectivity.db.generic,
  org.eclipse.jpt.utility,
  org.eclipse.jpt.db
-Export-Package: org.eclipse.jpt.db.tests.internal.platforms
+Export-Package: org.eclipse.jpt.db.tests.internal;x-internal:=true,
+ org.eclipse.jpt.db.tests.internal.platforms;x-internal:=true

@@ -50,7 +50,7 @@ public final class NullCollectionValueModel
 		return 0;
 	}
 
-	public Iterator values() {
+	public Iterator iterator() {
 		return EmptyIterator.instance();
 	}
 

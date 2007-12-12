@@ -24,15 +24,14 @@ import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
  * ListValueModel. It will keep its contents in synch with
  * the contents of the wrapped ListValueModel and notifies its
  * listeners of any changes.
- * 
- * To use, supply a <code>Transformer</code> or subclass
- * <code>TransformationListValueModelAdapter</code>
- * and override the <code>transformItem(Object)</code> method.
- * 
+ * <p>
+ * The transformer can be changed at any time; allowing the same
+ * adapter to be used with different transformations.
+ * <p>
  * NB: Since we only listen to the wrapped list when we have
  * listeners ourselves and we can only stay in synch with the wrapped
  * list while we are listening to it, results to various methods
- * (e.g. #size(), getItem(int)) will be unpredictable whenever
+ * (e.g. #size(), #getItem(int)) will be unpredictable whenever
  * we do not have any listeners. This should not be too painful since,
  * most likely, client objects will also be listeners.
  */
@@ -41,7 +40,7 @@ public class TransformationListValueModelAdapter
 {
 
 	/** This transforms the items, unless the subclass overrides #transformItem(Object). */
-	protected final Transformer transformer;
+	protected Transformer transformer;
 
 	/** The list of transformed items. */
 	protected final List transformedList;
@@ -62,7 +61,7 @@ public class TransformationListValueModelAdapter
 	 * Constructor - the list holder is required.
 	 */
 	public TransformationListValueModelAdapter(ListValueModel listHolder) {
-		this(listHolder, Transformer.Disabled.instance());
+		this(listHolder, Transformer.Null.instance());
 	}
 
 	/**
@@ -76,49 +75,31 @@ public class TransformationListValueModelAdapter
 	 * Constructor - the collection holder is required.
 	 */
 	public TransformationListValueModelAdapter(CollectionValueModel collectionHolder) {
-		this(collectionHolder, Transformer.Disabled.instance());
+		this(new CollectionListValueModelAdapter(collectionHolder));
 	}
 
 
 	// ********** ListValueModel implementation **********
 
-	public ListIterator values() {
+	public ListIterator listIterator() {
 		// try to prevent backdoor modification of the list
 		return new ReadOnlyListIterator(this.transformedList);
 	}
 
-	public void add(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void addAll(int index, List items) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Object remove(int index) {
-		throw new UnsupportedOperationException();
-	}
-
-	public List remove(int index, int length) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Object replace(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public List replaceAll(int index, List items) {
-		throw new UnsupportedOperationException();
-	}
-
+	@Override
 	public Object get(int index) {
 		return this.transformedList.get(index);
 	}
 
+	@Override
 	public int size() {
 		return this.transformedList.size();
 	}
 
+	@Override
+	public Object[] toArray() {
+		return this.transformedList.toArray();
+	}
 
 	// ********** behavior **********
 
@@ -148,7 +129,7 @@ public class TransformationListValueModelAdapter
 	 * Transform the items in the specified list value model.
 	 */
 	protected List transformItems(ListValueModel lvm) {
-		return this.transformItems((ListIterator) lvm.values(), lvm.size());
+		return this.transformItems(lvm.listIterator(), lvm.size());
 	}
 
 	/**
@@ -174,6 +155,23 @@ public class TransformationListValueModelAdapter
 	 */
 	protected Object transformItem(Object item) {
 		return this.transformer.transform(item);
+	}
+
+	/**
+	 * Change the transformer and rebuild the collection.
+	 */
+	public void setTransformer(Transformer transformer) {
+		this.transformer = transformer;
+		this.rebuildTransformedList();
+	}
+
+	/**
+	 * Synchronize our cache with the wrapped collection.
+	 */
+	protected void rebuildTransformedList() {
+		this.transformedList.clear();
+		this.transformedList.addAll(this.transformItems(this.listHolder));
+		this.fireListChanged(LIST_VALUES);
 	}
 
 
@@ -234,9 +232,7 @@ public class TransformationListValueModelAdapter
 	 */
     @Override
 	protected void listChanged(ListChangeEvent e) {
-		this.transformedList.clear();
-		this.transformedList.addAll(this.transformItems(this.listHolder));
-		this.fireListChanged(LIST_VALUES);
+		this.rebuildTransformedList();
 	}
 
 }

@@ -31,6 +31,9 @@ public abstract class ChangeEvent extends EventObject {
 		super(source);
 	}
 
+	/**
+	 * Covariant override.
+	 */
 	@Override
 	public Model getSource() {
 		return (Model) super.getSource();

@@ -28,7 +28,9 @@ import org.eclipse.jpt.utility.internal.IndentingPrintWriter;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.AbstractTreeNodeValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
@@ -37,6 +39,7 @@ import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.NullListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
@@ -192,7 +195,7 @@ public class TreeModelAdapterTests extends TestCase {
 
 	public void testTreeStructureChanged() {
 		PropertyValueModel nodeHolder = new SimplePropertyValueModel(this.buildSortedRootNode());
-		TreeModel treeModel = new TreeModelAdapter(nodeHolder);
+		TreeModel treeModel = this.buildTreeModel(nodeHolder);
 		this.eventFired = false;
 		treeModel.addTreeModelListener(new TestTreeModelListener() {
 			@Override
@@ -236,7 +239,7 @@ public class TreeModelAdapterTests extends TestCase {
 
 
 	private TreeModel buildSortedTreeModel() {
-		return new TreeModelAdapter(this.buildSortedRootNode());
+		return this.buildTreeModel(this.buildSortedRootNode());
 	}
 
 	private TestNode buildSortedRootNode() {
@@ -244,7 +247,7 @@ public class TreeModelAdapterTests extends TestCase {
 	}
 
 	private TreeModel buildUnsortedTreeModel() {
-		return new TreeModelAdapter(this.buildUnsortedRootNode());
+		return this.buildTreeModel(this.buildUnsortedRootNode());
 	}
 
 	private TestNode buildUnsortedRootNode() {
@@ -252,7 +255,7 @@ public class TreeModelAdapterTests extends TestCase {
 	}
 
 	private TreeModel buildSpecialTreeModel() {
-		return new TreeModelAdapter(this.buildSpecialRootNode());
+		return this.buildTreeModel(this.buildSpecialRootNode());
 	}
 
 	private TestNode buildSpecialRootNode() {
@@ -492,11 +495,11 @@ public class TreeModelAdapterTests extends TestCase {
 		protected CollectionValueModel buildChildrenAdapter(TestModel model) {
 			return new CollectionAspectAdapter(TestModel.CHILDREN_COLLECTION, model) {
 				@Override
-				protected Iterator getValueFromSubject() {
+				protected Iterator iterator_() {
 					return ((TestModel) this.subject).children();
 				}
 				@Override
-				protected int sizeFromSubject() {
+				protected int size_() {
 					return ((TestModel) this.subject).childrenSize();
 				}
 			};
@@ -519,11 +522,11 @@ public class TreeModelAdapterTests extends TestCase {
 			this.firePropertyChanged(VALUE, old, this.testModel);
 		}
 
-		public TreeNodeValueModel getParent() {
+		public TreeNodeValueModel parent() {
 			return this.parent;
 		}
 
-		public ListValueModel getChildrenModel() {
+		public ListValueModel childrenModel() {
 			return this.childrenModel;
 		}
 
@@ -564,7 +567,7 @@ public class TreeModelAdapterTests extends TestCase {
 		public void dumpOn(IndentingPrintWriter writer) {
 			writer.println(this);
 			writer.indent();
-			for (Iterator stream = (Iterator) this.childrenModel.values(); stream.hasNext(); ) {
+			for (Iterator stream = this.childrenModel.iterator(); stream.hasNext(); ) {
 				((TestNode) stream.next()).dumpOn(writer);
 			}
 			writer.undent();
@@ -604,7 +607,7 @@ public class TreeModelAdapterTests extends TestCase {
 		 * testing convenience method
 		 */
 		public TestNode childNamed(String name) {
-			for (Iterator stream = (Iterator) this.childrenModel.values(); stream.hasNext(); ) {
+			for (Iterator stream = this.childrenModel.iterator(); stream.hasNext(); ) {
 				TestNode childNode = (TestNode) stream.next();
 				if (childNode.getTestModel().getName().equals(name)) {
 					return childNode;
@@ -758,11 +761,11 @@ public class TreeModelAdapterTests extends TestCase {
 		protected PropertyValueModel buildNameAdapter() {
 			return new PropertyAspectAdapter(TestModel.NAME_PROPERTY, this.getTestModel()) {
 				@Override
-				protected Object getValueFromSubject() {
+				protected Object buildValue_() {
 					return ((TestModel) this.subject).getName();
 				}
 				@Override
-				protected void setValueOnSubject(Object value) {
+				protected void setValue_(Object value) {
 					((TestModel) this.subject).setName((String) value);
 				}
 			};
@@ -781,10 +784,10 @@ public class TreeModelAdapterTests extends TestCase {
 		public void setValue(Object value) {
 			this.nameAdapter.setValue(value);
 		}
-		public TreeNodeValueModel getParent() {
+		public TreeNodeValueModel parent() {
 			return this.specialNode;
 		}
-		public ListValueModel getChildrenModel() {
+		public ListValueModel childrenModel() {
 			return NullListValueModel.instance();
 		}
 
@@ -805,6 +808,31 @@ public class TreeModelAdapterTests extends TestCase {
 			// we need to notify listeners that our "value" has changed
 			this.firePropertyChanged(VALUE, e.oldValue(), e.newValue());
 		}
+	}
+
+	private TreeModel buildTreeModel(TreeNodeValueModel root) {
+		return this.buildTreeModel(new ReadOnlyPropertyValueModel(root));
+	}
+
+	private TreeModel buildTreeModel(PropertyValueModel rootHolder) {
+		return new TreeModelAdapter(rootHolder) {
+			@Override
+			protected ListChangeListener buildChildrenListener() {
+				return this.buildChildrenListener_();
+			}
+			@Override
+			protected StateChangeListener buildNodeStateListener() {
+				return this.buildNodeStateListener_();
+			}
+			@Override
+			protected PropertyChangeListener buildNodeValueListener() {
+				return this.buildNodeValueListener_();
+			}
+			@Override
+			protected PropertyChangeListener buildRootListener() {
+				return this.buildRootListener_();
+			}
+		};
 	}
 
 

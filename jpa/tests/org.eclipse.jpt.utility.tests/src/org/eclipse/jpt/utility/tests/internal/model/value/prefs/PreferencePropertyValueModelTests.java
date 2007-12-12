@@ -220,7 +220,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		// stop listening to the node and convert it to an integer
 		this.preferenceAdapter.removePropertyChangeListener(ValueModel.VALUE, this.listener);
 		this.testNode.putInt(KEY_NAME, 123);
-		this.preferenceAdapter.setConverter(BidiStringConverter.IntegerConverter.instance());
+		this.preferenceAdapter = PreferencePropertyValueModel.forInteger(this.testNode, KEY_NAME, 0);
 		this.preferenceAdapter.addPropertyChangeListener(ValueModel.VALUE, this.listener);
 		assertEquals(new Integer(123), this.preferenceAdapter.value());
 		assertNull(this.event);
@@ -233,13 +233,13 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		this.event = null;
 		this.testNode.remove(KEY_NAME);
 		this.waitForEventQueueToClear();
-		this.verifyEvent(new Integer(246), null);
-		assertNull(this.preferenceAdapter.value());
+		this.verifyEvent(new Integer(246), new Integer(0));
+		assertEquals(new Integer(0), this.preferenceAdapter.value());
 		
 		this.event = null;
 		this.testNode.putInt(KEY_NAME, 123);
 		this.waitForEventQueueToClear();
-		this.verifyEvent(null, new Integer(123));
+		this.verifyEvent(new Integer(0), new Integer(123));
 		assertEquals(new Integer(123), this.preferenceAdapter.value());
 	}
 

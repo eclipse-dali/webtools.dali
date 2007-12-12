@@ -30,11 +30,11 @@ import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
  *     i.e. the object "wrapped" by the node;
  *     typically only overridden for nodes with "primitive" values
  * 
- * #getParent()
+ * #parent()
  *     return the parent of the node, which should be another
  *     TreeNodeValueModel
  * 
- * #getChildrenModel()
+ * #childrenModel()
  *     return a ListValueModel for the node's children
  * 
  * #engageValue() and #disengageValue()
@@ -107,8 +107,8 @@ public abstract class AbstractTreeNodeValueModel
 	// ********** TreeNodeValueModel implementation **********
 	
 	public TreeNodeValueModel[] path() {
-		List path = CollectionTools.reverseList(this.backPath());
-		return (TreeNodeValueModel[]) path.toArray(new TreeNodeValueModel[path.size()]);
+		List<TreeNodeValueModel> path = CollectionTools.reverseList(this.backPath());
+		return path.toArray(new TreeNodeValueModel[path.size()]);
 	}
 
 	/**
@@ -116,25 +116,25 @@ public abstract class AbstractTreeNodeValueModel
 	 * starting with, and including, the node
 	 * and up to, and including, the root node.
 	 */
-	protected Iterator backPath() {
-		return new ChainIterator(this) {
+	protected Iterator<TreeNodeValueModel> backPath() {
+		return new ChainIterator<TreeNodeValueModel>(this) {
 			@Override
-			protected Object nextLink(Object currentLink) {
-				return ((TreeNodeValueModel) currentLink).getParent();
+			protected TreeNodeValueModel nextLink(TreeNodeValueModel currentLink) {
+				return currentLink.parent();
 			}
 		};
 	}
 
-	public TreeNodeValueModel getChild(int index) {
-		return (TreeNodeValueModel) this.getChildrenModel().get(index);
+	public TreeNodeValueModel child(int index) {
+		return (TreeNodeValueModel) this.childrenModel().get(index);
 	}
 
 	public int childrenSize() {
-		return this.getChildrenModel().size();
+		return this.childrenModel().size();
 	}
 
 	public int indexOfChild(TreeNodeValueModel child) {
-		ListValueModel children = this.getChildrenModel();
+		ListValueModel children = this.childrenModel();
 		int size = children.size();
 		for (int i = 0; i < size; i++) {
 			if (children.get(i) == child) {
@@ -145,7 +145,7 @@ public abstract class AbstractTreeNodeValueModel
 	}
 
 	public boolean isLeaf() {
-		return this.getChildrenModel().size() == 0;
+		return this.childrenModel().size() == 0;
 	}
 
 

@@ -10,134 +10,284 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
+import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 
 /**
- * Implementation of ListValueModel that simply holds on to a
- * list and uses it as the value.
+ * Implementation of ListValueModel and List that simply holds a
+ * collection and notifies listeners of any changes.
  */
-public class SimpleListValueModel
+public class SimpleListValueModel<E>
 	extends AbstractModel
-	implements ListValueModel
+	implements ListValueModel, List<E>
 {
-	/** The value. */
-	protected List value;
+	/** The list. */
+	protected List<E> list;
 
+
+	// ********** constructors **********
 
 	/**
-	 * Construct a ListValueModel for the specified value.
+	 * Construct a ListValueModel for the specified list.
 	 */
-	public SimpleListValueModel(List value) {
+	public SimpleListValueModel(List<E> list) {
 		super();
-		this.setValue(value);
+		if (list == null) {
+			throw new NullPointerException();
+		}
+		this.list = list;
 	}
 
 	/**
-	 * Construct a ListValueModel with an initial value
-	 * of an empty list
+	 * Construct a ListValueModel with an empty initial list.
 	 */
 	public SimpleListValueModel() {
-		this(new ArrayList());
+		this(new ArrayList<E>());
 	}
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, LIST_VALUES);
+		return new SingleAspectChangeSupport(this, ListChangeListener.class, LIST_VALUES);
 	}
 
 
 	// ********** ListValueModel implementation **********
 
-	public ListIterator values() {
-		// try to prevent backdoor modification of the list
-		return new ReadOnlyListIterator(this.value);
+	public Iterator<E> iterator() {
+		return new LocalIterator<E>(this.list.iterator());
 	}
 
-	public void add(int index, Object item) {
-		this.addItemToList(index, item, this.value, LIST_VALUES);
-	}
-
-	public void addAll(int index, List items) {
-		this.addItemsToList(index, items, this.value, LIST_VALUES);
-	}
-
-	public Object remove(int index) {
-		return this.removeItemFromList(index, this.value, LIST_VALUES);
-	}
-
-	public List remove(int index, int length) {
-		return this.removeItemsFromList(index, length, this.value, LIST_VALUES);
-	}
-
-	public Object replace(int index, Object item) {
-		return this.setItemInList(index, item, this.value, LIST_VALUES);
-	}
-
-	public List replaceAll(int index, List items) {
-		return this.setItemsInList(index, items, this.value, LIST_VALUES);
-	}
-
-	public Object get(int index) {
-		return this.value.get(index);
+	public ListIterator<E> listIterator() {
+		return new LocalListIterator<E>(this.list.listIterator());
 	}
 
 	public int size() {
-		return this.value.size();
+		return this.list.size();
+	}
+
+	public E get(int index) {
+		return this.list.get(index);
 	}
 
 
-	// ********** behavior **********
+	// ********** List implementation **********
 
-	/**
-	 * Allow the value to be replaced.
-	 */
-	public void setValue(List value) {
-		this.value = ((value == null) ? new ArrayList() : value);
-		this.fireListChanged(LIST_VALUES);
+	public boolean isEmpty() {
+		return this.list.isEmpty();
 	}
 
-	/**
-	 * Add the specified item to the end of the list.
-	 */
-	public void addItem(Object item) {
-		this.add(this.size(), item);
+	public boolean contains(Object o) {
+		return this.list.contains(o);
 	}
 
-	/**
-	 * Return the index of the first occurrence of the specified item.
-	 */
-	public int indexOfItem(Object item) {
-		return this.value.indexOf(item);
+	public Object[] toArray() {
+		return this.list.toArray();
 	}
 
-	/**
-	 * Remove the first occurrence of the specified item.
-	 */
-	public void removeItem(Object item) {
-		this.remove(this.indexOfItem(item));
+	public <T extends Object> T[] toArray(T[] a) {
+		return this.list.toArray(a);
 	}
 
-	/**
-	 * Allow the value to be cleared.
-	 */
+	public boolean add(E o) {
+		return this.addItemToList(o, this.list, LIST_VALUES);
+	}
+
+	public boolean remove(Object o) {
+		return this.removeItemFromList(o, this.list, LIST_VALUES);
+	}
+
+	public boolean containsAll(Collection<?> c) {
+		return this.list.containsAll(c);
+	}
+
+	public boolean addAll(Collection<? extends E> c) {
+		return this.addItemsToList(c, this.list, LIST_VALUES);
+	}
+
+	public boolean addAll(int index, Collection<? extends E> c) {
+		return this.addItemsToList(index, c, this.list, LIST_VALUES);
+	}
+
+	public boolean removeAll(Collection<?> c) {
+		return this.removeItemsFromList(c, this.list, LIST_VALUES);
+	}
+
+	public boolean retainAll(Collection<?> c) {
+		return this.retainItemsInList(c, this.list, LIST_VALUES);
+	}
+
 	public void clear() {
-		if (this.value.isEmpty()) {
+		if (this.list.isEmpty()) {
 			return;
 		}
-		List items = new ArrayList(this.value);
-		this.value.clear();
+		List<E> items = new ArrayList<E>(this.list);
+		this.list.clear();
 		this.fireItemsRemoved(LIST_VALUES, 0, items);
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		if ((o instanceof List) && (o instanceof ListValueModel)) {
+			List<E> l1 = CollectionTools.list(this.list);
+			@SuppressWarnings("unchecked")
+			List<E> l2 = CollectionTools.list(((List<E>) o).iterator());
+			return l1.equals(l2);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.list.hashCode();
+	}
+
+	public E set(int index, E element) {
+		return this.setItemInList(index, element, this.list, LIST_VALUES);
+	}
+
+	public void add(int index, E element) {
+		this.addItemToList(index, element, this.list, LIST_VALUES);
+	}
+
+	public E remove(int index) {
+		return this.removeItemFromList(index, this.list, LIST_VALUES);
+	}
+
+	public int indexOf(Object o) {
+		return this.list.indexOf(o);
+	}
+
+	public int lastIndexOf(Object o) {
+		return this.list.lastIndexOf(o);
+	}
+
+	public ListIterator<E> listIterator(int index) {
+		return new LocalListIterator<E>(this.list.listIterator(index));
+	}
+
+	public List<E> subList(int fromIndex, int toIndex) {
+		// TODO hmmm  ~bjv
+		throw new UnsupportedOperationException();
+	}
+
+
+	// ********** additional behavior **********
+
+	/**
+	 * Allow the list to be replaced.
+	 */
+	public void setList(List<E> list) {
+		if (list == null) {
+			throw new NullPointerException();
+		}
+		this.list = list;
+		this.fireListChanged(LIST_VALUES);
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.value);
+		sb.append(this.list);
+	}
+
+
+	// ********** iterators **********
+
+	private class LocalIterator<T> implements Iterator<T> {
+		private final Iterator<T> iterator;
+		private int index = -1;
+		private T next;
+
+		LocalIterator(Iterator<T> iterator) {
+			super();
+			this.iterator = iterator;
+		}
+
+		public boolean hasNext() {
+			return this.iterator.hasNext();
+		}
+
+		public T next() {
+			this.next = this.iterator.next();
+			this.index++;
+			return this.next;
+		}
+
+		@SuppressWarnings("synthetic-access")
+		public void remove() {
+			this.iterator.remove();
+			SimpleListValueModel.this.fireItemRemoved(LIST_VALUES, this.index, this.next);
+		}
+
+	}
+
+	private class LocalListIterator<T> implements ListIterator<T> {
+		private final ListIterator<T> iterator;
+		private int last = -1;
+		private int next = 0;
+		private T current;
+
+		LocalListIterator(ListIterator<T> iterator) {
+			super();
+			this.iterator = iterator;
+		}
+
+		public boolean hasNext() {
+			return this.iterator.hasNext();
+		}
+
+		public T next() {
+			this.current = this.iterator.next();
+			this.last = this.next++;
+			return this.current;
+		}
+
+		public int nextIndex() {
+			return this.iterator.nextIndex();
+		}
+
+		public boolean hasPrevious() {
+			return this.iterator.hasPrevious();
+		}
+
+		public T previous() {
+			this.current = this.iterator.previous();
+			this.last = --this.next;
+			return this.current;
+		}
+
+		public int previousIndex() {
+			return this.iterator.previousIndex();
+		}
+
+		@SuppressWarnings("synthetic-access")
+		public void set(T o) {
+			this.iterator.set(o);
+			SimpleListValueModel.this.fireItemReplaced(LIST_VALUES, this.last, o, this.current);
+		}
+
+		@SuppressWarnings("synthetic-access")
+		public void add(T o) {
+			this.iterator.add(o);
+			SimpleListValueModel.this.fireItemAdded(LIST_VALUES, this.next, o);
+		}
+
+		@SuppressWarnings("synthetic-access")
+		public void remove() {
+			this.iterator.remove();
+			SimpleListValueModel.this.fireItemRemoved(LIST_VALUES, this.last, this.current);
+		}
+
 	}
 
 }

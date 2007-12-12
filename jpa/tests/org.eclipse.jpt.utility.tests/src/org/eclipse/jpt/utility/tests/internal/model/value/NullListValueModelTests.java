@@ -38,74 +38,6 @@ public class NullListValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testAdd() {
-		boolean exCaught = false;
-		try {
-			this.listHolder.add(0, "foo");
-		} catch (UnsupportedOperationException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
-	public void testAddAll() {
-		boolean exCaught = false;
-		List<String> items = new ArrayList<String>();
-		items.add("foo");
-		items.add("bar");
-		items.add("baz");
-		try {
-			this.listHolder.addAll(0, items);
-		} catch (UnsupportedOperationException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
-	public void testRemove() {
-		boolean exCaught = false;
-		try {
-			this.listHolder.remove(0);
-		} catch (UnsupportedOperationException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
-	public void testRemoveLength() {
-		boolean exCaught = false;
-		try {
-			this.listHolder.remove(0, 3);
-		} catch (UnsupportedOperationException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
-	public void testReplace() {
-		boolean exCaught = false;
-		try {
-			this.listHolder.replace(0, "foo");
-		} catch (UnsupportedOperationException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
-	public void testReplaceAll() {
-		boolean exCaught = false;
-		List<String> items = new ArrayList<String>();
-		items.add("foo");
-		items.add("bar");
-		items.add("baz");
-		try {
-			this.listHolder.replaceAll(0, items);
-		} catch (UnsupportedOperationException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
 	public void testGet() {
 		boolean exCaught = false;
 		try {
@@ -120,8 +52,8 @@ public class NullListValueModelTests extends TestCase {
 		assertEquals(0, this.listHolder.size());
 	}
 
-	public void testValues() {
-		assertFalse(((ListIterator) this.listHolder.values()).hasNext());
+	public void testIterator() {
+		assertFalse(this.listHolder.iterator().hasNext());
 	}
 
 }

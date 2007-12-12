@@ -16,17 +16,18 @@ import java.util.Iterator;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 
 /**
  * A <code>FilteringCollectionValueModel</code> wraps another
  * <code>CollectionValueModel</code> and uses a <code>Filter</code>
  * to determine which items in the collection are returned by calls
- * to <code>value()</code>.
+ * to <code>#iterator()</code>.
  * <p>
- * As an alternative to building a <code>Filter</code>, a subclass
- * of <code>FilteringCollectionValueModel</code> can override the
- * <code>accept(Object)</code> method.
+ * The filter can be changed at any time; allowing the same
+ * adapter to be used with different filter criteria (e.g. when the user
+ * wants to view a list of .java files).
  * <p>
  * NB: If the objects in the "filtered" collection can change in such a way
  * that they should be removed from the "filtered" collection, you will
@@ -43,10 +44,7 @@ public class FilteringCollectionValueModel
 	extends CollectionValueModelWrapper
 {
 	/** This filters the items in the nested collection. */
-	private final Filter filter;
-
-	/** This filters the items in the nested collection. */
-	private final Filter localFilter;
+	private Filter filter;
 
 	/** Cache the items that were accepted by the filter */
 	private final Collection filteredItems;
@@ -56,13 +54,10 @@ public class FilteringCollectionValueModel
 
 	/**
 	 * Construct a collection value model with the specified wrapped
-	 * collection value model and a disabled filter.
-	 * Use this constructor if you want to override the
-	 * <code>accept(Object)</code> method
-	 * instead of building a <code>Filter</code>.
+	 * collection value model and a filter that simply accepts every object.
 	 */
 	public FilteringCollectionValueModel(CollectionValueModel collectionHolder) {
-		this(collectionHolder, Filter.Disabled.instance());
+		this(collectionHolder, Filter.Null.instance());
 	}
 
 	/**
@@ -72,16 +67,12 @@ public class FilteringCollectionValueModel
 	public FilteringCollectionValueModel(CollectionValueModel collectionHolder, Filter filter) {
 		super(collectionHolder);
 		this.filter = filter;
-		this.localFilter = this.buildLocalFilter();
 		this.filteredItems = new ArrayList();
 	}
 
 	/**
 	 * Construct a collection value model with the specified wrapped
 	 * list value model and a filter that simply accepts every object.
-	 * Use this constructor if you want to override the
-	 * <code>accept(Object)</code> method
-	 * instead of building a <code>Filter</code>.
 	 */
 	public FilteringCollectionValueModel(ListValueModel listHolder) {
 		this(new ListCollectionValueModelAdapter(listHolder));
@@ -96,26 +87,10 @@ public class FilteringCollectionValueModel
 	}
 
 
-	// ********** initialization **********
-
-	/**
-	 * Implement the filter by calling back to the collection
-	 * value model. This allows us to keep the method
-	 * #accept(Object) protected.
-	 */
-	protected Filter buildLocalFilter() {
-		return new Filter() {
-			public boolean accept(Object o) {
-				return FilteringCollectionValueModel.this.accept(o);
-			}
-		};
-	}
-
-
 	// ********** CollectionValueModel implementation **********
 
-	public Iterator values() {
-		return this.filteredItems.iterator();
+	public Iterator iterator() {
+		return new ReadOnlyIterator(this.filteredItems);
 	}
 
 	public int size() {
@@ -130,7 +105,7 @@ public class FilteringCollectionValueModel
 		super.engageModel();
 		// synch our cache *after* we start listening to the nested collection,
 		// since its value might change when a listener is added
-		this.synchFilteredItems();
+		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder.iterator()));
 	}
 
 	@Override
@@ -161,42 +136,34 @@ public class FilteringCollectionValueModel
 
 	@Override
 	protected void collectionChanged(CollectionChangeEvent e) {
-		this.synchFilteredItems();
-		this.fireCollectionChanged(VALUES);
+		this.rebuildFilteredItems();
 	}
 
 
-	// ********** queries **********
+	// ********** miscellaneous **********
 
 	/**
-	 * Return whether the <code>FilteringCollectionValueModel</code> should
-	 * include the specified value in the iterator returned from a call to the
-	 * <code>value()</code> method; the value came
-	 * from the nested collection value model.
-	 * <p>
-	 * This method can be overridden by a subclass as an
-	 * alternative to building a <code>Filter</code>.
+	 * Change the filter and rebuild the collection.
 	 */
-	protected boolean accept(Object value) {
-		return this.filter.accept(value);
+	public void setFilter(Filter filter) {
+		this.filter = filter;
+		this.rebuildFilteredItems();
 	}
 
 	/**
 	 * Return an iterator that filters the specified iterator.
 	 */
 	protected Iterator filter(Iterator items) {
-		return new FilteringIterator(items, this.localFilter);
+		return new FilteringIterator(items, this.filter);
 	}
-
-
-	// ********** behavior **********
 
 	/**
 	 * Synchronize our cache with the wrapped collection.
 	 */
-	protected void synchFilteredItems() {
+	protected void rebuildFilteredItems() {
 		this.filteredItems.clear();
-		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder.values()));
+		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder.iterator()));
+		this.fireCollectionChanged(VALUES);
 	}
 
 }

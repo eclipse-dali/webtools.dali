@@ -15,6 +15,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
@@ -54,7 +55,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 		this.valueHolder = new SimplePropertyValueModel(null);
 //		buttonGroup = new ButtonGroup();
 
-		this.redButtonModelAdapter = new RadioButtonModelAdapter(this.valueHolder, RED);
+		this.redButtonModelAdapter = this.buildButtonModel(this.valueHolder, RED);
 //		this.redButtonModelAdapter.setGroup(buttonGroup);
 		this.redListener = new TestChangeListener() {
 			@Override
@@ -63,7 +64,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 			}
 		};
 
-		this.greenButtonModelAdapter = new RadioButtonModelAdapter(this.valueHolder, GREEN);
+		this.greenButtonModelAdapter = this.buildButtonModel(this.valueHolder, GREEN);
 //		this.greenButtonModelAdapter.setGroup(buttonGroup);
 		this.greenListener = new TestChangeListener() {
 			@Override
@@ -72,7 +73,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 			}
 		};
 
-		this.blueButtonModelAdapter = new RadioButtonModelAdapter(this.valueHolder, BLUE);
+		this.blueButtonModelAdapter = this.buildButtonModel(this.valueHolder, BLUE);
 //		this.blueButtonModelAdapter.setGroup(buttonGroup);
 		this.blueListener = new TestChangeListener() {
 			@Override
@@ -82,6 +83,15 @@ public class RadioButtonModelAdapterTests extends TestCase {
 		};
 		
 		this.clearFlags();
+	}
+
+	private ButtonModel buildButtonModel(PropertyValueModel pvm, Object buttonValue) {
+		return new RadioButtonModelAdapter(pvm, buttonValue) {
+			@Override
+			protected PropertyChangeListener buildBooleanChangeListener() {
+				return this.buildBooleanChangeListener_();
+			}
+		};
 	}
 
 	private void listenToModelAdapters() {

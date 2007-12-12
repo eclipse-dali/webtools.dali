@@ -15,6 +15,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -36,7 +37,6 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -57,9 +57,9 @@ public class InheritanceComposite extends BaseJpaComposite {
 	private final Adapter entityListener;
 	private final Adapter discriminatorColumnListener;
 	
-	private CComboViewer strategyViewer;
+	private ComboViewer strategyViewer;
 	private CCombo columnCombo;
-	private CComboViewer discriminatorTypeViewer;
+	private ComboViewer discriminatorTypeViewer;
 	private CCombo discriminatorValueCombo;
 	
 	private ConnectionListener connectionListener;
@@ -213,9 +213,9 @@ public class InheritanceComposite extends BaseJpaComposite {
 		this.pkJoinColumnsComposite.getControl().setLayoutData(gridData);
 	}
 	
-	private CComboViewer buildStrategyCombo(Composite parent) {
+	private ComboViewer buildStrategyCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
-		CComboViewer strategyViewer = new CComboViewer(combo);
+		ComboViewer strategyViewer = new ComboViewer(combo);
 		strategyViewer.setLabelProvider(buildStrategyLabelProvider());
 		strategyViewer.add(InheritanceType.VALUES.toArray());
 		strategyViewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -281,9 +281,9 @@ public class InheritanceComposite extends BaseJpaComposite {
 		
 	}
 	
-	private CComboViewer buildDiscriminatorTypeCombo(Composite parent) {
+	private ComboViewer buildDiscriminatorTypeCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
-		CComboViewer discriminatorTypeViewer = new CComboViewer(combo);
+		ComboViewer discriminatorTypeViewer = new ComboViewer(combo);
 		discriminatorTypeViewer.setLabelProvider(buildDiscriminatorTypeLabelProvider());
 		discriminatorTypeViewer.add(DiscriminatorType.VALUES.toArray());
 		

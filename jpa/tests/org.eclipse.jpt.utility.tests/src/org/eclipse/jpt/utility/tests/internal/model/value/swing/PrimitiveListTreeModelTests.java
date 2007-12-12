@@ -21,6 +21,7 @@ import javax.swing.tree.TreeModel;
 
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.PrimitiveListTreeModel;
@@ -55,13 +56,17 @@ public class PrimitiveListTreeModelTests extends TestCase {
 					PrimitiveListTreeModelTests.this.testModel.replaceName(index, (String) newValue);
 				}
 			}
+			@Override
+			protected ListChangeListener buildListChangeListener() {
+				return this.buildListChangeListener_();
+			}
 		};
 	}
 
 	private ListValueModel buildListValueModel() {
 		return new ListAspectAdapter(TestModel.NAMES_LIST, this.testModel) {
 			@Override
-			protected ListIterator getValueFromSubject() {
+			protected ListIterator listIterator_() {
 				return ((TestModel) this.subject).names();
 			}
 			@Override
@@ -72,25 +77,17 @@ public class PrimitiveListTreeModelTests extends TestCase {
 			public int size() {
 				return ((TestModel) this.subject).namesSize();
 			}
-			@Override
 			public void add(int index, Object item) {
 				((TestModel) this.subject).addName(index, (String) item);
 			}
-			@Override
 			public void addAll(int index, List items) {
 				((TestModel) this.subject).addNames(index, items);
 			}
-			@Override
 			public Object remove(int index) {
 				return ((TestModel) this.subject).removeName(index);
 			}
-			@Override
 			public List remove(int index, int length) {
 				return ((TestModel) this.subject).removeNames(index, length);
-			}
-			@Override
-			public Object replace(int index, Object item) {
-				return ((TestModel) this.subject).replaceName(index, (String) item);
 			}
 		};
 	}

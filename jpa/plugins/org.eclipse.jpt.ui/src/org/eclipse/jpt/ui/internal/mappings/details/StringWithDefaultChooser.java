@@ -13,6 +13,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ISelection;
@@ -24,7 +25,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
-import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
@@ -39,7 +39,7 @@ public class StringWithDefaultChooser extends BaseJpaController
 	private StringHolder stringHolder;
 	private Adapter stringHolderListener;
 	
-	private CComboViewer comboViewer;
+	private ComboViewer comboViewer;
 
 	private static final String DEFAULT = "default";
 	
@@ -61,7 +61,7 @@ public class StringWithDefaultChooser extends BaseJpaController
 	@Override
 	protected void buildWidget(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-		this.comboViewer = new CComboViewer(combo);
+		this.comboViewer = new ComboViewer(combo);
 		this.comboViewer.setContentProvider(buildContentProvider());
 		this.comboViewer.setLabelProvider(buildLabelProvider());
 		
@@ -223,7 +223,7 @@ public class StringWithDefaultChooser extends BaseJpaController
 	}
 	
 	public CCombo getCombo() {
-		return this.comboViewer.getCombo();
+		return this.comboViewer.getCCombo();
 	}
 	
 	@Override

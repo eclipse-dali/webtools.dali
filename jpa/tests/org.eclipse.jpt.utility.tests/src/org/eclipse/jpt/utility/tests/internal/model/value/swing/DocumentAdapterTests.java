@@ -15,6 +15,7 @@ import javax.swing.event.DocumentEvent.EventType;
 import javax.swing.text.Document;
 
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
@@ -36,7 +37,12 @@ public class DocumentAdapterTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.stringHolder = new SimplePropertyValueModel("0123456789");
-		this.documentAdapter = new DocumentAdapter(this.stringHolder);
+		this.documentAdapter = new DocumentAdapter(this.stringHolder) {
+			@Override
+			protected PropertyChangeListener buildStringListener() {
+				return this.buildStringListener_();
+			}
+		};
 	}
 
 	@Override

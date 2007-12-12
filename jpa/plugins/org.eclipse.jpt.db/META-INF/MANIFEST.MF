@@ -8,7 +8,7 @@ Bundle-Activator: org.eclipse.jpt.db.internal.JptDbPlugin
 Bundle-ClassPath: .
 Bundle-Localization: plugin
 Eclipse-LazyStart: true
-Export-Package: org.eclipse.jpt.db.internal
+Export-Package: org.eclipse.jpt.db.internal;x-friends:="org.eclipse.jpt.core,org.eclipse.jpt.db.ui,org.eclipse.jpt.gen,org.eclipse.jpt.ui"
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.datatools.sqltools.editor.core,
  org.eclipse.jpt.utility

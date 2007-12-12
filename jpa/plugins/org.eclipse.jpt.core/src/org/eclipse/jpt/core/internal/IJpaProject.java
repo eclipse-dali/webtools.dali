@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * 
@@ -53,7 +54,7 @@ public interface IJpaProject extends IJpaNode {
 	 * Return the project's connection
 	 */
 	ConnectionProfile connectionProfile();
-	
+
 	/**
 	 * Return the data source the JPA project is mapped to.
 	 */
@@ -65,10 +66,10 @@ public interface IJpaProject extends IJpaNode {
 	Iterator<IJpaFile> jpaFiles();
 	
 	/** 
-	 * ID string used when jpaFiles collection is changed
+	 * ID string used when jpaFiles collection is changed.
 	 * @see org.eclipse.jpt.utility.internal.model.Model#addCollectionChangeListener(String, org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener)
 	 */
-	public static final String JPA_FILES_COLLECTION = "jpaFiles";
+	String JPA_FILES_COLLECTION = "jpaFiles";
 
 	/**
 	 * Return the size of the JPA project's JPA files.
@@ -94,21 +95,11 @@ public interface IJpaProject extends IJpaNode {
 	 */
 	IContextModel contextModel();
 
-//	/**
-//	 * Return the JPA project's Java JPA files.
-//	 */
-//	Iterator<IJpaFile> javaJpaFiles();
-//
-//	/**
-//	 * Return the JPA project's Java persistent types.
-//	 */
-//	Iterator<JavaPersistentType> javaPersistentTypes();
-//
 	/**
 	 * Return the Java persistent type resource for the specified fully qualified type name;
 	 * null, if none exists.
 	 */
-	JavaPersistentTypeResource javaPersistentTypeResource(String fullyQualifiedTypeName);
+	JavaPersistentTypeResource javaPersistentTypeResource(String typeName);
 
 	/**
 	 * Synchronize the JPA project's JPA files with the specified resource
@@ -128,6 +119,12 @@ public interface IJpaProject extends IJpaNode {
 	 */
 	boolean discoversAnnotatedClasses();
 	
+	/** 
+	 * ID string used when discoversAnnotatedClasses property is changed.
+	 * @see org.eclipse.jpt.utility.internal.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener)
+	 */
+	String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses";
+	
 	/**
 	 * Set whether the JPA project will "discover" annotated classes
 	 * automatically, as opposed to requiring the classes to be
@@ -135,17 +132,10 @@ public interface IJpaProject extends IJpaNode {
 	 */
 	void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses);
 	
-	/** 
-	 * ID string used when discoversAnnotatedClasses property is changed
-	 * @see org.eclipse.jpt.utility.internal.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener)
-	 */
-	public static final String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses";
-	
 	/**
 	 * Return project's validation messages.
 	 */
-	@SuppressWarnings("restriction")
-	Iterator<org.eclipse.wst.validation.internal.provisional.core.IMessage> validationMessages();
+	Iterator<IMessage> validationMessages();
 
 	/**
 	 * Return the JPA project's root "deploy path".

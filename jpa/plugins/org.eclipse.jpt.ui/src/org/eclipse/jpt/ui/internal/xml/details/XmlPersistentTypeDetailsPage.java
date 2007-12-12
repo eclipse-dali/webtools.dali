@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jpt.core.internal.AccessType;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
@@ -22,7 +23,6 @@ import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddableUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.EntityUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.MappedSuperclassUiProvider;
-import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComboViewer.AccessHolder;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -81,7 +81,7 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage
 		
 		buildTypeMappingLabel(composite);
 		
-		CComboViewer typeMappingCombo = buildTypeMappingCombo(composite);
+		ComboViewer typeMappingCombo = buildTypeMappingCombo(composite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;

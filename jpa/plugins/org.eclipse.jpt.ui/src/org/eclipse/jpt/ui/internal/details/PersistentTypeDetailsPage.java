@@ -12,10 +12,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Map;
+
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -25,12 +27,10 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
-import org.eclipse.jpt.core.internal.IPersistentType;
-import org.eclipse.jpt.core.internal.ITypeMapping;
-import org.eclipse.jpt.core.internal.JpaCorePackage;
+import org.eclipse.jpt.core.internal.context.base.IPersistentType;
+import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.widgets.CComboViewer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -47,7 +47,7 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 	
 	private String currentMappingKey;
 	
-	private CComboViewer typeMappingCombo;
+	private ComboViewer typeMappingCombo;
 	
 	private Map<String, IJpaComposite<ITypeMapping>> composites;
 	
@@ -98,9 +98,9 @@ public abstract class PersistentTypeDetailsPage extends BaseJpaDetailsPage
 		return getWidgetFactory().createLabel(parent, JptUiMessages.PersistentTypePage_mapAs);
 	}
 	
-	protected CComboViewer buildTypeMappingCombo(Composite parent) {
+	protected ComboViewer buildTypeMappingCombo(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
-		this.typeMappingCombo = new CComboViewer(combo);
+		this.typeMappingCombo = new ComboViewer(combo);
 		this.typeMappingCombo.setContentProvider(buildContentProvider());
 		this.typeMappingCombo.setLabelProvider(buildLabelProvider());
 		this.typeMappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {

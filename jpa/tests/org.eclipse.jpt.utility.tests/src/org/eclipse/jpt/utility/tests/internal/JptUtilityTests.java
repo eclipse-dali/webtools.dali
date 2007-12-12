@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.tests.internal.iterators.JptUtilityIteratorsTests;
 import org.eclipse.jpt.utility.tests.internal.model.JptUtilityModelTests;
 import org.eclipse.jpt.utility.tests.internal.node.JptUtilityNodeTests;
@@ -23,7 +22,7 @@ import junit.framework.TestSuite;
 public class JptUtilityTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(ClassTools.packageNameFor(JptUtilityTests.class));
+		TestSuite suite = new TestSuite(JptUtilityTests.class.getPackage().getName());
 
 		suite.addTest(JptUtilityIteratorsTests.suite());
 		suite.addTest(JptUtilityModelTests.suite());

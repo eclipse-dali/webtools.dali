@@ -18,6 +18,7 @@ import javax.swing.event.ChangeListener;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
@@ -74,6 +75,10 @@ public class ToggleButtonModelAdapter
 	// ********** initialization **********
 
 	protected PropertyChangeListener buildBooleanChangeListener() {
+		return new AWTPropertyChangeListenerWrapper(this.buildBooleanChangeListener_());
+	}
+
+	protected PropertyChangeListener buildBooleanChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				ToggleButtonModelAdapter.this.booleanChanged(e);

@@ -2,13 +2,23 @@
 <?eclipse version="3.0"?>
 
 <plugin>
-	<extension-point 
-		id="jpaPlatform" name="%JPA_PLATFORM" schema="schema/jpaPlatform.exsd"/>
-	
+
+	<!-- ***** extension points ***** -->
+
+	<extension-point
+		id="jpaPlatform"
+		name="%JPA_PLATFORM"
+		schema="schema/jpaPlatform.exsd"
+	/>
+
+
+	<!-- ***** Eclipse core extensions ***** -->
+
 	<extension
 		point="org.eclipse.core.resources.markers"
 		id="jpaProblemMarker"
 		name="%JPA_PROBLEM_MARKER">
+
 		<persistent value="true"/>
 		
 		<!-- Can't use text marker until we have specific models for each input type (XML, java)
@@ -16,6 +26,7 @@
 		-->
 		
 		<super type="org.eclipse.wst.validation.problemmarker"/>
+
 	</extension>
 	
 	
@@ -74,17 +85,8 @@
 	</extension>
 	
 	
-	<extension
-		point="org.eclipse.jpt.core.jpaPlatform">
-		
-		<jpaPlatform
-			id="generic"
-			label="%GENERIC_PLATFORM_LABEL"
-			class="org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform"/>
-		
-	</extension>
-	
-	
+	<!-- ***** WTP extensions ***** -->
+
 	<extension
 		point="org.eclipse.wst.common.modulecore.resourceFactories">
 		
@@ -205,7 +207,6 @@
 			
 			<markerId markerIdValue="jpaProblemMarker"/>
 			
-			
          	<!-- don't know what this does
 			<dependentValidator depValValue="true"/>
 			-->
@@ -213,14 +214,33 @@
 		</validator>
 		
 	</extension>
- <extension
-       point="org.eclipse.emf.ecore.generated_package">
-    <package
-          class="org.eclipse.jpt.core.internal.content.java.JpaJavaPackage"
-          genModel="model/old_coreModels.genmodel"
-          uri="jpt.java.xmi">
-    </package>
- </extension>
+
+
+	<!-- ***** EMF extensions ***** -->
+
+	<extension
+		point="org.eclipse.emf.ecore.generated_package">
+
+		<package
+			class="org.eclipse.jpt.core.internal.content.java.JpaJavaPackage"
+			genModel="model/old_coreModels.genmodel"
+			uri="jpt.java.xmi">
+		</package>
+
+	</extension>
+	
+	
+	<!-- ***** JPT extensions (eat our own dogfood) ***** -->
+
+	<extension
+		point="org.eclipse.jpt.core.jpaPlatform">
+		
+		<jpaPlatform
+			id="generic"
+			label="%GENERIC_PLATFORM_LABEL"
+			class="org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform"/>
+		
+	</extension>
 	
 	
 </plugin>

@@ -115,27 +115,27 @@ public class ListModelAdapterUITest {
 	}
 
 	private Component buildUnsortedPrimitiveListPanel() {
-		return this.buildListPanel(" primitive unsorted", this.buildUnsortedPrimitiveListModel());
+		return this.buildListPanel("primitive unsorted", this.buildUnsortedPrimitiveListModel());
 	}
 
 	private Component buildStandardSortedPrimitiveListPanel() {
-		return this.buildListPanel(" primitive sorted", this.buildStandardSortedPrimitiveListModel());
+		return this.buildListPanel("primitive sorted", this.buildStandardSortedPrimitiveListModel());
 	}
 
 	private Component buildCustomSortedPrimitiveListPanel() {
-		return this.buildListPanel(" primitive reverse sorted", this.buildCustomSortedPrimitiveListModel());
+		return this.buildListPanel("primitive reverse sorted", this.buildCustomSortedPrimitiveListModel());
 	}
 
 	private Component buildUnsortedDisplayableListPanel() {
-		return this.buildListPanel(" displayable unsorted", this.buildUnsortedDisplayableListModel());
+		return this.buildListPanel("displayable unsorted", this.buildUnsortedDisplayableListModel());
 	}
 
 	private Component buildStandardSortedDisplayableListPanel() {
-		return this.buildListPanel(" displayable sorted", this.buildStandardSortedDisplayableListModel());
+		return this.buildListPanel("displayable sorted", this.buildStandardSortedDisplayableListModel());
 	}
 
 	private Component buildCustomSortedDisplayableListPanel() {
-		return this.buildListPanel(" displayable reverse sorted", this.buildCustomSortedDisplayableListModel());
+		return this.buildListPanel("displayable reverse sorted", this.buildCustomSortedDisplayableListModel());
 	}
 
 	private ListModel buildUnsortedPrimitiveListModel() {
@@ -147,7 +147,7 @@ public class ListModelAdapterUITest {
 	}
 
 	private ListModel buildCustomSortedPrimitiveListModel() {
-		return new ListModelAdapter(new SortedListValueModelAdapter(this.buildPrimitiveTaskListAdapter(), this.buildCustomComparator()));
+		return new ListModelAdapter(new SortedListValueModelAdapter(this.buildPrimitiveTaskListAdapter(), this.buildCustomStringComparator()));
 	}
 
 	private ListModel buildUnsortedDisplayableListModel() {
@@ -159,12 +159,12 @@ public class ListModelAdapterUITest {
 	}
 
 	private ListModel buildCustomSortedDisplayableListModel() {
-		return new ListModelAdapter(new SortedListValueModelAdapter(this.buildDisplayableTaskListAdapter(), this.buildCustomComparator()));
+		return new ListModelAdapter(new SortedListValueModelAdapter(this.buildDisplayableTaskListAdapter(), this.buildCustomTaskObjectComparator()));
 	}
 
 	private Component buildListPanel(String label, ListModel listModel) {
 		JPanel listPanel = new JPanel(new BorderLayout());
-		JLabel listLabel = new JLabel(label);
+		JLabel listLabel = new JLabel("  " + label);
 		listPanel.add(listLabel, BorderLayout.NORTH);
 
 		JList listBox = new JList();
@@ -175,10 +175,18 @@ public class ListModelAdapterUITest {
 		return listPanel;
 	}
 
-	private Comparator buildCustomComparator() {
-		return new Comparator() {
-			public int compare(Object o1, Object o2) {
-				return ((Comparable) o2).compareTo(o1);
+	private Comparator<String> buildCustomStringComparator() {
+		return new Comparator<String>() {
+			public int compare(String s1, String s2) {
+				return s2.compareTo(s1);
+			}
+		};
+	}
+
+	private Comparator<TaskObject> buildCustomTaskObjectComparator() {
+		return new Comparator<TaskObject>() {
+			public int compare(TaskObject to1, TaskObject to2) {
+				return to2.compareTo(to1);
 			}
 		};
 	}
@@ -186,7 +194,7 @@ public class ListModelAdapterUITest {
 	private ListValueModel buildPrimitiveTaskListAdapter() {
 		return new ListAspectAdapter(TaskList.TASKS_LIST, this.taskList()) {
 			@Override
-			protected ListIterator getValueFromSubject() {
+			protected ListIterator<String> listIterator_() {
 				return ((TaskList) this.subject).tasks();
 			}
 		};
@@ -195,7 +203,7 @@ public class ListModelAdapterUITest {
 	private ListValueModel buildDisplayableTaskListAdapter() {
 		return new ListAspectAdapter(TaskList.TASK_OBJECTS_LIST, this.taskList()) {
 			@Override
-			protected ListIterator getValueFromSubject() {
+			protected ListIterator<TaskObject> listIterator_() {
 				return ((TaskList) this.subject).taskObjects();
 			}
 		};

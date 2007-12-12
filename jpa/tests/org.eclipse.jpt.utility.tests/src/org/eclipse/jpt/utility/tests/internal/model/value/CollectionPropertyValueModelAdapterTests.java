@@ -27,7 +27,7 @@ import junit.framework.TestCase;
 
 public class CollectionPropertyValueModelAdapterTests extends TestCase {
 	private PropertyValueModel adapter;
-	private CollectionValueModel wrappedCollectionHolder;
+	private SimpleCollectionValueModel wrappedCollectionHolder;
 	PropertyChangeEvent event;
 
 	public CollectionPropertyValueModelAdapterTests(String name) {
@@ -53,7 +53,7 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 	}
 
 	private Collection wrappedCollection() {
-		return CollectionTools.collection((Iterator) this.wrappedCollectionHolder.values());
+		return CollectionTools.collection((Iterator) this.wrappedCollectionHolder.iterator());
 	}
 
 	public void testValue() {
@@ -207,18 +207,18 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 			if (this.booleanValue()) {
 				if ( ! this.booleanValueOf(value)) {
 					// the value is changing from true to false
-					this.collectionHolder.remove(this.item);
+					((SimpleCollectionValueModel) this.collectionHolder).remove(this.item);
 				}
 			} else {
 				if (this.booleanValueOf(value)) {
 					// the value is changing from false to true
-					this.collectionHolder.add(this.item);
+					((SimpleCollectionValueModel) this.collectionHolder).add(this.item);
 				}
 			}
 		}
 		@Override
 		protected Object buildValue() {
-			return Boolean.valueOf(CollectionTools.contains((Iterator) this.collectionHolder.values(), this.item));
+			return Boolean.valueOf(CollectionTools.contains((Iterator) this.collectionHolder.iterator(), this.item));
 		}
 
 		// ********** internal methods **********

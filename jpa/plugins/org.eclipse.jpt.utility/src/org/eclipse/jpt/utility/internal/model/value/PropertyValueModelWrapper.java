@@ -52,7 +52,7 @@ public abstract class PropertyValueModelWrapper
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUE);
+		return new SingleAspectChangeSupport(this, PropertyChangeListener.class, VALUE);
 	}
 
 	protected PropertyChangeListener buildValueChangeListener() {

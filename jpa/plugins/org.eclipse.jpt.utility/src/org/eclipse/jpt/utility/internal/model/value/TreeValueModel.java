@@ -9,24 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import java.util.Iterator;
+
+import org.eclipse.jpt.utility.internal.model.Model;
+
 /**
- * Extend ValueModel to allow the adding and
- * removing of nodes in a tree value.
- * Typically the value returned from #value()
- * will be an Iterator.
+ * Interface used to abstract tree accessing and
+ * change notification and make it more pluggable.
  */
 public interface TreeValueModel
-	extends ValueModel
+	extends Model
 {
-
 	/**
-	 * Add the specified node to the tree value.
+	 * Return the tree's nodes.
 	 */
-	void addNode(Object[] parentPath, Object node);
-
-	/**
-	 * Remove the specified node from the tree value.
-	 */
-	void removeNode(Object[] path);
+	Iterator nodes();
+		String NODES = "nodes";
 
 }

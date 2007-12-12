@@ -69,11 +69,11 @@ public class DocumentAdapterUITest {
 	private PropertyValueModel buildNameHolder(ValueModel vm) {
 		return new PropertyAspectAdapter(vm, TestModel.NAME_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				return ((TestModel) this.subject).getName();
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				((TestModel) this.subject).setName((String) value);
 			}
 		};

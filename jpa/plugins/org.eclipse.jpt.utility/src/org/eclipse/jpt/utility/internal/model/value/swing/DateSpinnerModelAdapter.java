@@ -18,6 +18,7 @@ import javax.swing.event.ChangeListener;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
@@ -91,7 +92,11 @@ public class DateSpinnerModelAdapter
 
 	// ********** initialization **********
 
-	private PropertyChangeListener buildDateChangeListener() {
+	protected PropertyChangeListener buildDateChangeListener() {
+		return new AWTPropertyChangeListenerWrapper(this.buildDateChangeListener_());
+	}
+
+	protected PropertyChangeListener buildDateChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				DateSpinnerModelAdapter.this.synchronize(e.newValue());
@@ -187,6 +192,7 @@ public class DateSpinnerModelAdapter
 
 	// ********** standard methods **********
 
+	@Override
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.dateHolder);
 	}

@@ -30,6 +30,8 @@ public class PropertyChangeEvent extends ChangeEvent {
 	private static final long serialVersionUID = 1L;
 
 
+	// ********** constructors **********
+
 	/**
 	 * Construct a new property change event.
 	 *
@@ -48,10 +50,18 @@ public class PropertyChangeEvent extends ChangeEvent {
 		this.newValue = newValue;
 	}
 
+
+	// ********** standard state **********
+
 	/**
 	 * Return the programmatic name of the property that was changed.
 	 */
 	public String propertyName() {
+		return this.propertyName;
+	}
+
+	@Override
+	public String aspectName() {
 		return this.propertyName;
 	}
 
@@ -69,10 +79,8 @@ public class PropertyChangeEvent extends ChangeEvent {
 		return this.newValue;
 	}
 
-	@Override
-	public String aspectName() {
-		return this.propertyName;
-	}
+
+	// ********** cloning **********
 
 	@Override
 	public PropertyChangeEvent cloneWithSource(Model newSource) {

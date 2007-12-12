@@ -15,6 +15,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
@@ -36,7 +37,12 @@ public class CheckBoxModelAdapterTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.booleanHolder = new SimplePropertyValueModel(Boolean.TRUE);
-		this.buttonModelAdapter = new CheckBoxModelAdapter(this.booleanHolder);
+		this.buttonModelAdapter = new CheckBoxModelAdapter(this.booleanHolder) {
+			@Override
+			protected PropertyChangeListener buildBooleanChangeListener() {
+				return this.buildBooleanChangeListener_();
+			}
+		};
 	}
 
 	@Override

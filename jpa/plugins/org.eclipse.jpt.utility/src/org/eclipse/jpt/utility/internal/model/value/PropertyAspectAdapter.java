@@ -23,11 +23,11 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  * a single property, VALUE.
  * 
  * The typical subclass will override the following methods:
- * #getValueFromSubject()
+ * #buildValue_()
  *     at the very minimum, override this method to return the value of the
  *     subject's property (or "virtual" property); it does not need to be
  *     overridden if #buildValue() is overridden and its behavior changed
- * #setValueOnSubject(Object)
+ * #setValue_(Object)
  *     override this method if the client code needs to *set* the value of
  *     the subject's property; oftentimes, though, the client code (e.g. UI)
  *     will need only to *get* the value; it does not need to be
@@ -146,7 +146,7 @@ public abstract class PropertyAspectAdapter
 	 */
 	public void setValue(Object value) {
 		if (this.subject != null) {
-			this.setValueOnSubject(value);
+			this.setValue_(value);
 		}
 	}
 
@@ -155,7 +155,7 @@ public abstract class PropertyAspectAdapter
 	 * At this point we can be sure that the subject is not null.
 	 * @see #setValue(Object)
 	 */
-	protected void setValueOnSubject(Object value) {
+	protected void setValue_(Object value) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -232,18 +232,15 @@ public abstract class PropertyAspectAdapter
 	 * At this point the subject may be null.
 	 */
 	protected Object buildValue() {
-		if (this.subject == null) {
-			return null;
-		}
-		return this.getValueFromSubject();
+		return (this.subject == null) ? null : this.buildValue_();
 	}
 
 	/**
 	 * Return the value of the subject's property.
 	 * At this point we can be sure that the subject is not null.
-	 * @see #value()
+	 * @see #buildValue()
 	 */
-	protected Object getValueFromSubject() {
+	protected Object buildValue_() {
 		throw new UnsupportedOperationException();
 	}
 

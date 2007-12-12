@@ -9,8 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -24,22 +23,16 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  * This extension of AspectAdapter provides ListChange support.
  * 
  * The typical subclass will override the following methods:
- * #getValueFromSubject()
+ * #listIterator_()
  *     at the very minimum, override this method to return a list iterator
  *     on the subject's list aspect; it does not need to be overridden if
- *     #value() is overridden and its behavior changed
- * #getItem(int)
+ *     #listIterator() is overridden and its behavior changed
+ * #get(int)
  *     override this method to improve performance
- * #sizeFromSubject()
+ * #size_()
  *     override this method to improve performance; it does not need to be overridden if
  *     #size() is overridden and its behavior changed
- * #addItem(int, Object) and #removeItem(int)
- *     override these methods if the client code needs to *change* the contents of
- *     the subject's list aspect; oftentimes, though, the client code
- *     (e.g. UI) will need only to *get* the value
- * #addItems(int, List) and #removeItems(int, int)
- *     override these methods to improve performance, if necessary
- * #value()
+ * #listIterator()
  *     override this method only if returning an empty list iterator when the
  *     subject is null is unacceptable
  * #size()
@@ -57,6 +50,8 @@ public abstract class ListAspectAdapter
 
 	/** A listener that listens to the subject's list aspect. */
 	protected final ListChangeListener listChangeListener;
+
+	private static final Object[] EMPTY_ARRAY = new Object[0];
 
 
 	// ********** constructors **********
@@ -127,90 +122,40 @@ public abstract class ListAspectAdapter
 	// ********** ListValueModel implementation **********
 
 	/**
-	 * Return the value of the subject's list aspect.
-	 * This should be a *list iterator* on the list.
+	 * Return the elements of the subject's list aspect.
 	 */
-	public ListIterator values() {
-		if (this.subject == null) {
-			return EmptyListIterator.instance();
-		}
-		return this.getValueFromSubject();
+	public Iterator iterator() {
+		return this.listIterator();
 	}
 
 	/**
-	 * Return the value of the subject's list aspect.
-	 * This should be a *list iterator* on the list.
+	 * Return the elements of the subject's list aspect.
+	 */
+	public ListIterator listIterator() {
+		return (this.subject == null) ? EmptyListIterator.instance() : this.listIterator_();
+	}
+
+	/**
+	 * Return the elements of the subject's list aspect.
 	 * At this point we can be sure that the subject is not null.
-	 * @see #value()
+	 * @see #listIterator()
 	 */
-	protected ListIterator getValueFromSubject() {
+	protected ListIterator listIterator_() {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * Insert the specified item in the subject's list aspect at the specified index.
-	 */
-	public void add(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Insert the specified items in the subject's list aspect at the specified index.
-	 */
-	public void addAll(int index, List items) {
-		for (int i = 0; i < items.size(); i++) {
-			this.add(index + i, items.get(i));
-		}
-	}
-
-	/**
-	 * Remove the item at the specified index in the subject's list aspect.
-	 */
-	public Object remove(int index) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Remove the items at the specified index in the subject's list aspect.
-	 */
-	public List remove(int index, int length) {
-		List removedItems = new ArrayList(length);
-		for (int i = 0; i < length; i++) {
-			removedItems.add(this.remove(index));
-		}
-		return removedItems;
-	}
-
-	/**
-	 * Replace the item at the specified index of the subject's list aspect.
-	 */
-	public Object replace(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Replace the items at the specified index of the subject's list aspect.
-	 */
-	public List replaceAll(int index, List items) {
-		List replacedItems = new ArrayList(items.size());
-		for (int i = 0; i < items.size(); i++) {
-			replacedItems.add(this.replace(index + i, items.get(i)));
-		}
-		return replacedItems;
-	}
-
-	/**
-	 * Return the item at the specified index of the subject's list aspect.
+	 * Return the element at the specified index of the subject's list aspect.
 	 */
 	public Object get(int index) {
-		return CollectionTools.get((ListIterator) this.value(), index);
+		return CollectionTools.get(this.listIterator(), index);
 	}
 
 	/**
 	 * Return the size of the subject's list aspect.
 	 */
 	public int size() {
-		return this.subject == null ? 0 : this.sizeFromSubject();
+		return this.subject == null ? 0 : this.size_();
 	}
 
 	/**
@@ -218,8 +163,24 @@ public abstract class ListAspectAdapter
 	 * At this point we can be sure that the subject is not null.
 	 * @see #size()
 	 */
-	protected int sizeFromSubject() {
-		return CollectionTools.size((ListIterator) this.value());
+	protected int size_() {
+		return CollectionTools.size(this.listIterator());
+	}
+
+	/**
+	 * Return an array manifestation of the subject's list aspect.
+	 */
+	public Object[] toArray() {
+		return this.subject == null ? EMPTY_ARRAY : this.toArray_();
+	}
+
+	/**
+	 * Return an array manifestation of the subject's list aspect.
+	 * At this point we can be sure that the subject is not null.
+	 * @see #toArray()
+	 */
+	protected Object[] toArray_() {
+		return CollectionTools.array(this.listIterator(), this.size());
 	}
 
 
@@ -227,7 +188,7 @@ public abstract class ListAspectAdapter
 
 	@Override
 	protected Object value() {
-		return this.values();
+		return this.iterator();
 	}
 
 	@Override
@@ -273,27 +234,27 @@ public abstract class ListAspectAdapter
 	// ********** behavior **********
 
 	protected void itemsAdded(ListChangeEvent e) {
-		this.fireItemsAdded(e.cloneWithSource(ListAspectAdapter.this, LIST_VALUES));
+		this.fireItemsAdded(e.cloneWithSource(this, LIST_VALUES));
 	}
 
 	protected void itemsRemoved(ListChangeEvent e) {
-		this.fireItemsRemoved(e.cloneWithSource(ListAspectAdapter.this, LIST_VALUES));
+		this.fireItemsRemoved(e.cloneWithSource(this, LIST_VALUES));
 	}
 
 	protected void itemsReplaced(ListChangeEvent e) {
-		this.fireItemsReplaced(e.cloneWithSource(ListAspectAdapter.this, LIST_VALUES));
+		this.fireItemsReplaced(e.cloneWithSource(this, LIST_VALUES));
 	}
 
 	protected void itemsMoved(ListChangeEvent e) {
-		this.fireItemsMoved(e.cloneWithSource(ListAspectAdapter.this, LIST_VALUES));
+		this.fireItemsMoved(e.cloneWithSource(this, LIST_VALUES));
 	}
 
 	protected void listCleared(ListChangeEvent e) {
-		this.fireListCleared(LIST_VALUES);
+		this.fireListCleared(LIST_VALUES);  // nothing from original event to forward
 	}
 
 	protected void listChanged(ListChangeEvent e) {
-		this.fireListChanged(LIST_VALUES);
+		this.fireListChanged(LIST_VALUES);  // nothing from original event to forward
 	}
 
 }

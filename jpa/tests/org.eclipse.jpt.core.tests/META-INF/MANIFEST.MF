@@ -25,10 +25,13 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.wst.xml.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.eclipse.jpt.core.tests.internal;x-friends:="org.eclipse.jpt.ui.tests",
- org.eclipse.jpt.core.tests.internal.context,
+ org.eclipse.jpt.core.tests.internal.context;x-internal:=true,
+ org.eclipse.jpt.core.tests.internal.context.java;x-internal:=true,
+ org.eclipse.jpt.core.tests.internal.context.orm;x-internal:=true,
+ org.eclipse.jpt.core.tests.internal.context.persistence;x-internal:=true,
  org.eclipse.jpt.core.tests.internal.jdtutility;x-internal:=true,
  org.eclipse.jpt.core.tests.internal.model;x-internal:=true,
  org.eclipse.jpt.core.tests.internal.platform;x-internal:=true,
  org.eclipse.jpt.core.tests.internal.projects;x-friends:="org.eclipse.jpt.ui.tests",
- org.eclipse.jpt.core.tests.internal.resource,
- org.eclipse.jpt.core.tests.internal.resource.java
+ org.eclipse.jpt.core.tests.internal.resource;x-internal:=true,
+ org.eclipse.jpt.core.tests.internal.resource.java;x-internal:=true

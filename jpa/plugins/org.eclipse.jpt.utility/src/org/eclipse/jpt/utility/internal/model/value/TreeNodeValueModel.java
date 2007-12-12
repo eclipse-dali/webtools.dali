@@ -30,7 +30,7 @@ public interface TreeNodeValueModel
 	 * Return the node's parent node; null if the node
 	 * is the root.
 	 */
-	TreeNodeValueModel getParent();
+	TreeNodeValueModel parent();
 
 	/**
 	 * Return the path to the node.
@@ -40,12 +40,12 @@ public interface TreeNodeValueModel
 	/**
 	 * Return a list value model of the node's child nodes.
 	 */
-	ListValueModel getChildrenModel();
+	ListValueModel childrenModel();
 
 	/**
 	 * Return the node's child at the specified index.
 	 */
-	TreeNodeValueModel getChild(int index);
+	TreeNodeValueModel child(int index);
 
 	/**
 	 * Return the size of the node's list of children.

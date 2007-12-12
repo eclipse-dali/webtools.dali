@@ -58,7 +58,6 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  * NB3: This class is serializable, but it will only write out listeners that
  * are also serializable while silently leaving behind listeners that are not.
  * 
- * TODO support a dispatcher per listener?
  * TODO fire a state change event with *every* change?
  * TODO use objects (IDs?) instead of strings to identify aspects?
  */
@@ -225,13 +224,6 @@ public class ChangeSupport
 	// ********** internal queries **********
 
 	/**
-	 * Return a dispatcher that will forward change notifications to the listeners.
-	 */
-	protected ChangeEventDispatcher dispatcher() {
-		return SimpleChangeEventDispatcher.instance();
-	}
-
-	/**
 	 * Return the "generic" listeners for the specified listener class.
 	 * Return null if there are no listeners.
 	 */
@@ -294,7 +286,7 @@ public class ChangeSupport
 
 	// ********** state change support **********
 
-	private static final Class<StateChangeListener> STATE_CHANGE_LISTENER_CLASS = StateChangeListener.class;
+	protected static final Class<StateChangeListener> STATE_CHANGE_LISTENER_CLASS = StateChangeListener.class;
 
 	/**
 	 * Add a state change listener.
@@ -342,7 +334,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.stateChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().stateChanged(target, event);
+					target.stateChanged(event);
 				}
 			}
 		}
@@ -378,7 +370,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new StateChangeEvent(this.source);
 					}
-					this.dispatcher().stateChanged(target, event);
+					target.stateChanged(event);
 				}
 			}
 		}
@@ -389,7 +381,7 @@ public class ChangeSupport
 
 	// ********** property change support **********
 
-	private static final Class<PropertyChangeListener> PROPERTY_CHANGE_LISTENER_CLASS = PropertyChangeListener.class;
+	protected static final Class<PropertyChangeListener> PROPERTY_CHANGE_LISTENER_CLASS = PropertyChangeListener.class;
 
 	/**
 	 * Return whether the values are equal, with the appropriate null checks.
@@ -493,7 +485,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.propertyChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().propertyChanged(target, event);
+					target.propertyChanged(event);
 				}
 			}
 		}
@@ -540,7 +532,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new PropertyChangeEvent(this.source, propertyName, oldValue, newValue);
 					}
-					this.dispatcher().propertyChanged(target, event);
+					target.propertyChanged(event);
 				}
 			}
 		}
@@ -592,7 +584,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new PropertyChangeEvent(this.source, propertyName, new Integer(oldValue), new Integer(newValue));
 					}
-					this.dispatcher().propertyChanged(target, event);
+					target.propertyChanged(event);
 				}
 			}
 		}
@@ -644,7 +636,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new PropertyChangeEvent(this.source, propertyName, Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
 					}
-					this.dispatcher().propertyChanged(target, event);
+					target.propertyChanged(event);
 				}
 			}
 		}
@@ -662,7 +654,7 @@ public class ChangeSupport
 
 	// ********** collection change support **********
 
-	private static final Class<CollectionChangeListener> COLLECTION_CHANGE_LISTENER_CLASS = CollectionChangeListener.class;
+	protected static final Class<CollectionChangeListener> COLLECTION_CHANGE_LISTENER_CLASS = CollectionChangeListener.class;
 
 	/**
 	 * Add a collection change listener that is registered for all collections.
@@ -741,7 +733,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().itemsAdded(target, event);
+					target.itemsAdded(event);
 				}
 			}
 		}
@@ -785,7 +777,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new CollectionChangeEvent(this.source, collectionName, addedItems);
 					}
-					this.dispatcher().itemsAdded(target, event);
+					target.itemsAdded(event);
 				}
 			}
 		}
@@ -830,7 +822,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new CollectionChangeEvent(this.source, collectionName, Collections.singleton(addedItem));
 					}
-					this.dispatcher().itemsAdded(target, event);
+					target.itemsAdded(event);
 				}
 			}
 		}
@@ -873,7 +865,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().itemsRemoved(target, event);
+					target.itemsRemoved(event);
 				}
 			}
 		}
@@ -917,7 +909,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new CollectionChangeEvent(this.source, collectionName, removedItems);
 					}
-					this.dispatcher().itemsRemoved(target, event);
+					target.itemsRemoved(event);
 				}
 			}
 		}
@@ -962,7 +954,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new CollectionChangeEvent(this.source, collectionName, Collections.singleton(removedItem));
 					}
-					this.dispatcher().itemsRemoved(target, event);
+					target.itemsRemoved(event);
 				}
 			}
 		}
@@ -1001,7 +993,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().collectionCleared(target, event);
+					target.collectionCleared(event);
 				}
 			}
 		}
@@ -1042,7 +1034,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new CollectionChangeEvent(this.source, collectionName);
 					}
-					this.dispatcher().collectionCleared(target, event);
+					target.collectionCleared(event);
 				}
 			}
 		}
@@ -1081,7 +1073,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().collectionChanged(target, event);
+					target.collectionChanged(event);
 				}
 			}
 		}
@@ -1122,7 +1114,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new CollectionChangeEvent(this.source, collectionName);
 					}
-					this.dispatcher().collectionChanged(target, event);
+					target.collectionChanged(event);
 				}
 			}
 		}
@@ -1140,7 +1132,7 @@ public class ChangeSupport
 
 	// ********** list change support **********
 
-	private static final Class<ListChangeListener> LIST_CHANGE_LISTENER_CLASS = ListChangeListener.class;
+	protected static final Class<ListChangeListener> LIST_CHANGE_LISTENER_CLASS = ListChangeListener.class;
 
 	/**
 	 * Add a list change listener that is registered for all lists.
@@ -1219,7 +1211,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().itemsAdded(target, event);
+					target.itemsAdded(event);
 				}
 			}
 		}
@@ -1263,7 +1255,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new ListChangeEvent(this.source, listName, index, addedItems);
 					}
-					this.dispatcher().itemsAdded(target, event);
+					target.itemsAdded(event);
 				}
 			}
 		}
@@ -1308,7 +1300,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new ListChangeEvent(this.source, listName, index, Collections.singletonList(addedItem));
 					}
-					this.dispatcher().itemsAdded(target, event);
+					target.itemsAdded(event);
 				}
 			}
 		}
@@ -1351,7 +1343,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().itemsRemoved(target, event);
+					target.itemsRemoved(event);
 				}
 			}
 		}
@@ -1395,7 +1387,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new ListChangeEvent(this.source, listName, index, removedItems);
 					}
-					this.dispatcher().itemsRemoved(target, event);
+					target.itemsRemoved(event);
 				}
 			}
 		}
@@ -1440,7 +1432,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new ListChangeEvent(this.source, listName, index, Collections.singletonList(removedItem));
 					}
-					this.dispatcher().itemsRemoved(target, event);
+					target.itemsRemoved(event);
 				}
 			}
 		}
@@ -1483,7 +1475,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().itemsReplaced(target, event);
+					target.itemsReplaced(event);
 				}
 			}
 		}
@@ -1527,7 +1519,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new ListChangeEvent(this.source, listName, index, newItems, replacedItems);
 					}
-					this.dispatcher().itemsReplaced(target, event);
+					target.itemsReplaced(event);
 				}
 			}
 		}
@@ -1572,7 +1564,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new ListChangeEvent(this.source, listName, index, Collections.singletonList(newItem), Collections.singletonList(replacedItem));
 					}
-					this.dispatcher().itemsReplaced(target, event);
+					target.itemsReplaced(event);
 				}
 			}
 		}
@@ -1615,7 +1607,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().itemsMoved(target, event);
+					target.itemsMoved(event);
 				}
 			}
 		}
@@ -1659,7 +1651,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new ListChangeEvent(this.source, listName, targetIndex, sourceIndex, length);
 					}
-					this.dispatcher().itemsMoved(target, event);
+					target.itemsMoved(event);
 				}
 			}
 		}
@@ -1705,7 +1697,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().listCleared(target, event);
+					target.listCleared(event);
 				}
 			}
 		}
@@ -1746,7 +1738,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new ListChangeEvent(this.source, listName);
 					}
-					this.dispatcher().listCleared(target, event);
+					target.listCleared(event);
 				}
 			}
 		}
@@ -1785,7 +1777,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().listChanged(target, event);
+					target.listChanged(event);
 				}
 			}
 		}
@@ -1826,7 +1818,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new ListChangeEvent(this.source, listName);
 					}
-					this.dispatcher().listChanged(target, event);
+					target.listChanged(event);
 				}
 			}
 		}
@@ -1844,7 +1836,7 @@ public class ChangeSupport
 
 	// ********** tree change support **********
 
-	private static final Class<TreeChangeListener> TREE_CHANGE_LISTENER_CLASS = TreeChangeListener.class;
+	protected static final Class<TreeChangeListener> TREE_CHANGE_LISTENER_CLASS = TreeChangeListener.class;
 	private static final Object[] EMPTY_TREE_PATH = new Object[0];
 
 	/**
@@ -1920,7 +1912,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().nodeAdded(target, event);
+					target.nodeAdded(event);
 				}
 			}
 		}
@@ -1961,7 +1953,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new TreeChangeEvent(this.source, treeName, path);
 					}
-					this.dispatcher().nodeAdded(target, event);
+					target.nodeAdded(event);
 				}
 			}
 		}
@@ -2000,7 +1992,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().nodeRemoved(target, event);
+					target.nodeRemoved(event);
 				}
 			}
 		}
@@ -2041,7 +2033,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new TreeChangeEvent(this.source, treeName, path);
 					}
-					this.dispatcher().nodeRemoved(target, event);
+					target.nodeRemoved(event);
 				}
 			}
 		}
@@ -2080,7 +2072,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().treeCleared(target, event);
+					target.treeCleared(event);
 				}
 			}
 		}
@@ -2121,7 +2113,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new TreeChangeEvent(this.source, treeName, path);
 					}
-					this.dispatcher().treeCleared(target, event);
+					target.treeCleared(event);
 				}
 			}
 		}
@@ -2167,7 +2159,7 @@ public class ChangeSupport
 					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
 				}
 				if (stillListening) {
-					this.dispatcher().treeChanged(target, event);
+					target.treeChanged(event);
 				}
 			}
 		}
@@ -2208,7 +2200,7 @@ public class ChangeSupport
 						// here's the reason for the duplicate code...
 						event = new TreeChangeEvent(this.source, treeName, path);
 					}
-					this.dispatcher().treeChanged(target, event);
+					target.treeChanged(event);
 				}
 			}
 		}

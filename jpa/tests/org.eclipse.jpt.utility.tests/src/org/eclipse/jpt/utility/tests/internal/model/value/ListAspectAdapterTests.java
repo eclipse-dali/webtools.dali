@@ -31,7 +31,7 @@ import junit.framework.TestCase;
 public class ListAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
 	private PropertyValueModel subjectHolder1;
-	private ListAspectAdapter aa1;
+	private LocalListAspectAdapter aa1;
 	private ListChangeEvent event1;
 	private ListChangeListener listener1;
 
@@ -90,46 +90,8 @@ public class ListAspectAdapterTests extends TestCase {
 		return result;
 	}
 
-	private ListAspectAdapter buildAspectAdapter(ValueModel subjectHolder) {
-		return new ListAspectAdapter(subjectHolder, TestSubject.NAMES_LIST) {
-			// this is not a typical aspect adapter - the value is determined by the aspect name
-			protected ListIterator getValueFromSubject() {
-				if (this.listName == TestSubject.NAMES_LIST) {
-					return ((TestSubject) this.subject).names();
-				} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
-					return ((TestSubject) this.subject).descriptions();
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.listName);
-				}
-			}
-			public void add(int index, Object item) {
-				if (this.listName == TestSubject.NAMES_LIST) {
-					((TestSubject) this.subject).addName(index, (String) item);
-				} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
-					((TestSubject) this.subject).addDescription(index, (String) item);
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.listName);
-				}
-			}
-			public Object remove(int index) {
-				if (this.listName == TestSubject.NAMES_LIST) {
-					return ((TestSubject) this.subject).removeName(index);
-				} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
-					return ((TestSubject) this.subject).removeDescription(index);
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.listName);
-				}
-			}
-			public Object replace(int index, Object item) {
-				if (this.listName == TestSubject.NAMES_LIST) {
-					return ((TestSubject) this.subject).setName(index, (String) item);
-				} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
-					return ((TestSubject) this.subject).setDescription(index, (String) item);
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.listName);
-				}
-			}
-		};
+	private LocalListAspectAdapter buildAspectAdapter(ValueModel subjectHolder) {
+		return new LocalListAspectAdapter(subjectHolder);
 	}
 
 	private ListChangeListener buildValueChangeListener1() {
@@ -166,7 +128,7 @@ public class ListAspectAdapterTests extends TestCase {
 	}
 
 	public void testSubjectHolder() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.list(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		this.subjectHolder1.setValue(this.subject2);
@@ -175,7 +137,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(-1, this.event1.index());
 		assertFalse(this.event1.items().hasNext());
-		assertEquals(this.subject2Names(), CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(this.subject2Names(), CollectionTools.list(this.aa1.listIterator()));
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(null);
@@ -184,7 +146,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(-1, this.event1.index());
 		assertFalse(this.event1.items().hasNext());
-		assertFalse(((Iterator) this.aa1.values()).hasNext());
+		assertFalse(this.aa1.iterator().hasNext());
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(this.subject1);
@@ -193,11 +155,11 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(-1, this.event1.index());
 		assertFalse(this.event1.items().hasNext());
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.list(this.aa1.listIterator()));
 	}
 
 	public void testAdd() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.list(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		this.subject1.addName("jam");
@@ -208,7 +170,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals("jam", this.event1.items().next());
 		List namesPlus = this.subject1Names();
 		namesPlus.add("jam");
-		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(namesPlus, CollectionTools.list(this.aa1.listIterator()));
 
 		this.event1 = null;
 		this.aa1.add(2, "jaz");
@@ -218,11 +180,11 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(2, this.event1.index());
 		assertEquals("jaz", this.event1.items().next());
 		namesPlus.add(2, "jaz");
-		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(namesPlus, CollectionTools.list(this.aa1.listIterator()));
 	}
 
 	public void testDefaultAdd() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.list(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		List items = new ArrayList();
@@ -240,11 +202,11 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals("jam", this.event1.items().next());
 		List namesPlus = this.subject1Names();
 		namesPlus.addAll(2, items);
-		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(namesPlus, CollectionTools.list(this.aa1.listIterator()));
 	}
 
 	public void testRemove() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.list(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		String removedName = this.subject1.removeName(0);	// should be "foo"
@@ -255,7 +217,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(removedName, this.event1.items().next());
 		List namesMinus = this.subject1Names();
 		namesMinus.remove(0);
-		assertEquals(namesMinus, CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(namesMinus, CollectionTools.list(this.aa1.listIterator()));
 
 		this.event1 = null;
 		Object removedItem = this.aa1.remove(0);	
@@ -265,11 +227,11 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(0, this.event1.index());
 		assertEquals(removedItem, this.event1.items().next());
 		namesMinus.remove(0);
-		assertEquals(namesMinus, CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(namesMinus, CollectionTools.list(this.aa1.listIterator()));
 	}
 
 	public void testDefaultLength() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.list(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		List items = new ArrayList();
@@ -286,11 +248,11 @@ public class ListAspectAdapterTests extends TestCase {
 		List namesPlus = this.subject1Names();
 		namesPlus.remove(1);
 		namesPlus.remove(1);
-		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(namesPlus, CollectionTools.list(this.aa1.listIterator()));
 	}
 
 	public void testReplace() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.list(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		String replacedName = this.subject1.setName(0, "jelly");	// should be "foo"
@@ -302,7 +264,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(replacedName, this.event1.replacedItems().next());
 		List namesChanged = this.subject1Names();
 		namesChanged.set(0, "jelly");
-		assertEquals(namesChanged, CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(namesChanged, CollectionTools.list(this.aa1.listIterator()));
 
 		this.event1 = null;
 		replacedName = this.subject1.setName(1, "roll");	// should be "bar"
@@ -315,33 +277,11 @@ public class ListAspectAdapterTests extends TestCase {
 		namesChanged = this.subject1Names();
 		namesChanged.set(0, "jelly");
 		namesChanged.set(1, "roll");
-		assertEquals(namesChanged, CollectionTools.list((ListIterator) this.aa1.values()));
-	}
-
-	public void testDefaultReplaceAll() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
-		assertNull(this.event1);
-
-		List items = new ArrayList();
-		items.add("jar");
-		items.add("jaz");
-
-		this.event1 = null;
-		this.aa1.replaceAll(1, items);
-		assertNotNull(this.event1);
-		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
-		assertEquals(2, this.event1.index());		// only the last "replace" event will still be there
-		assertEquals("baz", this.event1.replacedItems().next());
-		assertEquals("jaz", this.event1.items().next());
-		List namesPlus = this.subject1Names();
-		namesPlus.set(1, items.get(0));
-		namesPlus.set(2, items.get(1));
-		assertEquals(namesPlus, CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(namesChanged, CollectionTools.list(this.aa1.listIterator()));
 	}
 
 	public void testListChange() {
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.list(this.aa1.listIterator()));
 		assertNull(this.event1);
 
 		this.subject1.addTwoNames("jam", "jaz");
@@ -353,12 +293,12 @@ public class ListAspectAdapterTests extends TestCase {
 		List namesPlus2 = this.subject1Names();
 		namesPlus2.add(0, "jaz");
 		namesPlus2.add(0, "jam");
-		assertEquals(namesPlus2, CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(namesPlus2, CollectionTools.list(this.aa1.listIterator()));
 	}
 
-	public void testValues() {
+	public void testIterator() {
 		assertEquals(this.subject1Names(), CollectionTools.list(this.subject1.names()));
-		assertEquals(this.subject1Names(), CollectionTools.list((ListIterator) this.aa1.values()));
+		assertEquals(this.subject1Names(), CollectionTools.list(this.aa1.listIterator()));
 	}
 
 	public void testGet() {
@@ -368,7 +308,7 @@ public class ListAspectAdapterTests extends TestCase {
 
 	public void testSize() {
 		assertEquals(this.subject1Names().size(), CollectionTools.size(this.subject1.names()));
-		assertEquals(this.subject1Names().size(), CollectionTools.size((ListIterator) this.aa1.values()));
+		assertEquals(this.subject1Names().size(), CollectionTools.size(this.aa1.listIterator()));
 	}
 
 	public void testHasListeners() {
@@ -387,85 +327,150 @@ public class ListAspectAdapterTests extends TestCase {
 		assertFalse(this.aa1.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
-// ********** inner class **********
 
-private class TestSubject extends AbstractModel {
-	private List names;
-	public static final String NAMES_LIST = "names";
-	private List descriptions;
-	public static final String DESCRIPTIONS_LIST = "descriptions";
+	// ********** inner class **********
 
-	public TestSubject() {
-		this.names = new ArrayList();
-		this.descriptions = new ArrayList();
-	}
-	public ListIterator names() {
-		return new ReadOnlyListIterator(this.names);
-	}
-	public String getName(int index) {
-		return (String) this.names.get(index);
-	}
-	public void addName(int index, String name) {
-		this.names.add(index, name);
-		this.fireItemAdded(NAMES_LIST, index, name);
-	}
-	public void addName(String name) {
-		this.addName(this.names.size(), name);
-	}
-	public void addNames(ListIterator newNames) {
-		while (newNames.hasNext()) {
-			this.addName((String) newNames.next());
+	private class TestSubject extends AbstractModel {
+		private List names;
+		public static final String NAMES_LIST = "names";
+		private List descriptions;
+		public static final String DESCRIPTIONS_LIST = "descriptions";
+	
+		public TestSubject() {
+			this.names = new ArrayList();
+			this.descriptions = new ArrayList();
+		}
+		public ListIterator names() {
+			return new ReadOnlyListIterator(this.names);
+		}
+		public String getName(int index) {
+			return (String) this.names.get(index);
+		}
+		public void addName(int index, String name) {
+			this.names.add(index, name);
+			this.fireItemAdded(NAMES_LIST, index, name);
+		}
+		public void addName(String name) {
+			this.addName(this.names.size(), name);
+		}
+		public void addNames(ListIterator newNames) {
+			while (newNames.hasNext()) {
+				this.addName((String) newNames.next());
+			}
+		}
+		public void addNames(List newNames) {
+			this.addNames(newNames.listIterator());
+		}
+		public void addTwoNames(String name1, String name2) {
+			this.names.add(0, name2);
+			this.names.add(0, name1);
+			this.fireListChanged(NAMES_LIST);
+		}
+		public String removeName(int index) {
+			String removedName = (String) this.names.remove(index);
+			this.fireItemRemoved(NAMES_LIST, index, removedName);
+			return removedName;
+		}
+		public String setName(int index, String name) {
+			String replacedName = (String) this.names.set(index, name);
+			this.fireItemReplaced(NAMES_LIST, index, name, replacedName);
+			return replacedName;
+		}
+		public ListIterator descriptions() {
+			return new ReadOnlyListIterator(this.descriptions);
+		}
+		public String getDescription(int index) {
+			return (String) this.descriptions.get(index);
+		}
+		public void addDescription(int index, String description) {
+			this.descriptions.add(index, description);
+			this.fireItemAdded(DESCRIPTIONS_LIST, index, description);
+		}
+		public void addDescription(String description) {
+			this.addDescription(this.descriptions.size(), description);
+		}
+		public void addDescriptions(ListIterator newDescriptions) {
+			while (newDescriptions.hasNext()) {
+				this.addDescription((String) newDescriptions.next());
+			}
+		}
+		public void addDescriptions(List newDescriptions) {
+			this.addDescriptions(newDescriptions.listIterator());
+		}
+		public String removeDescription(int index) {
+			String removedDescription = (String) this.descriptions.remove(index);
+			this.fireItemRemoved(DESCRIPTIONS_LIST, index, removedDescription);
+			return removedDescription;
+		}
+		public String setDescription(int index, String description) {
+			String replacedDescription = (String) this.descriptions.set(index, description);
+			this.fireItemReplaced(DESCRIPTIONS_LIST, index, description, replacedDescription);
+			return replacedDescription;
 		}
 	}
-	public void addNames(List newNames) {
-		this.addNames(newNames.listIterator());
-	}
-	public void addTwoNames(String name1, String name2) {
-		this.names.add(0, name2);
-		this.names.add(0, name1);
-		this.fireListChanged(NAMES_LIST);
-	}
-	public String removeName(int index) {
-		String removedName = (String) this.names.remove(index);
-		this.fireItemRemoved(NAMES_LIST, index, removedName);
-		return removedName;
-	}
-	public String setName(int index, String name) {
-		String replacedName = (String) this.names.set(index, name);
-		this.fireItemReplaced(NAMES_LIST, index, name, replacedName);
-		return replacedName;
-	}
-	public ListIterator descriptions() {
-		return new ReadOnlyListIterator(this.descriptions);
-	}
-	public String getDescription(int index) {
-		return (String) this.descriptions.get(index);
-	}
-	public void addDescription(int index, String description) {
-		this.descriptions.add(index, description);
-		this.fireItemAdded(DESCRIPTIONS_LIST, index, description);
-	}
-	public void addDescription(String description) {
-		this.addDescription(this.descriptions.size(), description);
-	}
-	public void addDescriptions(ListIterator newDescriptions) {
-		while (newDescriptions.hasNext()) {
-			this.addDescription((String) newDescriptions.next());
+
+
+	// this is not a typical aspect adapter - the value is determined by the aspect name
+	private class LocalListAspectAdapter extends ListAspectAdapter {
+
+		LocalListAspectAdapter(ValueModel subjectHolder) {
+			super(subjectHolder, TestSubject.NAMES_LIST);
+		}
+
+		@Override
+		protected ListIterator listIterator_() {
+			if (this.listName == TestSubject.NAMES_LIST) {
+				return ((TestSubject) this.subject).names();
+			} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
+				return ((TestSubject) this.subject).descriptions();
+			} else {
+				throw new IllegalStateException("invalid aspect name: " + this.listName);
+			}
+		}
+
+		public void add(int index, Object item) {
+			if (this.listName == TestSubject.NAMES_LIST) {
+				((TestSubject) this.subject).addName(index, (String) item);
+			} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
+				((TestSubject) this.subject).addDescription(index, (String) item);
+			} else {
+				throw new IllegalStateException("invalid aspect name: " + this.listName);
+			}
+		}
+
+		public void addAll(int index, List items) {
+			for (int i = 0; i < items.size(); i++) {
+				this.add(index + i, items.get(i));
+			}
+		}
+
+		public Object remove(int index) {
+			if (this.listName == TestSubject.NAMES_LIST) {
+				return ((TestSubject) this.subject).removeName(index);
+			} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
+				return ((TestSubject) this.subject).removeDescription(index);
+			} else {
+				throw new IllegalStateException("invalid aspect name: " + this.listName);
+			}
+		}
+
+		public List remove(int index, int length) {
+			List removedItems = new ArrayList(length);
+			for (int i = 0; i < length; i++) {
+				removedItems.add(this.remove(index));
+			}
+			return removedItems;
+		}
+
+		public Object replace(int index, Object item) {
+			if (this.listName == TestSubject.NAMES_LIST) {
+				return ((TestSubject) this.subject).setName(index, (String) item);
+			} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
+				return ((TestSubject) this.subject).setDescription(index, (String) item);
+			} else {
+				throw new IllegalStateException("invalid aspect name: " + this.listName);
+			}
 		}
 	}
-	public void addDescriptions(List newDescriptions) {
-		this.addDescriptions(newDescriptions.listIterator());
-	}
-	public String removeDescription(int index) {
-		String removedDescription = (String) this.descriptions.remove(index);
-		this.fireItemRemoved(DESCRIPTIONS_LIST, index, removedDescription);
-		return removedDescription;
-	}
-	public String setDescription(int index, String description) {
-		String replacedDescription = (String) this.descriptions.set(index, description);
-		this.fireItemReplaced(DESCRIPTIONS_LIST, index, description, replacedDescription);
-		return replacedDescription;
-	}
-}
 
 }

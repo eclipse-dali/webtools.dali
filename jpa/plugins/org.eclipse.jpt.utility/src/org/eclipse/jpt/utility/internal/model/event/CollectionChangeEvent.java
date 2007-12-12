@@ -48,6 +48,8 @@ public class CollectionChangeEvent extends ChangeEvent {
 	private static final long serialVersionUID = 1L;
 
 
+	// ********** constructors **********
+
 	/**
 	 * Construct a new collection change event.
 	 *
@@ -75,10 +77,18 @@ public class CollectionChangeEvent extends ChangeEvent {
 		this(source, collectionName, Collections.emptySet());
 	}
 
+
+	// ********** standard state **********
+
 	/**
 	 * Return the programmatic name of the collection that was changed.
 	 */
 	public String collectionName() {
+		return this.collectionName;
+	}
+
+	@Override
+	public String aspectName() {
 		return this.collectionName;
 	}
 
@@ -100,10 +110,8 @@ public class CollectionChangeEvent extends ChangeEvent {
 		return this.items.size();
 	}
 
-	@Override
-	public String aspectName() {
-		return this.collectionName;
-	}
+
+	// ********** cloning **********
 
 	/**
 	 * Return a copy of the event with the specified source
@@ -115,7 +123,7 @@ public class CollectionChangeEvent extends ChangeEvent {
 	}
 
 	/**
-	 * Return a copy of the event with the specified source
+	 * Return a copy of the event with the specified source and collection name
 	 * replacing the current source and collection name.
 	 */
 	public CollectionChangeEvent cloneWithSource(Model newSource, String newCollectionName) {

@@ -32,7 +32,7 @@ import junit.framework.TestCase;
 
 public class CollectionListValueModelAdapterTests extends TestCase {
 	private ListValueModel adapter;
-	private CollectionValueModel wrappedCollectionHolder;
+	private SimpleCollectionValueModel wrappedCollectionHolder;
 	private Collection wrappedCollection;
 
 	public CollectionListValueModelAdapterTests(String name) {
@@ -53,14 +53,14 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testValues() {
+	public void testIterator() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
 			public void itemsAdded(ListChangeEvent e) {/* OK */}
 		});
 		this.wrappedCollectionHolder.add("foo");
 		this.wrappedCollectionHolder.add("bar");
 		this.wrappedCollectionHolder.add("baz");
-		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
+		Collection adapterCollection = CollectionTools.collection(this.adapter.iterator());
 		assertEquals(3, adapterCollection.size());
 		assertEquals(this.wrappedCollection, adapterCollection);
 	}
@@ -73,17 +73,17 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		this.wrappedCollectionHolder.add("foo");
 		this.wrappedCollectionHolder.add("bar");
 		this.wrappedCollectionHolder.add("baz");
-		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
+		Collection adapterCollection = CollectionTools.collection(this.adapter.iterator());
 		assertEquals(3, adapterCollection.size());
 		assertEquals(this.wrappedCollection, adapterCollection);
 
 		this.adapter.removeListChangeListener(ListValueModel.LIST_VALUES, listener);
-		adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
+		adapterCollection = CollectionTools.collection(this.adapter.iterator());
 		assertEquals(0, adapterCollection.size());
 		assertEquals(new HashBag(), adapterCollection);
 
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, listener);
-		adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
+		adapterCollection = CollectionTools.collection(this.adapter.iterator());
 		assertEquals(3, adapterCollection.size());
 		assertEquals(this.wrappedCollection, adapterCollection);
 	}
@@ -100,7 +100,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		this.wrappedCollectionHolder.add("jaz");
 		assertEquals(6, this.wrappedCollection.size());
 
-		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
+		Collection adapterCollection = CollectionTools.collection(this.adapter.iterator());
 		assertEquals(this.wrappedCollection, adapterCollection);
 		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
@@ -115,13 +115,14 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		this.wrappedCollectionHolder.add("joo");
 		this.wrappedCollectionHolder.add("jar");
 		this.wrappedCollectionHolder.add("jaz");
+		assertTrue(this.wrappedCollection.contains("jaz"));
 		this.wrappedCollectionHolder.remove("jaz");
 		assertFalse(this.wrappedCollection.contains("jaz"));
 		this.wrappedCollectionHolder.remove("foo");
 		assertFalse(this.wrappedCollection.contains("foo"));
 		assertEquals(4, this.wrappedCollection.size());
 
-		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
+		Collection adapterCollection = CollectionTools.collection(this.adapter.iterator());
 		assertEquals(this.wrappedCollection, adapterCollection);
 		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
@@ -144,7 +145,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		assertFalse(this.wrappedCollection.contains("foo"));
 		assertEquals(4, this.wrappedCollection.size());
 
-		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
+		Collection adapterCollection = CollectionTools.collection(this.adapter.iterator());
 		assertEquals(this.wrappedCollection, adapterCollection);
 	}
 
@@ -169,7 +170,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		this.wrappedCollectionHolder.add("bar");
 		this.wrappedCollectionHolder.add("baz");
 		JList jList = new JList(new ListModelAdapter(this.adapter));
-		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setValue(new HashBag());
+		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setCollection(new HashBag());
 		assertEquals(0, jList.getModel().getSize());
 	}
 	
@@ -183,7 +184,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		HashBag bag = new HashBag();
 		bag.add("foo");
 		bag.add("bar");
-		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setValue(bag);
+		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setCollection(bag);
 		assertEquals(2, jList.getModel().getSize());
 	}
 	
@@ -195,7 +196,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		
 		HashBag bag = new HashBag();
-		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setValue(bag);
+		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setCollection(bag);
 		assertEquals(0, jList.getModel().getSize());
 	}
 

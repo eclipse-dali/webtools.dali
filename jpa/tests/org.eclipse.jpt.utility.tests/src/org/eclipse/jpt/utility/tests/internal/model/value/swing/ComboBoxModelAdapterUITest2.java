@@ -29,20 +29,20 @@ public class ComboBoxModelAdapterUITest2 extends ComboBoxModelAdapterUITest {
 	}
 
 	/**
-	 * add a null to the front of the list
-	 */
-	@Override
-	protected ListValueModel buildColorListHolder() {
-		// the default is to prepend the wrapped list with a null item
-		return new ExtendedListValueModelWrapper(super.buildColorListHolder());
-	}
-
-	/**
 	 * use a different model that allows the color to be set to null
 	 */
 	@Override
 	protected TestModel buildTestModel() {
 		return new TestModel2();
+	}
+
+	/**
+	 * add a null to the front of the list
+	 */
+	@Override
+	protected ListValueModel uiColorListHolder() {
+		// the default is to prepend the wrapped list with a null item
+		return new ExtendedListValueModelWrapper(super.uiColorListHolder());
 	}
 
 	/**

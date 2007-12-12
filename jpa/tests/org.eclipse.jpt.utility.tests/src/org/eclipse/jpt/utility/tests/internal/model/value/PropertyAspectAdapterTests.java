@@ -55,7 +55,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 		return new PropertyAspectAdapter(subjectHolder, TestSubject.NAME_PROPERTY) {
 			// this is not a aspect adapter - the value is determined by the aspect name
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				if (this.propertyNames[0] == TestSubject.NAME_PROPERTY) {
 					return ((TestSubject) this.subject).getName();
 				} else if (this.propertyNames[0] == TestSubject.DESCRIPTION_PROPERTY) {
@@ -65,7 +65,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 				}
 			}
 			@Override
-			protected void setValueOnSubject(Object value) {
+			protected void setValue_(Object value) {
 				if (this.propertyNames[0] == TestSubject.NAME_PROPERTY) {
 					((TestSubject) this.subject).setName((String) value);
 				} else if (this.propertyNames[0] == TestSubject.DESCRIPTION_PROPERTY) {
@@ -226,7 +226,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 	private PropertyValueModel buildMultipleAspectAdapter(ValueModel subjectHolder) {
 		return new PropertyAspectAdapter(subjectHolder, TestSubject.NAME_PROPERTY, TestSubject.DESCRIPTION_PROPERTY) {
 			@Override
-			protected Object getValueFromSubject() {
+			protected Object buildValue_() {
 				TestSubject ts = (TestSubject) this.subject;
 				return ts.getName() + ":" + ts.getDescription();
 			}

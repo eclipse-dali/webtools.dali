@@ -9,15 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.node;
 
-import org.eclipse.jpt.utility.internal.ClassTools;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 public class JptUtilityNodeTests {
 	
 	public static Test suite() {
-		TestSuite suite = new TestSuite(ClassTools.packageNameFor(JptUtilityNodeTests.class));
+		TestSuite suite = new TestSuite(JptUtilityNodeTests.class.getPackage().getName());
 	
 		suite.addTestSuite(AbstractNodeTests.class);
 	

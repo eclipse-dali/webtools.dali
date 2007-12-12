@@ -20,7 +20,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.IJavaModelStatusConstants;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
@@ -49,6 +51,7 @@ public class EntityGenerator {
 	private final String entityClassName;
 	private final OverwriteConfirmer overwriteConfirmer;
 	private final IProgressMonitor monitor;
+	private final String pkClassName;
 
 
 	// ********** public API **********
@@ -71,28 +74,41 @@ public class EntityGenerator {
 		this.entityClassName = this.fullyQualify(this.entityName());
 		this.overwriteConfirmer = overwriteConfirmer;
 		this.monitor = monitor;
+		this.pkClassName = this.entityClassName + "PK";  // hack
 	}
 
 
 	// ********** code gen **********
 
 	private void generateEntity() {
+		int totalWork = pkClassIsGenerated() ? 40 : 20;
 		try {
+			this.monitor.beginTask("", totalWork);
 			this.generateEntity_();
 		} catch (JavaModelException ex) {
 			throw new RuntimeException(ex);
 		}
+		finally {
+			this.monitor.done();
+		}
 	}
 
 	private void generateEntity_() throws JavaModelException {
-		String fileName = this.entityName() + ".java";
-		String source = this.buildSource();
+		// build the body source first so we can gather up the import statements
+		this.generateSourceFile(this.entityClassName, this.entityName() + ".java", this.buildSource(this.buildBodySource()));
+		if (this.pkClassIsGenerated()) {
+			this.generateSourceFile(this.pkClassName, this.pkName() + ".java", this.buildSource(this.buildPKBodySource()));
+		}
+		
+	}
+
+	private void generateSourceFile(String className, String fileName, String source) throws JavaModelException {
 		try {
-			this.packageFragment.createCompilationUnit(fileName, source, false, this.monitor);
+			this.packageFragment.createCompilationUnit(fileName, source, false, new SubProgressMonitor(this.monitor, 10));
 		} catch (JavaModelException ex) {
 			if (ex.getJavaModelStatus().getCode() == IJavaModelStatusConstants.NAME_COLLISION) {
-				if (this.overwriteConfirmer.overwrite(this.entityClassName)) {
-					this.packageFragment.createCompilationUnit(fileName, source, true, this.monitor);
+				if (this.overwriteConfirmer.overwrite(className)) {
+					this.packageFragment.createCompilationUnit(fileName, source, true, new SubProgressMonitor(this.monitor, 0));
 				}
 			} else {
 				throw ex;
@@ -104,20 +120,24 @@ public class EntityGenerator {
 	 * build the "body" source first; then build the "package" and "imports" source
 	 * and concatenate the "body" source to it
 	 */
-	private String buildSource() {
-		// build the body source first so we can gather up the import statements
-		BodySource bodySource = this.buildBodySource();
-
+	private String buildSource(BodySource bodySource) {
 		StringWriter sw = new StringWriter(bodySource.length() + 1000);
 		PrintWriter pw = new PrintWriter(sw);
 		this.printPackageAndImportsOn(pw, bodySource);
 		pw.print(bodySource.source());
+		this.monitor.worked(10);
 		return sw.toString();
 	}
 
 	private BodySource buildBodySource() {
 		EntitySourceWriter pw = new EntitySourceWriter(this.packageName(), this.entityClassName);
 		this.printBodySourceOn(pw);
+		return pw;
+	}
+
+	private BodySource buildPKBodySource() {
+		EntitySourceWriter pw = new EntitySourceWriter(this.packageName(), this.pkClassName);
+		this.printPrimaryKeyClassOn(pw);
 		return pw;
 	}
 
@@ -143,8 +163,6 @@ public class EntityGenerator {
 				this.printEntityOwnedManyToManyGettersAndSettersOn(pw);
 				this.printEntityNonOwnedManyToManyGettersAndSettersOn(pw);
 			}
-
-			this.printPrimaryKeyClassOn(pw);
 		pw.undent();
 
 		pw.print('}');
@@ -182,17 +200,17 @@ public class EntityGenerator {
 	}
 
 	private void printIdClassAnnotationOn(EntitySourceWriter pw) {
-		if ((this.table().primaryKeyColumnsSize() > 1) && this.config.generateIdClassForCompoundPK()) {
+		if (this.pkClassIsGenerated() && this.config.generateIdClassForCompoundPK()) {
 			pw.printAnnotation(JPA.ID_CLASS);
 			pw.print('(');
-			pw.printTypeDeclaration(this.entityClassName + ".PK");
+			pw.printTypeDeclaration(pkClassName);
 			pw.print(".class)");
 			pw.println();
 		}
 	}
 
 	private void printEntityPrimaryKeyFieldsOn(EntitySourceWriter pw) {
-		if ((this.table().primaryKeyColumnsSize() > 1) && this.config.generateEmbeddedIdForCompoundPK()) {
+		if (this.pkClassIsGenerated() && this.config.generateEmbeddedIdForCompoundPK()) {
 			this.printEntityEmbeddedIdPrimaryKeyFieldOn(pw);
 		} else {
 			this.printEntityReadOnlyPrimaryKeyFieldsOn(pw);
@@ -206,7 +224,7 @@ public class EntityGenerator {
 			pw.println();
 		}
 		pw.printVisibility(this.config.fieldVisibility());
-		pw.printTypeDeclaration(this.entityClassName + ".PK");
+		pw.printTypeDeclaration(this.pkClassName);
 		pw.print(' ');
 		pw.print(this.genTable.fieldNameForEmbeddedId());
 		pw.print(';');
@@ -215,16 +233,22 @@ public class EntityGenerator {
 	}
 
 	private void printEntityReadOnlyPrimaryKeyFieldsOn(EntitySourceWriter pw) {
+		this.printReadOnlyPrimaryKeyFieldsOn(pw, true);  // true=print ID annotation on fields
+	}
+
+	private void printReadOnlyPrimaryKeyFieldsOn(EntitySourceWriter pw, boolean printIdAnnotation) {
 		for (Iterator<Column> stream = this.genTable.readOnlyPrimaryKeyColumns(); stream.hasNext(); ) {
-			this.printEntityReadOnlyPrimaryKeyFieldOn(stream.next(), pw);
+			this.printReadOnlyPrimaryKeyFieldOn(stream.next(), pw, printIdAnnotation);
 		}
 	}
 
-	private void printEntityReadOnlyPrimaryKeyFieldOn(Column column, EntitySourceWriter pw) {
+	private void printReadOnlyPrimaryKeyFieldOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String fieldName = this.genTable.fieldNameFor(column);
 		if (this.config.fieldAccessType()) {
-			pw.printAnnotation(JPA.ID);
-			pw.println();
+			if (printIdAnnotation) {
+				pw.printAnnotation(JPA.ID);
+				pw.println();
+			}
 			if (column.matchesJavaFieldName(fieldName)) {
 				this.printReadOnlyColumnAnnotationOn(pw);  // no Column name needed
 			} else {
@@ -255,16 +279,22 @@ public class EntityGenerator {
 	}
 
 	private void printEntityWritablePrimaryKeyFieldsOn(EntitySourceWriter pw) {
+		this.printWritablePrimaryKeyFieldsOn(pw, true);  // true=print ID annotation on fields
+	}
+
+	private void printWritablePrimaryKeyFieldsOn(EntitySourceWriter pw, boolean printIdAnnotation) {
 		for (Iterator<Column> stream = this.genTable.writablePrimaryKeyColumns(); stream.hasNext(); ) {
-			this.printEntityWritablePrimaryKeyFieldOn(stream.next(), pw);
+			this.printWritablePrimaryKeyFieldOn(stream.next(), pw, printIdAnnotation);
 		}
 	}
 
-	private void printEntityWritablePrimaryKeyFieldOn(Column column, EntitySourceWriter pw) {
+	private void printWritablePrimaryKeyFieldOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String fieldName = this.genTable.fieldNameFor(column);
 		if (this.config.fieldAccessType()) {
-			pw.printAnnotation(JPA.ID);
-			pw.println();
+			if (printIdAnnotation) {
+				pw.printAnnotation(JPA.ID);
+				pw.println();
+			}
 			if ( ! column.matchesJavaFieldName(fieldName)) {
 				this.printColumnAnnotationOn(column.getName(), pw);
 			}
@@ -609,7 +639,7 @@ public class EntityGenerator {
 	}
 
 	private void printEntityPrimaryKeyGettersAndSettersOn(EntitySourceWriter pw) {
-		if ((this.table().primaryKeyColumnsSize() > 1) && this.config.generateEmbeddedIdForCompoundPK()) {
+		if (this.pkClassIsGenerated() && this.config.generateEmbeddedIdForCompoundPK()) {
 			this.printEntityEmbeddedIdPrimaryKeyGetterAndSetterOn(pw);
 		} else {
 			this.printEntityReadOnlyPrimaryKeyGettersAndSettersOn(pw);
@@ -622,20 +652,26 @@ public class EntityGenerator {
 			pw.printAnnotation(JPA.EMBEDDED_ID);
 			pw.println();
 		}
-		pw.printGetterAndSetter(this.genTable.fieldNameForEmbeddedId(), this.entityClassName + ".PK", this.config.methodVisibility());
+		pw.printGetterAndSetter(this.genTable.fieldNameForEmbeddedId(), this.pkClassName, this.config.methodVisibility());
 	}
 
 	private void printEntityReadOnlyPrimaryKeyGettersAndSettersOn(EntitySourceWriter pw) {
+		this.printReadOnlyPrimaryKeyGettersAndSettersOn(pw, true);  // true=print ID annotation on fields
+	}
+
+	private void printReadOnlyPrimaryKeyGettersAndSettersOn(EntitySourceWriter pw, boolean printIdAnnotation) {
 		for (Iterator<Column> stream = this.genTable.readOnlyPrimaryKeyColumns(); stream.hasNext(); ) {
-			this.printEntityReadOnlyPrimaryKeyGetterAndSetterOn(stream.next(), pw);
+			this.printReadOnlyPrimaryKeyGetterAndSetterOn(stream.next(), pw, printIdAnnotation);
 		}
 	}
 
-	private void printEntityReadOnlyPrimaryKeyGetterAndSetterOn(Column column, EntitySourceWriter pw) {
+	private void printReadOnlyPrimaryKeyGetterAndSetterOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String propertyName = this.genTable.fieldNameFor(column);
 		if (this.config.propertyAccessType()) {
-			pw.printAnnotation(JPA.ID);
-			pw.println();
+			if (printIdAnnotation) {
+				pw.printAnnotation(JPA.ID);
+				pw.println();
+			}
 			if (column.matchesJavaFieldName(propertyName)) {
 				this.printReadOnlyColumnAnnotationOn(pw);  // no Column name needed
 			} else {
@@ -647,16 +683,22 @@ public class EntityGenerator {
 	}
 
 	private void printEntityWritablePrimaryKeyGettersAndSettersOn(EntitySourceWriter pw) {
+		this.printWritablePrimaryKeyGettersAndSettersOn(pw, true);  // true=print ID annotation on fields
+	}
+
+	private void printWritablePrimaryKeyGettersAndSettersOn(EntitySourceWriter pw, boolean printIdAnnotation) {
 		for (Iterator<Column> stream = this.genTable.writablePrimaryKeyColumns(); stream.hasNext(); ) {
-			this.printEntityWritablePrimaryKeyGetterAndSetterOn(stream.next(), pw);
+			this.printWritablePrimaryKeyGetterAndSetterOn(stream.next(), pw, printIdAnnotation);
 		}
 	}
 
-	private void printEntityWritablePrimaryKeyGetterAndSetterOn(Column column, EntitySourceWriter pw) {
+	private void printWritablePrimaryKeyGetterAndSetterOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String propertyName = this.genTable.fieldNameFor(column);
 		if (this.config.propertyAccessType()) {
-			pw.printAnnotation(JPA.ID);
-			pw.println();
+			if (printIdAnnotation) {
+				pw.printAnnotation(JPA.ID);
+				pw.println();
+			}
 			if ( ! column.matchesJavaFieldName(propertyName)) {
 				this.printColumnAnnotationOn(column.getName(), pw);
 			}
@@ -747,36 +789,51 @@ public class EntityGenerator {
 	}
 
 	private void printPrimaryKeyClassOn(EntitySourceWriter pw) {
-		if (this.table().primaryKeyColumnsSize() <= 1) {
-			return;
-		}
-		pw.println();
 		if (this.config.generateEmbeddedIdForCompoundPK()) {
 			pw.printAnnotation(JPA.EMBEDDABLE);
 			pw.println();
 		}
-		pw.print("public static class PK implements ");
+		pw.print("public class ");
+		pw.printTypeDeclaration(this.pkClassName);
+		pw.print(" implements ");
 		pw.printTypeDeclaration(Serializable.class.getName());
 		pw.print(" {");
 		pw.println();
 
 		pw.indent();
-			this.printIdFieldsOn(pw);
+			if (this.config.generateEmbeddedIdForCompoundPK()) {
+				this.printEmbeddableReadOnlyPrimaryKeyFieldsOn(pw);
+				this.printEmbeddableWritablePrimaryKeyFieldsOn(pw);
+			} else {
+				this.printIdFieldsOn(pw);
+			}
 			this.printSerialVersionUID(pw);
 			pw.println();
-			this.printZeroArgumentConstructorOn("PK", "public", pw);
+			this.printZeroArgumentConstructorOn(this.pkName(), "public", pw);
 
 			if (this.config.propertyAccessType() || this.config.generateGettersAndSetters()) {
-				this.printIdGettersAndSettersOn(pw);
+				if (this.config.generateEmbeddedIdForCompoundPK()) {
+					this.printEmbeddableReadOnlyPrimaryKeyGettersAndSettersOn(pw);
+					this.printEmbeddableWritablePrimaryKeyGettersAndSettersOn(pw);
+				} else {
+					this.printIdGettersAndSettersOn(pw);
+				}
 			}
 
-			this.printEqualsMethodOn("PK", this.table().primaryKeyColumns(), pw);
+			this.printEqualsMethodOn(this.pkName(), this.table().primaryKeyColumns(), pw);
 			this.printHashCodeMethodOn(this.table().primaryKeyColumns(), pw);
 		pw.undent();
 
 		pw.print('}');
 		pw.println();
-		pw.println();
+	}
+
+	private void printEmbeddableReadOnlyPrimaryKeyFieldsOn(EntitySourceWriter pw) {
+		this.printReadOnlyPrimaryKeyFieldsOn(pw, false);  // false=do not print ID annotation on fields
+	}
+
+	private void printEmbeddableWritablePrimaryKeyFieldsOn(EntitySourceWriter pw) {
+		this.printWritablePrimaryKeyFieldsOn(pw, false);  // false=do not print ID annotation on fields
 	}
 
 	private void printIdFieldsOn(EntitySourceWriter pw) {
@@ -793,6 +850,14 @@ public class EntityGenerator {
 		pw.print(fieldName);
 		pw.print(';');
 		pw.println();
+	}
+
+	private void printEmbeddableReadOnlyPrimaryKeyGettersAndSettersOn(EntitySourceWriter pw) {
+		this.printReadOnlyPrimaryKeyGettersAndSettersOn(pw, false);  // false=do not print ID annotation on fields
+	}
+
+	private void printEmbeddableWritablePrimaryKeyGettersAndSettersOn(EntitySourceWriter pw) {
+		this.printWritablePrimaryKeyGettersAndSettersOn(pw, false);  // false=do not print ID annotation on fields
 	}
 
 	private void printIdGettersAndSettersOn(EntitySourceWriter pw) {
@@ -993,6 +1058,14 @@ public class EntityGenerator {
 		return this.genTable.getEntityName();
 	}
 
+	private String pkName() {
+		return this.entityName() + "PK";  // hack
+	}
+
+	private boolean pkClassIsGenerated() {
+		return this.table().primaryKeyColumnsSize() > 1;
+	}
+
 
 	// ********** writer **********
 
@@ -1018,18 +1091,18 @@ public class EntityGenerator {
 
 	/**
 	 * Extend IndentingPrintWriter with some methods that facilitate building
-	 * entity source code.
+	 * class source code.
 	 */
 	private static class EntitySourceWriter extends IndentingPrintWriter implements BodySource {
 		final String packageName;
-		final String entityClassName;
+		final String className;
 		// key = short class name; value = package name
 		private final Map<String, String> imports = new HashMap<String, String>();
 
-		EntitySourceWriter(String packageName, String entityClassName) {
+		EntitySourceWriter(String packageName, String className) {
 			super(new StringWriter(20000));
 			this.packageName = packageName;
-			this.entityClassName = entityClassName;
+			this.className = className;
 		}
 
 		void printVisibility(String visibilityModifier) {
@@ -1089,9 +1162,9 @@ public class EntityGenerator {
 		 * e.g. "foo.bar.Employee.PK" will return true
 		 */
 		private boolean typeDeclarationIsMemberClass(String typeDeclaration) {
-			return (typeDeclaration.length() > this.entityClassName.length())
-					&& typeDeclaration.startsWith(this.entityClassName)
-					&& (typeDeclaration.charAt(this.entityClassName.length()) == '.');
+			return (typeDeclaration.length() > this.className.length())
+					&& typeDeclaration.startsWith(this.className)
+					&& (typeDeclaration.charAt(this.className.length()) == '.');
 		}
 
 		/**

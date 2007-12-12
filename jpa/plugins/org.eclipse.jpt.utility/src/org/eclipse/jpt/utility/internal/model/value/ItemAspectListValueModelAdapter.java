@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.EventObject;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.Counter;
@@ -71,40 +70,23 @@ public abstract class ItemAspectListValueModelAdapter
 
 	// ********** ListValueModel implementation **********
 
-	public ListIterator values() {
-		return this.listHolder.values();
+	public ListIterator listIterator() {
+		return this.listHolder.listIterator();
 	}
 
-	public void add(int index, Object item) {
-		this.listHolder.add(index, item);
-	}
-
-	public void addAll(int index, List items) {
-		this.listHolder.addAll(index, items);
-	}
-
-	public Object remove(int index) {
-		return this.listHolder.remove(index);
-	}
-
-	public List remove(int index, int length) {
-		return this.listHolder.remove(index, length);
-	}
-
-	public Object replace(int index, Object item) {
-		return this.listHolder.replace(index, item);
-	}
-
-	public List replaceAll(int index, List items) {
-		return this.listHolder.replaceAll(index, items);
-	}
-
+	@Override
 	public Object get(int index) {
 		return this.listHolder.get(index);
 	}
 
+	@Override
 	public int size() {
 		return this.listHolder.size();
+	}
+
+	@Override
+	public Object[] toArray() {
+		return this.listHolder.toArray();
 	}
 
 
@@ -120,7 +102,7 @@ public abstract class ItemAspectListValueModelAdapter
 	}
 
 	protected void engageAllItems() {
-		this.engageItems((ListIterator) this.listHolder.values());
+		this.engageItems(this.listHolder.iterator());
 	}
 
 	protected void engageItems(Iterator stream) {
@@ -155,7 +137,7 @@ public abstract class ItemAspectListValueModelAdapter
 	}
 
 	protected void disengageAllItems() {
-		this.disengageItems((ListIterator) this.listHolder.values());
+		this.disengageItems(this.listHolder.iterator());
 	}
 
 	protected void disengageItems(Iterator stream) {

@@ -39,7 +39,6 @@ public abstract class AbstractJpaView extends ViewPart
 		this.widgetFactory = new TabbedPropertySheetWidgetFactory();
 	}
 	
-	/* @see IWorkbenchPart#createPartControl(Composite) */
 	public final void createPartControl(Composite parent) {
 		pageBook = new PageBook(parent, SWT.NONE);
 		defaultComposite = buildDefaultComposite();
@@ -70,7 +69,6 @@ public abstract class AbstractJpaView extends ViewPart
 		pageBook.showPage(defaultComposite);
 	}
 	
-	/* @see IWorkbenchPart#setFocus() */
 	public void setFocus() {
 		pageBook.setFocus();
 	}

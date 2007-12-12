@@ -24,6 +24,7 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TreeAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.TreeValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
@@ -68,7 +69,7 @@ public class TreeAspectAdapterTests extends TestCase {
 		this.subjectHolder1 = new SimplePropertyValueModel(this.subject1);
 		this.aa1 = this.buildAspectAdapter(this.subjectHolder1);
 		this.listener1 = this.buildValueChangeListener1();
-		this.aa1.addTreeChangeListener(ValueModel.VALUE, this.listener1);
+		this.aa1.addTreeChangeListener(TreeValueModel.NODES, this.listener1);
 		this.event1 = null;
 
 		this.subject2 = new TestSubject();
@@ -93,34 +94,15 @@ public class TreeAspectAdapterTests extends TestCase {
 	private TreeAspectAdapter buildAspectAdapter(ValueModel subjectHolder) {
 		return new TreeAspectAdapter(subjectHolder, TestSubject.NAMES_TREE) {
 			// this is not a typical aspect adapter - the value is determined by the aspect name
-			protected Iterator getValueFromSubject() {
+			@Override
+			protected Iterator nodes_() {
 				if (this.treeName == TestSubject.NAMES_TREE) {
 					return ((TestSubject) this.subject).namePaths();
-				} else if (this.treeName == TestSubject.DESCRIPTIONS_TREE) {
+				}
+				if (this.treeName == TestSubject.DESCRIPTIONS_TREE) {
 					return ((TestSubject) this.subject).descriptionPaths();
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.treeName);
 				}
-			}
-			public void addNode(Object[] parentPath, Object node) {
-				TestNode parent = (TestNode) parentPath[parentPath.length - 1];
-				if (this.treeName == TestSubject.NAMES_TREE) {
-					((TestSubject) this.subject).addName(parent, (String) node);
-				} else if (this.treeName == TestSubject.DESCRIPTIONS_TREE) {
-					((TestSubject) this.subject).addDescription(parent, (String) node);
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.treeName);
-				}
-			}
-			public void removeNode(Object[] path) {
-				TestNode node = (TestNode) path[path.length - 1];
-				if (this.treeName == TestSubject.NAMES_TREE) {
-					((TestSubject) this.subject).removeNameNode(node);
-				} else if (this.treeName == TestSubject.DESCRIPTIONS_TREE) {
-					((TestSubject) this.subject).removeDescriptionNode(node);
-				} else {
-					throw new IllegalStateException("invalid aspect name: " + this.treeName);
-				}
+				throw new IllegalStateException("invalid aspect name: " + this.treeName);
 			}
 		};
 	}
@@ -158,21 +140,21 @@ public class TreeAspectAdapterTests extends TestCase {
 		this.subjectHolder1.setValue(this.subject2);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.treeName());
+		assertEquals(TreeValueModel.NODES, this.event1.treeName());
 		assertEquals(0, this.event1.path().length);
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(null);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.treeName());
+		assertEquals(TreeValueModel.NODES, this.event1.treeName());
 		assertEquals(0, this.event1.path().length);
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(this.subject1);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.treeName());
+		assertEquals(TreeValueModel.NODES, this.event1.treeName());
 		assertEquals(0, this.event1.path().length);
 	}
 
@@ -182,62 +164,21 @@ public class TreeAspectAdapterTests extends TestCase {
 		this.subject1.addTwoNames(this.subject1.getRootNameNode(), "jam", "jaz");
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.treeName());
+		assertEquals(TreeValueModel.NODES, this.event1.treeName());
 		Object[] path = this.event1.path();
 		assertEquals(this.subject1.getRootNameNode(), path[path.length - 1]);
 		assertTrue(this.subject1.containsNameNode("jam"));
 		assertTrue(this.subject1.containsNameNode("jaz"));
 	}
 
-	public void testAddNode() {
-		assertNull(this.event1);
-
-		TestNode node = this.subject1.nameNode("name 1.1.2");
-		this.subject1.addName(node, "jam");
-		assertNotNull(this.event1);
-		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.treeName());
-		Object[] path = this.event1.path();
-		assertEquals("jam", ((TestNode) path[path.length - 1]).getText());
-
-		this.event1 = null;
-		this.aa1.addNode(node.path(), "jaz");
-		assertNotNull(this.event1);
-		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.treeName());
-		path = this.event1.path();
-		assertEquals("jaz", ((TestNode) path[path.length - 1]).getText());
+	public void testNodes() {
+		assertEquals(this.convertToNames(this.subject1.namePaths()), this.convertToNames(this.aa1.nodes()));
 	}
 
-	public void testRemoveNode() {
-		assertNull(this.event1);
-
-		TestNode node = this.subject1.nameNode("name 1.1.2");
-		this.subject1.removeNameNode(node);
-		assertNotNull(this.event1);
-		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.treeName());
-		Object[] path = this.event1.path();
-		assertEquals("name 1.1.2", ((TestNode) path[path.length - 1]).getText());
-
-		this.event1 = null;
-		node = this.subject1.nameNode("name 1.3");
-		this.aa1.removeNode(node.path());
-		assertNotNull(this.event1);
-		assertEquals(this.aa1, this.event1.getSource());
-		assertEquals(ValueModel.VALUE, this.event1.treeName());
-		path = this.event1.path();
-		assertEquals("name 1.3", ((TestNode) path[path.length - 1]).getText());
-	}
-
-	public void testValue() {
-		assertEquals(this.convertToNames(this.subject1.namePaths()), this.convertToNames((Iterator) this.aa1.value()));
-	}
-
-	private Collection convertToNames(Iterator namePaths) {
-		Collection result = new HashBag();
+	private Collection<String> convertToNames(Iterator<TestNode[]> namePaths) {
+		Collection<String> result = new HashBag<String>();
 		while (namePaths.hasNext()) {
-			Object[] path = (Object[]) namePaths.next();
+			Object[] path = namePaths.next();
 			StringBuffer sb = new StringBuffer();
 			sb.append('[');
 			for (int i = 0; i < path.length; i++) {
@@ -253,19 +194,19 @@ public class TreeAspectAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() {
-		assertTrue(this.aa1.hasAnyTreeChangeListeners(ValueModel.VALUE));
+		assertTrue(this.aa1.hasAnyTreeChangeListeners(TreeValueModel.NODES));
 		assertTrue(this.subject1.hasAnyTreeChangeListeners(TestSubject.NAMES_TREE));
-		this.aa1.removeTreeChangeListener(ValueModel.VALUE, this.listener1);
+		this.aa1.removeTreeChangeListener(TreeValueModel.NODES, this.listener1);
 		assertFalse(this.subject1.hasAnyTreeChangeListeners(TestSubject.NAMES_TREE));
-		assertFalse(this.aa1.hasAnyTreeChangeListeners(ValueModel.VALUE));
+		assertFalse(this.aa1.hasAnyTreeChangeListeners(TreeValueModel.NODES));
 
 		TreeChangeListener listener2 = this.buildValueChangeListener1();
 		this.aa1.addTreeChangeListener(listener2);
-		assertTrue(this.aa1.hasAnyTreeChangeListeners(ValueModel.VALUE));
+		assertTrue(this.aa1.hasAnyTreeChangeListeners(TreeValueModel.NODES));
 		assertTrue(this.subject1.hasAnyTreeChangeListeners(TestSubject.NAMES_TREE));
 		this.aa1.removeTreeChangeListener(listener2);
 		assertFalse(this.subject1.hasAnyTreeChangeListeners(TestSubject.NAMES_TREE));
-		assertFalse(this.aa1.hasAnyTreeChangeListeners(ValueModel.VALUE));
+		assertFalse(this.aa1.hasAnyTreeChangeListeners(TreeValueModel.NODES));
 	}
 
 	// ********** inner classes **********
@@ -283,17 +224,19 @@ public class TreeAspectAdapterTests extends TestCase {
 		public TestNode getRootNameNode() {
 			return this.rootNameNode;
 		}
-		public Iterator nameNodes() {
-			return new TreeIterator(this.rootNameNode) {
-				public Iterator children(Object next) {
-					return ((TestNode) next).children();
+		public Iterator<TestNode> nameNodes() {
+			return new TreeIterator<TestNode>(this.rootNameNode) {
+				@Override
+				public Iterator<TestNode> children(TestNode next) {
+					return next.children();
 				}
 			};
 		}
-		public Iterator namePaths() {
-			return new TransformationIterator(this.nameNodes()) {
-				protected Object transform(Object next) {
-					return ((TestNode) next).path();
+		public Iterator<TestNode[]> namePaths() {
+			return new TransformationIterator<TestNode, TestNode[]>(this.nameNodes()) {
+				@Override
+				protected TestNode[] transform(TestNode next) {
+					return next.path();
 				}
 			};
 		}
@@ -316,8 +259,8 @@ public class TreeAspectAdapterTests extends TestCase {
 			return this.nameNode(name) != null;
 		}
 		public TestNode nameNode(String name) {
-			for (Iterator stream = this.nameNodes(); stream.hasNext(); ) {
-				TestNode node = (TestNode) stream.next();
+			for (Iterator<TestNode> stream = this.nameNodes(); stream.hasNext(); ) {
+				TestNode node = stream.next();
 				if (node.getText().equals(name)) {
 					return node;
 				}
@@ -327,17 +270,19 @@ public class TreeAspectAdapterTests extends TestCase {
 		public TestNode getRootDescriptionNode() {
 			return this.rootDescriptionNode;
 		}
-		public Iterator descriptionNodes() {
-			return new TreeIterator(this.rootDescriptionNode) {
-				public Iterator children(Object next) {
-					return ((TestNode) next).children();
+		public Iterator<TestNode> descriptionNodes() {
+			return new TreeIterator<TestNode>(this.rootDescriptionNode) {
+				@Override
+				public Iterator<TestNode> children(TestNode next) {
+					return next.children();
 				}
 			};
 		}
-		public Iterator descriptionPaths() {
-			return new TransformationIterator(this.descriptionNodes()) {
-				protected Object transform(Object next) {
-					return ((TestNode) next).path();
+		public Iterator<TestNode[]> descriptionPaths() {
+			return new TransformationIterator<TestNode, TestNode[]>(this.descriptionNodes()) {
+				@Override
+				protected TestNode[] transform(TestNode next) {
+					return next.path();
 				}
 			};
 		}
@@ -352,8 +297,8 @@ public class TreeAspectAdapterTests extends TestCase {
 			this.fireNodeRemoved(DESCRIPTIONS_TREE, descriptionNode.path());
 		}
 		public boolean containsDescriptionNode(String name) {
-			for (Iterator stream = this.descriptionNodes(); stream.hasNext(); ) {
-				TestNode node = (TestNode) stream.next();
+			for (Iterator<TestNode> stream = this.descriptionNodes(); stream.hasNext(); ) {
+				TestNode node = stream.next();
 				if (node.getText().equals(name)) {
 					return true;
 				}
@@ -363,13 +308,13 @@ public class TreeAspectAdapterTests extends TestCase {
 	}
 	
 	private class TestNode {
-		private String text;
+		private final String text;
 		private TestNode parent;
-		private Collection children;
+		private final Collection<TestNode> children;
 	
 		public TestNode(String text) {
 			this.text = text;
-			this.children = new HashBag();
+			this.children = new HashBag<TestNode>();
 		}
 		public String getText() {
 			return this.text;
@@ -380,8 +325,8 @@ public class TreeAspectAdapterTests extends TestCase {
 		private void setParent(TestNode parent) {
 			this.parent = parent;
 		}
-		public Iterator children() {
-			return new ReadOnlyIterator(this.children);
+		public Iterator<TestNode> children() {
+			return new ReadOnlyIterator<TestNode>(this.children);
 		}
 		public void addChild(TestNode child) {
 			this.children.add(child);
@@ -390,13 +335,14 @@ public class TreeAspectAdapterTests extends TestCase {
 		public void removeChild(TestNode child) {
 			this.children.remove(child);
 		}
-		public Object[] path() {
-			return CollectionTools.reverseList(this.buildAntiPath()).toArray();
+		public TestNode[] path() {
+			return CollectionTools.reverseList(this.buildAntiPath()).toArray(new TestNode[0]);
 		}
-		private Iterator buildAntiPath() {
-			return new ChainIterator(this) {
-				protected Object nextLink(Object currentLink) {
-					return ((TestNode) currentLink).getParent();
+		private Iterator<TestNode> buildAntiPath() {
+			return new ChainIterator<TestNode>(this) {
+				@Override
+				protected TestNode nextLink(TestNode currentLink) {
+					return currentLink.getParent();
 				}
 			};
 		}

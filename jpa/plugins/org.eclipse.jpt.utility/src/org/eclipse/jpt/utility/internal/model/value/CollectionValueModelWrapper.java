@@ -52,7 +52,7 @@ public abstract class CollectionValueModelWrapper
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUES);
+		return new SingleAspectChangeSupport(this, CollectionChangeListener.class, VALUES);
 	}
 
 	protected CollectionChangeListener buildCollectionChangeListener() {
@@ -120,35 +120,6 @@ public abstract class CollectionValueModelWrapper
 		super.removeCollectionChangeListener(collectionName, listener);
 		if (collectionName == VALUES && this.hasNoCollectionChangeListeners(VALUES)) {
 			this.disengageModel();
-		}
-	}
-
-
-	// ********** CollectionValueModel implementation **********
-
-	/**
-	 * wrappers cannot be modified - the underlying model must be modified directly
-	 */
-	public void add(Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void addAll(Collection items) {
-		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
-			this.add(stream.next());
-		}
-	}
-
-	/**
-	 * wrappers cannot be modified - the underlying model must be modified directly
-	 */
-	public void remove(Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void removeAll(Collection items) {
-		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
-			this.remove(stream.next());
 		}
 	}
 

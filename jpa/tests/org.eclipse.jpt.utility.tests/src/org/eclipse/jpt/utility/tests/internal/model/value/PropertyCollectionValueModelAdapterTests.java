@@ -51,12 +51,12 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testValues() {
+	public void testIterator() {
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, new TestListener() {
 			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
 		});
 		this.wrappedValueHolder.setValue("foo");
-		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
+		Collection adapterCollection = CollectionTools.collection(this.adapter.iterator());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());
@@ -68,18 +68,18 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 		};
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, listener);
 		this.wrappedValueHolder.setValue("foo");
-		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
+		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.iterator());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());
 
 		this.adapter.removeCollectionChangeListener(CollectionValueModel.VALUES, listener);
-		adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
+		adapterCollection = CollectionTools.collection((Iterator) this.adapter.iterator());
 		assertEquals(0, adapterCollection.size());
 		assertEquals(new HashBag(), adapterCollection);
 
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, listener);
-		adapterCollection = CollectionTools.collection((Iterator) this.adapter.values());
+		adapterCollection = CollectionTools.collection((Iterator) this.adapter.iterator());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());

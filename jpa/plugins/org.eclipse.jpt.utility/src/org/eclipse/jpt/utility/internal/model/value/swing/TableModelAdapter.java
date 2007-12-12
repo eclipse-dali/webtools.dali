@@ -20,6 +20,8 @@ import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
+import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
@@ -115,7 +117,11 @@ public class TableModelAdapter
 
 	// ********** initialization **********
 
-	private ListChangeListener buildListChangeListener() {
+	protected ListChangeListener buildListChangeListener() {
+		return new AWTListChangeListenerWrapper(this.buildListChangeListener_());
+	}
+
+	protected ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListChangeEvent e) {
 				TableModelAdapter.this.addRows(e.index(), e.itemsSize(), e.items());
@@ -142,7 +148,11 @@ public class TableModelAdapter
 		};
 	}
 
-	private PropertyChangeListener buildCellListener() {
+	protected PropertyChangeListener buildCellListener() {
+		return new AWTPropertyChangeListenerWrapper(this.buildCellListener_());
+	}
+
+	protected PropertyChangeListener buildCellListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent evt) {
 				TableModelAdapter.this.cellChanged((PropertyValueModel) evt.getSource());
@@ -282,7 +292,7 @@ public class TableModelAdapter
 	 */
 	private void engageAllCells() {
 		this.rows.ensureCapacity(this.listHolder.size());
-		for (Iterator stream = (Iterator) this.listHolder.values(); stream.hasNext(); ) {
+		for (Iterator stream = this.listHolder.iterator(); stream.hasNext(); ) {
 			PropertyValueModel[] row = this.columnAdapter.cellModels(stream.next());
 			this.engageRow(row);
 			this.rows.add(row);

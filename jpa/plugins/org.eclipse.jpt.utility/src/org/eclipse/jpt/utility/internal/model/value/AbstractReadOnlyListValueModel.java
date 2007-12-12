@@ -9,8 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Iterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -20,7 +19,7 @@ import org.eclipse.jpt.utility.internal.model.NullModel;
  * Implementation of ListValueModel that can be subclassed and used for
  * returning a list iterator on a static list, but still allows listeners to be added.
  * Listeners will NEVER be notified of any changes, because there should be none.
- * Subclasses need only implement the #value() method to
+ * Subclasses need only implement the #listIterator() method to
  * return a list iterator on the static values required by the client code. This class is
  * really only useful for simplifying the building of anonymous inner
  * classes that implement the ListValueModel interface:
@@ -51,36 +50,20 @@ public abstract class AbstractReadOnlyListValueModel
 
 	// ********** ListValueModel implementation **********
 
-	public void add(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void addAll(int index, List items) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Object remove(int index) {
-		throw new UnsupportedOperationException();
-	}
-
-	public List remove(int index, int length) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Object replace(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public List replaceAll(int index, List items) {
-		throw new UnsupportedOperationException();
+	public Iterator iterator() {
+		return this.listIterator();
 	}
 
 	public Object get(int index) {
-		return CollectionTools.get((ListIterator) this.values(), index);
+		return CollectionTools.get(this.listIterator(), index);
 	}
 
 	public int size() {
-		return CollectionTools.size((ListIterator) this.values());
+		return CollectionTools.size(this.listIterator());
+	}
+
+	public Object[] toArray() {
+		return CollectionTools.array(this.listIterator(), this.size());
 	}
 
 
@@ -88,7 +71,7 @@ public abstract class AbstractReadOnlyListValueModel
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, CollectionTools.collection((ListIterator) this.values()));
+		return StringTools.buildToStringFor(this, CollectionTools.collection(this.listIterator()));
 	}
 
 }

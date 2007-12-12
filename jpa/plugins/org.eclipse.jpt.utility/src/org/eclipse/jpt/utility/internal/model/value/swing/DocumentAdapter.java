@@ -28,6 +28,7 @@ import javax.swing.text.Segment;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
@@ -90,6 +91,10 @@ public class DocumentAdapter
 	// ********** initialization **********
 
 	protected PropertyChangeListener buildStringListener() {
+		return new AWTPropertyChangeListenerWrapper(this.buildStringListener_());
+	}
+
+	protected PropertyChangeListener buildStringListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				DocumentAdapter.this.stringChanged(e);

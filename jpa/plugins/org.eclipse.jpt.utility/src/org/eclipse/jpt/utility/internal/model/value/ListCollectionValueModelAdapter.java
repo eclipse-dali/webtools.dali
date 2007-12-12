@@ -71,7 +71,7 @@ public class ListCollectionValueModelAdapter
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, VALUES);
+		return new SingleAspectChangeSupport(this, CollectionChangeListener.class, VALUES);
 	}
 
 	/**
@@ -108,25 +108,9 @@ public class ListCollectionValueModelAdapter
 
 	// ********** CollectionValueModel implementation **********
 
-	public Iterator values() {
+	public Iterator iterator() {
 		// try to prevent backdoor modification of the list
 		return new ReadOnlyIterator(this.collection);
-	}
-
-	public void add(Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void addAll(Collection items) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void remove(Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void removeAll(Collection items) {
-		throw new UnsupportedOperationException();
 	}
 
 	public int size() {
@@ -216,7 +200,7 @@ public class ListCollectionValueModelAdapter
 	// ********** behavior **********
 
 	protected void buildCollection() {
-		Iterator stream = (Iterator) this.listHolder.values();
+		Iterator stream = this.listHolder.iterator();
 		// if the new list is empty, do nothing
 		if (stream.hasNext()) {
 			this.collection.ensureCapacity(this.listHolder.size());

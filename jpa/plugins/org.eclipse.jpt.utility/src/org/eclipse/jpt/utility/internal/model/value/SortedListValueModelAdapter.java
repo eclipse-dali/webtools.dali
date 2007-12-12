@@ -19,18 +19,19 @@ import org.eclipse.jpt.utility.internal.Range;
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 
 /**
- * An adapter that allows us to make a CollectionValueModel
- * (or ListValueModel) behave like a read-only ListValueModel
+ * An adapter that allows us to make a <code>CollectionValueModel</code>
+ * (or <code>ListValueModel</code>) behave like a <code>ListValueModel</code>
  * that keeps its contents sorted and notifies listeners appropriately.
- * 
+ * <p>
  * The comparator can be changed at any time; allowing the same
  * adapter to be used with different sort criteria (e.g. when the user
  * wants to sort a list of files first by name, then by date, then by size).
- * 
+ * <p>
  * NB: Since we only listen to the wrapped collection when we have
  * listeners ourselves and we can only stay in synch with the wrapped
  * collection while we are listening to it, results to various methods
- * (e.g. #size(), getItem(int)) will be unpredictable whenever
+ * (e.g. <code>#size()</code>, <code>#getItem(int)</code>) will be
+ * unpredictable whenever
  * we do not have any listeners. This should not be too painful since,
  * most likely, client objects will also be listeners.
  */

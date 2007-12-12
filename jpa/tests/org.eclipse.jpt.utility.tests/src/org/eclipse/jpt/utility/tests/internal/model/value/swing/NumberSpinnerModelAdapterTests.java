@@ -13,6 +13,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
@@ -34,7 +35,12 @@ public class NumberSpinnerModelAdapterTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.valueHolder = new SimplePropertyValueModel(new Integer(0));
-		this.spinnerModelAdapter = new NumberSpinnerModelAdapter(this.valueHolder, -33, 33, 1);
+		this.spinnerModelAdapter = new NumberSpinnerModelAdapter(this.valueHolder, -33, 33, 1) {
+			@Override
+			protected PropertyChangeListener buildNumberChangeListener() {
+				return this.buildNumberChangeListener_();
+			}
+		};
 	}
 
 	@Override
@@ -109,7 +115,12 @@ public class NumberSpinnerModelAdapterTests extends TestCase {
 
 	public void testNullInitialValue() {
 		this.valueHolder = new SimplePropertyValueModel();
-		this.spinnerModelAdapter = new NumberSpinnerModelAdapter(this.valueHolder, new Integer(-33), new Integer(33), new Integer(1), new Integer(0));
+		this.spinnerModelAdapter = new NumberSpinnerModelAdapter(this.valueHolder, new Integer(-33), new Integer(33), new Integer(1), new Integer(0)) {
+			@Override
+			protected PropertyChangeListener buildNumberChangeListener() {
+				return this.buildNumberChangeListener_();
+			}
+		};
 
 		this.eventFired = false;
 		this.spinnerModelAdapter.addChangeListener(new TestChangeListener() {

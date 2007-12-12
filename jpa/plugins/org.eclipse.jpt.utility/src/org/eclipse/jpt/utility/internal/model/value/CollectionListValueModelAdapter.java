@@ -77,7 +77,7 @@ public class CollectionListValueModelAdapter
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, LIST_VALUES);
+		return new SingleAspectChangeSupport(this, ListChangeListener.class, LIST_VALUES);
 	}
 
 	/**
@@ -108,33 +108,13 @@ public class CollectionListValueModelAdapter
 
 	// ********** ListValueModel implementation **********
 
-	public ListIterator values() {
+	public Iterator iterator() {
+		return this.listIterator();
+	}
+
+	public ListIterator listIterator() {
 		// try to prevent backdoor modification of the list
 		return new ReadOnlyListIterator(this.list);
-	}
-
-	public void add(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void addAll(int index, List items) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Object remove(int index) {
-		throw new UnsupportedOperationException();
-	}
-
-	public List remove(int index, int length) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Object replace(int index, Object item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public List replaceAll(int index, List items) {
-		throw new UnsupportedOperationException();
 	}
 
 	public Object get(int index) {
@@ -143,6 +123,10 @@ public class CollectionListValueModelAdapter
 
 	public int size() {
 		return this.list.size();
+	}
+
+	public Object[] toArray() {
+		return this.list.toArray();
 	}
 
 
@@ -228,7 +212,7 @@ public class CollectionListValueModelAdapter
 	// ********** behavior **********
 
 	protected void buildList() {
-		Iterator stream = (Iterator) this.collectionHolder.values();
+		Iterator stream = (Iterator) this.collectionHolder.iterator();
 		// if the new collection is empty, do nothing
 		if (stream.hasNext()) {
 			this.list.ensureCapacity(this.collectionHolder.size());

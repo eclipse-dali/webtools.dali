@@ -43,7 +43,7 @@ public interface Model {
 
 	/**
 	 * Add a listener that listens to all property change events,
-	 * regardless of the property ID associated with that event.
+	 * regardless of the property name associated with that event.
 	 * The same listener may be added more than once and will be called
 	 * as many times as it is added. The listener cannot be null.
 	 */
@@ -51,7 +51,7 @@ public interface Model {
 
 	/**
 	 * Add a listener that listens to all property change events with
-	 * the specified property ID.
+	 * the specified property name.
 	 * The same listener may be added more than once and will be called
 	 * as many times as it is added. The listener cannot be null.
 	 */
@@ -59,7 +59,7 @@ public interface Model {
 
 	/**
 	 * Remove a listener that listens to all property change events,
-	 * regardless of the property ID associated with that event.
+	 * regardless of the property name associated with that event.
 	 * If the listener was added more than once, it will be notified one less
 	 * time after being removed. An exception will be thrown if the
 	 * listener is null or if the listener was never added.
@@ -68,7 +68,7 @@ public interface Model {
 
 	/**
 	 * Remove a listener that listens to all property change events,
-	 * with the specified property ID.
+	 * with the specified property name.
 	 * If the listener was added more than once, it will be notified one less
 	 * time after being removed. An exception will be thrown if the
 	 * listener is null or if the listener was never added.
@@ -80,7 +80,7 @@ public interface Model {
 
 	/**
 	 * Add a listener that listens to all collection change events,
-	 * regardless of the collection ID associated with that event.
+	 * regardless of the collection name associated with that event.
 	 * The same listener may be added more than once and will be called
 	 * as many times as it is added. The listener cannot be null.
 	 */
@@ -88,7 +88,7 @@ public interface Model {
 
 	/**
 	 * Add a listener that listens to all collection change events with
-	 * the specified collection ID.
+	 * the specified collection name.
 	 * The same listener may be added more than once and will be called
 	 * as many times as it is added. The listener cannot be null.
 	 */
@@ -96,7 +96,7 @@ public interface Model {
 
 	/**
 	 * Remove a listener that listens to all collection change events,
-	 * regardless of the collection ID associated with that event.
+	 * regardless of the collection name associated with that event.
 	 * If the listener was added more than once, it will be notified one less
 	 * time after being removed. An exception will be thrown if the
 	 * listener is null or if the listener was never added.
@@ -105,7 +105,7 @@ public interface Model {
 
 	/**
 	 * Remove a listener that listens to all collection change events,
-	 * with the specified collection ID.
+	 * with the specified collection name.
 	 * If the listener was added more than once, it will be notified one less
 	 * time after being removed. An exception will be thrown if the
 	 * listener is null or if the listener was never added.
@@ -117,7 +117,7 @@ public interface Model {
 
 	/**
 	 * Add a listener that listens to all list change events,
-	 * regardless of the list ID associated with that event.
+	 * regardless of the list name associated with that event.
 	 * The same listener may be added more than once and will be called
 	 * as many times as it is added. The listener cannot be null.
 	 */
@@ -125,7 +125,7 @@ public interface Model {
 
 	/**
 	 * Add a listener that listens to all list change events with
-	 * the specified list ID.
+	 * the specified list name.
 	 * The same listener may be added more than once and will be called
 	 * as many times as it is added. The listener cannot be null.
 	 */
@@ -133,7 +133,7 @@ public interface Model {
 
 	/**
 	 * Remove a listener that listens to all list change events,
-	 * regardless of the list ID associated with that event.
+	 * regardless of the list name associated with that event.
 	 * If the listener was added more than once, it will be notified one less
 	 * time after being removed. An exception will be thrown if the
 	 * listener is null or if the listener was never added.
@@ -142,7 +142,7 @@ public interface Model {
 
 	/**
 	 * Remove a listener that listens to all list change events,
-	 * with the specified list ID.
+	 * with the specified list name.
 	 * If the listener was added more than once, it will be notified one less
 	 * time after being removed. An exception will be thrown if the
 	 * listener is null or if the listener was never added.
@@ -154,7 +154,7 @@ public interface Model {
 
 	/**
 	 * Add a listener that listens to all tree change events,
-	 * regardless of the tree ID associated with that event.
+	 * regardless of the tree name associated with that event.
 	 * The same listener may be added more than once and will be called
 	 * as many times as it is added. The listener cannot be null.
 	 */
@@ -162,7 +162,7 @@ public interface Model {
 
 	/**
 	 * Add a listener that listens to all tree change events with
-	 * the specified tree ID.
+	 * the specified tree name.
 	 * The same listener may be added more than once and will be called
 	 * as many times as it is added. The listener cannot be null.
 	 */
@@ -170,7 +170,7 @@ public interface Model {
 
 	/**
 	 * Remove a listener that listens to all tree change events,
-	 * regardless of the tree ID associated with that event.
+	 * regardless of the tree name associated with that event.
 	 * If the listener was added more than once, it will be notified one less
 	 * time after being removed. An exception will be thrown if the
 	 * listener is null or if the listener was never added.
@@ -179,7 +179,7 @@ public interface Model {
 
 	/**
 	 * Remove a listener that listens to all tree change events,
-	 * with the specified tree ID.
+	 * with the specified tree name.
 	 * If the listener was added more than once, it will be notified one less
 	 * time after being removed. An exception will be thrown if the
 	 * listener is null or if the listener was never added.

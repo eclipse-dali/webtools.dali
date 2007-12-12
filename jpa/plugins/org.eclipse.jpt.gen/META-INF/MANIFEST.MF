@@ -9,7 +9,7 @@ Bundle-Localization: plugin
 Export-Package: org.eclipse.jpt.gen.internal; x-friends:="org.eclipse.jpt.ui"
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.core,
- org.eclipse.jpt.core,
+ org.eclipse.jpt.utility,
  org.eclipse.jpt.db,
- org.eclipse.jpt.utility
+ org.eclipse.jpt.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

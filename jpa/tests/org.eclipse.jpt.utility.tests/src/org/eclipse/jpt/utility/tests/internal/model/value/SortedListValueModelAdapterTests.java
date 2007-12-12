@@ -33,7 +33,7 @@ import junit.framework.TestCase;
 
 public class SortedListValueModelAdapterTests extends TestCase {
 	private SortedListValueModelAdapter adapter;
-	private CollectionValueModel wrappedCollectionHolder;
+	private SimpleCollectionValueModel wrappedCollectionHolder;
 	private Collection wrappedCollection;
 
 	
@@ -63,7 +63,7 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		Collection sortedSet = new TreeSet(comparator);
 		sortedSet.addAll(expected);
 		List expectedList = new ArrayList(sortedSet);
-		List actualList = CollectionTools.list((ListIterator) actual.values());
+		List actualList = CollectionTools.list(actual.iterator());
 		assertEquals(expectedList, actualList);
 	}
 
