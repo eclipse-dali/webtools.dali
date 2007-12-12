@@ -89,7 +89,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedName() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 				
@@ -111,7 +111,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
@@ -135,7 +135,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 	public void testUpdateDefaultNameFromJavaTable() throws Exception {
 		createTestEntity();
 		
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		
 		xmlEntity.javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
@@ -145,7 +145,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 	}
 
 	public void testUpdateSpecifiedSchema() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 				
@@ -167,7 +167,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 	}
 
 	public void testModifySpecifiedSchema() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
@@ -191,7 +191,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 	public void testUpdateDefaultSchemaFromJavaTable() throws Exception {
 		createTestEntity();
 		
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
 		
@@ -227,7 +227,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 	public void testUpdateDefaultSchemaFromPersistenceUnitDefaults() throws Exception {
 		createTestEntity();
 		
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		XmlSecondaryTable xmlSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
 		xmlSecondaryTable.setSpecifiedName("FOO");
@@ -252,7 +252,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedCatalog() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 				
@@ -274,7 +274,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedCatalog() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
@@ -298,7 +298,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 	public void testUpdateDefaultCatalogFromJavaTable() throws Exception {
 		createTestEntity();
 		
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
 		
@@ -313,7 +313,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 	public void testUpdateDefaultCatalogFromPersistenceUnitDefaults() throws Exception {
 		createTestEntity();
 		
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		XmlSecondaryTable xmlSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
 		xmlSecondaryTable.setSpecifiedName("FOO");

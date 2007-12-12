@@ -131,7 +131,7 @@ public class XmlEntityTests extends ContextModelTestCase
 
 	
 	public void testUpdateSpecifiedName() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertNull(xmlEntity.getSpecifiedName());
@@ -149,7 +149,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertNull(xmlEntity.getSpecifiedName());
@@ -169,7 +169,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	public void testUpdateDefaultName() throws Exception {
 		createTestEntityFieldAccess();
 		
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(TYPE_NAME, xmlEntity.getDefaultName());
@@ -188,7 +188,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateName() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals("Foo", xmlEntity.getName());
@@ -209,7 +209,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 
 	public void testUpdateClass() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals("model.Foo", xmlEntity.getClass_());
@@ -227,7 +227,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testModifyClass() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals("model.Foo", xmlEntity.getClass_());
@@ -246,7 +246,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	//TODO add tests for setting the className when the package is set on entity-mappings
 	
 	public void testUpdateSpecifiedAccess() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertNull(xmlEntity.getSpecifiedAccess());
@@ -265,7 +265,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedAccess() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertNull(xmlEntity.getSpecifiedAccess());
@@ -283,7 +283,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateDefaultAccessFromPersistenceUnitDefaults() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertNull(xmlEntity.getSpecifiedAccess());
@@ -311,7 +311,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	public void testUpdateDefaultAccessFromJava() throws Exception {
 		createTestEntityDefaultFieldAccess();
 
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		//java has no annotations, so defaultAccess in xml is null
 		assertNull(xmlEntity.getDefaultAccess());
@@ -343,7 +343,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	public void testUpdateDefaultAccessFromJavaFieldAccess() throws Exception {
 		createTestEntityFieldAccess();
 
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		assertEquals(AccessType.FIELD, xmlEntity.getDefaultAccess());
 		
@@ -366,7 +366,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	public void testUpdateDefaultAccessFromJavaPropertyAccess() throws Exception {
 		createTestEntityPropertyAccess();
 
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		assertEquals(AccessType.PROPERTY, xmlEntity.getDefaultAccess());
 		
@@ -387,13 +387,13 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateDefaultAccessNoUnderlyingJava() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		assertNull(xmlEntity.getDefaultAccess());
 	}
 		
 	public void testUpdateSpecifiedMetadataComplete() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertNull(xmlEntity.getSpecifiedMetadataComplete());
@@ -418,7 +418,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedMetadataComplete() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertNull(xmlEntity.getSpecifiedMetadataComplete());
@@ -440,7 +440,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateDefaultMetadataComplete() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertNull(xmlEntity.getSpecifiedMetadataComplete());
@@ -466,7 +466,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 
 	public void testUpdateMetadataComplete() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertNull(xmlEntity.getSpecifiedMetadataComplete());
@@ -487,7 +487,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	
 	public void testUpdateInheritanceStrategy() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getInheritanceStrategy());
@@ -504,7 +504,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	public void testUpdateDefaultInheritanceStrategyFromJava() throws Exception {
 		createTestEntityDefaultFieldAccess();
 
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		//no inheritance strategy specified in java so single-table is default
 		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getDefaultInheritanceStrategy());
@@ -537,8 +537,8 @@ public class XmlEntityTests extends ContextModelTestCase
 		createTestEntityDefaultFieldAccess();
 		createTestSubType();
 	
-		XmlPersistentType parentPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
-		XmlPersistentType childPersistentType = entityMappings().addXmlPersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType parentPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentType childPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
 		XmlEntity parentXmlEntity = (XmlEntity) parentPersistentType.getMapping();
 		XmlEntity childXmlEntity = (XmlEntity) childPersistentType.getMapping();
 		
@@ -565,7 +565,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 
 	public void testUpdateSpecifiedInheritanceStrategy() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertNull(xmlEntity.getSpecifiedInheritanceStrategy());
@@ -592,7 +592,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedInheritanceStrategy() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertNull(xmlEntity.getSpecifiedInheritanceStrategy());
@@ -610,7 +610,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testAddSpecifiedSecondaryTable() throws Exception {
-		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
@@ -650,7 +650,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveSpecifiedSecondaryTable() throws Exception {
-		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
 
 		xmlEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
@@ -674,7 +674,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testMoveSpecifiedSecondaryTable() throws Exception {
-		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
 
 		xmlEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
@@ -708,7 +708,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSecondaryTables() throws Exception {
-		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
 		
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
@@ -762,8 +762,8 @@ public class XmlEntityTests extends ContextModelTestCase
 		createTestEntityDefaultFieldAccess();
 		createTestSubType();
 	
-		XmlPersistentType parentPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
-		XmlPersistentType childPersistentType = entityMappings().addXmlPersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType parentPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentType childPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
 		XmlEntity parentXmlEntity = (XmlEntity) parentPersistentType.getMapping();
 		XmlEntity childXmlEntity = (XmlEntity) childPersistentType.getMapping();
 		
@@ -847,7 +847,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testMakeEntityEmbeddable() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity entity = (XmlEntity) entityPersistentType.getMapping();
 		entity.setSpecifiedAccess(AccessType.PROPERTY);
 		entity.setSpecifiedDiscriminatorValue("DISC_VALUE");
@@ -859,7 +859,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityPersistentType.setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 		
-		Embeddable embeddable = (Embeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		Embeddable embeddable = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertEquals("model.Foo", embeddable.getClassName());
 		assertEquals(Boolean.TRUE, embeddable.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, embeddable.getAccess());
@@ -871,32 +871,35 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testMakeEntityEmbeddable2() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
-		XmlPersistentType entityPersistentType2 = entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
 		XmlEntity entity = (XmlEntity) entityPersistentType.getMapping();
 		entity.setSpecifiedAccess(AccessType.PROPERTY);
 		entity.setSpecifiedDiscriminatorValue("DISC_VALUE");
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		entity.setSpecifiedName("ENTITY_NAME");
+//		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
 		ormResource().save(null);
 	
 		entityPersistentType.setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 		
-		Embeddable embeddable = (Embeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		Embeddable embeddable = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertEquals("model.Foo", embeddable.getClassName());
 		assertEquals(Boolean.TRUE, embeddable.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, embeddable.getAccess());
+//		assertEquals("basicMapping", embeddable.getAttributes().getBasics().get(0).getName());
 		
 		XmlEmbeddable xmlEmbeddable = (XmlEmbeddable) entityPersistentType.getMapping();
 		assertEquals("model.Foo", xmlEmbeddable.getClass_());
 		assertEquals(Boolean.TRUE, xmlEmbeddable.getSpecifiedMetadataComplete());
 		assertEquals(AccessType.PROPERTY, xmlEmbeddable.getSpecifiedAccess());
+//		assertEquals("basicMapping", xmlEmbeddable.persistentType().attributes().next().getName());
 	}
 	
 	public void testMakeEntityMappedSuperclass() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity entity = (XmlEntity) entityPersistentType.getMapping();
 		entity.setSpecifiedAccess(AccessType.PROPERTY);
 		entity.setSpecifiedDiscriminatorValue("DISC_VALUE");
@@ -908,7 +911,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityPersistentType.setMappingKey(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 		
-		MappedSuperclass mappedSuperclass = (MappedSuperclass) ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+		MappedSuperclass mappedSuperclass = ormResource().getEntityMappings().getMappedSuperclasses().get(0);
 		assertEquals("model.Foo", mappedSuperclass.getClassName());
 		assertEquals(Boolean.TRUE, mappedSuperclass.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, mappedSuperclass.getAccess());
@@ -920,8 +923,8 @@ public class XmlEntityTests extends ContextModelTestCase
 	}
 	
 	public void testMakeEntityMappedSuperclass2() throws Exception {
-		entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity entity = (XmlEntity) entityPersistentType.getMapping();
 		entity.setSpecifiedAccess(AccessType.PROPERTY);
 		entity.setSpecifiedDiscriminatorValue("DISC_VALUE");
@@ -933,7 +936,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityPersistentType.setMappingKey(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 		
-		MappedSuperclass mappedSuperclass = (MappedSuperclass) ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+		MappedSuperclass mappedSuperclass = ormResource().getEntityMappings().getMappedSuperclasses().get(0);
 		assertEquals("model.Foo", mappedSuperclass.getClassName());
 		assertEquals(Boolean.TRUE, mappedSuperclass.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, mappedSuperclass.getAccess());

@@ -14,7 +14,6 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
-import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
 import org.eclipse.jpt.core.internal.context.orm.XmlMappedSuperclass;
@@ -25,7 +24,6 @@ import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class XmlEmbeddableTests extends ContextModelTestCase
@@ -43,17 +41,9 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		persistenceResource().save(null);
 	}
-		
-	protected XmlPersistence xmlPersistence() {
-		return persistenceResource().getPersistence();
-	}
-	
-	protected EntityMappings entityMappings() {
-		return persistenceUnit().mappingFileRefs().next().getOrmXml().getEntityMappings();
-	}
-		
+
 	public void testUpdateClass() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEmbeddable xmlEmbeddable = (XmlEmbeddable) xmlPersistentType.getMapping();
 		Embeddable embeddableResource = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertEquals("model.Foo", xmlEmbeddable.getClass_());
@@ -71,7 +61,7 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 	}
 	
 	public void testModifyClass() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEmbeddable xmlEmbeddable = (XmlEmbeddable) xmlPersistentType.getMapping();
 		Embeddable embeddableResource = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertEquals("model.Foo", xmlEmbeddable.getClass_());
@@ -90,7 +80,7 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 	//TODO add tests for setting the className when the package is set on entity-mappings
 	
 	public void testUpdateSpecifiedAccess() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEmbeddable xmlEmbeddable = (XmlEmbeddable) xmlPersistentType.getMapping();
 		Embeddable embeddableResource = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertNull(xmlEmbeddable.getSpecifiedAccess());
@@ -108,7 +98,7 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedAccess() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEmbeddable xmlEmbeddable = (XmlEmbeddable) xmlPersistentType.getMapping();
 		Embeddable embeddableResource = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertNull(xmlEmbeddable.getSpecifiedAccess());
@@ -131,7 +121,7 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 		//with xml-mapping-metadata-complete set
 	
 	public void testUpdateSpecifiedMetadataComplete() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEmbeddable xmlEmbeddable = (XmlEmbeddable) xmlPersistentType.getMapping();
 		Embeddable embeddableResource = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertNull(embeddableResource.getMetadataComplete());
@@ -152,7 +142,7 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedMetadataComplete() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEmbeddable xmlEmbeddable = (XmlEmbeddable) xmlPersistentType.getMapping();
 		Embeddable embeddableResource = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertNull(embeddableResource.getMetadataComplete());
@@ -173,7 +163,7 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateDefaultMetadataComplete() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEmbeddable xmlEmbeddable = (XmlEmbeddable) xmlPersistentType.getMapping();
 		Embeddable embeddableResource = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertNull(xmlEmbeddable.getSpecifiedMetadataComplete());
@@ -193,7 +183,7 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateMetadataComplete() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEmbeddable xmlEmbeddable = (XmlEmbeddable) xmlPersistentType.getMapping();
 		Embeddable embeddableResource = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertNull(xmlEmbeddable.getSpecifiedMetadataComplete());
@@ -213,7 +203,7 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 	}
 	
 	public void testMakeEmbeddableEntity() throws Exception {
-		XmlPersistentType embeddablePersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		XmlPersistentType embeddablePersistentType = entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEmbeddable embeddable = (XmlEmbeddable) embeddablePersistentType.getMapping();
 		embeddable.setSpecifiedAccess(AccessType.PROPERTY);
 		embeddable.setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -222,7 +212,7 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 		embeddablePersistentType.setMappingKey(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 		
-		Entity entity = (Entity) ormResource().getEntityMappings().getEntities().get(0);
+		Entity entity = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals("model.Foo", entity.getClassName());
 		assertEquals(Boolean.TRUE, entity.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, entity.getAccess());
@@ -237,8 +227,8 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 		
 	//test with 2 Embeddables, make the second one an Entity so it has to move to the front of the list
 	public void testMakeEmbeddableEntity2() throws Exception {
-		entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-		XmlPersistentType embeddablePersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo2");
+		XmlPersistentType embeddablePersistentType = entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEmbeddable embeddable = (XmlEmbeddable) embeddablePersistentType.getMapping();
 		embeddable.setSpecifiedAccess(AccessType.PROPERTY);
 		embeddable.setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -247,7 +237,7 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 		embeddablePersistentType.setMappingKey(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 		
-		Entity entity = (Entity) ormResource().getEntityMappings().getEntities().get(0);
+		Entity entity = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals("model.Foo", entity.getClassName());
 		assertEquals(Boolean.TRUE, entity.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, entity.getAccess());
@@ -265,7 +255,7 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 	}
 	
 	public void testMakeEmbeddableMappedSuperclass() throws Exception {
-		XmlPersistentType embeddablePersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		XmlPersistentType embeddablePersistentType = entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEmbeddable embeddable = (XmlEmbeddable) embeddablePersistentType.getMapping();
 		embeddable.setSpecifiedAccess(AccessType.PROPERTY);
 		embeddable.setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -274,7 +264,7 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 		embeddablePersistentType.setMappingKey(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 		
-		MappedSuperclass  mappedSuperclass = (MappedSuperclass) ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+		MappedSuperclass  mappedSuperclass = ormResource().getEntityMappings().getMappedSuperclasses().get(0);
 		assertEquals("model.Foo", mappedSuperclass.getClassName());
 		assertEquals(Boolean.TRUE, mappedSuperclass.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, mappedSuperclass.getAccess());
@@ -287,8 +277,8 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 	
 	//test with 2 Embeddables, make the second one a MappedSuperclass so it has to move to the front of the list
 	public void testMakeEmbeddableMappedSuperclass2() throws Exception {
-		entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-		XmlPersistentType embeddablePersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo2");
+		XmlPersistentType embeddablePersistentType = entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEmbeddable embeddable = (XmlEmbeddable) embeddablePersistentType.getMapping();
 		embeddable.setSpecifiedAccess(AccessType.PROPERTY);
 		embeddable.setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -297,7 +287,7 @@ public class XmlEmbeddableTests extends ContextModelTestCase
 		embeddablePersistentType.setMappingKey(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 		
-		MappedSuperclass  mappedSuperclass = (MappedSuperclass) ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+		MappedSuperclass  mappedSuperclass = ormResource().getEntityMappings().getMappedSuperclasses().get(0);
 		assertEquals("model.Foo", mappedSuperclass.getClassName());
 		assertEquals(Boolean.TRUE, mappedSuperclass.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, mappedSuperclass.getAccess());

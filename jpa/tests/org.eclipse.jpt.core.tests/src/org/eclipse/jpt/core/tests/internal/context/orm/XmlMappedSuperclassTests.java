@@ -14,7 +14,6 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
-import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
 import org.eclipse.jpt.core.internal.context.orm.XmlMappedSuperclass;
@@ -25,7 +24,6 @@ import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class XmlMappedSuperclassTests extends ContextModelTestCase
@@ -43,17 +41,9 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		persistenceResource().save(null);
 	}
-		
-	protected XmlPersistence xmlPersistence() {
-		return persistenceResource().getPersistence();
-	}
-	
-	protected EntityMappings entityMappings() {
-		return persistenceUnit().mappingFileRefs().next().getOrmXml().getEntityMappings();
-	}
 	
 	public void testUpdateClass() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) xmlPersistentType.getMapping();
 		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);
 		assertEquals("model.Foo", xmlMappedSuperclass.getClass_());
@@ -72,7 +62,7 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 	}
 	
 	public void testModifyClass() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) xmlPersistentType.getMapping();
 		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);
 		assertEquals("model.Foo", xmlMappedSuperclass.getClass_());
@@ -91,7 +81,7 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 	//TODO add tests for setting the className when the package is set on entity-mappings
 	
 	public void testUpdateSpecifiedAccess() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) xmlPersistentType.getMapping();
 		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);
 		assertNull(xmlMappedSuperclass.getSpecifiedAccess());
@@ -109,7 +99,7 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedAccess() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) xmlPersistentType.getMapping();
 		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);
 		assertNull(xmlMappedSuperclass.getSpecifiedAccess());
@@ -132,9 +122,10 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 		//with xml-mapping-metadata-complete set
 	
 	public void testUpdateSpecifiedMetadataComplete() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) xmlPersistentType.getMapping();
-		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
+		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 		
 		//set metadata-complete in the resource model, verify context model updated
@@ -153,7 +144,7 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedMetadataComplete() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) xmlPersistentType.getMapping();
 		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
@@ -174,9 +165,10 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateDefaultMetadataComplete() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) xmlPersistentType.getMapping();
-		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
+		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
 		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
 		assertFalse(xmlMappedSuperclass.isDefaultMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
@@ -194,9 +186,10 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateMetadataComplete() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) xmlPersistentType.getMapping();
-		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
+		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);
+		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
 		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
 		assertFalse(xmlMappedSuperclass.isMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
@@ -215,7 +208,7 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 
 	
 	public void testMakeMappedSuperclassEntity() throws Exception {
-		XmlPersistentType mappedSuperclassPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		XmlPersistentType mappedSuperclassPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		XmlMappedSuperclass mappedSuperclass = (XmlMappedSuperclass) mappedSuperclassPersistentType.getMapping();
 		mappedSuperclass.setSpecifiedAccess(AccessType.PROPERTY);
 		mappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -224,7 +217,7 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 		mappedSuperclassPersistentType.setMappingKey(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 		
-		Entity entity = (Entity) ormResource().getEntityMappings().getEntities().get(0);
+		Entity entity = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals("model.Foo", entity.getClassName());
 		assertEquals(Boolean.TRUE, entity.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, entity.getAccess());
@@ -239,8 +232,8 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 		
 	//test with 2 MappedSuperclasses, make the first one an Entity so it has to move to the end of the list
 	public void testMakeMappedSuperclassEntity2() throws Exception {
-		XmlPersistentType mappedSuperclassPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
-		entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		XmlPersistentType mappedSuperclassPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
+		entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo2");
 		XmlMappedSuperclass mappedSuperclass = (XmlMappedSuperclass) mappedSuperclassPersistentType.getMapping();
 		mappedSuperclass.setSpecifiedAccess(AccessType.PROPERTY);
 		mappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -249,7 +242,7 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 		mappedSuperclassPersistentType.setMappingKey(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 		
-		Entity entity = (Entity) ormResource().getEntityMappings().getEntities().get(0);
+		Entity entity = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals("model.Foo", entity.getClassName());
 		assertEquals(Boolean.TRUE, entity.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, entity.getAccess());
@@ -267,7 +260,7 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 	}
 	
 	public void testMakeMappedSuperclassEmbeddable() throws Exception {
-		XmlPersistentType mappedSuperclassPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		XmlPersistentType mappedSuperclassPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		XmlMappedSuperclass mappedSuperclass = (XmlMappedSuperclass) mappedSuperclassPersistentType.getMapping();
 		mappedSuperclass.setSpecifiedAccess(AccessType.PROPERTY);
 		mappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -276,7 +269,7 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 		mappedSuperclassPersistentType.setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 		
-		Embeddable embeddable = (Embeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		Embeddable embeddable = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertEquals("model.Foo", embeddable.getClassName());
 		assertEquals(Boolean.TRUE, embeddable.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, embeddable.getAccess());
@@ -288,8 +281,8 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 	}
 	//test with 2 MappedSuperclasses, make the first one an Embeddable so it has to move to the end of the list
 	public void testMakeMappedSuperclassEmbeddable2() throws Exception {
-		XmlPersistentType mappedSuperclassPersistentType = entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
-		entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		XmlPersistentType mappedSuperclassPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
+		entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo2");
 		XmlMappedSuperclass mappedSuperclass = (XmlMappedSuperclass) mappedSuperclassPersistentType.getMapping();
 		mappedSuperclass.setSpecifiedAccess(AccessType.PROPERTY);
 		mappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -298,7 +291,7 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 		mappedSuperclassPersistentType.setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 		
-		Embeddable embeddable = (Embeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		Embeddable embeddable = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertEquals("model.Foo", embeddable.getClassName());
 		assertEquals(Boolean.TRUE, embeddable.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.internal.resource.orm.AccessType.PROPERTY, embeddable.getAccess());

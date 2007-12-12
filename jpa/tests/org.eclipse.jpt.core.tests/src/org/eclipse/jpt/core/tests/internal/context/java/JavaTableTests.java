@@ -152,7 +152,7 @@ public class JavaTableTests extends ContextModelTestCase
 
 		createTestEntity();
 		
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		IJavaEntity javaEntity = xmlEntity.javaEntity();
 		
@@ -261,7 +261,7 @@ public class JavaTableTests extends ContextModelTestCase
 
 		createTestEntity();
 		
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
 		IJavaEntity javaEntity = xmlEntity.javaEntity();
 		

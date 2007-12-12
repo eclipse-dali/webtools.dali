@@ -49,11 +49,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	protected final PersistenceUnitMetadata persistenceUnitMetadata;
 
 	protected final List<XmlPersistentType> persistentTypes;
-	
-//	protected EList<XmlTypeMapping> typeMappings;
-//
-//	protected EList<XmlPersistentType> persistentTypes;
-//
+
 //	protected EList<XmlSequenceGenerator> sequenceGenerators;
 //
 //	protected EList<XmlTableGenerator> tableGenerators;
@@ -196,17 +192,23 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		return this.persistentTypes.size();
 	}
 	
-	public XmlPersistentType addXmlPersistentType(String className, String mappingKey) {
-		XmlPersistentType persistentType = jpaFactory().createXmlPersistentType(this, mappingKey, this.entityMappings);
+	public XmlPersistentType addXmlPersistentType(String mappingKey, String className) {
+		XmlPersistentType persistentType = jpaFactory().createXmlPersistentType(this, mappingKey);
 		int index = insertionIndex(persistentType);
 		this.persistentTypes.add(index, persistentType);
 		if (className.startsWith(getPackage() + ".")) {
 			// adds short name if package name is specified
 			className = className.substring(getPackage().length() + 1);
 		}
-		persistentType.createAndAddOrmResourceMapping(mappingKey, className);
+		TypeMapping typeMapping = createAndAddOrmResourceMapping(persistentType, mappingKey);
+		typeMapping.setClassName(className);
 		fireItemAdded(PERSISTENT_TYPES_LIST, index, persistentType);
 		return persistentType;
+	}
+	
+	protected TypeMapping createAndAddOrmResourceMapping(XmlPersistentType persistentType, String mappingKey) {
+		IXmlTypeMappingProvider xmlTypeMappingProvider = persistentType.typeMappingProvider(mappingKey);
+		return xmlTypeMappingProvider.createAndAddOrmResourceMapping(persistentType, this.entityMappings);
 	}
 	
 	protected void addXmlPersistentType(XmlPersistentType xmlPersistentType) { 
@@ -341,7 +343,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	
 	protected void initializeMappedSuperclasses(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
 		for (MappedSuperclass mappedSuperclass : entityMappings.getMappedSuperclasses()) {
-			XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, entityMappings);
+			XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 			xmlPersistentType.initialize(mappedSuperclass);
 			this.persistentTypes.add(xmlPersistentType);
 		}	
@@ -349,7 +351,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	
 	protected void initializeEntities(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
 		for (Entity entity : entityMappings.getEntities()) {
-			XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.ENTITY_TYPE_MAPPING_KEY, entityMappings);
+			XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
 			xmlPersistentType.initialize(entity);
 			this.persistentTypes.add(xmlPersistentType);
 		}				
@@ -357,7 +359,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	
 	protected void initializeEmbeddables(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
 		for (Embeddable embeddable : entityMappings.getEmbeddables()) {
-			XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, entityMappings);
+			XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 			xmlPersistentType.initialize(embeddable);
 			this.persistentTypes.add(xmlPersistentType);
 		}
@@ -381,10 +383,6 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		return AccessType.fromXmlResourceModel(entityMappings.getAccess());
 	}
 	
-//	protected AccessType defaultAccess(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
-//		return persistenceUnit().persistenceUnitDefaults().getAccess();
-//	}
-	
 	protected void updatePersistentTypes(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
 		ListIterator<XmlPersistentType> xmlPersistentTypes = this.xmlPersistentTypes();
 		this.updateMappedSuperclasses(entityMappings, xmlPersistentTypes);
@@ -402,7 +400,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 				xmlPersistentTypes.next().update(mappedSuperclass);
 			}
 			else {
-				XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, entityMappings);
+				XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 				xmlPersistentType.initialize(mappedSuperclass);
 				addXmlPersistentType(xmlPersistentType);
 			}
@@ -415,7 +413,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 				xmlPersistentTypes.next().update(entity);
 			}
 			else {
-				XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.ENTITY_TYPE_MAPPING_KEY, entityMappings);
+				XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
 				xmlPersistentType.initialize(entity);
 				addXmlPersistentType(xmlPersistentType);
 			}
@@ -428,11 +426,10 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 				xmlPersistentTypes.next().update(embeddable);
 			}
 			else {
-				XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, entityMappings);
+				XmlPersistentType xmlPersistentType = jpaFactory().createXmlPersistentType(this, IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 				xmlPersistentType.initialize(embeddable);
 				addXmlPersistentType(xmlPersistentType);
 			}
 		}
 	}
-
 }

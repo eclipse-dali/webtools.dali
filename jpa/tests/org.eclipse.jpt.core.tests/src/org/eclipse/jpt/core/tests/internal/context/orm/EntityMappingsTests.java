@@ -13,14 +13,12 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
-import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class EntityMappingsTests extends ContextModelTestCase
@@ -36,14 +34,6 @@ public class EntityMappingsTests extends ContextModelTestCase
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		persistenceResource().save(null);
-	}
-		
-	protected XmlPersistence xmlPersistence() {
-		return persistenceResource().getPersistence();
-	}
-	
-	protected EntityMappings entityMappings() {
-		return persistenceUnit().mappingFileRefs().next().getOrmXml().getEntityMappings();
 	}
 	
 	public void testGetVersion() throws Exception {
@@ -409,7 +399,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
 		
 		//add embeddable in the context model, verify resource model modified
-		entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		assertTrue(entityMappings().xmlPersistentTypes().hasNext());
 		assertEquals("model.Foo", entityMappings().xmlPersistentTypes().next().getMapping().getClass_());
 		assertEquals(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, entityMappings().xmlPersistentTypes().next().getMapping().getKey());
@@ -419,7 +409,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("model.Foo", ormResource().getEntityMappings().getEmbeddables().get(0).getClassName());
 
 		//add entity in the context model, verify resource model modified
-		entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
 		assertTrue(entityMappings().xmlPersistentTypes().hasNext());
 		assertEquals("model.Foo2", entityMappings().xmlPersistentTypes().next().getMapping().getClass_());
 		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, entityMappings().xmlPersistentTypes().next().getMapping().getKey());
@@ -429,7 +419,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("model.Foo2", ormResource().getEntityMappings().getEntities().get(0).getClassName());
 
 		//add mapped-superclass in the context model, verify resource model modified
-		entityMappings().addXmlPersistentType("model.Foo3", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo3");
 		assertTrue(entityMappings().xmlPersistentTypes().hasNext());
 		assertEquals("model.Foo3", entityMappings().xmlPersistentTypes().next().getMapping().getClass_());
 		assertEquals(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, entityMappings().xmlPersistentTypes().next().getMapping().getKey());
@@ -445,9 +435,9 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
 		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
 		
-		entityMappings().addXmlPersistentType("model.Foo", IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-		entityMappings().addXmlPersistentType("model.Foo2", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
-		entityMappings().addXmlPersistentType("model.Foo3", IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
+		entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo3");
 		
 		ormResource().save(null);
 		//remove xmlPersistentType from the context model, verify resource model modified

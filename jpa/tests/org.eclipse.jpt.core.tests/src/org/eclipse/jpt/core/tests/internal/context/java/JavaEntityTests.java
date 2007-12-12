@@ -440,13 +440,13 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(AccessType.PROPERTY, parentPersistentType.access());
 		assertEquals(AccessType.PROPERTY, childPersistentType.access());
 		
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		removeXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		//only parent specified in orm.xml, i think this outcome is right??
 		assertEquals(AccessType.FIELD, xmlPersistentType.javaPersistentType().access());
 		assertEquals(AccessType.FIELD, childPersistentType.access());
 
-		XmlPersistentType childXmlPersistentType = entityMappings().addXmlPersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType childXmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
 		removeXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		//both parent and child specified in orm.xml
 		assertEquals(AccessType.FIELD, xmlPersistentType.javaPersistentType().access());
@@ -478,7 +478,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		//still accessType of PROPERTY because the java class is not specified in this orm.xml
 		assertEquals(AccessType.PROPERTY, javaPersistentType().access());
 		
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		//now class is specified in orm.xml, so entityMappings access setting wins over persistence-unit-defaults
 		assertEquals(AccessType.FIELD, xmlPersistentType.javaPersistentType().access());

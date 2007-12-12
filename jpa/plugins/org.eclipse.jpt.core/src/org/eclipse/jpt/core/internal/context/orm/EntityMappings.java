@@ -64,7 +64,7 @@ public interface EntityMappings extends IJpaContextNode
 	
 	ListIterator<XmlPersistentType> xmlPersistentTypes();
 	int xmlPersistentTypesSize();
-	XmlPersistentType addXmlPersistentType(String className, String mappingKey);
+	XmlPersistentType addXmlPersistentType(String mappingKey, String className);
 	void removeXmlPersistentType(int index);
 	//void moveXmlPersistentType(int oldIndex, int newIndex);
 		String PERSISTENT_TYPES_LIST = "persistentTypes";
