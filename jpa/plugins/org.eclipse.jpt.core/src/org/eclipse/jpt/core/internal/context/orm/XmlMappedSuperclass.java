@@ -84,7 +84,16 @@ public class XmlMappedSuperclass extends XmlTypeMapping<MappedSuperclass>
 //	public XmlIdClass getIdClassForXml() {
 //		return idClassForXml;
 //	}
-
+	
+	public String getIdClass() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void setIdClass(String value) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	public String getKey() {
 		return IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;

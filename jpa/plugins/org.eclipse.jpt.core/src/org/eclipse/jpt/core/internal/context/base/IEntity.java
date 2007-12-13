@@ -73,6 +73,7 @@ public interface IEntity extends ITypeMapping, IOverride.Owner
 	void removeSpecifiedPrimaryKeyJoinColumn(int index);
 	void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex);
 		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumnsList";
+		String DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST = "defaultPrimaryKeyJoinColumnsList";
 
 	<T extends IAttributeOverride> ListIterator<T> attributeOverrides();
 	<T extends IAttributeOverride> ListIterator<T> specifiedAttributeOverrides();
@@ -84,20 +85,37 @@ public interface IEntity extends ITypeMapping, IOverride.Owner
 		String SPECIFIED_ATTRIBUTE_OVERRIDES_LIST = "specifiedAttributeOverridesList";
 		String DEFAULT_ATTRIBUTE_OVERRIDES_LIST = "defaultAttributeOverridesList";
 
-//	EList<IAssociationOverride> getAssociationOverrides();
-//
-//	EList<IAssociationOverride> getSpecifiedAssociationOverrides();
-//
-//	EList<IAssociationOverride> getDefaultAssociationOverrides();
-//
-//	EList<INamedQuery> getNamedQueries();
-//
-//	EList<INamedNativeQuery> getNamedNativeQueries();
-//
-//	String getIdClass();
-//	
-//	void setIdClass(String value);
-//
+	
+	<T extends IAssociationOverride> ListIterator<T> associationOverrides();
+	<T extends IAssociationOverride> ListIterator<T> specifiedAssociationOverrides();
+	<T extends IAssociationOverride> ListIterator<T> defaultAssociationOverrides();
+	int specifiedAssociationOverridesSize();
+	IAssociationOverride addSpecifiedAssociationOverride(int index);
+	void removeSpecifiedAssociationOverride(int index);
+	void moveSpecifiedAssociationOverride(int oldIndex, int newIndex);
+		String SPECIFIED_ASSOCIATION_OVERRIDES_LIST = "specifiedAssociationOverridesList";
+		String DEFAULT_ASSOCIATION_OVERRIDES_LIST = "defaulAssociationOverridesList";
+
+
+	<T extends INamedQuery> ListIterator<T> namedQueries();
+	int namedQueriesSize();
+	INamedQuery addNamedQuery(int index);
+	void removeNamedQuery(int index);
+	void moveNamedQuery(int oldIndex, int newIndex);
+		String NAMED_QUERIES_LIST = "namedQueriesList";
+
+	<T extends INamedNativeQuery> ListIterator<T> namedNativeQueries();
+	int namedNativeQueriesSize();
+	INamedNativeQuery addNamedNativeQuery(int index);
+	void removeNamedNativeQuery(int index);
+	void moveNamedNativeQuery(int oldIndex, int newIndex);
+		String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueriesList";
+
+
+	String getIdClass();
+	void setIdClass(String value);
+		String ID_CLASS_PROPERTY = "isClassProperty";
+
 //	boolean discriminatorValueIsAllowed();
 //
 	/**
@@ -132,10 +150,6 @@ public interface IEntity extends ITypeMapping, IOverride.Owner
 //	 */
 //	String primaryKeyAttributeName();
 //
-//	IAttributeOverride createAttributeOverride(int index);
-//
-//	IAssociationOverride createAssociationOverride(int index);
-//
 //	IAttributeOverride attributeOverrideNamed(String name);
 //
 //	boolean containsAttributeOverride(String name);
@@ -150,17 +164,9 @@ public interface IEntity extends ITypeMapping, IOverride.Owner
 //
 //	boolean containsSpecifiedSecondaryTable(String name);
 //
-//	ISecondaryTable createSecondaryTable(int index);
-//
 //	boolean containsSpecifiedPrimaryKeyJoinColumns();
-//
-//	IPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(int index);
-//
-//	INamedQuery createNamedQuery(int index);
-//
-//	INamedNativeQuery createNamedNativeQuery(int index);
-//
-//
+
+
 
 //
 //

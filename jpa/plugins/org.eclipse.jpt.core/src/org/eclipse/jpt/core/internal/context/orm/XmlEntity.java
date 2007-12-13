@@ -16,10 +16,13 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.internal.context.base.INamedNativeQuery;
+import org.eclipse.jpt.core.internal.context.base.INamedQuery;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
@@ -1176,7 +1179,100 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	public <T extends IAssociationOverride> ListIterator<T> associationOverrides() {
+		return EmptyListIterator.instance();
+	}
+	
+	public <T extends IAssociationOverride> ListIterator<T> defaultAssociationOverrides() {
+		// TODO Auto-generated method stub
+		return EmptyListIterator.instance();
+	}
+	
+	public <T extends IAssociationOverride> ListIterator<T> specifiedAssociationOverrides() {
+		// TODO Auto-generated method stub
+		return EmptyListIterator.instance();
+	}
+	
+	public int specifiedAssociationOverridesSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public IAssociationOverride addSpecifiedAssociationOverride(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void removeSpecifiedAssociationOverride(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void moveSpecifiedAssociationOverride(int oldIndex, int newIndex) {
+		// TODO Auto-generated method stub
+		
+	}
 
+	public <T extends INamedQuery> ListIterator<T> namedQueries() {
+		// TODO Auto-generated method stub
+		return EmptyListIterator.instance();
+	}
+	
+	public int namedQueriesSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public INamedQuery addNamedQuery(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void removeNamedQuery(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void moveNamedQuery(int oldIndex, int newIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public <T extends INamedNativeQuery> ListIterator<T> namedNativeQueries() {
+		// TODO Auto-generated method stub
+		return EmptyListIterator.instance();
+	}
+	
+	public int namedNativeQueriesSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public INamedNativeQuery addNamedNativeQuery(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void removeNamedNativeQuery(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void moveNamedNativeQuery(int oldIndex, int newIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public String getIdClass() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void setIdClass(String value) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public IColumnMapping columnMapping(String attributeName) {
 		// TODO Auto-generated method stub
 		return null;

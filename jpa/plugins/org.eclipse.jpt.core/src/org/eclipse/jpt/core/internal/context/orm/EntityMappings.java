@@ -13,6 +13,10 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.INamedNativeQuery;
+import org.eclipse.jpt.core.internal.context.base.INamedQuery;
+import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
+import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 
 public interface EntityMappings extends IJpaContextNode
@@ -70,6 +74,36 @@ public interface EntityMappings extends IJpaContextNode
 		String PERSISTENT_TYPES_LIST = "persistentTypes";
 	
 
+	<T extends ISequenceGenerator> ListIterator<T> sequenceGenerators();
+	int sequenceGeneratorsSize();
+	ISequenceGenerator addSequenceGenerator(int index);
+	void removeSequenceGenerator(int index);
+	void moveSequenceGenerator(int oldIndex, int newIndex);
+		String SEQUENCE_GENERATORS_LIST = "sequenceGeneratorsList";
+
+	<T extends ITableGenerator> ListIterator<T> tableGenerators();
+	int tableGeneratorsSize();
+	ITableGenerator addTableGenerator(int index);
+	void removeTableGenerator(int index);
+	void moveTableGenerator(int oldIndex, int newIndex);
+		String TABLE_GENERATORS_LIST = "tableGeneratorsList";
+
+	<T extends INamedQuery> ListIterator<T> namedQueries();
+	int namedQueriesSize();
+	INamedQuery addNamedQuery(int index);
+	void removeNamedQuery(int index);
+	void moveNamedQuery(int oldIndex, int newIndex);
+		String NAMED_QUERIES_LIST = "namedQueriesList";
+
+	<T extends INamedNativeQuery> ListIterator<T> namedNativeQueries();
+	int namedNativeQueriesSize();
+	INamedNativeQuery addNamedNativeQuery(int index);
+	void removeNamedNativeQuery(int index);
+	void moveNamedNativeQuery(int oldIndex, int newIndex);
+		String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueriesList";
+
+		
+	
 	PersistenceUnitDefaults persistenceUnitDefaults();
 	
 	/**

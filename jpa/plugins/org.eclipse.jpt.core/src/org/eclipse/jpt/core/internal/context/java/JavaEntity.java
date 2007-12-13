@@ -19,11 +19,14 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
+import org.eclipse.jpt.core.internal.context.base.INamedNativeQuery;
+import org.eclipse.jpt.core.internal.context.base.INamedQuery;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
@@ -57,6 +60,7 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -1163,62 +1167,99 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		});
 	}
 
-//	public IAttributeOverride createAttributeOverride(int index) {
-//		return createJavaAttributeOverride(index);
-//	}
-//
-//	private JavaAttributeOverride createJavaAttributeOverride(int index) {
-//		return JavaAttributeOverride.createAttributeOverride(new AttributeOverrideOwner(this), this.getType(), index);
-//	}
-//
-//	public IAssociationOverride createAssociationOverride(int index) {
-//		return createJavaAssociationOverride(index);
-//	}
-//
-//	private JavaAssociationOverride createJavaAssociationOverride(int index) {
-//		return JavaAssociationOverride.createAssociationOverride(new AssociationOverrideOwner(this), this.getType(), index);
-//	}
-//
-//	public boolean containsSpecifiedPrimaryKeyJoinColumns() {
-//		return !this.getSpecifiedPrimaryKeyJoinColumns().isEmpty();
-//	}
-//
-//	public IPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(int index) {
-//		return this.createJavaPrimaryKeyJoinColumn(index);
-//	}
-//
-//	private JavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(int index) {
-//		return JavaPrimaryKeyJoinColumn.createEntityPrimaryKeyJoinColumn(buildPkJoinColumnOwner(), this.getType(), index);
-//	}
-//
-//	protected IAbstractJoinColumn.Owner buildPkJoinColumnOwner() {
-//		return new IEntity.PrimaryKeyJoinColumnOwner(this);
-//	}
-//
-//	public JavaNamedQuery createNamedQuery(int index) {
-//		return createJavaNamedQuery(index);
-//	}
-//
-//	private JavaNamedQuery createJavaNamedQuery(int index) {
-//		return JavaNamedQuery.createJavaNamedQuery(this.getType(), index);
-//	}
-//
-//	public JavaNamedNativeQuery createNamedNativeQuery(int index) {
-//		return createJavaNamedNativeQuery(index);
-//	}
-//
-//	private JavaNamedNativeQuery createJavaNamedNativeQuery(int index) {
-//		return JavaNamedNativeQuery.createJavaNamedNativeQuery(this.getType(), index);
-//	}
-//
-//	public ISequenceGenerator createSequenceGenerator() {
-//		return JpaJavaMappingsFactory.eINSTANCE.createJavaSequenceGenerator(getType());
-//	}
-//
-//	public ITableGenerator createTableGenerator() {
-//		return JpaJavaMappingsFactory.eINSTANCE.createJavaTableGenerator(getType());
-//	}
+	public <T extends IAssociationOverride> ListIterator<T> associationOverrides() {
+		return EmptyListIterator.instance();
+	}
+	
+	public <T extends IAssociationOverride> ListIterator<T> defaultAssociationOverrides() {
+		// TODO Auto-generated method stub
+		return EmptyListIterator.instance();
+	}
+	
+	public <T extends IAssociationOverride> ListIterator<T> specifiedAssociationOverrides() {
+		// TODO Auto-generated method stub
+		return EmptyListIterator.instance();
+	}
+	
+	public int specifiedAssociationOverridesSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public IAssociationOverride addSpecifiedAssociationOverride(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void removeSpecifiedAssociationOverride(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void moveSpecifiedAssociationOverride(int oldIndex, int newIndex) {
+		// TODO Auto-generated method stub
+		
+	}
 
+	public <T extends INamedQuery> ListIterator<T> namedQueries() {
+		// TODO Auto-generated method stub
+		return EmptyListIterator.instance();
+	}
+	
+	public int namedQueriesSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public INamedQuery addNamedQuery(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void removeNamedQuery(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void moveNamedQuery(int oldIndex, int newIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public <T extends INamedNativeQuery> ListIterator<T> namedNativeQueries() {
+		// TODO Auto-generated method stub
+		return EmptyListIterator.instance();
+	}
+	
+	public int namedNativeQueriesSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public INamedNativeQuery addNamedNativeQuery(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void removeNamedNativeQuery(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void moveNamedNativeQuery(int oldIndex, int newIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getIdClass() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void setIdClass(String value) {
+		// TODO Auto-generated method stub
+		
+	}
 	// ********** misc **********
 //	private static void attributeChanged(Object value, AnnotationAdapter annotationAdapter) {
 //		Annotation annotation = annotationAdapter.getAnnotation();

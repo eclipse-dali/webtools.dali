@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.internal.context.base;
 
 public interface IMappedSuperclass extends ITypeMapping
 {
-//	String getIdClass();
-//	void setIdClass(String value);
+	String getIdClass();
+	void setIdClass(String value);
+		String ID_CLASS_PROPERTY = "isClassProperty";
+
 }

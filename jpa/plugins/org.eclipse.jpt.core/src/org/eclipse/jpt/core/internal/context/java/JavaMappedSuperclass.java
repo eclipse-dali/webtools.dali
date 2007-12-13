@@ -109,7 +109,16 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 			}
 		};
 	}
-
+	
+	public String getIdClass() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void setIdClass(String value) {
+		// TODO Auto-generated method stub
+		
+	}
 	@Override
 	public void update(JavaPersistentTypeResource persistentTypeResource) {
 		super.update(persistentTypeResource);

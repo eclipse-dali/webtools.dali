@@ -30,5 +30,4 @@ public interface IIdMapping extends IAttributeMapping, IColumnMapping
 	void removeSequenceGenerator();
 		String SEQUENCE_GENERATOR_PROPERTY = "sequenceGeneratorProperty";
 
-//	IGeneratedValue createGeneratedValue();
 }

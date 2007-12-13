@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
+import org.eclipse.jpt.core.internal.context.base.INamedNativeQuery;
+import org.eclipse.jpt.core.internal.context.base.INamedQuery;
+import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
+import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
@@ -431,5 +435,105 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 				addXmlPersistentType(xmlPersistentType);
 			}
 		}
+	}
+
+	public INamedNativeQuery addNamedNativeQuery(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public INamedQuery addNamedQuery(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ISequenceGenerator addSequenceGenerator(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ITableGenerator addTableGenerator(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void moveNamedNativeQuery(int oldIndex, int newIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void moveNamedQuery(int oldIndex, int newIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void moveSequenceGenerator(int oldIndex, int newIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void moveTableGenerator(int oldIndex, int newIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public <T extends INamedNativeQuery> ListIterator<T> namedNativeQueries() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int namedNativeQueriesSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public <T extends INamedQuery> ListIterator<T> namedQueries() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int namedQueriesSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void removeNamedNativeQuery(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeNamedQuery(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeSequenceGenerator(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeTableGenerator(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public <T extends ISequenceGenerator> ListIterator<T> sequenceGenerators() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int sequenceGeneratorsSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public <T extends ITableGenerator> ListIterator<T> tableGenerators() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int tableGeneratorsSize() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
