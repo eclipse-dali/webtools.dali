@@ -24,11 +24,13 @@ public class BooleanTranslator extends Translator
 	public BooleanTranslator(String domNameAndPath, EStructuralFeature aFeature, int style) {
 		super(domNameAndPath, aFeature, BOOLEAN_FEATURE | BOOLEAN_LOWERCASE | style);
 	}
-		
+	
+	@Override
 	public Object convertStringToValue(String strValue, EObject owner) {
 		return Boolean.valueOf(strValue);
 	}
 	
+	@Override
 	public String convertValueToString(Object value, EObject owner) {
 		return ((Boolean) value).toString();
 	}
