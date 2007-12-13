@@ -102,7 +102,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
 		this.secondaryTableResource.addPkJoinColumn(index);
-		this.firePropertyChanged(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
+		this.fireItemAdded(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
 		return primaryKeyJoinColumn;
 	}
 

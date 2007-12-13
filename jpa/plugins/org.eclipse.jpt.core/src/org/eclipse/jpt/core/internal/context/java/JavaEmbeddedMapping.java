@@ -145,7 +145,7 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 		IJavaAttributeOverride attributeOverride = jpaFactory().createJavaAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		this.persistentAttributeResource.addAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
-		this.firePropertyChanged(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
+		this.fireItemAdded(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
 	

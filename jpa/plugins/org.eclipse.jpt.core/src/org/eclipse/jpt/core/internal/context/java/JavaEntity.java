@@ -538,7 +538,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
 		this.persistentTypeResource.addAnnotation(index, PrimaryKeyJoinColumn.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
-		this.firePropertyChanged(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
+		this.fireItemAdded(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
 		return primaryKeyJoinColumn;
 	}
 
@@ -589,7 +589,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		IJavaAttributeOverride attributeOverride = jpaFactory().createJavaAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		this.persistentTypeResource.addAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
-		this.firePropertyChanged(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
+		this.fireItemAdded(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
 	
