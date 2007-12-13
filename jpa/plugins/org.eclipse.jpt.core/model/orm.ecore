@@ -163,7 +163,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Id" eSuperTypes="#//AttributeMapping #//ColumnMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="generatedValue" eType="#//GeneratedValue"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//Temporal"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//TemporalType"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tableGenerator" eType="#//TableGenerator"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sequenceGenerator" eType="#//SequenceGenerator"
@@ -179,11 +179,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="lob" eType="#//Lob" containment="true"
         resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//Temporal"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enumerated" eType="#//Enumerated"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//TemporalType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enumerated" eType="#//EnumType"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Version" eSuperTypes="#//AttributeMapping #//ColumnMapping">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//Temporal"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//TemporalType"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ManyToOne" eSuperTypes="#//AttributeMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetEntity" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -420,17 +420,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnNames" unique="false"
         lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="AccessTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="DiscriminatorTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
   <eClassifiers xsi:type="ecore:EDataType" name="DiscriminatorValue" instanceClassName="java.lang.String"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Enumerated" instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="EnumTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="FetchTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="GenerationTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="InheritanceTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
   <eClassifiers xsi:type="ecore:EDataType" name="OrderBy" instanceClassName="java.lang.String"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="Temporal" instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="TemporalTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
   <eClassifiers xsi:type="ecore:EDataType" name="VersionType" instanceClassName="java.lang.String"/>
   <eClassifiers xsi:type="ecore:EEnum" name="AccessType">
     <eLiterals name="PROPERTY"/>

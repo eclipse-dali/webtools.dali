@@ -3647,26 +3647,6 @@ public class OrmPackage extends EPackageImpl
 	public static final int TEMPORAL_TYPE = 65;
 
 	/**
-	 * The meta object id for the '<em>Access Type Object</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAccessTypeObject()
-	 * @generated
-	 */
-	public static final int ACCESS_TYPE_OBJECT = 66;
-
-	/**
-	 * The meta object id for the '<em>Discriminator Type Object</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorTypeObject()
-	 * @generated
-	 */
-	public static final int DISCRIMINATOR_TYPE_OBJECT = 67;
-
-	/**
 	 * The meta object id for the '<em>Discriminator Value</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3674,7 +3654,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorValue()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_VALUE = 68;
+	public static final int DISCRIMINATOR_VALUE = 66;
 
 	/**
 	 * The meta object id for the '<em>Enumerated</em>' data type.
@@ -3684,47 +3664,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumerated()
 	 * @generated
 	 */
-	public static final int ENUMERATED = 69;
-
-	/**
-	 * The meta object id for the '<em>Enum Type Object</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumTypeObject()
-	 * @generated
-	 */
-	public static final int ENUM_TYPE_OBJECT = 70;
-
-	/**
-	 * The meta object id for the '<em>Fetch Type Object</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getFetchTypeObject()
-	 * @generated
-	 */
-	public static final int FETCH_TYPE_OBJECT = 71;
-
-	/**
-	 * The meta object id for the '<em>Generation Type Object</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerationTypeObject()
-	 * @generated
-	 */
-	public static final int GENERATION_TYPE_OBJECT = 72;
-
-	/**
-	 * The meta object id for the '<em>Inheritance Type Object</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getInheritanceTypeObject()
-	 * @generated
-	 */
-	public static final int INHERITANCE_TYPE_OBJECT = 73;
+	public static final int ENUMERATED = 67;
 
 	/**
 	 * The meta object id for the '<em>Order By</em>' data type.
@@ -3734,27 +3674,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOrderBy()
 	 * @generated
 	 */
-	public static final int ORDER_BY = 74;
-
-	/**
-	 * The meta object id for the '<em>Temporal</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporal()
-	 * @generated
-	 */
-	public static final int TEMPORAL = 75;
-
-	/**
-	 * The meta object id for the '<em>Temporal Type Object</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporalTypeObject()
-	 * @generated
-	 */
-	public static final int TEMPORAL_TYPE_OBJECT = 76;
+	public static final int ORDER_BY = 68;
 
 	/**
 	 * The meta object id for the '<em>Version Type</em>' data type.
@@ -3764,7 +3684,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getVersionType()
 	 * @generated
 	 */
-	public static final int VERSION_TYPE = 77;
+	public static final int VERSION_TYPE = 69;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -4233,20 +4153,6 @@ public class OrmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EDataType accessTypeObjectEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType discriminatorTypeObjectEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EDataType discriminatorValueEDataType = null;
 
 	/**
@@ -4261,49 +4167,7 @@ public class OrmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EDataType enumTypeObjectEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType fetchTypeObjectEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType generationTypeObjectEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType inheritanceTypeObjectEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EDataType orderByEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType temporalEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType temporalTypeObjectEDataType = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -7974,34 +7838,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.util.Enumerator <em>Access Type Object</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Access Type Object</em>'.
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @model instanceClass="org.eclipse.emf.common.util.Enumerator"
-	 * @generated
-	 */
-	public EDataType getAccessTypeObject()
-	{
-		return accessTypeObjectEDataType;
-	}
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.util.Enumerator <em>Discriminator Type Object</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Discriminator Type Object</em>'.
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @model instanceClass="org.eclipse.emf.common.util.Enumerator"
-	 * @generated
-	 */
-	public EDataType getDiscriminatorTypeObject()
-	{
-		return discriminatorTypeObjectEDataType;
-	}
-
-	/**
 	 * Returns the meta object for data type '{@link java.lang.String <em>Discriminator Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -8030,62 +7866,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.util.Enumerator <em>Enum Type Object</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Enum Type Object</em>'.
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @model instanceClass="org.eclipse.emf.common.util.Enumerator"
-	 * @generated
-	 */
-	public EDataType getEnumTypeObject()
-	{
-		return enumTypeObjectEDataType;
-	}
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.util.Enumerator <em>Fetch Type Object</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Fetch Type Object</em>'.
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @model instanceClass="org.eclipse.emf.common.util.Enumerator"
-	 * @generated
-	 */
-	public EDataType getFetchTypeObject()
-	{
-		return fetchTypeObjectEDataType;
-	}
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.util.Enumerator <em>Generation Type Object</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Generation Type Object</em>'.
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @model instanceClass="org.eclipse.emf.common.util.Enumerator"
-	 * @generated
-	 */
-	public EDataType getGenerationTypeObject()
-	{
-		return generationTypeObjectEDataType;
-	}
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.util.Enumerator <em>Inheritance Type Object</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Inheritance Type Object</em>'.
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @model instanceClass="org.eclipse.emf.common.util.Enumerator"
-	 * @generated
-	 */
-	public EDataType getInheritanceTypeObject()
-	{
-		return inheritanceTypeObjectEDataType;
-	}
-
-	/**
 	 * Returns the meta object for data type '{@link java.lang.String <em>Order By</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -8097,34 +7877,6 @@ public class OrmPackage extends EPackageImpl
 	public EDataType getOrderBy()
 	{
 		return orderByEDataType;
-	}
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.util.Enumerator <em>Temporal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Temporal</em>'.
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @model instanceClass="org.eclipse.emf.common.util.Enumerator"
-	 * @generated
-	 */
-	public EDataType getTemporal()
-	{
-		return temporalEDataType;
-	}
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.util.Enumerator <em>Temporal Type Object</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Temporal Type Object</em>'.
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @model instanceClass="org.eclipse.emf.common.util.Enumerator"
-	 * @generated
-	 */
-	public EDataType getTemporalTypeObject()
-	{
-		return temporalTypeObjectEDataType;
 	}
 
 	/**
@@ -8493,17 +8245,9 @@ public class OrmPackage extends EPackageImpl
 		temporalTypeEEnum = createEEnum(TEMPORAL_TYPE);
 
 		// Create data types
-		accessTypeObjectEDataType = createEDataType(ACCESS_TYPE_OBJECT);
-		discriminatorTypeObjectEDataType = createEDataType(DISCRIMINATOR_TYPE_OBJECT);
 		discriminatorValueEDataType = createEDataType(DISCRIMINATOR_VALUE);
 		enumeratedEDataType = createEDataType(ENUMERATED);
-		enumTypeObjectEDataType = createEDataType(ENUM_TYPE_OBJECT);
-		fetchTypeObjectEDataType = createEDataType(FETCH_TYPE_OBJECT);
-		generationTypeObjectEDataType = createEDataType(GENERATION_TYPE_OBJECT);
-		inheritanceTypeObjectEDataType = createEDataType(INHERITANCE_TYPE_OBJECT);
 		orderByEDataType = createEDataType(ORDER_BY);
-		temporalEDataType = createEDataType(TEMPORAL);
-		temporalTypeObjectEDataType = createEDataType(TEMPORAL_TYPE_OBJECT);
 		versionTypeEDataType = createEDataType(VERSION_TYPE);
 	}
 
@@ -8671,7 +8415,7 @@ public class OrmPackage extends EPackageImpl
 
 		initEClass(idEClass, Id.class, "Id", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getId_GeneratedValue(), this.getGeneratedValue(), null, "generatedValue", null, 0, 1, Id.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getId_Temporal(), this.getTemporal(), "temporal", null, 0, 1, Id.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getId_Temporal(), this.getTemporalType(), "temporal", null, 0, 1, Id.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getId_TableGenerator(), this.getTableGenerator(), null, "tableGenerator", null, 0, 1, Id.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getId_SequenceGenerator(), this.getSequenceGenerator(), null, "sequenceGenerator", null, 0, 1, Id.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -8682,11 +8426,11 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getBasic_Fetch(), this.getFetchType(), "fetch", "LAZY", 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBasic_Optional(), theXMLTypePackage.getBooleanObject(), "optional", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBasic_Lob(), this.getLob(), null, "lob", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBasic_Temporal(), this.getTemporal(), "temporal", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBasic_Enumerated(), this.getEnumerated(), "enumerated", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBasic_Temporal(), this.getTemporalType(), "temporal", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBasic_Enumerated(), this.getEnumType(), "enumerated", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(versionEClass, Version.class, "Version", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getVersion_Temporal(), this.getTemporal(), "temporal", null, 0, 1, Version.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVersion_Temporal(), this.getTemporalType(), "temporal", null, 0, 1, Version.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(manyToOneEClass, ManyToOne.class, "ManyToOne", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getManyToOne_TargetEntity(), theXMLTypePackage.getString(), "targetEntity", null, 0, 1, ManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8919,17 +8663,9 @@ public class OrmPackage extends EPackageImpl
 		addEEnumLiteral(temporalTypeEEnum, TemporalType.TIMESTAMP);
 
 		// Initialize data types
-		initEDataType(accessTypeObjectEDataType, Enumerator.class, "AccessTypeObject", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(discriminatorTypeObjectEDataType, Enumerator.class, "DiscriminatorTypeObject", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(discriminatorValueEDataType, String.class, "DiscriminatorValue", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(enumeratedEDataType, Enumerator.class, "Enumerated", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(enumTypeObjectEDataType, Enumerator.class, "EnumTypeObject", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(fetchTypeObjectEDataType, Enumerator.class, "FetchTypeObject", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(generationTypeObjectEDataType, Enumerator.class, "GenerationTypeObject", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(inheritanceTypeObjectEDataType, Enumerator.class, "InheritanceTypeObject", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(orderByEDataType, String.class, "OrderBy", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(temporalEDataType, Enumerator.class, "Temporal", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(temporalTypeObjectEDataType, Enumerator.class, "TemporalTypeObject", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(versionTypeEDataType, String.class, "VersionType", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
@@ -11147,26 +10883,6 @@ public class OrmPackage extends EPackageImpl
 		public static final EEnum TEMPORAL_TYPE = eINSTANCE.getTemporalType();
 
 		/**
-		 * The meta object literal for the '<em>Access Type Object</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.common.util.Enumerator
-		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAccessTypeObject()
-		 * @generated
-		 */
-		public static final EDataType ACCESS_TYPE_OBJECT = eINSTANCE.getAccessTypeObject();
-
-		/**
-		 * The meta object literal for the '<em>Discriminator Type Object</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.common.util.Enumerator
-		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorTypeObject()
-		 * @generated
-		 */
-		public static final EDataType DISCRIMINATOR_TYPE_OBJECT = eINSTANCE.getDiscriminatorTypeObject();
-
-		/**
 		 * The meta object literal for the '<em>Discriminator Value</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -11187,46 +10903,6 @@ public class OrmPackage extends EPackageImpl
 		public static final EDataType ENUMERATED = eINSTANCE.getEnumerated();
 
 		/**
-		 * The meta object literal for the '<em>Enum Type Object</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.common.util.Enumerator
-		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumTypeObject()
-		 * @generated
-		 */
-		public static final EDataType ENUM_TYPE_OBJECT = eINSTANCE.getEnumTypeObject();
-
-		/**
-		 * The meta object literal for the '<em>Fetch Type Object</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.common.util.Enumerator
-		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getFetchTypeObject()
-		 * @generated
-		 */
-		public static final EDataType FETCH_TYPE_OBJECT = eINSTANCE.getFetchTypeObject();
-
-		/**
-		 * The meta object literal for the '<em>Generation Type Object</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.common.util.Enumerator
-		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerationTypeObject()
-		 * @generated
-		 */
-		public static final EDataType GENERATION_TYPE_OBJECT = eINSTANCE.getGenerationTypeObject();
-
-		/**
-		 * The meta object literal for the '<em>Inheritance Type Object</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.common.util.Enumerator
-		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getInheritanceTypeObject()
-		 * @generated
-		 */
-		public static final EDataType INHERITANCE_TYPE_OBJECT = eINSTANCE.getInheritanceTypeObject();
-
-		/**
 		 * The meta object literal for the '<em>Order By</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -11235,26 +10911,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EDataType ORDER_BY = eINSTANCE.getOrderBy();
-
-		/**
-		 * The meta object literal for the '<em>Temporal</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.common.util.Enumerator
-		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporal()
-		 * @generated
-		 */
-		public static final EDataType TEMPORAL = eINSTANCE.getTemporal();
-
-		/**
-		 * The meta object literal for the '<em>Temporal Type Object</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.common.util.Enumerator
-		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporalTypeObject()
-		 * @generated
-		 */
-		public static final EDataType TEMPORAL_TYPE_OBJECT = eINSTANCE.getTemporalTypeObject();
 
 		/**
 		 * The meta object literal for the '<em>Version Type</em>' data type.

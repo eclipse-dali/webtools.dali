@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -79,14 +78,10 @@ public class Id extends JpaEObject implements AttributeMapping, ColumnMapping
 	protected GeneratedValue generatedValue;
 
 	/**
-	 * The default value of the '{@link #getTemporal() <em>Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTemporal()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final Enumerator TEMPORAL_EDEFAULT = null;
+	protected static final TemporalType TEMPORAL_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getTemporal() <em>Temporal</em>}' attribute.
@@ -96,7 +91,7 @@ public class Id extends JpaEObject implements AttributeMapping, ColumnMapping
 	 * @generated
 	 * @ordered
 	 */
-	protected Enumerator temporal = TEMPORAL_EDEFAULT;
+	protected TemporalType temporal = TEMPORAL_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getTableGenerator() <em>Table Generator</em>}' containment reference.
@@ -296,6 +291,7 @@ public class Id extends JpaEObject implements AttributeMapping, ColumnMapping
 
 	/**
 	 * Returns the value of the '<em><b>Temporal</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.resource.orm.TemporalType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Temporal</em>' attribute isn't clear,
@@ -303,12 +299,13 @@ public class Id extends JpaEObject implements AttributeMapping, ColumnMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Temporal</em>' attribute.
-	 * @see #setTemporal(Enumerator)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.TemporalType
+	 * @see #setTemporal(TemporalType)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getId_Temporal()
-	 * @model dataType="org.eclipse.jpt.core.internal.resource.orm.Temporal"
+	 * @model
 	 * @generated
 	 */
-	public Enumerator getTemporal()
+	public TemporalType getTemporal()
 	{
 		return temporal;
 	}
@@ -318,13 +315,14 @@ public class Id extends JpaEObject implements AttributeMapping, ColumnMapping
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Temporal</em>' attribute.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.TemporalType
 	 * @see #getTemporal()
 	 * @generated
 	 */
-	public void setTemporal(Enumerator newTemporal)
+	public void setTemporal(TemporalType newTemporal)
 	{
-		Enumerator oldTemporal = temporal;
-		temporal = newTemporal;
+		TemporalType oldTemporal = temporal;
+		temporal = newTemporal == null ? TEMPORAL_EDEFAULT : newTemporal;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ID__TEMPORAL, oldTemporal, temporal));
 	}
@@ -517,7 +515,7 @@ public class Id extends JpaEObject implements AttributeMapping, ColumnMapping
 				setGeneratedValue((GeneratedValue)newValue);
 				return;
 			case OrmPackage.ID__TEMPORAL:
-				setTemporal((Enumerator)newValue);
+				setTemporal((TemporalType)newValue);
 				return;
 			case OrmPackage.ID__TABLE_GENERATOR:
 				setTableGenerator((TableGenerator)newValue);
@@ -578,7 +576,7 @@ public class Id extends JpaEObject implements AttributeMapping, ColumnMapping
 			case OrmPackage.ID__GENERATED_VALUE:
 				return generatedValue != null;
 			case OrmPackage.ID__TEMPORAL:
-				return TEMPORAL_EDEFAULT == null ? temporal != null : !TEMPORAL_EDEFAULT.equals(temporal);
+				return temporal != TEMPORAL_EDEFAULT;
 			case OrmPackage.ID__TABLE_GENERATOR:
 				return tableGenerator != null;
 			case OrmPackage.ID__SEQUENCE_GENERATOR:

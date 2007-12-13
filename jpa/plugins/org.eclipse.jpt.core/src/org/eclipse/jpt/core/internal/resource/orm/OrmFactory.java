@@ -160,28 +160,12 @@ public class OrmFactory extends EFactoryImpl
 				return createInheritanceTypeFromString(eDataType, initialValue);
 			case OrmPackage.TEMPORAL_TYPE:
 				return createTemporalTypeFromString(eDataType, initialValue);
-			case OrmPackage.ACCESS_TYPE_OBJECT:
-				return createAccessTypeObjectFromString(eDataType, initialValue);
-			case OrmPackage.DISCRIMINATOR_TYPE_OBJECT:
-				return createDiscriminatorTypeObjectFromString(eDataType, initialValue);
 			case OrmPackage.DISCRIMINATOR_VALUE:
 				return createDiscriminatorValueFromString(eDataType, initialValue);
 			case OrmPackage.ENUMERATED:
 				return createEnumeratedFromString(eDataType, initialValue);
-			case OrmPackage.ENUM_TYPE_OBJECT:
-				return createEnumTypeObjectFromString(eDataType, initialValue);
-			case OrmPackage.FETCH_TYPE_OBJECT:
-				return createFetchTypeObjectFromString(eDataType, initialValue);
-			case OrmPackage.GENERATION_TYPE_OBJECT:
-				return createGenerationTypeObjectFromString(eDataType, initialValue);
-			case OrmPackage.INHERITANCE_TYPE_OBJECT:
-				return createInheritanceTypeObjectFromString(eDataType, initialValue);
 			case OrmPackage.ORDER_BY:
 				return createOrderByFromString(eDataType, initialValue);
-			case OrmPackage.TEMPORAL:
-				return createTemporalFromString(eDataType, initialValue);
-			case OrmPackage.TEMPORAL_TYPE_OBJECT:
-				return createTemporalTypeObjectFromString(eDataType, initialValue);
 			case OrmPackage.VERSION_TYPE:
 				return createVersionTypeFromString(eDataType, initialValue);
 			default:
@@ -213,28 +197,12 @@ public class OrmFactory extends EFactoryImpl
 				return convertInheritanceTypeToString(eDataType, instanceValue);
 			case OrmPackage.TEMPORAL_TYPE:
 				return convertTemporalTypeToString(eDataType, instanceValue);
-			case OrmPackage.ACCESS_TYPE_OBJECT:
-				return convertAccessTypeObjectToString(eDataType, instanceValue);
-			case OrmPackage.DISCRIMINATOR_TYPE_OBJECT:
-				return convertDiscriminatorTypeObjectToString(eDataType, instanceValue);
 			case OrmPackage.DISCRIMINATOR_VALUE:
 				return convertDiscriminatorValueToString(eDataType, instanceValue);
 			case OrmPackage.ENUMERATED:
 				return convertEnumeratedToString(eDataType, instanceValue);
-			case OrmPackage.ENUM_TYPE_OBJECT:
-				return convertEnumTypeObjectToString(eDataType, instanceValue);
-			case OrmPackage.FETCH_TYPE_OBJECT:
-				return convertFetchTypeObjectToString(eDataType, instanceValue);
-			case OrmPackage.GENERATION_TYPE_OBJECT:
-				return convertGenerationTypeObjectToString(eDataType, instanceValue);
-			case OrmPackage.INHERITANCE_TYPE_OBJECT:
-				return convertInheritanceTypeObjectToString(eDataType, instanceValue);
 			case OrmPackage.ORDER_BY:
 				return convertOrderByToString(eDataType, instanceValue);
-			case OrmPackage.TEMPORAL:
-				return convertTemporalToString(eDataType, instanceValue);
-			case OrmPackage.TEMPORAL_TYPE_OBJECT:
-				return convertTemporalTypeObjectToString(eDataType, instanceValue);
 			case OrmPackage.VERSION_TYPE:
 				return convertVersionTypeToString(eDataType, instanceValue);
 			default:
@@ -973,46 +941,6 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Enumerator createAccessTypeObjectFromString(EDataType eDataType, String initialValue)
-	{
-		return (Enumerator)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertAccessTypeObjectToString(EDataType eDataType, Object instanceValue)
-	{
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Enumerator createDiscriminatorTypeObjectFromString(EDataType eDataType, String initialValue)
-	{
-		return (Enumerator)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertDiscriminatorTypeObjectToString(EDataType eDataType, Object instanceValue)
-	{
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String createDiscriminatorValueFromString(EDataType eDataType, String initialValue)
 	{
 		return (String)super.createFromString(eDataType, initialValue);
@@ -1053,86 +981,6 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Enumerator createEnumTypeObjectFromString(EDataType eDataType, String initialValue)
-	{
-		return (Enumerator)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertEnumTypeObjectToString(EDataType eDataType, Object instanceValue)
-	{
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Enumerator createFetchTypeObjectFromString(EDataType eDataType, String initialValue)
-	{
-		return (Enumerator)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertFetchTypeObjectToString(EDataType eDataType, Object instanceValue)
-	{
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Enumerator createGenerationTypeObjectFromString(EDataType eDataType, String initialValue)
-	{
-		return (Enumerator)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertGenerationTypeObjectToString(EDataType eDataType, Object instanceValue)
-	{
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Enumerator createInheritanceTypeObjectFromString(EDataType eDataType, String initialValue)
-	{
-		return (Enumerator)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertInheritanceTypeObjectToString(EDataType eDataType, Object instanceValue)
-	{
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String createOrderByFromString(EDataType eDataType, String initialValue)
 	{
 		return (String)super.createFromString(eDataType, initialValue);
@@ -1144,46 +992,6 @@ public class OrmFactory extends EFactoryImpl
 	 * @generated
 	 */
 	public String convertOrderByToString(EDataType eDataType, Object instanceValue)
-	{
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Enumerator createTemporalFromString(EDataType eDataType, String initialValue)
-	{
-		return (Enumerator)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertTemporalToString(EDataType eDataType, Object instanceValue)
-	{
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Enumerator createTemporalTypeObjectFromString(EDataType eDataType, String initialValue)
-	{
-		return (Enumerator)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertTemporalTypeObjectToString(EDataType eDataType, Object instanceValue)
 	{
 		return super.convertToString(eDataType, instanceValue);
 	}

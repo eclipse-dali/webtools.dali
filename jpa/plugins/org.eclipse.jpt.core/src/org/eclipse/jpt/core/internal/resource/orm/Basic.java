@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -116,14 +115,10 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 	protected Lob lob;
 
 	/**
-	 * The default value of the '{@link #getTemporal() <em>Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTemporal()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final Enumerator TEMPORAL_EDEFAULT = null;
+	protected static final TemporalType TEMPORAL_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getTemporal() <em>Temporal</em>}' attribute.
@@ -133,17 +128,13 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 	 * @generated
 	 * @ordered
 	 */
-	protected Enumerator temporal = TEMPORAL_EDEFAULT;
+	protected TemporalType temporal = TEMPORAL_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getEnumerated() <em>Enumerated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEnumerated()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final Enumerator ENUMERATED_EDEFAULT = null;
+	protected static final EnumType ENUMERATED_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getEnumerated() <em>Enumerated</em>}' attribute.
@@ -153,7 +144,7 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 	 * @generated
 	 * @ordered
 	 */
-	protected Enumerator enumerated = ENUMERATED_EDEFAULT;
+	protected EnumType enumerated = ENUMERATED_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -407,6 +398,7 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 
 	/**
 	 * Returns the value of the '<em><b>Temporal</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.resource.orm.TemporalType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Temporal</em>' attribute isn't clear,
@@ -414,12 +406,13 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Temporal</em>' attribute.
-	 * @see #setTemporal(Enumerator)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.TemporalType
+	 * @see #setTemporal(TemporalType)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getBasic_Temporal()
-	 * @model dataType="org.eclipse.jpt.core.internal.resource.orm.Temporal"
+	 * @model
 	 * @generated
 	 */
-	public Enumerator getTemporal()
+	public TemporalType getTemporal()
 	{
 		return temporal;
 	}
@@ -429,19 +422,21 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Temporal</em>' attribute.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.TemporalType
 	 * @see #getTemporal()
 	 * @generated
 	 */
-	public void setTemporal(Enumerator newTemporal)
+	public void setTemporal(TemporalType newTemporal)
 	{
-		Enumerator oldTemporal = temporal;
-		temporal = newTemporal;
+		TemporalType oldTemporal = temporal;
+		temporal = newTemporal == null ? TEMPORAL_EDEFAULT : newTemporal;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC__TEMPORAL, oldTemporal, temporal));
 	}
 
 	/**
 	 * Returns the value of the '<em><b>Enumerated</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.resource.orm.EnumType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Enumerated</em>' attribute isn't clear,
@@ -449,12 +444,13 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Enumerated</em>' attribute.
-	 * @see #setEnumerated(Enumerator)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.EnumType
+	 * @see #setEnumerated(EnumType)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getBasic_Enumerated()
-	 * @model dataType="org.eclipse.jpt.core.internal.resource.orm.Enumerated"
+	 * @model
 	 * @generated
 	 */
-	public Enumerator getEnumerated()
+	public EnumType getEnumerated()
 	{
 		return enumerated;
 	}
@@ -464,13 +460,14 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Enumerated</em>' attribute.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.EnumType
 	 * @see #getEnumerated()
 	 * @generated
 	 */
-	public void setEnumerated(Enumerator newEnumerated)
+	public void setEnumerated(EnumType newEnumerated)
 	{
-		Enumerator oldEnumerated = enumerated;
-		enumerated = newEnumerated;
+		EnumType oldEnumerated = enumerated;
+		enumerated = newEnumerated == null ? ENUMERATED_EDEFAULT : newEnumerated;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC__ENUMERATED, oldEnumerated, enumerated));
 	}
@@ -547,10 +544,10 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 				setLob((Lob)newValue);
 				return;
 			case OrmPackage.BASIC__TEMPORAL:
-				setTemporal((Enumerator)newValue);
+				setTemporal((TemporalType)newValue);
 				return;
 			case OrmPackage.BASIC__ENUMERATED:
-				setEnumerated((Enumerator)newValue);
+				setEnumerated((EnumType)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -612,9 +609,9 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 			case OrmPackage.BASIC__LOB:
 				return lob != null;
 			case OrmPackage.BASIC__TEMPORAL:
-				return TEMPORAL_EDEFAULT == null ? temporal != null : !TEMPORAL_EDEFAULT.equals(temporal);
+				return temporal != TEMPORAL_EDEFAULT;
 			case OrmPackage.BASIC__ENUMERATED:
-				return ENUMERATED_EDEFAULT == null ? enumerated != null : !ENUMERATED_EDEFAULT.equals(enumerated);
+				return enumerated != ENUMERATED_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
