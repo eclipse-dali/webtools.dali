@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.resource.java.Column;
 
@@ -17,5 +18,14 @@ public interface IJavaColumn extends IJavaNamedColumn, IColumn
 	void initializeFromResource(Column columnResource);
 	
 	void update(Column columnResource);
+	
+	/**
+	 * interface allowing columns to be used in multiple places
+	 * (e.g. basic mappings and attribute overrides)
+	 */
+	interface Owner extends IAbstractColumn.Owner
+	{
+		Column columnResource();
+	}
 
 }

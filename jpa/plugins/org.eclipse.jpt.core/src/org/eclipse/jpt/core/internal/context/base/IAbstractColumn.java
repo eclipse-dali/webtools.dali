@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.resource.java.Column;
 
 
 public interface IAbstractColumn extends INamedColumn
@@ -81,7 +80,5 @@ public interface IAbstractColumn extends INamedColumn
 		 * Return the name of the persistent attribute that contains the column.
 		 */
 		String defaultTableName();
-		
-		Column columnResource();
 	}
 }

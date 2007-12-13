@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
-import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
@@ -106,7 +105,7 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	
 	IJavaTable createJavaTable(IJavaEntity parent);
 	
-	IJavaColumn createJavaColumn(IJavaColumnMapping parent, IColumn.Owner owner);
+	IJavaColumn createJavaColumn(IJavaColumnMapping parent, IJavaColumn.Owner owner);
 
 	IJavaDiscriminatorColumn createJavaDiscriminatorColumn(IJavaEntity parent, INamedColumn.Owner owner);
 	

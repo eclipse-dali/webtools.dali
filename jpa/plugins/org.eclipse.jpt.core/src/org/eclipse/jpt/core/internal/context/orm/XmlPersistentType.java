@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.internal.resource.orm.Embedded;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.Id;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.Transient;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Version;
@@ -245,6 +246,9 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	public XmlPersistentAttribute addSpecifiedPersistentAttribute(String mappingKey, String attributeName) {
 		XmlPersistentAttribute persistentAttribute = jpaFactory().createXmlPersistentAttribute(this, mappingKey);
 		int index = insertionIndex(persistentAttribute);
+		if (getMapping().typeMapping.getAttributes() == null) {
+			getMapping().typeMapping.setAttributes(OrmFactory.eINSTANCE.createAttributes());
+		}
 		this.specifiedPersistentAttributes.add(index, persistentAttribute);
 		AttributeMapping attributeMapping = getMapping().createAndAddOrmResourceAttributeMapping(persistentAttribute, mappingKey);
 		attributeMapping.setName(attributeName);

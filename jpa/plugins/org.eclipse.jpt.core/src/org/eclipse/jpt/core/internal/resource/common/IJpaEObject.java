@@ -37,4 +37,7 @@ public interface IJpaEObject extends EObject
 	 * range that will be highlighted for a validation error.
 	 */
 	ITextRange validationTextRange();
+	
+	boolean isAllFeaturesUnset();
+
 }

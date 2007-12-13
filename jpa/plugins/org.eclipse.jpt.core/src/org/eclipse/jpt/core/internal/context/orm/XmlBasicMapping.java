@@ -15,9 +15,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.EnumType;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
-import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
-import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Basic;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
@@ -26,8 +24,10 @@ import org.eclipse.jpt.db.internal.Table;
 
 
 public class XmlBasicMapping extends XmlAttributeMapping
-	implements IBasicMapping//, IXmlColumnMapping
+	implements IBasicMapping
 {
+	protected final XmlColumn column;
+	
 //	protected static final DefaultEagerFetchType FETCH_EDEFAULT = DefaultEagerFetchType.DEFAULT;
 //
 //	protected DefaultEagerFetchType fetch = FETCH_EDEFAULT;
@@ -35,8 +35,6 @@ public class XmlBasicMapping extends XmlAttributeMapping
 //	protected static final DefaultTrueBoolean OPTIONAL_EDEFAULT = DefaultTrueBoolean.DEFAULT;
 //
 //	protected DefaultTrueBoolean optional = OPTIONAL_EDEFAULT;
-//
-//	protected IColumn column;
 //
 //	protected static final boolean LOB_EDEFAULT = false;
 //
@@ -54,13 +52,9 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	
 	protected XmlBasicMapping(XmlPersistentAttribute parent) {
 		super(parent);
-//		this.column = OrmFactory.eINSTANCE.createXmlColumn(buildOwner());
-//		((InternalEObject) this.column).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_BASIC__COLUMN, null, null);
+		this.column = new XmlColumn(this, this);
 	}
-//
-//	public IColumn getColumn() {
-//		return column;
-//	}
+
 //
 //	public DefaultEagerFetchType getFetch() {
 //		return fetch;
@@ -117,34 +111,6 @@ public class XmlBasicMapping extends XmlAttributeMapping
 //			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC__ENUMERATED, oldEnumerated, enumerated));
 //	}
 //
-//	public XmlColumn getColumnForXml() {
-//		if (((XmlColumn) getColumn()).isAllFeaturesUnset()) {
-//			return null;
-//		}
-//		return (XmlColumn) getColumn();
-//	}
-//
-//	public void setColumnForXmlGen(XmlColumn newColumnForXml) {
-//		XmlColumn oldValue = newColumnForXml == null ? (XmlColumn) getColumn() : null;
-//		if (eNotificationRequired()) {
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC__COLUMN_FOR_XML, oldValue, newColumnForXml));
-//		}
-//	}
-//
-//	public void setColumnForXml(XmlColumn newColumnForXml) {
-//		setColumnForXmlGen(newColumnForXml);
-//		if (newColumnForXml == null) {
-//			((XmlColumn) getColumn()).unsetAllAttributes();
-//		}
-//	}
-//
-//	public void makeColumnForXmlNonNull() {
-//		setColumnForXmlGen(getColumnForXml());
-//	}
-//
-//	public void makeColumnForXmlNull() {
-//		setColumnForXmlGen(null);
-//	}
 
 	public String getKey() {
 		return IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
@@ -169,6 +135,10 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	@Override
 	public boolean isOverridableAttributeMapping() {
 		return true;
+	}
+
+	public XmlColumn getColumn() {
+		return this.column;
 	}
 
 	public EnumType getDefaultEnumerated() {
@@ -251,29 +221,22 @@ public class XmlBasicMapping extends XmlAttributeMapping
 		
 	}
 
-	public IColumn getColumn() {
-		// TODO Auto-generated method stub
-		return null;
+	public String attributeName() {
+		return this.persistentAttribute().getName();
 	}
 
-	public Column columnResource() {
-		// TODO Auto-generated method stub
-		return null;
+	public String defaultColumnName() {		
+		//TODO check java column for the case where this is a virtual mapping
+		return attributeName();
 	}
 
 	public String defaultTableName() {
-		// TODO Auto-generated method stub
-		return null;
+		//TODO check java column for the case where this is a virtual mapping
+		return typeMapping().getTableName();
 	}
 
 	public Table dbTable(String tableName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String defaultColumnName() {
-		// TODO Auto-generated method stub
-		return null;
+		return typeMapping().dbTable(tableName);
 	}
 
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
@@ -281,20 +244,14 @@ public class XmlBasicMapping extends XmlAttributeMapping
 		return null;
 	}
 	
-//	@Override
 	public void initialize(Basic basic) {
 		this.basic = basic;
-//		super.initialize(basic);
-//		this.specifiedName = entity.getName();
-//		this.defaultName = defaultName();
-//		this.initializeInheritance(this.inheritanceResource());
-//		this.table.initialize(entity);
-//		this.initializeSpecifiedSecondaryTables(entity);
-//		this.initializeVirtualSecondaryTables();
+		this.column.initialize(basic);
 	}
 	
 	public void update(Basic basic) {
 		this.basic = basic;
+		this.column.update(basic);
 	}
 	
 	@Override

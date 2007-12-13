@@ -257,14 +257,12 @@ public abstract class AbstractXmlTable extends JpaContextNode implements ITable
 //	}
 	
 	protected void initialize(AbstractTable table) {
-		if (table != null) {
-			this.specifiedName = table.getName();
-			this.specifiedSchema = table.getSchema();
-			this.specifiedCatalog = table.getCatalog();
-			this.defaultName = this.defaultName();
-			this.defaultSchema = this.defaultSchema();
-			this.defaultCatalog = this.defaultCatalog();
-		}
+		this.specifiedName = this.specifiedName(table);
+		this.specifiedSchema = this.specifiedSchema(table);
+		this.specifiedCatalog = this.specifiedCatalog(table);
+		this.defaultName = this.defaultName();
+		this.defaultSchema = this.defaultSchema();
+		this.defaultCatalog = this.defaultCatalog();
 	}
 	
 	protected void update(AbstractTable table) {

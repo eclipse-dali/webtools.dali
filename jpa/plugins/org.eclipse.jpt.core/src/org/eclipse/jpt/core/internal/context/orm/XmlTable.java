@@ -57,12 +57,12 @@ public class XmlTable extends AbstractXmlTable
 	
 	public void initialize(Entity entity) {
 		this.entity = entity;
-		super.initialize(this.table());
+		this.initialize(this.table());
 	}
 	
 	public void update(Entity entity) {
 		this.entity = entity;
-		super.update(this.table());
+		this.update(this.table());
 	}
 
 	@Override

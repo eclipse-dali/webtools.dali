@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 
-public interface IJavaColumnMapping extends IJavaJpaContextNode, IColumnMapping
+public interface IJavaColumnMapping extends IJavaJpaContextNode, IColumnMapping, IJavaColumn.Owner
 {
 	IJavaColumn getColumn();
 } 

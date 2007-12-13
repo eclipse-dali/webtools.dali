@@ -12,10 +12,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
-import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Basic;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
@@ -25,10 +23,10 @@ import org.eclipse.jpt.db.internal.Table;
 
 
 public class XmlVersionMapping extends XmlAttributeMapping
-	implements IVersionMapping//, IXmlColumnMapping
+	implements IVersionMapping
 {
-//	protected IColumn column;
-//
+	protected final XmlColumn column;
+
 //	protected static final TemporalType TEMPORAL_EDEFAULT = TemporalType.NULL;
 //
 //	protected TemporalType temporal = TEMPORAL_EDEFAULT;
@@ -37,8 +35,7 @@ public class XmlVersionMapping extends XmlAttributeMapping
 	
 	protected XmlVersionMapping(XmlPersistentAttribute parent) {
 		super(parent);
-//		this.column = OrmFactory.eINSTANCE.createXmlColumn(buildOwner());
-//		((InternalEObject) this.column).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID__COLUMN, null, null);
+		this.column = new XmlColumn(this, this);
 	}
 
 	@Override
@@ -54,10 +51,10 @@ public class XmlVersionMapping extends XmlAttributeMapping
 		newMapping.initializeFromXmlVersionMapping(this);
 	}
 
-//	public IColumn getColumn() {
-//		return column;
-//	}
-//
+	public XmlColumn getColumn() {
+		return this.column;
+	}
+
 //	public TemporalType getTemporal() {
 //		return temporal;
 //	}
@@ -125,24 +122,13 @@ public class XmlVersionMapping extends XmlAttributeMapping
 		
 	}
 
-	public IColumn getColumn() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Column columnResource() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public String defaultTableName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public Table dbTable(String tableName) {
-		// TODO Auto-generated method stub
-		return null;
+		return typeMapping().dbTable(tableName);
 	}
 
 	public String defaultColumnName() {
@@ -157,9 +143,11 @@ public class XmlVersionMapping extends XmlAttributeMapping
 	
 	public void initialize(Version version) {
 		this.version = version;
+		this.column.initialize(version);
 	}
 	
 	public void update(Version version) {
 		this.version = version;
+		this.column.update(version);
 	}
 }

@@ -12,13 +12,11 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
-import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Id;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
@@ -27,9 +25,10 @@ import org.eclipse.jpt.db.internal.Table;
 
 
 public class XmlIdMapping extends XmlAttributeMapping
-	implements IIdMapping//, IXmlColumnMapping
+	implements IIdMapping
 {
-//	protected IColumn column;
+	protected final XmlColumn column;
+
 //	protected IGeneratedValue generatedValue;
 //	protected static final TemporalType TEMPORAL_EDEFAULT = TemporalType.NULL;
 //	protected TemporalType temporal = TEMPORAL_EDEFAULT;
@@ -40,14 +39,13 @@ public class XmlIdMapping extends XmlAttributeMapping
 	
 	protected XmlIdMapping(XmlPersistentAttribute parent) {
 		super(parent);
-//		this.column = OrmFactory.eINSTANCE.createXmlColumn(buildOwner());
-//		((InternalEObject) this.column).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID__COLUMN, null, null);
+		this.column = new XmlColumn(this, this);
 	}
 
-//	public IColumn getColumn() {
-//		return column;
-//	}
-//
+	public XmlColumn getColumn() {
+		return this.column;
+	}
+
 //	public IGeneratedValue getGeneratedValue() {
 //		return generatedValue;
 //	}
@@ -154,35 +152,6 @@ public class XmlIdMapping extends XmlAttributeMapping
 //		else if (eNotificationRequired())
 //			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID__SEQUENCE_GENERATOR, newSequenceGenerator, newSequenceGenerator));
 //	}
-//
-//	public XmlColumn getColumnForXml() {
-//		if (((XmlColumn) getColumn()).isAllFeaturesUnset()) {
-//			return null;
-//		}
-//		return (XmlColumn) getColumn();
-//	}
-
-//	public void setColumnForXmlGen(XmlColumn newColumnForXml) {
-//		XmlColumn oldValue = newColumnForXml == null ? (XmlColumn) getColumn() : null;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID__COLUMN_FOR_XML, oldValue, newColumnForXml));
-//	}
-//
-//	public void setColumnForXml(XmlColumn newColumnForXml) {
-//		setColumnForXmlGen(newColumnForXml);
-//		if (newColumnForXml == null) {
-//			((XmlColumn) getColumn()).unsetAllAttributes();
-//		}
-//	}
-//
-//	public void makeColumnForXmlNonNull() {
-//		setColumnForXmlGen(getColumnForXml());
-//	}
-//
-//	public void makeColumnForXmlNull() {
-//		setColumnForXmlGen(null);
-//	}
-//
 
 
 
@@ -306,24 +275,13 @@ public class XmlIdMapping extends XmlAttributeMapping
 		
 	}
 
-	public IColumn getColumn() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Column columnResource() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public String defaultTableName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public Table dbTable(String tableName) {
-		// TODO Auto-generated method stub
-		return null;
+		return typeMapping().dbTable(tableName);
 	}
 
 	public String defaultColumnName() {
@@ -339,9 +297,11 @@ public class XmlIdMapping extends XmlAttributeMapping
 	
 	public void initialize(Id id) {
 		this.id = id;
+		this.column.initialize(id);
 	}
 	
 	public void update(Id id) {
 		this.id = id;
+		this.column.update(id);
 	}
 }

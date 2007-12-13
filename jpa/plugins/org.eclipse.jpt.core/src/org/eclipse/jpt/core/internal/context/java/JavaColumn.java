@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.resource.java.Column;
 
@@ -24,7 +23,7 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 
 	protected Integer specifiedScale;
 	
-	public JavaColumn(IJavaColumnMapping parent, IAbstractColumn.Owner owner) {
+	public JavaColumn(IJavaColumnMapping parent, IJavaColumn.Owner owner) {
 		super(parent, owner);
 	}
 	
@@ -36,6 +35,11 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 		this.specifiedScale = this.specifiedScale(column);
 	}
 	
+	@Override
+	protected IJavaColumn.Owner owner() {
+		return (IJavaColumn.Owner) super.owner();
+	}
+
 	@Override
 	protected Column columnResource() {
 		return this.owner().columnResource();
