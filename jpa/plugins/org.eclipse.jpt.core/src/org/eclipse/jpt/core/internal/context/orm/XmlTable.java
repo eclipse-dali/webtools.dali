@@ -72,9 +72,7 @@ public class XmlTable extends AbstractXmlTable
 			if (xmlEntity().isMetadataComplete() || (table() != null)) {
 				return javaTable.getDefaultName();
 			}
-			else {
-				return javaTable.getName();
-			}
+			return javaTable.getName();
 		}
 		IEntity rootEntity = xmlEntity().rootEntity();
 		if (rootEntity != xmlEntity()) {
@@ -92,9 +90,7 @@ public class XmlTable extends AbstractXmlTable
 			if (xmlEntity().isMetadataComplete() || (table() != null)) {
 				return javaTable.getDefaultSchema();
 			}
-			else {
-				return javaTable.getSchema();
-			}
+			return javaTable.getSchema();
 		}
 		IEntity rootEntity = xmlEntity().rootEntity();
 		if (rootEntity != xmlEntity()) {
@@ -112,9 +108,7 @@ public class XmlTable extends AbstractXmlTable
 			if (xmlEntity().isMetadataComplete() || (table() != null)) {
 				return javaTable.getDefaultCatalog();
 			}
-			else {
-				return javaTable.getCatalog();
-			}
+			return javaTable.getCatalog();
 		}
 		IEntity rootEntity = xmlEntity().rootEntity();
 		if (rootEntity != xmlEntity()) {
