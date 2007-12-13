@@ -331,11 +331,13 @@
     <genClasses ecoreClass="orm.ecore#//SecondaryTable">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//SecondaryTable/primaryKeyJoinColumns"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//Generator">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Generator/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Generator/initialValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Generator/allocationSize"/>
+    </genClasses>
     <genClasses ecoreClass="orm.ecore#//SequenceGenerator">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SequenceGenerator/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SequenceGenerator/sequenceName"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SequenceGenerator/initialValue"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SequenceGenerator/allocationSize"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//SqlResultSetMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SqlResultSetMapping/name"/>
@@ -343,15 +345,12 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//SqlResultSetMapping/columnResults"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//TableGenerator">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TableGenerator/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TableGenerator/table"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TableGenerator/catalog"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TableGenerator/schema"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TableGenerator/pkColumnName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TableGenerator/valueColumnName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TableGenerator/pkColumnValue"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TableGenerator/initialValue"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TableGenerator/allocationSize"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//TableGenerator/uniqueConstraints"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//UniqueConstraint">

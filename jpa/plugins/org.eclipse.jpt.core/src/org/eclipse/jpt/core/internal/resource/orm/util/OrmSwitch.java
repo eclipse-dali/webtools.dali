@@ -2,13 +2,14 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmSwitch.java,v 1.1.2.8 2007/12/13 14:48:57 kmoore Exp $
+ * $Id: OrmSwitch.java,v 1.1.2.9 2007/12/13 19:16:32 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
 import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.internal.resource.orm.*;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractColumn;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
 import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
@@ -563,10 +564,18 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.GENERATOR:
+			{
+				Generator generator = (Generator)theEObject;
+				T result = caseGenerator(generator);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.SEQUENCE_GENERATOR:
 			{
 				SequenceGenerator sequenceGenerator = (SequenceGenerator)theEObject;
 				T result = caseSequenceGenerator(sequenceGenerator);
+				if (result == null) result = caseGenerator(sequenceGenerator);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -581,6 +590,7 @@ public class OrmSwitch<T>
 			{
 				TableGenerator tableGenerator = (TableGenerator)theEObject;
 				T result = caseTableGenerator(tableGenerator);
+				if (result == null) result = caseGenerator(tableGenerator);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -1455,6 +1465,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseSecondaryTable(SecondaryTable object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Generator</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Generator</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGenerator(Generator object)
 	{
 		return null;
 	}

@@ -41,7 +41,7 @@ public class SequenceGeneratorTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getSequenceGenerator_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getGenerator_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createSequenceNameTranslator() {
@@ -49,10 +49,10 @@ public class SequenceGeneratorTranslator extends Translator
 	}
 	
 	private Translator createInitialValueTranslator() {
-		return new Translator(INITIAL_VALUE, ORM_PKG.getSequenceGenerator_InitialValue(), DOM_ATTRIBUTE);
+		return new Translator(INITIAL_VALUE, ORM_PKG.getGenerator_InitialValue(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createAllocationSizeTranslator() {
-		return new Translator(ALLOCATION_SIZE, ORM_PKG.getSequenceGenerator_AllocationSize(), DOM_ATTRIBUTE);
+		return new Translator(ALLOCATION_SIZE, ORM_PKG.getGenerator_AllocationSize(), DOM_ATTRIBUTE);
 	}
 }

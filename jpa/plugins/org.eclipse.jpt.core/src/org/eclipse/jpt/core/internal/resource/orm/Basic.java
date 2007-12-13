@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getFetch <em>Fetch</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#isOptional <em>Optional</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getOptional <em>Optional</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getLob <em>Lob</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getTemporal <em>Temporal</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getEnumerated <em>Enumerated</em>}</li>
@@ -86,33 +86,24 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 	protected FetchType fetch = FETCH_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isOptional() <em>Optional</em>}' attribute.
+	 * The default value of the '{@link #getOptional() <em>Optional</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isOptional()
+	 * @see #getOptional()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean OPTIONAL_EDEFAULT = false;
+	protected static final Boolean OPTIONAL_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #isOptional() <em>Optional</em>}' attribute.
+	 * The cached value of the '{@link #getOptional() <em>Optional</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isOptional()
+	 * @see #getOptional()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean optional = OPTIONAL_EDEFAULT;
-
-	/**
-	 * This is true if the Optional attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean optionalESet;
+	protected Boolean optional = OPTIONAL_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getLob() <em>Lob</em>}' containment reference.
@@ -268,70 +259,30 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Optional</em>' attribute.
-	 * @see #isSetOptional()
-	 * @see #unsetOptional()
-	 * @see #setOptional(boolean)
+	 * @see #setOptional(Boolean)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getBasic_Optional()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	public boolean isOptional()
+	public Boolean getOptional()
 	{
 		return optional;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#isOptional <em>Optional</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getOptional <em>Optional</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Optional</em>' attribute.
-	 * @see #isSetOptional()
-	 * @see #unsetOptional()
-	 * @see #isOptional()
+	 * @see #getOptional()
 	 * @generated
 	 */
-	public void setOptional(boolean newOptional)
+	public void setOptional(Boolean newOptional)
 	{
-		boolean oldOptional = optional;
+		Boolean oldOptional = optional;
 		optional = newOptional;
-		boolean oldOptionalESet = optionalESet;
-		optionalESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC__OPTIONAL, oldOptional, optional, !oldOptionalESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#isOptional <em>Optional</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetOptional()
-	 * @see #isOptional()
-	 * @see #setOptional(boolean)
-	 * @generated
-	 */
-	public void unsetOptional()
-	{
-		boolean oldOptional = optional;
-		boolean oldOptionalESet = optionalESet;
-		optional = OPTIONAL_EDEFAULT;
-		optionalESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.BASIC__OPTIONAL, oldOptional, OPTIONAL_EDEFAULT, oldOptionalESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#isOptional <em>Optional</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Optional</em>' attribute is set.
-	 * @see #unsetOptional()
-	 * @see #isOptional()
-	 * @see #setOptional(boolean)
-	 * @generated
-	 */
-	public boolean isSetOptional()
-	{
-		return optionalESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC__OPTIONAL, oldOptional, optional));
 	}
 
 	/**
@@ -559,7 +510,7 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 			case OrmPackage.BASIC__FETCH:
 				return getFetch();
 			case OrmPackage.BASIC__OPTIONAL:
-				return isOptional() ? Boolean.TRUE : Boolean.FALSE;
+				return getOptional();
 			case OrmPackage.BASIC__LOB:
 				return getLob();
 			case OrmPackage.BASIC__TEMPORAL:
@@ -590,7 +541,7 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 				setFetch((FetchType)newValue);
 				return;
 			case OrmPackage.BASIC__OPTIONAL:
-				setOptional(((Boolean)newValue).booleanValue());
+				setOptional((Boolean)newValue);
 				return;
 			case OrmPackage.BASIC__LOB:
 				setLob((Lob)newValue);
@@ -625,7 +576,7 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 				setFetch(FETCH_EDEFAULT);
 				return;
 			case OrmPackage.BASIC__OPTIONAL:
-				unsetOptional();
+				setOptional(OPTIONAL_EDEFAULT);
 				return;
 			case OrmPackage.BASIC__LOB:
 				setLob((Lob)null);
@@ -657,7 +608,7 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 			case OrmPackage.BASIC__FETCH:
 				return fetch != FETCH_EDEFAULT;
 			case OrmPackage.BASIC__OPTIONAL:
-				return isSetOptional();
+				return OPTIONAL_EDEFAULT == null ? optional != null : !OPTIONAL_EDEFAULT.equals(optional);
 			case OrmPackage.BASIC__LOB:
 				return lob != null;
 			case OrmPackage.BASIC__TEMPORAL:
@@ -722,7 +673,7 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 		result.append(", fetch: ");
 		result.append(fetch);
 		result.append(", optional: ");
-		if (optionalESet) result.append(optional); else result.append("<unset>");
+		result.append(optional);
 		result.append(", temporal: ");
 		result.append(temporal);
 		result.append(", enumerated: ");

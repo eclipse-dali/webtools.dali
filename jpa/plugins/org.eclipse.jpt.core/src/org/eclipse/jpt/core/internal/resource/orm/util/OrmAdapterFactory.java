@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmAdapterFactory.java,v 1.1.2.8 2007/12/13 14:48:58 kmoore Exp $
+ * $Id: OrmAdapterFactory.java,v 1.1.2.9 2007/12/13 19:16:33 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -10,6 +10,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.internal.resource.orm.*;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractColumn;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
 import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
@@ -402,6 +403,11 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseSecondaryTable(SecondaryTable object)
 			{
 				return createSecondaryTableAdapter();
+			}
+			@Override
+			public Adapter caseGenerator(Generator object)
+			{
+				return createGeneratorAdapter();
 			}
 			@Override
 			public Adapter caseSequenceGenerator(SequenceGenerator object)
@@ -1251,6 +1257,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createSecondaryTableAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.Generator <em>Generator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Generator
+	 * @generated
+	 */
+	public Adapter createGeneratorAdapter()
 	{
 		return null;
 	}

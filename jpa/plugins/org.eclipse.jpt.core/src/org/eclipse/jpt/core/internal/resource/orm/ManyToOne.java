@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#getTargetEntity <em>Target Entity</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#getFetch <em>Fetch</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#isOptional <em>Optional</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#getOptional <em>Optional</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#getJoinColumns <em>Join Columns</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#getJoinTable <em>Join Table</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#getCascade <em>Cascade</em>}</li>
@@ -100,33 +100,24 @@ public class ManyToOne extends JpaEObject implements AttributeMapping
 	protected FetchType fetch = FETCH_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isOptional() <em>Optional</em>}' attribute.
+	 * The default value of the '{@link #getOptional() <em>Optional</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isOptional()
+	 * @see #getOptional()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean OPTIONAL_EDEFAULT = false;
+	protected static final Boolean OPTIONAL_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #isOptional() <em>Optional</em>}' attribute.
+	 * The cached value of the '{@link #getOptional() <em>Optional</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isOptional()
+	 * @see #getOptional()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean optional = OPTIONAL_EDEFAULT;
-
-	/**
-	 * This is true if the Optional attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean optionalESet;
+	protected Boolean optional = OPTIONAL_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getJoinColumns() <em>Join Columns</em>}' containment reference list.
@@ -297,70 +288,30 @@ public class ManyToOne extends JpaEObject implements AttributeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Optional</em>' attribute.
-	 * @see #isSetOptional()
-	 * @see #unsetOptional()
-	 * @see #setOptional(boolean)
+	 * @see #setOptional(Boolean)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getManyToOne_Optional()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	public boolean isOptional()
+	public Boolean getOptional()
 	{
 		return optional;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#isOptional <em>Optional</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#getOptional <em>Optional</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Optional</em>' attribute.
-	 * @see #isSetOptional()
-	 * @see #unsetOptional()
-	 * @see #isOptional()
+	 * @see #getOptional()
 	 * @generated
 	 */
-	public void setOptional(boolean newOptional)
+	public void setOptional(Boolean newOptional)
 	{
-		boolean oldOptional = optional;
+		Boolean oldOptional = optional;
 		optional = newOptional;
-		boolean oldOptionalESet = optionalESet;
-		optionalESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MANY_TO_ONE__OPTIONAL, oldOptional, optional, !oldOptionalESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#isOptional <em>Optional</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetOptional()
-	 * @see #isOptional()
-	 * @see #setOptional(boolean)
-	 * @generated
-	 */
-	public void unsetOptional()
-	{
-		boolean oldOptional = optional;
-		boolean oldOptionalESet = optionalESet;
-		optional = OPTIONAL_EDEFAULT;
-		optionalESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.MANY_TO_ONE__OPTIONAL, oldOptional, OPTIONAL_EDEFAULT, oldOptionalESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#isOptional <em>Optional</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Optional</em>' attribute is set.
-	 * @see #unsetOptional()
-	 * @see #isOptional()
-	 * @see #setOptional(boolean)
-	 * @generated
-	 */
-	public boolean isSetOptional()
-	{
-		return optionalESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MANY_TO_ONE__OPTIONAL, oldOptional, optional));
 	}
 
 	/**
@@ -543,7 +494,7 @@ public class ManyToOne extends JpaEObject implements AttributeMapping
 			case OrmPackage.MANY_TO_ONE__FETCH:
 				return getFetch();
 			case OrmPackage.MANY_TO_ONE__OPTIONAL:
-				return isOptional() ? Boolean.TRUE : Boolean.FALSE;
+				return getOptional();
 			case OrmPackage.MANY_TO_ONE__JOIN_COLUMNS:
 				return getJoinColumns();
 			case OrmPackage.MANY_TO_ONE__JOIN_TABLE:
@@ -575,7 +526,7 @@ public class ManyToOne extends JpaEObject implements AttributeMapping
 				setFetch((FetchType)newValue);
 				return;
 			case OrmPackage.MANY_TO_ONE__OPTIONAL:
-				setOptional(((Boolean)newValue).booleanValue());
+				setOptional((Boolean)newValue);
 				return;
 			case OrmPackage.MANY_TO_ONE__JOIN_COLUMNS:
 				getJoinColumns().clear();
@@ -611,7 +562,7 @@ public class ManyToOne extends JpaEObject implements AttributeMapping
 				setFetch(FETCH_EDEFAULT);
 				return;
 			case OrmPackage.MANY_TO_ONE__OPTIONAL:
-				unsetOptional();
+				setOptional(OPTIONAL_EDEFAULT);
 				return;
 			case OrmPackage.MANY_TO_ONE__JOIN_COLUMNS:
 				getJoinColumns().clear();
@@ -643,7 +594,7 @@ public class ManyToOne extends JpaEObject implements AttributeMapping
 			case OrmPackage.MANY_TO_ONE__FETCH:
 				return fetch != FETCH_EDEFAULT;
 			case OrmPackage.MANY_TO_ONE__OPTIONAL:
-				return isSetOptional();
+				return OPTIONAL_EDEFAULT == null ? optional != null : !OPTIONAL_EDEFAULT.equals(optional);
 			case OrmPackage.MANY_TO_ONE__JOIN_COLUMNS:
 				return joinColumns != null && !joinColumns.isEmpty();
 			case OrmPackage.MANY_TO_ONE__JOIN_TABLE:
@@ -672,7 +623,7 @@ public class ManyToOne extends JpaEObject implements AttributeMapping
 		result.append(", fetch: ");
 		result.append(fetch);
 		result.append(", optional: ");
-		if (optionalESet) result.append(optional); else result.append("<unset>");
+		result.append(optional);
 		result.append(')');
 		return result.toString();
 	}

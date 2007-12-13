@@ -47,7 +47,7 @@ public class TableGeneratorTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getTableGenerator_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getGenerator_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createTableTranslator() {
@@ -75,11 +75,11 @@ public class TableGeneratorTranslator extends Translator
 	}
 	
 	private Translator createInitialValueTranslator() {
-		return new Translator(INITIAL_VALUE, ORM_PKG.getTableGenerator_InitialValue(), DOM_ATTRIBUTE);
+		return new Translator(INITIAL_VALUE, ORM_PKG.getGenerator_InitialValue(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createAllocationSizeTranslator() {
-		return new Translator(ALLOCATION_SIZE, ORM_PKG.getTableGenerator_AllocationSize(), DOM_ATTRIBUTE);
+		return new Translator(ALLOCATION_SIZE, ORM_PKG.getGenerator_AllocationSize(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createUniqueConstraintTranslator() {

@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -23,19 +22,15 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getSequenceName <em>Sequence Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getInitialValue <em>Initial Value</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getAllocationSize <em>Allocation Size</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSequenceGenerator()
  * @model kind="class"
- * @extends IJpaEObject
  * @generated
  */
-public class SequenceGenerator extends JpaEObject implements IJpaEObject
+public class SequenceGenerator extends JpaEObject implements Generator
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -58,6 +53,46 @@ public class SequenceGenerator extends JpaEObject implements IJpaEObject
 	protected String name = NAME_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getInitialValue() <em>Initial Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInitialValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Integer INITIAL_VALUE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getInitialValue() <em>Initial Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInitialValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected Integer initialValue = INITIAL_VALUE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getAllocationSize() <em>Allocation Size</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAllocationSize()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Integer ALLOCATION_SIZE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAllocationSize() <em>Allocation Size</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAllocationSize()
+	 * @generated
+	 * @ordered
+	 */
+	protected Integer allocationSize = ALLOCATION_SIZE_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getSequenceName() <em>Sequence Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -76,64 +111,6 @@ public class SequenceGenerator extends JpaEObject implements IJpaEObject
 	 * @ordered
 	 */
 	protected String sequenceName = SEQUENCE_NAME_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getInitialValue() <em>Initial Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getInitialValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int INITIAL_VALUE_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getInitialValue() <em>Initial Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getInitialValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected int initialValue = INITIAL_VALUE_EDEFAULT;
-
-	/**
-	 * This is true if the Initial Value attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean initialValueESet;
-
-	/**
-	 * The default value of the '{@link #getAllocationSize() <em>Allocation Size</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAllocationSize()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int ALLOCATION_SIZE_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getAllocationSize() <em>Allocation Size</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAllocationSize()
-	 * @generated
-	 * @ordered
-	 */
-	protected int allocationSize = ALLOCATION_SIZE_EDEFAULT;
-
-	/**
-	 * This is true if the Allocation Size attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean allocationSizeESet;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -166,7 +143,7 @@ public class SequenceGenerator extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSequenceGenerator_Name()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerator_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -235,14 +212,12 @@ public class SequenceGenerator extends JpaEObject implements IJpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Initial Value</em>' attribute.
-	 * @see #isSetInitialValue()
-	 * @see #unsetInitialValue()
-	 * @see #setInitialValue(int)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSequenceGenerator_InitialValue()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Int"
+	 * @see #setInitialValue(Integer)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerator_InitialValue()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
-	public int getInitialValue()
+	public Integer getInitialValue()
 	{
 		return initialValue;
 	}
@@ -252,53 +227,15 @@ public class SequenceGenerator extends JpaEObject implements IJpaEObject
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Initial Value</em>' attribute.
-	 * @see #isSetInitialValue()
-	 * @see #unsetInitialValue()
 	 * @see #getInitialValue()
 	 * @generated
 	 */
-	public void setInitialValue(int newInitialValue)
+	public void setInitialValue(Integer newInitialValue)
 	{
-		int oldInitialValue = initialValue;
+		Integer oldInitialValue = initialValue;
 		initialValue = newInitialValue;
-		boolean oldInitialValueESet = initialValueESet;
-		initialValueESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.SEQUENCE_GENERATOR__INITIAL_VALUE, oldInitialValue, initialValue, !oldInitialValueESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getInitialValue <em>Initial Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetInitialValue()
-	 * @see #getInitialValue()
-	 * @see #setInitialValue(int)
-	 * @generated
-	 */
-	public void unsetInitialValue()
-	{
-		int oldInitialValue = initialValue;
-		boolean oldInitialValueESet = initialValueESet;
-		initialValue = INITIAL_VALUE_EDEFAULT;
-		initialValueESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.SEQUENCE_GENERATOR__INITIAL_VALUE, oldInitialValue, INITIAL_VALUE_EDEFAULT, oldInitialValueESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getInitialValue <em>Initial Value</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Initial Value</em>' attribute is set.
-	 * @see #unsetInitialValue()
-	 * @see #getInitialValue()
-	 * @see #setInitialValue(int)
-	 * @generated
-	 */
-	public boolean isSetInitialValue()
-	{
-		return initialValueESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.SEQUENCE_GENERATOR__INITIAL_VALUE, oldInitialValue, initialValue));
 	}
 
 	/**
@@ -310,14 +247,12 @@ public class SequenceGenerator extends JpaEObject implements IJpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Allocation Size</em>' attribute.
-	 * @see #isSetAllocationSize()
-	 * @see #unsetAllocationSize()
-	 * @see #setAllocationSize(int)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSequenceGenerator_AllocationSize()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Int"
+	 * @see #setAllocationSize(Integer)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerator_AllocationSize()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
-	public int getAllocationSize()
+	public Integer getAllocationSize()
 	{
 		return allocationSize;
 	}
@@ -327,53 +262,15 @@ public class SequenceGenerator extends JpaEObject implements IJpaEObject
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Allocation Size</em>' attribute.
-	 * @see #isSetAllocationSize()
-	 * @see #unsetAllocationSize()
 	 * @see #getAllocationSize()
 	 * @generated
 	 */
-	public void setAllocationSize(int newAllocationSize)
+	public void setAllocationSize(Integer newAllocationSize)
 	{
-		int oldAllocationSize = allocationSize;
+		Integer oldAllocationSize = allocationSize;
 		allocationSize = newAllocationSize;
-		boolean oldAllocationSizeESet = allocationSizeESet;
-		allocationSizeESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.SEQUENCE_GENERATOR__ALLOCATION_SIZE, oldAllocationSize, allocationSize, !oldAllocationSizeESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getAllocationSize <em>Allocation Size</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetAllocationSize()
-	 * @see #getAllocationSize()
-	 * @see #setAllocationSize(int)
-	 * @generated
-	 */
-	public void unsetAllocationSize()
-	{
-		int oldAllocationSize = allocationSize;
-		boolean oldAllocationSizeESet = allocationSizeESet;
-		allocationSize = ALLOCATION_SIZE_EDEFAULT;
-		allocationSizeESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.SEQUENCE_GENERATOR__ALLOCATION_SIZE, oldAllocationSize, ALLOCATION_SIZE_EDEFAULT, oldAllocationSizeESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getAllocationSize <em>Allocation Size</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Allocation Size</em>' attribute is set.
-	 * @see #unsetAllocationSize()
-	 * @see #getAllocationSize()
-	 * @see #setAllocationSize(int)
-	 * @generated
-	 */
-	public boolean isSetAllocationSize()
-	{
-		return allocationSizeESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.SEQUENCE_GENERATOR__ALLOCATION_SIZE, oldAllocationSize, allocationSize));
 	}
 
 	/**
@@ -388,12 +285,12 @@ public class SequenceGenerator extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.SEQUENCE_GENERATOR__NAME:
 				return getName();
+			case OrmPackage.SEQUENCE_GENERATOR__INITIAL_VALUE:
+				return getInitialValue();
+			case OrmPackage.SEQUENCE_GENERATOR__ALLOCATION_SIZE:
+				return getAllocationSize();
 			case OrmPackage.SEQUENCE_GENERATOR__SEQUENCE_NAME:
 				return getSequenceName();
-			case OrmPackage.SEQUENCE_GENERATOR__INITIAL_VALUE:
-				return new Integer(getInitialValue());
-			case OrmPackage.SEQUENCE_GENERATOR__ALLOCATION_SIZE:
-				return new Integer(getAllocationSize());
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -411,14 +308,14 @@ public class SequenceGenerator extends JpaEObject implements IJpaEObject
 			case OrmPackage.SEQUENCE_GENERATOR__NAME:
 				setName((String)newValue);
 				return;
-			case OrmPackage.SEQUENCE_GENERATOR__SEQUENCE_NAME:
-				setSequenceName((String)newValue);
-				return;
 			case OrmPackage.SEQUENCE_GENERATOR__INITIAL_VALUE:
-				setInitialValue(((Integer)newValue).intValue());
+				setInitialValue((Integer)newValue);
 				return;
 			case OrmPackage.SEQUENCE_GENERATOR__ALLOCATION_SIZE:
-				setAllocationSize(((Integer)newValue).intValue());
+				setAllocationSize((Integer)newValue);
+				return;
+			case OrmPackage.SEQUENCE_GENERATOR__SEQUENCE_NAME:
+				setSequenceName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -437,14 +334,14 @@ public class SequenceGenerator extends JpaEObject implements IJpaEObject
 			case OrmPackage.SEQUENCE_GENERATOR__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case OrmPackage.SEQUENCE_GENERATOR__SEQUENCE_NAME:
-				setSequenceName(SEQUENCE_NAME_EDEFAULT);
-				return;
 			case OrmPackage.SEQUENCE_GENERATOR__INITIAL_VALUE:
-				unsetInitialValue();
+				setInitialValue(INITIAL_VALUE_EDEFAULT);
 				return;
 			case OrmPackage.SEQUENCE_GENERATOR__ALLOCATION_SIZE:
-				unsetAllocationSize();
+				setAllocationSize(ALLOCATION_SIZE_EDEFAULT);
+				return;
+			case OrmPackage.SEQUENCE_GENERATOR__SEQUENCE_NAME:
+				setSequenceName(SEQUENCE_NAME_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -462,12 +359,12 @@ public class SequenceGenerator extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.SEQUENCE_GENERATOR__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case OrmPackage.SEQUENCE_GENERATOR__INITIAL_VALUE:
+				return INITIAL_VALUE_EDEFAULT == null ? initialValue != null : !INITIAL_VALUE_EDEFAULT.equals(initialValue);
+			case OrmPackage.SEQUENCE_GENERATOR__ALLOCATION_SIZE:
+				return ALLOCATION_SIZE_EDEFAULT == null ? allocationSize != null : !ALLOCATION_SIZE_EDEFAULT.equals(allocationSize);
 			case OrmPackage.SEQUENCE_GENERATOR__SEQUENCE_NAME:
 				return SEQUENCE_NAME_EDEFAULT == null ? sequenceName != null : !SEQUENCE_NAME_EDEFAULT.equals(sequenceName);
-			case OrmPackage.SEQUENCE_GENERATOR__INITIAL_VALUE:
-				return isSetInitialValue();
-			case OrmPackage.SEQUENCE_GENERATOR__ALLOCATION_SIZE:
-				return isSetAllocationSize();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -485,12 +382,12 @@ public class SequenceGenerator extends JpaEObject implements IJpaEObject
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", initialValue: ");
+		result.append(initialValue);
+		result.append(", allocationSize: ");
+		result.append(allocationSize);
 		result.append(", sequenceName: ");
 		result.append(sequenceName);
-		result.append(", initialValue: ");
-		if (initialValueESet) result.append(initialValue); else result.append("<unset>");
-		result.append(", allocationSize: ");
-		if (allocationSizeESet) result.append(allocationSize); else result.append("<unset>");
 		result.append(')');
 		return result.toString();
 	}

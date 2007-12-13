@@ -97,7 +97,7 @@ public class DiscriminatorColumn extends JpaEObject implements NamedColumn
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int LENGTH_EDEFAULT = 0;
+	protected static final Integer LENGTH_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getLength() <em>Length</em>}' attribute.
@@ -107,16 +107,7 @@ public class DiscriminatorColumn extends JpaEObject implements NamedColumn
 	 * @generated
 	 * @ordered
 	 */
-	protected int length = LENGTH_EDEFAULT;
-
-	/**
-	 * This is true if the Length attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean lengthESet;
+	protected Integer length = LENGTH_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -222,14 +213,12 @@ public class DiscriminatorColumn extends JpaEObject implements NamedColumn
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Length</em>' attribute.
-	 * @see #isSetLength()
-	 * @see #unsetLength()
-	 * @see #setLength(int)
+	 * @see #setLength(Integer)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorColumn_Length()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Int"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
-	public int getLength()
+	public Integer getLength()
 	{
 		return length;
 	}
@@ -239,53 +228,15 @@ public class DiscriminatorColumn extends JpaEObject implements NamedColumn
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Length</em>' attribute.
-	 * @see #isSetLength()
-	 * @see #unsetLength()
 	 * @see #getLength()
 	 * @generated
 	 */
-	public void setLength(int newLength)
+	public void setLength(Integer newLength)
 	{
-		int oldLength = length;
+		Integer oldLength = length;
 		length = newLength;
-		boolean oldLengthESet = lengthESet;
-		lengthESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.DISCRIMINATOR_COLUMN__LENGTH, oldLength, length, !oldLengthESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.DiscriminatorColumn#getLength <em>Length</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetLength()
-	 * @see #getLength()
-	 * @see #setLength(int)
-	 * @generated
-	 */
-	public void unsetLength()
-	{
-		int oldLength = length;
-		boolean oldLengthESet = lengthESet;
-		length = LENGTH_EDEFAULT;
-		lengthESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.DISCRIMINATOR_COLUMN__LENGTH, oldLength, LENGTH_EDEFAULT, oldLengthESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.DiscriminatorColumn#getLength <em>Length</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Length</em>' attribute is set.
-	 * @see #unsetLength()
-	 * @see #getLength()
-	 * @see #setLength(int)
-	 * @generated
-	 */
-	public boolean isSetLength()
-	{
-		return lengthESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.DISCRIMINATOR_COLUMN__LENGTH, oldLength, length));
 	}
 
 	/**
@@ -340,7 +291,7 @@ public class DiscriminatorColumn extends JpaEObject implements NamedColumn
 			case OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				return getDiscriminatorType();
 			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
-				return new Integer(getLength());
+				return getLength();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -365,7 +316,7 @@ public class DiscriminatorColumn extends JpaEObject implements NamedColumn
 				setDiscriminatorType((DiscriminatorType)newValue);
 				return;
 			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
-				setLength(((Integer)newValue).intValue());
+				setLength((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -391,7 +342,7 @@ public class DiscriminatorColumn extends JpaEObject implements NamedColumn
 				setDiscriminatorType(DISCRIMINATOR_TYPE_EDEFAULT);
 				return;
 			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
-				unsetLength();
+				setLength(LENGTH_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -414,7 +365,7 @@ public class DiscriminatorColumn extends JpaEObject implements NamedColumn
 			case OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				return discriminatorType != DISCRIMINATOR_TYPE_EDEFAULT;
 			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
-				return isSetLength();
+				return LENGTH_EDEFAULT == null ? length != null : !LENGTH_EDEFAULT.equals(length);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -437,7 +388,7 @@ public class DiscriminatorColumn extends JpaEObject implements NamedColumn
 		result.append(", discriminatorType: ");
 		result.append(discriminatorType);
 		result.append(", length: ");
-		if (lengthESet) result.append(length); else result.append("<unset>");
+		result.append(length);
 		result.append(')');
 		return result.toString();
 	}

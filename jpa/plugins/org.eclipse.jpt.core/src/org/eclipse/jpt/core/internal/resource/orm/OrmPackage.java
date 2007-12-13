@@ -3108,7 +3108,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSqlResultSetMapping()
 	 * @generated
 	 */
-	public static final int SQL_RESULT_SET_MAPPING = 55;
+	public static final int SQL_RESULT_SET_MAPPING = 56;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.PrimaryKeyJoinColumn <em>Primary Key Join Column</em>}' class.
@@ -3201,7 +3201,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSequenceGenerator()
 	 * @generated
 	 */
-	public static final int SEQUENCE_GENERATOR = 54;
+	public static final int SEQUENCE_GENERATOR = 55;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Table <em>Table</em>}' class.
@@ -3313,22 +3313,23 @@ public class OrmPackage extends EPackageImpl
 	public static final int SECONDARY_TABLE_FEATURE_COUNT = ABSTRACT_TABLE_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Generator <em>Generator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Generator
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerator()
+	 * @generated
+	 */
+	public static final int GENERATOR = 54;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int SEQUENCE_GENERATOR__NAME = 0;
-
-	/**
-	 * The feature id for the '<em><b>Sequence Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int SEQUENCE_GENERATOR__SEQUENCE_NAME = 1;
+	public static final int GENERATOR__NAME = 0;
 
 	/**
 	 * The feature id for the '<em><b>Initial Value</b></em>' attribute.
@@ -3337,7 +3338,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int SEQUENCE_GENERATOR__INITIAL_VALUE = 2;
+	public static final int GENERATOR__INITIAL_VALUE = 1;
 
 	/**
 	 * The feature id for the '<em><b>Allocation Size</b></em>' attribute.
@@ -3346,7 +3347,52 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int SEQUENCE_GENERATOR__ALLOCATION_SIZE = 3;
+	public static final int GENERATOR__ALLOCATION_SIZE = 2;
+
+	/**
+	 * The number of structural features of the '<em>Generator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int GENERATOR_FEATURE_COUNT = 3;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int SEQUENCE_GENERATOR__NAME = GENERATOR__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Initial Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int SEQUENCE_GENERATOR__INITIAL_VALUE = GENERATOR__INITIAL_VALUE;
+
+	/**
+	 * The feature id for the '<em><b>Allocation Size</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int SEQUENCE_GENERATOR__ALLOCATION_SIZE = GENERATOR__ALLOCATION_SIZE;
+
+	/**
+	 * The feature id for the '<em><b>Sequence Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int SEQUENCE_GENERATOR__SEQUENCE_NAME = GENERATOR_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Sequence Generator</em>' class.
@@ -3355,7 +3401,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int SEQUENCE_GENERATOR_FEATURE_COUNT = 4;
+	public static final int SEQUENCE_GENERATOR_FEATURE_COUNT = GENERATOR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3401,7 +3447,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTableGenerator()
 	 * @generated
 	 */
-	public static final int TABLE_GENERATOR = 56;
+	public static final int TABLE_GENERATOR = 57;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3410,61 +3456,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int TABLE_GENERATOR__NAME = 0;
-
-	/**
-	 * The feature id for the '<em><b>Table</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int TABLE_GENERATOR__TABLE = 1;
-
-	/**
-	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int TABLE_GENERATOR__CATALOG = 2;
-
-	/**
-	 * The feature id for the '<em><b>Schema</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int TABLE_GENERATOR__SCHEMA = 3;
-
-	/**
-	 * The feature id for the '<em><b>Pk Column Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int TABLE_GENERATOR__PK_COLUMN_NAME = 4;
-
-	/**
-	 * The feature id for the '<em><b>Value Column Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int TABLE_GENERATOR__VALUE_COLUMN_NAME = 5;
-
-	/**
-	 * The feature id for the '<em><b>Pk Column Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int TABLE_GENERATOR__PK_COLUMN_VALUE = 6;
+	public static final int TABLE_GENERATOR__NAME = GENERATOR__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Initial Value</b></em>' attribute.
@@ -3473,7 +3465,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int TABLE_GENERATOR__INITIAL_VALUE = 7;
+	public static final int TABLE_GENERATOR__INITIAL_VALUE = GENERATOR__INITIAL_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Allocation Size</b></em>' attribute.
@@ -3482,7 +3474,61 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int TABLE_GENERATOR__ALLOCATION_SIZE = 8;
+	public static final int TABLE_GENERATOR__ALLOCATION_SIZE = GENERATOR__ALLOCATION_SIZE;
+
+	/**
+	 * The feature id for the '<em><b>Table</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TABLE_GENERATOR__TABLE = GENERATOR_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TABLE_GENERATOR__CATALOG = GENERATOR_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Schema</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TABLE_GENERATOR__SCHEMA = GENERATOR_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Pk Column Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TABLE_GENERATOR__PK_COLUMN_NAME = GENERATOR_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Value Column Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TABLE_GENERATOR__VALUE_COLUMN_NAME = GENERATOR_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Pk Column Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TABLE_GENERATOR__PK_COLUMN_VALUE = GENERATOR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
@@ -3491,7 +3537,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int TABLE_GENERATOR__UNIQUE_CONSTRAINTS = 9;
+	public static final int TABLE_GENERATOR__UNIQUE_CONSTRAINTS = GENERATOR_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Table Generator</em>' class.
@@ -3500,7 +3546,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int TABLE_GENERATOR_FEATURE_COUNT = 10;
+	public static final int TABLE_GENERATOR_FEATURE_COUNT = GENERATOR_FEATURE_COUNT + 7;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.UniqueConstraint <em>Unique Constraint</em>}' class.
@@ -3510,7 +3556,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getUniqueConstraint()
 	 * @generated
 	 */
-	public static final int UNIQUE_CONSTRAINT = 57;
+	public static final int UNIQUE_CONSTRAINT = 58;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -3538,7 +3584,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAccessType()
 	 * @generated
 	 */
-	public static final int ACCESS_TYPE = 58;
+	public static final int ACCESS_TYPE = 59;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.DiscriminatorType <em>Discriminator Type</em>}' enum.
@@ -3548,7 +3594,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 59;
+	public static final int DISCRIMINATOR_TYPE = 60;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.EnumType <em>Enum Type</em>}' enum.
@@ -3558,7 +3604,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 60;
+	public static final int ENUM_TYPE = 61;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.FetchType <em>Fetch Type</em>}' enum.
@@ -3568,7 +3614,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getFetchType()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE = 61;
+	public static final int FETCH_TYPE = 62;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.GenerationType <em>Generation Type</em>}' enum.
@@ -3578,7 +3624,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 62;
+	public static final int GENERATION_TYPE = 63;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -3588,7 +3634,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 63;
+	public static final int INHERITANCE_TYPE = 64;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.TemporalType <em>Temporal Type</em>}' enum.
@@ -3598,7 +3644,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 64;
+	public static final int TEMPORAL_TYPE = 65;
 
 	/**
 	 * The meta object id for the '<em>Access Type Object</em>' data type.
@@ -3608,7 +3654,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAccessTypeObject()
 	 * @generated
 	 */
-	public static final int ACCESS_TYPE_OBJECT = 65;
+	public static final int ACCESS_TYPE_OBJECT = 66;
 
 	/**
 	 * The meta object id for the '<em>Discriminator Type Object</em>' data type.
@@ -3618,7 +3664,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorTypeObject()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE_OBJECT = 66;
+	public static final int DISCRIMINATOR_TYPE_OBJECT = 67;
 
 	/**
 	 * The meta object id for the '<em>Discriminator Value</em>' data type.
@@ -3628,7 +3674,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorValue()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_VALUE = 67;
+	public static final int DISCRIMINATOR_VALUE = 68;
 
 	/**
 	 * The meta object id for the '<em>Enumerated</em>' data type.
@@ -3638,7 +3684,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumerated()
 	 * @generated
 	 */
-	public static final int ENUMERATED = 68;
+	public static final int ENUMERATED = 69;
 
 	/**
 	 * The meta object id for the '<em>Enum Type Object</em>' data type.
@@ -3648,7 +3694,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumTypeObject()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE_OBJECT = 69;
+	public static final int ENUM_TYPE_OBJECT = 70;
 
 	/**
 	 * The meta object id for the '<em>Fetch Type Object</em>' data type.
@@ -3658,7 +3704,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getFetchTypeObject()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE_OBJECT = 70;
+	public static final int FETCH_TYPE_OBJECT = 71;
 
 	/**
 	 * The meta object id for the '<em>Generation Type Object</em>' data type.
@@ -3668,7 +3714,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerationTypeObject()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE_OBJECT = 71;
+	public static final int GENERATION_TYPE_OBJECT = 72;
 
 	/**
 	 * The meta object id for the '<em>Inheritance Type Object</em>' data type.
@@ -3678,7 +3724,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getInheritanceTypeObject()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE_OBJECT = 72;
+	public static final int INHERITANCE_TYPE_OBJECT = 73;
 
 	/**
 	 * The meta object id for the '<em>Order By</em>' data type.
@@ -3688,7 +3734,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOrderBy()
 	 * @generated
 	 */
-	public static final int ORDER_BY = 73;
+	public static final int ORDER_BY = 74;
 
 	/**
 	 * The meta object id for the '<em>Temporal</em>' data type.
@@ -3698,7 +3744,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporal()
 	 * @generated
 	 */
-	public static final int TEMPORAL = 74;
+	public static final int TEMPORAL = 75;
 
 	/**
 	 * The meta object id for the '<em>Temporal Type Object</em>' data type.
@@ -3708,7 +3754,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporalTypeObject()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE_OBJECT = 75;
+	public static final int TEMPORAL_TYPE_OBJECT = 76;
 
 	/**
 	 * The meta object id for the '<em>Version Type</em>' data type.
@@ -3718,7 +3764,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getVersionType()
 	 * @generated
 	 */
-	public static final int VERSION_TYPE = 76;
+	public static final int VERSION_TYPE = 77;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -4097,6 +4143,13 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass secondaryTableEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass generatorEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -5657,11 +5710,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#isOptional <em>Optional</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getOptional <em>Optional</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Optional</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Basic#isOptional()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Basic#getOptional()
 	 * @see #getBasic()
 	 * @generated
 	 */
@@ -5781,11 +5834,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#isOptional <em>Optional</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOne#getOptional <em>Optional</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Optional</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.ManyToOne#isOptional()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.ManyToOne#getOptional()
 	 * @see #getManyToOne()
 	 * @generated
 	 */
@@ -6003,11 +6056,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#isOptional <em>Optional</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getOptional <em>Optional</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Optional</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OneToOne#isOptional()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OneToOne#getOptional()
 	 * @see #getOneToOne()
 	 * @generated
 	 */
@@ -7593,6 +7646,65 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.Generator <em>Generator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Generator</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Generator
+	 * @generated
+	 */
+	public EClass getGenerator()
+	{
+		return generatorEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Generator#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Generator#getName()
+	 * @see #getGenerator()
+	 * @generated
+	 */
+	public EAttribute getGenerator_Name()
+	{
+		return (EAttribute)generatorEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Generator#getInitialValue <em>Initial Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Initial Value</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Generator#getInitialValue()
+	 * @see #getGenerator()
+	 * @generated
+	 */
+	public EAttribute getGenerator_InitialValue()
+	{
+		return (EAttribute)generatorEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Generator#getAllocationSize <em>Allocation Size</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Allocation Size</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Generator#getAllocationSize()
+	 * @see #getGenerator()
+	 * @generated
+	 */
+	public EAttribute getGenerator_AllocationSize()
+	{
+		return (EAttribute)generatorEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator <em>Sequence Generator</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7606,20 +7718,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getName()
-	 * @see #getSequenceGenerator()
-	 * @generated
-	 */
-	public EAttribute getSequenceGenerator_Name()
-	{
-		return (EAttribute)sequenceGeneratorEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getSequenceName <em>Sequence Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7630,35 +7728,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getSequenceGenerator_SequenceName()
 	{
-		return (EAttribute)sequenceGeneratorEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getInitialValue <em>Initial Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Initial Value</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getInitialValue()
-	 * @see #getSequenceGenerator()
-	 * @generated
-	 */
-	public EAttribute getSequenceGenerator_InitialValue()
-	{
-		return (EAttribute)sequenceGeneratorEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getAllocationSize <em>Allocation Size</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Allocation Size</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator#getAllocationSize()
-	 * @see #getSequenceGenerator()
-	 * @generated
-	 */
-	public EAttribute getSequenceGenerator_AllocationSize()
-	{
-		return (EAttribute)sequenceGeneratorEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)sequenceGeneratorEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -7688,20 +7758,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.TableGenerator#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.TableGenerator#getName()
-	 * @see #getTableGenerator()
-	 * @generated
-	 */
-	public EAttribute getTableGenerator_Name()
-	{
-		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.TableGenerator#getTable <em>Table</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7712,7 +7768,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getTableGenerator_Table()
 	{
-		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -7726,7 +7782,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getTableGenerator_Catalog()
 	{
-		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -7740,7 +7796,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getTableGenerator_Schema()
 	{
-		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -7754,7 +7810,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getTableGenerator_PkColumnName()
 	{
-		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -7768,7 +7824,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getTableGenerator_ValueColumnName()
 	{
-		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -7782,35 +7838,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getTableGenerator_PkColumnValue()
 	{
-		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(6);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.TableGenerator#getInitialValue <em>Initial Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Initial Value</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.TableGenerator#getInitialValue()
-	 * @see #getTableGenerator()
-	 * @generated
-	 */
-	public EAttribute getTableGenerator_InitialValue()
-	{
-		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(7);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.TableGenerator#getAllocationSize <em>Allocation Size</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Allocation Size</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.TableGenerator#getAllocationSize()
-	 * @see #getTableGenerator()
-	 * @generated
-	 */
-	public EAttribute getTableGenerator_AllocationSize()
-	{
-		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(8);
+		return (EAttribute)tableGeneratorEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -7824,7 +7852,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getTableGenerator_UniqueConstraints()
 	{
-		return (EReference)tableGeneratorEClass.getEStructuralFeatures().get(9);
+		return (EReference)tableGeneratorEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -8430,11 +8458,13 @@ public class OrmPackage extends EPackageImpl
 		secondaryTableEClass = createEClass(SECONDARY_TABLE);
 		createEReference(secondaryTableEClass, SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS);
 
+		generatorEClass = createEClass(GENERATOR);
+		createEAttribute(generatorEClass, GENERATOR__NAME);
+		createEAttribute(generatorEClass, GENERATOR__INITIAL_VALUE);
+		createEAttribute(generatorEClass, GENERATOR__ALLOCATION_SIZE);
+
 		sequenceGeneratorEClass = createEClass(SEQUENCE_GENERATOR);
-		createEAttribute(sequenceGeneratorEClass, SEQUENCE_GENERATOR__NAME);
 		createEAttribute(sequenceGeneratorEClass, SEQUENCE_GENERATOR__SEQUENCE_NAME);
-		createEAttribute(sequenceGeneratorEClass, SEQUENCE_GENERATOR__INITIAL_VALUE);
-		createEAttribute(sequenceGeneratorEClass, SEQUENCE_GENERATOR__ALLOCATION_SIZE);
 
 		sqlResultSetMappingEClass = createEClass(SQL_RESULT_SET_MAPPING);
 		createEAttribute(sqlResultSetMappingEClass, SQL_RESULT_SET_MAPPING__NAME);
@@ -8442,15 +8472,12 @@ public class OrmPackage extends EPackageImpl
 		createEReference(sqlResultSetMappingEClass, SQL_RESULT_SET_MAPPING__COLUMN_RESULTS);
 
 		tableGeneratorEClass = createEClass(TABLE_GENERATOR);
-		createEAttribute(tableGeneratorEClass, TABLE_GENERATOR__NAME);
 		createEAttribute(tableGeneratorEClass, TABLE_GENERATOR__TABLE);
 		createEAttribute(tableGeneratorEClass, TABLE_GENERATOR__CATALOG);
 		createEAttribute(tableGeneratorEClass, TABLE_GENERATOR__SCHEMA);
 		createEAttribute(tableGeneratorEClass, TABLE_GENERATOR__PK_COLUMN_NAME);
 		createEAttribute(tableGeneratorEClass, TABLE_GENERATOR__VALUE_COLUMN_NAME);
 		createEAttribute(tableGeneratorEClass, TABLE_GENERATOR__PK_COLUMN_VALUE);
-		createEAttribute(tableGeneratorEClass, TABLE_GENERATOR__INITIAL_VALUE);
-		createEAttribute(tableGeneratorEClass, TABLE_GENERATOR__ALLOCATION_SIZE);
 		createEReference(tableGeneratorEClass, TABLE_GENERATOR__UNIQUE_CONSTRAINTS);
 
 		uniqueConstraintEClass = createEClass(UNIQUE_CONSTRAINT);
@@ -8543,6 +8570,8 @@ public class OrmPackage extends EPackageImpl
 		primaryKeyJoinColumnEClass.getESuperTypes().add(this.getNamedColumn());
 		tableEClass.getESuperTypes().add(this.getAbstractTable());
 		secondaryTableEClass.getESuperTypes().add(this.getAbstractTable());
+		sequenceGeneratorEClass.getESuperTypes().add(this.getGenerator());
+		tableGeneratorEClass.getESuperTypes().add(this.getGenerator());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(entityMappingsEClass, EntityMappings.class, "EntityMappings", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -8651,7 +8680,7 @@ public class OrmPackage extends EPackageImpl
 
 		initEClass(basicEClass, Basic.class, "Basic", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getBasic_Fetch(), this.getFetchType(), "fetch", "LAZY", 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBasic_Optional(), theXMLTypePackage.getBoolean(), "optional", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBasic_Optional(), theXMLTypePackage.getBooleanObject(), "optional", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBasic_Lob(), this.getLob(), null, "lob", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBasic_Temporal(), this.getTemporal(), "temporal", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBasic_Enumerated(), this.getEnumerated(), "enumerated", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8662,7 +8691,7 @@ public class OrmPackage extends EPackageImpl
 		initEClass(manyToOneEClass, ManyToOne.class, "ManyToOne", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getManyToOne_TargetEntity(), theXMLTypePackage.getString(), "targetEntity", null, 0, 1, ManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getManyToOne_Fetch(), this.getFetchType(), "fetch", "LAZY", 0, 1, ManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getManyToOne_Optional(), theXMLTypePackage.getBoolean(), "optional", null, 0, 1, ManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getManyToOne_Optional(), theXMLTypePackage.getBooleanObject(), "optional", null, 0, 1, ManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getManyToOne_JoinColumns(), this.getJoinColumn(), null, "joinColumns", null, 0, -1, ManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getManyToOne_JoinTable(), this.getJoinTable(), null, "joinTable", null, 0, 1, ManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getManyToOne_Cascade(), this.getCascadeType(), null, "cascade", null, 0, 1, ManyToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8680,7 +8709,7 @@ public class OrmPackage extends EPackageImpl
 		initEClass(oneToOneEClass, OneToOne.class, "OneToOne", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getOneToOne_TargetEntity(), theXMLTypePackage.getString(), "targetEntity", null, 0, 1, OneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getOneToOne_Fetch(), this.getFetchType(), "fetch", "LAZY", 0, 1, OneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getOneToOne_Optional(), theXMLTypePackage.getBoolean(), "optional", null, 0, 1, OneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getOneToOne_Optional(), theXMLTypePackage.getBooleanObject(), "optional", null, 0, 1, OneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getOneToOne_MappedBy(), theXMLTypePackage.getString(), "mappedBy", null, 0, 1, OneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getOneToOne_PrimaryKeyJoinColumns(), this.getPrimaryKeyJoinColumn(), null, "primaryKeyJoinColumns", null, 0, -1, OneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getOneToOne_JoinColumns(), this.getJoinColumn(), null, "joinColumns", null, 0, -1, OneToOne.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8737,7 +8766,7 @@ public class OrmPackage extends EPackageImpl
 
 		initEClass(discriminatorColumnEClass, DiscriminatorColumn.class, "DiscriminatorColumn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getDiscriminatorColumn_DiscriminatorType(), this.getDiscriminatorType(), "discriminatorType", "STRING", 0, 1, DiscriminatorColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDiscriminatorColumn_Length(), theXMLTypePackage.getInt(), "length", null, 0, 1, DiscriminatorColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDiscriminatorColumn_Length(), theXMLTypePackage.getIntObject(), "length", null, 0, 1, DiscriminatorColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(entityListenersEClass, EntityListeners.class, "EntityListeners", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getEntityListeners_EntityListeners(), this.getEntityListener(), null, "entityListeners", null, 0, -1, EntityListeners.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8830,11 +8859,13 @@ public class OrmPackage extends EPackageImpl
 		initEClass(secondaryTableEClass, SecondaryTable.class, "SecondaryTable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSecondaryTable_PrimaryKeyJoinColumns(), this.getPrimaryKeyJoinColumn(), null, "primaryKeyJoinColumns", null, 0, -1, SecondaryTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(generatorEClass, Generator.class, "Generator", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenerator_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, Generator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getGenerator_InitialValue(), theXMLTypePackage.getIntObject(), "initialValue", null, 0, 1, Generator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getGenerator_AllocationSize(), theXMLTypePackage.getIntObject(), "allocationSize", null, 0, 1, Generator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(sequenceGeneratorEClass, SequenceGenerator.class, "SequenceGenerator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getSequenceGenerator_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, SequenceGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getSequenceGenerator_SequenceName(), theXMLTypePackage.getString(), "sequenceName", null, 0, 1, SequenceGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getSequenceGenerator_InitialValue(), theXMLTypePackage.getInt(), "initialValue", null, 0, 1, SequenceGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getSequenceGenerator_AllocationSize(), theXMLTypePackage.getInt(), "allocationSize", null, 0, 1, SequenceGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sqlResultSetMappingEClass, SqlResultSetMapping.class, "SqlResultSetMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getSqlResultSetMapping_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, SqlResultSetMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8842,15 +8873,12 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getSqlResultSetMapping_ColumnResults(), this.getColumnResult(), null, "columnResults", null, 0, -1, SqlResultSetMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(tableGeneratorEClass, TableGenerator.class, "TableGenerator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getTableGenerator_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, TableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTableGenerator_Table(), theXMLTypePackage.getString(), "table", null, 0, 1, TableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTableGenerator_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, TableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTableGenerator_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, TableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTableGenerator_PkColumnName(), theXMLTypePackage.getString(), "pkColumnName", null, 0, 1, TableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTableGenerator_ValueColumnName(), theXMLTypePackage.getString(), "valueColumnName", null, 0, 1, TableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTableGenerator_PkColumnValue(), theXMLTypePackage.getString(), "pkColumnValue", null, 0, 1, TableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTableGenerator_InitialValue(), theXMLTypePackage.getInt(), "initialValue", null, 0, 1, TableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTableGenerator_AllocationSize(), theXMLTypePackage.getInt(), "allocationSize", null, 0, 1, TableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTableGenerator_UniqueConstraints(), this.getUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, TableGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(uniqueConstraintEClass, UniqueConstraint.class, "UniqueConstraint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -10903,6 +10931,40 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS = eINSTANCE.getSecondaryTable_PrimaryKeyJoinColumns();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.Generator <em>Generator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.resource.orm.Generator
+		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerator()
+		 * @generated
+		 */
+		public static final EClass GENERATOR = eINSTANCE.getGenerator();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute GENERATOR__NAME = eINSTANCE.getGenerator_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Initial Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute GENERATOR__INITIAL_VALUE = eINSTANCE.getGenerator_InitialValue();
+
+		/**
+		 * The meta object literal for the '<em><b>Allocation Size</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute GENERATOR__ALLOCATION_SIZE = eINSTANCE.getGenerator_AllocationSize();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator <em>Sequence Generator</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -10913,36 +10975,12 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass SEQUENCE_GENERATOR = eINSTANCE.getSequenceGenerator();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute SEQUENCE_GENERATOR__NAME = eINSTANCE.getSequenceGenerator_Name();
-
-		/**
 		 * The meta object literal for the '<em><b>Sequence Name</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		public static final EAttribute SEQUENCE_GENERATOR__SEQUENCE_NAME = eINSTANCE.getSequenceGenerator_SequenceName();
-
-		/**
-		 * The meta object literal for the '<em><b>Initial Value</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute SEQUENCE_GENERATOR__INITIAL_VALUE = eINSTANCE.getSequenceGenerator_InitialValue();
-
-		/**
-		 * The meta object literal for the '<em><b>Allocation Size</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute SEQUENCE_GENERATOR__ALLOCATION_SIZE = eINSTANCE.getSequenceGenerator_AllocationSize();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.Table <em>Table</em>}' class.
@@ -10963,14 +11001,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass TABLE_GENERATOR = eINSTANCE.getTableGenerator();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute TABLE_GENERATOR__NAME = eINSTANCE.getTableGenerator_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Table</b></em>' attribute feature.
@@ -11019,22 +11049,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute TABLE_GENERATOR__PK_COLUMN_VALUE = eINSTANCE.getTableGenerator_PkColumnValue();
-
-		/**
-		 * The meta object literal for the '<em><b>Initial Value</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute TABLE_GENERATOR__INITIAL_VALUE = eINSTANCE.getTableGenerator_InitialValue();
-
-		/**
-		 * The meta object literal for the '<em><b>Allocation Size</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute TABLE_GENERATOR__ALLOCATION_SIZE = eINSTANCE.getTableGenerator_AllocationSize();
 
 		/**
 		 * The meta object literal for the '<em><b>Unique Constraints</b></em>' containment reference list feature.
