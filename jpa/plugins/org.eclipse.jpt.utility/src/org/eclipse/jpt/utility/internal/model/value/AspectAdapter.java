@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  * adapter itself actually has listeners. This will allow the adapter to be
  * garbage collected when appropriate
  */
-public abstract class AspectAdapter 
+public abstract class AspectAdapter<S>
 	extends AbstractModel
 {
 	/**
@@ -35,7 +35,7 @@ public abstract class AspectAdapter
 	 * We need to hold on to this directly so we can
 	 * disengage it when it changes.
 	 */
-	protected Object subject;
+	protected S subject;
 
 	/**
 	 * A value model that holds the subject
@@ -46,7 +46,7 @@ public abstract class AspectAdapter
 	 * For now, this is can only be set upon construction and is
 	 * immutable.
 	 */
-	protected final PropertyValueModel subjectHolder;
+	protected final PropertyValueModel<S> subjectHolder;
 
 	/** A listener that keeps us in synch with the subjectHolder. */
 	protected final PropertyChangeListener subjectChangeListener;
@@ -57,15 +57,15 @@ public abstract class AspectAdapter
 	/**
 	 * Construct an AspectAdapter for the specified subject.
 	 */
-	protected AspectAdapter(Object subject) {
-		this(new ReadOnlyPropertyValueModel(subject));
+	protected AspectAdapter(S subject) {
+		this(new ReadOnlyPropertyValueModel<S>(subject));
 	}
 
 	/**
 	 * Construct an AspectAdapter for the specified subject holder.
 	 * The subject holder cannot be null.
 	 */
-	protected AspectAdapter(PropertyValueModel subjectHolder) {
+	protected AspectAdapter(PropertyValueModel<S> subjectHolder) {
 		super();
 		if (subjectHolder == null) {
 			throw new NullPointerException();
@@ -215,7 +215,7 @@ public abstract class AspectAdapter
 	protected class LocalChangeSupport extends SingleAspectChangeSupport {
 		private static final long serialVersionUID = 1L;
 
-		public LocalChangeSupport(AspectAdapter source, Class<? extends ChangeListener> listenerClass, String aspectName) {
+		public LocalChangeSupport(AspectAdapter<S> source, Class<? extends ChangeListener> listenerClass, String aspectName) {
 			super(source, listenerClass, aspectName);
 		}
 

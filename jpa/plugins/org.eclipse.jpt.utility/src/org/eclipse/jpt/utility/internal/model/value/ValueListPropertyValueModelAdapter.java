@@ -19,8 +19,8 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  * Extend ValueAspectPropertyValueModelAdapter to listen to one or more list
  * aspects of the value in the wrapped value model.
  */
-public class ValueListPropertyValueModelAdapter
-	extends ValueAspectPropertyValueModelAdapter
+public class ValueListPropertyValueModelAdapter<T extends Model>
+	extends ValueAspectPropertyValueModelAdapter<T>
 {
 
 	/** The names of the value's lists that we listen to. */
@@ -33,30 +33,9 @@ public class ValueListPropertyValueModelAdapter
 	// ********** constructors **********
 
 	/**
-	 * Construct an adapter for the specified value list.
-	 */
-	public ValueListPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String listName) {
-		this(valueHolder, new String[] {listName});
-	}
-
-	/**
 	 * Construct an adapter for the specified value lists.
 	 */
-	public ValueListPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String listName1, String listName2) {
-		this(valueHolder, new String[] {listName1, listName2});
-	}
-
-	/**
-	 * Construct an adapter for the specified value lists.
-	 */
-	public ValueListPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String listName1, String listName2, String listName3) {
-		this(valueHolder, new String[] {listName1, listName2, listName3});
-	}
-
-	/**
-	 * Construct an adapter for the specified value lists.
-	 */
-	public ValueListPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String[] listNames) {
+	public ValueListPropertyValueModelAdapter(WritablePropertyValueModel<T> valueHolder, String... listNames) {
 		super(valueHolder);
 		this.listNames = listNames;
 		this.valueListListener = this.buildValueListListener();
@@ -97,18 +76,16 @@ public class ValueListPropertyValueModelAdapter
 	}
 
 	@Override
-	protected void startListeningToValue() {
-		Model v = (Model) this.value;
-		for (int i = this.listNames.length; i-- > 0; ) {
-			v.addListChangeListener(this.listNames[i], this.valueListListener);
+	protected void engageValue_() {
+		for (String listName : this.listNames) {
+			this.value.addListChangeListener(listName, this.valueListListener);
 		}
 	}
 
 	@Override
-	protected void stopListeningToValue() {
-		Model v = (Model) this.value;
-		for (int i = this.listNames.length; i-- > 0; ) {
-			v.removeListChangeListener(this.listNames[i], this.valueListListener);
+	protected void disengageValue_() {
+		for (String listName : this.listNames) {
+			this.value.removeListChangeListener(listName, this.valueListListener);
 		}
 	}
 

@@ -16,20 +16,22 @@ import org.eclipse.jpt.utility.internal.model.NullModel;
  * A read-only property value model for when you
  * don't need to support a value.
  */
-public final class NullPropertyValueModel
+public final class NullPropertyValueModel<T>
 	extends NullModel
-	implements PropertyValueModel
+	implements PropertyValueModel<T>
 {
 
 	private static final long serialVersionUID = 1L;
 
 	// singleton
+	@SuppressWarnings("unchecked")
 	private static final NullPropertyValueModel INSTANCE = new NullPropertyValueModel();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static synchronized PropertyValueModel instance() {
+	@SuppressWarnings("unchecked")
+	public static synchronized <T> PropertyValueModel<T> instance() {
 		return INSTANCE;
 	}
 
@@ -43,7 +45,7 @@ public final class NullPropertyValueModel
 
 	// ********** PropertyValueModel implementation **********
 
-	public Object value() {
+	public T value() {
 		return null;
 	}
 

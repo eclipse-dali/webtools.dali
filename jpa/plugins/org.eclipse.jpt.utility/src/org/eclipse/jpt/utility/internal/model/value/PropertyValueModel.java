@@ -15,14 +15,14 @@ import org.eclipse.jpt.utility.internal.model.Model;
  * Interface used to abstract property accessing and
  * change notification and make it more pluggable.
  */
-public interface PropertyValueModel
+public interface PropertyValueModel<T>
 	extends Model
 {
 
 	/**
 	 * Return the property's value.
 	 */
-	Object value();
+	T value();
 		String VALUE = "value";
 
 }

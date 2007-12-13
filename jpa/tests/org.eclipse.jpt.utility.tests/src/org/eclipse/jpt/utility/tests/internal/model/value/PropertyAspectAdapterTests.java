@@ -22,8 +22,8 @@ import junit.framework.TestCase;
 
 public class PropertyAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
-	private WritablePropertyValueModel subjectHolder1;
-	private PropertyAspectAdapter aa1;
+	private WritablePropertyValueModel<TestSubject> subjectHolder1;
+	private PropertyAspectAdapter<TestSubject, String> aa1;
 	private PropertyChangeEvent event1;
 	private PropertyChangeListener listener1;
 
@@ -42,7 +42,7 @@ public class PropertyAspectAdapterTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.subject1 = new TestSubject("foo", "test subject 1");
-		this.subjectHolder1 = new SimplePropertyValueModel(this.subject1);
+		this.subjectHolder1 = new SimplePropertyValueModel<TestSubject> (this.subject1);
 		this.aa1 = this.buildAspectAdapter(this.subjectHolder1);
 		this.listener1 = this.buildValueChangeListener1();
 		this.aa1.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener1);
@@ -51,25 +51,25 @@ public class PropertyAspectAdapterTests extends TestCase {
 		this.subject2 = new TestSubject("bar", "test subject 2");
 	}
 
-	private PropertyAspectAdapter buildAspectAdapter(PropertyValueModel subjectHolder) {
-		return new PropertyAspectAdapter(subjectHolder, TestSubject.NAME_PROPERTY) {
+	private PropertyAspectAdapter<TestSubject, String> buildAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
+		return new PropertyAspectAdapter<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY) {
 			// this is not a aspect adapter - the value is determined by the aspect name
 			@Override
-			protected Object buildValue_() {
+			protected String buildValue_() {
 				if (this.propertyNames[0] == TestSubject.NAME_PROPERTY) {
-					return ((TestSubject) this.subject).getName();
+					return this.subject.getName();
 				} else if (this.propertyNames[0] == TestSubject.DESCRIPTION_PROPERTY) {
-					return ((TestSubject) this.subject).getDescription();
+					return this.subject.getDescription();
 				} else {
 					throw new IllegalStateException("invalid aspect name: " + this.propertyNames[0]);
 				}
 			}
 			@Override
-			protected void setValue_(Object value) {
+			protected void setValue_(String value) {
 				if (this.propertyNames[0] == TestSubject.NAME_PROPERTY) {
-					((TestSubject) this.subject).setName((String) value);
+					this.subject.setName(value);
 				} else if (this.propertyNames[0] == TestSubject.DESCRIPTION_PROPERTY) {
-					((TestSubject) this.subject).setDescription((String) value);
+					this.subject.setDescription(value);
 				} else {
 					throw new IllegalStateException("invalid aspect name: " + this.propertyNames[0]);
 				}
@@ -204,8 +204,8 @@ public class PropertyAspectAdapterTests extends TestCase {
 
 	public void testMultipleAspectAdapter() {
 		TestSubject testSubject = new TestSubject("fred", "husband");
-		WritablePropertyValueModel testSubjectHolder = new SimplePropertyValueModel(testSubject);
-		WritablePropertyValueModel testAA = this.buildMultipleAspectAdapter(testSubjectHolder);
+		WritablePropertyValueModel<TestSubject> testSubjectHolder = new SimplePropertyValueModel<TestSubject>(testSubject);
+		WritablePropertyValueModel<String> testAA = this.buildMultipleAspectAdapter(testSubjectHolder);
 		PropertyChangeListener testListener = this.buildMultipleValueChangeListener();
 		testAA.addPropertyChangeListener(PropertyValueModel.VALUE, testListener);
 		assertEquals("fred:husband", testAA.value());
@@ -223,12 +223,11 @@ public class PropertyAspectAdapterTests extends TestCase {
 		assertEquals("wilma:wife", this.multipleValueEvent.newValue());
 	}
 
-	private WritablePropertyValueModel buildMultipleAspectAdapter(PropertyValueModel subjectHolder) {
-		return new PropertyAspectAdapter(subjectHolder, TestSubject.NAME_PROPERTY, TestSubject.DESCRIPTION_PROPERTY) {
+	private WritablePropertyValueModel<String> buildMultipleAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
+		return new PropertyAspectAdapter<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY, TestSubject.DESCRIPTION_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				TestSubject ts = (TestSubject) this.subject;
-				return ts.getName() + ":" + ts.getDescription();
+			protected String buildValue_() {
+				return this.subject.getName() + ":" + this.subject.getDescription();
 			}
 		};
 	}
@@ -253,8 +252,8 @@ public class PropertyAspectAdapterTests extends TestCase {
 	 */
 	public void testCustomBuildValueWithNullSubject() {
 		TestSubject customSubject = new TestSubject("fred", "laborer");
-		WritablePropertyValueModel customSubjectHolder = new SimplePropertyValueModel(customSubject);
-		WritablePropertyValueModel customAA = this.buildCustomAspectAdapter(customSubjectHolder);
+		WritablePropertyValueModel<TestSubject> customSubjectHolder = new SimplePropertyValueModel<TestSubject>(customSubject);
+		WritablePropertyValueModel<String> customAA = this.buildCustomAspectAdapter(customSubjectHolder);
 		PropertyChangeListener customListener = this.buildCustomValueChangeListener();
 		customAA.addPropertyChangeListener(PropertyValueModel.VALUE, customListener);
 		assertEquals("fred", customAA.value());
@@ -273,12 +272,11 @@ public class PropertyAspectAdapterTests extends TestCase {
 		assertEquals("<unnamed>", this.customValueEvent.newValue());
 	}
 
-	private WritablePropertyValueModel buildCustomAspectAdapter(PropertyValueModel subjectHolder) {
-		return new PropertyAspectAdapter(subjectHolder, TestSubject.NAME_PROPERTY) {
+	private WritablePropertyValueModel<String> buildCustomAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
+		return new PropertyAspectAdapter<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY) {
 			@Override
-			protected Object buildValue() {
-				TestSubject ts = (TestSubject) this.subject;
-				return (ts == null) ? "<unnamed>" : ts.getName();
+			protected String buildValue() {
+				return (this.subject == null) ? "<unnamed>" : this.subject.getName();
 			}
 		};
 	}

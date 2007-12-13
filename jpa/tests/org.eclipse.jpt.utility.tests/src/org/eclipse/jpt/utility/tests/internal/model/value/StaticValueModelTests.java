@@ -16,8 +16,8 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class StaticValueModelTests extends TestCase {
-	private PropertyValueModel objectHolder;
-	private static final PropertyValueModel OBJECT_HOLDER = new ReadOnlyPropertyValueModel("foo");
+	private PropertyValueModel<String> objectHolder;
+	private static final PropertyValueModel<String> OBJECT_HOLDER = new ReadOnlyPropertyValueModel<String>("foo");
 
 	
 	public StaticValueModelTests(String name) {

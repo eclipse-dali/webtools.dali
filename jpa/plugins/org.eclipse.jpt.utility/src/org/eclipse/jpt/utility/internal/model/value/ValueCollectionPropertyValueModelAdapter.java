@@ -19,8 +19,8 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
  * Extend ValueAspectPropertyValueModelAdapter to listen to one or more collection
  * aspects of the value in the wrapped value model.
  */
-public class ValueCollectionPropertyValueModelAdapter
-	extends ValueAspectPropertyValueModelAdapter
+public class ValueCollectionPropertyValueModelAdapter<T extends Model>
+	extends ValueAspectPropertyValueModelAdapter<T>
 {
 
 	/** The names of the value's collections that we listen to. */
@@ -33,30 +33,9 @@ public class ValueCollectionPropertyValueModelAdapter
 	// ********** constructors **********
 
 	/**
-	 * Construct an adapter for the specified value collection.
-	 */
-	public ValueCollectionPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String collectionName) {
-		this(valueHolder, new String[] {collectionName});
-	}
-
-	/**
 	 * Construct an adapter for the specified value collections.
 	 */
-	public ValueCollectionPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String collectionName1, String collectionName2) {
-		this(valueHolder, new String[] {collectionName1, collectionName2});
-	}
-
-	/**
-	 * Construct an adapter for the specified value collections.
-	 */
-	public ValueCollectionPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String collectionName1, String collectionName2, String collectionName3) {
-		this(valueHolder, new String[] {collectionName1, collectionName2, collectionName3});
-	}
-
-	/**
-	 * Construct an adapter for the specified value collections.
-	 */
-	public ValueCollectionPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String[] collectionNames) {
+	public ValueCollectionPropertyValueModelAdapter(WritablePropertyValueModel<T> valueHolder, String... collectionNames) {
 		super(valueHolder);
 		this.collectionNames = collectionNames;
 		this.valueCollectionListener = this.buildValueCollectionListener();
@@ -91,18 +70,16 @@ public class ValueCollectionPropertyValueModelAdapter
 	}
 
 	@Override
-	protected void startListeningToValue() {
-		Model v = (Model) this.value;
-		for (int i = this.collectionNames.length; i-- > 0; ) {
-			v.addCollectionChangeListener(this.collectionNames[i], this.valueCollectionListener);
+	protected void engageValue_() {
+		for (String collectionName : this.collectionNames) {
+			this.value.addCollectionChangeListener(collectionName, this.valueCollectionListener);
 		}
 	}
 
 	@Override
-	protected void stopListeningToValue() {
-		Model v = (Model) this.value;
-		for (int i = this.collectionNames.length; i-- > 0; ) {
-			v.removeCollectionChangeListener(this.collectionNames[i], this.valueCollectionListener);
+	protected void disengageValue_() {
+		for (String collectionName : this.collectionNames) {
+			this.value.removeCollectionChangeListener(collectionName, this.valueCollectionListener);
 		}
 	}
 

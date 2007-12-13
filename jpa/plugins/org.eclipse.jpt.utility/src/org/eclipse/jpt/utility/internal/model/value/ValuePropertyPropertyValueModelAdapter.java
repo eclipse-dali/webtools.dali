@@ -19,8 +19,8 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  * Extend ValueAspectPropertyValueModelAdapter to listen to one or more
  * properties of the value in the wrapped value model.
  */
-public class ValuePropertyPropertyValueModelAdapter
-	extends ValueAspectPropertyValueModelAdapter
+public class ValuePropertyPropertyValueModelAdapter<T extends Model>
+	extends ValueAspectPropertyValueModelAdapter<T>
 {
 	/** The names of the value's properties that we listen to. */
 	protected final String[] propertyNames;
@@ -32,30 +32,9 @@ public class ValuePropertyPropertyValueModelAdapter
 	// ********** constructors **********
 
 	/**
-	 * Construct an adapter for the specified value property.
-	 */
-	public ValuePropertyPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String propertyName) {
-		this(valueHolder, new String[] {propertyName});
-	}
-
-	/**
 	 * Construct an adapter for the specified value properties.
 	 */
-	public ValuePropertyPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String propertyName1, String propertyName2) {
-		this(valueHolder, new String[] {propertyName1, propertyName2});
-	}
-
-	/**
-	 * Construct an adapter for the specified value properties.
-	 */
-	public ValuePropertyPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String propertyName1, String propertyName2, String propertyName3) {
-		this(valueHolder, new String[] {propertyName1, propertyName2, propertyName3});
-	}
-
-	/**
-	 * Construct an adapter for the specified value properties.
-	 */
-	public ValuePropertyPropertyValueModelAdapter(WritablePropertyValueModel valueHolder, String[] propertyNames) {
+	public ValuePropertyPropertyValueModelAdapter(WritablePropertyValueModel<T> valueHolder, String... propertyNames) {
 		super(valueHolder);
 		this.propertyNames = propertyNames;
 		this.valuePropertyListener = this.buildValuePropertyListener();
@@ -80,22 +59,17 @@ public class ValuePropertyPropertyValueModelAdapter
 	// ********** behavior **********
 
 	@Override
-	protected void startListeningToValue() {
-		Model v = (Model) this.value;
-		for (int i = this.propertyNames.length; i-- > 0; ) {
-			v.addPropertyChangeListener(this.propertyNames[i], this.valuePropertyListener);
+	protected void engageValue_() {
+		for (String propertyName : this.propertyNames) {
+			this.value.addPropertyChangeListener(propertyName, this.valuePropertyListener);
 		}
 	}
 
 	@Override
-	protected void stopListeningToValue() {
-		Model v = (Model) this.value;
-		for (int i = this.propertyNames.length; i-- > 0; ) {
-			v.removePropertyChangeListener(this.propertyNames[i], this.valuePropertyListener);
+	protected void disengageValue_() {
+		for (String propertyName : this.propertyNames) {
+			this.value.removePropertyChangeListener(propertyName, this.valuePropertyListener);
 		}
 	}
-
-
-	// ********** item change support **********
 
 }

@@ -17,12 +17,12 @@ import org.eclipse.jpt.utility.internal.model.NullModel;
  * returning a static value, but still allows listeners to be added.
  * Listeners will NEVER be notified of any changes, because there should be none.
  */
-public class ReadOnlyPropertyValueModel
+public class ReadOnlyPropertyValueModel<T>
 	extends NullModel
-	implements PropertyValueModel
+	implements PropertyValueModel<T>
 {
 	/** The value. */
-	protected final Object value;
+	protected final T value;
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class ReadOnlyPropertyValueModel
 	/**
 	 * Construct a read-only PropertyValueModel for the specified value.
 	 */
-	public ReadOnlyPropertyValueModel(Object value) {
+	public ReadOnlyPropertyValueModel(T value) {
 		super();
 		this.value = value;
 	}
@@ -38,7 +38,7 @@ public class ReadOnlyPropertyValueModel
 
 	// ********** ValueModel implementation **********
 
-	public Object value() {
+	public T value() {
 		return this.value;
 	}
 

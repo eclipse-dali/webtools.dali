@@ -17,8 +17,8 @@ import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
  * Extend ValueAspectPropertyValueModelAdapter to listen to the
  * "state" of the value in the wrapped value model.
  */
-public class ValueStatePropertyValueModelAdapter
-	extends ValueAspectPropertyValueModelAdapter
+public class ValueStatePropertyValueModelAdapter<T extends Model>
+	extends ValueAspectPropertyValueModelAdapter<T>
 {
 	/** Listener that listens to value. */
 	protected final StateChangeListener valueStateListener;
@@ -29,7 +29,7 @@ public class ValueStatePropertyValueModelAdapter
 	/**
 	 * Construct an adapter for the value state.
 	 */
-	public ValueStatePropertyValueModelAdapter(WritablePropertyValueModel valueHolder) {
+	public ValueStatePropertyValueModelAdapter(WritablePropertyValueModel<T> valueHolder) {
 		super(valueHolder);
 		this.valueStateListener = this.buildValueStateListener();
 	}
@@ -53,13 +53,13 @@ public class ValueStatePropertyValueModelAdapter
 	// ********** behavior **********
 
 	@Override
-	protected void startListeningToValue() {
-		((Model) this.value).addStateChangeListener(this.valueStateListener);
+	protected void engageValue_() {
+		this.value.addStateChangeListener(this.valueStateListener);
 	}
 
 	@Override
-	protected void stopListeningToValue() {
-		((Model) this.value).removeStateChangeListener(this.valueStateListener);
+	protected void disengageValue_() {
+		this.value.removeStateChangeListener(this.valueStateListener);
 	}
 
 }

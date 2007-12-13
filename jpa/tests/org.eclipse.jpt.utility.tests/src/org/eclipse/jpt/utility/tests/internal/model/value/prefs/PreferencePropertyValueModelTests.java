@@ -16,6 +16,7 @@ import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -24,8 +25,8 @@ import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.prefs.PreferencePropertyValueModel;
 
 public class PreferencePropertyValueModelTests extends PreferencesTestCase {
-	private WritablePropertyValueModel nodeHolder;
-	PreferencePropertyValueModel preferenceAdapter;
+	private WritablePropertyValueModel<Preferences> nodeHolder;
+	PreferencePropertyValueModel<String> preferenceAdapter;
 	PropertyChangeEvent event;
 	PropertyChangeListener listener;
 	boolean listenerRemoved = false;
@@ -42,8 +43,8 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		super.setUp();
 		this.testNode.put(KEY_NAME, STRING_VALUE);
 
-		this.nodeHolder = new SimplePropertyValueModel(this.testNode);
-		this.preferenceAdapter = new PreferencePropertyValueModel(this.nodeHolder, KEY_NAME);
+		this.nodeHolder = new SimplePropertyValueModel<Preferences>(this.testNode);
+		this.preferenceAdapter = new PreferencePropertyValueModel<String>(this.nodeHolder, KEY_NAME);
 		this.listener = this.buildValueChangeListener();
 		this.preferenceAdapter.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener);
 		this.event = null;
@@ -163,7 +164,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		// rebuild the adapter with a default value
 		String DEFAULT_VALUE = "default value";
 		this.preferenceAdapter.removePropertyChangeListener(PropertyValueModel.VALUE, this.listener);
-		this.preferenceAdapter = new PreferencePropertyValueModel(this.nodeHolder, KEY_NAME, DEFAULT_VALUE);
+		this.preferenceAdapter = new PreferencePropertyValueModel<String>(this.nodeHolder, KEY_NAME, DEFAULT_VALUE);
 		this.preferenceAdapter.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener);
 
 		assertEquals(STRING_VALUE, this.testNode.get(KEY_NAME, null));
@@ -218,28 +219,30 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 	public void testIntegerPreference() throws Exception {
 		// stop listening to the node and convert it to an integer
 		this.preferenceAdapter.removePropertyChangeListener(PropertyValueModel.VALUE, this.listener);
+
+		PreferencePropertyValueModel<Integer> integerPreferenceAdapter = new PreferencePropertyValueModel<Integer>(this.nodeHolder, KEY_NAME);
 		this.testNode.putInt(KEY_NAME, 123);
-		this.preferenceAdapter = PreferencePropertyValueModel.forInteger(this.testNode, KEY_NAME, 0);
-		this.preferenceAdapter.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener);
-		assertEquals(new Integer(123), this.preferenceAdapter.value());
+		integerPreferenceAdapter = PreferencePropertyValueModel.forInteger(this.testNode, KEY_NAME, 0);
+		integerPreferenceAdapter.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener);
+		assertEquals(new Integer(123), integerPreferenceAdapter.value());
 		assertNull(this.event);
 
 		this.testNode.putInt(KEY_NAME, 246);
 		this.waitForEventQueueToClear();
-		this.verifyEvent(new Integer(123), new Integer(246));
-		assertEquals(new Integer(246), this.preferenceAdapter.value());
+		this.verifyEvent(integerPreferenceAdapter, new Integer(123), new Integer(246));
+		assertEquals(new Integer(246), integerPreferenceAdapter.value());
 		
 		this.event = null;
 		this.testNode.remove(KEY_NAME);
 		this.waitForEventQueueToClear();
-		this.verifyEvent(new Integer(246), new Integer(0));
-		assertEquals(new Integer(0), this.preferenceAdapter.value());
+		this.verifyEvent(integerPreferenceAdapter, new Integer(246), new Integer(0));
+		assertEquals(new Integer(0), integerPreferenceAdapter.value());
 		
 		this.event = null;
 		this.testNode.putInt(KEY_NAME, 123);
 		this.waitForEventQueueToClear();
-		this.verifyEvent(new Integer(0), new Integer(123));
-		assertEquals(new Integer(123), this.preferenceAdapter.value());
+		this.verifyEvent(integerPreferenceAdapter, new Integer(0), new Integer(123));
+		assertEquals(new Integer(123), integerPreferenceAdapter.value());
 	}
 
 	/**
@@ -303,7 +306,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		assertNull(this.preferenceEvent);
 
 		this.preferenceAdapter.removePropertyChangeListener(PropertyValueModel.VALUE, this.listener);
-		this.preferenceAdapter = new AlwaysUpdatePreferencePropertyValueModel(this.nodeHolder, KEY_NAME);
+		this.preferenceAdapter = new AlwaysUpdatePreferencePropertyValueModel<String>(this.nodeHolder, KEY_NAME);
 		this.preferenceAdapter.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener);
 
 		this.testNode.addPreferenceChangeListener(this.buildPreferenceChangeListener());
@@ -334,12 +337,16 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		};
 	}
 
-	private void verifyEvent(Object oldValue, Object newValue) {
+	private void verifyEvent(Model source, Object oldValue, Object newValue) {
 		assertNotNull(this.event);
-		assertEquals(this.preferenceAdapter, this.event.getSource());
+		assertEquals(source, this.event.getSource());
 		assertEquals(PropertyValueModel.VALUE, this.event.propertyName());
 		assertEquals(oldValue, this.event.oldValue());
 		assertEquals(newValue, this.event.newValue());
+	}
+
+	private void verifyEvent(Object oldValue, Object newValue) {
+		this.verifyEvent(this.preferenceAdapter, oldValue, newValue);
 	}
 
 	private void verifyPreferenceEvent(Object newValue) {
@@ -360,9 +367,9 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 	 * Use this adapter to test out always passing through the new value
 	 * to the preference.
 	 */
-	private class AlwaysUpdatePreferencePropertyValueModel extends PreferencePropertyValueModel {
+	private class AlwaysUpdatePreferencePropertyValueModel<P> extends PreferencePropertyValueModel<P> {
 
-		AlwaysUpdatePreferencePropertyValueModel(PropertyValueModel preferencesHolder, String key) {
+		AlwaysUpdatePreferencePropertyValueModel(PropertyValueModel<Preferences> preferencesHolder, String key) {
 			super(preferencesHolder, key);
 		}
 

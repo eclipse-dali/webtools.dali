@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class RadioButtonModelAdapterTests extends TestCase {
-	private WritablePropertyValueModel valueHolder;
+	private WritablePropertyValueModel<String> valueHolder;
 
 	private ButtonModel redButtonModelAdapter;
 	private ChangeListener redListener;
@@ -52,7 +52,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.valueHolder = new SimplePropertyValueModel(null);
+		this.valueHolder = new SimplePropertyValueModel<String>(null);
 //		buttonGroup = new ButtonGroup();
 
 		this.redButtonModelAdapter = this.buildButtonModel(this.valueHolder, RED);
@@ -85,7 +85,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 		this.clearFlags();
 	}
 
-	private ButtonModel buildButtonModel(WritablePropertyValueModel pvm, Object buttonValue) {
+	private ButtonModel buildButtonModel(WritablePropertyValueModel<String> pvm, Object buttonValue) {
 		return new RadioButtonModelAdapter(pvm, buttonValue) {
 			@Override
 			protected PropertyChangeListener buildBooleanChangeListener() {
@@ -188,7 +188,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		SimplePropertyValueModel localValueHolder = (SimplePropertyValueModel) this.valueHolder;
+		SimplePropertyValueModel<String> localValueHolder = (SimplePropertyValueModel<String>) this.valueHolder;
 		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.redButtonModelAdapter);
 		this.verifyHasNoListeners(this.greenButtonModelAdapter);

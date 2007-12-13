@@ -22,10 +22,10 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class TransformationPropertyValueModelTests extends TestCase {
-	private WritablePropertyValueModel objectHolder;
+	private WritablePropertyValueModel<String> objectHolder;
 	PropertyChangeEvent event;
 
-	private WritablePropertyValueModel transformationObjectHolder;
+	private WritablePropertyValueModel<String> transformationObjectHolder;
 	PropertyChangeEvent transformationEvent;
 
 	public TransformationPropertyValueModelTests(String name) {
@@ -35,17 +35,17 @@ public class TransformationPropertyValueModelTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.objectHolder = new SimplePropertyValueModel("foo");
-		this.transformationObjectHolder = new TransformationPropertyValueModel(this.objectHolder, this.buildTransformer());
+		this.objectHolder = new SimplePropertyValueModel<String>("foo");
+		this.transformationObjectHolder = new TransformationPropertyValueModel<String, String>(this.objectHolder, this.buildTransformer());
 	}
 
-	private BidiTransformer buildTransformer() {
-		return new BidiTransformer() {
-			public Object transform(Object o) {
-				return (o == null) ? null : ((String) o).toUpperCase();
+	private BidiTransformer<String, String> buildTransformer() {
+		return new BidiTransformer<String, String>() {
+			public String transform(String s) {
+				return (s == null) ? null : s.toUpperCase();
 			}
-			public Object reverseTransform(Object o) {
-				return (o == null) ? null : ((String) o).toLowerCase();
+			public String reverseTransform(String s) {
+				return (s == null) ? null : s.toLowerCase();
 			}
 		};
 	}

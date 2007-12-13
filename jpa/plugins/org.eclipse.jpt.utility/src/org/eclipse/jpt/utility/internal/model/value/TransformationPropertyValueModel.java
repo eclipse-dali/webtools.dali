@@ -25,10 +25,11 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
  * override the <code>transform(Object)</code> and 
  * <code>reverseTransform(Object)</code> methods.
  */
-public class TransformationPropertyValueModel
-	extends WritablePropertyValueModelWrapper
+public class TransformationPropertyValueModel<T1, T2>
+	extends WritablePropertyValueModelWrapper<T1>
+	implements WritablePropertyValueModel<T2>
 {
-	private final BidiTransformer transformer;
+	private final BidiTransformer<T1, T2> transformer;
 
 
 	// ********** constructors **********
@@ -40,15 +41,15 @@ public class TransformationPropertyValueModel
 	 * <code>transform(Object)</code> and <code>reverseTransform(Object)</code>
 	 * methods instead of building a <code>BidiTransformer</code>.
 	 */
-	public TransformationPropertyValueModel(WritablePropertyValueModel valueHolder) {
-		this(valueHolder, BidiTransformer.Disabled.instance());
+	public TransformationPropertyValueModel(WritablePropertyValueModel<T1> valueHolder) {
+		this(valueHolder, BidiTransformer.Disabled.<T1, T2>instance());
 	}
 
 	/**
 	 * Construct an property value model with the specified nested
 	 * property value model and transformer.
 	 */
-	public TransformationPropertyValueModel(WritablePropertyValueModel valueHolder, BidiTransformer transformer) {
+	public TransformationPropertyValueModel(WritablePropertyValueModel<T1> valueHolder, BidiTransformer<T1, T2> transformer) {
 		super(valueHolder);
 		this.transformer = transformer;
 	}
@@ -56,7 +57,7 @@ public class TransformationPropertyValueModel
 
 	// ********** PropertyValueModel implementation **********
 
-	public Object value() {
+	public T2 value() {
 		// transform the object returned by the nested value model before returning it
 		return this.transform(this.valueHolder.value());
 	}
@@ -64,7 +65,7 @@ public class TransformationPropertyValueModel
 
 	// ********** WritablePropertyValueModel implementation **********
 
-	public void setValue(Object value) {
+	public void setValue(T2 value) {
 		// "reverse-transform" the object before passing it to the the nested value model
 		this.valueHolder.setValue(this.reverseTransform(value));
 	}
@@ -72,11 +73,13 @@ public class TransformationPropertyValueModel
 
 	// ********** PropertyValueModelWrapper implementation **********
 
-    @Override
+	@Override
 	protected void valueChanged(PropertyChangeEvent e) {
 		// transform the values before propagating the change event
-		Object oldValue = this.transform(e.oldValue());
-		Object newValue = this.transform(e.newValue());
+	    @SuppressWarnings("unchecked")
+		Object oldValue = this.transform((T1) e.oldValue());
+	    @SuppressWarnings("unchecked")
+		Object newValue = this.transform((T1) e.newValue());
 		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 
@@ -87,7 +90,7 @@ public class TransformationPropertyValueModel
 	 * Transform the specified object and return the result.
 	 * This is called by #value().
 	 */
-	protected Object transform(Object value) {
+	protected T2 transform(T1 value) {
 		return this.transformer.transform(value);
 	}
 
@@ -95,7 +98,7 @@ public class TransformationPropertyValueModel
 	 * "Reverse-transform" the specified object and return the result.
 	 * This is called by #setValue(Object).
 	 */
-	protected Object reverseTransform(Object value) {
+	protected T1 reverseTransform(T2 value) {
 		return this.transformer.reverseTransform(value);
 	}
 

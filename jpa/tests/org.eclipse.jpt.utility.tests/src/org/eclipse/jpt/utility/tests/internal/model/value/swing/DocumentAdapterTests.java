@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class DocumentAdapterTests extends TestCase {
-	private WritablePropertyValueModel stringHolder;
+	private WritablePropertyValueModel<String> stringHolder;
 	Document documentAdapter;
 	boolean eventFired;
 
@@ -36,7 +36,7 @@ public class DocumentAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.stringHolder = new SimplePropertyValueModel("0123456789");
+		this.stringHolder = new SimplePropertyValueModel<String>("0123456789");
 		this.documentAdapter = new DocumentAdapter(this.stringHolder) {
 			@Override
 			protected PropertyChangeListener buildStringListener() {
@@ -115,7 +115,7 @@ public class DocumentAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		SimplePropertyValueModel localStringHolder = (SimplePropertyValueModel) this.stringHolder;
+		SimplePropertyValueModel<String> localStringHolder = (SimplePropertyValueModel<String>) this.stringHolder;
 		assertFalse(localStringHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.documentAdapter);
 

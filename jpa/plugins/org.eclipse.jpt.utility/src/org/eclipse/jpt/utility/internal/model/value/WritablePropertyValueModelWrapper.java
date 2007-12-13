@@ -20,13 +20,12 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  * another property value model, "lazily" listen to it, and propagate
  * its change notifications.
  */
-public abstract class WritablePropertyValueModelWrapper
+public abstract class WritablePropertyValueModelWrapper<T>
 	extends AbstractModel
-	implements WritablePropertyValueModel
 {
 
 	/** The wrapped property value model. */
-	protected final WritablePropertyValueModel valueHolder;
+	protected final WritablePropertyValueModel<T> valueHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped value holder. */
 	protected final PropertyChangeListener valueChangeListener;
@@ -38,7 +37,7 @@ public abstract class WritablePropertyValueModelWrapper
 	 * Construct a property value model with the specified wrapped
 	 * property value model. The value holder is required.
 	 */
-	protected WritablePropertyValueModelWrapper(WritablePropertyValueModel valueHolder) {
+	protected WritablePropertyValueModelWrapper(WritablePropertyValueModel<T> valueHolder) {
 		super();
 		if (valueHolder == null) {
 			throw new NullPointerException();
@@ -52,7 +51,7 @@ public abstract class WritablePropertyValueModelWrapper
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, PropertyChangeListener.class, VALUE);
+		return new SingleAspectChangeSupport(this, PropertyChangeListener.class, PropertyValueModel.VALUE);
 	}
 
 	protected PropertyChangeListener buildValueChangeListener() {
@@ -75,7 +74,7 @@ public abstract class WritablePropertyValueModelWrapper
 	 */
     @Override
 	public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
-		if (this.hasNoPropertyChangeListeners(VALUE)) {
+		if (this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
 			this.engageValueHolder();
 		}
 		super.addPropertyChangeListener(listener);
@@ -86,7 +85,7 @@ public abstract class WritablePropertyValueModelWrapper
 	 */
     @Override
 	public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		if (propertyName == VALUE && this.hasNoPropertyChangeListeners(VALUE)) {
+		if (propertyName == PropertyValueModel.VALUE && this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
 			this.engageValueHolder();
 		}
 		super.addPropertyChangeListener(propertyName, listener);
@@ -98,7 +97,7 @@ public abstract class WritablePropertyValueModelWrapper
     @Override
 	public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
 		super.removePropertyChangeListener(listener);
-		if (this.hasNoPropertyChangeListeners(VALUE)) {
+		if (this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
 			this.disengageValueHolder();
 		}
 	}
@@ -109,7 +108,7 @@ public abstract class WritablePropertyValueModelWrapper
     @Override
 	public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		super.removePropertyChangeListener(propertyName, listener);
-		if (propertyName == VALUE && this.hasNoPropertyChangeListeners(VALUE)) {
+		if (propertyName == PropertyValueModel.VALUE && this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
 			this.disengageValueHolder();
 		}
 	}
@@ -121,14 +120,14 @@ public abstract class WritablePropertyValueModelWrapper
 	 * Begin listening to the value holder.
 	 */
 	protected void engageValueHolder() {
-		this.valueHolder.addPropertyChangeListener(VALUE, this.valueChangeListener);
+		this.valueHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.valueChangeListener);
 	}
 	
 	/**
 	 * Stop listening to the value holder.
 	 */
 	protected void disengageValueHolder() {
-		this.valueHolder.removePropertyChangeListener(VALUE, this.valueChangeListener);
+		this.valueHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.valueChangeListener);
 	}
 	
 	@Override

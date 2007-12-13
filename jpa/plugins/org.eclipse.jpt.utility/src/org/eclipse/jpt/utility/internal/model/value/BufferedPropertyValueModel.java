@@ -37,15 +37,16 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  * 
  * @see PropertyAspectAdapter
  */
-public class BufferedPropertyValueModel
-	extends WritablePropertyValueModelWrapper
+public class BufferedPropertyValueModel<T>
+	extends WritablePropertyValueModelWrapper<T>
+	implements WritablePropertyValueModel<T>
 {
 
 	/**
 	 * We cache the value here until it is accepted and passed
 	 * through to the wrapped value holder.
 	 */
-	protected Object bufferedValue;
+	protected T bufferedValue;
 
 	/**
 	 * This is set to true when we are "accepting" the buffered value
@@ -62,16 +63,16 @@ public class BufferedPropertyValueModel
 	 * This is the trigger that indicates whether the buffered value
 	 * should be accepted or reset.
 	 */
-	protected final PropertyValueModel triggerHolder;
+	protected final PropertyValueModel<Boolean> triggerHolder;
 
 	/** This listens to the trigger holder. */
 	protected final PropertyChangeListener triggerChangeListener;
 
 	/**
-	 * Our buffered value points at this until it has been assigned
+	 * This flag indicates whether our buffered value has been assigned
 	 * a value and is possibly out of synch with the wrapped value.
 	 */
-	protected static final Object UNASSIGNED = new Object();
+	protected boolean buffering;
 
 
 	// ********** constructors **********
@@ -80,13 +81,14 @@ public class BufferedPropertyValueModel
 	 * Construct a buffered property value model with the specified wrapped
 	 * property value model and trigger holder.
 	 */
-	public BufferedPropertyValueModel(WritablePropertyValueModel valueHolder, PropertyValueModel triggerHolder) {
+	public BufferedPropertyValueModel(WritablePropertyValueModel<T> valueHolder, PropertyValueModel<Boolean> triggerHolder) {
 		super(valueHolder);
 		if (triggerHolder == null) {
 			throw new NullPointerException();
 		}
 		this.triggerHolder = triggerHolder;
-		this.bufferedValue = UNASSIGNED;
+		this.bufferedValue = null;
+		this.buffering = false;
 		this.accepting = false;
 		this.triggerChangeListener = this.buildTriggerChangeListener();
 	}
@@ -113,8 +115,8 @@ public class BufferedPropertyValueModel
 	 * If we are currently "buffering" a value, return that;
 	 * otherwise, return the wrapped value.
 	 */
-	public Object value() {
-		return (this.bufferedValue == UNASSIGNED) ? this.valueHolder.value() : this.bufferedValue;
+	public T value() {
+		return this.buffering ? this.bufferedValue : this.valueHolder.value();
 	}
 
 	/**
@@ -122,9 +124,10 @@ public class BufferedPropertyValueModel
 	 * It will be forwarded to the wrapped value holder
 	 * when the trigger is "accepted".
 	 */
-	public void setValue(Object value) {
+	public void setValue(T value) {
 		Object old = this.value();
 		this.bufferedValue = value;
+		this.buffering = true;
 		this.firePropertyChanged(VALUE, old, this.bufferedValue);
 	}
 
@@ -164,10 +167,10 @@ public class BufferedPropertyValueModel
 			// since we caused them and our own listeners are already aware of the change
 			return;
 		}
-		if (this.bufferedValue == UNASSIGNED) {
-			this.firePropertyChanged(e.propertyName(), e.oldValue(), e.newValue());
-		} else {
+		if (this.buffering) {
 			this.handleChangeConflict(e);
+		} else {
+			this.firePropertyChanged(e.cloneWithSource(this));
 		}
 	}
 	
@@ -191,7 +194,7 @@ public class BufferedPropertyValueModel
 	 * If it is now false, "reset" the buffered value to its original value.
 	 */
 	protected void triggerChanged(PropertyChangeEvent e) {
-		if (this.bufferedValue == UNASSIGNED) {
+		if ( ! this.buffering) {
 			// if nothing has been "buffered", we don't need to do anything:
 			// nothing needs to be passed through; nothing needs to be reset;
 			return;
@@ -201,13 +204,15 @@ public class BufferedPropertyValueModel
 			// fired by the wrapped value holder
 			this.accepting = true;
 			this.valueHolder.setValue(this.bufferedValue);
-			this.bufferedValue = UNASSIGNED;
+			this.bufferedValue = null;
+			this.buffering = false;
 			// clear the flag once the "accept" is complete
 			this.accepting = false;
 		} else {
 			// notify our listeners that our value has been reset
 			Object old = this.bufferedValue;
-			this.bufferedValue = UNASSIGNED;
+			this.bufferedValue = null;
+			this.buffering = false;
 			this.firePropertyChanged(VALUE, old, this.valueHolder.value());
 		}
 	}
@@ -225,7 +230,7 @@ public class BufferedPropertyValueModel
 	 * a value.
 	 */
 	public boolean isBuffering() {
-		return this.bufferedValue != UNASSIGNED;
+		return this.buffering;
 	}
 
 
@@ -237,7 +242,7 @@ public class BufferedPropertyValueModel
 	 * the #setValue(Object) method. In other words, a Trigger object
 	 * only has a valid value 
 	 */
-	public static class Trigger extends SimplePropertyValueModel {
+	public static class Trigger extends SimplePropertyValueModel<Boolean> {
 
 
 		// ********** constructor **********
@@ -257,7 +262,7 @@ public class BufferedPropertyValueModel
 		 * change notification triggered by #setValue(Object).
 		 */
 		@Override
-		public Object value() {
+		public Boolean value() {
 			if (this.value == null) {
 				throw new IllegalStateException("The method Trigger.value() may only be called during change notification.");
 			}
@@ -269,7 +274,7 @@ public class BufferedPropertyValueModel
 		 * listeners have been notified.
 		 */
 		@Override
-		public void setValue(Object value) {
+		public void setValue(Boolean value) {
 			super.setValue(value);
 			this.value = null;
 		}
@@ -292,7 +297,7 @@ public class BufferedPropertyValueModel
 		 * 	- false indicates "reset"
 		 */
 		public boolean booleanValue() {
-			return ((Boolean) this.value()).booleanValue();
+			return this.value().booleanValue();
 		}
 
 		/**

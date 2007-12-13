@@ -16,7 +16,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class NullPropertyValueModelTests extends TestCase {
-	private PropertyValueModel valueHolder;
+	private PropertyValueModel<Object> valueHolder;
 
 	public NullPropertyValueModelTests(String name) {
 		super(name);

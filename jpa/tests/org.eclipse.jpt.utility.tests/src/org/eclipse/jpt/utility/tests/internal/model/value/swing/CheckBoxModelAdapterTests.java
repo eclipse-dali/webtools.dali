@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class CheckBoxModelAdapterTests extends TestCase {
-	private WritablePropertyValueModel booleanHolder;
+	private WritablePropertyValueModel<Boolean> booleanHolder;
 	private ButtonModel buttonModelAdapter;
 	boolean eventFired;
 
@@ -36,7 +36,7 @@ public class CheckBoxModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.booleanHolder = new SimplePropertyValueModel(Boolean.TRUE);
+		this.booleanHolder = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
 		this.buttonModelAdapter = new CheckBoxModelAdapter(this.booleanHolder) {
 			@Override
 			protected PropertyChangeListener buildBooleanChangeListener() {
@@ -98,7 +98,7 @@ public class CheckBoxModelAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		SimplePropertyValueModel localBooleanHolder = (SimplePropertyValueModel) this.booleanHolder;
+		SimplePropertyValueModel<Boolean> localBooleanHolder = (SimplePropertyValueModel<Boolean>) this.booleanHolder;
 		assertFalse(localBooleanHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.buttonModelAdapter);
 

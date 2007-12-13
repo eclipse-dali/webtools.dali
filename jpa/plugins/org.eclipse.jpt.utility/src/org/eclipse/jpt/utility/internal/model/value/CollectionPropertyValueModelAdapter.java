@@ -28,16 +28,14 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  *     current collection value
  * 
  * Subclasses might want to override:
- * - #setValue(Object)
- *     to manipulate the collection in some appropriate fashion
  * - #itemsAdded(CollectionChangeEvent e)
  * - #itemsRemoved(CollectionChangeEvent e)
  * - #collectionChanged(CollectionChangeEvent e)
  *     to improve performance (by not recalculating the value, if possible)
  */
-public abstract class CollectionPropertyValueModelAdapter
+public abstract class CollectionPropertyValueModelAdapter<T>
 	extends AbstractModel
-	implements PropertyValueModel
+	implements PropertyValueModel<T>
 {
 	/**
 	 * Cache the current value so we can pass an "old value" when
@@ -46,7 +44,7 @@ public abstract class CollectionPropertyValueModelAdapter
 	 * not able to derive the "old value" from the collection
 	 * change event fired by the collection value model.
 	 */
-	protected Object value;
+	protected T value;
 
 	/** The wrapped collection value model. */
 	protected final CollectionValueModel collectionHolder;
@@ -101,7 +99,7 @@ public abstract class CollectionPropertyValueModelAdapter
 	/**
 	 * Return the cached value.
 	 */
-	public Object value() {
+	public T value() {
 		return this.value;
 	}
 
@@ -186,7 +184,7 @@ public abstract class CollectionPropertyValueModelAdapter
 	 * Build and return the current value, as derived from the
 	 * current state of the wrapped collection.
 	 */
-	protected abstract Object buildValue();
+	protected abstract T buildValue();
 
 	/**
 	 * Stop listening to the collection holder.

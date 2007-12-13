@@ -44,8 +44,8 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
  * rely on that event to keep our internally cached value in synch.
  */
 public class PreferencePropertyValueModel<P>
-	extends AspectAdapter
-	implements WritablePropertyValueModel
+	extends AspectAdapter<Preferences>
+	implements WritablePropertyValueModel<P>
 {
 	/** The key to the preference we use for the value. */
 	protected final String key;
@@ -95,7 +95,7 @@ public class PreferencePropertyValueModel<P>
 	 * the specified default value for the preference.
 	 */
 	public PreferencePropertyValueModel(Preferences preferences, String key, P defaultValue, BidiStringConverter<P> converter) {
-		this(new ReadOnlyPropertyValueModel(preferences), key, defaultValue, converter);
+		this(new ReadOnlyPropertyValueModel<Preferences>(preferences), key, defaultValue, converter);
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class PreferencePropertyValueModel<P>
 	 * Construct an adapter for the specified preference.
 	 * The default value of the preference will be null.
 	 */
-	public PreferencePropertyValueModel(PropertyValueModel preferencesHolder, String key) {
+	public PreferencePropertyValueModel(PropertyValueModel<Preferences> preferencesHolder, String key) {
 		this(preferencesHolder, key, null);
 	}
 
@@ -136,7 +136,7 @@ public class PreferencePropertyValueModel<P>
 	 * Construct an adapter for the specified preference with
 	 * the specified default value for the preference.
 	 */
-	public PreferencePropertyValueModel(PropertyValueModel preferencesHolder, String key, P defaultValue) {
+	public PreferencePropertyValueModel(PropertyValueModel<Preferences> preferencesHolder, String key, P defaultValue) {
 		this(preferencesHolder, key, defaultValue, BidiStringConverter.Default.<P>instance());
 	}
 
@@ -144,7 +144,7 @@ public class PreferencePropertyValueModel<P>
 	 * Construct an adapter for the specified preference with
 	 * the specified default value for the preference.
 	 */
-	public PreferencePropertyValueModel(PropertyValueModel preferencesHolder, String key, P defaultValue, BidiStringConverter<P> converter) {
+	public PreferencePropertyValueModel(PropertyValueModel<Preferences> preferencesHolder, String key, P defaultValue, BidiStringConverter<P> converter) {
 		super(preferencesHolder);
 		this.key = key;
 		this.defaultValue = defaultValue;
@@ -180,23 +180,17 @@ public class PreferencePropertyValueModel<P>
 	 * Return the cached (converted) value.
 	 */
 	@Override
-	public synchronized Object value() {
+	public synchronized P value() {
 		return this.value;
 	}
 
 
 	// ********** PropertyValueModel implementation **********
 
-	// TODO combine these methods when PropertyValueModel is parameterized
-	@SuppressWarnings("unchecked")
-	public synchronized void setValue(Object value) {
-		this.setValue2((P) value);
-	}
-	
 	/**
 	 * Set the cached value, then set the appropriate preference value.
 	 */
-	protected void setValue2(P value) {
+	public synchronized void setValue(P value) {
 		if (this.hasNoListeners()) {
 			return;		// no changes allowed when we have no listeners
 		}
@@ -235,14 +229,14 @@ public class PreferencePropertyValueModel<P>
 
 	@Override
 	protected void engageNonNullSubject() {
-		((Preferences) this.subject).addPreferenceChangeListener(this.preferenceChangeListener);
+		this.subject.addPreferenceChangeListener(this.preferenceChangeListener);
 		this.value = this.buildValue();
 	}
 
 	@Override
 	protected void disengageNonNullSubject() {
 		try {
-			((Preferences) this.subject).removePreferenceChangeListener(this.preferenceChangeListener);
+			this.subject.removePreferenceChangeListener(this.preferenceChangeListener);
 		} catch (IllegalStateException ex) {
 			// for some odd reason, we are not allowed to remove a listener from a "dead"
 			// preferences node; so handle the exception that gets thrown here
@@ -290,7 +284,7 @@ public class PreferencePropertyValueModel<P>
 	 * At this point we can be sure that the subject is not null.
 	 */
 	protected P buildValue_() {
-		return this.convertToObject(((Preferences) this.subject).get(this.key, this.convertToString(this.defaultValue)));
+		return this.convertToObject(this.subject.get(this.key, this.convertToString(this.defaultValue)));
 	}
 
 	/**
@@ -298,7 +292,7 @@ public class PreferencePropertyValueModel<P>
 	 * At this point we can be sure that the subject is not null.
 	 */
 	protected void setValue_(P value) {
-		((Preferences) this.subject).put(this.key, this.convertToString(value));
+		this.subject.put(this.key, this.convertToString(value));
 	}
 
 	/**

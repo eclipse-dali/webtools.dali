@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class CollectionPropertyValueModelAdapterTests extends TestCase {
-	private WritablePropertyValueModel adapter;
+	private WritablePropertyValueModel<Boolean> adapter;
 	private SimpleCollectionValueModel<String> wrappedCollectionHolder;
 	PropertyChangeEvent event;
 
@@ -48,7 +48,7 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 	}
 
 	private boolean booleanValue() {
-		return ((Boolean) this.adapter.value()).booleanValue();
+		return this.adapter.value().booleanValue();
 	}
 
 	private Collection<String> wrappedCollection() {
@@ -185,8 +185,8 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 	 * otherwise the value is false
 	 */
 	private static class LocalAdapter
-		extends CollectionPropertyValueModelAdapter
-		implements WritablePropertyValueModel
+		extends CollectionPropertyValueModelAdapter<Boolean>
+		implements WritablePropertyValueModel<Boolean>
 	{
 		private String item;
 
@@ -200,12 +200,12 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 		 * always return a Boolean
 		 */
 		@Override
-		public Object value() {
-			Object result = super.value();
+		public Boolean value() {
+			Boolean result = super.value();
 			return (result == null) ? Boolean.FALSE : result;
 		}
 		@SuppressWarnings("unchecked")
-		public void setValue(Object value) {
+		public void setValue(Boolean value) {
 			if (this.booleanValue()) {
 				if ( ! this.booleanValueOf(value)) {
 					// the value is changing from true to false
@@ -219,7 +219,7 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 			}
 		}
 		@Override
-		protected Object buildValue() {
+		protected Boolean buildValue() {
 			return Boolean.valueOf(CollectionTools.contains(this.collectionHolder.iterator(), this.item));
 		}
 

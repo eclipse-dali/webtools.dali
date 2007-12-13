@@ -28,11 +28,12 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
  * stopListeningToValue(Model)
  *     stop listening to the appropriate aspect of the specified value
  */
-public abstract class ValueAspectPropertyValueModelAdapter
-	extends WritablePropertyValueModelWrapper
+public abstract class ValueAspectPropertyValueModelAdapter<T>
+	extends WritablePropertyValueModelWrapper<T>
+	implements WritablePropertyValueModel<T>
 {
 	/** Cache the value so we can disengage. */
-	protected Object value;
+	protected T value;
 
 
 	// ********** constructor **********
@@ -40,7 +41,7 @@ public abstract class ValueAspectPropertyValueModelAdapter
 	/**
 	 * Constructor - the value holder is required.
 	 */
-	protected ValueAspectPropertyValueModelAdapter(WritablePropertyValueModel valueHolder) {
+	protected ValueAspectPropertyValueModelAdapter(WritablePropertyValueModel<T> valueHolder) {
 		super(valueHolder);
 	}
 
@@ -56,14 +57,14 @@ public abstract class ValueAspectPropertyValueModelAdapter
 
 	// ********** PropertyValueModel implementation **********
 
-	public Object value() {
+	public T value() {
 		return this.value;
 	}
 
 
 	// ********** WritablePropertyValueModel implementation **********
 
-	public void setValue(Object value) {
+	public void setValue(T value) {
 		this.valueHolder.setValue(value);
 	}
 
@@ -92,7 +93,7 @@ public abstract class ValueAspectPropertyValueModelAdapter
 	protected void engageValue() {
 		this.value = this.valueHolder.value();
 		if (this.value != null) {
-			this.startListeningToValue();
+			this.engageValue_();
 		}
 	}
 
@@ -100,7 +101,7 @@ public abstract class ValueAspectPropertyValueModelAdapter
 	 * Start listening to the current value.
 	 * At this point we can be sure that the value is not null.
 	 */
-	protected abstract void startListeningToValue();
+	protected abstract void engageValue_();
 
 	/**
 	 * Stop listening to the value holder and the value.
@@ -113,7 +114,7 @@ public abstract class ValueAspectPropertyValueModelAdapter
 
 	protected void disengageValue() {
 		if (this.value != null) {
-			this.stopListeningToValue();
+			this.disengageValue_();
 			this.value = null;
 		}
 	}
@@ -122,7 +123,7 @@ public abstract class ValueAspectPropertyValueModelAdapter
 	 * Stop listening to the current value.
 	 * At this point we can be sure that the value is not null.
 	 */
-	protected abstract void stopListeningToValue();
+	protected abstract void disengageValue_();
 
 	protected void valueAspectChanged() {
 		this.firePropertyChanged(VALUE, this.value);		// hmmm...

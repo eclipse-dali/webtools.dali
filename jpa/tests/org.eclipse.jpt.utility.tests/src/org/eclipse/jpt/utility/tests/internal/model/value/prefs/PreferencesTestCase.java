@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model.value.prefs;
 
+import java.util.EventObject;
 import java.util.List;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.Preferences;
@@ -78,8 +79,9 @@ public abstract class PreferencesTestCase extends TestCase {
 		}
 	}
 
-	private List preferencesEventQueue() {
-		return (List) ClassTools.getStaticFieldValue(AbstractPreferences.class, "eventQueue");
+	@SuppressWarnings("unchecked")
+	private List<EventObject> preferencesEventQueue() {
+		return (List<EventObject>) ClassTools.getStaticFieldValue(AbstractPreferences.class, "eventQueue");
 	}
 
 }

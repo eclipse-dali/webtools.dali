@@ -41,8 +41,8 @@ import org.eclipse.jpt.utility.internal.model.value.swing.RadioButtonModelAdapte
 public class RadioButtonModelAdapterUITest {
 
 	private TestModel testModel;
-	private WritablePropertyValueModel testModelHolder;
-	private WritablePropertyValueModel colorHolder;
+	private WritablePropertyValueModel<TestModel> testModelHolder;
+	private WritablePropertyValueModel<String> colorHolder;
 	private ButtonModel redButtonModel;
 	private ButtonModel greenButtonModel;
 	private ButtonModel blueButtonModel;
@@ -57,7 +57,7 @@ public class RadioButtonModelAdapterUITest {
 
 	private void exec(String[] args) throws Exception {
 		this.testModel = new TestModel();
-		this.testModelHolder = new SimplePropertyValueModel(this.testModel);
+		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
 		this.colorHolder = this.buildColorHolder(this.testModelHolder);
 		this.redButtonModel = this.buildRadioButtonModelAdapter(this.colorHolder, TestModel.RED);
 		this.greenButtonModel = this.buildRadioButtonModelAdapter(this.colorHolder, TestModel.GREEN);
@@ -65,20 +65,20 @@ public class RadioButtonModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private WritablePropertyValueModel buildColorHolder(PropertyValueModel subjectHolder) {
-		return new PropertyAspectAdapter(subjectHolder, TestModel.COLOR_PROPERTY) {
+	private WritablePropertyValueModel<String> buildColorHolder(PropertyValueModel<TestModel> subjectHolder) {
+		return new PropertyAspectAdapter<TestModel, String>(subjectHolder, TestModel.COLOR_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return ((TestModel) this.subject).getColor();
+			protected String buildValue_() {
+				return this.subject.getColor();
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((TestModel) this.subject).setColor((String) value);
+			protected void setValue_(String value) {
+				this.subject.setColor(value);
 			}
 		};
 	}
 
-	private ButtonModel buildRadioButtonModelAdapter(WritablePropertyValueModel colorPVM, String color) {
+	private ButtonModel buildRadioButtonModelAdapter(WritablePropertyValueModel<String> colorPVM, String color) {
 		return new RadioButtonModelAdapter(colorPVM, color);
 	}
 

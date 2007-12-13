@@ -51,7 +51,7 @@ public class ComboBoxModelAdapterTests extends TestCase {
 	public void testHasListeners() throws Exception {
 		SimpleListValueModel<Displayable> listHolder = this.buildListHolder();
 		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		SimplePropertyValueModel selectionHolder = new SimplePropertyValueModel(listHolder.iterator().next());
+		SimplePropertyValueModel<Displayable> selectionHolder = new SimplePropertyValueModel<Displayable>(listHolder.iterator().next());
 		assertFalse(selectionHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		ComboBoxModel comboBoxModel = new ComboBoxModelAdapter(listHolder, selectionHolder);

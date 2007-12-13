@@ -44,15 +44,15 @@ import org.eclipse.jpt.utility.internal.model.value.swing.NumberSpinnerModelAdap
 public class SpinnerModelAdapterUITest {
 
 	private TestModel testModel;
-	private WritablePropertyValueModel testModelHolder;
+	private WritablePropertyValueModel<TestModel> testModelHolder;
 
-	private WritablePropertyValueModel birthDateHolder;
+	private WritablePropertyValueModel<Date> birthDateHolder;
 	private SpinnerModel birthDateSpinnerModel;
 
-	private WritablePropertyValueModel ageHolder;
+	private WritablePropertyValueModel<Number> ageHolder;
 	private SpinnerModel ageSpinnerModel;
 
-	private WritablePropertyValueModel eyeColorHolder;
+	private WritablePropertyValueModel<String> eyeColorHolder;
 	private SpinnerModel eyeColorSpinnerModel;
 
 
@@ -66,7 +66,7 @@ public class SpinnerModelAdapterUITest {
 
 	private void exec(String[] args) throws Exception {
 		this.testModel = new TestModel();
-		this.testModelHolder = new SimplePropertyValueModel(this.testModel);
+		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
 
 		this.birthDateHolder = this.buildBirthDateHolder(this.testModelHolder);
 		this.birthDateSpinnerModel = this.buildBirthDateSpinnerModel(this.birthDateHolder);
@@ -80,54 +80,54 @@ public class SpinnerModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private WritablePropertyValueModel buildBirthDateHolder(PropertyValueModel vm) {
-		return new PropertyAspectAdapter(vm, TestModel.BIRTH_DATE_PROPERTY) {
+	private WritablePropertyValueModel<Date> buildBirthDateHolder(PropertyValueModel<TestModel> vm) {
+		return new PropertyAspectAdapter<TestModel, Date>(vm, TestModel.BIRTH_DATE_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return ((TestModel) this.subject).getBirthDate();
+			protected Date buildValue_() {
+				return this.subject.getBirthDate();
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((TestModel) this.subject).setBirthDate((Date) value);
+			protected void setValue_(Date value) {
+				this.subject.setBirthDate(value);
 			}
 		};
 	}
 
-	private SpinnerModel buildBirthDateSpinnerModel(WritablePropertyValueModel valueHolder) {
+	private SpinnerModel buildBirthDateSpinnerModel(WritablePropertyValueModel<Date> valueHolder) {
 		return new DateSpinnerModelAdapter(valueHolder);
 	}
 
-	private WritablePropertyValueModel buildAgeHolder(PropertyValueModel vm) {
-		return new PropertyAspectAdapter(vm, TestModel.AGE_PROPERTY) {
+	private WritablePropertyValueModel<Number> buildAgeHolder(PropertyValueModel<TestModel> vm) {
+		return new PropertyAspectAdapter<TestModel, Number>(vm, TestModel.AGE_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return new Integer(((TestModel) this.subject).getAge());
+			protected Number buildValue_() {
+				return new Integer(this.subject.getAge());
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((TestModel) this.subject).setAge(((Number) value).intValue());
-			}
-		};
-	}
-
-	private SpinnerModel buildAgeSpinnerModel(WritablePropertyValueModel valueHolder) {
-		return new NumberSpinnerModelAdapter(valueHolder, ((Integer) valueHolder.value()).intValue(), TestModel.MIN_AGE, TestModel.MAX_AGE, 1);
-	}
-
-	private WritablePropertyValueModel buildEyeColorHolder(PropertyValueModel vm) {
-		return new PropertyAspectAdapter(vm, TestModel.EYE_COLOR_PROPERTY) {
-			@Override
-			protected Object buildValue_() {
-				return ((TestModel) this.subject).getEyeColor();
-			}
-			@Override
-			protected void setValue_(Object value) {
-				((TestModel) this.subject).setEyeColor((String) value);
+			protected void setValue_(Number value) {
+				this.subject.setAge(value.intValue());
 			}
 		};
 	}
 
-	private SpinnerModel buildEyeColorSpinnerModel(WritablePropertyValueModel valueHolder) {
+	private SpinnerModel buildAgeSpinnerModel(WritablePropertyValueModel<Number> valueHolder) {
+		return new NumberSpinnerModelAdapter(valueHolder, valueHolder.value().intValue(), TestModel.MIN_AGE, TestModel.MAX_AGE, 1);
+	}
+
+	private WritablePropertyValueModel<String> buildEyeColorHolder(PropertyValueModel<TestModel> vm) {
+		return new PropertyAspectAdapter<TestModel, String>(vm, TestModel.EYE_COLOR_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return this.subject.getEyeColor();
+			}
+			@Override
+			protected void setValue_(String value) {
+				this.subject.setEyeColor(value);
+			}
+		};
+	}
+
+	private SpinnerModel buildEyeColorSpinnerModel(WritablePropertyValueModel<String> valueHolder) {
 		return new ListSpinnerModelAdapter(valueHolder, TestModel.VALID_EYE_COLORS);
 	}
 
@@ -334,6 +334,7 @@ public class SpinnerModelAdapterUITest {
 			this.eyeColor = eyeColor;
 			this.firePropertyChanged(EYE_COLOR_PROPERTY, old, eyeColor);
 		}
+		@Override
 		public String toString() {
 			return "TestModel(birth: " + this.getBirthDate() + " - eyes: " + this.eyeColor + ")";
 		}

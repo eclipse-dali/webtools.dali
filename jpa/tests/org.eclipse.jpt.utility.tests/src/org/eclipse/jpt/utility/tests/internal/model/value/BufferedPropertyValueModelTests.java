@@ -62,41 +62,41 @@ public class BufferedPropertyValueModelTests extends TestCase {
 		this.bufferedHireDateHolder = new BufferedPropertyValueModel(this.hireDateAdapter, this.trigger);
 	}
 
-	private WritablePropertyValueModel buildIDAdapter(PropertyValueModel eHolder) {
-		return new PropertyAspectAdapter(eHolder, Employee.ID_PROPERTY) {
+	private WritablePropertyValueModel<Integer> buildIDAdapter(PropertyValueModel<Employee> eHolder) {
+		return new PropertyAspectAdapter<Employee, Integer>(eHolder, Employee.ID_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return new Integer(((Employee) this.subject).getID());
+			protected Integer buildValue_() {
+				return new Integer(this.subject.getID());
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((Employee) this.subject).setID(((Integer) value).intValue());
-			}
-		};
-	}
-
-	private WritablePropertyValueModel buildNameAdapter(PropertyValueModel eHolder) {
-		return new PropertyAspectAdapter(eHolder, Employee.NAME_PROPERTY) {
-			@Override
-			protected Object buildValue_() {
-				return ((Employee) this.subject).getName();
-			}
-			@Override
-			protected void setValue_(Object value) {
-				((Employee) this.subject).setName((String) value);
+			protected void setValue_(Integer value) {
+				this.subject.setID(value.intValue());
 			}
 		};
 	}
 
-	private WritablePropertyValueModel buildHireDateAdapter(PropertyValueModel eHolder) {
-		return new PropertyAspectAdapter(eHolder, Employee.HIRE_DATE_PROPERTY) {
+	private WritablePropertyValueModel<String> buildNameAdapter(PropertyValueModel<Employee> eHolder) {
+		return new PropertyAspectAdapter<Employee, String>(eHolder, Employee.NAME_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return ((Employee) this.subject).getHireDate();
+			protected String buildValue_() {
+				return this.subject.getName();
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((Employee) this.subject).setHireDate((Date) value);
+			protected void setValue_(String value) {
+				this.subject.setName(value);
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Date> buildHireDateAdapter(PropertyValueModel<Employee> eHolder) {
+		return new PropertyAspectAdapter<Employee, Date>(eHolder, Employee.HIRE_DATE_PROPERTY) {
+			@Override
+			protected Date buildValue_() {
+				return this.subject.getHireDate();
+			}
+			@Override
+			protected void setValue_(Date value) {
+				this.subject.setHireDate(value);
 			}
 		};
 	}

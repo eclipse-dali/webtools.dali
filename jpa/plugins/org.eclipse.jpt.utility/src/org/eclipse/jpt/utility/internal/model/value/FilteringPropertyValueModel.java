@@ -32,11 +32,12 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
  * Likewise, if an incoming value is not "reverseAccepted", *nothing* will passed
  * through to the wrapped value holder, not even <code>null</code>.
  */
-public class FilteringPropertyValueModel
-	extends WritablePropertyValueModelWrapper
+public class FilteringPropertyValueModel<T>
+	extends WritablePropertyValueModelWrapper<T>
+	implements WritablePropertyValueModel<T>
 {
-	private final BidiFilter filter;
-	private final Object defaultValue;
+	private final BidiFilter<T> filter;
+	private final T defaultValue;
 
 
 	// ********** constructors **********
@@ -49,8 +50,8 @@ public class FilteringPropertyValueModel
 	 * methods instead of building a <code>BidiFilter</code>.
 	 * The default value will be <code>null</code>.
 	 */
-	public FilteringPropertyValueModel(WritablePropertyValueModel valueHolder) {
-		this(valueHolder, BidiFilter.Disabled.instance(), null);
+	public FilteringPropertyValueModel(WritablePropertyValueModel<T> valueHolder) {
+		this(valueHolder, BidiFilter.Disabled.<T>instance(), null);
 	}
 
 	/**
@@ -62,8 +63,8 @@ public class FilteringPropertyValueModel
 	 * <em>and</em> you need to specify
 	 * a default value other than <code>null</code>.
 	 */
-	public FilteringPropertyValueModel(WritablePropertyValueModel valueHolder, Object defaultValue) {
-		this(valueHolder, BidiFilter.Disabled.instance(), defaultValue);
+	public FilteringPropertyValueModel(WritablePropertyValueModel<T> valueHolder, T defaultValue) {
+		this(valueHolder, BidiFilter.Disabled.<T>instance(), defaultValue);
 	}
 
 	/**
@@ -71,7 +72,7 @@ public class FilteringPropertyValueModel
 	 * property value model and filter.
 	 * The default value will be <code>null</code>.
 	 */
-	public FilteringPropertyValueModel(WritablePropertyValueModel valueHolder, BidiFilter filter) {
+	public FilteringPropertyValueModel(WritablePropertyValueModel<T> valueHolder, BidiFilter<T> filter) {
 		this(valueHolder, filter, null);
 	}
 
@@ -79,7 +80,7 @@ public class FilteringPropertyValueModel
 	 * Construct an property value model with the specified nested
 	 * property value model, filter, and default value.
 	 */
-	public FilteringPropertyValueModel(WritablePropertyValueModel valueHolder, BidiFilter filter, Object defaultValue) {
+	public FilteringPropertyValueModel(WritablePropertyValueModel<T> valueHolder, BidiFilter<T> filter, T defaultValue) {
 		super(valueHolder);
 		this.filter = filter;
 		this.defaultValue = defaultValue;
@@ -88,14 +89,14 @@ public class FilteringPropertyValueModel
 
 	// ********** PropertyValueModel implementation **********
 
-	public Object value() {
+	public T value() {
 		return this.filterValue(this.valueHolder.value());
 	}
 
 
 	// ********** WritablePropertyValueModel implementation **********
 
-	public void setValue(Object value) {
+	public void setValue(T value) {
 		if (this.reverseAccept(value)) {
 			this.valueHolder.setValue(value);
 		}
@@ -107,8 +108,10 @@ public class FilteringPropertyValueModel
 	@Override
 	protected void valueChanged(PropertyChangeEvent e) {
 		// filter the values before propagating the change event
-		Object oldValue = this.filterValue(e.oldValue());
-		Object newValue = this.filterValue(e.newValue());
+		@SuppressWarnings("unchecked")
+		Object oldValue = this.filterValue((T) e.oldValue());
+		@SuppressWarnings("unchecked")
+		Object newValue = this.filterValue((T) e.newValue());
 		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 
@@ -119,7 +122,7 @@ public class FilteringPropertyValueModel
 	 * If the specified value is "accepted" simply return it,
 	 * otherwise return the default value.
 	 */
-	protected Object filterValue(Object value) {
+	protected T filterValue(T value) {
 		return this.accept(value) ? value : this.defaultValue();
 	}
 
@@ -132,7 +135,7 @@ public class FilteringPropertyValueModel
 	 * This method can be overridden by a subclass as an
 	 * alternative to building a <code>BidiFilter</code>.
 	 */
-	protected boolean accept(Object value) {
+	protected boolean accept(T value) {
 		return this.filter.accept(value);
 	}
 
@@ -145,7 +148,7 @@ public class FilteringPropertyValueModel
 	 * This method can be overridden by a subclass as an
 	 * alternative to building a <code>BidiFilter</code>.
 	 */
-	protected boolean reverseAccept(Object value) {
+	protected boolean reverseAccept(T value) {
 		return this.filter.reverseAccept(value);
 	}
 
@@ -154,7 +157,7 @@ public class FilteringPropertyValueModel
 	 * the nested value was rejected by the filter.
 	 * The default is <code>null</code>.
 	 */
-	protected Object defaultValue() {
+	protected T defaultValue() {
 		return this.defaultValue;
 	}
 

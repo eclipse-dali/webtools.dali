@@ -83,15 +83,15 @@ public class ComboBoxModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private WritablePropertyValueModel buildColorHolder(PropertyValueModel vm) {
-		return new PropertyAspectAdapter(vm, TestModel.COLOR_PROPERTY) {
+	private WritablePropertyValueModel<String> buildColorHolder(PropertyValueModel<TestModel> vm) {
+		return new PropertyAspectAdapter<TestModel, String>(vm, TestModel.COLOR_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return ((TestModel) this.subject).getColor();
+			protected String buildValue_() {
+				return this.subject.getColor();
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((TestModel) this.subject).setColor((String) value);
+			protected void setValue_(String value) {
+				this.subject.setColor(value);
 			}
 		};
 	}

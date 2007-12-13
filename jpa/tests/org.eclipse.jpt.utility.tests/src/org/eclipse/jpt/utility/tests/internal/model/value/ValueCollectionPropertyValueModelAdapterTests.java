@@ -24,8 +24,8 @@ import junit.framework.TestCase;
 
 public class ValueCollectionPropertyValueModelAdapterTests extends TestCase {
 	private Junk junk;
-	private SimplePropertyValueModel junkHolder;
-	private ValueCollectionPropertyValueModelAdapter junkHolder2;
+	private SimplePropertyValueModel<Junk> junkHolder;
+	private ValueCollectionPropertyValueModelAdapter<Junk> junkHolder2;
 
 
 	public ValueCollectionPropertyValueModelAdapterTests(String name) {
@@ -36,8 +36,8 @@ public class ValueCollectionPropertyValueModelAdapterTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.junk = new Junk("foo");
-		this.junkHolder = new SimplePropertyValueModel(this.junk);
-		this.junkHolder2 = new ValueCollectionPropertyValueModelAdapter(this.junkHolder, Junk.STUFF_COLLECTION);
+		this.junkHolder = new SimplePropertyValueModel<Junk>(this.junk);
+		this.junkHolder2 = new ValueCollectionPropertyValueModelAdapter<Junk>(this.junkHolder, Junk.STUFF_COLLECTION);
 	}
 
 	@Override

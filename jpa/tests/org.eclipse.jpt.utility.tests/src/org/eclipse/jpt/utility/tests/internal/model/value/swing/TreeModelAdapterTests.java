@@ -194,7 +194,7 @@ public class TreeModelAdapterTests extends TestCase {
 	}
 
 	public void testTreeStructureChanged() {
-		WritablePropertyValueModel nodeHolder = new SimplePropertyValueModel(this.buildSortedRootNode());
+		WritablePropertyValueModel<TreeNodeValueModel<Object>> nodeHolder = new SimplePropertyValueModel<TreeNodeValueModel<Object>>(this.buildSortedRootNode());
 		TreeModel treeModel = this.buildTreeModel(nodeHolder);
 		this.eventFired = false;
 		treeModel.addTreeModelListener(new TestTreeModelListener() {
@@ -415,7 +415,7 @@ public class TreeModelAdapterTests extends TestCase {
 	 * TestModel's children into a ListValueModel of Nodes whose order is
 	 * determined by subclass implementations.
 	 */
-	public static abstract class TestNode extends AbstractTreeNodeValueModel implements Displayable {
+	public static abstract class TestNode extends AbstractTreeNodeValueModel<Object> implements Displayable {
 		/** the model object wrapped by this node */
 		private TestModel testModel;
 		/** this node's parent node; null for the root node */
@@ -495,7 +495,7 @@ public class TreeModelAdapterTests extends TestCase {
 		protected CollectionValueModel buildChildrenAdapter(TestModel model) {
 			return new CollectionAspectAdapter(TestModel.CHILDREN_COLLECTION, model) {
 				@Override
-				protected Iterator iterator_() {
+				protected Iterator<TestModel> iterator_() {
 					return ((TestModel) this.subject).children();
 				}
 				@Override
@@ -508,7 +508,7 @@ public class TreeModelAdapterTests extends TestCase {
 
 		// ********** TreeNodeValueModel implementation **********
 
-		public Object value() {
+		public TestModel value() {
 			return this.testModel;
 		}
 
@@ -522,7 +522,7 @@ public class TreeModelAdapterTests extends TestCase {
 			this.firePropertyChanged(VALUE, old, this.testModel);
 		}
 
-		public TreeNodeValueModel parent() {
+		public TreeNodeValueModel<Object> parent() {
 			return this.parent;
 		}
 
@@ -567,8 +567,8 @@ public class TreeModelAdapterTests extends TestCase {
 		public void dumpOn(IndentingPrintWriter writer) {
 			writer.println(this);
 			writer.indent();
-			for (Iterator stream = this.childrenModel.iterator(); stream.hasNext(); ) {
-				((TestNode) stream.next()).dumpOn(writer);
+			for (Iterator<TestNode> stream = this.childrenModel.iterator(); stream.hasNext(); ) {
+				stream.next().dumpOn(writer);
 			}
 			writer.undent();
 		}
@@ -607,8 +607,8 @@ public class TreeModelAdapterTests extends TestCase {
 		 * testing convenience method
 		 */
 		public TestNode childNamed(String name) {
-			for (Iterator stream = this.childrenModel.iterator(); stream.hasNext(); ) {
-				TestNode childNode = (TestNode) stream.next();
+			for (Iterator<TestNode> stream = this.childrenModel.iterator(); stream.hasNext(); ) {
+				TestNode childNode = stream.next();
 				if (childNode.getTestModel().getName().equals(name)) {
 					return childNode;
 				}
@@ -730,8 +730,8 @@ public class TreeModelAdapterTests extends TestCase {
 	}
 
 
-	public static class NameTestNode extends AbstractTreeNodeValueModel {
-		private WritablePropertyValueModel nameAdapter;
+	public static class NameTestNode extends AbstractTreeNodeValueModel<Object> {
+		private WritablePropertyValueModel<String> nameAdapter;
 		private SpecialTestNode specialNode;		// parent node
 		private PropertyChangeListener nameListener;
 
@@ -758,15 +758,15 @@ public class TreeModelAdapterTests extends TestCase {
 			this.nameAdapter = this.buildNameAdapter();
 		}
 
-		protected WritablePropertyValueModel buildNameAdapter() {
-			return new PropertyAspectAdapter(TestModel.NAME_PROPERTY, this.getTestModel()) {
+		protected WritablePropertyValueModel<String> buildNameAdapter() {
+			return new PropertyAspectAdapter<TestModel, String>(TestModel.NAME_PROPERTY, this.getTestModel()) {
 				@Override
-				protected Object buildValue_() {
-					return ((TestModel) this.subject).getName();
+				protected String buildValue_() {
+					return this.subject.getName();
 				}
 				@Override
-				protected void setValue_(Object value) {
-					((TestModel) this.subject).setName((String) value);
+				protected void setValue_(String value) {
+					this.subject.setName(value);
 				}
 			};
 		}
@@ -782,9 +782,9 @@ public class TreeModelAdapterTests extends TestCase {
 		}
 		@Override
 		public void setValue(Object value) {
-			this.nameAdapter.setValue(value);
+			this.nameAdapter.setValue((String) value);
 		}
-		public TreeNodeValueModel parent() {
+		public TreeNodeValueModel<Object> parent() {
 			return this.specialNode;
 		}
 		public ListValueModel childrenModel() {
@@ -810,11 +810,12 @@ public class TreeModelAdapterTests extends TestCase {
 		}
 	}
 
-	private TreeModel buildTreeModel(TreeNodeValueModel root) {
-		return this.buildTreeModel(new ReadOnlyPropertyValueModel(root));
+	private TreeModel buildTreeModel(TestNode root) {
+		return this.buildTreeModel(new ReadOnlyPropertyValueModel<TreeNodeValueModel<Object>>(root));
 	}
 
-	private TreeModel buildTreeModel(PropertyValueModel rootHolder) {
+	private TreeModel buildTreeModel(PropertyValueModel<TreeNodeValueModel<Object>> rootHolder) {
+//	private TreeModel buildTreeModel(PropertyValueModel<TestNode> rootHolder) {
 		return new TreeModelAdapter(rootHolder) {
 			@Override
 			protected ListChangeListener buildChildrenListener() {

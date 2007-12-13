@@ -44,7 +44,7 @@ import org.eclipse.jpt.utility.internal.model.value.TreeNodeValueModel;
  * which, typically, should not be a problem. (If you want to display an empty
  * tree you can set the JTree's treeModel to null.)
  */
-public class TreeModelAdapter
+public class TreeModelAdapter<T>
 	extends AbstractTreeModel
 {
 	/**
@@ -53,7 +53,7 @@ public class TreeModelAdapter
 	 * the entire tree. Due to limitations in JTree, the root should
 	 * never be set to null while we have listeners.
 	 */
-	private final PropertyValueModel rootHolder;
+	private final PropertyValueModel<TreeNodeValueModel<T>> rootHolder;
 	private final PropertyChangeListener rootListener;
 
 	/**
@@ -85,7 +85,7 @@ public class TreeModelAdapter
 	 * most of the time. The root is cached so we can disengage
 	 * from it when it has been swapped out.
 	 */
-	private TreeNodeValueModel root;
+	private TreeNodeValueModel<T> root;
 
 	/**
 	 * Map the nodes to their lists of children.
@@ -94,7 +94,7 @@ public class TreeModelAdapter
 	 * the items that were affected).
 	 * @see EventChangePolicy#rebuildChildren()
 	 */
-	final IdentityHashMap<TreeNodeValueModel, List<TreeNodeValueModel>> childrenLists;
+	final IdentityHashMap<TreeNodeValueModel<T>, List<TreeNodeValueModel<T>>> childrenLists;
 
 	/**
 	 * Map the children models to their parents.
@@ -102,7 +102,7 @@ public class TreeModelAdapter
 	 * list change events (the parent).
 	 * @see EventChangePolicy#parent()
 	 */
-	final IdentityHashMap<ListValueModel, TreeNodeValueModel> parents;
+	final IdentityHashMap<ListValueModel, TreeNodeValueModel<T>> parents;
 
 
 	// ********** constructors **********
@@ -110,7 +110,7 @@ public class TreeModelAdapter
 	/**
 	 * Construct a tree model for the specified root.
 	 */
-	public TreeModelAdapter(PropertyValueModel rootHolder) {
+	public TreeModelAdapter(PropertyValueModel<TreeNodeValueModel<T>> rootHolder) {
 		super();
 		if (rootHolder == null) {
 			throw new NullPointerException();
@@ -120,15 +120,15 @@ public class TreeModelAdapter
 		this.nodeStateListener = this.buildNodeStateListener();
 		this.nodeValueListener = this.buildNodeValueListener();
 		this.childrenListener = this.buildChildrenListener();
-		this.childrenLists = new IdentityHashMap<TreeNodeValueModel, List<TreeNodeValueModel>>();
-		this.parents = new IdentityHashMap<ListValueModel, TreeNodeValueModel>();
+		this.childrenLists = new IdentityHashMap<TreeNodeValueModel<T>, List<TreeNodeValueModel<T>>>();
+		this.parents = new IdentityHashMap<ListValueModel, TreeNodeValueModel<T>>();
 	}
 
 	/**
 	 * Construct a tree model for the specified root.
 	 */
-	public TreeModelAdapter(TreeNodeValueModel root) {
-		this(new ReadOnlyPropertyValueModel(root));
+	public TreeModelAdapter(TreeNodeValueModel<T> root) {
+		this(new ReadOnlyPropertyValueModel<TreeNodeValueModel<T>>(root));
 	}
 
 
@@ -156,8 +156,9 @@ public class TreeModelAdapter
 
 	protected PropertyChangeListener buildNodeValueListener_() {
 		return new PropertyChangeListener() {
+			@SuppressWarnings("unchecked")
 			public void propertyChanged(PropertyChangeEvent e) {
-				TreeModelAdapter.this.nodeChanged((TreeNodeValueModel) e.getSource());
+				TreeModelAdapter.this.nodeChanged((TreeNodeValueModel<T>) e.getSource());
 			}
 			@Override
 			public String toString() {
@@ -172,8 +173,9 @@ public class TreeModelAdapter
 
 	protected StateChangeListener buildNodeStateListener_() {
 		return new StateChangeListener() {
+			@SuppressWarnings("unchecked")
 			public void stateChanged(StateChangeEvent e) {
-				TreeModelAdapter.this.nodeChanged((TreeNodeValueModel) e.getSource());
+				TreeModelAdapter.this.nodeChanged((TreeNodeValueModel<T>) e.getSource());
 			}
 			@Override
 			public String toString() {
@@ -220,24 +222,29 @@ public class TreeModelAdapter
 		return this.root;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object getChild(Object parent, int index) {
-		return ((TreeNodeValueModel) parent).child(index);
+		return ((TreeNodeValueModel<T>) parent).child(index);
 	}
 
+	@SuppressWarnings("unchecked")
 	public int getChildCount(Object parent) {
-		return ((TreeNodeValueModel) parent).childrenSize();
+		return ((TreeNodeValueModel<T>) parent).childrenSize();
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean isLeaf(Object node) {
-		return ((TreeNodeValueModel) node).isLeaf();
+		return ((TreeNodeValueModel<T>) node).isLeaf();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void valueForPathChanged(TreePath path, Object newValue) {
-		((TreeNodeValueModel) path.getLastPathComponent()).setValue(newValue);
+		((TreeNodeValueModel<T>) path.getLastPathComponent()).setValue((T) newValue);
 	}
 
+	@SuppressWarnings("unchecked")
 	public int getIndexOfChild(Object parent, Object child) {
-		return ((TreeNodeValueModel) parent).indexOfChild((TreeNodeValueModel) child);
+		return ((TreeNodeValueModel<T>) parent).indexOfChild((TreeNodeValueModel<T>) child);
 	}
 
 	/**
@@ -271,7 +278,7 @@ public class TreeModelAdapter
 	 */
 	private void engageModel() {
 		this.rootHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.rootListener);
-		this.root = (TreeNodeValueModel) this.rootHolder.value();
+		this.root = this.rootHolder.value();
 		if (this.root == null) {
 			throw new NullPointerException();	// the root cannot be null while we have listeners
 		}
@@ -311,7 +318,7 @@ public class TreeModelAdapter
 	 * non-root nodes.
 	 */
 	void rootChanged() {
-		TreeNodeValueModel newRoot = (TreeNodeValueModel) this.rootHolder.value();
+		TreeNodeValueModel<T> newRoot = this.rootHolder.value();
 		if (newRoot == null) {
 			throw new NullPointerException();	// the root cannot be null while we have listeners
 		}
@@ -320,7 +327,7 @@ public class TreeModelAdapter
 		this.removeRoot(); 
 
 		// save the old root and swap in the new root
-		TreeNodeValueModel oldRoot = this.root;
+		TreeNodeValueModel<T> oldRoot = this.root;
 		this.root = newRoot;
 
 		// we must be listening to both the old and new roots when we fire the event
@@ -339,8 +346,8 @@ public class TreeModelAdapter
 	 * Either the "value" or the "state" of the specified node has changed,
 	 * forward notification to our listeners.
 	 */
-	void nodeChanged(TreeNodeValueModel node) {
-		TreeNodeValueModel parent = node.parent();
+	void nodeChanged(TreeNodeValueModel<T> node) {
+		TreeNodeValueModel<T> parent = node.parent();
 		if (parent == null) {
 			this.fireTreeRootChanged(node);
 		} else {
@@ -354,21 +361,21 @@ public class TreeModelAdapter
 	 * We must listen to the nodes before notifying anybody, because
 	 * adding a listener can change the value of a node.
 	 */
-	void addChildren(Object[] path, int[] childIndices, Object[] children) {
+	void addChildren(TreeNodeValueModel<T>[] path, int[] childIndices, TreeNodeValueModel<T>[] children) {
 		int len = childIndices.length;
 		for (int i = 0; i < len; i++) {
-			this.engageNode((TreeNodeValueModel) children[i]);
+			this.engageNode(children[i]);
 		}
 		this.fireTreeNodesInserted(path, childIndices, children);
 		for (int i = 0; i < len; i++) {
-			this.addNode(childIndices[i], (TreeNodeValueModel) children[i]);
+			this.addNode(childIndices[i], children[i]);
 		}
 	}
 
 	/**
 	 * Listen to the node and its children model.
 	 */
-	private void engageNode(TreeNodeValueModel node) {
+	private void engageNode(TreeNodeValueModel<T> node) {
 		node.addStateChangeListener(this.nodeStateListener);
 		node.addPropertyChangeListener(PropertyValueModel.VALUE, this.nodeValueListener);
 		node.childrenModel().addListChangeListener(ListValueModel.LIST_VALUES, this.childrenListener);
@@ -379,7 +386,7 @@ public class TreeModelAdapter
 	 * then recurse down through the node's children,
 	 * adding them to the internal tree also.
 	 */
-	private void addNode(int index, TreeNodeValueModel node) {
+	private void addNode(int index, TreeNodeValueModel<T> node) {
 		this.addNodeToInternalTree(node.parent(), index, node, node.childrenModel());
 		new NodeChangePolicy(node).addChildren();
 	}
@@ -387,10 +394,10 @@ public class TreeModelAdapter
 	/**
 	 * Add the specified node to our internal tree.
 	 */
-	private void addNodeToInternalTree(TreeNodeValueModel parent, int index, TreeNodeValueModel node, ListValueModel childrenModel) {
-		List<TreeNodeValueModel> siblings = this.childrenLists.get(parent);
+	private void addNodeToInternalTree(TreeNodeValueModel<T> parent, int index, TreeNodeValueModel<T> node, ListValueModel childrenModel) {
+		List<TreeNodeValueModel<T>> siblings = this.childrenLists.get(parent);
 		if (siblings == null) {
-			siblings = new ArrayList<TreeNodeValueModel>();
+			siblings = new ArrayList<TreeNodeValueModel<T>>();
 			this.childrenLists.put(parent, siblings);
 		}
 		siblings.add(index, node);
@@ -404,15 +411,15 @@ public class TreeModelAdapter
 	 * We must listen to the nodes until after notifying anybody, because
 	 * removing a listener can change the value of a node.
 	 */
-	void removeChildren(Object[] path, int[] childIndices, Object[] children) {
+	void removeChildren(TreeNodeValueModel<T>[] path, int[] childIndices, TreeNodeValueModel<T>[] children) {
 		int len = childIndices.length;
 		for (int i = 0; i < len; i++) {
 			// the indices slide down a notch each time we remove a child
-			this.removeNode(childIndices[i] - i, (TreeNodeValueModel) children[i]);
+			this.removeNode(childIndices[i] - i, children[i]);
 		}
 		this.fireTreeNodesRemoved(path, childIndices, children);
 		for (int i = 0; i < len; i++) {
-			this.disengageNode((TreeNodeValueModel) children[i]);
+			this.disengageNode(children[i]);
 		}
 	}
 
@@ -421,7 +428,7 @@ public class TreeModelAdapter
 	 * removing them from our internal tree;
 	 * then remove the node itself from our internal tree.
 	 */
-	private void removeNode(int index, TreeNodeValueModel node) {
+	private void removeNode(int index, TreeNodeValueModel<T> node) {
 		new NodeChangePolicy(node).removeChildren();
 		this.removeNodeFromInternalTree(node.parent(), index, node, node.childrenModel());
 	}
@@ -429,10 +436,10 @@ public class TreeModelAdapter
 	/**
 	 * Remove the specified node from our internal tree.
 	 */
-	private void removeNodeFromInternalTree(TreeNodeValueModel parent, int index, TreeNodeValueModel node, ListValueModel childrenModel) {
+	private void removeNodeFromInternalTree(TreeNodeValueModel<T> parent, int index, TreeNodeValueModel<T> node, ListValueModel childrenModel) {
 		this.parents.remove(childrenModel);
 
-		List<TreeNodeValueModel> siblings = this.childrenLists.get(parent);
+		List<TreeNodeValueModel<T>> siblings = this.childrenLists.get(parent);
 		siblings.remove(index);
 		if (siblings.isEmpty()) {
 			this.childrenLists.remove(parent);
@@ -442,15 +449,15 @@ public class TreeModelAdapter
 	/**
 	 * Stop listening to the node and its children model.
 	 */
-	private void disengageNode(TreeNodeValueModel node) {
+	private void disengageNode(TreeNodeValueModel<T> node) {
 		node.childrenModel().removeListChangeListener(ListValueModel.LIST_VALUES, this.childrenListener);
 		node.removePropertyChangeListener(PropertyValueModel.VALUE, this.nodeValueListener);
 		node.removeStateChangeListener(this.nodeStateListener);
 	}
 
-	void moveChildren(TreeNodeValueModel parent, int targetIndex, int sourceIndex, int length) {
-		List<TreeNodeValueModel> childrenList = this.childrenLists.get(parent);
-		ArrayList<TreeNodeValueModel> temp = new ArrayList<TreeNodeValueModel>(length);
+	void moveChildren(TreeNodeValueModel<T> parent, int targetIndex, int sourceIndex, int length) {
+		List<TreeNodeValueModel<T>> childrenList = this.childrenLists.get(parent);
+		ArrayList<TreeNodeValueModel<T>> temp = new ArrayList<TreeNodeValueModel<T>>(length);
 		for (int i = 0; i < length; i++) {
 			temp.add(childrenList.remove(sourceIndex));
 		}
@@ -504,7 +511,7 @@ public class TreeModelAdapter
 		/**
 		 * Return an array of the current set of children.
 		 */
-		Object[] childArray() {
+		TreeNodeValueModel<T>[] childArray() {
 			return this.buildArray(this.children(), this.childrenSize());
 		}
 
@@ -512,8 +519,9 @@ public class TreeModelAdapter
 		 * Build an array to hold the elements in the specified iterator.
 		 * If they are different sizes, something is screwed up...
 		 */
-		Object[] buildArray(Iterator<?> stream, int size) {
-			Object[] array = new Object[size];
+		TreeNodeValueModel<T>[] buildArray(Iterator<TreeNodeValueModel<T>> stream, int size) {
+			@SuppressWarnings("unchecked")
+			TreeNodeValueModel<T>[] array = new TreeNodeValueModel[size];
 			for (int i = 0; stream.hasNext(); i++) {
 				array[i] = stream.next();
 			}
@@ -544,7 +552,7 @@ public class TreeModelAdapter
 		/**
 		 * Return the parent of the current set of children.
 		 */
-		abstract TreeNodeValueModel parent();
+		abstract TreeNodeValueModel<T> parent();
 
 		/**
 		 * Return the starting index for the current set of children.
@@ -559,7 +567,7 @@ public class TreeModelAdapter
 		/**
 		 * Return an interator on the current set of children.
 		 */
-		abstract Iterator children();
+		abstract Iterator<TreeNodeValueModel<T>> children();
 
 	}
 
@@ -579,7 +587,7 @@ public class TreeModelAdapter
 		 * Map the ListChangeEvent's source to the corresponding parent.
 		 */
 		@Override
-		TreeNodeValueModel parent() {
+		TreeNodeValueModel<T> parent() {
 			return TreeModelAdapter.this.parents.get(this.event.getSource());
 		}
 
@@ -603,15 +611,16 @@ public class TreeModelAdapter
 		 * The ListChangeEvent's items are the children.
 		 */
 		@Override
-		Iterator children() {
-			return this.event.items();
+		@SuppressWarnings("unchecked")
+		Iterator<TreeNodeValueModel<T>> children() {
+			return (Iterator<TreeNodeValueModel<T>>) this.event.items();
 		}
 
 		/**
 		 * Remove the old nodes and add the new ones.
 		 */
 		void replaceChildren() {
-			Object[] parentPath = this.parent().path();
+			TreeNodeValueModel<T>[] parentPath = this.parent().path();
 			int[] childIndices = this.childIndices();
 			TreeModelAdapter.this.removeChildren(parentPath, childIndices, this.replacedChildren());
 			TreeModelAdapter.this.addChildren(parentPath, childIndices, this.childArray());
@@ -628,23 +637,24 @@ public class TreeModelAdapter
 		 * Clear all the nodes.
 		 */
 		void clearChildren() {
-			TreeNodeValueModel parent = this.parent();
-			Object[] parentPath = parent.path();
-			List<TreeNodeValueModel> childrenList = TreeModelAdapter.this.childrenLists.get(parent);
+			TreeNodeValueModel<T> parent = this.parent();
+			TreeNodeValueModel<T>[] parentPath = parent.path();
+			List<TreeNodeValueModel<T>> childrenList = TreeModelAdapter.this.childrenLists.get(parent);
 			int[] childIndices = this.buildIndices(childrenList.size());
-			Object[] childArray = this.buildArray(childrenList.iterator(), childrenList.size());
+			TreeNodeValueModel<T>[] childArray = this.buildArray(childrenList.iterator(), childrenList.size());
 			TreeModelAdapter.this.removeChildren(parentPath, childIndices, childArray);
 		}
 
 		/**
 		 * Remove all the old nodes and add all the new nodes.
 		 */
+		@SuppressWarnings("unchecked")
 		void rebuildChildren() {
-			TreeNodeValueModel parent = this.parent();
-			Object[] parentPath = parent.path();
-			List<TreeNodeValueModel> childrenList = TreeModelAdapter.this.childrenLists.get(parent);
+			TreeNodeValueModel<T> parent = this.parent();
+			TreeNodeValueModel<T>[] parentPath = parent.path();
+			List<TreeNodeValueModel<T>> childrenList = TreeModelAdapter.this.childrenLists.get(parent);
 			int[] childIndices = this.buildIndices(childrenList.size());
-			Object[] childArray = this.buildArray(childrenList.iterator(), childrenList.size());
+			TreeNodeValueModel<T>[] childArray = this.buildArray(childrenList.iterator(), childrenList.size());
 			TreeModelAdapter.this.removeChildren(parentPath, childIndices, childArray);
 
 			childIndices = this.buildIndices(parent.childrenModel().size());
@@ -655,8 +665,9 @@ public class TreeModelAdapter
 		/**
 		 * The ListChangeEvent's replaced items are the replaced children.
 		 */
-		Object[] replacedChildren() {
-			return this.buildArray(this.event.replacedItems(), this.event.itemsSize());
+		@SuppressWarnings("unchecked")
+		TreeNodeValueModel<T>[] replacedChildren() {
+			return this.buildArray((Iterator<TreeNodeValueModel<T>>) this.event.replacedItems(), this.event.itemsSize());
 		}
 
 	}
@@ -666,9 +677,9 @@ public class TreeModelAdapter
 	 * Wraps a TreeNodeValueModel for adding and removing its children.
 	 */
 	private class NodeChangePolicy extends ChangePolicy {
-		private TreeNodeValueModel node;
+		private TreeNodeValueModel<T> node;
 
-		NodeChangePolicy(TreeNodeValueModel node) {
+		NodeChangePolicy(TreeNodeValueModel<T> node) {
 			this.node = node;
 		}
 
@@ -676,7 +687,7 @@ public class TreeModelAdapter
 		 * The node itself is the parent.
 		 */
 		@Override
-		TreeNodeValueModel parent() {
+		TreeNodeValueModel<T> parent() {
 			return this.node;
 		}
 
@@ -705,7 +716,8 @@ public class TreeModelAdapter
 		 * the children model.
 		 */
 		@Override
-		Iterator children() {
+		@SuppressWarnings("unchecked")
+		Iterator<TreeNodeValueModel<T>> children() {
 			return this.node.childrenModel().iterator();
 		}
 
