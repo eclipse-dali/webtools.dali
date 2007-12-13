@@ -14,37 +14,37 @@ import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.Expression;
 
 /**
- * Convert a boolean literal to/from a string representation of a boolean
- * (e.g. "true").
+ * Convert a boolean literal to/from a Boolean
+ * (e.g. Boolean.TRUE).
  */
-public final class BooleanStringExpressionConverter
-	extends AbstractExpressionConverter<String>
+public final class BooleanExpressionConverter
+	extends AbstractExpressionConverter<Boolean>
 {
-	private static final ExpressionConverter<String> INSTANCE = new BooleanStringExpressionConverter();
+	private static final ExpressionConverter<Boolean> INSTANCE = new BooleanExpressionConverter();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<String> instance() {
+	public static ExpressionConverter<Boolean> instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure single instance.
 	 */
-	private BooleanStringExpressionConverter() {
+	private BooleanExpressionConverter() {
 		super();
 	}
 
 	@Override
-	protected BooleanLiteral convertObject(String string, AST ast) {
-		return ast.newBooleanLiteral(Boolean.parseBoolean(string));
+	protected BooleanLiteral convertObject(Boolean booleanObject, AST ast) {
+		return ast.newBooleanLiteral(booleanObject.booleanValue());
 	}
 
 	@Override
-	protected String convertExpression(Expression expression) {
+	protected Boolean convertExpression(Expression expression) {
 		Object value = expression.resolveConstantExpressionValue();
-		return (value instanceof Boolean) ? ((Boolean) value).toString() : null;
+		return (value instanceof Boolean) ? ((Boolean) value) : null;
 	}
 
 }

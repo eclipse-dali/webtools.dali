@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter;
+import org.eclipse.jpt.core.internal.jdtutility.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
@@ -27,11 +27,11 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private final AnnotationElementAdapter<String> optionalAdapter;
+	private final AnnotationElementAdapter<Boolean> optionalAdapter;
 
 	private final AnnotationElementAdapter<String> fetchAdapter;
 
-	private static final DeclarationAnnotationElementAdapter<String> OPTIONAL_ADAPTER = buildOptionalAdapter();
+	private static final DeclarationAnnotationElementAdapter<Boolean> OPTIONAL_ADAPTER = buildOptionalAdapter();
 
 	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildFetchAdapter();
 	
@@ -41,7 +41,7 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 	
 	protected BasicImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.optionalAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, OPTIONAL_ADAPTER);
+		this.optionalAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(attribute, OPTIONAL_ADAPTER);
 		this.fetchAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
 	}
 	
@@ -62,7 +62,7 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 	public void setOptional(Boolean newOptional) {
 		Boolean oldOptional = this.optional;
 		this.optional = newOptional;
-		this.optionalAdapter.setValue(BooleanUtility.toJavaAnnotationValue(newOptional));
+		this.optionalAdapter.setValue(newOptional);
 		firePropertyChanged(OPTIONAL_PROPERTY, oldOptional, newOptional);
 	}
 
@@ -95,12 +95,12 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 	}
 	
 	protected Boolean optional(CompilationUnit astRoot) {
-		return BooleanUtility.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot));
+		return this.optionalAdapter.getValue(astRoot);
 	}
 	
 	// ********** static methods **********
-	private static DeclarationAnnotationElementAdapter<String> buildOptionalAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__OPTIONAL, false, BooleanStringExpressionConverter.instance());
+	private static DeclarationAnnotationElementAdapter<Boolean> buildOptionalAdapter() {
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__OPTIONAL, false, BooleanExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {

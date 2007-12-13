@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.ASTNodeTextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationStringArrayExpressionConverter;
-import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter;
+import org.eclipse.jpt.core.internal.jdtutility.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.CharacterStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -77,9 +77,9 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.createAnnotationAndMembers("Foo", "boolean bar();");
 		this.createTestType("@annot.Foo(bar=false)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", BooleanStringExpressionConverter.instance());
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
-		assertEquals("false", aea.getValue());
+		DeclarationAnnotationElementAdapter<Boolean> daea = new ConversionDeclarationAnnotationElementAdapter<Boolean>(daa, "bar", BooleanExpressionConverter.instance());
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
+		assertEquals(Boolean.FALSE, aea.getValue());
 	}
 
 	public void testGetValue5() throws Exception {
@@ -90,18 +90,18 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedDeclarationAnnotationAdapter(daa1, "value", "annot.Bar");
 		DeclarationAnnotationAdapter daa3 = new NestedDeclarationAnnotationAdapter(daa2, "jimmy", "annot.Baz");
-		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa3, "fred", BooleanStringExpressionConverter.instance());
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
-		assertEquals("false", aea.getValue());
+		DeclarationAnnotationElementAdapter<Boolean> daea = new ConversionDeclarationAnnotationElementAdapter<Boolean>(daa3, "fred", BooleanExpressionConverter.instance());
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
+		assertEquals(Boolean.FALSE, aea.getValue());
 	}
 
 	public void testGetValue6() throws Exception {
 		this.createAnnotationAndMembers("Foo", "boolean value();");
 		this.createTestType("@annot.Foo(false)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, BooleanStringExpressionConverter.instance());
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
-		assertEquals("false", aea.getValue());
+		DeclarationAnnotationElementAdapter<Boolean> daea = new ConversionDeclarationAnnotationElementAdapter<Boolean>(daa, BooleanExpressionConverter.instance());
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
+		assertEquals(Boolean.FALSE, aea.getValue());
 	}
 
 	public void testGetValueNull1() throws Exception {
@@ -205,36 +205,36 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.createAnnotationAndMembers("Foo", "boolean bar();");
 		this.createTestType("@annot.Foo(bar=7 > 2)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, "bar");
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
-		assertEquals("true", aea.getValue());
+		DeclarationAnnotationElementAdapter<Boolean> daea = ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, "bar");
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
+		assertEquals(Boolean.TRUE, aea.getValue());
 	}
 
 	public void testGetValueBooleanOperator2() throws Exception {
 		this.createAnnotationAndMembers("Foo", "boolean bar();");
 		this.createTestType("@annot.Foo(bar=7 == 2)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, "bar");
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
-		assertEquals("false", aea.getValue());
+		DeclarationAnnotationElementAdapter<Boolean> daea = ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, "bar");
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
+		assertEquals(Boolean.FALSE, aea.getValue());
 	}
 
 	public void testGetValueBooleanOperator3() throws Exception {
 		this.createAnnotationAndMembers("Foo", "boolean bar();");
 		this.createTestType("@annot.Foo(bar=(7 != 2) && false)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, "bar");
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
-		assertEquals("false", aea.getValue());
+		DeclarationAnnotationElementAdapter<Boolean> daea = ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, "bar");
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
+		assertEquals(Boolean.FALSE, aea.getValue());
 	}
 
 	public void testGetValueBooleanOperator4() throws Exception {
 		this.createAnnotationAndMembers("Foo", "boolean bar();");
 		this.createTestType("@annot.Foo(bar=(7 != 2) ? false : true)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, "bar");
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
-		assertEquals("false", aea.getValue());
+		DeclarationAnnotationElementAdapter<Boolean> daea = ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, "bar");
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
+		assertEquals(Boolean.FALSE, aea.getValue());
 	}
 
 	public void testGetValueInvalidValue1() throws Exception {
@@ -259,8 +259,8 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.createAnnotationAndMembers("Foo", "boolean bar();");
 		this.createTestType("@annot.Foo(bar=bazzzz)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, "bar");
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
+		DeclarationAnnotationElementAdapter<Boolean> daea = ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, "bar");
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
 		assertNull(aea.getValue());
 	}
 
@@ -303,8 +303,8 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedDeclarationAnnotationAdapter(daa1, "value", "annot.Bar");
 		DeclarationAnnotationAdapter daa3 = new NestedDeclarationAnnotationAdapter(daa2, "jimmy", "annot.Baz");
-		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa3, "fred", BooleanStringExpressionConverter.instance());
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
+		DeclarationAnnotationElementAdapter<Boolean> daea = new ConversionDeclarationAnnotationElementAdapter<Boolean>(daa3, "fred", BooleanExpressionConverter.instance());
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
 		assertNull(aea.getValue());
 	}
 
@@ -353,9 +353,9 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedDeclarationAnnotationAdapter(daa1, "value", "annot.Bar");
 		DeclarationAnnotationAdapter daa3 = new NestedDeclarationAnnotationAdapter(daa2, "jimmy", "annot.Baz");
-		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa3, "fred", BooleanStringExpressionConverter.instance());
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
-		assertEquals("false", aea.getValue());
+		DeclarationAnnotationElementAdapter<Boolean> daea = new ConversionDeclarationAnnotationElementAdapter<Boolean>(daa3, "fred", BooleanExpressionConverter.instance());
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
+		assertEquals(Boolean.FALSE, aea.getValue());
 		ITextRange textRange = new ASTNodeTextRange(aea.astNode());
 		assertEquals(value.length(), textRange.getLength());
 	}
@@ -424,8 +424,8 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedDeclarationAnnotationAdapter(daa1, "value", "annot.Bar");
 		DeclarationAnnotationAdapter daa3 = new NestedDeclarationAnnotationAdapter(daa2, "jimmy", "annot.Baz");
-		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa3, "fred", BooleanStringExpressionConverter.instance());
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
+		DeclarationAnnotationElementAdapter<Boolean> daea = new ConversionDeclarationAnnotationElementAdapter<Boolean>(daa3, "fred", BooleanExpressionConverter.instance());
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
 
 		aea.setValue(null);
 		this.assertSourceDoesNotContain(annotation);
@@ -443,8 +443,8 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedDeclarationAnnotationAdapter(daa1, "value", "annot.Bar", false);
 		DeclarationAnnotationAdapter daa3 = new NestedDeclarationAnnotationAdapter(daa2, "jimmy", "annot.Baz", false);
-		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa3, "fred", BooleanStringExpressionConverter.instance());
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
+		DeclarationAnnotationElementAdapter<Boolean> daea = new ConversionDeclarationAnnotationElementAdapter<Boolean>(daa3, "fred", BooleanExpressionConverter.instance());
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
 
 		aea.setValue(null);
 		this.assertSourceDoesNotContain(annotation);
@@ -472,10 +472,10 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedDeclarationAnnotationAdapter(daa1, "value", "annot.Bar");
 		DeclarationAnnotationAdapter daa3 = new NestedDeclarationAnnotationAdapter(daa2, "jimmy", "annot.Baz");
-		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa3, "fred", BooleanStringExpressionConverter.instance());
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
+		DeclarationAnnotationElementAdapter<Boolean> daea = new ConversionDeclarationAnnotationElementAdapter<Boolean>(daa3, "fred", BooleanExpressionConverter.instance());
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
 
-		aea.setValue("true");
+		aea.setValue(Boolean.TRUE);
 		this.assertSourceDoesNotContain(annotation);
 		this.assertSourceContains("@annot.Foo(@annot.Bar(jimmy=@annot.Baz(fred=true)))");
 	}
@@ -488,10 +488,10 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedDeclarationAnnotationAdapter(daa1, "value", "annot.Bar");
 		DeclarationAnnotationAdapter daa3 = new NestedDeclarationAnnotationAdapter(daa2, "jimmy", "annot.Baz");
-		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa3, "fred", BooleanStringExpressionConverter.instance());
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
+		DeclarationAnnotationElementAdapter<Boolean> daea = new ConversionDeclarationAnnotationElementAdapter<Boolean>(daa3, "fred", BooleanExpressionConverter.instance());
+		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
 
-		aea.setValue("true");
+		aea.setValue(Boolean.TRUE);
 		this.assertSourceContains("@Foo(@Bar(jimmy=@Baz(fred=true)))");
 	}
 

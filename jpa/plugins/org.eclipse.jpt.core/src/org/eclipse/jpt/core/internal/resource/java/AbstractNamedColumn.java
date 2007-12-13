@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter;
+import org.eclipse.jpt.core.internal.jdtutility.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
@@ -48,8 +48,8 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(getDeclarationAnnotationAdapter(), elementName);
 	}
 
-	protected DeclarationAnnotationElementAdapter<String> buildBooleanElementAdapter(String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(getDeclarationAnnotationAdapter(), elementName, BooleanStringExpressionConverter.instance());
+	protected DeclarationAnnotationElementAdapter<Boolean> buildBooleanElementAdapter(String elementName) {
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(getDeclarationAnnotationAdapter(), elementName, BooleanExpressionConverter.instance());
 	}
 
 	protected DeclarationAnnotationElementAdapter<String> buildNumberElementAdapter(String elementName) {
@@ -58,6 +58,10 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 
 	protected AnnotationElementAdapter<String> buildShortCircuitElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
 		return new ShortCircuitAnnotationElementAdapter<String>(getMember(), daea);
+	}
+	
+	protected AnnotationElementAdapter<Boolean> buildShortCircuitBooleanElementAdapter(DeclarationAnnotationElementAdapter<Boolean> daea) {
+		return new ShortCircuitAnnotationElementAdapter<Boolean>(getMember(), daea);
 	}
 	
 	protected IntAnnotationElementAdapter buildShortCircuitIntElementAdapter(DeclarationAnnotationElementAdapter<String> adapter) {

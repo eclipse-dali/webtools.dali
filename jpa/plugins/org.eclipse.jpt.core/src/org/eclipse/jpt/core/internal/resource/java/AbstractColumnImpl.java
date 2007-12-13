@@ -24,26 +24,26 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 	private final DeclarationAnnotationElementAdapter<String> tableDeclarationAdapter;
 	
 	// hold this so we can get the 'unique' text range
-	private final DeclarationAnnotationElementAdapter<String> uniqueDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<Boolean> uniqueDeclarationAdapter;
 	
 	// hold this so we can get the 'nullable' text range
-	private final DeclarationAnnotationElementAdapter<String> nullableDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<Boolean> nullableDeclarationAdapter;
 	
 	// hold this so we can get the 'insertable' text range
-	private final DeclarationAnnotationElementAdapter<String> insertableDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<Boolean> insertableDeclarationAdapter;
 	
 	// hold this so we can get the 'updatable' text range
-	private final DeclarationAnnotationElementAdapter<String> updatableDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<Boolean> updatableDeclarationAdapter;
 
 	private final AnnotationElementAdapter<String> tableAdapter;
 
-	private final AnnotationElementAdapter<String> uniqueAdapter;
+	private final AnnotationElementAdapter<Boolean> uniqueAdapter;
 
-	private final AnnotationElementAdapter<String> nullableAdapter;
+	private final AnnotationElementAdapter<Boolean> nullableAdapter;
 
-	private final AnnotationElementAdapter<String> insertableAdapter;
+	private final AnnotationElementAdapter<Boolean> insertableAdapter;
 
-	private final AnnotationElementAdapter<String> updatableAdapter;
+	private final AnnotationElementAdapter<Boolean> updatableAdapter;
 
 	private String table;
 	private Boolean unique;
@@ -61,13 +61,13 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 		this.tableDeclarationAdapter = this.buildStringElementAdapter(this.tableElementName());
 		this.tableAdapter = this.buildShortCircuitElementAdapter(this.tableDeclarationAdapter);
 		this.uniqueDeclarationAdapter = this.buildBooleanElementAdapter(this.uniqueElementName());
-		this.uniqueAdapter = this.buildShortCircuitElementAdapter(this.uniqueDeclarationAdapter);
+		this.uniqueAdapter = this.buildShortCircuitBooleanElementAdapter(this.uniqueDeclarationAdapter);
 		this.nullableDeclarationAdapter = this.buildBooleanElementAdapter(this.nullableElementName());
-		this.nullableAdapter = this.buildShortCircuitElementAdapter(this.nullableDeclarationAdapter);
+		this.nullableAdapter = this.buildShortCircuitBooleanElementAdapter(this.nullableDeclarationAdapter);
 		this.insertableDeclarationAdapter = this.buildBooleanElementAdapter(this.insertableElementName());
-		this.insertableAdapter = this.buildShortCircuitElementAdapter(this.insertableDeclarationAdapter);
+		this.insertableAdapter = this.buildShortCircuitBooleanElementAdapter(this.insertableDeclarationAdapter);
 		this.updatableDeclarationAdapter = this.buildBooleanElementAdapter(this.updatableElementName());
-		this.updatableAdapter = this.buildShortCircuitElementAdapter(this.updatableDeclarationAdapter);
+		this.updatableAdapter = this.buildShortCircuitBooleanElementAdapter(this.updatableDeclarationAdapter);
 	}
 	
 	@Override
@@ -120,7 +120,7 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 	public void setUnique(Boolean newUnique) {
 		Boolean oldUnique = this.unique;
 		this.unique = newUnique;
-		this.uniqueAdapter.setValue(BooleanUtility.toJavaAnnotationValue(newUnique));
+		this.uniqueAdapter.setValue(newUnique);
 		firePropertyChanged(UNIQUE_PROPERTY, oldUnique, newUnique);
 	}
 
@@ -131,7 +131,7 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 	public void setNullable(Boolean newNullable) {
 		Boolean oldNullable = this.nullable;
 		this.nullable = newNullable;
-		this.nullableAdapter.setValue(BooleanUtility.toJavaAnnotationValue(newNullable));
+		this.nullableAdapter.setValue(newNullable);
 		firePropertyChanged(NULLABLE_PROPERTY, oldNullable, newNullable);
 	}
 
@@ -142,7 +142,7 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 	public void setInsertable(Boolean newInsertable) {
 		Boolean oldInsertable = this.insertable;
 		this.insertable = newInsertable;
-		this.insertableAdapter.setValue(BooleanUtility.toJavaAnnotationValue(newInsertable));
+		this.insertableAdapter.setValue(newInsertable);
 		firePropertyChanged(INSERTABLE_PROPERTY, oldInsertable, newInsertable);
 	}
 
@@ -153,7 +153,7 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 	public void setUpdatable(Boolean newUpdatable) {
 		Boolean oldUpdatable = this.updatable;
 		this.updatable = newUpdatable;
-		this.updatableAdapter.setValue(BooleanUtility.toJavaAnnotationValue(newUpdatable));
+		this.updatableAdapter.setValue(newUpdatable);
 		firePropertyChanged(UPDATABLE_PROPERTY, oldUpdatable, newUpdatable);
 	}
 
@@ -197,19 +197,19 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 	}
 	
 	protected Boolean unique(CompilationUnit astRoot) {
-		return BooleanUtility.fromJavaAnnotationValue(this.uniqueAdapter.getValue(astRoot));
+		return this.uniqueAdapter.getValue(astRoot);
 	}
 	
 	protected Boolean nullable(CompilationUnit astRoot) {
-		return BooleanUtility.fromJavaAnnotationValue(this.nullableAdapter.getValue(astRoot));
+		return this.nullableAdapter.getValue(astRoot);
 	}
 	
 	protected Boolean insertable(CompilationUnit astRoot) {
-		return BooleanUtility.fromJavaAnnotationValue(this.insertableAdapter.getValue(astRoot));
+		return this.insertableAdapter.getValue(astRoot);
 	}
 	
 	protected Boolean updatable(CompilationUnit astRoot) {
-		return BooleanUtility.fromJavaAnnotationValue(this.updatableAdapter.getValue(astRoot));
+		return this.updatableAdapter.getValue(astRoot);
 	}
 
 }

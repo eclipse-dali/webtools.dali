@@ -65,6 +65,10 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 	protected AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
 		return new ShortCircuitAnnotationElementAdapter<String>(this.getMember(), daea);
 	}
+	
+	protected AnnotationElementAdapter<Boolean> buildBooleanAnnotationElementAdapter(DeclarationAnnotationElementAdapter<Boolean> daea) {
+		return new ShortCircuitAnnotationElementAdapter<Boolean>(this.getMember(), daea);
+	}
 
 	/**
 	 * return the Java adapter's 'targetEntity' element adapter config

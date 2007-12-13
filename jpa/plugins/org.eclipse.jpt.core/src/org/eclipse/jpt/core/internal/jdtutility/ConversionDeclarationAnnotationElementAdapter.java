@@ -151,8 +151,8 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 	 * remove the annotation when the last element is removed;
 	 * the default expression converter expects boolean constant expressions.
 	 */
-	public static ConversionDeclarationAnnotationElementAdapter<String> forBooleans(DeclarationAnnotationAdapter annotationAdapter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, BooleanStringExpressionConverter.instance());
+	public static ConversionDeclarationAnnotationElementAdapter<Boolean> forBooleans(DeclarationAnnotationAdapter annotationAdapter) {
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, BooleanExpressionConverter.instance());
 	}
 
 	/**
@@ -160,15 +160,15 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 	 * element is removed; the default expression converter expects
 	 * boolean constant expressions.
 	 */
-	public static ConversionDeclarationAnnotationElementAdapter<String> forBooleans(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, BooleanStringExpressionConverter.instance());
+	public static ConversionDeclarationAnnotationElementAdapter<Boolean> forBooleans(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, BooleanExpressionConverter.instance());
 	}
 
 	/**
 	 * The default expression converter expects boolean constant expressions.
 	 */
-	public static ConversionDeclarationAnnotationElementAdapter<String> forBooleans(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, removeAnnotationWhenEmpty, BooleanStringExpressionConverter.instance());
+	public static ConversionDeclarationAnnotationElementAdapter<Boolean> forBooleans(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, removeAnnotationWhenEmpty, BooleanExpressionConverter.instance());
 	}
 
 	/**

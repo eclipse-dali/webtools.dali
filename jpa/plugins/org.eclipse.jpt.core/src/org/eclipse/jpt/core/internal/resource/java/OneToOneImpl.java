@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.BooleanStringExpressionConverter;
+import org.eclipse.jpt.core.internal.jdtutility.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
@@ -30,11 +30,11 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 
 	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildFetchAdapter();
 
-	private static final DeclarationAnnotationElementAdapter<String> OPTIONAL_ADAPTER = buildOptionalAdapter();
+	private static final DeclarationAnnotationElementAdapter<Boolean> OPTIONAL_ADAPTER = buildOptionalAdapter();
 
 	private static final DeclarationAnnotationElementAdapter<String> MAPPED_BY_ADAPTER = buildMappedByAdapter();	
 
-	private final AnnotationElementAdapter<String> optionalAdapter;
+	private final AnnotationElementAdapter<Boolean> optionalAdapter;
 
 	private final AnnotationElementAdapter<String> mappedByAdapter;
 
@@ -46,7 +46,7 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 	public OneToOneImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.mappedByAdapter = buildAnnotationElementAdapter(MAPPED_BY_ADAPTER);
-		this.optionalAdapter = this.buildAnnotationElementAdapter(OPTIONAL_ADAPTER);
+		this.optionalAdapter = this.buildBooleanAnnotationElementAdapter(OPTIONAL_ADAPTER);
 	}
 	
 	@Override
@@ -87,7 +87,7 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 	public void setOptional(Boolean newOptional) {
 		Boolean oldOptional = this.optional;
 		this.optional = newOptional;
-		this.optionalAdapter.setValue(BooleanUtility.toJavaAnnotationValue(newOptional));
+		this.optionalAdapter.setValue(newOptional);
 		firePropertyChanged(OPTIONAL_PROPERTY, oldOptional, newOptional);
 	}
 
@@ -126,7 +126,7 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 	}
 	
 	protected Boolean optional(CompilationUnit astRoot) {
-		return BooleanUtility.fromJavaAnnotationValue(this.optionalAdapter.getValue(astRoot));
+		return this.optionalAdapter.getValue(astRoot);
 	}
 
 
@@ -144,12 +144,12 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 		return buildFetchAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__FETCH);
 	}
 	
-	private static DeclarationAnnotationElementAdapter<String> buildOptionalAdapter() {
+	private static DeclarationAnnotationElementAdapter<Boolean> buildOptionalAdapter() {
 		return buildOptionalAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__OPTIONAL);
 	}
 	
-	private static DeclarationAnnotationElementAdapter<String> buildOptionalAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, false, BooleanStringExpressionConverter.instance());
+	private static DeclarationAnnotationElementAdapter<Boolean> buildOptionalAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, false, BooleanExpressionConverter.instance());
 	}
 	
 	private static DeclarationAnnotationElementAdapter<String> buildMappedByAdapter() {
