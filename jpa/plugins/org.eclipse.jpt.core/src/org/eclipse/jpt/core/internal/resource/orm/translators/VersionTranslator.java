@@ -45,7 +45,7 @@ public class VersionTranslator extends Translator
 	}
 	
 	private Translator createColumnTranslator() {
-		return new ColumnTranslator(COLUMN, ORM_PKG.getVersion_Column());
+		return new ColumnTranslator(COLUMN, ORM_PKG.getColumnMapping_Column());
 	}
 	
 	private Translator createTemporalTranslator() {

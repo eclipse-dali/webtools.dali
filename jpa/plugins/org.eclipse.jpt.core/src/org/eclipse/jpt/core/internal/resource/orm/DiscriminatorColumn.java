@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -23,19 +22,16 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.DiscriminatorColumn#getColumnDefinition <em>Column Definition</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.DiscriminatorColumn#getDiscriminatorType <em>Discriminator Type</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.DiscriminatorColumn#getLength <em>Length</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.DiscriminatorColumn#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorColumn()
  * @model kind="class"
- * @extends IJpaEObject
  * @generated
  */
-public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
+public class DiscriminatorColumn extends JpaEObject implements NamedColumn
 {
 	/**
 	 * The default value of the '{@link #getColumnDefinition() <em>Column Definition</em>}' attribute.
@@ -56,6 +52,26 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 	 * @ordered
 	 */
 	protected String columnDefinition = COLUMN_DEFINITION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
@@ -103,26 +119,6 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 	protected boolean lengthESet;
 
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -153,7 +149,7 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column Definition</em>' attribute.
 	 * @see #setColumnDefinition(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorColumn_ColumnDefinition()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedColumn_ColumnDefinition()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -302,7 +298,7 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorColumn_Name()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedColumn_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -339,12 +335,12 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
 				return getColumnDefinition();
+			case OrmPackage.DISCRIMINATOR_COLUMN__NAME:
+				return getName();
 			case OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				return getDiscriminatorType();
 			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
 				return new Integer(getLength());
-			case OrmPackage.DISCRIMINATOR_COLUMN__NAME:
-				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -362,14 +358,14 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 			case OrmPackage.DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
 				setColumnDefinition((String)newValue);
 				return;
+			case OrmPackage.DISCRIMINATOR_COLUMN__NAME:
+				setName((String)newValue);
+				return;
 			case OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				setDiscriminatorType((DiscriminatorType)newValue);
 				return;
 			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
 				setLength(((Integer)newValue).intValue());
-				return;
-			case OrmPackage.DISCRIMINATOR_COLUMN__NAME:
-				setName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -388,14 +384,14 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 			case OrmPackage.DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
 				setColumnDefinition(COLUMN_DEFINITION_EDEFAULT);
 				return;
+			case OrmPackage.DISCRIMINATOR_COLUMN__NAME:
+				setName(NAME_EDEFAULT);
+				return;
 			case OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				setDiscriminatorType(DISCRIMINATOR_TYPE_EDEFAULT);
 				return;
 			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
 				unsetLength();
-				return;
-			case OrmPackage.DISCRIMINATOR_COLUMN__NAME:
-				setName(NAME_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -413,12 +409,12 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
 				return COLUMN_DEFINITION_EDEFAULT == null ? columnDefinition != null : !COLUMN_DEFINITION_EDEFAULT.equals(columnDefinition);
+			case OrmPackage.DISCRIMINATOR_COLUMN__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				return discriminatorType != DISCRIMINATOR_TYPE_EDEFAULT;
 			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
 				return isSetLength();
-			case OrmPackage.DISCRIMINATOR_COLUMN__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -436,12 +432,12 @@ public class DiscriminatorColumn extends JpaEObject implements IJpaEObject
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (columnDefinition: ");
 		result.append(columnDefinition);
+		result.append(", name: ");
+		result.append(name);
 		result.append(", discriminatorType: ");
 		result.append(discriminatorType);
 		result.append(", length: ");
 		if (lengthESet) result.append(length); else result.append("<unset>");
-		result.append(", name: ");
-		result.append(name);
 		result.append(')');
 		return result.toString();
 	}

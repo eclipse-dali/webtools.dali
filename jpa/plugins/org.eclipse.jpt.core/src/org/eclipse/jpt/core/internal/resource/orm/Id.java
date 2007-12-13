@@ -25,7 +25,6 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Id#getColumn <em>Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Id#getGeneratedValue <em>Generated Value</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Id#getTemporal <em>Temporal</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Id#getTableGenerator <em>Table Generator</em>}</li>
@@ -37,7 +36,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * @model kind="class"
  * @generated
  */
-public class Id extends JpaEObject implements AttributeMapping
+public class Id extends JpaEObject implements AttributeMapping, ColumnMapping
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -185,7 +184,7 @@ public class Id extends JpaEObject implements AttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column</em>' containment reference.
 	 * @see #setColumn(Column)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getId_Column()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getColumnMapping_Column()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -586,6 +585,44 @@ public class Id extends JpaEObject implements AttributeMapping
 				return sequenceGenerator != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == ColumnMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ID__COLUMN: return OrmPackage.COLUMN_MAPPING__COLUMN;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == ColumnMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.COLUMN_MAPPING__COLUMN: return OrmPackage.ID__COLUMN;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**

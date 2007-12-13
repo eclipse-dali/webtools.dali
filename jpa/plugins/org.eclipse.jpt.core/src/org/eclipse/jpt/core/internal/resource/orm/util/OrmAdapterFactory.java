@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmAdapterFactory.java,v 1.1.2.7 2007/12/12 20:44:54 kmoore Exp $
+ * $Id: OrmAdapterFactory.java,v 1.1.2.8 2007/12/13 14:48:58 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -10,7 +10,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.resource.orm.*;
+import org.eclipse.jpt.core.internal.resource.orm.AbstractColumn;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
 import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.internal.resource.orm.Attributes;
 import org.eclipse.jpt.core.internal.resource.orm.Basic;
 import org.eclipse.jpt.core.internal.resource.orm.CascadeType;
 import org.eclipse.jpt.core.internal.resource.orm.Column;
+import org.eclipse.jpt.core.internal.resource.orm.ColumnMapping;
 import org.eclipse.jpt.core.internal.resource.orm.ColumnResult;
 import org.eclipse.jpt.core.internal.resource.orm.DiscriminatorColumn;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
@@ -42,6 +43,7 @@ import org.eclipse.jpt.core.internal.resource.orm.ManyToMany;
 import org.eclipse.jpt.core.internal.resource.orm.ManyToOne;
 import org.eclipse.jpt.core.internal.resource.orm.MapKey;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.orm.NamedColumn;
 import org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery;
 import org.eclipse.jpt.core.internal.resource.orm.NamedQuery;
 import org.eclipse.jpt.core.internal.resource.orm.OneToMany;
@@ -175,6 +177,11 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseAttributeMapping(AttributeMapping object)
 			{
 				return createAttributeMappingAdapter();
+			}
+			@Override
+			public Adapter caseColumnMapping(ColumnMapping object)
+			{
+				return createColumnMappingAdapter();
 			}
 			@Override
 			public Adapter caseId(Id object)
@@ -569,6 +576,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createAttributeMappingAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.ColumnMapping <em>Column Mapping</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.ColumnMapping
+	 * @generated
+	 */
+	public Adapter createColumnMappingAdapter()
 	{
 		return null;
 	}

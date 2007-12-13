@@ -27,7 +27,6 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getFetch <em>Fetch</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#isOptional <em>Optional</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getColumn <em>Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getLob <em>Lob</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getTemporal <em>Temporal</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getEnumerated <em>Enumerated</em>}</li>
@@ -38,7 +37,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * @model kind="class"
  * @generated
  */
-public class Basic extends JpaEObject implements AttributeMapping
+public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -59,6 +58,16 @@ public class Basic extends JpaEObject implements AttributeMapping
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getColumn() <em>Column</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getColumn()
+	 * @generated
+	 * @ordered
+	 */
+	protected Column column;
 
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
@@ -104,16 +113,6 @@ public class Basic extends JpaEObject implements AttributeMapping
 	 * @ordered
 	 */
 	protected boolean optionalESet;
-
-	/**
-	 * The cached value of the '{@link #getColumn() <em>Column</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getColumn()
-	 * @generated
-	 * @ordered
-	 */
-	protected Column column;
 
 	/**
 	 * The cached value of the '{@link #getLob() <em>Lob</em>}' containment reference.
@@ -345,7 +344,7 @@ public class Basic extends JpaEObject implements AttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column</em>' containment reference.
 	 * @see #setColumn(Column)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getBasic_Column()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getColumnMapping_Column()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -555,12 +554,12 @@ public class Basic extends JpaEObject implements AttributeMapping
 		{
 			case OrmPackage.BASIC__NAME:
 				return getName();
+			case OrmPackage.BASIC__COLUMN:
+				return getColumn();
 			case OrmPackage.BASIC__FETCH:
 				return getFetch();
 			case OrmPackage.BASIC__OPTIONAL:
 				return isOptional() ? Boolean.TRUE : Boolean.FALSE;
-			case OrmPackage.BASIC__COLUMN:
-				return getColumn();
 			case OrmPackage.BASIC__LOB:
 				return getLob();
 			case OrmPackage.BASIC__TEMPORAL:
@@ -584,14 +583,14 @@ public class Basic extends JpaEObject implements AttributeMapping
 			case OrmPackage.BASIC__NAME:
 				setName((String)newValue);
 				return;
+			case OrmPackage.BASIC__COLUMN:
+				setColumn((Column)newValue);
+				return;
 			case OrmPackage.BASIC__FETCH:
 				setFetch((FetchType)newValue);
 				return;
 			case OrmPackage.BASIC__OPTIONAL:
 				setOptional(((Boolean)newValue).booleanValue());
-				return;
-			case OrmPackage.BASIC__COLUMN:
-				setColumn((Column)newValue);
 				return;
 			case OrmPackage.BASIC__LOB:
 				setLob((Lob)newValue);
@@ -619,14 +618,14 @@ public class Basic extends JpaEObject implements AttributeMapping
 			case OrmPackage.BASIC__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case OrmPackage.BASIC__COLUMN:
+				setColumn((Column)null);
+				return;
 			case OrmPackage.BASIC__FETCH:
 				setFetch(FETCH_EDEFAULT);
 				return;
 			case OrmPackage.BASIC__OPTIONAL:
 				unsetOptional();
-				return;
-			case OrmPackage.BASIC__COLUMN:
-				setColumn((Column)null);
 				return;
 			case OrmPackage.BASIC__LOB:
 				setLob((Lob)null);
@@ -653,12 +652,12 @@ public class Basic extends JpaEObject implements AttributeMapping
 		{
 			case OrmPackage.BASIC__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case OrmPackage.BASIC__COLUMN:
+				return column != null;
 			case OrmPackage.BASIC__FETCH:
 				return fetch != FETCH_EDEFAULT;
 			case OrmPackage.BASIC__OPTIONAL:
 				return isSetOptional();
-			case OrmPackage.BASIC__COLUMN:
-				return column != null;
 			case OrmPackage.BASIC__LOB:
 				return lob != null;
 			case OrmPackage.BASIC__TEMPORAL:
@@ -667,6 +666,44 @@ public class Basic extends JpaEObject implements AttributeMapping
 				return ENUMERATED_EDEFAULT == null ? enumerated != null : !ENUMERATED_EDEFAULT.equals(enumerated);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == ColumnMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.BASIC__COLUMN: return OrmPackage.COLUMN_MAPPING__COLUMN;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == ColumnMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.COLUMN_MAPPING__COLUMN: return OrmPackage.BASIC__COLUMN;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**

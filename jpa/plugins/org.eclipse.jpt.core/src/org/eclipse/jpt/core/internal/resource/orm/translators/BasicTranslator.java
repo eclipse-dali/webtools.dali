@@ -57,7 +57,7 @@ public class BasicTranslator extends Translator
 	}
 	
 	private Translator createColumnTranslator() {
-		return new ColumnTranslator(COLUMN, ORM_PKG.getBasic_Column());
+		return new ColumnTranslator(COLUMN, ORM_PKG.getColumnMapping_Column());
 	}
 	
 	private Translator createLobTranslator() {

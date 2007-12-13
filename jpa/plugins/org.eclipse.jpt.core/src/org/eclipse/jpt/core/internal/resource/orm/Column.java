@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -23,25 +22,17 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Column#getColumnDefinition <em>Column Definition</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Column#isInsertable <em>Insertable</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Column#getLength <em>Length</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Column#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Column#isNullable <em>Nullable</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Column#getPrecision <em>Precision</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Column#getScale <em>Scale</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Column#getTable <em>Table</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Column#isUnique <em>Unique</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Column#isUpdatable <em>Updatable</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getColumn()
  * @model kind="class"
- * @extends IJpaEObject
  * @generated
  */
-public class Column extends JpaEObject implements IJpaEObject
+public class Column extends JpaEObject implements AbstractColumn
 {
 	/**
 	 * The default value of the '{@link #getColumnDefinition() <em>Column Definition</em>}' attribute.
@@ -64,64 +55,6 @@ public class Column extends JpaEObject implements IJpaEObject
 	protected String columnDefinition = COLUMN_DEFINITION_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isInsertable() <em>Insertable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isInsertable()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean INSERTABLE_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isInsertable() <em>Insertable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isInsertable()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean insertable = INSERTABLE_EDEFAULT;
-
-	/**
-	 * This is true if the Insertable attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean insertableESet;
-
-	/**
-	 * The default value of the '{@link #getLength() <em>Length</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getLength()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int LENGTH_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getLength() <em>Length</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getLength()
-	 * @generated
-	 * @ordered
-	 */
-	protected int length = LENGTH_EDEFAULT;
-
-	/**
-	 * This is true if the Length attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean lengthESet;
-
-	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -142,91 +75,44 @@ public class Column extends JpaEObject implements IJpaEObject
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isNullable() <em>Nullable</em>}' attribute.
+	 * The default value of the '{@link #getInsertable() <em>Insertable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isNullable()
+	 * @see #getInsertable()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean NULLABLE_EDEFAULT = false;
+	protected static final Boolean INSERTABLE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #isNullable() <em>Nullable</em>}' attribute.
+	 * The cached value of the '{@link #getInsertable() <em>Insertable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isNullable()
+	 * @see #getInsertable()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean nullable = NULLABLE_EDEFAULT;
+	protected Boolean insertable = INSERTABLE_EDEFAULT;
 
 	/**
-	 * This is true if the Nullable attribute has been set.
+	 * The default value of the '{@link #getNullable() <em>Nullable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @see #getNullable()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean nullableESet;
+	protected static final Boolean NULLABLE_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getPrecision() <em>Precision</em>}' attribute.
+	 * The cached value of the '{@link #getNullable() <em>Nullable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getPrecision()
+	 * @see #getNullable()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int PRECISION_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getPrecision() <em>Precision</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPrecision()
-	 * @generated
-	 * @ordered
-	 */
-	protected int precision = PRECISION_EDEFAULT;
-
-	/**
-	 * This is true if the Precision attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean precisionESet;
-
-	/**
-	 * The default value of the '{@link #getScale() <em>Scale</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getScale()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int SCALE_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getScale() <em>Scale</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getScale()
-	 * @generated
-	 * @ordered
-	 */
-	protected int scale = SCALE_EDEFAULT;
-
-	/**
-	 * This is true if the Scale attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean scaleESet;
+	protected Boolean nullable = NULLABLE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getTable() <em>Table</em>}' attribute.
@@ -249,62 +135,104 @@ public class Column extends JpaEObject implements IJpaEObject
 	protected String table = TABLE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isUnique() <em>Unique</em>}' attribute.
+	 * The default value of the '{@link #getUnique() <em>Unique</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isUnique()
+	 * @see #getUnique()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean UNIQUE_EDEFAULT = false;
+	protected static final Boolean UNIQUE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #isUnique() <em>Unique</em>}' attribute.
+	 * The cached value of the '{@link #getUnique() <em>Unique</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isUnique()
+	 * @see #getUnique()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean unique = UNIQUE_EDEFAULT;
+	protected Boolean unique = UNIQUE_EDEFAULT;
 
 	/**
-	 * This is true if the Unique attribute has been set.
+	 * The default value of the '{@link #getUpdatable() <em>Updatable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @see #getUpdatable()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean uniqueESet;
+	protected static final Boolean UPDATABLE_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #isUpdatable() <em>Updatable</em>}' attribute.
+	 * The cached value of the '{@link #getUpdatable() <em>Updatable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isUpdatable()
+	 * @see #getUpdatable()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean UPDATABLE_EDEFAULT = false;
+	protected Boolean updatable = UPDATABLE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #isUpdatable() <em>Updatable</em>}' attribute.
+	 * The default value of the '{@link #getLength() <em>Length</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isUpdatable()
+	 * @see #getLength()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean updatable = UPDATABLE_EDEFAULT;
+	protected static final Integer LENGTH_EDEFAULT = null;
 
 	/**
-	 * This is true if the Updatable attribute has been set.
+	 * The cached value of the '{@link #getLength() <em>Length</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @see #getLength()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean updatableESet;
+	protected Integer length = LENGTH_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getPrecision() <em>Precision</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPrecision()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Integer PRECISION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getPrecision() <em>Precision</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPrecision()
+	 * @generated
+	 * @ordered
+	 */
+	protected Integer precision = PRECISION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getScale() <em>Scale</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getScale()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Integer SCALE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getScale() <em>Scale</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getScale()
+	 * @generated
+	 * @ordered
+	 */
+	protected Integer scale = SCALE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -337,7 +265,7 @@ public class Column extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column Definition</em>' attribute.
 	 * @see #setColumnDefinition(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getColumn_ColumnDefinition()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedColumn_ColumnDefinition()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -363,81 +291,6 @@ public class Column extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Insertable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Insertable</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Insertable</em>' attribute.
-	 * @see #isSetInsertable()
-	 * @see #unsetInsertable()
-	 * @see #setInsertable(boolean)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getColumn_Insertable()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
-	 * @generated
-	 */
-	public boolean isInsertable()
-	{
-		return insertable;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#isInsertable <em>Insertable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Insertable</em>' attribute.
-	 * @see #isSetInsertable()
-	 * @see #unsetInsertable()
-	 * @see #isInsertable()
-	 * @generated
-	 */
-	public void setInsertable(boolean newInsertable)
-	{
-		boolean oldInsertable = insertable;
-		insertable = newInsertable;
-		boolean oldInsertableESet = insertableESet;
-		insertableESet = true;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__INSERTABLE, oldInsertable, insertable, !oldInsertableESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#isInsertable <em>Insertable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetInsertable()
-	 * @see #isInsertable()
-	 * @see #setInsertable(boolean)
-	 * @generated
-	 */
-	public void unsetInsertable()
-	{
-		boolean oldInsertable = insertable;
-		boolean oldInsertableESet = insertableESet;
-		insertable = INSERTABLE_EDEFAULT;
-		insertableESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.COLUMN__INSERTABLE, oldInsertable, INSERTABLE_EDEFAULT, oldInsertableESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#isInsertable <em>Insertable</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Insertable</em>' attribute is set.
-	 * @see #unsetInsertable()
-	 * @see #isInsertable()
-	 * @see #setInsertable(boolean)
-	 * @generated
-	 */
-	public boolean isSetInsertable()
-	{
-		return insertableESet;
-	}
-
-	/**
 	 * Returns the value of the '<em><b>Length</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -446,14 +299,12 @@ public class Column extends JpaEObject implements IJpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Length</em>' attribute.
-	 * @see #isSetLength()
-	 * @see #unsetLength()
-	 * @see #setLength(int)
+	 * @see #setLength(Integer)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getColumn_Length()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Int"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
-	public int getLength()
+	public Integer getLength()
 	{
 		return length;
 	}
@@ -463,53 +314,15 @@ public class Column extends JpaEObject implements IJpaEObject
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Length</em>' attribute.
-	 * @see #isSetLength()
-	 * @see #unsetLength()
 	 * @see #getLength()
 	 * @generated
 	 */
-	public void setLength(int newLength)
+	public void setLength(Integer newLength)
 	{
-		int oldLength = length;
+		Integer oldLength = length;
 		length = newLength;
-		boolean oldLengthESet = lengthESet;
-		lengthESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__LENGTH, oldLength, length, !oldLengthESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#getLength <em>Length</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetLength()
-	 * @see #getLength()
-	 * @see #setLength(int)
-	 * @generated
-	 */
-	public void unsetLength()
-	{
-		int oldLength = length;
-		boolean oldLengthESet = lengthESet;
-		length = LENGTH_EDEFAULT;
-		lengthESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.COLUMN__LENGTH, oldLength, LENGTH_EDEFAULT, oldLengthESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#getLength <em>Length</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Length</em>' attribute is set.
-	 * @see #unsetLength()
-	 * @see #getLength()
-	 * @see #setLength(int)
-	 * @generated
-	 */
-	public boolean isSetLength()
-	{
-		return lengthESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__LENGTH, oldLength, length));
 	}
 
 	/**
@@ -522,7 +335,7 @@ public class Column extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getColumn_Name()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedColumn_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -548,6 +361,41 @@ public class Column extends JpaEObject implements IJpaEObject
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Insertable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Insertable</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Insertable</em>' attribute.
+	 * @see #setInsertable(Boolean)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAbstractColumn_Insertable()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getInsertable()
+	{
+		return insertable;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#getInsertable <em>Insertable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Insertable</em>' attribute.
+	 * @see #getInsertable()
+	 * @generated
+	 */
+	public void setInsertable(Boolean newInsertable)
+	{
+		Boolean oldInsertable = insertable;
+		insertable = newInsertable;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__INSERTABLE, oldInsertable, insertable));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Nullable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -556,70 +404,30 @@ public class Column extends JpaEObject implements IJpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Nullable</em>' attribute.
-	 * @see #isSetNullable()
-	 * @see #unsetNullable()
-	 * @see #setNullable(boolean)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getColumn_Nullable()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @see #setNullable(Boolean)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAbstractColumn_Nullable()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	public boolean isNullable()
+	public Boolean getNullable()
 	{
 		return nullable;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#isNullable <em>Nullable</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#getNullable <em>Nullable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Nullable</em>' attribute.
-	 * @see #isSetNullable()
-	 * @see #unsetNullable()
-	 * @see #isNullable()
+	 * @see #getNullable()
 	 * @generated
 	 */
-	public void setNullable(boolean newNullable)
+	public void setNullable(Boolean newNullable)
 	{
-		boolean oldNullable = nullable;
+		Boolean oldNullable = nullable;
 		nullable = newNullable;
-		boolean oldNullableESet = nullableESet;
-		nullableESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__NULLABLE, oldNullable, nullable, !oldNullableESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#isNullable <em>Nullable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetNullable()
-	 * @see #isNullable()
-	 * @see #setNullable(boolean)
-	 * @generated
-	 */
-	public void unsetNullable()
-	{
-		boolean oldNullable = nullable;
-		boolean oldNullableESet = nullableESet;
-		nullable = NULLABLE_EDEFAULT;
-		nullableESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.COLUMN__NULLABLE, oldNullable, NULLABLE_EDEFAULT, oldNullableESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#isNullable <em>Nullable</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Nullable</em>' attribute is set.
-	 * @see #unsetNullable()
-	 * @see #isNullable()
-	 * @see #setNullable(boolean)
-	 * @generated
-	 */
-	public boolean isSetNullable()
-	{
-		return nullableESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__NULLABLE, oldNullable, nullable));
 	}
 
 	/**
@@ -631,14 +439,12 @@ public class Column extends JpaEObject implements IJpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Precision</em>' attribute.
-	 * @see #isSetPrecision()
-	 * @see #unsetPrecision()
-	 * @see #setPrecision(int)
+	 * @see #setPrecision(Integer)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getColumn_Precision()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Int"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
-	public int getPrecision()
+	public Integer getPrecision()
 	{
 		return precision;
 	}
@@ -648,53 +454,15 @@ public class Column extends JpaEObject implements IJpaEObject
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Precision</em>' attribute.
-	 * @see #isSetPrecision()
-	 * @see #unsetPrecision()
 	 * @see #getPrecision()
 	 * @generated
 	 */
-	public void setPrecision(int newPrecision)
+	public void setPrecision(Integer newPrecision)
 	{
-		int oldPrecision = precision;
+		Integer oldPrecision = precision;
 		precision = newPrecision;
-		boolean oldPrecisionESet = precisionESet;
-		precisionESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__PRECISION, oldPrecision, precision, !oldPrecisionESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#getPrecision <em>Precision</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetPrecision()
-	 * @see #getPrecision()
-	 * @see #setPrecision(int)
-	 * @generated
-	 */
-	public void unsetPrecision()
-	{
-		int oldPrecision = precision;
-		boolean oldPrecisionESet = precisionESet;
-		precision = PRECISION_EDEFAULT;
-		precisionESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.COLUMN__PRECISION, oldPrecision, PRECISION_EDEFAULT, oldPrecisionESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#getPrecision <em>Precision</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Precision</em>' attribute is set.
-	 * @see #unsetPrecision()
-	 * @see #getPrecision()
-	 * @see #setPrecision(int)
-	 * @generated
-	 */
-	public boolean isSetPrecision()
-	{
-		return precisionESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__PRECISION, oldPrecision, precision));
 	}
 
 	/**
@@ -706,14 +474,12 @@ public class Column extends JpaEObject implements IJpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Scale</em>' attribute.
-	 * @see #isSetScale()
-	 * @see #unsetScale()
-	 * @see #setScale(int)
+	 * @see #setScale(Integer)
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getColumn_Scale()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Int"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
-	public int getScale()
+	public Integer getScale()
 	{
 		return scale;
 	}
@@ -723,53 +489,15 @@ public class Column extends JpaEObject implements IJpaEObject
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Scale</em>' attribute.
-	 * @see #isSetScale()
-	 * @see #unsetScale()
 	 * @see #getScale()
 	 * @generated
 	 */
-	public void setScale(int newScale)
+	public void setScale(Integer newScale)
 	{
-		int oldScale = scale;
+		Integer oldScale = scale;
 		scale = newScale;
-		boolean oldScaleESet = scaleESet;
-		scaleESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__SCALE, oldScale, scale, !oldScaleESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#getScale <em>Scale</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetScale()
-	 * @see #getScale()
-	 * @see #setScale(int)
-	 * @generated
-	 */
-	public void unsetScale()
-	{
-		int oldScale = scale;
-		boolean oldScaleESet = scaleESet;
-		scale = SCALE_EDEFAULT;
-		scaleESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.COLUMN__SCALE, oldScale, SCALE_EDEFAULT, oldScaleESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#getScale <em>Scale</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Scale</em>' attribute is set.
-	 * @see #unsetScale()
-	 * @see #getScale()
-	 * @see #setScale(int)
-	 * @generated
-	 */
-	public boolean isSetScale()
-	{
-		return scaleESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__SCALE, oldScale, scale));
 	}
 
 	/**
@@ -782,7 +510,7 @@ public class Column extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table</em>' attribute.
 	 * @see #setTable(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getColumn_Table()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAbstractColumn_Table()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -816,70 +544,30 @@ public class Column extends JpaEObject implements IJpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Unique</em>' attribute.
-	 * @see #isSetUnique()
-	 * @see #unsetUnique()
-	 * @see #setUnique(boolean)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getColumn_Unique()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @see #setUnique(Boolean)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAbstractColumn_Unique()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	public boolean isUnique()
+	public Boolean getUnique()
 	{
 		return unique;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#isUnique <em>Unique</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#getUnique <em>Unique</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Unique</em>' attribute.
-	 * @see #isSetUnique()
-	 * @see #unsetUnique()
-	 * @see #isUnique()
+	 * @see #getUnique()
 	 * @generated
 	 */
-	public void setUnique(boolean newUnique)
+	public void setUnique(Boolean newUnique)
 	{
-		boolean oldUnique = unique;
+		Boolean oldUnique = unique;
 		unique = newUnique;
-		boolean oldUniqueESet = uniqueESet;
-		uniqueESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__UNIQUE, oldUnique, unique, !oldUniqueESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#isUnique <em>Unique</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetUnique()
-	 * @see #isUnique()
-	 * @see #setUnique(boolean)
-	 * @generated
-	 */
-	public void unsetUnique()
-	{
-		boolean oldUnique = unique;
-		boolean oldUniqueESet = uniqueESet;
-		unique = UNIQUE_EDEFAULT;
-		uniqueESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.COLUMN__UNIQUE, oldUnique, UNIQUE_EDEFAULT, oldUniqueESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#isUnique <em>Unique</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Unique</em>' attribute is set.
-	 * @see #unsetUnique()
-	 * @see #isUnique()
-	 * @see #setUnique(boolean)
-	 * @generated
-	 */
-	public boolean isSetUnique()
-	{
-		return uniqueESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__UNIQUE, oldUnique, unique));
 	}
 
 	/**
@@ -891,70 +579,30 @@ public class Column extends JpaEObject implements IJpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Updatable</em>' attribute.
-	 * @see #isSetUpdatable()
-	 * @see #unsetUpdatable()
-	 * @see #setUpdatable(boolean)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getColumn_Updatable()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @see #setUpdatable(Boolean)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAbstractColumn_Updatable()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	public boolean isUpdatable()
+	public Boolean getUpdatable()
 	{
 		return updatable;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#isUpdatable <em>Updatable</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#getUpdatable <em>Updatable</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Updatable</em>' attribute.
-	 * @see #isSetUpdatable()
-	 * @see #unsetUpdatable()
-	 * @see #isUpdatable()
+	 * @see #getUpdatable()
 	 * @generated
 	 */
-	public void setUpdatable(boolean newUpdatable)
+	public void setUpdatable(Boolean newUpdatable)
 	{
-		boolean oldUpdatable = updatable;
+		Boolean oldUpdatable = updatable;
 		updatable = newUpdatable;
-		boolean oldUpdatableESet = updatableESet;
-		updatableESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__UPDATABLE, oldUpdatable, updatable, !oldUpdatableESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#isUpdatable <em>Updatable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetUpdatable()
-	 * @see #isUpdatable()
-	 * @see #setUpdatable(boolean)
-	 * @generated
-	 */
-	public void unsetUpdatable()
-	{
-		boolean oldUpdatable = updatable;
-		boolean oldUpdatableESet = updatableESet;
-		updatable = UPDATABLE_EDEFAULT;
-		updatableESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.COLUMN__UPDATABLE, oldUpdatable, UPDATABLE_EDEFAULT, oldUpdatableESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Column#isUpdatable <em>Updatable</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Updatable</em>' attribute is set.
-	 * @see #unsetUpdatable()
-	 * @see #isUpdatable()
-	 * @see #setUpdatable(boolean)
-	 * @generated
-	 */
-	public boolean isSetUpdatable()
-	{
-		return updatableESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN__UPDATABLE, oldUpdatable, updatable));
 	}
 
 	/**
@@ -969,24 +617,24 @@ public class Column extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.COLUMN__COLUMN_DEFINITION:
 				return getColumnDefinition();
-			case OrmPackage.COLUMN__INSERTABLE:
-				return isInsertable() ? Boolean.TRUE : Boolean.FALSE;
-			case OrmPackage.COLUMN__LENGTH:
-				return new Integer(getLength());
 			case OrmPackage.COLUMN__NAME:
 				return getName();
+			case OrmPackage.COLUMN__INSERTABLE:
+				return getInsertable();
 			case OrmPackage.COLUMN__NULLABLE:
-				return isNullable() ? Boolean.TRUE : Boolean.FALSE;
-			case OrmPackage.COLUMN__PRECISION:
-				return new Integer(getPrecision());
-			case OrmPackage.COLUMN__SCALE:
-				return new Integer(getScale());
+				return getNullable();
 			case OrmPackage.COLUMN__TABLE:
 				return getTable();
 			case OrmPackage.COLUMN__UNIQUE:
-				return isUnique() ? Boolean.TRUE : Boolean.FALSE;
+				return getUnique();
 			case OrmPackage.COLUMN__UPDATABLE:
-				return isUpdatable() ? Boolean.TRUE : Boolean.FALSE;
+				return getUpdatable();
+			case OrmPackage.COLUMN__LENGTH:
+				return getLength();
+			case OrmPackage.COLUMN__PRECISION:
+				return getPrecision();
+			case OrmPackage.COLUMN__SCALE:
+				return getScale();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1004,32 +652,32 @@ public class Column extends JpaEObject implements IJpaEObject
 			case OrmPackage.COLUMN__COLUMN_DEFINITION:
 				setColumnDefinition((String)newValue);
 				return;
-			case OrmPackage.COLUMN__INSERTABLE:
-				setInsertable(((Boolean)newValue).booleanValue());
-				return;
-			case OrmPackage.COLUMN__LENGTH:
-				setLength(((Integer)newValue).intValue());
-				return;
 			case OrmPackage.COLUMN__NAME:
 				setName((String)newValue);
 				return;
+			case OrmPackage.COLUMN__INSERTABLE:
+				setInsertable((Boolean)newValue);
+				return;
 			case OrmPackage.COLUMN__NULLABLE:
-				setNullable(((Boolean)newValue).booleanValue());
-				return;
-			case OrmPackage.COLUMN__PRECISION:
-				setPrecision(((Integer)newValue).intValue());
-				return;
-			case OrmPackage.COLUMN__SCALE:
-				setScale(((Integer)newValue).intValue());
+				setNullable((Boolean)newValue);
 				return;
 			case OrmPackage.COLUMN__TABLE:
 				setTable((String)newValue);
 				return;
 			case OrmPackage.COLUMN__UNIQUE:
-				setUnique(((Boolean)newValue).booleanValue());
+				setUnique((Boolean)newValue);
 				return;
 			case OrmPackage.COLUMN__UPDATABLE:
-				setUpdatable(((Boolean)newValue).booleanValue());
+				setUpdatable((Boolean)newValue);
+				return;
+			case OrmPackage.COLUMN__LENGTH:
+				setLength((Integer)newValue);
+				return;
+			case OrmPackage.COLUMN__PRECISION:
+				setPrecision((Integer)newValue);
+				return;
+			case OrmPackage.COLUMN__SCALE:
+				setScale((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -1048,32 +696,32 @@ public class Column extends JpaEObject implements IJpaEObject
 			case OrmPackage.COLUMN__COLUMN_DEFINITION:
 				setColumnDefinition(COLUMN_DEFINITION_EDEFAULT);
 				return;
-			case OrmPackage.COLUMN__INSERTABLE:
-				unsetInsertable();
-				return;
-			case OrmPackage.COLUMN__LENGTH:
-				unsetLength();
-				return;
 			case OrmPackage.COLUMN__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case OrmPackage.COLUMN__INSERTABLE:
+				setInsertable(INSERTABLE_EDEFAULT);
+				return;
 			case OrmPackage.COLUMN__NULLABLE:
-				unsetNullable();
-				return;
-			case OrmPackage.COLUMN__PRECISION:
-				unsetPrecision();
-				return;
-			case OrmPackage.COLUMN__SCALE:
-				unsetScale();
+				setNullable(NULLABLE_EDEFAULT);
 				return;
 			case OrmPackage.COLUMN__TABLE:
 				setTable(TABLE_EDEFAULT);
 				return;
 			case OrmPackage.COLUMN__UNIQUE:
-				unsetUnique();
+				setUnique(UNIQUE_EDEFAULT);
 				return;
 			case OrmPackage.COLUMN__UPDATABLE:
-				unsetUpdatable();
+				setUpdatable(UPDATABLE_EDEFAULT);
+				return;
+			case OrmPackage.COLUMN__LENGTH:
+				setLength(LENGTH_EDEFAULT);
+				return;
+			case OrmPackage.COLUMN__PRECISION:
+				setPrecision(PRECISION_EDEFAULT);
+				return;
+			case OrmPackage.COLUMN__SCALE:
+				setScale(SCALE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -1091,24 +739,24 @@ public class Column extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.COLUMN__COLUMN_DEFINITION:
 				return COLUMN_DEFINITION_EDEFAULT == null ? columnDefinition != null : !COLUMN_DEFINITION_EDEFAULT.equals(columnDefinition);
-			case OrmPackage.COLUMN__INSERTABLE:
-				return isSetInsertable();
-			case OrmPackage.COLUMN__LENGTH:
-				return isSetLength();
 			case OrmPackage.COLUMN__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case OrmPackage.COLUMN__INSERTABLE:
+				return INSERTABLE_EDEFAULT == null ? insertable != null : !INSERTABLE_EDEFAULT.equals(insertable);
 			case OrmPackage.COLUMN__NULLABLE:
-				return isSetNullable();
-			case OrmPackage.COLUMN__PRECISION:
-				return isSetPrecision();
-			case OrmPackage.COLUMN__SCALE:
-				return isSetScale();
+				return NULLABLE_EDEFAULT == null ? nullable != null : !NULLABLE_EDEFAULT.equals(nullable);
 			case OrmPackage.COLUMN__TABLE:
 				return TABLE_EDEFAULT == null ? table != null : !TABLE_EDEFAULT.equals(table);
 			case OrmPackage.COLUMN__UNIQUE:
-				return isSetUnique();
+				return UNIQUE_EDEFAULT == null ? unique != null : !UNIQUE_EDEFAULT.equals(unique);
 			case OrmPackage.COLUMN__UPDATABLE:
-				return isSetUpdatable();
+				return UPDATABLE_EDEFAULT == null ? updatable != null : !UPDATABLE_EDEFAULT.equals(updatable);
+			case OrmPackage.COLUMN__LENGTH:
+				return LENGTH_EDEFAULT == null ? length != null : !LENGTH_EDEFAULT.equals(length);
+			case OrmPackage.COLUMN__PRECISION:
+				return PRECISION_EDEFAULT == null ? precision != null : !PRECISION_EDEFAULT.equals(precision);
+			case OrmPackage.COLUMN__SCALE:
+				return SCALE_EDEFAULT == null ? scale != null : !SCALE_EDEFAULT.equals(scale);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1126,24 +774,24 @@ public class Column extends JpaEObject implements IJpaEObject
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (columnDefinition: ");
 		result.append(columnDefinition);
-		result.append(", insertable: ");
-		if (insertableESet) result.append(insertable); else result.append("<unset>");
-		result.append(", length: ");
-		if (lengthESet) result.append(length); else result.append("<unset>");
 		result.append(", name: ");
 		result.append(name);
+		result.append(", insertable: ");
+		result.append(insertable);
 		result.append(", nullable: ");
-		if (nullableESet) result.append(nullable); else result.append("<unset>");
-		result.append(", precision: ");
-		if (precisionESet) result.append(precision); else result.append("<unset>");
-		result.append(", scale: ");
-		if (scaleESet) result.append(scale); else result.append("<unset>");
+		result.append(nullable);
 		result.append(", table: ");
 		result.append(table);
 		result.append(", unique: ");
-		if (uniqueESet) result.append(unique); else result.append("<unset>");
+		result.append(unique);
 		result.append(", updatable: ");
-		if (updatableESet) result.append(updatable); else result.append("<unset>");
+		result.append(updatable);
+		result.append(", length: ");
+		result.append(length);
+		result.append(", precision: ");
+		result.append(precision);
+		result.append(", scale: ");
+		result.append(scale);
 		result.append(')');
 		return result.toString();
 	}

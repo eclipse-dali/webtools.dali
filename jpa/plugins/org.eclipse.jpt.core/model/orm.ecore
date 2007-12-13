@@ -156,9 +156,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="AttributeMapping" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Id" eSuperTypes="#//AttributeMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="ColumnMapping" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="column" eType="#//Column"
         containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Id" eSuperTypes="#//AttributeMapping #//ColumnMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="generatedValue" eType="#//GeneratedValue"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//Temporal"/>
@@ -171,21 +173,17 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributeOverrides" upperBound="-1"
         eType="#//AttributeOverride" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Basic" eSuperTypes="#//AttributeMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="Basic" eSuperTypes="#//AttributeMapping #//ColumnMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fetch" eType="#//FetchType"
         defaultValueLiteral="LAZY"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
         unsettable="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="column" eType="#//Column"
-        containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="lob" eType="#//Lob" containment="true"
         resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//Temporal"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enumerated" eType="#//Enumerated"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Version" eSuperTypes="#//AttributeMapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="column" eType="#//Column"
-        containment="true" resolveProxies="false"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Version" eSuperTypes="#//AttributeMapping #//ColumnMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//Temporal"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ManyToOne" eSuperTypes="#//AttributeMapping">
@@ -273,23 +271,16 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractColumn" abstract="true" interface="true"
       eSuperTypes="#//NamedColumn">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="insertable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
-        unsettable="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nullable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
-        unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="insertable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nullable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="table" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
-        unsettable="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="updatable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
-        unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="updatable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Column" eSuperTypes="#//AbstractColumn">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Int"
-        unsettable="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="precision" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Int"
-        unsettable="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="scale" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Int"
-        unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="precision" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="scale" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ColumnResult">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>

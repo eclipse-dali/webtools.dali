@@ -148,8 +148,10 @@
     <genClasses image="false" ecoreClass="orm.ecore#//AttributeMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AttributeMapping/name"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//ColumnMapping">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//ColumnMapping/column"/>
+    </genClasses>
     <genClasses ecoreClass="orm.ecore#//Id">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Id/column"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Id/generatedValue"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Id/temporal"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Id/tableGenerator"/>
@@ -161,13 +163,11 @@
     <genClasses ecoreClass="orm.ecore#//Basic">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/fetch"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/optional"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Basic/column"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Basic/lob"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/temporal"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/enumerated"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//Version">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Version/column"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Version/temporal"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//ManyToOne">

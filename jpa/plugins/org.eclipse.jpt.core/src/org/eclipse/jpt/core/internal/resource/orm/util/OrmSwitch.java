@@ -2,14 +2,14 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmSwitch.java,v 1.1.2.7 2007/12/12 20:44:54 kmoore Exp $
+ * $Id: OrmSwitch.java,v 1.1.2.8 2007/12/13 14:48:57 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
 import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.resource.orm.*;
+import org.eclipse.jpt.core.internal.resource.orm.AbstractColumn;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
 import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.internal.resource.orm.Attributes;
 import org.eclipse.jpt.core.internal.resource.orm.Basic;
 import org.eclipse.jpt.core.internal.resource.orm.CascadeType;
 import org.eclipse.jpt.core.internal.resource.orm.Column;
+import org.eclipse.jpt.core.internal.resource.orm.ColumnMapping;
 import org.eclipse.jpt.core.internal.resource.orm.ColumnResult;
 import org.eclipse.jpt.core.internal.resource.orm.DiscriminatorColumn;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
@@ -41,6 +42,7 @@ import org.eclipse.jpt.core.internal.resource.orm.ManyToMany;
 import org.eclipse.jpt.core.internal.resource.orm.ManyToOne;
 import org.eclipse.jpt.core.internal.resource.orm.MapKey;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.orm.NamedColumn;
 import org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery;
 import org.eclipse.jpt.core.internal.resource.orm.NamedQuery;
 import org.eclipse.jpt.core.internal.resource.orm.OneToMany;
@@ -216,11 +218,19 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.COLUMN_MAPPING:
+			{
+				ColumnMapping columnMapping = (ColumnMapping)theEObject;
+				T result = caseColumnMapping(columnMapping);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.ID:
 			{
 				Id id = (Id)theEObject;
 				T result = caseId(id);
 				if (result == null) result = caseAttributeMapping(id);
+				if (result == null) result = caseColumnMapping(id);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -237,6 +247,7 @@ public class OrmSwitch<T>
 				Basic basic = (Basic)theEObject;
 				T result = caseBasic(basic);
 				if (result == null) result = caseAttributeMapping(basic);
+				if (result == null) result = caseColumnMapping(basic);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -245,6 +256,7 @@ public class OrmSwitch<T>
 				Version version = (Version)theEObject;
 				T result = caseVersion(version);
 				if (result == null) result = caseAttributeMapping(version);
+				if (result == null) result = caseColumnMapping(version);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -723,6 +735,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseAttributeMapping(AttributeMapping object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Column Mapping</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Column Mapping</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseColumnMapping(ColumnMapping object)
 	{
 		return null;
 	}

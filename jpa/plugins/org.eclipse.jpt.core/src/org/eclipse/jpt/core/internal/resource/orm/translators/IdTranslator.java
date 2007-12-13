@@ -47,7 +47,7 @@ public class IdTranslator extends Translator
 	}
 	
 	private Translator createColumnTranslator() {
-		return new Translator(COLUMN, ORM_PKG.getId_Column());
+		return new Translator(COLUMN, ORM_PKG.getColumnMapping_Column());
 	}
 	
 	private Translator createGeneratedValueTranslator() {

@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -23,180 +22,16 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#getReferencedColumnName <em>Referenced Column Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isUnique <em>Unique</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isNullable <em>Nullable</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isInsertable <em>Insertable</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isUpdatable <em>Updatable</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#getColumnDefinition <em>Column Definition</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#getTable <em>Table</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getJoinColumn()
  * @model kind="class"
- * @extends IJpaEObject
  * @generated
  */
-public class JoinColumn extends JpaEObject implements IJpaEObject
+public class JoinColumn extends JpaEObject implements AbstractColumn
 {
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReferencedColumnName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String REFERENCED_COLUMN_NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReferencedColumnName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String referencedColumnName = REFERENCED_COLUMN_NAME_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #isUnique() <em>Unique</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isUnique()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean UNIQUE_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isUnique() <em>Unique</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isUnique()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean unique = UNIQUE_EDEFAULT;
-
-	/**
-	 * This is true if the Unique attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean uniqueESet;
-
-	/**
-	 * The default value of the '{@link #isNullable() <em>Nullable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isNullable()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean NULLABLE_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isNullable() <em>Nullable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isNullable()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean nullable = NULLABLE_EDEFAULT;
-
-	/**
-	 * This is true if the Nullable attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean nullableESet;
-
-	/**
-	 * The default value of the '{@link #isInsertable() <em>Insertable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isInsertable()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean INSERTABLE_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isInsertable() <em>Insertable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isInsertable()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean insertable = INSERTABLE_EDEFAULT;
-
-	/**
-	 * This is true if the Insertable attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean insertableESet;
-
-	/**
-	 * The default value of the '{@link #isUpdatable() <em>Updatable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isUpdatable()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean UPDATABLE_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isUpdatable() <em>Updatable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isUpdatable()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean updatable = UPDATABLE_EDEFAULT;
-
-	/**
-	 * This is true if the Updatable attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean updatableESet;
-
 	/**
 	 * The default value of the '{@link #getColumnDefinition() <em>Column Definition</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -218,6 +53,66 @@ public class JoinColumn extends JpaEObject implements IJpaEObject
 	protected String columnDefinition = COLUMN_DEFINITION_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getInsertable() <em>Insertable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInsertable()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean INSERTABLE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getInsertable() <em>Insertable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInsertable()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean insertable = INSERTABLE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getNullable() <em>Nullable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNullable()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean NULLABLE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getNullable() <em>Nullable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNullable()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean nullable = NULLABLE_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getTable() <em>Table</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -236,6 +131,66 @@ public class JoinColumn extends JpaEObject implements IJpaEObject
 	 * @ordered
 	 */
 	protected String table = TABLE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getUnique() <em>Unique</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUnique()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean UNIQUE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getUnique() <em>Unique</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUnique()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean unique = UNIQUE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getUpdatable() <em>Updatable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUpdatable()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean UPDATABLE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getUpdatable() <em>Updatable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUpdatable()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean updatable = UPDATABLE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReferencedColumnName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String REFERENCED_COLUMN_NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReferencedColumnName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String referencedColumnName = REFERENCED_COLUMN_NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -268,7 +223,7 @@ public class JoinColumn extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getJoinColumn_Name()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedColumn_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -291,6 +246,76 @@ public class JoinColumn extends JpaEObject implements IJpaEObject
 		name = newName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.JOIN_COLUMN__NAME, oldName, name));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Insertable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Insertable</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Insertable</em>' attribute.
+	 * @see #setInsertable(Boolean)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAbstractColumn_Insertable()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getInsertable()
+	{
+		return insertable;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#getInsertable <em>Insertable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Insertable</em>' attribute.
+	 * @see #getInsertable()
+	 * @generated
+	 */
+	public void setInsertable(Boolean newInsertable)
+	{
+		Boolean oldInsertable = insertable;
+		insertable = newInsertable;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.JOIN_COLUMN__INSERTABLE, oldInsertable, insertable));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Nullable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Nullable</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Nullable</em>' attribute.
+	 * @see #setNullable(Boolean)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAbstractColumn_Nullable()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getNullable()
+	{
+		return nullable;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#getNullable <em>Nullable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Nullable</em>' attribute.
+	 * @see #getNullable()
+	 * @generated
+	 */
+	public void setNullable(Boolean newNullable)
+	{
+		Boolean oldNullable = nullable;
+		nullable = newNullable;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.JOIN_COLUMN__NULLABLE, oldNullable, nullable));
 	}
 
 	/**
@@ -329,306 +354,6 @@ public class JoinColumn extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Unique</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Unique</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Unique</em>' attribute.
-	 * @see #isSetUnique()
-	 * @see #unsetUnique()
-	 * @see #setUnique(boolean)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getJoinColumn_Unique()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
-	 * @generated
-	 */
-	public boolean isUnique()
-	{
-		return unique;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isUnique <em>Unique</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Unique</em>' attribute.
-	 * @see #isSetUnique()
-	 * @see #unsetUnique()
-	 * @see #isUnique()
-	 * @generated
-	 */
-	public void setUnique(boolean newUnique)
-	{
-		boolean oldUnique = unique;
-		unique = newUnique;
-		boolean oldUniqueESet = uniqueESet;
-		uniqueESet = true;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.JOIN_COLUMN__UNIQUE, oldUnique, unique, !oldUniqueESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isUnique <em>Unique</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetUnique()
-	 * @see #isUnique()
-	 * @see #setUnique(boolean)
-	 * @generated
-	 */
-	public void unsetUnique()
-	{
-		boolean oldUnique = unique;
-		boolean oldUniqueESet = uniqueESet;
-		unique = UNIQUE_EDEFAULT;
-		uniqueESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.JOIN_COLUMN__UNIQUE, oldUnique, UNIQUE_EDEFAULT, oldUniqueESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isUnique <em>Unique</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Unique</em>' attribute is set.
-	 * @see #unsetUnique()
-	 * @see #isUnique()
-	 * @see #setUnique(boolean)
-	 * @generated
-	 */
-	public boolean isSetUnique()
-	{
-		return uniqueESet;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Nullable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Nullable</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Nullable</em>' attribute.
-	 * @see #isSetNullable()
-	 * @see #unsetNullable()
-	 * @see #setNullable(boolean)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getJoinColumn_Nullable()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
-	 * @generated
-	 */
-	public boolean isNullable()
-	{
-		return nullable;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isNullable <em>Nullable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Nullable</em>' attribute.
-	 * @see #isSetNullable()
-	 * @see #unsetNullable()
-	 * @see #isNullable()
-	 * @generated
-	 */
-	public void setNullable(boolean newNullable)
-	{
-		boolean oldNullable = nullable;
-		nullable = newNullable;
-		boolean oldNullableESet = nullableESet;
-		nullableESet = true;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.JOIN_COLUMN__NULLABLE, oldNullable, nullable, !oldNullableESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isNullable <em>Nullable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetNullable()
-	 * @see #isNullable()
-	 * @see #setNullable(boolean)
-	 * @generated
-	 */
-	public void unsetNullable()
-	{
-		boolean oldNullable = nullable;
-		boolean oldNullableESet = nullableESet;
-		nullable = NULLABLE_EDEFAULT;
-		nullableESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.JOIN_COLUMN__NULLABLE, oldNullable, NULLABLE_EDEFAULT, oldNullableESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isNullable <em>Nullable</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Nullable</em>' attribute is set.
-	 * @see #unsetNullable()
-	 * @see #isNullable()
-	 * @see #setNullable(boolean)
-	 * @generated
-	 */
-	public boolean isSetNullable()
-	{
-		return nullableESet;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Insertable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Insertable</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Insertable</em>' attribute.
-	 * @see #isSetInsertable()
-	 * @see #unsetInsertable()
-	 * @see #setInsertable(boolean)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getJoinColumn_Insertable()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
-	 * @generated
-	 */
-	public boolean isInsertable()
-	{
-		return insertable;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isInsertable <em>Insertable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Insertable</em>' attribute.
-	 * @see #isSetInsertable()
-	 * @see #unsetInsertable()
-	 * @see #isInsertable()
-	 * @generated
-	 */
-	public void setInsertable(boolean newInsertable)
-	{
-		boolean oldInsertable = insertable;
-		insertable = newInsertable;
-		boolean oldInsertableESet = insertableESet;
-		insertableESet = true;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.JOIN_COLUMN__INSERTABLE, oldInsertable, insertable, !oldInsertableESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isInsertable <em>Insertable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetInsertable()
-	 * @see #isInsertable()
-	 * @see #setInsertable(boolean)
-	 * @generated
-	 */
-	public void unsetInsertable()
-	{
-		boolean oldInsertable = insertable;
-		boolean oldInsertableESet = insertableESet;
-		insertable = INSERTABLE_EDEFAULT;
-		insertableESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.JOIN_COLUMN__INSERTABLE, oldInsertable, INSERTABLE_EDEFAULT, oldInsertableESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isInsertable <em>Insertable</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Insertable</em>' attribute is set.
-	 * @see #unsetInsertable()
-	 * @see #isInsertable()
-	 * @see #setInsertable(boolean)
-	 * @generated
-	 */
-	public boolean isSetInsertable()
-	{
-		return insertableESet;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Updatable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Updatable</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Updatable</em>' attribute.
-	 * @see #isSetUpdatable()
-	 * @see #unsetUpdatable()
-	 * @see #setUpdatable(boolean)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getJoinColumn_Updatable()
-	 * @model unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
-	 * @generated
-	 */
-	public boolean isUpdatable()
-	{
-		return updatable;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isUpdatable <em>Updatable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Updatable</em>' attribute.
-	 * @see #isSetUpdatable()
-	 * @see #unsetUpdatable()
-	 * @see #isUpdatable()
-	 * @generated
-	 */
-	public void setUpdatable(boolean newUpdatable)
-	{
-		boolean oldUpdatable = updatable;
-		updatable = newUpdatable;
-		boolean oldUpdatableESet = updatableESet;
-		updatableESet = true;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.JOIN_COLUMN__UPDATABLE, oldUpdatable, updatable, !oldUpdatableESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isUpdatable <em>Updatable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetUpdatable()
-	 * @see #isUpdatable()
-	 * @see #setUpdatable(boolean)
-	 * @generated
-	 */
-	public void unsetUpdatable()
-	{
-		boolean oldUpdatable = updatable;
-		boolean oldUpdatableESet = updatableESet;
-		updatable = UPDATABLE_EDEFAULT;
-		updatableESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.JOIN_COLUMN__UPDATABLE, oldUpdatable, UPDATABLE_EDEFAULT, oldUpdatableESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#isUpdatable <em>Updatable</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Updatable</em>' attribute is set.
-	 * @see #unsetUpdatable()
-	 * @see #isUpdatable()
-	 * @see #setUpdatable(boolean)
-	 * @generated
-	 */
-	public boolean isSetUpdatable()
-	{
-		return updatableESet;
-	}
-
-	/**
 	 * Returns the value of the '<em><b>Column Definition</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -638,7 +363,7 @@ public class JoinColumn extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column Definition</em>' attribute.
 	 * @see #setColumnDefinition(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getJoinColumn_ColumnDefinition()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedColumn_ColumnDefinition()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -673,7 +398,7 @@ public class JoinColumn extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table</em>' attribute.
 	 * @see #setTable(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getJoinColumn_Table()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAbstractColumn_Table()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -699,6 +424,76 @@ public class JoinColumn extends JpaEObject implements IJpaEObject
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Unique</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Unique</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Unique</em>' attribute.
+	 * @see #setUnique(Boolean)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAbstractColumn_Unique()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getUnique()
+	{
+		return unique;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#getUnique <em>Unique</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Unique</em>' attribute.
+	 * @see #getUnique()
+	 * @generated
+	 */
+	public void setUnique(Boolean newUnique)
+	{
+		Boolean oldUnique = unique;
+		unique = newUnique;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.JOIN_COLUMN__UNIQUE, oldUnique, unique));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Updatable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Updatable</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Updatable</em>' attribute.
+	 * @see #setUpdatable(Boolean)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAbstractColumn_Updatable()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getUpdatable()
+	{
+		return updatable;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumn#getUpdatable <em>Updatable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Updatable</em>' attribute.
+	 * @see #getUpdatable()
+	 * @generated
+	 */
+	public void setUpdatable(Boolean newUpdatable)
+	{
+		Boolean oldUpdatable = updatable;
+		updatable = newUpdatable;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.JOIN_COLUMN__UPDATABLE, oldUpdatable, updatable));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -708,22 +503,22 @@ public class JoinColumn extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.JOIN_COLUMN__NAME:
-				return getName();
-			case OrmPackage.JOIN_COLUMN__REFERENCED_COLUMN_NAME:
-				return getReferencedColumnName();
-			case OrmPackage.JOIN_COLUMN__UNIQUE:
-				return isUnique() ? Boolean.TRUE : Boolean.FALSE;
-			case OrmPackage.JOIN_COLUMN__NULLABLE:
-				return isNullable() ? Boolean.TRUE : Boolean.FALSE;
-			case OrmPackage.JOIN_COLUMN__INSERTABLE:
-				return isInsertable() ? Boolean.TRUE : Boolean.FALSE;
-			case OrmPackage.JOIN_COLUMN__UPDATABLE:
-				return isUpdatable() ? Boolean.TRUE : Boolean.FALSE;
 			case OrmPackage.JOIN_COLUMN__COLUMN_DEFINITION:
 				return getColumnDefinition();
+			case OrmPackage.JOIN_COLUMN__NAME:
+				return getName();
+			case OrmPackage.JOIN_COLUMN__INSERTABLE:
+				return getInsertable();
+			case OrmPackage.JOIN_COLUMN__NULLABLE:
+				return getNullable();
 			case OrmPackage.JOIN_COLUMN__TABLE:
 				return getTable();
+			case OrmPackage.JOIN_COLUMN__UNIQUE:
+				return getUnique();
+			case OrmPackage.JOIN_COLUMN__UPDATABLE:
+				return getUpdatable();
+			case OrmPackage.JOIN_COLUMN__REFERENCED_COLUMN_NAME:
+				return getReferencedColumnName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -738,29 +533,29 @@ public class JoinColumn extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.JOIN_COLUMN__NAME:
-				setName((String)newValue);
-				return;
-			case OrmPackage.JOIN_COLUMN__REFERENCED_COLUMN_NAME:
-				setReferencedColumnName((String)newValue);
-				return;
-			case OrmPackage.JOIN_COLUMN__UNIQUE:
-				setUnique(((Boolean)newValue).booleanValue());
-				return;
-			case OrmPackage.JOIN_COLUMN__NULLABLE:
-				setNullable(((Boolean)newValue).booleanValue());
-				return;
-			case OrmPackage.JOIN_COLUMN__INSERTABLE:
-				setInsertable(((Boolean)newValue).booleanValue());
-				return;
-			case OrmPackage.JOIN_COLUMN__UPDATABLE:
-				setUpdatable(((Boolean)newValue).booleanValue());
-				return;
 			case OrmPackage.JOIN_COLUMN__COLUMN_DEFINITION:
 				setColumnDefinition((String)newValue);
 				return;
+			case OrmPackage.JOIN_COLUMN__NAME:
+				setName((String)newValue);
+				return;
+			case OrmPackage.JOIN_COLUMN__INSERTABLE:
+				setInsertable((Boolean)newValue);
+				return;
+			case OrmPackage.JOIN_COLUMN__NULLABLE:
+				setNullable((Boolean)newValue);
+				return;
 			case OrmPackage.JOIN_COLUMN__TABLE:
 				setTable((String)newValue);
+				return;
+			case OrmPackage.JOIN_COLUMN__UNIQUE:
+				setUnique((Boolean)newValue);
+				return;
+			case OrmPackage.JOIN_COLUMN__UPDATABLE:
+				setUpdatable((Boolean)newValue);
+				return;
+			case OrmPackage.JOIN_COLUMN__REFERENCED_COLUMN_NAME:
+				setReferencedColumnName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -776,29 +571,29 @@ public class JoinColumn extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.JOIN_COLUMN__NAME:
-				setName(NAME_EDEFAULT);
-				return;
-			case OrmPackage.JOIN_COLUMN__REFERENCED_COLUMN_NAME:
-				setReferencedColumnName(REFERENCED_COLUMN_NAME_EDEFAULT);
-				return;
-			case OrmPackage.JOIN_COLUMN__UNIQUE:
-				unsetUnique();
-				return;
-			case OrmPackage.JOIN_COLUMN__NULLABLE:
-				unsetNullable();
-				return;
-			case OrmPackage.JOIN_COLUMN__INSERTABLE:
-				unsetInsertable();
-				return;
-			case OrmPackage.JOIN_COLUMN__UPDATABLE:
-				unsetUpdatable();
-				return;
 			case OrmPackage.JOIN_COLUMN__COLUMN_DEFINITION:
 				setColumnDefinition(COLUMN_DEFINITION_EDEFAULT);
 				return;
+			case OrmPackage.JOIN_COLUMN__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case OrmPackage.JOIN_COLUMN__INSERTABLE:
+				setInsertable(INSERTABLE_EDEFAULT);
+				return;
+			case OrmPackage.JOIN_COLUMN__NULLABLE:
+				setNullable(NULLABLE_EDEFAULT);
+				return;
 			case OrmPackage.JOIN_COLUMN__TABLE:
 				setTable(TABLE_EDEFAULT);
+				return;
+			case OrmPackage.JOIN_COLUMN__UNIQUE:
+				setUnique(UNIQUE_EDEFAULT);
+				return;
+			case OrmPackage.JOIN_COLUMN__UPDATABLE:
+				setUpdatable(UPDATABLE_EDEFAULT);
+				return;
+			case OrmPackage.JOIN_COLUMN__REFERENCED_COLUMN_NAME:
+				setReferencedColumnName(REFERENCED_COLUMN_NAME_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -814,22 +609,22 @@ public class JoinColumn extends JpaEObject implements IJpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.JOIN_COLUMN__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case OrmPackage.JOIN_COLUMN__REFERENCED_COLUMN_NAME:
-				return REFERENCED_COLUMN_NAME_EDEFAULT == null ? referencedColumnName != null : !REFERENCED_COLUMN_NAME_EDEFAULT.equals(referencedColumnName);
-			case OrmPackage.JOIN_COLUMN__UNIQUE:
-				return isSetUnique();
-			case OrmPackage.JOIN_COLUMN__NULLABLE:
-				return isSetNullable();
-			case OrmPackage.JOIN_COLUMN__INSERTABLE:
-				return isSetInsertable();
-			case OrmPackage.JOIN_COLUMN__UPDATABLE:
-				return isSetUpdatable();
 			case OrmPackage.JOIN_COLUMN__COLUMN_DEFINITION:
 				return COLUMN_DEFINITION_EDEFAULT == null ? columnDefinition != null : !COLUMN_DEFINITION_EDEFAULT.equals(columnDefinition);
+			case OrmPackage.JOIN_COLUMN__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case OrmPackage.JOIN_COLUMN__INSERTABLE:
+				return INSERTABLE_EDEFAULT == null ? insertable != null : !INSERTABLE_EDEFAULT.equals(insertable);
+			case OrmPackage.JOIN_COLUMN__NULLABLE:
+				return NULLABLE_EDEFAULT == null ? nullable != null : !NULLABLE_EDEFAULT.equals(nullable);
 			case OrmPackage.JOIN_COLUMN__TABLE:
 				return TABLE_EDEFAULT == null ? table != null : !TABLE_EDEFAULT.equals(table);
+			case OrmPackage.JOIN_COLUMN__UNIQUE:
+				return UNIQUE_EDEFAULT == null ? unique != null : !UNIQUE_EDEFAULT.equals(unique);
+			case OrmPackage.JOIN_COLUMN__UPDATABLE:
+				return UPDATABLE_EDEFAULT == null ? updatable != null : !UPDATABLE_EDEFAULT.equals(updatable);
+			case OrmPackage.JOIN_COLUMN__REFERENCED_COLUMN_NAME:
+				return REFERENCED_COLUMN_NAME_EDEFAULT == null ? referencedColumnName != null : !REFERENCED_COLUMN_NAME_EDEFAULT.equals(referencedColumnName);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -845,22 +640,22 @@ public class JoinColumn extends JpaEObject implements IJpaEObject
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(", referencedColumnName: ");
-		result.append(referencedColumnName);
-		result.append(", unique: ");
-		if (uniqueESet) result.append(unique); else result.append("<unset>");
-		result.append(", nullable: ");
-		if (nullableESet) result.append(nullable); else result.append("<unset>");
-		result.append(", insertable: ");
-		if (insertableESet) result.append(insertable); else result.append("<unset>");
-		result.append(", updatable: ");
-		if (updatableESet) result.append(updatable); else result.append("<unset>");
-		result.append(", columnDefinition: ");
+		result.append(" (columnDefinition: ");
 		result.append(columnDefinition);
+		result.append(", name: ");
+		result.append(name);
+		result.append(", insertable: ");
+		result.append(insertable);
+		result.append(", nullable: ");
+		result.append(nullable);
 		result.append(", table: ");
 		result.append(table);
+		result.append(", unique: ");
+		result.append(unique);
+		result.append(", updatable: ");
+		result.append(updatable);
+		result.append(", referencedColumnName: ");
+		result.append(referencedColumnName);
 		result.append(')');
 		return result.toString();
 	}
