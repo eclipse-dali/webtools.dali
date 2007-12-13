@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * A <code>NullIterator</code> is just that.
+ * An <code>EmptyIterator</code> is just that.
  */
 public final class EmptyIterator<E>
 	implements Iterator<E>
