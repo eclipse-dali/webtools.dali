@@ -26,21 +26,21 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 	private static final DeclarationAnnotationElementAdapter<String> DISCRIMINATOR_TYPE_ADAPTER = buildDiscriminatorTypeAdapter();
 
 	// hold this so we can get the 'length' text range
-	private final DeclarationAnnotationElementAdapter<String> lengthDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<Integer> lengthDeclarationAdapter;
 
 	private final AnnotationElementAdapter<String> discriminatorTypeAdapter;
 
-	private final IntAnnotationElementAdapter lengthAdapter;
+	private final AnnotationElementAdapter<Integer> lengthAdapter;
 
 	private DiscriminatorType discriminatorType;
 
-	private int length = DEFAULT_LENGTH;	
+	private Integer length;	
 	
 	protected DiscriminatorColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa,  new MemberAnnotationAdapter(member, daa));
 		this.discriminatorTypeAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, DISCRIMINATOR_TYPE_ADAPTER);
-		this.lengthDeclarationAdapter = this.buildNumberElementAdapter(JPA.DISCRIMINATOR_COLUMN__LENGTH);
-		this.lengthAdapter = this.buildShortCircuitIntElementAdapter(this.lengthDeclarationAdapter);
+		this.lengthDeclarationAdapter = this.buildIntegerElementAdapter(JPA.DISCRIMINATOR_COLUMN__LENGTH);
+		this.lengthAdapter = this.buildShortCircuitIntegerElementAdapter(this.lengthDeclarationAdapter);
 	}
 	
 	@Override
@@ -88,12 +88,12 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 		firePropertyChanged(DISCRIMINATOR_TYPE_PROPERTY, oldDiscriminatorType, newDiscriminatorType);
 	}
 	
-	public int getLength() {
+	public Integer getLength() {
 		return this.length;
 	}
 
-	public void setLength(int newLength) {
-		int oldLength = this.length;
+	public void setLength(Integer newLength) {
+		Integer oldLength = this.length;
 		this.length = newLength;
 		this.lengthAdapter.setValue(newLength);
 		firePropertyChanged(LENGTH_PROPERTY, oldLength, newLength);
@@ -106,7 +106,7 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 		this.setDiscriminatorType(this.discriminatorType(astRoot));
 	}
 
-	protected int length(CompilationUnit astRoot) {
+	protected Integer length(CompilationUnit astRoot) {
 		return this.lengthAdapter.getValue(astRoot);
 	}
 	

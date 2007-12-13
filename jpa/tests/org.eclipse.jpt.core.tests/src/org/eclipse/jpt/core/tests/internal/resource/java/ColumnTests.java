@@ -238,7 +238,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
 
-		assertTrue(column.getUnique());
+		assertEquals(Boolean.TRUE, column.getUnique());
 	}
 	
 	public void testSetUnique() throws Exception {
@@ -250,8 +250,8 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		assertNotNull(column);
 		assertNull(column.getUnique());
 
-		column.setUnique(false);
-		assertFalse(column.getUnique());
+		column.setUnique(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, column.getUnique());
 		
 		assertSourceContains("@Column(unique=false)");
 		
@@ -265,7 +265,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
 
-		assertTrue(column.getNullable());
+		assertEquals(Boolean.TRUE, column.getNullable());
 	}
 	
 	public void testSetNullable() throws Exception {
@@ -277,8 +277,8 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		assertNotNull(column);
 		assertNull(column.getNullable());
 
-		column.setNullable(false);
-		assertFalse(column.getNullable());
+		column.setNullable(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, column.getNullable());
 		
 		assertSourceContains("@Column(nullable=false)");
 		
@@ -292,7 +292,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
 
-		assertTrue(column.getInsertable());
+		assertEquals(Boolean.TRUE, column.getInsertable());
 	}
 	
 	public void testSetInsertable() throws Exception {
@@ -304,8 +304,8 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		assertNotNull(column);
 		assertNull(column.getInsertable());
 
-		column.setInsertable(false);
-		assertFalse(column.getInsertable());
+		column.setInsertable(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, column.getInsertable());
 		
 		assertSourceContains("@Column(insertable=false)");
 		
@@ -319,7 +319,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
 
-		assertTrue(column.getUpdatable());
+		assertEquals(Boolean.TRUE, column.getUpdatable());
 	}
 	
 	public void testSetUpdatable() throws Exception {
@@ -331,8 +331,8 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		assertNotNull(column);
 		assertNull(column.getUpdatable());
 
-		column.setUpdatable(false);
-		assertFalse(column.getUpdatable());
+		column.setUpdatable(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, column.getUpdatable());
 		
 		assertSourceContains("@Column(updatable=false)");
 		
@@ -346,7 +346,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
 
-		assertEquals(5, column.getLength());
+		assertEquals(Integer.valueOf(5), column.getLength());
 	}
 	
 	public void testSetLength() throws Exception {
@@ -356,14 +356,14 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
 
 		assertNotNull(column);
-		assertEquals(-1, column.getLength());
+		assertNull(column.getLength());
 
-		column.setLength(5);
-		assertEquals(5, column.getLength());
+		column.setLength(Integer.valueOf(5));
+		assertEquals(Integer.valueOf(5), column.getLength());
 		
 		assertSourceContains("@Column(length=5)");
 		
-		column.setLength(-1);
+		column.setLength(null);
 		assertSourceDoesNotContain("@Column");
 	}
 
@@ -373,7 +373,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
 
-		assertEquals(5, column.getPrecision());
+		assertEquals(Integer.valueOf(5), column.getPrecision());
 	}
 	
 	public void testSetPrecision() throws Exception {
@@ -383,14 +383,14 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
 
 		assertNotNull(column);
-		assertEquals(-1, column.getPrecision());
+		assertEquals(null, column.getPrecision());
 
-		column.setPrecision(5);
-		assertEquals(5, column.getPrecision());
+		column.setPrecision(Integer.valueOf(5));
+		assertEquals(Integer.valueOf(5), column.getPrecision());
 		
 		assertSourceContains("@Column(precision=5)");
 		
-		column.setPrecision(-1);
+		column.setPrecision(null);
 		assertSourceDoesNotContain("@Column");
 	}
 
@@ -400,7 +400,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
 
-		assertEquals(5, column.getScale());
+		assertEquals(Integer.valueOf(5), column.getScale());
 	}
 	
 	public void testSetScale() throws Exception {
@@ -410,14 +410,14 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
 
 		assertNotNull(column);
-		assertEquals(-1, column.getScale());
+		assertNull(column.getScale());
 
-		column.setScale(5);
-		assertEquals(5, column.getScale());
+		column.setScale(Integer.valueOf(5));
+		assertEquals(Integer.valueOf(5), column.getScale());
 		
 		assertSourceContains("@Column(scale=5)");
 		
-		column.setScale(-1);
+		column.setScale(null);
 		assertSourceDoesNotContain("@Column");
 	}
 }

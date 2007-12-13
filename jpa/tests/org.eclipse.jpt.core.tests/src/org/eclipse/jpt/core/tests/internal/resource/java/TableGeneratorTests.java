@@ -30,8 +30,8 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	private static final String GENERATOR_PK_COLUMN_NAME = "MY_PK_COLUMN_NAME";
 	private static final String GENERATOR_VALUE_COLUMN_NAME = "MY_VALUE_COLUMN_NAME";
 	private static final String GENERATOR_PK_COLUMN_VALUE = "MY_PK_COLUMN_VALUE";
-	private static final int GENERATOR_ALLOCATION_SIZE = 5;
-	private static final int GENERATOR_INITIAL_VALUE = 5;
+	private static final Integer GENERATOR_ALLOCATION_SIZE = Integer.valueOf(5);
+	private static final Integer GENERATOR_INITIAL_VALUE = Integer.valueOf(5);
 	
 	public TableGeneratorTests(String name) {
 		super(name);
@@ -386,16 +386,16 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_ALLOCATION_SIZE, tableGenerator.getAllocationSize());
 		
-		tableGenerator.setAllocationSize(500);
-		assertEquals(500, tableGenerator.getAllocationSize());
+		tableGenerator.setAllocationSize(Integer.valueOf(500));
+		assertEquals(Integer.valueOf(500), tableGenerator.getAllocationSize());
 		
 		assertSourceContains("@TableGenerator(allocationSize=500)");
 		
-		tableGenerator.setAllocationSize(-1);
+		tableGenerator.setAllocationSize(null);
 		
 		assertSourceDoesNotContain("@TableGenerator");
 
-		tableGenerator.setAllocationSize(0);
+		tableGenerator.setAllocationSize(Integer.valueOf(0));
 		assertSourceContains("@TableGenerator(allocationSize=0)");
 	}
 	
@@ -416,20 +416,18 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_INITIAL_VALUE, tableGenerator.getInitialValue());
 		
-		tableGenerator.setInitialValue(500);
-		assertEquals(500, tableGenerator.getInitialValue());
+		tableGenerator.setInitialValue(Integer.valueOf(500));
+		assertEquals(Integer.valueOf(500), tableGenerator.getInitialValue());
 		
 		assertSourceContains("@TableGenerator(initialValue=500)");
 		
-		tableGenerator.setInitialValue(-1);
+		tableGenerator.setInitialValue(null);
 		
 		assertSourceDoesNotContain("@TableGenerator");
 
-		tableGenerator.setInitialValue(0);
+		tableGenerator.setInitialValue(Integer.valueOf(0));
 		assertSourceContains("@TableGenerator(initialValue=0)");
-
 	}
-	
 	
 	public void testUniqueConstraints() throws Exception {
 		IType testType = this.createTestTableGeneratorOnField();

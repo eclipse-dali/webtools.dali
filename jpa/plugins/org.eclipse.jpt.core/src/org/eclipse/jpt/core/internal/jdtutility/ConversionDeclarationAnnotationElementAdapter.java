@@ -126,8 +126,8 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 	 * remove the annotation when the last element is removed;
 	 * the default expression converter expects number constant expressions.
 	 */
-	public static ConversionDeclarationAnnotationElementAdapter<String> forNumbers(DeclarationAnnotationAdapter annotationAdapter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, NumberStringExpressionConverter.instance());
+	public static ConversionDeclarationAnnotationElementAdapter<Integer> forNumbers(DeclarationAnnotationAdapter annotationAdapter) {
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(annotationAdapter, NumberIntegerExpressionConverter.instance());
 	}
 
 	/**
@@ -135,15 +135,15 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 	 * element is removed; the default expression converter expects
 	 * number constant expressions.
 	 */
-	public static ConversionDeclarationAnnotationElementAdapter<String> forNumbers(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, NumberStringExpressionConverter.instance());
+	public static ConversionDeclarationAnnotationElementAdapter<Integer> forNumbers(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(annotationAdapter, elementName, NumberIntegerExpressionConverter.instance());
 	}
 
 	/**
 	 * The default expression converter expects number constant expressions.
 	 */
-	public static ConversionDeclarationAnnotationElementAdapter<String> forNumbers(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, removeAnnotationWhenEmpty, NumberStringExpressionConverter.instance());
+	public static ConversionDeclarationAnnotationElementAdapter<Integer> forNumbers(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(annotationAdapter, elementName, removeAnnotationWhenEmpty, NumberIntegerExpressionConverter.instance());
 	}
 
 	/**

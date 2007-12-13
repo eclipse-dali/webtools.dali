@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.context.base.IGenerator;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
-import org.eclipse.jpt.core.internal.resource.java.Generator;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
@@ -380,10 +379,10 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);	
 		
-		tableGenerator.setInitialValue(82);
+		tableGenerator.setInitialValue(Integer.valueOf(82));
 		
-		assertEquals(82, idMapping.getTableGenerator().getInitialValue());
-		assertEquals(82, idMapping.getTableGenerator().getSpecifiedInitialValue());
+		assertEquals(Integer.valueOf(82), idMapping.getTableGenerator().getInitialValue());
+		assertEquals(Integer.valueOf(82), idMapping.getTableGenerator().getSpecifiedInitialValue());
 	}
 	
 	public void testGetDefaultInitialValue() throws Exception {
@@ -394,10 +393,10 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 
 		assertEquals(ITableGenerator.DEFAULT_INITIAL_VALUE, idMapping.getTableGenerator().getDefaultInitialValue());
 		
-		idMapping.getTableGenerator().setSpecifiedInitialValue(82);
+		idMapping.getTableGenerator().setSpecifiedInitialValue(Integer.valueOf(82));
 		
 		assertEquals(ITableGenerator.DEFAULT_INITIAL_VALUE, idMapping.getTableGenerator().getDefaultInitialValue());
-		assertEquals(82, idMapping.getTableGenerator().getSpecifiedInitialValue());
+		assertEquals(Integer.valueOf(82), idMapping.getTableGenerator().getSpecifiedInitialValue());
 	}
 	
 	public void testSetSpecifiedInitialValue() throws Exception {
@@ -405,16 +404,16 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IIdMapping idMapping = (IIdMapping) javaPersistentType().attributeNamed("id").getMapping();
-		idMapping.getTableGenerator().setSpecifiedInitialValue(20);
+		idMapping.getTableGenerator().setSpecifiedInitialValue(Integer.valueOf(20));
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);	
 		
-		assertEquals(20, tableGenerator.getInitialValue());
+		assertEquals(Integer.valueOf(20), tableGenerator.getInitialValue());
 		
 		idMapping.getTableGenerator().setName(null);
-		idMapping.getTableGenerator().setSpecifiedInitialValue(Generator.DEFAULT_INITIAL_VALUE);
+		idMapping.getTableGenerator().setSpecifiedInitialValue(null);
 		assertNull(attributeResource.annotation(JPA.TABLE_GENERATOR));
 	}
 	
@@ -430,10 +429,10 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);	
 		
-		tableGenerator.setAllocationSize(20);
+		tableGenerator.setAllocationSize(Integer.valueOf(20));
 		
-		assertEquals(20, idMapping.getTableGenerator().getAllocationSize());
-		assertEquals(20, idMapping.getTableGenerator().getSpecifiedAllocationSize());
+		assertEquals(Integer.valueOf(20), idMapping.getTableGenerator().getAllocationSize());
+		assertEquals(Integer.valueOf(20), idMapping.getTableGenerator().getSpecifiedAllocationSize());
 	}
 	
 	public void testGetDefaultAllocationSize() throws Exception {
@@ -444,10 +443,10 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 
 		assertEquals(IGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getTableGenerator().getDefaultAllocationSize());
 		
-		idMapping.getTableGenerator().setSpecifiedAllocationSize(20);
+		idMapping.getTableGenerator().setSpecifiedAllocationSize(Integer.valueOf(20));
 		
 		assertEquals(IGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getTableGenerator().getDefaultAllocationSize());
-		assertEquals(20, idMapping.getTableGenerator().getSpecifiedAllocationSize());
+		assertEquals(Integer.valueOf(20), idMapping.getTableGenerator().getSpecifiedAllocationSize());
 	}
 	
 	public void testSetSpecifiedAllocationSize() throws Exception {
@@ -455,16 +454,16 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IIdMapping idMapping = (IIdMapping) javaPersistentType().attributeNamed("id").getMapping();
-		idMapping.getTableGenerator().setSpecifiedAllocationSize(25);
+		idMapping.getTableGenerator().setSpecifiedAllocationSize(Integer.valueOf(25));
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);	
 		
-		assertEquals(25, tableGenerator.getAllocationSize());
+		assertEquals(Integer.valueOf(25), tableGenerator.getAllocationSize());
 		
 		idMapping.getTableGenerator().setName(null);
-		idMapping.getTableGenerator().setSpecifiedAllocationSize(Generator.DEFAULT_ALLOCATION_SIZE_VALUE);
+		idMapping.getTableGenerator().setSpecifiedAllocationSize(null);
 		assertNull(attributeResource.annotation(JPA.TABLE_GENERATOR));
 	}
 }

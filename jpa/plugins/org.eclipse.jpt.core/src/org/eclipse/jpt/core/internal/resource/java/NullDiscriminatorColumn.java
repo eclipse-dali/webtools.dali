@@ -36,12 +36,12 @@ public class NullDiscriminatorColumn extends NullNamedColumn implements Discrimi
 		}
 	}
 
-	public int getLength() {
-		return DEFAULT_LENGTH;
+	public Integer getLength() {
+		return null;
 	}
 
-	public void setLength(int length) {
-		if (length != DEFAULT_LENGTH) {
+	public void setLength(Integer length) {
+		if (length != null) {
 			createColumnResource().setLength(length);
 		}
 	}

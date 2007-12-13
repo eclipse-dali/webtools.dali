@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.context.base.IGenerator;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
-import org.eclipse.jpt.core.internal.resource.java.Generator;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
@@ -129,10 +128,10 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);	
 		
-		sequenceGenerator.setInitialValue(82);
+		sequenceGenerator.setInitialValue(Integer.valueOf(82));
 		
-		assertEquals(82, idMapping.getSequenceGenerator().getInitialValue());
-		assertEquals(82, idMapping.getSequenceGenerator().getSpecifiedInitialValue());
+		assertEquals(Integer.valueOf(82), idMapping.getSequenceGenerator().getInitialValue());
+		assertEquals(Integer.valueOf(82), idMapping.getSequenceGenerator().getSpecifiedInitialValue());
 	}
 	
 	public void testGetDefaultInitialValue() throws Exception {
@@ -143,10 +142,10 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 
 		assertEquals(ISequenceGenerator.DEFAULT_INITIAL_VALUE, idMapping.getSequenceGenerator().getDefaultInitialValue());
 		
-		idMapping.getSequenceGenerator().setSpecifiedInitialValue(82);
+		idMapping.getSequenceGenerator().setSpecifiedInitialValue(Integer.valueOf(82));
 		
 		assertEquals(ISequenceGenerator.DEFAULT_INITIAL_VALUE, idMapping.getSequenceGenerator().getDefaultInitialValue());
-		assertEquals(82, idMapping.getSequenceGenerator().getSpecifiedInitialValue());
+		assertEquals(Integer.valueOf(82), idMapping.getSequenceGenerator().getSpecifiedInitialValue());
 	}
 	
 	public void testSetSpecifiedInitialValue() throws Exception {
@@ -154,16 +153,16 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IIdMapping idMapping = (IIdMapping) javaPersistentType().attributeNamed("id").getMapping();
-		idMapping.getSequenceGenerator().setSpecifiedInitialValue(20);
+		idMapping.getSequenceGenerator().setSpecifiedInitialValue(Integer.valueOf(20));
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);	
 		
-		assertEquals(20, sequenceGenerator.getInitialValue());
+		assertEquals(Integer.valueOf(20), sequenceGenerator.getInitialValue());
 		
 		idMapping.getSequenceGenerator().setName(null);
-		idMapping.getSequenceGenerator().setSpecifiedInitialValue(Generator.DEFAULT_INITIAL_VALUE);
+		idMapping.getSequenceGenerator().setSpecifiedInitialValue(null);
 		assertNull(attributeResource.annotation(JPA.SEQUENCE_GENERATOR));
 	}
 	
@@ -179,10 +178,10 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);	
 		
-		sequenceGenerator.setAllocationSize(20);
+		sequenceGenerator.setAllocationSize(Integer.valueOf(20));
 		
-		assertEquals(20, idMapping.getSequenceGenerator().getAllocationSize());
-		assertEquals(20, idMapping.getSequenceGenerator().getSpecifiedAllocationSize());
+		assertEquals(Integer.valueOf(20), idMapping.getSequenceGenerator().getAllocationSize());
+		assertEquals(Integer.valueOf(20), idMapping.getSequenceGenerator().getSpecifiedAllocationSize());
 	}
 	
 	public void testGetDefaultAllocationSize() throws Exception {
@@ -193,10 +192,10 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 
 		assertEquals(IGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getSequenceGenerator().getDefaultAllocationSize());
 		
-		idMapping.getSequenceGenerator().setSpecifiedAllocationSize(20);
+		idMapping.getSequenceGenerator().setSpecifiedAllocationSize(Integer.valueOf(20));
 		
 		assertEquals(IGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getSequenceGenerator().getDefaultAllocationSize());
-		assertEquals(20, idMapping.getSequenceGenerator().getSpecifiedAllocationSize());
+		assertEquals(Integer.valueOf(20), idMapping.getSequenceGenerator().getSpecifiedAllocationSize());
 	}
 	
 	public void testSetSpecifiedAllocationSize() throws Exception {
@@ -204,16 +203,16 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IIdMapping idMapping = (IIdMapping) javaPersistentType().attributeNamed("id").getMapping();
-		idMapping.getSequenceGenerator().setSpecifiedAllocationSize(25);
+		idMapping.getSequenceGenerator().setSpecifiedAllocationSize(Integer.valueOf(25));
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);	
 		
-		assertEquals(25, sequenceGenerator.getAllocationSize());
+		assertEquals(Integer.valueOf(25), sequenceGenerator.getAllocationSize());
 		
 		idMapping.getSequenceGenerator().setName(null);
-		idMapping.getSequenceGenerator().setSpecifiedAllocationSize(Generator.DEFAULT_ALLOCATION_SIZE_VALUE);
+		idMapping.getSequenceGenerator().setSpecifiedAllocationSize(null);
 		assertNull(attributeResource.annotation(JPA.SEQUENCE_GENERATOR));
 	}
 	

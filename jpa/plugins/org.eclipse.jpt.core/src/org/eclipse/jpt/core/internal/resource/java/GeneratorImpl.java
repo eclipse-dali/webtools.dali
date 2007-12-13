@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationE
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
-import org.eclipse.jpt.core.internal.jdtutility.NumberStringExpressionConverter;
+import org.eclipse.jpt.core.internal.jdtutility.NumberIntegerExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 
 public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> implements Generator
@@ -25,31 +25,31 @@ public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> i
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 
 	// hold this so we can get the 'initialValue' text range
-	private final DeclarationAnnotationElementAdapter<String> initialValueDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<Integer> initialValueDeclarationAdapter;
 
 	// hold this so we can get the 'allocationSize' text range
-	private final DeclarationAnnotationElementAdapter<String> allocationSizeDeclarationAdapter;
+	private final DeclarationAnnotationElementAdapter<Integer> allocationSizeDeclarationAdapter;
 
 	private final AnnotationElementAdapter<String> nameAdapter;
 
-	private final IntAnnotationElementAdapter initialValueAdapter;
+	private final AnnotationElementAdapter<Integer> initialValueAdapter;
 
-	private final IntAnnotationElementAdapter allocationSizeAdapter;
+	private final AnnotationElementAdapter<Integer> allocationSizeAdapter;
 
 	private String name;
 	
-	private int initialValue = DEFAULT_INITIAL_VALUE;
+	private Integer initialValue;
 	
-	private int allocationSize = DEFAULT_ALLOCATION_SIZE_VALUE;
+	private Integer allocationSize;
 		
 	public GeneratorImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
 		this.nameDeclarationAdapter = this.nameAdapter();
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
 		this.initialValueDeclarationAdapter = this.initialValueAdapter();
-		this.initialValueAdapter = this.buildIntAdapter(this.initialValueDeclarationAdapter);
+		this.initialValueAdapter = this.buildIntegerAdapter(this.initialValueDeclarationAdapter);
 		this.allocationSizeDeclarationAdapter = this.allocationSizeAdapter();
-		this.allocationSizeAdapter = this.buildIntAdapter(this.allocationSizeDeclarationAdapter);
+		this.allocationSizeAdapter = this.buildIntegerAdapter(this.allocationSizeDeclarationAdapter);
 	}
 	
 	public void initialize(CompilationUnit astRoot) {
@@ -63,37 +63,37 @@ public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> i
 		return new ShortCircuitAnnotationElementAdapter<String>(getMember(), daea);
 	}
 
-	protected IntAnnotationElementAdapter buildIntAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new IntAnnotationElementAdapter(this.buildAdapter(daea));
+	protected AnnotationElementAdapter<Integer> buildIntegerAdapter(DeclarationAnnotationElementAdapter<Integer> daea) {
+		return new ShortCircuitAnnotationElementAdapter<Integer>(getMember(), daea);
 	}
 
 	protected abstract DeclarationAnnotationAdapter annotationAdapter();
 
 	protected abstract DeclarationAnnotationElementAdapter<String> nameAdapter();
 
-	protected abstract DeclarationAnnotationElementAdapter<String> initialValueAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<Integer> initialValueAdapter();
 
-	protected abstract DeclarationAnnotationElementAdapter<String> allocationSizeAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<Integer> allocationSizeAdapter();
 
 	
 
-	public int getAllocationSize() {
+	public Integer getAllocationSize() {
 		return this.allocationSize;
 	}
 	
-	public void setAllocationSize(int newAllocationSize) {
-		int oldAllocationSize = this.allocationSize;
+	public void setAllocationSize(Integer newAllocationSize) {
+		Integer oldAllocationSize = this.allocationSize;
 		this.allocationSize = newAllocationSize;
 		this.allocationSizeAdapter.setValue(newAllocationSize);
 		firePropertyChanged(ALLOCATION_SIZE_PROPERTY, oldAllocationSize, newAllocationSize);
 	}
 
-	public int getInitialValue() {
+	public Integer getInitialValue() {
 		return this.initialValue;
 	}
 
-	public void setInitialValue(int newInitialValue) {
-		int oldInitialValue = this.initialValue;
+	public void setInitialValue(Integer newInitialValue) {
+		Integer oldInitialValue = this.initialValue;
 		this.initialValue = newInitialValue;
 		this.initialValueAdapter.setValue(newInitialValue);
 		firePropertyChanged(INITIAL_VALUE_PROPERTY, oldInitialValue, newInitialValue);
@@ -133,11 +133,11 @@ public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> i
 		return this.nameAdapter.getValue(astRoot);
 	}
 	
-	protected int allocationSize(CompilationUnit astRoot) {
+	protected Integer allocationSize(CompilationUnit astRoot) {
 		return this.allocationSizeAdapter.getValue(astRoot);
 	}
 	
-	protected int initialValue(CompilationUnit astRoot) {
+	protected Integer initialValue(CompilationUnit astRoot) {
 		return this.initialValueAdapter.getValue(astRoot);
 	}
 	
@@ -146,7 +146,7 @@ public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> i
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(annotationAdapter, elementName);
 	}
 
-	protected static DeclarationAnnotationElementAdapter<String> buildNumberAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, NumberStringExpressionConverter.instance());
+	protected static DeclarationAnnotationElementAdapter<Integer> buildIntegerAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(annotationAdapter, elementName, NumberIntegerExpressionConverter.instance());
 	}
 }

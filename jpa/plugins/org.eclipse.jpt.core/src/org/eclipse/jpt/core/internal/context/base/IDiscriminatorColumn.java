@@ -26,14 +26,14 @@ public interface IDiscriminatorColumn extends INamedColumn
 		String SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY = "specifiedDiscriminatorTypeProperty";
 
 
-	int getLength();
+	Integer getLength();
 
-	int getDefaultLength();
-		int DEFAULT_LENGTH = 31;
+	Integer getDefaultLength();
+		Integer DEFAULT_LENGTH = Integer.valueOf(31);
 		String DEFAULT_LENGTH_PROPERTY = "defaultLengthProperty";
 
-	int getSpecifiedLength();
-	void setSpecifiedLength(int value);
+	Integer getSpecifiedLength();
+	void setSpecifiedLength(Integer value);
 		String SPECIFIED_LENGTH_PROPERTY = "spcifiedLengthProperty";
 
 }

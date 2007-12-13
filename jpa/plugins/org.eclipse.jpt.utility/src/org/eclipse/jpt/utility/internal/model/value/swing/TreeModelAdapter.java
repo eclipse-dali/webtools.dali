@@ -31,7 +31,6 @@ import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TreeNodeValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 
 /**
  * This javax.swing.tree.TreeModel can be used to keep a TreeModelListener

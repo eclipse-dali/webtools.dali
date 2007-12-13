@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.internal.jdtutility.ExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.NumberStringExpressionConverter;
+import org.eclipse.jpt.core.internal.jdtutility.NumberIntegerExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.PrimitiveTypeStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConverter;
@@ -59,9 +59,9 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.createAnnotationAndMembers("Foo", "int bar();");
 		this.createTestType("@annot.Foo(bar=48)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", NumberStringExpressionConverter.instance());
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
-		assertEquals("48", aea.getValue());
+		DeclarationAnnotationElementAdapter<Integer> daea = new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, "bar", NumberIntegerExpressionConverter.instance());
+		AnnotationElementAdapter<Integer> aea = new MemberAnnotationElementAdapter<Integer>(this.idField(), daea);
+		assertEquals(Integer.valueOf(48), aea.getValue());
 	}
 
 	public void testGetValue3() throws Exception {
@@ -158,18 +158,18 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.createAnnotationAndMembers("Foo", "int bar();");
 		this.createTestType("@annot.Foo(bar=47 - 7 + 2 * 1 / 1)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forNumbers(daa, "bar");
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
-		assertEquals("42", aea.getValue());
+		DeclarationAnnotationElementAdapter<Integer> daea = ConversionDeclarationAnnotationElementAdapter.forNumbers(daa, "bar");
+		AnnotationElementAdapter<Integer> aea = new MemberAnnotationElementAdapter<Integer>(this.idField(), daea);
+		assertEquals(Integer.valueOf(42), aea.getValue());
 	}
 
 	public void testGetValueNumberShift() throws Exception {
 		this.createAnnotationAndMembers("Foo", "int bar();");
 		this.createTestType("@annot.Foo(bar=2 << 2)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forNumbers(daa, "bar");
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
-		assertEquals("8", aea.getValue());
+		DeclarationAnnotationElementAdapter<Integer> daea = ConversionDeclarationAnnotationElementAdapter.forNumbers(daa, "bar");
+		AnnotationElementAdapter<Integer> aea = new MemberAnnotationElementAdapter<Integer>(this.idField(), daea);
+		assertEquals(Integer.valueOf(8), aea.getValue());
 	}
 
 	public void testGetValueNumberConstant() throws Exception {
@@ -177,9 +177,9 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		// just a bit hacky:
 		this.createTestType("private static final int FOO_BAR = 77; @annot.Foo(bar=FOO_BAR)");
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forNumbers(daa, "bar");
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
-		assertEquals("77", aea.getValue());
+		DeclarationAnnotationElementAdapter<Integer> daea = ConversionDeclarationAnnotationElementAdapter.forNumbers(daa, "bar");
+		AnnotationElementAdapter<Integer> aea = new MemberAnnotationElementAdapter<Integer>(this.idField(), daea);
+		assertEquals(Integer.valueOf(77), aea.getValue());
 	}
 
 	public void testGetValueCharacterConstant() throws Exception {
@@ -560,11 +560,11 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedDeclarationAnnotationAdapter(daa1, "value", "annot.Bar");
 		DeclarationAnnotationAdapter daa3 = new NestedIndexedDeclarationAnnotationAdapter(daa2, "jimmy", 2, "annot.Baz");
-		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa3, "fred", NumberStringExpressionConverter.instance());
-		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
+		DeclarationAnnotationElementAdapter<Integer> daea = new ConversionDeclarationAnnotationElementAdapter<Integer>(daa3, "fred", NumberIntegerExpressionConverter.instance());
+		AnnotationElementAdapter<Integer> aea = new MemberAnnotationElementAdapter<Integer>(this.idField(), daea);
 
-		assertEquals("2", aea.getValue());
-		aea.setValue("48");
+		assertEquals(Integer.valueOf(2), aea.getValue());
+		aea.setValue(Integer.valueOf(48));
 		this.assertSourceContains("@annot.Foo(@annot.Bar(jimmy={@annot.Baz(fred=0), @annot.Baz(fred=1), @annot.Baz(fred=48), @annot.Baz(fred=3)}))");
 	}
 

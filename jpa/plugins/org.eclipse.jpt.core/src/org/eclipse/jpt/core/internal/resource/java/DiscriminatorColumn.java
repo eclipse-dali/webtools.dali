@@ -31,16 +31,15 @@ public interface DiscriminatorColumn extends NamedColumn
 	
 	/**
 	 * Corresponds to the length element of the javax.persistence.DiscriminatorColumn annotation.
-	 * Returns -1 if the length valuePair does not exist in the annotation
+	 * Returns null if the length valuePair does not exist in the annotation
 	 */
-	int getLength();
-		int DEFAULT_LENGTH = -1;
+	Integer getLength();
 	
 	/**
 	 * Corresponds to the length element of the javax.persistence.OrderBy annotation.
-	 * Set the length to -1 to remove the length valuePair
+	 * Set the length to null to remove the length valuePair
 	 */
-	void setLength(int length);
+	void setLength(Integer length);
 		String LENGTH_PROPERTY = "lengthProperty";
 
 }

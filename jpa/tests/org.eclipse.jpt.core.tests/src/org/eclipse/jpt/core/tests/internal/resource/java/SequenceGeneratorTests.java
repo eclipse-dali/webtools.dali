@@ -21,8 +21,8 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 
 	private static final String GENERATOR_NAME = "MY_GENERATOR";
 	private static final String GENERATOR_SEQUENCE_NAME = "MY_SEQUENCE";
-	private static final int GENERATOR_ALLOCATION_SIZE = 5;
-	private static final int GENERATOR_INITIAL_VALUE = 5;
+	private static final Integer GENERATOR_ALLOCATION_SIZE = Integer.valueOf(5);
+	private static final Integer GENERATOR_INITIAL_VALUE = Integer.valueOf(5);
 	
 	public SequenceGeneratorTests(String name) {
 		super(name);
@@ -197,16 +197,16 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_ALLOCATION_SIZE, sequenceGenerator.getAllocationSize());
 		
-		sequenceGenerator.setAllocationSize(500);
-		assertEquals(500, sequenceGenerator.getAllocationSize());
+		sequenceGenerator.setAllocationSize(Integer.valueOf(500));
+		assertEquals(Integer.valueOf(500), sequenceGenerator.getAllocationSize());
 		
 		assertSourceContains("@SequenceGenerator(allocationSize=500)");
 		
-		sequenceGenerator.setAllocationSize(-1);
+		sequenceGenerator.setAllocationSize(null);
 		
 		assertSourceDoesNotContain("@SequenceGenerator");
 
-		sequenceGenerator.setAllocationSize(0);
+		sequenceGenerator.setAllocationSize(Integer.valueOf(0));
 		assertSourceContains("@SequenceGenerator(allocationSize=0)");
 	}
 	
@@ -227,16 +227,16 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_INITIAL_VALUE, sequenceGenerator.getInitialValue());
 		
-		sequenceGenerator.setInitialValue(500);
-		assertEquals(500, sequenceGenerator.getInitialValue());
+		sequenceGenerator.setInitialValue(Integer.valueOf(500));
+		assertEquals(Integer.valueOf(500), sequenceGenerator.getInitialValue());
 		
 		assertSourceContains("@SequenceGenerator(initialValue=500)");
 		
-		sequenceGenerator.setInitialValue(-1);
+		sequenceGenerator.setInitialValue(null);
 		
 		assertSourceDoesNotContain("@SequenceGenerator");
 
-		sequenceGenerator.setInitialValue(0);
+		sequenceGenerator.setInitialValue(Integer.valueOf(0));
 		assertSourceContains("@SequenceGenerator(initialValue=0)");
 	}
 }

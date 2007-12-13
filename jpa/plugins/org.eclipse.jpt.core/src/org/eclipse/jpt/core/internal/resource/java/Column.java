@@ -19,45 +19,42 @@ public interface Column extends AbstractColumn
 
 	/**
 	 * Corresponds to the length element of the javax.persistence.Column annotation.
-	 * Returns -1 if the length valuePair does not exist in the annotation
+	 * Returns null if the length valuePair does not exist in the annotation
 	 */
-	int getLength();
+	Integer getLength();
 	
 	/**
 	 * Corresponds to the length element of the javax.persistence.Column annotation.
-	 * Set to -1 to remove the length valuePair from the annotation
+	 * Set to null to remove the length valuePair from the annotation
 	 */
-	void setLength(int length);
+	void setLength(Integer length);
 		String LENGTH_PROPERTY = "lengthProperty";
-		int DEFAULT_LENGTH = -1;
 	
 	/**
 	 * Corresponds to the precision element of the javax.persistence.Column annotation.
-	 * Returns -1 if the precision valuePair does not exist in the annotation
+	 * Returns null if the precision valuePair does not exist in the annotation
 	 */
-	int getPrecision();
+	Integer getPrecision();
 	
 	/**
 	 * Corresponds to the precision element of the javax.persistence.Column annotation.
-	 * Set to -1 to remove the precision valuePair from the annotation
+	 * Set to null to remove the precision valuePair from the annotation
 	 */
-	void setPrecision(int precision);
+	void setPrecision(Integer precision);
 		String PRECISION_PROPERTY = "precisionProperty";
-		int DEFAULT_PRECISION = -1;
 	
 	/**
 	 * Corresponds to the scale element of the javax.persistence.Column annotation.
-	 * Returns -1 if the scale valuePair does not exist in the annotation
+	 * Returns null if the scale valuePair does not exist in the annotation
 	 */
-	int getScale();
+	Integer getScale();
 	
 	/**
 	 * Corresponds to the scale element of the javax.persistence.Column annotation.
-	 * Set to -1 to remove the scale valuePair from the annotation
+	 * Set to null to remove the scale valuePair from the annotation
 	 */
-	void setScale(int scale);
+	void setScale(Integer scale);
 		String SCALE_PROPERTY = "scaleProperty";
-		int DEFAULT_SCALE = -1;
 
 	/**
 	 * Return the ITextRange for the length element. If length element

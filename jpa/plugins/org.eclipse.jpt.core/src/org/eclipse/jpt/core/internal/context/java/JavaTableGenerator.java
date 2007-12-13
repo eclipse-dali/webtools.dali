@@ -61,7 +61,7 @@ public class JavaTableGenerator extends JavaGenerator<TableGenerator>
 		//this.updateUniqueConstraintsFromJava(astRoot);
 	}
 	
-	public int getDefaultInitialValue() {
+	public Integer getDefaultInitialValue() {
 		return ITableGenerator.DEFAULT_INITIAL_VALUE;
 	}
 	

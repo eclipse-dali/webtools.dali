@@ -17,24 +17,24 @@ public interface IGenerator extends IJpaContextNode
 	void setName(String value);
 		String NAME_PROPERTY = "nameProperty";
 
-	int getInitialValue();
+	Integer getInitialValue();
 
-	int getDefaultInitialValue();
+	Integer getDefaultInitialValue();
 		String DEFAULT_INITIAL_VALUE_PROPERTY = "defaultInitialValueProperty";
 
-	int getSpecifiedInitialValue();
-	void setSpecifiedInitialValue(int value);
+	Integer getSpecifiedInitialValue();
+	void setSpecifiedInitialValue(Integer value);
 		String SPECIFIED_INITIAL_VALUE_PROPERTY = "specifiedInitialValueProperty";
 
 
-	int getAllocationSize();
+	Integer getAllocationSize();
 
-	int getDefaultAllocationSize();
-		int DEFAULT_ALLOCATION_SIZE = 50;
+	Integer getDefaultAllocationSize();
+		Integer DEFAULT_ALLOCATION_SIZE = Integer.valueOf(50);
 		String DEFAULT_ALLOCATION_SIZE_PROPERTY = "defaultAllocationSizeProperty";
 	
-	int getSpecifiedAllocationSize();
-	void setSpecifiedAllocationSize(int value);
+	Integer getSpecifiedAllocationSize();
+	void setSpecifiedAllocationSize(Integer value);
 		String SPECIFIED_ALLOCATION_SIZE_PROPERTY = "specifiedAllocationSizeProperty";
 
 }

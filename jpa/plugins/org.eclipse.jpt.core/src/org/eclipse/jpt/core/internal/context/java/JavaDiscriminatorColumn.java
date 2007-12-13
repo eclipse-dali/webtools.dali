@@ -23,7 +23,7 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn<DiscriminatorColumn
 
 	protected DiscriminatorType specifiedDiscriminatorType;
 
-	protected int specifiedLength;
+	protected Integer specifiedLength;
 	
 	protected JavaPersistentResource persistenceResource;
 	
@@ -71,20 +71,20 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn<DiscriminatorColumn
 		firePropertyChanged(IDiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY, oldDiscriminatorType, newSpecifiedDiscriminatorType);
 	}
 		
-	public int getLength() {
-		return (this.getSpecifiedLength() == DiscriminatorColumn.DEFAULT_LENGTH) ? this.getDefaultLength() : this.getSpecifiedLength();
+	public Integer getLength() {
+		return (this.getSpecifiedLength() == null) ? this.getDefaultLength() : this.getSpecifiedLength();
 	}
 
-	public int getDefaultLength() {
+	public Integer getDefaultLength() {
 		return IDiscriminatorColumn.DEFAULT_LENGTH;
 	}
 
-	public int getSpecifiedLength() {
+	public Integer getSpecifiedLength() {
 		return this.specifiedLength;
 	}
 
-	public void setSpecifiedLength(int newSpecifiedLength) {
-		int oldSpecifiedLength = this.specifiedLength;
+	public void setSpecifiedLength(Integer newSpecifiedLength) {
+		Integer oldSpecifiedLength = this.specifiedLength;
 		this.specifiedLength = newSpecifiedLength;
 		columnResource().setLength(newSpecifiedLength);
 		firePropertyChanged(IDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
@@ -119,7 +119,7 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn<DiscriminatorColumn
 		return DiscriminatorType.fromJavaResourceModel(discriminatorColumn.getDiscriminatorType());
 	}
 	
-	protected int length(DiscriminatorColumn discriminatorColumn) {
+	protected Integer length(DiscriminatorColumn discriminatorColumn) {
 		return discriminatorColumn.getLength();
 	}
 }

@@ -398,8 +398,8 @@ public class JavaColumnTests extends ContextModelTestCase
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 
 		assertEquals(IColumn.DEFAULT_LENGTH, basicMapping.getColumn().getLength());
-		basicMapping.getColumn().setSpecifiedLength(55);
-		assertEquals(55, basicMapping.getColumn().getLength());
+		basicMapping.getColumn().setSpecifiedLength(Integer.valueOf(55));
+		assertEquals(Integer.valueOf(55), basicMapping.getColumn().getLength());
 	}
 	
 	public void testGetDefaultLength() throws Exception {
@@ -409,7 +409,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 
 		assertEquals(IColumn.DEFAULT_LENGTH, basicMapping.getColumn().getDefaultLength());
-		basicMapping.getColumn().setSpecifiedLength(55);
+		basicMapping.getColumn().setSpecifiedLength(Integer.valueOf(55));
 		
 		assertEquals(IColumn.DEFAULT_LENGTH, basicMapping.getColumn().getDefaultLength());
 	}	
@@ -420,20 +420,20 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 		
-		assertEquals(Column.DEFAULT_LENGTH, basicMapping.getColumn().getSpecifiedLength());
+		assertNull(basicMapping.getColumn().getSpecifiedLength());
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		Column column = (Column) attributeResource.addAnnotation(JPA.COLUMN);
-		column.setLength(66);
+		column.setLength(Integer.valueOf(66));
 		
-		assertEquals(66, basicMapping.getColumn().getSpecifiedLength());
-		assertEquals(66, basicMapping.getColumn().getLength());
+		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getSpecifiedLength());
+		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getLength());
 		
-		column.setLength(Column.DEFAULT_LENGTH);
+		column.setLength(null);
 		
 		assertNull(attributeResource.annotation(JPA.COLUMN));
-		assertEquals(Column.DEFAULT_LENGTH, basicMapping.getColumn().getSpecifiedLength());	
+		assertNull(basicMapping.getColumn().getSpecifiedLength());	
 	}	
 	
 	public void testSetSpecifiedLength() throws Exception {
@@ -442,19 +442,19 @@ public class JavaColumnTests extends ContextModelTestCase
 
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 		
-		assertEquals(Column.DEFAULT_LENGTH, basicMapping.getColumn().getSpecifiedLength());
+		assertNull(basicMapping.getColumn().getSpecifiedLength());
 		
-		basicMapping.getColumn().setSpecifiedLength(100);
+		basicMapping.getColumn().setSpecifiedLength(Integer.valueOf(100));
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
 		
-		assertEquals(100, column.getLength());
+		assertEquals(Integer.valueOf(100), column.getLength());
 		
-		basicMapping.getColumn().setSpecifiedLength(Column.DEFAULT_LENGTH);
+		basicMapping.getColumn().setSpecifiedLength(null);
 		
-		assertEquals(Column.DEFAULT_LENGTH, column.getLength());
+		assertNull(column.getLength());
 	}
 
 	public void testGetPrecision() throws Exception {
@@ -463,8 +463,8 @@ public class JavaColumnTests extends ContextModelTestCase
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 
 		assertEquals(IColumn.DEFAULT_PRECISION, basicMapping.getColumn().getPrecision());
-		basicMapping.getColumn().setSpecifiedPrecision(55);
-		assertEquals(55, basicMapping.getColumn().getPrecision());
+		basicMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(55));
+		assertEquals(Integer.valueOf(55), basicMapping.getColumn().getPrecision());
 	}
 	
 	public void testGetDefaultPrecision() throws Exception {
@@ -474,7 +474,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 
 		assertEquals(IColumn.DEFAULT_PRECISION, basicMapping.getColumn().getDefaultPrecision());
-		basicMapping.getColumn().setSpecifiedPrecision(55);
+		basicMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(55));
 		
 		assertEquals(IColumn.DEFAULT_PRECISION, basicMapping.getColumn().getDefaultPrecision());
 	}	
@@ -485,20 +485,20 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 		
-		assertEquals(Column.DEFAULT_PRECISION, basicMapping.getColumn().getSpecifiedPrecision());
+		assertNull(basicMapping.getColumn().getSpecifiedPrecision());
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		Column column = (Column) attributeResource.addAnnotation(JPA.COLUMN);
-		column.setPrecision(66);
+		column.setPrecision(Integer.valueOf(66));
 		
-		assertEquals(66, basicMapping.getColumn().getSpecifiedPrecision());
-		assertEquals(66, basicMapping.getColumn().getPrecision());
+		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getSpecifiedPrecision());
+		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getPrecision());
 		
-		column.setPrecision(Column.DEFAULT_PRECISION);
+		column.setPrecision(null);
 		
 		assertNull(attributeResource.annotation(JPA.COLUMN));
-		assertEquals(Column.DEFAULT_PRECISION, basicMapping.getColumn().getSpecifiedPrecision());	
+		assertNull(basicMapping.getColumn().getSpecifiedPrecision());	
 	}	
 	
 	public void testSetSpecifiedPrecision() throws Exception {
@@ -507,19 +507,19 @@ public class JavaColumnTests extends ContextModelTestCase
 
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 		
-		assertEquals(Column.DEFAULT_PRECISION, basicMapping.getColumn().getSpecifiedPrecision());
+		assertNull(basicMapping.getColumn().getSpecifiedPrecision());
 		
-		basicMapping.getColumn().setSpecifiedPrecision(100);
+		basicMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(100));
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
 		
-		assertEquals(100, column.getPrecision());
+		assertEquals(Integer.valueOf(100), column.getPrecision());
 		
-		basicMapping.getColumn().setSpecifiedPrecision(Column.DEFAULT_LENGTH);
+		basicMapping.getColumn().setSpecifiedPrecision(null);
 		
-		assertEquals(Column.DEFAULT_PRECISION, column.getPrecision());
+		assertNull(column.getPrecision());
 	}
 	
 	public void testGetScale() throws Exception {
@@ -528,8 +528,8 @@ public class JavaColumnTests extends ContextModelTestCase
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 
 		assertEquals(IColumn.DEFAULT_SCALE, basicMapping.getColumn().getScale());
-		basicMapping.getColumn().setSpecifiedScale(55);
-		assertEquals(55, basicMapping.getColumn().getScale());
+		basicMapping.getColumn().setSpecifiedScale(Integer.valueOf(55));
+		assertEquals(Integer.valueOf(55), basicMapping.getColumn().getScale());
 	}
 	
 	public void testGetDefaultScale() throws Exception {
@@ -539,7 +539,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 
 		assertEquals(IColumn.DEFAULT_SCALE, basicMapping.getColumn().getDefaultScale());
-		basicMapping.getColumn().setSpecifiedScale(55);
+		basicMapping.getColumn().setSpecifiedScale(Integer.valueOf(55));
 		
 		assertEquals(IColumn.DEFAULT_SCALE, basicMapping.getColumn().getDefaultScale());
 	}	
@@ -550,20 +550,20 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 		
-		assertEquals(Column.DEFAULT_SCALE, basicMapping.getColumn().getSpecifiedScale());
+		assertNull(basicMapping.getColumn().getSpecifiedScale());
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		Column column = (Column) attributeResource.addAnnotation(JPA.COLUMN);
-		column.setScale(66);
+		column.setScale(Integer.valueOf(66));
 		
-		assertEquals(66, basicMapping.getColumn().getSpecifiedScale());
-		assertEquals(66, basicMapping.getColumn().getScale());
+		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getSpecifiedScale());
+		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getScale());
 		
-		column.setScale(Column.DEFAULT_SCALE);
+		column.setScale(null);
 		
 		assertNull(attributeResource.annotation(JPA.COLUMN));
-		assertEquals(Column.DEFAULT_SCALE, basicMapping.getColumn().getSpecifiedScale());	
+		assertNull(basicMapping.getColumn().getSpecifiedScale());	
 	}	
 	
 	public void testSetSpecifiedScale() throws Exception {
@@ -572,19 +572,19 @@ public class JavaColumnTests extends ContextModelTestCase
 
 		IBasicMapping basicMapping = (IBasicMapping) javaPersistentType().attributes().next().getMapping();
 		
-		assertEquals(Column.DEFAULT_SCALE, basicMapping.getColumn().getSpecifiedScale());
+		assertNull(basicMapping.getColumn().getSpecifiedScale());
 		
-		basicMapping.getColumn().setSpecifiedScale(100);
+		basicMapping.getColumn().setSpecifiedScale(Integer.valueOf(100));
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
 		
-		assertEquals(100, column.getScale());
+		assertEquals(Integer.valueOf(100), column.getScale());
 		
-		basicMapping.getColumn().setSpecifiedScale(Column.DEFAULT_LENGTH);
+		basicMapping.getColumn().setSpecifiedScale(null);
 		
-		assertEquals(Column.DEFAULT_SCALE, column.getScale());
+		assertNull(column.getScale());
 	}
 	
 	public void testGetUnique() throws Exception {

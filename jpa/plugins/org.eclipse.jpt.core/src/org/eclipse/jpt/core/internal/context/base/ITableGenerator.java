@@ -15,7 +15,7 @@ import org.eclipse.jpt.db.internal.Table;
 
 public interface ITableGenerator extends IGenerator
 {
-	int DEFAULT_INITIAL_VALUE = 0;
+	Integer DEFAULT_INITIAL_VALUE = Integer.valueOf(0);
 
 	String getTable();
 	

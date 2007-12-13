@@ -32,35 +32,33 @@ public interface Generator extends JavaResource
 	
 	/**
 	 * Corresponds to the initialValue element of the TableGenerator or SequenceGenerator annotation.
-	 * Returns -1 if the initialValue element does not exist in java.  If no other memberValuePairs exist
+	 * Returns null if the initialValue element does not exist in java.  If no other memberValuePairs exist
 	 * the *Generator annotation will be removed as well.
 	 */
-	int getInitialValue();
+	Integer getInitialValue();
 	
 	/**
 	 * Corresponds to the initialValue element of the TableGenerator or SequenceGenerator annotation.
-	 * Set to -1 to remove the initialValue element.  If no other memberValuePairs exist
+	 * Set to null to remove the initialValue element.  If no other memberValuePairs exist
 	 * the *Generator annotation will be removed as well.
 	 */
-	void setInitialValue(int initialValue);
+	void setInitialValue(Integer initialValue);
 		String INITIAL_VALUE_PROPERTY = "initialValueProperty";
-		int DEFAULT_INITIAL_VALUE = -1;
 		
 	/**
 	 * Corresponds to the allocationSize element of the TableGenerator or SequenceGenerator annotation.
-	 * Returns -1 if the allocationSize element does not exist in java.  If no other memberValuePairs exist
+	 * Returns null if the allocationSize element does not exist in java.  If no other memberValuePairs exist
 	 * the *Generator annotation will be removed as well.
 	 */
-	int getAllocationSize();
+	Integer getAllocationSize();
 	
 	/**
 	 * Corresponds to the allocationSize element of the TableGenerator or SequenceGenerator annotation.
-	 * Set to -1 to remove the allocationSize element.  If no other memberValuePairs exist
+	 * Set to null to remove the allocationSize element.  If no other memberValuePairs exist
 	 * the *Generator annotation will be removed as well.
 	 */
-	void setAllocationSize(int allocationSize);
+	void setAllocationSize(Integer allocationSize);
 		String ALLOCATION_SIZE_PROPERTY = "allocationSizeProperty";
-		int DEFAULT_ALLOCATION_SIZE_VALUE = -1;
 	
 	/**
 	 * Return the ITextRange for the name element.  If the name element 

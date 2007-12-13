@@ -19,9 +19,9 @@ public abstract class JavaGenerator<T extends Generator> extends JavaContextMode
 {
 	protected String name;
 
-	protected int specifiedInitialValue;
+	protected Integer specifiedInitialValue;
 	
-	protected int specifiedAllocationSize;
+	protected Integer specifiedAllocationSize;
 
 	protected T generatorResource;
 	
@@ -44,11 +44,11 @@ public abstract class JavaGenerator<T extends Generator> extends JavaContextMode
 		return generatorResource.getName();
 	}
 	
-	protected int specifiedInitialValue(Generator generatorResource) {
+	protected Integer specifiedInitialValue(Generator generatorResource) {
 		return generatorResource.getInitialValue();
 	}
 	
-	protected int specifiedAllocationSize(Generator generatorResource) {
+	protected Integer specifiedAllocationSize(Generator generatorResource) {
 		return generatorResource.getAllocationSize();
 	}
 	
@@ -63,37 +63,37 @@ public abstract class JavaGenerator<T extends Generator> extends JavaContextMode
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
-	public int getInitialValue() {
-		return (this.getSpecifiedInitialValue() == Generator.DEFAULT_INITIAL_VALUE) ? this.getDefaultInitialValue() : this.getSpecifiedInitialValue();
+	public Integer getInitialValue() {
+		return (this.getSpecifiedInitialValue() == null) ? this.getDefaultInitialValue() : this.getSpecifiedInitialValue();
 	}
 
-	public int getSpecifiedInitialValue() {
+	public Integer getSpecifiedInitialValue() {
 		return this.specifiedInitialValue;
 	}
 
-	public void setSpecifiedInitialValue(int newSpecifiedInitialValue) {
-		int oldSpecifiedInitialValue = this.specifiedInitialValue;
+	public void setSpecifiedInitialValue(Integer newSpecifiedInitialValue) {
+		Integer oldSpecifiedInitialValue = this.specifiedInitialValue;
 		this.specifiedInitialValue = newSpecifiedInitialValue;
 		generatorResource().setInitialValue(newSpecifiedInitialValue);
 		firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
 	}
 
-	public int getAllocationSize() {
-		return (this.getSpecifiedAllocationSize() == -1) ? this.getDefaultAllocationSize() : this.getSpecifiedAllocationSize();
+	public Integer getAllocationSize() {
+		return (this.getSpecifiedAllocationSize() == null) ? this.getDefaultAllocationSize() : this.getSpecifiedAllocationSize();
 	}
 
-	public int getSpecifiedAllocationSize() {
+	public Integer getSpecifiedAllocationSize() {
 		return this.specifiedAllocationSize;
 	}
 
-	public void setSpecifiedAllocationSize(int newSpecifiedAllocationSize) {
-		int oldSpecifiedAllocationSize = this.specifiedAllocationSize;
+	public void setSpecifiedAllocationSize(Integer newSpecifiedAllocationSize) {
+		Integer oldSpecifiedAllocationSize = this.specifiedAllocationSize;
 		this.specifiedAllocationSize = newSpecifiedAllocationSize;
 		generatorResource().setAllocationSize(newSpecifiedAllocationSize);
 		firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
 	}
 
-	public int getDefaultAllocationSize() {
+	public Integer getDefaultAllocationSize() {
 		return IGenerator.DEFAULT_ALLOCATION_SIZE;
 	}
 

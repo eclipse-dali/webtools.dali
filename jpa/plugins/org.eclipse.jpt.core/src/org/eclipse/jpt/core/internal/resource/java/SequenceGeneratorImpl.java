@@ -25,9 +25,9 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildAdapter(JPA.SEQUENCE_GENERATOR__NAME);
 
-	private static final DeclarationAnnotationElementAdapter<String> INITIAL_VALUE_ADAPTER = buildNumberAdapter(JPA.SEQUENCE_GENERATOR__INITIAL_VALUE);
+	private static final DeclarationAnnotationElementAdapter<Integer> INITIAL_VALUE_ADAPTER = buildIntegerAdapter(JPA.SEQUENCE_GENERATOR__INITIAL_VALUE);
 
-	private static final DeclarationAnnotationElementAdapter<String> ALLOCATION_SIZE_ADAPTER = buildNumberAdapter(JPA.SEQUENCE_GENERATOR__ALLOCATION_SIZE);
+	private static final DeclarationAnnotationElementAdapter<Integer> ALLOCATION_SIZE_ADAPTER = buildIntegerAdapter(JPA.SEQUENCE_GENERATOR__ALLOCATION_SIZE);
 
 	private static final DeclarationAnnotationElementAdapter<String> SEQUENCE_NAME_ADAPTER = buildAdapter(JPA.SEQUENCE_GENERATOR__SEQUENCE_NAME);
 	
@@ -51,7 +51,7 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 	//************ GeneratorImpl implementation **************
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> allocationSizeAdapter() {
+	protected DeclarationAnnotationElementAdapter<Integer> allocationSizeAdapter() {
 		return ALLOCATION_SIZE_ADAPTER;
 	}
 
@@ -61,7 +61,7 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> initialValueAdapter() {
+	protected DeclarationAnnotationElementAdapter<Integer> initialValueAdapter() {
 		return INITIAL_VALUE_ADAPTER;
 	}
 
@@ -102,8 +102,8 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 		return buildAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
 	}
 
-	private static DeclarationAnnotationElementAdapter<String> buildNumberAdapter(String elementName) {
-		return buildNumberAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
+	private static DeclarationAnnotationElementAdapter<Integer> buildIntegerAdapter(String elementName) {
+		return buildIntegerAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
 	}
 	
 	public static class SequenceGeneratorAnnotationDefinition implements AnnotationDefinition

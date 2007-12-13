@@ -28,7 +28,7 @@ public class JavaSequenceGenerator extends JavaGenerator<SequenceGenerator>
 		this.specifiedSequenceName = this.specifiedSequenceName(sequenceGenerator);
 	}
 	
-	public int getDefaultInitialValue() {
+	public Integer getDefaultInitialValue() {
 		return ISequenceGenerator.DEFAULT_INITIAL_VALUE;
 	}
 	

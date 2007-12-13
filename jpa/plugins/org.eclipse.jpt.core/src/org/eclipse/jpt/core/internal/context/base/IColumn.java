@@ -11,35 +11,35 @@ package org.eclipse.jpt.core.internal.context.base;
 
 public interface IColumn extends IAbstractColumn
 {
-	int getLength();
+	Integer getLength();
 
-	int getDefaultLength();
-		int DEFAULT_LENGTH = 255;
+	Integer getDefaultLength();
+	Integer DEFAULT_LENGTH = Integer.valueOf(255);
 		String DEFAULT_LENGTH_PROPERTY = "defaultLengthProperty";
 
-	int getSpecifiedLength();
-	void setSpecifiedLength(int newSpecifiedLength);
+	Integer getSpecifiedLength();
+	void setSpecifiedLength(Integer newSpecifiedLength);
 		String SPECIFIED_LENGTH_PROPERTY = "spcifiedLengthProperty";
 		
-	int getPrecision();
+		Integer getPrecision();
 
-	int getDefaultPrecision();
-		int DEFAULT_PRECISION = 0;
+	Integer getDefaultPrecision();
+		Integer DEFAULT_PRECISION = Integer.valueOf(0);
 		String DEFAULT_PRECISION_PROPERTY = "defaultPrecisionProperty";
 
-	int getSpecifiedPrecision();
-	void setSpecifiedPrecision(int newSpecifiedPrecision);
+		Integer getSpecifiedPrecision();
+	void setSpecifiedPrecision(Integer newSpecifiedPrecision);
 		String SPECIFIED_PRECISION_PROPERTY = "spcifiedPrecisionProperty";
 
 	
-	int getScale();
+	Integer getScale();
 
-	int getDefaultScale();
-		int DEFAULT_SCALE = 0;
+	Integer getDefaultScale();
+		Integer DEFAULT_SCALE = Integer.valueOf(0);
 		String DEFAULT_SCALE_PROPERTY = "defaultScaleProperty";
 
-	int getSpecifiedScale();
-	void setSpecifiedScale(int newSpecifiedScale);
+	Integer getSpecifiedScale();
+	void setSpecifiedScale(Integer newSpecifiedScale);
 		String SPECIFIED_SCALE_PROPERTY = "spcifiedScaleProperty";
 
 	/**

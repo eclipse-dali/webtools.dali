@@ -29,32 +29,32 @@ public class NullColumn extends NullAbstractColumn implements Column, Annotation
 	}
 
 
-	public int getLength() {
-		return Column.DEFAULT_LENGTH;
+	public Integer getLength() {
+		return null;
 	}
 	
-	public void setLength(int length) {
-		if (length != DEFAULT_LENGTH) {
+	public void setLength(Integer length) {
+		if (length != null) {
 			createColumnResource().setLength(length);
 		}
 	}
 	
-	public int getScale() {
-		return Column.DEFAULT_SCALE;
+	public Integer getScale() {
+		return null;
 	}
 	
-	public void setScale(int scale) {
-		if (scale != DEFAULT_SCALE) {
+	public void setScale(Integer scale) {
+		if (scale != null) {
 			createColumnResource().setScale(scale);
 		}
 	}
 	
-	public int getPrecision() {
-		return Column.DEFAULT_PRECISION;
+	public Integer getPrecision() {
+		return null;
 	}
 	
-	public void setPrecision(int precision) {
-		if (precision != DEFAULT_PRECISION) {
+	public void setPrecision(Integer precision) {
+		if (precision != null) {
 			createColumnResource().setPrecision(precision);
 		}
 	}

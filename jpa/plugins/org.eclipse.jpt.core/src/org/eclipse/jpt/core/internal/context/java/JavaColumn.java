@@ -18,14 +18,11 @@ import org.eclipse.jpt.core.internal.resource.java.Column;
 public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColumn
 {
 
-	protected int specifiedLength;
-	protected static final int DEFAULT_SPECIFIED_LENGTH = -1;
+	protected Integer specifiedLength;
 
-	protected int specifiedPrecision;
-	protected static final int DEFAULT_SPECIFIED_PRECISION = -1;
+	protected Integer specifiedPrecision;
 
-	protected int specifiedScale;
-	protected static final int DEFAULT_SPECIFIED_SCALE = -1;
+	protected Integer specifiedScale;
 	
 	public JavaColumn(IJavaColumnMapping parent, IAbstractColumn.Owner owner) {
 		super(parent, owner);
@@ -44,58 +41,58 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 		return this.owner().columnResource();
 	}
 	
-	public int getLength() {
-		return (this.getSpecifiedLength() == DEFAULT_SPECIFIED_LENGTH) ? getDefaultLength() : this.getSpecifiedLength();
+	public Integer getLength() {
+		return (this.getSpecifiedLength() == null) ? getDefaultLength() : this.getSpecifiedLength();
 	}
 
-	public int getDefaultLength() {
+	public Integer getDefaultLength() {
 		return IColumn.DEFAULT_LENGTH;
 	}
 	
-	public int getSpecifiedLength() {
+	public Integer getSpecifiedLength() {
 		return this.specifiedLength;
 	}
 
-	public void setSpecifiedLength(int newSpecifiedLength) {
-		int oldSpecifiedLength = this.specifiedLength;
+	public void setSpecifiedLength(Integer newSpecifiedLength) {
+		Integer oldSpecifiedLength = this.specifiedLength;
 		this.specifiedLength = newSpecifiedLength;
 		columnResource().setLength(newSpecifiedLength);
 		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
 	}
 
-	public int getPrecision() {
-		return (this.getSpecifiedPrecision() == DEFAULT_SPECIFIED_PRECISION) ? getDefaultPrecision() : this.getSpecifiedPrecision();
+	public Integer getPrecision() {
+		return (this.getSpecifiedPrecision() == null) ? getDefaultPrecision() : this.getSpecifiedPrecision();
 	}
 
-	public int getDefaultPrecision() {
+	public Integer getDefaultPrecision() {
 		return IColumn.DEFAULT_PRECISION;
 	}
 	
-	public int getSpecifiedPrecision() {
+	public Integer getSpecifiedPrecision() {
 		return this.specifiedPrecision;
 	}
 
-	public void setSpecifiedPrecision(int newSpecifiedPrecision) {
-		int oldSpecifiedPrecision = this.specifiedPrecision;
+	public void setSpecifiedPrecision(Integer newSpecifiedPrecision) {
+		Integer oldSpecifiedPrecision = this.specifiedPrecision;
 		this.specifiedPrecision = newSpecifiedPrecision;
 		columnResource().setPrecision(newSpecifiedPrecision);
 		firePropertyChanged(SPECIFIED_PRECISION_PROPERTY, oldSpecifiedPrecision, newSpecifiedPrecision);
 	}
 
-	public int getScale() {
-		return (this.getSpecifiedScale() == DEFAULT_SPECIFIED_SCALE) ? getDefaultScale() : this.getSpecifiedScale();
+	public Integer getScale() {
+		return (this.getSpecifiedScale() == null) ? getDefaultScale() : this.getSpecifiedScale();
 	}
 
-	public int getDefaultScale() {
+	public Integer getDefaultScale() {
 		return IColumn.DEFAULT_SCALE;
 	}
 	
-	public int getSpecifiedScale() {
+	public Integer getSpecifiedScale() {
 		return this.specifiedScale;
 	}
 
-	public void setSpecifiedScale(int newSpecifiedScale) {
-		int oldSpecifiedScale = this.specifiedScale;
+	public void setSpecifiedScale(Integer newSpecifiedScale) {
+		Integer oldSpecifiedScale = this.specifiedScale;
 		this.specifiedScale = newSpecifiedScale;
 		columnResource().setScale(newSpecifiedScale);
 		firePropertyChanged(SPECIFIED_SCALE_PROPERTY, oldSpecifiedScale, newSpecifiedScale);
@@ -119,15 +116,15 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 		this.setSpecifiedScale(this.specifiedScale(column));
 	}
 	
-	protected int specifiedLength(Column column) {
+	protected Integer specifiedLength(Column column) {
 		return column.getLength();
 	}
 	
-	protected int specifiedPrecision(Column column) {
+	protected Integer specifiedPrecision(Column column) {
 		return column.getPrecision();
 	}
 	
-	protected int specifiedScale(Column column) {
+	protected Integer specifiedScale(Column column) {
 		return column.getScale();
 	}
 }

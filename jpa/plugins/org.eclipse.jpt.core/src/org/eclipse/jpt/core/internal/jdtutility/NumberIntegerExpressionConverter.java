@@ -14,37 +14,37 @@ import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.NumberLiteral;
 
 /**
- * Convert a number literal to/from a string representation of a number
- * (e.g. "48").
+ * Convert a number literal to/from an Integer
+ * (e.g. 5).
  */
-public final class NumberStringExpressionConverter
-	extends AbstractExpressionConverter<String>
+public final class NumberIntegerExpressionConverter
+	extends AbstractExpressionConverter<Integer>
 {
-	private static final ExpressionConverter<String> INSTANCE = new NumberStringExpressionConverter();
+	private static final ExpressionConverter<Integer> INSTANCE = new NumberIntegerExpressionConverter();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExpressionConverter<String> instance() {
+	public static ExpressionConverter<Integer> instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure single instance.
 	 */
-	private NumberStringExpressionConverter() {
+	private NumberIntegerExpressionConverter() {
 		super();
 	}
 	
 	@Override
-	protected NumberLiteral convertObject(String string, AST ast) {
-		return ast.newNumberLiteral(string);
+	protected NumberLiteral convertObject(Integer integer, AST ast) {
+		return ast.newNumberLiteral(integer.toString());
 	}
 
 	@Override
-	protected String convertExpression(Expression expression) {
+	protected Integer convertExpression(Expression expression) {
 		Object value = expression.resolveConstantExpressionValue();
-		return (value instanceof Number) ? ((Number) value).toString() : null;
+		return (value instanceof Integer) ? ((Integer) value) : null;
 	}
 
 }

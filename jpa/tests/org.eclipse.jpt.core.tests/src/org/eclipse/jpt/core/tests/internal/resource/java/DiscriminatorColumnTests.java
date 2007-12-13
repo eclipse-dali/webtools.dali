@@ -180,7 +180,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		DiscriminatorColumn column = (DiscriminatorColumn) typeResource.annotation(JPA.DISCRIMINATOR_COLUMN);
 
-		assertEquals(5, column.getLength());
+		assertEquals(Integer.valueOf(5), column.getLength());
 	}
 	
 	public void testSetLength() throws Exception {
@@ -189,14 +189,14 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 		DiscriminatorColumn column = (DiscriminatorColumn) typeResource.annotation(JPA.DISCRIMINATOR_COLUMN);
 
 		assertNotNull(column);
-		assertEquals(-1, column.getLength());
+		assertNull(column.getLength());
 
-		column.setLength(5);
-		assertEquals(5, column.getLength());
+		column.setLength(Integer.valueOf(5));
+		assertEquals(Integer.valueOf(5), column.getLength());
 		
 		assertSourceContains("@DiscriminatorColumn(length=5)");
 		
-		column.setLength(-1);
+		column.setLength(null);
 		assertSourceDoesNotContain("@DiscriminatorColumn");
 	}
 	
