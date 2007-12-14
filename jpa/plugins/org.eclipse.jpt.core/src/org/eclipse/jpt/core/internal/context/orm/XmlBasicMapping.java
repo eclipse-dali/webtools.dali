@@ -40,14 +40,9 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	
 	protected EnumType defaultEnumerated;
 	
-//	protected static final boolean LOB_EDEFAULT = false;
-//
-//	protected boolean lob = LOB_EDEFAULT;
-//
-//	protected static final TemporalType TEMPORAL_EDEFAULT = TemporalType.NULL;
-//
-//	protected TemporalType temporal = TEMPORAL_EDEFAULT;
-//
+	protected TemporalType temporal;
+	
+	protected boolean lob;
 
 	protected Basic basic;
 	
@@ -107,27 +102,28 @@ public class XmlBasicMapping extends XmlAttributeMapping
 		firePropertyChanged(IBasicMapping.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 
-//	public boolean isLob() {
-//		return lob;
-//	}
-//
-//	public void setLob(boolean newLob) {
-//		boolean oldLob = lob;
-//		lob = newLob;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC__LOB, oldLob, lob));
-//	}
-//
-//	public TemporalType getTemporal() {
-//		return temporal;
-//	}
-//
-//	public void setTemporal(TemporalType newTemporal) {
-//		TemporalType oldTemporal = temporal;
-//		temporal = newTemporal == null ? TEMPORAL_EDEFAULT : newTemporal;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC__TEMPORAL, oldTemporal, temporal));
-//	}
+	public boolean isLob() {
+		return this.lob;
+	}
+
+	public void setLob(boolean newLob) {
+		boolean oldLob = this.lob;
+		this.lob = newLob;
+		this.basic.setLob(newLob);
+		firePropertyChanged(IBasicMapping.LOB_PROPERTY, oldLob, newLob);
+	}
+
+	public TemporalType getTemporal() {
+		return this.temporal;
+	}
+
+	public void setTemporal(TemporalType newTemporal) {
+		TemporalType oldTemporal = this.temporal;
+		this.temporal = newTemporal;
+		this.basic.setTemporal(TemporalType.toOrmResourceModel(newTemporal));
+		firePropertyChanged(IBasicMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+	}
+
 	
 	public EnumType getEnumerated() {
 		return (this.getSpecifiedEnumerated() == null) ? this.getDefaultEnumerated() : this.getSpecifiedEnumerated();
@@ -183,27 +179,6 @@ public class XmlBasicMapping extends XmlAttributeMapping
 		return this.column;
 	}
 
-	public TemporalType getTemporal() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean isLob() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void setLob(boolean value) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	public void setTemporal(TemporalType value) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public String attributeName() {
 		return this.persistentAttribute().getName();
 	}
@@ -232,6 +207,8 @@ public class XmlBasicMapping extends XmlAttributeMapping
 		this.specifiedFetch = this.specifiedFetch(basic);
 		this.specifiedOptional = this.specifiedOptional(basic);
 		this.specifiedEnumerated = this.specifiedEnumerated(basic);
+		this.temporal = this.specifiedTemporal(basic);
+		this.lob = specifiedLob(basic);
 		this.column.initialize(basic);
 	}
 	
@@ -240,6 +217,8 @@ public class XmlBasicMapping extends XmlAttributeMapping
 		this.setSpecifiedFetch(this.specifiedFetch(basic));
 		this.setSpecifiedOptional(this.specifiedOptional(basic));
 		this.setSpecifiedEnumerated(this.specifiedEnumerated(basic));
+		this.setTemporal(this.specifiedTemporal(basic));
+		this.setLob(this.specifiedLob(basic));
 		this.column.update(basic);
 	}
 	
@@ -254,7 +233,15 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	protected EnumType specifiedEnumerated(Basic basic) {
 		return EnumType.fromOrmResourceModel(basic.getEnumerated());
 	}
+	
+	protected TemporalType specifiedTemporal(Basic basic) {
+		return TemporalType.fromOrmResourceModel(basic.getTemporal());
+	}
 
+	protected boolean specifiedLob(Basic basic) {
+		return basic.isLob();
+	}
+	
 	@Override
 	public AttributeMapping addToResourceModel(TypeMapping typeMapping) {
 		Basic basic = OrmFactory.eINSTANCE.createBasic();

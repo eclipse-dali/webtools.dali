@@ -155,7 +155,7 @@
     <genClasses ecoreClass="orm.ecore#//Basic">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/fetch"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/optional"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Basic/lob"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/lob"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/temporal"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/enumerated"/>
     </genClasses>

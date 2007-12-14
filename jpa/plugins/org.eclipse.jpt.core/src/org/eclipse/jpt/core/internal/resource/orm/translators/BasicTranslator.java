@@ -61,7 +61,7 @@ public class BasicTranslator extends Translator
 	}
 	
 	private Translator createLobTranslator() {
-		return new Translator(LOB, ORM_PKG.getBasic_Lob());
+		return new EmptyTagBooleanTranslator(LOB, ORM_PKG.getBasic_Lob());
 	}
 	
 	private Translator createTemporalTranslator() {

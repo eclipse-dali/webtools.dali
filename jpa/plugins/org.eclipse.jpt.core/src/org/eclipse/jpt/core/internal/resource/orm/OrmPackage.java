@@ -1227,7 +1227,7 @@ public class OrmPackage extends EPackageImpl
 	public static final int BASIC__OPTIONAL = ATTRIBUTE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Lob</b></em>' containment reference.
+	 * The feature id for the '<em><b>Lob</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -5588,17 +5588,17 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getLob <em>Lob</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#isLob <em>Lob</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Lob</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Basic#getLob()
+	 * @return the meta object for the attribute '<em>Lob</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Basic#isLob()
 	 * @see #getBasic()
 	 * @generated
 	 */
-	public EReference getBasic_Lob()
+	public EAttribute getBasic_Lob()
 	{
-		return (EReference)basicEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)basicEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -8032,7 +8032,7 @@ public class OrmPackage extends EPackageImpl
 		basicEClass = createEClass(BASIC);
 		createEAttribute(basicEClass, BASIC__FETCH);
 		createEAttribute(basicEClass, BASIC__OPTIONAL);
-		createEReference(basicEClass, BASIC__LOB);
+		createEAttribute(basicEClass, BASIC__LOB);
 		createEAttribute(basicEClass, BASIC__TEMPORAL);
 		createEAttribute(basicEClass, BASIC__ENUMERATED);
 
@@ -8425,7 +8425,7 @@ public class OrmPackage extends EPackageImpl
 		initEClass(basicEClass, Basic.class, "Basic", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getBasic_Fetch(), this.getFetchType(), "fetch", "LAZY", 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBasic_Optional(), theXMLTypePackage.getBooleanObject(), "optional", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBasic_Lob(), this.getLob(), null, "lob", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBasic_Lob(), theXMLTypePackage.getBoolean(), "lob", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBasic_Temporal(), this.getTemporalType(), "temporal", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBasic_Enumerated(), this.getEnumType(), "enumerated", null, 0, 1, Basic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -9473,12 +9473,12 @@ public class OrmPackage extends EPackageImpl
 		public static final EAttribute BASIC__OPTIONAL = eINSTANCE.getBasic_Optional();
 
 		/**
-		 * The meta object literal for the '<em><b>Lob</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Lob</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference BASIC__LOB = eINSTANCE.getBasic_Lob();
+		public static final EAttribute BASIC__LOB = eINSTANCE.getBasic_Lob();
 
 		/**
 		 * The meta object literal for the '<em><b>Temporal</b></em>' attribute feature.

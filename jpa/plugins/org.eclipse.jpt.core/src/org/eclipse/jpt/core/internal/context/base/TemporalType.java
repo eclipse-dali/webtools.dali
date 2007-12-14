@@ -44,7 +44,7 @@ public enum TemporalType {
 	}
 	
 
-	public static TemporalType fromXmlResourceModel(org.eclipse.jpt.core.internal.resource.orm.TemporalType ormTemporalType) {
+	public static TemporalType fromOrmResourceModel(org.eclipse.jpt.core.internal.resource.orm.TemporalType ormTemporalType) {
 		if (ormTemporalType == org.eclipse.jpt.core.internal.resource.orm.TemporalType.DATE) {
 			return DATE;
 		}
@@ -57,7 +57,7 @@ public enum TemporalType {
 		return null;
 	}
 	
-	public static org.eclipse.jpt.core.internal.resource.orm.TemporalType toXmlResourceModel(TemporalType temporalType) {
+	public static org.eclipse.jpt.core.internal.resource.orm.TemporalType toOrmResourceModel(TemporalType temporalType) {
 		if (temporalType == DATE)  {
 			return org.eclipse.jpt.core.internal.resource.orm.TemporalType.DATE;
 		}

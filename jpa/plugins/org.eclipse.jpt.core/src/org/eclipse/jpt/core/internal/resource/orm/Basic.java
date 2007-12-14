@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getFetch <em>Fetch</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getOptional <em>Optional</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getLob <em>Lob</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#isLob <em>Lob</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getTemporal <em>Temporal</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getEnumerated <em>Enumerated</em>}</li>
  * </ul>
@@ -105,14 +105,24 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 	protected Boolean optional = OPTIONAL_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getLob() <em>Lob</em>}' containment reference.
+	 * The default value of the '{@link #isLob() <em>Lob</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getLob()
+	 * @see #isLob()
 	 * @generated
 	 * @ordered
 	 */
-	protected Lob lob;
+	protected static final boolean LOB_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isLob() <em>Lob</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isLob()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean lob = LOB_EDEFAULT;
 
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
@@ -277,6 +287,41 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Lob</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Lob</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Lob</em>' attribute.
+	 * @see #setLob(boolean)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getBasic_Lob()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @generated
+	 */
+	public boolean isLob()
+	{
+		return lob;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#isLob <em>Lob</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Lob</em>' attribute.
+	 * @see #isLob()
+	 * @generated
+	 */
+	public void setLob(boolean newLob)
+	{
+		boolean oldLob = lob;
+		lob = newLob;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC__LOB, oldLob, lob));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Column</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -334,66 +379,6 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC__COLUMN, newColumn, newColumn));
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Lob</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Lob</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Lob</em>' containment reference.
-	 * @see #setLob(Lob)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getBasic_Lob()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public Lob getLob()
-	{
-		return lob;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetLob(Lob newLob, NotificationChain msgs)
-	{
-		Lob oldLob = lob;
-		lob = newLob;
-		if (eNotificationRequired())
-		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC__LOB, oldLob, newLob);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Basic#getLob <em>Lob</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Lob</em>' containment reference.
-	 * @see #getLob()
-	 * @generated
-	 */
-	public void setLob(Lob newLob)
-	{
-		if (newLob != lob)
-		{
-			NotificationChain msgs = null;
-			if (lob != null)
-				msgs = ((InternalEObject)lob).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.BASIC__LOB, null, msgs);
-			if (newLob != null)
-				msgs = ((InternalEObject)newLob).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.BASIC__LOB, null, msgs);
-			msgs = basicSetLob(newLob, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC__LOB, newLob, newLob));
 	}
 
 	/**
@@ -484,8 +469,6 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 		{
 			case OrmPackage.BASIC__COLUMN:
 				return basicSetColumn(null, msgs);
-			case OrmPackage.BASIC__LOB:
-				return basicSetLob(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -509,7 +492,7 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 			case OrmPackage.BASIC__OPTIONAL:
 				return getOptional();
 			case OrmPackage.BASIC__LOB:
-				return getLob();
+				return isLob() ? Boolean.TRUE : Boolean.FALSE;
 			case OrmPackage.BASIC__TEMPORAL:
 				return getTemporal();
 			case OrmPackage.BASIC__ENUMERATED:
@@ -541,7 +524,7 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 				setOptional((Boolean)newValue);
 				return;
 			case OrmPackage.BASIC__LOB:
-				setLob((Lob)newValue);
+				setLob(((Boolean)newValue).booleanValue());
 				return;
 			case OrmPackage.BASIC__TEMPORAL:
 				setTemporal((TemporalType)newValue);
@@ -576,7 +559,7 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 				setOptional(OPTIONAL_EDEFAULT);
 				return;
 			case OrmPackage.BASIC__LOB:
-				setLob((Lob)null);
+				setLob(LOB_EDEFAULT);
 				return;
 			case OrmPackage.BASIC__TEMPORAL:
 				setTemporal(TEMPORAL_EDEFAULT);
@@ -607,7 +590,7 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 			case OrmPackage.BASIC__OPTIONAL:
 				return OPTIONAL_EDEFAULT == null ? optional != null : !OPTIONAL_EDEFAULT.equals(optional);
 			case OrmPackage.BASIC__LOB:
-				return lob != null;
+				return lob != LOB_EDEFAULT;
 			case OrmPackage.BASIC__TEMPORAL:
 				return temporal != TEMPORAL_EDEFAULT;
 			case OrmPackage.BASIC__ENUMERATED:
@@ -671,6 +654,8 @@ public class Basic extends JpaEObject implements AttributeMapping, ColumnMapping
 		result.append(fetch);
 		result.append(", optional: ");
 		result.append(optional);
+		result.append(", lob: ");
+		result.append(lob);
 		result.append(", temporal: ");
 		result.append(temporal);
 		result.append(", enumerated: ");

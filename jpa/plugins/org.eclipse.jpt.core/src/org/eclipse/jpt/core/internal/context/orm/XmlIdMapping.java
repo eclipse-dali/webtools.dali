@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
@@ -30,8 +31,9 @@ public class XmlIdMapping extends XmlAttributeMapping
 	protected final XmlColumn column;
 
 //	protected IGeneratedValue generatedValue;
-//	protected static final TemporalType TEMPORAL_EDEFAULT = TemporalType.NULL;
-//	protected TemporalType temporal = TEMPORAL_EDEFAULT;
+	
+	protected TemporalType temporal;
+	
 //	protected ITableGenerator tableGenerator;
 //	protected ISequenceGenerator sequenceGenerator;
 
@@ -77,17 +79,18 @@ public class XmlIdMapping extends XmlAttributeMapping
 //		else if (eNotificationRequired())
 //			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID__GENERATED_VALUE, newGeneratedValue, newGeneratedValue));
 //	}
-//
-//	public TemporalType getTemporal() {
-//		return temporal;
-//	}
-//
-//	public void setTemporal(TemporalType newTemporal) {
-//		TemporalType oldTemporal = temporal;
-//		temporal = newTemporal == null ? TEMPORAL_EDEFAULT : newTemporal;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID__TEMPORAL, oldTemporal, temporal));
-//	}
+
+	public TemporalType getTemporal() {
+		return this.temporal;
+	}
+
+	public void setTemporal(TemporalType newTemporal) {
+		TemporalType oldTemporal = this.temporal;
+		this.temporal = newTemporal;
+		this.id.setTemporal(TemporalType.toOrmResourceModel(newTemporal));
+		firePropertyChanged(IBasicMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+	}
+
 //
 //	public ITableGenerator getTableGenerator() {
 //		return tableGenerator;
@@ -250,11 +253,6 @@ public class XmlIdMapping extends XmlAttributeMapping
 		return null;
 	}
 
-	public TemporalType getTemporal() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void removeGeneratedValue() {
 		// TODO Auto-generated method stub
 		
@@ -266,11 +264,6 @@ public class XmlIdMapping extends XmlAttributeMapping
 	}
 
 	public void removeTableGenerator() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setTemporal(TemporalType value) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -297,11 +290,18 @@ public class XmlIdMapping extends XmlAttributeMapping
 	
 	public void initialize(Id id) {
 		this.id = id;
+		this.temporal = this.specifiedTemporal(id);
 		this.column.initialize(id);
 	}
 	
 	public void update(Id id) {
 		this.id = id;
+		this.setTemporal(this.specifiedTemporal(id));
 		this.column.update(id);
 	}
+	
+	protected TemporalType specifiedTemporal(Id id) {
+		return TemporalType.fromOrmResourceModel(id.getTemporal());
+	}
+
 }

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
@@ -27,9 +28,7 @@ public class XmlVersionMapping extends XmlAttributeMapping
 {
 	protected final XmlColumn column;
 
-//	protected static final TemporalType TEMPORAL_EDEFAULT = TemporalType.NULL;
-//
-//	protected TemporalType temporal = TEMPORAL_EDEFAULT;
+	protected TemporalType temporal;
 
 	protected Version version;
 	
@@ -55,45 +54,17 @@ public class XmlVersionMapping extends XmlAttributeMapping
 		return this.column;
 	}
 
-//	public TemporalType getTemporal() {
-//		return temporal;
-//	}
-//
-//	public void setTemporal(TemporalType newTemporal) {
-//		TemporalType oldTemporal = temporal;
-//		temporal = newTemporal == null ? TEMPORAL_EDEFAULT : newTemporal;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_VERSION__TEMPORAL, oldTemporal, temporal));
-//	}
-//	
-//	public XmlColumn getColumnForXml() {
-//		if (((XmlColumn) getColumn()).isAllFeaturesUnset()) {
-//			return null;
-//		}
-//		return (XmlColumn) getColumn();
-//	}
-//
-//	public void setColumnForXmlGen(XmlColumn newColumnForXml) {
-//		XmlColumn oldValue = newColumnForXml == null ? (XmlColumn) getColumn() : null;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_VERSION__COLUMN_FOR_XML, oldValue, newColumnForXml));
-//	}
-//
-//	public void setColumnForXml(XmlColumn newColumnForXml) {
-//		setColumnForXmlGen(newColumnForXml);
-//		if (newColumnForXml == null) {
-//			((XmlColumn) getColumn()).unsetAllAttributes();
-//		}
-//	}
-//
-//	public void makeColumnForXmlNonNull() {
-//		setColumnForXmlGen(getColumnForXml());
-//	}
-//
-//	public void makeColumnForXmlNull() {
-//		setColumnForXmlGen(null);
-//	}
-//
+	public TemporalType getTemporal() {
+		return this.temporal;
+	}
+
+	public void setTemporal(TemporalType newTemporal) {
+		TemporalType oldTemporal = this.temporal;
+		this.temporal = newTemporal;
+		this.version.setTemporal(TemporalType.toOrmResourceModel(newTemporal));
+		firePropertyChanged(IBasicMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+	}
+
 	@Override
 	public AttributeMapping addToResourceModel(TypeMapping typeMapping) {
 		Basic basic = OrmFactory.eINSTANCE.createBasic();
@@ -110,16 +81,6 @@ public class XmlVersionMapping extends XmlAttributeMapping
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
-	}
-
-	public TemporalType getTemporal() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setTemporal(TemporalType value) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public String defaultTableName() {
@@ -143,11 +104,18 @@ public class XmlVersionMapping extends XmlAttributeMapping
 	
 	public void initialize(Version version) {
 		this.version = version;
+		this.temporal = this.specifiedTemporal(version);
 		this.column.initialize(version);
 	}
 	
 	public void update(Version version) {
 		this.version = version;
+		this.setTemporal(this.specifiedTemporal(version));
 		this.column.update(version);
 	}
+	
+	protected TemporalType specifiedTemporal(Version version) {
+		return TemporalType.fromOrmResourceModel(version.getTemporal());
+	}
+
 }
