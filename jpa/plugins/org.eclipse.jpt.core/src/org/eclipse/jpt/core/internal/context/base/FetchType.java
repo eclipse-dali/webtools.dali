@@ -37,7 +37,7 @@ public enum FetchType {
 	}
 	
 
-	public static FetchType fromXmlResourceModel(org.eclipse.jpt.core.internal.resource.orm.FetchType ormFetchType) {
+	public static FetchType fromOrmResourceModel(org.eclipse.jpt.core.internal.resource.orm.FetchType ormFetchType) {
 		if (ormFetchType == org.eclipse.jpt.core.internal.resource.orm.FetchType.EAGER) {
 			return EAGER;
 		}
@@ -47,7 +47,7 @@ public enum FetchType {
 		return null;
 	}
 	
-	public static org.eclipse.jpt.core.internal.resource.orm.FetchType toXmlResourceModel(FetchType fetchType) {
+	public static org.eclipse.jpt.core.internal.resource.orm.FetchType toOrmResourceModel(FetchType fetchType) {
 		if (fetchType == EAGER)  {
 			return org.eclipse.jpt.core.internal.resource.orm.FetchType.EAGER;
 		}

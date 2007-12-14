@@ -37,7 +37,7 @@ public enum EnumType {
 	}
 	
 
-	public static EnumType fromXmlResourceModel(org.eclipse.jpt.core.internal.resource.orm.EnumType ormEnumType) {
+	public static EnumType fromOrmResourceModel(org.eclipse.jpt.core.internal.resource.orm.EnumType ormEnumType) {
 		if (ormEnumType == org.eclipse.jpt.core.internal.resource.orm.EnumType.ORDINAL) {
 			return ORDINAL;
 		}
@@ -47,7 +47,7 @@ public enum EnumType {
 		return null;
 	}
 	
-	public static org.eclipse.jpt.core.internal.resource.orm.EnumType toXmlResourceModel(EnumType enumType) {
+	public static org.eclipse.jpt.core.internal.resource.orm.EnumType toOrmResourceModel(EnumType enumType) {
 		if (enumType == ORDINAL)  {
 			return org.eclipse.jpt.core.internal.resource.orm.EnumType.ORDINAL;
 		}

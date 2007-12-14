@@ -28,14 +28,18 @@ public class XmlBasicMapping extends XmlAttributeMapping
 {
 	protected final XmlColumn column;
 	
-//	protected static final DefaultEagerFetchType FETCH_EDEFAULT = DefaultEagerFetchType.DEFAULT;
-//
-//	protected DefaultEagerFetchType fetch = FETCH_EDEFAULT;
-//
-//	protected static final DefaultTrueBoolean OPTIONAL_EDEFAULT = DefaultTrueBoolean.DEFAULT;
-//
-//	protected DefaultTrueBoolean optional = OPTIONAL_EDEFAULT;
-//
+	protected FetchType specifiedFetch;
+	
+	protected FetchType defaulFetch;	
+	
+	protected Boolean defaultOptional;
+
+	protected Boolean specifiedOptional;
+	
+	protected EnumType specifiedEnumerated;
+	
+	protected EnumType defaultEnumerated;
+	
 //	protected static final boolean LOB_EDEFAULT = false;
 //
 //	protected boolean lob = LOB_EDEFAULT;
@@ -44,9 +48,6 @@ public class XmlBasicMapping extends XmlAttributeMapping
 //
 //	protected TemporalType temporal = TEMPORAL_EDEFAULT;
 //
-//	protected static final EnumType ENUMERATED_EDEFAULT = EnumType.DEFAULT;
-//
-//	protected EnumType enumerated = ENUMERATED_EDEFAULT;
 
 	protected Basic basic;
 	
@@ -55,29 +56,57 @@ public class XmlBasicMapping extends XmlAttributeMapping
 		this.column = new XmlColumn(this, this);
 	}
 
-//
-//	public DefaultEagerFetchType getFetch() {
-//		return fetch;
-//	}
-//
-//	public void setFetch(DefaultEagerFetchType newFetch) {
-//		DefaultEagerFetchType oldFetch = fetch;
-//		fetch = newFetch == null ? FETCH_EDEFAULT : newFetch;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC__FETCH, oldFetch, fetch));
-//	}
-//
-//	public DefaultTrueBoolean getOptional() {
-//		return optional;
-//	}
-//
-//	public void setOptional(DefaultTrueBoolean newOptional) {
-//		DefaultTrueBoolean oldOptional = optional;
-//		optional = newOptional == null ? OPTIONAL_EDEFAULT : newOptional;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC__OPTIONAL, oldOptional, optional));
-//	}
-//
+	public FetchType getFetch() {
+		return (this.getSpecifiedFetch() == null) ? this.getDefaultFetch() : this.getSpecifiedFetch();
+	}
+
+	public FetchType getDefaultFetch() {
+		return this.defaulFetch;
+	}
+	
+	protected void setDefaultFetch(FetchType newDefaultFetch) {
+		FetchType oldFetch = this.defaulFetch;
+		this.defaulFetch = newDefaultFetch;
+		firePropertyChanged(IBasicMapping.DEFAULT_FETCH_PROPERTY, oldFetch, newDefaultFetch);
+	}
+
+	public FetchType getSpecifiedFetch() {
+		return this.specifiedFetch;
+	}
+	
+	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
+		FetchType oldFetch = this.specifiedFetch;
+		this.specifiedFetch = newSpecifiedFetch;
+		this.basic.setFetch(FetchType.toOrmResourceModel(newSpecifiedFetch));
+		firePropertyChanged(IBasicMapping.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
+	}
+
+
+	public Boolean getOptional() {
+		return (this.getSpecifiedOptional() == null) ? this.getDefaultOptional() : this.getSpecifiedOptional();
+	}
+	
+	public Boolean getDefaultOptional() {
+		return this.defaultOptional;
+	}
+	
+	protected void setDefaultOptional(Boolean newDefaultOptional) {
+		Boolean oldOptional = this.defaultOptional;
+		this.defaultOptional = newDefaultOptional;
+		firePropertyChanged(IBasicMapping.DEFAULT_OPTIONAL_PROPERTY, oldOptional, newDefaultOptional);
+	}
+
+	public Boolean getSpecifiedOptional() {
+		return this.specifiedOptional;
+	}
+	
+	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
+		Boolean oldOptional = this.specifiedOptional;
+		this.specifiedOptional = newSpecifiedOptional;
+		this.basic.setOptional(newSpecifiedOptional);
+		firePropertyChanged(IBasicMapping.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
+	}
+
 //	public boolean isLob() {
 //		return lob;
 //	}
@@ -99,18 +128,31 @@ public class XmlBasicMapping extends XmlAttributeMapping
 //		if (eNotificationRequired())
 //			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC__TEMPORAL, oldTemporal, temporal));
 //	}
-//
-//	public EnumType getEnumerated() {
-//		return enumerated;
-//	}
-//
-//	public void setEnumerated(EnumType newEnumerated) {
-//		EnumType oldEnumerated = enumerated;
-//		enumerated = newEnumerated == null ? ENUMERATED_EDEFAULT : newEnumerated;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC__ENUMERATED, oldEnumerated, enumerated));
-//	}
-//
+	
+	public EnumType getEnumerated() {
+		return (this.getSpecifiedEnumerated() == null) ? this.getDefaultEnumerated() : this.getSpecifiedEnumerated();
+	}
+	
+	public EnumType getDefaultEnumerated() {
+		return IBasicMapping.DEFAULT_ENUMERATED;
+	}
+	
+	public EnumType getSpecifiedEnumerated() {
+		return this.specifiedEnumerated;
+	}
+	
+	public void setSpecifiedEnumerated(EnumType newSpecifiedEnumerated) {
+		EnumType oldEnumerated = this.specifiedEnumerated;
+		this.specifiedEnumerated = newSpecifiedEnumerated;
+		this.basic.setEnumerated(EnumType.toOrmResourceModel(newSpecifiedEnumerated));
+		firePropertyChanged(IBasicMapping.SPECIFIED_ENUMERATED_PROPERTY, oldEnumerated, newSpecifiedEnumerated);
+	}
+
+	protected void setDefaultEnumerated(EnumType newDefaultEnumerated) {
+		EnumType oldEnumerated = this.defaultEnumerated;
+		this.defaultEnumerated = newDefaultEnumerated;
+		firePropertyChanged(IBasicMapping.DEFAULT_ENUMERATED_PROPERTY, oldEnumerated, newDefaultEnumerated);
+	}
 
 	public String getKey() {
 		return IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
@@ -141,51 +183,6 @@ public class XmlBasicMapping extends XmlAttributeMapping
 		return this.column;
 	}
 
-	public EnumType getDefaultEnumerated() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public FetchType getDefaultFetch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Boolean getDefaultOptional() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public EnumType getEnumerated() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public FetchType getFetch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Boolean getOptional() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public EnumType getSpecifiedEnumerated() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public FetchType getSpecifiedFetch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Boolean getSpecifiedOptional() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public TemporalType getTemporal() {
 		// TODO Auto-generated method stub
 		return null;
@@ -201,20 +198,6 @@ public class XmlBasicMapping extends XmlAttributeMapping
 		
 	}
 
-	public void setSpecifiedEnumerated(EnumType newSpecifiedEnumerated) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public void setTemporal(TemporalType value) {
 		// TODO Auto-generated method stub
@@ -246,14 +229,32 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	
 	public void initialize(Basic basic) {
 		this.basic = basic;
+		this.specifiedFetch = this.specifiedFetch(basic);
+		this.specifiedOptional = this.specifiedOptional(basic);
+		this.specifiedEnumerated = this.specifiedEnumerated(basic);
 		this.column.initialize(basic);
 	}
 	
 	public void update(Basic basic) {
 		this.basic = basic;
+		this.setSpecifiedFetch(this.specifiedFetch(basic));
+		this.setSpecifiedOptional(this.specifiedOptional(basic));
+		this.setSpecifiedEnumerated(this.specifiedEnumerated(basic));
 		this.column.update(basic);
 	}
 	
+	protected Boolean specifiedOptional(Basic basic) {
+		return basic.getOptional();
+	}
+	
+	protected FetchType specifiedFetch(Basic basic) {
+		return FetchType.fromOrmResourceModel(basic.getFetch());
+	}
+	
+	protected EnumType specifiedEnumerated(Basic basic) {
+		return EnumType.fromOrmResourceModel(basic.getEnumerated());
+	}
+
 	@Override
 	public AttributeMapping addToResourceModel(TypeMapping typeMapping) {
 		Basic basic = OrmFactory.eINSTANCE.createBasic();

@@ -33,6 +33,7 @@ public class JptCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(XmlTableTests.class);
 		suite.addTestSuite(XmlSecondaryTableTests.class);
 		suite.addTestSuite(XmlColumnTests.class);
+		suite.addTestSuite(XmlBasicMappingTests.class);
 		return suite;
 	}
 	
