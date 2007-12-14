@@ -22,7 +22,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class OneToOneComposite extends BaseJpaComposite 
 {
-	private IOneToOne oneToOne;
+	private IOneToOneMapping oneToOne;
 	
 	private TargetEntityChooser targetEntityChooser;
 
@@ -40,7 +40,7 @@ public class OneToOneComposite extends BaseJpaComposite
 		super(parent, SWT.NULL, commandStack, widgetFactory);
 	}
 	
-	protected IOneToOne getOneToOne() {
+	protected IOneToOneMapping getOneToOne() {
 		return this.oneToOne;
 	}
 	
@@ -187,7 +187,7 @@ public class OneToOneComposite extends BaseJpaComposite
 
 	
 	public void doPopulate(EObject obj) {
-		this.oneToOne = (IOneToOne) obj;
+		this.oneToOne = (IOneToOneMapping) obj;
 		this.targetEntityChooser.populate(getOneToOne());
 		this.fetchTypeComboViewer.populate(CommonWidgets.buildSingleRelationshipMappingFetchEnumHolder(getOneToOne()));
 		this.mappedByCombo.populate(getOneToOne());

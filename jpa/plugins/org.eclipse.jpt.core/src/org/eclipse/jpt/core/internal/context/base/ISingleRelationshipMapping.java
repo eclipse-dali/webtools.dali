@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -11,8 +11,21 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import java.util.ListIterator;
 
-public interface IAssociationOverride extends IOverride
+
+public interface ISingleRelationshipMapping extends IRelationshipMapping
 {
+
+	FetchType getFetch();
+
+	FetchType getDefaultFetch();
+		String DEFAULT_FETCH_PROPERTY = "defaultFetchProperty";
+		FetchType DEFAULT_FETCH_TYPE = FetchType.EAGER;
+		
+	FetchType getSpecifiedFetch();
+	void setSpecifiedFetch(FetchType newSpecifiedFetch);
+		String SPECIFIED_FETCH_PROPERTY = "specifiedFetchProperty";
+
+
 	<T extends IJoinColumn> ListIterator<T> joinColumns();
 	<T extends IJoinColumn> ListIterator<T> specifiedJoinColumns();
 	<T extends IJoinColumn> ListIterator<T> defaultJoinColumns();
@@ -22,51 +35,58 @@ public interface IAssociationOverride extends IOverride
 	void moveSpecifiedJoinColumn(int oldIndex, int newIndex);
 		String SPECIFIED_JOIN_COLUMNS_LIST = "specifiedJoinColumnsList";
 		String DEFAULT_JOIN_COLUMNS_LIST = "defaultJoinColumnsList";
-		
+
 	boolean containsSpecifiedJoinColumns();
 
-	ITypeMapping typeMapping();
+	Boolean getOptional();
+	
+	Boolean getDefaultOptional();
+		String DEFAULT_OPTIONAL_PROPERTY = "defaultOptionalProperty";
+		Boolean DEFAULT_OPTIONAL = Boolean.TRUE;
+	
+	Boolean getSpecifiedOptional();
+	void setSpecifiedOptional(Boolean newSpecifiedOptional);
+		String SPECIFIED_OPTIONAL_PROPERTY = "specifiedOptionalProperty";
 
 
 //	public class JoinColumnOwner implements IJoinColumn.Owner
 //	{
-//		private IAssociationOverride associationOverride;
+//		private ISingleRelationshipMapping singleRelationshipMapping;
 //
-//		public JoinColumnOwner(IAssociationOverride associationOverride) {
+//		public JoinColumnOwner(ISingleRelationshipMapping singleRelationshipMapping) {
 //			super();
-//			this.associationOverride = associationOverride;
+//			this.singleRelationshipMapping = singleRelationshipMapping;
 //		}
 //
 //		/**
 //		 * by default, the join column is in the type mapping's primary table
 //		 */
 //		public String defaultTableName() {
-//			return this.associationOverride.getOwner().getTypeMapping().getTableName();
+//			return this.singleRelationshipMapping.getPersistentAttribute().typeMapping().getTableName();
 //		}
 //
 //		public List<IJoinColumn> joinColumns() {
-//			return this.associationOverride.getJoinColumns();
+//			return this.singleRelationshipMapping.getJoinColumns();
 //		}
-//
+//		
 //		public int indexOf(IAbstractJoinColumn joinColumn) {
 //			return joinColumns().indexOf(joinColumn);
 //		}
-//		
+//
 //		public IEntity targetEntity() {
-//			return getRelationshipMapping().getResolvedTargetEntity();
+//			return this.singleRelationshipMapping.getResolvedTargetEntity();
 //		}
 //
 //		public String attributeName() {
-//			return this.associationOverride.getName();
+//			return this.singleRelationshipMapping.getPersistentAttribute().getName();
 //		}
 //
 //		public IRelationshipMapping getRelationshipMapping() {
-//			//TODO cast or check instanceof first??
-//			return (IRelationshipMapping) this.associationOverride.getOwner().attributeMapping(this.associationOverride.getName());
+//			return this.singleRelationshipMapping;
 //		}
 //
 //		public boolean tableNameIsInvalid(String tableName) {
-//			return getTypeMapping().tableNameIsInvalid(tableName);
+//			return this.singleRelationshipMapping.getPersistentAttribute().typeMapping().tableNameIsInvalid(tableName);
 //		}
 //
 //		/**
@@ -77,11 +97,11 @@ public interface IAssociationOverride extends IOverride
 //		}
 //
 //		public ITextRange validationTextRange() {
-//			return this.associationOverride.validationTextRange();
+//			return this.singleRelationshipMapping.validationTextRange();
 //		}
 //
 //		public ITypeMapping getTypeMapping() {
-//			return this.associationOverride.getOwner().getTypeMapping();
+//			return this.singleRelationshipMapping.typeMapping();
 //		}
 //
 //		public Table dbTable(String tableName) {
@@ -94,8 +114,7 @@ public interface IAssociationOverride extends IOverride
 //		}
 //		
 //		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
-//			return this.associationOverride.getDefaultJoinColumns().contains(joinColumn);
+//			return this.singleRelationshipMapping.getDefaultJoinColumns().contains(joinColumn);
 //		}
-//
 //	}
 }

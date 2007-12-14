@@ -25,7 +25,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class ManyToManyComposite extends BaseJpaComposite 
 {
-	private IManyToMany manyToMany;
+	private IManyToManyMapping manyToMany;
 	
 	private TargetEntityChooser targetEntityChooser;
 
@@ -140,7 +140,7 @@ public class ManyToManyComposite extends BaseJpaComposite
 	}
 	
 	public void doPopulate(EObject obj) {
-		this.manyToMany = (IManyToMany) obj;
+		this.manyToMany = (IManyToManyMapping) obj;
 		this.targetEntityChooser.populate(this.manyToMany);
 		this.fetchTypeComboViewer.populate(CommonWidgets.buildMultiRelationshipMappingFetchEnumHolder(this.manyToMany));
 		this.mappedByCombo.populate(this.manyToMany);

@@ -25,7 +25,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class ManyToOneComposite extends BaseJpaComposite 
 {
-	private IManyToOne manyToOne;
+	private IManyToOneMapping manyToOne;
 	
 	private TargetEntityChooser targetEntityChooser;
 
@@ -111,7 +111,7 @@ public class ManyToOneComposite extends BaseJpaComposite
 	}
 	
 	public void doPopulate(EObject obj) {
-		this.manyToOne = (IManyToOne) obj;
+		this.manyToOne = (IManyToOneMapping) obj;
 		this.targetEntityChooser.populate(this.manyToOne);
 		this.fetchTypeComboViewer.populate(CommonWidgets.buildSingleRelationshipMappingFetchEnumHolder(this.manyToOne));
 		this.optionalComboViewer.populate(CommonWidgets.buildOptionalHolder(this.manyToOne));
