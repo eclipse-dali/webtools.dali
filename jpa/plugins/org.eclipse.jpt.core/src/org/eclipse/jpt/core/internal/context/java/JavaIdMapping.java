@@ -169,16 +169,20 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		if (getTableGenerator() != null) {
 			throw new IllegalStateException("tableGenerator already exists");
 		}
-		IJavaTableGenerator tableGenerator = jpaFactory().createJavaTableGenerator(this);
-		setTableGenerator(tableGenerator);
-		return tableGenerator;
+		this.tableGenerator = jpaFactory().createJavaTableGenerator(this);
+		this.persistentAttributeResource.addAnnotation(TableGenerator.ANNOTATION_NAME);
+		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
+		return this.tableGenerator;
 	}
 	
 	public void removeTableGenerator() {
 		if (getTableGenerator() == null) {
 			throw new IllegalStateException("tableGenerator does not exist, cannot be removed");
 		}
-		setTableGenerator(null);
+		IJavaTableGenerator oldTableGenerator = this.tableGenerator;
+		this.tableGenerator = null;
+		this.persistentAttributeResource.removeAnnotation(TableGenerator.ANNOTATION_NAME);
+		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, null);
 	}
 	
 	public IJavaTableGenerator getTableGenerator() {
@@ -188,12 +192,6 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 	protected void setTableGenerator(IJavaTableGenerator newTableGenerator) {
 		IJavaTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = newTableGenerator;
-		if (newTableGenerator != null) {
-			this.persistentAttributeResource.addAnnotation(TableGenerator.ANNOTATION_NAME);
-		}
-		else {
-			this.persistentAttributeResource.removeAnnotation(TableGenerator.ANNOTATION_NAME);
-		}
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
 	}
 
@@ -201,16 +199,20 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		if (getSequenceGenerator() != null) {
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
-		IJavaSequenceGenerator sequenceGenerator = jpaFactory().createJavaSequenceGenerator(this);
-		setSequenceGenerator(sequenceGenerator);
-		return sequenceGenerator;
+		this.sequenceGenerator = jpaFactory().createJavaSequenceGenerator(this);
+		this.persistentAttributeResource.addAnnotation(SequenceGenerator.ANNOTATION_NAME);
+		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
+		return this.sequenceGenerator;
 	}
 	
 	public void removeSequenceGenerator() {
 		if (getSequenceGenerator() == null) {
 			throw new IllegalStateException("sequenceGenerator does not exist, cannot be removed");
 		}
-		this.setSequenceGenerator(null);
+		IJavaSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
+		this.sequenceGenerator = null;
+		this.persistentAttributeResource.removeAnnotation(SequenceGenerator.ANNOTATION_NAME);
+		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, null);
 	}
 	
 	public IJavaSequenceGenerator getSequenceGenerator() {
@@ -220,12 +222,6 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 	protected void setSequenceGenerator(IJavaSequenceGenerator newSequenceGenerator) {
 		IJavaSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = newSequenceGenerator;
-		if (newSequenceGenerator != null) {
-			this.persistentAttributeResource.addAnnotation(SequenceGenerator.ANNOTATION_NAME);
-		}
-		else {
-			this.persistentAttributeResource.removeAnnotation(SequenceGenerator.ANNOTATION_NAME);
-		}
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
 	}
 
@@ -253,8 +249,8 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		}
 		else {
 			if (getTableGenerator() == null) {
-				IJavaTableGenerator tableGenerator = addTableGenerator();
-				tableGenerator.initializeFromResource(tableGeneratorResource);
+				setTableGenerator(jpaFactory().createJavaTableGenerator(this));
+				getTableGenerator().initializeFromResource(tableGeneratorResource);
 			}
 			else {
 				getTableGenerator().update(tableGeneratorResource);
@@ -271,8 +267,8 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		}
 		else {
 			if (getSequenceGenerator() == null) {
-				IJavaSequenceGenerator sequenceGenerator = addSequenceGenerator();
-				sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
+				setSequenceGenerator(jpaFactory().createJavaSequenceGenerator(this));
+				getSequenceGenerator().initializeFromResource(sequenceGeneratorResource);
 			}
 			else {
 				getSequenceGenerator().update(sequenceGeneratorResource);

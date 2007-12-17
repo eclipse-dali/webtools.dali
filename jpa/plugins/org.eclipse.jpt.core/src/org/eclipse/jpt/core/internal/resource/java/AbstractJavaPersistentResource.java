@@ -164,9 +164,9 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 
 	public Annotation addAnnotation(String annotationName) {
 		Annotation annotation = buildAnnotation(annotationName);
-		addAnnotation(annotation);		
+		this.annotations.add(annotation);
 		annotation.newAnnotation();
-		
+		this.fireItemAdded(ANNOTATIONS_COLLECTION, annotation);
 		return annotation;
 	}
 

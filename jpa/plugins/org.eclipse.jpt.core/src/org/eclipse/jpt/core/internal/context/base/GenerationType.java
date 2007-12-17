@@ -51,7 +51,7 @@ public enum GenerationType {
 	}
 	
 
-	public static GenerationType fromXmlResourceModel(org.eclipse.jpt.core.internal.resource.orm.GenerationType ormGenerationType) {
+	public static GenerationType fromOrmResourceModel(org.eclipse.jpt.core.internal.resource.orm.GenerationType ormGenerationType) {
 		if (ormGenerationType == org.eclipse.jpt.core.internal.resource.orm.GenerationType.TABLE) {
 			return TABLE;
 		}
@@ -67,7 +67,7 @@ public enum GenerationType {
 		return null;
 	}
 	
-	public static org.eclipse.jpt.core.internal.resource.orm.GenerationType toXmlResourceModel(GenerationType generationType) {
+	public static org.eclipse.jpt.core.internal.resource.orm.GenerationType toOrmResourceModel(GenerationType generationType) {
 		if (generationType == TABLE)  {
 			return org.eclipse.jpt.core.internal.resource.orm.GenerationType.TABLE;
 		}

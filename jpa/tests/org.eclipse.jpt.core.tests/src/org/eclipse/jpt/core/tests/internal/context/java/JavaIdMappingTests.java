@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.internal.resource.java.SequenceGenerator;
 import org.eclipse.jpt.core.internal.resource.java.TableGenerator;
 import org.eclipse.jpt.core.internal.resource.java.Temporal;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaIdMappingTests extends ContextModelTestCase
@@ -358,6 +359,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		attributeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
 		
 		assertNotNull(idMapping.getSequenceGenerator());
+		assertEquals(1, CollectionTools.size(attributeResource.annotations()));
 	}
 	
 	public void testAddSequenceGenerator() throws Exception {
@@ -426,6 +428,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		attributeResource.addAnnotation(JPA.TABLE_GENERATOR);
 		
 		assertNotNull(idMapping.getTableGenerator());		
+		assertEquals(1, CollectionTools.size(attributeResource.annotations()));
 	}
 	
 	public void testAddTableGenerator() throws Exception {

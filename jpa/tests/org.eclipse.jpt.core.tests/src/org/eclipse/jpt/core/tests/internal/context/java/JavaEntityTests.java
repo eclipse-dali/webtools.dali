@@ -978,6 +978,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		typeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
 		
 		assertNotNull(javaEntity().getSequenceGenerator());
+		assertEquals(1, CollectionTools.size(typeResource.annotations()));
 	}
 	
 	public void testAddSequenceGenerator() throws Exception {
@@ -1033,6 +1034,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		typeResource.addAnnotation(JPA.TABLE_GENERATOR);
 		
 		assertNotNull(javaEntity().getTableGenerator());		
+		assertEquals(1, CollectionTools.size(typeResource.annotations()));
 	}
 	
 	public void testAddTableGenerator() throws Exception {

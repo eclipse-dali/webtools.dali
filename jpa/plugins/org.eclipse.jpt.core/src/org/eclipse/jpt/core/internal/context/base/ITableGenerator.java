@@ -62,11 +62,11 @@ public interface ITableGenerator extends IGenerator
 	String getValueColumnName();
 
 	String getDefaultValueColumnName();
-		String DEFAULT_VALUE_COLUMN_PROPERTY = "defaultValueColumnProperty";
+		String DEFAULT_VALUE_COLUMN_NAME_PROPERTY = "defaultValueColumnNameProperty";
 	
 	String getSpecifiedValueColumnName();
 	void setSpecifiedValueColumnName(String value);
-		String SPECIFIED_VALUE_COLUMN_PROPERTY = "specifiedValueColumnProperty";
+		String SPECIFIED_VALUE_COLUMN_NAME_PROPERTY = "specifiedValueColumnNameProperty";
 
 
 	String getPkColumnValue();

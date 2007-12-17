@@ -463,16 +463,20 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		if (getTableGenerator() != null) {
 			throw new IllegalStateException("tableGenerator already exists");
 		}
-		IJavaTableGenerator tableGenerator = jpaFactory().createJavaTableGenerator(this);
-		setTableGenerator(tableGenerator);
-		return tableGenerator;
+		this.tableGenerator = jpaFactory().createJavaTableGenerator(this);
+		this.persistentTypeResource.addAnnotation(TableGenerator.ANNOTATION_NAME);
+		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
+		return this.tableGenerator;
 	}
 	
 	public void removeTableGenerator() {
 		if (getTableGenerator() == null) {
 			throw new IllegalStateException("tableGenerator does not exist, cannot be removed");
 		}
-		setTableGenerator(null);
+		IJavaTableGenerator oldTableGenerator = this.tableGenerator;
+		this.tableGenerator = null;
+		this.persistentTypeResource.removeAnnotation(TableGenerator.ANNOTATION_NAME);
+		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, null);
 	}
 	
 	public IJavaTableGenerator getTableGenerator() {
@@ -482,12 +486,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	protected void setTableGenerator(IJavaTableGenerator newTableGenerator) {
 		IJavaTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = newTableGenerator;
-		if (newTableGenerator != null) {
-			this.persistentTypeResource.addAnnotation(TableGenerator.ANNOTATION_NAME);
-		}
-		else {
-			this.persistentTypeResource.removeAnnotation(TableGenerator.ANNOTATION_NAME);
-		}
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
 	}
 
@@ -495,16 +493,20 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		if (getSequenceGenerator() != null) {
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
-		IJavaSequenceGenerator sequenceGenerator = jpaFactory().createJavaSequenceGenerator(this);
-		setSequenceGenerator(sequenceGenerator);
-		return sequenceGenerator;
+		this.sequenceGenerator = jpaFactory().createJavaSequenceGenerator(this);
+		this.persistentTypeResource.addAnnotation(SequenceGenerator.ANNOTATION_NAME);
+		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
+		return this.sequenceGenerator;
 	}
 	
 	public void removeSequenceGenerator() {
 		if (getSequenceGenerator() == null) {
 			throw new IllegalStateException("sequenceGenerator does not exist, cannot be removed");
 		}
-		this.setSequenceGenerator(null);
+		IJavaSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
+		this.sequenceGenerator = null;
+		this.persistentTypeResource.removeAnnotation(SequenceGenerator.ANNOTATION_NAME);
+		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator,null);
 	}
 	
 	public IJavaSequenceGenerator getSequenceGenerator() {
@@ -514,12 +516,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	protected void setSequenceGenerator(IJavaSequenceGenerator newSequenceGenerator) {
 		IJavaSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = newSequenceGenerator;
-		if (newSequenceGenerator != null) {
-			this.persistentTypeResource.addAnnotation(SequenceGenerator.ANNOTATION_NAME);
-		}
-		else {
-			this.persistentTypeResource.removeAnnotation(SequenceGenerator.ANNOTATION_NAME);
-		}
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
 	}
 
@@ -876,8 +872,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 		else {
 			if (getTableGenerator() == null) {
-				IJavaTableGenerator tableGenerator = addTableGenerator();
-				tableGenerator.initializeFromResource(tableGeneratorResource);
+				setTableGenerator(jpaFactory().createJavaTableGenerator(this));
+				getTableGenerator().initializeFromResource(tableGeneratorResource);
 			}
 			else {
 				getTableGenerator().update(tableGeneratorResource);
@@ -894,8 +890,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 		else {
 			if (getSequenceGenerator() == null) {
-				IJavaSequenceGenerator sequenceGenerator = addSequenceGenerator();
-				sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
+				setSequenceGenerator(jpaFactory().createJavaSequenceGenerator(this));
+				getSequenceGenerator().initializeFromResource(sequenceGeneratorResource);
 			}
 			else {
 				getSequenceGenerator().update(sequenceGeneratorResource);

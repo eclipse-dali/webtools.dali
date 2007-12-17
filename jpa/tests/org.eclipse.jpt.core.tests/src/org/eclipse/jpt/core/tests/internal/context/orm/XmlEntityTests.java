@@ -948,4 +948,137 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals(AccessType.PROPERTY, xmlMappedSuperclass.getSpecifiedAccess());
 	}
 
+	
+	public void testAddSequenceGenerator() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		
+		assertNull(xmlEntity.getSequenceGenerator());
+		assertNull(entityResource.getSequenceGenerator());
+		
+		xmlEntity.addSequenceGenerator();
+		
+		assertNotNull(entityResource.getSequenceGenerator());
+		assertNotNull(xmlEntity.getSequenceGenerator());
+				
+		//try adding another sequence generator, should get an IllegalStateException
+		try {
+			xmlEntity.addSequenceGenerator();
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testRemoveSequenceGenerator() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		
+		assertNull(xmlEntity.getSequenceGenerator());
+		assertNull(entityResource.getSequenceGenerator());
+
+		xmlEntity.addSequenceGenerator();
+		assertNotNull(entityResource.getSequenceGenerator());
+		assertNotNull(xmlEntity.getSequenceGenerator());
+
+		xmlEntity.removeSequenceGenerator();
+		
+		assertNull(xmlEntity.getSequenceGenerator());
+		assertNull(entityResource.getSequenceGenerator());
+
+		//try removing the sequence generator again, should get an IllegalStateException
+		try {
+			xmlEntity.removeSequenceGenerator();		
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+
+	public void testUpdateSequenceGenerator() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		
+		assertNull(xmlEntity.getSequenceGenerator());
+		assertNull(entityResource.getSequenceGenerator());
+		
+		entityResource.setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGenerator());
+				
+		assertNotNull(xmlEntity.getSequenceGenerator());
+		assertNotNull(entityResource.getSequenceGenerator());
+				
+		entityResource.setSequenceGenerator(null);
+		assertNull(xmlEntity.getSequenceGenerator());
+		assertNull(entityResource.getSequenceGenerator());
+	}
+	
+	public void testAddTableGenerator() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		
+		assertNull(xmlEntity.getTableGenerator());
+		assertNull(entityResource.getTableGenerator());
+		
+		xmlEntity.addTableGenerator();
+		
+		assertNotNull(entityResource.getTableGenerator());
+		assertNotNull(xmlEntity.getTableGenerator());
+				
+		//try adding another table generator, should get an IllegalStateException
+		try {
+			xmlEntity.addTableGenerator();
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testRemoveTableGenerator() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		
+		assertNull(xmlEntity.getTableGenerator());
+		assertNull(entityResource.getTableGenerator());
+
+		xmlEntity.addTableGenerator();
+		assertNotNull(entityResource.getTableGenerator());
+		assertNotNull(xmlEntity.getTableGenerator());
+
+		xmlEntity.removeTableGenerator();
+		
+		assertNull(xmlEntity.getTableGenerator());
+		assertNull(entityResource.getTableGenerator());
+
+		//try removing the table generator again, should get an IllegalStateException
+		try {
+			xmlEntity.removeTableGenerator();		
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testUpdateTableGenerator() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		
+		assertNull(xmlEntity.getTableGenerator());
+		assertNull(entityResource.getTableGenerator());
+		
+		entityResource.setTableGenerator(OrmFactory.eINSTANCE.createTableGenerator());
+				
+		assertNotNull(xmlEntity.getTableGenerator());
+		assertNotNull(entityResource.getTableGenerator());
+				
+		entityResource.setTableGenerator(null);
+		assertNull(xmlEntity.getTableGenerator());
+		assertNull(entityResource.getTableGenerator());
+	}
+
 }

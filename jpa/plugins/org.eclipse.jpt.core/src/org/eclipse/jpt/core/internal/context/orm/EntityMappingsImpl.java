@@ -23,6 +23,9 @@ import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator;
+import org.eclipse.jpt.core.internal.resource.orm.TableGenerator;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -54,10 +57,10 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 
 	protected final List<XmlPersistentType> persistentTypes;
 
-//	protected EList<XmlSequenceGenerator> sequenceGenerators;
-//
-//	protected EList<XmlTableGenerator> tableGenerators;
-//
+	protected final List<XmlSequenceGenerator> sequenceGenerators;
+	
+	protected final List<XmlTableGenerator> tableGenerators;
+
 //	protected EList<XmlNamedQuery> namedQueries;
 //
 //	protected EList<XmlNamedNativeQuery> namedNativeQueries;
@@ -67,6 +70,8 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		super(parent);
 		this.persistenceUnitMetadata = jpaFactory().createPersistenceUnitMetadata(this);
 		this.persistentTypes = new ArrayList<XmlPersistentType>();
+		this.sequenceGenerators = new ArrayList<XmlSequenceGenerator>();
+		this.tableGenerators = new ArrayList<XmlTableGenerator>();
 	}
 	
 	@Override
@@ -261,7 +266,87 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		//TODO are the source and target correct in this case, or is target off by one???
 		fireItemMoved(PERSISTENT_TYPES_LIST, targetIndex, sourceIndex);
 	}
+
+
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlSequenceGenerator> sequenceGenerators() {
+		return new CloneListIterator<XmlSequenceGenerator>(this.sequenceGenerators);
+	}
+
+	public int sequenceGeneratorsSize() {
+		return this.sequenceGenerators.size();
+	}
 	
+	public ISequenceGenerator addSequenceGenerator(int index) {
+		XmlSequenceGenerator xmlSequenceGenerator = new XmlSequenceGenerator(this);
+		this.sequenceGenerators.add(index, xmlSequenceGenerator);
+		SequenceGenerator sequenceGenerator = OrmFactory.eINSTANCE.createSequenceGenerator();
+		xmlSequenceGenerator.initialize(sequenceGenerator);
+		this.entityMappings.getSequenceGenerators().add(index, sequenceGenerator);
+		fireItemAdded(SEQUENCE_GENERATORS_LIST, index, xmlSequenceGenerator);
+		return xmlSequenceGenerator;
+	}
+
+	protected void addSequenceGenerator(int index, XmlSequenceGenerator sequenceGenerator) {
+		addItemToList(index, sequenceGenerator, this.sequenceGenerators, EntityMappings.SEQUENCE_GENERATORS_LIST);
+	}
+
+	public void removeSequenceGenerator(int index) {
+		XmlSequenceGenerator removedSequenceGenerator = this.sequenceGenerators.remove(index);
+		fireItemRemoved(SEQUENCE_GENERATORS_LIST, index, removedSequenceGenerator);
+		this.entityMappings.getSequenceGenerators().remove(index);
+	}
+	
+	protected void removeSequenceGenerator(XmlSequenceGenerator sequenceGenerator) {
+		removeItemFromList(sequenceGenerator, this.sequenceGenerators, EntityMappings.SEQUENCE_GENERATORS_LIST);
+	}
+
+	public void moveSequenceGenerator(int oldIndex, int newIndex) {
+		this.sequenceGenerators.add(newIndex, this.sequenceGenerators.remove(oldIndex));
+		this.entityMappings.getSequenceGenerators().move(newIndex, oldIndex);
+		fireItemMoved(EntityMappings.SEQUENCE_GENERATORS_LIST, newIndex, oldIndex);	
+	}
+
+	
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlTableGenerator> tableGenerators() {
+		return new CloneListIterator<XmlTableGenerator>(this.tableGenerators);
+	}
+
+	public int tableGeneratorsSize() {
+		return this.tableGenerators.size();
+	}
+	
+	public ITableGenerator addTableGenerator(int index) {
+		XmlTableGenerator xmlTableGenerator = new XmlTableGenerator(this);
+		this.tableGenerators.add(index, xmlTableGenerator);
+		TableGenerator tableGenerator = OrmFactory.eINSTANCE.createTableGenerator();
+		xmlTableGenerator.initialize(tableGenerator);
+		this.entityMappings.getTableGenerators().add(index, tableGenerator);
+		fireItemAdded(TABLE_GENERATORS_LIST, index, xmlTableGenerator);
+		return xmlTableGenerator;
+	}
+	
+	protected void addTableGenerator(int index, XmlTableGenerator tableGenerator) {
+		addItemToList(index, tableGenerator, this.tableGenerators, EntityMappings.TABLE_GENERATORS_LIST);
+	}
+
+	public void removeTableGenerator(int index) {
+		XmlTableGenerator removedTableGenerator = this.tableGenerators.remove(index);
+		this.entityMappings.getTableGenerators().remove(index);
+		fireItemRemoved(TABLE_GENERATORS_LIST, index, removedTableGenerator);
+	}
+	
+	protected void removeTableGenerator(XmlTableGenerator tableGenerator) {
+		removeItemFromList(tableGenerator, this.tableGenerators, EntityMappings.TABLE_GENERATORS_LIST);
+	}
+
+	public void moveTableGenerator(int oldIndex, int newIndex) {
+		this.tableGenerators.add(newIndex, this.tableGenerators.remove(oldIndex));
+		this.entityMappings.getTableGenerators().move(newIndex, oldIndex);
+		fireItemMoved(EntityMappings.TABLE_GENERATORS_LIST, newIndex, oldIndex);	
+	}
+
 //	public boolean containsPersistentType(IType type) {
 //		if (type == null) {
 //			return false;
@@ -274,12 +359,6 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 //		return false;
 //	}
 //
-//	public EList<XmlTableGenerator> getTableGenerators() {
-//		if (tableGenerators == null) {
-//			tableGenerators = new EObjectContainmentEList<XmlTableGenerator>(XmlTableGenerator.class, this, OrmPackage.ENTITY_MAPPINGS_INTERNAL__TABLE_GENERATORS);
-//		}
-//		return tableGenerators;
-//	}
 //
 //	public EList<XmlNamedQuery> getNamedQueries() {
 //		if (namedQueries == null) {
@@ -295,12 +374,6 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 //		return namedNativeQueries;
 //	}
 //
-//	public EList<XmlSequenceGenerator> getSequenceGenerators() {
-//		if (sequenceGenerators == null) {
-//			sequenceGenerators = new EObjectContainmentEList<XmlSequenceGenerator>(XmlSequenceGenerator.class, this, OrmPackage.ENTITY_MAPPINGS_INTERNAL__SEQUENCE_GENERATORS);
-//		}
-//		return sequenceGenerators;
-//	}
 //
 //	/* @see IJpaContentNode#getId() */
 //	public Object getId() {
@@ -337,6 +410,8 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		this.defaultCatalog = persistenceUnit().getDefaultCatalog();
 		this.defaultSchema = persistenceUnit().getDefaultSchema();
 		this.initializePersistentTypes(entityMappings);
+		this.initializeTableGenerators(entityMappings);
+		this.initializeSequenceGenerators(entityMappings);
 	}
 	
 	protected void initializePersistentTypes(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
@@ -369,6 +444,22 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		}
 	}
 	
+	protected void initializeTableGenerators(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
+		for (TableGenerator tableGenerator : entityMappings.getTableGenerators()) {
+			XmlTableGenerator xmlTableGenerator = new XmlTableGenerator(this);
+			xmlTableGenerator.initialize(tableGenerator);
+			this.tableGenerators.add(xmlTableGenerator);
+		}
+	}
+	
+	protected void initializeSequenceGenerators(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
+		for (SequenceGenerator sequenceGenerator : entityMappings.getSequenceGenerators()) {
+			XmlSequenceGenerator xmlSequenceGenerator = new XmlSequenceGenerator(this);
+			xmlSequenceGenerator.initialize(sequenceGenerator);
+			this.sequenceGenerators.add(xmlSequenceGenerator);
+		}
+	}
+	
 	public void update(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
 		this.entityMappings = entityMappings;
 		this.setDescription(entityMappings.getDescription());
@@ -381,6 +472,8 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		this.setDefaultCatalog(persistenceUnit().getDefaultCatalog());
 		this.setDefaultSchema(persistenceUnit().getDefaultSchema());
 		this.updatePersistentTypes(entityMappings);
+		this.updateTableGenerators(entityMappings);
+		this.updateSequenceGenerators(entityMappings);
 	}
 	
 	protected AccessType specifiedAccess(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
@@ -436,6 +529,54 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 			}
 		}
 	}
+	
+	protected void updateTableGenerators(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
+		ListIterator<XmlTableGenerator> tableGenerators = tableGenerators();
+		ListIterator<TableGenerator> resourceTableGenerators = entityMappings.getTableGenerators().listIterator();
+		while (tableGenerators.hasNext()) {
+			XmlTableGenerator tableGenerator = tableGenerators.next();
+			if (resourceTableGenerators.hasNext()) {
+				tableGenerator.update(resourceTableGenerators.next());
+			}
+			else {
+				removeTableGenerator(tableGenerator);
+			}
+		}
+		
+		while (resourceTableGenerators.hasNext()) {
+			addTableGenerator(tableGeneratorsSize(), createTableGenerator(resourceTableGenerators.next()));
+		}
+	}
+
+	protected XmlTableGenerator createTableGenerator(TableGenerator tableGeneratorResource) {
+		XmlTableGenerator tableGenerator = new XmlTableGenerator(this);
+		tableGenerator.initialize(tableGeneratorResource);
+		return tableGenerator;
+	}
+
+	protected void updateSequenceGenerators(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
+		ListIterator<XmlSequenceGenerator> sequenceGenerators = sequenceGenerators();
+		ListIterator<SequenceGenerator> resourceSequenceGenerators = entityMappings.getSequenceGenerators().listIterator();
+		while (sequenceGenerators.hasNext()) {
+			XmlSequenceGenerator sequenceGenerator = sequenceGenerators.next();
+			if (resourceSequenceGenerators.hasNext()) {
+				sequenceGenerator.update(resourceSequenceGenerators.next());
+			}
+			else {
+				removeSequenceGenerator(sequenceGenerator);
+			}
+		}
+		
+		while (resourceSequenceGenerators.hasNext()) {
+			addSequenceGenerator(sequenceGeneratorsSize(), createSequenceGenerator(resourceSequenceGenerators.next()));
+		}
+	}
+
+	protected XmlSequenceGenerator createSequenceGenerator(SequenceGenerator sequenceGeneratorResource) {
+		XmlSequenceGenerator sequenceGenerator = new XmlSequenceGenerator(this);
+		sequenceGenerator.initialize(sequenceGeneratorResource);
+		return sequenceGenerator;
+	}
 
 	public INamedNativeQuery addNamedNativeQuery(int index) {
 		// TODO Auto-generated method stub
@@ -443,16 +584,6 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	}
 
 	public INamedQuery addNamedQuery(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ISequenceGenerator addSequenceGenerator(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ITableGenerator addTableGenerator(int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -467,15 +598,6 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		
 	}
 
-	public void moveSequenceGenerator(int oldIndex, int newIndex) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void moveTableGenerator(int oldIndex, int newIndex) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public <T extends INamedNativeQuery> ListIterator<T> namedNativeQueries() {
 		// TODO Auto-generated method stub
@@ -507,33 +629,5 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		
 	}
 
-	public void removeSequenceGenerator(int index) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	public void removeTableGenerator(int index) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public <T extends ISequenceGenerator> ListIterator<T> sequenceGenerators() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int sequenceGeneratorsSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public <T extends ITableGenerator> ListIterator<T> tableGenerators() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int tableGeneratorsSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }

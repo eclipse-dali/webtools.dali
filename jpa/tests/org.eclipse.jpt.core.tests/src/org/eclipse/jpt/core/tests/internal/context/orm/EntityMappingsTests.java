@@ -10,13 +10,18 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
+import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
+import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator;
+import org.eclipse.jpt.core.internal.resource.orm.TableGenerator;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -458,6 +463,354 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
 		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+	}
+	
+	public void testUpdateTableGenerators() throws Exception {
+		assertEquals(0, entityMappings().tableGeneratorsSize());
+		assertEquals(0, ormResource().getEntityMappings().getTableGenerators().size());
+		ormResource().save(null);
+		TableGenerator tableGeneratorResource = OrmFactory.eINSTANCE.createTableGenerator();
+		ormResource().getEntityMappings().getTableGenerators().add(tableGeneratorResource);
+		ormResource().save(null);
+		tableGeneratorResource.setName("FOO");
+		ormResource().save(null);
+		
+		ITableGenerator tableGenerator = entityMappings().tableGenerators().next();
+		assertEquals("FOO", tableGenerator.getName());
+		
+		
+		TableGenerator tableGeneratorResource2 = OrmFactory.eINSTANCE.createTableGenerator();
+		ormResource().getEntityMappings().getTableGenerators().add(0, tableGeneratorResource2);
+		tableGeneratorResource2.setName("BAR");
+		ormResource().save(null);
+
+		ListIterator<ITableGenerator> tableGenerators = entityMappings().tableGenerators();
+		assertEquals("BAR", tableGenerators.next().getName());
+		assertEquals("FOO", tableGenerators.next().getName());
+		assertFalse(tableGenerators.hasNext());
+
+		
+		TableGenerator tableGeneratorResource3 = OrmFactory.eINSTANCE.createTableGenerator();
+		ormResource().getEntityMappings().getTableGenerators().add(1, tableGeneratorResource3);
+		tableGeneratorResource3.setName("BAZ");
+		ormResource().save(null);
+
+		tableGenerators = entityMappings().tableGenerators();
+		assertEquals("BAR", tableGenerators.next().getName());
+		assertEquals("BAZ", tableGenerators.next().getName());
+		assertEquals("FOO", tableGenerators.next().getName());
+		assertFalse(tableGenerators.hasNext());
+		
+		ormResource().getEntityMappings().getTableGenerators().move(2, 0);
+		ormResource().save(null);
+		tableGenerators = entityMappings().tableGenerators();
+		assertEquals("BAZ", tableGenerators.next().getName());
+		assertEquals("FOO", tableGenerators.next().getName());
+		assertEquals("BAR", tableGenerators.next().getName());
+		assertFalse(tableGenerators.hasNext());
+	
+		
+		ormResource().getEntityMappings().getTableGenerators().remove(0);
+		ormResource().save(null);
+		tableGenerators = entityMappings().tableGenerators();
+		assertEquals("FOO", tableGenerators.next().getName());
+		assertEquals("BAR", tableGenerators.next().getName());
+		assertFalse(tableGenerators.hasNext());
+
+		ormResource().getEntityMappings().getTableGenerators().remove(1);
+		ormResource().save(null);
+		tableGenerators = entityMappings().tableGenerators();
+		assertEquals("FOO", tableGenerators.next().getName());
+		assertFalse(tableGenerators.hasNext());
+
+		ormResource().getEntityMappings().getTableGenerators().clear();
+		ormResource().save(null);
+		tableGenerators = entityMappings().tableGenerators();
+		assertFalse(tableGenerators.hasNext());				
+	}
+	
+	public void testAddTableGenerator() throws Exception {
+		assertEquals(0, entityMappings().tableGeneratorsSize());
+		assertEquals(0, ormResource().getEntityMappings().getTableGenerators().size());
+		ormResource().save(null);
+		entityMappings().addTableGenerator(0).setName("FOO");
+		
+		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
+		
+		entityMappings().addTableGenerator(0).setName("BAR");
+		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
+		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
+		assertEquals(2, ormResource().getEntityMappings().getTableGenerators().size());
+		
+		ListIterator<ITableGenerator> tableGenerators = entityMappings().tableGenerators();
+		assertEquals("BAR", tableGenerators.next().getName());
+		assertEquals("FOO", tableGenerators.next().getName());
+		assertFalse(tableGenerators.hasNext());
+	}
+	
+	public void testRemoveTableGenerator() throws Exception {
+		assertEquals(0, entityMappings().tableGeneratorsSize());
+		assertEquals(0, ormResource().getEntityMappings().getTableGenerators().size());
+		
+		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);
+		tableGenerator.setName("FOO");
+		ITableGenerator tableGenerator2 = entityMappings().addTableGenerator(1);
+		tableGenerator2.setName("BAR");
+		ITableGenerator tableGenerator3 = entityMappings().addTableGenerator(2);
+		tableGenerator3.setName("BAZ");
+		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
+		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(2).getName());
+		assertEquals(3, ormResource().getEntityMappings().getTableGenerators().size());
+		
+		entityMappings().removeTableGenerator(0);
+		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
+		
+		ListIterator<ITableGenerator> tableGenerators = entityMappings().tableGenerators();
+		ITableGenerator xmlTableGenerator = tableGenerators.next();
+		assertEquals("BAR", xmlTableGenerator.getName());
+		assertEquals(tableGenerator2, xmlTableGenerator);
+		xmlTableGenerator = tableGenerators.next();
+		assertEquals("BAZ", xmlTableGenerator.getName());
+		assertEquals(tableGenerator3, xmlTableGenerator);
+		assertFalse(tableGenerators.hasNext());
+
+		
+		entityMappings().removeTableGenerator(1);
+		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
+		tableGenerators = entityMappings().tableGenerators();
+		xmlTableGenerator = tableGenerators.next();
+		assertEquals("BAR", xmlTableGenerator.getName());
+		assertEquals(tableGenerator2, xmlTableGenerator);
+		assertFalse(tableGenerators.hasNext());
+
+		
+		entityMappings().removeTableGenerator(0);
+		assertEquals(0, ormResource().getEntityMappings().getTableGenerators().size());
+		tableGenerators = entityMappings().tableGenerators();
+		assertFalse(tableGenerators.hasNext());		
+	}
+	
+	public void testMoveTableGenerator() throws Exception {
+		assertEquals(0, entityMappings().tableGeneratorsSize());
+		assertEquals(0, ormResource().getEntityMappings().getTableGenerators().size());
+		
+		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);
+		tableGenerator.setName("FOO");
+		ITableGenerator tableGenerator2 = entityMappings().addTableGenerator(1);
+		tableGenerator2.setName("BAR");
+		ITableGenerator tableGenerator3 = entityMappings().addTableGenerator(2);
+		tableGenerator3.setName("BAZ");
+		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
+		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(2).getName());
+		assertEquals(3, ormResource().getEntityMappings().getTableGenerators().size());
+		
+		entityMappings().moveTableGenerator(0, 2);
+		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
+		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(2).getName());
+		assertEquals(3, ormResource().getEntityMappings().getTableGenerators().size());
+		
+		entityMappings().moveTableGenerator(2, 0);
+		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
+		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(2).getName());
+		assertEquals(3, ormResource().getEntityMappings().getTableGenerators().size());
+	}
+	
+	public void testTableGeneratorsSize() throws Exception {
+		assertEquals(0, entityMappings().tableGeneratorsSize());
+		assertEquals(0, ormResource().getEntityMappings().getTableGenerators().size());
+		
+		
+		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);
+		tableGenerator.setName("FOO");
+		ITableGenerator tableGenerator2 = entityMappings().addTableGenerator(1);
+		tableGenerator2.setName("BAR");
+		ITableGenerator tableGenerator3 = entityMappings().addTableGenerator(2);
+		tableGenerator3.setName("BAZ");
+	
+		assertEquals(3, entityMappings().tableGeneratorsSize());
+		
+		ormResource().getEntityMappings().getTableGenerators().remove(0);
+		assertEquals(2, entityMappings().tableGeneratorsSize());
+	}
+
+	public void testUpdateSequenceGenerators() throws Exception {
+		assertEquals(0, entityMappings().sequenceGeneratorsSize());
+		assertEquals(0, ormResource().getEntityMappings().getSequenceGenerators().size());
+		ormResource().save(null);
+		
+		SequenceGenerator sequenceGeneratorResource = OrmFactory.eINSTANCE.createSequenceGenerator();
+		ormResource().getEntityMappings().getSequenceGenerators().add(sequenceGeneratorResource);
+		ormResource().save(null);
+		sequenceGeneratorResource.setName("FOO");
+		ormResource().save(null);
+		
+		ISequenceGenerator sequenceGenerator = entityMappings().sequenceGenerators().next();
+		assertEquals("FOO", sequenceGenerator.getName());
+		
+		
+		SequenceGenerator sequenceGeneratorResource2 = OrmFactory.eINSTANCE.createSequenceGenerator();
+		ormResource().getEntityMappings().getSequenceGenerators().add(0, sequenceGeneratorResource2);
+		sequenceGeneratorResource2.setName("BAR");
+		ormResource().save(null);
+
+		ListIterator<ISequenceGenerator> sequenceGenerators = entityMappings().sequenceGenerators();
+		assertEquals("BAR", sequenceGenerators.next().getName());
+		assertEquals("FOO", sequenceGenerators.next().getName());
+		assertFalse(sequenceGenerators.hasNext());
+
+		
+		SequenceGenerator sequenceGeneratorResource3 = OrmFactory.eINSTANCE.createSequenceGenerator();
+		ormResource().getEntityMappings().getSequenceGenerators().add(1, sequenceGeneratorResource3);
+		sequenceGeneratorResource3.setName("BAZ");
+		ormResource().save(null);
+
+		sequenceGenerators = entityMappings().sequenceGenerators();
+		assertEquals("BAR", sequenceGenerators.next().getName());
+		assertEquals("BAZ", sequenceGenerators.next().getName());
+		assertEquals("FOO", sequenceGenerators.next().getName());
+		assertFalse(sequenceGenerators.hasNext());
+		
+		ormResource().getEntityMappings().getSequenceGenerators().move(2, 0);
+		ormResource().save(null);
+		sequenceGenerators = entityMappings().sequenceGenerators();
+		assertEquals("BAZ", sequenceGenerators.next().getName());
+		assertEquals("FOO", sequenceGenerators.next().getName());
+		assertEquals("BAR", sequenceGenerators.next().getName());
+		assertFalse(sequenceGenerators.hasNext());
+	
+		
+		ormResource().getEntityMappings().getSequenceGenerators().remove(0);
+		ormResource().save(null);
+		sequenceGenerators = entityMappings().sequenceGenerators();
+		assertEquals("FOO", sequenceGenerators.next().getName());
+		assertEquals("BAR", sequenceGenerators.next().getName());
+		assertFalse(sequenceGenerators.hasNext());
+
+		ormResource().getEntityMappings().getSequenceGenerators().remove(1);
+		ormResource().save(null);
+		sequenceGenerators = entityMappings().sequenceGenerators();
+		assertEquals("FOO", sequenceGenerators.next().getName());
+		assertFalse(sequenceGenerators.hasNext());
+
+		ormResource().getEntityMappings().getSequenceGenerators().clear();
+		ormResource().save(null);
+		sequenceGenerators = entityMappings().sequenceGenerators();
+		assertFalse(sequenceGenerators.hasNext());				
+	}
+	
+	public void testAddSequenceGenerator() throws Exception {
+		assertEquals(0, entityMappings().sequenceGeneratorsSize());
+		assertEquals(0, ormResource().getEntityMappings().getSequenceGenerators().size());
+		
+		entityMappings().addSequenceGenerator(0).setName("FOO");
+		
+		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		
+		entityMappings().addSequenceGenerator(0).setName("BAR");
+		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
+		assertEquals(2, ormResource().getEntityMappings().getSequenceGenerators().size());
+		
+		ListIterator<ISequenceGenerator> sequenceGenerators = entityMappings().sequenceGenerators();
+		assertEquals("BAR", sequenceGenerators.next().getName());
+		assertEquals("FOO", sequenceGenerators.next().getName());
+		assertFalse(sequenceGenerators.hasNext());
+	}
+	
+	public void testRemoveSequenceGenerator() throws Exception {
+		assertEquals(0, entityMappings().sequenceGeneratorsSize());
+		assertEquals(0, ormResource().getEntityMappings().getSequenceGenerators().size());
+		
+		ISequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);
+		sequenceGenerator.setName("FOO");
+		ISequenceGenerator sequenceGenerator2 = entityMappings().addSequenceGenerator(1);
+		sequenceGenerator2.setName("BAR");
+		ISequenceGenerator sequenceGenerator3 = entityMappings().addSequenceGenerator(2);
+		sequenceGenerator3.setName("BAZ");
+		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(2).getName());
+		assertEquals(3, ormResource().getEntityMappings().getSequenceGenerators().size());
+		
+		entityMappings().removeSequenceGenerator(0);
+		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
+		
+		ListIterator<ISequenceGenerator> sequenceGenerators = entityMappings().sequenceGenerators();
+		ISequenceGenerator xmlSequenceGenerator = sequenceGenerators.next();
+		assertEquals("BAR", xmlSequenceGenerator.getName());
+		assertEquals(sequenceGenerator2, xmlSequenceGenerator);
+		xmlSequenceGenerator = sequenceGenerators.next();
+		assertEquals("BAZ", xmlSequenceGenerator.getName());
+		assertEquals(sequenceGenerator3, xmlSequenceGenerator);
+		assertFalse(sequenceGenerators.hasNext());
+
+		
+		entityMappings().removeSequenceGenerator(1);
+		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		sequenceGenerators = entityMappings().sequenceGenerators();
+		xmlSequenceGenerator = sequenceGenerators.next();
+		assertEquals("BAR", xmlSequenceGenerator.getName());
+		assertEquals(sequenceGenerator2, xmlSequenceGenerator);
+		assertFalse(sequenceGenerators.hasNext());
+
+		
+		entityMappings().removeSequenceGenerator(0);
+		assertEquals(0, ormResource().getEntityMappings().getSequenceGenerators().size());
+		sequenceGenerators = entityMappings().sequenceGenerators();
+		assertFalse(sequenceGenerators.hasNext());		
+	}
+	
+	public void testMoveSequenceGenerator() throws Exception {
+		assertEquals(0, entityMappings().sequenceGeneratorsSize());
+		assertEquals(0, ormResource().getEntityMappings().getSequenceGenerators().size());
+		
+		ISequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);
+		sequenceGenerator.setName("FOO");
+		ISequenceGenerator sequenceGenerator2 = entityMappings().addSequenceGenerator(1);
+		sequenceGenerator2.setName("BAR");
+		ISequenceGenerator sequenceGenerator3 = entityMappings().addSequenceGenerator(2);
+		sequenceGenerator3.setName("BAZ");
+		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(2).getName());
+		assertEquals(3, ormResource().getEntityMappings().getSequenceGenerators().size());
+		
+		entityMappings().moveSequenceGenerator(0, 2);
+		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
+		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(2).getName());
+		assertEquals(3, ormResource().getEntityMappings().getSequenceGenerators().size());
+		
+		entityMappings().moveSequenceGenerator(2, 0);
+		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(2).getName());
+		assertEquals(3, ormResource().getEntityMappings().getSequenceGenerators().size());
+		
+	}
+	
+	public void testSequenceGeneratorsSize() throws Exception {
+		assertEquals(0, entityMappings().sequenceGeneratorsSize());
+		assertEquals(0, ormResource().getEntityMappings().getSequenceGenerators().size());
+		
+		
+		ISequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);
+		sequenceGenerator.setName("FOO");
+		ISequenceGenerator sequenceGenerator2 = entityMappings().addSequenceGenerator(1);
+		sequenceGenerator2.setName("BAR");
+		ISequenceGenerator sequenceGenerator3 = entityMappings().addSequenceGenerator(2);
+		sequenceGenerator3.setName("BAZ");
+	
+		assertEquals(3, entityMappings().sequenceGeneratorsSize());
+		
+		ormResource().getEntityMappings().getSequenceGenerators().remove(0);
+		assertEquals(2, entityMappings().sequenceGeneratorsSize());
 	}
 
 }

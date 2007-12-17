@@ -26,9 +26,7 @@ import org.eclipse.jpt.core.internal.context.base.INamedQuery;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.context.base.ITable;
-import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
@@ -51,7 +49,6 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 {
-	
 	protected String specifiedName;
 
 	protected String defaultName;
@@ -66,7 +63,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	
 	protected final List<XmlSecondaryTable> virtualSecondaryTables;
 		public static final String VIRTUAL_SECONDARY_TABLES_LIST = "virtualSecondaryTablesList";
-
+	
 //	protected EList<IPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
 //
 //	protected EList<IPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns;
@@ -80,11 +77,11 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 //	protected String specifiedDiscriminatorValue;
 //
 //	protected IDiscriminatorColumn discriminatorColumn;
-//
-//	protected ISequenceGenerator sequenceGenerator;
-//
-//	protected ITableGenerator tableGenerator;
-//
+
+	protected XmlSequenceGenerator sequenceGenerator;
+
+	protected XmlTableGenerator tableGenerator;
+
 //	protected EList<IAttributeOverride> specifiedAttributeOverrides;
 //
 //	protected EList<IAttributeOverride> defaultAttributeOverrides;
@@ -425,76 +422,67 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 //		}
 //		return msgs;
 //	}
-//
-//	public ISequenceGenerator getSequenceGenerator() {
-//		return sequenceGenerator;
-//	}
-//
-//	/**
-//	 * <!-- begin-user-doc -->
-//	 * <!-- end-user-doc -->
-//	 * @generated
-//	 */
-//	public NotificationChain basicSetSequenceGenerator(ISequenceGenerator newSequenceGenerator, NotificationChain msgs) {
-//		ISequenceGenerator oldSequenceGenerator = sequenceGenerator;
-//		sequenceGenerator = newSequenceGenerator;
-//		if (eNotificationRequired()) {
-//			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__SEQUENCE_GENERATOR, oldSequenceGenerator, newSequenceGenerator);
-//			if (msgs == null)
-//				msgs = notification;
-//			else
-//				msgs.add(notification);
-//		}
-//		return msgs;
-//	}
-//
-//	public void setSequenceGenerator(ISequenceGenerator newSequenceGenerator) {
-//		if (newSequenceGenerator != sequenceGenerator) {
-//			NotificationChain msgs = null;
-//			if (sequenceGenerator != null)
-//				msgs = ((InternalEObject) sequenceGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__SEQUENCE_GENERATOR, null, msgs);
-//			if (newSequenceGenerator != null)
-//				msgs = ((InternalEObject) newSequenceGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__SEQUENCE_GENERATOR, null, msgs);
-//			msgs = basicSetSequenceGenerator(newSequenceGenerator, msgs);
-//			if (msgs != null)
-//				msgs.dispatch();
-//		}
-//		else if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__SEQUENCE_GENERATOR, newSequenceGenerator, newSequenceGenerator));
-//	}
-//
-//	public ITableGenerator getTableGenerator() {
-//		return tableGenerator;
-//	}
-//
-//	public NotificationChain basicSetTableGenerator(ITableGenerator newTableGenerator, NotificationChain msgs) {
-//		ITableGenerator oldTableGenerator = tableGenerator;
-//		tableGenerator = newTableGenerator;
-//		if (eNotificationRequired()) {
-//			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__TABLE_GENERATOR, oldTableGenerator, newTableGenerator);
-//			if (msgs == null)
-//				msgs = notification;
-//			else
-//				msgs.add(notification);
-//		}
-//		return msgs;
-//	}
-//
-//	public void setTableGenerator(ITableGenerator newTableGenerator) {
-//		if (newTableGenerator != tableGenerator) {
-//			NotificationChain msgs = null;
-//			if (tableGenerator != null)
-//				msgs = ((InternalEObject) tableGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__TABLE_GENERATOR, null, msgs);
-//			if (newTableGenerator != null)
-//				msgs = ((InternalEObject) newTableGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__TABLE_GENERATOR, null, msgs);
-//			msgs = basicSetTableGenerator(newTableGenerator, msgs);
-//			if (msgs != null)
-//				msgs.dispatch();
-//		}
-//		else if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__TABLE_GENERATOR, newTableGenerator, newTableGenerator));
-//	}
-//
+
+	public XmlSequenceGenerator addSequenceGenerator() {
+		if (getSequenceGenerator() != null) {
+			throw new IllegalStateException("sequenceGenerator already exists");
+		}
+		this.sequenceGenerator = new XmlSequenceGenerator(this);
+		typeMappingResource().setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGenerator());
+		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
+		return this.sequenceGenerator;
+	}
+	
+	public void removeSequenceGenerator() {
+		if (getSequenceGenerator() == null) {
+			throw new IllegalStateException("sequenceGenerator does not exist, cannot be removed");
+		}
+		XmlSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
+		this.sequenceGenerator = null;
+		this.typeMappingResource().setSequenceGenerator(null);
+		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, null);
+	}
+	
+	public XmlSequenceGenerator getSequenceGenerator() {
+		return this.sequenceGenerator;
+	}
+
+	protected void setSequenceGenerator(XmlSequenceGenerator newSequenceGenerator) {
+		XmlSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
+		this.sequenceGenerator = newSequenceGenerator;
+		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
+	}
+
+	public XmlTableGenerator addTableGenerator() {
+		if (getTableGenerator() != null) {
+			throw new IllegalStateException("tableGenerator already exists");
+		}
+		this.tableGenerator = new XmlTableGenerator(this);
+		typeMappingResource().setTableGenerator(OrmFactory.eINSTANCE.createTableGenerator());
+		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
+		return this.tableGenerator;
+	}
+	
+	public void removeTableGenerator() {
+		if (getTableGenerator() == null) {
+			throw new IllegalStateException("tableGenerator does not exist, cannot be removed");
+		}
+		XmlTableGenerator oldTableGenerator = this.tableGenerator;
+		this.tableGenerator = null;
+		this.typeMappingResource().setTableGenerator(null);
+		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, null);
+	}
+	
+	public XmlTableGenerator getTableGenerator() {
+		return this.tableGenerator;
+	}
+
+	protected void setTableGenerator(XmlTableGenerator newTableGenerator) {
+		XmlTableGenerator oldTableGenerator = this.tableGenerator;
+		this.tableGenerator = newTableGenerator;
+		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
+	}
+
 //	public String getDefaultDiscriminatorValue() {
 //		return defaultDiscriminatorValue;
 //	}
@@ -906,6 +894,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.table.initialize(entity);
 		this.initializeSpecifiedSecondaryTables(entity);
 		this.initializeVirtualSecondaryTables();
+		this.initializeSequenceGenerator(entity);
+		this.initializeTableGenerator(entity);
 	}
 	
 	protected void initializeInheritance(Inheritance inheritanceResource) {
@@ -938,8 +928,21 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 				this.virtualSecondaryTables.add(createVirtualSecondaryTable(javaSecondaryTable));
 			}
 		}
+	}	
+	
+	protected void initializeTableGenerator(Entity entity) {
+		if (entity.getTableGenerator() != null) {
+			this.tableGenerator = new XmlTableGenerator(this);
+			this.tableGenerator.initialize(entity.getTableGenerator());
+		}
 	}
 	
+	protected void initializeSequenceGenerator(Entity entity) {
+		if (entity.getSequenceGenerator() != null) {
+			this.sequenceGenerator = new XmlSequenceGenerator(this);
+			this.sequenceGenerator.initialize(entity.getSequenceGenerator());
+		}
+	}
 
 	@Override
 	public void update(Entity entity) {
@@ -950,6 +953,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.table.update(entity);
 		this.updateSpecifiedSecondaryTables(entity);
 		this.updateVirtualSecondaryTables();
+		this.updateSequenceGenerator(entity);
+		this.updateTableGenerator(entity);
 	}
 
 	protected String defaultName() {
@@ -1029,6 +1034,40 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return virutalSecondaryTable;
 	}
 	
+	protected void updateTableGenerator(Entity entity) {
+		if (entity.getTableGenerator() == null) {
+			if (getTableGenerator() != null) {
+				setTableGenerator(null);
+			}
+		}
+		else {
+			if (getTableGenerator() == null) {
+				setTableGenerator(new XmlTableGenerator(this));
+				getTableGenerator().initialize(entity.getTableGenerator());
+			}
+			else {
+				getTableGenerator().update(entity.getTableGenerator());
+			}
+		}
+	}
+	
+	protected void updateSequenceGenerator(Entity entity) {
+		if (entity.getSequenceGenerator() == null) {
+			if (getSequenceGenerator() != null) {
+				setSequenceGenerator(null);
+			}
+		}
+		else {
+			if (getSequenceGenerator() == null) {
+				setSequenceGenerator(new XmlSequenceGenerator(this));
+				getSequenceGenerator().initialize(entity.getSequenceGenerator());
+			}
+			else {
+				getSequenceGenerator().update(entity.getSequenceGenerator());
+			}
+		}
+	}
+
 	protected InheritanceType specifiedInheritanceStrategy(Inheritance inheritanceResource) {
 		if (inheritanceResource == null) {
 			return null;
@@ -1048,24 +1087,12 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return rootEntity().getInheritanceStrategy();
 	}
 
-	
-	public ISequenceGenerator addSequenceGenerator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public IAttributeOverride addSpecifiedAttributeOverride(int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	public ITableGenerator addTableGenerator() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1100,17 +1127,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return null;
 	}
 
-	public ISequenceGenerator getSequenceGenerator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public String getSpecifiedDiscriminatorValue() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ITableGenerator getTableGenerator() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1135,22 +1152,12 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return null;
 	}
 
-	public void removeSequenceGenerator() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void removeSpecifiedAttributeOverride(int index) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void removeTableGenerator() {
 		// TODO Auto-generated method stub
 		
 	}
