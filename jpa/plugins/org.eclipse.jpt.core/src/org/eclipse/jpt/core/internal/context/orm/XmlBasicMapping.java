@@ -30,7 +30,7 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	
 	protected FetchType specifiedFetch;
 	
-	protected FetchType defaulFetch;	
+	protected FetchType defaultFetch;	
 	
 	protected Boolean defaultOptional;
 
@@ -56,12 +56,12 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	}
 
 	public FetchType getDefaultFetch() {
-		return this.defaulFetch;
+		return this.defaultFetch;
 	}
 	
 	protected void setDefaultFetch(FetchType newDefaultFetch) {
-		FetchType oldFetch = this.defaulFetch;
-		this.defaulFetch = newDefaultFetch;
+		FetchType oldFetch = this.defaultFetch;
+		this.defaultFetch = newDefaultFetch;
 		firePropertyChanged(IBasicMapping.DEFAULT_FETCH_PROPERTY, oldFetch, newDefaultFetch);
 	}
 
