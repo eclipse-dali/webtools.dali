@@ -50,6 +50,12 @@ public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 		return this.defaultLength;
 	}
 	
+	protected void setDefaultLength(Integer newDefaultLength) {
+		Integer oldDefaultLength = this.defaultLength;
+		this.defaultLength = newDefaultLength;
+		firePropertyChanged(DEFAULT_LENGTH_PROPERTY, oldDefaultLength, newDefaultLength);
+	}
+
 	public Integer getSpecifiedLength() {
 		return this.specifiedLength;
 	}
@@ -72,7 +78,7 @@ public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
 	}
 	
-	public void setSpecifiedLength_(Integer newSpecifiedLength) {
+	protected void setSpecifiedLength_(Integer newSpecifiedLength) {
 		Integer oldSpecifiedLength = this.specifiedLength;
 		this.specifiedLength = newSpecifiedLength;
 		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);

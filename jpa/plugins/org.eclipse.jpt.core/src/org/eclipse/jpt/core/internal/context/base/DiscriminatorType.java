@@ -44,7 +44,7 @@ public enum DiscriminatorType {
 	}
 	
 
-	public static DiscriminatorType fromXmlResourceModel(org.eclipse.jpt.core.internal.resource.orm.DiscriminatorType ormDiscriminatorType) {
+	public static DiscriminatorType fromOrmResourceModel(org.eclipse.jpt.core.internal.resource.orm.DiscriminatorType ormDiscriminatorType) {
 		if (ormDiscriminatorType == org.eclipse.jpt.core.internal.resource.orm.DiscriminatorType.STRING) {
 			return STRING;
 		}
@@ -57,7 +57,7 @@ public enum DiscriminatorType {
 		return null;
 	}
 	
-	public static org.eclipse.jpt.core.internal.resource.orm.DiscriminatorType toXmlResourceModel(DiscriminatorType discriminatorType) {
+	public static org.eclipse.jpt.core.internal.resource.orm.DiscriminatorType toOrmResourceModel(DiscriminatorType discriminatorType) {
 		if (discriminatorType == STRING)  {
 			return org.eclipse.jpt.core.internal.resource.orm.DiscriminatorType.STRING;
 		}

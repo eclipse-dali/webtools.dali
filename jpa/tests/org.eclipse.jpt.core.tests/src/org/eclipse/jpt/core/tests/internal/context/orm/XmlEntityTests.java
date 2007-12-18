@@ -1080,5 +1080,65 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertNull(xmlEntity.getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
 	}
+	
+	public void testUpdateDiscriminatorColumn() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		
+		assertNotNull(xmlEntity.getDiscriminatorColumn());
 
+		entityResource.setDiscriminatorColumn(OrmFactory.eINSTANCE.createDiscriminatorColumn());
+		entityResource.getDiscriminatorColumn().setName("FOO");
+		
+		assertEquals("FOO", xmlEntity.getDiscriminatorColumn().getSpecifiedName());
+		assertEquals("FOO", entityResource.getDiscriminatorColumn().getName());
+		
+		entityResource.getDiscriminatorColumn().setName(null);
+		
+		assertNull(xmlEntity.getDiscriminatorColumn().getSpecifiedName());
+		assertNull(entityResource.getDiscriminatorColumn().getName());
+
+		entityResource.setDiscriminatorColumn(null);
+		
+		assertNotNull(xmlEntity.getDiscriminatorColumn());
+	}
+	
+	public void testUpdateDiscriminatorValue() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		
+		assertNull(xmlEntity.getSpecifiedDiscriminatorValue());
+		assertNull(entityResource.getDiscriminatorValue());
+
+		entityResource.setDiscriminatorValue("FOO");
+		
+		assertEquals("FOO", xmlEntity.getSpecifiedDiscriminatorValue());
+		assertEquals("FOO", entityResource.getDiscriminatorValue());
+		
+		entityResource.setDiscriminatorValue(null);
+		
+		assertNull(xmlEntity.getSpecifiedDiscriminatorValue());
+		assertNull(entityResource.getDiscriminatorValue());
+	}
+	
+	public void testModifyDiscriminatorValue() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		
+		assertNull(xmlEntity.getSpecifiedDiscriminatorValue());
+		assertNull(entityResource.getDiscriminatorValue());
+
+		xmlEntity.setSpecifiedDiscriminatorValue("FOO");
+		
+		assertEquals("FOO", xmlEntity.getSpecifiedDiscriminatorValue());
+		assertEquals("FOO", entityResource.getDiscriminatorValue());
+		
+		xmlEntity.setSpecifiedDiscriminatorValue(null);
+		
+		assertNull(xmlEntity.getSpecifiedDiscriminatorValue());
+		assertNull(entityResource.getDiscriminatorValue());
+	}
 }

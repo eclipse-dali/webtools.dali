@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.context.base.INamedNativeQuery;
 import org.eclipse.jpt.core.internal.context.base.INamedQuery;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
@@ -72,11 +73,11 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	
 	protected InheritanceType defaultInheritanceStrategy;
 
-//	protected String defaultDiscriminatorValue;
-//
-//	protected String specifiedDiscriminatorValue;
-//
-//	protected IDiscriminatorColumn discriminatorColumn;
+	protected String defaultDiscriminatorValue;
+
+	protected String specifiedDiscriminatorValue;
+
+	protected final XmlDiscriminatorColumn discriminatorColumn;
 
 	protected XmlSequenceGenerator sequenceGenerator;
 
@@ -102,8 +103,34 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.table = new XmlTable(this);
 		this.specifiedSecondaryTables = new ArrayList<XmlSecondaryTable>();
 		this.virtualSecondaryTables = new ArrayList<XmlSecondaryTable>();
+		this.discriminatorColumn = createXmlDiscriminatorColumn();
 	}
 	
+	protected XmlDiscriminatorColumn createXmlDiscriminatorColumn() {
+		return new XmlDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
+	}
+	
+	protected INamedColumn.Owner buildDiscriminatorColumnOwner() {
+		return new INamedColumn.Owner(){
+			public Table dbTable(String tableName) {
+				return XmlEntity.this.dbTable(tableName);
+			}
+
+			public ITextRange validationTextRange(CompilationUnit astRoot) {
+				return XmlEntity.this.validationTextRange(astRoot);
+			}
+
+			public ITypeMapping typeMapping() {
+				return XmlEntity.this;
+			}
+			
+			public String defaultColumnName() {
+				//TODO default column name from java here or in XmlDiscriminatorColumn?
+				return IDiscriminatorColumn.DEFAULT_NAME;
+			}
+		};
+	}
+
 	// ******************* ITypeMapping implementation ********************
 
 	public String getKey() {
@@ -143,39 +170,6 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		}
 		return null;
 	}
-
-//	protected Adapter buildListener() {
-//		return new AdapterImpl() {
-//			@Override
-//			public void notifyChanged(Notification notification) {
-//				XmlEntityInternal.this.notifyChanged(notification);
-//			}
-//		};
-//	}
-//
-//	protected void notifyChanged(Notification notification) {
-//		switch (notification.getFeatureID(IEntity.class)) {
-//			case JpaCoreMappingsPackage.IENTITY__ID_CLASS :
-//				idClassChanged();
-//				break;
-//			case JpaCoreMappingsPackage.IENTITY__INHERITANCE_STRATEGY :
-//				inheritanceStrategyChanged();
-//				break;
-//			default :
-//				break;
-//		}
-//		switch (notification.getFeatureID(XmlEntityForXml.class)) {
-//			case OrmPackage.XML_ENTITY_FOR_XML__ID_CLASS_FOR_XML :
-//				xmlIdClassChanged();
-//				break;
-//			case OrmPackage.XML_ENTITY_FOR_XML__INHERITANCE_FOR_XML :
-//				xmlInheritanceChanged();
-//				break;
-//			default :
-//				break;
-//		}
-//	}
-//
 
 	public String getName() {
 		return (this.getSpecifiedName() == null) ? getDefaultName() : this.getSpecifiedName();
@@ -406,22 +400,9 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		typeMappingResource().setInheritance(null);
 	}
 
-//	public IDiscriminatorColumn getDiscriminatorColumn() {
-//		return discriminatorColumn;
-//	}
-//
-//	public NotificationChain basicSetDiscriminatorColumn(IDiscriminatorColumn newDiscriminatorColumn, NotificationChain msgs) {
-//		IDiscriminatorColumn oldDiscriminatorColumn = discriminatorColumn;
-//		discriminatorColumn = newDiscriminatorColumn;
-//		if (eNotificationRequired()) {
-//			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__DISCRIMINATOR_COLUMN, oldDiscriminatorColumn, newDiscriminatorColumn);
-//			if (msgs == null)
-//				msgs = notification;
-//			else
-//				msgs.add(notification);
-//		}
-//		return msgs;
-//	}
+	public XmlDiscriminatorColumn getDiscriminatorColumn() {
+		return this.discriminatorColumn;
+	}
 
 	public XmlSequenceGenerator addSequenceGenerator() {
 		if (getSequenceGenerator() != null) {
@@ -483,31 +464,30 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
 	}
 
-//	public String getDefaultDiscriminatorValue() {
-//		return defaultDiscriminatorValue;
-//	}
-//
-//	public void setDefaultDiscriminatorValue(String newDefaultDiscriminatorValue) {
-//		String oldDefaultDiscriminatorValue = defaultDiscriminatorValue;
-//		defaultDiscriminatorValue = newDefaultDiscriminatorValue;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_DISCRIMINATOR_VALUE, oldDefaultDiscriminatorValue, defaultDiscriminatorValue));
-//	}
-//
-//	public String getSpecifiedDiscriminatorValue() {
-//		return specifiedDiscriminatorValue;
-//	}
-//
-//	public void setSpecifiedDiscriminatorValue(String newSpecifiedDiscriminatorValue) {
-//		String oldSpecifiedDiscriminatorValue = specifiedDiscriminatorValue;
-//		specifiedDiscriminatorValue = newSpecifiedDiscriminatorValue;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_DISCRIMINATOR_VALUE, oldSpecifiedDiscriminatorValue, specifiedDiscriminatorValue));
-//	}
-//
-//	public String getDiscriminatorValue() {
-//		return (this.getSpecifiedDiscriminatorValue() == null) ? getDefaultDiscriminatorValue() : this.getSpecifiedDiscriminatorValue();
-//	}
+	public String getDefaultDiscriminatorValue() {
+		return this.defaultDiscriminatorValue;
+	}
+
+	protected void setDefaultDiscriminatorValue(String newDefaultDiscriminatorValue) {
+		String oldDefaultDiscriminatorValue = this.defaultDiscriminatorValue;
+		this.defaultDiscriminatorValue = newDefaultDiscriminatorValue;
+		firePropertyChanged(DEFAULT_DISCRIMINATOR_VALUE_PROPERTY, oldDefaultDiscriminatorValue, newDefaultDiscriminatorValue);
+	}
+
+	public String getSpecifiedDiscriminatorValue() {
+		return this.specifiedDiscriminatorValue;
+	}
+
+	public void setSpecifiedDiscriminatorValue(String newSpecifiedDiscriminatorValue) {
+		String oldSpecifiedDiscriminatorValue = this.specifiedDiscriminatorValue;
+		this.specifiedDiscriminatorValue = newSpecifiedDiscriminatorValue;
+		typeMappingResource().setDiscriminatorValue(newSpecifiedDiscriminatorValue);
+		firePropertyChanged(SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY, oldSpecifiedDiscriminatorValue, newSpecifiedDiscriminatorValue);
+	}
+
+	public String getDiscriminatorValue() {
+		return (this.getSpecifiedDiscriminatorValue() == null) ? getDefaultDiscriminatorValue() : this.getSpecifiedDiscriminatorValue();
+	}
 //
 //	public EList<IPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
 //		return this.getSpecifiedPrimaryKeyJoinColumns().isEmpty() ? this.getDefaultPrimaryKeyJoinColumns() : this.getSpecifiedPrimaryKeyJoinColumns();
@@ -889,8 +869,11 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	public void initialize(Entity entity) {
 		super.initialize(entity);
 		this.specifiedName = entity.getName();
-		this.defaultName = defaultName();
+		this.defaultName = this.defaultName();
 		this.initializeInheritance(this.inheritanceResource());
+		this.discriminatorColumn.initialize(entity);
+		this.specifiedDiscriminatorValue = entity.getDiscriminatorValue();
+		this.defaultDiscriminatorValue = this.defaultDiscriminatorValue();
 		this.table.initialize(entity);
 		this.initializeSpecifiedSecondaryTables(entity);
 		this.initializeVirtualSecondaryTables();
@@ -950,6 +933,9 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.setSpecifiedName(entity.getName());
 		this.setDefaultName(this.defaultName());
 		this.updateInheritance(this.inheritanceResource());
+		this.discriminatorColumn.update(entity);
+		this.setSpecifiedDiscriminatorValue(entity.getDiscriminatorValue());
+		this.setDefaultDiscriminatorValue(defaultDiscriminatorValue());
 		this.table.update(entity);
 		this.updateSpecifiedSecondaryTables(entity);
 		this.updateVirtualSecondaryTables();
@@ -964,6 +950,11 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		if (className != null) {
 			return ClassTools.shortNameForClassNamed(className);
 		}
+		return null;
+	}
+	
+	protected String defaultDiscriminatorValue() {
+		//TODO default discriminator value
 		return null;
 	}
 	
@@ -1112,26 +1103,6 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return null;
 	}
 
-	public String getDefaultDiscriminatorValue() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public IDiscriminatorColumn getDiscriminatorColumn() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getDiscriminatorValue() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getSpecifiedDiscriminatorValue() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void moveSpecifiedAttributeOverride(int oldIndex, int newIndex) {
 		// TODO Auto-generated method stub
 		
@@ -1158,11 +1129,6 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	}
 
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setSpecifiedDiscriminatorValue(String value) {
 		// TODO Auto-generated method stub
 		
 	}
