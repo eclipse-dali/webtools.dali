@@ -11,16 +11,19 @@
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.orm.XmlSecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.internal.resource.orm.SecondaryTable;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -335,6 +338,160 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 
 		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog(null);
 		assertNull(xmlSecondaryTable.getDefaultCatalog());
+	}
+	
+	public void testAddSpecifiedPrimaryKeyJoinColumn() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+		XmlSecondaryTable xmlSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		SecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
+		
+		XmlPrimaryKeyJoinColumn primaryKeyJoinColumn = xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
+		ormResource().save(null);
+		primaryKeyJoinColumn.setSpecifiedName("FOO");
+		ormResource().save(null);
+				
+		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
+		
+		XmlPrimaryKeyJoinColumn primaryKeyJoinColumn2 = xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
+		ormResource().save(null);
+		primaryKeyJoinColumn2.setSpecifiedName("BAR");
+		ormResource().save(null);
+		
+		assertEquals("BAR", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
+		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(1).getName());
+		
+		XmlPrimaryKeyJoinColumn primaryKeyJoinColumn3 = xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(1);
+		ormResource().save(null);
+		primaryKeyJoinColumn3.setSpecifiedName("BAZ");
+		ormResource().save(null);
+		
+		assertEquals("BAR", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
+		assertEquals("BAZ", secondaryTableResource.getPrimaryKeyJoinColumns().get(1).getName());
+		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(2).getName());
+		
+		ListIterator<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		assertEquals(primaryKeyJoinColumn2, primaryKeyJoinColumns.next());
+		assertEquals(primaryKeyJoinColumn3, primaryKeyJoinColumns.next());
+		assertEquals(primaryKeyJoinColumn, primaryKeyJoinColumns.next());
+		
+		primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
+		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
+		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
+	}
+	
+	public void testRemoveSpecifiedPrimaryKeyJoinColumn() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+		XmlSecondaryTable xmlSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		SecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
+
+		xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
+		xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
+		xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
+		
+		assertEquals(3, secondaryTableResource.getPrimaryKeyJoinColumns().size());
+		
+		xmlSecondaryTable.removeSpecifiedPrimaryKeyJoinColumn(0);
+		assertEquals(2, secondaryTableResource.getPrimaryKeyJoinColumns().size());
+		assertEquals("BAR", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
+		assertEquals("BAZ", secondaryTableResource.getPrimaryKeyJoinColumns().get(1).getName());
+
+		xmlSecondaryTable.removeSpecifiedPrimaryKeyJoinColumn(0);
+		assertEquals(1, secondaryTableResource.getPrimaryKeyJoinColumns().size());
+		assertEquals("BAZ", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
+		
+		xmlSecondaryTable.removeSpecifiedPrimaryKeyJoinColumn(0);
+		assertEquals(0, secondaryTableResource.getPrimaryKeyJoinColumns().size());
+	}
+	
+	public void testMoveSpecifiedPrimaryKeyJoinColumn() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+		XmlSecondaryTable xmlSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		SecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
+
+		xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
+		xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
+		xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
+		
+		assertEquals(3, secondaryTableResource.getPrimaryKeyJoinColumns().size());
+		
+		
+		xmlSecondaryTable.moveSpecifiedPrimaryKeyJoinColumn(0, 2);
+		ListIterator<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
+		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
+		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
+
+		assertEquals("BAR", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
+		assertEquals("BAZ", secondaryTableResource.getPrimaryKeyJoinColumns().get(1).getName());
+		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(2).getName());
+
+
+		xmlSecondaryTable.moveSpecifiedPrimaryKeyJoinColumn(1, 0);
+		primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
+		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
+		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
+
+		assertEquals("BAZ", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
+		assertEquals("BAR", secondaryTableResource.getPrimaryKeyJoinColumns().get(1).getName());
+		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(2).getName());
+	}
+	
+	public void testUpdatePrimaryKeyJoinColumns() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+		XmlSecondaryTable xmlSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		SecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
+		
+		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createPrimaryKeyJoinColumn());
+		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createPrimaryKeyJoinColumn());
+		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createPrimaryKeyJoinColumn());
+		
+		secondaryTableResource.getPrimaryKeyJoinColumns().get(0).setName("FOO");
+		secondaryTableResource.getPrimaryKeyJoinColumns().get(1).setName("BAR");
+		secondaryTableResource.getPrimaryKeyJoinColumns().get(2).setName("BAZ");
+
+		ListIterator<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
+		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
+		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
+		assertFalse(primaryKeyJoinColumns.hasNext());
+		
+		secondaryTableResource.getPrimaryKeyJoinColumns().move(2, 0);
+		primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
+		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
+		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
+		assertFalse(primaryKeyJoinColumns.hasNext());
+
+		secondaryTableResource.getPrimaryKeyJoinColumns().move(0, 1);
+		primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
+		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
+		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
+		assertFalse(primaryKeyJoinColumns.hasNext());
+
+		secondaryTableResource.getPrimaryKeyJoinColumns().remove(1);
+		primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
+		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
+		assertFalse(primaryKeyJoinColumns.hasNext());
+
+		secondaryTableResource.getPrimaryKeyJoinColumns().remove(1);
+		primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
+		assertFalse(primaryKeyJoinColumns.hasNext());
+		
+		secondaryTableResource.getPrimaryKeyJoinColumns().remove(0);
+		assertFalse(xmlSecondaryTable.specifiedPrimaryKeyJoinColumns().hasNext());
 	}
 
 }

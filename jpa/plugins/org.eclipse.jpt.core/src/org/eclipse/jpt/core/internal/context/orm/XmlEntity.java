@@ -16,6 +16,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.core.internal.context.base.INamedNativeQuery;
 import org.eclipse.jpt.core.internal.context.base.INamedQuery;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
-import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
@@ -36,6 +36,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.Inheritance;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.internal.resource.orm.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.resource.orm.SecondaryTable;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
@@ -65,9 +66,9 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	protected final List<XmlSecondaryTable> virtualSecondaryTables;
 		public static final String VIRTUAL_SECONDARY_TABLES_LIST = "virtualSecondaryTablesList";
 	
-//	protected EList<IPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
-//
-//	protected EList<IPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns;
+	protected final List<XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
+	
+	protected final List<XmlPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns;
 
 	protected InheritanceType specifiedInheritanceStrategy;
 	
@@ -104,6 +105,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.specifiedSecondaryTables = new ArrayList<XmlSecondaryTable>();
 		this.virtualSecondaryTables = new ArrayList<XmlSecondaryTable>();
 		this.discriminatorColumn = createXmlDiscriminatorColumn();
+		this.specifiedPrimaryKeyJoinColumns = new ArrayList<XmlPrimaryKeyJoinColumn>();
+		this.defaultPrimaryKeyJoinColumns = new ArrayList<XmlPrimaryKeyJoinColumn>();
 	}
 	
 	protected XmlDiscriminatorColumn createXmlDiscriminatorColumn() {
@@ -488,24 +491,57 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	public String getDiscriminatorValue() {
 		return (this.getSpecifiedDiscriminatorValue() == null) ? getDefaultDiscriminatorValue() : this.getSpecifiedDiscriminatorValue();
 	}
-//
-//	public EList<IPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
-//		return this.getSpecifiedPrimaryKeyJoinColumns().isEmpty() ? this.getDefaultPrimaryKeyJoinColumns() : this.getSpecifiedPrimaryKeyJoinColumns();
-//	}
-//
-//	public EList<IPrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns() {
-//		if (specifiedPrimaryKeyJoinColumns == null) {
-//			specifiedPrimaryKeyJoinColumns = new EObjectContainmentEList<IPrimaryKeyJoinColumn>(IPrimaryKeyJoinColumn.class, this, OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS);
-//		}
-//		return specifiedPrimaryKeyJoinColumns;
-//	}
-//
-//	public EList<IPrimaryKeyJoinColumn> getDefaultPrimaryKeyJoinColumns() {
-//		if (defaultPrimaryKeyJoinColumns == null) {
-//			defaultPrimaryKeyJoinColumns = new EObjectContainmentEList<IPrimaryKeyJoinColumn>(IPrimaryKeyJoinColumn.class, this, OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_PRIMARY_KEY_JOIN_COLUMNS);
-//		}
-//		return defaultPrimaryKeyJoinColumns;
-//	}
+	
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
+		return new CloneListIterator<XmlPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumns);
+	}
+
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
+		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ? this.defaultPrimaryKeyJoinColumns() : this.specifiedPrimaryKeyJoinColumns();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns() {
+		return new CloneListIterator<XmlPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
+	}
+
+	public int specifiedPrimaryKeyJoinColumnsSize() {
+		return this.specifiedPrimaryKeyJoinColumns.size();
+	}
+
+	public XmlPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
+		XmlPrimaryKeyJoinColumn primaryKeyJoinColumn = new XmlPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
+		this.typeMappingResource().getPrimaryKeyJoinColumns().add(index, OrmFactory.eINSTANCE.createPrimaryKeyJoinColumn());
+		this.fireItemAdded(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
+		return primaryKeyJoinColumn;
+	}
+	
+	protected IAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
+		return new PrimaryKeyJoinColumnOwner();
+	}
+
+	protected void addSpecifiedPrimaryKeyJoinColumn(int index, XmlPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+	}
+	
+	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
+		XmlPrimaryKeyJoinColumn removedPrimaryKeyJoinColumn = this.specifiedPrimaryKeyJoinColumns.remove(index);
+		this.typeMappingResource().getPrimaryKeyJoinColumns().remove(index);
+		fireItemRemoved(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
+	}
+
+	protected void removeSpecifiedPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+	}
+	
+	public void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex) {
+		this.typeMappingResource().getPrimaryKeyJoinColumns().move(newIndex, oldIndex);
+		moveItemInList(newIndex, oldIndex, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
+	}
+
 //
 //	public EList<IAttributeOverride> getAttributeOverrides() {
 //		EList<IAttributeOverride> list = new EObjectEList<IAttributeOverride>(IAttributeOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__ATTRIBUTE_OVERRIDES);
@@ -612,30 +648,6 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return rootEntity;
 	}
 
-//	public XmlDiscriminatorColumn getDiscriminatorColumnForXml() {
-//		if (getDiscriminatorColumnInternal().isAllFeaturesUnset()) {
-//			return null;
-//		}
-//		return getDiscriminatorColumnInternal();
-//	}
-//
-//	private XmlDiscriminatorColumn getDiscriminatorColumnInternal() {
-//		return (XmlDiscriminatorColumn) getDiscriminatorColumn();
-//	}
-//
-//	public void setDiscriminatorColumnForXmlGen(XmlDiscriminatorColumn newDiscriminatorColumnForXml) {
-//		XmlDiscriminatorColumn oldValue = newDiscriminatorColumnForXml == null ? (XmlDiscriminatorColumn) getDiscriminatorColumn() : null;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__DISCRIMINATOR_COLUMN_FOR_XML, oldValue, newDiscriminatorColumnForXml));
-//	}
-//
-//	public void setDiscriminatorColumnForXml(XmlDiscriminatorColumn newDiscriminatorColumnForXml) {
-//		setDiscriminatorColumnForXmlGen(newDiscriminatorColumnForXml);
-//		if (newDiscriminatorColumnForXml == null) {
-//			getDiscriminatorColumnInternal().unsetAllAttributes();
-//		}
-//	}
-//
 //	public XmlIdClass getIdClassForXml() {
 //		return idClassForXml;
 //	}
@@ -666,48 +678,6 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 //		}
 //		else if (eNotificationRequired())
 //			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML, newIdClassForXml, newIdClassForXml));
-//	}
-//
-//	public XmlInheritance getInheritanceForXml() {
-//		return inheritanceForXml;
-//	}
-//
-//	public NotificationChain basicSetInheritanceForXml(XmlInheritance newInheritanceForXml, NotificationChain msgs) {
-//		XmlInheritance oldInheritanceForXml = inheritanceForXml;
-//		inheritanceForXml = newInheritanceForXml;
-//		if (eNotificationRequired()) {
-//			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML, oldInheritanceForXml, newInheritanceForXml);
-//			if (msgs == null)
-//				msgs = notification;
-//			else
-//				msgs.add(notification);
-//		}
-//		return msgs;
-//	}
-//
-//	public void setInheritanceForXml(XmlInheritance newInheritanceForXml) {
-//		if (newInheritanceForXml != inheritanceForXml) {
-//			NotificationChain msgs = null;
-//			if (inheritanceForXml != null)
-//				msgs = ((InternalEObject) inheritanceForXml).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML, null, msgs);
-//			if (newInheritanceForXml != null)
-//				msgs = ((InternalEObject) newInheritanceForXml).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML, null, msgs);
-//			msgs = basicSetInheritanceForXml(newInheritanceForXml, msgs);
-//			if (msgs != null)
-//				msgs.dispatch();
-//		}
-//		else if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__INHERITANCE_FOR_XML, newInheritanceForXml, newInheritanceForXml));
-//	}
-
-
-//	public void makeDiscriminatorColumnForXmlNull() {
-//		setDiscriminatorColumnForXmlGen(null);
-//	}
-//
-//	//um, this is an object on XmlInheritance, but a tag on entity in the xml, how to handle???
-//	public void makeDiscriminatorColumnForXmlNonNull() {
-//		setDiscriminatorColumnForXmlGen(getDiscriminatorColumnForXml());
 //	}
 //
 //	public String primaryKeyColumnName() {
@@ -879,6 +849,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.initializeVirtualSecondaryTables();
 		this.initializeSequenceGenerator(entity);
 		this.initializeTableGenerator(entity);
+		this.initializeSpecifiedPrimaryKeyJoinColumns(entity);
 	}
 	
 	protected void initializeInheritance(Inheritance inheritanceResource) {
@@ -926,6 +897,12 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 			this.sequenceGenerator.initialize(entity.getSequenceGenerator());
 		}
 	}
+	
+	protected void initializeSpecifiedPrimaryKeyJoinColumns(Entity entity) {
+		for (PrimaryKeyJoinColumn primaryKeyJoinColumn : entity.getPrimaryKeyJoinColumns()) {
+			this.specifiedPrimaryKeyJoinColumns.add(createPrimaryKeyJoinColumn(primaryKeyJoinColumn));
+		}
+	}
 
 	@Override
 	public void update(Entity entity) {
@@ -941,6 +918,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.updateVirtualSecondaryTables();
 		this.updateSequenceGenerator(entity);
 		this.updateTableGenerator(entity);
+		this.updateSpecifiedPrimaryKeyJoinColumns(entity);
 	}
 
 	protected String defaultName() {
@@ -1077,13 +1055,33 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		}
 		return rootEntity().getInheritanceStrategy();
 	}
-
-	public IAttributeOverride addSpecifiedAttributeOverride(int index) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	protected void updateSpecifiedPrimaryKeyJoinColumns(Entity entity) {
+		ListIterator<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns = specifiedPrimaryKeyJoinColumns();
+		ListIterator<PrimaryKeyJoinColumn> resourcePrimaryKeyJoinColumns = entity.getPrimaryKeyJoinColumns().listIterator();
+		
+		while (primaryKeyJoinColumns.hasNext()) {
+			XmlPrimaryKeyJoinColumn primaryKeyJoinColumn = primaryKeyJoinColumns.next();
+			if (resourcePrimaryKeyJoinColumns.hasNext()) {
+				primaryKeyJoinColumn.update(resourcePrimaryKeyJoinColumns.next());
+			}
+			else {
+				removeSpecifiedPrimaryKeyJoinColumn(primaryKeyJoinColumn);
+			}
+		}
+		
+		while (resourcePrimaryKeyJoinColumns.hasNext()) {
+			addSpecifiedPrimaryKeyJoinColumn(specifiedPrimaryKeyJoinColumnsSize(), createPrimaryKeyJoinColumn(resourcePrimaryKeyJoinColumns.next()));
+		}
+	}
+	
+	protected XmlPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(PrimaryKeyJoinColumn primaryKeyJoinColumn) {
+		XmlPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = new XmlPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		xmlPrimaryKeyJoinColumn.initialize(primaryKeyJoinColumn);
+		return xmlPrimaryKeyJoinColumn;
 	}
 
-	public IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
+	public IAttributeOverride addSpecifiedAttributeOverride(int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1098,37 +1096,15 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return null;
 	}
 
-	public <T extends IPrimaryKeyJoinColumn> ListIterator<T> defaultPrimaryKeyJoinColumns() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public void moveSpecifiedAttributeOverride(int oldIndex, int newIndex) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public String primaryKeyColumnName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public <T extends IPrimaryKeyJoinColumn> ListIterator<T> primaryKeyJoinColumns() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public void removeSpecifiedAttributeOverride(int index) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -1143,15 +1119,11 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return 0;
 	}
 
-	public <T extends IPrimaryKeyJoinColumn> ListIterator<T> specifiedPrimaryKeyJoinColumns() {
+	public void moveSpecifiedAttributeOverride(int oldIndex, int newIndex) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
-	public int specifiedPrimaryKeyJoinColumnsSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	public <T extends IAssociationOverride> ListIterator<T> associationOverrides() {
 		return EmptyListIterator.instance();
 	}
@@ -1281,5 +1253,44 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
 		sb.append(getName());
+	}
+	
+	class PrimaryKeyJoinColumnOwner implements IAbstractJoinColumn.Owner
+	{
+		public ITextRange validationTextRange(CompilationUnit astRoot) {
+			return XmlEntity.this.validationTextRange(astRoot);
+		}
+
+		public ITypeMapping typeMapping() {
+			return XmlEntity.this;
+		}
+
+		public Table dbTable(String tableName) {
+			return XmlEntity.this.dbTable(tableName);
+		}
+
+		public Table dbReferencedColumnTable() {
+			IEntity parentEntity = XmlEntity.this.parentEntity();
+			return (parentEntity == null) ? null : parentEntity.primaryDbTable();
+		}
+
+		public int joinColumnsSize() {
+			return CollectionTools.size(XmlEntity.this.primaryKeyJoinColumns());
+		}
+		
+		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
+			return XmlEntity.this.defaultPrimaryKeyJoinColumns.contains(joinColumn);
+		}
+		
+		public int indexOf(IAbstractJoinColumn joinColumn) {
+			return CollectionTools.indexOf(XmlEntity.this.primaryKeyJoinColumns(), joinColumn);
+		}
+		
+		public String defaultColumnName() {
+			if (joinColumnsSize() != 1) {
+				return null;
+			}
+			return XmlEntity.this.parentEntity().primaryKeyColumnName();
+		}
 	}
 }
