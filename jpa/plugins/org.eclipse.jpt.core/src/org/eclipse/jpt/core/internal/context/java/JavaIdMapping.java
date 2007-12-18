@@ -137,16 +137,20 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		if (getGeneratedValue() != null) {
 			throw new IllegalStateException("gemeratedValue already exists");
 		}
-		IJavaGeneratedValue generatedValue = jpaFactory().createJavaGeneratedValue(this);
-		setGeneratedValue(generatedValue);
-		return generatedValue;
+		this.generatedValue = jpaFactory().createJavaGeneratedValue(this);
+		this.persistentAttributeResource.addAnnotation(GeneratedValue.ANNOTATION_NAME);
+		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
+		return this.generatedValue;
 	}
 	
 	public void removeGeneratedValue() {
 		if (getGeneratedValue() == null) {
 			throw new IllegalStateException("gemeratedValue does not exist, cannot be removed");
 		}
-		setGeneratedValue(null);
+		IJavaGeneratedValue oldGeneratedValue = this.generatedValue;
+		this.generatedValue = null;
+		this.persistentAttributeResource.removeAnnotation(GeneratedValue.ANNOTATION_NAME);
+		firePropertyChanged(GENERATED_VALUE_PROPERTY, oldGeneratedValue, null);
 	}
 	
 	public IJavaGeneratedValue getGeneratedValue() {
@@ -156,12 +160,6 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 	protected void setGeneratedValue(IJavaGeneratedValue newGeneratedValue) {
 		IJavaGeneratedValue oldGeneratedValue = this.generatedValue;
 		this.generatedValue = newGeneratedValue;
-		if (newGeneratedValue != null) {
-			this.persistentAttributeResource.addAnnotation(GeneratedValue.ANNOTATION_NAME);
-		}
-		else {
-			this.persistentAttributeResource.removeAnnotation(GeneratedValue.ANNOTATION_NAME);
-		}
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, oldGeneratedValue, newGeneratedValue);
 	}
 
@@ -285,8 +283,8 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		}
 		else {
 			if (getGeneratedValue() == null) {
-				IJavaGeneratedValue generatedValue = addGeneratedValue();
-				generatedValue.initializeFromResource(generatedValueResource);
+				setGeneratedValue(jpaFactory().createJavaGeneratedValue(this));
+				getGeneratedValue().initializeFromResource(generatedValueResource);
 			}
 			else {
 				getGeneratedValue().update(generatedValueResource);

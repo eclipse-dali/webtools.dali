@@ -298,5 +298,73 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertNull(idResource.getTableGenerator());
 	}
 
+	public void testAddGeneratedValue() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
+		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		
+		assertNull(xmlIdMapping.getGeneratedValue());
+		assertNull(idResource.getGeneratedValue());
+		
+		xmlIdMapping.addGeneratedValue();
+		
+		assertNotNull(idResource.getGeneratedValue());
+		assertNotNull(xmlIdMapping.getGeneratedValue());
+				
+		//try adding another sequence generator, should get an IllegalStateException
+		try {
+			xmlIdMapping.addGeneratedValue();
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+	
+	public void testRemoveGeneratedValue() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
+		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		
+		assertNull(xmlIdMapping.getGeneratedValue());
+		assertNull(idResource.getGeneratedValue());
 
+		xmlIdMapping.addGeneratedValue();
+		assertNotNull(idResource.getGeneratedValue());
+		assertNotNull(xmlIdMapping.getGeneratedValue());
+
+		xmlIdMapping.removeGeneratedValue();
+		
+		assertNull(xmlIdMapping.getGeneratedValue());
+		assertNull(idResource.getGeneratedValue());
+
+		//try removing the sequence generator again, should get an IllegalStateException
+		try {
+			xmlIdMapping.removeGeneratedValue();		
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail("IllegalStateException not thrown");
+	}
+
+	public void testUpdateGeneratedValue() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
+		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		
+		assertNull(xmlIdMapping.getGeneratedValue());
+		assertNull(idResource.getGeneratedValue());
+		
+		idResource.setGeneratedValue(OrmFactory.eINSTANCE.createGeneratedValue());
+				
+		assertNotNull(xmlIdMapping.getGeneratedValue());
+		assertNotNull(idResource.getGeneratedValue());
+				
+		idResource.setGeneratedValue(null);
+		assertNull(xmlIdMapping.getGeneratedValue());
+		assertNull(idResource.getGeneratedValue());
+	}
+	
 }

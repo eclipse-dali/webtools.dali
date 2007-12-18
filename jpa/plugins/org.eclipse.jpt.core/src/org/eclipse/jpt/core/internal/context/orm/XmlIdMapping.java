@@ -13,7 +13,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
-import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
@@ -28,7 +27,7 @@ public class XmlIdMapping extends XmlAttributeMapping
 {
 	protected final XmlColumn column;
 
-//	protected IGeneratedValue generatedValue;
+	protected XmlGeneratedValue generatedValue;
 	
 	protected TemporalType temporal;
 	
@@ -57,38 +56,35 @@ public class XmlIdMapping extends XmlAttributeMapping
 		firePropertyChanged(IBasicMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
-
-//	public IGeneratedValue getGeneratedValue() {
-//		return generatedValue;
-//	}
-//
-//	public NotificationChain basicSetGeneratedValue(IGeneratedValue newGeneratedValue, NotificationChain msgs) {
-//		IGeneratedValue oldGeneratedValue = generatedValue;
-//		generatedValue = newGeneratedValue;
-//		if (eNotificationRequired()) {
-//			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID__GENERATED_VALUE, oldGeneratedValue, newGeneratedValue);
-//			if (msgs == null)
-//				msgs = notification;
-//			else
-//				msgs.add(notification);
-//		}
-//		return msgs;
-//	}
-//
-//	public void setGeneratedValue(IGeneratedValue newGeneratedValue) {
-//		if (newGeneratedValue != generatedValue) {
-//			NotificationChain msgs = null;
-//			if (generatedValue != null)
-//				msgs = ((InternalEObject) generatedValue).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID__GENERATED_VALUE, null, msgs);
-//			if (newGeneratedValue != null)
-//				msgs = ((InternalEObject) newGeneratedValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID__GENERATED_VALUE, null, msgs);
-//			msgs = basicSetGeneratedValue(newGeneratedValue, msgs);
-//			if (msgs != null)
-//				msgs.dispatch();
-//		}
-//		else if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID__GENERATED_VALUE, newGeneratedValue, newGeneratedValue));
-//	}
+	public XmlGeneratedValue addGeneratedValue() {
+		if (getGeneratedValue() != null) {
+			throw new IllegalStateException("gemeratedValue already exists");
+		}
+		this.generatedValue = new XmlGeneratedValue(this);
+		this.id.setGeneratedValue(OrmFactory.eINSTANCE.createGeneratedValue());
+		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
+		return this.generatedValue;
+	}
+	
+	public void removeGeneratedValue() {
+		if (getGeneratedValue() == null) {
+			throw new IllegalStateException("gemeratedValue does not exist, cannot be removed");
+		}
+		XmlGeneratedValue oldGeneratedValue = this.generatedValue;
+		this.generatedValue = null;
+		this.id.setGeneratedValue(null);
+		firePropertyChanged(GENERATED_VALUE_PROPERTY, oldGeneratedValue, null);
+	}
+	
+	public XmlGeneratedValue getGeneratedValue() {
+		return this.generatedValue;
+	}
+	
+	protected void setGeneratedValue(XmlGeneratedValue newGeneratedValue) {
+		XmlGeneratedValue oldGeneratedValue = this.generatedValue;
+		this.generatedValue = newGeneratedValue;
+		firePropertyChanged(GENERATED_VALUE_PROPERTY, oldGeneratedValue, newGeneratedValue);
+	}
 
 	public XmlSequenceGenerator addSequenceGenerator() {
 		if (getSequenceGenerator() != null) {
@@ -222,22 +218,6 @@ public class XmlIdMapping extends XmlAttributeMapping
 		}
 	}
 
-	public IGeneratedValue addGeneratedValue() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	public IGeneratedValue getGeneratedValue() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void removeGeneratedValue() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public String defaultTableName() {
 		// TODO Auto-generated method stub
 		return null;
@@ -263,7 +243,8 @@ public class XmlIdMapping extends XmlAttributeMapping
 		this.temporal = this.specifiedTemporal(id);
 		this.column.initialize(id);
 		this.initializeSequenceGenerator(id);
-		this.initializeTableGenerator(id);		
+		this.initializeTableGenerator(id);
+		this.initializeGeneratedValue(id);
 	}
 	
 	protected void initializeSequenceGenerator(Id id) {
@@ -280,12 +261,20 @@ public class XmlIdMapping extends XmlAttributeMapping
 		}
 	}
 	
+	protected void initializeGeneratedValue(Id id) {
+		if (id.getGeneratedValue() != null) {
+			this.generatedValue = new XmlGeneratedValue(this);
+			this.generatedValue.initialize(id.getGeneratedValue());
+		}
+	}
+	
 	public void update(Id id) {
 		this.id = id;
 		this.setTemporal(this.specifiedTemporal(id));
 		this.column.update(id);
 		this.updateSequenceGenerator(id);
-		this.updateTableGenerator(id);		
+		this.updateTableGenerator(id);
+		this.updateGeneratedValue(id);
 	}
 	
 	protected void updateSequenceGenerator(Id id) {
@@ -318,6 +307,23 @@ public class XmlIdMapping extends XmlAttributeMapping
 			}
 			else {
 				getTableGenerator().update(id.getTableGenerator());
+			}
+		}
+	}
+	
+	protected void updateGeneratedValue(Id id) {
+		if (id.getGeneratedValue() == null) {
+			if (getGeneratedValue() != null) {
+				setGeneratedValue(null);
+			}
+		}
+		else {
+			if (getGeneratedValue() == null) {
+				setGeneratedValue(new XmlGeneratedValue(this));
+				getGeneratedValue().initialize(id.getGeneratedValue());
+			}
+			else {
+				getGeneratedValue().update(id.getGeneratedValue());
 			}
 		}
 	}

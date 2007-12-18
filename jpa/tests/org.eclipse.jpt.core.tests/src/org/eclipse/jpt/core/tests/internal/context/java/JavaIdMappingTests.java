@@ -497,6 +497,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		attributeResource.addAnnotation(JPA.GENERATED_VALUE);
 		
 		assertNotNull(idMapping.getGeneratedValue());		
+		assertEquals(1, CollectionTools.size(attributeResource.annotations()));
 	}
 	
 	public void testGetGeneratedValue2() throws Exception {
@@ -506,7 +507,11 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		IIdMapping idMapping = (IIdMapping) persistentAttribute.getSpecifiedMapping();
 		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+
 		assertNotNull(idMapping.getGeneratedValue());
+		assertEquals(1, CollectionTools.size(attributeResource.annotations()));
 	}
 	
 	public void testAddGeneratedValue() throws Exception {
