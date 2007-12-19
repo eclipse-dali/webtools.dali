@@ -37,7 +37,7 @@ public class ToggleButtonModelAdapter
 	protected final boolean defaultValue;
 
 	/** A value model on the underlying model boolean. */
-	protected final WritablePropertyValueModel booleanHolder;
+	protected final WritablePropertyValueModel<Boolean> booleanHolder;
 
 	/**
 	 * A listener that allows us to synchronize with
@@ -51,7 +51,7 @@ public class ToggleButtonModelAdapter
 	/**
 	 * Constructor - the boolean holder is required.
 	 */
-	public ToggleButtonModelAdapter(WritablePropertyValueModel booleanHolder, boolean defaultValue) {
+	public ToggleButtonModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder, boolean defaultValue) {
 		super();
 		if (booleanHolder == null) {
 			throw new NullPointerException();
@@ -67,7 +67,7 @@ public class ToggleButtonModelAdapter
 	 * Constructor - the boolean holder is required.
 	 * The default value will be false.
 	 */
-	public ToggleButtonModelAdapter(WritablePropertyValueModel booleanHolder) {
+	public ToggleButtonModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder) {
 		this(booleanHolder, false);
 	}
 
@@ -180,7 +180,7 @@ public class ToggleButtonModelAdapter
 		return this.listenerList.getListenerCount() == 0;
 	}
 
-	protected boolean getDefaultValue() {
+	protected boolean defaultValue() {
 		return this.defaultValue;
 	}
 
@@ -193,7 +193,7 @@ public class ToggleButtonModelAdapter
 	 */
 	protected void setSelected(Boolean value) {
 		if (value == null) {
-			this.setSelected(this.getDefaultValue());
+			this.setSelected(this.defaultValue());
 		} else {
 			this.setSelected(value.booleanValue());
 		}
@@ -208,7 +208,7 @@ public class ToggleButtonModelAdapter
 
 	protected void engageModel() {
 		this.booleanHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
-		this.setSelected((Boolean) this.booleanHolder.value());
+		this.setSelected(this.booleanHolder.value());
 	}
 
 	protected void disengageModel() {

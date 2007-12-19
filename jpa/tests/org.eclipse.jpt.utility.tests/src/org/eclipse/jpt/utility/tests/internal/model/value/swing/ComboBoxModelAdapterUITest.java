@@ -55,8 +55,8 @@ public class ComboBoxModelAdapterUITest {
 
 	protected JFrame window;
 	private TestModel testModel;
-	private WritablePropertyValueModel testModelHolder;
-	private WritablePropertyValueModel colorHolder;
+	private WritablePropertyValueModel<TestModel> testModelHolder;
+	private WritablePropertyValueModel<Object> colorHolder;
 	private SimpleListValueModel<String> colorListHolder;
 	protected ComboBoxModel colorComboBoxModel;
 	private int nextColorNumber = 0;
@@ -76,22 +76,22 @@ public class ComboBoxModelAdapterUITest {
 //		UIManager.setLookAndFeel(com.sun.java.swing.plaf.motif.MotifLookAndFeel.class.getName());
 //		UIManager.setLookAndFeel(oracle.bali.ewt.olaf.OracleLookAndFeel.class.getName());
 		this.testModel = this.buildTestModel();
-		this.testModelHolder = new SimplePropertyValueModel(this.testModel);
+		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
 		this.colorHolder = this.buildColorHolder(this.testModelHolder);
 		this.colorListHolder = this.buildColorListHolder();
 		this.colorComboBoxModel = this.buildComboBoxModelAdapter(this.colorListHolder, this.colorHolder);
 		this.openWindow();
 	}
 
-	private WritablePropertyValueModel<String> buildColorHolder(PropertyValueModel<TestModel> vm) {
-		return new PropertyAspectAdapter<TestModel, String>(vm, TestModel.COLOR_PROPERTY) {
+	private WritablePropertyValueModel<Object> buildColorHolder(PropertyValueModel<TestModel> vm) {
+		return new PropertyAspectAdapter<TestModel, Object>(vm, TestModel.COLOR_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColor();
 			}
 			@Override
-			protected void setValue_(String value) {
-				this.subject.setColor(value);
+			protected void setValue_(Object value) {
+				this.subject.setColor((String) value);
 			}
 		};
 	}
@@ -116,7 +116,7 @@ public class ComboBoxModelAdapterUITest {
 		return this.colorListHolder;
 	}
 
-	private ComboBoxModel buildComboBoxModelAdapter(ListValueModel listHolder, WritablePropertyValueModel selectionHolder) {
+	private ComboBoxModel buildComboBoxModelAdapter(ListValueModel listHolder, WritablePropertyValueModel<Object> selectionHolder) {
 		return new ComboBoxModelAdapter(listHolder, selectionHolder);
 	}
 

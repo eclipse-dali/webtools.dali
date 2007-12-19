@@ -1933,16 +1933,34 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(Arrays.equals(new String[] { "A", "B", "A", "D" }, a));
 	}
 
+	public void testRemoveElementsAtIndexObjectArrayIntIntEmpty() {
+		String[] a = new String[] { "A", "B", "A", "C", "A", "D" };
+		a = CollectionTools.removeElementsAtIndex(a, 0, 6);
+		assertEquals(0, a.length);
+	}
+
 	public void testRemoveElementsAtIndexCharArrayIntInt() {
 		char[] a = new char[] { 'A', 'B', 'A', 'C', 'A', 'D' };
 		a = CollectionTools.removeElementsAtIndex(a, 0, 5);
 		assertTrue(Arrays.equals(new char[] { 'D' }, a));
 	}
 
+	public void testRemoveElementsAtIndexCharArrayIntIntEmpty() {
+		char[] a = new char[] { 'A', 'B', 'A', 'C', 'A', 'D' };
+		a = CollectionTools.removeElementsAtIndex(a, 0, 6);
+		assertEquals(0, a.length);
+	}
+
 	public void testRemoveElementsAtIndexIntArrayIntInt() {
 		int[] a = new int[] { 8, 6, 7, 33, 2, 11 };
-		a = CollectionTools.removeElementAtIndex(a, 3);
-		assertTrue(Arrays.equals(new int[] { 8, 6, 7, 2, 11 }, a));
+		a = CollectionTools.removeElementsAtIndex(a, 3, 3);
+		assertTrue(Arrays.equals(new int[] { 8, 6, 7 }, a));
+	}
+
+	public void testRemoveElementsAtIndexIntArrayIntIntEmpty() {
+		int[] a = new int[] { 8, 6, 7, 33, 2, 11 };
+		a = CollectionTools.removeElementsAtIndex(a, 0, 6);
+		assertEquals(0, a.length);
 	}
 
 	public void testReplaceAllObjectArray1() {

@@ -815,8 +815,7 @@ public class TreeModelAdapterTests extends TestCase {
 	}
 
 	private TreeModel buildTreeModel(PropertyValueModel<TreeNodeValueModel<Object>> rootHolder) {
-//	private TreeModel buildTreeModel(PropertyValueModel<TestNode> rootHolder) {
-		return new TreeModelAdapter(rootHolder) {
+		return new TreeModelAdapter<Object>(rootHolder) {
 			@Override
 			protected ListChangeListener buildChildrenListener() {
 				return this.buildChildrenListener_();

@@ -35,7 +35,6 @@ import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.CheckBoxModelAdapter;
 
-
 /**
  * Play around with a set of check boxes.
  */

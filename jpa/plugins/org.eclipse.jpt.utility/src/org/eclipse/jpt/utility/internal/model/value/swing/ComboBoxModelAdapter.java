@@ -43,7 +43,7 @@ public class ComboBoxModelAdapter
 	extends ListModelAdapter
 	implements ComboBoxModel
 {
-	protected final WritablePropertyValueModel selectionHolder;
+	protected final WritablePropertyValueModel<Object> selectionHolder;
 	protected final PropertyChangeListener selectionListener;
 
 
@@ -52,7 +52,7 @@ public class ComboBoxModelAdapter
 	/**
 	 * Constructor - the list holder and selection holder are required;
 	 */
-	public ComboBoxModelAdapter(ListValueModel listHolder, WritablePropertyValueModel selectionHolder) {
+	public ComboBoxModelAdapter(ListValueModel listHolder, WritablePropertyValueModel<Object> selectionHolder) {
 		super(listHolder);
 		if (selectionHolder == null) {
 			throw new NullPointerException();
@@ -64,7 +64,7 @@ public class ComboBoxModelAdapter
 	/**
 	 * Constructor - the collection holder and selection holder are required;
 	 */
-	public ComboBoxModelAdapter(CollectionValueModel collectionHolder, WritablePropertyValueModel selectionHolder) {
+	public ComboBoxModelAdapter(CollectionValueModel collectionHolder, WritablePropertyValueModel<Object> selectionHolder) {
 		super(collectionHolder);
 		if (selectionHolder == null) {
 			throw new NullPointerException();

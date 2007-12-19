@@ -1986,11 +1986,15 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementsAtIndex(Object[] array, int index, int length)
 	 */
 	public static <E> E[] removeElementsAtIndex(E[] array, int index, int length) {
-		int len = array.length;
+		int arrayLength = array.length;
+		int newLength = arrayLength - length;
 		@SuppressWarnings("unchecked")
-		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), len - length);
+		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), newLength);
+		if ((newLength == 0) && (index == 0)) {
+			return result;  // performance tweak
+		}
 		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + length, result, index, len - index - length);
+		System.arraycopy(array, index + length, result, index, newLength - index);
 		return result;
 	}
 
@@ -2000,12 +2004,17 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementAtIndex(char[] array, int index, int length)
 	 */
 	public static char[] removeElementsAtIndex(char[] array, int index, int length) {
-		int len = array.length;
-		char[] result = new char[len - length];
+		int arrayLength = array.length;
+		int newLength = arrayLength - length;
+		if ((newLength == 0) && (index == 0)) {
+			return EMPTY_CHAR_ARRAY;  // performance tweak
+		}
+		char[] result = new char[newLength];
 		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + length, result, index, len - index - length);
+		System.arraycopy(array, index + length, result, index, newLength - index);
 		return result;
 	}
+	private static final char[] EMPTY_CHAR_ARRAY = new char[0];
 
 	/**
 	 * Return a new array that contains the elements in the
@@ -2013,12 +2022,17 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementAtIndex(int[] array, int index, int length)
 	 */
 	public static int[] removeElementsAtIndex(int[] array, int index, int length) {
-		int len = array.length;
-		int[] result = new int[len - length];
+		int arrayLength = array.length;
+		int newLength = arrayLength - length;
+		if ((newLength == 0) && (index == 0)) {
+			return EMPTY_INT_ARRAY;  // performance tweak
+		}
+		int[] result = new int[newLength];
 		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + length, result, index, len - index - length);
+		System.arraycopy(array, index + length, result, index, newLength - index);
 		return result;
 	}
+	private static final int[] EMPTY_INT_ARRAY = new int[0];
 
 	/**
 	 * Remove any duplicate elements from the specified array,

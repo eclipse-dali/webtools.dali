@@ -49,7 +49,7 @@ import org.eclipse.jpt.utility.internal.swing.Displayable;
  */
 public class ListModelAdapterUITest {
 
-	private WritablePropertyValueModel taskListHolder;
+	private WritablePropertyValueModel<TaskList> taskListHolder;
 	private TextField taskTextField;
 
 	public static void main(String[] args) throws Exception {
@@ -61,7 +61,7 @@ public class ListModelAdapterUITest {
 	}
 
 	private void exec(String[] args) throws Exception {
-		this.taskListHolder = new SimplePropertyValueModel(new TaskList());
+		this.taskListHolder = new SimplePropertyValueModel<TaskList>(new TaskList());
 		this.openWindow();
 	}
 
@@ -229,7 +229,7 @@ public class ListModelAdapterUITest {
 	}
 
 	private TaskList taskList() {
-		return (TaskList) this.taskListHolder.value();
+		return this.taskListHolder.value();
 	}
 
 	void addTask() {

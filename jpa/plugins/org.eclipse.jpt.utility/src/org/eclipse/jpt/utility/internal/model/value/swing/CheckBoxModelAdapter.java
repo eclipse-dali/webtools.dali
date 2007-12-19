@@ -28,7 +28,7 @@ public class CheckBoxModelAdapter
 	/**
 	 * Constructor - the boolean holder is required.
 	 */
-	public CheckBoxModelAdapter(WritablePropertyValueModel booleanHolder, boolean defaultValue) {
+	public CheckBoxModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder, boolean defaultValue) {
 		super(booleanHolder, defaultValue);
 	}
 
@@ -36,7 +36,7 @@ public class CheckBoxModelAdapter
 	 * Constructor - the boolean holder is required.
 	 * The default value will be false.
 	 */
-	public CheckBoxModelAdapter(WritablePropertyValueModel booleanHolder) {
+	public CheckBoxModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder) {
 		super(booleanHolder);
 	}
 

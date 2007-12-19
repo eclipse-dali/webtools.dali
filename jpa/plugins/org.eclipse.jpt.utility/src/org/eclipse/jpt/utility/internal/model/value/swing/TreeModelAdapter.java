@@ -648,7 +648,6 @@ public class TreeModelAdapter<T>
 		/**
 		 * Remove all the old nodes and add all the new nodes.
 		 */
-		@SuppressWarnings("unchecked")
 		void rebuildChildren() {
 			TreeNodeValueModel<T> parent = this.parent();
 			TreeNodeValueModel<T>[] parentPath = parent.path();
@@ -716,7 +715,6 @@ public class TreeModelAdapter<T>
 		 * the children model.
 		 */
 		@Override
-		@SuppressWarnings("unchecked")
 		Iterator<TreeNodeValueModel<T>> children() {
 			return this.node.childrenModel().iterator();
 		}
