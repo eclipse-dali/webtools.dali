@@ -7,30 +7,36 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.tests.internal.jface;
+package org.eclipse.jpt.ui.tests.internal.swt;
 
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.ui.internal.jface.StructuredContentProviderAdapter;
+import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter;
+import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter.SelectionChangeEvent;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.Model;
+import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
-import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -47,23 +53,32 @@ import org.eclipse.swt.widgets.Text;
  * an example UI for testing various permutations of the
  * StructuredContentProviderAdapter
  */
-public class StructuredContentProviderAdapterUITest
+public class ListBoxModelAdapterUITest
 	extends ApplicationWindow
 {
-	private WritablePropertyValueModel taskListHolder;
+	final TaskList taskList;
+	private final WritablePropertyValueModel<TaskList> taskListHolder;
 	private Text taskTextField;
 
 	public static void main(String[] args) throws Exception {
-		Window window = new StructuredContentProviderAdapterUITest(args);
+		Window window = new ListBoxModelAdapterUITest(args);
 		window.setBlockOnOpen(true);
 		window.open();
 		Display.getCurrent().dispose();
 		System.exit(0);
 	}
 
-	private StructuredContentProviderAdapterUITest(String[] args) {
+	private ListBoxModelAdapterUITest(String[] args) {
 		super(null);
-		this.taskListHolder = new SimplePropertyValueModel(new TaskList());
+		this.taskList = new TaskList();
+		this.taskListHolder = new SimplePropertyValueModel<TaskList>(this.taskList);
+		this.taskList.addTask("swim");
+		this.taskList.addTask("bike");
+		this.taskList.addTask("run");
+		Task rest = this.taskList.addTask("rest");
+		this.taskList.addPriorityTask(rest);
+		Task repeat = this.taskList.addTask("repeat");
+		this.taskList.addPriorityTask(repeat);
 	}
 
 	@Override
@@ -89,7 +104,7 @@ public class StructuredContentProviderAdapterUITest
 
 		panel.setLayout(new FormLayout());
 		this.buildPrimitiveTaskListPanel(panel);
-		this.buildDisplayableTaskListPanel(panel);
+		this.buildObjectTaskListPanel(panel);
 
 		return panel;
 	}
@@ -110,7 +125,7 @@ public class StructuredContentProviderAdapterUITest
 		this.buildCustomSortedPrimitiveListPanel(panel);
 	}
 
-	private void buildDisplayableTaskListPanel(Composite parent) {
+	private void buildObjectTaskListPanel(Composite parent) {
 		Composite panel = new Composite(parent, SWT.NONE);
 
 		FormData fd = new FormData();
@@ -121,33 +136,33 @@ public class StructuredContentProviderAdapterUITest
 		panel.setLayoutData(fd);
 
 		panel.setLayout(new FillLayout());
-		this.buildUnsortedDisplayableListPanel(panel);
-		this.buildStandardSortedDisplayableListPanel(panel);
-		this.buildCustomSortedDisplayableListPanel(panel);
+		this.buildUnsortedObjectListPanel(panel);
+		this.buildStandardSortedObjectListPanel(panel);
+		this.buildCustomSortedObjectListPanel(panel);
 	}
 
 	private void buildUnsortedPrimitiveListPanel(Composite parent) {
-		this.buildListPanel(parent, "primitive unsorted", this.buildUnsortedPrimitiveListModel());
+		this.buildListPanel(parent, "primitive unsorted", this.buildUnsortedPrimitiveListModel(), new SimpleCollectionValueModel<String>());
 	}
 
 	private void buildStandardSortedPrimitiveListPanel(Composite parent) {
-		this.buildListPanel(parent, "primitive sorted", this.buildStandardSortedPrimitiveListModel());
+		this.buildListPanel(parent, "primitive sorted", this.buildStandardSortedPrimitiveListModel(), new SimpleCollectionValueModel<String>());
 	}
 
 	private void buildCustomSortedPrimitiveListPanel(Composite parent) {
-		this.buildListPanel(parent, "primitive reverse sorted", this.buildCustomSortedPrimitiveListModel());
+		this.buildListPanel(parent, "primitive reverse sorted", this.buildCustomSortedPrimitiveListModel(), new SimpleCollectionValueModel<String>());
 	}
 
-	private void buildUnsortedDisplayableListPanel(Composite parent) {
-		this.buildListPanel(parent, "displayable unsorted", this.buildUnsortedDisplayableListModel());
+	private void buildUnsortedObjectListPanel(Composite parent) {
+		this.buildListPanel2(parent, "object unsorted", this.buildUnsortedObjectListModel(), this.buildPriorityTaskListAdapter());
 	}
 
-	private void buildStandardSortedDisplayableListPanel(Composite parent) {
-		this.buildListPanel(parent, "displayable sorted", this.buildStandardSortedDisplayableListModel());
+	private void buildStandardSortedObjectListPanel(Composite parent) {
+		this.buildListPanel2(parent, "object sorted", this.buildStandardSortedObjectListModel(), this.buildPriorityTaskListAdapter());
 	}
 
-	private void buildCustomSortedDisplayableListPanel(Composite parent) {
-		this.buildListPanel(parent, "displayable reverse sorted", this.buildCustomSortedDisplayableListModel());
+	private void buildCustomSortedObjectListPanel(Composite parent) {
+		this.buildListPanel2(parent, "object reverse sorted", this.buildCustomSortedObjectListModel(), this.buildPriorityTaskListAdapter());
 	}
 
 	private ListValueModel buildUnsortedPrimitiveListModel() {
@@ -162,19 +177,19 @@ public class StructuredContentProviderAdapterUITest
 		return new SortedListValueModelAdapter(this.buildPrimitiveTaskListAdapter(), this.buildCustomStringComparator());
 	}
 
-	private ListValueModel buildUnsortedDisplayableListModel() {
-		return this.buildDisplayableTaskListAdapter();
+	private ListValueModel buildUnsortedObjectListModel() {
+		return this.buildObjectTaskListAdapter();
 	}
 
-	private ListValueModel buildStandardSortedDisplayableListModel() {
-		return new SortedListValueModelAdapter(this.buildDisplayableTaskListAdapter());
+	private ListValueModel buildStandardSortedObjectListModel() {
+		return new SortedListValueModelAdapter(this.buildObjectTaskListAdapter());
 	}
 
-	private ListValueModel buildCustomSortedDisplayableListModel() {
-		return new SortedListValueModelAdapter(this.buildDisplayableTaskListAdapter(), this.buildCustomTaskObjectComparator());
+	private ListValueModel buildCustomSortedObjectListModel() {
+		return new SortedListValueModelAdapter(this.buildObjectTaskListAdapter(), this.buildCustomTaskComparator());
 	}
 
-	private void buildListPanel(Composite parent, String label, ListValueModel model) {
+	private ListBoxModelAdapter buildListPanel(Composite parent, String label, ListValueModel model, CollectionValueModel selectedItemsModel) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayout(new FormLayout());
 
@@ -187,14 +202,36 @@ public class StructuredContentProviderAdapterUITest
 			fd.right = new FormAttachment(100);
 		listLabel.setLayoutData(fd);
 
-		ListViewer listViewer = new ListViewer(panel);
+		org.eclipse.swt.widgets.List listBox = new org.eclipse.swt.widgets.List(panel, SWT.MULTI | SWT.BORDER);
 		fd = new FormData();
 			fd.top = new FormAttachment(listLabel);
 			fd.bottom = new FormAttachment(100);
 			fd.left = new FormAttachment(0);
 			fd.right = new FormAttachment(100);
-		listViewer.getList().setLayoutData(fd);
-		StructuredContentProviderAdapter.adapt(listViewer, model);
+		listBox.setLayoutData(fd);
+		return ListBoxModelAdapter.adapt(model, selectedItemsModel, listBox);  // use #toString()
+	}
+
+	private void buildListPanel2(Composite parent, String label, ListValueModel model, CollectionValueModel selectedItemsModel) {
+		ListBoxModelAdapter<Task> adapter = this.buildListPanel(parent, label, model, selectedItemsModel);
+		adapter.addDoubleClickListener(this.buildDoubleClickListener());
+		adapter.addSelectionChangeListener(this.buildSelectionChangeListener());
+	}
+
+	private ListBoxModelAdapter.DoubleClickListener<Task> buildDoubleClickListener() {
+		return new ListBoxModelAdapter.DoubleClickListener<Task>() {
+			public void doubleClick(ListBoxModelAdapter.DoubleClickEvent<Task> event) {
+				System.out.println("double-click: " + event.selection());
+			}
+		};
+	}
+
+	private ListBoxModelAdapter.SelectionChangeListener<Task> buildSelectionChangeListener() {
+		return new ListBoxModelAdapter.SelectionChangeListener<Task>() {
+			public void selectionChanged(SelectionChangeEvent<Task> event) {
+				ListBoxModelAdapterUITest.this.taskList.setPriorityTasks(event.selection());
+			}
+		};
 	}
 
 	private Comparator<String> buildCustomStringComparator() {
@@ -205,28 +242,37 @@ public class StructuredContentProviderAdapterUITest
 		};
 	}
 
-	private Comparator<TaskObject> buildCustomTaskObjectComparator() {
-		return new Comparator<TaskObject>() {
-			public int compare(TaskObject to1, TaskObject to2) {
+	private Comparator<Task> buildCustomTaskComparator() {
+		return new Comparator<Task>() {
+			public int compare(Task to1, Task to2) {
 				return to2.compareTo(to1);
 			}
 		};
 	}
 
 	private ListValueModel buildPrimitiveTaskListAdapter() {
-		return new ListAspectAdapter(TaskList.TASKS_LIST, this.taskList()) {
+		return new ListAspectAdapter(this.taskListHolder, TaskList.TASK_NAMES_LIST) {
 			@Override
 			protected ListIterator<String> listIterator_() {
+				return ((TaskList) this.subject).taskNames();
+			}
+		};
+	}
+
+	private ListValueModel buildObjectTaskListAdapter() {
+		return new ListAspectAdapter(this.taskListHolder, TaskList.TASKS_LIST) {
+			@Override
+			protected ListIterator<Task> listIterator_() {
 				return ((TaskList) this.subject).tasks();
 			}
 		};
 	}
 
-	private ListValueModel buildDisplayableTaskListAdapter() {
-		return new ListAspectAdapter(TaskList.TASK_OBJECTS_LIST, this.taskList()) {
+	private CollectionValueModel buildPriorityTaskListAdapter() {
+		return new CollectionAspectAdapter(this.taskListHolder, TaskList.PRIORITY_TASKS_COLLECTION) {
 			@Override
-			protected ListIterator<TaskObject> listIterator_() {
-				return ((TaskList) this.subject).taskObjects();
+			protected Iterator<Task> iterator_() {
+				return ((TaskList) this.subject).priorityTasks();
 			}
 		};
 	}
@@ -241,33 +287,93 @@ public class StructuredContentProviderAdapterUITest
 		panel.setLayoutData(fd);
 
 		panel.setLayout(new FormLayout());
-		Control clearButton = this.buildClearButton(panel);
-		this.buildAddRemoveTaskPanel(panel, clearButton);
+		Control misc = this.buildMiscTaskPanel(panel);
+		this.buildAddRemoveTaskPanel(panel, misc);
 	}
 
 	// is there a better way to associate an ACI with form data?
-	private Control buildClearButton(Composite parent) {
+	private Control buildMiscTaskPanel(Composite parent) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		FormData fd = new FormData();
 			fd.top = new FormAttachment(0);
 			fd.bottom = new FormAttachment(100);
-			fd.left = new FormAttachment(100, -50);
+			fd.left = new FormAttachment(100, -400);
 			fd.right = new FormAttachment(100);
 		panel.setLayoutData(fd);
 
 		panel.setLayout(new FillLayout());
-		this.buildClearACI().fill(panel);
+		this.buildClearListACI().fill(panel);
+		this.buildClearModelACI().fill(panel);
+		this.buildRestoreModelACI().fill(panel);
+		this.buildAddPriorityTaskACI().fill(panel);
+		this.buildRemovePriorityTaskACI().fill(panel);
+		this.buildClearPriorityTasksACI().fill(panel);
 		return panel;
 	}
 
-	private ActionContributionItem buildClearACI() {
-		Action action = new Action("clear", IAction.AS_PUSH_BUTTON) {
+	private ActionContributionItem buildClearListACI() {
+		Action action = new Action("clear list", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				StructuredContentProviderAdapterUITest.this.clearTasks();
+				ListBoxModelAdapterUITest.this.clearTasks();
 			}
 		};
 		action.setToolTipText("clear all the tasks");
+		return new ActionContributionItem(action);
+	}
+
+	private ActionContributionItem buildClearModelACI() {
+		Action action = new Action("clear model", IAction.AS_PUSH_BUTTON) {
+			@Override
+			public void run() {
+				ListBoxModelAdapterUITest.this.clearModel();
+			}
+		};
+		action.setToolTipText("clear the task list model");
+		return new ActionContributionItem(action);
+	}
+
+	private ActionContributionItem buildRestoreModelACI() {
+		Action action = new Action("restore model", IAction.AS_PUSH_BUTTON) {
+			@Override
+			public void run() {
+				ListBoxModelAdapterUITest.this.restoreModel();
+			}
+		};
+		action.setToolTipText("restore the task list model");
+		return new ActionContributionItem(action);
+	}
+
+	private ActionContributionItem buildAddPriorityTaskACI() {
+		Action action = new Action("add priority", IAction.AS_PUSH_BUTTON) {
+			@Override
+			public void run() {
+				ListBoxModelAdapterUITest.this.addPriorityTask();
+			}
+		};
+		action.setToolTipText("add a task to the priority tasks");
+		return new ActionContributionItem(action);
+	}
+
+	private ActionContributionItem buildRemovePriorityTaskACI() {
+		Action action = new Action("remove priority", IAction.AS_PUSH_BUTTON) {
+			@Override
+			public void run() {
+				ListBoxModelAdapterUITest.this.removePriorityTask();
+			}
+		};
+		action.setToolTipText("remove a task from the priority tasks");
+		return new ActionContributionItem(action);
+	}
+
+	private ActionContributionItem buildClearPriorityTasksACI() {
+		Action action = new Action("clear priority", IAction.AS_PUSH_BUTTON) {
+			@Override
+			public void run() {
+				ListBoxModelAdapterUITest.this.clearPriorityTasks();
+			}
+		};
+		action.setToolTipText("clear the priority tasks");
 		return new ActionContributionItem(action);
 	}
 
@@ -305,7 +411,7 @@ public class StructuredContentProviderAdapterUITest
 		Action action = new Action("add", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				StructuredContentProviderAdapterUITest.this.addTask();
+				ListBoxModelAdapterUITest.this.addTask();
 			}
 		};
 		action.setToolTipText("add a task with the name in the entry field");
@@ -331,7 +437,7 @@ public class StructuredContentProviderAdapterUITest
 		Action action = new Action("remove", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				StructuredContentProviderAdapterUITest.this.removeTask();
+				ListBoxModelAdapterUITest.this.removeTask();
 			}
 		};
 		action.setToolTipText("remove the task with the name in the entry field");
@@ -352,79 +458,121 @@ public class StructuredContentProviderAdapterUITest
 		return this.taskTextField.getText();
 	}
 
-	private TaskList taskList() {
-		return (TaskList) this.taskListHolder.value();
-	}
-
 	void addTask() {
 		String taskText = this.taskTextFieldText();
 		if (taskText.length() != 0) {
-			this.taskList().addTask(taskText);
+			this.taskList.addTask(taskText);
 		}
 	}
 
 	void removeTask() {
 		String task = this.taskTextFieldText();
 		if (task.length() != 0) {
-			this.taskList().removeTask(task);
+			this.taskList.removeTask(task);
 		}
 	}
 
 	void clearTasks() {
-		this.taskList().clearTasks();
+		this.taskList.clearTasks();
+	}
+
+	void clearModel() {
+		this.taskListHolder.setValue(null);
+	}
+
+	void restoreModel() {
+		this.taskListHolder.setValue(this.taskList);
+	}
+
+	void addPriorityTask() {
+		Iterator<Task> tasks = this.taskList.tasks();
+		while (tasks.hasNext()) {
+			if (this.taskList.addPriorityTask(tasks.next())) {
+				return;
+			}
+		}
+	}
+
+	void removePriorityTask() {
+		Iterator<Task> pTasks = this.taskList.priorityTasks();
+		if (pTasks.hasNext()) {
+			this.taskList.removePriorityTask(pTasks.next());
+		}
+	}
+
+	void clearPriorityTasks() {
+		this.taskList.clearPriorityTasks();
 	}
 
 
 	// ********** TaskList **********
 
+	// note absence of validation...
 	private class TaskList extends AbstractModel {
-		private List<String> tasks = new ArrayList<String>();
-		private List<TaskObject> taskObjects = new ArrayList<TaskObject>();
-		public static final String TASKS_LIST = "tasks";
-		public static final String TASK_OBJECTS_LIST = "taskObjects";
+		private final List<String> taskNames = new ArrayList<String>();
+			public static final String TASK_NAMES_LIST = "taskNames";
+		private final List<Task> tasks = new ArrayList<Task>();
+			public static final String TASKS_LIST = "tasks";
+		private final Collection<Task> priorityTasks = new HashSet<Task>();
+			public static final String PRIORITY_TASKS_COLLECTION = "priorityTasks";
 		TaskList() {
 			super();
 		}
-		public ListIterator<String> tasks() {
+		public ListIterator<String> taskNames() {
+			return this.taskNames.listIterator();
+		}
+		public ListIterator<Task> tasks() {
 			return this.tasks.listIterator();
 		}
-		public ListIterator<TaskObject> taskObjects() {
-			return this.taskObjects.listIterator();
+		public Iterator<Task> priorityTasks() {
+			return this.priorityTasks.iterator();
 		}
-		public void addTask(String task) {
-			int index = this.tasks.size();
-			this.tasks.add(index, task);
-			this.fireItemAdded(TASKS_LIST, index, task);
-	
-			TaskObject taskObject = new TaskObject(task);
-			this.taskObjects.add(index, taskObject);
-			this.fireItemAdded(TASK_OBJECTS_LIST, index, taskObject);
+		public Task addTask(String taskName) {
+			this.addItemToList(taskName, this.taskNames, TASK_NAMES_LIST);
+			Task task = new Task(taskName);
+			this.addItemToList(task, this.tasks, TASKS_LIST);
+			return task;
 		}		
-		public void removeTask(String task) {
-			int index = this.tasks.indexOf(task);
+		public void removeTask(String taskName) {
+			int index = this.taskNames.indexOf(taskName);
 			if (index != -1) {
-				Object removedTask = this.tasks.remove(index);
-				this.fireItemRemoved(TASKS_LIST, index, removedTask);
+				this.removeItemFromList(index, this.taskNames, TASK_NAMES_LIST);
 				// assume the indexes match...
-				Object removedTaskObject = this.taskObjects.remove(index);
-				this.fireItemRemoved(TASK_OBJECTS_LIST, index, removedTaskObject);
+				Task removedTask = this.removeItemFromList(index, this.tasks, TASKS_LIST);
+				this.removeItemFromCollection(removedTask, this.priorityTasks, PRIORITY_TASKS_COLLECTION);
 			}
 		}
 		public void clearTasks() {
+			this.taskNames.clear();
+			this.fireListCleared(TASK_NAMES_LIST);
 			this.tasks.clear();
 			this.fireListCleared(TASKS_LIST);
-			this.taskObjects.clear();
-			this.fireListCleared(TASK_OBJECTS_LIST);
+		}
+		public boolean addPriorityTask(Task task) {
+			return this.addItemToCollection(task, this.priorityTasks, PRIORITY_TASKS_COLLECTION);
+		}		
+		public void removePriorityTask(Task task) {
+			this.removeItemFromCollection(task, this.priorityTasks, PRIORITY_TASKS_COLLECTION);
+		}
+		public void clearPriorityTasks() {
+			this.clearCollection(this.priorityTasks, PRIORITY_TASKS_COLLECTION);
+		}
+		public void setPriorityTasks(Iterator<Task> tasks) {
+			this.priorityTasks.clear();
+			while (tasks.hasNext()) {
+				this.priorityTasks.add(tasks.next());
+			}
+			this.fireCollectionChanged(PRIORITY_TASKS_COLLECTION);
 		}
 	}
 
 
-	// ********** TaskObject **********
+	// ********** Task **********
 
-	private class TaskObject extends AbstractModel implements Displayable {
+	private class Task extends AbstractModel implements Displayable {
 		private String name;
 		private Date creationTimeStamp;
-		public TaskObject(String name) {
+		public Task(String name) {
 			this.name = name;
 			this.creationTimeStamp = new Date();
 		}
@@ -444,7 +592,7 @@ public class StructuredContentProviderAdapterUITest
 		}
 		@Override
 		public String toString() {
-			return "TaskObject(" + this.displayString() + ")";
+			return this.displayString();
 		}
 	}
 
